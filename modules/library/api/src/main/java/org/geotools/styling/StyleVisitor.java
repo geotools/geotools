@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import org.opengis.style.ContrastMethod;
 
 /**
  * An interface for classes that want to perform operations on a Style
@@ -247,4 +248,10 @@ public interface StyleVisitor {
      * @param cs the {@link ShadedRelief} to visit.
      */
     void visit(ShadedRelief sr);
+
+    /**
+     * called when accept is called on a raster {@link ContrastEnhancement} method
+     * @param method the {@link ContrastMethod} to visit
+     */
+    void visit(ContrastMethod method);
 }

@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import static org.junit.Assert.fail;
+
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -35,17 +37,15 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.Normalize;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.style.ContrastMethod;
-import org.opengis.filter.FilterFactory2;
-
-import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.FilterFactory2;
 
 /**
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).
@@ -142,7 +142,7 @@ public class DisplayCoverageTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), new Normalize());
         SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
 
         RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();

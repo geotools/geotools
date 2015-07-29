@@ -253,4 +253,10 @@ public interface StyleVisitor {
      * @param cs the {@link ShadedRelief} to visit.
      */
     Object visit(ShadedRelief shadedRelief, Object data );
+
+    /**
+     * @param normalize
+     * @param data
+     */
+    void visit(ContrastMethod method, Object data);
 }

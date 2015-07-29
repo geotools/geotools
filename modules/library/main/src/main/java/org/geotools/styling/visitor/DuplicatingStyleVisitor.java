@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.swing.Icon;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.styling.AnchorPoint;
@@ -70,9 +72,8 @@ import org.geotools.styling.UserLayer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.Description;
-
-import javax.swing.Icon;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -1058,5 +1059,16 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
         pages.push(copy);
 
+    }
+
+    @Override
+    public void visit(ContrastMethod method) {
+        final ContrastMethod copy = sf.createContrastMethod(method);
+        
+        if (STRICT && !copy.equals(copy)) {
+            throw new IllegalStateException("Was unable to duplicate provided ContrastMethod:" + method);
+        }
+        pages.push(copy);
+        
     }
 }

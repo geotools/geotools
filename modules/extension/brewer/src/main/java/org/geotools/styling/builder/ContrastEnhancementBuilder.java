@@ -17,6 +17,8 @@
 package org.geotools.styling.builder;
 
 import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.Histogram;
+import org.geotools.styling.Normalize;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
@@ -50,13 +52,13 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
     }
 
     public ContrastEnhancementBuilder normalize() {
-        this.method = ContrastMethod.NORMALIZE;
+        this.method = new Normalize();
         this.unset = false;
         return this;
     }
 
     public ContrastEnhancementBuilder histogram() {
-        this.method = ContrastMethod.HISTOGRAM;
+        this.method = new Histogram();
         this.unset = false;
         return this;
     }
@@ -75,7 +77,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
 
     public ContrastEnhancementBuilder reset() {
         gamma = null;
-        method = ContrastMethod.NONE;
+        method = null;
         unset = false;
         return this;
     }

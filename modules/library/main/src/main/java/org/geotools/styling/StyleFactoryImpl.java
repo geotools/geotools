@@ -984,4 +984,16 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             org.opengis.style.Fill fill) {
         return delegate.textSymbolizer(name, geometry, description, unit, label, font, placement, halo, fill);        
     }
+
+    @Override
+    public ContrastMethod createContrastMethod(ContrastMethod method) {
+        ContrastMethod ret = null;
+        if(method instanceof Normalize) {
+            ret = new Normalize(method);
+        }
+        if(method instanceof Histogram) {
+            ret = new Histogram(method);
+        }
+        return ret;
+    }
 }

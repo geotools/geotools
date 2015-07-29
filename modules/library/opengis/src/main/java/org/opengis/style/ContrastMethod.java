@@ -12,21 +12,19 @@ package org.opengis.style;
 import java.util.List;
 import java.util.ArrayList;
 import org.opengis.util.CodeList;
+import java.util.Map;
 
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.annotation.XmlElement;
 
-
 /**
- * The ContrastEnhancement element defines contrast enhancement for a channel of a
- * false-color image or for a color image.
+ * The ContrastEnhancement element defines contrast enhancement for a channel of a false-color image or for a color image.
  * 
- * In the case of a color image, the relative grayscale brightness of a pixel color is used.
- * “Normalize” means to stretch the contrast so that the dimmest color is stretched to black
- * and the brightest color is stretched to white, with all colors in between stretched out
- * linearly. “Histogram” means to stretch the contrast based on a histogram of how many
- * colors are at each brightness level on input, with the goal of producing equal number of
- * pixels in the image at each brightness level on output. This has the effect of revealing
- * many subtle ground features.
+ * In the case of a color image, the relative grayscale brightness of a pixel color is used. “Normalize” means to stretch the contrast so that the
+ * dimmest color is stretched to black and the brightest color is stretched to white, with all colors in between stretched out linearly. “Histogram”
+ * means to stretch the contrast based on a histogram of how many colors are at each brightness level on input, with the goal of producing equal
+ * number of pixels in the image at each brightness level on output. This has the effect of revealing many subtle ground features.
  *
  *
  *
@@ -36,79 +34,55 @@ import org.opengis.annotation.XmlElement;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-@XmlElement("ContrastEnchancement:type")
-public final class ContrastMethod extends CodeList<ContrastMethod> {
-    /**
-     * Serial number for compatibility with different versions.
-     */
-    private static final long serialVersionUID = -7328502367911363577L;
+@XmlElement("ContrastEnhancement:type")
+public interface ContrastMethod {
 
     /**
-     * List of all enumerations of this type.
-     * Must be declared before any enum declaration.
+     * discover the type of this method.
+     * 
+     * @return the type
      */
-    private static final List<ContrastMethod> VALUES = new ArrayList<ContrastMethod>(3);
+    public Expression getType();
 
     /**
-     * Normalize enchancement.
-     * “Normalize” means to stretch the contrast so that the dimmest color is stretched to black
-     * and the brightest color is stretched to white, with all colors in between stretched out
-     * linearly.
+     * Get the Algorithm that this method uses or null if none.
+     * 
+     * @return an expression for the name of the algorithm
      */
-    @XmlElement("Normalize")
-    public static final ContrastMethod NORMALIZE = new ContrastMethod("NORMALIZE");
+    public Expression getAlgorithm();
 
     /**
-     * Histogram enchancement.
-     * “Histogram” means to stretch the contrast based on a histogram of how many
-     * colors are at each brightness level on input, with the goal of producing equal number of
-     * pixels in the image at each brightness level on output.
+     * 
      */
-    @XmlElement("Histogram")
-    public static final ContrastMethod HISTOGRAM = new ContrastMethod("HISTOGRAM");
+    public Map<String, Expression> getParameters();
 
     /**
-     * No enchancement.
-     * this is the default value.
+     * 
      */
-    public static final ContrastMethod NONE = new ContrastMethod("NONE");
+
+    public String name();
 
     /**
-     * Constructs an enum with the given name. The new enum is
-     * automatically added to the list returned by {@link #values}.
-     *
-     * @param name The enum name. This name must not be in use by an other enum of this type.
+     * Traversal of the style data structure.
+     * 
+     * @param visitor
      */
-    private ContrastMethod(final String name) {
-        super(name, VALUES);
-    }
+    public void accept(StyleVisitor visitor);
 
     /**
-     * Returns the list of {@code ContrastType}s.
-     *
-     * @return The list of codes declared in the current JVM.
+     * @return
      */
-    public static ContrastMethod[] values() {
-        synchronized (VALUES) {
-            return VALUES.toArray(new ContrastMethod[VALUES.size()]);
-        }
-    }
+    public FilterFactory getFilterFactory();
 
     /**
-     * Returns the list of enumerations of the same kind than this enum.
+     * @param key - the name of the parameter
+     * @param value - an expression that evaluates the parameter value
      */
-    public ContrastMethod[] family() {
-        return values();
-    }
+    public void addParameter(String key, Expression value);
 
     /**
-     * Returns the contrast type that matches the given string, or returns a
-     * new one if none match it.
-     *
-     * @param code The name of the code to fetch or to create.
-     * @return A code matching the given name.
+     * @param name - the name of the algorithm to use (if required)
      */
-    public static ContrastMethod valueOf(String code) {
-        return valueOf(ContrastMethod.class, code);
-    }
+    public void setAlgorithm(Expression name);
+
 }

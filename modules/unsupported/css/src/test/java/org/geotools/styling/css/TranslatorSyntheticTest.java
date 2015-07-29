@@ -37,6 +37,7 @@ import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Normalize;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
@@ -49,7 +50,6 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.GraphicFill;
@@ -514,7 +514,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
         assertNull(rs.getChannelSelection());
         assertNull(rs.getColorMap());
-        assertEquals(ContrastMethod.NORMALIZE, rs.getContrastEnhancement().getMethod());
+        assertEquals(new Normalize(), rs.getContrastEnhancement().getMethod());
         assertLiteral("0.5", rs.getContrastEnhancement().getGammaValue());
     }
 
@@ -527,7 +527,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertNull(rs.getColorMap());
         SelectedChannelType grayChannel = rs.getChannelSelection().getGrayChannel();
         assertNotNull(grayChannel);
-        assertEquals(ContrastMethod.NORMALIZE, grayChannel.getContrastEnhancement().getMethod());
+        assertEquals(new Normalize(), grayChannel.getContrastEnhancement().getMethod());
         assertLiteral("0.5", grayChannel.getContrastEnhancement().getGammaValue());
     }
 

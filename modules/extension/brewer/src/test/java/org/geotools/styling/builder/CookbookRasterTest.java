@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.Normalize;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Style;
@@ -99,7 +100,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         assertEquals(1.0, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNotNull(rs.getContrastEnhancement());
-        assertEquals(ContrastMethod.NORMALIZE, rs.getContrastEnhancement().getMethod());
+        assertEquals(new Normalize(), rs.getContrastEnhancement().getMethod());
         assertEquals(0.5, rs.getContrastEnhancement().getGammaValue().evaluate(null, Double.class),
                 0.0);
         assertNull(rs.getChannelSelection());

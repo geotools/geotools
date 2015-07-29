@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.opengis.style.ContrastMethod;
+
 /**
  * A basic implementation of the StyleVisitor interface.
  * <p>
@@ -432,6 +434,14 @@ public class AbstractStyleVisitor implements StyleVisitor {
         if (sr.getReliefFactor() != null) {
             //sr.getReliefFactor().accept(visitor, extraData)
         }
+    }
+
+    @Override
+    public void visit(ContrastMethod method) {
+        if (method != null) {
+            method.accept((org.opengis.style.StyleVisitor) this);
+        }
+                
     }
 
 }

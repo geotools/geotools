@@ -27,8 +27,7 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 
 /**
- * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
- * or for a color image. Its format is:
+ * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image or for a color image. Its format is:
  * 
  * <pre>
  * &lt;xs:element name=&quot;ContrastEnhancement&quot;&gt;
@@ -51,29 +50,36 @@ import org.opengis.style.ContrastMethod;
  * &lt;xs:element name=&quot;GammaValue&quot; type=&quot;xs:double&quot;/&gt;
  * </pre>
  * 
- * In the case of a color image, the relative grayscale brightness of a pixel color is used.
- * ?Normalize? means to stretch the contrast so that the dimmest color is stretched to black and the
- * brightest color is stretched to white, with all colors in between stretched out linearly.
- * ?Histogram? means to stretch the contrast based on a histogram of how many colors are at each
- * brightness level on input, with the goal of producing equal number of pixels in the image at each
- * brightness level on output. This has the effect of revealing many subtle ground features. A
- * ?GammaValue? tells how much to brighten (value greater than 1.0) or dim (value less than 1.0) an
- * image. The default GammaValue is 1.0 (no change). If none of Normalize, Histogram, or GammaValue
- * are selected in a ContrastEnhancement, then no enhancement is performed.
+ * In the case of a color image, the relative grayscale brightness of a pixel color is used. ?Normalize? means to stretch the contrast so that the
+ * dimmest color is stretched to black and the brightest color is stretched to white, with all colors in between stretched out linearly. ?Histogram?
+ * means to stretch the contrast based on a histogram of how many colors are at each brightness level on input, with the goal of producing equal
+ * number of pixels in the image at each brightness level on output. This has the effect of revealing many subtle ground features. A ?GammaValue?
+ * tells how much to brighten (value greater than 1.0) or dim (value less than 1.0) an image. The default GammaValue is 1.0 (no change). If none of
+ * Normalize, Histogram, or GammaValue are selected in a ContrastEnhancement, then no enhancement is performed.
  * 
  * @author iant
  *
  *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *         styling/ContrastEnhancementImpl.java $
+ * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/ styling/ContrastEnhancementImpl.java $
  */
 public class ContrastEnhancementImpl implements ContrastEnhancement {
+    /** HISTOGRAM */
+    private static final String HISTOGRAM = "Histogram";
+
+    /** EXPONENTIAL */
+    private static final String EXPONENTIAL = "Exponential";
+
+    /** LOGARITHMIC */
+    private static final String LOGARITHMIC = "Logarithmic";
+
+    /** NORMALIZE */
+    private static final String NORMALIZE = "Normalize";
+
     private FilterFactory filterFactory;
 
     private Expression gamma;
 
-    private Expression type;
+    
 
     private ContrastMethod method;
 
@@ -92,15 +98,27 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
 
     public ContrastEnhancementImpl(org.opengis.style.ContrastEnhancement contrastEnhancement) {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
-        this.method = contrastEnhancement.getMethod();
+        org.opengis.style.ContrastMethod meth = contrastEnhancement.getMethod();
+        if (meth != null) {
+            if (NORMALIZE.equalsIgnoreCase(meth.name())) {
+                this.method = new Normalize(filterFactory);
+            } else if (HISTOGRAM.equalsIgnoreCase(meth.name())) {
+                this.method = new Histogram(filterFactory);
+            } else if (LOGARITHMIC.equalsIgnoreCase(meth.name())) {
+                this.method = new Logarithmic(filterFactory);
+            } else if (EXPONENTIAL.equalsIgnoreCase(meth.name())) {
+                this.method = new Exponential();
+            }
+        }
         this.gamma = contrastEnhancement.getGammaValue();
     }
 
-    public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma, ContrastMethod method) {
+    public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma,
+            ContrastMethod method) {
         this.filterFactory = factory;
         this.gamma = gamma;
         this.method = method;
-        this.type = factory.literal(method.name());
+        
     }
 
     public void setFilterFactory(FilterFactory factory) {
@@ -112,7 +130,11 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public Expression getType() {
-        return type;
+        if (method != null) {
+            return method.getType();
+        } else {
+            return null;
+        }
     }
 
     public void setGammaValue(Expression gamma) {
@@ -120,50 +142,46 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public void setHistogram() {
-        type = filterFactory.literal("Histogram");
-        method = ContrastMethod.HISTOGRAM;
+
+        method = new Histogram();
+        
+
     }
 
     public void setNormalize() {
-        type = filterFactory.literal("Normalize");
-        method = ContrastMethod.NORMALIZE;
+
+        method = new Normalize();
+        
     }
 
     public void setLogarithmic() {
-        type = filterFactory.literal("Logarithmic");
-        method = ContrastMethod.NONE;
+
+        method = new Logarithmic();
+    
     }
 
     public void setExponential() {
-        type = filterFactory.literal("Exponential");
-        method = ContrastMethod.NONE;
+        method = new Exponential();
+
     }
 
     public void setType(Expression type) {
-        this.type = type;
+
         if (type instanceof Literal) {
             String value = type.evaluate(null, String.class);
-            if ("Histogram".equalsIgnoreCase(value)) {
-                method = ContrastMethod.HISTOGRAM;
-            } else if ("Normalize".equalsIgnoreCase(value)) {
-                method = ContrastMethod.NORMALIZE;
+            if (HISTOGRAM.equalsIgnoreCase(value)) {
+                method = new Histogram();
+            } else if (NORMALIZE.equalsIgnoreCase(value)) {
+                method = new Normalize();
+            } else if (LOGARITHMIC.equalsIgnoreCase(value)) {
+                method = new Logarithmic();
+            } else if (EXPONENTIAL.equalsIgnoreCase(value)) {
+                method = new Exponential();
             } else {
-                method = ContrastMethod.NONE;
+                method = null;
             }
         } else {
-            method = ContrastMethod.NONE;
-        }
-    }
-
-    public void setMethod(ContrastMethod method) {
-        if (method == ContrastMethod.NORMALIZE) {
-            this.type = filterFactory.literal("Normalize");
-            this.method = ContrastMethod.NORMALIZE;
-        } else if (method == ContrastMethod.HISTOGRAM) {
-            this.type = filterFactory.literal("Histogram");
-            this.method = ContrastMethod.HISTOGRAM;
-        } else {
-            this.method = method;
+            method = null;
         }
     }
 
@@ -178,56 +196,60 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
-    
+
     @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
 
-        if (gamma != null){
+        if (gamma != null) {
             result = (PRIME * result) + gamma.hashCode();
         }
 
-        if (type != null) {
-            result = (PRIME * result) + type.hashCode();
+        if (getType() != null) {
+            result = (PRIME * result) + getType().hashCode();
         }
-        
-        if (method != null) {
-            result = (PRIME * result) + method.hashCode();
+
+        if (getMethod() != null) {
+            result = (PRIME * result) + getMethod().hashCode();
         }
-        
+
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-    	if (this == obj) {
+        if (this == obj) {
             return true;
         }
 
         if (obj instanceof ContrastEnhancementImpl) {
-        	ContrastEnhancementImpl other = (ContrastEnhancementImpl) obj;
+            ContrastEnhancementImpl other = (ContrastEnhancementImpl) obj;
 
-            return Utilities.equals(gamma, other.gamma)
-            && Utilities.equals(type, other.type)
-            && Utilities.equals(method, other.method);
+            return Utilities.equals(gamma, other.gamma) && Utilities.equals(getType(), other.getType())
+                    && Utilities.equals(getMethod(), other.getMethod());
         }
 
         return false;
     }
 
     static ContrastEnhancementImpl cast(org.opengis.style.ContrastEnhancement enhancement) {
-        if( enhancement == null ){
+        if (enhancement == null) {
             return null;
-        }
-        else if (enhancement instanceof ContrastEnhancementImpl){
+        } else if (enhancement instanceof ContrastEnhancementImpl) {
             return (ContrastEnhancementImpl) enhancement;
-        }
-        else {
+        } else {
             ContrastEnhancementImpl copy = new ContrastEnhancementImpl();
-            copy.setGammaValue( enhancement.getGammaValue() );
-            copy.setMethod( enhancement.getMethod() );
+            copy.setGammaValue(enhancement.getGammaValue());
+            copy.setMethod(enhancement.getMethod());
             return copy;
         }
+    }
+
+    @Override
+    public void setMethod(ContrastMethod method) {
+        this.method = method;
+        
+
     }
 }

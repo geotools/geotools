@@ -38,6 +38,7 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
+import org.geotools.styling.Normalize;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -360,7 +361,7 @@ public class Utils {
         }
         // Now we create a RasterSymbolizer using the selected channels
         SelectedChannelType[] sct = new SelectedChannelType[cov.getNumSampleDimensions()];
-        ContrastEnhancement ce = styleFactory.contrastEnhancement(filterFactory.literal(1.0), ContrastMethod.NORMALIZE);
+        ContrastEnhancement ce = styleFactory.contrastEnhancement(filterFactory.literal(1.0), new Normalize());
         for( int i = 0; i < 3; i++ ) {
             sct[i] = styleFactory.createSelectedChannelType(String.valueOf(channelNum[i]), ce);
         }

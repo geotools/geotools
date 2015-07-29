@@ -67,6 +67,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
 
 /**
@@ -565,5 +566,10 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
     public void visit(ShadedRelief sr) {
         // nothing to do here
+    }
+
+    @Override
+    public void visit(ContrastMethod method) {
+     // nothing to do here
     }
 }

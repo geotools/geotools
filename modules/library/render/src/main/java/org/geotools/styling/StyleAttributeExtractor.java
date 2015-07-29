@@ -26,6 +26,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.ContrastMethod;
 
 
 /**
@@ -542,6 +543,12 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
 
     public void visit(ShadedRelief sr) {
         sr.accept(this);
+        
+    }
+
+    @Override
+    public void visit(ContrastMethod method) {
+        // TODO Auto-generated method stub
         
     }
 }

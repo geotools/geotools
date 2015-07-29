@@ -42,6 +42,7 @@ import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.Halo;
+import org.geotools.styling.Histogram;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
@@ -668,8 +669,8 @@ public class DuplicatorStyleVisitorTest extends TestCase {
 
         ContrastEnhancement ce = sf.createContrastEnhancement();
         ce.setGammaValue(sb.literalExpression(0.5));
-        ce.setMethod(ContrastMethod.HISTOGRAM);
-        ce.setHistogram();
+        ce.setMethod(new Histogram());
+        
         ce.accept(visitor);
         ContrastEnhancement ce2 = (ContrastEnhancement) visitor.getCopy();
 

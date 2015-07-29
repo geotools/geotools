@@ -127,3 +127,8 @@ Implementation Notes
 * MongoDB versions tested through 2.4.9 do not support more than one operation on a spatial index nested in an $or operation (so splitting a query into two across the dateline will not work).
 
 * Within, Intersects and BBOX filters are implemented with $geoWithin and $geoIntersects operations. These operations are limited when effected by geometries spanning a hemisphere (and will use the smaller geometry).
+
+Usage Notes
+--------------------
+
+* Attribute names containing characters other than letters and numbers may cause issues if used in CQL filters and therefore should be enclosed in double quotes (see: http://docs.geoserver.org/latest/en/user/filter/ecql_reference.html#attribute). This is especially relevant for nested properties, which are named after their full path (dot-notation) by the default schema inference algorithm.

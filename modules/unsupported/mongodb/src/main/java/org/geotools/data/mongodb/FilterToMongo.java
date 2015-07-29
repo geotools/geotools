@@ -24,15 +24,25 @@ import com.mongodb.DBObject;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
+import org.geotools.util.logging.LoggerFactory;
+import org.geotools.util.logging.Logging;
 
 import static org.geotools.util.Converters.convert;
 
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
@@ -100,9 +110,16 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
+    private static final Logger LOGGER = Logging.getLogger(FilterToMongo.class);
+
+    static final SimpleDateFormat ISO8601_SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
     final CollectionMapper mapper;
 
     final MongoGeometryBuilder geometryBuilder;
+
+    /** The schmema the encoder will use as reference to drive filter encoding */
+    SimpleFeatureType featureType;
 
     public FilterToMongo(CollectionMapper mapper) {
         this(mapper, new MongoGeometryBuilder());
@@ -120,12 +137,30 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         return new BasicDBObject();
     }
 
+    /**
+     * Sets the feature type the encoder is encoding a filter for.
+     * <p>
+     * The type of the attributes may drive how the filter is translated to a mongodb
+     * query document.
+     * </p>
+     * 
+     * @param featureType
+     */
+    public void setFeatureType(SimpleFeatureType featureType) {
+        this.featureType = featureType;
+    }
+
     //
     // primitives
     //
     @Override
     public Object visit(Literal expression, Object extraData) {
-        return encodeLiteral(expression.getValue());
+        Class<?> targetType = null;
+        if (extraData != null && extraData instanceof Class) {
+            targetType = (Class<?>) extraData;
+        }
+
+        return encodeLiteral(expression.getValue(), targetType);
     }
 
     @Override
@@ -201,14 +236,15 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         BasicDBObject output = asDBObject(extraData);
 
         String propName = convert(filter.getExpression().accept(this, null), String.class);
-        Object lower = filter.getLowerBoundary().accept(this, null);
-        Object upper = filter.getUpperBoundary().accept(this, null);
+        Object lower = filter.getLowerBoundary().accept(this, getValueType(filter.getExpression()));
+        Object upper = filter.getUpperBoundary().accept(this, getValueType(filter.getExpression()));
 
         BasicDBObject dbo = new BasicDBObject();
         dbo.put("$gte", lower);
         dbo.put("$lte", upper);
         output.put(propName, dbo);
-        return propName;
+
+        return output;
     }
 
     @Override
@@ -220,18 +256,53 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
             Object extraData) {
         BasicDBObject output = asDBObject(extraData);
 
-        Object expr1 = filter.getExpression1().accept(this, null);
-        Object expr2 = filter.getExpression2().accept(this, null);
+        Expression left = filter.getExpression1();
+        Expression right = filter.getExpression2();
+        Class<?> leftValueType = getValueType(right), rightValueType = getValueType(left);
 
-        if (expr2 instanceof String && !(expr1 instanceof String)) {
+        Object leftValue = filter.getExpression1().accept(this, leftValueType);
+        Object rightValue = filter.getExpression2().accept(this, rightValueType);
+        if (rightValue instanceof String && !(leftValue instanceof String)) {
             // reverse
-            Object tmp = expr1;
-            expr1 = expr2;
-            expr2 = tmp;
+            Object tmp = leftValue;
+            leftValue = rightValue;
+            rightValue = tmp;
         }
 
-        output.put((String) expr1, op == null ? expr2 : new BasicDBObject(op, expr2));
+        output.put((String) leftValue, op == null ? rightValue : new BasicDBObject(op, rightValue));
         return output;
+    }
+
+    private Class<?> getValueType(Expression e) {
+        Class<?> valueType = null;
+
+        if (e instanceof PropertyName && featureType != null) {
+            // we should get the value type from the correspondent attribute descriptor
+            AttributeDescriptor attType = (AttributeDescriptor)e.evaluate(featureType);
+            if (attType != null) {
+                valueType = attType.getType().getBinding();
+            }
+        }
+        else if (e instanceof Function) {
+            // get the value type from the function return type
+            Class<?> ret = getFunctionReturnType((Function)e);
+            if (ret != null) {
+                valueType = ret;
+            }
+        }
+
+        return valueType;
+    }
+
+    private Class<?> getFunctionReturnType(Function f) {
+        Class<?> clazz = Object.class;
+        if (f.getFunctionName() != null && f.getFunctionName().getReturn() != null) {
+            clazz = f.getFunctionName().getReturn().getType();
+        }
+        if (clazz == Object.class) {
+            clazz = null;
+        }
+        return clazz;
     }
 
     @Override
@@ -527,11 +598,29 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         throw new UnsupportedOperationException();
     }
 
-    Object encodeLiteral(Object literal) {
+    Object encodeLiteral(Object literal, Class<?> targetType) {
         if (literal instanceof Envelope) {
             return geometryBuilder.toObject((Envelope) literal);
         } else if (literal instanceof Geometry) {
             return geometryBuilder.toObject((Geometry) literal);
+        } else if (literal instanceof Date) {
+            if (targetType != null && Date.class.isAssignableFrom(targetType)) {
+                // return date object as is, will be correctly encoded by BasicDBObject
+                return literal;
+            }
+            // by default, convert date to ISO-8601 string
+            return ISO8601_SDF.format((Date)literal);
+        } else if (literal instanceof String) {
+            if (targetType != null && Date.class.isAssignableFrom(targetType)) {
+                // try parse string assuming it's ISO-8601 formatted
+                try {
+                    return ISO8601_SDF.parse((String) literal);
+                } catch (ParseException e) {
+                    LOGGER.log(Level.WARNING, "Could not parse String literal as ISO-8601 date", e);
+                }
+            }
+            // by default, return string as is
+            return literal;
         } else {
             return literal.toString();
         }

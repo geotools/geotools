@@ -381,6 +381,7 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
                 FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
                 FileFilterUtils.suffixFileFilter("ncx"), FileFilterUtils.suffixFileFilter("gbx9"),
+                FileFilterUtils.suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"),
                 FileFilterUtils.nameFileFilter("error.txt"),
                 FileFilterUtils.nameFileFilter("_metadata"),
                 FileFilterUtils.suffixFileFilter("sample_image"),

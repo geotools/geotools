@@ -344,9 +344,9 @@ class NetCDFGeoreferenceManager {
                     }
                     break;
                 }
-            }else {
-                if (LOGGER.isLoggable(Level.SEVERE)) {
-                    LOGGER.severe("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
+            } else {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
                 }
             }
         }

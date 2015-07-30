@@ -958,8 +958,7 @@ public class ImageMosaicConfigHandler {
             if (palette == null) {
                 palette = rasterManager.defaultPalette;
             }
-            if (Utils.checkColorModels(colorModel, palette, mosaicConfiguration, actualCM)) {
-                // if (checkColorModels(defaultCM, defaultPalette, actualCM)) {
+            if (Utils.checkColorModels(colorModel, palette, actualCM)) {
                 eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipping image "
                         + fileBeingProcessed + " because color models do not match.",
                         (((fileIndex + 1) * 99.0) / numFiles));

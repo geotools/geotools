@@ -1515,7 +1515,9 @@ public class SLDParser {
             }
 
             if (CONTRAST_METHODS.contains(childName.toLowerCase())) {
-                symbol.setMethod(parseContrastMethod(childName,child));
+                ContrastEnhancementMethod parseContrastMethod = parseContrastMethod(childName,child);
+                symbol.setMethod(parseContrastMethod.getMethod());
+                symbol.setOptions(parseContrastMethod.getOptions());
             } else if (childName.equalsIgnoreCase("GammaValue")) {
                 try {
                     final String gammaString = getFirstChildValue(child);
@@ -1533,21 +1535,25 @@ public class SLDParser {
     /**
      * @return
      */
-    private ContrastMethod parseContrastMethod(String name, Node root) {
-        ContrastMethod ret = null;
+    private ContrastEnhancementMethod parseContrastMethod(String name, Node root) {
+        ContrastMethod met = ContrastMethod.NONE;
+        ContrastEnhancementMethod ret = new ContrastEnhancementMethod();
         if(NORMALIZE.equalsIgnoreCase(name)) {
-            ret = new Normalize();
+            met = ContrastMethod.NORMALIZE;
+            ret= new Normalize();
         }else if (HISTOGRAM.equalsIgnoreCase(name)) {
+            met = ContrastMethod.HISTOGRAM;
             ret = new Histogram();
         }else if (LOGARITHMIC.equalsIgnoreCase(name)) {
+            met = ContrastMethod.LOGARITHMIC;
             ret = new Logarithmic();
         }else if (EXPONENTIAL.equalsIgnoreCase(name)) {
+            met = ContrastMethod.EXPONENTIAL;
             ret = new Exponential();
         }
-        if(ret == null) {
-            //almost certainly can't happen, but...
-            return null;
-        }
+        
+        ret.setMethod(met);
+        //now extract any VendorOptions
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -1560,7 +1566,7 @@ public class SLDParser {
             if (childName == null) {
                 childName = child.getNodeName();
             }
-            if ("Parameter".equalsIgnoreCase(childName)) {
+            if ("VendorOption".equalsIgnoreCase(childName)) {
 
                 String key = getAttribute(child, "name");
                 if (key == null)
@@ -1568,11 +1574,9 @@ public class SLDParser {
                 Expression value = parseCssParameter(child);
                 if (value == null)
                     continue;
-                ret.addParameter(key, value);
+                ret.addOption(key, value);
             }
-            if ("Algorithm".equalsIgnoreCase(childName)) {
-                ret.setAlgorithm(parseCssParameter(child));
-            }
+            
         }
         return ret;
     }

@@ -730,15 +730,60 @@ public class sldComplexTypes2 {
         }
     }
 
+    static class _Parameter extends sldComplexType{
+        private static ComplexType instance = new _Parameter();
+        public static ComplexType getInstance() {
+            return instance;
+        }
+        private static Attribute[] attrs = new Attribute[] {
+                new AttributeGT(null, "name",
+                        sldSchema.NAMESPACE, org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
+                        Attribute.REQUIRED, null, null, false)
+        };
+        private static final int EXPRESSION = 0;
+
+        private static final ElementGrouping child = new SequenceGT(null,
+                new ElementGrouping[]{new sldElement("expression",
+                        org.geotools.xml.filter.FilterComplexTypes.ExpressionType.getInstance(), null, 1, 1)}, 0, Element.UNBOUNDED);
+        private static final Element[] elems = new Element[]{new sldElement("expression",
+                org.geotools.xml.filter.FilterComplexTypes.ExpressionType.getInstance(), null, 1, 1)};
+        /**
+         * @param name
+         * @param child
+         * @param attrs
+         * @param elems
+         */
+        public _Parameter(String name, ElementGrouping child, Attribute[] attrs, Element[] elems) {
+            super(name, child, attrs, elems);
+            // TODO Auto-generated constructor stub
+        }
+        private _Parameter() {
+            super("Parameter", child, attrs, elems, null, false, false);
+        }
+    }
     static class _Normalize extends sldComplexType {
         private static ComplexType instance = new _Normalize();
         public static ComplexType getInstance() {
             return instance;
         }
-    
         private static Attribute[] attrs = null;
-        private static Element[] elems = null;
-        private static ElementGrouping child = new SequenceGT(null);
+        private static Element[] elems = new Element[]{
+                new sldElement("Algorithm", org.geotools.xml.xsi.XSISimpleTypes.String
+                        .getInstance()/* simpleType name is string */, null, 0, 1),
+                
+                new sldElement("Parameter", _Parameter.getInstance(), null, 0, Element.UNBOUNDED )};
+    
+        // array spots
+        private static int ALGORITHM = 0;
+        private static int PARAMETER = 1;
+        
+        
+        private static ElementGrouping child = new SequenceGT(null,
+                new ElementGrouping[]{
+                        new sldElement("Algorithm", org.geotools.xml.xsi.XSISimpleTypes.String
+                                .getInstance()/* simpleType name is string */, null, 0, 1),
+                        new sldElement("Parameter", _Parameter.getInstance(), null, 0, 1)}, 1, 1);
+    
     
         private _Normalize() {
             super(null, child, attrs, elems, null, false, false);

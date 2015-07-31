@@ -546,9 +546,5 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         
     }
 
-    @Override
-    public void visit(ContrastMethod method) {
-        // TODO Auto-generated method stub
-        
-    }
+    
 }

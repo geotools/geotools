@@ -942,26 +942,34 @@ public class CssTranslator {
             String[] channelNames = getStringArray(values, "raster-channels", i);
             String[] constrastEnhancements = getStringArray(values, "raster-contrast-enhancement",
                     i);
+            String[] constrastAlgorithms = getStringArray(values, "raster-contrast-enhancement-algorithm",
+                    i);
+            String[] constrastParameters = getStringArray(values, "raster-contrast-enhancement-parameter",
+                    i);
             double[] gammas = getDoubleArray(values, "raster-gamma", i);
             if (!"auto".equals(channelNames[0])) {
                 ChannelSelectionBuilder cs = rb.channelSelection();
                 if (channelNames.length == 1) {
                     applyContrastEnhancement(cs.gray().channelName(channelNames[0])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 0);
+                            .contrastEnhancement(), constrastEnhancements, constrastAlgorithms, constrastParameters, gammas, 0);
                 } else if (channelNames.length == 2 || channelNames.length > 3) {
                     throw new IllegalArgumentException(
                             "raster-channels can accept the name of one or three bands, not "
                                     + channelNames.length);
                 } else {
                     applyContrastEnhancement(cs.red().channelName(channelNames[0])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 0);
+                            .contrastEnhancement(), constrastEnhancements, 
+                            constrastAlgorithms, constrastParameters, gammas, 0);
                     applyContrastEnhancement(cs.green().channelName(channelNames[1])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 1);
+                            .contrastEnhancement(), constrastEnhancements, 
+                            constrastAlgorithms, constrastParameters, gammas, 1);
                     applyContrastEnhancement(cs.blue().channelName(channelNames[2])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 2);
+                            .contrastEnhancement(), constrastEnhancements, 
+                            constrastAlgorithms, constrastParameters, gammas, 2);
                 }
             } else {
-                applyContrastEnhancement(rb.contrastEnhancement(), constrastEnhancements, gammas, 0);
+                applyContrastEnhancement(rb.contrastEnhancement(), constrastEnhancements,
+                        constrastAlgorithms, constrastParameters, gammas, 0);
             }
 
             Expression opacity = getExpression(values, "raster-opacity", i);
@@ -1032,11 +1040,13 @@ public class CssTranslator {
      * 
      * @param ceb
      * @param constrastEnhancements
+     * @param constrastAlgorithms 
+     * @param constrastParameters 
      * @param gammas
      * @param i
      */
     private void applyContrastEnhancement(ContrastEnhancementBuilder ceb,
-            String[] constrastEnhancements, double[] gammas, int i) {
+            String[] constrastEnhancements, String[] constrastAlgorithms, String[] constrastParameters, double[] gammas, int i) {
         if (constrastEnhancements != null && constrastEnhancements.length > 0) {
             String contrastEnhancementName;
             if (constrastEnhancements.length > i) {
@@ -1044,14 +1054,29 @@ public class CssTranslator {
             } else {
                 contrastEnhancementName = constrastEnhancements[i];
             }
+            String contrastAlgorithm = "";
+            if (constrastAlgorithms != null) {
+                if (constrastAlgorithms.length > i) {
+                    contrastAlgorithm = constrastAlgorithms[0];
+                } else {
+                    contrastAlgorithm = constrastAlgorithms[i];
+                }
+            }
+            
+            //
             if ("histogram".equals(contrastEnhancementName)) {
-                ceb.histogram();
+                ceb.histogram(contrastAlgorithm,constrastParameters);
             } else if ("normalize".equals(contrastEnhancementName)) {
-                ceb.normalize();
+                ceb.normalize(contrastAlgorithm, constrastParameters);
+            } else if ("exponential".equals(contrastEnhancementName)) {
+                ceb.exponential(contrastAlgorithm,constrastParameters);
+            } else if ("logarithmic".equals(contrastEnhancementName)) {
+                ceb.logarithmic(contrastAlgorithm, constrastParameters);
             } else if (!"none".equals(contrastEnhancementName)) {
+                //
                 throw new IllegalArgumentException("Invalid contrast enhancement name "
                         + contrastEnhancementName
-                        + ", valid values are 'none', 'histogram', 'normalize'");
+                        + ", valid values are 'none', 'histogram', 'normalize', 'exponential' or 'logarithmic'");
             }
         } else {
             ceb.unset();

@@ -100,7 +100,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         assertEquals(1.0, rs.getOpacity().evaluate(null, Double.class), 0.0);
         assertNotNull(rs.getContrastEnhancement());
-        assertEquals(new Normalize(), rs.getContrastEnhancement().getMethod());
+        assertEquals(ContrastMethod.NORMALIZE, rs.getContrastEnhancement().getMethod());
         assertEquals(0.5, rs.getContrastEnhancement().getGammaValue().evaluate(null, Double.class),
                 0.0);
         assertNull(rs.getChannelSelection());

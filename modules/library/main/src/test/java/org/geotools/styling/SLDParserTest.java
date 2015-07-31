@@ -185,17 +185,17 @@ public class SLDParserTest {
             + "</ogc:Literal>" + "\n\t\t</ogc:Function>" + "\n\t</CssParameter>" + "</Stroke>";
 
     static String contrastEnhance = " <ContrastEnhancement> " + "\n\t<Normalize> "
-            + "\n\t<Algorithm>ClipToMinimumMaximum</Algorithm> "
-            + "\n\t<Parameter name=\"minValue\">1</Parameter>"
-            + "\n\t<Parameter name=\"maxValue\">27.0</Parameter>" + "\n\t</Normalize>"
+            + "\n\t<VendorOption name=\"Algorithm\">ClipToMinimumMaximum</VendorOption> "
+            + "\n\t<VendorOption name=\"minValue\">1</VendorOption>"
+            + "\n\t<VendorOption name=\"maxValue\">27.0</VendorOption>" + "\n\t</Normalize>"
             + "\n\t</ContrastEnhancement>";
 
     static String contrastEnhanceOther = " <ContrastEnhancement> " + "\n\t<METHOD/> "
             + "\n\t</ContrastEnhancement>";
 
     static String contrastEnhancelogExp = " <ContrastEnhancement> " + "\n\t<METHOD> "
-            + "\n\t<Parameter name='correctionFactor'>0.1</Parameter>"
-            + "\n\t<Parameter name='normalizationFactor'>10.0</Parameter>" + "\n\t</METHOD> "
+            + "\n\t<VendorOption name='correctionFactor'>0.1</VendorOption>"
+            + "\n\t<VendorOption name='normalizationFactor'>10.0</VendorOption>" + "\n\t</METHOD> "
             + "\n\t</ContrastEnhancement>";
 
     static String contrastEnhanceBroken = " <ContrastEnhancement> " + "\n\t<Normalize> "
@@ -397,12 +397,13 @@ public class SLDParserTest {
         ContrastEnhancement ce = parser.parseContrastEnhancement(node.getDocumentElement());
         ContrastMethod method = ce.getMethod();
         assertNotNull(ce);
-        assertEquals("Wrong method type", "Normalize", method.getType().evaluate(null));
+        assertEquals("Wrong method type", "normalize", method.name().toLowerCase());
+        assertTrue("No Algotrithm set", ce.hasOption("Algorithm"));
         assertEquals("wrong Algorithm", "ClipToMinimumMaximum",
-                method.getAlgorithm().evaluate(null));
-        Map<String, Expression> params = method.getParameters();
+                ce.getOption("Algorithm").evaluate(null));
+        Map<String, Expression> params = ce.getOptions();
 
-        assertEquals("Wrong number of parameters", 2, params.size());
+        assertEquals("Wrong number of parameters", 3, params.size());
 
         assertEquals("wrong param returned", "1", params.get("minValue").evaluate(null));
         assertEquals("wrong param returned", "27.0", params.get("maxValue").evaluate(null));
@@ -414,7 +415,8 @@ public class SLDParserTest {
             ce = parser.parseContrastEnhancement(node.getDocumentElement());
             method = ce.getMethod();
             assertNotNull(method);
-            assertEquals("Wrong method returned", methodName, method.getType().evaluate(null));
+            assertEquals("Wrong method returned", methodName.toLowerCase(),
+                    method.name().toLowerCase());
 
         }
 
@@ -425,19 +427,22 @@ public class SLDParserTest {
             ce = parser.parseContrastEnhancement(node.getDocumentElement());
             method = ce.getMethod();
             assertNotNull(method);
-            assertEquals("Wrong method returned", methodName, method.getType().evaluate(null));
-            params = method.getParameters();
-            assertEquals("wrong number of parameters",2,params.size());
-            assertEquals("wrong param returned", "10.0", params.get("normalizationFactor").evaluate(null));
-            assertEquals("wrong param returned", "0.1", params.get("correctionFactor").evaluate(null));
+            assertEquals("Wrong method returned", methodName.toLowerCase(),
+                    method.name().toLowerCase());
+            params = ce.getOptions();
+            assertEquals("wrong number of parameters", 2, params.size());
+            assertEquals("wrong param returned", "10.0",
+                    params.get("normalizationFactor").evaluate(null));
+            assertEquals("wrong param returned", "0.1",
+                    params.get("correctionFactor").evaluate(null));
         }
         // now see what happens if we break things
         node = builder.parse(new ByteArrayInputStream(contrastEnhanceBroken.getBytes()));
         ce = parser.parseContrastEnhancement(node.getDocumentElement());
         method = ce.getMethod();
         assertNotNull(method);
-        assertNull("Algorithm set when it's not defined in SLD", method.getAlgorithm());
-        params = method.getParameters();
+        assertNull("Algorithm set when it's not defined in SLD", ce.getOption("Algorithm"));
+        params = ce.getOptions();
         assertNotNull(params);
 
         assertTrue("Params should be empty", params.isEmpty());

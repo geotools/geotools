@@ -115,7 +115,20 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         
         return colorMap;
     }
-
+    public ContrastEnhancementImpl contrastEnhancement(Expression gamma,
+            String method) {
+        ContrastMethod meth = ContrastMethod.NONE;
+        if(ContrastMethod.NORMALIZE.matches(method)) {
+            meth = ContrastMethod.NORMALIZE;
+        } else if(ContrastMethod.HISTOGRAM.matches(method)) {
+            meth = ContrastMethod.HISTOGRAM;
+        } else if(ContrastMethod.LOGARITHMIC.matches(method)) {
+            meth = ContrastMethod.LOGARITHMIC;
+        } else if(ContrastMethod.EXPONENTIAL.matches(method)) {
+            meth = ContrastMethod.EXPONENTIAL;
+        } 
+        return new ContrastEnhancementImpl( filterFactory, gamma, meth);
+    }
     public ContrastEnhancementImpl contrastEnhancement(Expression gamma,
             ContrastMethod method) {
         return new ContrastEnhancementImpl( filterFactory, gamma, method );

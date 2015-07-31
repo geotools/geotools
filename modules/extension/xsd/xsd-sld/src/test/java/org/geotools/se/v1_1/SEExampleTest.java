@@ -47,6 +47,7 @@ import org.geotools.styling.UomOgcMapping;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.Rule;
@@ -440,11 +441,11 @@ public class SEExampleTest extends SETestSupport {
         
         SelectedChannelType[] ch = sym.getChannelSelection().getRGBChannels();
         assertEquals("1", ch[0].getChannelName());
-        assertEquals(new Histogram(), ch[0].getContrastEnhancement().getMethod());
+        assertEquals(ContrastMethod.HISTOGRAM, ch[0].getContrastEnhancement().getMethod());
         assertEquals("2", ch[1].getChannelName());
         assertEquals(2.5, ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class));
         assertEquals("3", ch[2].getChannelName());
-        assertEquals(new Normalize(), ch[2].getContrastEnhancement().getMethod());
+        assertEquals(ContrastMethod.NORMALIZE, ch[2].getContrastEnhancement().getMethod());
         
         ColorMap map = sym.getColorMap();
         assertNotNull(map);

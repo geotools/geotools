@@ -57,7 +57,7 @@ public class ContrastEnhancementImplTest extends TestCase {
      */
     public void testGetSetMethod() {
         System.out.println("setMethod");
-        ContrastMethod expected = new Histogram();
+        ContrastMethod expected = ContrastMethod.HISTOGRAM;
         ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
         contrastEnhancementImpl.setMethod(expected);
         ContrastMethod actual = contrastEnhancementImpl.getMethod();

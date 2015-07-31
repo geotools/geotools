@@ -493,9 +493,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         ContrastEnhancement copy = sf.createContrastEnhancement();
         copy.setGammaValue( copy( contrast.getGammaValue()));
         copy.setMethod(contrast.getMethod());
-        if(contrast.getType() != null) {
-            copy.setType(contrast.getType());
-        }
+        copy.setOptions(contrast.getOptions());
+        
         return copy;
     }
     
@@ -994,7 +993,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     
     public void visit(ContrastEnhancement contrastEnhancement) {
         final ContrastEnhancement copy = sf.createContrastEnhancement();
-        copy.setType(contrastEnhancement.getType());
+        copy.setMethod(contrastEnhancement.getMethod());
+        copy.setOptions(contrastEnhancement.getOptions());
+        
         copy.setGammaValue(contrastEnhancement.getGammaValue());
         if (STRICT && !copy.equals(contrastEnhancement)) {
             throw new IllegalStateException("Was unable to duplicate provided contrastEnhancement:" + contrastEnhancement);
@@ -1061,14 +1062,5 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
     }
 
-    @Override
-    public void visit(ContrastMethod method) {
-        final ContrastMethod copy = sf.createContrastMethod(method);
-        
-        if (STRICT && !copy.equals(copy)) {
-            throw new IllegalStateException("Was unable to duplicate provided ContrastMethod:" + method);
-        }
-        pages.push(copy);
-        
-    }
+   
 }

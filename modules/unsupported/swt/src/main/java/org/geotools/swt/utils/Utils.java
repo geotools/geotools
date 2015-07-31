@@ -361,7 +361,7 @@ public class Utils {
         }
         // Now we create a RasterSymbolizer using the selected channels
         SelectedChannelType[] sct = new SelectedChannelType[cov.getNumSampleDimensions()];
-        ContrastEnhancement ce = styleFactory.contrastEnhancement(filterFactory.literal(1.0), new Normalize());
+        ContrastEnhancement ce = styleFactory.contrastEnhancement(filterFactory.literal(1.0), ContrastMethod.NORMALIZE);
         for( int i = 0; i < 3; i++ ) {
             sct[i] = styleFactory.createSelectedChannelType(String.valueOf(channelNum[i]), ce);
         }

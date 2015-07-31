@@ -1256,9 +1256,20 @@ public class SLDTransformer extends TransformerBase {
             start("ContrastEnhancement");
             // histogram
             ContrastMethod method = ce.getMethod();
-            if (method != null) {
-                visit(method);
+            if (method != null && method != ContrastMethod.NONE) {
+                String val = method.name();
+                val = val.substring(0, 1).toUpperCase() + val.substring(1).toLowerCase();
+                start(val);
+                Map<String, Expression> opts = ce.getOptions();
 
+                for (Entry<String, Expression> entry : opts.entrySet()) {
+                    AttributesImpl atts = new AttributesImpl();
+                    atts.addAttribute("", "name", "name", "", entry.getKey());
+                    element("VendorOption", 
+                            entry.getValue().evaluate(null).toString(), atts);
+                }
+
+                end(val);
             }
 
             // gamma
@@ -1328,29 +1339,7 @@ public class SLDTransformer extends TransformerBase {
 
         }
 
-        @Override
-        public void visit(ContrastMethod method) {
-            if (method != null) {
-                String val = method.name();
-                val = val.substring(0, 1).toUpperCase() + val.substring(1).toLowerCase();
-                start(val);
-                Expression algorithm = method.getAlgorithm();
-                if (algorithm != null) {
-                    element("Algorithm", algorithm);
-                }
-                Map<String, Expression> params = method.getParameters();
-                if (params != null) {
-                    for (Entry<String, Expression> entry : params.entrySet()) {
-                        AttributesImpl atts = new AttributesImpl();
-                        atts.addAttribute("", "name", "name", "", entry.getKey());
-                        element("Parameter", entry.getValue().evaluate(null).toString(), atts);
-                    }
-                }
-                end(val);
-            }
-            
-        }
-
+      
        
         
     }

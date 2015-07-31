@@ -436,12 +436,6 @@ public class AbstractStyleVisitor implements StyleVisitor {
         }
     }
 
-    @Override
-    public void visit(ContrastMethod method) {
-        if (method != null) {
-            method.accept((org.opengis.style.StyleVisitor) this);
-        }
-                
-    }
+   
 
 }

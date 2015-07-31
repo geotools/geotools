@@ -33,17 +33,11 @@ import org.opengis.style.StyleVisitor;
  * @author ian
  *
  */
-public class Logarithmic implements ContrastMethod {
+public class Logarithmic extends AbstractContrastEnhancementMethod {
 
-    FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+ 
 
-    private Map<String, Expression> params;
-
-    private Expression algorithm;
-
-    final static String NAME = "Logarithmic";
-
-    final static List<String> PARAM_NAMES = Arrays.asList("normalizationFactor", "normalizationFactor");
+    final static List<String> PARAM_NAMES = Arrays.asList("normalizationFactor", "correctionFactor");
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.core");
@@ -52,116 +46,17 @@ public class Logarithmic implements ContrastMethod {
     * 
     */
     public Logarithmic() {
-        // TODO Auto-generated constructor stub
+        NAME = "Logarithmic";
+        method = ContrastMethod.LOGARITHMIC;
     }
 
-    public Logarithmic(Logarithmic m) {
-        ff = m.getFilterFactory();
-    }
-
-    /**
-    * 
-    */
-    public Logarithmic(FilterFactory f) {
-        ff = f;
-    }
-
-    @Override
-    public Expression getType() {
-        return ff.literal(name());
-    }
-
-    @Override
-    public Expression getAlgorithm() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Map<String, Expression> getParameters() {
-        if (params == null)
-            params = new HashMap<String, Expression>();
-        return params;
-    }
-
+    
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
             LOGGER.log(Level.WARNING, "Adding unexpected parameter {0} to {1} Contrast Enhancer",
                     new Object[] { key, NAME });
         }
-        if (params == null)
-            params = new HashMap<String, Expression>();
-        params.put(key, value);
-    }
-
-    @Override
-    public void accept(StyleVisitor visitor) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public String name() {
-        return NAME;
-    }
-
-    @Override
-    public FilterFactory getFilterFactory() {
-        return ff;
-    }
-
-
-
-    @Override
-    public void setAlgorithm(Expression name) {
-        this.algorithm = name;
-        
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((algorithm == null) ? 0 : algorithm.hashCode());
-        result = prime * result + ((ff == null) ? 0 : ff.hashCode());
-        result = prime * result + ((params == null) ? 0 : params.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Logarithmic)) {
-            return false;
-        }
-        Logarithmic other = (Logarithmic) obj;
-        if (algorithm == null) {
-            if (other.algorithm != null) {
-                return false;
-            }
-        } else if (!algorithm.equals(other.algorithm)) {
-            return false;
-        }
-        if (ff == null) {
-            if (other.ff != null) {
-                return false;
-            }
-        } else if (!ff.equals(other.ff)) {
-            return false;
-        }
-        if (params == null) {
-            if (other.params != null) {
-                return false;
-            }
-        } else if (!params.equals(other.params)) {
-            return false;
-        }
-        return true;
+        super.addParameter(key, value);
     }
 
 }

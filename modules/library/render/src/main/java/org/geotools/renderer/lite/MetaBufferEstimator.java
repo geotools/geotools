@@ -568,8 +568,5 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         // nothing to do here
     }
 
-    @Override
-    public void visit(ContrastMethod method) {
-     // nothing to do here
-    }
+    
 }

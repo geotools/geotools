@@ -50,6 +50,7 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.GraphicFill;
@@ -514,7 +515,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
         assertNull(rs.getChannelSelection());
         assertNull(rs.getColorMap());
-        assertEquals(new Normalize(), rs.getContrastEnhancement().getMethod());
+        assertEquals(ContrastMethod.NORMALIZE, rs.getContrastEnhancement().getMethod());
         assertLiteral("0.5", rs.getContrastEnhancement().getGammaValue());
     }
 
@@ -527,7 +528,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertNull(rs.getColorMap());
         SelectedChannelType grayChannel = rs.getChannelSelection().getGrayChannel();
         assertNotNull(grayChannel);
-        assertEquals(new Normalize(), grayChannel.getContrastEnhancement().getMethod());
+        assertEquals(ContrastMethod.NORMALIZE, grayChannel.getContrastEnhancement().getMethod());
         assertLiteral("0.5", grayChannel.getContrastEnhancement().getGammaValue());
     }
 

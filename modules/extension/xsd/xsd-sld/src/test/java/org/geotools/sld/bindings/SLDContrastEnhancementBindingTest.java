@@ -40,7 +40,7 @@ public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
         assertNotNull(ce.getGammaValue());
         assertEquals(1.23, Filters.asDouble(ce.getGammaValue()), 0d);
 
-        assertNotNull(ce.getType());
-        assertEquals("Histogram", Filters.asString(ce.getType()));
+        assertNotNull(ce.getMethod());
+        assertEquals("histogram", ce.getMethod().name().toLowerCase());
     }
 }

@@ -19,8 +19,16 @@ package org.geotools.sld.bindings;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.List;
+
 import javax.xml.namespace.QName;
+
+import org.geotools.styling.Normalize;
+import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -44,6 +52,13 @@ import org.geotools.xml.*;
  * @source $URL$
  */
 public class SLDNormalizeBinding extends AbstractComplexBinding {
+    StyleFactory styleFactory;
+    FilterFactory filterFactory;
+    
+    public SLDNormalizeBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
+        this.styleFactory = styleFactory;
+        this.filterFactory = filterFactory;
+    }
     /**
      * @generated
      */
@@ -68,7 +83,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return null;
+        return Normalize.class;
     }
 
     /**
@@ -88,7 +103,17 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        //TODO: implement
-        return null;
+        
+        Normalize ret = new  Normalize();
+        if (node.getChildValue("Algorithm") != null) {
+           Expression algor = (Expression) node.getChildValue("Algorithm");
+            ret.setAlgorithm(algor);
+        }
+        List<Node> params = node.getChildren("Parameter");
+        for(Node param:params) {
+            String key = (String) param.getAttributeValue("name");
+            ret.addParameter(key, (Expression) param.getValue());
+        }
+        return ret;
     }
 }

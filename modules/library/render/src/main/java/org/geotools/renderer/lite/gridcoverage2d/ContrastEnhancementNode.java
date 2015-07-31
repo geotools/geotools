@@ -60,6 +60,7 @@ import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.style.ContrastMethod;
@@ -144,9 +145,10 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 		// TYPE of the operation to perform
 		//
 		// /////////////////////////////////////////////////////////////////////
-		final Expression expType = ce.getType();
+		
+		ContrastMethod  expType = ce.getMethod();
 		if (expType != null) {
-			final String type = expType.evaluate(null, String.class);
+			final String type = expType.name();
 			if (type != null && !type.equalsIgnoreCase("None")) {
 				this.type = type.toUpperCase();
 				if (!SUPPORTED_HE_ALGORITHMS.contains(type.toUpperCase()))
@@ -857,11 +859,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 		return result;
 	}
 
-    @Override
-    public void visit(ContrastMethod method) {
-        // TODO Auto-generated method stub
-        
-    }
+   
 
 
 

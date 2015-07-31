@@ -46,6 +46,7 @@ import org.geotools.styling.StyleFactory;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.style.ContrastMethod;
 
 /**
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).
@@ -142,7 +143,7 @@ public class DisplayCoverageTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), new Normalize());
+        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
         SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
 
         RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();

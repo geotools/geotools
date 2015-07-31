@@ -63,23 +63,11 @@ import org.opengis.style.ContrastMethod;
  * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/ styling/ContrastEnhancementImpl.java $
  */
 public class ContrastEnhancementImpl implements ContrastEnhancement {
-    /** HISTOGRAM */
-    private static final String HISTOGRAM = "Histogram";
-
-    /** EXPONENTIAL */
-    private static final String EXPONENTIAL = "Exponential";
-
-    /** LOGARITHMIC */
-    private static final String LOGARITHMIC = "Logarithmic";
-
-    /** NORMALIZE */
-    private static final String NORMALIZE = "Normalize";
+    
 
     private FilterFactory filterFactory;
 
     private Expression gamma;
-
-    
 
     private ContrastMethod method;
 
@@ -88,37 +76,61 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public ContrastEnhancementImpl(FilterFactory factory) {
-        this(factory, null);
+        this(factory, (ContrastMethod)null);
+    }
+
+    public ContrastEnhancementImpl(FilterFactory factory, String method) {
+        filterFactory = factory;
+        lookupMethod(method);
+    }
+    private void lookupMethod(String method) {
+        lookupMethod(method,null);
+    }
+    /**
+     * @param method
+     * @param filterFactory2 
+     */
+    private void lookupMethod(String method, FilterFactory ff) {
+        if(ff==null) {
+            ff=CommonFactoryFinder.getFilterFactory();
+        }
+        if (ContrastMethod.NORMALIZE.equalsIgnoreCase(method)) {
+            this.method = new Normalize(ff);
+        } else if (ContrastMethod.EXPONENTIAL.equalsIgnoreCase(method)) {
+            this.method = new Exponential(ff);
+        } else if (ContrastMethod.LOGARITHMIC.equalsIgnoreCase(method)) {
+            this.method = new Logarithmic(ff);
+        } else if (ContrastMethod.HISTOGRAM.equalsIgnoreCase(method)) {
+            this.method = new Histogram(ff);
+        } else {
+            this.method = null;
+        }
     }
 
     public ContrastEnhancementImpl(FilterFactory factory, ContrastMethod method) {
         filterFactory = factory;
         this.method = method;
     }
-
     public ContrastEnhancementImpl(org.opengis.style.ContrastEnhancement contrastEnhancement) {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
         org.opengis.style.ContrastMethod meth = contrastEnhancement.getMethod();
-        if (meth != null) {
-            if (NORMALIZE.equalsIgnoreCase(meth.name())) {
-                this.method = new Normalize(filterFactory);
-            } else if (HISTOGRAM.equalsIgnoreCase(meth.name())) {
-                this.method = new Histogram(filterFactory);
-            } else if (LOGARITHMIC.equalsIgnoreCase(meth.name())) {
-                this.method = new Logarithmic(filterFactory);
-            } else if (EXPONENTIAL.equalsIgnoreCase(meth.name())) {
-                this.method = new Exponential();
-            }
+        if(meth != null) {
+            lookupMethod(meth.name(),filterFactory);
         }
         this.gamma = contrastEnhancement.getGammaValue();
     }
 
     public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma,
+            String method) {
+        lookupMethod(method, factory);
+        this.gamma = gamma;
+    }
+    public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma,
             ContrastMethod method) {
         this.filterFactory = factory;
         this.gamma = gamma;
         this.method = method;
-        
+
     }
 
     public void setFilterFactory(FilterFactory factory) {
@@ -144,20 +156,19 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     public void setHistogram() {
 
         method = new Histogram();
-        
 
     }
 
     public void setNormalize() {
 
         method = new Normalize();
-        
+
     }
 
     public void setLogarithmic() {
 
         method = new Logarithmic();
-    
+
     }
 
     public void setExponential() {
@@ -169,17 +180,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
 
         if (type instanceof Literal) {
             String value = type.evaluate(null, String.class);
-            if (HISTOGRAM.equalsIgnoreCase(value)) {
-                method = new Histogram();
-            } else if (NORMALIZE.equalsIgnoreCase(value)) {
-                method = new Normalize();
-            } else if (LOGARITHMIC.equalsIgnoreCase(value)) {
-                method = new Logarithmic();
-            } else if (EXPONENTIAL.equalsIgnoreCase(value)) {
-                method = new Exponential();
-            } else {
-                method = null;
-            }
+            lookupMethod(value);
         } else {
             method = null;
         }
@@ -226,7 +227,8 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         if (obj instanceof ContrastEnhancementImpl) {
             ContrastEnhancementImpl other = (ContrastEnhancementImpl) obj;
 
-            return Utilities.equals(gamma, other.gamma) && Utilities.equals(getType(), other.getType())
+            return Utilities.equals(gamma, other.gamma)
+                    && Utilities.equals(getType(), other.getType())
                     && Utilities.equals(getMethod(), other.getMethod());
         }
 
@@ -249,7 +251,6 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public void setMethod(ContrastMethod method) {
         this.method = method;
-        
 
     }
 }

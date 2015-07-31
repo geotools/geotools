@@ -102,6 +102,14 @@ public interface StyleFactory {
      */
     ContrastEnhancement contrastEnhancement(Expression gamma,
             ContrastMethod method);
+    /**
+     * 
+     * @param gamma
+     * @param method
+     * @return
+     */
+    ContrastEnhancement contrastEnhancement(Expression gamma,
+            String method);
 
     /**
      * 

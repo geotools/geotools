@@ -36,7 +36,10 @@ import org.opengis.annotation.XmlElement;
  */
 @XmlElement("ContrastEnhancement:type")
 public interface ContrastMethod {
-
+    public static final String NORMALIZE = "normalize";
+    public static final String LOGARITHMIC = "logarithmic";
+    public static final String EXPONENTIAL = "exponential";
+    public static final String HISTOGRAM = "histogram";
     /**
      * discover the type of this method.
      * 

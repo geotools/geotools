@@ -43,7 +43,7 @@ public class Logarithmic implements ContrastMethod {
 
     final static String NAME = "Logarithmic";
 
-    final static List<String> PARAM_NAMES = Arrays.asList("normalizationFactor", "normalizationFactor");
+    final static List<String> PARAM_NAMES = Arrays.asList("normalizationFactor", "correctionFactor");
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.core");
@@ -74,7 +74,7 @@ public class Logarithmic implements ContrastMethod {
     @Override
     public Expression getAlgorithm() {
         // TODO Auto-generated method stub
-        return null;
+        return algorithm;
     }
 
     @Override

@@ -750,7 +750,8 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
         return ce;
     }
-
+    
+    
     public SelectedChannelType createSelectedChannelType(String name,
         ContrastEnhancement enhancement) {
         SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
@@ -994,6 +995,19 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         if(method instanceof Histogram) {
             ret = new Histogram(method);
         }
+        if(method instanceof Logarithmic) {
+            ret = new Logarithmic((Logarithmic) method);
+        }
+        if(method instanceof Exponential) {
+            ret = new Exponential((Exponential) method);
+        }
         return ret;
+    }
+
+    @Override
+    public org.opengis.style.ContrastEnhancement contrastEnhancement(Expression gamma,
+            String method) {
+      
+        return new ContrastEnhancementImpl( filterFactory, gamma, method );
     }
 }

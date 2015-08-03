@@ -82,10 +82,14 @@ public class Normalize implements ContrastMethod {
 
     @Override
     public void accept(StyleVisitor visitor) {
-        visitor.visit(this,null);
+        visitor.visit(this, null);
 
     }
 
+    public void  accept(StyleVisitor visitor, Object extra) {
+        visitor.visit(this, extra);
+    }
+    
     @Override
     public String name() {
         return NAME;

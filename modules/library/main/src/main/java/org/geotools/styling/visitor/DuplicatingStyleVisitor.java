@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006 - 2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+
+import javax.swing.Icon;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
@@ -71,8 +73,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
-
-import javax.swing.Icon;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -305,7 +305,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     public void visit(FeatureTypeStyle fts) {
         
         
-        FeatureTypeStyle copy = new FeatureTypeStyleImpl( (FeatureTypeStyleImpl)fts);
+        FeatureTypeStyle copy = new FeatureTypeStyleImpl( fts);
 
 //        copy = new StyleFactoryImpl().createFeatureTypeStyle(
 //                fts.getRules(), 
@@ -713,7 +713,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         TextSymbolizer copy = sf.createTextSymbolizer();
         
         copy.setFill( copy( text.getFill()));
-        copy.setFont( copy( text.getFont()));
+        copy.setFonts(copy(text.getFonts()));
         
         copy.setGeometry(copy(text.getGeometry()));
         
@@ -780,9 +780,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setAnchorPoint(anchorCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);
-        copy.setOpacity((Expression) opacityCopy);
-        copy.setRotation((Expression) rotationCopy);
-        copy.setSize((Expression) sizeCopy);
+        copy.setOpacity(opacityCopy);
+        copy.setRotation(rotationCopy);
+        copy.setSize(sizeCopy);
         // copy.setSymbols(symbolCopys);
         
         if( STRICT ){

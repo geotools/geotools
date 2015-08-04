@@ -247,7 +247,7 @@ public final class LabelCacheImpl implements LabelCache {
 
         // evaluate
         try {
-            Double number = (Double) symbolizer.getPriority().evaluate(feature, Double.class);
+            Double number = symbolizer.getPriority().evaluate(feature, Double.class);
             return number.doubleValue();
         } catch (Exception e) {
             return DEFAULT_PRIORITY;
@@ -267,7 +267,7 @@ public final class LabelCacheImpl implements LabelCache {
                 return;
             }
             
-            String label = (String) symbolizer.getLabel().evaluate(feature, String.class);
+            String label = symbolizer.getLabel().evaluate(feature, String.class);
 
             if (label == null)
                 return;
@@ -534,10 +534,10 @@ public final class LabelCacheImpl implements LabelCache {
                 double[] gp = new double[2];
                 double[] tp = new double[2];
                 for (int i = 1; i < (painter.getLineCount() + 1); i++) {
-                    gp[1] = glyphBounds.getY() + ((double) glyphBounds.getHeight())
+                    gp[1] = glyphBounds.getY() + (glyphBounds.getHeight())
                             * (((double) i) / (painter.getLineCount() + 1));
                     for (int j = 1; j < (n + 1); j++) {
-                        gp[0] = glyphBounds.getX() + ((double) glyphBounds.getWidth())
+                        gp[0] = glyphBounds.getX() + (glyphBounds.getWidth())
                             * (((double) j) / (n + 1));
                         transform.transform(gp, 0, tp, 0, 1);
                         c.x = tp[0];
@@ -574,7 +574,7 @@ public final class LabelCacheImpl implements LabelCache {
     private boolean paintLineLabels(LabelPainter painter, AffineTransform originalTransform,
             Rectangle displayArea, LabelIndex paintedBounds) throws Exception {
         final LabelCacheItem labelItem = painter.getLabel();
-        List<LineString> lines = (List<LineString>) getLineSetRepresentativeLocation(
+        List<LineString> lines = getLineSetRepresentativeLocation(
                 labelItem.getGeoms(), displayArea, labelItem.removeGroupOverlaps(),
                 labelItem.isPartialsEnabled());
 
@@ -701,11 +701,12 @@ public final class LabelCacheImpl implements LabelCache {
                             // overrun
                             if ((startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength())) {
                                 if (maxAngleChange < maxAngleDelta) {
-                                    // if the max angle is very small, draw it
-                                    // like a straight line
-                                    if (maxAngleChange < MIN_CURVED_DELTA)
+                                    // if straight segment connecting the start and end ordinate is really close, paint as a straight label
+                                    if (maxAngleChange == 0
+                                            || cursor.getMaxDistanceFromStraightLine(startOrdinate,
+                                                    endOrdinate) < painter.getLineHeight() / 2) {
                                         painter.paintStraightLabel(tx);
-                                    else {
+                                    } else {
                                         painter.paintCurvedLabel(cursor);
                                     }
                                     painted = true;
@@ -782,7 +783,7 @@ public final class LabelCacheImpl implements LabelCache {
         }
         if (simplified.size() == 1)
             simplified.add(inputCoordinates[inputCoordinates.length - 1]);
-        Coordinate[] newCoords = (Coordinate[]) simplified
+        Coordinate[] newCoords = simplified
                 .toArray(new Coordinate[simplified.size()]);
         return line.getFactory().createLineString(newCoords);
     }
@@ -1233,7 +1234,7 @@ public final class LabelCacheImpl implements LabelCache {
             return null;
 
         // do better metric than this:
-        return (Point) pts.get(0);
+        return pts.get(0);
     }
 
     /**
@@ -1472,7 +1473,7 @@ public final class LabelCacheImpl implements LabelCache {
         Polygon maxPoly = null;
         Polygon cpoly;
         for (int t = 0; t < clippedPolys.size(); t++) {
-            cpoly = (Polygon) clippedPolys.get(t);
+            cpoly = clippedPolys.get(t);
             final double area = cpoly.getArea();
             if (area > maxSize) {
                 maxPoly = cpoly;
@@ -1554,7 +1555,7 @@ public final class LabelCacheImpl implements LabelCache {
         if (polys.size() == 0)
             return null;
 
-        return poly.getFactory().createMultiPolygon((Polygon[]) polys.toArray(new Polygon[1]));
+        return poly.getFactory().createMultiPolygon(polys.toArray(new Polygon[1]));
     }
 
     private List<LineString> mergeLines(Collection<LineString> lines) {
@@ -1603,7 +1604,7 @@ public final class LabelCacheImpl implements LabelCache {
         while (index < edges.size()) // still more to do
         {
             // 1. get a line and remove it from the graph
-            LineString ls = (LineString) edges.get(index);
+            LineString ls = edges.get(index);
             Coordinate key = ls.getCoordinateN(0);
             List<LineString> nodeList = nodes.get(key);
             if (nodeList == null) { // this was removed in an earlier iteration
@@ -1675,7 +1676,7 @@ public final class LabelCacheImpl implements LabelCache {
 
     private void putInNodeHash(Coordinate node, LineString ls,
             Map<Coordinate, List<LineString>> nodes) {
-        List<LineString> nodeList = (List<LineString>) nodes.get(node);
+        List<LineString> nodeList = nodes.get(node);
         if (nodeList == null) {
             nodeList = new ArrayList<LineString>();
             nodeList.add(ls);
@@ -1691,7 +1692,7 @@ public final class LabelCacheImpl implements LabelCache {
     private LineString reverse(LineString l) {
         List<Coordinate> clist = Arrays.asList(l.getCoordinates());
         Collections.reverse(clist);
-        return l.getFactory().createLineString((Coordinate[]) clist.toArray(new Coordinate[1]));
+        return l.getFactory().createLineString(clist.toArray(new Coordinate[1]));
     }
 
     /**
@@ -1731,7 +1732,7 @@ public final class LabelCacheImpl implements LabelCache {
         List<Coordinate> clist = new ArrayList<Coordinate>(Arrays.asList(l1.getCoordinates()));
         clist.addAll(Arrays.asList(l2.getCoordinates()));
 
-        return l1.getFactory().createLineString((Coordinate[]) clist.toArray(new Coordinate[1]));
+        return l1.getFactory().createLineString(clist.toArray(new Coordinate[1]));
     }
 
     /**

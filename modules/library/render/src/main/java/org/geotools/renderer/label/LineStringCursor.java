@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -333,6 +333,53 @@ public class LineStringCursor {
         }
 
         return maxDifference;
+    }
+
+    /**
+     * Returns the maximum distance between the curve and a straight line connecting the 
+     * start and end ordinates.
+     * 
+     * @param startOrdinate
+     * @param endOrdinate
+     * @return
+     */
+    public double getMaxDistanceFromStraightLine(double startOrdinate, double endOrdinate) {
+        if (startOrdinate > endOrdinate)
+            throw new IllegalArgumentException("Invalid arguments, endOrdinate < starOrdinate");
+
+        // compute the begin and end segments
+        double x1, y1, x2, y2;
+        Coordinate c = new Coordinate();
+        LineStringCursor delegate = new LineStringCursor(this);
+        delegate.moveTo(startOrdinate);
+        delegate.getCurrentPosition(c);
+        x1 = c.x;
+        y1 = c.y;
+        int startSegment = delegate.segment;
+        delegate.moveTo(endOrdinate);
+        delegate.getCurrentPosition(c);
+        x2 = c.y;
+        y2 = c.y;
+        int endSegment = delegate.segment;
+
+        // everything inside the same segment, it's already a straight line
+        if (startSegment == endSegment)
+            return 0;
+
+        double maxDistanceSquared= 0;
+        double len2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+        for (int i = startSegment + 1; i <= endSegment; i++) {
+            delegate.segment = i;
+            delegate.getCurrentPosition(c);
+            double s = ((y1 - c.y) * (x2 - x1) - (x1 - c.x) * (y2 - y1)) / len2;
+            double distanceSquared = s * s * len2;
+            if (distanceSquared > maxDistanceSquared) {
+                maxDistanceSquared = distanceSquared;
+            }
+        }
+
+        double maxDistance = Math.sqrt(maxDistanceSquared);
+        return maxDistance;
     }
 
     /**

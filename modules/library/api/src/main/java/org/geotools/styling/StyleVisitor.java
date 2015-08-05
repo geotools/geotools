@@ -249,9 +249,5 @@ public interface StyleVisitor {
      */
     void visit(ShadedRelief sr);
 
-    /**
-     * called when accept is called on a raster {@link ContrastEnhancement} method
-     * @param method the {@link ContrastMethod} to visit
-     */
-    void visit(ContrastMethod method);
+    
 }

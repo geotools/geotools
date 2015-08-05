@@ -17,7 +17,10 @@
 package org.geotools.se.v1_1.bindings;
 
 import org.geotools.se.v1_1.SE;
+import org.geotools.sld.bindings.SLDNormalizeBinding;
+import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
+import org.opengis.filter.FilterFactory;
 
 import javax.xml.namespace.QName;
 
@@ -47,7 +50,16 @@ import javax.xml.namespace.QName;
  *
  * @source $URL$
  */
-public class NormalizeBinding extends AbstractComplexBinding {
+public class NormalizeBinding extends SLDNormalizeBinding {
+
+    /**
+     * @param styleFactory
+     * @param filterFactory
+     */
+    public NormalizeBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
+        super(styleFactory, filterFactory);
+        // TODO Auto-generated constructor stub
+    }
 
     /**
      * @generated

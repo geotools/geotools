@@ -16,11 +16,10 @@
  */
 package org.geotools.styling.builder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Exponential;
-import org.geotools.styling.Histogram;
-import org.geotools.styling.Logarithmic;
-import org.geotools.styling.Normalize;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
@@ -34,6 +33,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
 
     private ContrastMethod method;
 
+    private Map<String, Expression> options = new HashMap<>();
     public ContrastEnhancementBuilder() {
         this(null);
     }
@@ -60,27 +60,33 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
     public ContrastEnhancementBuilder histogram(String contrastAlgorithm, String[] constrastParameters) {
         return contrastMethod("histogram", contrastAlgorithm, constrastParameters);
     }
+    public ContrastEnhancementBuilder exponential(String contrastAlgorithm, String[] constrastParameters) {
+        return contrastMethod("exponential", contrastAlgorithm, constrastParameters);
+    }
 
+    public ContrastEnhancementBuilder logarithmic(String contrastAlgorithm, String[] constrastParameters) {
+        return contrastMethod("logarithm", contrastAlgorithm, constrastParameters);
+    }
     private ContrastEnhancementBuilder contrastMethod(String name, String algorithm, String[] parameters) {
         if ("histogram".equals(name)) {
-            this.method = new Histogram();
+            this.method = ContrastMethod.HISTOGRAM;
         } else if ("normalize".equals(name)) {
-            this.method = new Normalize();
+            this.method = ContrastMethod.NORMALIZE;
         } else if ("logarithmic".equals(name)) {
-            this.method = new Logarithmic();
+            this.method = ContrastMethod.LOGARITHMIC;
         } else if ("exponential".equals(name)) {
-            this.method = new Exponential();
+            this.method = ContrastMethod.EXPONENTIAL;
         } else {
             throw new IllegalArgumentException("Unexpected ContrastEnhamcement method " + name);
         }
         if (algorithm != null && !algorithm.isEmpty()) {
-            System.out.println("setting "+algorithm);
-            this.method.setAlgorithm(FF.literal(algorithm));
+            
+            this.options.put("algorithm",FF.literal(algorithm));
         }
         if (parameters!=null) {
             for(int i=0;i<parameters.length;i+=2) {
-                System.out.println("adding parameter "+parameters[i]+"="+parameters[i+1]);
-                this.method.addParameter(parameters[i], FF.literal(parameters[i+1]));
+               
+                this.options.put(parameters[i], FF.literal(parameters[i+1]));
             }
         }
         this.unset = false;
@@ -95,6 +101,8 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
             return null;
         }
         ContrastEnhancement contrastEnhancement = sf.contrastEnhancement(gamma, method);
+        contrastEnhancement.setOptions(options);
+        
         return contrastEnhancement;
     }
 
@@ -111,6 +119,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         }
         gamma = contrastEnhancement.getGammaValue();
         method = contrastEnhancement.getMethod();
+        options = contrastEnhancement.getOptions();
         unset = false;
         return this;
     }
@@ -126,12 +135,8 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
 
     }
 
-    /**
-     * @return
-     */
-    public ContrastEnhancementBuilder normalize() {
-        // TODO Auto-generated method stub
-        return normalize(null,null);
-    }
+    
+
+    
 
 }

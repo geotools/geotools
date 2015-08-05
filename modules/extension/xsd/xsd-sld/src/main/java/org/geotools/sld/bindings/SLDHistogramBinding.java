@@ -19,8 +19,16 @@ package org.geotools.sld.bindings;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.List;
+
 import javax.xml.namespace.QName;
+
+import org.geotools.styling.AbstractContrastEnhancementMethod;
+import org.geotools.styling.Histogram;
+import org.geotools.styling.Normalize;
 import org.geotools.xml.*;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -88,7 +96,16 @@ public class SLDHistogramBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        //TODO: implement
-        return null;
+        AbstractContrastEnhancementMethod ret = new  Histogram();
+        if (node.getChildValue("Algorithm") != null) {
+           Expression algor = (Expression) node.getChildValue("Algorithm");
+            ret.setAlgorithm(algor);
+        }
+        List<Node> params = node.getChildren("Parameter");
+        for(Node param:params) {
+            String key = (String) param.getAttributeValue("name");
+            ret.addParameter(key, (Expression) param.getValue());
+        }
+        return ret;
     }
 }

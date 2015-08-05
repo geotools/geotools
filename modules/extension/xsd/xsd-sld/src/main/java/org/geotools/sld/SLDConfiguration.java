@@ -37,6 +37,7 @@ import org.geotools.sld.bindings.SLDGraphicBinding;
 import org.geotools.sld.bindings.SLDGraphicFillBinding;
 import org.geotools.sld.bindings.SLDGraphicStrokeBinding;
 import org.geotools.sld.bindings.SLDHaloBinding;
+import org.geotools.sld.bindings.SLDHistogramBinding;
 import org.geotools.sld.bindings.SLDImageOutlineBinding;
 import org.geotools.sld.bindings.SLDLabelPlacementBinding;
 import org.geotools.sld.bindings.SLDLayerFeatureConstraintsBinding;
@@ -46,6 +47,7 @@ import org.geotools.sld.bindings.SLDLineSymbolizerBinding;
 import org.geotools.sld.bindings.SLDMarkBinding;
 import org.geotools.sld.bindings.SLDNamedLayerBinding;
 import org.geotools.sld.bindings.SLDNamedStyleBinding;
+import org.geotools.sld.bindings.SLDNormalizeBinding;
 import org.geotools.sld.bindings.SLDOnlineResourceBinding;
 import org.geotools.sld.bindings.SLDOverlapBehaviorBinding;
 import org.geotools.sld.bindings.SLDParameterValueTypeBinding;
@@ -132,7 +134,7 @@ public class SLDConfiguration extends Configuration {
         container.registerComponentImplementation(SLD.GRAPHICSTROKE, SLDGraphicStrokeBinding.class);
 
         container.registerComponentImplementation(SLD.HALO, SLDHaloBinding.class);
-
+        container.registerComponentImplementation(SLD.HISTOGRAM, SLDHistogramBinding.class);
         container.registerComponentImplementation(SLD.IMAGEOUTLINE, SLDImageOutlineBinding.class);
 
         container.registerComponentImplementation(SLD.LABELPLACEMENT, SLDLabelPlacementBinding.class);
@@ -146,7 +148,7 @@ public class SLDConfiguration extends Configuration {
 
         container.registerComponentImplementation(SLD.NAMEDLAYER, SLDNamedLayerBinding.class);
         container.registerComponentImplementation(SLD.NAMEDSTYLE, SLDNamedStyleBinding.class);
-
+        container.registerComponentImplementation(SLD.NORMALIZE, SLDNormalizeBinding.class);
         container.registerComponentImplementation(SLD.ONLINERESOURCE, SLDOnlineResourceBinding.class);
 
         container.registerComponentImplementation(SLD.OVERLAPBEHAVIOR,

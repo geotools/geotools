@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import java.util.Map;
+
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
@@ -63,25 +65,26 @@ import org.opengis.style.ContrastMethod;
  * 
  */
 public interface ContrastEnhancement extends org.opengis.style.ContrastEnhancement {	
-	/**
-	 * Used to set the contrast enhancement method used.
-	 * @param method
-	 */
-	public void setMethod( ContrastMethod method );
+    /**
+     * Used to set the contrast enhancement method used.
+     * 
+     * @param method
+     */
+    public void setMethod(ContrastMethod method);
 	
     /**
      * @param type Should be a Literal of "Normalize" or "Histogram" or "None", if null supplied "None" is assumed
-     * @deprecated Please use setMethod
-     */
+     * 
+     *//*
     public void setType(Expression type);
 
-    /**
+    *//**
      * Returns a literal expression (one of NORMALIZE, HISTOGRAM, NONE)
      * indicating which ContrastMethod value is to be used.
      * 
-     * @deprecated Please use getMethod
-     */
-    public Expression getType();
+     * 
+     *//*
+    public Expression getType();*/
 
     /**
      * @param gamma How much to brighten (greater than 1) or dim (less than 1) this channel; use 1.0 to indicate no change.
@@ -97,31 +100,46 @@ public interface ContrastEnhancement extends org.opengis.style.ContrastEnhanceme
     public Expression getGammaValue();
 
     /**
-     * @deprecated Please use setMethod( ContrastMethodt.NORMALIZE )
+     * Return vendor options relating to the enhancement method
+     * 
+     * @return a Map containing expressions with string keys.
      */
-    @Deprecated
-    public void setNormalize();
-
-     /**
-     * @deprecated Please use setMethod( ContrastMethodt.HISTOGRAM )
-     */
-    @Deprecated
-    public void setHistogram();
-
+    public Map<String, Expression> getOptions();
     /**
-     * @deprecated Please use setMethod; please note Logarithmic is not currently supported
+     * check if vendor option key is available
+     * @param key - the name of the option to check
+     * @return true if present
      */
-    @Deprecated
-    public void setLogarithmic();
-
+    public boolean hasOption(String key);
+    
     /**
-     * @deprecated Please use setMethod; please note Exponential is not currently supported
+     * Store a vendor option
+     * @param key - the name of the option
+     * @param value an expression that evaluates to it's value
      */
-    public void setExponential();
-
+    public void addOption(String key, Expression value);
+    
     /**
      * Traversal of the style data structure.
      * @param visitor
      */
+    
     public void accept(StyleVisitor visitor);
+
+    /**
+     * @param options
+     */
+    public void setOptions(Map<String, Expression> options);
+
+    /**
+     * @param string
+     * @return
+     */
+    public Expression getOption(String string);
+
+    /**
+     * @param normal
+     */
+    public void setRealMethod(ContrastEnhancementMethod method);
+
 }

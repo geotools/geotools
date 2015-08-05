@@ -410,11 +410,6 @@ public class StyleVisitorAdapter implements StyleVisitor {
 				Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1,"visit(ImageOutline)"));
 	}
 
-    @Override
-    public void visit(ContrastMethod method) {
-        throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1,"visit(ContrastMethod)"));
-        
-    }
+    
 
 }

@@ -55,6 +55,7 @@ import org.geotools.xml.styling.sldComplexTypes2._PolygonSymbolizer;
 import org.geotools.xml.styling.sldComplexTypes2._Rule;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.ContrastMethod;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -214,10 +215,10 @@ public class sldComplexTypes {
 
                 Element e = value[i].getElement();
                 if(elems[NORMALIZE].getName().equals(e.getName()))
-                    symbol.setNormalize(); // (Graphic)value[i].getValue()
+                    symbol.setMethod(ContrastMethod.NORMALIZE); // (Graphic)value[i].getValue()
 
                 if(elems[HISTORGRAM].getName().equals(e.getName()))
-                    symbol.setHistogram(); // (Graphic)value[i].getValue()
+                    symbol.setMethod(ContrastMethod.HISTOGRAM); // (Graphic)value[i].getValue()
 
                 if(elems[GAMMAVALUE].getName().equals(e.getName())){
                     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

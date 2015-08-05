@@ -1063,16 +1063,20 @@ public class CssTranslator {
                 }
             }
             
-            //TODO IAN - add parameters and algorithm names here
+            //
             if ("histogram".equals(contrastEnhancementName)) {
                 ceb.histogram(contrastAlgorithm,constrastParameters);
             } else if ("normalize".equals(contrastEnhancementName)) {
                 ceb.normalize(contrastAlgorithm, constrastParameters);
+            } else if ("exponential".equals(contrastEnhancementName)) {
+                ceb.exponential(contrastAlgorithm,constrastParameters);
+            } else if ("logarithmic".equals(contrastEnhancementName)) {
+                ceb.logarithmic(contrastAlgorithm, constrastParameters);
             } else if (!"none".equals(contrastEnhancementName)) {
-                //TODO IAN add Exponential and Logarithmic here
+                //
                 throw new IllegalArgumentException("Invalid contrast enhancement name "
                         + contrastEnhancementName
-                        + ", valid values are 'none', 'histogram', 'normalize'");
+                        + ", valid values are 'none', 'histogram', 'normalize', 'exponential' or 'logarithmic'");
             }
         } else {
             ceb.unset();

@@ -182,7 +182,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGray = new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
-		cntEnh.setMethod(new Histogram());;
+		cntEnh.setMethod(ContrastMethod.HISTOGRAM);;
 		//cntEnh.setType(type);
 		//cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
@@ -251,7 +251,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGray_2 = new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh_2 = new ContrastEnhancementImpl();
 
-		cntEnh_2.setLogarithmic();
+		cntEnh_2.setMethod(ContrastMethod.LOGARITHMIC);
 		//cntEnh.setType(type);
 		//cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
@@ -319,7 +319,8 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGray_3 = new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh_3 = new ContrastEnhancementImpl();
 
-		cntEnh_3.setExponential();
+		cntEnh_3.setMethod(ContrastMethod.EXPONENTIAL);
+		
 		//cntEnh.setType(type);
 		//cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
@@ -395,7 +396,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final ChannelSelection chSel = new ChannelSelectionImpl();
 		final SelectedChannelType chTypeGray = new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
-		cntEnh.setLogarithmic();
+		cntEnh.setMethod(ContrastMethod.LOGARITHMIC);
 		chTypeGray.setChannelName("1");
 		chTypeGray.setContrastEnhancement(cntEnh);
 		chSel.setGrayChannel(chTypeGray);
@@ -476,7 +477,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGray = new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
-		cntEnh.setMethod(new Histogram());;
+		cntEnh.setMethod(ContrastMethod.HISTOGRAM);;
 		//cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
 		chTypeGray.setChannelName("1");
@@ -582,7 +583,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGreen 	= new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
-		cntEnh.setMethod(new Histogram());;
+		cntEnh.setMethod(ContrastMethod.HISTOGRAM);;
 		//cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
 		chTypeRed.setChannelName("1");
@@ -672,7 +673,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
         final SelectedChannelType chTypeGreen = new SelectedChannelTypeImpl();
         final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
-        cntEnh.setMethod(new Histogram());
+        cntEnh.setMethod(ContrastMethod.HISTOGRAM);;
 
         chTypeRed.setChannelName("1");
         chTypeBlue.setChannelName("2");
@@ -767,7 +768,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGreen 	= new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
-		cntEnh.setMethod(new Histogram());;
+		cntEnh.setMethod(ContrastMethod.HISTOGRAM);
 		cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
 		chTypeRed.setChannelName("1");
@@ -853,7 +854,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final SelectedChannelType chTypeGray  	= new SelectedChannelTypeImpl();
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
-		cntEnh.setMethod(new Histogram());;
+		cntEnh.setMethod(ContrastMethod.HISTOGRAM);
 		//cntEnh.setGammaValue(sldBuilder.literalExpression(0.50));
 		
 		chTypeGray.setChannelName("1");		
@@ -950,7 +951,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
 
 		//this will convert to byte!!!
-		cntEnh.setMethod(new Histogram());
+		cntEnh.setMethod(ContrastMethod.HISTOGRAM);
 		chTypeGray.setChannelName("1");
 		chTypeGray.setContrastEnhancement(cntEnh);
 		chSel.setGrayChannel(chTypeGray);

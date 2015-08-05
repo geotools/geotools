@@ -986,28 +986,30 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         return delegate.textSymbolizer(name, geometry, description, unit, label, font, placement, halo, fill);        
     }
 
-    @Override
-    public ContrastMethod createContrastMethod(ContrastMethod method) {
-        ContrastMethod ret = null;
-        if(method instanceof Normalize) {
-            ret = new Normalize(method);
-        }
-        if(method instanceof Histogram) {
-            ret = new Histogram(method);
-        }
-        if(method instanceof Logarithmic) {
-            ret = new Logarithmic((Logarithmic) method);
-        }
-        if(method instanceof Exponential) {
-            ret = new Exponential((Exponential) method);
-        }
-        return ret;
-    }
+    
 
     @Override
     public org.opengis.style.ContrastEnhancement contrastEnhancement(Expression gamma,
             String method) {
       
-        return new ContrastEnhancementImpl( filterFactory, gamma, method );
+        ContrastMethod meth = ContrastMethod.NONE;
+        if(ContrastMethod.NORMALIZE.matches(method)) {
+            meth = ContrastMethod.NORMALIZE;
+        } else if(ContrastMethod.HISTOGRAM.matches(method)) {
+            meth = ContrastMethod.HISTOGRAM;
+        } else if(ContrastMethod.LOGARITHMIC.matches(method)) {
+            meth = ContrastMethod.LOGARITHMIC;
+        } else if(ContrastMethod.EXPONENTIAL.matches(method)) {
+            meth = ContrastMethod.EXPONENTIAL;
+        } 
+        return new ContrastEnhancementImpl( filterFactory, gamma, meth);
     }
+
+    @Override
+    public ContrastMethod createContrastMethod(ContrastMethod method) {
+        // TODO Auto-generated method stub
+        return method;
+    }
+
+    
 }

@@ -669,14 +669,14 @@ public class DuplicatorStyleVisitorTest extends TestCase {
 
         ContrastEnhancement ce = sf.createContrastEnhancement();
         ce.setGammaValue(sb.literalExpression(0.5));
-        ce.setMethod(new Histogram());
+        ce.setMethod(ContrastMethod.HISTOGRAM);
         
         ce.accept(visitor);
         ContrastEnhancement ce2 = (ContrastEnhancement) visitor.getCopy();
 
         assertEquals("Gamma value incorrest after duplication", ((Literal)ce.getGammaValue()).getValue(), ((Literal)ce2.getGammaValue()).getValue());
         assertEquals("ContrastMethod must be equal after duplication ", ce.getMethod(), ce2.getMethod());
-        assertEquals("Contrast Type must be equal after duplication ", ((Literal)ce.getType()).getValue(),  ((Literal)ce2.getType()).getValue());
+        
 
     }
     

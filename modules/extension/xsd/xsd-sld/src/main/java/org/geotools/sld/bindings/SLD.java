@@ -91,7 +91,7 @@ public final class SLD extends XSD {
     /** @generated */
     public static final QName CONTRASTENHANCEMENT = new QName("http://www.opengis.net/sld",
             "ContrastEnhancement");
-
+    
     /** @generated */
     public static final QName CSSPARAMETER = new QName("http://www.opengis.net/sld", "CssParameter");
 

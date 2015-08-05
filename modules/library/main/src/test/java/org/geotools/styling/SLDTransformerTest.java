@@ -50,6 +50,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.Rule;
 import org.opengis.style.Symbolizer;
@@ -143,7 +144,7 @@ public class SLDTransformerTest {
         SelectedChannelTypeImpl redChannel = new SelectedChannelTypeImpl();
         redChannel.setChannelName("1");
         ContrastEnhancementImpl rcei = new ContrastEnhancementImpl();
-        rcei.setHistogram();
+        rcei.setMethod(ContrastMethod.HISTOGRAM);
         redChannel.setContrastEnhancement(rcei);
 
         // green
@@ -157,7 +158,7 @@ public class SLDTransformerTest {
         SelectedChannelTypeImpl blueChannel = new SelectedChannelTypeImpl();
         blueChannel.setChannelName("2");
         ContrastEnhancementImpl bcei = new ContrastEnhancementImpl();
-        bcei.setNormalize();
+        bcei.setMethod(ContrastMethod.NORMALIZE);
         blueChannel.setContrastEnhancement(bcei);
 
         csi.setRGBChannels(redChannel, greenChannel, blueChannel);
@@ -1523,27 +1524,27 @@ public class SLDTransformerTest {
         normal.setAlgorithm(ff.literal("MyTestAlgorithm"));
         normal.addParameter("p1", ff.literal(false));
         normal.addParameter("p2", ff.literal(23.5d));
-        ce.setMethod(normal);
+        ce.setRealMethod(normal);
         SLDTransformer st = new SLDTransformer();     
         String xml = st.transform(ce);
-    //    System.out.println(xml);
+      // System.out.println(xml);
         Document doc = buildTestDocument(xml);
         assertXpathExists( "//sld:ContrastEnhancement/sld:Normalize", doc);
-        assertXpathEvaluatesTo("false", "//sld:ContrastEnhancement/sld:Normalize/sld:Parameter[@name='p1']", doc);
-        assertXpathEvaluatesTo("MyTestAlgorithm", "//sld:ContrastEnhancement/sld:Normalize/sld:Algorithm", doc);
+        assertXpathEvaluatesTo("false", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']", doc);
+        assertXpathEvaluatesTo("MyTestAlgorithm", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='Algorithm']", doc);
         
         Histogram hist = new Histogram();
-        ce.setMethod(hist);
+        ce.setRealMethod(hist);
         xml = st.transform(ce);
         String skeleton = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Histogram/></sld:ContrastEnhancement>";
-  //      System.out.println(xml);
+        System.out.println(xml);
         Diff myDiff = new Diff(skeleton, xml);
         
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
         //assertXpathNotExists("//sld:ContrastEnhancement/sld:Histogram/sld:Algorithm",doc);
     
         Logarithmic log = new Logarithmic();
-        ce.setMethod(log);
+        ce.setRealMethod(log);
         xml = st.transform(ce);
         //System.out.println(xml);
         skeleton = skeleton.replace("Histogram", "Logarithmic");
@@ -1553,7 +1554,7 @@ public class SLDTransformerTest {
         
         
         Exponential exp = new Exponential();
-        ce.setMethod(exp);
+        ce.setRealMethod(exp);
         xml = st.transform(ce);
         //System.out.println(xml);
         skeleton = skeleton.replace("Logarithmic", "Exponential");

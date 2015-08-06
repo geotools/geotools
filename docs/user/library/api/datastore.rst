@@ -160,13 +160,14 @@ To check if the contents of a file are writable you can use an **instanceof** ch
      Transaction session = new DefaultTransaction("Adding");
      featureStore.setTransaction( session );
      try {
-       List<FeatureId> added = featureSource.addFeatures( featureCollection );
+       List<FeatureId> added = featureStore.addFeatures( featureCollection );
        System.out.println( "Added "+added );
        session.commit();
      }
      catch (Throwable t){
        System.out.println( "Failed to add features: "+t );
        session.rollback();
+     }
   }
 
 This approach is nice in that you cannot accidentally modify a read-only file (as your

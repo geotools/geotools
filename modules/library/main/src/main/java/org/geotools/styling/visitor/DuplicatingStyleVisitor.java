@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -72,7 +72,6 @@ import org.geotools.styling.UserLayer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
 import org.opengis.style.Description;
 
 /**
@@ -990,18 +989,17 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
         pages.push(copy);
     }
-    
+
     public void visit(ContrastEnhancement contrastEnhancement) {
         final ContrastEnhancement copy = sf.createContrastEnhancement();
         copy.setMethod(contrastEnhancement.getMethod());
         copy.setOptions(contrastEnhancement.getOptions());
-        
+
         copy.setGammaValue(contrastEnhancement.getGammaValue());
         if (STRICT && !copy.equals(contrastEnhancement)) {
             throw new IllegalStateException("Was unable to duplicate provided contrastEnhancement:" + contrastEnhancement);
         }
         pages.push(copy);
-
     }
 
     public void visit(ImageOutline outline) {
@@ -1061,6 +1059,4 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
 
     }
-
-   
 }

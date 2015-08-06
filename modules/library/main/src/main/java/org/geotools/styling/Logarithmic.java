@@ -17,25 +17,18 @@
 package org.geotools.styling;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
-import org.opengis.style.StyleVisitor;
 
 /**
  * @author ian
  *
  */
 public class Logarithmic extends AbstractContrastEnhancementMethod {
-
- 
 
     final static List<String> PARAM_NAMES = Arrays.asList("normalizationFactor", "correctionFactor");
 
@@ -50,7 +43,6 @@ public class Logarithmic extends AbstractContrastEnhancementMethod {
         method = ContrastMethod.LOGARITHMIC;
     }
 
-    
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
             LOGGER.log(Level.WARNING, "Adding unexpected parameter {0} to {1} Contrast Enhancer",
@@ -58,5 +50,4 @@ public class Logarithmic extends AbstractContrastEnhancementMethod {
         }
         super.addParameter(key, value);
     }
-
 }

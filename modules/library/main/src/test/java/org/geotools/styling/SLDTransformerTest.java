@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,11 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -1521,7 +1525,7 @@ public class SLDTransformerTest {
         
         ContrastEnhancement ce = new ContrastEnhancementImpl();
         Normalize normal = new Normalize();
-        normal.setAlgorithm(ff.literal("MyTestAlgorithm"));
+        normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
         normal.addParameter("p1", ff.literal(false));
         normal.addParameter("p2", ff.literal(23.5d));
         ce.setRealMethod(normal);
@@ -1531,7 +1535,7 @@ public class SLDTransformerTest {
         Document doc = buildTestDocument(xml);
         assertXpathExists( "//sld:ContrastEnhancement/sld:Normalize", doc);
         assertXpathEvaluatesTo("false", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']", doc);
-        assertXpathEvaluatesTo("MyTestAlgorithm", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='Algorithm']", doc);
+        assertXpathEvaluatesTo("ClipToMinimumMaximum", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='algorithm']", doc);
         
         Histogram hist = new Histogram();
         ce.setRealMethod(hist);

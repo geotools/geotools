@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -73,20 +73,6 @@ public interface ContrastEnhancement extends org.opengis.style.ContrastEnhanceme
     public void setMethod(ContrastMethod method);
 	
     /**
-     * @param type Should be a Literal of "Normalize" or "Histogram" or "None", if null supplied "None" is assumed
-     * 
-     *//*
-    public void setType(Expression type);
-
-    *//**
-     * Returns a literal expression (one of NORMALIZE, HISTOGRAM, NONE)
-     * indicating which ContrastMethod value is to be used.
-     * 
-     * 
-     *//*
-    public Expression getType();*/
-
-    /**
      * @param gamma How much to brighten (greater than 1) or dim (less than 1) this channel; use 1.0 to indicate no change.
      */
     public void setGammaValue(Expression gamma);
@@ -127,18 +113,22 @@ public interface ContrastEnhancement extends org.opengis.style.ContrastEnhanceme
     public void accept(StyleVisitor visitor);
 
     /**
-     * @param options
+     * @param options a Map of VendorOptions 
      */
     public void setOptions(Map<String, Expression> options);
 
     /**
      * @param string
-     * @return
+     * @return An expression for the matching VendorOption
      */
     public Expression getOption(String string);
 
     /**
-     * @param normal
+     * Convenience method to allow users to pass in a 
+     * {@link ContrastEnhancementMethod} to update {@link Method} 
+     * and {@link Options} in one go.
+     * 
+     * @param method the {@link ContrastEnhancementMethod} that underlies this enhancement
      */
     public void setRealMethod(ContrastEnhancementMethod method);
 

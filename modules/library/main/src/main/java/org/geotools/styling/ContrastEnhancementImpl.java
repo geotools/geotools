@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 
 /**
@@ -66,15 +64,14 @@ import org.opengis.style.ContrastMethod;
  * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/ styling/ContrastEnhancementImpl.java $
  */
 public class ContrastEnhancementImpl implements ContrastEnhancement {
-    
 
     private FilterFactory filterFactory;
 
     private Expression gamma;
 
-    private ContrastMethod method;
-
     private Expression type;
+    
+    private ContrastMethod method;
 
     private Map<String, Expression> options;
 
@@ -86,13 +83,6 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         this(factory, (ContrastMethod)null);
     }
 
-    /*public ContrastEnhancementImpl(FilterFactory factory, String method) {
-        filterFactory = factory;
-        lookupMethod(method);
-    }*/
-    /*private void lookupMethod(String method) {
-        lookupMethod(method,null);
-    }*/
     /**
      * @param method
      * @param filterFactory2 
@@ -118,6 +108,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         filterFactory = factory;
         this.method = method;
     }
+
     public ContrastEnhancementImpl(org.opengis.style.ContrastEnhancement contrastEnhancement) {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
         org.opengis.style.ContrastMethod meth = contrastEnhancement.getMethod();
@@ -127,17 +118,11 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         this.gamma = contrastEnhancement.getGammaValue();
     }
 
-    /*public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma,
-            String method) {
-        lookupMethod(method, factory);
-        this.gamma = gamma;
-    }*/
     public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma,
             ContrastMethod method) {
         this.filterFactory = factory;
         this.gamma = gamma;
         this.method = method;
-
     }
 
     public void setFilterFactory(FilterFactory factory) {
@@ -148,19 +133,10 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         return gamma;
     }
 
-    /*public Expression getType() {
-        return type;
-    }*/
-
     public void setGammaValue(Expression gamma) {
         this.gamma = gamma;
     }
 
-    
-   /* public void setType(Expression type) {
-        this.type = type;
-    }
-*/
     public ContrastMethod getMethod() {
         return method;
     }
@@ -173,8 +149,6 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         visitor.visit(this);
     }
 
-    
-    
     static ContrastEnhancementImpl cast(org.opengis.style.ContrastEnhancement enhancement) {
         if (enhancement == null) {
             return null;
@@ -191,15 +165,8 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public void setMethod(ContrastMethod method) {
         this.method = method;
-
     }
-    
-    /*public void setMethod(Expression exp) {
-        if(exp!=null) {
-            String meth = (String)exp.evaluate(null);
-            lookupMethod(meth);
-        }
-    }*/
+
     @Override
     public Map<String, Expression> getOptions() {
         if(this.options == null) {
@@ -215,11 +182,12 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         }
         return options.containsKey(key);
     }
-    
+
     @Override
     public Expression getOption(String key) {
         return this.options.get(key);
     }
+
     @Override
     public void addOption(String key, Expression value) {
         if(this.options == null) {
@@ -231,15 +199,12 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public void setOptions(Map<String, Expression> options) {
         this.options = options;
-        
     }
 
     @Override
     public void setRealMethod(ContrastEnhancementMethod method) {
         this.method = method.getMethod();
         this.options = method.getOptions();
-        
-        
     }
 
     @Override
@@ -295,6 +260,4 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         }
         return true;
     }
-    
-    
 }

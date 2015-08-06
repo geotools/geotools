@@ -17,18 +17,12 @@
 package org.geotools.styling;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.factory.CommonFactoryFinder;
-
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
-import org.opengis.style.StyleVisitor;
 
 /**
  * @author iant

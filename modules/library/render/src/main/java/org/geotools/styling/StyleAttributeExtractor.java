@@ -26,7 +26,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.style.ContrastMethod;
 
 
 /**
@@ -545,6 +544,4 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         sr.accept(this);
         
     }
-
-    
 }

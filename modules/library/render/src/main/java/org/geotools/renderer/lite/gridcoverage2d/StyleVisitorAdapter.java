@@ -50,7 +50,6 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
-import org.opengis.style.ContrastMethod;
 
 /**
  * Simple empty implementation for the {@link StyleVisitor} interface.
@@ -409,7 +408,5 @@ public class StyleVisitorAdapter implements StyleVisitor {
 		throw new UnsupportedOperationException(
 				Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1,"visit(ImageOutline)"));
 	}
-
-    
 
 }

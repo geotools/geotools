@@ -192,7 +192,6 @@ public class SLDExampleTest extends TestCase {
         
         // check it passes validation
         List errors = validate(file);
-        
         assertEquals(0, errors.size());
     }
 }

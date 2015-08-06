@@ -30,13 +30,12 @@ import org.opengis.filter.expression.Expression;
 public abstract class AbstractContrastEnhancementMethod extends ContrastEnhancementMethod {
 
     /** ALGORITHM */
-    private static final String ALGORITHM = "Algorithm";
+    public static final String ALGORITHM = "algorithm";
 
     protected FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory2();
-    
+
     protected String NAME = "None";
-    
-    
+
     /**
      * 
      */
@@ -54,7 +53,7 @@ public abstract class AbstractContrastEnhancementMethod extends ContrastEnhancem
 
     public Map<String, Expression> getParameters() {
         HashMap<String, Expression> parameters = new HashMap<>(getOptions());
-        if(parameters.containsKey(ALGORITHM)) {
+        if (parameters.containsKey(ALGORITHM)) {
             parameters.remove(ALGORITHM);
         }
         return parameters;
@@ -70,12 +69,10 @@ public abstract class AbstractContrastEnhancementMethod extends ContrastEnhancem
 
     public void addParameter(String key, Expression value) {
         addOption(key, value);
-    
     }
 
     public void setAlgorithm(Expression name) {
         addOption(ALGORITHM, name);
-    
     }
 
 }

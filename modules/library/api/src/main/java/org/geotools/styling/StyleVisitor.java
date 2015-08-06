@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.ContrastMethod;
 
 /**
  * An interface for classes that want to perform operations on a Style
@@ -249,5 +248,4 @@ public interface StyleVisitor {
      */
     void visit(ShadedRelief sr);
 
-    
 }

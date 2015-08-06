@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.ContrastMethod;
 
 /**
  * A basic implementation of the StyleVisitor interface.

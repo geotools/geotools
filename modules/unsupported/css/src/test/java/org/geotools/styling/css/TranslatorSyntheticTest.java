@@ -37,7 +37,6 @@ import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Normalize;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;

@@ -16,21 +16,34 @@
  */
 package org.geotools.styling;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
 /**
  * @author iant
  *
  */
-public class Normalize  extends AbstractContrastEnhancementMethod{
+public class Normalize extends AbstractContrastEnhancementMethod{
 
+    final static List<String> ALGORITHM_NAMES = Arrays.asList("StretchToMinimumMaximum",
+            "ClipToMinimumMaximum", "ClipToZero");
 
     public Normalize() {
         NAME = "Normalize";
         method = ContrastMethod.NORMALIZE;
     }
-    
-    
 
-    
+    @Override
+    public void setAlgorithm(Expression name) {
+        if (name != null) {
+            String algorithm = name.evaluate(null, String.class);
+            if (algorithm != null && !ALGORITHM_NAMES.contains(algorithm)) {
+                throw new IllegalArgumentException("Unsupported Algorithm has been specified: " + algorithm);
+            }
+        }
+        super.setAlgorithm(name);
+    }
 }

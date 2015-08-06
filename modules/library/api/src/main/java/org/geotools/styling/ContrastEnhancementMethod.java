@@ -61,5 +61,4 @@ public class ContrastEnhancementMethod {
         options.put(key, value);
         
     }
-    
 }

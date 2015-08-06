@@ -23,10 +23,10 @@ import org.opengis.style.ContrastMethod;
  * @author iant
  *
  */
-public class Histogram extends AbstractContrastEnhancementMethod  {
+public class Histogram extends AbstractContrastEnhancementMethod {
 
     public Histogram() {
-        NAME="Histogram";
+        NAME = "Histogram";
         method = ContrastMethod.HISTOGRAM;
     }
 
@@ -34,17 +34,12 @@ public class Histogram extends AbstractContrastEnhancementMethod  {
         if (!(ContrastMethod.HISTOGRAM.equals(method))) {
             throw new RuntimeException("tried to construct Histogram with " + method.getClass());
         }
-        
-
     }
 
     /**
      * @param filterFactory
      */
     public Histogram(FilterFactory filterFactory) {
-        this. filterFactory = filterFactory;
+        this.filterFactory = filterFactory;
     }
-
-    
-
 }

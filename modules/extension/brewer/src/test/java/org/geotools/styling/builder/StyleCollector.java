@@ -3,6 +3,7 @@ package org.geotools.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geotools.styling.AbstractStyleVisitor;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
@@ -42,7 +43,7 @@ import org.geotools.styling.UserLayer;
  *
  * @source $URL$
  */
-public class StyleCollector implements StyleVisitor {
+public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
     List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
 

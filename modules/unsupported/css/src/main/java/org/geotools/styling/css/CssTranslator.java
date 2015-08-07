@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -107,17 +107,13 @@ public class CssTranslator {
         /**
          * Generates fully exclusive rules, extra rules are removed
          */
-        Exclusive,
-        /**
-         * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the
-         * first matching rules to the renderer, will generate more rules, but work a lot less to do
-         * so by avoiding to compute the domain coverage
-         */
-        Simple,
-        /**
-         * The translator will pick Exclusive by default, but if the rules to be turned into SLD go
-         * beyond
-         */
+        Exclusive, /**
+                    * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the first matching rules to the renderer,
+                    * will generate more rules, but work a lot less to do so by avoiding to compute the domain coverage
+                    */
+        Simple, /**
+                 * The translator will pick Exclusive by default, but if the rules to be turned into SLD go beyond
+                 */
         Auto;
     };
 
@@ -129,11 +125,11 @@ public class CssTranslator {
 
     static final String DIRECTIVE_TRANSLATION_MODE = "mode";
 
-    static final int MAX_OUTPUT_RULES_DEFAULT = Integer.valueOf(System.getProperty(
-            "org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
+    static final int MAX_OUTPUT_RULES_DEFAULT = Integer
+            .valueOf(System.getProperty("org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
 
-    static final int AUTO_THRESHOLD_DEFAULT = Integer.valueOf(System.getProperty(
-            "org.geotools.css." + DIRECTIVE_AUTO_THRESHOLD, "100"));
+    static final int AUTO_THRESHOLD_DEFAULT = Integer
+            .valueOf(System.getProperty("org.geotools.css." + DIRECTIVE_AUTO_THRESHOLD, "100"));
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
@@ -216,6 +212,27 @@ public class CssTranslator {
     static final Map<String, String> RASTER_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
             put("raster-composite", "composite");
+        }
+    };
+
+    @SuppressWarnings("serial")
+    static final Map<String, String> CONTRASTENHANCMENT_VENDOR_OPTIONS = new HashMap<String, String>() {
+        {
+            put("-gt-raster-contrast-enhancement-algorithm", "algorithm");
+
+            put("-gt-raster-contrast-enhancement-minvalue", "minValue");
+            put("-gt-raster-contrast-enhancement-maxvalue", "maxValue");
+
+            put("-gt-raster-contrast-enhancement-normalizationFactor", "normalizationFactor");
+            put("-gt-raster-contrast-enhancement-correctionFactor", "correctionFactor");
+            //short forms for lazy people 
+            put("-gt-rce-algorithm", "algorithm");
+
+            put("-gt-rce-minvalue", "minValue");
+            put("-gt-rce-maxvalue", "maxValue");
+
+            put("-gt-rce-normalizationFactor", "normalizationFactor");
+            put("-gt-rce-correctionFactor", "correctionFactor");
         }
     };
 
@@ -340,8 +357,8 @@ public class CssTranslator {
                 ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
                         FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
                 if (featureTypeName != null) {
-                    ftsBuilder.setFeatureTypeNames(Arrays.asList((Name) new NameImpl(
-                            featureTypeName)));
+                    ftsBuilder.setFeatureTypeNames(
+                            Arrays.asList((Name) new NameImpl(featureTypeName)));
                 }
 
                 Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
@@ -403,25 +420,26 @@ public class CssTranslator {
                         // the first rule providing the information (the one with the highest
                         // priority)
                         if (composite == null) {
-                            List<Value> values = derived.getPropertyValues(PseudoClass.ROOT,
-                                    COMPOSITE).get(COMPOSITE);
+                            List<Value> values = derived
+                                    .getPropertyValues(PseudoClass.ROOT, COMPOSITE).get(COMPOSITE);
                             if (values != null && !values.isEmpty()) {
                                 composite = values.get(0).toLiteral();
                             }
                         }
                         if (compositeBase == null) {
-                            List<Value> values = derived.getPropertyValues(PseudoClass.ROOT,
-                                    COMPOSITE_BASE).get(COMPOSITE_BASE);
+                            List<Value> values = derived
+                                    .getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
+                                    .get(COMPOSITE_BASE);
                             if (values != null && !values.isEmpty()) {
                                 compositeBase = Boolean.valueOf(values.get(0).toLiteral());
                             }
                         }
                     }
-                    
-                    if(composite != null) {
+
+                    if (composite != null) {
                         ftsBuilder.option(COMPOSITE, composite);
                     }
-                    if(Boolean.TRUE.equals(compositeBase)) {
+                    if (Boolean.TRUE.equals(compositeBase)) {
                         ftsBuilder.option(COMPOSITE_BASE, "true");
                     }
                 }
@@ -432,7 +450,7 @@ public class CssTranslator {
         if (translatedRuleCount == 0) {
             throw new IllegalArgumentException("Invalid CSS style, no rule seems to activate "
                     + "any symbolization. The properties activating the symbolizers are fill, "
-                            + "stroke, mark, label, raster-channels, has any been used in a rule matching any feature?");
+                    + "stroke, mark, label, raster-channels, has any been used in a rule matching any feature?");
         }
 
         return styleBuilder.build();
@@ -458,8 +476,7 @@ public class CssTranslator {
         if (maxOutputRulesDirective != null) {
             Integer converted = Converters.convert(maxOutputRulesDirective, Integer.class);
             if (converted == null) {
-                throw new IllegalArgumentException("Invalid value for "
-                        + DIRECTIVE_MAX_OUTPUT_RULES
+                throw new IllegalArgumentException("Invalid value for " + DIRECTIVE_MAX_OUTPUT_RULES
                         + ", it should be a positive integer value, it was "
                         + maxOutputRulesDirective);
             }
@@ -483,9 +500,8 @@ public class CssTranslator {
     }
 
     /**
-     * SLD rules can have two or more selectors in OR using different scale ranges, however the SLD
-     * model does not allow for that. Flatten them into N different rules, with the same properties,
-     * but different selectors
+     * SLD rules can have two or more selectors in OR using different scale ranges, however the SLD model does not allow for that. Flatten them into N
+     * different rules, with the same properties, but different selectors
      * 
      * @param rules
      * @return
@@ -508,7 +524,8 @@ public class CssTranslator {
                 if (others.size() == 1) {
                     result.add(new CssRule(others.get(0), rule.getProperties(), rule.getComment()));
                 } else if (others.size() > 0) {
-                    result.add(new CssRule(new Or(others), rule.getProperties(), rule.getComment()));
+                    result.add(
+                            new CssRule(new Or(others), rule.getProperties(), rule.getComment()));
                 }
             } else {
                 result.add(rule);
@@ -519,8 +536,8 @@ public class CssTranslator {
     }
 
     /**
-     * This method builds a target feature type based on the provided rules, subclasses can override
-     * and maybe pick the feature type from a well known source
+     * This method builds a target feature type based on the provided rules, subclasses can override and maybe pick the feature type from a well known
+     * source
      */
     protected FeatureType getTargetFeatureType(String featureTypeName, List<CssRule> rules) {
         FeatureTypeGuesser guesser = new FeatureTypeGuesser();
@@ -557,8 +574,8 @@ public class CssTranslator {
                 TypeNameSimplifier simplifier = new TypeNameSimplifier(tn);
                 Selector simplified = (Selector) rule.getSelector().accept(simplifier);
                 if (simplified != Selector.REJECT) {
-                    typeNameRules.add(new CssRule(simplified, rule.getProperties(), rule
-                            .getComment()));
+                    typeNameRules
+                            .add(new CssRule(simplified, rule.getProperties(), rule.getComment()));
                 }
             }
             result.put(tn.name, typeNameRules);
@@ -619,8 +636,7 @@ public class CssTranslator {
     }
 
     /**
-     * Turns an SLD compatible {@link CSSRule} into a {@link Rule}, appending it to the
-     * {@link FeatureTypeStyleBuilder}
+     * Turns an SLD compatible {@link CSSRule} into a {@link Rule}, appending it to the {@link FeatureTypeStyleBuilder}
      * 
      * @param cssRule
      * @param fts
@@ -877,10 +893,10 @@ public class CssTranslator {
                 tb.fill().opacity(opacity);
             }
             // the fontdi
-            Map<String, List<Value>> fontLikeProperties = cssRule.getPropertyValues(
-                    PseudoClass.ROOT, "font");
-            if (!fontLikeProperties.isEmpty()
-                    && (fontLikeProperties.size() > 1 || fontLikeProperties.get("font-fill") == null)) {
+            Map<String, List<Value>> fontLikeProperties = cssRule
+                    .getPropertyValues(PseudoClass.ROOT, "font");
+            if (!fontLikeProperties.isEmpty() && (fontLikeProperties.size() > 1
+                    || fontLikeProperties.get("font-fill") == null)) {
                 FontBuilder fb = tb.newFont();
                 Expression fontFamily = getExpression(values, "font-family", i);
                 if (fontFamily != null) {
@@ -924,14 +940,13 @@ public class CssTranslator {
     }
 
     /**
-     * Builds a raster symbolizer into the current rule, if a <code>raster-channels</code> property
-     * is found
+     * Builds a raster symbolizer into the current rule, if a <code>raster-channels</code> property is found
      * 
      * @param cssRule
      * @param ruleBuilder
      */
     private void addRasterSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
-        Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "raster");
+        Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "raster","rce");
         if (values == null || values.isEmpty()) {
             return;
         }
@@ -942,26 +957,41 @@ public class CssTranslator {
             String[] channelNames = getStringArray(values, "raster-channels", i);
             String[] constrastEnhancements = getStringArray(values, "raster-contrast-enhancement",
                     i);
+            HashMap<String, Expression> constrastParameters = new HashMap<>();
+            for (String cssKey : values.keySet()) {
+                String sldKey = CONTRASTENHANCMENT_VENDOR_OPTIONS.get(cssKey);
+                if (sldKey != null) {
+                    constrastParameters.put(sldKey, getExpression(values, cssKey, i));
+                }
+            }
             double[] gammas = getDoubleArray(values, "raster-gamma", i);
             if (!"auto".equals(channelNames[0])) {
                 ChannelSelectionBuilder cs = rb.channelSelection();
                 if (channelNames.length == 1) {
-                    applyContrastEnhancement(cs.gray().channelName(channelNames[0])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 0);
+                    applyContrastEnhancement(
+                            cs.gray().channelName(channelNames[0]).contrastEnhancement(),
+                            constrastEnhancements, constrastParameters, gammas, 0);
                 } else if (channelNames.length == 2 || channelNames.length > 3) {
                     throw new IllegalArgumentException(
                             "raster-channels can accept the name of one or three bands, not "
                                     + channelNames.length);
                 } else {
-                    applyContrastEnhancement(cs.red().channelName(channelNames[0])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 0);
-                    applyContrastEnhancement(cs.green().channelName(channelNames[1])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 1);
-                    applyContrastEnhancement(cs.blue().channelName(channelNames[2])
-                            .contrastEnhancement(), constrastEnhancements, gammas, 2);
+                    applyContrastEnhancement(
+                            cs.red().channelName(channelNames[0]).contrastEnhancement(),
+                            constrastEnhancements, constrastParameters, gammas,
+                            0);
+                    applyContrastEnhancement(
+                            cs.green().channelName(channelNames[1]).contrastEnhancement(),
+                            constrastEnhancements, constrastParameters, gammas,
+                            1);
+                    applyContrastEnhancement(
+                            cs.blue().channelName(channelNames[2]).contrastEnhancement(),
+                            constrastEnhancements, constrastParameters, gammas,
+                            2);
                 }
             } else {
-                applyContrastEnhancement(rb.contrastEnhancement(), constrastEnhancements, gammas, 0);
+                applyContrastEnhancement(rb.contrastEnhancement(), constrastEnhancements,
+                        constrastParameters, gammas, 0);
             }
 
             Expression opacity = getExpression(values, "raster-opacity", i);
@@ -1022,21 +1052,24 @@ public class CssTranslator {
                     }
                 }
             }
-            
+
             addVendorOptions(rb, RASTER_VENDOR_OPTIONS, values, i);
         }
     }
 
     /**
-     * Applies contrast enhcancement for the i-th band
+     * Applies contrast enhancement for the i-th band
      * 
      * @param ceb
      * @param constrastEnhancements
+     * @param constrastAlgorithms
+     * @param constrastParameters
      * @param gammas
      * @param i
      */
     private void applyContrastEnhancement(ContrastEnhancementBuilder ceb,
-            String[] constrastEnhancements, double[] gammas, int i) {
+            String[] constrastEnhancements, Map<String, Expression> constrastParameters,
+            double[] gammas, int i) {
         if (constrastEnhancements != null && constrastEnhancements.length > 0) {
             String contrastEnhancementName;
             if (constrastEnhancements.length > i) {
@@ -1044,14 +1077,23 @@ public class CssTranslator {
             } else {
                 contrastEnhancementName = constrastEnhancements[i];
             }
+            
+            
+
+            //
             if ("histogram".equals(contrastEnhancementName)) {
-                ceb.histogram();
+                ceb.histogram(constrastParameters);
             } else if ("normalize".equals(contrastEnhancementName)) {
-                ceb.normalize();
+                ceb.normalize(constrastParameters);
+            } else if ("exponential".equals(contrastEnhancementName)) {
+                ceb.exponential(constrastParameters);
+            } else if ("logarithmic".equals(contrastEnhancementName)) {
+                ceb.logarithmic(constrastParameters);
             } else if (!"none".equals(contrastEnhancementName)) {
+                //
                 throw new IllegalArgumentException("Invalid contrast enhancement name "
                         + contrastEnhancementName
-                        + ", valid values are 'none', 'histogram', 'normalize'");
+                        + ", valid values are 'none', 'histogram', 'normalize', 'exponential' or 'logarithmic'");
             }
         } else {
             ceb.unset();
@@ -1075,8 +1117,8 @@ public class CssTranslator {
                 CssRule cssRule, int i) {
             if (v != null) {
                 if (!(v instanceof Function)) {
-                    throw new IllegalArgumentException("The value of '" + propertyName
-                            + "' must be a symbol or a url");
+                    throw new IllegalArgumentException(
+                            "The value of '" + propertyName + "' must be a symbol or a url");
                 }
                 Function f = (Function) v;
                 GraphicBuilder gb = getGraphicBuilder();
@@ -1094,11 +1136,9 @@ public class CssTranslator {
                     String mime = getLiteral(values, propertyName + "-mime", i, "image/jpeg");
                     gb.externalGraphic(location, mime);
                 } else {
-                    throw new IllegalArgumentException(
-                            "'"
-                                    + propertyName
-                                    + "' accepts either a 'symbol' or a 'url' function, the following function is unrecognized: "
-                                    + f);
+                    throw new IllegalArgumentException("'" + propertyName
+                            + "' accepts either a 'symbol' or a 'url' function, the following function is unrecognized: "
+                            + f);
                 }
 
                 Expression rotation = getMeasureExpression(values, propertyName + "-rotation", i,
@@ -1346,8 +1386,7 @@ public class CssTranslator {
     }
 
     /**
-     * Returns the set of values for the idx-th pseudo-class taking into account both generic and
-     * non indexed pseudo class names
+     * Returns the set of values for the idx-th pseudo-class taking into account both generic and non indexed pseudo class names
      * 
      * @param cssRule
      * @param pseudoClassName
@@ -1364,8 +1403,8 @@ public class CssTranslator {
         // symbol specific ones
         combined.putAll(cssRule.getPropertyValues(PseudoClass.newPseudoClass(pseudoClassName)));
         // symbol and index specific ones
-        combined.putAll(cssRule.getPropertyValues(PseudoClass.newPseudoClass(pseudoClassName,
-                idx + 1)));
+        combined.putAll(
+                cssRule.getPropertyValues(PseudoClass.newPseudoClass(pseudoClassName, idx + 1)));
         return combined;
     }
 
@@ -1383,8 +1422,7 @@ public class CssTranslator {
     }
 
     /**
-     * Builds/grabs an expression from the specified value, if a multi value is passed the first
-     * value will be used
+     * Builds/grabs an expression from the specified value, if a multi value is passed the first value will be used
      * 
      * @param v
      * @return
@@ -1402,8 +1440,7 @@ public class CssTranslator {
     }
 
     /**
-     * Returns an expression for the i-th value of the specified property, taking into account units
-     * of measure
+     * Returns an expression for the i-th value of the specified property, taking into account units of measure
      * 
      * @param valueMap
      * @param name
@@ -1596,8 +1633,7 @@ public class CssTranslator {
     }
 
     /**
-     * Returns the max number of property values in the provided property set (for repeated
-     * symbolizers)
+     * Returns the max number of property values in the provided property set (for repeated symbolizers)
      * 
      * @param valueMap
      * @return
@@ -1638,8 +1674,8 @@ public class CssTranslator {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").setLevel(
-                java.util.logging.Level.FINE);
+        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css")
+                .setLevel(java.util.logging.Level.FINE);
         org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").addHandler(handler);
 
         CssTranslator translator = new CssTranslator();

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -750,7 +750,8 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
         return ce;
     }
-
+    
+    
     public SelectedChannelType createSelectedChannelType(String name,
         ContrastEnhancement enhancement) {
         SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
@@ -983,5 +984,27 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             org.opengis.style.LabelPlacement placement, org.opengis.style.Halo halo,
             org.opengis.style.Fill fill) {
         return delegate.textSymbolizer(name, geometry, description, unit, label, font, placement, halo, fill);        
+    }
+
+    @Override
+    public org.opengis.style.ContrastEnhancement contrastEnhancement(Expression gamma,
+            String method) {
+
+        ContrastMethod meth = ContrastMethod.NONE;
+        if(ContrastMethod.NORMALIZE.matches(method)) {
+            meth = ContrastMethod.NORMALIZE;
+        } else if(ContrastMethod.HISTOGRAM.matches(method)) {
+            meth = ContrastMethod.HISTOGRAM;
+        } else if(ContrastMethod.LOGARITHMIC.matches(method)) {
+            meth = ContrastMethod.LOGARITHMIC;
+        } else if(ContrastMethod.EXPONENTIAL.matches(method)) {
+            meth = ContrastMethod.EXPONENTIAL;
+        } 
+        return new ContrastEnhancementImpl( filterFactory, gamma, meth);
+    }
+
+    @Override
+    public ContrastMethod createContrastMethod(ContrastMethod method) {
+        return method;
     }
 }

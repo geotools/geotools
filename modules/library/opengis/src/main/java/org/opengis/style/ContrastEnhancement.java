@@ -48,7 +48,7 @@ public interface ContrastEnhancement {
     /**
      * We use a codeList to enable more enchancement type possibilities.
      */
-    @XmlElement("Normalize,Histogram")
+    @XmlElement("Normalize,Histogram,Logarithmic,Exponential")
     public ContrastMethod getMethod();
     
     /**

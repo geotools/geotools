@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import static org.junit.Assert.fail;
+
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -40,12 +42,10 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.style.ContrastMethod;
-import org.opengis.filter.FilterFactory2;
-
-import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.style.ContrastMethod;
 
 /**
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).

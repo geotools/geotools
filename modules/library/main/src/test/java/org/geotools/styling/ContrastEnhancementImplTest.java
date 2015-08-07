@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,12 +16,15 @@
  */
 package org.geotools.styling;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
+
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.expression.Literal;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
-import static org.junit.Assert.*;
 
 /**
  * The ContrastEnhancementImpl UnitTest
@@ -56,5 +59,24 @@ public class ContrastEnhancementImplTest extends TestCase {
         contrastEnhancementImpl.setMethod(expected);
         ContrastMethod actual = contrastEnhancementImpl.getMethod();
         assertEquals(expected, actual);
+    }
+
+    public void testNormalize() {
+        Normalize normalize = new Normalize();
+        normalize.setAlgorithm(filterFactory.literal("ClipToMinimumMaximum"));
+        Map<String, Expression> params = normalize.getParameters();
+        assertNotNull("Null parameters returned by Normalize", params);
+        normalize.addParameter("min", filterFactory.literal(45.9));
+        params = normalize.getParameters();
+        assertEquals("Wrong number of parameters returned", 1, params.size());
+        normalize.addParameter(
+                "max",
+                filterFactory.function("env", filterFactory.literal("arg1"),
+                        filterFactory.literal("arg2")));
+        params = normalize.getParameters();
+
+        Expression max = params.get("max");
+        assertEquals("mangled the function in normalize", "env([arg1], [arg2])", max.toString());
+
     }
 }

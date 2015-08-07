@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.Normalize;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Style;

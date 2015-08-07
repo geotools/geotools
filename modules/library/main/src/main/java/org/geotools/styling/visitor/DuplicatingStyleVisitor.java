@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+
+import javax.swing.Icon;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
@@ -71,8 +73,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
-
-import javax.swing.Icon;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -492,9 +492,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         ContrastEnhancement copy = sf.createContrastEnhancement();
         copy.setGammaValue( copy( contrast.getGammaValue()));
         copy.setMethod(contrast.getMethod());
-        if(contrast.getType() != null) {
-            copy.setType(contrast.getType());
-        }
+        copy.setOptions(contrast.getOptions());
+        
         return copy;
     }
     
@@ -990,16 +989,17 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
         pages.push(copy);
     }
-    
+
     public void visit(ContrastEnhancement contrastEnhancement) {
         final ContrastEnhancement copy = sf.createContrastEnhancement();
-        copy.setType(contrastEnhancement.getType());
+        copy.setMethod(contrastEnhancement.getMethod());
+        copy.setOptions(contrastEnhancement.getOptions());
+
         copy.setGammaValue(contrastEnhancement.getGammaValue());
         if (STRICT && !copy.equals(contrastEnhancement)) {
             throw new IllegalStateException("Was unable to duplicate provided contrastEnhancement:" + contrastEnhancement);
         }
         pages.push(copy);
-
     }
 
     public void visit(ImageOutline outline) {

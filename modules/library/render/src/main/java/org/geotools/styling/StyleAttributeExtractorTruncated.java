@@ -16,6 +16,9 @@
  */
 package org.geotools.styling;
 
+import java.util.List;
+
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.VolatileFunction;
 
 /**
@@ -126,29 +129,25 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
 			text.getHalo().accept(this);
 		}
 
-		if (text.getFonts() != null) {
-			Font[] fonts = text.getFonts();
-
-			for (int i = 0; i < fonts.length; i++) {
-				Font font = fonts[i];
-
-				if (font.getFontFamily() != null) {
-					font.getFontFamily().accept(this, null);
-				}
-
-				if (font.getFontSize() != null) {
-					font.getFontSize().accept(this, null);
-				}
-
-				if (font.getFontStyle() != null) {
-					font.getFontStyle().accept(this, null);
-				}
-
-				if (font.getFontWeight() != null) {
-					font.getFontWeight().accept(this, null);
-				}
-			}
-		}
+        if (text.fonts() != null) {
+            List<Font> fonts = text.fonts();
+            for (Font font : fonts) {
+                if (font.getFamily() != null) {
+                    for (Expression family : font.getFamily()) {
+                        family.accept(this, null);
+                    }
+                }
+                if (font.getSize() != null) {
+                    font.getSize().accept(this, null);
+                }
+                if (font.getStyle() != null) {
+                    font.getStyle().accept(this, null);
+                }
+                if (font.getWeight() != null) {
+                    font.getWeight().accept(this, null);
+                }
+            }
+        }
 
 		if (text.getHalo() != null) {
 			text.getHalo().accept(this);

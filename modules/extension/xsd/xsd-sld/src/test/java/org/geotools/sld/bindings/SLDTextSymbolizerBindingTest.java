@@ -37,7 +37,7 @@ public class SLDTextSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(ts.getFill());
         assertEquals(1, ts.fonts().size());
         assertNotNull(ts.getGeometryPropertyName());
-        assertNotNull(ts.getPlacement());
+        assertNotNull(ts.getLabelPlacement());
         assertNotNull(ts.getHalo());
         assertNotNull(ts.getLabel());
     }

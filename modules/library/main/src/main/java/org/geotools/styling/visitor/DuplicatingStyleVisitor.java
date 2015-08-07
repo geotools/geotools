@@ -18,7 +18,9 @@ package org.geotools.styling.visitor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -348,6 +350,20 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
     
     /**
+     * Copy list of expressions.
+     * @param expressions
+     * @return copy of expressions or null if list was null
+     */    
+    protected List<Expression> copyExpressions( List<Expression> expressions ){
+        if( expressions == null  ) return null;
+        List<Expression> copy = new ArrayList<Expression>(expressions.size());
+        for( Expression expression : expressions ){
+            copy.add( copy( expression ));
+        }
+        return copy;
+    }
+    
+    /**
      * Null safe expression copy.
      * <p>
      * This method will perform a null check, and save you some lines of code:<pre><code>
@@ -536,30 +552,32 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
     
     /**
-     * Null safe copy of font array.
+     * Null safe copy of font list.
      * <p>
      * Right now style visitor does not let us visit fonts!
      * @param fonts
      * @return copy of provided fonts
      */
-    protected Font[] copy(Font[] fonts) {
-        if( fonts == null ) return null;
-        Font copy[] = new Font[ fonts.length ];
-        for( int i=0; i<fonts.length; i++){
-            copy[i] = copy( fonts[i] );
+    protected List<Font> copyFonts(List<Font> fonts) {
+        if (fonts == null) {
+            return null;
+        }
+        List<Font> copy = new ArrayList<Font>(fonts.size());
+        for (Font font : fonts) {
+            copy.add(copy(font));
         }
         return copy;
     }
-    
+
     /** Null safe copy of a single font */
     protected Font copy(Font font) {
         if( font == null) return font;
         
-        Expression fontFamily = copy( font.getFontFamily() );
-        Expression fontStyle = copy( font.getFontStyle() );
-        Expression fontWeight = copy( font.getFontWeight() );
-        Expression fontSize = copy( font.getFontSize() );
-        Font copy = sf.createFont(fontFamily, fontStyle, fontWeight, fontSize);
+        List<Expression> fontFamily = copyExpressions( font.getFamily() );
+        Expression fontStyle = copy( font.getStyle() );
+        Expression fontWeight = copy( font.getWeight() );
+        Expression fontSize = copy( font.getSize() );
+        Font copy = sf.font(fontFamily, fontStyle, fontWeight, fontSize);
         return copy;
     }
     
@@ -713,7 +731,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         TextSymbolizer copy = sf.createTextSymbolizer();
         
         copy.setFill( copy( text.getFill()));
-        copy.setFonts(copy(text.getFonts()));
+        copy.fonts().clear();
+        copy.fonts().addAll(copyFonts(text.fonts()));
         
         copy.setGeometry(copy(text.getGeometry()));
         

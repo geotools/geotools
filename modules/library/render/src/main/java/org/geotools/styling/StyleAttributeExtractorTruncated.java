@@ -149,14 +149,14 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
             }
         }
 
-		if (text.getHalo() != null) {
-			text.getHalo().accept(this);
-		}
+        if (text.getHalo() != null) {
+            text.getHalo().accept(this);
+        }
 
-		if (text.getPlacement() != null) {
-			text.getPlacement().accept(this);
-		}
+        if (text.getLabelPlacement() != null) {
+            text.getLabelPlacement().accept(this);
+        }
 
-	}
+    }
 
 }

@@ -265,8 +265,8 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     public void visit(TextSymbolizer text) {
         // while we cannot account for the label size, we should at least
         // account for its height, anchor point, and eventual offsets
-        if (text.getFonts() != null) {
-            for (Font font : text.getFonts()) {
+        if (text.fonts() != null && !text.fonts().isEmpty()) {
+            for (Font font : text.fonts()) {
                 int textSize = getPositiveValue(font.getSize());
                 int delta = -1;
                 if (text.getLabelPlacement() instanceof PointPlacement) {

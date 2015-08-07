@@ -2038,9 +2038,8 @@ public class sldComplexTypes2 {
                 if(elems[HALO].getName().equals(e.getName()))
                     symbol.setHalo((Halo)value[i].getValue());
             }
-            
-            symbol.setFonts((Font[]) fonts.toArray(new Font[0]));
-            
+            symbol.fonts().addAll(fonts);
+
             return symbol;
         }
     }

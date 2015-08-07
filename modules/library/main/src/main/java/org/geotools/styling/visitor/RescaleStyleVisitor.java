@@ -217,7 +217,9 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             // rescales fonts
             for (Font font : copy.fonts()) {
-                font.setSize(rescale(font.getSize()));
+                if( font != null ){
+                    font.setSize(rescale(font.getSize()));
+                }
             }
             
             // rescales label placement

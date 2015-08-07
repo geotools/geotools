@@ -793,8 +793,8 @@ public class SLDStyleFactory {
 
 		// get the sequence of fonts to be used and set the first one available
 		List<Font> fonts = symbolizer.fonts();
-		java.awt.Font javaFont = getFont(feature, fonts);
-		ts2d.setFont(javaFont);
+		java.awt.Font[] javaFonts = getFonts(feature, fonts);
+	        ts2d.setFonts(javaFonts);
 
 		// compute label position, anchor, rotation and displacement
 		LabelPlacement placement = symbolizer.getLabelPlacement();
@@ -913,10 +913,9 @@ public class SLDStyleFactory {
      *            An array of fonts dependent of the feature, the first that is
      *            found on the current machine is returned
      *
-     * @return The first of the specified fonts found on this machine or null if
-     *         none found
+     * @return The first of the specified fonts found on this machine (Serif 10 if none found)
      */
-    private java.awt.Font[] getFonts(Object feature, Font[] fonts) {
+    private java.awt.Font[] getFonts(Object feature, List<Font> fonts) {
         List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
         if (fonts != null) {
@@ -935,8 +934,8 @@ public class SLDStyleFactory {
 
         if (result.isEmpty()) {
             java.awt.Font font = new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
-            if (fonts != null && fonts.length > 0) {
-                font = styleFont(feature, fonts[0], font);
+            if (fonts != null && !fonts.isEmpty()) {
+                font = styleFont(feature, fonts.get(0), font);
             }
             result.add(font);
         }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -915,33 +916,32 @@ public class SLDStyleFactory {
      * @return The first of the specified fonts found on this machine or null if
      *         none found
      */
-    private java.awt.Font getFont(Object feature, List<Font> fonts) {
-
+    private java.awt.Font[] getFonts(Object feature, Font[] fonts) {
+        List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
         if (fonts != null) {
+            for (Font curr : fonts) {
+                for (Expression family : curr.getFamily()) {
+                    String requestedFont = evalToString(family, feature, null);
+                    java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
 
-            for (Font curr: fonts) {
-                String requestedFont = evalToString(curr.getFontFamily(),
-                        feature, null);
-                java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(
-                        requestedFont);
-
-                if (javaFont != null) {
-                    return styleFont(feature, curr, javaFont);
+                    if (javaFont != null) {
+                        java.awt.Font font = styleFont(feature, curr, javaFont);
+                        result.add(font);
+                    }
                 }
             }
         }
 
-        // could not find the requested font, see if we can at least use the
-        // requested styling
-        java.awt.Font result = new java.awt.Font("Serif", java.awt.Font.PLAIN,
-                12);
-
-        if ((fonts != null) && (!fonts.isEmpty())) {
-            return styleFont(feature, fonts.get(0), result);
-        } else {
-            return result;
+        if (result.isEmpty()) {
+            java.awt.Font font = new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
+            if (fonts != null && fonts.length > 0) {
+                font = styleFont(feature, fonts[0], font);
+            }
+            result.add(font);
         }
+
+        return result.toArray(new java.awt.Font[result.size()]);
     }
 
     private java.awt.Font styleFont(Object feature, Font curr,

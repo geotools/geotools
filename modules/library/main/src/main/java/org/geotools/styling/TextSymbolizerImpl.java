@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,10 +17,7 @@
 package org.geotools.styling;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
@@ -130,6 +127,15 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     }
 
     /**
+     * Setter for property font.
+     *
+     * @param font New value of property font.
+     */
+    public void addFont(org.geotools.styling.Font font) {
+        fonts.add(font);
+    }
+
+    /**
      * Sets the list of fonts in the TextSymbolizer to the provided array of
      * Fonts.
      *
@@ -138,10 +144,11 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     @Deprecated
     public void setFonts(org.geotools.styling.Font[] fonts) {
         this.fonts.clear();
-        if(fonts != null && fonts.length >0){
-            for( Font font : fonts ){
-                if( font != null ){
-                    this.fonts.add( font );
+        if (fonts != null) {
+            for (Font font : fonts) {
+                // the factory likes to pass a array of fonts with a single null value...
+                if (font != null) {
+                    this.fonts.add(font);
                 }
             }
         }
@@ -285,7 +292,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
             return null;
         }
 
-        return (String) options.get(key);
+        return options.get(key);
     }
 
     public Graphic getGraphic() {
@@ -306,7 +313,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         buf.append( " label=");
         buf.append( label );
         buf.append(">");
-        buf.append( this.fonts );
+        buf.append(this.fonts);
         return buf.toString();
     }
     

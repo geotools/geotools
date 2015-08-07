@@ -18,6 +18,7 @@ package org.geotools.styling.visitor;
 
 import static org.geotools.styling.TextSymbolizer.*;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
@@ -215,12 +216,10 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             TextSymbolizer copy = (TextSymbolizer) pages.peek();
 
             // rescales fonts
-            Font[] fonts = copy.getFonts();
-            for (Font font : fonts) {
+            for (Font font : copy.fonts()) {
                 font.setSize(rescale(font.getSize()));
             }
-            copy.setFonts(fonts);
-
+            
             // rescales label placement
             LabelPlacement placement = copy.getLabelPlacement();
             if (placement instanceof PointPlacement) {

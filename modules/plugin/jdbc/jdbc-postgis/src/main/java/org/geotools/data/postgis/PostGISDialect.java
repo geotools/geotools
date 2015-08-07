@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -162,6 +162,8 @@ public class PostGISDialect extends BasicSQLDialect {
     }
 
     boolean looseBBOXEnabled = false;
+    
+    boolean encodeBBOXFilterAsEnvelope = false;
 
     boolean estimatedExtentsEnabled = false;
     
@@ -178,7 +180,15 @@ public class PostGISDialect extends BasicSQLDialect {
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
-        
+    
+    public boolean isEncodeBBOXFilterAsEnvelope() {
+        return encodeBBOXFilterAsEnvelope;
+    }
+
+    public void setEncodeBBOXFilterAsEnvelope(boolean encodeBBOXFilterAsEnvelope) {
+        this.encodeBBOXFilterAsEnvelope = encodeBBOXFilterAsEnvelope;
+    }
+
     public boolean isEstimatedExtentsEnabled() {
         return estimatedExtentsEnabled;
     }
@@ -1039,6 +1049,7 @@ public class PostGISDialect extends BasicSQLDialect {
     public FilterToSQL createFilterToSQL() {
         PostgisFilterToSQL sql = new PostgisFilterToSQL(this);
         sql.setLooseBBOXEnabled(looseBBOXEnabled);
+        sql.setEncodeBBOXFilterAsEnvelope(encodeBBOXFilterAsEnvelope);
         sql.setFunctionEncodingEnabled(functionEncodingEnabled);
         return sql;
     }

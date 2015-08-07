@@ -679,6 +679,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         final List<CoordinateVariable<?>> otherAxes = new ArrayList<CoordinateVariable<?>>();
         for(CoordinateAxis axis :coordinateSystem.getCoordinateAxes()){
             CoordinateVariable<?> cv=reader.georeferencing.getCoordinateVariable(axis.getShortName());
+            if (cv == null) { 
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                }
+                continue;
+            }
             switch(cv.getAxisType()){
             case Time:case RunTime:
                 initTemporalDomain(cv, dimensions);
@@ -1166,9 +1172,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             feature.setAttribute(timeAttribute, date);
         }
 
+        List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
         // ELEVATION or other dimension
         if (!Double.isNaN(verticalValue.doubleValue())) {
-            List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
             String attribute = null;
             final String elevationCVName = reader.georeferencing.getDimension(NetCDFUtilities.ELEVATION_DIM);
             // Once we don't deal anymore with old coverage APIs, we can consider directly use the dimension name as attribute
@@ -1193,6 +1199,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             }
             feature.setAttribute(attribute, verticalValue);
         }
+
         return feature;
     }
 

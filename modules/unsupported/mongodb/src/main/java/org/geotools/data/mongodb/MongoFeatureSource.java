@@ -245,7 +245,10 @@ public class MongoFeatureSource extends ContentFeatureSource {
             return new BasicDBObject();
         }
 
-        return (DBObject) f.accept(new FilterToMongo(mapper), null);
+        FilterToMongo v = new FilterToMongo(mapper);
+        v.setFeatureType(getSchema());
+
+        return (DBObject) f.accept(v, null);
     }
 
     boolean isAll(Filter f) {

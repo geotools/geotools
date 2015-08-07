@@ -17,16 +17,15 @@
  */
 package org.geotools.data.mongodb;
 
+import java.util.Properties;
+
+import org.geotools.test.OnlineTestCase;
+import org.opengis.feature.simple.SimpleFeature;
+
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.vividsolutions.jts.geom.Point;
-
-import java.util.Properties;
-import java.util.Set;
-
-import org.geotools.test.OnlineTestCase;
-import org.opengis.feature.simple.SimpleFeature;
 
 public abstract class MongoTestSupport extends OnlineTestCase {
 
@@ -103,6 +102,9 @@ public abstract class MongoTestSupport extends OnlineTestCase {
 
             assertNotNull(f.getAttribute("properties.stringProperty"));
             assertEquals(toString(i), (String)f.getAttribute("properties.stringProperty"));
+
+            assertNotNull(f.getAttribute("properties.dateProperty"));
+            assertEquals(testSetup.getDateProperty(i), f.getAttribute("properties.dateProperty"));
         }
     }
 

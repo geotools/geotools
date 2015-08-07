@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  */
 package org.geotools.data.postgis;
 import org.geotools.data.DefaultQuery;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
@@ -24,7 +25,12 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.spatial.Intersects;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 
 /**
@@ -43,6 +49,30 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
     @Override
     protected void setUpInternal() throws Exception {
         super.setUpInternal();
+    }
+    
+    public void testBBOXOverlapsEncoding() throws Exception {
+        // enable bbox envelope encoding
+        ((PostGISDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setEncodeBBOXFilterAsEnvelope(true);
+        
+        GeometryFactory gf = dataStore.getGeometryFactory();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Intersects filter = ff.intersects(
+                ff.property("geometry"),
+                ff.literal(gf.createPolygon(gf.createLinearRing(new Coordinate[] {
+                        new Coordinate(0, 0), new Coordinate(0, 2), new Coordinate(2, 2),
+                        new Coordinate(2, 0), new Coordinate(0, 0) }))));
+
+        DefaultQuery query = new DefaultQuery();
+        query.setFilter(filter);
+        
+        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds(query);
+        assertEquals(0l, Math.round(bounds.getMinX()));
+        assertEquals(0l, Math.round(bounds.getMinY()));
+        assertEquals(2l, Math.round(bounds.getMaxX()));
+        assertEquals(2l, Math.round(bounds.getMaxY()));
+    
+        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
     
     public void testEstimatedBounds() throws Exception {

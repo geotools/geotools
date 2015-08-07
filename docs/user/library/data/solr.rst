@@ -28,13 +28,15 @@ The following connection parameters are available:
 | "namespace"             | Namespace prefixs                                  |
 +-------------------------+----------------------------------------------------+
 
+Notes: "layer_mapper" and "layer_name_field" are deprecated, a single layer is exposed now by default, use 
+the ``SolrLayerConfiguration`` class to configure more layers
+
 Example use:
 
 .. code-block:: java
 
         Map map = new HashMap();
         map.put("solr_url", new URL("http://localhost:8080/solr"));
-        map.put("layer_name_field", "layer_type");
-        map.put(SolrDataStoreFactory.NAMESPACE.key, "namesapce");
+        map.put(SolrDataStoreFactory.NAMESPACE.key, "namespace");
 
        

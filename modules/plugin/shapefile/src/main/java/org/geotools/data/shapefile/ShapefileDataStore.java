@@ -21,6 +21,7 @@ import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -42,6 +43,7 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.dbf.DbaseFileException;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
+import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StorageFile;
 import org.geotools.data.shapefile.shp.ShapeType;
@@ -491,6 +493,36 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public void setOdbcFilteringEnabled(boolean odbcFilteringEnabled) {
         this.odbcFilteringEnabled = odbcFilteringEnabled;        
     }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        removeSchema(new NameImpl(null, typeName));
+    }
     
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        // check file
+        ContentEntry entry = ensureEntry(typeName);
+        org.geotools.data.shapefile.files.FileWriter writer = new org.geotools.data.shapefile.files.FileWriter() {
+
+            @Override
+            public String id() {
+                return "TheShapefileRemover";
+            }
+        };
+        for (ShpFileType type : ShpFileType.values()) {
+            File file = shpFiles.acquireWriteFile(type, writer);
+            try {
+                if (file.exists()) {
+                    if (!file.delete()) {
+                        throw new IOException("Failed to delete " + file.getAbsolutePath());
+                    }
+                }
+            } finally {
+                shpFiles.unlockWrite(file, writer);
+            }
+        }
+        removeEntry(entry.getName());
+    }
 
 }

@@ -383,6 +383,24 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
     
     @Test
+    public void testRemove() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        assertTrue(shpFile.exists());
+        URL url = shpFile.toURI().toURL();
+
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        ds.removeSchema(ds.getSchema().getTypeName());
+        ds.dispose();
+
+        assertFalse(shpFile.exists());
+        assertFalse(sibling(shpFile, ".shx").exists());
+        assertFalse(sibling(shpFile, ".dbf").exists());
+        assertFalse(sibling(shpFile, ".prj").exists());
+        assertFalse(sibling(shpFile, ".qix").exists());
+        assertFalse(sibling(shpFile, ".fix").exists());
+    }
+
+    @Test
     public void testSelectionQuery() throws Exception {
         File shpFile = copyShapefiles(STATE_POP);
         URL url = shpFile.toURI().toURL();

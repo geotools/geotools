@@ -73,7 +73,7 @@
     </dependency> 
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-coverage</artifactId>
+      <artifactId>gt-imagemosaic</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

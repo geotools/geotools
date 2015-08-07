@@ -16,11 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -80,9 +75,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
-
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -116,6 +108,13 @@ import org.opengis.filter.spatial.BBOX;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
+
 /**
  * Sparse utilities for the various mosaic classes. I use them to extract
  * complex code from other places.
@@ -141,6 +140,8 @@ public class Utils {
     public final static Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
 
     public final static Key AUXILIARY_FILES_PATH = new Key(String.class);
+    
+    public final static Key AUXILIARY_DATASTORE_PATH = new Key(String.class);
 
     public final static Key PARENT_DIR = new Key(String.class);
 
@@ -201,6 +202,7 @@ public class Utils {
         public final static String EXP_RGB = "ExpandToRGB";
         public final static String ABSOLUTE_PATH = "AbsolutePath";
         public final static String AUXILIARY_FILE = "AuxiliaryFile";
+        public final static String AUXILIARY_DATASTORE_FILE = "AuxiliaryDatastoreFile";
         public final static String NAME = "Name";
         public final static String INDEX_NAME = "Name";
         public final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
@@ -378,6 +380,7 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
                 FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
                 FileFilterUtils.suffixFileFilter("ncx"), FileFilterUtils.suffixFileFilter("gbx9"),
+                FileFilterUtils.suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"),
                 FileFilterUtils.nameFileFilter("error.txt"),
                 FileFilterUtils.nameFileFilter("_metadata"),
                 FileFilterUtils.suffixFileFilter("sample_image"),
@@ -470,9 +473,11 @@ public class Utils {
 				
 		}
 		
-		if (!ignoreSome
-                        || !ignorePropertiesSet.contains(Prop.AUXILIARY_FILE)) {
-                    retValue.setAuxiliaryFilePath(properties.getProperty(Prop.AUXILIARY_FILE));
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.AUXILIARY_FILE)) {
+            retValue.setAuxiliaryFilePath(properties.getProperty(Prop.AUXILIARY_FILE));
+        }
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.AUXILIARY_DATASTORE_FILE)) {
+            retValue.setAuxiliaryDatastorePath(properties.getProperty(Prop.AUXILIARY_DATASTORE_FILE));
         }
 
                 if (!ignoreSome || !ignorePropertiesSet.contains(Prop.CHECK_AUXILIARY_METADATA)) {
@@ -1756,83 +1761,24 @@ public class Utils {
      * @param actualCM
      * @return a boolean asking to skip this feature.
      */
-    static boolean checkColorModels(ColorModel defaultCM, byte[][] defaultPalette, MosaicConfigurationBean configuration, ColorModel actualCM) {
-        //
-        //
-        // ComponentColorModel
-        //
-        //
-        
-        if (defaultCM instanceof ComponentColorModel && actualCM instanceof ComponentColorModel) {
-            final ComponentColorModel defCCM = (ComponentColorModel) defaultCM, actualCCM = (ComponentColorModel) actualCM;
-            
-            // number of color components
-            final int numColorComponents = defCCM.getNumColorComponents();
-            if(numColorComponents != actualCCM.getNumColorComponents()){
+    static boolean checkColorModels(ColorModel defaultCM, byte[][] defaultPalette,
+            ColorModel actualCM) {
+
+        // check the number of color components
+        final int defNumComponents = defaultCM.getNumColorComponents();
+        int actualNumComponents = actualCM.getNumColorComponents();
+        int colorComponentsDifference = Math.abs(defNumComponents - actualNumComponents);
+
+        if (colorComponentsDifference != 0) {
+            if ((defNumComponents == 1 && defaultCM instanceof ComponentColorModel)
+                    || (actualNumComponents == 1 && actualCM instanceof ComponentColorModel)) {
+                // gray expansion can be performed
                 return false;
             }
-            
-            // componets size
-            for(int i=0;i<numColorComponents;i++){
-                if(defaultCM.getComponentSize(i)!=defaultCM.getComponentSize(i)){
-                    return false;
-                }
-            }
-            return !(defCCM.hasAlpha() == actualCCM.hasAlpha() 
-                    &&defCCM.isAlphaPremultiplied() == actualCCM.isAlphaPremultiplied()//&& colorSpaceIsOk
-                    && defCCM.getTransparency() == actualCCM.getTransparency()
-                    && defCCM.getTransferType() == actualCCM.getTransferType()
-                    && defCCM.getPixelSize() == actualCCM.getPixelSize());
-            
-        }
-    
-        //
-        //
-        // IndexColorModel
-        //
-        //
-    
-        if (defaultCM instanceof IndexColorModel && actualCM instanceof IndexColorModel) {
-            final IndexColorModel defICM = (IndexColorModel) defaultCM, actualICM = (IndexColorModel) actualCM;
-            if (defICM.getNumColorComponents() != actualICM.getNumColorComponents()
-                    || defICM.hasAlpha() != actualICM.hasAlpha()
-                    || !defICM.getColorSpace().equals(actualICM.getColorSpace())
-                    || defICM.getTransferType() != actualICM.getTransferType())
-                return true;
-    
-            //
-            // Suggesting expansion in the simplest case
-            //
-            if (defICM.getMapSize() != actualICM.getMapSize()
-                    || defICM.getTransparency() != actualICM.getTransparency()
-                    || defICM.getTransferType() != actualICM.getTransferType()
-                    || defICM.getTransparentPixel() != actualICM.getTransparentPixel()) {
-                configuration.setExpandToRGB(true);
-                return false;
-            }
-    
-            //
-            // Now checking palettes to see if we need to do a color convert
-            //
-            // get the palette for this color model
-            int numBands = actualICM.getNumColorComponents();
-            byte[][] actualPalette = new byte[3][actualICM.getMapSize()];
-            actualICM.getReds(actualPalette[0]);
-            actualICM.getGreens(actualPalette[0]);
-            actualICM.getBlues(actualPalette[0]);
-            if (numBands == 4)
-                actualICM.getAlphas(defaultPalette[0]);
-            // compare them
-            for (int i = 0; i < defICM.getMapSize(); i++)
-                for (int j = 0; j < numBands; j++)
-                    if (actualPalette[j][i] != defaultPalette[j][i]) {
-                        configuration.setExpandToRGB(true);
-                        break;
-                    }
+        } else {
             return false;
-    
         }
-    
+
         //
         // if we get here this means that the two color models where completely
         // different, hence skip this feature.

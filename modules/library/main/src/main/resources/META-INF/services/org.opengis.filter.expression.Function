@@ -108,6 +108,7 @@ org.geotools.filter.function.FilterFunction_isLike
 org.geotools.filter.function.FilterFunction_isNull
 org.geotools.filter.function.FilterFunction_between
 org.geotools.filter.function.FilterFunction_not
+org.geotools.filter.function.InFunction
 org.geotools.filter.function.FilterFunction_in2
 org.geotools.filter.function.FilterFunction_in3
 org.geotools.filter.function.FilterFunction_in4

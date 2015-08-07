@@ -268,7 +268,7 @@ a list of layers, the supported image formats and so forth.
 
 .. code-block:: java
    
-   URL url =  url = new URL("http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?VERSION=1.1.0&REQUEST=GetCapabilities");
+   URL url = new URL("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
    
    WebMapServer wms = new WebMapServer(url);
    WMSCapabilities capabilities = wms.getCapabilities();

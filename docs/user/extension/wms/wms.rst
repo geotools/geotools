@@ -11,7 +11,7 @@ This page contains examples how how to connect and use the GeoTools WebMapServer
     
     URL url = null;
     try {
-      url = new URL("http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?VERSION=1.1.0&REQUEST=GetCapabilities");
+      url = new URL("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
     } catch (MalformedURLException e) {
       //will not happen
     }

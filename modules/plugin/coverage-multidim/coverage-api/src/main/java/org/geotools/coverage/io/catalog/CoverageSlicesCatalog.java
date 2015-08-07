@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,11 +19,8 @@ package org.geotools.coverage.io.catalog;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +32,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureStore;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
-import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -48,13 +47,17 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 
 /**
  * This class simply builds an index for fast indexed queries.
@@ -62,14 +65,76 @@ import org.opengis.filter.Filter;
  * TODO: we may consider converting {@link CoverageSlice}s to {@link SimpleFeature}s
  */
 public class CoverageSlicesCatalog {
-    
+
+    /**
+     * CoverageSlicesCatalog always used an hidden H2 DB to store granules
+     * index related to a specific file.
+     * 
+     * Starting from 14.x it also can be setup on top of a shared PostGIS
+     * datastore.
+     * 
+     * Using a PostGIS shared index, we need to add a LOCATION attribute
+     * to distinguish the different granules, as well as add a Filter
+     * setting the LOCATION value to each query from a reader 
+     * (1 reader <-> 1 file <-> 1 location)
+     *
+     */
+    public static class WrappedCoverageSlicesCatalog extends CoverageSlicesCatalog {
+
+        private final static FilterFactory FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+
+        /** Internal query filter to be ANDED with the input query */
+        private Filter queryFilter;  
+
+        public WrappedCoverageSlicesCatalog(DataStoreConfiguration config, File file)
+                throws IOException {
+            super(config);
+            queryFilter = FF.equal(FF.property(CoverageSlice.Attributes.LOCATION),
+                    FF.literal(file.getCanonicalPath()), true);
+        }
+
+        @Override
+        public List<CoverageSlice> getGranules(Query q) throws IOException {
+            return super.getGranules(refineQuery(q));
+        }
+
+        @Override
+        public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
+            super.computeAggregateFunction(refineQuery(query), function);
+        }
+
+        @Override
+        public void removeGranules(String typeName, Filter filter, Transaction transaction)
+                throws IOException {
+            super.removeGranules(typeName, refineFilter(filter), transaction);
+        }
+
+        /**
+         * Refine query to make sure to restrict the query to the single file
+         * associated.
+         * @param q
+         * @return
+         */
+        private Query refineQuery(Query q) {
+            Query query = new Query(q);
+            query.setFilter(refineFilter(q.getFilter()));
+            return query;
+        }
+
+        /**
+         * Refine filter to make sure to AND the filter with a filter
+         * selecting the proper file 
+
+         * @param filter
+         * @return
+         */
+        private Filter refineFilter(Filter filter) {
+            return filter != null ? FF.and(filter, queryFilter) : queryFilter;
+        }
+    }
 
     /** Logger. */
     final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CoverageSlicesCatalog.class);
-
-    final static H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
-    
-    static final String SCAN_FOR_TYPENAMES = "ScanTypeNames";
 
     /** The slices index store */
     private DataStore slicesIndexStore;
@@ -79,67 +144,66 @@ public class CoverageSlicesCatalog {
 
     private String geometryPropertyName;
 
-    private ReferencedEnvelope bounds;
-
     public final static String IMAGE_INDEX_ATTR = "imageindex";
+
+    private static final String HIDDEN_FOLDER = ".mapping";
 
     private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache = new SoftValueHashMap<Integer, CoverageSlice>(0);
 
     public CoverageSlicesCatalog(final String database, final File parentLocation) {
-        this(createParams(database,parentLocation));
+        this(new DataStoreConfiguration(DataStoreConfiguration.getDefaultParams(database, parentLocation)));
     }
 
-    /**
-     * @param database
-     * @param parentLocation2
-     * @return
-     */
-    private static Map<String, Serializable> createParams(String database, File parentLocation) {
-        Utilities.ensureNonNull("database", database);
-        Utilities.ensureNonNull("parentLocation", parentLocation);
-        final Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("ScanTypeNames", Boolean.valueOf(true));
-        final String url = DataUtilities.fileToURL(parentLocation).toExternalForm();
-        String updatedDB;
-        try {
-            updatedDB = "file:" + (new File(DataUtilities.urlToFile(new URL(url)), database)).getPath();
-            params.put("ParentLocation", url);
-            params.put("database", updatedDB);
-            params.put("dbtype", "h2");
-            params.put("user", "geotools");
-            params.put("passwd", "geotools");
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        }
-        return params;
-    }
-
-    private CoverageSlicesCatalog(final Map<String, Serializable> params) {
+    public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig) {
+        DataStoreFactorySpi spi = datastoreConfig.getDatastoreSpi();
+        final Map<String, Serializable> params = datastoreConfig.getParams();
         Utilities.ensureNonNull("params", params);
         try {
 
             // creating a store, this might imply creating it for an existing underlying store or
             // creating a brand new one
-            slicesIndexStore = INTERNAL_STORE_SPI.createDataStore(params);
-
-            // if this is not a new store let's extract basic properties from it
-            String typeName = null;
-            boolean scanForTypeNames = false;
-            
-            // Handle multiple typeNames
-            if(params.containsKey("TypeName")){
-                typeName=(String) params.get("TypeName");
-            }  
-            if (params.containsKey(SCAN_FOR_TYPENAMES)) {
-                scanForTypeNames = (Boolean) params.get(SCAN_FOR_TYPENAMES);
+            boolean isPostgis = Utils.isPostgisStore(spi);
+            boolean isH2 = Utils.isH2Store(spi);
+            if (!(isH2 || isPostgis)) {
+                throw new IllegalArgumentException(
+                        "Low level index for multidim granules only supports"
+                        + " H2 and PostGIS databases");
             }
-            
-            if (scanForTypeNames) {
-                String[] typeNames = slicesIndexStore.getTypeNames();
-                if (typeNames != null) {
-                    for (String tn : typeNames) {
-                        this.typeNames.add(tn);
-                    }
+            if (isPostgis) {
+                Utils.fixPostgisDBCreationParams(params);
+            }
+            slicesIndexStore = spi.createDataStore(params);
+            boolean wrapDatastore = false;
+            String parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
+            if (params.containsKey(Utils.Prop.WRAP_STORE)) {
+                wrapDatastore = (Boolean) params.get(Utils.Prop.WRAP_STORE);
+            }
+            if (isPostgis && wrapDatastore) {
+                slicesIndexStore = new PostgisDatastoreWrapper(slicesIndexStore, parentLocation, HIDDEN_FOLDER);
+            }
+
+            String typeName = null;
+            String[] typeNamesValues = null;
+            boolean scanForTypeNames = false;
+
+            // Handle multiple typeNames
+            if (params.containsKey(Utils.Prop.TYPENAME)) {
+                typeName = (String) params.get(Utils.Prop.TYPENAME);
+                if (typeName != null && typeName.contains(",")){
+                    typeNamesValues = typeName.split(",");
+                }
+            }
+
+            if (params.containsKey(Utils.SCAN_FOR_TYPENAMES)) {
+                scanForTypeNames = Boolean.valueOf((String) (params.get(Utils.SCAN_FOR_TYPENAMES)));
+            }
+            if (typeNamesValues == null && scanForTypeNames) {
+                typeNamesValues = slicesIndexStore.getTypeNames();
+            } 
+
+            if (typeNamesValues != null) {
+                for (String tn : typeNamesValues) {
+                    this.typeNames.add(tn);
                 }
             } else if (typeName != null) {
                 addTypeName(typeName, false);
@@ -308,7 +372,7 @@ public class CoverageSlicesCatalog {
             lock.lock();
             checkStore();
             final String typeName = q.getTypeName();
-            
+
             //
             // Load tiles informations, especially the bounds, which will be reused
             //
@@ -317,17 +381,29 @@ public class CoverageSlicesCatalog {
                 throw new NullPointerException(
                         "The provided SimpleFeatureSource is null, it's impossible to create an index!");
             }
-            final SimpleFeatureCollection features = featureSource.getFeatures(q);
-            if (features == null)
-                throw new NullPointerException(
-                        "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
-
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Index Loaded");
-
-            // load the feature from the underlying datastore as needed
-            final SimpleFeatureIterator it = features.features();
+            Transaction tx = null;
+            SimpleFeatureIterator it = null;
             try {
+
+                // Transform feature stores will use an autoCommit transaction which doesn't
+                // have any state. Getting the features iterator may throw an exception  
+                // by interpreting a null state as a closed transaction. Therefore
+                // we use a DefaultTransaction instance when dealing with stores. 
+                if (featureSource instanceof FeatureStore) {
+                    tx = new DefaultTransaction("getGranulesTransaction" + System.nanoTime());
+                    ((FeatureStore) featureSource).setTransaction(tx);
+                }
+                final SimpleFeatureCollection features = featureSource.getFeatures(q);
+                if (features == null)
+                    throw new NullPointerException(
+                            "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
+
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("Index Loaded");
+
+                // load the feature from the underlying datastore as needed
+                it = features.features();
+
                 if (!it.hasNext()) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("The provided SimpleFeatureCollection  or empty, it's impossible to create an index!");
@@ -355,6 +431,10 @@ public class CoverageSlicesCatalog {
                 }
             } finally {
                 it.close();
+
+                if (tx != null) {
+                    tx.close();
+                }
             }
             // return
             return returnValue;
@@ -372,16 +452,14 @@ public class CoverageSlicesCatalog {
         try {
             lock.lock();
             checkStore();
-            if (bounds == null) {
-                bounds = this.slicesIndexStore.getFeatureSource(typeName).getBounds();
-            }
+            return this.slicesIndexStore.getFeatureSource(typeName).getBounds();
+            
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
-            bounds = null;
+            return null;
         } finally {
             lock.unlock();
         }
-        return bounds;
     }
 
     public void createType(SimpleFeatureType featureType) throws IOException {
@@ -475,7 +553,7 @@ public class CoverageSlicesCatalog {
         }
     }
 
-    public void removeGranules(String typeName,Filter filter, Transaction transaction) throws IOException {
+    public void removeGranules(String typeName, Filter filter, Transaction transaction) throws IOException {
         Utilities.ensureNonNull("typeName", typeName);
         Utilities.ensureNonNull("filter", filter);
         Utilities.ensureNonNull("transaction", transaction);
@@ -491,6 +569,33 @@ public class CoverageSlicesCatalog {
 
         } finally {
             lock.unlock();
+        }
+    }
+
+    public void purge(Filter filter) throws IOException {
+        DefaultTransaction transaction = null;
+        try {
+            transaction = new DefaultTransaction("CleanupTransaction" + System.nanoTime());
+            for (String typeName: typeNames) {
+                removeGranules(typeName, filter, transaction);
+            }
+            transaction.commit();
+        } catch (Throwable e) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Rollback");
+            }
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new IOException(e);
+        } finally {
+            try {
+                if (transaction != null) {
+                    transaction.close();
+                }
+            } catch (Throwable t) {
+
+            }
         }
     }
 }

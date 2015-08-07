@@ -19,11 +19,13 @@ package org.geotools.gce.imagemosaic.catalog;
 import java.io.IOException;
 
 import org.geotools.coverage.grid.io.GranuleStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.RasterManager;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 
@@ -36,9 +38,13 @@ import org.opengis.filter.Filter;
 public class GranuleCatalogStore extends GranuleCatalogSource implements GranuleStore {
     
     private Transaction transaction;
+
+    private RasterManager manager;
     
-    public GranuleCatalogStore(GranuleCatalog catalog, final String typeName, final Hints hints) {
+    public GranuleCatalogStore(RasterManager manager, GranuleCatalog catalog, final String typeName,
+            final Hints hints) {
         super(catalog, typeName, hints);
+        this.manager = manager;
     }
 
     @Override
@@ -85,7 +91,18 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
 
     @Override
     public int removeGranules(Filter filter) {
-        return catalog.removeGranules(new Query(typeName, filter));
+        int removed = catalog.removeGranules(new Query(typeName, filter));
+        try {
+            // we cannot re-initialize a raster manager if there are no granules
+            Query q = new Query(manager.getTypeName());
+            q.setMaxFeatures(1);
+            if (DataUtilities.count(catalog.getGranules(q)) > 0) {
+                manager.initialize(true);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return removed;
     }
 
     @Override

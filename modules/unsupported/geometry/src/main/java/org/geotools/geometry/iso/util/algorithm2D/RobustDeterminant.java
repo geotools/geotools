@@ -25,21 +25,22 @@ package org.geotools.geometry.iso.util.algorithm2D;
  * The original code carries the following copyright notice:
  * 
  * <pre>
- * ************************************************************************
- *  Author : Olivier Devillers
- *  Olivier.Devillers@sophia.inria.fr
- *  http:/www.inria.fr:/prisme/personnel/devillers/anglais/determinant.html
- * *************************************************************************
+ *************************************************************************
+ * Author : Olivier Devillers
+ * Olivier.Devillers@sophia.inria.fr
+ * http:/www.inria.fr:/prisme/personnel/devillers/anglais/determinant.html
  * 
- * *************************************************************************
- *               Copyright (c) 1995  by  INRIA Prisme Project
- *                   BP 93 06902 Sophia Antipolis Cedex, France.
- *                            All rights reserved
- * *************************************************************************
+ * Olivier Devillers has allowed the code to be distributed under
+ * the LGPL (2012-02-16) saying "It is ok for LGPL distribution."
+ * 
+ **************************************************************************
+ *
+ **************************************************************************
+ *              Copyright (c) 1995  by  INRIA Prisme Project
+ *                  BP 93 06902 Sophia Antipolis Cedex, France.
+ *                           All rights reserved
+ **************************************************************************
  * </pre>
- *
- *
- *
  *
  * @source $URL$
  */

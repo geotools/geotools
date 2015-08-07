@@ -202,7 +202,7 @@ public class RasterManager {
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS,
-                        (CoordinateReferenceSystem) coverageCRS2D);
+                        coverageCRS2D);
                 final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
                 coverageBBox = ReferencedEnvelope.create(bbox,coverageCRS2D);
             } else {
@@ -908,7 +908,7 @@ public class RasterManager {
         this.heterogeneousGranules = configuration.getCatalogConfigurationBean().isHeterogeneous();
         this.configuration = configuration;
         hints = parentReader.getHints();
-        checkAuxiliaryFile(hints, configuration, parentReader);
+        updateHints(hints, configuration, parentReader);
 
         if (checkAuxiliaryMetadata) {
             hints.add(new RenderingHints(Utils.CHECK_AUXILIARY_METADATA, checkAuxiliaryMetadata));
@@ -963,18 +963,29 @@ public class RasterManager {
         }
     }
 
-    private void checkAuxiliaryFile(Hints hints, MosaicConfigurationBean configuration,
+    private void updateHints(Hints hints, MosaicConfigurationBean configuration,
             ImageMosaicReader parentReader) {
-        if (configuration != null && configuration.getAuxiliaryFilePath() != null) {
-            hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, configuration.getAuxiliaryFilePath()));
-            if (!configuration.getCatalogConfigurationBean().isAbsolutePath() && !hints.containsKey(Utils.PARENT_DIR)) {
+        if (configuration != null) {
+            String auxiliaryFilePath = configuration.getAuxiliaryFilePath();
+            String auxiliaryDatastorePath = configuration.getAuxiliaryDatastorePath();
+            boolean update = false;
+            if (auxiliaryFilePath != null) {
+                hints.add(new RenderingHints(Utils.AUXILIARY_FILES_PATH, auxiliaryFilePath));
+                update = true;
+            }
+            if (auxiliaryDatastorePath != null) {
+                hints.add(new RenderingHints(Utils.AUXILIARY_DATASTORE_PATH, auxiliaryDatastorePath));
+                update = true;
+            }
+            if (update && !configuration.getCatalogConfigurationBean().isAbsolutePath()
+                    && !hints.containsKey(Utils.PARENT_DIR)) {
                 String parentDir = null;
                 if (parentReader.parentDirectory != null) {
                     parentDir = parentReader.parentDirectory.getAbsolutePath();
                 } else {
                     Object source = parentReader.getSource();
-                    if (source != null && source instanceof File && ((File)source).isDirectory()) {
-                        parentDir = ((File)source).getAbsolutePath();
+                    if (source != null && source instanceof File && ((File) source).isDirectory()) {
+                        parentDir = ((File) source).getAbsolutePath();
                     }
                 }
                 hints.add(new RenderingHints(Utils.PARENT_DIR, parentDir));
@@ -1327,11 +1338,11 @@ public class RasterManager {
                 delete = !checkForReferences(coverageName);
                 
             }
-            AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(rasterPath, excludeMosaicHints);
+            AbstractGridFormat format = GridFormatFinder.findFormat(rasterPath, excludeMosaicHints);
             if (format != null) {
                 GridCoverage2DReader coverageReader = null;
                 try {
-                    coverageReader = (GridCoverage2DReader) format.getReader(rasterPath, hints);
+                    coverageReader = format.getReader(rasterPath, hints);
                     if (coverageReader instanceof StructuredGridCoverage2DReader) {
                         StructuredGridCoverage2DReader reader = (StructuredGridCoverage2DReader) coverageReader;
                         if (delete) {
@@ -1387,7 +1398,7 @@ public class RasterManager {
                 return granuleSource;
             } else {
                 if (granuleStore == null) {
-                    granuleStore = new GranuleCatalogStore(granuleCatalog, typeName, hints);
+                    granuleStore = new GranuleCatalogStore(this, granuleCatalog, typeName, hints);
                 }
                 return granuleStore;
             }
@@ -1429,7 +1440,7 @@ public class RasterManager {
         }
     }
 
-    void initialize(final boolean checkDomains) throws IOException {
+    public void initialize(final boolean checkDomains) throws IOException {
         final BoundingBox bounds = granuleCatalog.getBounds(typeName);
         if (checkDomains) {
             initDomains(configuration);
@@ -1459,7 +1470,7 @@ public class RasterManager {
 
         try {
             spatialDomainManager = new SpatialDomainManager(originalEnvelope,
-                    (GridEnvelope2D) originalGridRange, crs, raster2Model, overviewsController);
+                    originalGridRange, crs, raster2Model, overviewsController);
         } catch (TransformException e) {
             throw new IOException("Exception occurred while initializing the SpatialDomainManager", e);
         } catch (FactoryException e) {

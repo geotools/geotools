@@ -31,6 +31,8 @@ public class CoverageSlice {
 
         public final static String INDEX = CoverageSlicesCatalog.IMAGE_INDEX_ATTR;
 
+        public final static String LOCATION = "location";
+
         public final static String TIME = "time";
 
         public final static String ELEVATION = "elevation";
@@ -38,6 +40,8 @@ public class CoverageSlice {
         public final static String GEOMETRY = "the_geom";
 
         public static final String BASE_SCHEMA = GEOMETRY + ":Polygon," + INDEX + ":Integer";
+        
+        public static final String BASE_SCHEMA_LOCATION = GEOMETRY + ":Polygon," + INDEX + ":Integer," + LOCATION + ":String";
 
         public static final String DEFAULT_SCHEMA = BASE_SCHEMA+"," + TIME + ":java.util.Date," + ELEVATION + ":Double";
     }

@@ -19,29 +19,21 @@ package org.geotools.imageio.netcdf;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.coverage.io.netcdf.crs.NetCDFCRSAuthorityFactory;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import ucar.nc2.Attribute;
-import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
@@ -176,7 +168,7 @@ class NetCDFGeoreferenceManager {
         // get the coordinate variables
         Map<String, CoordinateVariable<?>> coordinates = new HashMap<String, CoordinateVariable<?>>();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
-            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
+            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null && !"reftime".equalsIgnoreCase(axis.getFullName())) {
                 coordinates.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
             } else {
                 // Workaround for Unsupported Axes
@@ -192,6 +184,10 @@ class NetCDFGeoreferenceManager {
                     axis.setAxisType(AxisType.Time);
                     coordinates.put(axis.getFullName(),
                             CoordinateVariable.create((CoordinateAxis1D) axis));
+                } else if ("reftime".equals(axis.getFullName())) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Unable to support reftime which is not a CoordinateAxis1D");
+                    }
                 } else {
                     LOGGER.warning("Unsupported axis: " + axis + " in input: " + dataset.getLocation()
                             + " has been found");
@@ -352,9 +348,9 @@ class NetCDFGeoreferenceManager {
                     }
                     break;
                 }
-            }else {
-                if (LOGGER.isLoggable(Level.SEVERE)) {
-                    LOGGER.severe("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
+            } else {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
                 }
             }
         }

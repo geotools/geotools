@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -47,6 +47,14 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
         helper.looseBBOXEnabled = looseBBOXEnabled;
     }
 
+    public boolean isEncodeBBOXFilterAsEnvelope(boolean encodeBBOXFilterAsEnvelope) {
+        return helper.encodeBBOXFilterAsEnvelope;
+    }
+    
+    public void setEncodeBBOXFilterAsEnvelope(boolean encodeBBOXFilterAsEnvelope) {
+        helper.encodeBBOXFilterAsEnvelope = encodeBBOXFilterAsEnvelope;
+    }
+    
     @Override
     protected FilterCapabilities createFilterCapabilities() {
         return helper.createFilterCapabilities(functionEncodingEnabled);

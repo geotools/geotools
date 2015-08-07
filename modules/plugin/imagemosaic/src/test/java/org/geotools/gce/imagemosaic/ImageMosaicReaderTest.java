@@ -16,10 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +24,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
+import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
@@ -62,9 +60,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -78,6 +73,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -90,14 +86,18 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.wkt.Parser;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -120,6 +120,16 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -149,6 +159,8 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL rgbURL;
 	
+    private URL mixedSampleModelURL;
+
 	private URL heterogeneousGranulesURL;
 
 	private URL indexURL;
@@ -515,6 +527,83 @@ public class ImageMosaicReaderTest extends Assert{
         if (!INTERACTIVE) {
             FileUtils.deleteDirectory(TestData.file(this, "water_temp5"));
         }
+    }
+
+    /**
+     * This test is used to check backward compatibility with old imagemosaics wich does not include
+     * the TypeName=MOSAICNAME into the generated MOSAICNAME.properties file
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testMixedTables() throws Exception {
+        String mosaicName = "water_temp6";
+        final File workDir = new File(TestData.file(this, "."), mosaicName);
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"),
+                new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, mosaicName + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, mosaicName);
+
+        // place H2 file in the dir
+        File datastoreProperties = new File(workDir, "datastore.properties");
+        try (FileWriter out = new FileWriter(datastoreProperties)) {
+            out.write("database=imagemosaic\n");
+            out.write(H2_SAMPLE_PROPERTIES);
+            out.flush();
+        }
+
+        // make it fill the tables
+        AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.dispose();
+        format = null;
+
+        // setup the typename in the indexer
+        File indexerProperties = new File(workDir, "indexer.properties");
+        Properties indexer = new Properties();
+        // tell it to use the existing schema
+        indexer.put("UseExistingSchema", "true");
+        indexer.put("TypeName", "customIndex");
+        try (OutputStream os = new FileOutputStream(indexerProperties)) {
+            indexer.store(os, null);
+        }
+
+        // get a connection to the db to create a few extra tables
+        Properties props = new Properties();
+        try (InputStream is = new FileInputStream(datastoreProperties)) {
+            props.load(is);
+        }
+        props.put("database", new File(workDir, "imagemosaic").getPath());
+        JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(props);
+        // H2 seems to return the table names in alphabetical order
+        store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
+        store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
+        try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
+                Statement st = conn.createStatement();) {
+            st.execute("alter table \"" + mosaicName + "\" rename to \"customIndex\"");
+            st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'customIndex'");
+        }
+        store.dispose();
+
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(workDir, new RegexFileFilter(mosaicName + ".*"),
+                null)) {
+            assertTrue(file.delete());
+        }
+
+        // see that we can create the reader again
+        format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+        reader.dispose();
+        format = null;
     }
 
 	@Test
@@ -1877,6 +1966,7 @@ public class ImageMosaicReaderTest extends Assert{
 		cleanUp();
 		
 		rgbURL = TestData.url(this, "rgb");
+        mixedSampleModelURL = TestData.url(this, "mixed_sample_model");
 		heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
 		timeURL = TestData.url(this, "time_geotiff");
 		timeFormatURL = TestData.url(this, "time_format_geotiff");
@@ -2190,6 +2280,74 @@ public class ImageMosaicReaderTest extends Assert{
     }
 
     @Test
+    public void testHarvestSpatial() throws Exception {
+        File source = DataUtilities.urlToFile(rgbURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "rgbHarvest1");
+        File directory2 = new File(testDataDir, "rgbHarvest2");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgb.*"), null)) {
+            assertTrue(file.delete());
+        }
+        // move all files except global_mosaic_0 to the second dir
+        directory2.mkdirs();
+        for (File file : FileUtils.listFiles(directory1,
+                new RegexFileFilter("global_mosaic_[^0].*"), null)) {
+            assertTrue(file.renameTo(new File(directory2, file.getName())));
+        }
+
+        // crate a mosaic
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GeneralEnvelope singleGranuleEnvelope = reader.getOriginalEnvelope();
+        // System.out.println(singleGranuleEnvelope);
+
+        // now push back all the files, and harvest them
+        for (File file : directory2.listFiles()) {
+            assertTrue(file.renameTo(new File(directory1, file.getName())));
+        }
+        reader.harvest(null, directory1, null);
+
+        // the envelope should have been updated
+        GeneralEnvelope fullEnvelope = reader.getOriginalEnvelope();
+        assertTrue(fullEnvelope.contains(singleGranuleEnvelope, true));
+        assertTrue(fullEnvelope.getSpan(0) > singleGranuleEnvelope.getSpan(0));
+        assertTrue(fullEnvelope.getSpan(1) > singleGranuleEnvelope.getSpan(1));
+        
+        // make a request in a bbox that's outside of the original envelope
+        MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        GridEnvelope2D rasterEnvelope = new GridEnvelope2D(
+                new Envelope2D(CRS.transform(mt.inverse(), env)), PixelInCell.CELL_CORNER);
+        GridGeometry2D gg = new GridGeometry2D(rasterEnvelope, env);
+        final ParameterValue<GridGeometry2D> ggParameter = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParameter.setValue(gg);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggParameter });
+        assertNotNull(coverage);
+        coverage.dispose(true);
+
+        // remove all the granules on the east side
+        GranuleStore store = (GranuleStore) reader.getGranules(null, false);
+        store.removeGranules(ECQL.toFilter("location = 'global_mosaic_19.png' "
+                + "OR location = 'global_mosaic_14.png' " + "OR location = 'global_mosaic_9.png' "
+                + "OR location = 'global_mosaic_4.png'"));
+
+        GeneralEnvelope reducedEnvelope = reader.getOriginalEnvelope();
+        assertTrue(fullEnvelope.contains(reducedEnvelope, true));
+        assertTrue(reducedEnvelope.contains(singleGranuleEnvelope, true));
+        assertTrue(fullEnvelope.getSpan(0) > reducedEnvelope.getSpan(0));
+        assertEquals(fullEnvelope.getSpan(1), reducedEnvelope.getSpan(1), 0d);
+
+        reader.dispose();
+    }
+
+    @Test
     public void testHarvestSingleFileRGBA() throws Exception {
         File source = DataUtilities.urlToFile(rgbAURLTiff);
         File testDataDir = TestData.file(this, ".");
@@ -2352,10 +2510,6 @@ public class ImageMosaicReaderTest extends Assert{
 
             // Palette should have been successfully loaded
             assertNotNull(manager.defaultPalette);
-
-            // Different palettes requires color Expansion
-            assertTrue(manager.expandMe);
-
         } finally {
             reader.dispose();
         }
@@ -3078,8 +3232,6 @@ public class ImageMosaicReaderTest extends Assert{
                 .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, "water_temp4/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "water_temp4");
-//
-
 
         // now start the test
         AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
@@ -3593,6 +3745,78 @@ public class ImageMosaicReaderTest extends Assert{
         GridCoverage2D coverage = reader2.read(null);
         coverage.dispose(true);
         reader2.dispose();
+    }
+
+    @Test
+    public void testMixedSampleModels() throws Exception {
+        File mosaicFolder = DataUtilities.urlToFile(mixedSampleModelURL);
+        cleanConfigurationFiles(mosaicFolder, mosaicFolder.getName());
+        final AbstractGridFormat format = TestUtils.getFormat(mixedSampleModelURL);
+        ImageMosaicReader reader = TestUtils.getReader(mixedSampleModelURL, format);
+
+        GridCoverage2D coverage = reader.read(null);
+        assertNotNull(coverage);
+        RenderedImage ri = coverage.getRenderedImage();
+        assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
+        assertThat(ri.getColorModel(), instanceOf(ComponentColorModel.class));
+
+        File sample = new File(
+                "src/test/resources/org/geotools/gce/imagemosaic/test-data/mixed-mosaic.png");
+        // RenderedImageBrowser.showChain(coverage.getRenderedImage());
+        ImageAssert.assertEquals(sample, ri, 100);
+        coverage.dispose(true);
+
+        // check the color models of small areas, it should be the one of the one granule
+        // involved in the mosaic
+        checkColorModel(IndexColorModel.class, 1, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(10, 10.1, 43, 43.1, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(IndexColorModel.class, 1, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(13.5, 13.6, 43.5, 43.6, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(ComponentColorModel.class, 1, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(8, 8.1, 45.5, 45.6, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(ComponentColorModel.class, 1, DataBuffer.TYPE_USHORT,
+                new ReferencedEnvelope(10.5, 10.6, 45.5, 45.6, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(13.5, 13.6, 45.5, 45.6, DefaultGeographicCRS.WGS84), reader);
+
+        // check larger ares for combinations of tiles
+        // ... gray 8 bit and gray 16 bit
+        checkColorModel(ComponentColorModel.class, 1, DataBuffer.TYPE_USHORT,
+                new ReferencedEnvelope(8, 10, 45, 46, DefaultGeographicCRS.WGS84), reader);
+        // ... gray 8 bit and RGB
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(7, 8, 43, 45, DefaultGeographicCRS.WGS84), reader);
+        // ... gray 16 bit and RGB
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(11, 13, 45, 46, DefaultGeographicCRS.WGS84), reader);
+        // ... gray 16 bit and indexed
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(10, 11, 43, 45, DefaultGeographicCRS.WGS84), reader);
+        // ... RGB and indexed
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(7, 11, 43, 44, DefaultGeographicCRS.WGS84), reader);
+
+        reader.dispose();
+    }
+
+    private void checkColorModel(Class<? extends ColorModel> clazz, int bands, int dataType,
+            ReferencedEnvelope box,
+            ImageMosaicReader reader)
+                    throws NoninvertibleTransformException, TransformException, IOException {
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        GeneralEnvelope ge = CRS.transform(mt.inverse(), box);
+        GridEnvelope2D range = new GridEnvelope2D(new Envelope2D(ge), PixelInCell.CELL_CENTER);
+        gg.setValue(new GridGeometry2D(range, mt, box.getCoordinateReferenceSystem()));
+
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { gg });
+        RenderedImage ri = coverage.getRenderedImage();
+        // RenderedImageBrowser.showChain(ri);
+        assertThat(ri.getColorModel(), instanceOf(clazz));
+        assertEquals(bands, ri.getSampleModel().getNumBands());
+        assertEquals(dataType, ri.getSampleModel().getDataType());
+        coverage.dispose(true);
     }
 
     private void cleanConfigurationFiles(File testMosaic, String mosaicName) {

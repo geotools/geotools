@@ -109,14 +109,9 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
         // get the needed info from them to set the extent
         try {
             reader = (NetCDFImageReader) NetCDFDriver.SPI.createReaderInstance();
-            if (hints != null && hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                String prefix = "";
-                if (hints.containsKey(Utils.PARENT_DIR)) {
-                    prefix = (String) hints.get(Utils.PARENT_DIR) + File.separatorChar;
-                }
-                String filePath = prefix + (String) hints.get(Utils.AUXILIARY_FILES_PATH);
-                reader.setAuxiliaryFilesPath(filePath);
-            }
+
+            // Look for auxiliary paths from Hints and set them into the reader
+            setAuxiliaryEntries(hints);
             reader.setInput(this.source);
 
             if (names == null) {
@@ -129,6 +124,29 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
             }
         } catch (Exception e) {
             throw new DataSourceException(e);
+        }
+    }
+
+    /**
+     * Scan the provided hints (if any) and look for auxiliary entries to be
+     * set into the reader.
+     * 
+     * @param hints
+     */
+    private void setAuxiliaryEntries(Hints hints) {
+        String prefix = "";
+        if (hints != null) {
+            if (hints.containsKey(Utils.PARENT_DIR)) {
+                prefix = (String) hints.get(Utils.PARENT_DIR) + File.separatorChar;
+            }
+            if (hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
+                String filePath = prefix + (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+                reader.setAuxiliaryFilesPath(filePath);
+            }
+            if (hints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
+                String filePath = prefix + (String) hints.get(Utils.AUXILIARY_DATASTORE_PATH);
+                reader.setAuxiliaryDatastorePath(filePath);
+            }
         }
     }
 
@@ -146,7 +164,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
         }
         listener.started();
         try {
-            return new NetCDFSource((NetCDFImageReader)reader, /*nameToVarMap.get(name)*/ name);
+            return new NetCDFSource((NetCDFImageReader)reader, name);
         } catch (Throwable e) {
             LOGGER.log(Level.SEVERE, "Failed to access the NetCDF source", e);
             listener.exceptionOccurred(e);

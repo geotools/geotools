@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -72,7 +73,7 @@ public class SolrDataStore extends ContentDataStore {
 
     // Types that the datastore provides obtained
     // Dependent on doc loader being used
-    private List<Name> typeNames;
+    private List<Name> nativeTypeNames;
 
     // Attributes present in SOLR schema
     private ArrayList<SolrAttribute> solrAttributes = new ArrayList<SolrAttribute>();
@@ -188,17 +189,24 @@ public class SolrDataStore extends ContentDataStore {
     @Override
     protected List<Name> createTypeNames() throws IOException {
         try {
-            if (typeNames == null || typeNames.isEmpty()) {
-                List<Name> names = new ArrayList<>();
+            if (nativeTypeNames == null || nativeTypeNames.isEmpty()) {
+                List<Name> temp = new ArrayList<>();
                 for (String name : layerMapper.createTypeNames(solrServer)) {
-                    names.add(new NameImpl(namespaceURI, name));
+                    temp.add(new NameImpl(namespaceURI, name));
                 }
-                typeNames = names;
+                nativeTypeNames = temp;
             }
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        return typeNames;
+        Set<Name> names = new TreeSet<>(nativeTypeNames);
+        // also pick the configured layers
+        for (SolrLayerConfiguration conf : solrConfigurations.values()) {
+            String name = conf.getLayerName();
+            names.add(new NameImpl(namespaceURI, name));
+        }
+
+        return new ArrayList<>(names);
     }
 
     @Override

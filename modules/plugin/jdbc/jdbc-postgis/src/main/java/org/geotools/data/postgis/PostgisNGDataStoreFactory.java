@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -85,7 +85,6 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SIMPLIFY = new Param("Support on the fly geometry simplification", Boolean.class, 
             "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify", false, Boolean.TRUE);
     
-    
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new PostGISDialect(dataStore);
@@ -156,6 +155,15 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         // check geometry simplification (on by default)
         Boolean simplify = (Boolean) SIMPLIFY.lookUp(params);
         dialect.setSimplifyEnabled(simplify == null || simplify);
+        
+        // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
+        Boolean encodeBBOXAsEnvelope = true;
+        String largeGeometriesOptimized = System.getProperty("org.geotools.data.postgis.largeGeometriesOptimize");
+        if(largeGeometriesOptimized != null) {
+            encodeBBOXAsEnvelope = largeGeometriesOptimized.toLowerCase().equals("true");
+        }
+        dialect.setEncodeBBOXFilterAsEnvelope(encodeBBOXAsEnvelope != null
+                && Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
         return dataStore;
     }

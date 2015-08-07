@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -75,10 +75,10 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  * 
  * <p>The label cache sports a number of features that are enabled depending on
  * the programmatic configuration and the TextSymbolizer options.</p>
- * <p>The basic functionalitty of the label cache consist in finding the 
+ * <p>The basic functionality of the label cache consist in finding the 
  * best label position for each Feature according to the {@link TextSymbolizer} 
  * specifications, and drawing it, provided it does not overlap with other labels.</p>
- * <p>This basic behaviour can be customized in a number of ways.</p>
+ * <p>This basic behaviour can be customised in a number of ways.</p>
  *  
  * 
  * <h2>Priority</h2>
@@ -107,7 +107,7 @@ public final class LabelCacheImpl implements LabelCache {
         /**
          * Always extracts the outline from the {@link GlyphVector} and paints it as a shape. It's
          * a bit slower, generates more antialiasing, ensures labels and halos are perfectly
-         * centered  
+         * Centred  
          */
         OUTLINE, 
         /**
@@ -414,7 +414,10 @@ public final class LabelCacheImpl implements LabelCache {
             }
             paintLabels(graphics, displayArea);
         } finally {
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasing);
+            if (antialiasing != null) {
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        antialiasing);
+            }
         }
     }
 

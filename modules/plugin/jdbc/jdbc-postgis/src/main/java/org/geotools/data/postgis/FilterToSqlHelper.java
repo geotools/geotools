@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -115,6 +115,7 @@ class FilterToSqlHelper {
     FilterToSQL delegate;
     Writer out;
     boolean looseBBOXEnabled;
+    boolean encodeBBOXFilterAsEnvelope;
 
     public FilterToSqlHelper(FilterToSQL delegate) {
         this.delegate = delegate;
@@ -263,8 +264,13 @@ class FilterToSqlHelper {
         
         // add && filter if possible
         if(!(filter instanceof Disjoint)) {
-            
+            if(encodeBBOXFilterAsEnvelope && !isCurrentGeography()) {
+                out.write("ST_envelope(");
+            }
             property.accept(delegate, extraData);
+            if(encodeBBOXFilterAsEnvelope && !isCurrentGeography()) {
+                out.write(")");
+            }
             out.write(" && ");
             geometry.accept(delegate, extraData);
     

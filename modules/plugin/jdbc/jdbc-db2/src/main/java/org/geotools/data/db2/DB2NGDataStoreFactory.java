@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -58,7 +58,11 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "db2");
     
     /** enables using EnvelopesIntersect in bbox queries */
-    public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);    
+    public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
+    
+    /** use selectivity clause for spatial predicates */
+    public static final Param USE_SELECTIVITY = new Param("Use selectivity clause", Boolean.class, "Use selectivity clause for spatial queries", false, Boolean.TRUE);    
+
 
     
     public final static String DriverClassName = "com.ibm.db2.jcc.DB2Driver"; 
@@ -135,7 +139,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
-
+        parameters.put(USE_SELECTIVITY.key, USE_SELECTIVITY);
     }
     
 
@@ -150,6 +154,10 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     DB2SQLDialectPrepared dialect = (DB2SQLDialectPrepared) dataStore.getSQLDialect();
     Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
     dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
+    
+    Boolean selectivity = (Boolean) USE_SELECTIVITY.lookUp(params);
+    dialect.setUseSelectivity(Boolean.TRUE.equals(selectivity));
+
 
     DatabaseMetaData md = con.getMetaData();
     di.setMajorVersion(md.getDatabaseMajorVersion());

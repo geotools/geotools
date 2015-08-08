@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General 
@@ -16,11 +16,14 @@
  */
 package org.geotools.data.db2;
 
+import java.util.HashMap;
+
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -97,5 +100,12 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         assertEquals(2, features.size());
     }
 	
+
+    @Override
+    protected HashMap createDataStoreFactoryParams() throws Exception {
+        HashMap params = super.createDataStoreFactoryParams();
+        params.put(DB2NGDataStoreFactory.USE_SELECTIVITY.key, true);
+        return params;
+    }
 
 }

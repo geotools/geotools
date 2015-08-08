@@ -248,8 +248,8 @@ public class UomRescaleStyleVisitorTest
             textSymb.setLabelPlacement(placement);
             
             // check we can rescale properly also vendor options
-            textSymb.addToOptions("maxDisplacement", String.valueOf(maxDisplacement));
-            textSymb.addToOptions(TextSymbolizer.GRAPHIC_MARGIN_KEY, maxDisplacement + " " + maxDisplacement * 2);
+            textSymb.getOptions().put("maxDisplacement", String.valueOf(maxDisplacement));
+            textSymb.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, maxDisplacement + " " + maxDisplacement * 2);
 
             visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
 

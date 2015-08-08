@@ -147,12 +147,12 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
 
         //&lt;xsd:element ref="sld:Font" minOccurs="0"/&gt;
         if (node.hasChild("Font")) {
-            ts.setFonts(new Font[] { (Font) node.getChildValue("Font") });
+            ts.fonts().add( (Font) node.getChildValue("Font"));
         }
 
         //&lt;xsd:element ref="sld:LabelPlacement" minOccurs="0"/&gt;
         if (node.hasChild("LabelPlacement")) {
-            ts.setPlacement((LabelPlacement) node.getChildValue("LabelPlacement"));
+            ts.setLabelPlacement((LabelPlacement) node.getChildValue("LabelPlacement"));
         }
 
         //&lt;xsd:element ref="sld:Halo" minOccurs="0"/&gt;

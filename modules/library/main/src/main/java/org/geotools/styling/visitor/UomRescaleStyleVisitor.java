@@ -220,11 +220,10 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         Unit<Length> uom = copy.getUnitOfMeasure();
         // rescales fonts
-        Font[] fonts = copy.getFonts();
-        for (Font font : fonts)
+        for (Font font : copy.fonts()) {
             font.setSize(rescale(font.getSize(), uom));
-        copy.setFonts(fonts);
-
+        }
+        
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
         if (placement instanceof PointPlacement) {

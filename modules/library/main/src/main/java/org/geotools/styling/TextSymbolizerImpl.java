@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
@@ -42,9 +42,7 @@ import org.opengis.util.Cloneable;
  * @version $Id$
  */
 public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbolizer2, Cloneable {
-    
-    private Font font;
-    
+    private List<Font> fonts = new ArrayList<Font>(1);
     private final FilterFactory filterFactory;
     private FillImpl fill;
     private HaloImpl halo;
@@ -97,16 +95,25 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         }
         this.fill = FillImpl.cast( fill );
     }
-
+    public List<Font> fonts(){
+        return fonts;
+    }
     public Font getFont() {
-        return font;
+        return fonts.isEmpty() ? null : fonts.get(0);
     }
     
     public void setFont( org.opengis.style.Font font ){
-        if( this.font == font ){
-            return;
+        if( this.fonts.size() == 1 && this.fonts.get(0) == font ){
+            return; // no change
         }
-        this.font = FontImpl.cast( font );
+        if( font != null ){
+            if( this.fonts.isEmpty() ){
+                this.fonts.add( FontImpl.cast( font ) );
+            }
+            else {
+                this.fonts.set( 0, FontImpl.cast( font ));
+            }
+        }
     }
     /**
      * Returns a device independent Font object that is to be used to render
@@ -115,13 +122,8 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * @return Device independent Font object to be used to render the label.
      */
     @Deprecated
-    public  org.geotools.styling.Font[] getFonts() {
-        
-        if(font == null){
-            return new org.geotools.styling.Font[0];
-        }else{
-            return new org.geotools.styling.Font[]{(org.geotools.styling.Font)font} ;
-        }
+    public org.geotools.styling.Font[] getFonts() {
+        return fonts.toArray(new org.geotools.styling.Font[fonts.size()]);
     }
 
     /**
@@ -129,9 +131,8 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param font New value of property font.
      */
-    @Deprecated
     public void addFont(org.geotools.styling.Font font) {
-        this.font = font;
+        fonts.add(font);
     }
 
     /**
@@ -142,11 +143,14 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      */
     @Deprecated
     public void setFonts(org.geotools.styling.Font[] fonts) {
-        
-        if(fonts != null && fonts.length >0){
-            this.font = fonts[0]; 
-        }else{
-            this.font = null;
+        this.fonts.clear();
+        if (fonts != null) {
+            for (Font font : fonts) {
+                // the factory likes to pass a array of fonts with a single null value...
+                if (font != null) {
+                    this.fonts.add(font);
+                }
+            }
         }
     }
 
@@ -288,7 +292,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
             return null;
         }
 
-        return (String) options.get(key);
+        return options.get(key);
     }
 
     public Graphic getGraphic() {
@@ -309,7 +313,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         buf.append( " label=");
         buf.append( label );
         buf.append(">");
-        buf.append( this.font );
+        buf.append(this.fonts);
         return buf.toString();
     }
     
@@ -369,7 +373,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((fill == null) ? 0 : fill.hashCode());
         result = prime * result + ((filterFactory == null) ? 0 : filterFactory.hashCode());
-        result = prime * result + ((font == null) ? 0 : font.hashCode());
+        result = prime * result + ((fonts == null) ? 0 : fonts.hashCode());
         result = prime * result + ((graphic == null) ? 0 : graphic.hashCode());
         result = prime * result + ((halo == null) ? 0 : halo.hashCode());
         result = prime * result + ((label == null) ? 0 : label.hashCode());
@@ -408,10 +412,10 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
                 return false;
         } else if (!filterFactory.equals(other.filterFactory))
             return false;
-        if (font == null) {
-            if (other.font != null)
+        if (fonts == null) {
+            if (other.fonts != null)
                 return false;
-        } else if (!font.equals(other.font))
+        } else if (!fonts.equals(other.fonts))
             return false;
         if (graphic == null) {
             if (other.graphic != null)

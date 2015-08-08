@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import java.net.MalformedURLException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.geotools.filter.FilterAttributeExtractor;
@@ -285,26 +286,23 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
             text.getHalo().accept(this);
         }
 
-        if (text.getFonts() != null) {
-            Font[] fonts = text.getFonts();
-
-            for (int i = 0; i < fonts.length; i++) {
-                Font font = fonts[i];
-
-                if (font.getFontFamily() != null) {
-                    font.getFontFamily().accept(this,null);
+        if (text.fonts() != null) {
+            for (Font font : text.fonts() ){
+                if (font.getFamily() != null) {
+                    for( Expression list: font.getFamily() ){
+                        list.accept(this,null);
+                    }
+                }
+                if (font.getSize() != null) {
+                    font.getSize().accept(this,null);
                 }
 
-                if (font.getFontSize() != null) {
-                    font.getFontSize().accept(this,null);
+                if (font.getStyle() != null) {
+                    font.getStyle().accept(this,null);
                 }
 
-                if (font.getFontStyle() != null) {
-                    font.getFontStyle().accept(this,null);
-                }
-
-                if (font.getFontWeight() != null) {
-                    font.getFontWeight().accept(this,null);
+                if (font.getWeight() != null) {
+                    font.getWeight().accept(this,null);
                 }
             }
         }
@@ -317,8 +315,8 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
             text.getLabel().accept(this,null);
         }
 
-        if (text.getPlacement() != null) {
-            text.getPlacement().accept(this);
+        if (text.getLabelPlacement() != null) {
+            text.getLabelPlacement().accept(this);
         }
 
         if (text.getPriority() != null) {

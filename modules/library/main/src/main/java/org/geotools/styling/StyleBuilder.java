@@ -1156,7 +1156,7 @@ public class StyleBuilder {
 
         ts.setFill(createFill(Color.BLACK));
         ts.setLabel(literalExpression("Label"));
-        ts.setFonts(new Font[] { createFont("Lucida Sans", 10)});
+        ts.fonts().add(createFont("Lucida Sans", 10));
 
         return ts;
     }
@@ -1277,7 +1277,7 @@ public class StyleBuilder {
         }
 
         if (labelPlacement != null) {
-            ts.setPlacement(labelPlacement);
+            ts.setLabelPlacement(labelPlacement);
         }
 
         if (geometryPropertyName != null) {
@@ -1285,7 +1285,11 @@ public class StyleBuilder {
         }
 
         if (fonts != null) {
-            ts.setFonts(fonts);
+            for (Font font : fonts) {
+                if (font != null) {
+                    ts.fonts().add(font);
+                }
+            }
         }
 
         return ts;

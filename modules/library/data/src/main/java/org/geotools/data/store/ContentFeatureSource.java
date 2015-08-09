@@ -20,9 +20,12 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +47,6 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
-import org.geotools.data.TransactionStateDiff;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -71,6 +73,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.geometry.BoundingBox;
@@ -405,7 +408,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 // new ones
                 Iterator<SimpleFeature> it = diff.getAdded().values().iterator();
                 while(it.hasNext()){
-                    SimpleFeature feature = (SimpleFeature) it.next();
+                    SimpleFeature feature = it.next();
                     BoundingBox fb = feature.getBounds();
                     if(fb != null) {
                         bounds.expandToInclude(ReferencedEnvelope.reference(fb));
@@ -415,7 +418,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 // modified ones
                 it = diff.getModified().values().iterator();
                 while(it.hasNext()){
-                    SimpleFeature feature = (SimpleFeature) it.next();
+                    SimpleFeature feature = it.next();
                     if(feature != Diff.NULL) {
                         BoundingBox fb = feature.getBounds();
                         if(fb != null) {
@@ -507,7 +510,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
                 int modifiedPostCount = 0;
                 while(it.hasNext()){
-                    SimpleFeature feature = (SimpleFeature) it.next();
+                    SimpleFeature feature = it.next();
                     
                     if(feature == Diff.NULL) {
                         count--;
@@ -604,13 +607,33 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             query = dq;
         }
 
-        //check for a join
+        // check for a join
         if (!query.getJoins().isEmpty() && getQueryCapabilities().isJoiningSupported()) {
             throw new IOException("Feature source does not support joins");
         }
-
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReaderInternal( query );
         
+        // if the implementation can retype but not sort, we might have
+        // to remove the retyping, or we won't be able to sort in memory
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        boolean postRetypeRequired = !canSort() && canRetype() && query.getSortBy() != null && query.getPropertyNames() != Query.ALL_NAMES;
+        if (postRetypeRequired) {
+            List<String> requestedProperties = new ArrayList<>(
+                    Arrays.asList(query.getPropertyNames()));
+            Set<String> sortProperties = getSortPropertyNames(query.getSortBy());
+            if(requestedProperties.containsAll(sortProperties)) {
+                reader = getReaderInternal(query);
+            } else {
+                // add the sort properties that we miss
+                Query loadingQuery = new Query(query);
+                sortProperties.removeAll(requestedProperties);
+                requestedProperties.addAll(sortProperties);
+                loadingQuery.setPropertyNames(requestedProperties);
+                reader = getReaderInternal(loadingQuery);
+            }
+        } else {
+            reader = getReaderInternal(query);
+        }
+
         //
         //apply wrappers based on subclass capabilities
         //
@@ -627,8 +650,15 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }    
         }
         
-        //retyping
-        if ( !canRetype() ) {
+        // sorting
+        if (query.getSortBy() != null && query.getSortBy().length != 0) {
+            if (!canSort()) {
+                reader = new SortedFeatureReader(DataUtilities.simple(reader), query);
+            }
+        }
+
+        // retyping
+        if (!canRetype() || postRetypeRequired) {
             if ( query.getPropertyNames() != Query.ALL_NAMES ) {
                 //rebuild the type and wrap the reader
                 SimpleFeatureType target = 
@@ -640,13 +670,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     reader = new ReTypeFeatureReader( reader, target, false );    
                 }
             }
-        }
-        
-        // sorting
-        if ( query.getSortBy() != null && query.getSortBy().length != 0 ) {
-            if ( !canSort() ) {
-                reader = new SortedFeatureReader(DataUtilities.simple(reader), query);
-            } 
         }
 
         
@@ -710,24 +733,44 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     }
     
     /**
+     * Returns all the properties used in the sortBy (excluding primary keys and the like, e.g.,
+     * natural sorting)
+     * 
+     * @param sortBy
+     * @return
+     */
+    private Set<String> getSortPropertyNames(SortBy[] sortBy) {
+        Set<String> result = new HashSet<>();
+        for (SortBy sort : sortBy) {
+            PropertyName p = sort.getPropertyName();
+            if (p != null && p.getPropertyName() != null) {
+                result.add(p.getPropertyName());
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Visit the features matching the provided query.
      * <p>
-     * The default information will use getReader( query ) and pass each feature to the provided visitor.
-     * Subclasses should override this method to optimise common visitors:
+     * The default information will use getReader( query ) and pass each feature to the provided
+     * visitor. Subclasses should override this method to optimise common visitors:
      * <ul>
-     * <li> {@link Collection_AverageFunction}
-     * <li> {@link Collection_BoundsFunction}
-     * <li> (@link Collection_CountFunction}
-     * <li> {@link Collection_MaxFunction}
-     * <li> {@link Collection_MedianFunction}
-     * <li> {@link Collection_MinFunction}
-     * <li> {@link Collection_SumFunction}
-     * <li> {@link Collection_UniqueFunction}
+     * <li>{@link Collection_AverageFunction}
+     * <li>{@link Collection_BoundsFunction}
+     * <li>(@link Collection_CountFunction}
+     * <li>{@link Collection_MaxFunction}
+     * <li>{@link Collection_MedianFunction}
+     * <li>{@link Collection_MinFunction}
+     * <li>{@link Collection_SumFunction}
+     * <li>{@link Collection_UniqueFunction}
      * </ul>
-     * Often in the case of Filter.INCLUDES the information can be determined from a file header or metadata table.
+     * Often in the case of Filter.INCLUDES the information can be determined from a file header or
+     * metadata table.
      * <p>
      * 
-     * @param visitor Visitor called for each feature 
+     * @param visitor Visitor called for each feature
      * @param progress Used to report progress; and errors on a feature by feature basis
      * @throws IOException
      */

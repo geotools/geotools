@@ -220,19 +220,19 @@ public class CssTranslator {
         {
             put("-gt-raster-contrast-enhancement-algorithm", "algorithm");
 
-            put("-gt-raster-contrast-enhancement-minvalue", "minValue");
-            put("-gt-raster-contrast-enhancement-maxvalue", "maxValue");
+            put("-gt-raster-contrast-enhancement-min", "minValue");
+            put("-gt-raster-contrast-enhancement-max", "maxValue");
 
-            put("-gt-raster-contrast-enhancement-normalizationFactor", "normalizationFactor");
-            put("-gt-raster-contrast-enhancement-correctionFactor", "correctionFactor");
+            put("-gt-raster-contrast-enhancement-normalizationfactor", "normalizationFactor");
+            put("-gt-raster-contrast-enhancement-correctionfactor", "correctionFactor");
             //short forms for lazy people 
             put("-gt-rce-algorithm", "algorithm");
 
-            put("-gt-rce-minvalue", "minValue");
-            put("-gt-rce-maxvalue", "maxValue");
+            put("-gt-rce-min", "minValue");
+            put("-gt-rce-max", "maxValue");
 
-            put("-gt-rce-normalizationFactor", "normalizationFactor");
-            put("-gt-rce-correctionFactor", "correctionFactor");
+            put("-gt-rce-normalizationfactor", "normalizationFactor");
+            put("-gt-rce-correctionfactor", "correctionFactor");
         }
     };
 

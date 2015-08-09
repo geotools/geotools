@@ -16,30 +16,16 @@
  */
 package org.geotools.styling;
 
-import org.opengis.filter.FilterFactory;
 import org.opengis.style.ContrastMethod;
 
 /**
  * @author iant
  *
  */
-public class Histogram extends AbstractContrastEnhancementMethod {
+public class HistogramContrastMethodStrategy extends AbstractContrastMethodStrategy {
 
-    public Histogram() {
-        NAME = "Histogram";
+    public HistogramContrastMethodStrategy() {
         method = ContrastMethod.HISTOGRAM;
     }
 
-    public Histogram(ContrastMethod method) {
-        if (!(ContrastMethod.HISTOGRAM.equals(method))) {
-            throw new RuntimeException("tried to construct Histogram with " + method.getClass());
-        }
-    }
-
-    /**
-     * @param filterFactory
-     */
-    public Histogram(FilterFactory filterFactory) {
-        this.filterFactory = filterFactory;
-    }
 }

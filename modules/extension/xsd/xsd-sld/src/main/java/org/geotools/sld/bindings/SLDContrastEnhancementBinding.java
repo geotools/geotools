@@ -16,17 +16,16 @@
  */
 package org.geotools.sld.bindings;
 
-import org.opengis.filter.FilterFactory;
-import org.picocontainer.MutablePicoContainer;
 import javax.xml.namespace.QName;
+
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastEnhancementMethod;
-import org.geotools.styling.Histogram;
-import org.geotools.styling.Normalize;
+import org.geotools.styling.ContrastMethodStrategy;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.opengis.filter.FilterFactory;
+import org.picocontainer.MutablePicoContainer;
 
 
 /**
@@ -127,11 +126,11 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
         if (node.getChild("Normalize") != null) {
             SLDNormalizeBinding binding = new SLDNormalizeBinding(styleFactory,filterFactory);
             Node child = node.getChild("Normalize");
-            ce.setMethod((((ContrastEnhancementMethod) binding.parse(instance, child, value)).getMethod()));
+            ce.setMethod((((ContrastMethodStrategy) binding.parse(instance, child, value)).getMethod()));
         } else if (node.getChild("Histogram") != null) {
             SLDHistogramBinding binding = new SLDHistogramBinding();
             Node child = node.getChild("Histogram");
-            ce.setMethod((((ContrastEnhancementMethod) binding.parse(instance, child, value)).getMethod()));
+            ce.setMethod((((ContrastMethodStrategy) binding.parse(instance, child, value)).getMethod()));
         }
 
         return ce;

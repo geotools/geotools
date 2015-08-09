@@ -20,8 +20,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.styling.AbstractContrastEnhancementMethod;
-import org.geotools.styling.Histogram;
+import org.geotools.styling.AbstractContrastMethodStrategy;
+import org.geotools.styling.HistogramContrastMethodStrategy;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -94,7 +94,7 @@ public class SLDHistogramBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        AbstractContrastEnhancementMethod ret = new  Histogram();
+        AbstractContrastMethodStrategy ret = new  HistogramContrastMethodStrategy();
         if (node.getChildValue("Algorithm") != null) {
            Expression algor = (Expression) node.getChildValue("Algorithm");
             ret.setAlgorithm(algor);

@@ -26,13 +26,19 @@ import org.opengis.style.ContrastMethod;
  * @author iant
  *
  */
-public class Normalize extends AbstractContrastEnhancementMethod{
+public class NormalizeContrastMethodStrategy extends AbstractContrastMethodStrategy{
 
-    final static List<String> ALGORITHM_NAMES = Arrays.asList("StretchToMinimumMaximum",
-            "ClipToMinimumMaximum", "ClipToZero");
+    /** CLIP_TO_ZERO */
+    private static final String CLIP_TO_ZERO = "ClipToZero";
+    /** CLIP_TO_MINIMUM_MAXIMUM */
+    private static final String CLIP_TO_MINIMUM_MAXIMUM = "ClipToMinimumMaximum";
+    /** STRETCH_TO_MINIMUM_MAXIMUM */
+    private static final String STRETCH_TO_MINIMUM_MAXIMUM = "StretchToMinimumMaximum";
+    final static List<String> ALGORITHM_NAMES = 
+            Arrays.asList(STRETCH_TO_MINIMUM_MAXIMUM,
+            CLIP_TO_MINIMUM_MAXIMUM, CLIP_TO_ZERO);
 
-    public Normalize() {
-        NAME = "Normalize";
+    public NormalizeContrastMethodStrategy() {
         method = ContrastMethod.NORMALIZE;
     }
 

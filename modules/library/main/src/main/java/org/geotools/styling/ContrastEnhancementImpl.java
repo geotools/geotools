@@ -83,26 +83,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         this(factory, (ContrastMethod)null);
     }
 
-    /**
-     * @param method
-     * @param filterFactory2 
-     */
-    private void lookupMethod(String method, FilterFactory ff) {
-        if(ff==null) {
-            ff=CommonFactoryFinder.getFilterFactory();
-        }
-        if (ContrastMethod.NORMALIZE.matches(method)) {
-            this.method = ContrastMethod.NORMALIZE;
-        } else if (ContrastMethod.EXPONENTIAL.matches(method)) {
-            this.method = ContrastMethod.EXPONENTIAL;
-        } else if (ContrastMethod.LOGARITHMIC.matches(method)) {
-            this.method = ContrastMethod.LOGARITHMIC;
-        } else if (ContrastMethod.HISTOGRAM.matches(method)) {
-            this.method = ContrastMethod.HISTOGRAM;
-        } else {
-            this.method = ContrastMethod.NONE;
-        }
-    }
+
 
     public ContrastEnhancementImpl(FilterFactory factory, ContrastMethod method) {
         filterFactory = factory;
@@ -113,7 +94,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
         org.opengis.style.ContrastMethod meth = contrastEnhancement.getMethod();
         if(meth != null) {
-            lookupMethod(meth.name(),filterFactory);
+            this.method = ContrastMethod.valueOf(meth.name());
         }
         this.gamma = contrastEnhancement.getGammaValue();
     }
@@ -202,9 +183,9 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     @Override
-    public void setRealMethod(ContrastEnhancementMethod method) {
+    public void setMethod(ContrastMethodStrategy method) {
         this.method = method.getMethod();
-        this.options = method.getOptions();
+        this.options = method.getOptions(); 
     }
 
     @Override

@@ -62,7 +62,7 @@ public class ContrastEnhancementImplTest extends TestCase {
     }
 
     public void testNormalize() {
-        Normalize normalize = new Normalize();
+        NormalizeContrastMethodStrategy normalize = new NormalizeContrastMethodStrategy();
         normalize.setAlgorithm(filterFactory.literal("ClipToMinimumMaximum"));
         Map<String, Expression> params = normalize.getParameters();
         assertNotNull("Null parameters returned by Normalize", params);

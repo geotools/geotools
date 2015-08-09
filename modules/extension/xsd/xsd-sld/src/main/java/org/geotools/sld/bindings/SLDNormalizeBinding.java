@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.styling.Normalize;
+import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -82,7 +82,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return Normalize.class;
+        return NormalizeContrastMethodStrategy.class;
     }
 
     /**
@@ -103,7 +103,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
         
-        Normalize ret = new  Normalize();
+        NormalizeContrastMethodStrategy ret = new  NormalizeContrastMethodStrategy();
         if (node.getChildValue("Algorithm") != null) {
            Expression algor = (Expression) node.getChildValue("Algorithm");
             ret.setAlgorithm(algor);

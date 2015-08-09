@@ -244,6 +244,7 @@ public abstract class BaseCoverageProcessingNode implements
 				    output=(GridCoverage2D) result;
 			} catch (Throwable t) {
 				// something bad happened
+			    t.printStackTrace();
 				output = null;
 				error = t;
 			}

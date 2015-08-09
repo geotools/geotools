@@ -52,12 +52,12 @@ import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.styling.AbstractContrastEnhancementMethod;
+import org.geotools.styling.AbstractContrastMethodStrategy;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Exponential;
-import org.geotools.styling.Histogram;
-import org.geotools.styling.Logarithmic;
-import org.geotools.styling.Normalize;
+import org.geotools.styling.ExponentialContrastMethodStrategy;
+import org.geotools.styling.HistogramContrastMethodStrategy;
+import org.geotools.styling.LogarithmicContrastMethodStrategy;
+import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.grid.GridCoverage;
@@ -109,7 +109,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 	}
 
 	/** ContrastMethod */
-	AbstractContrastEnhancementMethod contrastEnhancementMethod = null;
+	AbstractContrastMethodStrategy contrastEnhancementMethod = null;
 	
 	/** Enhancement type to use. */
 	private String type = null;
@@ -173,22 +173,22 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 
 	}
 
-	private AbstractContrastEnhancementMethod parseContrastEnhancementMethod(
+	private AbstractContrastMethodStrategy parseContrastEnhancementMethod(
             ContrastMethod method, Map<String, Expression> options) {
 	        String name = method.name().toUpperCase();
-	        AbstractContrastEnhancementMethod ceMethod = null; 
+	        AbstractContrastMethodStrategy ceMethod = null; 
 	        if ("NORMALIZE".equals(name)) {
-	            Expression algorithm = options.get(AbstractContrastEnhancementMethod.ALGORITHM);
-	            ceMethod = new Normalize();
+	            Expression algorithm = options.get(AbstractContrastMethodStrategy.ALGORITHM);
+	            ceMethod = new NormalizeContrastMethodStrategy();
 	            if (algorithm != null) {
 	                ceMethod.setAlgorithm(algorithm);
 	            }
 	        } else if ("LOGARITHMIC".equalsIgnoreCase(name)) {
-	            ceMethod = new Logarithmic();
+	            ceMethod = new LogarithmicContrastMethodStrategy();
 	        } else if ("EXPONENTIAL".equalsIgnoreCase(name)) {
-	            ceMethod = new Exponential();
+	            ceMethod = new ExponentialContrastMethodStrategy();
 	        } else if ("HISTOGRAM".equalsIgnoreCase(name)) {
-	            ceMethod = new Histogram();
+	            ceMethod = new HistogramContrastMethodStrategy();
 	        } else {
 	            throw new IllegalArgumentException(
 	                    Errors.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));

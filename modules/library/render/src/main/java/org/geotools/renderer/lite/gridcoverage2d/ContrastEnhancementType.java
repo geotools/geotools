@@ -37,11 +37,11 @@ import org.geotools.referencing.piecewise.MathTransformationAdapter;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.resources.image.ColorUtilities;
-import org.geotools.styling.AbstractContrastEnhancementMethod;
+import org.geotools.styling.AbstractContrastMethodStrategy;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Exponential;
-import org.geotools.styling.Logarithmic;
-import org.geotools.styling.Normalize;
+import org.geotools.styling.ExponentialContrastMethodStrategy;
+import org.geotools.styling.LogarithmicContrastMethodStrategy;
+import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.util.Utilities;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.operation.TransformException;
@@ -788,13 +788,13 @@ public enum ContrastEnhancementType {
     }
 
     /**
-     * Return a proper {@link ContrastEnhancementType} instance depending on the provided {@link AbstractContrastEnhancementMethod}.
+     * Return a proper {@link ContrastEnhancementType} instance depending on the provided {@link AbstractContrastMethodStrategy}.
      * 
      * @param method
      * @return
      */
-    public static ContrastEnhancementType getType(AbstractContrastEnhancementMethod method) {
-        if (method instanceof Normalize) {
+    public static ContrastEnhancementType getType(AbstractContrastMethodStrategy method) {
+        if (method instanceof NormalizeContrastMethodStrategy) {
             String algorithmType = parseAlgorithm(method.getAlgorithm());
             if (algorithmType == null) {
                 return NORMALIZE_DEFAULT;
@@ -807,11 +807,11 @@ public enum ContrastEnhancementType {
             }
             throw new IllegalArgumentException(Errors.format(ErrorKeys.UNSUPPORTED_ALGORITHM_$1,
                     algorithmType));
-        } else if (method instanceof Logarithmic) {
+        } else if (method instanceof LogarithmicContrastMethodStrategy) {
             return LOGARITHMIC;
-        } else if (method instanceof Exponential) {
+        } else if (method instanceof ExponentialContrastMethodStrategy) {
             return EXPONENTIAL;
-        } else if (method instanceof org.geotools.styling.Histogram) {
+        } else if (method instanceof org.geotools.styling.HistogramContrastMethodStrategy) {
             return HISTOGRAM;
         } else {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.UNSUPPORTED_METHOD_$1,

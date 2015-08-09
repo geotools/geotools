@@ -1514,7 +1514,7 @@ public class SLDParser {
             }
 
             if (CONTRAST_METHODS.contains(childName.toLowerCase())) {
-                ContrastEnhancementMethod parseContrastMethod = parseContrastMethod(childName,child);
+                ContrastMethodStrategy parseContrastMethod = parseContrastMethod(childName,child);
                 symbol.setMethod(parseContrastMethod.getMethod());
                 symbol.setOptions(parseContrastMethod.getOptions());
             } else if (childName.equalsIgnoreCase("GammaValue")) {
@@ -1534,21 +1534,21 @@ public class SLDParser {
     /**
      * @return
      */
-    private ContrastEnhancementMethod parseContrastMethod(String name, Node root) {
+    private ContrastMethodStrategy parseContrastMethod(String name, Node root) {
         ContrastMethod met = ContrastMethod.NONE;
-        ContrastEnhancementMethod ret = new ContrastEnhancementMethod();
+        ContrastMethodStrategy ret = null;
         if(NORMALIZE.equalsIgnoreCase(name)) {
             met = ContrastMethod.NORMALIZE;
-            ret= new Normalize();
+            ret= new NormalizeContrastMethodStrategy();
         }else if (HISTOGRAM.equalsIgnoreCase(name)) {
             met = ContrastMethod.HISTOGRAM;
-            ret = new Histogram();
+            ret = new HistogramContrastMethodStrategy();
         }else if (LOGARITHMIC.equalsIgnoreCase(name)) {
             met = ContrastMethod.LOGARITHMIC;
-            ret = new Logarithmic();
+            ret = new LogarithmicContrastMethodStrategy();
         }else if (EXPONENTIAL.equalsIgnoreCase(name)) {
             met = ContrastMethod.EXPONENTIAL;
-            ret = new Exponential();
+            ret = new ExponentialContrastMethodStrategy();
         }
         
         ret.setMethod(met);

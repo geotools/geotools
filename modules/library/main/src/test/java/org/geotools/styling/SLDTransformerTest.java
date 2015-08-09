@@ -1524,11 +1524,11 @@ public class SLDTransformerTest {
         StyleBuilder sb = new StyleBuilder();
         
         ContrastEnhancement ce = new ContrastEnhancementImpl();
-        Normalize normal = new Normalize();
+        NormalizeContrastMethodStrategy normal = new NormalizeContrastMethodStrategy();
         normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
         normal.addParameter("p1", ff.literal(false));
         normal.addParameter("p2", ff.literal(23.5d));
-        ce.setRealMethod(normal);
+        ce.setMethod(normal);
         SLDTransformer st = new SLDTransformer();     
         String xml = st.transform(ce);
       // System.out.println(xml);
@@ -1537,8 +1537,8 @@ public class SLDTransformerTest {
         assertXpathEvaluatesTo("false", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']", doc);
         assertXpathEvaluatesTo("ClipToMinimumMaximum", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='algorithm']", doc);
         
-        Histogram hist = new Histogram();
-        ce.setRealMethod(hist);
+        HistogramContrastMethodStrategy hist = new HistogramContrastMethodStrategy();
+        ce.setMethod(hist);
         xml = st.transform(ce);
         String skeleton = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Histogram/></sld:ContrastEnhancement>";
         System.out.println(xml);
@@ -1547,8 +1547,8 @@ public class SLDTransformerTest {
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
         //assertXpathNotExists("//sld:ContrastEnhancement/sld:Histogram/sld:Algorithm",doc);
     
-        Logarithmic log = new Logarithmic();
-        ce.setRealMethod(log);
+        LogarithmicContrastMethodStrategy log = new LogarithmicContrastMethodStrategy();
+        ce.setMethod(log);
         xml = st.transform(ce);
         //System.out.println(xml);
         skeleton = skeleton.replace("Histogram", "Logarithmic");
@@ -1557,8 +1557,8 @@ public class SLDTransformerTest {
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
         
         
-        Exponential exp = new Exponential();
-        ce.setRealMethod(exp);
+        ExponentialContrastMethodStrategy exp = new ExponentialContrastMethodStrategy();
+        ce.setMethod(exp);
         xml = st.transform(ce);
         //System.out.println(xml);
         skeleton = skeleton.replace("Logarithmic", "Exponential");

@@ -28,10 +28,16 @@ import org.opengis.style.ContrastMethod;
  * @author iant
  *
  */
-public class Exponential extends AbstractContrastEnhancementMethod {
+public class ExponentialContrastMethodStrategy extends AbstractContrastMethodStrategy {
 
-    final static List<String> PARAM_NAMES = Arrays.asList("normalizationFactor",
-            "correctionFactor");
+    /** CORRECTION_FACTOR */
+    private static final String CORRECTION_FACTOR = "correctionFactor";
+
+    /** NORMALIZATION_FACTOR */
+    private static final String NORMALIZATION_FACTOR = "normalizationFactor";
+
+    final static List<String> PARAM_NAMES = Arrays.asList(NORMALIZATION_FACTOR,
+            CORRECTION_FACTOR);
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.core");
@@ -39,15 +45,16 @@ public class Exponential extends AbstractContrastEnhancementMethod {
     /**
      * 
      */
-    public Exponential() {
-        NAME = "Exponential";
+    public ExponentialContrastMethodStrategy() {
+       
         method = ContrastMethod.EXPONENTIAL;
+        
     }
 
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
             LOGGER.log(Level.WARNING, "Adding unexpected parameter {0} to {1} Contrast Enhancer",
-                    new Object[] { key, NAME });
+                    new Object[] { key, method.name() });
         }
         super.addParameter(key, value);
     }

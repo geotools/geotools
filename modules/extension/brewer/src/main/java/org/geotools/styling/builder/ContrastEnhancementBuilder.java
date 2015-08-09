@@ -68,7 +68,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return contrastMethod("logarithm", constrastParameters);
     }
     private ContrastEnhancementBuilder contrastMethod(String name, Map<String, Expression> constrastParameters) {
-        if ("histogram".equals(name)) {
+        /*if ("histogram".equals(name)) {
             this.method = ContrastMethod.HISTOGRAM;
         } else if ("normalize".equals(name)) {
             this.method = ContrastMethod.NORMALIZE;
@@ -78,7 +78,8 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
             this.method = ContrastMethod.EXPONENTIAL;
         } else {
             throw new IllegalArgumentException("Unexpected ContrastEnhamcement method " + name);
-        }
+        }*/
+        this.method = ContrastMethod.valueOf(name);
         if(constrastParameters!=null) {
             options = constrastParameters;
         }

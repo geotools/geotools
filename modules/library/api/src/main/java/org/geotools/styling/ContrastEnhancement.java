@@ -130,6 +130,6 @@ public interface ContrastEnhancement extends org.opengis.style.ContrastEnhanceme
      * 
      * @param method the {@link ContrastEnhancementMethod} that underlies this enhancement
      */
-    public void setRealMethod(ContrastEnhancementMethod method);
+    public void setMethod(ContrastMethodStrategy method);
 
 }

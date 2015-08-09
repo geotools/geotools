@@ -28,7 +28,6 @@ class UomRescaleHelper {
     /**
      * Computes a rescaling multiplier to be applied to an unscaled value.
      * 
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the rescaling multiplier for the provided parameters.
      */
@@ -50,7 +49,6 @@ class UomRescaleHelper {
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -97,8 +95,7 @@ class UomRescaleHelper {
      * Used to rescale the provided dash array.
      * 
      * @param dashArray the unscaled dash array. If null, the method returns null.
-     * @param mapScale the mapScale in pixels per meter.
-     * @param uom the unit of measure that will be used to scale.
+     * @param unitOfMeasure the unit of measure that will be used to scale.
      * @return the rescaled dash array
      */
     protected float[] rescale(float[] dashArray, Unit<Length> unitOfMeasure) {
@@ -119,7 +116,6 @@ class UomRescaleHelper {
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return a scaled value.
      */

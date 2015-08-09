@@ -369,7 +369,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
      * This method will perform a null check, and save you some lines of code:<pre><code>
      * copy.setBackgroundColor( copyExpr( fill.getColor()) );
      * </code></pre>
-     * @param sion
+     * @param expression
      * @return copy of expression or null if expression was null
      */    
     protected Expression copy( Expression expression ){
@@ -399,7 +399,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     
     /**
      * Null safe fill copy
-     * @param graphic
+     * @param fill
      * @return copy of graphic or null if not provided
      */
     protected Fill copy( Fill fill ){
@@ -460,7 +460,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     
     /**
      * Null safe copy of description
-     * @param shaded
+     * @param desc
      * @return copy of shaded or null if not provided
      */
     protected Description copy(Description desc) {

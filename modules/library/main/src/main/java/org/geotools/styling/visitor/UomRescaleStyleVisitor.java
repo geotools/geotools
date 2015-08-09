@@ -80,7 +80,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -97,7 +96,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -114,8 +112,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided dash array.
      * 
      * @param dashArray the unscaled dash array. If null, the method returns null.
-     * @param mapScale the mapScale in pixels per meter.
-     * @param uom the unit of measure that will be used to scale.
+     * @param unitOfMeasure the unit of measure that will be used to scale.
      * @return the rescaled dash array
      */
     protected float[] rescale(float[] dashArray, Unit<Length> unitOfMeasure) {
@@ -136,7 +133,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided stroke.
      * 
      * @param stroke the unscaled stroke, which will be modified in-place.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      */
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {

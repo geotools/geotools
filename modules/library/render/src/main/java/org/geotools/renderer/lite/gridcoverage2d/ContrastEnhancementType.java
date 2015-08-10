@@ -24,6 +24,7 @@ import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
 import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferUShort;
 import java.awt.image.RenderedImage;
 import java.util.Collections;
 import java.util.HashMap;
@@ -496,10 +497,7 @@ public enum ContrastEnhancementType {
                 Map<String, Object> params) {
             Utilities.ensureNonNull("params", params);
             double minimum = (double) params.get(KEY_MIN);
-            double maximum = (double) params.get(KEY_MAX);
-            int dataType = (int) params.get(KEY_DATATYPE);
-            double maxValue = getMaxValue(dataType);
-            
+            double maximum = (double) params.get(KEY_MAX);            
             return generateClampingPiecewise(minimum, maximum, 0, 0);
             
         }
@@ -522,7 +520,7 @@ public enum ContrastEnhancementType {
         final DefaultPiecewiseTransform1DElement mainElement = DefaultPiecewiseTransform1DElement
                 .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(minimum, maximum));
         final DefaultPiecewiseTransform1DElement maxElement = DefaultPiecewiseTransform1DElement
-                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(maximum, false, maxValue, true), maxValue);
+                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(maximum, false, Double.POSITIVE_INFINITY, true), maxValue);
 
         return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
                 new DefaultPiecewiseTransform1DElement[] {zeroElement, mainElement, maxElement }, 0);
@@ -578,8 +576,9 @@ public enum ContrastEnhancementType {
         case DataBuffer.TYPE_BYTE:
             return (double) MAX_BYTE;
         case DataBuffer.TYPE_SHORT:
-        case DataBuffer.TYPE_USHORT:
             return (double) Short.MAX_VALUE;
+        case DataBuffer.TYPE_USHORT:
+            return  65535.0;
         case DataBuffer.TYPE_INT:
             return (double) Integer.MAX_VALUE;
         case DataBuffer.TYPE_FLOAT:

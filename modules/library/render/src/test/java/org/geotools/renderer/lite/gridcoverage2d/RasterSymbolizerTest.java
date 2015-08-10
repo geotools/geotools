@@ -79,6 +79,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.style.ContrastMethod;
@@ -581,6 +582,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
      * to facilitate debugging.
      */
 	@Test
+	//@Ignore("This test is broken - the expected answer of max=255 seems wrong since the max is clamped to 100 but the observered is 0 anyway")
     public void test12() throws URISyntaxException, FileNotFoundException {
         GridCoverage2D gc;
         SubchainStyleVisitorCoverageProcessingAdapter rsh_StyleBuilder;
@@ -604,6 +606,10 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                         JAI.create("ImageRead", new File(TestData.url(this, "test_ushort.tif").toURI())),
                         new GeneralEnvelope(new double[] { -90, -180 },
                                         new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
+        worker = new ImageWorker(gc.getRenderedImage());
+        min = worker.getMinimums();
+        max = worker.getMaximums();
+        System.out.println("before "+min[0]+" -> "+max[0]);
         // build the RasterSymbolizer
         sldBuilder = new StyleBuilder();
         // the RasterSymbolizer Helper
@@ -634,7 +640,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
         worker = new ImageWorker(output.getRenderedImage());
         min = worker.getMinimums();
         max = worker.getMaximums();
-
+        System.out.println("after "+min[0]+" -> "+max[0]);
         // Clip to Minimum Maximum does a Clamp by forcing
         // values outside the specified range to be clamped
         // to the range bounds

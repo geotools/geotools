@@ -26,6 +26,7 @@ import java.util.List;
 import org.geotools.renderer.ScreenMap;
 import org.geotools.styling.Rule;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * This is a simple class that contains the information needed to render a layer.
@@ -65,6 +66,8 @@ public final class LiteFeatureTypeStyle {
     public Expression transformation;
 
     public Composite composite;
+
+    public SortBy[] sortBy;
 
     /**
      * When true, the first maching rule will be applied, skipping the others

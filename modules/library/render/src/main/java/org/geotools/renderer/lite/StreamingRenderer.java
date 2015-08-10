@@ -56,7 +56,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
@@ -68,6 +67,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.SchemaException;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.GeometryTransformationVisitor;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
@@ -87,7 +87,6 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
 import org.geotools.map.StyleLayer;
-import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -132,6 +131,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -1086,6 +1086,10 @@ public class StreamingRenderer implements GTRenderer {
             query.setFilter(filter);
             query.setProperties(attributes);
             processRuleForQuery(styles, query);
+
+            // get the eventual sort-by from the styles
+            SortBy[] sortBy = getSortByFromLiteStyles(styles);
+            query.setSortBy(sortBy);
         } catch (Exception e) {
             final Exception txException = new Exception("Error transforming bbox", e);
             LOGGER.log(Level.SEVERE, "Error querying layer", txException);
@@ -1182,6 +1186,23 @@ public class StreamingRenderer implements GTRenderer {
         return query;
     }
     
+    /**
+     * Returns the sort-by from the list of feature type styles for a given layer. The code assumes
+     * the styles have already been classified and are uniform in sorting clauses
+     * 
+     * @param styles
+     * @return
+     */
+    private SortBy[] getSortByFromLiteStyles(LiteFeatureTypeStyle[] styles) {
+        for (LiteFeatureTypeStyle fts : styles) {
+            if (fts.sortBy != null) {
+                return fts.sortBy;
+            }
+        }
+
+        return null;
+    }
+
     Query getDefinitionQuery(MapLayer currLayer, FeatureSource<FeatureType, Feature> source, CoordinateReferenceSystem featCrs) throws FactoryException {
         // now, if a definition query has been established for this layer, be
         // sure to respect it by combining it with the bounding box one.
@@ -1712,7 +1733,6 @@ public class StreamingRenderer implements GTRenderer {
         List<Rule> ruleList;
         List<Rule> elseRuleList;
         LiteFeatureTypeStyle lfts;
-        BufferedImage image;
 
         boolean foundComposite = false;
         for (FeatureTypeStyle fts : featureStyles) {
@@ -1812,6 +1832,11 @@ public class StreamingRenderer implements GTRenderer {
                         FeatureTypeStyle.KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
                 }
+
+                // get the sort by, if any
+                SortBy[] sortBy = styleFactory.getSortBy(fts.getOptions());
+                lfts.sortBy = sortBy;
+
                 if (screenMapEnabled(lfts)) {
                     int renderingBuffer = getRenderingBuffer();
                     lfts.screenMap = new ScreenMap(screenSize.x - renderingBuffer, screenSize.y
@@ -1995,7 +2020,7 @@ public class StreamingRenderer implements GTRenderer {
         final ArrayList<LiteFeatureTypeStyle> lfts ;
 
         if ( featureSource != null ) {
-            FeatureCollection features = null;
+
             final FeatureType schema = featureSource.getSchema();
 
             final GeometryDescriptor geometryAttribute = schema.getGeometryDescriptor();
@@ -2019,91 +2044,15 @@ public class StreamingRenderer implements GTRenderer {
             // apply the uom and dpi rescale
             applyUnitRescale(lfts);
             
-            // classify by transformation
-            List<List<LiteFeatureTypeStyle>> txClassified = classifyByTransformation(lfts);
+            // classify by sortby and transformation (aka how we produce the features to
+            // be rendered)
+            List<List<LiteFeatureTypeStyle>> txClassified = classifyByFeatureProduction(lfts);
             
             // render groups by uniform transformation
             for (List<LiteFeatureTypeStyle> uniform : txClassified) {
-                Expression transform = uniform.get(0).transformation;
-                
-                // ... assume we have to do the generalization, the query layer process will
-                // turn down the flag if we don't 
-                inMemoryGeneralization = true;
-                boolean hasTransformation = transform != null;
-                Query styleQuery = getStyleQuery(featureSource, schema,
-                        uniform, mapArea, destinationCrs, sourceCrs, screenSize,
-                        geometryAttribute, at, hasTransformation);
-                Query definitionQuery = getDefinitionQuery(currLayer, featureSource, sourceCrs);
-                if(hasTransformation) {
-                    // prepare the stage for the raster transformations
-                    GridGeometry2D gridGeometry = getRasterGridGeometry(destinationCrs, sourceCrs);
-                    // vector transformation wise, we have to account for two separate queries,
-                    // the one attached to the layer and then one coming from SLD.
-                    // The first source attributes, the latter talks tx output attributes
-                    // so they have to be applied before and after the transformation respectively
-                    
-                    RenderingTransformationHelper helper = new RenderingTransformationHelper() {
-                        
-                        @Override
-                        protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException {
-                            GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
-                            Interpolation interpolation = getRenderingInterpolation(layer);
-                            GridCoverageReaderHelper helper;
-                            try {
-                                helper = new GridCoverageReaderHelper(reader,
-                                        readGG.getGridRange2D(),
-                                        ReferencedEnvelope.reference(readGG.getEnvelope2D()),
-                                        interpolation);
-                                return helper.readCoverage(readParams);
-                            } catch (InvalidGridGeometryException | FactoryException e) {
-                                throw new IOException("Failure reading the coverage", e);
-                            }
-
-                        }
-                    };
-                    
-                    Object result = helper.applyRenderingTransformation(transform, featureSource, definitionQuery, 
-                            styleQuery, gridGeometry, sourceCrs, java2dHints);
-                    if(result == null) {
-                        return;
-                    } else if (result instanceof FeatureCollection) {
-                        features = (FeatureCollection) result;
-                    } else if (result instanceof GridCoverage2D) {
-                        GridCoverage2D coverage = (GridCoverage2D) result;
-                        // we only avoid disposing if the input was a in memory GridCovereage2D
-                        if((schema instanceof SimpleFeatureType && !FeatureUtilities.isWrappedCoverage((SimpleFeatureType) schema))) {
-                            coverage = new DisposableGridCoverage(coverage);
-                        }
-                        features = FeatureUtilities.wrapGridCoverage(coverage);
-                    } else if (result instanceof GridCoverage2DReader) {
-                        features = FeatureUtilities.wrapGridCoverageReader(
-                                (GridCoverage2DReader) result, null);
-                    } else {
-                        throw new IllegalArgumentException(
-                                "Don't know how to handle the results of the transformation, "
-                                        + "the supported result types are FeatureCollection, GridCoverage2D "
-                                        + "and GridCoverage2DReader, but we got: "
-                                        + result.getClass());
-                    }                    
-                } else {
-                    Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);
-                    checkAttributeExistence(featureSource.getSchema(), mixed);
-                    features = featureSource.getFeatures(mixed);
-                    features = RendererUtilities.fixFeatureCollectionReferencing(features, sourceCrs);
-                }
-
-                // HACK HACK HACK
-                // For complex features, we need the targetCrs and version in scenario where we have
-                // a top level feature that does not contain a geometry(therefore no crs) and has a
-                // nested feature that contains geometry as its property.Furthermore it is possible
-                // for each nested feature to have different crs hence we need to reproject on each
-                // feature accordingly.
-                // This is a Hack, this information should not be passed through feature type
-                // appschema will need to remove this information from the feature type again
-                if (!(features instanceof SimpleFeatureCollection)) {
-                    features.getSchema().getUserData().put("targetCrs", destinationCrs);
-                    features.getSchema().getUserData().put("targetVersion", "wms:getmap");
-                }
+                FeatureCollection features = getFeatures(layer, at, destinationCrs, mapArea,
+                        screenSize, currLayer, featureSource, sourceCrs, schema, geometryAttribute,
+                        uniform);
 
                 // finally, perform rendering
                 if (isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
@@ -2137,6 +2086,97 @@ public class StreamingRenderer implements GTRenderer {
             }
         }
     }
+
+    private FeatureCollection getFeatures(final Layer layer, AffineTransform at,
+            CoordinateReferenceSystem destinationCrs, Envelope mapArea, Rectangle screenSize,
+            final MapLayer currLayer, final FeatureSource featureSource,
+            final CoordinateReferenceSystem sourceCrs, 
+            final FeatureType schema, final GeometryDescriptor geometryAttribute,
+            List<LiteFeatureTypeStyle> featureTypeStyles) throws IOException, FactoryException,
+                    NoninvertibleTransformException, SchemaException, TransformException {
+        Expression transform = featureTypeStyles.get(0).transformation;
+        
+        // ... assume we have to do the generalization, the query layer process will
+        // turn down the flag if we don't 
+        inMemoryGeneralization = true;
+        boolean hasTransformation = transform != null;
+        Query styleQuery = getStyleQuery(featureSource, schema,
+                featureTypeStyles, mapArea, destinationCrs, sourceCrs, screenSize,
+                geometryAttribute, at, hasTransformation);
+        Query definitionQuery = getDefinitionQuery(currLayer, featureSource, sourceCrs);
+        FeatureCollection features = null;
+        if(hasTransformation) {
+            // prepare the stage for the raster transformations
+            GridGeometry2D gridGeometry = getRasterGridGeometry(destinationCrs, sourceCrs);
+            // vector transformation wise, we have to account for two separate queries,
+            // the one attached to the layer and then one coming from SLD.
+            // The first source attributes, the latter talks tx output attributes
+            // so they have to be applied before and after the transformation respectively
+            RenderingTransformationHelper helper = new RenderingTransformationHelper() {
+                
+                @Override
+                protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException {
+                    GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
+                    Interpolation interpolation = getRenderingInterpolation(layer);
+                    GridCoverageReaderHelper helper;
+                    try {
+                        helper = new GridCoverageReaderHelper(reader,
+                                readGG.getGridRange2D(),
+                                ReferencedEnvelope.reference(readGG.getEnvelope2D()),
+                                interpolation);
+                        return helper.readCoverage(readParams);
+                    } catch (InvalidGridGeometryException | FactoryException e) {
+                        throw new IOException("Failure reading the coverage", e);
+                    }
+
+                }
+            };
+            
+            Object result = helper.applyRenderingTransformation(transform, featureSource, definitionQuery, 
+                    styleQuery, gridGeometry, sourceCrs, java2dHints);
+            if(result == null) {
+                return null;
+            } else if (result instanceof FeatureCollection) {
+                features = (FeatureCollection) result;
+            } else if (result instanceof GridCoverage2D) {
+                GridCoverage2D coverage = (GridCoverage2D) result;
+                // we only avoid disposing if the input was a in memory GridCovereage2D
+                if((schema instanceof SimpleFeatureType && !FeatureUtilities.isWrappedCoverage((SimpleFeatureType) schema))) {
+                    coverage = new DisposableGridCoverage(coverage);
+                }
+                features = FeatureUtilities.wrapGridCoverage(coverage);
+            } else if (result instanceof GridCoverage2DReader) {
+                features = FeatureUtilities.wrapGridCoverageReader(
+                        (GridCoverage2DReader) result, null);
+            } else {
+                throw new IllegalArgumentException(
+                        "Don't know how to handle the results of the transformation, "
+                                + "the supported result types are FeatureCollection, GridCoverage2D "
+                                + "and GridCoverage2DReader, but we got: "
+                                + result.getClass());
+            }                    
+        } else {
+            Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);
+            checkAttributeExistence(featureSource.getSchema(), mixed);
+            features = featureSource.getFeatures(mixed);
+            features = RendererUtilities.fixFeatureCollectionReferencing(features, sourceCrs);
+        }
+
+        // HACK HACK HACK
+        // For complex features, we need the targetCrs and version in scenario where we have
+        // a top level feature that does not contain a geometry(therefore no crs) and has a
+        // nested feature that contains geometry as its property.Furthermore it is possible
+        // for each nested feature to have different crs hence we need to reproject on each
+        // feature accordingly.
+        // This is a Hack, this information should not be passed through feature type
+        // appschema will need to remove this information from the feature type again
+        if (!(features instanceof SimpleFeatureCollection)) {
+            features.getSchema().getUserData().put("targetCrs", destinationCrs);
+            features.getSchema().getUserData().put("targetVersion", "wms:getmap");
+        }
+
+        return features;
+    }
     
     /**
      * Classify a List of LiteFeatureTypeStyle objects by Transformation.
@@ -2144,20 +2184,42 @@ public class StreamingRenderer implements GTRenderer {
      * @param lfts A List of LiteFeatureTypeStyles
      * @return A List of List of LiteFeatureTypeStyles
      */
-    List<List<LiteFeatureTypeStyle>> classifyByTransformation(List<LiteFeatureTypeStyle> lfts) {
+    List<List<LiteFeatureTypeStyle>> classifyByFeatureProduction(List<LiteFeatureTypeStyle> lfts) {
         List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<List<LiteFeatureTypeStyle>>();
         txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
         Expression transformation = null;
+        SortBy[] sortBy = null;
         for (int i = 0; i < lfts.size(); i++) {
             LiteFeatureTypeStyle curr = lfts.get(i);
             if(i == 0) {
                 transformation = curr.transformation;
-            } else if(!(transformation == curr.transformation) 
+                sortBy = curr.sortBy;
+            } else {
+                // do they have the same transformation?
+                boolean differentTransformation = (transformation != curr.transformation)
                     || (transformation != null && curr.transformation != null && 
-                            !curr.transformation.equals(transformation))) {
-                txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+                    !curr.transformation.equals(transformation));
 
-            }  
+                // is sorting incompatible, that is, different from the one
+                // we are working against? "null" means not caring about sorting,
+                // it's thus compatible with whatever other sort
+                boolean incompatibleSort = false;
+                if (curr.sortBy != null) {
+                    if (sortBy == null) {
+                        // we started with "whatever sorting", from here on we have one
+                        sortBy = curr.sortBy;
+                    } else {
+                        incompatibleSort = true;
+                    }
+                }
+                if (differentTransformation || incompatibleSort) {
+                    // create a new slot (we always add the lfts into the last one)
+                    txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+                    transformation = curr.transformation;
+                    sortBy = curr.sortBy;
+                }
+
+            }
             txClassified.get(txClassified.size() - 1).add(curr);
         }
         return txClassified;

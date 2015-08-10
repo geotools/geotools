@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,30 +27,30 @@ import org.opengis.filter.sort.SortOrder;
  */
 public class SortByImpl implements SortBy {
 
-	PropertyName propertyName;
-	
-	SortOrder sortOrder;
-	
-	public SortByImpl( PropertyName propertyName, SortOrder sortOrder ) {
-		this.propertyName = propertyName;
-		this.sortOrder = sortOrder;
-	}
-	
-	public PropertyName getPropertyName() {
-		return propertyName;
-	}
+    PropertyName propertyName;
 
-	public void setPropertyName(PropertyName propertyName) {
-		this.propertyName = propertyName;
-	}
+    SortOrder sortOrder;
 
-	public SortOrder getSortOrder() {
-		return sortOrder;
-	}
+    public SortByImpl(PropertyName propertyName, SortOrder sortOrder) {
+        this.propertyName = propertyName;
+        this.sortOrder = sortOrder;
+    }
 
-	public void setSortOrder(SortOrder sortOrder) {
-		this.sortOrder = sortOrder;
-	}
+    public PropertyName getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(PropertyName propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    public SortOrder getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(SortOrder sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
     /*
      * (non-Javadoc)

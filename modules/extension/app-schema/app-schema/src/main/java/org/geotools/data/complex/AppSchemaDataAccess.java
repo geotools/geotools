@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -163,7 +163,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * list of FeatureType mappings and returns it.
      */
     public FeatureType getSchema(Name typeName) throws IOException {
-        return (FeatureType) getMappingByElement(typeName).getTargetFeature().getType();
+        return (FeatureType) getMappingByNameOrElement(typeName).getTargetFeature().getType();
     }
 
     /**
@@ -187,7 +187,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Returns the mapping suite for the given target type name.
+     * Returns the mapping suite for the given target type name. This name would be the mappingName in the TypeMapping if it exists, otherwise it's
+     * the target element name.
      * 
      * <p>
      * Note this method is public just for unit testing purposes
@@ -197,17 +198,23 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @return
      * @throws IOException
      */
-    public FeatureTypeMapping getMappingByElement(Name typeName) throws IOException {
-        for (FeatureTypeMapping mapping : mappings.values()) {
-            if (mapping.getTargetFeature().getName().equals(typeName)) {
-                return mapping;
+    public FeatureTypeMapping getMappingByNameOrElement(Name typeName) throws IOException {
+        FeatureTypeMapping mapping = (FeatureTypeMapping) this.mappings.get(typeName);
+        if (mapping != null) {
+            return mapping;
+        }
+
+        // lookup by mapping name failed, try to lookup by target element
+        // NOTE: in this case, there is a risk of ambiguity. E.g. consider a (questionable) mapping configuration where multiple mappings of the
+        // same type have been specified, each with its own mappingName: they would have the same targetElement, and we wouldn't know which one to
+        // pick. The result would be unpredictable in such a situation.
+        for (FeatureTypeMapping typeMapping : mappings.values()) {
+            if (typeMapping.getTargetFeature().getName().equals(typeName)) {
+                return typeMapping;
             }
         }
-        ArrayList<String> availables = new ArrayList<String>();
-        for (FeatureTypeMapping mapping : mappings.values()) {
-            availables.add(mapping.getTargetFeature().getName().toString());
-        }
-        throw new DataSourceException(typeName + " not found. Available: " + availables.toString());
+        throw new DataSourceException(typeName + " not found. Available: "
+                + mappings.keySet().toString());
     }
 
     /**
@@ -247,7 +254,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @throws IOException
      */
     protected ReferencedEnvelope getBounds(Query query) throws IOException {
-        FeatureTypeMapping mapping = getMappingByElement(getName(query));
+        FeatureTypeMapping mapping = getMappingByNameOrElement(getName(query));
         Query unmappedQuery = unrollQuery(query, mapping);
         return mapping.getSource().getBounds(unmappedQuery);
     }
@@ -270,7 +277,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      *             if there are errors getting the count
      */
     protected int getCount(final Query targetQuery) throws IOException {
-        final FeatureTypeMapping mapping = getMappingByElement(getName(targetQuery));
+        final FeatureTypeMapping mapping = getMappingByNameOrElement(getName(targetQuery));
         FeatureSource mappedSource = mapping.getSource();
         // Wrap with JoiningJDBCFeatureSource like in DataAccessMappingFeatureIterator
         // this is so it'd use the splitFilter in JoiningJDBCFeatureSource
@@ -631,7 +638,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @see org.geotools.data.DataAccess#getFeatureSource(org.opengis.feature.type.Name)
      */
     public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
-        return new MappingFeatureSource(this, getMappingByElement(typeName));
+        return new MappingFeatureSource(this, getMappingByNameOrElement(typeName));
     }
 
     /**

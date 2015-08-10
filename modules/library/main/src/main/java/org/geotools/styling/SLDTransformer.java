@@ -235,7 +235,7 @@ public class SLDTransformer extends TransformerBase {
         /**
          * Utility method used to quickly package up the provided InternationalString.
          * @param element
-         * @param expr
+         * @param intString
          */
         void element(String element, InternationalString intString) {
             if(intString instanceof GrowableInternationalString) {
@@ -388,7 +388,22 @@ public class SLDTransformer extends TransformerBase {
                 }
     
                 encodeCssParam("stroke-dasharray", ff.literal(sb.toString()));
-    
+
+            } else
+            if (stroke instanceof Stroke2){
+                Expression[] dashExpressionArray = ((Stroke2)stroke).getDashExpressionArray();
+                if (dashExpressionArray != null){
+                    int parametersCount = dashExpressionArray.length * 2 - 1;
+                    Expression[] parameters = new Expression[parametersCount];
+                    for (int j=0; j<dashExpressionArray.length; ++j){
+                        parameters[2 * j] = dashExpressionArray[j];
+                        if (j != dashExpressionArray.length - 1) {
+                            parameters[2 * j + 1] = ff.literal("![CDATA[ ]]");
+                        }
+                    }
+                    Expression dashArrayConcatenetedExpression = ff.function("Concatenate", parameters);
+                    encodeCssParam("stroke-dasharray", dashArrayConcatenetedExpression);
+                }
             }
             end("Stroke");
         }
@@ -429,21 +444,23 @@ public class SLDTransformer extends TransformerBase {
                 end("Label");
             }
 
-            if ((text.fonts() != null) && (!text.fonts().isEmpty())) {
+            if ((text.getFonts() != null) && (text.getFonts().length != 0)) {
                 start("Font");
-                List<Font> fonts = text.fonts();
-                Font initialFont = fonts.get(0);
-                for (Font font : fonts ) {
-                    encodeCssParam("font-family", font.getFamily().get(0));
+
+                Font[] fonts = text.getFonts();
+
+                for (int i = 0; i < fonts.length; i++) {
+                    encodeCssParam("font-family", fonts[i].getFontFamily());
                 }
-                encodeCssParam("font-size", initialFont.getSize());
-                encodeCssParam("font-style", initialFont.getStyle());
-                encodeCssParam("font-weight", initialFont.getWeight());
+
+                encodeCssParam("font-size", fonts[0].getFontSize());
+                encodeCssParam("font-style", fonts[0].getFontStyle());
+                encodeCssParam("font-weight", fonts[0].getFontWeight());
                 end("Font");
             }
 
-            if (text.getLabelPlacement() != null) {
-                text.getLabelPlacement().accept(this);
+            if (text.getPlacement() != null) {
+                text.getPlacement().accept(this);
             }
 
             if (text.getHalo() != null) {

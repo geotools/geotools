@@ -28,6 +28,7 @@ class UomRescaleHelper {
     /**
      * Computes a rescaling multiplier to be applied to an unscaled value.
      * 
+     * @param uom the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the rescaling multiplier for the provided parameters.
      */
@@ -110,6 +111,27 @@ class UomRescaleHelper {
             rescaledDashArray[i] = (float) rescale((double) dashArray[i], unitOfMeasure);
         }
         return rescaledDashArray;
+    }
+
+    /**
+     * Used to rescale the provided dash expression array.
+     *
+     * @param dashExpressionArray the unscaled dash expression array. If null, the method returns null.
+     * @param unitOfMeasure the unit of measure that will be used to scale.
+     * @return the rescaled dash expression array
+     */
+    protected Expression[] rescale(Expression[] dashExpressionArray, Unit<Length> unitOfMeasure) {
+        if (dashExpressionArray == null)
+            return null;
+        if (unitOfMeasure == null || unitOfMeasure.equals(NonSI.PIXEL))
+            return dashExpressionArray;
+
+        Expression[] rescaledDashExpressionArray = new Expression[dashExpressionArray.length];
+
+        for (int i = 0; i < rescaledDashExpressionArray.length; i++) {
+            rescaledDashExpressionArray[i] = rescale(dashExpressionArray[i], unitOfMeasure);
+        }
+        return rescaledDashExpressionArray;
     }
 
     /**

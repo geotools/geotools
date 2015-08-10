@@ -22,20 +22,7 @@ import javax.measure.quantity.Length;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.Unit;
 
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.*;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
@@ -139,10 +126,27 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
             stroke.setDashArray(rescale(stroke.getDashArray(), uom));
+            if (stroke instanceof Stroke2){
+                ((Stroke2)stroke).setDashExpressionArray(
+                        rescale(((Stroke2)stroke).getDashExpressionArray(), uom));
+            }
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);
         }
+    }
+
+    private Expression[] rescale(Expression[] unscaled, Unit<Length> uom) {
+        if (unscaled == null) {
+            return unscaled;
+        }
+
+        Expression[] ret = new Expression[unscaled.length];
+        for (int j=0; j<unscaled.length; ++j){
+            ret[j] = rescale(unscaled[j], uom);
+        }
+
+        return ret;
     }
 
     @Override
@@ -216,10 +220,11 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         Unit<Length> uom = copy.getUnitOfMeasure();
         // rescales fonts
-        for (Font font : copy.fonts()) {
+        Font[] fonts = copy.getFonts();
+        for (Font font : fonts)
             font.setSize(rescale(font.getSize(), uom));
-        }
-        
+        copy.setFonts(fonts);
+
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
         if (placement instanceof PointPlacement) {

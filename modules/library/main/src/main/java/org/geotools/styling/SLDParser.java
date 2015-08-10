@@ -610,7 +610,7 @@ public class SLDParser {
 
     /**
      * 
-     * @param child
+     * @param root
      * @param layer
      */
     private void parseInlineFeature(Node root, UserLayer layer) {
@@ -1188,7 +1188,7 @@ public class SLDParser {
             if (childName.equalsIgnoreCase("Font")) {
                 fonts.add(parseFont(child));
             } else if (childName.equalsIgnoreCase("LabelPlacement")) {
-                symbol.setLabelPlacement(parseLabelPlacement(child));
+                symbol.setPlacement(parseLabelPlacement(child));
             } else if (childName.equalsIgnoreCase("Halo")) {
                 symbol.setHalo(parseHalo(child));
             } else if (childName.equalsIgnoreCase("Graphic")) {
@@ -1220,7 +1220,8 @@ public class SLDParser {
             }
 
         }
-        symbol.fonts().addAll(fonts);
+
+        symbol.setFonts(fonts.toArray(new Font[0]));
 
         return symbol;
     }
@@ -1242,7 +1243,7 @@ public class SLDParser {
     /**
      * adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>")
      * 
-     * @param symbol
+     * @param options
      * @param child
      */
     private void parseVendorOption(Map<String, String> options, Node child) {
@@ -1978,9 +1979,29 @@ public class SLDParser {
                         if( definition instanceof Literal){
                             dashString = ((Literal)definition).getValue().toString();
                         }
-                        else {
-                            LOGGER.warning("Only literal stroke-dasharray supported at this time:"+definition);
-                        }                        
+                        else
+                        if( definition instanceof Function){
+                          if (stroke instanceof Stroke2){
+                              Function functionExpression = (Function) definition;
+                              String functionName = functionExpression.getFunctionName().getName();
+                              if  ("Concatenate".equals(functionName)) {
+                                  List<Expression> parameters = functionExpression.getParameters();
+                                  int dashCount = (parameters.size() + 1) / 2;
+                                  Expression[] dashExpressionArray = new Expression[dashCount];
+                                  for (int j=0; j<dashCount; ++j){
+                                      Expression dashLengthExpression = parameters.get(2 * j);
+                                      dashExpressionArray[j] = dashLengthExpression;
+                                  }
+                                  ((Stroke2)stroke).setDashExpressionArray(dashExpressionArray);
+                              } else {
+                                  LOGGER.warning(functionName + "-Only literal and Concatenate function in stroke-dasharray are supported at this time:"+definition);
+                               }
+                          } else {
+                              LOGGER.warning("Only literal in stroke-dasharray are supported for Stroke, created by StyleFactory2. Use StyleFactory3:"+definition);
+                          }
+                        } else {
+                            LOGGER.warning("Only literal and Concatenate function in stroke-dasharray are supported at this time:"+definition);
+                        }
                     }
                     if( dashString != null){
                         StringTokenizer stok = new StringTokenizer(dashString.trim(), " ");

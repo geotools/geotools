@@ -34,6 +34,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ColorReplacement;
 import org.opengis.style.ContrastMethod;
@@ -64,7 +65,7 @@ import org.opengis.util.InternationalString;
  * @version $Id$
  */
 public class StyleFactoryImpl extends AbstractStyleFactory
-    implements StyleFactory2, org.opengis.style.StyleFactory {
+    implements StyleFactory2, StyleFactory3, org.opengis.style.StyleFactory {
 	
     private FilterFactory2 filterFactory;
     private StyleFactoryImpl2 delegate;
@@ -135,14 +136,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         String geometryPropertyName) {
         TextSymbolizer tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        if( fonts != null ){
-            tSymb.fonts().addAll(Arrays.asList(fonts));
-        }
+        tSymb.setFonts(fonts);
         tSymb.setGeometryPropertyName(geometryPropertyName);
 
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
-        tSymb.setLabelPlacement(labelPlacement);
+        tSymb.setPlacement(labelPlacement);
 
         return tSymb;
     }
@@ -152,14 +151,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         String geometryPropertyName, Graphic graphic) {
         TextSymbolizer2 tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        if( fonts != null ){
-            tSymb.fonts().addAll(Arrays.asList(fonts));
-        }
+        tSymb.setFonts(fonts);
         tSymb.setGeometryPropertyName(geometryPropertyName);
 
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
-        tSymb.setLabelPlacement(labelPlacement);
+        tSymb.setPlacement(labelPlacement);
         tSymb.setGraphic(graphic);
 
         return tSymb;
@@ -239,7 +236,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      *
      * @return the stroke object
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width) {
         return createStroke(color, width,
@@ -255,7 +252,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      *
      * @return The stroke
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width,
         Expression opacity) {
@@ -282,7 +279,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      *
      * @throws IllegalArgumentException DOCUMENT ME!
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width,
         Expression opacity, Expression lineJoin, Expression lineCap,
@@ -596,12 +593,13 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
     public Stroke getDefaultStroke() {
         try {
-            Stroke stroke = createStroke(filterFactory.literal("#000000"),
+            Stroke2 stroke = createStroke2(filterFactory.literal("#000000"),
                     filterFactory.literal(new Integer(1)));
 
             stroke.setDashOffset(filterFactory.literal(
                     new Integer(0)));
             stroke.setDashArray(Stroke.DEFAULT.getDashArray());
+            stroke.setDashExpressionArray(Stroke2.DEFAULT.getDashExpressionArray());
             stroke.setLineCap(filterFactory.literal("butt"));
             stroke.setLineJoin(filterFactory.literal("miter"));
             stroke.setOpacity(filterFactory.literal(new Integer(1)));
@@ -611,6 +609,63 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             //we should never be in here
             throw new RuntimeException("Error creating stroke", ife);
         }
+    }
+
+    @Override
+    public Stroke2 createStroke2(Literal color, Literal width) {
+        return createStroke2(color, width,
+                filterFactory.literal(1.0));
+    }
+
+    @Override
+    public Stroke2 createStroke2(Expression color, Expression width,
+                                 Expression opacity) {
+        return createStroke2(color, width, opacity,
+                filterFactory.literal("miter"),
+                filterFactory.literal("butt"), null,
+                filterFactory.literal(0.0), null, null);
+    }
+
+    @Override
+    public Stroke2 createStroke2(Expression color, Expression width,
+                                 Expression opacity, Expression lineJoin, Expression lineCap,
+                                 Expression[] dashArray, Expression dashOffset, Graphic graphicFill,
+                                 Graphic graphicStroke) {
+        Stroke2 stroke = (Stroke2)new StrokeImpl(filterFactory);
+
+        if (color == null) {
+            //use default
+            color = Stroke.DEFAULT.getColor();
+        }
+        stroke.setColor(color);
+
+        if (width == null) {
+            //use default
+            width = Stroke.DEFAULT.getWidth();
+        }
+        stroke.setWidth(width);
+
+        if (opacity == null) {
+            opacity = Stroke.DEFAULT.getOpacity();;
+        }
+        stroke.setOpacity(opacity);
+
+        if (lineJoin == null) {
+            lineJoin = Stroke.DEFAULT.getLineJoin();
+        }
+        stroke.setLineJoin(lineJoin);
+
+        if (lineCap == null) {
+            lineCap = Stroke.DEFAULT.getLineCap();
+        }
+
+        stroke.setLineCap(lineCap);
+        stroke.setDashExpressionArray(dashArray);
+        stroke.setDashOffset(dashOffset);
+        stroke.setGraphicFill(graphicFill);
+        stroke.setGraphicStroke(graphicStroke);
+
+        return stroke;
     }
 
     public Style getDefaultStyle() {

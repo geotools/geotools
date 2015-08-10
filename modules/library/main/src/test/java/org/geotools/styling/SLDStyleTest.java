@@ -196,6 +196,16 @@ public class SLDStyleTest extends TestCase {
         validateDashArrayStyle(sld);
     }
 
+
+    public void testDashArray3() throws Exception {
+        // using ogc:Function in dasharray
+        java.net.URL surl = TestData.getResource(this, "dasharray3.sld");
+        SLDParser stylereader = new SLDParser(sf, surl);
+        StyledLayerDescriptor sld = stylereader.parseSLD();
+
+        validateDashExpressionArrayStyle(sld);
+    }
+
     private void validateDashArrayStyle(StyledLayerDescriptor sld) {
         assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
@@ -208,6 +218,21 @@ public class SLDStyleTest extends TestCase {
         
         LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
         assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
+    }
+
+    private void validateDashExpressionArrayStyle(StyledLayerDescriptor sld) {
+        assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
+        Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
+        List<FeatureTypeStyle> fts = style.featureTypeStyles();
+        assertEquals(1, fts.size());
+        List<Rule> rules = fts.get(0).rules();
+        assertEquals(1, rules.size());
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        assertEquals(1, symbolizers.size());
+
+        LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
+        assertTrue(Arrays.equals(new Expression[] {ff.literal(2.0f), ff.literal(1.0f), ff.literal(4.0f),
+                ff.literal(1.0f)}, ((Stroke2)ls.getStroke()).getDashExpressionArray()));
     }
 
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {

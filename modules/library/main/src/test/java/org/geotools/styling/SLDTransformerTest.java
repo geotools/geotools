@@ -16,8 +16,10 @@
  */
 package org.geotools.styling;
 
+import static junit.framework.Assert.assertEquals;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathValuesEqual;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
 import static org.junit.Assert.*;
@@ -211,6 +213,46 @@ public class SLDTransformerTest {
         assertNotNull("color", value);
         assertEquals("blue", Color.BLUE, value);
         assertEquals("expected width", 2, (int) stroke.getWidth().evaluate(null, Integer.class));
+    }
+
+    @Test
+    public void testDashExpressionArray() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer();
+        ((Stroke2)ls.getStroke()).setDashExpressionArray(new Expression[]{ff.property("dash_size"),
+                                                               ff.property("blank_size")});
+        String xml = transformer.transform(ls);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/*)", doc);
+        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:Stroke/*)", doc);
+        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/*)", doc);
+        assertXpathEvaluatesTo("3", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/*)", doc);
+        assertXpathEvaluatesTo("2", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:PropertyName)", doc);
+        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:Literal)", doc);
+        assertXpathEvaluatesTo("dash_size", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:PropertyName", doc);
+        assertXpathEvaluatesTo("![CDATA[ ]]", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:Literal", doc);
+
+        SLDParser parser = new SLDParser(sf);
+
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+            Document dom = null;
+            DocumentBuilder db = null;
+
+            db = dbf.newDocumentBuilder();
+            dom = db.parse(new InputSource(new StringReader(xml)));
+
+            LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
+
+            assertEquals(new Expression[]{ff.property("dash_size"),
+                                          ff.property("blank_size")},
+                    ((Stroke2)lineSymbolizer2.getStroke()).getDashExpressionArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

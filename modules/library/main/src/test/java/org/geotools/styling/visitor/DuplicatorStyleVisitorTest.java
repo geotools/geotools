@@ -30,39 +30,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.GraphicImpl;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.OtherTextImpl;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLDTransformer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.*;
 import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -603,6 +571,12 @@ public class DuplicatorStyleVisitorTest extends TestCase {
 
         Stroke dashArray2 = (Stroke) ((Cloneable)dashArray).clone();
         assertEqualsContract(dashArray, dashArray2);
+
+        Stroke2 dashArray3 = (Stroke2)sf.getDefaultStroke();
+        dashArray3.setDashExpressionArray(new Expression[]{ff.literal(1.0f), ff.literal(2.0f), ff.literal(3.0f)});
+
+        Stroke dashArray4 = (Stroke) ((Cloneable)dashArray3).clone();
+        assertEqualsContract(dashArray3, dashArray4);
     }
 
     private static void assertCopy(Object real, Object clone) {

@@ -331,6 +331,14 @@ public class StyleObjectTest extends TestCase {
         dashArray.accept( duplicate );
         Stroke dashArray2 = (Stroke) duplicate.getCopy();
         assertEqualsContract(dashArray, dashArray2);
+
+        Stroke dashArray3 = styleFactory.getDefaultStroke();
+        ((Stroke2)dashArray3).setDashExpressionArray(new Expression[]{filterFactory.literal(1.0f), filterFactory.literal(2.0f),
+                filterFactory.literal(3.0f)});
+
+        dashArray3.accept( duplicate );
+        Stroke dashArray4 = (Stroke) duplicate.getCopy();
+        assertEqualsContract(dashArray3, dashArray4);
     }
 
     private static void assertClone(Object real, Object clone) {

@@ -38,10 +38,11 @@ import org.opengis.util.Cloneable;
  * @source $URL$
  * @version $Id$
  */
-public class StrokeImpl implements Stroke, Cloneable {
+public class StrokeImpl implements Stroke, Stroke2, Cloneable {
     private FilterFactory filterFactory;
     private Expression color;
     private float[] dashArray;
+    private Expression[] dashExpressionArray;
     private Expression dashOffset;
     private GraphicImpl fillGraphic;
     private GraphicImpl strokeGraphic;
@@ -143,9 +144,21 @@ public class StrokeImpl implements Stroke, Cloneable {
         	final float[] defaultDashArray = Stroke.DEFAULT.getDashArray();
         	if(defaultDashArray == null)
         	    return null;
-        	
+
         	ret = new float[defaultDashArray.length];
         	System.arraycopy(defaultDashArray, 0, ret, 0, defaultDashArray.length);
+        }
+
+        return ret;
+    }
+
+    public Expression[] getDashExpressionArray() {
+        Expression[] ret;
+
+        if (dashExpressionArray != null) {
+            ret = dashExpressionArray;
+        } else {
+            ret = Stroke2.DEFAULT.getDashExpressionArray();
         }
 
         return ret;
@@ -169,6 +182,10 @@ public class StrokeImpl implements Stroke, Cloneable {
      */
     public void setDashArray(float[] dashPattern) {
         dashArray = dashPattern;
+    }
+
+    public void setDashExpressionArray(Expression[] dashExpressionArray) {
+        this.dashExpressionArray = dashExpressionArray;
     }
 
     /**
@@ -383,7 +400,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         out.append("\tOpacity " + this.opacity + "\n");
         out.append("\tLineCap " + this.lineCap + "\n");
         out.append("\tLineJoin " + this.lineJoin + "\n");
-        out.append("\tDash Array " + this.dashArray + "\n");
+        out.append("\tDash Array " + ((this.dashArray!=null)?this.dashArray:this.dashExpressionArray) + "\n"); // Volkov I.A.
         out.append("\tDash Offset " + this.dashOffset + "\n");
         out.append("\tFill Graphic " + this.fillGraphic + "\n");
         out.append("\tStroke Graphic " + this.strokeGraphic);
@@ -421,6 +438,12 @@ public class StrokeImpl implements Stroke, Cloneable {
                 clone.dashArray = new float[dashArray.length];
                 System.arraycopy(dashArray, 0, clone.dashArray, 0,
                     dashArray.length);
+            }
+
+            if (dashExpressionArray != null) {
+                clone.dashExpressionArray = new Expression[dashExpressionArray.length];
+                System.arraycopy(dashExpressionArray, 0, clone.dashExpressionArray, 0,
+                        dashExpressionArray.length);
             }
 
             if (fillGraphic != null && fillGraphic instanceof Cloneable) {
@@ -479,6 +502,10 @@ public class StrokeImpl implements Stroke, Cloneable {
             result = (PRIME * result) + hashCodeDashArray(dashArray);
         }
 
+        if (dashExpressionArray != null) {
+            result = (PRIME * result) + hashCodeDashExpressionArray(dashExpressionArray);
+        }
+
         return result;
     }
 
@@ -496,6 +523,25 @@ public class StrokeImpl implements Stroke, Cloneable {
 
         for (int i = 0; i < a.length; i++) {
             result = (PRIME * result) + Float.floatToIntBits(a[i]);
+        }
+
+        return result;
+    }
+
+    /*
+     * Helper method to compute the hashCode of expression arrays.
+     */
+    private int hashCodeDashExpressionArray(Expression[] a) {
+        final int PRIME = 1000003;
+
+        if (a == null) {
+            return 0;
+        }
+
+        int result = 0;
+
+        for (int i = 0; i < a.length; i++) {
+            result = (PRIME * result) + a[i].hashCode();
         }
 
         return result;
@@ -554,6 +600,10 @@ public class StrokeImpl implements Stroke, Cloneable {
         }
 
         if (!Arrays.equals(getDashArray(), other.getDashArray())) {
+            return false;
+        }
+
+        if (!Arrays.equals(getDashExpressionArray(), other.getDashExpressionArray())) {
             return false;
         }
 

@@ -24,6 +24,7 @@ import java.awt.Paint;
 
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.Stroke2;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 
@@ -79,6 +80,9 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
 
         // get the other properties needed for the stroke
         float[] dashes = stroke.getDashArray();
+        if ((dashes == null) && (stroke instanceof Stroke2)){
+            dashes = evalToFloatArray(((Stroke2)stroke).getDashExpressionArray(), feature);
+        }
         float width = ((Float) stroke.getWidth().evaluate(feature, Float.class)).floatValue();
         float dashOffset = ((Float) stroke.getDashOffset().evaluate(feature, Float.class)).floatValue();
 
@@ -98,6 +102,17 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         }
 
         return stroke2d;
+    }
+
+    private float[] evalToFloatArray(Expression[] exp,  SimpleFeature f) {
+        if (exp == null) {
+            return null;
+        }
+        float[] fo = new float[exp.length];
+        for (int i = 0; i < fo.length; ++i){
+            fo[i] = exp[i].evaluate(f, Float.class);
+        }
+        return fo;
     }
 
     /**

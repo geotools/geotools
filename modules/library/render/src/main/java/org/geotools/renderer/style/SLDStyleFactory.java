@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,26 +47,7 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.StyleAttributeExtractorTruncated;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.*;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.Feature;
@@ -792,9 +772,9 @@ public class SLDStyleFactory {
 		ts2d.setLabel(label);
 
 		// get the sequence of fonts to be used and set the first one available
-		List<Font> fonts = symbolizer.fonts();
-		java.awt.Font[] javaFonts = getFonts(feature, fonts);
-	        ts2d.setFonts(javaFonts);
+		Font[] fonts = symbolizer.getFonts();
+		java.awt.Font javaFont = getFont(feature, fonts);
+		ts2d.setFont(javaFont);
 
 		// compute label position, anchor, rotation and displacement
 		LabelPlacement placement = symbolizer.getLabelPlacement();
@@ -913,34 +893,37 @@ public class SLDStyleFactory {
      *            An array of fonts dependent of the feature, the first that is
      *            found on the current machine is returned
      *
-     * @return The first of the specified fonts found on this machine (Serif 10 if none found)
+     * @return The first of the specified fonts found on this machine or null if
+     *         none found
      */
-    private java.awt.Font[] getFonts(Object feature, List<Font> fonts) {
-        List<java.awt.Font> result = new ArrayList<>();
+    private java.awt.Font getFont(Object feature, Font[] fonts) {
+
         // try to build a font using the full spec
         if (fonts != null) {
-            for (Font curr : fonts) {
-                for (Expression family : curr.getFamily()) {
-                    String requestedFont = evalToString(family, feature, null);
-                    java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
 
-                    if (javaFont != null) {
-                        java.awt.Font font = styleFont(feature, curr, javaFont);
-                        result.add(font);
-                    }
+            for (int k = 0; k < fonts.length; k++) {
+                Font curr = fonts[k];
+                String requestedFont = evalToString(curr.getFontFamily(),
+                        feature, null);
+                java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(
+                        requestedFont);
+
+                if (javaFont != null) {
+                    return styleFont(feature, curr, javaFont);
                 }
             }
         }
 
-        if (result.isEmpty()) {
-            java.awt.Font font = new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
-            if (fonts != null && !fonts.isEmpty()) {
-                font = styleFont(feature, fonts.get(0), font);
-            }
-            result.add(font);
-        }
+        // could not find the requested font, see if we can at least use the
+        // requested styling
+        java.awt.Font result = new java.awt.Font("Serif", java.awt.Font.PLAIN,
+                12);
 
-        return result.toArray(new java.awt.Font[result.size()]);
+        if ((fonts != null) && (fonts.length > 0)) {
+            return styleFont(feature, fonts[0], result);
+        } else {
+            return result;
+        }
     }
 
     private java.awt.Font styleFont(Object feature, Font curr,
@@ -1016,6 +999,9 @@ public class SLDStyleFactory {
 
 		// get the other properties needed for the stroke
 		float[] dashes = stroke.getDashArray();
+        if ((dashes == null) && (stroke instanceof Stroke2)){
+            dashes = evalToFloatArray(((Stroke2)stroke).getDashExpressionArray(), feature);
+        }
 		float width = evalToFloat(stroke.getWidth(), feature, 1);
 		float dashOffset = evalToFloat(stroke.getDashOffset(), feature, 0);
 
@@ -1038,6 +1024,17 @@ public class SLDStyleFactory {
 
 		return stroke2d;
 	}
+
+    private float[] evalToFloatArray(Expression[] exp,  Object f) {
+        if (exp == null) {
+            return null;
+        }
+        float[] fo = new float[exp.length];
+        for (int i = 0; i < fo.length; ++i){
+            fo[i] = exp[i].evaluate(f, Float.class);
+        }
+        return fo;
+    }
 
 	private Paint getStrokePaint(org.geotools.styling.Stroke stroke, Object feature) {
 		if (stroke == null) {

@@ -1,5 +1,5 @@
 Symbology Encoding
-^^^^^^^^^^^^^^^^^^
+------------------
 
 The GeoTools rendering process is controlled styling information that you provide. The data structures we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE) specifications provided by the OGC.
 

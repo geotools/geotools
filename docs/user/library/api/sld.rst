@@ -63,7 +63,6 @@ such as Rule.
 Symbolizer
 ''''''''''
 
-
 .. image:: /images/symbolizer2.PNG
 
 GeoTools extends the concept of Symbolizer allowing the geometry to be defined using a general Expression (rather than just a PropertyName references). This facility allows a geometry to be defined using a Function expression giving users an opportunity to preprocess the geometry.

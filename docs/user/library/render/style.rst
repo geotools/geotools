@@ -91,8 +91,6 @@ StyleBuilder.
 For working with style layer descriptor use StyleBuilder to quickly create objects
 with their default values filled in; and then configure them as needed using setters.
 
-
-
 Internally we have:
 
 * StyleFactoryImpl2 that creates the raw objects; this is an implementation
@@ -105,7 +103,6 @@ Style Layer Descriptor
 ^^^^^^^^^^^^^^^^^^^^^^
 
 GeoTools styling is built on the style layer descriptor data model shown below (from :doc:`gt-api <../api/sld>`).
-
 
 .. image:: /images/sld.PNG
 
@@ -214,9 +211,7 @@ Symbology Encoding
 
 The feature type style data model captures the symbology encoding information describing how a feature should be drawn on the screen and will represent the bulk of our examples.
 
-
 .. image:: /images/se.PNG
-
 
 FeatureTypeStyle
 ''''''''''''''''
@@ -276,13 +271,33 @@ Notes on handling of features:
   
 * For an in depth discussion of the rendering process please refer to * :doc:`style </tutorial/map/style>` (tutorial)
 
-FeatureTypeStyle includes vendorExtensions specific to the GeoTools rendering engine:
+FeatureTypeStyle includes vendor options specific to the GeoTools rendering engine:
 
 * composite (source-over): allows control of color blending (using copy destination, source-over, destination-over, source-in, destination-in, source-out, destination-out source-atop, destination-atop, xor, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion).
 
 * composite-base (false): definition of composition groups
-
+   
+  .. code-block:: java
+     
+     // multiply buffer from feature type style 0, onto composite-base provided by feature type style 1 
+     style.featureTypeStyles().get(0).getOptions().put("composite","multiply, 0.5");
+     style.featureTypeStyles().get(1).getOptions().put("composite-base", true ); 
+     
 * firstMatch: stops rule evaluation after the first match (making it easier to work with datasets where content is classified by distinct attribute values)
+  
+  .. code-block:: java
+  
+     // exit rules on first match, like a switch statement 
+     fts.getOptions().put( "first", true ); 
+
+* sortBy: Control order features are retrieved, controlling drawing order.
+
+  The syntax is `Attribute1 {A|D},Attribute2 {A|D}...` where `A` is ascending, `D` is descending. The sorting direction is optional and defaults to ascending if not specified.
+  
+  .. code-block:: java
+     
+     // sort newer cities first, than by name  
+     fts.getOptions().put( "sortBy", "year D,name A"); 
 
 Rule
 ''''

@@ -522,7 +522,8 @@ public enum ContrastEnhancementType {
         final DefaultPiecewiseTransform1DElement mainElement = DefaultPiecewiseTransform1DElement
                 .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(minimum, maximum));
         final DefaultPiecewiseTransform1DElement maxElement = DefaultPiecewiseTransform1DElement
-                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(maximum, false, maxValue, true), maxValue);
+                //TODO Check if 255 is correct here - Ian
+                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(maximum, false, Double.POSITIVE_INFINITY, true), maxValue);
 
         return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
                 new DefaultPiecewiseTransform1DElement[] {zeroElement, mainElement, maxElement }, 0);

@@ -1,34 +1,31 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wfs.internal.v2_0;
 
-import junit.framework.Assert;
-import net.opengis.wfs20.AbstractType;
-import net.opengis.wfs20.FeatureTypeType;
-import net.opengis.wfs20.ParameterExpressionType;
-import net.opengis.wfs20.ParameterType;
-import net.opengis.wfs20.StoredQueryDescriptionType;
-import net.opengis.wfs20.Wfs20Factory;
-import net.opengis.wfs20.Wfs20Package;
-import net.opengis.wfs20.impl.FeatureTypeTypeImpl;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+
 import org.eclipse.emf.common.util.ECollections;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.geotools.data.wfs.internal.v2_0.storedquery.ParameterMappingDefaultValue;
-import org.geotools.data.wfs.internal.v2_0.storedquery.ParameterMappingExpressionValue;
-import org.geotools.data.wfs.internal.v2_0.storedquery.ParameterTypeFactory;
-import org.geotools.data.wfs.internal.v2_0.storedquery.StoredQueryConfiguration;
-import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.opengis.filter.Filter;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import net.opengis.wfs20.AbstractType;
+import net.opengis.wfs20.FeatureTypeType;
 
 /**
  * Test class for {@link FeatureTypeInfoImpl}.
@@ -37,7 +34,8 @@ import static org.mockito.Mockito.when;
  */
 public class FeatureTypeInfoImplTest {
 
-	private FeatureTypeType fttMock;
+    private FeatureTypeType fttMock;
+
     private FeatureTypeInfoImpl featureType;
 
     @Before
@@ -50,12 +48,12 @@ public class FeatureTypeInfoImplTest {
     // One parameter, no view params, no mappings => no parameters
     @Test
     public void testGetAbstractWhenFeatureTypeTypeAbstractIsEmpty() {
-		when(fttMock.getAbstract()).thenReturn(ECollections.<AbstractType>emptyEList());
-		String abstractExpected = "";
+        when(fttMock.getAbstract()).thenReturn(ECollections.<AbstractType> emptyEList());
+        String abstractExpected = "";
 
-		String abstractResult = featureType.getAbstract();
+        String abstractResult = featureType.getAbstract();
 
-		Assert.assertEquals(abstractExpected, abstractResult);
-	}
+        assertEquals(abstractExpected, abstractResult);
+    }
 
 }

@@ -94,14 +94,8 @@ public final class StyledShapePainter {
         // nothing do do, just needs to exist
     }
 
-    /**
-     * 
-     * @deprecated Use the no arguments constructor instead
-     */
-    @Deprecated
     public StyledShapePainter(LabelCache cache) {
         this.labelCache = cache;
-        // nothing do do
     }
 
     public void paint(final Graphics2D graphics, final LiteShape2 shape,

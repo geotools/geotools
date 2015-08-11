@@ -11,3 +11,4 @@ nb-configuration.xml
 *.iml
 .idea/
 workspace
+*.db

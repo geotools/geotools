@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -157,6 +157,11 @@ public class CssTranslator {
      * The global composite-base property
      */
     static final String COMPOSITE_BASE = "composite-base";
+
+    /**
+     * The attribute sorting property
+     */
+    static final String SORT_BY = "sort-by";
 
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS = new HashMap<String, String>() {
@@ -354,6 +359,7 @@ public class CssTranslator {
 
                 String composite = null;
                 Boolean compositeBase = null;
+                String sortBy = null;
 
                 // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
@@ -416,6 +422,16 @@ public class CssTranslator {
                                 compositeBase = Boolean.valueOf(values.get(0).toLiteral());
                             }
                         }
+
+                        // check if we have any sort-by
+                        if (sortBy == null) {
+                            List<Value> values = derived
+                                    .getPropertyValues(PseudoClass.ROOT, SORT_BY).get(SORT_BY);
+                            if (values != null && !values.isEmpty()) {
+                                sortBy = values.get(0).toLiteral();
+                            }
+                        }
+
                     }
                     
                     if(composite != null) {
@@ -423,6 +439,9 @@ public class CssTranslator {
                     }
                     if(Boolean.TRUE.equals(compositeBase)) {
                         ftsBuilder.option(COMPOSITE_BASE, "true");
+                    }
+                    if (sortBy != null) {
+                        ftsBuilder.option("sortBy", sortBy);
                     }
                 }
             }

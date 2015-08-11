@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -995,6 +995,14 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
             if (Math.abs(trPoint.getY() - getEnvelope2D().getMinY()) <= TOL) {
                 trPoint.setLocation(trPoint.getX(), trPoint.getY() + TOL);
+            }
+
+            if (Math.abs(trPoint.getX() - getEnvelope2D().getMinX()) <= TOL) {
+                trPoint.setLocation(trPoint.getX() + TOL, trPoint.getY());
+            }
+
+            if (Math.abs(trPoint.getY() - getEnvelope2D().getMaxY()) <= TOL) {
+                trPoint.setLocation(trPoint.getX(), trPoint.getY() - TOL);
             }
 
             GridCoordinates2D gc2D = new GridCoordinates2D();

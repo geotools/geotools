@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,23 +16,26 @@
  */
 package org.geotools.coverage.grid;
 
-import java.awt.geom.AffineTransform;
-
+import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.junit.Test;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.metadata.spatial.PixelOrientation;
 
-import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.transform.IdentityTransform;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 
-import org.junit.*;
-import org.opengis.geometry.DirectPosition;
 import static org.junit.Assert.*;
 
 
@@ -161,6 +164,22 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         gridCalc = gg.worldToGrid(worldPoint);
         gridExp.setLocation(gridBounds.width - 1, 0);
         assertTrue(gridExp.equals(gridCalc));
+
+        // This is a specific example that previously broke this unit test
+        Double minX =  -78.523;
+        Double minY = 38.010;
+        Double maxX = -78.451;
+        Double maxY = 38.069;
+        int width = 400;
+        int height = 300;
+
+        ReferencedEnvelope bounds = new ReferencedEnvelope(new Envelope(minX, maxX, minY, maxY), DefaultGeographicCRS.WGS84);
+        Rectangle rect = new Rectangle(0, 0, width, height);
+        GeneralGridEnvelope ggEnvelope = new GeneralGridEnvelope(rect, bounds.getDimension());
+        GridGeometry2D gm = new GridGeometry2D(ggEnvelope, bounds);
+        gridExp.setLocation(0, height - 1);
+        GridCoordinates2D gridCalcException = gm.worldToGrid(bounds.getLowerCorner());
+        assertTrue(gridCalcException.equals(gridExp));
     }
 
     @Test

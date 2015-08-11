@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -100,7 +100,7 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
         return largestType(type1, type2);
     }
 
-    private Class<?> largestType(Class<?> type1, Class<?> type2) {
+    Class<?> largestType(Class<?> type1, Class<?> type2) {
         // start with the easy cases
         if (type1.isAssignableFrom(type2)) {
             return type1;

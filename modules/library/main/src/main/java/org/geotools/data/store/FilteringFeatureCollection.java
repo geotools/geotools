@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.DecoratingFeatureCollection;
-import org.geotools.feature.collection.DelegateFeatureIterator;
+import org.geotools.filter.visitor.BindingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -59,7 +59,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 	public FilteringFeatureCollection( FeatureCollection<T, F> delegate, Filter filter ) {
 		super(delegate);
 		this.delegate = delegate;
-		this.filter = filter;
+        this.filter = (Filter) filter.accept(new BindingFilterVisitor(delegate.getSchema()), null);
 	}
 	
 	public FeatureCollection<T, F> subCollection(Filter filter) {

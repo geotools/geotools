@@ -237,7 +237,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         Expression expr1 = optimizeTime(contains.getExpression1(), extraData);
         Expression expr2 = optimizeTime(contains.getExpression2(), extraData);
 
-        return getFactory(extraData).contains(expr1, expr2, contains.getMatchAction());
+        return getFactory(extraData).tcontains(expr1, expr2, contains.getMatchAction());
     }
 
     public Object visit(TEquals equals, Object extraData) {

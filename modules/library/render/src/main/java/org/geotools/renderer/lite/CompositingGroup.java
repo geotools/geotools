@@ -21,6 +21,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.DirectLayer;
@@ -31,6 +32,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.util.logging.Logging;
 
 /**
  * Data structure holding a MapContent that has its own compositing base
@@ -38,6 +40,8 @@ import org.geotools.styling.StyleFactory;
  * @author Andrea Aime - GeoSolutions
  */
 class CompositingGroup {
+
+    private static final Logger LOGGER = Logging.getLogger(CompositingGroup.class);
 
     private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
@@ -49,6 +53,9 @@ class CompositingGroup {
         for (Layer layer : mc.layers()) {
             Style style = layer.getStyle();
             if (layer instanceof DirectLayer) {
+                layers.add(layer);
+            } else if (layer instanceof ZGroupLayer) {
+                LOGGER.severe("REMEMBER TO HANDLE Z-GROUPS IN COMPOSITING!");
                 layers.add(layer);
             } else {
                 List<Style> styles = splitOnCompositingBase(style);
@@ -113,7 +120,7 @@ class CompositingGroup {
     /**
      * Returns true if alpha compositing is used anywhere in the style
      * 
-     * @param current
+     * @param currentFeature
      * @return
      */
     private static boolean hasAlphaCompositing(List<Layer> layers) {

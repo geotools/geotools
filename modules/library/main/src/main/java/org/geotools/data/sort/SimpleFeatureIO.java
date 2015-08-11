@@ -259,4 +259,15 @@ public class SimpleFeatureIO {
         }
 
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "SimpleFeatureIO [schema=" + schema + ", file=" + file + "]";
+    }
+
 }

@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.geotools.map.Layer;
 import org.geotools.renderer.ScreenMap;
+import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.styling.Rule;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.sort.SortBy;
@@ -79,12 +80,30 @@ final class LiteFeatureTypeStyle {
     ScreenMap screenMap;
 
     /**
-     * use this for only the 1st FTS. We dont actually create an image for it -- we just use the
+     * Whether the feature should be generalized in memory, or not (in this case, the store did it
+     * for us). True by default
+     */
+    boolean inMemoryGeneralization = true;
+
+    /**
+     * The handler that will be called to process the geometries to deal with projections
+     * singularities and dateline wrapping
+     */
+    ProjectionHandler projectionHandler;
+
+    /**
+     * The meta buffer for the current layer
+     */
+    int metaBuffer;
+
+    /**
+     * use this for only the 1st FTS. We don't actually create an image for it -- we just use the
      * graphics. WATCH OUT FOR THIS. NOTE: image=null in this case
      * 
      * @param graphics
      * @param ruleList
      * @param elseRuleList
+     * @param transformation
      */
     public LiteFeatureTypeStyle(Layer layer, Graphics2D graphics, List ruleList, List elseRuleList,
             Expression transformation) {

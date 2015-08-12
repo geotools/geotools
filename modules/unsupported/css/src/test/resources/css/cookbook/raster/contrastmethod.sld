@@ -13,8 +13,8 @@
             <sld:ContrastEnhancement>
               <sld:Normalize>
                 <sld:VendorOption name="algorithm">ClipToMinimumMaximum</sld:VendorOption>
-                <sld:VendorOption name="min">20</sld:VendorOption>
-                <sld:VendorOption name="max">30</sld:VendorOption>
+                <sld:VendorOption name="minValue">20</sld:VendorOption>
+                <sld:VendorOption name="maxValue">30</sld:VendorOption>
               </sld:Normalize>
               <sld:GammaValue>0.5</sld:GammaValue>
             </sld:ContrastEnhancement>

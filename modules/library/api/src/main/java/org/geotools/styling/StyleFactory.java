@@ -178,7 +178,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      *
      * @return the stroke object
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width);
 
@@ -191,7 +191,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      *
      * @return The stroke
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width, Expression opacity);
 
@@ -210,7 +210,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      *
      * @return The completed stroke.
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width, Expression opacity,
         Expression lineJoin, Expression lineCap, float[] dashArray, Expression dashOffset,

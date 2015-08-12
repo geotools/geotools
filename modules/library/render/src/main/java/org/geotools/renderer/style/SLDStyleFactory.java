@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,8 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -791,9 +794,9 @@ public class SLDStyleFactory {
 		ts2d.setLabel(label);
 
 		// get the sequence of fonts to be used and set the first one available
-		Font[] fonts = symbolizer.getFonts();
-		java.awt.Font javaFont = getFont(feature, fonts);
-		ts2d.setFont(javaFont);
+		List<Font> fonts = symbolizer.fonts();
+		java.awt.Font[] javaFonts = getFonts(feature, fonts);
+	        ts2d.setFonts(javaFonts);
 
 		// compute label position, anchor, rotation and displacement
 		LabelPlacement placement = symbolizer.getLabelPlacement();
@@ -912,37 +915,34 @@ public class SLDStyleFactory {
      *            An array of fonts dependent of the feature, the first that is
      *            found on the current machine is returned
      *
-     * @return The first of the specified fonts found on this machine or null if
-     *         none found
+     * @return The first of the specified fonts found on this machine (Serif 10 if none found)
      */
-    private java.awt.Font getFont(Object feature, Font[] fonts) {
-
+    private java.awt.Font[] getFonts(Object feature, List<Font> fonts) {
+        List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
         if (fonts != null) {
+            for (Font curr : fonts) {
+                for (Expression family : curr.getFamily()) {
+                    String requestedFont = evalToString(family, feature, null);
+                    java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
 
-            for (int k = 0; k < fonts.length; k++) {
-                Font curr = fonts[k];
-                String requestedFont = evalToString(curr.getFontFamily(),
-                        feature, null);
-                java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(
-                        requestedFont);
-
-                if (javaFont != null) {
-                    return styleFont(feature, curr, javaFont);
+                    if (javaFont != null) {
+                        java.awt.Font font = styleFont(feature, curr, javaFont);
+                        result.add(font);
+                    }
                 }
             }
         }
 
-        // could not find the requested font, see if we can at least use the
-        // requested styling
-        java.awt.Font result = new java.awt.Font("Serif", java.awt.Font.PLAIN,
-                12);
-
-        if ((fonts != null) && (fonts.length > 0)) {
-            return styleFont(feature, fonts[0], result);
-        } else {
-            return result;
+        if (result.isEmpty()) {
+            java.awt.Font font = new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
+            if (fonts != null && !fonts.isEmpty()) {
+                font = styleFont(feature, fonts.get(0), font);
+            }
+            result.add(font);
         }
+
+        return result.toArray(new java.awt.Font[result.size()]);
     }
 
     private java.awt.Font styleFont(Object feature, Font curr,
@@ -1545,6 +1545,47 @@ public class SLDStyleFactory {
                             + BlendingMode.getStandardNames());
         }
         return BlendComposite.getInstance(blend, opacity);
+    }
+
+    /**
+     * Returns the sorting directions found in the feature type style
+     * 
+     * @param options
+     * @return
+     */
+    public static SortBy[] getSortBy(Map<String, String> options) {
+        // get the spec, if no spec, no sorting
+        String sortBySpec = options.get(FeatureTypeStyle.SORT_BY);
+        if (sortBySpec == null) {
+            return null;
+        }
+
+        // parse it
+        List<SortBy> result = new ArrayList<>();
+        String[] attributeSpecs = sortBySpec.split("\\s*,\\s*");
+        for (String attributeSpec : attributeSpecs) {
+            String[] items = attributeSpec.split("\\s+");
+            if (items.length < 1 || items.length > 2) {
+                throw new IllegalArgumentException("Invalid sortBy specification, it should "
+                        + "be either in the form 'attribute' or 'attribute direction' "
+                        + "but instead it is: '" + attributeSpec + "'");
+            }
+            String attribute = items[0];
+            SortOrder order = SortOrder.ASCENDING;
+            if (items.length == 2) {
+                String direction = items[1];
+                if ("D".equalsIgnoreCase(direction) || "DESC".equalsIgnoreCase(direction)) {
+                    order = SortOrder.DESCENDING;
+                } else if(!"A".equalsIgnoreCase(direction) || "ASC".equalsIgnoreCase(direction)) {
+                    throw new IllegalArgumentException("Unknown sort order '" + order 
+                            + "' in: '" + attributeSpec + "'");
+                }
+            }
+            SortBy sort = ff.sort(attribute, order);
+            result.add(sort);
+        }
+
+        return result.toArray(new SortBy[result.size()]);
     }
 
 	/**

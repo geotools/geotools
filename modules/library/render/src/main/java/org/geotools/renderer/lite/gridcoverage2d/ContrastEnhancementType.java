@@ -23,27 +23,33 @@ import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
 import it.geosolutions.jaiext.range.RangeFactory;
 
+import java.awt.RenderingHints;
+import java.awt.Transparency;
+import java.awt.color.ColorSpace;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferUShort;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.media.jai.Histogram;
+import javax.media.jai.JAI;
+import javax.media.jai.RasterFactory;
 
 import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.piecewise.MathTransformationAdapter;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
 import org.geotools.styling.AbstractContrastMethodStrategy;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.util.Utilities;
+import org.jaitools.imageutils.ImageLayout2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.style.ContrastMethod;
@@ -310,8 +316,8 @@ public enum ContrastEnhancementType {
             //
             // //
             // get the correct dim for this data type
-            final double maximum = ColorUtilities.getMaximum(dataType);
-            final double minimum = ColorUtilities.getMinimum(dataType);
+            final double maximum = MAX_BYTE;
+            final double minimum = MIN_BYTE;
             if (areEqual(extrema[1][0], maximum) && areEqual(extrema[0][0], minimum)) {
                 return inputWorker.getRenderedImage();
             }
@@ -320,9 +326,21 @@ public enum ContrastEnhancementType {
             final double delta = extrema[1][0] - extrema[0][0];
             final double scale = (maximum - minimum) / delta;
             final double offset = minimum - scale * extrema[0][0];
-
+            
+            //
             // do the actual rescale
-            inputWorker.setRenderingHints(hints);
+            //
+            
+            // create a proper layout to impose the target data type
+            final ImageLayout2 layout = new ImageLayout2(inputWorker.getRenderedImage());
+            SampleModel sm = RasterFactory.createBandedSampleModel(DataBuffer.TYPE_BYTE, inputWorker.getRenderedImage().getWidth(), inputWorker.getRenderedImage().getHeight(), 1);
+            layout.setSampleModel(sm);
+            layout.setColorModel(new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE));
+            RenderingHints localHints= hints.clone();
+            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
+            
+            // rescale
+            inputWorker.setRenderingHints(localHints);
             inputWorker.rescale(new double[] { scale }, new double[] { offset });
             return inputWorker.getRenderedImage();
         }
@@ -360,9 +378,9 @@ public enum ContrastEnhancementType {
             //
             // General case, we use the rescale in order to stretch the values to highest and lowest dim
             //
-            // get the correct dim for this data type
-            final double maximum = ColorUtilities.getMaximum(dataType);
-            final double minimum = ColorUtilities.getMinimum(dataType);
+            // get the target data type
+            final double maximum = MAX_BYTE;
+            final double minimum = MIN_BYTE;
             if (areEqual(maxData, maximum) && areEqual(minData, minimum)) {
                 return inputWorker.getRenderedImage();
             }
@@ -372,8 +390,20 @@ public enum ContrastEnhancementType {
             final double scale = (maximum - minimum) / delta;
             final double offset = minimum - scale * minData;
 
+            //
             // do the actual rescale
-            inputWorker.setRenderingHints(hints);
+            //
+            
+            // create a proper layout to impose the target data type
+            final ImageLayout2 layout = new ImageLayout2(inputWorker.getRenderedImage());            
+            ComponentColorModel colorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+            layout.setColorModel(colorModel);
+            layout.setSampleModel(colorModel.createCompatibleSampleModel(inputWorker.getRenderedImage().getWidth(), inputWorker.getRenderedImage().getHeight()));
+            RenderingHints localHints= hints.clone();
+            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
+            
+            // rescale
+            inputWorker.setRenderingHints(localHints);
             inputWorker.rescale(new double[] { scale }, new double[] { offset });
             return inputWorker.getRenderedImage();
         }
@@ -516,11 +546,11 @@ public enum ContrastEnhancementType {
     private static PiecewiseTransform1D<DefaultPiecewiseTransform1DElement> generateClampingPiecewise(
             double minimum, double maximum, double minValue, double maxValue) {
         final DefaultPiecewiseTransform1DElement zeroElement = DefaultPiecewiseTransform1DElement
-                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(0, true, minimum, false), minValue);
+                .create("clamp-to-min", RangeFactory.create(0, true, minimum, false), minValue);
         final DefaultPiecewiseTransform1DElement mainElement = DefaultPiecewiseTransform1DElement
-                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(minimum, maximum));
+                .create("passthrough", RangeFactory.create(minimum, maximum));
         final DefaultPiecewiseTransform1DElement maxElement = DefaultPiecewiseTransform1DElement
-                .create("normalize-clip-contrast-enhancement-transform", RangeFactory.create(maximum, false, Double.POSITIVE_INFINITY, true), maxValue);
+                .create("clamp-to-max", RangeFactory.create(maximum, false, Double.POSITIVE_INFINITY, true), maxValue);
 
         return new DefaultPiecewiseTransform1D<DefaultPiecewiseTransform1DElement>(
                 new DefaultPiecewiseTransform1DElement[] {zeroElement, mainElement, maxElement }, 0);

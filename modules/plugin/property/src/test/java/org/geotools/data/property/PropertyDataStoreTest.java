@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,21 +26,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.property.PropertyFeatureStore;
-import org.geotools.data.property.PropertyFeatureWriter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -55,6 +52,10 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
+
+import junit.framework.TestCase;
 
 /**
  * Test functioning of PropertyDataStore.
@@ -608,5 +609,25 @@ public class PropertyDataStoreTest extends TestCase {
         SimpleFeature sf = it.next();
         it.close();
         assertEquals(fid, sf.getIdentifier());
+    }
+
+    public void testSortOnUnrequestedProperties() throws Exception {
+        ContentFeatureSource fs = store.getFeatureSource("road");
+        Query q = new Query("road");
+        q.setPropertyNames(new String[] { "name" });
+        q.setSortBy(new SortBy[] { ff.sort("id", SortOrder.DESCENDING) });
+
+        ContentFeatureCollection fc = fs.getFeatures(q);
+        String[] expectedNames = new String[] { "", "justin", "dave", "brent", "jody" };
+        try (SimpleFeatureIterator fi = fc.features()) {
+            int i = 0;
+            while (fi.hasNext()) {
+                SimpleFeature feature = fi.next();
+                String name = (String) feature.getAttribute("name");
+                String expectedName = expectedNames[i];
+                assertEquals(expectedName, name);
+                i++;
+            }
+        }
     }
 }

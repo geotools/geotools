@@ -492,7 +492,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
         String typeNames = builder.toString();
         typeNames = typeNames.substring(0, typeNames.length() - 1);
-        params.put("TypeNames", typeNames);
+        params.put("TypeName", typeNames);
 
     }
 

@@ -168,7 +168,7 @@ class NetCDFGeoreferenceManager {
         // get the coordinate variables
         Map<String, CoordinateVariable<?>> coordinates = new HashMap<String, CoordinateVariable<?>>();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
-            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
+            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null && !"reftime".equalsIgnoreCase(axis.getFullName())) {
                 coordinates.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
             } else {
                 // Workaround for Unsupported Axes
@@ -184,6 +184,10 @@ class NetCDFGeoreferenceManager {
                     axis.setAxisType(AxisType.Time);
                     coordinates.put(axis.getFullName(),
                             CoordinateVariable.create((CoordinateAxis1D) axis));
+                } else if ("reftime".equals(axis.getFullName())) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Unable to support reftime which is not a CoordinateAxis1D");
+                    }
                 } else {
                     LOGGER.warning("Unsupported axis: " + axis + " in input: " + dataset.getLocation()
                             + " has been found");
@@ -344,9 +348,9 @@ class NetCDFGeoreferenceManager {
                     }
                     break;
                 }
-            }else {
-                if (LOGGER.isLoggable(Level.SEVERE)) {
-                    LOGGER.severe("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
+            } else {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
                 }
             }
         }

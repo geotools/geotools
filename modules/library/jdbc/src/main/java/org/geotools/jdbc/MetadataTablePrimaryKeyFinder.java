@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,9 @@ package org.geotools.jdbc;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -109,8 +109,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
     public PrimaryKey getPrimaryKey(JDBCDataStore store, String schema, String table, Connection cx)
             throws SQLException {
         ResultSet rs = null;
-        ResultSet tables = null;
-        Statement st = null;
+        PreparedStatement st = null;
         
         String metadataSchema = getMetadataSchema(store);
         
@@ -123,7 +122,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                 synchronized (this) {
                     if(metadataTableExists == null) {
                         try {
-                            st = cx.createStatement();
+                            
                             StringBuffer sb = new StringBuffer();
                             sb.append("SELECT * FROM ");
                             if (metadataSchema != null) {
@@ -131,7 +130,8 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                                 sb.append(".");
                             }
                             sb.append(tableName).append(" WHERE 1 = 0");
-                            rs = st.executeQuery(sb.toString());
+                            st = cx.prepareStatement(sb.toString());
+                            rs = st.executeQuery();
                             metadataTableExists = true;
                         } catch(Exception e) {
                             // clean up the transaction status in case we are in auto-commit mode
@@ -141,6 +141,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                             metadataTableExists = false;
                         } finally {
                             store.closeSafe(rs);
+                            store.closeSafe(st);
                         }
                     }
                 }
@@ -150,7 +151,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             }
             
             // build query against the metadata table
-            SQLDialect dialect = store.getSQLDialect();
+            List<String> parameters = new ArrayList<String>();
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT * FROM ");
             if (metadataSchema != null) {
@@ -160,21 +161,24 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             sb.append(tableName);
             sb.append(" WHERE ");
             if (schema != null) {
-                sb.append("table_schema");
-                sb.append(" = '" + schema + "' AND ");
+                sb.append("table_schema = ? AND ");
+                parameters.add(schema);
             }
-            sb.append("table_name");
-            sb.append(" = '" + table + "'");
+            sb.append("table_name = ?");
+            parameters.add(table);
             sb.append(" ORDER BY ");
             sb.append("pk_column_idx");
             sb.append(" ASC");
             String sql = sb.toString();
-            LOGGER.log(Level.FINE, "Reading metadata table metadata: {0}", sql);
+            LOGGER.log(Level.FINE, "Reading metadata table metadata: {0} [ parameters = {1} ]", new Object[] { sql, parameters });
 
             // extract information column by column
             DatabaseMetaData metaData = cx.getMetaData();
-            st = cx.createStatement();
-            rs = st.executeQuery(sql);
+            st = cx.prepareStatement(sql);
+            for (int i = 0; i < parameters.size(); i++) {
+            	st.setString(i+1, parameters.get(i));
+            }
+            rs = st.executeQuery();
 
             List<PrimaryKeyColumn> columns = new ArrayList<PrimaryKeyColumn>();
             Set<String> colNames = null;
@@ -225,9 +229,8 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                     e);
             return null;
         } finally {
-            store.closeSafe(st);
-            store.closeSafe(tables);
             store.closeSafe(rs);
+            store.closeSafe(st);
         }
     }
 

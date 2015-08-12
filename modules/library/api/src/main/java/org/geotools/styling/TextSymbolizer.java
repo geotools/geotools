@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import java.util.List;
 import java.util.Map;
 
 import org.opengis.filter.expression.Expression;
@@ -313,30 +314,42 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     void setLabel(Expression label);
 
     /**
+     * Direct access to device independent Fonts used to render the label. Fonts are used in order
+     * of priority given.
+     * 
+     * @return device independent Font used to render the label.
+     */
+    List<Font> fonts();
+
+    /**
      * Returns a device independent Font object that is to be used to render
      * the label.
      *
-     * @deprecated use getFont()
+     * @deprecated use fonts()
      */
     Font[] getFonts();
     
     /**
-     * Font to use when rendering this symbolizer.
-     * @return Font to use when rendering this symbolizer
+     * Initial Font to use when rendering this symbolizer.
+     * For alternatives see {@link #fonts()}.
+     * 
+     * @return Initial Font used to render label, or null if unavailable.
      */
     Font getFont();
     
     /**
-     * Font used when rendering this symbolizer.
+     * Set initial font used to render label.
+     * This will replace the initial entry in the {@link #fonts()} list.
+     * 
      * @param font
      */
     public void setFont( org.opengis.style.Font font );
     
     /**
-     * sets a list of device independent Font objects to be used to render the
+     * Sets a list of device independent Font objects to be used to render the
      * label.
      *
-     * @deprecated use getFont() setters to modify the set of font faces used
+     * @deprecated use fonts() to directly modify list of fonts in place
      */
     void setFonts(Font[] fonts);
 

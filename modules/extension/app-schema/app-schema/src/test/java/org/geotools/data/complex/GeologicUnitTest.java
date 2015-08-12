@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,6 +42,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -76,6 +78,11 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void oneTimeSetUp() throws Exception {
         reader = EmfComplexFeatureReader.newInstance();
+    }
+
+    @After
+    public void cleanUpDataAccessRegistry() {
+        DataAccessRegistry.unregisterAndDisposeAll();
     }
 
     /**
@@ -137,6 +144,31 @@ public class GeologicUnitTest extends AppSchemaTestSupport {
 
         assertNotNull(mappings);
         assertEquals(1, mappings.size());
+    }
+
+    /**
+     * Tests that a {@link FeatureSource} can be obtained for all names returned by {@link AppSchemaDataAccess#getNames()}.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testGetNamesAndFeatureSources() throws Exception {
+        /*
+         * Initiate data accesses and make sure they have the mappings
+         */
+        final Map<String, Serializable> dsParams = new HashMap<String, Serializable>();
+        URL url = getClass().getResource(schemaBase + "GeologicUnit.xml");
+        assertNotNull(url);
+        dsParams.put("dbtype", "app-schema");
+        dsParams.put("url", url.toExternalForm());
+
+        DataAccess<?, ?> guDataStore = DataAccessFinder.getDataStore(dsParams);
+        assertNotNull(guDataStore);
+
+        for (Name name: guDataStore.getNames()) {
+            FeatureSource<?, ?>  fs = guDataStore.getFeatureSource(name);
+            assertNotNull(fs);
+        }
     }
 
     /**

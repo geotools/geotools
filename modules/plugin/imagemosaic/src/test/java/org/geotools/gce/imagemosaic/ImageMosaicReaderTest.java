@@ -16,12 +16,15 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
+import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
@@ -86,6 +89,8 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -110,6 +115,8 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.TransformException;
 
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
@@ -141,6 +148,8 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL rgbURL;
 	
+    private URL mixedSampleModelURL;
+
 	private URL heterogeneousGranulesURL;
 
 	private URL indexURL;
@@ -1946,6 +1955,7 @@ public class ImageMosaicReaderTest extends Assert{
 		cleanUp();
 		
 		rgbURL = TestData.url(this, "rgb");
+        mixedSampleModelURL = TestData.url(this, "mixed_sample_model");
 		heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
 		timeURL = TestData.url(this, "time_geotiff");
 		timeFormatURL = TestData.url(this, "time_format_geotiff");
@@ -2489,10 +2499,6 @@ public class ImageMosaicReaderTest extends Assert{
 
             // Palette should have been successfully loaded
             assertNotNull(manager.defaultPalette);
-
-            // Different palettes requires color Expansion
-            assertTrue(manager.expandMe);
-
         } finally {
             reader.dispose();
         }
@@ -3728,6 +3734,78 @@ public class ImageMosaicReaderTest extends Assert{
         GridCoverage2D coverage = reader2.read(null);
         coverage.dispose(true);
         reader2.dispose();
+    }
+
+    @Test
+    public void testMixedSampleModels() throws Exception {
+        File mosaicFolder = DataUtilities.urlToFile(mixedSampleModelURL);
+        cleanConfigurationFiles(mosaicFolder, mosaicFolder.getName());
+        final AbstractGridFormat format = TestUtils.getFormat(mixedSampleModelURL);
+        ImageMosaicReader reader = TestUtils.getReader(mixedSampleModelURL, format);
+
+        GridCoverage2D coverage = reader.read(null);
+        assertNotNull(coverage);
+        RenderedImage ri = coverage.getRenderedImage();
+        assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
+        assertThat(ri.getColorModel(), instanceOf(ComponentColorModel.class));
+
+        File sample = new File(
+                "src/test/resources/org/geotools/gce/imagemosaic/test-data/mixed-mosaic.png");
+        // RenderedImageBrowser.showChain(coverage.getRenderedImage());
+        ImageAssert.assertEquals(sample, ri, 100);
+        coverage.dispose(true);
+
+        // check the color models of small areas, it should be the one of the one granule
+        // involved in the mosaic
+        checkColorModel(IndexColorModel.class, 1, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(10, 10.1, 43, 43.1, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(IndexColorModel.class, 1, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(13.5, 13.6, 43.5, 43.6, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(ComponentColorModel.class, 1, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(8, 8.1, 45.5, 45.6, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(ComponentColorModel.class, 1, DataBuffer.TYPE_USHORT,
+                new ReferencedEnvelope(10.5, 10.6, 45.5, 45.6, DefaultGeographicCRS.WGS84), reader);
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(13.5, 13.6, 45.5, 45.6, DefaultGeographicCRS.WGS84), reader);
+
+        // check larger ares for combinations of tiles
+        // ... gray 8 bit and gray 16 bit
+        checkColorModel(ComponentColorModel.class, 1, DataBuffer.TYPE_USHORT,
+                new ReferencedEnvelope(8, 10, 45, 46, DefaultGeographicCRS.WGS84), reader);
+        // ... gray 8 bit and RGB
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(7, 8, 43, 45, DefaultGeographicCRS.WGS84), reader);
+        // ... gray 16 bit and RGB
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(11, 13, 45, 46, DefaultGeographicCRS.WGS84), reader);
+        // ... gray 16 bit and indexed
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(10, 11, 43, 45, DefaultGeographicCRS.WGS84), reader);
+        // ... RGB and indexed
+        checkColorModel(ComponentColorModel.class, 3, DataBuffer.TYPE_BYTE,
+                new ReferencedEnvelope(7, 11, 43, 44, DefaultGeographicCRS.WGS84), reader);
+
+        reader.dispose();
+    }
+
+    private void checkColorModel(Class<? extends ColorModel> clazz, int bands, int dataType,
+            ReferencedEnvelope box,
+            ImageMosaicReader reader)
+                    throws NoninvertibleTransformException, TransformException, IOException {
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        GeneralEnvelope ge = CRS.transform(mt.inverse(), box);
+        GridEnvelope2D range = new GridEnvelope2D(new Envelope2D(ge), PixelInCell.CELL_CENTER);
+        gg.setValue(new GridGeometry2D(range, mt, box.getCoordinateReferenceSystem()));
+
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { gg });
+        RenderedImage ri = coverage.getRenderedImage();
+        // RenderedImageBrowser.showChain(ri);
+        assertThat(ri.getColorModel(), instanceOf(clazz));
+        assertEquals(bands, ri.getSampleModel().getNumBands());
+        assertEquals(dataType, ri.getSampleModel().getDataType());
+        coverage.dispose(true);
     }
 
     private void cleanConfigurationFiles(File testMosaic, String mosaicName) {

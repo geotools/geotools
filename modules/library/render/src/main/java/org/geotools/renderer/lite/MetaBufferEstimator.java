@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -38,6 +38,7 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
 import org.geotools.styling.ImageOutline;
@@ -264,42 +265,43 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     public void visit(TextSymbolizer text) {
         // while we cannot account for the label size, we should at least
         // account for its height, anchor point, and eventual offsets
-        if(text.getFont() != null) {
-
-            int textSize = getPositiveValue(text.getFont().getSize());
-            int delta = -1;
-            if (text.getLabelPlacement() instanceof PointPlacement) {
-                PointPlacement pp = (PointPlacement) text.getLabelPlacement();
-                Displacement pd = pp.getDisplacement();
-                if (pd != null) {
-                    int dx = getPositiveValue(pd.getDisplacementX());
-                    int dy = getPositiveValue(pd.getDisplacementY());
-                    delta = Math.max(dx, dy);
-                }
-                AnchorPoint ap = pp.getAnchorPoint();
-                if (ap != null) {
-                    double ax = Math.abs(getDouble(ap.getAnchorPointX()) - 0.5);
-                    double ay = Math.abs(getDouble(ap.getAnchorPointY()) - 0.5);
-                    int anchorDelta = (int) Math.ceil(Math.max(ax, ay) * textSize);
-                    if (delta > 0) {
-                        delta += anchorDelta;
-                    } else {
-                        delta = anchorDelta;
+        if (text.fonts() != null && !text.fonts().isEmpty()) {
+            for (Font font : text.fonts()) {
+                int textSize = getPositiveValue(font.getSize());
+                int delta = -1;
+                if (text.getLabelPlacement() instanceof PointPlacement) {
+                    PointPlacement pp = (PointPlacement) text.getLabelPlacement();
+                    Displacement pd = pp.getDisplacement();
+                    if (pd != null) {
+                        int dx = getPositiveValue(pd.getDisplacementX());
+                        int dy = getPositiveValue(pd.getDisplacementY());
+                        delta = Math.max(dx, dy);
+                    }
+                    AnchorPoint ap = pp.getAnchorPoint();
+                    if (ap != null) {
+                        double ax = Math.abs(getDouble(ap.getAnchorPointX()) - 0.5);
+                        double ay = Math.abs(getDouble(ap.getAnchorPointY()) - 0.5);
+                        int anchorDelta = (int) Math.ceil(Math.max(ax, ay) * textSize);
+                        if (delta > 0) {
+                            delta += anchorDelta;
+                        } else {
+                            delta = anchorDelta;
+                        }
                     }
                 }
-            }
-            int total = -1;
-            if (delta > 0) {
-                if (textSize > 0) {
-                    total = delta + textSize;
-                } else {
-                    total = delta;
+                int total = -1;
+                if (delta > 0) {
+                    if (textSize > 0) {
+                        total = delta + textSize;
+                    } else {
+                        total = delta;
+                    }
+                } else if (textSize > 0) {
+                    total = textSize;
                 }
-            } else if (textSize > 0) {
-                total = textSize;
-            }
 
-            buffer = Math.max(buffer, total);
+                buffer = Math.max(buffer, total);
+            }
         }
         
         // take into account label shields if any

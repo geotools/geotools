@@ -47,8 +47,6 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import javax.xml.transform.TransformerException;
 
-import junit.framework.Assert;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -83,6 +81,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.style.ContrastMethod;
@@ -346,7 +345,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 //
                 // Test #7: [SLD]
                 //    - Opacity: 1.0
-                //    - ChannelSelection: Gray {Contrast Enh: Normalize-StretchMinMax}
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-StretchMinMax} with BYTE
                 //
                 // ////////////////////////////////////////////////////////////////////
                 gc = CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -384,7 +383,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 //
                 // Test #8: [StyleBuilder]
                 //    - Opacity: 1.0
-                //    - ChannelSelection: Gray {Contrast Enh: Normalize-StretchMinMax}
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-StretchMinMax} with USHORT
                 //
                 // ////////////////////////////////////////////////////////////////////
                 gc = CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -417,6 +416,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 // visit the RasterSymbolizer
                 rsh_StyleBuilder.visit(rsb_4);
                 output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_BYTE, output.getRenderedImage().getSampleModel().getDataType()); //ok we went to byte
                 worker = new ImageWorker(output.getRenderedImage());
                 min = worker.getMinimums();
                 max = worker.getMaximums();
@@ -425,14 +425,62 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 // values outside the specified range to be clamped
                 // to the range bounds
                 assertEquals(0d,  min[0], DELTA);
-                assertEquals(65535d,  max[0], DELTA);
+                assertEquals(255d,  max[0], DELTA);
                 testRasterSymbolizerHelper(rsh_StyleBuilder);
+                
+                // ////////////////////////////////////////////////////////////////////
+                //
+                // Test #8a: [StyleBuilder]
+                //    - Opacity: 1.0
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-StretchMinMax} with Float
+                //
+                // ////////////////////////////////////////////////////////////////////
+                gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                                "Float",
+                                JAI.create("ImageRead", new File(TestData.url(this, "smalldem.tif").toURI())),
+                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+
+                // build the RasterSymbolizer
+                sldBuilder = new StyleBuilder();
+                // the RasterSymbolizer Helper
+                rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+                final RasterSymbolizer rsb_4f = sldBuilder.createRasterSymbolizer();
+                final ChannelSelection chSel_4f = new ChannelSelectionImpl();
+                final SelectedChannelType chTypeGray_4f = new SelectedChannelTypeImpl();
+                final ContrastEnhancement cntEnh_4f = new ContrastEnhancementImpl();
+                final ContrastMethodStrategy method_4f = new NormalizeContrastMethodStrategy();
+                method_4f.addOption("algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_STRETCH_TO_MINMAX_NAME));
+                method_4f.addOption("minValue", sldBuilder.literalExpression(10));
+                method_4f.addOption("maxValue", sldBuilder.literalExpression(1200));
+                cntEnh_4f.setMethod(method_4);
+
+                chTypeGray_4f.setChannelName("1");
+                chTypeGray_4f.setContrastEnhancement(cntEnh_4f);
+                chSel_4f.setGrayChannel(chTypeGray_4f);
+                rsb_4f.setChannelSelection(chSel_4f);
+
+                // visit the RasterSymbolizer
+                rsh_StyleBuilder.visit(rsb_4f);
+                output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_BYTE, output.getRenderedImage().getSampleModel().getDataType()); //ok we went to byte                
+                worker = new ImageWorker(output.getRenderedImage());
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+                // Clip to Minimum Maximum does a Clamp by forcing
+                // values outside the specified range to be clamped
+                // to the range bounds
+                assertEquals(0d,  min[0], DELTA);
+                assertEquals(255d,  max[0], DELTA);
+                testRasterSymbolizerHelper(rsh_StyleBuilder);                
 
                 // ////////////////////////////////////////////////////////////////////
                 //
                 // Test #9: [SLD]
                 //    - Opacity: 1.0
-                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax}
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax} BYTE
                 //
                 // ////////////////////////////////////////////////////////////////////
                 gc = CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -471,7 +519,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 //
                 // Test #10: [StyleBuilder]
                 //    - Opacity: 1.0
-                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax}
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax} USHORT
                 //
                 // ////////////////////////////////////////////////////////////////////
                 gc = CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -491,13 +539,12 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 final SelectedChannelType chTypeGray_5 = new SelectedChannelTypeImpl();
                 final ContrastEnhancement cntEnh_5 = new ContrastEnhancementImpl();
 
-                double minClampValue = 50;
-                double maxClampValue = 200;
+            
                 final ContrastMethodStrategy method_5 = new NormalizeContrastMethodStrategy(); 
 
                 method_5.addOption("algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_MINMAX_NAME));
-                method_5.addOption("minValue", sldBuilder.literalExpression(minClampValue));
-                method_5.addOption("maxValue", sldBuilder.literalExpression(maxClampValue));
+                method_5.addOption("minValue", sldBuilder.literalExpression(50));
+                method_5.addOption("maxValue", sldBuilder.literalExpression(200));
                 cntEnh_5.setMethod(method_5);
 
                 chTypeGray_5.setChannelName("1");
@@ -516,15 +563,179 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 // Clip to Minimum Maximum does a Clamp by forcing
                 // values outside the specified range to be clamped
                 // to the range bounds
-                assertEquals(minClampValue,  min[0], DELTA);
-                assertEquals(maxClampValue,  max[0], DELTA);
+                assertEquals(50,  min[0], DELTA);
+                assertEquals(200,  max[0], DELTA);
                 testRasterSymbolizerHelper(rsh_StyleBuilder);
+                
+                // ////////////////////////////////////////////////////////////////////
+                //
+                // Test #10a: [StyleBuilder]
+                //    - Opacity: 1.0
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax} FLOAT in Byte range
+                //
+                // ////////////////////////////////////////////////////////////////////
+                gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                                "name",
+                                JAI.create("ImageRead", new File(TestData.url(this, "smalldem.tif").toURI())),
+                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+
+                // build the RasterSymbolizer
+                sldBuilder = new StyleBuilder();
+                // the RasterSymbolizer Helper
+                rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+                final RasterSymbolizer rsb_5f = sldBuilder.createRasterSymbolizer();
+                final ChannelSelection chSel_5f = new ChannelSelectionImpl();
+                final SelectedChannelType chTypeGray_5f = new SelectedChannelTypeImpl();
+                final ContrastEnhancement cntEnh_5f = new ContrastEnhancementImpl();
+
+
+                final ContrastMethodStrategy method_5f = new NormalizeContrastMethodStrategy(); 
+                method_5f.addOption("algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_MINMAX_NAME));
+                method_5f.addOption("minValue", sldBuilder.literalExpression(50));
+                method_5f.addOption("maxValue", sldBuilder.literalExpression(200));
+                cntEnh_5f.setMethod(method_5f);
+
+                chTypeGray_5f.setChannelName("1");
+                chTypeGray_5f.setContrastEnhancement(cntEnh_5f);
+                chSel_5f.setGrayChannel(chTypeGray_5f);
+                rsb_5f.setChannelSelection(chSel_5f);
+
+                // visit the RasterSymbolizer
+                rsh_StyleBuilder.visit(rsb_5f);
+                output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_BYTE,output.getRenderedImage().getSampleModel().getDataType());
+                // at the end the rastersymb does a rescale to byte for simplicity that tries to bring back 
+                // the dynamic to 8 Bits
+                
+                
+                worker = new ImageWorker(output.getRenderedImage());
+                worker.setNoData(RangeFactory.create(0, 0));
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+                // Clip to Minimum Maximum does a Clamp by forcing
+                // values outside the specified range to be clamped
+                // to the range bounds
+                assertEquals(50,  min[0], DELTA);
+                assertEquals(200,  max[0], DELTA);
+                testRasterSymbolizerHelper(rsh_StyleBuilder);                
+                
+                // ////////////////////////////////////////////////////////////////////
+                //
+                // Test #10b: [StyleBuilder]
+                //    - Opacity: 1.0
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax} FLOAT outside Byte range
+                //
+                // ////////////////////////////////////////////////////////////////////
+                gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                                "name",
+                                JAI.create("ImageRead", new File(TestData.url(this, "smalldem.tif").toURI())),
+                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+
+                // build the RasterSymbolizer
+                sldBuilder = new StyleBuilder();
+                // the RasterSymbolizer Helper
+                rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+                final RasterSymbolizer rsb_5g = sldBuilder.createRasterSymbolizer();
+                final ChannelSelection chSel_5g = new ChannelSelectionImpl();
+                final SelectedChannelType chTypeGray_5g = new SelectedChannelTypeImpl();
+                final ContrastEnhancement cntEnh_5g = new ContrastEnhancementImpl();
+
+
+                final ContrastMethodStrategy method_5g = new NormalizeContrastMethodStrategy(); 
+                method_5g.addOption("algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_MINMAX_NAME));
+                method_5g.addOption("minValue", sldBuilder.literalExpression(50));
+                method_5g.addOption("maxValue", sldBuilder.literalExpression(1200));
+                cntEnh_5g.setMethod(method_5g);
+
+                chTypeGray_5g.setChannelName("1");
+                chTypeGray_5g.setContrastEnhancement(cntEnh_5g);
+                chSel_5g.setGrayChannel(chTypeGray_5g);
+                rsb_5g.setChannelSelection(chSel_5g);
+
+                // visit the RasterSymbolizer
+                rsh_StyleBuilder.visit(rsb_5g);
+                output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_BYTE,output.getRenderedImage().getSampleModel().getDataType());
+                // at the end the rastersymb does a rescale to byte for simplicity that tries to bring back 
+                // the dynamic to 8 Bits
+                
+                
+                worker = new ImageWorker(output.getRenderedImage());
+                worker.setNoData(RangeFactory.create(0, 0));
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+                // Clip to Minimum Maximum does a Clamp by forcing
+                // values outside the specified range to be clamped
+                // to the range bounds
+                assertEquals(10,  min[0], DELTA); // the RasterSymbolizerHelper introduce a stretch to BYTE
+                assertEquals(255,  max[0], DELTA); // the RasterSymbolizerHelper introduce a stretch to BYTE
+                testRasterSymbolizerHelper(rsh_StyleBuilder);  
+                
+             // ////////////////////////////////////////////////////////////////////
+                //
+                // Test #10c: [StyleBuilder]
+                //    - Opacity: 1.0
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipMinMax} USHORT outside byte range
+                //
+                // ////////////////////////////////////////////////////////////////////
+                RenderedImage source = new ImageWorker(new File(TestData.url(this, "small_4bands_UInt16.tif").toURI())).retainBands(new int[]{2}).getRenderedImage();
+                gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                                "name",
+                                source,
+                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("band")},null,null);
+
+                // build the RasterSymbolizer
+                sldBuilder = new StyleBuilder();
+                // the RasterSymbolizer Helper
+                rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+                final RasterSymbolizer rsb_5c = sldBuilder.createRasterSymbolizer();
+                final ChannelSelection chSel_5c = new ChannelSelectionImpl();
+                final SelectedChannelType chTypeGray_5c = new SelectedChannelTypeImpl();
+                final ContrastEnhancement cntEnh_5c = new ContrastEnhancementImpl();
+
+            
+                final ContrastMethodStrategy method_5c = new NormalizeContrastMethodStrategy(); 
+
+                method_5c.addOption("algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_MINMAX_NAME));
+                method_5c.addOption("minValue", sldBuilder.literalExpression(50));
+                method_5c.addOption("maxValue", sldBuilder.literalExpression(500)); //ouside byte range
+                cntEnh_5c.setMethod(method_5c);
+
+                chTypeGray_5c.setChannelName("1");
+                chTypeGray_5c.setContrastEnhancement(cntEnh_5c);
+                chSel_5c.setGrayChannel(chTypeGray_5c);
+                rsb_5c.setChannelSelection(chSel_5c);
+
+                // visit the RasterSymbolizer
+                rsh_StyleBuilder.visit(rsb_5c);
+                output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_USHORT,output.getRenderedImage().getSampleModel().getDataType()); // preserved
+                worker = new ImageWorker(output.getRenderedImage());
+                worker.setNoData(RangeFactory.create(0, 0));
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+
+                // Clip to Minimum Maximum does a Clamp by forcing
+                // values outside the specified range to be clamped
+                // to the range bounds
+                assertEquals(97,  min[0], DELTA); 
+                assertEquals(500,  max[0], DELTA); // preserved
+                testRasterSymbolizerHelper(rsh_StyleBuilder);                
                 
                 // ////////////////////////////////////////////////////////////////////
                 //
                 // Test #11: [StyleBuilder]
                 //    - Opacity: 1.0
-                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipZeroMax}
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipZeroMax} byte
                 //
                 // ////////////////////////////////////////////////////////////////////
                 gc = CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -543,13 +754,11 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 final ChannelSelection chSel_6 = new ChannelSelectionImpl();
                 final SelectedChannelType chTypeGray_6 = new SelectedChannelTypeImpl();
                 final ContrastEnhancement cntEnh_6 = new ContrastEnhancementImpl();
-                final ContrastMethodStrategy method_6 = new NormalizeContrastMethodStrategy();
-
-                minClampValue = 50;
-                maxClampValue = 100;
-                method_6.addOption("algorithmhm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
-                method_6.addOption("minValue", sldBuilder.literalExpression(minClampValue));
-                method_6.addOption("maxValue", sldBuilder.literalExpression(maxClampValue));
+                
+                final AbstractContrastMethodStrategy method_6 = new NormalizeContrastMethodStrategy();    
+                method_6.setAlgorithm(sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
+                method_6.addOption("minValue", sldBuilder.literalExpression(50));
+                method_6.addOption("maxValue", sldBuilder.literalExpression(100));
                 cntEnh_6.setMethod(method_6);
 
                 chTypeGray_6.setChannelName("1");
@@ -565,18 +774,16 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 min = worker.getMinimums();
                 max = worker.getMaximums();
 
-                // Clip to Minimum Maximum does a Clamp by forcing
-                // values outside the specified range to be clamped
-                // to the range bounds
+           
                 assertEquals(0,  min[0], DELTA);
-                assertEquals(255,  max[0], DELTA);
+                assertEquals(100,  max[0], DELTA);
                 testRasterSymbolizerHelper(rsh_StyleBuilder);
                 
                 // ////////////////////////////////////////////////////////////////////
                 //
                 // Test #12: [StyleBuilder]
                 //    - Opacity: 1.0
-                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipZeroMax}
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipZeroMax} USHORT outside byte range
                 //
                 // ////////////////////////////////////////////////////////////////////
                 gc = CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -599,11 +806,10 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 final ContrastEnhancement cntEnh_7 = new ContrastEnhancementImpl();
                 final AbstractContrastMethodStrategy method_7 = new NormalizeContrastMethodStrategy();
 
-                minClampValue = 50;
-                maxClampValue = 18000;
+     
                 method_7.setAlgorithm(sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
-                method_7.addParameter("minValue", sldBuilder.literalExpression(minClampValue));
-                method_7.addParameter("maxValue", sldBuilder.literalExpression(maxClampValue));
+                method_7.addParameter("minValue", sldBuilder.literalExpression(50));
+                method_7.addParameter("maxValue", sldBuilder.literalExpression(18000));
                 cntEnh_7.setMethod(method_7);
 
                 chTypeGray_7.setChannelName("1");
@@ -615,6 +821,7 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 // visit the RasterSymbolizer
                 rsh_StyleBuilder.visit(rsb_7);
                 output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_USHORT,output.getRenderedImage().getSampleModel().getDataType()); // preserved
                 worker = new ImageWorker(output.getRenderedImage());
                 min = worker.getMinimums();
                 max = worker.getMaximums();
@@ -624,7 +831,119 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
                 assertEquals(0,  min[0], DELTA);
                 assertEquals(16114,  max[0], DELTA);
                 
-                testRasterSymbolizerHelper(rsh_StyleBuilder);                
+                testRasterSymbolizerHelper(rsh_StyleBuilder);  
+                
+             // ////////////////////////////////////////////////////////////////////
+                //
+                // Test #12a: [StyleBuilder]
+                //    - Opacity: 1.0
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipZeroMax}  Float within Byte range
+                //
+                // ////////////////////////////////////////////////////////////////////
+                gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                                "name",
+                                JAI.create("ImageRead", new File(TestData.url(this, "smalldem.tif").toURI())),
+                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+                worker = new ImageWorker(gc.getRenderedImage());
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+                // build the RasterSymbolizer
+                sldBuilder = new StyleBuilder();
+                // the RasterSymbolizer Helper
+                rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+                final RasterSymbolizer rsb_7f = sldBuilder.createRasterSymbolizer();
+                final ChannelSelection chSel_7f = new ChannelSelectionImpl();
+                final SelectedChannelType chTypeGray_7f = new SelectedChannelTypeImpl();
+                final ContrastEnhancement cntEnh_7f = new ContrastEnhancementImpl();
+                final AbstractContrastMethodStrategy method_7f = new NormalizeContrastMethodStrategy();
+
+     
+                method_7f.setAlgorithm(sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
+                method_7f.addParameter("minValue", sldBuilder.literalExpression(50));
+                method_7f.addParameter("maxValue", sldBuilder.literalExpression(200));
+                cntEnh_7f.setMethod(method_7f);
+
+                chTypeGray_7f.setChannelName("1");
+                chTypeGray_7f.setContrastEnhancement(cntEnh_7f);
+                chSel_7f.setGrayChannel(chTypeGray_7f);
+                rsb_7f.setChannelSelection(chSel_7f);
+                rsb_7f.setOpacity(sldBuilder.literalExpression(1.0));
+                
+                // visit the RasterSymbolizer
+                rsh_StyleBuilder.visit(rsb_7f);
+                output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_BYTE,output.getRenderedImage().getSampleModel().getDataType());
+                // at the end the rastersymb does a rescale to byte for simplicity that tries to bring back 
+                // the dynamic to 8 Bits
+                
+                worker = new ImageWorker(output.getRenderedImage());
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+                // Clip to Minimum Maximum does a Clamp by forcing
+                // values outside the specified range to be clamped
+                // to the range bounds
+                assertEquals(0,  min[0], DELTA);
+                assertEquals(200,  max[0], DELTA);
+                
+                testRasterSymbolizerHelper(rsh_StyleBuilder);
+                
+                // ////////////////////////////////////////////////////////////////////
+                //
+                // Test #12b: [StyleBuilder]
+                //    - Opacity: 1.0
+                //    - ChannelSelection: Gray {Contrast Enh: Normalize-ClipZeroMax}  Float outside Byte range
+                //
+                // ////////////////////////////////////////////////////////////////////
+                gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                                "name",
+                                JAI.create("ImageRead", new File(TestData.url(this, "smalldem.tif").toURI())),
+                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+                worker = new ImageWorker(gc.getRenderedImage());
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+                // build the RasterSymbolizer
+                sldBuilder = new StyleBuilder();
+                // the RasterSymbolizer Helper
+                rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
+
+                final RasterSymbolizer rsb_7g = sldBuilder.createRasterSymbolizer();
+                final ChannelSelection chSel_7g = new ChannelSelectionImpl();
+                final SelectedChannelType chTypeGray_7g = new SelectedChannelTypeImpl();
+                final ContrastEnhancement cntEnh_7g = new ContrastEnhancementImpl();
+                final AbstractContrastMethodStrategy method_7g = new NormalizeContrastMethodStrategy();
+
+     
+                method_7g.setAlgorithm(sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
+                method_7g.addParameter("minValue", sldBuilder.literalExpression(50));
+                method_7g.addParameter("maxValue", sldBuilder.literalExpression(1200));
+                cntEnh_7g.setMethod(method_7g);
+
+                chTypeGray_7g.setChannelName("1");
+                chTypeGray_7g.setContrastEnhancement(cntEnh_7g);
+                chSel_7g.setGrayChannel(chTypeGray_7g);
+                rsb_7g.setChannelSelection(chSel_7g);
+                rsb_7g.setOpacity(sldBuilder.literalExpression(1.0));
+                
+                // visit the RasterSymbolizer
+                rsh_StyleBuilder.visit(rsb_7g);
+                output = (GridCoverage2D)rsh_StyleBuilder.getOutput();
+                assertEquals(DataBuffer.TYPE_BYTE,output.getRenderedImage().getSampleModel().getDataType());
+                // at the end the rastersymb does a rescale to byte for simplicity that tries to bring back 
+                // the dynamic to 8 Bits
+                worker = new ImageWorker(output.getRenderedImage());
+                min = worker.getMinimums();
+                max = worker.getMaximums();
+  
+                
+                assertEquals(0,  min[0], DELTA); // the RasterSymbolizerHelper introduce a stretch to BYTE
+                assertEquals(255,  max[0], DELTA); // the RasterSymbolizerHelper introduce a stretch to BYTE
+                
+                testRasterSymbolizerHelper(rsh_StyleBuilder);                  
 	}
 	
 	@org.junit.Test

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.geotools.feature.IllegalAttributeException;
+import org.geotools.filter.visitor.BindingFilterVisitor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
@@ -63,7 +64,9 @@ public class FilteringFeatureReader<T extends FeatureType, F extends Feature> im
      */
     public FilteringFeatureReader(FeatureReader<T, F> featureReader, Filter filter) {
         this.featureReader = featureReader;
-        this.filter = filter;
+        this.filter = (Filter) filter
+                .accept(new BindingFilterVisitor(featureReader.getFeatureType()),
+                null);
         next = null;
     }
 

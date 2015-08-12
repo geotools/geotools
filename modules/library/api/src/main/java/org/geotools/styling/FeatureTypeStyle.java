@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -125,6 +125,19 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * composite operator
      */
     public static String COMPOSITE_BASE = "composite-base";
+
+    /**
+     * String value controlling the order in which the features are loaded from the data source, and
+     * thus painted, in this feature type style.
+     * <p>
+     * The syntax is <code>Attribute1 {A|D},Attribute2 {A|D}...</code>, <code>A</code> is ascending,
+     * <code>D</code> is descending. The sorting direction is optional and defaults to ascending if
+     * not specified.
+     * <p>
+     * E.g., <code>cat D,name</code> sorts data by <code>cat</code> in descending order, and then by
+     * ascending <code>name</code> within all features having the same <code>cat</code> value.
+     */
+    public static String SORT_BY = "sortBy";
 
 
     void setName(String name);

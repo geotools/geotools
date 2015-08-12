@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.style;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -26,10 +28,10 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
-
-import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -37,6 +39,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.SLDStyleFactory.SymbolizerKey;
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
@@ -50,10 +53,14 @@ import org.geotools.util.NumberRange;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+
+import junit.framework.TestCase;
 
 /**
  *
@@ -306,7 +313,7 @@ public class SLDStyleFactoryTest extends TestCase {
         fill.setGraphicFill(sf.createGraphic(null, new Mark[] {myMark}, null, null, null, null));
         symb.setFill(fill); 
         
-        PolygonStyle2D ps = (PolygonStyle2D) sld.createPolygonStyle(feature, symb, range);
+        PolygonStyle2D ps = sld.createPolygonStyle(feature, symb, range);
         assertTrue(ps.getFill() instanceof TexturePaint);
     }
     
@@ -368,4 +375,30 @@ public class SLDStyleFactoryTest extends TestCase {
          Style2D icon = sld.createPointStyle(feature, symb, range);
          assertNotNull(icon);
      }
+
+    public void testSortBySingleAscending() throws Exception {
+        checkSortByParsing("z", ff.sort("z", SortOrder.ASCENDING));
+    }
+
+    public void testSortByTwoPropertiesAscending() throws Exception {
+        checkSortByParsing("cat ,    name", ff.sort("cat", SortOrder.ASCENDING),
+                ff.sort("name", SortOrder.ASCENDING));
+    }
+
+    public void testSortBySingleDescending() throws Exception {
+        checkSortByParsing("cat D   ", ff.sort("cat", SortOrder.DESCENDING));
+    }
+
+    public void testSortByMixed() throws Exception {
+        checkSortByParsing("cat D,name A,z D", ff.sort("cat", SortOrder.DESCENDING),
+                ff.sort("name", SortOrder.ASCENDING), ff.sort("z", SortOrder.DESCENDING));
+    }
+
+    private void checkSortByParsing(String sortBySpec, SortBy... expected) {
+        Map<String, String> options = new HashMap<>();
+        options.put(FeatureTypeStyle.SORT_BY, sortBySpec);
+        SortBy[] sortBy = SLDStyleFactory.getSortBy(options);
+        assertArrayEquals(expected, sortBy);
+    }
+
 }

@@ -135,12 +135,14 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         String geometryPropertyName) {
         TextSymbolizer tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        tSymb.setFonts(fonts);
+        if( fonts != null ){
+            tSymb.fonts().addAll(Arrays.asList(fonts));
+        }
         tSymb.setGeometryPropertyName(geometryPropertyName);
 
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
-        tSymb.setPlacement(labelPlacement);
+        tSymb.setLabelPlacement(labelPlacement);
 
         return tSymb;
     }
@@ -150,12 +152,14 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         String geometryPropertyName, Graphic graphic) {
         TextSymbolizer2 tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        tSymb.setFonts(fonts);
+        if( fonts != null ){
+            tSymb.fonts().addAll(Arrays.asList(fonts));
+        }
         tSymb.setGeometryPropertyName(geometryPropertyName);
 
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
-        tSymb.setPlacement(labelPlacement);
+        tSymb.setLabelPlacement(labelPlacement);
         tSymb.setGraphic(graphic);
 
         return tSymb;

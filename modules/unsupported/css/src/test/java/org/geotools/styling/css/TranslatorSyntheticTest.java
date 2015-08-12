@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,7 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -712,7 +708,21 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 .featureTypeStyles().get(0);
         assertEquals("true", fts.getOptions().get("composite-base"));
         assertEquals("multiply", fts.getOptions().get("composite"));
+    }
 
+    @Test
+    public void testSortBy() throws Exception {
+        String css = "* { stroke: red; sort-by: \"cat A, name D\"; }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(0, ls.getOptions().size());
+        // but in the feature type style
+        org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
+                .featureTypeStyles().get(0);
+        assertEquals("cat A, name D", fts.getOptions().get("sortBy"));
     }
 
 

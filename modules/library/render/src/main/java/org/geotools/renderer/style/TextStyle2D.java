@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -84,7 +84,8 @@ public class TextStyle2D extends Style2D {
     GlyphVector textGlyphVector;
     Shape haloShape;
     String label;
-    Font font;
+
+    Font[] fonts;
     double rotation;
       /** yes = <PointPlacement> no = <LinePlacement>  default = yes**/
     boolean pointPlacement = true;
@@ -116,7 +117,7 @@ public class TextStyle2D extends Style2D {
         this.displacementX = t.displacementX;
         this.displacementY = t.displacementY;
         this.fill = t.fill;
-        this.font = t.font;
+        this.fonts = t.fonts;
         this.graphic = t.graphic;
         this.haloComposite = t.haloComposite;
         this.haloFill = t.haloFill;
@@ -146,7 +147,11 @@ public class TextStyle2D extends Style2D {
     /**
      */
     public Font getFont() {
-        return font;
+        if (fonts == null) {
+            return null;
+        } else {
+            return fonts[0];
+        }
     }
 
     /**
@@ -174,7 +179,7 @@ public class TextStyle2D extends Style2D {
     }
 
     /**
-     * recompute each time
+     * Gets the glyph vector for the main font
      */
     public GlyphVector getTextGlyphVector(Graphics2D graphics) {
         // arabic and hebrew are scripted and right to left, they do require full layout
@@ -182,12 +187,13 @@ public class TextStyle2D extends Style2D {
         // and create the glyph vector with the appropriate call
         final char[] chars = label.toCharArray();
         final int length = label.length();
-        if(Bidi.requiresBidi(chars, 0, length) && 
-                new Bidi(label, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isRightToLeft())
-            textGlyphVector = font.layoutGlyphVector(graphics.getFontRenderContext(), chars, 
-                    0, length, Font.LAYOUT_RIGHT_TO_LEFT);
-        else
-            textGlyphVector = font.createGlyphVector(graphics.getFontRenderContext(), chars);
+        if (Bidi.requiresBidi(chars, 0, length)
+                && new Bidi(label, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isRightToLeft()) {
+            textGlyphVector = getFont().layoutGlyphVector(graphics.getFontRenderContext(), chars, 0,
+                    length, Font.LAYOUT_RIGHT_TO_LEFT);
+        } else {
+            textGlyphVector = getFont().createGlyphVector(graphics.getFontRenderContext(), chars);
+        }
         return textGlyphVector;
     }
 
@@ -219,7 +225,11 @@ public class TextStyle2D extends Style2D {
      * @param font
      */
     public void setFont(Font font) {
-        this.font = font;
+        if (font == null) {
+            this.fonts = null;
+        } else {
+            this.fonts = new Font[] { font };
+        }
     }
 
     /**
@@ -396,6 +406,20 @@ public class TextStyle2D extends Style2D {
     	} else {
     		throw new RuntimeException("Can't render graphic which is not a MarkStyle2D or a GraphicStyle2D");
     	}
+    }
+
+    /**
+     * @return the fonts
+     */
+    public Font[] getFonts() {
+        return fonts;
+    }
+
+    /**
+     * @param fonts the fonts to set
+     */
+    public void setFonts(Font[] fonts) {
+        this.fonts = fonts;
     }
         
         

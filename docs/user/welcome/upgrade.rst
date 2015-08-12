@@ -41,9 +41,46 @@ Users may now decide to choose between JAI and JAI-EXT operations by simply usin
 
 A more detailed tutorial on how to use JAI-EXT may be found at the following :ref:`JAI-EXT Tutorial Page<jaiext>`.
 
+TextSymbolizer provides direct access to the device independent Font list, removing deprecated array access methods. This change restores SLD 1.0 multi-lingual behaviour allowing several face/size combinations to be used during labeling.
+
+BEFORE::
+
+  textSymbolizer.addFont(font);
+  Font[] array = textSymbolizer.getFonts();
+  for(int i=0; i<array.length; i++){
+      Font f = textSymbolizer.getFonts()[i];
+      ...
+   }
+  
+AFTER::
+ 
+  textSymbolizer.fonts().add(font);
+  for(Font f : textSymbolizer.fonts()){
+     ...
+  }
+
+Transaction is now Closable for use with try-with-resource syntax::
+
+   try (Transaction t = new DefaultTransaction()){
+        store.setTransaction( t );
+        store.addFeatures( newFeatures );
+        t.commit();
+   }
+
 GeoTools 13.0
 -------------
-As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement. There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from AbstractDataStore.
+As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement.
+
+There is a `ContentDataStore Tutorial <http://docs.geotools.org/latest/userguide/tutorial/datastore/index.html>`_ to help with migration from AbstractDataStore.
+
+Many readers and iterators are now Closable for use with try-with-resource syntax::
+
+   try( SimpleFeatureIterator features = source.getFeatures( filter ) ){
+       while( features.hasNext() ){
+          SimpleFeature feature = features.next();
+          ...
+       }
+   }
 
 GeoTools 12.0
 -------------

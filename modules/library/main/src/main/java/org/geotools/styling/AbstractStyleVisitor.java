@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+
 /**
  * A basic implementation of the StyleVisitor interface.
  * <p>
@@ -433,5 +434,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
             //sr.getReliefFactor().accept(visitor, extraData)
         }
     }
+
+   
 
 }

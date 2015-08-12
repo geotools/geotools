@@ -94,7 +94,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
         List validationErrors = validateSLD(actualSld);
         if (!validationErrors.isEmpty()) {
-            System.err.println("Validation failed, errors are: ");
+            System.out.println("Validation failed, errors are: ");
             for (Object e : validationErrors) {
                 if (e instanceof SAXParseException) {
                     SAXParseException se = (SAXParseException) e;

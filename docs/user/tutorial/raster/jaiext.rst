@@ -24,13 +24,13 @@ A project which would like to use JAI-EXT operations needs to first register the
 
 .. code-block:: java
 
-	static{
+	static {
 		JAIExt.initJAIEXT();
 	}
 
 This registers all of the JAI-EXT operations inside the JAI *OperationRegistry* in order to use them instead of old JAI operations. 
 
-.. note:: It should be pointed out that if this method is called more than one times, it has no effect since it is only an initialization method.
+.. note:: It should be pointed out that if this method is called more than one time; it has no effect since it is only an initialization method.
 
 The above changes can be reverted individually::
 
@@ -108,11 +108,12 @@ The first suggestion is to always use a **CoverageProcessor** instance for getti
 
 When an *OperationDescriptor* is replaced, users should take care to remove the existing associated GeoTools operation from all the *CoverageProcessor* instances and then to insert it again. This procedure must be done in order to avoid having a GeoTools operation with an internal *OperationDescriptor* which has been replaced; this situation may lead to wrong parameter initialization which could then lead to exceptions during Coverage processing. 
 
-The procedure is described below::
+The procedure is described below.
 	
-	CoverageProcessor.removeOperationFromProcessors("Warp"); --> Removal of the operation from the processors
-	
-	CoverageProcessor.updateProcessors(); --> Update of all the processors with the new operation
+.. code-block:: java
+
+        CoverageProcessor.removeOperationFromProcessors("Warp"); // Removal of the operation from the processors
+        CoverageProcessor.updateProcessors(); // Update of all the processors with the new operation
 
 Best Practice
 --------------

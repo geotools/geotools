@@ -17,7 +17,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
  * @author Kevin Smith, Boundless
  *
  */
-public class TupleValidator extends YsldValidateHandler {
+public class TupleValidator extends StatefulValidator{
     
     enum State {
         NEW,
@@ -84,7 +84,8 @@ public class TupleValidator extends YsldValidateHandler {
         return new TupleValidator(this.subValidators);
     }
 
-    protected void reset() {
+    @Override
+    void reset() {
         assert state==State.NEW || state==State.DONE;
         state = State.NEW;
         valuesValidated = 0;

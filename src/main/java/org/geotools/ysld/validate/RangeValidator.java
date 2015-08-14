@@ -58,7 +58,7 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
     }
     
     @Override
-    protected void reset() {
+    void reset() {
         super.reset();
         min=null;
     }

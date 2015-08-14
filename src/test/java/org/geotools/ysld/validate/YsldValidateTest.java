@@ -20,6 +20,7 @@ import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -557,5 +558,99 @@ public class YsldValidateTest {
     List<MarkedYAMLException> validate(String ysld, List<ZoomContextFinder> ctxts) throws IOException {
         //return dump(Ysld.validate(ysld));
         return Ysld.validate(ysld, ctxts, new UomMapper());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testRenderingTransform() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("transform:").append("\n")
+               .append("  name: ras:Contour").append("\n")
+               .append("  input: data").append("\n")
+               .append("  params:").append("\n")
+               .append("    levels:").append("\n")
+               .append("    - -10").append("\n")
+               .append("    - -5").append("\n")
+               .append("    - 0").append("\n")
+               .append("    - 5").append("\n")
+               .append("    - 10").append("\n")
+               .append("    simplify: true").append("\n")
+               .append("");
+        
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.EMPTY_LIST);
+        assertThat(errors, empty());
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNestedRenderingTransform() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("transform:").append("\n")
+               .append("  name: ras:Contour").append("\n")
+               .append("  params:").append("\n")
+               .append("    data:").append("\n")
+               .append("      name: vec:BarnesSurface").append("\n")
+               .append("      input: data").append("\n")
+               .append("      params:").append("\n")
+               .append("        valueAttr: natlscale").append("\n")
+               .append("        dataLimit: 500").append("\n")
+               .append("        scale: 15.0").append("\n")
+               .append("        convergence: 0.2").append("\n")
+               .append("        passes: 3").append("\n")
+               .append("        minObservations: 2").append("\n")
+               .append("        maxObservationDistance: 15").append("\n")
+               .append("        pixelsPerCell: 8").append("\n")
+               .append("        queryBuffer: 40").append("\n")
+               .append("    levels:").append("\n")
+               .append("    - -10").append("\n")
+               .append("    - -5").append("\n")
+               .append("    - 0").append("\n")
+               .append("    - 5").append("\n")
+               .append("    - 10").append("\n")
+               .append("    simplify: true").append("\n")
+               .append("");
+        
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.EMPTY_LIST);
+        assertThat(errors, empty());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testErrorAfterNestedRenderingTransform() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("transform:").append("\n")
+               .append("  name: ras:Contour").append("\n")
+               .append("  params:").append("\n")
+               .append("    data:").append("\n")
+               .append("      name: vec:BarnesSurface").append("\n")
+               .append("      input: data").append("\n")
+               .append("      params:").append("\n")
+               .append("        valueAttr: natlscale").append("\n")
+               .append("        dataLimit: 500").append("\n")
+               .append("        scale: 15.0").append("\n")
+               .append("        convergence: 0.2").append("\n")
+               .append("        passes: 3").append("\n")
+               .append("        minObservations: 2").append("\n")
+               .append("        maxObservationDistance: 15").append("\n")
+               .append("        pixelsPerCell: 8").append("\n")
+               .append("        queryBuffer: 40").append("\n")
+               .append("    levels:").append("\n")
+               .append("    - -10").append("\n")
+               .append("    - -5").append("\n")
+               .append("    - 0").append("\n")
+               .append("    - 5").append("\n")
+               .append("    - 10").append("\n")
+               .append("    simplify: true").append("\n")
+               .append("rules:").append("\n")
+               .append("- point:").append("\n")
+               .append("    displacement: []").append("\n") // Empty displacement on line 26
+               .append("");
+        
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.EMPTY_LIST);
+        assertThat(errors, contains(
+                hasProperty("problemMark", problemOn(26))
+                ));
     }
 }

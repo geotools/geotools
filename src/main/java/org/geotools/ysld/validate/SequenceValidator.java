@@ -12,7 +12,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
  * @author Kevin Smith, Boundless
  *
  */
-public class SequenceValidator extends YsldValidateHandler {
+public class SequenceValidator extends StatefulValidator {
     
     enum State {
         NEW,
@@ -84,7 +84,8 @@ public class SequenceValidator extends YsldValidateHandler {
         return new SequenceValidator(this.subValidator);
     }
 
-    protected void reset() {
+    @Override
+    void reset() {
         assert state==State.NEW || state==State.DONE;
         state = State.NEW;
     }

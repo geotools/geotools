@@ -55,6 +55,8 @@ public class RootValidator extends YsldValidateHandler {
                             }
                             ))
                     ));
+        } else if ("params".equals(key)) {
+            context.push(new PermissiveValidator());
         }
         
     }

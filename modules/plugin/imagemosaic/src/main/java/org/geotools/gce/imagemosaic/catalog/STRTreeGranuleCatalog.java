@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,10 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -227,7 +225,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 			while (it.hasNext()) {
 				final GranuleDescriptor granule = it.next();
 				final ReferencedEnvelope env=ReferencedEnvelope.reference(granule.getGranuleBBOX());
-				final Geometry g = (Geometry)FeatureUtilities.getPolygon(
+				final Geometry g = FeatureUtilities.getPolygon(
 						new Rectangle2D.Double(env.getMinX(),env.getMinY(),env.getWidth(),env.getHeight()),0);
 				tree.insert(g.getEnvelopeInternal(), granule);
 			}

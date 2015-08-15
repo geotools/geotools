@@ -204,11 +204,10 @@ public class RasterManager {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS,
                         coverageCRS2D);
                 final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
-                bbox.setCoordinateReferenceSystem(coverageCRS2D);
-                coverageBBox = new ReferencedEnvelope(bbox);
+                coverageBBox = ReferencedEnvelope.create(bbox,coverageCRS2D);
             } else {
                 // it is already a bbox
-                coverageBBox = new ReferencedEnvelope(coverageEnvelope);
+                coverageBBox = ReferencedEnvelope.create(coverageEnvelope,coverageEnvelope.getCoordinateReferenceSystem());
             }
         }
         
@@ -1445,10 +1444,6 @@ public class RasterManager {
         final BoundingBox bounds = granuleCatalog.getBounds(typeName);
         if (checkDomains) {
             initDomains(configuration);
-        }
-
-        if (bounds.isEmpty()) {
-            throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");
         }
 
         // we might have an imposed bbox

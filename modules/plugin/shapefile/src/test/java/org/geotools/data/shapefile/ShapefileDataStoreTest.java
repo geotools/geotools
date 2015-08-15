@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1810,6 +1810,21 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 'a', 'b', 'c', 'd', 'e', 'f' };
         char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
         return new String(array);
+    }
+    
+    /**
+     * A test method testing the correct bounds of shapefiles without any data, but having
+     * [0:0,0:0] in their header. The bounds must pass the isEmpty() and isNull() tests. 
+     *
+     * @throws IOException, if the shapefile can not be read
+     * @author Hendrik Peilke (IBYKUS AG)
+     */
+    @Test
+    public void testBoundsEmpty() throws IOException {
+        File file = TestData.file(TestCaseSupport.class, "empty-shapefile/empty-shapefile.shp");
+        ShapefileDataStore dataStore = new ShapefileDataStore(file.toURI().toURL());
+        ReferencedEnvelope bounds = dataStore.getFeatureSource().getBounds();
+        assertTrue("bounds of a shapefile without any data must be empty",bounds.isEmpty() && bounds.isNull());
     }
     
 }

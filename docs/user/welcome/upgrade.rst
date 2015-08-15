@@ -67,6 +67,8 @@ Transaction is now Closable for use with try-with-resource syntax::
         t.commit();
    }
 
+ShapefileDataStore representing shapefiles without any data, now return empty bounds on getBounds() instead of the bounds inside the shapefile header (mostly [0:0,0:0]). So bounds.isEmpty() and bounds.isNull() will return true for empty shapefiles.
+
 GeoTools 13.0
 -------------
 As of GeoTools 13.0, the CoverageViewType classes have been removed. The AbstractDataStore class is also now deprecated. Extensive work has been done to bring in ContentDataStore as its replacement.

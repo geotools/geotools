@@ -18,6 +18,6 @@ matrix:
   include:
   # additional builds on linux w/ openjdk7 and oraclejdk8
     - os: linux
-     jdk: openjdk7
-   - os: linux
-     jdk: oraclejdk8
+      jdk: openjdk7
+    - os: linux
+      jdk: oraclejdk8

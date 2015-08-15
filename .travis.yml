@@ -3,10 +3,6 @@ cache:
   directories:
     - "$HOME/.m2"
 language: java
-jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk7
 script:
   - mvn -B -T2 -fae -Djava.awt.headless=true -Dall clean install
 notifications:
@@ -19,3 +15,9 @@ os:
 matrix:
   allow_failures:
     - os: osx
+  include:
+  # additional builds on linux w/ openjdk7 and oraclejdk8
+    - os: linux
+     jdk: openjdk7
+   - os: linux
+     jdk: oraclejdk8

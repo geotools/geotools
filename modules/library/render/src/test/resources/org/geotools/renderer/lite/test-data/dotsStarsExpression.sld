@@ -33,11 +33,7 @@
                 </Graphic>
               </GraphicStroke>
               <CssParameter name="stroke-dasharray">
-                         <Function name="Concatenate">
-                              <Literal>5</Literal>
-                              <Literal><![CDATA[ ]]></Literal>
-                              <Literal>35</Literal>
-                         </Function>
+                <Literal>5 35</Literal>
               </CssParameter>
               <CssParameter name="stroke-dashoffset">0</CssParameter>
             </Stroke>
@@ -57,11 +53,14 @@
                 </Graphic>
               </GraphicStroke>
               <CssParameter name="stroke-dasharray">
-                         <Function name="Concatenate">
-                              <Literal>10</Literal>
-                              <Literal><![CDATA[ ]]></Literal>
-                              <Literal>30</Literal>
-                         </Function>
+                <Add>
+                  <Literal>5</Literal>
+                  <Literal>5</Literal>
+                </Add>
+                <Sub>
+                    <Literal>35</Literal>
+                    <Literal>5</Literal>
+                </Sub>
               </CssParameter>
               <CssParameter name="stroke-dashoffset">20</CssParameter>
             </Stroke>

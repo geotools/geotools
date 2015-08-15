@@ -28,10 +28,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -217,39 +214,51 @@ public class SLDTransformerTest {
 
     @Test
     public void testDashExpressionArray() throws Exception {
-        StyleBuilder sb = new StyleBuilder();
+        final StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+
+        final StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        final UserLayer layer = sf.createUserLayer();
+        sld.addStyledLayer(layer);
+        final StyleBuilder sb = new StyleBuilder(sf);
         LineSymbolizer ls = sb.createLineSymbolizer();
-        ((Stroke2)ls.getStroke()).setDashExpressionArray(new Expression[]{ff.property("dash_size"),
-                                                               ff.property("blank_size")});
-        String xml = transformer.transform(ls);
+        final FeatureTypeStyle fts = sb.createFeatureTypeStyle(ls);
+        final Style style = sf.createStyle();
+        layer.addUserStyle(style);
+        style.addFeatureTypeStyle(fts);
+
+        List<Expression> dashArray = ls.getStroke().dashArray();
+        dashArray.add(ff.property("dash_size"));
+        dashArray.add(ff.literal(35));
+        dashArray.add(ff.multiply(ff.property("dash_size"), ff.literal(0.5)));
+        dashArray.add(ff.literal("5 20"));
+        String xml = transformer.transform(sld);
         // System.out.println(xml);
         Document doc = buildTestDocument(xml);
 
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:Stroke/*)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/*)", doc);
-        assertXpathEvaluatesTo("3", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/*)", doc);
-        assertXpathEvaluatesTo("2", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:PropertyName)", doc);
-        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:Literal)", doc);
-        assertXpathEvaluatesTo("dash_size", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:PropertyName", doc);
-        assertXpathEvaluatesTo("![CDATA[ ]]", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Function[@name='Concatenate']/ogc:Literal", doc);
+        String path = "/sld:StyledLayerDescriptor/sld:UserLayer/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:LineSymbolizer";
+        assertXpathEvaluatesTo("1", "count(" + path + "/*)", doc);
+        assertXpathEvaluatesTo("1", "count(" + path + "/sld:Stroke/*)", doc);
+        assertXpathEvaluatesTo("4", "count(" + path + "/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/*)", doc);
+        assertXpathEvaluatesTo("1", "count(" + path + "/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:PropertyName)", doc);
+        assertXpathEvaluatesTo("2", "count(" + path + "/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Literal)", doc);
+        assertXpathEvaluatesTo("1", "count(" + path + "/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Mul)", doc);
+        assertXpathEvaluatesTo("dash_size", path + "/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:PropertyName", doc);
+        assertXpathEvaluatesTo("35", path + "/sld:Stroke/sld:CssParameter[@name='stroke-dasharray']/ogc:Literal", doc);
 
         SLDParser parser = new SLDParser(sf);
 
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            parser.setInput(new StringReader(xml));
 
-            Document dom = null;
-            DocumentBuilder db = null;
-
-            db = dbf.newDocumentBuilder();
-            dom = db.parse(new InputSource(new StringReader(xml)));
-
-            LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
-
-            assertEquals(new Expression[]{ff.property("dash_size"),
-                                          ff.property("blank_size")},
-                    ((Stroke2)lineSymbolizer2.getStroke()).getDashExpressionArray());
+            Style importedStyle = parser.readXML()[0];
+            LineSymbolizer lineSymbolizer = (LineSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+            List<Expression> dashArray1 = new ArrayList<Expression>();
+            dashArray1.add(ff.property("dash_size"));
+            dashArray1.add(ff.literal(35));
+            dashArray1.add(ff.multiply(ff.property("dash_size"), ff.literal(0.5)));
+            dashArray1.add(ff.literal(5));
+            dashArray1.add(ff.literal(20));
+            assertEquals(dashArray1, lineSymbolizer.getStroke().dashArray());
         } catch (Exception e) {
             e.printStackTrace();
         }

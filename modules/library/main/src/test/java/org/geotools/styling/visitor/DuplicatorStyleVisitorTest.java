@@ -21,6 +21,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.xml.transform.TransformerException;
@@ -572,10 +573,13 @@ public class DuplicatorStyleVisitorTest extends TestCase {
         Stroke dashArray2 = (Stroke) ((Cloneable)dashArray).clone();
         assertEqualsContract(dashArray, dashArray2);
 
-        Stroke2 dashArray3 = (Stroke2)sf.getDefaultStroke();
-        dashArray3.setDashExpressionArray(new Expression[]{ff.literal(1.0f), ff.literal(2.0f), ff.literal(3.0f)});
+        Stroke dashArray3 = sf.getDefaultStroke();
+        List<Expression> dashs = dashArray3.dashArray();
+        dashs.add(ff.literal(1.0f));
+        dashs.add(ff.literal(2.0f));
+        dashs.add(ff.literal(3.0f));
 
-        Stroke dashArray4 = (Stroke) ((Cloneable)dashArray3).clone();
+        Stroke dashArray4 = (Stroke)((Cloneable)dashArray3).clone();
         assertEqualsContract(dashArray3, dashArray4);
     }
 

@@ -26,22 +26,15 @@
                         <Literal>0</Literal>
                      </CssParameter>
                      <CssParameter name="stroke-dasharray">
-                         <Function name="Concatenate">
-                              <Literal>2.0</Literal>
-                              <Literal><![CDATA[
- ]]></Literal>
-                              <Literal>1.0</Literal>
-                              <Literal><![CDATA[
- ]]></Literal>
-                              <Literal>4.0</Literal>
-                              <Literal><![CDATA[
- ]]></Literal>
-                              <Literal>1.0</Literal>
-                        </Function>
+                        <Literal>2.0 1.0</Literal>
+                         <Mul>
+                           <Literal>2.0</Literal>
+                           <Literal>2.0</Literal>
+                         </Mul>
+                        <Literal>1.0</Literal>
                      </CssParameter>
                   </Stroke>
                </LineSymbolizer>
-
             </Rule>
          </FeatureTypeStyle>
       </UserStyle>

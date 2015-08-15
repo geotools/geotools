@@ -148,16 +148,9 @@ public class SLD {
                         Expression dashOffset = copy(stroke.getDashOffset());
                         Graphic graphicStroke = copy(stroke.getGraphicStroke());
                         Graphic graphicFill = copy(stroke.getGraphicFill());
-                        Stroke out_stroke;
-                        if ((sf instanceof StyleFactory3) && (stroke instanceof Stroke2)){
-                          Expression[] dashExpressionArray = copy(((Stroke2)stroke).getDashExpressionArray());
-                          out_stroke = ((StyleFactory3)sf).createStroke2(color, width, opacity, lineJoin,
-                                  lineCap, dashExpressionArray, dashOffset, graphicFill, graphicStroke);
-                        } else {
-                            float[] dashArray = copy(stroke.getDashArray());
-                            out_stroke = sf.createStroke(color, width, opacity, lineJoin,
-                                    lineCap, dashArray, dashOffset, graphicFill, graphicStroke);
-                        }
+                        Stroke out_stroke = sf.createStroke(color, width, opacity, lineJoin,
+                                lineCap, null, dashOffset, graphicFill, graphicStroke);
+                        out_stroke.dashArray().addAll(stroke.dashArray());
                         return out_stroke;
                     }
                 };
@@ -384,13 +377,13 @@ public class SLD {
     }
 
     /**
-     * Retrieves the dashe expressions array from a LineSymbolizer.
+     * Retrieves the dash expressions list from a LineSymbolizer.
      *
      * @param symbolizer Line symbolizer information.
      *
-     * @return float[] of the line dashes array, or null if unavailable.
+     * @return List of the line dash expressions.
      */
-    public static Expression[] lineDashExpression(LineSymbolizer symbolizer) {
+    public static List<Expression> lineDashExpression(LineSymbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         }
@@ -400,15 +393,9 @@ public class SLD {
         if (stroke == null) {
             return null;
         }
-        if (!(stroke instanceof Stroke2)){
-            return null;
-        }
 
-        Expression[] linedash = ((Stroke2)stroke).getDashExpressionArray();
-
-        return linedash;
+        return stroke.dashArray();
     }
-
 
     /**
      * Retrieves the location of the first external graphic in

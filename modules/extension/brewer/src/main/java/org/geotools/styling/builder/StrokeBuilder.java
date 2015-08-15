@@ -17,6 +17,8 @@
 package org.geotools.styling.builder;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geotools.styling.Stroke;
 import org.geotools.util.Converters;
@@ -38,7 +40,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
 
     Expression lineJoin;
 
-    float[] dashArray = null;
+    List<Expression> dashArray = new ArrayList<Expression>();
 
     Expression dashOffset;
 
@@ -68,7 +70,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         opacity = Stroke.DEFAULT.getOpacity();
         lineCap = Stroke.DEFAULT.getLineCap();
         lineJoin = Stroke.DEFAULT.getLineJoin();
-        dashArray = Stroke.DEFAULT.getDashArray();
+        dashArray.clear();
         dashOffset = Stroke.DEFAULT.getDashOffset();
         graphicFill.unset();
         graphicStroke.unset();
@@ -95,7 +97,8 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         opacity = stroke.getOpacity();
         lineCap = stroke.getLineCap();
         lineJoin = stroke.getLineJoin();
-        dashArray = stroke.getDashArray();
+        dashArray.clear();
+        dashArray.addAll(((Stroke) stroke).dashArray());
         dashOffset = stroke.getDashOffset();
         graphicFill.reset(stroke.getGraphicFill());
         graphicStroke.reset(stroke.getGraphicStroke());
@@ -183,7 +186,16 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     }
 
     public StrokeBuilder dashArray(float... dashArray) {
-        this.dashArray = dashArray;
+        this.dashArray.clear();
+        for (float f: dashArray){
+            this.dashArray.add(FF.literal(f));
+        }
+        unset = false;
+        return this;
+    }
+
+    public StrokeBuilder dash(Expression expr) {
+        dashArray.add(expr);
         unset = false;
         return this;
     }
@@ -215,8 +227,10 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         if (unset) {
             return null;
         }
-        Stroke stroke = sf.createStroke(color, width, opacity, lineJoin, lineCap, dashArray,
+        Stroke stroke = sf.createStroke(color, width, opacity, lineJoin, lineCap, null,
                 dashOffset, graphicFill.build(), this.graphicStroke.build());
+        List<Expression> dashArray = stroke.dashArray();
+        dashArray.addAll(this.dashArray);
         if (parent == null) {
             reset();
         }

@@ -16,6 +16,7 @@
  */
 package org.geotools.styling.visitor;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
@@ -125,28 +126,21 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
-            stroke.setDashArray(rescale(stroke.getDashArray(), uom));
-            if (stroke instanceof Stroke2){
-                ((Stroke2)stroke).setDashExpressionArray(
-                        rescale(((Stroke2)stroke).getDashExpressionArray(), uom));
-            }
+            rescaleList(stroke.dashArray(), uom);
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);
         }
     }
 
-    private Expression[] rescale(Expression[] unscaled, Unit<Length> uom) {
+    private void rescaleList(List<Expression> unscaled, Unit<Length> uom) {
         if (unscaled == null) {
-            return unscaled;
+            return;
         }
-
-        Expression[] ret = new Expression[unscaled.length];
-        for (int j=0; j<unscaled.length; ++j){
-            ret[j] = rescale(unscaled[j], uom);
+        for (int j=0; j<unscaled.size(); ++j){
+            Expression exp = unscaled.get(j);
+            unscaled.set(j,rescale(exp, uom));
         }
-
-        return ret;
     }
 
     @Override

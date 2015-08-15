@@ -374,38 +374,51 @@ public class SLDTransformer extends TransformerBase {
             encodeCssParam("stroke-opacity", stroke.getOpacity(), 1.0);
             encodeCssParam("stroke-width", stroke.getWidth(), 1.0);
             encodeCssParam("stroke-dashoffset", stroke.getDashOffset(), 0.0);
+            encodeDashArrayCssParam(stroke.dashArray());
+            end("Stroke");
+        }
 
-            float[] dash = stroke.getDashArray();
-
-            if (dash != null) {
-                StringBuffer sb = new StringBuffer();
-    
-                for (int i = 0; i < dash.length; i++) {
-                    sb.append(dash[i]);
-                    if(i < dash.length - 1) {
-                        sb.append(" ");
-                    }
-                }
-    
-                encodeCssParam("stroke-dasharray", ff.literal(sb.toString()));
-
-            } else
-            if (stroke instanceof Stroke2){
-                Expression[] dashExpressionArray = ((Stroke2)stroke).getDashExpressionArray();
-                if (dashExpressionArray != null){
-                    int parametersCount = dashExpressionArray.length * 2 - 1;
-                    Expression[] parameters = new Expression[parametersCount];
-                    for (int j=0; j<dashExpressionArray.length; ++j){
-                        parameters[2 * j] = dashExpressionArray[j];
-                        if (j != dashExpressionArray.length - 1) {
-                            parameters[2 * j + 1] = ff.literal("![CDATA[ ]]");
+        private void encodeDashArrayCssParam(List<Expression> dashArray) {
+            if (dashArray.size() > 0){
+                int floatLiteralCount = 0;
+                for (Expression expr: dashArray){
+                    if (expr instanceof Literal){
+                        Float dash = expr.evaluate(null, Float.class);
+                        if (dash != null){
+                            floatLiteralCount++;
                         }
                     }
-                    Expression dashArrayConcatenetedExpression = ff.function("Concatenate", parameters);
-                    encodeCssParam("stroke-dasharray", dashArrayConcatenetedExpression);
+                }
+                if (floatLiteralCount == dashArray.size()){
+                    encodeFloatArrayDashArray(dashArray);
+                } else {
+                    encodeExpressionListDashArray(dashArray);
                 }
             }
-            end("Stroke");
+        }
+
+        private void encodeExpressionListDashArray(List<Expression> dashArray) {
+            AttributesImpl atts = new AttributesImpl();
+            atts.addAttribute("", "name", "name", "", "stroke-dasharray");
+            start("CssParameter", atts);
+            for (Expression expr: dashArray){
+                filterTranslator.encode(expr);
+            }
+            end("CssParameter");
+        }
+
+        private void encodeFloatArrayDashArray(List<Expression> dashArray) {
+            StringBuffer sb = new StringBuffer();
+            int j=0;
+            for (Expression expr: dashArray){
+                Float dash = expr.evaluate(null, Float.class);
+                sb.append(dash);
+                j++;
+                if(j < dashArray.size()) {
+                    sb.append(" ");
+                }
+            }
+            encodeCssParam("stroke-dasharray", ff.literal(sb.toString()));
         }
 
         public void visit(LinePlacement lp) {

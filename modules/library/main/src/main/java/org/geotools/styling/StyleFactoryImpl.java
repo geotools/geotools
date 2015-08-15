@@ -65,7 +65,7 @@ import org.opengis.util.InternationalString;
  * @version $Id$
  */
 public class StyleFactoryImpl extends AbstractStyleFactory
-    implements StyleFactory2, StyleFactory3, org.opengis.style.StyleFactory {
+    implements StyleFactory2, org.opengis.style.StyleFactory {
 	
     private FilterFactory2 filterFactory;
     private StyleFactoryImpl2 delegate;
@@ -593,13 +593,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
     public Stroke getDefaultStroke() {
         try {
-            Stroke2 stroke = createStroke2(filterFactory.literal("#000000"),
+            Stroke stroke = createStroke(filterFactory.literal("#000000"),
                     filterFactory.literal(new Integer(1)));
 
             stroke.setDashOffset(filterFactory.literal(
                     new Integer(0)));
             stroke.setDashArray(Stroke.DEFAULT.getDashArray());
-            stroke.setDashExpressionArray(Stroke2.DEFAULT.getDashExpressionArray());
             stroke.setLineCap(filterFactory.literal("butt"));
             stroke.setLineJoin(filterFactory.literal("miter"));
             stroke.setOpacity(filterFactory.literal(new Integer(1)));
@@ -611,62 +610,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         }
     }
 
-    @Override
-    public Stroke2 createStroke2(Literal color, Literal width) {
-        return createStroke2(color, width,
-                filterFactory.literal(1.0));
-    }
-
-    @Override
-    public Stroke2 createStroke2(Expression color, Expression width,
-                                 Expression opacity) {
-        return createStroke2(color, width, opacity,
-                filterFactory.literal("miter"),
-                filterFactory.literal("butt"), null,
-                filterFactory.literal(0.0), null, null);
-    }
-
-    @Override
-    public Stroke2 createStroke2(Expression color, Expression width,
-                                 Expression opacity, Expression lineJoin, Expression lineCap,
-                                 Expression[] dashArray, Expression dashOffset, Graphic graphicFill,
-                                 Graphic graphicStroke) {
-        Stroke2 stroke = (Stroke2)new StrokeImpl(filterFactory);
-
-        if (color == null) {
-            //use default
-            color = Stroke.DEFAULT.getColor();
-        }
-        stroke.setColor(color);
-
-        if (width == null) {
-            //use default
-            width = Stroke.DEFAULT.getWidth();
-        }
-        stroke.setWidth(width);
-
-        if (opacity == null) {
-            opacity = Stroke.DEFAULT.getOpacity();;
-        }
-        stroke.setOpacity(opacity);
-
-        if (lineJoin == null) {
-            lineJoin = Stroke.DEFAULT.getLineJoin();
-        }
-        stroke.setLineJoin(lineJoin);
-
-        if (lineCap == null) {
-            lineCap = Stroke.DEFAULT.getLineCap();
-        }
-
-        stroke.setLineCap(lineCap);
-        stroke.setDashExpressionArray(dashArray);
-        stroke.setDashOffset(dashOffset);
-        stroke.setGraphicFill(graphicFill);
-        stroke.setGraphicStroke(graphicStroke);
-
-        return stroke;
-    }
 
     public Style getDefaultStyle() {
         Style style = createStyle();

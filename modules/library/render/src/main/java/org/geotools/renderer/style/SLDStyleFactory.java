@@ -32,10 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -998,10 +995,7 @@ public class SLDStyleFactory {
 		}
 
 		// get the other properties needed for the stroke
-		float[] dashes = stroke.getDashArray();
-        if ((dashes == null) && (stroke instanceof Stroke2)){
-            dashes = evalToFloatArray(((Stroke2)stroke).getDashExpressionArray(), feature);
-        }
+        float[] dashArray = evalToFloatArray(stroke.dashArray(), feature);
 		float width = evalToFloat(stroke.getWidth(), feature, 1);
 		float dashOffset = evalToFloat(stroke.getDashOffset(), feature, 0);
 
@@ -1015,8 +1009,8 @@ public class SLDStyleFactory {
 		// now set up the stroke
 		BasicStroke stroke2d;
 
-		if ((dashes != null) && (dashes.length > 0)) {
-			stroke2d = new BasicStroke(width, capCode, joinCode, 1, dashes,
+		if ((dashArray != null) && (dashArray.length > 0)) {
+			stroke2d = new BasicStroke(width, capCode, joinCode, 1, dashArray,
 					dashOffset);
 		} else {
 			stroke2d = new BasicStroke(width, capCode, joinCode, 1);
@@ -1025,15 +1019,25 @@ public class SLDStyleFactory {
 		return stroke2d;
 	}
 
-    private float[] evalToFloatArray(Expression[] exp,  Object f) {
-        if (exp == null) {
+    public static float[] evalToFloatArray(List<Expression> expressions, Object feature) {
+        if (expressions == null) {
             return null;
         }
-        float[] fo = new float[exp.length];
-        for (int i = 0; i < fo.length; ++i){
-            fo[i] = exp[i].evaluate(f, Float.class);
+        List<Float> floats = new ArrayList<Float>();
+        for (Expression exp: expressions){
+            String s = exp.evaluate(feature, String.class);
+            if (s == null || s.isEmpty()) continue;
+            for (String textPart : s.split("\\s+")) {
+                if (textPart.length() > 0){
+                    floats.add(Float.valueOf(textPart));
+                }
+            }
         }
-        return fo;
+        float[] result = new float[floats.size()];
+        for (int j=0; j<floats.size(); ++j){
+            result[j] = floats.get(j);
+        }
+        return result;
     }
 
 	private Paint getStrokePaint(org.geotools.styling.Stroke stroke, Object feature) {

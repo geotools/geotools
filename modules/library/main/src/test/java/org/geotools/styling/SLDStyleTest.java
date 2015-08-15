@@ -23,11 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -203,7 +199,7 @@ public class SLDStyleTest extends TestCase {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
-        validateDashExpressionArrayStyle(sld);
+        validateDashArrayStyle1(sld);
     }
 
     private void validateDashArrayStyle(StyledLayerDescriptor sld) {
@@ -220,7 +216,7 @@ public class SLDStyleTest extends TestCase {
         assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
     }
 
-    private void validateDashExpressionArrayStyle(StyledLayerDescriptor sld) {
+    private void validateDashArrayStyle1(StyledLayerDescriptor sld) {
         assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
         List<FeatureTypeStyle> fts = style.featureTypeStyles();
@@ -231,8 +227,12 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, symbolizers.size());
 
         LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
-        assertTrue(Arrays.equals(new Expression[] {ff.literal(2.0f), ff.literal(1.0f), ff.literal(4.0f),
-                ff.literal(1.0f)}, ((Stroke2)ls.getStroke()).getDashExpressionArray()));
+        List<Expression> dashArray = new ArrayList<Expression>();
+        dashArray.add(ff.literal(2.0f));
+        dashArray.add(ff.literal(1.0f));
+        dashArray.add(ff.multiply(ff.literal(2.0f),ff.literal(2.0f)));
+        dashArray.add(ff.literal(1.0f));
+        assertEquals(dashArray, ls.getStroke().dashArray());
     }
 
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {

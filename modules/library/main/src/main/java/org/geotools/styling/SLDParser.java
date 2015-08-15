@@ -1971,49 +1971,7 @@ public class SLDParser {
                     stroke.setLineJoin(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("dasharray")
                         || res.equalsIgnoreCase("stroke-dasharray")) {
-                    String dashString = null;
-                    if( child.getChildNodes().getLength() == 1 && child.getFirstChild().getNodeType() == Node.TEXT_NODE ){
-                        dashString = getFirstChildValue(child);                        
-                    } else {
-                        Expression definition = parseCssParameter(child);
-                        if( definition instanceof Literal){
-                            dashString = ((Literal)definition).getValue().toString();
-                        }
-                        else
-                        if( definition instanceof Function){
-                          if (stroke instanceof Stroke2){
-                              Function functionExpression = (Function) definition;
-                              String functionName = functionExpression.getFunctionName().getName();
-                              if  ("Concatenate".equals(functionName)) {
-                                  List<Expression> parameters = functionExpression.getParameters();
-                                  int dashCount = (parameters.size() + 1) / 2;
-                                  Expression[] dashExpressionArray = new Expression[dashCount];
-                                  for (int j=0; j<dashCount; ++j){
-                                      Expression dashLengthExpression = parameters.get(2 * j);
-                                      dashExpressionArray[j] = dashLengthExpression;
-                                  }
-                                  ((Stroke2)stroke).setDashExpressionArray(dashExpressionArray);
-                              } else {
-                                  LOGGER.warning(functionName + "-Only literal and Concatenate function in stroke-dasharray are supported at this time:"+definition);
-                               }
-                          } else {
-                              LOGGER.warning("Only literal in stroke-dasharray are supported for Stroke, created by StyleFactory2. Use StyleFactory3:"+definition);
-                          }
-                        } else {
-                            LOGGER.warning("Only literal and Concatenate function in stroke-dasharray are supported at this time:"+definition);
-                        }
-                    }
-                    if( dashString != null){
-                        StringTokenizer stok = new StringTokenizer(dashString.trim(), " ");
-                        float[] dashes = new float[stok.countTokens()];
-                        for (int l = 0; l < dashes.length; l++) {
-                            dashes[l] = Float.parseFloat(stok.nextToken());
-                        }                    
-                        stroke.setDashArray(dashes);
-                    }
-                    else {
-                        LOGGER.fine("Unable to parse stroke-dasharray");
-                    }                
+                    parseDashArray(child, stroke.dashArray());
                 } else if (res.equalsIgnoreCase("dashoffset")
                         || res.equalsIgnoreCase("stroke-dashoffset")) {
                     stroke.setDashOffset(parseCssParameter(child));
@@ -2022,6 +1980,50 @@ public class SLDParser {
         }
 
         return stroke;
+    }
+    private void  parseDashArray(Node root, List<Expression> expressions) {
+        NodeList children = root.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node child = children.item(i);
+            if (child == null) continue;
+            switch (child.getNodeType()) {
+                case Node.TEXT_NODE:
+                    handleDashArrayText(child.getNodeValue(), expressions);
+                    break;
+                case Node.ELEMENT_NODE:
+                    handleDashArrayNode(child, expressions);
+                    break;
+                case Node.CDATA_SECTION_NODE:
+                    handleDashArrayText(child.getNodeValue(), expressions);
+            }
+        }
+    }
+
+    private void handleDashArrayText(String text, List<Expression> expressions) {
+        if (text == null || text.isEmpty()) return;
+        for (String textPart : text.split("\\s+")) {
+            if (textPart.length() > 0){
+                expressions.add(ff.literal(Float.valueOf(textPart)));
+            }
+        }
+    }
+
+    private void handleDashArrayNode(Node child, List<Expression> expressions) {
+        Expression expression = ExpressionDOMParser.parseExpression(child);
+        if (expression instanceof Literal) {
+            handleDashArrayLiteral((Literal) expression, expressions);
+        } else {
+            expressions.add(expression);
+        }
+    }
+
+    private void handleDashArrayLiteral(Literal literal, List<Expression> expressions) {
+        Object value = literal.getValue();
+        if (value instanceof String) {
+            handleDashArrayText((String) value, expressions);
+        } else {
+            expressions.add(literal);
+        }
     }
 
     /** Internal parse method - made protected for unit testing */

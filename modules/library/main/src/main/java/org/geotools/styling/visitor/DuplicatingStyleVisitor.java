@@ -590,10 +590,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     public void visit(Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor( copy(stroke.getColor()));
-        copy.setDashArray( copy(stroke.getDashArray()));
-        if ((stroke instanceof Stroke2) && (copy instanceof Stroke2)){
-            ((Stroke2)copy).setDashExpressionArray(copy(((Stroke2)stroke).getDashExpressionArray()));
-        }
+        copy.dashArray().addAll(stroke.dashArray());
         copy.setDashOffset( copy( stroke.getDashOffset()));
         copy.setGraphicFill( copy(stroke.getGraphicFill()));
         copy.setGraphicStroke( copy( stroke.getGraphicStroke()));

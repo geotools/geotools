@@ -1,6 +1,8 @@
+*.db
 .project
 .classpath
 .settings
+.settings/*
 target
 *.patch
 *.class

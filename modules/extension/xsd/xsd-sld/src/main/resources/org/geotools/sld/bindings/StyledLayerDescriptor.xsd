@@ -901,20 +901,36 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:choice minOccurs="0">
-          <xsd:element ref="sld:Normalize"/>
-          <xsd:element ref="sld:Histogram"/>
-        </xsd:choice>
+			<xsd:choice minOccurs="0" maxOccurs="1">
+    			<xsd:element name="Normalize" type="sld:ContrastMethodType"/>
+                <xsd:element name="Logarithmic" type="sld:ContrastMethodType"/>
+                <xsd:element name="Exponential" type="sld:ContrastMethodType"/> 
+                <xsd:element name="Histogram" type="sld:ContrastMethodType"/>
+			</xsd:choice>
         <xsd:element ref="sld:GammaValue" minOccurs="0"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
+  
   <xsd:element name="Normalize">
     <xsd:complexType/>
   </xsd:element>
   <xsd:element name="Histogram">
     <xsd:complexType/>
   </xsd:element>
+  <xsd:element name="Logarithmic">
+    <xsd:complexType/>
+  </xsd:element>
+      <xsd:element name="Exponential">
+    <xsd:complexType/>
+  </xsd:element>
+	<xsd:complexType name="ContrastMethodType">
+		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="VendorOption" minOccurs="0"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+  
+  
   <xsd:element name="GammaValue" type="xsd:double"/>
 
   <xsd:element name="ShadedRelief">

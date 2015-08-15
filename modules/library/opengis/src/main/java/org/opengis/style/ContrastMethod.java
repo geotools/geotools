@@ -47,7 +47,7 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
      * List of all enumerations of this type.
      * Must be declared before any enum declaration.
      */
-    private static final List<ContrastMethod> VALUES = new ArrayList<ContrastMethod>(3);
+    private static final List<ContrastMethod> VALUES = new ArrayList<ContrastMethod>(5);
 
     /**
      * Normalize enchancement.
@@ -66,6 +66,13 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
      */
     @XmlElement("Histogram")
     public static final ContrastMethod HISTOGRAM = new ContrastMethod("HISTOGRAM");
+
+    @XmlElement("Logarithmic")
+    public static final ContrastMethod LOGARITHMIC = new ContrastMethod("LOGARITHMIC");
+
+
+    @XmlElement("Exponential")
+    public static final ContrastMethod EXPONENTIAL = new ContrastMethod("EXPONENTIAL");
 
     /**
      * No enchancement.

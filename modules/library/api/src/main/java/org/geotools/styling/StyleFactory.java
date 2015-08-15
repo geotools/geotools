@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
 import org.opengis.metadata.citation.OnLineResource;
+import org.opengis.style.ContrastMethod;
 import org.opengis.util.InternationalString;
 
 
@@ -718,5 +719,11 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      */
     TextSymbolizer textSymbolizer(String name, Expression geometry,
             org.opengis.style.Description description, Unit<?> unit, Expression label, org.opengis.style.Font font,
-            org.opengis.style.LabelPlacement placement, org.opengis.style.Halo halo, org.opengis.style.Fill fill);   
+            org.opengis.style.LabelPlacement placement, org.opengis.style.Halo halo, org.opengis.style.Fill fill);
+
+    /**
+     * @param method
+     * @return a deep copy of the method
+     */
+    public ContrastMethod createContrastMethod(ContrastMethod method);   
 }

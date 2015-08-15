@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,6 +46,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Disjoint;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -703,20 +704,20 @@ public class SLDStyleTest extends TestCase {
     	
          //contrast enhancement
          ContrastEnhancement rcs =  redChannel.getContrastEnhancement();
-         String type = (String)rcs.getType().evaluate(null);
-         assertEquals("Histogram", type);
+         
+         assertEquals("histogram", rcs.getMethod().name().toLowerCase());
 
          ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
          Double ggamma = (Double)gcs.getGammaValue().evaluate(null);
          assertEquals(2.8, ggamma.doubleValue());
          
          ContrastEnhancement bcs =  blueChannel.getContrastEnhancement();
-         type = (String)bcs.getType().evaluate(null);
-         assertEquals("Normalize", type);
+         ContrastMethod m = bcs.getMethod();
+         assertEquals("normalize", m.name().toLowerCase());
          
          //overlap behaviour
          Expression overlapExpr = rs.getOverlap();
-         type = (String)overlapExpr.evaluate(null);
+         String type = (String)overlapExpr.evaluate(null);
          assertEquals("LATEST_ON_TOP", type);
          
          //ContrastEnhancement

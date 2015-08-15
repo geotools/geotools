@@ -93,7 +93,7 @@ public class SEConfiguration extends Configuration {
         container.registerComponentImplementation(SE.GraphicFill,GraphicFillBinding.class);
         container.registerComponentImplementation(SE.GraphicStroke,GraphicStrokeBinding.class);
         container.registerComponentImplementation(SE.Halo,HaloBinding.class);
-        //container.registerComponentImplementation(SE.Histogram,HistogramBinding.class);
+        container.registerComponentImplementation(SE.Histogram,HistogramBinding.class);
         container.registerComponentImplementation(SE.ImageOutline,ImageOutlineBinding.class);
         container.registerComponentImplementation(SE.InlineContent,InlineContentBinding.class);
         container.registerComponentImplementation(SE.Interpolate,InterpolateBinding.class);
@@ -104,9 +104,10 @@ public class SEConfiguration extends Configuration {
         container.registerComponentImplementation(SE.LineSymbolizer,LineSymbolizerBinding.class);
         //container.registerComponentImplementation(SE.MapItem,MapItemBinding.class);
         container.registerComponentImplementation(SE.Mark,MarkBinding.class);
-        //container.registerComponentImplementation(SE.Normalize,NormalizeBinding.class);
+        container.registerComponentImplementation(SE.Normalize,NormalizeBinding.class);
         container.registerComponentImplementation(SE.OnlineResource,OnlineResourceBinding.class);
         container.registerComponentImplementation(SE.OverlapBehavior,OverlapBehaviorBinding.class);
+        
         container.registerComponentImplementation(SE.PointPlacement,PointPlacementBinding.class);
         container.registerComponentImplementation(SE.PointSymbolizer,PointSymbolizerBinding.class);
         container.registerComponentImplementation(SE.PolygonSymbolizer,PolygonSymbolizerBinding.class);

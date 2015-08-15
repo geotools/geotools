@@ -235,7 +235,7 @@ public class SLDTransformer extends TransformerBase {
         /**
          * Utility method used to quickly package up the provided InternationalString.
          * @param element
-         * @param intString
+         * @param expr
          */
         void element(String element, InternationalString intString) {
             if(intString instanceof GrowableInternationalString) {
@@ -457,23 +457,21 @@ public class SLDTransformer extends TransformerBase {
                 end("Label");
             }
 
-            if ((text.getFonts() != null) && (text.getFonts().length != 0)) {
+            if ((text.fonts() != null) && (!text.fonts().isEmpty())) {
                 start("Font");
-
-                Font[] fonts = text.getFonts();
-
-                for (int i = 0; i < fonts.length; i++) {
-                    encodeCssParam("font-family", fonts[i].getFontFamily());
+                List<Font> fonts = text.fonts();
+                Font initialFont = fonts.get(0);
+                for (Font font : fonts ) {
+                    encodeCssParam("font-family", font.getFamily().get(0));
                 }
-
-                encodeCssParam("font-size", fonts[0].getFontSize());
-                encodeCssParam("font-style", fonts[0].getFontStyle());
-                encodeCssParam("font-weight", fonts[0].getFontWeight());
+                encodeCssParam("font-size", initialFont.getSize());
+                encodeCssParam("font-style", initialFont.getStyle());
+                encodeCssParam("font-weight", initialFont.getWeight());
                 end("Font");
             }
 
-            if (text.getPlacement() != null) {
-                text.getPlacement().accept(this);
+            if (text.getLabelPlacement() != null) {
+                text.getLabelPlacement().accept(this);
             }
 
             if (text.getHalo() != null) {

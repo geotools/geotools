@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,11 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathValuesEqual;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -36,6 +40,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerException;
 
+import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.geotools.factory.CommonFactoryFinder;
@@ -48,6 +53,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.Rule;
 import org.opengis.style.Symbolizer;
@@ -141,7 +147,7 @@ public class SLDTransformerTest {
         SelectedChannelTypeImpl redChannel = new SelectedChannelTypeImpl();
         redChannel.setChannelName("1");
         ContrastEnhancementImpl rcei = new ContrastEnhancementImpl();
-        rcei.setHistogram();
+        rcei.setMethod(ContrastMethod.HISTOGRAM);
         redChannel.setContrastEnhancement(rcei);
 
         // green
@@ -155,7 +161,7 @@ public class SLDTransformerTest {
         SelectedChannelTypeImpl blueChannel = new SelectedChannelTypeImpl();
         blueChannel.setChannelName("2");
         ContrastEnhancementImpl bcei = new ContrastEnhancementImpl();
-        bcei.setNormalize();
+        bcei.setMethod(ContrastMethod.NORMALIZE);
         blueChannel.setContrastEnhancement(bcei);
 
         csi.setRGBChannels(redChannel, greenChannel, blueChannel);
@@ -1564,6 +1570,53 @@ public class SLDTransformerTest {
         return style;
     }
 
+    @Test
+    public void testContrastEnhancement() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        
+        ContrastEnhancement ce = new ContrastEnhancementImpl();
+        NormalizeContrastMethodStrategy normal = new NormalizeContrastMethodStrategy();
+        normal.setAlgorithm(ff.literal("ClipToMinimumMaximum"));
+        normal.addParameter("p1", ff.literal(false));
+        normal.addParameter("p2", ff.literal(23.5d));
+        ce.setMethod(normal);
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(ce);
+      // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        assertXpathExists( "//sld:ContrastEnhancement/sld:Normalize", doc);
+        assertXpathEvaluatesTo("false", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']", doc);
+        assertXpathEvaluatesTo("ClipToMinimumMaximum", "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='algorithm']", doc);
+        
+        HistogramContrastMethodStrategy hist = new HistogramContrastMethodStrategy();
+        ce.setMethod(hist);
+        xml = st.transform(ce);
+        String skeleton = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Histogram/></sld:ContrastEnhancement>";
+        System.out.println(xml);
+        Diff myDiff = new Diff(skeleton, xml);
+        
+        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+        //assertXpathNotExists("//sld:ContrastEnhancement/sld:Histogram/sld:Algorithm",doc);
+    
+        LogarithmicContrastMethodStrategy log = new LogarithmicContrastMethodStrategy();
+        ce.setMethod(log);
+        xml = st.transform(ce);
+        //System.out.println(xml);
+        skeleton = skeleton.replace("Histogram", "Logarithmic");
+        myDiff = new Diff(skeleton, xml);
+        
+        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+        
+        
+        ExponentialContrastMethodStrategy exp = new ExponentialContrastMethodStrategy();
+        ce.setMethod(exp);
+        xml = st.transform(ce);
+        //System.out.println(xml);
+        skeleton = skeleton.replace("Logarithmic", "Exponential");
+        myDiff = new Diff(skeleton, xml);
+        
+        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+    }
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(symbolizer);

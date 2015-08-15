@@ -53,6 +53,8 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -1544,6 +1546,47 @@ public class SLDStyleFactory {
                             + BlendingMode.getStandardNames());
         }
         return BlendComposite.getInstance(blend, opacity);
+    }
+
+    /**
+     * Returns the sorting directions found in the feature type style
+     * 
+     * @param options
+     * @return
+     */
+    public static SortBy[] getSortBy(Map<String, String> options) {
+        // get the spec, if no spec, no sorting
+        String sortBySpec = options.get(FeatureTypeStyle.SORT_BY);
+        if (sortBySpec == null) {
+            return null;
+        }
+
+        // parse it
+        List<SortBy> result = new ArrayList<>();
+        String[] attributeSpecs = sortBySpec.split("\\s*,\\s*");
+        for (String attributeSpec : attributeSpecs) {
+            String[] items = attributeSpec.split("\\s+");
+            if (items.length < 1 || items.length > 2) {
+                throw new IllegalArgumentException("Invalid sortBy specification, it should "
+                        + "be either in the form 'attribute' or 'attribute direction' "
+                        + "but instead it is: '" + attributeSpec + "'");
+            }
+            String attribute = items[0];
+            SortOrder order = SortOrder.ASCENDING;
+            if (items.length == 2) {
+                String direction = items[1];
+                if ("D".equalsIgnoreCase(direction) || "DESC".equalsIgnoreCase(direction)) {
+                    order = SortOrder.DESCENDING;
+                } else if(!"A".equalsIgnoreCase(direction) || "ASC".equalsIgnoreCase(direction)) {
+                    throw new IllegalArgumentException("Unknown sort order '" + order 
+                            + "' in: '" + attributeSpec + "'");
+                }
+            }
+            SortBy sort = ff.sort(attribute, order);
+            result.add(sort);
+        }
+
+        return result.toArray(new SortBy[result.size()]);
     }
 
 	/**

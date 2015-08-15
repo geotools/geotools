@@ -610,7 +610,7 @@ public class SLDParser {
 
     /**
      * 
-     * @param root
+     * @param child
      * @param layer
      */
     private void parseInlineFeature(Node root, UserLayer layer) {
@@ -1188,7 +1188,7 @@ public class SLDParser {
             if (childName.equalsIgnoreCase("Font")) {
                 fonts.add(parseFont(child));
             } else if (childName.equalsIgnoreCase("LabelPlacement")) {
-                symbol.setPlacement(parseLabelPlacement(child));
+                symbol.setLabelPlacement(parseLabelPlacement(child));
             } else if (childName.equalsIgnoreCase("Halo")) {
                 symbol.setHalo(parseHalo(child));
             } else if (childName.equalsIgnoreCase("Graphic")) {
@@ -1220,8 +1220,7 @@ public class SLDParser {
             }
 
         }
-
-        symbol.setFonts(fonts.toArray(new Font[0]));
+        symbol.fonts().addAll(fonts);
 
         return symbol;
     }
@@ -1243,7 +1242,7 @@ public class SLDParser {
     /**
      * adds the key/value pair from the node ("<VendorOption name="...">...</VendorOption>")
      * 
-     * @param options
+     * @param symbol
      * @param child
      */
     private void parseVendorOption(Map<String, String> options, Node child) {

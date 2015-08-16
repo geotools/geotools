@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -59,7 +59,6 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.GeometryFilterImpl;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
@@ -71,7 +70,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
@@ -89,7 +87,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -246,13 +243,17 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 header.read(buffer, true);
 
                 SimpleFeatureType schema = getSchema();
-                ReferencedEnvelope bounds = new ReferencedEnvelope(
-                        schema.getCoordinateReferenceSystem());
-                bounds.include(header.minX(), header.minY());
-                bounds.include(header.minX(), header.minY());
-
-                Envelope env = new Envelope(header.minX(), header.maxX(), header.minY(),
+                
+                Envelope env;
+                
+                // If it is a shapefile without any data (file length equals 50), return an empty
+                // envelope as expected
+                if(header.getFileLength() == 50) {
+                    env = new Envelope();
+                } else {
+                    env = new Envelope(header.minX(), header.maxX(), header.minY(),
                         header.maxY());
+                }
 
                 CoordinateReferenceSystem crs = null;
                 if (schema != null) {

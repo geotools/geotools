@@ -3,13 +3,21 @@ cache:
   directories:
     - "$HOME/.m2"
 language: java
-jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk7
 script:
   - mvn -B -T2 -fae -Djava.awt.headless=true -Dall clean install
 notifications:
   email: false
   on_failure: never
 env: GDAL_LIBRARY_NAME=disabled_see_geot-4733
+os:
+  - linux
+  - osx
+matrix:
+  allow_failures:
+    - os: osx
+  include:
+  # additional builds on linux w/ openjdk7 and oraclejdk8
+    - os: linux
+      jdk: openjdk7
+    - os: linux
+      jdk: oraclejdk8

@@ -651,9 +651,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         // save the bbox and prepare other info
         //
         final BoundingBox bounds = catalog.getBounds(typeName);
-        if(bounds.isEmpty()) {
-                throw new IllegalArgumentException("Cannot create a mosaic out of an empty index");
-        }
         
         // we might have an imposed bbox
         this.crs=bounds.getCoordinateReferenceSystem();

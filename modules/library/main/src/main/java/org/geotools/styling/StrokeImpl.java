@@ -140,19 +140,23 @@ public class StrokeImpl implements Stroke, Cloneable {
         if (dashArray.isEmpty()){
         	return Stroke.DEFAULT.getDashArray();
         }  else {
-            int floatLiteralCount = 0;
+            boolean isFloatArray = true;
             for (Expression expr: dashArray){
                 if (expr instanceof Literal){
                     Float dash = expr.evaluate(null, Float.class);
-                    if (dash != null){
-                      floatLiteralCount++;
+                    if (dash == null){
+                        isFloatArray = false;
+                        break;
                     }
+                } else {
+                    isFloatArray = false;
+                    break;
                 }
             }
-            if (floatLiteralCount != dashArray.size()){
+            if (!isFloatArray){
                 return Stroke.NULL.getDashArray();
             } else {
-                float[] result = new float[floatLiteralCount];
+                float[] result = new float[dashArray.size()];
                 int j = 0;
                 for (Expression expr: dashArray){
                     Float dash = expr.evaluate(null, Float.class);

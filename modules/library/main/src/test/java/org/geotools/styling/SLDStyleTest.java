@@ -193,7 +193,6 @@ public class SLDStyleTest extends TestCase {
         validateDashArrayStyle(sld);
     }
 
-
     public void testDashArray3() throws Exception {
         // using ogc:Function in dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray3.sld");
@@ -201,6 +200,24 @@ public class SLDStyleTest extends TestCase {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         validateDashArrayStyle1(sld);
+    }
+
+    public void testDashArray4() throws Exception {
+        Stroke stroke = sf.createStroke(null, null);
+        assertNull(stroke.getDashArray());
+
+        List<Expression> dashArray = stroke.dashArray();
+        dashArray.add(ff.literal("5"));
+        dashArray.add(ff.literal("10"));
+        assertTrue(Arrays.equals(new float[]{5, 10},  stroke.getDashArray()));
+
+        dashArray.add(ff.property("dash_size"));
+        assertTrue(Arrays.equals(new float[]{},  stroke.getDashArray()));
+
+        Stroke stroke2 = sf.createStroke(null, null, null,
+                null, null, new float[]{5, 10}, null,
+                null, null);
+        assertTrue(Arrays.equals(new float[]{5, 10},  stroke2.getDashArray()));
     }
 
     private void validateDashArrayStyle(StyledLayerDescriptor sld) {
@@ -214,7 +231,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, symbolizers.size());
         
         LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
+        assertTrue(Arrays.equals(new float[]{2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
     }
 
     private void validateDashArrayStyle1(StyledLayerDescriptor sld) {

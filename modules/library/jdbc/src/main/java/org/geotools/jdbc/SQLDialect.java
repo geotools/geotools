@@ -1247,6 +1247,10 @@ public abstract class SQLDialect {
             sql.append("UNIQUE ");
         }
         sql.append("INDEX ");
+        if (databaseSchema != null) {
+            encodeSchemaName(databaseSchema, sql);
+            sql.append(".");
+        }        
         sql.append(escape).append(index.getIndexName()).append(escape);
         sql.append(" ON ");
         if (databaseSchema != null) {

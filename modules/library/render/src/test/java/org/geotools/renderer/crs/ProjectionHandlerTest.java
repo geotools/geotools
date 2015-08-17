@@ -50,12 +50,15 @@ public class ProjectionHandlerTest {
 
     static CoordinateReferenceSystem ED50;
 
+    static CoordinateReferenceSystem OSM;
+
     @BeforeClass
     public static void setup() throws Exception {
         WGS84 = DefaultGeographicCRS.WGS84;
         UTM32N = CRS.decode("EPSG:32632", true);
         MERCATOR_SHIFTED = CRS.decode("EPSG:3349", true);
         MERCATOR = CRS.decode("EPSG:3395", true);
+        OSM = CRS.decode("EPSG:3857", true);
         ED50 = CRS.decode("EPSG:4230", true);
         ED50_LATLON = CRS.decode("urn:x-ogc:def:crs:EPSG:4230", false);
     }
@@ -708,5 +711,27 @@ public class ProjectionHandlerTest {
         assertNotEquals(collection, preProcessed);
         // Ensure the result is null
         assertNull(preProcessed);
+    }
+
+
+    @Test
+    public void testWorldMeridian() throws Exception {
+        ReferencedEnvelope requestWgs84 = new ReferencedEnvelope(-180, 180, -85, 85, WGS84);
+        ReferencedEnvelope requestWebMercator = requestWgs84.transform(OSM, true);
+
+        // a geometry close to the dateline 
+        Geometry g = new WKTReader().read("LINESTRING(0 -90, 0 90)");
+        Geometry expected = new WKTReader().read("LINESTRING(0 -85, 0 85)");
+
+        // make sure the geometry is not wrapped, but it is preserved
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(requestWebMercator, WGS84, true);
+        assertTrue(handler.requiresProcessing(g));
+        Geometry preProcessed = handler.preProcess(g);
+        // should have cut at 85 degrees, the web mercator breaks at the poles
+        assertEquals(expected, preProcessed);
+        // post process (provide identity transform to force wrap heuristic)
+        Geometry postProcessed = handler.postProcess(CRS.findMathTransform(WGS84, WGS84), expected);
+        // check the geometry is in the same area as the rendering envelope
+        assertEquals(expected, postProcessed);
     }
 }

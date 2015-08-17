@@ -13,8 +13,8 @@ os:
   - linux
   - osx
 matrix:
-  allow_failures:
-    - os: osx
+#  allow_failures:
+#    - os: osx
   include:
   # additional builds on linux w/ openjdk7 and oraclejdk8
     - os: linux

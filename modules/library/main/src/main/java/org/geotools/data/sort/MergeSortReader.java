@@ -16,7 +16,6 @@
  */
 package org.geotools.data.sort;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Comparator;
@@ -38,21 +37,18 @@ class MergeSortReader implements SimpleFeatureReader {
 
     List<FeatureBlockReader> readers;
 
-    RandomAccessFile raf;
-
-    File file;
+    SimpleFeatureIO io;
 
     SimpleFeatureType schema;
 
     Comparator<SimpleFeature> comparator;
 
-    public MergeSortReader(SimpleFeatureType schema, RandomAccessFile raf, File file,
+    public MergeSortReader(SimpleFeatureType schema, SimpleFeatureIO io,
             List<FeatureBlockReader> readers, Comparator<SimpleFeature> comparator) {
         this.schema = schema;
         this.comparator = comparator;
         this.readers = readers;
-        this.raf = raf;
-        this.file = file;
+        this.io = io;
     }
 
     public SimpleFeatureType getFeatureType() {
@@ -91,11 +87,7 @@ class MergeSortReader implements SimpleFeatureReader {
     }
 
     public void close() throws IOException {
-        try {
-            raf.close();
-        } finally {
-            file.delete();
-        }
+        io.close(true);
     }
 
 }

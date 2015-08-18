@@ -305,6 +305,26 @@ public class SLDStyleFactory {
 		return requests;
 	}
 
+    /**
+     * <p>
+     * Creates a rendered style
+     * </p>
+     * 
+     * <p>
+     * Makes use of a symbolizer cache based on identity to avoid recomputing over and over the same
+     * style object and to reduce memory usage. The same Style2D object will be returned by
+     * subsequent calls using the same feature independent symbolizer with the same scaleRange.
+     * </p>
+     * 
+     * @param drawMe The feature
+     * @param symbolizer The SLD symbolizer
+     * 
+     * @return A rendered style equivalent to the symbolizer
+     */
+    public Style2D createStyle(Object drawMe, Symbolizer symbolizer) {
+        return createStyle(drawMe, symbolizer, null);
+    }
+
 	/**
 	 * <p>
 	 * Creates a rendered style
@@ -969,9 +989,11 @@ public class SLDStyleFactory {
     }
 
 	void setScaleRange(Style style, Range scaleRange) {
-		double min = ((Number) scaleRange.getMinValue()).doubleValue();
-		double max = ((Number) scaleRange.getMaxValue()).doubleValue();
-		style.setMinMaxScale(min, max);
+        if (scaleRange != null) {
+            double min = ((Number) scaleRange.getMinValue()).doubleValue();
+            double max = ((Number) scaleRange.getMaxValue()).doubleValue();
+            style.setMinMaxScale(min, max);
+        }
 	}
 
 	// Builds an image version of the graphics with the proper size, no further
@@ -1610,22 +1632,27 @@ public class SLDStyleFactory {
 	}
 
 	/**
-	 * Simple key used to cache Style2D objects based on the originating
-	 * symbolizer and scale range. Will compare symbolizers by identity,
-	 * avoiding a possibly very long comparison
-	 * 
-	 * @author aaime
-	 */
+     * Simple key used to cache Style2D objects based on the originating symbolizer and scale range.
+     * Will compare symbolizers by identity, avoiding a possibly expensive comparison among their
+     * contents
+     * 
+     * @author aaime
+     */
 	static class SymbolizerKey {
 		private Symbolizer symbolizer;
 		private double minScale;
 		private double maxScale;
 
-		public SymbolizerKey(Symbolizer symbolizer, Range scaleRange) {
-			this.symbolizer = symbolizer;
-			minScale = ((Number) scaleRange.getMinValue()).doubleValue();
-			maxScale = ((Number) scaleRange.getMaxValue()).doubleValue();
-		}
+        public SymbolizerKey(Symbolizer symbolizer, Range scaleRange) {
+            this.symbolizer = symbolizer;
+            if (scaleRange == null) {
+                minScale = 0;
+                maxScale = Double.POSITIVE_INFINITY;
+            } else {
+                minScale = ((Number) scaleRange.getMinValue()).doubleValue();
+                maxScale = ((Number) scaleRange.getMaxValue()).doubleValue();
+            }
+        }
 
 		/**
 		 * @see java.lang.Object#equals(java.lang.Object)

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,12 @@
  */
 package org.geotools.data.sort;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.geotools.data.Query;
@@ -41,7 +37,6 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKBWriter;
 
 class MergeSortDumper {
 
@@ -126,7 +121,7 @@ class MergeSortDumper {
 
         int count = 0;
         File file = null;
-        RandomAccessFile raf = null;
+        SimpleFeatureIO io = null;
         List<SimpleFeature> features = new ArrayList<SimpleFeature>();
         List<FeatureBlockReader> readers = new ArrayList<FeatureBlockReader>();
         boolean cleanFile = true;
@@ -139,12 +134,12 @@ class MergeSortDumper {
 
                 if (count > maxFeatures) {
                     Collections.sort(features, comparator);
-                    if (raf == null) {
+                    if (io == null) {
                         file = File.createTempFile("sorted", ".features");
                         file.delete();
-                        raf = new RandomAccessFile(file, "rw");
+                        io = new SimpleFeatureIO(file, schema);
                     }
-                    FeatureBlockReader fbr = storeToFile(raf, features, schema);
+                    FeatureBlockReader fbr = storeToFile(io, features);
                     readers.add(fbr);
                     count = 0;
                     features.clear();
@@ -152,7 +147,7 @@ class MergeSortDumper {
             }
 
             // return the appropriate reader
-            if (raf == null) {
+            if (io == null) {
                 // simple case, we managed to keep everything in memory, sort and return a
                 // reader based on the collection contents
                 Collections.sort(features, comparator);
@@ -162,12 +157,12 @@ class MergeSortDumper {
             } else {
                 // go merge-sort
                 cleanFile = false;
-                return new MergeSortReader(schema, raf, file, readers, comparator);
+                return new MergeSortReader(schema, io, readers, comparator);
             }
 
         } finally {
-            if (cleanFile && raf != null) {
-                raf.close();
+            if (cleanFile && io != null) {
+                io.close(true);
                 file.delete();
             }
 
@@ -182,78 +177,19 @@ class MergeSortDumper {
      * @return
      * @throws IOException
      */
-    static FeatureBlockReader storeToFile(RandomAccessFile raf, List<SimpleFeature> features,
-            SimpleFeatureType schema) throws IOException {
-        long start = raf.getFilePointer();
+    static FeatureBlockReader storeToFile(SimpleFeatureIO io, List<SimpleFeature> features)
+            throws IOException {
+        long start = io.getOffset();
 
         // write each attribute in the random access file
-        List<AttributeDescriptor> attributes = schema.getAttributeDescriptors();
         for (SimpleFeature sf : features) {
-            // write feature id
-            raf.writeUTF(sf.getID());
-            // write the attributes
-            for (AttributeDescriptor ad : attributes) {
-                Object value = sf.getAttribute(ad.getLocalName());
-                writeAttribute(raf, ad, value);
-            }
+            io.write(sf);
         }
 
-        return new FeatureBlockReader(raf, start, features.size(), schema);
+        return new FeatureBlockReader(io, start, features.size());
     }
 
-    static void writeAttribute(RandomAccessFile raf, AttributeDescriptor ad, Object value)
-            throws IOException {
-        if (value == null) {
-            // null marker
-            raf.writeBoolean(true);
-        } else {
-            // not null, write the contents. This one requires some explanation. We are not
-            // writing any type metadata in the stream for the types we can optimize (primitives,
-            // numbers,
-            // strings and the like). This means we have to be 100% sure the class we're writing is
-            // actually the one we can optimize for, and not some subclass. Thus, we are authorized
-            // to use identity comparison instead of isAssignableFrom or equality, when we read back
-            // it must be as if we did not serialize stuff at all
-            raf.writeBoolean(false);
-            Class<?> binding = ad.getType().getBinding();
-            if (binding == Boolean.class) {
-                raf.writeBoolean((Boolean) value);
-            } else if (binding == Byte.class || binding == byte.class) {
-                raf.writeByte((Byte) value);
-            } else if (binding == Short.class || binding == short.class) {
-                raf.writeShort((Short) value);
-            } else if (binding == Integer.class || binding == int.class) {
-                raf.writeInt((Integer) value);
-            } else if (binding == Long.class || binding == long.class) {
-                raf.writeLong((Long) value);
-            } else if (binding == Float.class || binding == float.class) {
-                raf.writeFloat((Float) value);
-            } else if (binding == Double.class || binding == double.class) {
-                raf.writeDouble((Double) value);
-            } else if (binding == String.class) {
-                raf.writeUTF((String) value);
-            } else if (binding == java.sql.Date.class || binding == java.sql.Time.class
-                    || binding == java.sql.Timestamp.class || binding == java.util.Date.class) {
-                raf.writeLong(((Date) value).getTime());
-            } else if (Geometry.class.isAssignableFrom(binding)) {
-                WKBWriter writer = new WKBWriter();
-                byte[] buffer = writer.write((Geometry) value);
-                int length = buffer.length;
-                raf.writeInt(length);
-                raf.write(buffer);
-            } else {
-                // can't optimize, in this case we use an ObjectOutputStream to write out
-                // full metadata
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(bos);
-                oos.writeObject(value);
-                oos.flush();
-                byte[] bytes = bos.toByteArray();
-                raf.writeInt(bytes.length);
-                raf.write(bytes);
-            }
-        }
-    }
+
 
     /**
      * Builds a comparator out of the sortBy list

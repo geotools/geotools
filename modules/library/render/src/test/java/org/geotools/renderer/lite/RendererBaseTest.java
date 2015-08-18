@@ -32,8 +32,6 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContext;
@@ -51,6 +49,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.Parser;
+
+import junit.framework.Assert;
 
 /**
  * Used to test a renderer implementation.

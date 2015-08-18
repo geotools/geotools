@@ -367,6 +367,7 @@ public class StreamingRendererCompositeTest {
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
+        mc.dispose();
         return blended;
     }
 
@@ -402,6 +403,7 @@ public class StreamingRendererCompositeTest {
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
+        mc.dispose();
         return blended;
     }
 
@@ -438,6 +440,7 @@ public class StreamingRendererCompositeTest {
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
+        mc.dispose();
         return blended;
     }
 
@@ -476,6 +479,7 @@ public class StreamingRendererCompositeTest {
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
+        mc.dispose();
         return blended;
     }
 

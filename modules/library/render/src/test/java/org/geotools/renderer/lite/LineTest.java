@@ -69,7 +69,7 @@ public class LineTest {
     }
 
     @Test
-    public void testLineDoubleDash() throws Exception {
+    public void testLineDoubleDashLiteral() throws Exception {
         StreamingRenderer renderer = setupLineMap("lineDoubleDash.sld");
         MapViewport viewport = renderer.getMapContent().getViewport();
         ReferencedEnvelope re = viewport.getBounds();

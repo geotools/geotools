@@ -24,7 +24,10 @@
             <Stroke>
               <CssParameter name="stroke">0xFFFFFF</CssParameter>
               <CssParameter name="stroke-width">4</CssParameter>
-              <CssParameter name="stroke-dasharray">16 16</CssParameter>
+              <CssParameter name="stroke-dasharray">
+                <PropertyName>dash1</PropertyName>
+                <PropertyName>dash2</PropertyName>
+              </CssParameter>
               <CssParameter name="stroke-linecap">round</CssParameter>
             </Stroke>
           </LineSymbolizer>

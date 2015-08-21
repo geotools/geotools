@@ -44,28 +44,18 @@ public class RecnoFilterToSQL extends FilterToSQL
         return caps;
     }
     private FilterCapabilities filterCapabilities;
-    
-    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    static {
-        // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
-        // get a local timezone encoding regardless of the actual Date value
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    
-    
+
     @Override
     protected void writeLiteral(Object literal) throws IOException 
     {
         if (literal instanceof Date)
         {
             out.write("'");
-            
-            if (literal instanceof java.sql.Date)
-            {
+            if (literal instanceof java.sql.Date) {
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
                 out.write(DATE_FORMAT.format(literal));
-            }
-            else
-            {
+            } else {
+                SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 out.write(DATETIME_FORMAT.format(literal));
             }
             out.write("'");

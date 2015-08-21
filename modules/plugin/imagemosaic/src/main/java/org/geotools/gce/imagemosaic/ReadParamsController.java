@@ -107,14 +107,14 @@ public class ReadParamsController {
         int subSamplingFactorX = (int) Math.floor(requestedResolution[0] / selectedRes[0]);
         subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
 
-        while (rasterWidth / subSamplingFactorX <= 0 && subSamplingFactorX >= 0)
+        while (subSamplingFactorX > 0 && rasterWidth / subSamplingFactorX <= 0)
             subSamplingFactorX--;
         subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
 
         int subSamplingFactorY = (int) Math.floor(requestedResolution[1] / selectedRes[1]);
         subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
 
-        while (rasterHeight / subSamplingFactorY <= 0 && subSamplingFactorY >= 0)
+        while (subSamplingFactorY > 0 && rasterHeight / subSamplingFactorY <= 0)
             subSamplingFactorY--;
         subSamplingFactorY = subSamplingFactorY <= 0 ? 1 : subSamplingFactorY;
 

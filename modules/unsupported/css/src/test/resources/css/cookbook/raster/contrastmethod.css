@@ -1,0 +1,13 @@
+* {
+	raster-channels: auto;
+	raster-contrast-enhancement: normalize;
+	-gt-raster-contrast-enhancement-algorithm: ClipToMinimumMaximum;
+	/*You can shorten raster-contrast-enhancement to rce in all cases */
+	-gt-rce-min: 20;
+	-gt-rce-max: 30;
+	raster-gamma : 0.5;
+	raster-color-map: color-map-entry(#008000, 70)
+		color-map-entry(#663333, 256);
+	raster-gamma: 0.5;
+}
+

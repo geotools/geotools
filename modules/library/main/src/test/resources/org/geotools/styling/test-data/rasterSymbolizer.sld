@@ -24,7 +24,13 @@
               </GreenChannel>  
               <BlueChannel>
                 <SourceChannelName>6</SourceChannelName>
-                <ContrastEnhancement><Normalize/></ContrastEnhancement>
+                <ContrastEnhancement>
+                <Normalize>
+                    <Algorithm>ClipToMinimumMaximum</Algorithm>
+                    <Parameter name='minValue'>1</Parameter>
+                    <Parameter name='maxValue'>10</Parameter>
+                </Normalize>
+                </ContrastEnhancement>
               </BlueChannel>
             </ChannelSelection>
             

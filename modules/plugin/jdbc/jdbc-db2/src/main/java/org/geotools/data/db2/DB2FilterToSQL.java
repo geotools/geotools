@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -285,6 +285,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
                 geometry.accept(this, extraData);
                 out.write(") < ");
                 out.write(Double.toString(filter.getDistance()));
+                addSelectivity();
             }
             if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
                 out.write("db2gse.ST_Distance(");
@@ -293,6 +294,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
                 geometry.accept(this, extraData);
                 out.write(") > ");
                 out.write(Double.toString(filter.getDistance()));
+                addSelectivity();
             }
             return extraData;
         } catch (IOException ex) {
@@ -435,22 +437,18 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
 
-    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    static{
-        // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
-        // get a local timezone encoding regardless of the actual Date value        
-        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-
-    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
     @Override
     protected void writeLiteral(Object literal) throws IOException {
         if (literal instanceof Date) {
             out.write("'");
             if (literal instanceof java.sql.Date) {
+                SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+                // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
+                // get a local timezone encoding regardless of the actual Date value   
+                // DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
                 out.write(DATE_FORMAT.format(literal));
             } else {
+                SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 out.write(DATETIME_FORMAT.format(literal));
             }
             out.write("'");
@@ -650,6 +648,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             out.write(","+minx + ", " + miny + ", "
                     + maxx + ", " + maxy + ", " + srid);
             out.write(") =1 ");
+            addSelectivity();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

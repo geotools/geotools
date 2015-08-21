@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -80,14 +80,17 @@ public class DB2SQLDialect extends SQLDialect  {
 	private static String MULTIPOLY_STR ="\"DB2GSE\".\"ST_MULTIPOLYGON\"";
 	private static String GEOMETRY_STR ="\"DB2GSE\".\"ST_GEOMETRY\"";
 	private static String GEOMETRYCOLL_STR ="\"DB2GSE\".\"ST_GEOMCOLLECTION\"";
-
+	
+	static String SELECTIVITY_CLAUSE="SELECTIVITY 0.000001 ";
 	
 	
 	private static String DEFAULT_SRS_NAME = "DEFAULT_SRS";
 	private static Integer DEFAULT_SRS_ID=0;
 
 	private boolean looseBBOXEnabled;
+	private boolean useSelectivity;
 	
+
 
     private static String SELECT_SRSID_WITH_SCHEMA = 
     	"select SRS_ID from DB2GSE.ST_GEOMETRY_COLUMNS where TABLE_SCHEMA = ? and "+
@@ -836,5 +839,14 @@ public class DB2SQLDialect extends SQLDialect  {
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
+    
+    public boolean isUseSelectivity() {
+        return useSelectivity;
+    }
+
+    public void setUseSelectivity(boolean useSelectivity) {
+        this.useSelectivity = useSelectivity;
+    }
+
 
 }

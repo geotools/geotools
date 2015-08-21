@@ -399,11 +399,16 @@ public class ProjectionHandler {
         Geometry mask;
         // fast path for the rectangular case, more complex one for the
         // non rectangular one
+        ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
+        ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
+        // if the size of the envelope is less than 1 meter (1e-6 in degrees) expand it a bit
+        // to make intersection tests work
+        if (geWGS84.getWidth() < EPS || geWGS84.getHeight() < EPS) {
+            geWGS84.expandBy(EPS);
+        }
         if(validArea == null) {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
-            ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
-            ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
             if (validAreaBounds.contains((Envelope) geWGS84)) {
                 return geometry;
             }
@@ -424,8 +429,6 @@ public class ProjectionHandler {
         } else {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
-            ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
-            ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
             if (validaAreaTester.contains(JTS.toGeometry(geWGS84))) {
                 return geometry;
             }

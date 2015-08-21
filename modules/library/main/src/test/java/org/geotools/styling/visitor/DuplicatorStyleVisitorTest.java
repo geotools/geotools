@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -669,13 +669,13 @@ public class DuplicatorStyleVisitorTest extends TestCase {
         ContrastEnhancement ce = sf.createContrastEnhancement();
         ce.setGammaValue(sb.literalExpression(0.5));
         ce.setMethod(ContrastMethod.HISTOGRAM);
-        ce.setHistogram();
+        
         ce.accept(visitor);
         ContrastEnhancement ce2 = (ContrastEnhancement) visitor.getCopy();
 
         assertEquals("Gamma value incorrest after duplication", ((Literal)ce.getGammaValue()).getValue(), ((Literal)ce2.getGammaValue()).getValue());
         assertEquals("ContrastMethod must be equal after duplication ", ce.getMethod(), ce2.getMethod());
-        assertEquals("Contrast Type must be equal after duplication ", ((Literal)ce.getType()).getValue(),  ((Literal)ce2.getType()).getValue());
+        
 
     }
     

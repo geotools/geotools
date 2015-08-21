@@ -48,7 +48,7 @@ public abstract class DateAdapter implements IDataTypeAdapter<Date> {
     };
 
     /** Set of legal date formats */
-    public static final Set<SimpleDateFormat> FORMATS = createDefaultFormats();
+    public final Set<SimpleDateFormat> FORMATS = createDefaultFormats();
 
     /**
      * Extracts from/Adapts the argument object to a {@link Date}

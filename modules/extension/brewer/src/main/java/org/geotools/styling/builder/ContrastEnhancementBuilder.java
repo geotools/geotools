@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,9 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.styling.builder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geotools.styling.ContrastEnhancement;
 import org.opengis.filter.expression.Expression;
@@ -30,6 +33,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
 
     private ContrastMethod method;
 
+    private Map<String, Expression> options = new HashMap<>();
     public ContrastEnhancementBuilder() {
         this(null);
     }
@@ -49,18 +53,39 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return gamma(literal(gamma));
     }
 
-    public ContrastEnhancementBuilder normalize() {
-        this.method = ContrastMethod.NORMALIZE;
-        this.unset = false;
-        return this;
+    public ContrastEnhancementBuilder normalize(Map<String, Expression> constrastParameters) {
+        return contrastMethod("normalize", constrastParameters);
     }
 
-    public ContrastEnhancementBuilder histogram() {
-        this.method = ContrastMethod.HISTOGRAM;
-        this.unset = false;
-        return this;
+    public ContrastEnhancementBuilder histogram(Map<String, Expression> constrastParameters) {
+        return contrastMethod("histogram", constrastParameters);
+    }
+    public ContrastEnhancementBuilder exponential(Map<String, Expression> constrastParameters) {
+        return contrastMethod("exponential", constrastParameters);
     }
 
+    public ContrastEnhancementBuilder logarithmic(Map<String, Expression> constrastParameters) {
+        return contrastMethod("logarithm", constrastParameters);
+    }
+    private ContrastEnhancementBuilder contrastMethod(String name, Map<String, Expression> constrastParameters) {
+        /*if ("histogram".equals(name)) {
+            this.method = ContrastMethod.HISTOGRAM;
+        } else if ("normalize".equals(name)) {
+            this.method = ContrastMethod.NORMALIZE;
+        } else if ("logarithmic".equals(name)) {
+            this.method = ContrastMethod.LOGARITHMIC;
+        } else if ("exponential".equals(name)) {
+            this.method = ContrastMethod.EXPONENTIAL;
+        } else {
+            throw new IllegalArgumentException("Unexpected ContrastEnhamcement method " + name);
+        }*/
+        this.method = ContrastMethod.valueOf(name);
+        if(constrastParameters!=null) {
+            options = constrastParameters;
+        }
+        this.unset = false;
+        return this; 
+    }
     public ContrastEnhancementBuilder gamma(String cqlExpression) {
         return gamma(cqlExpression(cqlExpression));
     }
@@ -70,12 +95,14 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
             return null;
         }
         ContrastEnhancement contrastEnhancement = sf.contrastEnhancement(gamma, method);
+        contrastEnhancement.setOptions(options);
+        
         return contrastEnhancement;
     }
 
     public ContrastEnhancementBuilder reset() {
         gamma = null;
-        method = ContrastMethod.NONE;
+        method = null;
         unset = false;
         return this;
     }
@@ -86,6 +113,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         }
         gamma = contrastEnhancement.getGammaValue();
         method = contrastEnhancement.getMethod();
+        options = contrastEnhancement.getOptions();
         unset = false;
         return this;
     }
@@ -101,4 +129,20 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
 
     }
 
+    /**
+     * @return
+     */
+    public ContrastEnhancementBuilder normalize() {
+        return contrastMethod("normalize", null);
+    }
+    public ContrastEnhancementBuilder histogram() {     
+        return contrastMethod("histogram", null);
+    }
+    public ContrastEnhancementBuilder logarithmic() {
+        return contrastMethod("logarithmic", null);
+    }
+    public ContrastEnhancementBuilder exponential() {
+        return contrastMethod("exponential", null);
+    }
+    
 }

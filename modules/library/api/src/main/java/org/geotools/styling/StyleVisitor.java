@@ -247,4 +247,5 @@ public interface StyleVisitor {
      * @param cs the {@link ShadedRelief} to visit.
      */
     void visit(ShadedRelief sr);
+
 }

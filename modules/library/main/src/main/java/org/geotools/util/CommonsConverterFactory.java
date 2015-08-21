@@ -220,20 +220,19 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
     
     static class DateConverter implements Converter {
-        private static SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" );
-        private static SimpleDateFormat format2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" );
-        
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if( source == null ) return null;
             String string = (String) source;
             
             try {
+                SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" );
                 Date parsed = format1.parse(string);
                 return target.cast( parsed );
             }
             catch( Exception ignore){
             }
             try {
+                SimpleDateFormat format2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" );
                 Date parsed = format2.parse(string);
                 return target.cast( parsed );
             }

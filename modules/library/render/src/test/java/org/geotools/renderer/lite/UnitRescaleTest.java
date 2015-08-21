@@ -16,14 +16,11 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.Assert;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
@@ -34,6 +31,8 @@ import org.geotools.styling.UomOgcMapping;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
+
+import junit.framework.Assert;
 
 
 public class UnitRescaleTest {
@@ -76,7 +75,8 @@ public class UnitRescaleTest {
         for (FeatureTypeStyle fts : featureTypeStyles) {
             List<Rule> ruleList = new ArrayList<Rule>(Arrays.asList(rules));
             List<Rule> elseRuleList = new ArrayList<Rule>();
-            LiteFeatureTypeStyle s = new LiteFeatureTypeStyle(null, ruleList, elseRuleList, fts.getTransformation());
+            LiteFeatureTypeStyle s = new LiteFeatureTypeStyle(null, null, ruleList, elseRuleList,
+                    fts.getTransformation());
             lfts.add(s);
         }
         

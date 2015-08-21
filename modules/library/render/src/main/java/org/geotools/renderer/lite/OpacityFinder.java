@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
+import org.geotools.styling.AbstractStyleVisitor;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
@@ -59,7 +60,7 @@ import org.opengis.filter.expression.Literal;
  * 
  * @source $URL$
  */
-public class OpacityFinder implements StyleVisitor {
+public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor {
     private Class[] acceptableTypes;
 
     public boolean hasOpacity;

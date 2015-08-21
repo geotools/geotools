@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -40,7 +40,7 @@ public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
         assertNotNull(ce.getGammaValue());
         assertEquals(1.23, Filters.asDouble(ce.getGammaValue()), 0d);
 
-        assertNotNull(ce.getType());
-        assertEquals("Histogram", Filters.asString(ce.getType()));
+        assertNotNull(ce.getMethod());
+        assertEquals("histogram", ce.getMethod().name().toLowerCase());
     }
 }

@@ -465,26 +465,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
 
     @Test
-    public void testQueryNonGeomAttributes() throws Exception {
-        File shpFile = copyShapefiles(STATE_POP);
-        URL url = shpFile.toURI().toURL();
-        ShapefileDataStore ds = new ShapefileDataStore(url);
-        SimpleFeatureSource fs = ds.getFeatureSource();
-                
-        // GEOS-6842/GEOT-4991: 
-        // Build an alphanumeric query to use optionally an ODBC provider to execute fast Dbase filters.
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        Filter filter = ff.equals(ff.property("STATE_ABBR"), ff.literal("AL"));
-        Query q = new Query();
-        q.setFilter(filter);
-        
-        // grab the features
-        SimpleFeatureCollection fc = fs.getFeatures(q);
-        assertTrue(fc.size() > 0);
-        ds.dispose();
-    }
-    
-    @Test
     public void testFidFilter() throws Exception {
         File shpFile = copyShapefiles(STATE_POP);
         URL url = shpFile.toURI().toURL();

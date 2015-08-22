@@ -573,7 +573,7 @@ time.
 
    However only one copy can be used at a time so we will need to remove the following jars from the Library Manager:
 
-   * gt-epsg-h2
+   * gt-epsg-hsql
    * gt-epsg-oracle
    * gt-epsg-postgresql
    * gt-epsg-wkt
@@ -584,9 +584,7 @@ time.
 
    * gt-arcsde
    * gt-arcsde-common
-   * gt-db2
    * gt-jdbc-db2
-   * gt-oracle-spatial
    * gt-jdbc-oracle
 
 9. Next we update our java build path to include the remaining jars. Choose Project > Properties from 

@@ -17,6 +17,7 @@
 package org.geotools.styling;
 
 import java.util.Collections;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -331,6 +332,15 @@ public class StyleObjectTest extends TestCase {
         dashArray.accept( duplicate );
         Stroke dashArray2 = (Stroke) duplicate.getCopy();
         assertEqualsContract(dashArray, dashArray2);
+
+        Stroke dashArray3 = styleFactory.getDefaultStroke();
+        List<Expression> dashes = dashArray3.dashArray();
+        dashes.add(filterFactory.literal(1.0f));
+        dashes.add(filterFactory.literal(2.0f));
+        dashes.add(filterFactory.literal(3.0f));
+
+        Stroke dashArray4 = (Stroke) duplicate.getCopy();
+        assertEqualsContract(dashArray3, dashArray4);
     }
 
     private static void assertClone(Object real, Object clone) {

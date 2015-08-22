@@ -156,6 +156,14 @@ public class LineTest {
     }
 
     @Test
+    public void testDotsStarsExpression() throws Exception {
+        StreamingRenderer renderer = setupLineMap("dotsStarsExpression.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("Dots and stars expression", renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("dotstar"), image, 200);
+    }
+
+    @Test
     public void testRenderingTransform() throws Exception {
         StreamingRenderer renderer = setupLineMap("line_rendering_transform.sld");
 

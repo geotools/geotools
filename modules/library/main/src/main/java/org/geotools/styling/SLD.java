@@ -145,11 +145,13 @@ public class SLD {
                         Expression opacity = copy(stroke.getOpacity());
                         Expression lineJoin = copy(stroke.getLineJoin());
                         Expression lineCap = copy(stroke.getLineCap());
-                        float[] dashArray = copy(stroke.getDashArray());
                         Expression dashOffset = copy(stroke.getDashOffset());
                         Graphic graphicStroke = copy(stroke.getGraphicStroke());
                         Graphic graphicFill = copy(stroke.getGraphicFill());
-                        return sf.createStroke(color, width, opacity, lineJoin, lineCap, dashArray, dashOffset, graphicFill, graphicStroke);
+                        Stroke out_stroke = sf.createStroke(color, width, opacity, lineJoin,
+                                lineCap, null, dashOffset, graphicFill, graphicStroke);
+                        out_stroke.dashArray().addAll(stroke.dashArray());
+                        return out_stroke;
                     }
                 };
                 rule.accept(update);
@@ -279,7 +281,7 @@ public class SLD {
     /**
      * Retrieve the opacity from a RasterSymbolizer object.
      *
-     * @param symbolizer raster symbolizer information.
+     * @param rasterSymbolizer raster symbolizer information.
      *
      * @return double of the raster symbolizer's opacity, or 1.0 if unavailable.
      */
@@ -372,6 +374,27 @@ public class SLD {
         float[] linedash = stroke.getDashArray();
 
         return linedash;
+    }
+
+    /**
+     * Retrieves the dash expressions list from a LineSymbolizer.
+     *
+     * @param symbolizer Line symbolizer information.
+     *
+     * @return List of the line dash expressions.
+     */
+    public static List<Expression> lineDashExpression(LineSymbolizer symbolizer) {
+        if (symbolizer == null) {
+            return null;
+        }
+
+        Stroke stroke = symbolizer.getStroke();
+
+        if (stroke == null) {
+            return null;
+        }
+
+        return stroke.dashArray();
     }
 
     /**
@@ -1178,7 +1201,7 @@ public class SLD {
     /**
      * Retrieves the label from a TextSymbolizer.
      *
-     * @param symbolizer Text symbolizer information.
+     * @param sym Text symbolizer information.
      *
      * @return the label's text, or null if unavailable.
      */
@@ -1925,9 +1948,7 @@ public class SLD {
     /**
      * Create a minimal style to render features of type {@code type}
      *
-     * @param store the data store containing the features
-     *
-     * @param typeName the feature type to create the style for
+     * @param type the feature type to create the style for
      *
      * @param color single color to use for all components of the Style
      *

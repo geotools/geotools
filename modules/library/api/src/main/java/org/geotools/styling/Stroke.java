@@ -17,6 +17,8 @@
 package org.geotools.styling;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geotools.filter.ConstantExpression;
 import org.opengis.feature.simple.SimpleFeature;
@@ -115,6 +117,10 @@ public interface Stroke extends org.opengis.style.Stroke {
                 return null;
             }
 
+            public List<Expression> dashArray() {
+                return new ArrayList<Expression>();
+            }
+
             public Expression getDashOffset() {
                 return ConstantExpression.ZERO;
             }
@@ -166,6 +172,10 @@ public interface Stroke extends org.opengis.style.Stroke {
 
             public float[] getDashArray() {
                 return new float[] {  };
+            }
+
+            public List<Expression> dashArray() {
+                return new ArrayList<Expression>();
             }
 
             public Expression getDashOffset() {
@@ -245,31 +255,20 @@ public interface Stroke extends org.opengis.style.Stroke {
      */
     void setLineCap(Expression lineCap);
 
-    /**
-     * This parameter encodes the dash pattern as a seqeuence of floats.<br>
-     * The first number gives the length in pixels of the dash to draw, the
-     * second gives the amount of space to leave, and this pattern repeats.<br>
-     * If an odd number of values is given, then the pattern is expanded by
-     * repeating it twice to give an even number of values.
-     *
-     * For example, "2 1 3 2" would produce:<br>
-     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
-     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
-     */
+    /** Shortcut to retrieve dash array in the case where all expressions are literal numbers */
     float[] getDashArray();
 
-    /**
-     * This parameter encodes the dash pattern as a seqeuence of floats.<br>
+    /** Shortcut to define dash array using literal numbers */
+    void setDashArray(float[] dashArray);
+
+    /** Sequence defining dash array pattern as a series of floats.
+     * <p>
      * The first number gives the length in pixels of the dash to draw, the
      * second gives the amount of space to leave, and this pattern repeats.<br>
      * If an odd number of values is given, then the pattern is expanded by
      * repeating it twice to give an even number of values.
-     *
-     * For example, "2 1 3 2" would produce:<br>
-     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
-     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
      */
-    void setDashArray(float[] dashArray);
+    List<Expression> dashArray();
 
     /**
      * A dash array need not start from the beginning.  This method allows for

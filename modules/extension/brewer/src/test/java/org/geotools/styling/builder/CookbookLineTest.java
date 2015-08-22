@@ -3,11 +3,13 @@ package org.geotools.styling.builder;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.measure.unit.SI;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointPlacement;
@@ -15,6 +17,8 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.Graphic;
 import org.opengis.style.GraphicalSymbol;
@@ -86,7 +90,33 @@ public class CookbookLineTest extends AbstractStyleTest {
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
         assertEquals(3, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(Color.BLUE, ls.getStroke().getColor().evaluate(null, Color.class));
-        assertTrue(Arrays.equals(new float[] { 5, 2 }, ls.getStroke().getDashArray()));
+        assertTrue(Arrays.equals(new float[]{5, 2}, ls.getStroke().getDashArray()));
+        List<Expression> dashArray = new ArrayList<Expression>();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        dashArray.add(ff.literal(5));
+        dashArray.add(ff.literal(2));
+        assertEquals(dashArray, ls.getStroke().dashArray());
+    }
+
+    @Test
+    public void testDashed2() {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Style style = new StrokeBuilder().color(Color.BLUE).width(3).
+                dash(ff.literal(5)).dash(ff.literal(2)).buildStyle();
+        // print(style);
+
+        // round up the basic elements and check its simple
+        StyleCollector collector = new StyleCollector();
+        style.accept(collector);
+        assertSimpleStyle(collector);
+
+        // check the size
+        LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
+        assertTrue(Arrays.equals(new float[]{5, 2}, ls.getStroke().getDashArray()));
+        List<Expression> dashArray = new ArrayList<Expression>();
+        dashArray.add(ff.literal(5));
+        dashArray.add(ff.literal(2));
+        assertEquals(dashArray, ls.getStroke().dashArray());
     }
 
     @Test

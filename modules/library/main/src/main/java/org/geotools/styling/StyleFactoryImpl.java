@@ -34,6 +34,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ColorReplacement;
 import org.opengis.style.ContrastMethod;
@@ -135,14 +136,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         String geometryPropertyName) {
         TextSymbolizer tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        if( fonts != null ){
-            tSymb.fonts().addAll(Arrays.asList(fonts));
-        }
+        tSymb.setFonts(fonts);
         tSymb.setGeometryPropertyName(geometryPropertyName);
 
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
-        tSymb.setLabelPlacement(labelPlacement);
+        tSymb.setPlacement(labelPlacement);
 
         return tSymb;
     }
@@ -152,14 +151,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         String geometryPropertyName, Graphic graphic) {
         TextSymbolizer2 tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
-        if( fonts != null ){
-            tSymb.fonts().addAll(Arrays.asList(fonts));
-        }
+        tSymb.setFonts(fonts);
         tSymb.setGeometryPropertyName(geometryPropertyName);
 
         tSymb.setHalo(halo);
         tSymb.setLabel(label);
-        tSymb.setLabelPlacement(labelPlacement);
+        tSymb.setPlacement(labelPlacement);
         tSymb.setGraphic(graphic);
 
         return tSymb;
@@ -239,7 +236,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      *
      * @return the stroke object
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width) {
         return createStroke(color, width,
@@ -255,7 +252,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      *
      * @return The stroke
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width,
         Expression opacity) {
@@ -282,7 +279,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      *
      * @throws IllegalArgumentException DOCUMENT ME!
      *
-     * @see org.geotools.stroke
+     * @see org.geotools.styling.Stroke
      */
     public Stroke createStroke(Expression color, Expression width,
         Expression opacity, Expression lineJoin, Expression lineCap,
@@ -612,6 +609,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             throw new RuntimeException("Error creating stroke", ife);
         }
     }
+
 
     public Style getDefaultStyle() {
         Style style = createStyle();

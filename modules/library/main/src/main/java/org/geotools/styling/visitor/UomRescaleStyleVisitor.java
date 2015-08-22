@@ -16,26 +16,14 @@
  */
 package org.geotools.styling.visitor;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.Unit;
 
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.*;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
@@ -80,7 +68,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -97,7 +84,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -114,8 +100,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided dash array.
      * 
      * @param dashArray the unscaled dash array. If null, the method returns null.
-     * @param mapScale the mapScale in pixels per meter.
-     * @param uom the unit of measure that will be used to scale.
+     * @param unitOfMeasure the unit of measure that will be used to scale.
      * @return the rescaled dash array
      */
     protected float[] rescale(float[] dashArray, Unit<Length> unitOfMeasure) {
@@ -136,16 +121,25 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescale the provided stroke.
      * 
      * @param stroke the unscaled stroke, which will be modified in-place.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      */
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
-            stroke.setDashArray(rescale(stroke.getDashArray(), uom));
+            rescaleList(stroke.dashArray(), uom);
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);
+        }
+    }
+
+    private void rescaleList(List<Expression> unscaled, Unit<Length> uom) {
+        if (unscaled == null) {
+            return;
+        }
+        for (int j=0; j<unscaled.size(); ++j){
+            Expression exp = unscaled.get(j);
+            unscaled.set(j,rescale(exp, uom));
         }
     }
 
@@ -220,10 +214,11 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         Unit<Length> uom = copy.getUnitOfMeasure();
         // rescales fonts
-        for (Font font : copy.fonts()) {
+        Font[] fonts = copy.getFonts();
+        for (Font font : fonts)
             font.setSize(rescale(font.getSize(), uom));
-        }
-        
+        copy.setFonts(fonts);
+
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
         if (placement instanceof PointPlacement) {

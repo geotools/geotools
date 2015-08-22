@@ -21,6 +21,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Paint;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
@@ -78,7 +80,8 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         capCode = SLDStyleFactory.lookUpCap(capType);
 
         // get the other properties needed for the stroke
-        float[] dashes = stroke.getDashArray();
+        float[] dashArray = SLDStyleFactory.evalToFloatArray(stroke.dashArray(), feature);
+
         float width = ((Float) stroke.getWidth().evaluate(feature, Float.class)).floatValue();
         float dashOffset = ((Float) stroke.getDashOffset().evaluate(feature, Float.class)).floatValue();
 
@@ -91,8 +94,8 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         // now set up the stroke
         BasicStroke stroke2d;
 
-        if ((dashes != null) && (dashes.length > 0)) {
-            stroke2d = new BasicStroke(width, capCode, joinCode, 1, dashes, dashOffset);
+        if ((dashArray != null) && (dashArray.length > 0)) {
+            stroke2d = new BasicStroke(width, capCode, joinCode, 1, dashArray, dashOffset);
         } else {
             stroke2d = new BasicStroke(width, capCode, joinCode, 1);
         }

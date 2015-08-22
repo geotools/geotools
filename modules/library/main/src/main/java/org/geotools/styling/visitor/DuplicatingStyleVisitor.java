@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,63 +18,19 @@ package org.geotools.styling.visitor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import javax.swing.Icon;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Extent;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.FeatureTypeStyleImpl;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.OtherText;
-import org.geotools.styling.OtherTextImpl;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbol;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.*;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
+
+import javax.swing.Icon;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -307,7 +263,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     public void visit(FeatureTypeStyle fts) {
         
         
-        FeatureTypeStyle copy = new FeatureTypeStyleImpl( fts);
+        FeatureTypeStyle copy = new FeatureTypeStyleImpl( (FeatureTypeStyleImpl)fts);
 
 //        copy = new StyleFactoryImpl().createFeatureTypeStyle(
 //                fts.getRules(), 
@@ -350,26 +306,12 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
     
     /**
-     * Copy list of expressions.
-     * @param expressions
-     * @return copy of expressions or null if list was null
-     */    
-    protected List<Expression> copyExpressions( List<Expression> expressions ){
-        if( expressions == null  ) return null;
-        List<Expression> copy = new ArrayList<Expression>(expressions.size());
-        for( Expression expression : expressions ){
-            copy.add( copy( expression ));
-        }
-        return copy;
-    }
-    
-    /**
      * Null safe expression copy.
      * <p>
      * This method will perform a null check, and save you some lines of code:<pre><code>
      * copy.setBackgroundColor( copyExpr( fill.getColor()) );
      * </code></pre>
-     * @param sion
+     * @param expression
      * @return copy of expression or null if expression was null
      */    
     protected Expression copy( Expression expression ){
@@ -399,7 +341,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     
     /**
      * Null safe fill copy
-     * @param graphic
+     * @param fill
      * @return copy of graphic or null if not provided
      */
     protected Fill copy( Fill fill ){
@@ -421,7 +363,15 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         System.arraycopy( array, 0, copy, 0, array.length );
         return copy;
     }
-    
+
+    protected Expression[] copy(Expression[] array) {
+        if( array == null ) return null;
+
+        Expression copy[] = new Expression[ array.length];
+        System.arraycopy( array, 0, copy, 0, array.length );
+        return copy;
+    }
+
     /**
      * Null safe map copy, used for external graphic custom properties.
      * @param customProperties
@@ -460,7 +410,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     
     /**
      * Null safe copy of description
-     * @param shaded
+     * @param desc
      * @return copy of shaded or null if not provided
      */
     protected Description copy(Description desc) {
@@ -551,32 +501,30 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
     
     /**
-     * Null safe copy of font list.
+     * Null safe copy of font array.
      * <p>
      * Right now style visitor does not let us visit fonts!
      * @param fonts
      * @return copy of provided fonts
      */
-    protected List<Font> copyFonts(List<Font> fonts) {
-        if (fonts == null) {
-            return null;
-        }
-        List<Font> copy = new ArrayList<Font>(fonts.size());
-        for (Font font : fonts) {
-            copy.add(copy(font));
+    protected Font[] copy(Font[] fonts) {
+        if( fonts == null ) return null;
+        Font copy[] = new Font[ fonts.length ];
+        for( int i=0; i<fonts.length; i++){
+            copy[i] = copy( fonts[i] );
         }
         return copy;
     }
-
+    
     /** Null safe copy of a single font */
     protected Font copy(Font font) {
         if( font == null) return font;
         
-        List<Expression> fontFamily = copyExpressions( font.getFamily() );
-        Expression fontStyle = copy( font.getStyle() );
-        Expression fontWeight = copy( font.getWeight() );
-        Expression fontSize = copy( font.getSize() );
-        Font copy = sf.font(fontFamily, fontStyle, fontWeight, fontSize);
+        Expression fontFamily = copy( font.getFontFamily() );
+        Expression fontStyle = copy( font.getFontStyle() );
+        Expression fontWeight = copy( font.getFontWeight() );
+        Expression fontSize = copy( font.getFontSize() );
+        Font copy = sf.createFont(fontFamily, fontStyle, fontWeight, fontSize);
         return copy;
     }
     
@@ -641,7 +589,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     public void visit(Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor( copy(stroke.getColor()));
-        copy.setDashArray( copy(stroke.getDashArray()));
+        copy.dashArray().addAll(stroke.dashArray());
         copy.setDashOffset( copy( stroke.getDashOffset()));
         copy.setGraphicFill( copy(stroke.getGraphicFill()));
         copy.setGraphicStroke( copy( stroke.getGraphicStroke()));
@@ -730,8 +678,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         TextSymbolizer copy = sf.createTextSymbolizer();
         
         copy.setFill( copy( text.getFill()));
-        copy.fonts().clear();
-        copy.fonts().addAll(copyFonts(text.fonts()));
+        copy.setFont( copy( text.getFont()));
         
         copy.setGeometry(copy(text.getGeometry()));
         
@@ -798,9 +745,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setAnchorPoint(anchorCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);
-        copy.setOpacity(opacityCopy);
-        copy.setRotation(rotationCopy);
-        copy.setSize(sizeCopy);
+        copy.setOpacity((Expression) opacityCopy);
+        copy.setRotation((Expression) rotationCopy);
+        copy.setSize((Expression) sizeCopy);
         // copy.setSymbols(symbolCopys);
         
         if( STRICT ){

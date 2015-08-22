@@ -23,11 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -197,6 +193,33 @@ public class SLDStyleTest extends TestCase {
         validateDashArrayStyle(sld);
     }
 
+    public void testDashArray3() throws Exception {
+        // using ogc:Function in dasharray
+        java.net.URL surl = TestData.getResource(this, "dasharray3.sld");
+        SLDParser stylereader = new SLDParser(sf, surl);
+        StyledLayerDescriptor sld = stylereader.parseSLD();
+
+        validateDashArrayStyle1(sld);
+    }
+
+    public void testDashArray4() throws Exception {
+        Stroke stroke = sf.createStroke(null, null);
+        assertNull(stroke.getDashArray());
+
+        List<Expression> dashArray = stroke.dashArray();
+        dashArray.add(ff.literal("5"));
+        dashArray.add(ff.literal("10"));
+        assertTrue(Arrays.equals(new float[]{5, 10},  stroke.getDashArray()));
+
+        dashArray.add(ff.property("dash_size"));
+        assertTrue(Arrays.equals(new float[]{},  stroke.getDashArray()));
+
+        Stroke stroke2 = sf.createStroke(null, null, null,
+                null, null, new float[]{5, 10}, null,
+                null, null);
+        assertTrue(Arrays.equals(new float[]{5, 10},  stroke2.getDashArray()));
+    }
+
     private void validateDashArrayStyle(StyledLayerDescriptor sld) {
         assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
@@ -208,7 +231,26 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, symbolizers.size());
         
         LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
+        assertTrue(Arrays.equals(new float[]{2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
+    }
+
+    private void validateDashArrayStyle1(StyledLayerDescriptor sld) {
+        assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
+        Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
+        List<FeatureTypeStyle> fts = style.featureTypeStyles();
+        assertEquals(1, fts.size());
+        List<Rule> rules = fts.get(0).rules();
+        assertEquals(1, rules.size());
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        assertEquals(1, symbolizers.size());
+
+        LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
+        List<Expression> dashArray = new ArrayList<Expression>();
+        dashArray.add(ff.literal(2.0f));
+        dashArray.add(ff.literal(1.0f));
+        dashArray.add(ff.multiply(ff.literal(2.0f),ff.literal(2.0f)));
+        dashArray.add(ff.literal(1.0f));
+        assertEquals(dashArray, ls.getStroke().dashArray());
     }
 
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {

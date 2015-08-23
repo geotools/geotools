@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,15 +19,15 @@ package org.geotools.xml;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
+import junit.framework.TestCase;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
-import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.xs.XS;
-
-import junit.framework.TestCase;
 
 /**
  * 
@@ -95,7 +95,8 @@ public class SchemasTest extends TestCase {
                 "targetNamespace='http://geotools.org/test'> " + 
             "</xsd:schema>";
         write( f, xsd );
-            
+
+        System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");
     }
     
     void write( File f, String xsd ) throws IOException {
@@ -118,6 +119,8 @@ public class SchemasTest extends TestCase {
         
         sub.delete();
         tmp.delete();
+
+        System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");
     }
     
     
@@ -159,5 +162,54 @@ public class SchemasTest extends TestCase {
       errors = Schemas.validateImportsIncludes( location, null, new XSDSchemaLocationResolver[]{resolver1,resolver2} );
       assertEquals( 0, errors.size() );
       
+    }
+
+    /**
+     * Tests that element declarations and type definitions from imported schemas are parsed,
+     * even if the importing schema itself contains no element nor type.
+     * 
+     * @throws IOException
+     */
+    public void testImportsOnly() throws IOException {
+        XSDSchema schema = Schemas.parse(Schemas.class.getResource("importFacetsEmpty.xsd").toString());
+        assertNotNull(schema);
+
+        boolean elFound = hasElement(schema, "collapsedString");
+        assertTrue(elFound);
+    }
+
+    /**
+     * Tests that system property "org.geotools.xml.forceSchemaImport" is properly taken into account.
+     * @throws IOException
+     */
+    public void testForcedSchemaImport() throws IOException {
+        XSDSchema schema = Schemas.parse(Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
+        assertNotNull(schema);
+
+        // importing schema is not empty and system property "org.geotools.xml.forceSchemaImport" is false:
+        // elements defined in imported schema should not be found
+        boolean elFound = hasElement(schema, "collapsedString");
+        assertFalse(elFound);
+
+        // force import of external schemas in any case
+        System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "true");
+
+        schema = Schemas.parse(Schemas.class.getResource("importFacetsNotEmpty.xsd").toString());
+        assertNotNull(schema);
+
+        elFound = hasElement(schema, "collapsedString");
+        assertTrue(elFound);
+    }
+
+    private boolean hasElement(XSDSchema schema, String elQName) {
+        boolean elFound = false;
+        EList<XSDElementDeclaration> elDeclList = schema.getElementDeclarations();
+        for (XSDElementDeclaration elDecl: elDeclList) {
+            if (elQName.equals(elDecl.getQName())) {
+                elFound = true;
+            }
+        }
+
+        return elFound;
     }
 }

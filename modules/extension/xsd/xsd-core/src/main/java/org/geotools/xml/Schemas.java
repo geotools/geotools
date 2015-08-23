@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -70,6 +70,8 @@ import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.impl.XSDImportImpl;
+import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -103,6 +105,13 @@ import org.eclipse.xsd.XSDWildcard;
 public class Schemas {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Schemas.class.getPackage()
                                                                                                   .getName());
+
+    /*
+     * Name of the system property forcing the import of external schemas in any case,
+     * whereas the default behavior is to force the import only if the importing schema
+     * has no element nor type on its own.
+     */
+    static final String FORCE_SCHEMA_IMPORT = "org.geotools.xml.forceSchemaImport";
 
     static {
         //need to register custom factory to load schema resources
@@ -311,7 +320,43 @@ public class Schemas {
         // to synchronize this call so that only one of these operations is active at any time
         synchronized(Schemas.class) {
             xsdMainResource.load(resourceSet.getLoadOptions());
-            return xsdMainResource.getSchema();
+            XSDSchema schema = xsdMainResource.getSchema();
+
+            if (schema != null) {
+                // if schema contains no element declarations, nor type definitions,
+                // force import of external schemas (if any), since it does not happen automatically;
+                // import can be forced no matter what is in the importing schema by setting
+                // the system property "org.geotools.xml.forceSchemaImport" to "true".
+                String forceSchemaImport = System.getProperty(FORCE_SCHEMA_IMPORT);
+                boolean alwaysForce = false;
+                if (forceSchemaImport != null) {
+                    alwaysForce = forceSchemaImport.equalsIgnoreCase("true");
+                }
+                if (alwaysForce || hasNoElementsNorTypes(schema)) {
+                    forceImport((XSDSchemaImpl) schema);
+                }
+            }
+
+            return schema;
+        }
+    }
+
+    private static boolean hasNoElementsNorTypes(XSDSchema schema) {
+        if (schema == null) {
+            return false;
+        }
+
+        return schema.getElementDeclarations().isEmpty() && schema.getTypeDefinitions().isEmpty();
+    }
+
+    private static void forceImport(XSDSchemaImpl schema) {
+        if (schema != null) {
+            for (XSDSchemaContent content: schema.getContents()) {
+                if (content instanceof XSDImportImpl) {
+                    XSDImportImpl importDirective = (XSDImportImpl)content;
+                    schema.resolveSchema(importDirective.getNamespace());
+                }
+            }
         }
     }
 

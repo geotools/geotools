@@ -13,15 +13,8 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
- *    Portions of this file is adapted from Fortran code provided by NOAA.
- *    Programmed for CDC-6600 by LCDR L.Pfeifer NGS ROCKVILLE MD 18FEB75
- *    Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
- *    Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/
  */
 package org.geotools.referencing;
-
-import static java.lang.Math.*;
 
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
@@ -64,7 +57,7 @@ import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.TransformException;
-
+import net.sf.geographiclib.*;
 
 /**
  * Performs geodetic calculations on an {@linkplain Ellipsoid ellipsoid}. This class encapsulates
@@ -75,7 +68,7 @@ import org.opengis.referencing.operation.TransformException;
  *   <li>Point located at a given distance and azimuth from an other point.</li>
  * </ul>
  * <p>
- * The calculation use the following informations:
+ * The calculation uses the following information:
  * <p>
  * <ul>
  *   <li>The {@linkplain #setStartingPosition starting position}, which is always considered valid.
@@ -85,7 +78,7 @@ import org.opengis.referencing.operation.TransformException;
  *         <li>The {@linkplain #setDestinationPosition destination position}, or</li>
  *         <li>An {@linkplain #setDirection azimuth and distance}.</li>
  *       </ul>
- *       The latest one set overrides the other and determines what will be calculated.</li>
+ *       The last one set overrides the other and determines what will be calculated.</li>
  * </ul>
  * <p>
  * Note: This class is not thread-safe. If geodetic calculations are needed in a multi-threads
@@ -100,20 +93,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Martin Desruisseaux
  */
 public class GeodeticCalculator {
-    /**
-     * Tolerance factors from the strictest (<code>TOLERANCE_0</CODE>)
-     * to the most relax one (<code>TOLERANCE_3</CODE>).
-     */
-    private static final double TOLERANCE_0 = 5.0e-15,  // tol0
-                                TOLERANCE_1 = 5.0e-14,  // tol1
-                                TOLERANCE_2 = 5.0e-13,  // tt
-                                TOLERANCE_3 = 7.0e-3;   // tol2
-
-    /**
-     * Tolerance factor for assertions. It has no impact on computed values.
-     */
-    private static final double TOLERANCE_CHECK = 1E-8;
-
     /**
      * The transform from user coordinates to geodetic coordinates used for computation,
      * or {@code null} if no transformations are required.
@@ -139,63 +118,29 @@ public class GeodeticCalculator {
     private final Ellipsoid ellipsoid;
 
     /*
-     * The semi major axis of the refereced ellipsoid.
+     * The semi major axis of the reference ellipsoid.
      */
     private final double semiMajorAxis;
 
     /*
-     * The semi minor axis of the refereced ellipsoid.
+     * The flattening the reference ellipsoid.
      */
-    private final double semiMinorAxis;
-
-    /*
-     * The eccenticity squared of the refereced ellipsoid.
-     */
-    private final double eccentricitySquared;
-
-    /*
-     * The maximum orthodromic distance that could be calculated onto the referenced ellipsoid.
-     */
-    private final double maxOrthodromicDistance;
-
-    /**
-     * GPNARC parameters computed from the ellipsoid.
-     */
-    private final double A, B, C, D, E, F;
-
-    /**
-     * GPNHRI parameters computed from the ellipsoid.
-     *
-     * {@code f} if the flattening of the referenced ellipsoid. {@code f2},
-     * {@code f3} and {@code f4} are <var>f<sup>2</sup></var>,
-     * <var>f<sup>3</sup></var> and <var>f<sup>4</sup></var> respectively.
-     */
-    private final double fo, f, f2, f3, f4;
-
-    /**
-     * Parameters computed from the ellipsoid.
-     */
-    private final double T1, T2, T4, T6;
-
-    /**
-     * Parameters computed from the ellipsoid.
-     */
-    private final double a01, a02, a03, a21, a22, a23, a42, a43, a63;
+    private final double flattening;
 
     /**
      * The (<var>latitude</var>, <var>longitude</var>) coordinate of the first point
-     * <strong>in radians</strong>. This point is set by {@link #setStartingGeographicPoint}.
+     * <strong>in degrees</strong>. This point is set by {@link #setStartingGeographicPoint}.
      */
     private double lat1, long1;
 
     /**
      * The (<var>latitude</var>, <var>longitude</var>) coordinate of the destination point
-     * <strong>in radians</strong>. This point is set by {@link #setDestinationGeographicPoint}.
+     * <strong>in degrees</strong>. This point is set by {@link #setDestinationGeographicPoint}.
      */
     private double lat2, long2;
 
     /**
-     * The distance and azimuth (in radians) from the starting point
+     * The distance and azimuth (in degrees) from the starting point
      * ({@link #long1}, {@link #lat1}) to the destination point
      * ({@link #long2}, {@link #lat2}).
      */
@@ -214,11 +159,9 @@ public class GeodeticCalculator {
     private boolean directionValid;
 
     /**
-     * {@code true} if the source and destination points are almost antipodal. If {@code true},
-     * then the distance and direction computed by {@link #computeDirection} are likely to be
-     * innacurate.
+     * The object that carries out the geodesic calculations.
      */
-    private boolean antipodal;
+    private Geodesic geod;
 
     /**
      * Constructs a new geodetic calculator associated with the WGS84 ellipsoid.
@@ -256,9 +199,10 @@ public class GeodeticCalculator {
         if (ellipsoid == null) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
         }
-        this.ellipsoid     = ellipsoid;
-        this.semiMajorAxis = ellipsoid.getSemiMajorAxis();
-        this.semiMinorAxis = ellipsoid.getSemiMinorAxis();
+        this.ellipsoid = ellipsoid;
+        semiMajorAxis  = ellipsoid.getSemiMajorAxis();
+        flattening     = 1/ellipsoid.getInverseFlattening();
+        geod = new Geodesic(semiMajorAxis, flattening);
         if (crs != null) {
             coordinateReferenceSystem = crs;
             geographicCRS = getGeographicCRS(crs);
@@ -273,51 +217,7 @@ public class GeodeticCalculator {
         } else {
             userToGeodetic = null;
         }
-
-        /* calculation of GPNHRI parameters */
-        f  = (semiMajorAxis-semiMinorAxis) / semiMajorAxis;
-        fo = 1.0 - f;
-        f2 = f*f;
-        f3 = f*f2;
-        f4 = f*f3;
-        eccentricitySquared = f * (2.0-f);
-
-        /* Calculation of GNPARC parameters */
-        final double E2 = eccentricitySquared;
-        final double E4 = E2*E2;
-        final double E6 = E4*E2;
-        final double E8 = E6*E2;
-        final double EX = E8*E2;
-
-        A =  1.0+0.75*E2+0.703125*E4+0.68359375 *E6+0.67291259765625*E8+0.6661834716796875 *EX;
-        B =      0.75*E2+0.9375  *E4+1.025390625*E6+1.07666015625   *E8+1.1103057861328125 *EX;
-        C =              0.234375*E4+0.41015625 *E6+0.538330078125  *E8+0.63446044921875   *EX;
-        D =                          0.068359375*E6+0.15380859375   *E8+0.23792266845703125*EX;
-        E =                                         0.01922607421875*E8+0.0528717041015625 *EX;
-        F =                                                             0.00528717041015625*EX;
-
-        maxOrthodromicDistance = semiMajorAxis * (1.0 - E2) * PI * A - 1.0;
-
-        T1 = 1.0;
-        T2 = -0.25*f*(1.0 + f + f2);
-        T4 = 0.1875 * f2 * (1.0+2.25*f);
-        T6 = 0.1953125 * f3;
-
-        final double a = f3*(1.0+2.25*f);
-        a01 = -f2*(1.0+f+f2)/4.0;
-        a02 = 0.1875*a;
-        a03 = -0.1953125*f4;
-        a21 = -a01;
-        a22 = -0.25*a;
-        a23 = 0.29296875*f4;
-        a42 = 0.03125*a;
-        a43 = 0.05859375*f4;
-        a63 = 5.0*f4/768.0;
     }
-
-
-
-
 
     ///////////////////////////////////////////////////////////
     ////////                                           ////////
@@ -363,90 +263,70 @@ public class GeodeticCalculator {
     }
 
     /**
-     * Returns an angle between -{@linkplain Math#PI PI} and {@linkplain Math#PI PI}
-     * equivalent to the specified angle in radians.
-     *
-     * @param  alpha An angle value in radians.
-     * @return The angle between between -{@linkplain Math#PI PI} and {@linkplain Math#PI PI}.
-     */
-    private static double castToAngleRange(final double alpha) {
-        return alpha - (2*PI) * floor(alpha / (2*PI) + 0.5);
-    }
-
-    /**
      * Checks the latidude validity. The argument {@code latidude} should be
-     * greater or equal than -90 degrees and lower or equals than +90 degrees. As
-     * a convenience, this method returns the latitude in radians.
+     * greater than or equal to -90 degrees and less than or equal to +90
+     * degrees.
      *
      * @param  latitude The latitude value in <strong>decimal degrees</strong>.
-     * @return The latitude value in <strong>radians</strong>.
      * @throws IllegalArgumentException if {@code latitude} is not between -90 and +90 degrees.
      */
-    private static double checkLatitude(final double latitude) throws IllegalArgumentException {
-        if (latitude >= Latitude.MIN_VALUE && latitude <= Latitude.MAX_VALUE) {
-            return toRadians(latitude);
-        }
+    private static void checkLatitude(final double latitude) throws IllegalArgumentException {
+      if (!(latitude >= Latitude.MIN_VALUE && latitude <= Latitude.MAX_VALUE)) {
         throw new IllegalArgumentException(Errors.format(
-                ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, new Latitude(latitude)));
+         ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, new Latitude(latitude)));
+      }
     }
 
     /**
      * Checks the longitude validity. The argument {@code longitude} should be
-     * greater or equal than -180 degrees and lower or equals than +180 degrees. As
-     * a convenience, this method returns the longitude in radians.
+     * finite.
      *
      * @param  longitude The longitude value in <strong>decimal degrees</strong>.
-     * @return The longitude value in <strong>radians</strong>.
-     * @throws IllegalArgumentException if {@code longitude} is not between -180 and +180 degrees.
+     * @throws IllegalArgumentException if {@code longitude} is not finite.
      */
-    private static double checkLongitude(final double longitude) throws IllegalArgumentException {
-        if (longitude >= Longitude.MIN_VALUE && longitude <= Longitude.MAX_VALUE) {
-            return toRadians(longitude);
-        }
+    private static void checkLongitude(final double longitude) throws IllegalArgumentException {
+      if (!(Math.abs(longitude) <= Double.MAX_VALUE)) {
         throw new IllegalArgumentException(Errors.format(
-                ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1, new Longitude(longitude)));
+          ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", new Longitude(longitude)));
+      }
     }
 
     /**
-     * Checks the azimuth validity. The argument {@code azimuth}  should be
-     * greater or equal than -180 degrees and lower or equals than +180 degrees.
-     * As a convenience, this method returns the azimuth in radians.
+     * Checks the azimuth validity. The argument {@code azimuth} should be
+     * finite.
      *
      * @param  azimuth The azimuth value in <strong>decimal degrees</strong>.
-     * @return The azimuth value in <strong>radians</strong>.
-     * @throws IllegalArgumentException if {@code azimuth} is not between -180 and +180 degrees.
+     * @throws IllegalArgumentException if {@code azimuth} is not finite.
      */
-    private static double checkAzimuth(final double azimuth) throws IllegalArgumentException {
-        if (azimuth >= -180.0 && azimuth <= 180.0) {
-            return toRadians(azimuth);
-        }
+    private static void checkAzimuth(final double azimuth) throws IllegalArgumentException {
+      if (!(Math.abs(azimuth) <= Double.MAX_VALUE)) {
         throw new IllegalArgumentException(Errors.format(
-                ErrorKeys.AZIMUTH_OUT_OF_RANGE_$1, new Longitude(azimuth)));
+          ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", new Longitude(azimuth)));
+      }
     }
 
     /**
      * Checks the orthodromic distance validity. Arguments {@code orthodromicDistance}
-     * should be greater or equal than 0 and lower or equals than the maximum orthodromic distance.
+     * should be finite.
      *
      * @param  distance The orthodromic distance value.
-     * @throws IllegalArgumentException if {@code orthodromic distance} is not between
-     *                                  0 and the maximum orthodromic distance.
+     * @throws IllegalArgumentException if {@code orthodromic distance} is not finite.
      */
-    private void checkOrthodromicDistance(final double distance)
+    private static void checkOrthodromicDistance(final double distance)
             throws IllegalArgumentException
     {
-        if (!(distance >= 0.0 && distance <= maxOrthodromicDistance)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.DISTANCE_OUT_OF_RANGE_$4,
-                    distance, 0.0, maxOrthodromicDistance, ellipsoid.getAxisUnit()));
-        }
+      if (!(Math.abs(distance) <= Double.MAX_VALUE)) {
+        throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
+                                           "distance", distance));
+      }
     }
 
     /**
-     * Checks the number of verteces in a curve. Arguments {@code numberOfPoints}
+     * Checks the number of vertices in a curve. Arguments {@code numberOfPoints}
      * should be not negative.
      *
-     * @param  numberOfPonits The number of verteces in a curve.
-     * @throws IllegalArgumentException if {@code numberOfVerteces} is negative.
+     * @param  numberOfPoints The number of vertices in a curve.
+     * @throws IllegalArgumentException if {@code numberOfPoints} is negative.
      */
     private static void checkNumberOfPoints(final int numberOfPoints)
             throws IllegalArgumentException
@@ -458,25 +338,12 @@ public class GeodeticCalculator {
     }
 
     /**
-     * Returns a localized "No convergence" error message. The error message
-     * includes informations about starting and destination points.
-     */
-    private String getNoConvergenceErrorMessage() {
-        final CoordinateFormat cf = new CoordinateFormat();
-        return Errors.format(ErrorKeys.NO_CONVERGENCE_$2,
-                             format(cf, long1, lat1), format(cf, long2, lat2));
-    }
-
-    /**
      * Format the specified coordinates using the specified formatter, which should be an instance
      * of {@link CoordinateFormat}.
      */
     private static String format(final Format cf, final double longitude, final double latitude) {
-        return cf.format(new GeneralDirectPosition(toDegrees(longitude), toDegrees(latitude)));
+        return cf.format(new GeneralDirectPosition(longitude, latitude));
     }
-
-
-
 
     ///////////////////////////////////////////////////////////////
     ////////                                               ////////
@@ -546,8 +413,8 @@ public class GeodeticCalculator {
     {
         // Check first in case an exception is raised
         // (in other words, we change all or nothing).
-        longitude = checkLongitude(longitude);
-        latitude  = checkLatitude (latitude);
+        checkLongitude(longitude);
+        checkLatitude (latitude);
         // Check passed. Now performs the changes in this object.
         long1 = longitude;
         lat1  = latitude;
@@ -601,7 +468,7 @@ public class GeodeticCalculator {
      * @since 2.3
      */
     public Point2D getStartingGeographicPoint() {
-        return new Point2D.Double(toDegrees(long1), toDegrees(lat1));
+        return new Point2D.Double(long1, lat1);
     }
 
     /**
@@ -619,8 +486,8 @@ public class GeodeticCalculator {
         if (position == null) {
             position = new DirectPosition2D();
         }
-        position.setOrdinate(0, toDegrees(long1));
-        position.setOrdinate(1, toDegrees( lat1));
+        position.setOrdinate(0, long1);
+        position.setOrdinate(1,  lat1);
         if (userToGeodetic != null) {
             position = userToGeodetic.inverseTransform();
         }
@@ -632,8 +499,8 @@ public class GeodeticCalculator {
      * will be updated as a side effect of this call. They will be recomputed the next time
      * {@link #getAzimuth()} or {@link #getOrthodromicDistance()} are invoked.
      *
-     * @param  longitude The longitude in decimal degrees between -180 and +180°
-     * @param  latitude  The latgitude in decimal degrees between  -90 and  +90°
+     * @param  longitude The longitude in decimal degrees
+     * @param  latitude  The latitude in decimal degrees between  -90 and  +90°
      * @throws IllegalArgumentException if the longitude or the latitude is out of bounds.
      *
      * @since 2.3
@@ -643,8 +510,8 @@ public class GeodeticCalculator {
     {
         // Check first in case an exception is raised
         // (in other words, we change all or nothing).
-        longitude = checkLongitude(longitude);
-        latitude  = checkLatitude (latitude);
+        checkLongitude(longitude);
+        checkLatitude (latitude);
         // Check passed. Now performs the changes in this object.
         long2 = longitude;
         lat2  = latitude;
@@ -710,7 +577,7 @@ public class GeodeticCalculator {
         if (!destinationValid) {
             computeDestinationPoint();
         }
-        return new Point2D.Double(toDegrees(long2), toDegrees(lat2));
+        return new Point2D.Double(long2, lat2);
     }
 
     /**
@@ -731,8 +598,8 @@ public class GeodeticCalculator {
         if (position == null) {
             position = new DirectPosition2D();
         }
-        position.setOrdinate(0, toDegrees(long2));
-        position.setOrdinate(1, toDegrees( lat2));
+        position.setOrdinate(0, long2);
+        position.setOrdinate(1,  lat2);
         if (userToGeodetic != null) {
             position = userToGeodetic.inverseTransform();
         }
@@ -744,7 +611,7 @@ public class GeodeticCalculator {
      * starting point}. The destination point will be updated as a side effect of this call.
      * It will be recomputed the next time {@link #getDestinationGeographicPoint()} is invoked.
      *
-     * @param  azimuth The azimuth in decimal degrees from -180° to 180°.
+     * @param  azimuth The azimuth in decimal degrees
      * @param  distance The orthodromic distance in the same units as the
      *         {@linkplain #getEllipsoid ellipsoid} axis (meters by default)
      * @throws IllegalArgumentException if the azimuth or the distance is out of bounds.
@@ -755,7 +622,7 @@ public class GeodeticCalculator {
     public void setDirection(double azimuth, final double distance) throws IllegalArgumentException {
         // Check first in case an exception is raised
         // (in other words, we change all or nothing).
-        azimuth = checkAzimuth(azimuth);
+        checkAzimuth(azimuth);
         checkOrthodromicDistance(distance);
         // Check passed. Now performs the changes in this object.
         this.azimuth  = azimuth;
@@ -783,16 +650,12 @@ public class GeodeticCalculator {
     public double getAzimuth() throws IllegalStateException {
         if (!directionValid) {
             computeDirection();
-            if (antipodal) {
-                Logging.getLogger(GeodeticCalculator.class).warning(
-                        "Azimuth is innacurate for antipodal points.");
-            }
         }
-        return toDegrees(azimuth);
+        return azimuth;
     }
 
     /**
-     * Returns the orthodromic distance (expressed in meters). This method returns the value set 
+     * Returns the orthodromic distance (expressed in meters). This method returns the value set
      * by the last call to <code>{@linkplain #setDirection(double,double) setDirection}(azimuth,distance)</code>,
      * <strong>except</strong> if <code>{@linkplain #setDestinationGeographicPoint(double,double)
      * setDestinationGeographicPoint}(...)</code> has been invoked after. In this later case, the
@@ -806,34 +669,8 @@ public class GeodeticCalculator {
     public double getOrthodromicDistance() throws IllegalStateException {
         if (!directionValid) {
             computeDirection();
-            if (antipodal) {
-                // If we are at antipodes, DefaultEllipsoid will provides a better estimation.
-                if (ellipsoid instanceof DefaultEllipsoid) {
-                    return ((DefaultEllipsoid) ellipsoid).orthodromicDistance(
-                            toDegrees(long1), toDegrees(lat1), toDegrees(long2), toDegrees(lat2));
-                }
-            } else {
-                assert checkOrthodromicDistance() : this;
-            }
         }
         return distance;
-    }
-
-    /**
-     * Computes the orthodromic distance using the algorithm implemented in the Geotools's
-     * ellipsoid class (if available), and check if the error is smaller than some tolerance
-     * error.
-     */
-    private boolean checkOrthodromicDistance() {
-        if (ellipsoid instanceof DefaultEllipsoid) {
-            double check;
-            final DefaultEllipsoid ellipsoid = (DefaultEllipsoid) this.ellipsoid;
-            check = ellipsoid.orthodromicDistance(toDegrees(long1), toDegrees(lat1),
-                                                  toDegrees(long2), toDegrees(lat2));
-            check = abs(distance - check);
-            return check <= (distance+1) * TOLERANCE_CHECK;
-        }
-        return true;
     }
 
     /**
@@ -849,62 +686,9 @@ public class GeodeticCalculator {
         if (!directionValid) {
             throw new IllegalStateException(Errors.format(ErrorKeys.DIRECTION_NOT_SET));
         }
-        // Protect internal variables from changes
-        final double lat1     = this.lat1;
-        final double long1    = this.long1;
-        final double azimuth  = this.azimuth;
-        final double distance = this.distance;
-        /*
-         * Solution of the geodetic direct problem after T.Vincenty.
-         * Modified Rainsford's method with Helmert's elliptical terms.
-         * Effective in any azimuth and at any distance short of antipodal.
-         *
-         * Latitudes and longitudes in radians positive North and East.
-         * Forward azimuths at both points returned in radians from North.
-         *
-         * Programmed for CDC-6600 by LCDR L.Pfeifer NGS ROCKVILLE MD 18FEB75
-         * Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
-         * Ported from Fortran to Java by Daniele Franzoni.
-         *
-         * Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/forward.for
-         *         subroutine DIRECT1
-         */
-        double TU  = fo*sin(lat1) / cos(lat1);
-        double SF  = sin(azimuth);
-        double CF  = cos(azimuth);
-        double BAZ = (CF!=0) ? atan2(TU,CF)*2.0 : 0;
-        double CU  = 1 / sqrt(TU*TU + 1.0);
-        double SU  = TU*CU;
-        double SA  = CU*SF;
-        double C2A = 1.0 - SA*SA;
-        double X   = sqrt((1.0/fo/fo - 1) * C2A + 1.0) + 1.0;
-        X   = (X - 2.0) / X;
-        double C   = 1.0-X;
-        C   = (X*X / 4.0 + 1.0) / C;
-        double D   = (0.375 * X*X - 1.0) * X;
-        TU   = distance / fo / semiMajorAxis / C;
-        double Y   = TU;
-        double SY, CY, CZ, E;
-        do {
-            SY = sin(Y);
-            CY = cos(Y);
-            CZ = cos(BAZ + Y);
-            E  = CZ*CZ*2.0-1.0;
-            C  = Y;
-            X  = E*CY;
-            Y  = E+E-1.0;
-            Y  = (((SY*SY*4.0-3.0)*Y*CZ*D/6.0+X)*D/4.0-CZ)*SY*D+TU;
-        } while (abs(Y-C) > TOLERANCE_1);
-        BAZ  = CU*CY*CF - SU*SY;
-        C    = fo * hypot(SA, BAZ);
-        D    = SU*CY + CU*SY*CF;
-        lat2 = atan2(D,C);
-        C    = CU*CY - SU*SY*CF;
-        X    = atan2(SY*SF, C);
-        C    = ((-3.0 * C2A + 4.0) * f + 4.0) * C2A * f / 16.0;
-        D    = ((E * CY * C + CZ) * SY * C + Y) * SA;
-        long2 = long1+X - (1.0-C)*D*f;
-        long2 = castToAngleRange(long2);
+        GeodesicData g = geod.Direct(lat1, long1, azimuth, distance);
+        lat2  = g.lat2;
+        long2 = g.lon2;
         destinationValid = true;
     }
 
@@ -917,48 +701,11 @@ public class GeodeticCalculator {
      * @return Returned the meridian arc length between latitude1 and latitude2
      */
     public double getMeridianArcLength(final double latitude1, final double latitude2) {
-        return getMeridianArcLengthRadians(checkLatitude(latitude1), checkLatitude(latitude2));
-    }
-
-    /**
-     * Calculates the meridian arc length between two points in the same meridian
-     * in the referenced ellipsoid.
-     *
-     * @param  P1 The latitude of the first  point (in radians).
-     * @param  P2 The latitude of the second point (in radians).
-     * @return Returned the meridian arc length between P1 and P2
-     */
-    private double getMeridianArcLengthRadians(final double P1, final double P2) {
-        /*
-         * Latitudes P1 and P2 in radians positive North and East.
-         * Forward azimuths at both points returned in radians from North.
-         *
-         * Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/inverse.for
-         *         subroutine GPNARC
-         *         version    200005.26
-         *         written by Robert (Sid) Safford
-         *
-         * Ported from Fortran to Java by Daniele Franzoni.
-         */
-        double S1 = abs(P1);
-        double S2 = abs(P2);
-        double DA = (P2-P1);
-        // Check for a 90 degree lookup
-        if (S1 > TOLERANCE_0 || S2 <= (PI/2 - TOLERANCE_0) || S2 >= (PI/2 + TOLERANCE_0)) {
-            final double DB = sin(P2* 2.0) - sin(P1* 2.0);
-            final double DC = sin(P2* 4.0) - sin(P1* 4.0);
-            final double DD = sin(P2* 6.0) - sin(P1* 6.0);
-            final double DE = sin(P2* 8.0) - sin(P1* 8.0);
-            final double DF = sin(P2*10.0) - sin(P1*10.0);
-            // Compute the S2 part of the series expansion
-            S2 = -DB*B/2.0 + DC*C/4.0 - DD*D/6.0 + DE*E/8.0 - DF*F/10.0;
-        } else {
-            S2  = 0;
-        }
-        // Compute the S1 part of the series expansion
-        S1 = DA * A;
-        // Compute the arc length
-        return abs(semiMajorAxis * (1.0-eccentricitySquared) * (S1+S2));
+      checkLatitude(latitude1);
+      checkLatitude(latitude2);
+      GeodesicData g = geod.Inverse(latitude1, 0, latitude2, 0,
+                                    GeodesicMask.DISTANCE);
+      return g.s12;
     }
 
     /**
@@ -975,156 +722,9 @@ public class GeodeticCalculator {
         if (!destinationValid) {
             throw new IllegalStateException(Errors.format(ErrorKeys.DESTINATION_NOT_SET));
         }
-        // Protect internal variables from change.
-        final double long1 = this.long1;
-        final double lat1  = this.lat1;
-        final double long2 = this.long2;
-        final double lat2  = this.lat2;
-        /*
-         * Solution of the geodetic inverse problem after T.Vincenty.
-         * Modified Rainsford's method with Helmert's elliptical terms.
-         * Effective in any azimuth and at any distance short of antipodal.
-         *
-         * Latitudes and longitudes in radians positive North and East.
-         * Forward azimuths at both points returned in radians from North.
-         *
-         * Programmed for CDC-6600 by LCDR L.Pfeifer NGS ROCKVILLE MD 18FEB75
-         * Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
-         * Ported from Fortran to Java by Daniele Franzoni.
-         *
-         * Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/inverse.for
-         *         subroutine GPNHRI
-         *         version    200208.09
-         *         written by robert (sid) safford
-         */
-        final double dlon = castToAngleRange(long2 - long1);
-        final double ss = abs(dlon);
-        if (ss < TOLERANCE_1) {
-            distance = getMeridianArcLengthRadians(lat1, lat2);
-            azimuth = (lat2 > lat1) ? 0.0 : PI;
-            directionValid = true;
-            antipodal = false;
-            return;
-        }
-        antipodal = (PI - ss < 2*TOLERANCE_3) && (abs(lat1 + lat2) < 2*TOLERANCE_3);
-        /*
-         * Computes the limit in longitude (alimit), it is equal
-         * to twice  the distance from the equator to the pole,
-         * as measured along the equator.
-         */
-        // tests for antinodal difference
-        final double ESQP = eccentricitySquared / (1.0-eccentricitySquared);
-        final double alimit = PI * fo;
-        if (ss >= alimit &&
-            lat1 < TOLERANCE_3 && lat1 > -TOLERANCE_3 &&
-            lat2 < TOLERANCE_3 && lat2 > -TOLERANCE_3)
-        {
-            // Computes an approximate AZ
-            final double CONS = (PI - ss) / (PI * f);
-            double AZ = asin(CONS);
-            double AZ_TEMP, S, AO;
-            int iter = 0;
-            do {
-                if (++iter > 8) {
-                    throw new ArithmeticException(getNoConvergenceErrorMessage());
-                }
-                S = cos(AZ);
-                final double C2 = S*S;
-                // Compute new AO
-                AO = T1 + T2*C2 + T4*C2*C2 + T6*C2*C2*C2;
-                final double CS = CONS/AO;
-                S = asin(CS);
-                AZ_TEMP = AZ;
-                AZ = S;
-            } while (abs(S - AZ_TEMP) >= TOLERANCE_2);
-
-            final double AZ1 = (dlon < 0.0) ? 2.0*PI - S : S;
-            azimuth = castToAngleRange(AZ1);
-            S = cos(AZ1);
-
-            // Equatorial - geodesic(S-s) SMS
-            final double U2 = ESQP*S*S;
-            final double U4 = U2*U2;
-            final double U6 = U4*U2;
-            final double U8 = U6*U2;
-            final double BO =  1.0                 +
-                               0.25            *U2 +
-                               0.046875        *U4 +
-                               0.01953125      *U6 +
-                              -0.01068115234375*U8;
-            S = sin(AZ1);
-            final double SMS = semiMajorAxis*PI*(1.0 - f*abs(S)*AO - BO*fo);
-            distance = semiMajorAxis*ss - SMS;
-            directionValid = true;
-            return;
-        }
-
-        // the reduced latitudes
-        final double  u1 = atan(fo*sin(lat1) / cos(lat1));
-        final double  u2 = atan(fo*sin(lat2) / cos(lat2));
-        final double su1 = sin(u1);
-        final double cu1 = cos(u1);
-        final double su2 = sin(u2);
-        final double cu2 = cos(u2);
-        double xy, w, q2, q4, q6, r2, r3, sig, ssig, slon, clon, sinalf, ab=dlon;
-        int kcount = 0;
-        do {
-            if (++kcount > 12) {
-                throw new ArithmeticException(getNoConvergenceErrorMessage());
-            }
-            clon = cos(ab);
-            slon = sin(ab);
-            final double csig = su1*su2 + cu1*cu2*clon;
-            ssig = hypot(slon*cu2, su2*cu1 - su1*cu2*clon);
-            sig  = atan2(ssig, csig);
-            sinalf = cu1*cu2*slon/ssig;
-            w = (1.0 - sinalf*sinalf);
-            final double t4 = w*w;
-            final double t6 = w*t4;
-
-            // the coefficents of type a
-            final double ao = f+a01*w+a02*t4+a03*t6;
-            final double a2 =   a21*w+a22*t4+a23*t6;
-            final double a4 =         a42*t4+a43*t6;
-            final double a6 =                a63*t6;
-
-            // the multiple angle functions
-            double qo  = 0.0;
-            if (w > TOLERANCE_0) {
-                qo = -2.0*su1*su2/w;
-            }
-            q2 = csig + qo;
-            q4 = 2.0*q2*q2 - 1.0;
-            q6 = q2*(4.0*q2*q2 - 3.0);
-            r2 = 2.0*ssig*csig;
-            r3 = ssig*(3.0 - 4.0*ssig*ssig);
-
-            // the longitude difference
-            final double s = sinalf*(ao*sig + a2*ssig*q2 + a4*r2*q4 + a6*r3*q6);
-            double xz = dlon+s;
-            xy = abs(xz - ab);
-            ab = dlon+s;
-        } while (xy >= TOLERANCE_1);
-
-        final double z  = ESQP*w;
-        final double bo = 1.0 + z*( 1.0/4.0 + z*(-3.0/  64.0 + z*(  5.0/256.0 - z*(175.0/16384.0))));
-        final double b2 =       z*(-1.0/4.0 + z*( 1.0/  16.0 + z*(-15.0/512.0 + z*( 35.0/ 2048.0))));
-        final double b4 =                   z*z*(-1.0/ 128.0 + z*(  3.0/512.0 - z*( 35.0/ 8192.0)));
-        final double b6 =                                  z*z*z*(-1.0/1536.0 + z*(  5.0/ 6144.0));
-
-        // The distance in ellispoid axis units.
-        distance = semiMinorAxis * (bo*sig + b2*ssig*q2 + b4*r2*q4 + b6*r3*q6);
-        double az1 = (dlon < 0) ? PI*(3.0/2.0) : PI/2;
-
-        // now compute the az1 & az2 for latitudes not on the equator
-        if ((abs(su1) >= TOLERANCE_0) || (abs(su2) >= TOLERANCE_0)) {
-            final double tana1 = slon*cu2 / (su2*cu1 - clon*su1*cu2);
-            final double sina1 = sinalf/cu1;
-
-            // azimuths from north,longitudes positive east
-            az1 = atan2(sina1, sina1/tana1);
-        }
-        azimuth = castToAngleRange(az1);
+        GeodesicData g = geod.Inverse(lat1, long1, lat2, long2);
+        azimuth = g.azi1;
+        distance = g.s12;
         directionValid = true;
         return;
     }
@@ -1155,7 +755,7 @@ public class GeodeticCalculator {
             Point2D p = points.get(i);
             path.lineTo(p.getX(), p.getY());
         }
-        
+
         return path;
     }
 
@@ -1173,7 +773,7 @@ public class GeodeticCalculator {
     public Shape getGeodeticCurve() {
         return getGeodeticCurve(10);
     }
-    
+
     /**
      * Calculates the geodetic curve between two points in the referenced ellipsoid.
      * A curve in the ellipsoid is a path which points contain the longitude and latitude
@@ -1183,7 +783,7 @@ public class GeodeticCalculator {
      *
      * @param  numPoints The number of vertices <strong>between</strong> the start
      *         and destination points
-     * 
+     *
      * @return vertices approximating the curve
      *
      * @todo We should check for cases where the path cross the 90Â°N, 90Â°S, 90Â°E or 90Â°W boundaries.
@@ -1193,37 +793,32 @@ public class GeodeticCalculator {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
                         "numPoints", numPoints));
         }
-        
+
         List<Point2D> points = new ArrayList<Point2D>(numPoints + 2);
-        
+
         if (!directionValid) {
             computeDirection();
         }
-        
+
         if (!destinationValid) {
             computeDestinationPoint();
         }
-        
-        final double         long2 = this.long2;
-        final double          lat2 = this.lat2;
-        final double      distance = this.distance;
+
         final double delta = distance / (numPoints + 1);
-    
-        points.add(new Point2D.Double(toDegrees(long1), toDegrees(lat1)));
-        
-        for (int i = 1; i <= numPoints; i++) {
-            this.distance = i * delta;
-            computeDestinationPoint();
-            points.add(new Point2D.Double(toDegrees(this.long2), toDegrees(this.lat2)));
+
+        points.add(new Point2D.Double(long1, lat1));
+        GeodesicLine line = geod.Line(lat1, long1, azimuth);
+
+        for (int i = 1; i <= numPoints + 1; i++) {
+          GeodesicData g = line.Position(i * delta,
+                                         GeodesicMask.LATITUDE |
+                                         GeodesicMask.LONGITUDE |
+                                         GeodesicMask.LONG_UNROLL);
+          points.add(new Point2D.Double(g.lon2, g.lat2));
         }
-        points.add(new Point2D.Double(toDegrees(long2), toDegrees(lat2)));
-        this.long2    = long2;
-        this.lat2     = lat2;
-        this.distance = distance;
-        
+
         return points;
     }
-    
 
     /**
      * Calculates the loxodromic curve between two points in the referenced ellipsoid.
@@ -1264,10 +859,10 @@ public class GeodeticCalculator {
         if (!destinationValid) {
             computeDestinationPoint();
         }
-        final double x1 = toDegrees(long1);
-        final double y1 = toDegrees( lat1);
-        final double x2 = toDegrees(long2);
-        final double y2 = toDegrees( lat2);
+        final double x1 = long1;
+        final double y1 =  lat1;
+        final double x2 = long2;
+        final double y2 =  lat2;
         /*
          * Check if the azimuth is heading from P1 to P2 (TRUE) or in the opposite direction
          * (FALSE). Horizontal (X) and vertical (Y) components are checked separatly. A null
@@ -1324,7 +919,7 @@ public class GeodeticCalculator {
                 final double zonalX, zonalY; // The point where the path cross the +/- 90° parallel.
                 meridX = in ? xin : xout;    meridY = dy/dx * (meridX-x1) + y1;
                 zonalY = in ? yin : yout;    zonalX = dx/dy * (zonalY-y1) + x1;
-                if (abs(meridY) < abs(zonalX)*0.5) {
+                if (Math.abs(meridY) < Math.abs(zonalX)*0.5) {
                     if (in) {
                         xin = meridX;
                         yin = meridY;
@@ -1387,7 +982,7 @@ public class GeodeticCalculator {
         if (directionValid) {
             buffer.write(resources.getLabel(VocabularyKeys.AZIMUTH));
             buffer.nextColumn();
-            buffer.write(nf.format(new Angle(toDegrees(azimuth))));
+            buffer.write(nf.format(new Angle(azimuth)));
             buffer.nextLine();
         }
         if (directionValid) {

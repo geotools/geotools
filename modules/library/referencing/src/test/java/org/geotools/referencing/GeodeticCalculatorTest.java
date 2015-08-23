@@ -63,7 +63,7 @@ public final class GeodeticCalculatorTest {
         calculator.setDestinationGeographicPoint(13, 20);  assertEquals("East",   90, calculator.getAzimuth(), EPS);
         calculator.setDestinationGeographicPoint(12, 21);  assertEquals("North",   0, calculator.getAzimuth(), EPS);
         calculator.setDestinationGeographicPoint(11, 20);  assertEquals("West",  -90, calculator.getAzimuth(), EPS);
-        calculator.setDestinationGeographicPoint(12, 19);  assertEquals("South", 180, calculator.getAzimuth(), EPS);
+        calculator.setDestinationGeographicPoint(12, 19);  assertEquals("South",-180, calculator.getAzimuth(), EPS);
     }
 
     /**
@@ -179,11 +179,11 @@ public final class GeodeticCalculatorTest {
             calculator.setDestinationGeographicPoint(x, 0);
             final double distance = calculator.getOrthodromicDistance() / 1000; // In kilometers
             /*
-             * Checks that the increment is constant. It is not for x>179 unless
-             * GeodeticCalculator switch to DefaultEllipsoid algorithm, which is
-             * what we want to ensure with this test.
+             * Checks that the increment is constant and then tapers off.
              */
-            assertFalse(Math.abs(Math.abs(distance - last) - 13.914935) > 2E-6);
+            assertTrue(x == 0 ? (distance == 0) :
+                       (x < 179.5 ? (Math.abs(distance - last - 13.914936) < 2E-6)
+                        : (distance - last < 13)));
             last = distance;
         }
     }

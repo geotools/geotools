@@ -151,7 +151,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
         array0[6]=  0; array0[ 7]=0.0; array0[ 8]=0;
         array0[9]=180; array0[10]=0.0; array0[11]=0; // Antipodes; distance should be 2*6378.137 km
         cartesianDistance  [1] = ellipsoid.getSemiMajorAxis() * 2;
-        orthodromicDistance[1] = ellipsoid.getSemiMajorAxis() * Math.PI;
+        orthodromicDistance[1] = 20003931.46;
 
         array0[12]=  0; array0[13]=-90; array0[14]=0;
         array0[15]=180; array0[16]=+90; array0[17]=0; // Antipodes; distance should be 2*6356.752 km
@@ -161,7 +161,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
         array0[18]= 95; array0[19]=-38; array0[20]=0;
         array0[21]=-85; array0[22]=+38; array0[23]=0; // Antipodes
         cartesianDistance  [3] = 12740147.19;
-        orthodromicDistance[3] = 20003867.86;
+        orthodromicDistance[3] = 20003931.46;
         /*
          * Transform all points, and then inverse transform then. The resulting
          * <code>array2</code> array should be equals to <code>array0</code>

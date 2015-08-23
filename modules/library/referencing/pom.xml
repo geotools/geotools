@@ -194,6 +194,11 @@
       <artifactId>jgridshift</artifactId>
       <version>1.0</version>
     </dependency>
+   <dependency>
+     <groupId>net.sf.geographiclib</groupId>
+     <artifactId>GeographicLib-Java</artifactId>
+     <version>1.44</version>
+   </dependency>
 
     <!-- Test dependencies -->
     <dependency>

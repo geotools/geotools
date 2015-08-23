@@ -13,9 +13,6 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *
- *    This class contains formulas from the public FTP area of NOAA.
- *    NOAAS's work is fully acknowledged here.
  */
 package org.geotools.referencing.datum;
 
@@ -35,6 +32,7 @@ import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import net.sf.geographiclib.*;
 
 
 /**
@@ -423,92 +421,10 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * @return The orthodromic distance (in the units of this ellipsoid's axis).
      */
     public double orthodromicDistance(double x1, double y1, double x2, double y2) {
-        x1 = Math.toRadians(x1);
-        y1 = Math.toRadians(y1);
-        x2 = Math.toRadians(x2);
-        y2 = Math.toRadians(y2);
-        /*
-         * Solution of the geodetic inverse problem after T.Vincenty.
-         * Modified Rainsford's method with Helmert's elliptical terms.
-         * Effective in any azimuth and at any distance short of antipodal.
-         *
-         * Latitudes and longitudes in radians positive North and East.
-         * Forward azimuths at both points returned in radians from North.
-         *
-         * Programmed for CDC-6600 by LCDR L.Pfeifer NGS ROCKVILLE MD 18FEB75
-         * Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
-         * Ported from Fortran to Java by Martin Desruisseaux.
-         *
-         * Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/inverse.for
-         *         subroutine INVER1
-         */
-        final int    MAX_ITERATIONS = 100;
-        final double EPS = 0.5E-13;
-        final double F   = 1/getInverseFlattening();
-        final double R   = 1-F;
-
-        double tu1 = R * Math.sin(y1) / Math.cos(y1);
-        double tu2 = R * Math.sin(y2) / Math.cos(y2);
-        double cu1 = 1 / Math.sqrt(tu1*tu1 + 1);
-        double cu2 = 1 / Math.sqrt(tu2*tu2 + 1);
-        double su1 = cu1*tu1;
-        double s   = cu1*cu2;
-        double baz = s*tu2;
-        double faz = baz*tu1;
-        double x   = x2-x1;
-        for (int i=0; i<MAX_ITERATIONS; i++) {
-            final double sx = Math.sin(x);
-            final double cx = Math.cos(x);
-            tu1 = cu2*sx;
-            tu2 = baz - su1*cu2*cx;
-            final double sy = Math.hypot(tu1, tu2);
-            final double cy = s*cx + faz;
-            final double y = Math.atan2(sy, cy);
-            final double SA = s*sx/sy;
-            final double c2a = 1 - SA*SA;
-            double cz = faz+faz;
-            if (c2a > 0) {
-                cz = -cz/c2a + cy;
-            }
-            double e = cz*cz*2 - 1;
-            double c = ((-3*c2a+4)*F+4)*c2a*F/16;
-            double d = x;
-            x = ((e*cy*c+cz)*sy*c+y)*SA;
-            x = (1-c)*x*F + x2-x1;
-
-            if (Math.abs(d-x) <= EPS) {
-                if (false) {
-                    // 'faz' and 'baz' are forward azimuths at both points.
-                    // Since the current API can't returns this result, it
-                    // doesn't worth to compute it at this time.
-                    faz = Math.atan2(tu1, tu2);
-                    baz = Math.atan2(cu1*sx, baz*cx - su1*cu2)+Math.PI;
-                }
-                x = Math.sqrt((1/(R*R)-1) * c2a + 1)+1;
-                x = (x-2)/x;
-                c = 1-x;
-                c = (x*x/4 + 1)/c;
-                d = (0.375*x*x - 1)*x;
-                x = e*cy;
-                s = 1-2*e;
-                s = ((((sy*sy*4 - 3)*s*cz*d/6-x)*d/4+cz)*sy*d+y)*c*R*getSemiMajorAxis();
-                return s;
-            }
-        }
-        // No convergence. It may be because coordinate points
-        // are equals or because they are at antipodes.
-        final double LEPS = 1E-10;
-        if (Math.abs(x1-x2)<=LEPS && Math.abs(y1-y2)<=LEPS) {
-            return 0; // Coordinate points are equals
-        }
-        if (Math.abs(y1)<=LEPS && Math.abs(y2)<=LEPS) {
-            return Math.abs(x1-x2) * getSemiMajorAxis(); // Points are on the equator.
-        }
-        // Other cases: no solution for this algorithm.
-        final CoordinateFormat format = new CoordinateFormat();
-        throw new ArithmeticException(Errors.format(ErrorKeys.NO_CONVERGENCE_$2,
-                  format.format(new GeneralDirectPosition(Math.toDegrees(x1),Math.toDegrees(y1))),
-                  format.format(new GeneralDirectPosition(Math.toDegrees(x2),Math.toDegrees(y2)))));
+      Geodesic geod = new Geodesic(getSemiMajorAxis(),
+                                   1/getInverseFlattening());
+      GeodesicData g = geod.Inverse(y1, x1, y2, x2, GeodesicMask.DISTANCE);
+      return g.s12;
     }
 
     /**

@@ -17,7 +17,6 @@
 package org.geotools.referencing;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +24,11 @@ import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.measure.unit.SI;
@@ -35,11 +39,14 @@ import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.operation.TransformException;
+
+import com.csvreader.CsvReader;
 
 
 /**
@@ -236,4 +243,33 @@ public final class GeodeticCalculatorTest {
         }
     }
     
+    @Test
+    public void testVincentyFails() throws FileNotFoundException, IOException {
+        //check pairs of points known to fail with the Vincenty method
+        //taken from Wikipedia Talk page.
+        //https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
+        InputStream in = TestData.openStream( this, "vincenty.csv" );
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+       CsvReader creader = new CsvReader(reader);
+       creader.setComment('#');
+       creader.setUseComments(true);
+       while(creader.readRecord()) {
+           
+           double lat1 = Double.parseDouble(creader.get(0));
+           double lon1 = Double.parseDouble(creader.get(1));
+           double lat2 = Double.parseDouble(creader.get(2));
+           double lon2 = Double.parseDouble(creader.get(3));
+           
+           GeodeticCalculator calculator = new GeodeticCalculator();
+           calculator.setStartingGeographicPoint(lon1,lat1);
+           calculator.setDestinationGeographicPoint(lon2,lat2);
+           double dist = calculator.getOrthodromicDistance();
+           //really we are just proving it works as previous code failed 
+           //to converge for these points.
+           //but this way there is no chance of optimising the call away.
+           assertTrue("Bad distance calculation",dist>0.0d);
+           
+           
+       }
+    }
 }

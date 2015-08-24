@@ -59,7 +59,9 @@ class ZGroupLayerPainter {
         this.sortBy = lfts.get(0).sortBy;
         this.currentKey = new SortKey(sortBy.length);
         this.renderer = renderer;
-        this.renderable = renderer.createRenderableFeature(layerId, lfts);
+        // when doing z-ordering we paint multiple time the same feature, so we
+        // have to force geometry cloning, otherwise we'll transform it in place multiple times
+        this.renderable = renderer.createRenderableFeature(layerId, true);
         next();
     }
 

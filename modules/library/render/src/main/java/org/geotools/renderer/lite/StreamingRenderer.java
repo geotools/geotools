@@ -2272,7 +2272,7 @@ public class StreamingRenderer implements GTRenderer {
                 if( featureIterator == null ){
                     return; // nothing to do
                 }
-                RenderableFeature rf = createRenderableFeature(layerId, lfts);
+                RenderableFeature rf = createRenderableFeature(layerId, isCloningRequired(lfts));
                 rf.layer = liteFeatureTypeStyle.layer;
                 rf.setScreenMap(liteFeatureTypeStyle.screenMap);
                 // loop exit condition tested inside try catch
@@ -2301,13 +2301,12 @@ public class StreamingRenderer implements GTRenderer {
      * Builds a new renderable feature for the given layerId and set of lite feature type styles
      * 
      * @param layerId
-     * @param lfts
+     * @param cloningRequired TODO
      * @return
      */
     RenderableFeature createRenderableFeature(String layerId,
-            final List<LiteFeatureTypeStyle> lfts) {
-        boolean clone = isCloningRequired(lfts);
-        RenderableFeature rf = new RenderableFeature(layerId, clone);
+            boolean cloningRequired) {
+        RenderableFeature rf = new RenderableFeature(layerId, cloningRequired);
         return rf;
     }
 
@@ -2323,7 +2322,7 @@ public class StreamingRenderer implements GTRenderer {
             if (iterator == null)
                 return; // nothing to do
 
-            RenderableFeature rf = createRenderableFeature(layerId, lfts);
+            RenderableFeature rf = createRenderableFeature(layerId, isCloningRequired(lfts));
             // loop exit condition tested inside try catch
             // make sure we test hasNext() outside of the try/cath that follows, as that
             // one is there to make sure a single feature error does not ruin the rendering

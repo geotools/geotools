@@ -111,6 +111,12 @@ public class ZOrderTest {
         runRoadsBuildingTest("z", "theGroup", "roads-buildings-group-z");
     }
 
+    @Test
+    public void testCrossRoadsBuildingsZoomedOut() throws Exception {
+        bounds.expandBy(10, 10);
+        runRoadsBuildingTest("z", "theGroup", "roads-buildings-group-z-zoomedout");
+    }
+
     private void runZSquaresTest(String styleName, String sortBy, String referenceImageName)
             throws Exception {
         Style style = RendererBaseTest.loadStyle(this, styleName);

@@ -102,6 +102,8 @@ class ZGroupLayer extends Layer {
                     throw new IllegalStateException("The sorted rendering moved from a set of "
                             + "sort attributes, to one that's equal or greater, this is unexpected, "
                             + "bailing out to avoid an infinite loop");
+                } else {
+                    previousKey = smallestKey;
                 }
 
                 for (Iterator it = painters.iterator(); it.hasNext();) {

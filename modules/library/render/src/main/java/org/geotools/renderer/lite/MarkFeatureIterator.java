@@ -69,7 +69,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
                 features.add(f);
                 count++;
                 if (count >= maxFeaturesInMemory) {
-                    if (fc.getSchema() instanceof SimpleFeatureIO) {
+                    if (fc.getSchema() instanceof SimpleFeature) {
                         return new DiskMarkFeatureIterator(features, fi,
                                 (SimpleFeatureType) fc.getSchema(), listener);
                     } else {

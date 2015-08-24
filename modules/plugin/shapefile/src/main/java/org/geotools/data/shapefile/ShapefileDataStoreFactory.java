@@ -91,22 +91,6 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             new KVP(Param.LEVEL, "advanced"));
 
     /**
-     * Optional - Enable/disable the automatic use of the optional Recno field from the DBF file 
-     * to quickly execute Dbase filters.
-     * 
-     * The FeatureStore previously checks if there is an avaliable a ODBC provider in the system 
-     * and compatible with the use of Recno fields of DBF files.
-     * 
-     * Now it only works for two ODBC drivers running in Windows SO's:
-     *  - Microsoft ODBC FoxPro Driver (x86).
-     *  - Advantage StreamlineSQL ODBC driver (x86/x64).
-     * It is feasible implement this using the 'Advantage StreamlineSQL ODBC' driver in Linux platforms.
-     */
-    public static final Param USE_ODBC_DBASE_FILTERING = new Param("use a ODBC provider to fast execution of Dbase filters",
-            Boolean.class, "enable/disable the automatic use of an available ODBC provider to fast execution of Dbase filters", false, true,
-            new KVP(Param.LEVEL, "advanced"));
-
-    /**
      * Optional - character used to decode strings from the DBF file
      */
     public static final Param DBFCHARSET = new Param("charset", Charset.class,
@@ -164,7 +148,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     public Param[] getParametersInfo() {
-        return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, USE_ODBC_DBASE_FILTERING, DBFCHARSET, DBFTIMEZONE,
+        return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, DBFCHARSET, DBFTIMEZONE,
                 MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
     }
 
@@ -188,11 +172,6 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         if (isEnableSpatialIndex == null) {
             // should not be needed as default is TRUE
             isEnableSpatialIndex = Boolean.TRUE;
-        }
-        Boolean isEnableOdbcFiltering = (Boolean) USE_ODBC_DBASE_FILTERING.lookUp(params);
-        if (isEnableOdbcFiltering == null) {
-            // should not be needed as default is TRUE
-            isEnableOdbcFiltering = true;
         }
         
         // are we creating a directory of shapefiles store, or a single one?
@@ -219,7 +198,6 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);
             store.setIndexCreationEnabled(createIndex);
-            store.setOdbcFilteringEnabled(isEnableOdbcFiltering);
             return store;
         }
     }

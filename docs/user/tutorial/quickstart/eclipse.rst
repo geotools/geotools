@@ -1,5 +1,6 @@
 :Author: Jody Garnett
 :Author: Micheal Bedward
+:Author: Ian Turton
 :Thanks: geotools-user list
 :Version: |release|
 :License: Create Commons with attribution
@@ -38,18 +39,18 @@ Imaging and Java Image IO section.
    
 #. Download the latest Java Developer Kit (JDK) from the the java.sun.com website:
 
-   http://java.sun.com/javase/downloads/index.jsp
+   http://www.oracle.com/technetwork/java/javase/downloads/index.html
    
 #. At the time of writing the latest JDK was:
    
-   jdk-7u1-windows-i586.exe
+   jdk-8u51-windows-i586.exe
    
 #. Click through the installer. You will need to accept a license agreement, choose a directory
    and so forth.
    
    By default this will install to:     
    
-   C:\\Program Files\\Java\\jdk1.7.0\\
+   C:\\Program Files\\Java\\jdk1.8.0\\
      
 #. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
@@ -89,11 +90,11 @@ switch to the "Java Perspective".
    
    At the time of writing the latest release was:
    
-   * eclipse-java-indigo-SR1-win32.zip 
+   * eclipse-java-mars-R-win32.zip 
    
 2. Eclipse does not provide an installer, just a directory to unzip and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
-4. Unzip the downloaded eclipse-java-indigo-win32.zip file to your C:\\java directory - the
+4. Unzip the downloaded eclipse-java-mars-R-win32.zip file to your C:\\java directory - the
    folder C:\\java\\eclipse will be created.
 5. Navigate to C:\\java\\eclipse and right-click on the eclipse.exe file and select
    Send To -> Desktop (create shortcut).
@@ -114,8 +115,8 @@ switch to the "Java Perspective".
 
 .. _eclipse-m2eclipse:
 
-M2Eclipse
----------
+M2E
+-----
   
 Maven is a build system for Java which is very good at managing dependencies. The GeoTools library
 is plugin based and you get to pick and choose what features you need for your application. While
@@ -123,9 +124,9 @@ this is useful when determining just what is needed for delivery - it can be a p
 hand so we encourage the use of a tool such as maven.
 
 In previous years we used the command line (gasp!) when working with maven. This year we are going
-to be using the M2Eclipse plugin from Sonyatype.
+to be using the M2E plugin from Sonyatype.
 
-The M2Eclipse plugin is included by default in Eclipse 3.7.
+The M2E plugin is included by default since Eclipse 3.7.
 
 Quickstart
 ==========
@@ -144,7 +145,7 @@ code is, how you want it packaged, and what libraries it makes use of. Based on 
 can figure out most things: how to compile your code, creating javadocs, or even downloading the
 library jars for you.
 
-To use M2Eclipse plugin to create a create a new maven project:
+To use M2E plugin to create a create a new maven project:
 
 #. File > New > Other from the menu bar
 
@@ -546,6 +547,10 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 Download GeoTools
 -----------------
 
+.. sidebar:: Caution
+
+    This procedure is tricky and can often lead to problems with missing jars or too many jars. GeoTools is really too large and complex to consider building without the use of maven. Please reconsider before proceeding with this process.
+
 We can also download the GeoTools project bundle from source forge and set up our project to use
 them. Please follow these steps carefully as not all the GeoTools jars can be used at the same
 time.
@@ -568,7 +573,7 @@ time.
 
    However only one copy can be used at a time so we will need to remove the following jars from the Library Manager:
 
-   * gt-epsg-h2
+   * gt-epsg-hsql
    * gt-epsg-oracle
    * gt-epsg-postgresql
    * gt-epsg-wkt
@@ -579,9 +584,7 @@ time.
 
    * gt-arcsde
    * gt-arcsde-common
-   * gt-db2
    * gt-jdbc-db2
-   * gt-oracle-spatial
    * gt-jdbc-oracle
 
 9. Next we update our java build path to include the remaining jars. Choose Project > Properties from 

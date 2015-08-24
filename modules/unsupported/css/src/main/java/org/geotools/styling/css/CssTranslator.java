@@ -159,6 +159,11 @@ public class CssTranslator {
      */
     static final String SORT_BY = "sort-by";
 
+    /**
+     * The sort group for z-ordering
+     */
+    static final String SORT_BY_GROUP = "sort-by-group";
+
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
@@ -377,6 +382,7 @@ public class CssTranslator {
                 String composite = null;
                 Boolean compositeBase = null;
                 String sortBy = null;
+                String sortByGroup = null;
 
                 // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
@@ -450,6 +456,16 @@ public class CssTranslator {
                             }
                         }
 
+                        // check if we have any sort-by-group
+                        if (sortByGroup == null) {
+                            List<Value> values = derived
+                                    .getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
+                                    .get(SORT_BY_GROUP);
+                            if (values != null && !values.isEmpty()) {
+                                sortByGroup = values.get(0).toLiteral();
+                            }
+                        }
+
                     }
 
                     if (composite != null) {
@@ -459,7 +475,10 @@ public class CssTranslator {
                         ftsBuilder.option(COMPOSITE_BASE, "true");
                     }
                     if (sortBy != null) {
-                        ftsBuilder.option("sortBy", sortBy);
+                        ftsBuilder.option(FeatureTypeStyle.SORT_BY, sortBy);
+                    }
+                    if (sortByGroup != null) {
+                        ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
                     }
                 }
             }

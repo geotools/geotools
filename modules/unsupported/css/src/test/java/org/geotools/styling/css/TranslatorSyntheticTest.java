@@ -722,11 +722,26 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         // but in the feature type style
         org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
                 .featureTypeStyles().get(0);
-        assertEquals("cat A, name D", fts.getOptions().get("sortBy"));
+        assertEquals("cat A, name D",
+                fts.getOptions().get(org.geotools.styling.FeatureTypeStyle.SORT_BY));
     }
 
-
-    
-    
+    @Test
+    public void testSortByGroup() throws Exception {
+        String css = "* { stroke: red; sort-by: \"cat A, name D\"; sort-by-group: \"theGroup\"}";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(0, ls.getOptions().size());
+        // but in the feature type style
+        org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
+                .featureTypeStyles().get(0);
+        assertEquals("cat A, name D",
+                fts.getOptions().get((org.geotools.styling.FeatureTypeStyle.SORT_BY)));
+        assertEquals("theGroup",
+                fts.getOptions().get(org.geotools.styling.FeatureTypeStyle.SORT_BY_GROUP));
+    }
 
 }

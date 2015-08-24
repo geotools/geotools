@@ -70,6 +70,8 @@ public class ProjectionHandler {
 
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ProjectionHandler.class);
 
+    static final double EPS = 1e-6;
+
     ReferencedEnvelope renderingEnvelope;
     
     final ReferencedEnvelope validAreaBounds;

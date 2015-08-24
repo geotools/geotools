@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Set;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
@@ -29,6 +30,7 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
@@ -36,6 +38,9 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * @author Jody Garnett
@@ -54,6 +59,12 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         this.typeName = entry.getTypeName();
     }
     
+    @Override
+    protected void addHints(Set<Key> hints) {
+        // mark the features as detached, that is, the user can directly alter them
+        // without altering the state of the datastore
+        hints.add(Hints.FEATURE_DETACHED);
+    }
     
     public PropertyDataStore getDataStore() {
         return (PropertyDataStore) super.getDataStore();
@@ -139,7 +150,8 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         File file = new File( store.dir, typeName+".properties");
-        PropertyFeatureReader reader = new PropertyFeatureReader(store.getNamespaceURI(), file);
+        PropertyFeatureReader reader = new PropertyFeatureReader(store.getNamespaceURI(), file,
+                getGeometryFactory(query));
         
         Double tolerance = (Double)query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
         if (tolerance != null) {
@@ -149,6 +161,25 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         return reader;
     }
     
+    private GeometryFactory getGeometryFactory(Query query) {
+        Hints hints = query.getHints();
+        // grab a geometry factory... check for a special hint
+        GeometryFactory geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
+        if (geometryFactory == null) {
+            // look for a coordinate sequence factory
+            CoordinateSequenceFactory csFactory = (CoordinateSequenceFactory) hints
+                    .get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
+
+            if (csFactory != null) {
+                geometryFactory = new GeometryFactory(csFactory);
+            } else {
+                geometryFactory = new GeometryFactory();
+            }
+        }
+
+        return geometryFactory;
+    }
+
     /**
      * Make handleVisitor package visible allowing PropertyFeatureStore to delegate to
      * this implementation.

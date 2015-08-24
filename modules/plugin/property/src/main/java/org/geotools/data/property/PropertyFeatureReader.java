@@ -40,6 +40,7 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.ParseException;
 
 /**
@@ -90,9 +91,15 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
     String next;
     String[] text;
     String fid;
-    WKTReader2 wktReader = new WKTReader2();
+
+    WKTReader2 wktReader;
     
     public PropertyFeatureReader(String namespace, File file) throws IOException {
+        this(namespace, file, null);
+    }
+
+    public PropertyFeatureReader(String namespace, File file, GeometryFactory geometryFactory)
+            throws IOException {
         reader = new BufferedReader(new FileReader(file));
         
         // read until "_=";
@@ -114,6 +121,12 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         }
         line = null;
         next = null;
+
+        if (geometryFactory == null) {
+            wktReader = new WKTReader2();
+        } else {
+            wktReader = new WKTReader2(geometryFactory);
+        }
     }
     
     public SimpleFeatureType getFeatureType() {

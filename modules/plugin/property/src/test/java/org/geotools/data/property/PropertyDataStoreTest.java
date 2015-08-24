@@ -16,6 +16,9 @@
  */
 package org.geotools.data.property;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -54,6 +57,14 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 import junit.framework.TestCase;
 
@@ -452,6 +463,41 @@ public class PropertyDataStoreTest extends TestCase {
                 assertEquals( "jody \ngarnett", name );
             }
         },null);
+    }
+
+    public void testGeometryFactoryHint() throws Exception {
+        final GeometryFactory gf = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING),
+                1234);
+        SimpleFeatureSource road = store.getFeatureSource("road");
+        FeatureId fid1 = ff.featureId("fid1");
+        Filter select = ff.id(Collections.singleton(fid1));
+        Query q = new Query(road.getSchema().getTypeName(), select);
+        q.getHints().put(Hints.JTS_GEOMETRY_FACTORY, gf);
+        SimpleFeatureCollection featureCollection = road.getFeatures(q);
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                Geometry g = (Geometry) feature.getDefaultGeometry();
+                assertEquals(1234, g.getSRID());
+            }
+        }, null);
+    }
+
+    public void testCoordinateSequenceHint() throws Exception {
+        CoordinateSequenceFactory csFactory = new PackedCoordinateSequenceFactory();
+        SimpleFeatureSource road = store.getFeatureSource("road");
+        FeatureId fid1 = ff.featureId("fid1");
+        Filter select = ff.id(Collections.singleton(fid1));
+        Query q = new Query(road.getSchema().getTypeName(), select);
+        q.getHints().put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, csFactory);
+        SimpleFeatureCollection featureCollection = road.getFeatures(q);
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                Point p = (Point) feature.getDefaultGeometry();
+                assertThat(p.getCoordinateSequence(), instanceOf(PackedCoordinateSequence.class));
+            }
+        }, null);
     }
 
     /**

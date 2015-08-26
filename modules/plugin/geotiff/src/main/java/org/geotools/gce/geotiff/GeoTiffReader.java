@@ -34,9 +34,6 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -107,6 +104,7 @@ import org.geotools.util.NumberRange;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -115,6 +113,9 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
 
 
 /**
@@ -656,18 +657,21 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         ROI roi = null;
         // Using MaskOvrProvider
         if (hasMaskOvrProvider) {
-            Rectangle sourceRegion = coverageRaster.getBounds();
+            // Parameter definiton
+            GridEnvelope ogr = getOriginalGridRange();
+            Rectangle sourceRegion;
             if (readP.getSourceRegion() != null) {
                 sourceRegion = readP.getSourceRegion();
+            } else {
+                sourceRegion = new Rectangle(ogr.getSpan(0), ogr.getSpan(1));
             }
-            // Parameter definiton
-            MaskInfo info = maskOvrProvider.getMaskInfo(imageChoice, sourceRegion);
+
+            MaskInfo info = maskOvrProvider.getMaskInfo(imageChoice, sourceRegion, readP);
             if (info != null) {
                 // Reading Mask
                 RenderedOp roiRaster = readROIRaster(info.streamSpi,
                         DataUtilities.fileToURL(info.file), info.index, newHints,
                         info.readParameters);
-                // Creating ROI
                 roi = MaskOverviewProvider.scaleROI(roiRaster, coverageRaster.getBounds());
             }
         }

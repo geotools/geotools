@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,6 +73,8 @@ import org.opengis.referencing.operation.MathTransform;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTWriter;
+
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 
 public class ImageMosaicFootprintsTest {
 
@@ -596,6 +599,37 @@ public class ImageMosaicFootprintsTest {
     }
 
     @Test
+    public void testRasterFootprintSubmsampling() throws Exception {
+        // Raster
+        File testMosaicRaster = new File(TestData.file(this, "."), "footprintRasterSubsampling");
+        if (testMosaicRaster.exists()) {
+            FileUtils.deleteDirectory(testMosaicRaster);
+        }
+        // Reading Coverage with Raster footprint
+        GridCoverage2D coverage = readRasterFootprint("masked2", testMosaicRaster, true);
+        RenderedImageBrowser.showChain(coverage.getRenderedImage());
+
+        // check the ROI and the image are black in the same pixels
+        ROI roi = CoverageUtilities.getROIProperty(coverage);
+        Raster roiImage = roi.getAsImage().getData();
+        Raster image = coverage.getRenderedImage().getData();
+
+        int[] px = new int[3];
+        int[] rpx = new int[1];
+        for (int i = 0; i < image.getHeight(); i++) {
+            for (int j = 0; j < image.getWidth(); j++) {
+                image.getPixel(j, i, px);
+                roiImage.getPixel(j, i, rpx);
+                if (px[0] == 0 && px[1] == 0 && px[2] == 0) {
+                    assertEquals("Difference at " + i + "," + j, 0, rpx[0]);
+                } else {
+                    assertEquals("Difference at " + i + "," + j, 1, rpx[0]);
+                }
+            }
+        }
+    }
+
+    @Test
     public void testRasterFootprintInternal() throws Exception {
         // Raster
         File testMosaicRaster = new File(TestData.file(this, "."), "footprintRaster");
@@ -782,7 +816,7 @@ public class ImageMosaicFootprintsTest {
         jaiImageRead.setValue(false);
         params[1] = jaiImageRead;
 
-        // limit yourself to reading just a bit of it
+        // setup how much we are going to read
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
                 .createValue();
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());

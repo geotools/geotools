@@ -16,8 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -44,6 +42,8 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import com.vividsolutions.jts.geom.Geometry;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
 
 /**
  * {@link MultiLevelROI} implementation supporting Raster masking. Notice that actually it does not support Inset definition.
@@ -86,11 +86,7 @@ public class MultiLevelROIRaster implements MultiLevelROI {
     public ROI getTransformedROI(AffineTransform at, int imageIndex, Rectangle imgBounds,
             ImageReadParam params, ReadType readType) {
         // Getting MaskInfo
-        Rectangle sourceRegion = imgBounds;
-        if (params.getSourceRegion() != null) {
-            sourceRegion = params.getSourceRegion();
-        }
-        MaskInfo info = maskOvrProvider.getMaskInfo(imageIndex, sourceRegion);
+        MaskInfo info = maskOvrProvider.getMaskInfo(imageIndex, imgBounds, params);
         // Define which File must be used for reading mask info
         File inFile = info.file;
         // Defining imageIndex based on the imageIndex

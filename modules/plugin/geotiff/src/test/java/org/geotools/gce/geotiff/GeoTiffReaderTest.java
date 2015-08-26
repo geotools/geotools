@@ -17,14 +17,11 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,6 +70,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 
 /**
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
@@ -500,6 +501,59 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertEquals(results[0], 0);
         assertEquals(results[1], 0);
         assertEquals(results[2], 0);
+    }
+
+    /**
+     * Test that the reader sets a ROI property based on the input internal masks, and that the ROI
+     * is the expected one, taking into account the same subsampling factors during the read as the
+     * image
+     */
+    @Test
+    public void testMaskSubsampling() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class, "mask/masked2.tif");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        AbstractGridCoverage2DReader reader = format.getReader(file);
+
+        // prepare to read a sub.sampled image
+        GeneralParameterValue[] params = new GeneralParameterValue[1];
+        // Define a GridGeometry in order to reduce the output
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 4,
+                reader.getOriginalGridRange().getSpan(1) / 4);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+        params[0] = gg;
+
+        GridCoverage2D coverage = reader.read(params);
+        // Checking if ROI is present
+        checkCoverageROI(coverage);
+
+        // check the ROI and the image are black in the same pixels
+        ROI roi = CoverageUtilities.getROIProperty(coverage);
+        Raster roiImage = roi.getAsImage().getData();
+        Raster image = coverage.getRenderedImage().getData();
+
+        int[] px = new int[3];
+        int[] rpx = new int[1];
+        for (int i = 0; i < image.getHeight(); i++) {
+            for (int j = 0; j < image.getWidth(); j++) {
+                image.getPixel(j, i, px);
+                roiImage.getPixel(j, i, rpx);
+                if (px[0] == 0 && px[1] == 0 && px[2] == 0) {
+                    assertEquals("Difference at " + i + "," + j, 0, rpx[0]);
+                } else {
+                    assertEquals("Difference at " + i + "," + j, 1, rpx[0]);
+                }
+            }
+        }
+
     }
 
     /**

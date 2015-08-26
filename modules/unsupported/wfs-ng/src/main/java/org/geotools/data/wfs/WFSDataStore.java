@@ -19,6 +19,7 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -316,6 +317,10 @@ public class WFSDataStore extends ContentDataStore {
         Name name = new NameImpl(namespaceURI, localName);
         this.names.remove(name);
         configuredStoredQueries.remove(localName);
+    }
+    
+    public URL getCapabilitiesURL() {
+       return client.getCapabilitiesURL();
     }
 
 }

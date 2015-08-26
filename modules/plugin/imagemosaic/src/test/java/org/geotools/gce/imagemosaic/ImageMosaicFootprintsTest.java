@@ -74,8 +74,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTWriter;
 
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
-
 public class ImageMosaicFootprintsTest {
 
     private File testMosaic;
@@ -607,14 +605,13 @@ public class ImageMosaicFootprintsTest {
         }
         // Reading Coverage with Raster footprint
         GridCoverage2D coverage = readRasterFootprint("masked2", testMosaicRaster, true);
-        RenderedImageBrowser.showChain(coverage.getRenderedImage());
 
         // check the ROI and the image are black in the same pixels
         ROI roi = CoverageUtilities.getROIProperty(coverage);
         Raster roiImage = roi.getAsImage().getData();
         Raster image = coverage.getRenderedImage().getData();
 
-        int[] px = new int[3];
+        int[] px = new int[4];
         int[] rpx = new int[1];
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {

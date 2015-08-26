@@ -372,4 +372,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     public String getAxisOrderFilter(){
         return config.getAxisOrderFilter();
     }
+    
+    public URL getCapabilitiesURL() {
+        return serverURL;
+    }
 }

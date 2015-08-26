@@ -67,8 +67,8 @@ Example use::
 Configuration Flags
 ^^^^^^^^^^^^^^^^^^^
 
-By default, an optimization on spatial queries is applied, to avoid a bug with PostGIS query planner with big geometries and small bboxes.
+An optimization on spatial queries can be applied, to avoid a bug with PostGIS query planner with big geometries and small bboxes, setting a system property.
 
-This optimization can be disabled using a system-wide default from the command line::
+This optimization can be enabled using a system-wide default from the command line::
   
-  java -Dorg.geotools.data.postgis.largeGeometriesOptimize=false
+  java -Dorg.geotools.data.postgis.largeGeometriesOptimize=true

@@ -1,4 +1,4 @@
-// Test points for the Meteosat Second Generationimagery projection
+// Test points for the Meteosat Second Generation imagery projection
 //
 // (C) 2015, Open Source Geospatial Foundation (OSGeo)
 //
@@ -47,23 +47,23 @@ target crs = _MSG_
 // col, row
 // lon, lat
 
-source pt = (24.259015685448439, 3.9842388501098558)
-target pt = (1000, 2000)
-//print pts
-
-source pt = (80.5547692415917, -0.0946262451338)
-target pt = (45, 1853)
+source pt = (0,0)
+target pt = (1856, 1856)
 //print pts
 
 source pt = (4.0244517481909288,44.701975477556189)
 target pt = (1755, 3264)
-//print pts
+
+source pt = (27.328919391984773, 37.102357255774159)
+target pt = (1116, 3062)
+
+source pt = (24.259015685448439, 3.9842388501098558)
+target pt = (1000, 2000)
+
+source pt = (80.5547692415917, -0.0946262451338)
+target pt = (45, 1853)
 
 // Point outside validity area
 //source pt = (124.259015685448439, 3.9842388501098558)
 //target pt = ( 2140.50, 3062.5)
-//print pts
 
-source pt = (27.328919391984773, 37.102357255774159)
-target pt = (1116, 3062)
-//print pts

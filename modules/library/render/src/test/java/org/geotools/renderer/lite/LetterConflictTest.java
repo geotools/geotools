@@ -43,6 +43,9 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
  */
 public class LetterConflictTest extends TestCase {
 
+    private boolean SHOW_RESULT = Boolean.getBoolean("org.geotools.labelcache.showLetterConflictTestResult");
+    private boolean OUTPUT_IMAGE = Boolean.getBoolean("org.geotools.labelcache.outputLetterConflictTestResult");
+
     private static final long TIME = 5000;
     SimpleFeatureSource fs_line1;
     SimpleFeatureSource fs_line2;
@@ -97,14 +100,18 @@ public class LetterConflictTest extends TestCase {
         assertTrue("More labels in image2 than image1",
                 countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
 
-        // // Write to file
-        // File tmpFile = File.createTempFile("geotools",".png");
-        // ImageIO.write(image1, "png", tmpFile);
-        // tmpFile = File.createTempFile("geotools",".png");
-        // ImageIO.write(image2, "png", tmpFile);
-        // // Interactive visualization
-        // showImage("letterConflictEnabled false", TIME, image1);
-        // showImage("letterConflictEnabled true", TIME, image2);
+        if (OUTPUT_IMAGE) {
+            // Write to file
+            File tmpFile = File.createTempFile("geotools", ".png");
+            ImageIO.write(image1, "png", tmpFile);
+            tmpFile = File.createTempFile("geotools", ".png");
+            ImageIO.write(image2, "png", tmpFile);
+        }
+        if (SHOW_RESULT) {
+            // Interactive visualization
+            showImage("letterConflictEnabled false", TIME, image1);
+            showImage("letterConflictEnabled true", TIME, image2);
+        }
     }
 
     public void testLetterConflictEnabled2Lines() throws Exception {
@@ -126,14 +133,18 @@ public class LetterConflictTest extends TestCase {
         assertTrue("More labels in image2 than image1",
                 countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
 
-        // // Write to file
-        // File tmpFile = File.createTempFile("geotools",".png");
-        // ImageIO.write(image1, "png", tmpFile);
-        // tmpFile = File.createTempFile("geotools",".png");
-        // ImageIO.write(image2, "png", tmpFile);
-        // // Interactive visualization
-        // showImage("letterConflictEnabled false", TIME, image1);
-        // showImage("letterConflictEnabled true", TIME, image2);
+        if (OUTPUT_IMAGE) {
+            // Write to file
+            File tmpFile = File.createTempFile("geotools",".png");
+            ImageIO.write(image1, "png", tmpFile);
+            tmpFile = File.createTempFile("geotools",".png");
+            ImageIO.write(image2, "png", tmpFile);
+        }
+        if (SHOW_RESULT) {
+            // Interactive visualization
+            showImage("letterConflictEnabled false", TIME, image1);
+            showImage("letterConflictEnabled true", TIME, image2);
+        }
     }
 
     public void testLetterConflictEnabledCurvedLine() throws Exception {
@@ -152,17 +163,21 @@ public class LetterConflictTest extends TestCase {
         renderer = getNewRenderer(mc);
         final BufferedImage image2 = RendererBaseTest.renderImage(renderer, bounds1, null);
 
-        //assertTrue("More labels in image2 than image1",
-        //        countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
+        assertTrue("More labels in image2 than image1",
+                countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
 
-        // // Write to file
-        // File tmpFile = File.createTempFile("geotools",".png");
-        // ImageIO.write(image1, "png", tmpFile);
-        // tmpFile = File.createTempFile("geotools",".png");
-        // ImageIO.write(image2, "png", tmpFile);
-        // // Interactive visualization
-        // showImage("letterConflictEnabled false", TIME, image1);
-        // showImage("letterConflictEnabled true", TIME, image2);
+        if (OUTPUT_IMAGE) {
+            // Write to file
+            File tmpFile = File.createTempFile("geotools", ".png");
+            ImageIO.write(image1, "png", tmpFile);
+            tmpFile = File.createTempFile("geotools", ".png");
+            ImageIO.write(image2, "png", tmpFile);
+        }
+        if (SHOW_RESULT) {
+            // Interactive visualization
+            showImage("letterConflictEnabled false", TIME, image1);
+            showImage("letterConflictEnabled true", TIME, image2);
+        }
     }
 
     public void testLetterConflictEnabledPerf() throws Exception {
@@ -202,17 +217,21 @@ public class LetterConflictTest extends TestCase {
             }
             System.out.println("time true " + ta / 10000000);
 
-            //assertTrue("More labels in image2 than image1",
-            //        countDarkPixels(image2) > countDarkPixels(image1));
+            assertTrue("More labels in image2 than image1",
+                    countDarkPixels(image2) > countDarkPixels(image1));
 
-            // // Write to file
-            // File tmpFile = File.createTempFile("geotools",".png");
-            // ImageIO.write(image1, "png", tmpFile);
-            // tmpFile = File.createTempFile("geotools",".png");
-            // ImageIO.write(image2, "png", tmpFile);
-            // // Interactive visualization
-            // showImage("letterConflictEnabled false", TIME, image1);
-            // showImage("letterConflictEnabled true", TIME, image2);
+            if (OUTPUT_IMAGE) {
+                // Write to file
+                File tmpFile = File.createTempFile("geotools", ".png");
+                ImageIO.write(image1, "png", tmpFile);
+                tmpFile = File.createTempFile("geotools", ".png");
+                ImageIO.write(image2, "png", tmpFile);
+            }
+            if (SHOW_RESULT) {
+                // Interactive visualization
+                showImage("letterConflictEnabled false", TIME, image1);
+                showImage("letterConflictEnabled true", TIME, image2);
+            }
         }
     }
 

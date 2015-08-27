@@ -142,7 +142,8 @@ public class ImageAssert {
                 } else {
                     throw new AssertionError("Images are visibly different, found "
                             + comparator.getMismatchCount()
-                            + " different pixels, against a threshold of " + threshold);
+                            + " different pixels, against a threshold of " + threshold
+                            + "\nYou can add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
                 }
             } else {
                 LOGGER.fine("Images are not visibly different, found "

@@ -4,7 +4,7 @@ cache:
     - "$HOME/.m2"
 language: java
 script:
-  - mvn -B -T2 -fae -Djava.awt.headless=true -Dall clean install
+  - mvn -B -fae -Djava.awt.headless=true -Dall clean install
 notifications:
   email: false
   on_failure: never

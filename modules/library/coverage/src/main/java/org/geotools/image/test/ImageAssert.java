@@ -145,7 +145,7 @@ public class ImageAssert {
                             + " different pixels, against a threshold of " + threshold);
                 }
             } else {
-                LOGGER.info("Images are not visibly different, found "
+                LOGGER.fine("Images are not visibly different, found "
                         + comparator.getMismatchCount()
                         + " different pixels, against a threshold of " + threshold);
             }

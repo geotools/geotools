@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -60,15 +60,6 @@ public class DpiRescaleStyleVisitor extends RescaleStyleVisitor {
         // to deal with local uom (px, m, ft suffixes)
         Measure v = new Measure(expr, defaultUnit);
         return RescalingMode.Pixels.rescaleToExpression(scale, v);
-    }
-    
-    @Override
-    float[] rescale(float[] values) {
-        if (defaultUnit == null || defaultUnit == NonSI.PIXEL) {
-            return super.rescale(values);
-        } else {
-            return values;
-        }        
     }
     
     @Override    

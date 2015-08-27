@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -375,22 +375,38 @@ public class SLDTransformer extends TransformerBase {
             encodeCssParam("stroke-width", stroke.getWidth(), 1.0);
             encodeCssParam("stroke-dashoffset", stroke.getDashOffset(), 0.0);
 
-            float[] dash = stroke.getDashArray();
+            encodeStrokeDasharray(stroke.dashArray());
 
-            if (dash != null) {
-                StringBuffer sb = new StringBuffer();
-
-                for (int i = 0; i < dash.length; i++) {
-                    sb.append(dash[i]);
-                    if (i < dash.length - 1) {
-                        sb.append(" ");
-                    }
-                }
-
-                encodeCssParam("stroke-dasharray", ff.literal(sb.toString()));
-
-            }
             end("Stroke");
+        }
+
+        private void encodeStrokeDasharray(List<Expression> expressions) {
+            if (expressions == null || expressions.isEmpty()) return;
+            boolean isLiteral = true;
+            for (Expression expression : expressions) {
+                if(!(expression instanceof Literal)) isLiteral = false;
+            }
+            if(isLiteral) encodeLiteralStrokeDasharray(expressions);
+            else encodeMixedStrokeDasharray(expressions);
+        }
+
+        private void encodeLiteralStrokeDasharray(List<Expression> expressions) {
+           StringBuilder literalDash = new StringBuilder();
+            for (Expression expression : expressions) {
+                literalDash.append(((Literal) expression).getValue()).append(" ");
+            }
+            literalDash.deleteCharAt(literalDash.length() - 1);
+            encodeCssParam("stroke-dasharray", ff.literal(literalDash.toString()));
+        }
+
+        private void encodeMixedStrokeDasharray(List<Expression> expressions) {
+            AttributesImpl attributes = new AttributesImpl();
+            attributes.addAttribute("", "name", "name", "", "stroke-dasharray");
+            start("CssParameter", attributes);
+            for (Expression expression : expressions) {
+                filterTranslator.encode(expression);
+            }
+            end("CssParameter");
         }
 
         public void visit(LinePlacement lp) {

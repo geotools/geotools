@@ -1426,6 +1426,128 @@ public class SLDTransformerTest {
         validateWellKnownNameWithExpressionStyle(transformedStyleXml);
     }
 
+    /**
+     * Test the transformation of a stroke-dasharray element that contains expressions.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testStrokeDasharrayWithExpressions() throws Exception {
+
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "					 <LineSymbolizer>"
+                + "                     <Stroke>"
+                + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
+                + "                         <CssParameter name=\"stroke-dasharray\">"
+                + "                             <PropertyName>stroke1</PropertyName>"
+                + "                             1.0"
+                + "                             <PropertyName>stroke2</PropertyName>"
+                + "                             <![CDATA[2.0]]>"
+                + "                         </CssParameter>"
+                + "                     </Stroke>"
+                + "                 </LineSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        styleTransform.setIndentation(2);
+        StringWriter writerWriter = new StringWriter();
+        styleTransform.transform(parseStyles(originalStyleXml), writerWriter);
+        String transformedStyleXml = writerWriter.toString();
+
+        Style style = parseStyles(transformedStyleXml)[0];
+
+        assertNotNull("style is null", style);
+        assertNotNull("feature type styles are null", style.featureTypeStyles());
+        assertTrue("more or less that one feature type style is available", style.featureTypeStyles().size() == 1);
+        assertNotNull("rules are null", style.featureTypeStyles().get(0).rules());
+        assertTrue("more or less that one rule is available", style.featureTypeStyles().get(0).rules().size() == 1);
+
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        assertNotNull("rule is null", rule);
+
+        List<? extends Symbolizer> symbolizers = rule.symbolizers();
+        assertNotNull("symbolizers are null", symbolizers);
+        assertTrue("more or less that one symbolizer is available", symbolizers.size() == 1);
+
+        LineSymbolizer lineSymbolizer = (LineSymbolizer) symbolizers.get(0);
+        assertNotNull("line symbolizer is null", lineSymbolizer);
+
+        Stroke stroke = lineSymbolizer.getStroke();
+        assertNotNull("stroke is null", stroke);
+        assertNotNull("stroke dasharray is null", stroke.dashArray());
+
+        List<Expression> expressions = stroke.dashArray();
+        assertTrue("more or less expressions available", expressions.size() == 4);
+        assertTrue("not expected expression", expressions.get(0).equals(ff.property("stroke1")));
+        assertTrue("not expected expression", expressions.get(1).equals(ff.literal(1.0)));
+        assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
+        assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
+    }
+
+    /**
+     * Test the transformation of a stroke-dasharray element that contains only literal expressions.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testStrokeDasharrayWithOnlyLiteralExpressions() throws Exception {
+
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "                 <LineSymbolizer>"
+                + "                     <Stroke>"
+                + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
+                + "                         <CssParameter name=\"stroke-dasharray\">"
+                + "                             10.0 5.0 20.0 15.0"
+                + "                         </CssParameter>"
+                + "                     </Stroke>"
+                + "                 </LineSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        styleTransform.setIndentation(2);
+        StringWriter writerWriter = new StringWriter();
+        styleTransform.transform(parseStyles(originalStyleXml), writerWriter);
+        String transformedStyleXml = writerWriter.toString();
+
+        assertTrue(transformedStyleXml.contains("<sld:CssParameter name=\"stroke-dasharray\">10.0 5.0 20.0 15.0</sld:CssParameter>"));
+    }
+
+    private Style[] parseStyles(String styleXml) {
+        StringReader stringReader = new StringReader(styleXml);
+        SLDParser sldParser = new SLDParser(sf, stringReader);
+        return sldParser.readXML();
+    }
+
     @Test
     public void testAnchorPointInGraphic() throws Exception {
         StyleBuilder sb = new StyleBuilder();

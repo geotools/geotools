@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.visitor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
@@ -94,6 +96,20 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
+     * Rescale a list of expressions, can handle null.
+     */
+    protected List<Expression> rescale(List<Expression> expressions, Unit<Length> uom) {
+        if(expressions == null || expressions.isEmpty()) {
+            return expressions;
+        }
+        List<Expression> rescaled = new ArrayList<>(expressions.size());
+        for(Expression expression: expressions) {
+            rescaled.add(rescale(expression, uom));
+        }
+        return rescaled;
+    }
+
+    /**
      * Used to rescale the provided unscaled value.
      * 
      * @param unscaled the unscaled value.
@@ -111,28 +127,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
-     * Used to rescale the provided dash array.
-     * 
-     * @param dashArray the unscaled dash array. If null, the method returns null.
-     * @param mapScale the mapScale in pixels per meter.
-     * @param uom the unit of measure that will be used to scale.
-     * @return the rescaled dash array
-     */
-    protected float[] rescale(float[] dashArray, Unit<Length> unitOfMeasure) {
-        if (dashArray == null)
-            return null;
-        if (unitOfMeasure == null || unitOfMeasure.equals(NonSI.PIXEL))
-            return dashArray;
-
-        float[] rescaledDashArray = new float[dashArray.length];
-
-        for (int i = 0; i < rescaledDashArray.length; i++) {
-            rescaledDashArray[i] = Float.parseFloat(rescale(String.valueOf(dashArray[i]), unitOfMeasure));
-        }
-        return rescaledDashArray;
-    }
-
-    /**
      * Used to rescale the provided stroke.
      * 
      * @param stroke the unscaled stroke, which will be modified in-place.
@@ -142,7 +136,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
-            stroke.setDashArray(rescale(stroke.getDashArray(), uom));
+            stroke.setDashArray(rescale(stroke.dashArray(), uom));
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);

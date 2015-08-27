@@ -53,7 +53,7 @@ final class ProjectiveTransform2D extends ProjectiveTransform implements MathTra
      * Creates an inverse transform using the specified matrix.
      */
     @Override
-    MathTransform2D createInverse(final Matrix matrix) {
+    ProjectiveTransform2D createInverse(final Matrix matrix) {
         return new ProjectiveTransform2D(matrix);
     }
 }

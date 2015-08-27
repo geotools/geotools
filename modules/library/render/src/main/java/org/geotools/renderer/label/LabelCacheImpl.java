@@ -25,7 +25,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -508,9 +507,9 @@ public final class LabelCacheImpl implements LabelCache {
             }
         }
         //Output for line labels
-        LOGGER.log(Level.INFO, "TOTAL LINE LABELS : {0}", items.size());
-        LOGGER.log(Level.INFO, "PAINTED LINE LABELS : {0}", paintedLineLabels);
-        LOGGER.log(Level.INFO, "REMAINING LINE LABELS : {0}", nonPaintedLineLabels);
+        LOGGER.log(Level.FINE, "TOTAL LINE LABELS : {0}", items.size());
+        LOGGER.log(Level.FINE, "PAINTED LINE LABELS : {0}", paintedLineLabels);
+        LOGGER.log(Level.FINE, "REMAINING LINE LABELS : {0}", nonPaintedLineLabels);
     }
 
 
@@ -592,86 +591,6 @@ public final class LabelCacheImpl implements LabelCache {
     }
 
 
-    /**
-     * Compute the affine transform for each glyph along a curved lines.
-     * Does not consider letter orientation (only letter position).
-     * (taken from LabelPainter#paintCurvedLabel).
-     * @param painter the painter in charge of painting the glyphs
-     * @param cursor the LineString cursor
-     * @return a list of AffinTransforms (one AffineTransform per glyph)
-     */
-    private List<AffineTransform> getGlyphTransforms(LabelPainter painter, LineStringCursor cursor){
-        List<AffineTransform> transforms = new ArrayList<>();
-
-        // for labels following lines, one can only have one line of text
-        LineInfo lineInfo = painter.lines.get(0);
-
-        // first off, check if we are walking the line so that the label is
-        // looking up, if not, reverse the line
-        if (!painter.isLabelUpwards(cursor) &&
-                painter.getLabel().isForceLeftToRightEnabled()) {
-            LineStringCursor reverse = cursor.reverse();
-            reverse.moveTo(cursor.getLineStringLength() - cursor.getCurrentOrdinate());
-            cursor = reverse;
-        }
-
-        // find out the true centering position
-        double anchorY = painter.getLinePlacementYAnchor();
-
-        // init, move to the starting position
-        double mid = cursor.getCurrentOrdinate();
-        Coordinate c = new Coordinate();
-        c = cursor.getCurrentPosition(c);
-
-        double startOrdinate = mid - painter.getStraightLabelWidth() / 2;
-        if (startOrdinate < 0)
-            startOrdinate = 0;
-        cursor.moveTo(startOrdinate);
-
-        for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
-            GlyphVector gv = lineComponent.getGlyphVector();
-            float nextAdvance = gv.getGlyphMetrics(0).getAdvance() * 0.5f;
-            for (int i = 0; i < gv.getNumGlyphs(); i++) {
-                Point2D p = gv.getGlyphPosition(i);
-                float advance = nextAdvance;
-                nextAdvance = i < gv.getNumGlyphs() - 1
-                        ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f
-                        : 0;
-                c = cursor.getCurrentPosition(c);
-                AffineTransform t = new AffineTransform();
-                t.setToTranslation(c.x, c.y);
-                t.rotate(cursor.getCurrentAngle());
-                t.translate(-p.getX() - advance, -p.getY() + painter.getLineHeight() * anchorY);
-                transforms.add(t);
-
-                cursor.moveTo(cursor.getCurrentOrdinate() + advance + nextAdvance);
-            }
-        }
-        return transforms;
-    }
-
-    /**
-     * Compute the affine transform for each glyph along a straight line.
-     * Does not consider letter orientation (only letter position).
-     * (taken from LabelPainter#paintCurvedLabel).
-     * @param painter the painter in charge of painting the glyphs
-     * @param tx global label AffineTranform
-     * @return a list of AffinTransforms (one AffineTransform per glyph)
-     */
-    private List<AffineTransform> getGlyphTransforms(LabelPainter painter, AffineTransform tx){
-        List<AffineTransform> transforms = new ArrayList<>();
-        for (LineInfo lineInfo : painter.lines) {
-            for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
-                AffineTransform componentTx = new AffineTransform(tx);
-                componentTx.translate(lineComponent.getX(), lineInfo.getY());
-                for (int i = 0; i < lineComponent.getGlyphVector().getNumGlyphs(); i++) {
-                    transforms.add(componentTx);
-                }
-            }
-        }
-        return transforms;
-    }
-
     //Modified version of paintLineLabels
     //We compute the Bounding box for each letters instead of the whole label
     //then we check each letters for collisions
@@ -697,7 +616,6 @@ public final class LabelCacheImpl implements LabelCache {
         int space = labelItem.getSpaceAround();
         int haloRadius = Math.round(labelItem.getTextStyle().getHaloFill() != null ? labelItem
                 .getTextStyle().getHaloRadius() : 0);
-        int extraSpace = space + haloRadius;
         // repetition distance, if any
         //We extend this distance for a better placement of long labels
         int labelDistance = (int) (labelItem.getRepeat() > 0 ? labelItem.getRepeat() + (textBounds.getWidth()*2) : 0);
@@ -797,39 +715,22 @@ public final class LabelCacheImpl implements LabelCache {
                         setupLineTransform(painter, cursor, centroid, tx, false);
                     }
 
-                    List<AffineTransform> transforms = null;
+                    GlyphVectorProcessor glyphVectorProcessor = null;
+                    //List<AffineTransform> transforms = null;
                     //For curved labels, we want the glyph's bounding box
                     //to follow the line
                     if (curved){
                         LineStringCursor oldCursor = new LineStringCursor(cursor);
-                        transforms = getGlyphTransforms(painter, oldCursor);
+                        glyphVectorProcessor = new GlyphVectorProcessor.Curved(painter, oldCursor);
                     } else {
-                        transforms = getGlyphTransforms(painter, tx);
+                        glyphVectorProcessor = new GlyphVectorProcessor.Straight(painter, tx);
                     }
 
                     //We check each letters for collision
                     int glyphCount = 0;
                     boolean collision = false;
-                    for (LineInfo lineInfo : painter.lines) {
-                        for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
-                            GlyphVector glyphVector = lineComponent.getGlyphVector();
-                            for (int g = 0 ; g < glyphVector.getNumGlyphs() && !collision ; g++, glyphCount++) {
-                                labelEnvelope = transforms.get(glyphCount)
-                                        .createTransformedShape(glyphVector.getGlyphLogicalBounds(g)).getBounds2D();
-                                // try to paint the label, the condition under which this
-                                // happens are complex
-                                // white space character does not conflict with other labels
-                                if (Character.isWhitespace(lineComponent.getText().charAt(glyphVector.getGlyphCharIndex(g))))
-                                    continue;
-                                else if ((displayArea.contains(labelEnvelope) || labelItem.isPartialsEnabled()) &&
-                                        !(labelItem.isConflictResolutionEnabled() && paintedBounds.labelsWithinDistance(labelEnvelope, extraSpace)) &&
-                                        !groupLabels.labelsWithinDistance(labelEnvelope, minDistance))
-                                    continue;
-                                else
-                                    collision = true;
-                            }
-                        }
-                    }
+                    collision = glyphVectorProcessor.process(new GlyphProcessor.ConflictDetector(painter,
+                            displayArea, paintedBounds, groupLabels), true);
 
                     //If none of the glyphs intersects a bounding box,
                     //we paint the label
@@ -868,57 +769,17 @@ public final class LabelCacheImpl implements LabelCache {
                     if (painted) {
                         labelCount++;
                         //Add each glyph's bounding box to the index
-                        glyphCount = 0;
-                        for (LineInfo lineInfo : painter.lines) {
-                            for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
-                                GlyphVector glyphVector = lineComponent.getGlyphVector();
-                                for (int g = 0; g < glyphVector.getNumGlyphs(); g++, glyphCount++) {
-                                    // do not insert a constraint in the index for white spaces
-                                    if (Character.isWhitespace(lineComponent.getText().charAt(glyphVector.getGlyphCharIndex(g))))
-                                        continue;
-                                    labelEnvelope = transforms.get(glyphCount)
-                                            .createTransformedShape(glyphVector.getGlyphOutline(g))
-                                            .getBounds2D();
-                                    groupLabels.addLabel(labelItem, labelEnvelope);
-                                }
-                            }
-                        }
+                        glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, groupLabels));
 
                         if(labelItem.isConflictResolutionEnabled()) {
                             if(DEBUG_CACHE_BOUNDS) {
                                 painter.graphics.setStroke(new BasicStroke());
                                 painter.graphics.setColor(Color.RED);
-                                glyphCount = 0;
-                                for (LineInfo lineInfo : painter.lines) {
-                                    for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
-                                        GlyphVector glyphVector = lineComponent.getGlyphVector();
-                                        for (int g = 0; g < glyphVector.getNumGlyphs(); g++, glyphCount++) {
-                                            if (Character.isWhitespace(lineComponent.getText().charAt(glyphVector.getGlyphCharIndex(g))))
-                                                continue;
-                                            painter.graphics.draw(transforms.get(glyphCount)
-                                                    .createTransformedShape(glyphVector.getGlyphOutline(g))
-                                                    .getBounds2D());
-                                        }
-                                    }
-                                }
+                                glyphVectorProcessor.process(new GlyphProcessor.BoundsPainter(painter));
                             }
 
                             //Add each glyph's bounding box to the index
-                            glyphCount = 0;
-                            for (LineInfo lineInfo : painter.lines) {
-                                for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
-                                    GlyphVector glyphVector = lineComponent.getGlyphVector();
-                                    for (int g = 0; g < glyphVector.getNumGlyphs(); g++, glyphCount++) {
-                                        // do not insert a constraint in the index for white spaces
-                                        if (Character.isWhitespace(lineComponent.getText().charAt(glyphVector.getGlyphCharIndex(g))))
-                                            continue;
-                                        labelEnvelope = transforms.get(glyphCount)
-                                                .createTransformedShape(glyphVector.getGlyphOutline(g))
-                                                .getBounds2D();
-                                        paintedBounds.addLabel(labelItem, labelEnvelope);
-                                    }
-                                }
-                            }
+                            glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, paintedBounds));
                         }
                     } else {
                         // generate a sequence like s, -2s, 3s, -4s,...

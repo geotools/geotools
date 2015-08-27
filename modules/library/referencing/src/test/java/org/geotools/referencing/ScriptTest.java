@@ -279,6 +279,15 @@ public final class ScriptTest {
     }    
 
     /**
+     * Run "MeteosatSG.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testMeteosatSG() throws Exception {
+        runScript("scripts/MeteosatSG.txt");
+    }    
+
+    /**
      * Run "WorldVanDerGrintenI.txt"
      *
      * @throws Exception If a test failed.

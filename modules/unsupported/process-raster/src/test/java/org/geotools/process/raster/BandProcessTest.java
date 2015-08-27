@@ -18,6 +18,7 @@
 package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
+import it.geosolutions.jaiext.JAIExt;
 
 import java.awt.Rectangle;
 import java.awt.geom.NoninvertibleTransformException;
@@ -81,6 +82,8 @@ public class BandProcessTest {
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException,
             NoninvertibleTransformException {
+        JAIExt.initJAIEXT(true, true);
+
         // Disable medialib
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
         // Disable bandmerge and mosaic native operation
@@ -117,6 +120,7 @@ public class BandProcessTest {
         // Enable bandmerge and mosaic native operation
         Registry.setNativeAccelerationAllowed("BandMerge", true);
         Registry.setNativeAccelerationAllowed("Mosaic", true);
+        JAIExt.initJAIEXT(false, true);
     }
 
     // Ensure that the merging and selecting two equal images returns the same images

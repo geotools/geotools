@@ -1252,4 +1252,19 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedOp op = (RenderedOp) ri2;
         assertEquals(gray, op.getSourceObject(0));
     }
+
+    @Test
+    public void testAddBands() {
+        ImageWorker iw = new ImageWorker(gray).retainBands(1);
+        RenderedImage input = iw.getRenderedImage();
+        RenderedImage image = iw.addBands(new RenderedImage[]{input, input, input, input}, false, null).getRenderedImage();
+        assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
+    }
+
+    @Test
+    public void testBandMerge() {
+        ImageWorker iw = new ImageWorker(gray).retainBands(1);
+        RenderedImage image = iw.bandMerge(4).getRenderedImage();
+        assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
+    }
 }

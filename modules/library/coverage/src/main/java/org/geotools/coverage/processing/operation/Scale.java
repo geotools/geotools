@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.scale.ScaleDescriptor;
-import it.geosolutions.jaiext.translate.TranslateDescriptor;
-
 import java.awt.RenderingHints;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
@@ -33,6 +30,7 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.PropertyGenerator;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
@@ -57,7 +55,6 @@ import org.opengis.util.InternationalString;
  * @see javax.media.jai.operator.ScaleDescriptor
  */
 public class Scale extends BaseScaleOperationJAI {
-
 
 	/**
 	 * Serial number for cross-version compatibility.
@@ -131,7 +128,7 @@ public class Scale extends BaseScaleOperationJAI {
 
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
-        handleROINoDataInternal(parameters, source, "Scale", 5, 7);
+        handleROINoDataInternal(parameters, source, SCALE, 5, 7);
     }
 
     protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
@@ -144,10 +141,10 @@ public class Scale extends BaseScaleOperationJAI {
             properties.putAll(props);
         }
 
-        // Setting NoData property if needed
-        Object bkgProp = parameters.parameters.getObjectParameter(8);
         if (parameters.parameters.getNumParameters() > 5
                 && parameters.parameters.getObjectParameter(8) != null) {
+            // Setting NoData property if needed
+            Object bkgProp = parameters.parameters.getObjectParameter(8);
             if (bkgProp != null && bkgProp instanceof double[]) {
                 double[] background = (double[]) bkgProp;
                 CoverageUtilities.setNoDataProperty(properties, background);
@@ -158,13 +155,11 @@ public class Scale extends BaseScaleOperationJAI {
         if (data instanceof RenderedOp) {
             String operationName = ((RenderedOp) data).getOperationName();
             PropertyGenerator propertyGenerator = null;
-            if (operationName.equalsIgnoreCase("Scale")) {
-                propertyGenerator = new ScaleDescriptor().getPropertyGenerators()[0];
-            } else if (operationName.equalsIgnoreCase("Translate")) {
-                propertyGenerator = new TranslateDescriptor().getPropertyGenerators()[0];
+            if (operationName.equalsIgnoreCase(SCALE) || operationName.equalsIgnoreCase(TRANSLATE)) {
+                propertyGenerator = getOperationDescriptor(operationName).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
             }
             if (propertyGenerator != null) {
-                Object roiProp = propertyGenerator.getProperty("roi", data);
+                Object roiProp = propertyGenerator.getProperty(ROI, data);
                 if (roiProp != null && roiProp instanceof ROI) {
                     CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
                 }

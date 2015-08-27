@@ -17,6 +17,11 @@
  */
 package org.geotools.gce.geotiff;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -71,10 +76,6 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-
 /**
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  * 
@@ -92,12 +93,14 @@ public class GeoTiffReaderTest extends org.junit.Assert {
 	public void saveGlobals() {
 	    oldOverrideInnerCRS = GeoTiffReader.OVERRIDE_INNER_CRS;
 	    GeoTiffReader.OVERRIDE_INNER_CRS = true;
+	    JAIExt.initJAIEXT(true, true);
 	}
 	
 	@After
 	public void cleanupGlobals() {
         System.clearProperty(GeoTiffReader.OVERRIDE_CRS_SWITCH);
-        GeoTiffReader.OVERRIDE_INNER_CRS = oldOverrideInnerCRS; 
+        GeoTiffReader.OVERRIDE_INNER_CRS = oldOverrideInnerCRS;
+        JAIExt.initJAIEXT(false, true);
 	}
 	
 	/**

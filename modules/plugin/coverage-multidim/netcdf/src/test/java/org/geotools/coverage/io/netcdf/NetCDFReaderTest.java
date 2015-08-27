@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 
 import java.awt.Dimension;
@@ -54,7 +55,9 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -74,6 +77,16 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class NetCDFReaderTest extends Assert {
+
+    @Before
+    public void setup() {
+        JAIExt.initJAIEXT(true, true);
+    }
+
+    @After
+    public void cleanup() {
+        JAIExt.initJAIEXT(false, true);
+    }
 
     private static final double DELTA = 1E-6;
 

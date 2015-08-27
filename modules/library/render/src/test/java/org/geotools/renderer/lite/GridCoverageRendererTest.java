@@ -818,7 +818,7 @@ public class GridCoverageRendererTest  {
         // Check the image
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/flippedAffine.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 2);
     }
 
     @Test
@@ -839,7 +839,7 @@ public class GridCoverageRendererTest  {
         // RenderedImageBrowser.showChain(image);
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/world_0_360.png");
-        ImageAssert.assertEquals(reference, image, 0);
+        ImageAssert.assertEquals(reference, image, 10);
     }
 
 }

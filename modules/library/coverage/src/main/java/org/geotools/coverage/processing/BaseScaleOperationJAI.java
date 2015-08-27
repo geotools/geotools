@@ -62,6 +62,12 @@ import org.opengis.util.InternationalString;
  */
 public abstract class BaseScaleOperationJAI extends OperationJAI {
 
+    public static final String AFFINE = "Affine";
+    public static final String SCALE = "Scale";
+    public static final String TRANSLATE = "Translate";
+    public static final String WARP = "Warp";
+    public static final String ROI = "roi";
+
 	/**
 	 * Serial number for interoperability with different versions.
 	 */

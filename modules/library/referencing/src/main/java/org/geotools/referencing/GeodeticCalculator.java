@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -13,6 +13,11 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *
+ *    Portions of this file is adapted from Fortran code provided by NOAA.
+ *    Programmed for CDC-6600 by LCDR L.Pfeifer NGS ROCKVILLE MD 18FEB75
+ *    Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
+ *    Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/
  */
 package org.geotools.referencing;
 

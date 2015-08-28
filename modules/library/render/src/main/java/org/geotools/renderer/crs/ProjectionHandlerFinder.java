@@ -16,12 +16,16 @@
  */
 package org.geotools.renderer.crs;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.factory.FactoryCreator;
+import org.geotools.factory.FactoryRegistry;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.resources.LazySet;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -32,13 +36,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Andrea Aime - OpenGeo
  *
- *
  * @source $URL$
  */
 public class ProjectionHandlerFinder {
 
-    static List<ProjectionHandlerFactory> factories = new ArrayList<ProjectionHandlerFactory>();
-    
+    private static FactoryRegistry registry;
+
     static final Logger LOGGER = Logging.getLogger(ProjectionHandlerFinder.class);
     
     public static final String WRAP_LIMIT_KEY = "org.geotools.render.wrapLimit";
@@ -46,22 +49,22 @@ public class ProjectionHandlerFinder {
     static int WRAP_LIMIT;
 
     static {
-        factories.add(new GeographicHandlerFactory());
-        factories.add(new MercatorHandlerFactory());
-        factories.add(new TransverseMercatorHandlerFactory());
-        factories.add(new PolarStereographicHandlerFactory());
-        factories.add(new LambertAzimuthalEqualAreaHandlerFactory());
-        factories.add(new ConicHandlerFactory());
-        factories.add(new WorldVanDerGrintenIHandlerFactory());
-        
+        if (registry == null) {
+            registry = new FactoryCreator(
+                    Arrays.asList(new Class<?>[] { ProjectionHandlerFactory.class }));
+        }
+
         String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
         int limit = 10;
         try {
-            if(wrapLimit != null) {
+            if (wrapLimit != null) {
                 limit = Integer.valueOf(wrapLimit);
             }
-        } catch(NumberFormatException e) {
-            LOGGER.log(Level.SEVERE, WRAP_LIMIT_KEY + " has invalid value, it should be an integer number but it was: " + wrapLimit);
+        } catch (NumberFormatException e) {
+            LOGGER.log(Level.SEVERE,
+                    WRAP_LIMIT_KEY
+                            + " has invalid value, it should be an integer number but it was: "
+                            + wrapLimit);
         }
         WRAP_LIMIT = limit;
     }
@@ -75,6 +78,12 @@ public class ProjectionHandlerFinder {
     public void setWrapLimit(int wrapLimit) {
         ProjectionHandlerFinder.WRAP_LIMIT = wrapLimit;
     }
+    
+    private static LazySet<ProjectionHandlerFactory> getProjectionHandlerFactories() {
+        Hints hints = GeoTools.getDefaultHints();
+        return new LazySet<ProjectionHandlerFactory>(
+                registry.getServiceProviders(ProjectionHandlerFactory.class, null, hints));
+    }
 
     /**
      * Returns a projection handler for the specified rendering area, or null if not found
@@ -86,7 +95,7 @@ public class ProjectionHandlerFinder {
         if (renderingArea.getCoordinateReferenceSystem() == null)
             return null;
         
-        for (ProjectionHandlerFactory factory : factories) {
+        for (ProjectionHandlerFactory factory : getProjectionHandlerFactories()) {
             ProjectionHandler handler = factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
             if (handler != null)
                 return handler;

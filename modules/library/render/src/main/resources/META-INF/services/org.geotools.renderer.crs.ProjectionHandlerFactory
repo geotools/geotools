@@ -1,0 +1,7 @@
+org.geotools.renderer.crs.GeographicHandlerFactory
+org.geotools.renderer.crs.MercatorHandlerFactory
+org.geotools.renderer.crs.TransverseMercatorHandlerFactory
+org.geotools.renderer.crs.PolarStereographicHandlerFactory
+org.geotools.renderer.crs.LambertAzimuthalEqualAreaHandlerFactory
+org.geotools.renderer.crs.ConicHandlerFactory
+org.geotools.renderer.crs.WorldVanDerGrintenIHandlerFactory

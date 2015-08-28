@@ -527,12 +527,12 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * Check if this bounding box intersects the provided bounds.
      */    
     @Override
-    public Envelope intersection(Envelope env) {
+    public ReferencedEnvelope intersection(Envelope env) {
         if( env instanceof BoundingBox ){
             BoundingBox bbox = (BoundingBox) env;
             ensureCompatibleReferenceSystem( bbox );
         }
-        return super.intersection(env);
+        return new ReferencedEnvelope(super.intersection(env), this.getCoordinateReferenceSystem());
     }    
     /**
      * Include the provided bounding box, expanding as necessary.

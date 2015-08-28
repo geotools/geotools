@@ -882,7 +882,7 @@ public final class GridCoverageRenderer {
                     reprojectedAlphas.add(reprojectedAlpha);
                 }
             } else {
-                reprojectedCoverages.addAll(coverages);
+                reprojectedCoverages.add(coverage);
             }
         }
 

@@ -115,12 +115,18 @@ public class GridCoverageRendererTest  {
 
     private GridCoverage2DReader rainReader;
 
+    private GeoTiffReader worldReader_0_360;
+
     @Before
     public void getData() throws IOException {
         MapProjection.SKIP_SANITY_CHECKS = true;
         File coverageFile = TestData.copy(this, "geotiff/world.tiff");
         assertTrue(coverageFile.exists());
         worldReader = new GeoTiffReader(coverageFile);
+
+        coverageFile = TestData.copy(this, "geotiff/world_0_360.tiff");
+        assertTrue(coverageFile.exists());
+        worldReader_0_360 = new GeoTiffReader(coverageFile);
 
         // grab also the global precipitation
         File file = TestData.copy(this, "arcgrid/arcgrid.zip");
@@ -812,6 +818,27 @@ public class GridCoverageRendererTest  {
         // Check the image
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/flippedAffine.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    @Test
+    public void testCoverage_0_360() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(100, 260, -90, 90, crs);
+        Rectangle screenSize = new Rectangle(400,
+                (int) (mapExtent.getHeight() / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+
+        RenderedImage image = renderer.renderImage(worldReader_0_360, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+        assertNotNull(image);
+        // RenderedImageBrowser.showChain(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/world_0_360.png");
         ImageAssert.assertEquals(reference, image, 0);
     }
 

@@ -199,7 +199,6 @@ public class GridCoverageReaderHelper {
 
         // it is not uncommon to find rasters whose coordinates are in the 0-360 range,
         // if that's the case, see if we can perform extra reads
-        LOGGER.severe("Add the same processing to the case without projection handler!!");
         SingleCRS readerCRS = CRS.getHorizontalCRS(reader.getCoordinateReferenceSystem());
         if (readerCRS instanceof GeographicCRS) {
             ReferencedEnvelope readerEnvelope = ReferencedEnvelope

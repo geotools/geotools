@@ -597,7 +597,7 @@ public final class LabelCacheImpl implements LabelCache {
     private boolean paintLineLabelsWithLetterConflict(LabelPainter painter, AffineTransform originalTransform,
             Rectangle displayArea, LabelIndex paintedBounds) throws Exception {
         final LabelCacheItem labelItem = painter.getLabel();
-        List<LineString> lines = (List<LineString>) getLineSetRepresentativeLocation(
+        List<LineString> lines = getLineSetRepresentativeLocation(
                 labelItem.getGeoms(), displayArea, labelItem.removeGroupOverlaps(),
                 labelItem.isPartialsEnabled());
 
@@ -726,8 +726,7 @@ public final class LabelCacheImpl implements LabelCache {
                         glyphVectorProcessor = new GlyphVectorProcessor.Straight(painter, tx);
                     }
 
-                    //We check each letters for collision
-                    int glyphCount = 0;
+                    // We check each letters for collision
                     boolean collision = false;
                     collision = glyphVectorProcessor.process(new GlyphProcessor.ConflictDetector(painter,
                             displayArea, paintedBounds, groupLabels), true);
@@ -768,8 +767,6 @@ public final class LabelCacheImpl implements LabelCache {
                     // displacement sequence
                     if (painted) {
                         labelCount++;
-                        //Add each glyph's bounding box to the index
-                        glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, groupLabels));
 
                         if(labelItem.isConflictResolutionEnabled()) {
                             if(DEBUG_CACHE_BOUNDS) {
@@ -778,7 +775,7 @@ public final class LabelCacheImpl implements LabelCache {
                                 glyphVectorProcessor.process(new GlyphProcessor.BoundsPainter(painter));
                             }
 
-                            //Add each glyph's bounding box to the index
+                            // Add each glyph's bounding box to the index
                             glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, paintedBounds));
                         }
                     } else {

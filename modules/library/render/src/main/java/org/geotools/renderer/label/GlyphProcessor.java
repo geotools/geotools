@@ -1,6 +1,22 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.renderer.label;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -8,7 +24,7 @@ import java.awt.geom.Rectangle2D;
 /**
  * A class to process glyphs.
  */
-public abstract class GlyphProcessor {
+abstract class GlyphProcessor {
 
     LabelPainter painter;
     LabelCacheItem labelItem;

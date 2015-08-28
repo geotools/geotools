@@ -16,18 +16,16 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import it.geosolutions.jaiext.warp.WarpDescriptor;
+
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.warp.WarpDescriptor;
-
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PropertyGenerator;
 import javax.media.jai.ROI;
+import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
@@ -57,12 +55,12 @@ public class Warp extends BaseScaleOperationJAI {
      * Default constructor.
      */
     public Warp() {
-        super("Warp");
+        super(WARP);
     }
-    
+
     protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
-        handleROINoDataInternal(parameters, source, "Warp", 3, 4);
+        handleROINoDataInternal(parameters, source, WARP, 3, 4);
     }
 
     protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
@@ -81,11 +79,10 @@ public class Warp extends BaseScaleOperationJAI {
                 && parameters.parameters.getObjectParameter(4) != null) {
             CoverageUtilities.setNoDataProperty(properties, background);
         }
-        
 
         // Setting ROI if present
-        PropertyGenerator propertyGenerator = new WarpDescriptor().getPropertyGenerators()[0];
-        Object roiProp = propertyGenerator.getProperty("roi", data);
+        PropertyGenerator propertyGenerator = getOperationDescriptor(WARP).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+        Object roiProp = propertyGenerator.getProperty(ROI, data);
         if (roiProp != null && roiProp instanceof ROI) {
             CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
         }

@@ -1336,8 +1336,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         if (extender != null) {
             ImageWorker w = new ImageWorker(src).setRenderingHints(GeoTools.getDefaultHints());
             RenderedOp op = w.border(leftPad, rightPad, topPad, bottomPad, extender).getRenderedOperation();
-//                    BorderDescriptor.create(src, leftPad, rightPad, topPad, bottomPad,
-//                    extender, GeoTools.getDefaultHints());
             iterSource = RandomIterFactory.create(op, op.getBounds(), true, true);
         } else {
             iterSource = RandomIterFactory.create(src, src.getBounds(), true, true);

@@ -17,7 +17,6 @@
 package org.geotools.image;
 
 import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.affine.AffineDescriptor;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 import it.geosolutions.jaiext.classifier.ColorMapTransform;
@@ -29,11 +28,9 @@ import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.scale.ScaleDescriptor;
 import it.geosolutions.jaiext.stats.HistogramWrapper;
 import it.geosolutions.jaiext.stats.Statistics;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.warp.WarpDescriptor;
 
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -89,6 +86,8 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.LookupTableJAI;
+import javax.media.jai.OperationDescriptor;
+import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.PlanarImage;
@@ -123,6 +122,7 @@ import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
 import org.jaitools.imageutils.ImageLayout2;
+import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
@@ -155,6 +155,14 @@ public class ImageWorker {
 
     private static final String ALGEBRIC_OP_NAME = "algebric";
 
+    public final static String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
+
+    public final static boolean JAIEXT_ENABLED;
+
+    public static boolean isJaiExtEnabled() {
+        return JAIEXT_ENABLED;
+    }
+
     /**
      * The logger to use for this class.
      */
@@ -165,7 +173,8 @@ public class ImageWorker {
 
     /** Registration of the JAI-EXT operations */
     static {
-        JAIExt.initJAIEXT();
+        JAIEXT_ENABLED = Boolean.getBoolean(JAIEXT_ENABLED_KEY);
+        JAIExt.initJAIEXT(JAIEXT_ENABLED);
     }
 
     /** JDK_JPEG_IMAGE_WRITER_SPI */
@@ -328,6 +337,19 @@ public class ImageWorker {
         CS_PYCC = cs;
     }
 
+    protected static OperationDescriptor getOperationDescriptor(final String name)
+            throws OperationNotFoundException
+    {
+        final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+        OperationDescriptor operation = (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, name);
+        if (operation != null) {
+            return operation;
+        }
+
+        throw new OperationNotFoundException(Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+    }
+
+    
     /**
      * If {@link Boolean#FALSE FALSE}, image operators are not allowed to produce tiled images. The default is {@link Boolean#TRUE TRUE}. The
      * {@code FALSE} value is sometime useful for exporting images to some formats that doesn't support tiling (e.g. GIF).
@@ -1875,7 +1897,7 @@ public class ImageWorker {
             forceComponentColorModel();
 
             // Create a ColorModel to convert the image to IHS.
-            final IHSColorSpaceJAIExt ihs = IHSColorSpaceJAIExt.getInstance();
+            final ColorSpace ihs = isJaiExtEnabled() ? IHSColorSpaceJAIExt.getInstance() : IHSColorSpace.getInstance();;
             final int numBits = image.getColorModel().getComponentSize(0);
             final ColorModel ihsColorModel = new ComponentColorModel(ihs, new int[] { numBits,
                     numBits, numBits }, false, false, Transparency.OPAQUE, image.getSampleModel()
@@ -1956,28 +1978,21 @@ public class ImageWorker {
 
         // adding to the image
         final int length = writeband - numBands;
+        pb.addSource(sourceImage);
         for (int i = 0; i < length; i++) {
-            pb.removeParameters();
-            pb.removeSources();
-
-            pb.addSource(sourceImage);
             pb.addSource(firstBand);
-            pb.set(new Range[] { nodata }, 0);
-            if (isNoDataNeeded()) {
-                if (background != null && background.length > 0) {
-                    // Elaborating the final NoData value
-                    pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
-                }
-            }
-            pb.set(roi, 3);
-            sourceImage = JAI.create("bandmerge", pb);
-
-            pb.removeParameters();
-            pb.removeSources();
         }
-
+        pb.set(new Range[] { nodata }, 0);
+        if (isNoDataNeeded()) {
+            if (background != null && background.length > 0) {
+                // Elaborating the final NoData value
+                pb.set(background[0], 1);
+                // We must set the new NoData value
+                setNoData(RangeFactory.create(background[0], background[0]));
+            }
+        }
+        pb.set(roi, 3);
+        sourceImage = JAI.create("bandmerge", pb);
         image = sourceImage;
         invalidateStatistics();
 
@@ -3781,8 +3796,7 @@ public class ImageWorker {
         }
 
         // apply defaults to allow for comparisong
-        ParameterListDescriptor pld = new AffineDescriptor()
-                .getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
+        ParameterListDescriptor pld = getOperationDescriptor("affine").getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
         if (interpolation == null) {
             interpolation = (Interpolation) pld.getParamDefaultValue("interpolation");
         }
@@ -3978,9 +3992,9 @@ public class ImageWorker {
                             result.setProperty("MathTransform", chained);
                             image = result;
                             // getting the new ROI property
-                            PropertyGenerator gen = new WarpDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                            PropertyGenerator gen = getOperationDescriptor("Warp").getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                             Object prop = gen.getProperty("roi", image);
-                            if(prop != null && prop instanceof ROI){
+                            if (prop != null && prop instanceof ROI){
                                 setROI((ROI) prop);
                             } else {
                                 setROI(null);
@@ -4150,7 +4164,7 @@ public class ImageWorker {
                 image = JAI.create("Scale", pb, localHints);
                 // getting the new ROI property
                 if (roi != null) {
-                    PropertyGenerator gen = new ScaleDescriptor()
+                    PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                     Object prop = gen.getProperty("roi", image);
                     if (prop != null && prop instanceof ROI) {
@@ -4178,7 +4192,7 @@ public class ImageWorker {
                 }
                 image = JAI.create("Scale", pb, commonHints);
                 if (roi != null) {
-                    PropertyGenerator gen = new ScaleDescriptor()
+                    PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                     Object prop = gen.getProperty("roi", image);
                     if (prop != null && prop instanceof ROI) {
@@ -4203,7 +4217,7 @@ public class ImageWorker {
             }
             image = JAI.create("Affine", pb, commonHints);
             if (roi != null) {
-                PropertyGenerator gen = new AffineDescriptor()
+                PropertyGenerator gen = getOperationDescriptor("Affine")
                         .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                 Object prop = gen.getProperty("roi", image);
                 if (prop != null && prop instanceof ROI) {
@@ -4466,7 +4480,7 @@ public class ImageWorker {
         }
         image = JAI.create("Warp", pb, getRenderingHints());
         // getting the new ROI property
-        PropertyGenerator gen = new WarpDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+        PropertyGenerator gen = getOperationDescriptor("Warp").getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
         Object prop = gen.getProperty("roi", image);
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);
@@ -4501,7 +4515,7 @@ public class ImageWorker {
         }
         image = JAI.create("Scale", pb, getRenderingHints());
         // getting the new ROI property
-        PropertyGenerator gen = new ScaleDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+        PropertyGenerator gen = getOperationDescriptor("Scale").getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
         Object prop = gen.getProperty("roi", image);
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);

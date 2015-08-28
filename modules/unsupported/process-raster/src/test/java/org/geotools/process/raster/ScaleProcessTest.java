@@ -19,6 +19,7 @@ package org.geotools.process.raster;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.iterators.RandomIterFactory;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
@@ -47,6 +48,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -84,7 +86,9 @@ public class ScaleProcessTest {
 
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException {
-        // Selection of the File to use
+        JAIExt.initJAIEXT(true, true);
+
+        //Selection of the File to use
         File tiff = TestData.file(ScaleProcessTest.class, "sample.tif");
         // Reading of the file with the GeoTiff reader
         AbstractGridFormat format = GridFormatFinder.findFormat(tiff);
@@ -126,6 +130,11 @@ public class ScaleProcessTest {
         // Definition of the transformation. (The final image should be doubled and translated)
         scaleX = 2d;
         scaleY = 2d;
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        JAIExt.initJAIEXT(false, true);
     }
 
     @Test

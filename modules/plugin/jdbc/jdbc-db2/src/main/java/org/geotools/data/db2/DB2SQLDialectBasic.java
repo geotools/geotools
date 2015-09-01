@@ -246,4 +246,9 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
         delegate.setUseSelectivity(useSelectivity);
     }
 
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return delegate.supportsSchemaForIndex();
+    }
+
 }

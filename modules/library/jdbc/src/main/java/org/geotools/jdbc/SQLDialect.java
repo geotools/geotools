@@ -1230,6 +1230,20 @@ public abstract class SQLDialect {
     }
     
     /**
+     * Return <code>true</code> if the database supports individual 
+     * schemas for indices.
+     * <p>
+     * The SQL encoding would be <code>CREATE INDEX SCHEMANAME.INDEXNAME ON ....</code>
+     * <p> 
+     * The default is false and the encoding is <code>CREATE INDEX INDEXNAME ON ....</code>
+     * 
+     * @return true or false
+     */
+    protected boolean supportsSchemaForIndex() {
+        return false;
+    }
+    
+    /**
      * Performs the class "create [unique] indexName on tableName(att1, att2, ..., attN)" call.
      * 
      * Subclasses can override to handle special indexes (like spatial ones) and/or the hints
@@ -1247,7 +1261,7 @@ public abstract class SQLDialect {
             sql.append("UNIQUE ");
         }
         sql.append("INDEX ");
-        if (databaseSchema != null) {
+        if (supportsSchemaForIndex() && databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }        
@@ -1290,7 +1304,7 @@ public abstract class SQLDialect {
         StringBuffer sql = new StringBuffer();
         String escape = getNameEscape();
         sql.append("DROP INDEX ");
-        if (databaseSchema != null) {
+        if (supportsSchemaForIndex() && databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }

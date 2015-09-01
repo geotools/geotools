@@ -847,6 +847,11 @@ public class DB2SQLDialect extends SQLDialect  {
     public void setUseSelectivity(boolean useSelectivity) {
         this.useSelectivity = useSelectivity;
     }
+    
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return true;
+    }
 
 
 }

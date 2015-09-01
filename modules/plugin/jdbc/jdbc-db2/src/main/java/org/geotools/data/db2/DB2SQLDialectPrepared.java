@@ -277,4 +277,9 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     }
 
 
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return delegate.supportsSchemaForIndex();
+    }
+
 }

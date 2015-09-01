@@ -53,8 +53,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
      * @throws IOException
      */
     public static MarkFeatureIterator create(FeatureCollection fc, int maxFeaturesInMemory,
-            ProgressListener listener)
-            throws IOException {
+            ProgressListener listener) throws IOException {
         List<Feature> features = new ArrayList<>();
         int count = 0;
         if (listener == null) {
@@ -69,7 +68,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
                 features.add(f);
                 count++;
                 if (count >= maxFeaturesInMemory) {
-                    if (fc.getSchema() instanceof SimpleFeature) {
+                    if (fc.getSchema() instanceof SimpleFeatureType) {
                         return new DiskMarkFeatureIterator(features, fi,
                                 (SimpleFeatureType) fc.getSchema(), listener);
                     } else {
@@ -184,6 +183,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
             while (fi.hasNext() && !listener.isCanceled()) {
                 Feature feature = fi.next();
                 io.write((SimpleFeature) feature);
+                featureCount++;
             }
             // do not close the iterator, the caller does that
 
@@ -208,10 +208,13 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
 
         @Override
         public void close() {
-            try {
-                io.close(true);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (io != null) {
+                try {
+                    io.close(true);
+                    io = null;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -239,6 +242,14 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
                     + io + ", curr=" + curr + ", featureCount=" + featureCount + "]";
         }
 
+        @Override
+        protected void finalize() throws Throwable {
+            if (io != null) {
+                LOGGER.warning("There is code leaving DiskMarkFeatureIterator open, "
+                        + "this is leaking temporary files!");
+                close();
+            }
+        }
     }
 
 }

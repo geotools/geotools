@@ -16,8 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,9 +69,9 @@ public class MarkFeatureIteratorTest {
         try (MarkFeatureIterator iterator = MarkFeatureIterator.create(zroads.getFeatures(), limit,
                 listener)) {
             if (limit >= zroads.getCount(Query.ALL)) {
-                assertThat(iterator, instanceOf(MemoryMarkFeatureIterator.class));
+                assertTrue(iterator instanceof MemoryMarkFeatureIterator);
             } else {
-                assertThat(iterator, instanceOf(DiskMarkFeatureIterator.class));
+                assertTrue(iterator instanceof DiskMarkFeatureIterator);
             }
 
             iterator.mark();

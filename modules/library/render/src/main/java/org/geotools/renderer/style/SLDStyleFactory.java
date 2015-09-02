@@ -1607,8 +1607,8 @@ public class SLDStyleFactory {
                 if ("D".equalsIgnoreCase(direction) || "DESC".equalsIgnoreCase(direction)) {
                     order = SortOrder.DESCENDING;
                 } else if(!"A".equalsIgnoreCase(direction) || "ASC".equalsIgnoreCase(direction)) {
-                    throw new IllegalArgumentException("Unknown sort order '" + order 
-                            + "' in: '" + attributeSpec + "'");
+                    throw new IllegalArgumentException(
+                            "Unknown sort order '" + direction + "' in: '" + attributeSpec + "'");
                 }
             }
             SortBy sort = ff.sort(attribute, order);

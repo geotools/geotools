@@ -190,6 +190,8 @@ class ZGroupLayer extends Layer {
                 }
             }
 
+            validateSortBy(painters);
+
             // got to the end cleanly, no need to close the painters accumulated so far
             closePainters = false;
         } finally {
@@ -205,8 +207,6 @@ class ZGroupLayer extends Layer {
             }
         }
 
-        validateSortBy(painters);
-
         return painters;
     }
 
@@ -219,12 +219,15 @@ class ZGroupLayer extends Layer {
      */
     private void validateSortBy(List<ZGroupLayerPainter> painters) {
         Class[] referenceClasses = null;
+        SortOrder[] referenceOrders = null;
         LiteFeatureTypeStyle reference = null;
         for (ZGroupLayerPainter painter : painters) {
             for (LiteFeatureTypeStyle style : painter.lfts) {
                 Class[] styleClasses = getSortByAttributeClasses(style);
+                SortOrder[] styleOrders = getSortOrders(style);
                 if (referenceClasses == null) {
                     referenceClasses = styleClasses;
+                    referenceOrders = styleOrders;
                     reference = style;
                     for (int i = 0; i < referenceClasses.length; i++) {
                         if (!Comparable.class.isAssignableFrom(referenceClasses[i])) {
@@ -250,6 +253,15 @@ class ZGroupLayer extends Layer {
                                     && !referenceClass.isAssignableFrom(currClass)) {
                                 throw new IllegalArgumentException(
                                         "Found two incompatible classes at position " + (i + 1)
+                                                + " of the sortBy clauses in group " + groupId
+                                                + ": " + sortByToString(reference, referenceClasses)
+                                                + " vs " + sortByToString(style, styleClasses));
+                            }
+                            SortOrder currOrder = styleOrders[i];
+                            SortOrder referenceOrder = referenceOrders[i];
+                            if (!currOrder.equals(referenceOrder)) {
+                                throw new IllegalArgumentException(
+                                        "Found two different sort orders at position " + (i + 1)
                                                 + " of the sortBy clauses in group " + groupId
                                                 + ": " + sortByToString(reference, referenceClasses)
                                                 + " vs " + sortByToString(style, styleClasses));
@@ -283,6 +295,17 @@ class ZGroupLayer extends Layer {
         }
 
         return classes;
+    }
+
+    private SortOrder[] getSortOrders(LiteFeatureTypeStyle style) {
+        SortBy[] sb = style.sortBy;
+        FeatureType schema = style.layer.getFeatureSource().getSchema();
+        SortOrder[] orders = new SortOrder[sb.length];
+        for (int i = 0; i < orders.length; i++) {
+            orders[i] = sb[i].getSortOrder();
+        }
+
+        return orders;
     }
 
     private String sortByToString(LiteFeatureTypeStyle style, Class[] classes) {

@@ -954,7 +954,8 @@ public class CssTranslator {
                     if (fontWeight != null) {
                         fb.weight(fontWeight);
                     }
-                    Expression fontSize = getExpression(getValueInMulti(values, "font-size", i, j));
+                    Expression fontSize = getMeasureExpression(
+                            getValueInMulti(values, "font-size", i, j), "px");
                     if (fontSize != null) {
                         fb.size(fontSize);
                     }
@@ -1497,6 +1498,10 @@ public class CssTranslator {
     private Expression getMeasureExpression(Map<String, List<Value>> valueMap, String name, int i,
             String defaultUnit) {
         Value v = getValue(valueMap, name, i);
+        return getMeasureExpression(v, defaultUnit);
+    }
+
+    private Expression getMeasureExpression(Value v, String defaultUnit) {
         if (v == null) {
             return null;
         } else if (v instanceof Literal) {

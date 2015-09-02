@@ -935,22 +935,30 @@ public class CssTranslator {
                     .getPropertyValues(PseudoClass.ROOT, "font");
             if (!fontLikeProperties.isEmpty() && (fontLikeProperties.size() > 1
                     || fontLikeProperties.get("font-fill") == null)) {
-                FontBuilder fb = tb.newFont();
-                Expression fontFamily = getExpression(values, "font-family", i);
-                if (fontFamily != null) {
-                    fb.family(fontFamily);
-                }
-                Expression fontStyle = getExpression(values, "font-style", i);
-                if (fontStyle != null) {
-                    fb.style(fontStyle);
-                }
-                Expression fontWeight = getExpression(values, "font-weight", i);
-                if (fontWeight != null) {
-                    fb.weight(fontWeight);
-                }
-                Expression fontSize = getMeasureExpression(values, "font-size", i, "px");
-                if (fontSize != null) {
-                    fb.size(fontSize);
+                int maxSize = getMaxMultiValueSize(values, i, "font-family", "font-style",
+                        "font-weight", "font-family");
+                for (int j = 0; j < maxSize; j++) {
+                    FontBuilder fb = tb.newFont();
+                    Expression fontFamily = getExpression(
+                            getValueInMulti(values, "font-family", i, j));
+                    if (fontFamily != null) {
+                        fb.family(fontFamily);
+                    }
+                    Expression fontStyle = getExpression(
+                            getValueInMulti(values, "font-style", i, j));
+                    if (fontStyle != null) {
+                        fb.style(fontStyle);
+                    }
+                    Expression fontWeight = getExpression(
+                            getValueInMulti(values, "font-weight", i, j));
+                    if (fontWeight != null) {
+                        fb.weight(fontWeight);
+                    }
+                    Expression fontSize = getExpression(getValueInMulti(values, "font-size", i, j));
+                    if (fontSize != null) {
+                        fb.size(fontSize);
+                    }
+
                 }
             }
             // the halo
@@ -1531,8 +1539,34 @@ public class CssTranslator {
         Value value = getValue(valueMap, name, i);
         if (value instanceof MultiValue) {
             return ((MultiValue) value).values;
+        } else if (value == null) {
+            return Collections.emptyList();
         } else {
             return Collections.singletonList(value);
+        }
+    }
+
+    public int getMaxMultiValueSize(Map<String, List<Value>> valueMap, int i, String... names) {
+        int max = 0;
+        for (String name : names) {
+            List<Value> values = getMultiValue(valueMap, name, i);
+            int size = values.size();
+            if (size > max) {
+                max = size;
+            }
+        }
+        return max;
+    }
+
+    public Value getValueInMulti(Map<String, List<Value>> valueMap, String name, int i,
+            int valueIdx) {
+        List<Value> values = getMultiValue(valueMap, name, i);
+        if (values.isEmpty()) {
+            return null;
+        } else if (values.size() <= valueIdx) {
+            return values.get(values.size() - 1);
+        } else {
+            return values.get(valueIdx);
         }
     }
 

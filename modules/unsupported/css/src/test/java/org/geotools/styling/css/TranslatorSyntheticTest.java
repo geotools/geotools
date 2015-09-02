@@ -744,4 +744,42 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 fts.getOptions().get(org.geotools.styling.FeatureTypeStyle.SORT_BY_GROUP));
     }
 
+    @Test
+    public void testMultipleFonts() throws Exception {
+        String css = "* { label: \"static\"; font-family: \"Serif\" \"Sans\"; font-size: 10 15; }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        List<Font> fonts = ts.fonts();
+        assertEquals(2, fonts.size());
+        Font f1 = fonts.get(0);
+        assertEquals("Serif", f1.getFamily().get(0).evaluate(null));
+        assertEquals("10", f1.getSize().evaluate(null));
+        Font f2 = fonts.get(1);
+        assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
+        assertEquals("15", f2.getSize().evaluate(null));
+
+    }
+
+    @Test
+    public void testMultipleFontsSingleSize() throws Exception {
+        String css = "* { label: \"static\"; font-family: \"Serif\" \"Sans\"; font-size: 10 }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        List<Font> fonts = ts.fonts();
+        assertEquals(2, fonts.size());
+        Font f1 = fonts.get(0);
+        assertEquals("Serif", f1.getFamily().get(0).evaluate(null));
+        assertEquals("10", f1.getSize().evaluate(null));
+        Font f2 = fonts.get(1);
+        assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
+        assertEquals("10", f2.getSize().evaluate(null));
+
+    }
+
 }

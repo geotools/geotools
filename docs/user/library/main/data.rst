@@ -16,7 +16,7 @@ URL and File
 
 DataUtilities also gathers up common solutions to problems encountered in Java, with that in mind we have a number of methods for safely handling files and URLs.
 
-* DataUtilties.fileToURL( file )
+* DataUtilities.fileToURL( file )
 * DataUtilities.urlToFile( url )
 
 One of the changes between Java 5 and Java 6 is the deprecation of the File.toURL() method. Earlier version of Java implemented this method incorrectly, and Java 6 offers File.toURI().toURL() as a replacement.
@@ -93,9 +93,9 @@ FeatureType Modify
 Because a FeatureType cannot be modified once created; all of the following methods
 return a modified copy.
 
-* DataUtilties.createSubType(SimpleFeatureType, String[], CoordinateReferenceSystem)
-* DataUtilties.createSubType(SimpleFeatureType, String[], CoordinateReferenceSystem, String, URI)
-* DataUtilties.createSubType(SimpleFeatureType, String[])
+* DataUtilities.createSubType(SimpleFeatureType, String[], CoordinateReferenceSystem)
+* DataUtilities.createSubType(SimpleFeatureType, String[], CoordinateReferenceSystem, String, URI)
+* DataUtilities.createSubType(SimpleFeatureType, String[])
   
   Used to quickly produce a (slightly modified) copy of the provided FeatureType. Used to
   recast a FeatureType with a desired CoordinateReferenceSystem or limit a FeatureType
@@ -106,7 +106,7 @@ return a modified copy.
     FeatureType schema = DataUtilities.createType("EDGE", "edge:Polygon,name:String");
     CoordinateReferenceSystem crs = CRS.decode( "EPSG:4326" );
     
-    schema = DataUtilties.createSubType( schema, null, crs );
+    schema = DataUtilities.createSubType( schema, null, crs );
   
   You can also get a bit more complicated and choose exactly which attributes you want.::
     
@@ -225,7 +225,7 @@ is really helpful when working with an API that expects a FeatureCollection.::
     
     Feature[] array;
     ...
-    return DataUtilties.collection( array );
+    return DataUtilities.collection( array );
 
 These methods are often used to add a single SimpleFeature to a FeatureStore::
     

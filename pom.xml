@@ -103,6 +103,7 @@
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgresql.jdbc.version>9.4-1201-jdbc41</postgresql.jdbc.version>
+    <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1262,6 +1263,16 @@
           <artifactId>cobertura-maven-plugin</artifactId>
           <version>2.6</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven.javadoc.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.9.1</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -1662,6 +1673,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
 
         <configuration>
             <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->

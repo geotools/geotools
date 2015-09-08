@@ -31,17 +31,17 @@ CSVDataStore now uses a CSVStrategy and CSVFileState. The CSVFileState holds inf
       :start-after: import org.opengis.filter.Filter;
       :end-before: public Name getTypeName() {
 
-Using the CSVFileState to do work for us, the **createTypeNames()** method is much simpler.
+Using the CSVFileState to do work for us, the **getTypeName()** method to create Name is much simpler.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
       :language: java
-      :lines: 52-59
+      :lines: 52-58
 
 CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by FileDataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema. Depending on the strategy defined, the schema for this store will be different. The implementation of **createFeatureSource()** checks to make sure the file is writable before allowing the writing of features. If it is, it actually uses a CSVFeatureStore instead of a CSVFeatureSource, which is a data structure that will allow being written to as well as read from.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
       :language: java
-      :lines: 61-116
+      :lines: 60-119
 
 CSVDataStoreFactory
 ^^^^^^^^^^^^^^^^^^^
@@ -63,19 +63,19 @@ The method **isAvailable()** just attempts to read the class, and if it succeeds
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :lines: 99-107
+      :lines: 115-123
 
 The **canProcess(Map<String, Serializable> params)** method was made more tolerant, now accepting URL and File params through the **fileFromParams(Map<String, Serializable> params)** method. It will try File first, then URL before giving up.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :lines: 70-97
+      :lines: 213-216
 
 Finally, the different strategies are implemented in the **createDataStoreFromFile()** method. The method is overloaded to make some parameters optional, which the class will then fill in for us.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :lines: 125-182
+      :lines: 130-142
 
 CSVFeatureReader
 ^^^^^^^^^^^^^^^^

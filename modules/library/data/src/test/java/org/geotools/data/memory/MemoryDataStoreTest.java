@@ -19,7 +19,9 @@ package org.geotools.data.memory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataStore;
@@ -72,7 +74,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * DOCUMENT ME!
  * 
  * @author Jody Garnett, Refractions Research
- *
+ * @author Frank Gasdorf
  *
  * @source $URL$
  */
@@ -443,17 +445,17 @@ public class MemoryDataStoreTest extends DataTestCase {
                 new Integer(1),
                 line(new int[] { 1, 1, 2, 2, 4, 2, 5, 1 }),
                 "r1"
-            }, null
+            }, "r1"
         );
         dynFeatures[1] = SimpleFeatureBuilder.build(roadType, new Object[] {
                 new Integer(2), line(new int[] { 3, 0, 3, 2, 3, 3, 3, 4 }),
                 "r2"
-            }, null
+            }, "r2"
         );
         dynFeatures[2] = SimpleFeatureBuilder.build(roadType, new Object[] {
                 new Integer(3),
                 line(new int[] { 3, 2, 4, 2, 5, 3 }), "r3"
-            }, null
+            }, "r3"
         );
         assertOrderSame(dynFeatures);
     }
@@ -507,7 +509,6 @@ public class MemoryDataStoreTest extends DataTestCase {
      * @return DOCUMENT ME!
      * @throws NoSuchElementException DOCUMENT ME!
      * @throws IOException DOCUMENT ME!
-     * @throws IllegalAttributeException DOCUMENT ME!
      */
     boolean covers(  FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array ) throws NoSuchElementException,
             IOException {
@@ -871,7 +872,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction);
 
-         Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
+        Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
         reader.close();
         assertEquals(new Coordinate(0, 0), geom1.getCoordinates()[0]);
         assertEquals(new Coordinate(0, 1), geom1.getCoordinates()[1]);
@@ -1233,10 +1234,8 @@ public class MemoryDataStoreTest extends DataTestCase {
         store1.setTransaction(defaultTransaction);
         class Listener implements FeatureListener {
 
-            String name;
-            List events = new ArrayList();
+            List<FeatureEvent> events = new ArrayList<FeatureEvent>();
             public Listener( String name ) {
-                this.name = name;
             }
 
             public void changed( FeatureEvent featureEvent ) {
@@ -1417,6 +1416,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         } while ( then > System.currentTimeMillis() - 515 );     
         assertFalse(isLocked("road", "road.rd1"));
     }
+
     public void testRemoveSchema() throws IOException {
         // two featureTypes should be in
         List<Name> names = data.getNames();
@@ -1442,7 +1442,33 @@ public class MemoryDataStoreTest extends DataTestCase {
         } catch (IOException e) {
             fail("remove Schema should act gracfully if it has never been created for that type");
         }
+    }
 
+    public void testConcurrentModificationExcpetionWritingWhileReading() throws IOException {
+    	Map<String, SimpleFeature> features = data.features("road");
+    	assertTrue(features.size() >= 2);
+    	Iterator<SimpleFeature> iterator = features.values().iterator();
+    	if (iterator.hasNext()) {
+    		iterator.next();
+    	}
+    	FeatureWriter<SimpleFeatureType, SimpleFeature> writer = data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
+    	GeometryFactory fac = new GeometryFactory();
+    	
+    	try {
+            while (writer.hasNext()) {
+                writer.next();
+            }
+            // create a new feature
+            SimpleFeature newFeature = writer.next();
+            newFeature.setDefaultGeometry(fac.createLineString(new Coordinate[]{new Coordinate(10, 10), new Coordinate(20, 20)}));
+            writer.write();
+            
+        } finally {
+            writer.close();
+        }
+    	// 2nd iterator.next() causes java.util.ConcurrentModificationException"
+    	iterator.next();
+    	
         // still the same size and no IOException
         List<Name> namesAfterRemove = data.getNames();
         assertNotNull(namesAfterRemove);

@@ -19,7 +19,10 @@ package org.geotools.data.memory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataStore;
@@ -59,6 +62,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -1391,5 +1396,32 @@ public class MemoryDataStoreTest extends DataTestCase {
             Thread.sleep( 15 );            
         } while ( then > System.currentTimeMillis() - 515 );     
         assertFalse(isLocked("road", "road.rd1"));
+    }
+    
+    public void testConcurrentModificationExcpetionWritingWhileReading() throws IOException {
+    	Map<String, SimpleFeature> features = data.features("road");
+    	assertTrue(features.size() >= 2);
+    	Iterator<SimpleFeature> iterator = features.values().iterator();
+    	if (iterator.hasNext()) {
+    		iterator.next();
+    	}
+    	FeatureWriter<SimpleFeatureType, SimpleFeature> writer = data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
+    	GeometryFactory fac = new GeometryFactory();
+    	
+    	try {
+            while (writer.hasNext()) {
+                writer.next();
+            }
+            // create a new feature
+            SimpleFeature newFeature = writer.next();
+            newFeature.setDefaultGeometry(fac.createLineString(new Coordinate[]{new Coordinate(10, 10), new Coordinate(20, 20)}));
+            writer.write();
+            
+        } finally {
+            writer.close();
+        }
+    	// 2nd iterator.next() causes java.util.ConcurrentModificationException"
+    	iterator.next();
+    	
     }
 }

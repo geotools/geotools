@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import org.geotools.data.AbstractDataStore;
@@ -93,7 +94,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @param schema An empty feature collection of this type will be made available
      */
     public MemoryDataStore(SimpleFeatureType featureType) {
-        Map<String,SimpleFeature> featureMap = new LinkedHashMap<String,SimpleFeature>();
+        Map<String,SimpleFeature> featureMap = new ConcurrentHashMap<String,SimpleFeature>();
         String typeName = featureType.getTypeName();
         schema.put(typeName, featureType);
         memory.put(typeName, featureMap);
@@ -130,7 +131,7 @@ public class MemoryDataStore extends ContentDataStore {
             // use an order preserving map, so that features are returned in the same
             // order as they were inserted. This is important for repeatable rendering
             // of overlapping features.
-            Map<String,SimpleFeature> featureMap = new LinkedHashMap<String,SimpleFeature>();
+            Map<String,SimpleFeature> featureMap = new ConcurrentHashMap<String,SimpleFeature>();
             String typeName;
             SimpleFeature feature;
 
@@ -171,7 +172,7 @@ public class MemoryDataStore extends ContentDataStore {
     public void addFeatures(SimpleFeatureIterator reader) throws IOException {
         try {
             SimpleFeatureType featureType;
-            Map<String,SimpleFeature> featureMap = new LinkedHashMap<String,SimpleFeature>();
+            Map<String,SimpleFeature> featureMap = new ConcurrentHashMap<String,SimpleFeature>();
             String typeName;
             SimpleFeature feature;
 
@@ -371,7 +372,7 @@ public class MemoryDataStore extends ContentDataStore {
             throw new IOException(typeName + " already exists");
         }
             // insertion order preserving map
-            Map<String,SimpleFeature> featuresMap = new LinkedHashMap<String,SimpleFeature>();
+            Map<String,SimpleFeature> featuresMap = new ConcurrentHashMap<String,SimpleFeature>();
             schema.put(typeName, featureType);
             memory.put(typeName, featuresMap);
     }

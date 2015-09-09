@@ -182,7 +182,6 @@
          <module>sfs</module>
          <module>feature-aggregate</module>
          <module>mongodb</module>
-         <module>property-old</module>
          <module>solr</module>
          <module>css</module>
        </modules>

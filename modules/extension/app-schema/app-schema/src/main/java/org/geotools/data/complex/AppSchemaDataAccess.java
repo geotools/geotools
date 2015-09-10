@@ -98,8 +98,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      */
     boolean hidden = false;
 
-    List<Name> relatedTypeNames = new ArrayList<>();
-
     /**
      * Constructor.
      * 

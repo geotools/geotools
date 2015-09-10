@@ -310,14 +310,19 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
             Expression e2, boolean swapped, Object extraData) {
+        
+        String checkValue="1";
 
         try {
             // currentSRID=getSRID();
             LOGGER.finer("Generating GeometryFilter WHERE clause for " + filter);
             if (filter instanceof Equals) {
                 out.write("db2gse.ST_Equals");
-            } else if (filter instanceof Disjoint) {
-                out.write("db2gse.ST_Disjoint");
+            } else if (filter instanceof Disjoint && this.selectivityClause == null) {
+                out.write("db2gse.ST_Disjoint");                
+            } else if (filter instanceof Disjoint && this.selectivityClause != null) {
+                out.write("db2gse.ST_Intersects");
+                checkValue="0";
             } else if (filter instanceof Intersects || filter instanceof BBOX) {
                 out.write("db2gse.ST_Intersects");
             } else if (filter instanceof Crosses) {
@@ -345,7 +350,9 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             out.write(", ");
             e2.accept(this, extraData);
 
-            out.write(") = 1 ");
+            out.write(") = ");
+            out.write(checkValue);
+            out.write(" ");
             addSelectivity(); // add selectivity clause if needed
 
             LOGGER.fine(this.out.toString());

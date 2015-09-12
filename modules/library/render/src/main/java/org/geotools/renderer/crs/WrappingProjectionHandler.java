@@ -18,6 +18,7 @@ package org.geotools.renderer.crs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -28,6 +29,7 @@ import org.opengis.referencing.operation.MathTransform;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
@@ -86,14 +88,14 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // if it's touching both datelines then don't wrap it, as it might be something
         // like antarctica
         if (datelineWrappingCheckEnabled && width > radius && width < radius * 2) {
-            Geometry wrapped = (Geometry) geometry.clone();
+            final Geometry wrapped = (Geometry) geometry.clone();
             wrapped.apply(new WrappingCoordinateFilter(radius, radius * 2, mt, northEast));
             wrapped.geometryChanged();
             // did we un-wrap it?
-            if (wrapped.getEnvelopeInternal().getWidth() < radius) {
-                geometry = wrapped;
-                env = geometry.getEnvelopeInternal();
-            }
+            // if (isUnwrapped(wrapped)) {
+            geometry = wrapped;
+            env = geometry.getEnvelopeInternal();
+            // }
         }
 
         // The viewing area might contain the geometry multiple times due to
@@ -116,8 +118,12 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         } else {
             base = env.getMinX();
             curr = env.getMinX();
-            lowLimit = Math.max(renderingEnvelope.getMinX(), renderingEnvelope.getMedian(0) - maxWraps * radius * 2); 
-            highLimit = Math.min(renderingEnvelope.getMaxX(), renderingEnvelope.getMedian(0) + maxWraps * radius * 2);
+            double geometryWidth = geometry.getEnvelopeInternal().getWidth();
+            lowLimit = Math.max(
+                    renderingEnvelope.getMinX() - geometryWidth,
+                    renderingEnvelope.getMedian(0) - maxWraps * radius * 2);
+            highLimit = Math.min(renderingEnvelope.getMaxX() + geometryWidth,
+                    renderingEnvelope.getMedian(0) + maxWraps * radius * 2);
         }
         while (curr > lowLimit) {
             curr -= radius * 2;
@@ -164,6 +170,26 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             return geometry.getFactory().createGeometryCollection(
                     geoms.toArray(new Geometry[geoms.size()]));
         }
+    }
+
+    private boolean isUnwrapped(final Geometry geometry) {
+        if (geometry instanceof GeometryCollection) {
+            final AtomicBoolean unwrapped = new AtomicBoolean(true);
+            geometry.apply(new GeometryComponentFilter() {
+
+                @Override
+                public void filter(Geometry geom) {
+                    if (geom != geometry && geom.getEnvelopeInternal().getWidth() > radius) {
+                        unwrapped.set(false);
+                    }
+
+                }
+            });
+            return unwrapped.get();
+        } else {
+            return geometry.getEnvelopeInternal().getWidth() <= radius;
+        }
+
     }
 
     /**

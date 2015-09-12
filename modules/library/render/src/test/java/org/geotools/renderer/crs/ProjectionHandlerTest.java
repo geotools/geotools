@@ -24,6 +24,7 @@ import com.vividsolutions.jts.geom.CoordinateFilter;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -733,5 +734,37 @@ public class ProjectionHandlerTest {
         Geometry postProcessed = handler.postProcess(CRS.findMathTransform(WGS84, WGS84), expected);
         // check the geometry is in the same area as the rendering envelope
         assertEquals(expected, postProcessed);
+    }
+
+    @Test
+    public void testWrapPDCMercator() throws Exception {
+        CoordinateReferenceSystem pdc = CRS.decode("EPSG:3832", true);
+        ReferencedEnvelope world = new ReferencedEnvelope(-20000000, 20000000, -20000000, 20000000,
+                pdc);
+        Geometry g = new WKTReader().read(
+                "MULTIPOLYGON(((-73 60, -73 83, -11 83, -11 60, -73 60)),((-10 60, -10 61, -11 61, -11 60, -10 60)))");
+        Geometry original = (Geometry) g.clone();
+        //
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, WGS84, true);
+        assertTrue(handler.requiresProcessing(g));
+        Geometry preProcessed = handler.preProcess(g);
+        // no cutting expected
+        assertEquals(original, preProcessed);
+        // post process (provide identity transform to force wrap heuristic)
+        MathTransform mt = CRS.findMathTransform(WGS84, pdc, true);
+        Geometry transformed = JTS.transform(g, mt);
+        final Geometry postProcessed = handler.postProcess(mt, transformed);
+        // make sure we got the geometry unwrapped and replicated
+        assertEquals(3, postProcessed.getNumGeometries());
+        postProcessed.apply(new GeometryComponentFilter() {
+            
+            @Override
+            public void filter(Geometry geom) {
+                if(geom != postProcessed && geom.getEnvelopeInternal().getWidth() > 40000000) {
+                    fail("The geometry did not get rewrapped properly");
+                }
+                
+            }
+        });
     }
 }

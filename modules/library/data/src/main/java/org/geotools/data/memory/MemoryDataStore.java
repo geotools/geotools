@@ -24,17 +24,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Level;
 
-import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
-import org.geotools.data.SchemaNotFoundException;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
@@ -42,19 +37,12 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This is an example implementation of a DataStore used for testing.
@@ -80,7 +68,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class MemoryDataStore extends ContentDataStore {
     /** Memory holds Map of Feature by fid by typeName. */
-    protected Map<String,Map<String,SimpleFeature>> memory = new LinkedHashMap<String,Map<String,SimpleFeature>>();
+    protected Map<String,ConcurrentSkipListMap<String,SimpleFeature>> memory = new LinkedHashMap<String,ConcurrentSkipListMap<String,SimpleFeature>>();
 
     /** Schema holds FeatureType by typeName */
     protected Map<String,SimpleFeatureType> schema = new HashMap<String,SimpleFeatureType>();
@@ -94,7 +82,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @param schema An empty feature collection of this type will be made available
      */
     public MemoryDataStore(SimpleFeatureType featureType) {
-        Map<String,SimpleFeature> featureMap = new ConcurrentHashMap<String,SimpleFeature>();
+    	ConcurrentSkipListMap<String,SimpleFeature> featureMap = new ConcurrentSkipListMap<String,SimpleFeature>();
         String typeName = featureType.getTypeName();
         schema.put(typeName, featureType);
         memory.put(typeName, featureMap);
@@ -131,7 +119,7 @@ public class MemoryDataStore extends ContentDataStore {
             // use an order preserving map, so that features are returned in the same
             // order as they were inserted. This is important for repeatable rendering
             // of overlapping features.
-            Map<String,SimpleFeature> featureMap = new ConcurrentHashMap<String,SimpleFeature>();
+            ConcurrentSkipListMap<String,SimpleFeature> featureMap = new ConcurrentSkipListMap<String,SimpleFeature>();
             String typeName;
             SimpleFeature feature;
 
@@ -172,7 +160,7 @@ public class MemoryDataStore extends ContentDataStore {
     public void addFeatures(SimpleFeatureIterator reader) throws IOException {
         try {
             SimpleFeatureType featureType;
-            Map<String,SimpleFeature> featureMap = new ConcurrentHashMap<String,SimpleFeature>();
+            ConcurrentSkipListMap<String,SimpleFeature> featureMap = new ConcurrentSkipListMap<String,SimpleFeature>();
             String typeName;
             SimpleFeature feature;
 
@@ -372,8 +360,8 @@ public class MemoryDataStore extends ContentDataStore {
             throw new IOException(typeName + " already exists");
         }
             // insertion order preserving map
-            Map<String,SimpleFeature> featuresMap = new ConcurrentHashMap<String,SimpleFeature>();
-            schema.put(typeName, featureType);
-            memory.put(typeName, featuresMap);
+        ConcurrentSkipListMap<String,SimpleFeature> featuresMap = new ConcurrentSkipListMap<String,SimpleFeature>();
+        schema.put(typeName, featureType);
+        memory.put(typeName, featuresMap);
     }
 }

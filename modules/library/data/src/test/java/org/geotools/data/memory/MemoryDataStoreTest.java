@@ -19,7 +19,6 @@ package org.geotools.data.memory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +30,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.DiffFeatureReader;
-import org.geotools.data.EmptyFeatureReader;
-import org.geotools.data.EmptyFeatureWriter;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureLock;
@@ -41,18 +38,15 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FilteringFeatureReader;
-import org.geotools.data.FilteringFeatureWriter;
 import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.TransactionStateDiff;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureStore;
-import org.geotools.data.store.DiffTransactionState;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -61,9 +55,6 @@ import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -444,17 +435,17 @@ public class MemoryDataStoreTest extends DataTestCase {
                 new Integer(1),
                 line(new int[] { 1, 1, 2, 2, 4, 2, 5, 1 }),
                 "r1"
-            }, null
+            }, "r1"
         );
         dynFeatures[1] = SimpleFeatureBuilder.build(roadType, new Object[] {
                 new Integer(2), line(new int[] { 3, 0, 3, 2, 3, 3, 3, 4 }),
                 "r2"
-            }, null
+            }, "r2"
         );
         dynFeatures[2] = SimpleFeatureBuilder.build(roadType, new Object[] {
                 new Integer(3),
                 line(new int[] { 3, 2, 4, 2, 5, 3 }), "r3"
-            }, null
+            }, "r3"
         );
         assertOrderSame(dynFeatures);
     }

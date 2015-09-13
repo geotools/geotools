@@ -13,7 +13,7 @@ will have a full functional CSVDataStore supporting both read and write operatio
    
    CSVDataStore Read-Write
    
-The DataStore API provides three categories of public methods involved in making content writable.
+The DataStore API provides three categories of public methods involved in making content writeable.
 
 * DataStore.createSchema( featureType ) - sets up a new entry for content of the provided type
 * DataStore.getFeatureWriter( typeName ) - a low-level iterator that allows writing
@@ -21,7 +21,7 @@ The DataStore API provides three categories of public methods involved in making
 
 The infrastructure to support this functionality is quite extensive. A few highlights from the above diagram:
 
-* ContentState.listerners - event notification for changed content
+* ContentState.listeners - event notification for changed content
 * ContentState.tx  - transaction object used by clients to stash session callbacks
 * ContentState.transactionState: provides transaction independence between threads working on the same content.
 
@@ -72,7 +72,7 @@ functionality.
    
 2. And revise our implementation of **createFeatureSource( ContentEntry )**.
    
-   While we will still return a **FeatureSource**, we have the option of returning a the subclass
+   While we will still return a **FeatureSource**, we have the option of returning the subclass
    **FeatureStore** for read-write files. 
    
    The **FeatureStore** interface provides additional methods allowing the modification of content.
@@ -96,12 +96,12 @@ CSVFFeatureStore has an interesting design constraint:
 So what is the trouble? Java only allows single inheritance - forcing us to account for all the
 work we did reading features in CSVFeatureSource.
 
-Many first generation DataStore implementations practiced cut and paste coding, meaning fixes would
+Many first generation DataStore implementations practised cut and paste coding, meaning fixes would
 often get applied in one spot and not another making for a frustrating debugging experience.
 
-Instead we are going to use a **delegate** CSVFeatureStore, hidden from public view, simply to
-call its methods for reading. This prevents code duplication, makinng the code easier to maintain,
-at the coast of some up front complexity.
+Instead we are going to use a **delegate** CSVFeatureStore, hidden from public
+view, simply to call its methods for reading. This prevents code duplication,
+making the code easier to maintain, at the cost of some up front complexity.
 
 .. figure:: images/CSVFeatureStore.png
    
@@ -134,7 +134,7 @@ are always on the same transaction, but other than that this approach is working
       of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
       FileInputStream).
       
-      You can control what decorators/wrappers are applied, by as shown in the following table.
+      You can control which decorators/wrappers are applied, by as shown in the following table.
       
           ==================== ===============
           Handle               Override
@@ -183,6 +183,7 @@ are always on the same transaction, but other than that this approach is working
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
       :language: java
       :start-after: // public start
+      :end-before: // public end
 
 #. You can see what this looks like in context by reviewing the :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java>` from the **gt-csv** plugin.
 
@@ -234,7 +235,7 @@ A couple common questions:
   
 * Q: How does that work with transactions?
   
-  ContentState managed a DiffTransactionState used to capture each modification. Each change is
+  ContentState manages a DiffTransactionState used to capture each modification. Each change is
   recorded by FeatureId (a feature recorded for each add or modification, or null recorded
   for a delete).
   
@@ -243,7 +244,7 @@ A couple common questions:
      Transaction and DiffTransactionState
      
   As CSVFeatureReader is used to access the file contents, a wrapper checks the Diff
-  and dynamically modifies the content to match any outstnding edits. When it reaches the end of
+  and dynamically modifies the content to match any outstanding edits. When it reaches the end of
   your file, it keeps going listing any features that were added.
 
 * Q: That is fine for transaction independence, what if two FeatueSources are using the
@@ -278,7 +279,7 @@ A couple common questions:
   This makes the ContentState recorded for Transaction.AUTO_COMMIT special in that it represents
   the point of truth on the files current status. The bounds recorded for Transaction.AUTO_COMMIT
   are the bounds of the file. The number of features recorded for Transaction.AUTO_COMMIT are the
-  the number of features recorded in the file.
+  number of features recorded in the file.
 
 Now that we have some idea of what is riding on top, lets implement our CSVFeatureWriter:
 
@@ -297,7 +298,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    * Creating a CsvWriter for output
    * Quickly making a copy of the file if we are just interested in appending
    * Starting the file off with a copy of the headers
-   * Creating a delegate to read the origional file
+   * Creating a delegate to read the original file
    
    Putting all that together:
    
@@ -365,7 +366,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    .. note::
       
       Previous implementations would make a copy of the feature to return. When write was called
-      copy would be compared to the origional to see if any change had been made. Why? So that an
+      copy would be compared to the original to see if any change had been made. Why? So that an
       appropriate event notification could be sent out.
       
       This is another case where a wrapper has been created, and applied by ContentFeatureStore.

@@ -41,19 +41,19 @@ Our initial implementation will result in a read-only datastore for accessing CS
       :start-after: // header start
       :end-before: // header end
 
-#. Add the reader
-
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
-      :language: java
-      :start-after: // reader start
-      :end-before: // reader end
-
 #. We are going to be working with a single CSV file
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
       :language: java
       :start-after: // constructor start
       :end-before: // constructor end
+
+#. Add the reader
+
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+      :language: java
+      :start-after: // reader start
+      :end-before: // reader end
 
 
 #. Listing TypeNames

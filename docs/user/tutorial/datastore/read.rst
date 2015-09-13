@@ -15,7 +15,7 @@ CSVDataStore API for data access:
 * DataStore.getFeatureReader( featureType, filter, transaction )
 * DataStore.getFeatureSource( typeName )
 
-If you would like to follow along with these examples you can
+If you would like to follow along with these examples you can download 
 :download:`CSVTest.java </../src/main/java/org/geotools/tutorial/csv/CSVTest.java>`.
 
 * DataStore.getTypeNames()
@@ -104,9 +104,10 @@ If you would like to follow along with these examples you can
     The coordinate returned by the DataStore will be processed , either natively by
     Advanced DataStores, or using GeoTools reprojection routines.
 
-  .. note::
+  .. I suspect the following is no longer relevant (based on above)
+  .. .. note::
      
-     Since this tutorial was written Query has expanding its capabilities
+  ..    Since this tutorial was written Query has expanding its capabilities
      (and the capabilities of your DataStore) to include support for reprojection.
      
      It also offers an "open ended" pathway for expansion using "query hints".
@@ -146,7 +147,7 @@ If you would like to follow along with these examples you can
 
 * DataStore.getFeatureSource( typeName )
   
-  This method is the gateway to our high level as provided by an instance of FeatureSource,
+  This method is the gateway to the higher level interface as provided by an instance of FeatureSource,
   FeatureStore or FeatureLocking. The returned instance represents the contents of a single
   named FeatureType provided by the DataStore. The type of the returned instance indicates
   the capabilities available.
@@ -236,7 +237,7 @@ provide optimised implementations that handles the above methods natively.
 
 .. note::
    
-   Warning: When calling ``FeatureSource.count(Query.ALL)`` be aware a DataStore implementation may return ``-1`` indicating that the value is expensive for the DataStore to calculate. 
+   Warning: When calling ``FeatureSource.count(Query.ALL)`` be aware a DataStore implementation may return ``-1`` indicating that the value is too expensive for the DataStore to calculate. 
    
    You can think of this as:
    

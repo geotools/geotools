@@ -92,7 +92,7 @@ Time to create a new project making use of this library:
 
 #. Create a new project:
 
-   * Using Eclipse: :menuselection:`New --> Project` to create a `Maven Project` with group `org.geotools.tutorial* and name `csv`.
+   * Using Eclipse: :menuselection:`New --> Project` to create a `Maven Project` with group `org.geotools.tutorial` and name `csv`.
    * Using Maven: ``mvn archetype:create -DgroupId=org.geotools.tutorial -DartifactId=csv``
 
 #. Fill in project details, paying careful attention to the *gt.version* property you wish to use. You can choose a stable release (recommended) or use |branch|-SNAPSHOT for access to the latest nightly build.

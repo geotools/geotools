@@ -167,7 +167,7 @@ are always on the same transaction, but other than that this approach is working
    We have to do one "fix" to allow handle visitor method to be called - add the following to
       **CSVFeatureSource**.
       
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
       :language: java
       :start-after: // visitor start
       :end-before: // visitor end

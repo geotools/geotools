@@ -590,6 +590,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         Map<String, String> dimensionsMapping = reader.georeferencing.getDimensions();
         Set<String> keys = dimensionsMapping.keySet();
         int indexAttribute = FIRST_ATTRIBUTE_INDEX;
+        final AttributeDescriptor attributeDescriptor = indexSchema.getDescriptor(indexAttribute);
+        final String updatedAttribute = attributeDescriptor.getLocalName();
+        if ("location".equalsIgnoreCase(updatedAttribute)) {
+            // Skip location attribute
+            indexAttribute++;
+        }
 
         // Remap time
         String currentDimName = NetCDFUtilities.TIME_DIM;
@@ -735,17 +741,18 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      */
     private void initTemporalDomain(CoordinateVariable<?> cv, List<DimensionDescriptor> dimensions) throws IOException {
        if(!cv.getType().equals(Date.class)){
-           throw new IllegalArgumentException("Unable to init temporal domani from CoordinateVariable that does not bind to Date");
+           throw new IllegalArgumentException("Unable to init temporal domain from CoordinateVariable that does not bind to Date");
        }
        if(!(cv.getCoordinateReferenceSystem() instanceof TemporalCRS)){
-           throw new IllegalArgumentException("Unable to init temporal domani from CoordinateVariable that does not have a TemporalCRS");
+           throw new IllegalArgumentException("Unable to init temporal domain from CoordinateVariable that does not have a TemporalCRS");
        }
        this.setHasTemporalDomain(true);
        final UnidataTemporalDomain temporalDomain = new UnidataTemporalDomain(cv);
        this.setTemporalDomain(temporalDomain);
-     //TODO: Fix that once schema attributes to dimension mapping is merged from Simone's code
+
+       String timeAttribute = reader.uniqueTimeAttribute ? NetCDFUtilities.TIME : cv.getName();
        dimensions.add(new DefaultDimensionDescriptor(Utils.TIME_DOMAIN, 
-               CoverageUtilities.UCUM.TIME_UNITS.getName(), CoverageUtilities.UCUM.TIME_UNITS.getSymbol(), cv.getName(), null));
+               CoverageUtilities.UCUM.TIME_UNITS.getName(), CoverageUtilities.UCUM.TIME_UNITS.getSymbol(), timeAttribute, null));
     }
 
     /**
@@ -1166,12 +1173,23 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
         // TIME management
         // Check if we have time and elevation domain and set the attribute if needed
-        String timeAttribute = null;
-        if (date != null) {
-            timeAttribute = getTimeAttribute(cs);
-            feature.setAttribute(timeAttribute, date);
-        }
+        String originalTimeAttribute = setFeatureTime(feature, date, cs);
+        setOtherFeatureAttribute(feature, verticalValue, indexSchema, variable, dimSize, originalTimeAttribute);
 
+        return feature;
+    }
+
+    /**
+     * 
+     * @param feature
+     * @param verticalValue
+     * @param indexSchema
+     * @param variable
+     * @param dimSize
+     * @param originalTimeAttribute
+     */
+    private void setOtherFeatureAttribute(SimpleFeature feature, Number verticalValue,
+            SimpleFeatureType indexSchema, Variable variable, int dimSize, String originalTimeAttribute) {
         List<AttributeDescriptor> descriptors = indexSchema.getAttributeDescriptors();
         // ELEVATION or other dimension
         if (!Double.isNaN(verticalValue.doubleValue())) {
@@ -1191,7 +1209,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 String attrib = null;
                 for (int i = 0; i < dimSize; i++) {
                     attrib = variable.getDimension(i).getShortName();
-                    if (!attrib.equalsIgnoreCase(timeAttribute)) {
+                    // Time has already been set
+                    if (!attrib.equalsIgnoreCase(originalTimeAttribute)) {
                         attribute = attrib;
                         break;
                     }
@@ -1199,8 +1218,19 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             }
             feature.setAttribute(attribute, verticalValue);
         }
+    }
 
-        return feature;
+    private String setFeatureTime(SimpleFeature feature, Date date, CoordinateSystem cs) {
+        String originalTimeAttribute = null;
+        if (date != null) {
+            originalTimeAttribute = getTimeAttribute(cs);
+            String timeAttribute = originalTimeAttribute;
+            if (reader.uniqueTimeAttribute) {
+                timeAttribute = NetCDFUtilities.TIME;
+            }
+            feature.setAttribute(timeAttribute, date);
+        }
+        return originalTimeAttribute;
     }
 
     private String getTimeAttribute(CoordinateSystem cs) {

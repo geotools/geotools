@@ -19,9 +19,9 @@ package org.geotools.imageio.netcdf;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -195,7 +195,7 @@ class NetCDFGeoreferenceManager {
             }
         }
         coordinatesVariables = coordinates;
-        initMapping(dataset.getCoordinateAxes());
+        initMapping(coordinates);
     }
 
     /**
@@ -300,13 +300,14 @@ class NetCDFGeoreferenceManager {
      *  
      * @param coordinateAxes
      */
-    private void initMapping(List<CoordinateAxis> coordinateAxes) {
+    private void initMapping(Map<String, CoordinateVariable<?>> coordinates) {
         // check other dimensions
         int coordinates2D = 0;
         Map<String, String> dimensionsMap = new HashMap<String, String>();
-        for (CoordinateAxis axis : coordinateAxes) {
+        Set<String> coordinateKeys = new TreeSet<String>(coordinates.keySet());
+        for (String key : coordinateKeys) {
             // get from coordinate vars
-            final CoordinateVariable<?> cv = getCoordinateVariable(axis.getFullName());
+            final CoordinateVariable<?> cv = getCoordinateVariable(key);
             if (cv != null) {
                 final String name = cv.getName();
                 AxisType axisType = cv.getAxisType();
@@ -350,7 +351,7 @@ class NetCDFGeoreferenceManager {
                 }
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + dataset.getLocation());
+                    LOGGER.fine("Null coordinate variable: '" + key + "' while processing input: " + dataset.getLocation());
                 }
             }
         }

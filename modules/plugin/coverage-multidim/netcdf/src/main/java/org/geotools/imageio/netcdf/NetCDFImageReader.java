@@ -145,6 +145,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     private CheckType checkType = CheckType.UNSET;
 
+    /** 
+     * States whether any underlying time dimension should be indexed by "time" (instead of time1, time2, ...)
+     * stored as a field of the reader to avoid multiple searches of the indexer 
+     */
+    boolean uniqueTimeAttribute = false;
+
     /** Internal Cache for CoverageSourceDescriptor.**/
     private final SoftValueHashMap<String, VariableAdapter> coverageSourceDescriptorsCache= new SoftValueHashMap<String, VariableAdapter>();
 
@@ -442,6 +448,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 // get the coordinate variables
                 georeferencing = new NetCDFGeoreferenceManager(dataset);
                 final File slicesIndexFile = ancillaryFileManager.getSlicesIndexFile();
+                uniqueTimeAttribute = ancillaryFileManager.getParameterAsBoolean(NetCDFUtilities.UNIQUE_TIME_ATTRIBUTE);
 
                 if (slicesIndexFile != null) {
                     // === use sidecar index
@@ -914,10 +921,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 }
                 continue;
             }
-            final String name = cv.getName();
+            String name = cv.getName();
             switch(cv.getAxisType()){
             case GeoX: case GeoY: case Lat: case Lon:
                 continue;
+            case Time:
+                name = uniqueTimeAttribute ? NetCDFUtilities.TIME : name;
             }
             schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }

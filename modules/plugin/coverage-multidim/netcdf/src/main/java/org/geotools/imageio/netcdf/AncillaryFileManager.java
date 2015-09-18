@@ -835,12 +835,22 @@ public class AncillaryFileManager implements FileSetManager{
      */
     private void checkStoreWrapping(DataStoreConfiguration datastoreConfiguration) throws IOException {
         Map<String, Serializable> params = datastoreConfiguration.getParams();
-        ParametersType indexerParams = indexer != null ? indexer.getParameters() : null;
-        String param = IndexerUtils.getParam(indexerParams, Utils.Prop.WRAP_STORE);
+        String param = getParameter(Utils.Prop.WRAP_STORE);
         if (param != null && param.trim().equalsIgnoreCase("true")) {
             params.put(Utils.Prop.WRAP_STORE, true);
             params.put(Utils.Prop.PARENT_LOCATION, DataUtilities.fileToURL(getDestinationDir())
                     .toString());
         }
+    }
+
+    public String getParameter (String parameterKey) {
+        ParametersType indexerParams = indexer != null ? indexer.getParameters() : null;
+        return IndexerUtils.getParam(indexerParams, parameterKey);
+    }
+
+    public boolean getParameterAsBoolean (String parameterKey) {
+        ParametersType indexerParams = indexer != null ? indexer.getParameters() : null;
+        String param = IndexerUtils.getParam(indexerParams, parameterKey);
+        return Boolean.valueOf(param);
     }
 }

@@ -116,6 +116,7 @@ public class NetCDFUtilities {
 
     public static final String UNKNOWN = "unknown";
 
+    public static final double DEFAULT_EARTH_RADIUS = 6371229.0d; 
 
     private NetCDFUtilities() {
 

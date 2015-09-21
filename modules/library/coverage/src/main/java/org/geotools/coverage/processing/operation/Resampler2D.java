@@ -703,21 +703,23 @@ final class Resampler2D extends GridCoverage2D {
                  * TODO: Move the check for AffineTransform into WarpTransform2D.
                  */
                 boolean forceAdapter = false;
-                switch (sourceImage.getSampleModel().getTransferType()) {
-                    case DataBuffer.TYPE_DOUBLE:
-                    case DataBuffer.TYPE_FLOAT: {
-                        Envelope source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
-                        Envelope target = CRS.transform(targetGG.getEnvelope(), targetCRS);
-                        source = targetGG.reduce(source);
-                        target = targetGG.reduce(target);
-                        if (!(new GeneralEnvelope(source).contains(target, true))) {
-                            if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
-                                return reproject(sourceCoverage, targetCRS, targetGG, null, hints, background);
-                            } else {
-                                // If we were already using nearest-neighbor interpolation, force
-                                // usage of WarpAdapter2D instead of WarpAffine. The price will be
-                                // a slower reprojection.
-                                forceAdapter = true;
+                if (!JAIExt.isJAIExtOperation("Warp")) {
+                    switch (sourceImage.getSampleModel().getTransferType()) {
+                        case DataBuffer.TYPE_DOUBLE:
+                        case DataBuffer.TYPE_FLOAT: {
+                            Envelope source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
+                            Envelope target = CRS.transform(targetGG.getEnvelope(), targetCRS);
+                            source = targetGG.reduce(source);
+                            target = targetGG.reduce(target);
+                            if (!(new GeneralEnvelope(source).contains(target, true))) {
+                                if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
+                                    return reproject(sourceCoverage, targetCRS, targetGG, null, hints, background);
+                                } else {
+                                    // If we were already using nearest-neighbor interpolation, force
+                                    // usage of WarpAdapter2D instead of WarpAffine. The price will be
+                                    // a slower reprojection.
+                                    forceAdapter = true;
+                                }
                             }
                         }
                     }

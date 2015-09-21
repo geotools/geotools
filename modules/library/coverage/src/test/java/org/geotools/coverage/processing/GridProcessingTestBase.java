@@ -186,4 +186,8 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
 
         // TODO: we should probably invoke "assertRasterEquals" with both coverages.
     }
+    
+    public void floatHack(){
+        
+    }
 }

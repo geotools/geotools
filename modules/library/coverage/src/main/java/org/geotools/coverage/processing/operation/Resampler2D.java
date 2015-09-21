@@ -691,6 +691,7 @@ final class Resampler2D extends GridCoverage2D {
                         target = targetGG.reduce(target);
                         if (!(new GeneralEnvelope(source).contains(target, true))) {
                             if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
+                                hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
                                 return reproject(sourceCoverage, targetCRS, targetGG, null, hints, background);
                             } else {
                                 // If we were already using nearest-neighbor interpolation, force

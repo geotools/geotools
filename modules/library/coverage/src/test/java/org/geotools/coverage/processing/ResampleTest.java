@@ -16,7 +16,12 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -30,7 +35,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
@@ -505,5 +509,38 @@ public final class ResampleTest extends GridProcessingTestBase {
         assertSame(point, expected.transform(point, point)); // Round toward neareast integer
     }
     
-    
+    /**
+     * Testing hack on float and double 
+     * @throws Exception in case something bad happens
+     */
+    @Test
+    public void testFloatCoverage() throws Exception{
+        // make sure final GG is slightly bigger than original
+        CoordinateReferenceSystem webMercator = CRS.parseWKT(GOOGLE_MERCATOR_WKT);
+        GridGeometry2D targetGG = new GridGeometry2D(
+                new GridEnvelope2D(
+                        floatCoverage.getGridGeometry().getGridRange2D().x-10,
+                        floatCoverage.getGridGeometry().getGridRange2D().y-10, 
+                        floatCoverage.getGridGeometry().getGridRange2D().width+20,
+                        floatCoverage.getGridGeometry().getGridRange2D().height+20),
+                floatCoverage.getGridGeometry().getCRSToGrid2D(),
+                webMercator
+                );
+        
+        
+        // reproject
+        GridCoverage2D coverage_ = project(
+                floatCoverage,
+                webMercator, 
+                targetGG,
+                "bilinear", 
+                null,
+                true);
+        
+        // check CRS, this is a minimal check, if we get here things already work since 
+        // in the past we would have not reached this stage due to stackoverflow
+        assertTrue(CRS.equalsIgnoreMetadata(coverage_.getCoordinateReferenceSystem(), webMercator));
+         
+        
+    }
 }

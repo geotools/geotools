@@ -53,6 +53,8 @@ import org.opengis.referencing.operation.Projection;
  */
 public class NetCDFCRSTest extends Assert {
 
+    private final static double DELTA = 1E-6;
+
     /**
      * Sets up the custom definitions
      */
@@ -179,8 +181,26 @@ public class NetCDFCRSTest extends Assert {
        assertTrue(CRS.equalsIgnoreMetadata(baseCRS, DefaultGeographicCRS.WGS84));
        assertTrue(transform instanceof LambertConformal1SP);
     }
-    
-    
+
+    @Test
+    public void testDefaultDatumSetup() throws Exception {
+       ParameterValueGroup params = ProjectionBuilder.getProjectionParameters(NetCDFProjection.LAMBERT_CONFORMAL_CONIC_1SP.getOGCName());
+       params.parameter("central_meridian").setValue(-95.0);
+       params.parameter("latitude_of_origin").setValue(25.0); 
+       params.parameter("scale_factor").setValue(1.0); 
+       params.parameter("false_easting").setValue(0.0); 
+       params.parameter("false_northing").setValue(0.0); 
+
+       // Intentionally left empty
+       Map<String, Number> ellipsoidParams = new HashMap<String, Number>();
+
+       Ellipsoid ellipsoid = ProjectionBuilder.createEllipsoid("Unknown", ellipsoidParams);
+       ProjectionBuilder.updateEllipsoidParams(params, ellipsoid);
+       assertEquals(NetCDFUtilities.DEFAULT_EARTH_RADIUS, ellipsoid.getSemiMajorAxis(), DELTA);
+       assertEquals(NetCDFUtilities.DEFAULT_EARTH_RADIUS, ellipsoid.getSemiMinorAxis(), DELTA);
+       assertTrue(Double.isInfinite(ellipsoid.getInverseFlattening()));
+    }
+
     /**
      * Cleanup the custom definitions
      */

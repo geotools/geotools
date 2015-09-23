@@ -16,22 +16,6 @@
  */
 package org.geotools.image;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.lookup.LookupTable;
-import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.stats.HistogramWrapper;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -132,6 +116,22 @@ import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.jai.util.ImageUtil;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
+import it.geosolutions.jaiext.classifier.ColorMapTransform;
+import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
+import it.geosolutions.jaiext.colorindexer.ColorIndexer;
+import it.geosolutions.jaiext.lookup.LookupTable;
+import it.geosolutions.jaiext.lookup.LookupTableFactory;
+import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+import it.geosolutions.jaiext.stats.HistogramWrapper;
+import it.geosolutions.jaiext.stats.Statistics;
+import it.geosolutions.jaiext.stats.Statistics.StatsType;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain #ImageWorker(RenderedImage) creation time}. Sucessive
@@ -3992,8 +3992,7 @@ public class ImageWorker {
                             result.setProperty("MathTransform", chained);
                             image = result;
                             // getting the new ROI property
-                            PropertyGenerator gen = getOperationDescriptor("Warp").getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                            Object prop = gen.getProperty("roi", image);
+                            Object prop = result.getProperty("roi");
                             if (prop != null && prop instanceof ROI){
                                 setROI((ROI) prop);
                             } else {
@@ -4479,9 +4478,7 @@ public class ImageWorker {
             }
         }
         image = JAI.create("Warp", pb, getRenderingHints());
-        // getting the new ROI property
-        PropertyGenerator gen = getOperationDescriptor("Warp").getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-        Object prop = gen.getProperty("roi", image);
+        Object prop = image.getProperty("roi");
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);
         }  else {

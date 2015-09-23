@@ -122,7 +122,8 @@ public class ImageAssert {
                             .initCause(e);
                 }
             } else {
-                throw new AssertionError("Reference image is missing: " + expectedFile);
+                throw new AssertionError("Reference image is missing: " + expectedFile
+                        + ", add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
             }
         } else {
             RenderedImage expectedImage = ImageIO.read(expectedFile);

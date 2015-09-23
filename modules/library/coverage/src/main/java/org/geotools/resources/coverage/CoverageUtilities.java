@@ -16,9 +16,6 @@
  */
 package org.geotools.resources.coverage;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
@@ -55,6 +52,9 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 
 
 /**
@@ -519,7 +519,7 @@ public final class CoverageUtilities {
 		case DataBuffer.TYPE_INT:
 			return Integer.valueOf(Integer.MIN_VALUE);
 		case DataBuffer.TYPE_SHORT:
-			return Short.valueOf((short)Short.MIN_VALUE);
+			return Short.valueOf(Short.MIN_VALUE);
 		case DataBuffer.TYPE_DOUBLE:
 			return Double.valueOf(Double.NaN);
 		case DataBuffer.TYPE_FLOAT:

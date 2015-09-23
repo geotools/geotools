@@ -17,11 +17,6 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -75,6 +70,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 
 /**
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
@@ -792,6 +792,14 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         ROI roi = CoverageUtilities.getROIProperty(coverage);
         assertNotNull(roi);
         // Ensure has the same size of the input image
+        checkROI(coverage, roi);
+        // make sure the ROI is also present at the image level
+        Object imageRoi = coverage.getRenderedImage().getProperty("ROI");
+        assertTrue(imageRoi instanceof ROI);
+        checkROI(coverage, (ROI) imageRoi);
+    }
+
+    private void checkROI(GridCoverage2D coverage, ROI roi) {
         Rectangle roiBounds = roi.getBounds();
         Rectangle imgBounds = coverage.getGridGeometry().getGridRange2D();
         assertEquals(imgBounds.x, roiBounds.x);

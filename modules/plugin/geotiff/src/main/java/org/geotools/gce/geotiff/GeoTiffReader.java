@@ -820,6 +820,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         }
         // Setting ROI Property
         if (roi != null) {
+            image.setProperty("ROI", roi);
             CoverageUtilities.setROIProperty(properties, roi);
         }
         

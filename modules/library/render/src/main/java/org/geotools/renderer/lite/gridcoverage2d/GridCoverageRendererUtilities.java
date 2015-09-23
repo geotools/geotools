@@ -27,6 +27,7 @@ import java.util.List;
 import javax.media.jai.Interpolation;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -34,12 +35,14 @@ import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
+import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -339,6 +342,28 @@ final class GridCoverageRendererUtilities {
         param.parameter("destNoData").setValue(background);
         return (GridCoverage2D) ((Crop)processor.getOperation("CoverageCrop")).doOperation(param, hints);
     
+    }
+
+    static GridCoverage2D displace(GridCoverage2D coverage, double tx, double ty,
+            GridCoverageFactory gridCoverageFactory) {
+        // let's compute the new grid geometry
+        GridGeometry2D originalGG = coverage.getGridGeometry();
+        GridEnvelope gridRange = originalGG.getGridRange();
+        Envelope2D envelope = originalGG.getEnvelope2D();
+
+        double minx = envelope.getMinX() + tx;
+        double miny = envelope.getMinY() + ty;
+        double maxx = envelope.getMaxX() + tx;
+        double maxy = envelope.getMaxY() + ty;
+        ReferencedEnvelope translatedEnvelope = new ReferencedEnvelope(minx, maxx, miny, maxy,
+                envelope.getCoordinateReferenceSystem());
+
+        GridGeometry2D translatedGG = new GridGeometry2D(gridRange, translatedEnvelope);
+
+        GridCoverage2D translatedCoverage = gridCoverageFactory.create(coverage.getName(),
+                coverage.getRenderedImage(), translatedGG, coverage.getSampleDimensions(),
+                new GridCoverage2D[] { coverage }, coverage.getProperties());
+        return translatedCoverage;
     }
 
     /**

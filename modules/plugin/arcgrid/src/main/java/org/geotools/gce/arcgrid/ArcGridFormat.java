@@ -86,8 +86,8 @@ public final class ArcGridFormat extends AbstractGridFormat implements Format {
 	private void setInfo() {
 		HashMap<String, String> info = new HashMap<String, String>();
 
-		info.put("name", "ArcGrid");
-		info.put("description", "Arc Grid Coverage Format");
+		info.put("name", "ArcGrid (ASCII)");
+		info.put("description", "ARC/INFO ASCII GRID Coverage Format");
 		info.put("vendor", "Geotools");
 		info.put("docURL", "http://gdal.velocet.ca/projects/aigrid/index.html");
 		info.put("version", "1.0");

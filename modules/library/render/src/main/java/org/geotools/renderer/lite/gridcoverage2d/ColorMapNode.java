@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
+import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
@@ -31,7 +32,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.factory.Hints;
-import org.geotools.referencing.piecewise.Domain1D;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
@@ -144,9 +144,15 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 			final GridCoverage2D sourceCoverage = (GridCoverage2D) source.getOutput();
 			GridCoverageRendererUtilities.ensureSourceNotNull(sourceCoverage, "ColorMapNode");
 			final int numSD = sourceCoverage.getNumSampleDimensions();
-			if (numSD>1)
-				throw new IllegalArgumentException(
-						Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1,Integer.valueOf(numSD)));
+            if (numSD > 1) {
+                // check it, is it gray + alpha?
+                ColorModel cm = sourceCoverage.getRenderedImage().getColorModel();
+                if (!cm.hasAlpha() && cm.getNumColorComponents() != 2) {
+                    // let's check, it might
+                    throw new IllegalArgumentException(
+                            Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
+                }
+            }
 			// /////////////////////////////////////////////////////////////////////
 			//
 			// Check the sample dimension we are going to use for NoData
@@ -157,7 +163,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 			// have a valid NoDataValue that we can use.
 			//
 			// /////////////////////////////////////////////////////////////////////
-			final GridSampleDimension candidateSD = (GridSampleDimension) sourceCoverage.getSampleDimension(0);
+			final GridSampleDimension candidateSD = sourceCoverage.getSampleDimension(0);
 			double[] candidateNoDataValues = preparaNoDataValues(candidateSD);
 
 			// /////////////////////////////////////////////////////////////////////

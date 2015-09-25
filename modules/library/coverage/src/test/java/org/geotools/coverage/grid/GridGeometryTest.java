@@ -16,7 +16,15 @@
  */
 package org.geotools.coverage.grid;
 
-import com.vividsolutions.jts.geom.Envelope;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -24,8 +32,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.Test;
+import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.datum.PixelInCell;
@@ -33,10 +44,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-
-import static org.junit.Assert.*;
+import com.vividsolutions.jts.geom.Envelope;
 
 
 /**
@@ -49,6 +57,9 @@ import static org.junit.Assert.*;
  * @author Martin Desruisseaux (IRD)
  */
 public final class GridGeometryTest extends GridCoverageTestBase {
+
+    static final double EPS = 1e-6;
+
     /**
      * Tests the construction with an identity transform.
      */
@@ -269,6 +280,43 @@ public final class GridGeometryTest extends GridCoverageTestBase {
                 worldBounds.getHeight() - 2 * cellWidthY);
 
         assertTrue( expectedEnv.boundsEquals(subEnv, 0, 1, TOL) );
+    }
+
+    @Test
+    public void testCanonicalFromOrthogonal() throws Exception {
+        Envelope2D bbox = new Envelope2D(DefaultGeographicCRS.WGS84, 150, 40, 10, 10);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100),
+                (org.opengis.geometry.Envelope) bbox);
+
+        GridGeometry2D canonical = gg.toCanonical();
+        assertEquivalentCanonical(gg, canonical);
+    }
+
+    @Test
+    public void testCanonicalFromRotated() throws Exception {
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100),
+                new AffineTransform2D(0.001, -0.5, 0.5, 0.001, -10, -20),
+                DefaultGeographicCRS.WGS84);
+
+        GridGeometry2D canonical = gg.toCanonical();
+        assertEquivalentCanonical(gg, canonical);
+    }
+
+    private void assertEquivalentCanonical(GridGeometry2D original, GridGeometry2D canonical) {
+        // check the grid range
+        GridEnvelope canonicalRange = canonical.getGridRange();
+        assertEquals(0, canonicalRange.getLow(0));
+        assertEquals(0, canonicalRange.getLow(1));
+        GridEnvelope originalRange = original.getGridRange();
+        assertEquals(originalRange.getSpan(0), canonicalRange.getSpan(0));
+        assertEquals(originalRange.getSpan(1), canonicalRange.getSpan(1));
+        // check the envelope
+        Envelope2D bbox = original.getEnvelope2D();
+        Envelope2D canonicalBbox = canonical.getEnvelope2D();
+        assertEquals(bbox.getMinX(), canonicalBbox.getMinX(), EPS);
+        assertEquals(bbox.getMinY(), canonicalBbox.getMinY(), EPS);
+        assertEquals(bbox.getMaxX(), canonicalBbox.getMaxX(), EPS);
+        assertEquals(bbox.getMaxY(), canonicalBbox.getMaxY(), EPS);
     }
 
 }

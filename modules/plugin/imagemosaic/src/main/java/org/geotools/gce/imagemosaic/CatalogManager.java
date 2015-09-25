@@ -62,6 +62,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.referencing.CRS;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
@@ -263,10 +264,12 @@ public class CatalogManager {
                 if (actualCRS != null) {
                     Set<ReferenceIdentifier> identifiers = actualCRS.getIdentifiers();
                     if (identifiers == null || identifiers.isEmpty()) {
+                        Integer code = CRS.lookupEpsgCode(actualCRS, true);
+                        int nativeSrid = code == null ? 0 : code;
                         GeometryDescriptor geometryDescriptor = indexSchema.getGeometryDescriptor();
                         if (geometryDescriptor != null) {
                             Map<Object, Object> userData = geometryDescriptor.getUserData();
-                            userData.put(JDBCDataStore.JDBC_NATIVE_SRID,0);
+                            userData.put(JDBCDataStore.JDBC_NATIVE_SRID, nativeSrid);
                         }
                     }
                 }

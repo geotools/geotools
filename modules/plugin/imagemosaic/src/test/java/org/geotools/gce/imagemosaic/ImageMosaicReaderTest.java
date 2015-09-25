@@ -17,11 +17,6 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -65,9 +60,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -100,7 +92,6 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
@@ -133,6 +124,14 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.JAIExt;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -794,7 +793,13 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		
 		// Test the output coverage
-		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai }, "Imposed BBox");
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader,
+                new GeneralParameterValue[] { gg, useJai }, "Imposed BBox");
+
+        // check that the grid geometry is canonical
+        GridGeometry2D ggCoverage = coverage.getGridGeometry();
+        assertEquals(0, ggCoverage.getGridRange().getLow(0));
+        assertEquals(0, ggCoverage.getGridRange().getLow(1));
 	}	
 	
 
@@ -3852,13 +3857,13 @@ public class ImageMosaicReaderTest extends Assert{
         final File testMosaic = TestData.file(this, "/empty_mosaic/empty_mosaic.shp");
         assertTrue(testMosaic.exists());
 
-        ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormat()
+        ImageMosaicReader reader = new ImageMosaicFormat()
                 .getReader(testMosaic);
         
         // remove cached granules on error and reload
         reader.granuleCatalog.removeGranules(new Query("empty_mosaic", Filter.INCLUDE));
         reader.dispose();
-        reader = (ImageMosaicReader) new ImageMosaicFormat().getReader(testMosaic);
+        reader = new ImageMosaicFormat().getReader(testMosaic);
         
         // manager should have an empty bbox
         final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
@@ -3957,7 +3962,7 @@ public class ImageMosaicReaderTest extends Assert{
         final File testMosaic = TestData.file(this, "/empty_mosaic/empty_mosaic_with_caching.shp");
         assertTrue(testMosaic.exists());
 
-        final ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormat()
+        final ImageMosaicReader reader = new ImageMosaicFormat()
                 .getReader(testMosaic);
         
         // manager should have an empty bbox

@@ -444,7 +444,7 @@ class RasterLayerRequest {
         	if (value == null)
         		return;
             final GridGeometry2D gg = (GridGeometry2D) value;
-            spatialRequestHelper.setRequestedGridGeometry(gg);
+            spatialRequestHelper.setRequestedGridGeometry(gg.toCanonical());
             return;
         }
 

@@ -1,7 +1,7 @@
 Axis
 ----
 
-A quick page to help take apart the CoordianteReferenceSystem object and figure out what the raw data is measuring.
+A quick page to help take apart the CoordinateReferenceSystem object and figure out what the raw data is measuring.
 
 This is most often phrased as the question "What axis is X?" on our mailing list.
 
@@ -76,12 +76,12 @@ Avoid Assumptions
 ^^^^^^^^^^^^^^^^^
 
 This is a problem when you run into code that would like to assume that each DirectPosition contains data in (x,y) order
-(ie matching the screen).
+(i.e. matching the screen).
 
 There exist many methods that are almost helpful:
 
 * getHorizontalCRS return the GeographicCRS or ProjectedCRS part, or a DerivedCRS based on the above, that applies to
-  the Earth's surface (ie real geophysical meaning - not the first two axis).
+  the Earth's surface (i.e. real geophysical meaning - not the first two axis).
 
 * You would still need to account for axis direction and polar coordinates on your own time.
 
@@ -107,7 +107,7 @@ This code will fail when presented with:
 * data in which the direction of the axis is not what was expected
 * data that was collected in polar coordinates
 
-Please note that some GeoTools classes, such as CRSUtiities.getCRS2D, often make use of this assumption; blinding
+Please note that some GeoTools classes, such as CRSUtilities.getCRS2D, often make use of this assumption; blindly
 returning the first 2 dimensions no matter what they are.
 
 Quick Fix
@@ -192,5 +192,5 @@ This code will fail when presented with:
 * data that was collected in polar coordinates
 
 Please note that you will still miss out on a lot of data, we have only looked for AxisDirection that match our
-assumptions (ie that the data is across an increasing - such as EAST). We are missing out on other data that is
+assumptions (i.e. that the data is across an increasing - such as EAST). We are missing out on other data that is
 obviously across but is decreasing - such as WEST.

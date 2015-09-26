@@ -1,7 +1,7 @@
 Bindings
 ^^^^^^^^
 
-A binding is what transforms xml into a java object and vice versa. Bindings can be attached to the following types of xml "components":
+A binding is what transforms XML into a Java object and vice versa. Bindings can be attached to the following types of XML "components":
 
 * elements
 * attributes
@@ -53,7 +53,7 @@ http://www.opengis.net/gml       AbstractFeatureType  Complex type "AbstractFeat
 Binding Type
 ''''''''''''
 
-The job of a binding is to transform between objects and xml. Along with the target xml component, a binding declares the type of the resulting java object.::
+The job of a binding is to transform between objects and XML. Along with the target XML component, a binding declares the type of the resulting java object.::
   
   Class getType();
 
@@ -70,7 +70,7 @@ http://www.opengis.net/gml, AbstractFeatureType org.geotools.feature.Feature
 Binding Execution
 '''''''''''''''''
 
-When an element or attribute in an xml document is being parsed, a Binding Execution Chain is created for it under your control::
+When an element or attribute in an XML document is being parsed, a Binding Execution Chain is created for it under your control::
 
   int getExecutionMode();
 
@@ -90,7 +90,7 @@ So for the above example, the following bindings would form the binding executio
 
 .. image:: /images/xml/bindingChain1.png
 
-Once the binding chain has been formed, it is executed in order, with the input to the chain being the "raw" text of the element. At each binding a tranformation occurs and is passed onto the next binding in the chain. The end result of which is the final transformed value for the element.
+Once the binding chain has been formed, it is executed in order, with the input to the chain being the "raw" text of the element. At each binding a transformation occurs and is passed onto the next binding in the chain. The end result of which is the final transformed value for the element.
 
 .. image:: /images/xml/bindingChain2.png
 
@@ -109,7 +109,7 @@ The default execution behaviour is to execute after its "parent" binding has exe
   Binding completely overrides its immediate parent and all grandparents. The input to the binding is the "raw" value of 
   the element or attribute.
   
-  The execution mode which should be used really depends on both the xml type hierarchy involved, and the java object model it maps too. Continuing with the above example, in the end the desired result is to turn the string "25", into the integer 25. Using four bindings as suggested above seems to be overkill.
+  The execution mode which should be used really depends on both the XML type hierarchy involved, and the Java object model it maps to. Continuing with the above example, in the end the desired result is to turn the string "25", into the integer 25. Using four bindings as suggested above seems to be overkill.
   
   A more logical approach would be to have the "integer" binding perform the transformation directly. This can be achieved by having the integer binding declare its execution mode to be "OVERRIDE":
 
@@ -127,7 +127,7 @@ The default execution behaviour is to execute after its "parent" binding has exe
    
    .. image:: /images/xml/bindingChain4.png
    
-   So this begs the final question When would I want to bind to an element or attribute directly?. The most common case would be when a schema contains multiple elements of the same xml schema type, but which map to different java types.
+   So this begs the final question When would I want to bind to an element or attribute directly?. The most common case would be when a schema contains multiple elements of the same XML schema type, but which map to different Java types.
    
    A good example of this are the mappings from the filter schema to the gt-opengis filter object model. Consider the following element declarations for various binary comparison operations::
      
@@ -152,20 +152,20 @@ The default execution behaviour is to execute after its "parent" binding has exe
    PropertyIsGreaterThanOrEqualTo    org.opengis.filter.PropertyIsGreaterThanOrEqualTo
    ================================= ==================================================
    
-   All of the elements are of the same xml type "BinaryComparisonOpType", but each maps to a different java interface, so it makes sense to have a specific binding for each element, instead of having a single binding for the type do the work.
+   All of the elements are of the same XML type "BinaryComparisonOpType", but each maps to a different Java interface, so it makes sense to have a specific binding for each element, instead of having a single binding for the type do the work.
 
 * Encoding
   
-  Similar to parsing, encoding is executed via a binding chain. The input to the chain is the object itself and the output is xml. The formation of the chain for encoding is identical to that of parsing. So for the previous example the binding chain that would result is:
+  Similar to parsing, encoding is executed via a binding chain. The input to the chain is the object itself and the output is XML. The formation of the chain for encoding is identical to that of parsing. So for the previous example the binding chain that would result is:
 
 .. image:: /images/xml/bindingChain5.png
 
 Simple Bindings
 '''''''''''''''
 
-Types in xml schema fall into two categories: Simple and Complex. For this reason bindings also fall into the same two categories.
+Types in XML schema fall into two categories: Simple and Complex. For this reason bindings also fall into the same two categories.
 
-Simple bindings are used to parse and encode elements and attributes which have simple types. The api for simple bindings looks like::
+Simple bindings are used to parse and encode elements and attributes which have simple types. The API for simple bindings looks like::
     
     /**
      * Parses an instance component (element or attribute) into an object
@@ -203,7 +203,7 @@ Simple bindings are used to parse and encode elements and attributes which have 
   
   It takes two parameters:
   
-  * object: The object to serialize or encode as xml
+  * object: The object to serialize or encode as XML
   * value: The string value as encoded by the previous binding in the execution chain. If the binding is the first in the chain, the value is the result of calling toString() on the object parameter.
   
   The return value of the method is the serialized value for the object.
@@ -234,7 +234,7 @@ The interface for complex bindings looks like::
     Object parse(ElementInstance instance, Node node, Object value) throws Exception;
 
     /**
-     * Performs the encoding of the object into its xml representation.
+     * Performs the encoding of the object into its XML representation.
      *
      */
     Element encode(Object object, Document document, Element value) throws Exception;
@@ -256,7 +256,7 @@ The interface for complex bindings looks like::
   * nocde:: A node in the current "parse tree" ( explained below ) at the time the binding is being executed, an instance of Node
   * value: The parsed value as produced by the previous binding in the execution chain. This value is null for the first binding in the chain.
 
-  Complex types by defintion are xml elements which are composed of other xml elements and attributes. A complex object could be defined as an object which is composed of other objects. Parsing a complex object really just amounts to rounding up objects for child elements, and composing the resulting object accordingly.
+  Complex types by definition are XML elements which are composed of other XML elements and attributes. A complex object could be defined as an object which is composed of other objects. Parsing a complex object really just amounts to rounding up objects for child elements, and composing the resulting object accordingly.
   
   Parsing of complex elements occurs on the trailing edge. At which point all child elements and attributes have been parsed and placed in the "parse tree". The parse tree is an instance of Node. The Node interface contains methods for obtaining parsed values of child elements and attributes.
   
@@ -295,11 +295,11 @@ The interface for complex bindings looks like::
   
   The return value of the method is the encoded element. Often this is the same element passed in ( the value parameter ), with some content added to it.
   
-  The getProperty method for a complex binding is used to retreive properties from an object being encoded.::
+  The getProperty method for a complex binding is used to retrieve properties from an object being encoded.::
   
      Object getProperty(Object object, QName name) throws Exception;
   
-  The returned objects themselves are then encoded down the line. For an object being encoded as an element, each property corresponds to a child element or attribite.
+  The returned objects themselves are then encoded down the line. For an object being encoded as an element, each property corresponds to a child element or attribute.
   
   The method takes two parameters:
 
@@ -310,7 +310,7 @@ The interface for complex bindings looks like::
   
   .. note::
      
-    A multi-valued property is an element declaration in which the "maxOccurs" attribute is greater then 1. In this case, the getProperty method may return a collction, an array, or an iterator for the property.
+    A multi-valued property is an element declaration in which the "maxOccurs" attribute is greater then 1. In this case, the getProperty method may return a collection, an array, or an iterator for the property.
   
   The entire encoding process for a complex binding is split over these two methods.
   
@@ -335,10 +335,10 @@ The interface for complex bindings looks like::
 
     }
   
-  In the above example all of the work is dont in the getProperty method. This is often the case. However there are situations where the encode method is necessary.
+  In the above example all of the work is done in the getProperty method. This is often the case. However there are situations where the encode method is necessary.
 
-  * For types with "open-ended" or "extensible" content ( think AbstractFeatureType from the gml schema ). Since the content is open ended the schema does not contain the necessary information to retrieve the property
-  * For types with "mixed" content ( ie, can have child elements and text ). In this situation the child elements can be encoded with getProperty, and the text content can be be encoded in encode.
+  * For types with "open-ended" or "extensible" content ( think AbstractFeatureType from the GML schema ). Since the content is open ended the schema does not contain the necessary information to retrieve the property
+  * For types with "mixed" content ( i.e. can have child elements and text ). In this situation the child elements can be encoded with getProperty, and the text content can be be encoded in encode.
 
 .. note::
    
@@ -511,7 +511,7 @@ The class provides convenience methods for testing various aspects of all bindin
 
 * Type Mapping Testing
   
-  Part of testing a binding is being sure of which type of object it returns. To acheive this the binding method can be used to obtain an instance of a particular binding.::
+  Part of testing a binding is being sure of which type of object it returns. To achieve this the binding method can be used to obtain an instance of a particular binding.::
     
       /**
        * Convenience method for obtaining an instance of a binding.

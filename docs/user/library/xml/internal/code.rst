@@ -105,7 +105,7 @@ Configuration Parameter Reference
 The code generator plugins offers the following goals:
 
 * xmlcodegen:generate - Generates the parser/encoding configuration and bindings
-* xmlcodegen:generateSchema - Generates the class that represents the xml schema as a geotools feature model schema
+* xmlcodegen:generateSchema - Generates the class that represents the XML schema as a geotools feature model schema
 
 **Common Configuration**
 
@@ -113,7 +113,7 @@ Many configuration parameters are shared between the above goals. The following 
 
 * schemaLocation (no default)
   
-  Location of the \*.xsd file defining the schema. This can be a relative or aboslute path. For relative paths, the schemaSourceDirectory and schemaLookupDirectories parameters are used.::
+  Location of the \*.xsd file defining the schema. This can be a relative or absolute path. For relative paths, the schemaSourceDirectory and schemaLookupDirectories parameters are used.::
     
     
     <schemaLocation>po.xsd</schemaLocation>
@@ -156,7 +156,7 @@ Many configuration parameters are shared between the above goals. The following 
 
 * overwriteExistingFiles (default false)
   
-  Flag controlling wether existing files should be overwritten by newly generated files.::
+  Flag controlling whether existing files should be overwritten by newly generated files.::
      
      <overwriteExistingFiles>true</overwriteExistingFiles>
 
@@ -172,31 +172,31 @@ The following configuration parameters apply only to the **generate** goal:
 
 * generateXsd (default true)
   
-  Flag controlling wether the interface containing all the qualified element, attribute, and type names for the schema is generated.::
+  Flag controlling whether the interface containing all the qualified element, attribute, and type names for the schema is generated.::
     
     <generateXsd>false</generateXsd>
 
 * generateConfiguration (default true)
   
-  Flag controlling wether the Configuration for the schema should be generated.::
+  Flag controlling whether the Configuration for the schema should be generated.::
     
     <generateConfiguration>false</generateConfiguration>
 
 * generateAttributeBindings (default false)
   
-  Flag controlling wether bindings for attributes declared in the schema should be generated.::
+  Flag controlling whether bindings for attributes declared in the schema should be generated.::
      
      <generateAttributeBindings>true</generateAttributeBindings>
 
 * generateElementBindings (default false)
   
-  Flag controlling wether bindings for elements declared in the schema should be generated.::
+  Flag controlling whether bindings for elements declared in the schema should be generated.::
     
     <generateElementBindings>true</generateElementBindings>
 
 * generateTypeBindings (default true)
   
-  Flag controlling wether bindings for types declared in the schema should be generated.::
+  Flag controlling whether bindings for types declared in the schema should be generated.::
     
     <generateTypeBindings>false</generateTypeBindings>
 
@@ -238,21 +238,21 @@ The following configuration parameters apply only to the generateSchema goal:
 
 * includeComplexTypes (default true)
   
-  Controls whether complex types from the xml schema are included in the generated geotools schema
+  Controls whether complex types from the XML schema are included in the generated geotools schema
 
 * includeSimpleTypes (default true)
   
-  Controls whether simple types from the xml schema are included in the generated geotools schema.
+  Controls whether simple types from the XML schema are included in the generated geotools schema.
 
 * followComplexTypes (default false)
   
-  Controls whether the contents of complex xml types are processed during schema generation. Setting this parameter to true will cause the generator to create geotools types which model exactly their corresponding xml schema types in term of base types and composition::
+  Controls whether the contents of complex XML types are processed during schema generation. Setting this parameter to true will cause the generator to create geotools types which model exactly their corresponding XML schema types in term of base types and composition::
 
       <followComplexTypes>true</followComplexTypes>
 
 * cyclicTypeSupport (default false)
 
-  Support complex xml types that are cyclically defined, such as ``gmd:CI_CitationType`` from GML 3.2. Types in the generated Schema file will be defined using ``AbstractLazyAttributeType`` and ``AbstractLazyComplexType`` from ``gt-main``. A ``main()`` method is also included in the generated Schema class to aid testing. This option is best used with ``followComplexTypes`` set to ``true``, although if you are working with a multi-package schema such as GML 3.2, you will likely need to bootstrap with ``followComplexTypes`` set to ``false`` to generate skeleton Schema files that you can import before recreating them all with ``followComplexTypes`` set to ``true``::
+  Support complex XML types that are cyclically defined, such as ``gmd:CI_CitationType`` from GML 3.2. Types in the generated Schema file will be defined using ``AbstractLazyAttributeType`` and ``AbstractLazyComplexType`` from ``gt-main``. A ``main()`` method is also included in the generated Schema class to aid testing. This option is best used with ``followComplexTypes`` set to ``true``, although if you are working with a multi-package schema such as GML 3.2, you will likely need to bootstrap with ``followComplexTypes`` set to ``false`` to generate skeleton Schema files that you can import before recreating them all with ``followComplexTypes`` set to ``true``::
 
       <cyclicTypeSupport>true</cyclicTypeSupport>
 
@@ -266,7 +266,7 @@ The following configuration parameters apply only to the generateSchema goal:
  
 * printRecursionPaths (default false)
   
-  Causes the generator to print out information about how it recurses through the xml schema
+  Causes the generator to print out information about how it recurses through the XML schema
 
 * maxRecrusionDepth (default 15)
   

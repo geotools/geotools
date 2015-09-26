@@ -1,7 +1,7 @@
 Pregeneralized Plugin
 ---------------------
 
-This plugin offers the the possibility to use pregeneralized features to reduce cpu and memory
+This plugin offers the the possibility to use pregeneralized features to reduce CPU and memory
 usage at runtime. The effect is used to improve the response time for client code.
 
 This is an advanced plugin that is great for eking the greatest performance out of the GeoTools
@@ -64,7 +64,7 @@ To create a **PreGeneralizedDataStore**:
        }
     FeatureSource<SimpleFeatureType, SimpleFeature> fs = ds.getFeatureSource("GenStreams")
   
-  To benefit from less memory usage und less cpu consumption the usage of
+  To benefit from less memory usage and less CPU consumption the usage of
   Hints.GEOMETRY_DISTANCE is required. It is possible to pass hints to a
   query object, an example for reading all features with geometries fitting
   for a generalization of 22 meters::
@@ -112,7 +112,7 @@ To create a **PreGeneralizedDataStore**:
 Configuration
 ^^^^^^^^^^^^^
 
-This section has sample xml configuraiton files with corresponding physical layou.
+This section has sample XML configuration files with corresponding physical layout.
 
 XML
 '''
@@ -267,7 +267,7 @@ We have two alternatives for how to represent generalized feature:
   The only difference between these 5 feature sets are the geometries,
   which are generalized by 5,10,20 and 50 meters respectively.
   
-  As you can see this approach results in a fair amount of dupication.
+  As you can see this approach results in a fair amount of duplication.
   
   * GenStreams
     
@@ -456,7 +456,7 @@ Background
   implementation can build the configuration data from a jdbc database, getting as parameter a JNDI 
   name.
   
-  Once again, modifications of pregeneralized features are NOT possible.
+  Once again, modification of pregeneralized features is NOT possible.
 
 DataStructure
 ^^^^^^^^^^^^^

@@ -23,7 +23,7 @@ For the parts of GeoTools that use databases they have provided two mechanisms f
 
 * You can look up the DataSource yourself, and provide the raw javax.sql.DataSource as:
   
-  * Aa configuration Hint when creating an EpsgAuthority
+  * As a configuration Hint when creating an EpsgAuthority
   * As a connection parameter when creating a DataStore
 
 * You can provide the name and let GeoTools look up the DataSource using your GeoTools.getInitialConext()
@@ -38,7 +38,7 @@ Spring typically provides all services through Dependency Injection (DI). Geotoo
 Geotools transaction management can be performed programmatically in the application code, but Spring provides its own transaction support as well. 
 With the declarative model, developers typically write little or no code related to transaction management, and even do not depend on the Spring Framework transaction API, or any other transaction API.
 For using the declarative model with Geotools, it is necessary that Geotools simply uses the transaction/connection state provided by the Spring transaction manager and does not try to intervene with it.
-This is a possibly problem for JDBC datastores, but fortunately Geotools provides an api to pass external connections to it's internal transaction state (using the buildTransaction() method), which is ideally suited for this case.
+This is a possibly problem for JDBC datastores, but fortunately Geotools provides an API to pass external connections to it's internal transaction state (using the buildTransaction() method), which is ideally suited for this case.
 
 To use Geotools in conjunction with Spring transaction management, datastore operations in transactional methods must call the setTransaction() method with a request-scoped transaction object.
 This transaction should be created when an actual Spring transaction is started and contain the current connection of the active transaction.

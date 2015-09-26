@@ -60,7 +60,7 @@ The original wiki documentation was distributed under the free documentation lic
    Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
    the Back-Cover Texts being no Back-Cover Texts.
 
-The source code examples cited in thsi documentation is made available to the public domain. This
+The source code examples cited in this documentation is made available to the public domain. This
 covers the source code in:
 
 * demo

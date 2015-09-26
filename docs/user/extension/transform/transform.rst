@@ -8,7 +8,7 @@ The *gt-transform* module allows to wrap ``SimpleFeatureSource`` or ``SimpleFeat
   * create a new attribute as an Expression of existing attributes (the module will try to figure out the target type of the new attribute if none is provided)
   * remove attributes
 
-The transformed feature source will make sure all ``Filter`` and ``Query`` are translated back ot the original feature type when accessing data, and will apply the transformations on the fly when returning data. If the original source was writable, the transformed version will still work as writable, with back transformations of renamed/retyped attributes.
+The transformed feature source will make sure all ``Filter`` and ``Query`` are translated back to the original feature type when accessing data, and will apply the transformations on the fly when returning data. If the original source was writeable, the transformed version will still work as writeable, with back transformations of renamed/retyped attributes.
 
 **Maven**::
    
@@ -23,7 +23,7 @@ While ``TransformFeatureSource`` and ``TransformFeatureStore`` can be created di
 Selecting attributes
 ^^^^^^^^^^^^^^^^^^^^
 
-The following example shows how to setup a transformation that merely selects a subset of attributes from an original feature type ``states`` into a reduced version called ``states_mini``: 
+The following example shows how to set up a transformation that merely selects a subset of attributes from an original feature type ``states`` into a reduced version called ``states_mini``: 
 
 .. code-block:: java
 

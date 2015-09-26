@@ -5,7 +5,7 @@ Supports the parsing and encoding of geospatial information using XML.
 
 .. image:: /images/gt-xml.png
 
-There are a large number of supporting plugins capturing xml schemas, and "bindings" mapping
+There are a large number of supporting plugins capturing XML schemas, and "bindings" mapping
 these ideas into concrete Java objects.
 
 The Geotools library has spent a lot of time and energy on this problem, this document introduces

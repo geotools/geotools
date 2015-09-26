@@ -210,7 +210,7 @@ Hints:
   
 * Handling of FeatureID Yourself
   
-  Recentlyy a few datastore implementations (JDBCNG and Property) added support for a "Hint" allowing
+  Recently a few DataStore implementations (JDBCNG and Property) added support for a "Hint" allowing
   you to define your own FeatureID::
     
     if( featureStore.getQueryCapabilities().isUseExisingFIDSupported() ){
@@ -299,7 +299,7 @@ Acquiring a lock is straight forward::
         
         System.out.println("Features lock with authorisation: "+lock.getAuthorization() );
 
-To unlock the features again we need to use the authorisation provided by lock.getAuthroisation() above.
+To unlock the features again we need to use the authorisation provided by lock.getAuthorization() above.
 Usually these authorisations are stored as part of your application (as part of a session),
 and used to configure the GeoTools Transaction before use of SimpleFeatureStore.::
 

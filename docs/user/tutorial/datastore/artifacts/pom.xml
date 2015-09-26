@@ -9,7 +9,7 @@
 
  <name>CSV DataStore</name>
  <description>CSV DataStore tutorial</description>
- <url>http://maven.apache.org</url>
+ <url>http://docs.geotools.org/latest/userguide/tutorial/datastore</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

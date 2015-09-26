@@ -193,7 +193,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 	 */
 	public DirectPositionImpl clone() {
 		// Cloning the double array (in parameter) is important!
-		// Return new DirectPosition by cloning the Coordiante array of double which define the position
+		// Return new DirectPosition by cloning the Coordinate array of double which define the position
 		return new DirectPositionImpl( crs, coordinate.clone() );
 	}
 
@@ -260,7 +260,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 	}
 
 	/**
-	 * Compares coodinates of Direct Positions and allows a tolerance value in
+	 * Compares coordinates of Direct Positions and allows a tolerance value in
 	 * the comparison
 	 * 
 	 * @param position

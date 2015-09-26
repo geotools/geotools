@@ -68,7 +68,7 @@ We do have a number of custom collections, or collections provided by third part
 
   The following collections ask you to indicate the element
   type during creation - and will check that new elements
-  are of the required type as you add them to the colleciton.
+  are of the required type as you add them to the collection.
   
   * CheckedArrayList
   * CheckedCollection

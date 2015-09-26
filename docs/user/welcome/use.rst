@@ -9,7 +9,7 @@ Adding GeoTools to your Application
 -----------------------------------
 
 Maven (recommended):
-   The quickstart is writen with the maven build system in mind. The maven build
+   The quickstart is written with the maven build system in mind. The maven build
    system is very good at sorting out dependencies between lots of little jars - and
    is the recommended way to start using GeoTools.
    
@@ -79,7 +79,7 @@ Public classes are provided for the purpose of:
 * Helping glue the library together at runtime - an example is the FactoryFinders which allow you
   to look up available implementations on the CLASSPATH.
 * GeoTools "Extensions" provide additional services on top of the library and require additional
-  public classes to make this happen. An example is the ColorBrewer class provied by gt-brewer.
+  public classes to make this happen. An example is the ColorBrewer class provided by gt-brewer.
 
 You can make use of public classes in these modules directly, in all cases they are utilities to
 get the job done. These classes are suitable for use in your import section. There is no need to
@@ -141,7 +141,7 @@ Creating in GeoTools
 ^^^^^^^^^^^^^^^^^^^^
 
 To create an implementation (and not get your hands dirty by depending on a specific class) Java
-developers are asked to use a Factory. Other languages like scala allow the definition of a
+developers are asked to use a Factory. Other languages like Scala allow the definition of a
 constructors as part of the interface itself.
 
 In GeoTools we use a "FactoryFinder" to look for a factory implementation on the classpath.
@@ -187,13 +187,13 @@ CommonFactoryFinder
 * FeatureTypeFactory - factory used to create feature type description
 * FeatureCollections - factory used to create feature collection
 
-For access to feature (ie vector) information:
+For access to feature (i.e. vector) information:
 
 * DataAccessFinder - listing DataAccessFactory for working with feature data
 * DataStoreFinder - lists DataStoreFactorySpi limited to simple features
 * FileDataStoreFinder - Create of FileDataStoreFactorySpi instances limited to file formats
 
-For access to coverage (ie raster) information:
+For access to coverage (i.e. raster) information:
 
 * GridFormatFinder - access to GridFormatFactorySpi supporting raster formats
 * CoverageFactoryFinder - access to GridCoverageFactory 
@@ -262,9 +262,9 @@ If you are curious you can make use of the FactorySPI system yourself to locate 
 
 Notes:
 
-* keep you FactoryRegistery around, hold it in a static field or global lookup service such as JNDI.
+* keep your FactoryRegistry around, hold it in a static field or global lookup service such as JNDI.
 * The registry usually creates one instance (the first time you ask) and will return it to you again next time
-* Specifically it will create you one instance per configuration (ie that Hints object), so if you ask again using the same hints you will get the same instance back
+* Specifically it will create you one instance per configuration (i.e. that Hints object), so if you ask again using the same hints you will get the same instance back
 
 Think of FactoryRegistry keeping instances as singletons for you.  In the same manner as it is a Java best practice (when making a singleton) to "partition" by ThreadGroup (so different applets use different singletons). FactoryRegistry does not follow this practice - it uses Hints to "partition" - so two applets that are configured the same will end up using the same FilterFactory.
 
@@ -289,7 +289,7 @@ factories together.
 Popular techniques:
 
 * reflection - picocontainer looks the constructors using reflection to see if any of the required parameters are available
-* configuration - Spring uses a big xml file marking how each factory is created
+* configuration - Spring uses a big XML file marking how each factory is created
 
 The other nice thing is the container can put off creating the
 factories until you actually ask for them.::
@@ -300,7 +300,7 @@ factories until you actually ask for them.::
   container.registerImplementationClass( ComplexFactory.class, ComplexFactoryImpl.class );
   container.registerImplementationClass( AggregateFactory.class AggregateFactoryImpl.class );
   
-  container.registerInstance( CoordianteReferenceSystem.class, CRS.decode("EPSG:4326") );
+  container.registerInstance( CoordinateReferenceSystem.class, CRS.decode("EPSG:4326") );
   
   WKTParser parser = (WKTParser) container.newInstance( WKTParser.class );
 
@@ -333,7 +333,7 @@ The difference between JNDI and a Container:
   
   A Java EE Application Server runs programs in a "container" and part
   of the "container configuration" is making sure that JNDI is set up
-  and pointing to the Services (ie global variables) that the
+  and pointing to the Services (i.e. global variables) that the
   Application Server makes available to all applications.
   
   This same directory service can be used by you to share global

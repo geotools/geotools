@@ -1,7 +1,7 @@
 DataUtilities
 -------------
 
-Working with GIS data can be difficulty. Working with the number of classes in the GeoTools library can also be a bit intimidating. The **DataUtilitis** a facade classes which can help simplify common data wrangling chores.
+Working with GIS data can be difficult. Working with the number of classes in the GeoTools library can also be a bit intimidating. The **DataUtilities** a facade classes which can help simplify common data wrangling chores.
 
 In almost all cases the methods for this class act as a front end for the classes provided by gt-main. This documentation makes note of the classes used internally so you can learn how the library is put together and can go look for more control if needed.
 

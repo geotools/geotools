@@ -15,7 +15,7 @@ topics such as job notices or advertising products or services are best placed e
 notices there is the `FOSS GIS mailing list <http://lists.osgeo.org/mailman/listinfo/jobs>`_ and the
 `OSGeo Jobs Board <http://wiki.osgeo.org/wiki/Jobs_Board>`_. For other topics such as product or
 company news, please contact a member of the GeoTools Project Management Committee to discuss
-pubishing an item on the GeoTools blog.
+publishing an item on the GeoTools blog.
 
 Be polite 
 ---------

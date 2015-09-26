@@ -28,7 +28,7 @@ The following tools are required to build GeoTools:
   
   * http://www.oracle.com/technetwork/java/javase/overview/index.html
 
-The following optional downloads facilitate increased functionality or performance:
+The following optional downloads provide increased functionality or performance:
 
 * Java Advanced Imaging (Optional)
   
@@ -39,7 +39,7 @@ The following optional downloads facilitate increased functionality or performan
 
 * Java ImageIO (Optional)
   
-  Java Image I/O Tools 1.1 is a java extensions providing drivers for reading and writing
+  Java Image I/O Tools 1.1 is a Java extension providing drivers for reading and writing
   image files.
   
   * http://download.java.net/media/jai-imageio/builds/release/1.1/

@@ -1,7 +1,7 @@
 SVG Plugin
 ----------
 
-The **gt-svg** plugin uses the Batik library to support the use of svg graphics.
+The **gt-svg** plugin uses the Batik library to support the use of SVG graphics.
 
 **Maven**::
    

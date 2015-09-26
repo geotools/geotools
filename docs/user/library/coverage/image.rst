@@ -8,8 +8,8 @@ file along side the image defining the image's extend and use this plugin.
 
 **References**
 
+* https://en.wikipedia.org/wiki/World_file
 * http://www.kralidis.ca/gis/worldfile.htm
-* http://geos.gsi.gov.il/vladi/FEFLOW/help/general/file_format.html#tfw_file
 
 **Maven**::
    

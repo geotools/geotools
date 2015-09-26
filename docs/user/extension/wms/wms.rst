@@ -3,7 +3,7 @@ WebMapServer
 
 The client code is fairly slick in that it takes care of version negotiation, and even a few server specific wrinkles for you.
 
-This page contains examples how how to connect and use the GeoTools WebMapServer class. WebMapServer acts as a proxy for a remote "Web Map Server" and can be used to examine and retrieve published information in the forms of descriptive java beans, and raw images.
+This page contains examples how how to connect and use the GeoTools WebMapServer class. WebMapServer acts as a proxy for a remote "Web Map Server" and can be used to examine and retrieve published information in the forms of descriptive Java beans, and raw images.
 
 * To begin communicating with a server, pass in a URL pointing to a WMS Capabilities document.
   
@@ -98,7 +98,7 @@ The concept of a Layer in WMS is a bit strange. Not all layers are useful (some 
 
 Rather than figure all this out yourself we recommend using the WMSUtils utility class.
 
-To retrieve all the layers that can be requested (ie they have a name) try the following::
+To retrieve all the layers that can be requested (i.e. they have a name) try the following::
   
   Layer[] layers = WMSUtils.getNamedLayers(capabilities);
 
@@ -133,7 +133,7 @@ For each layer you can get its available styles::
 GetMapRequest
 ^^^^^^^^^^^^^
 
-Making a GetMap request is more interesting then looking at WMSCapabilities.
+Making a GetMap request is more interesting than looking at WMSCapabilities.
 
 1. We need to ask the client to create us a GetMapRequest object::
      

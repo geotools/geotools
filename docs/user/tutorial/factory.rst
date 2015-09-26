@@ -136,7 +136,7 @@ To continue with our implementation we will define ExampleFunctionFactory:
     
 6. That is it SnapFunction is now published!
 
-Step 3 FactoryRegistery
+Step 3 FactoryRegistry
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Geotools 2.2 uses javax.imageio.ServiceRegistry magic (where this plug-in system originated from).
@@ -146,7 +146,7 @@ are stateless this should not be a problem.
 Direct use of FactoryRegistry
 '''''''''''''''''''''''''''''
 
-1. You can directly use FactoryRegistery in your own code::
+1. You can directly use FactoryRegistry in your own code::
     
       Set categories = Collections.singleton(new Class[] {FunctionFactory.class,});
       FactoryRegistry registry = new FactoryRegistry(categories);

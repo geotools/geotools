@@ -75,7 +75,7 @@ public class ReferencedEnvelopeTest {
         newZealand.include( 33, 180);
         try {
             australia.intersection(newZealand);
-            fail( "Expected a missmatch of CoordianteReferenceSystem");
+            fail( "Expected a mismatch of CoordinateReferenceSystem");
         }
         catch (MismatchedReferenceSystemException t){
             // expected
@@ -93,14 +93,14 @@ public class ReferencedEnvelopeTest {
         
         try {
             australia.expandToInclude( newZealand);
-            fail( "Expected a missmatch of CoordianteReferenceSystem");
+            fail( "Expected a mismatch of CoordinateReferenceSystem");
         }
         catch (MismatchedReferenceSystemException t){
             // expected
         }
         try {
             australia.include( newZealand);
-            fail( "Expected a missmatch of CoordianteReferenceSystem");
+            fail( "Expected a mismatch of CoordinateReferenceSystem");
         }
         catch (MismatchedReferenceSystemException t){
             // expected

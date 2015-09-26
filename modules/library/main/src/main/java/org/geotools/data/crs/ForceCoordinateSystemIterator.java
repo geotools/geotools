@@ -50,7 +50,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *     originalReader.getFeatureType().getDefaultGeometry().getCoordianteSystem();
  * 
  * CoordinateReferenceSystem newCS =
- *     reader.getFeatureType().getDefaultGeometry().getCoordianteSystem();
+ *     reader.getFeatureType().getDefaultGeometry().getCoordinateSystem();
  * 
  * assertEquals( forceCS, newCS );
  * </code></pre>

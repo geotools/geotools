@@ -31,7 +31,7 @@ context use the following::
 Logging
 ^^^^^^^
 
-If you are working in your own application, you can teach GeoTools to use your application logging facilities (rather than Java loggin which it uses by internal default).::
+If you are working in your own application, you can teach GeoTools to use your application logging facilities (rather than Java logging which it uses by internal default).::
   
   GeoTools.setLoggerFactory( loggerFactory );
 

@@ -12,7 +12,7 @@ These pages document hosting a GeoTools application in different environments, a
 Service Provide Interface
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Out of the box the GeoTools library operates using Java's built in "Factory SPI" look up mechanism to find plug-ins on the CLASSPATH. The Factory SPI system makes use of additional files in a jars MANIFEST/ directory, the GeoTools library looks at these files to find out what is available.
+Out of the box the GeoTools library operates using Java's built in "Factory SPI" look up mechanism to find plug-ins on the CLASSPATH. The Factory SPI system makes use of additional files in a jar's MANIFEST/ directory, the GeoTools library looks at these files to find out what is available.
 
 Using Hints
 '''''''''''
@@ -50,7 +50,7 @@ Command Line
        */
       public class ToWKT {
           public void main(String args[]){
-              CoordianteReferenceSystem crs = CRS.decode( "EPSG:"+args[0] );
+              CoordinateReferenceSystem crs = CRS.decode( "EPSG:"+args[0] );
               System.out.println( crs );
           }
       }

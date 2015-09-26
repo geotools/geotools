@@ -3,7 +3,7 @@ Upgrade
 
 With a library as old as GeoTools you will occasionally run into a project from ten years ago that
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
-fundemental changes with code examples showing how to upgrade your code.
+fundamental changes with code examples showing how to upgrade your code.
 
 But first to upgrade - change your dependency to |release| (or an appropriate stable version)::
     
@@ -50,7 +50,7 @@ GeoTools 10.0
    For background details on any API changes review the change proposals above.
 
 GeoTools 10 add significant improvements in the coverage reading API.
-For those migrating the first visible benefit is that referring to a generic grid coverage reader does not require anymore to use AbstractGridCoverage2DReader (an abstract class) but tto the new GridCoverage2DReader interface. The old usage is still supported though, as most readers are still extending the same base class, but the usage of the interface allows for reader wrappers.
+For those migrating the first visible benefit is that referring to a generic grid coverage reader does not require anymore to use AbstractGridCoverage2DReader (an abstract class) but to the new GridCoverage2DReader interface. The old usage is still supported though, as most readers are still extending the same base class, but the usage of the interface allows for reader wrappers.
 
 BEFORE::
 
@@ -78,7 +78,7 @@ ReferencedEnvelope and CRS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ReferencedEnvelope has in the past only supported 2D extents, we have introduced the subclass ReferencedEnvelope3D
-to support CoordianteReferenceSystems with three dimensions.
+to support CoordinateReferenceSystems with three dimensions.
 
 There is now a new factory method to safely construct the appropriate implementation for a provided CoordinateReferenceSystem
 as shown below.
@@ -94,7 +94,7 @@ AFTER::
   ReferencedEnvelope copy = ReferencedEnvelope.create( bbox );
 
 This represents an *incompatible API change*, existing code using "new ReferencedEnvelope" may now throw
-a RuntimeException when supplied with an incompatible CoordianteReferenceSystem.
+a RuntimeException when supplied with an incompatible CoordinateReferenceSystem.
 
 FeatureCollection Add
 ^^^^^^^^^^^^^^^^^^^^^
@@ -242,7 +242,7 @@ GeoTools 8.0
 
    * `GeoTools 8.0 <http://docs.codehaus.org/display/GEOTOOLS/8.x>`_
 
-   You are encourged to review the change proposals for GeoTools 8.0 for background information
+   You are encouraged to review the change proposals for GeoTools 8.0 for background information
    on the following changes.
 
 The changes moving from GeoTools 2.7 to GeoTools 8.0 have a great emphasis on usability and
@@ -306,7 +306,7 @@ Function
 We have extended **gt-opengis** Function to make the FunctionName description (especially
 argument names) more available.
 
-* To updateyour code::
+* To update your code::
 
     class SplitFunction implements Function {
         public static FunctionName NAME = new FunctionNameImpl( "split", "geometry", "line" );
@@ -364,7 +364,7 @@ Point.setPosition()                     Point.setDirectPosition()        For con
 NumberRange
 ^^^^^^^^^^^
 
-The **gt-metadata** NumberRange class is finally sheading some of its deprecated methods.
+The **gt-metadata** NumberRange class is finally shedding some of its deprecated methods.
 
 ** BEFORE::
 
@@ -382,10 +382,10 @@ GeoTools 2.7
 
    * `GeoTools 2.7.0 <http://docs.codehaus.org/display/GEOTOOLS/2.7.x>`_
 
-   You are encourged to review the change proposals for GeoTools 2.7.0 for background information
+   You are encouraged to review the change proposals for GeoTools 2.7.0 for background information
    on the following changes.
 
-The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readible; you will
+The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readable; you will
 find a number of optional changes (such as using Query rather than DefaultQuery) which will
 simplify make your code easier to follow.
 
@@ -416,7 +416,7 @@ Tips:
 SimpleFeatureCollection
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-We have vastly cut down the use of Java generics for causual users of the GeoTools library. The
+We have vastly cut down the use of Java generics for casual users of the GeoTools library. The
 primary example of this is the introduction of **SimpleFeatureCollection** (which saves you
 typing in **FeatureCollection<SimpleFeatureType,SimpleFeature>** each time).
 
@@ -580,7 +580,7 @@ GeoTools 2.6
 
    * `GeoTools 2.6.0 <http://docs.codehaus.org/display/GEOTOOLS/2.6.x>`_
 
-   You are encourged to review the change proposals for GeoTools 2.6.0 for background information
+   You are encouraged to review the change proposals for GeoTools 2.6.0 for background information
    on the following changes.
 
 The GeoTools 2.6.0 release is incremental in nature with the main change being the introduction
@@ -615,8 +615,8 @@ There are a few more caveats, which we are showing here below.
 BEFORE:
 
 1. Use getSpan where getLength was used
-2. Be EXTREMELY careful with the convetions for the inclusion/exclusion of the maximum coordinates.
-3. GridRange2D IS a Ractangle and is mutable now!
+2. Be EXTREMELY careful with the conventions for the inclusion/exclusion of the maximum coordinates.
+3. GridRange2D IS a Rectangle and is mutable now!
 
    BEFORE::
 
@@ -708,7 +708,7 @@ Hints:
 
 * This change allows us to store basic parameters to control how we will perform subsequent
   reads from this reader. The&nbsp; AbstractGridFormat READ_GRIDGEOMETRY2D parameter will be
-  always overriden during a subsequent read.
+  always overridden during a subsequent read.
 
 Coverage Processing Classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -796,7 +796,7 @@ GeoTools 2.5
 
    * `GeoTools 2.5.0 <http://docs.codehaus.org/display/GEOTOOLS/2.5.x>`_
 
-   You are encourged to review the change proposals for GeoTools 2.5.0 for background information
+   You are encouraged to review the change proposals for GeoTools 2.5.0 for background information
    on the following changes.
 
 The GeoTools 2.5.0 release is a major change to the GeoTools library due to the adoption of both
@@ -809,7 +809,7 @@ In transitioning your code to Java 5 please be careful not use use the *for each
 We still need to call FeatureCollection.close( iterator).
 
 Due to this restriction (of not using *for each* loop construct we have had to make FeatureCollection
-no longer Colection.
+no longer Collection.
 
 * Example (GeoTools 2.5 code)::
 
@@ -890,7 +890,7 @@ place to extend SimpleFeature.
 
         import org.geotools.feature.FeatureType;
         ...
-        CoordianteReferenceSystem crs = CRS.decode("EPSG:4326");
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
         final AttributeType GEOM =
             AttributeTypeFactory.newAttributeType("Location",Point.class,true, null,null,crs );
         final AttributeType NAME =
@@ -1119,11 +1119,11 @@ GeoTools 2.4
 
    * `GeoTools 2.4.0 <http://docs.codehaus.org/display/GEOTOOLS/2.4.x>`_
 
-   You are encourged to review the change proposals for GeoTools 2.4.0 for background information
+   You are encouraged to review the change proposals for GeoTools 2.4.0 for background information
    on the following changes.
 
 The GeoTools 2.4.0 release is a major change to the GeoTools library due to the adoption of geoapi
-Filter model. This new fileter model is immutable making it impossible to modify filters that
+Filter model. This new filter model is immutable making it impossible to modify filters that
 have already been constructed; in trade it is threadsafe.
 
 The following is needed when upgrading to 2.4.
@@ -1144,7 +1144,7 @@ Rename FactoryFinder to ReferencingFactoryFinder
 FeatureStore addFeatures
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The use of FeatureReader has been revmoved from the FeatureStore API.
+The use of FeatureReader has been removed from the FeatureStore API.
 
 * Before (GeoTools 2.2 Code)::
 
@@ -1436,11 +1436,11 @@ Notes:
 * you will have to make API changes to pass the intended parent collection in
 
 This is a mistake with the previous feature model (for a feature can exist in more then one
-collection) and we appologize for the inconvience.
+collection) and we apologise for the inconvenience.
 
 Split Classification Expressions
 
-The biggest user of the feature.getParent() mistake was the implementation of classificaiton
+The biggest user of the feature.getParent() mistake was the implementation of classification
 functions. You will now need to split up these expressions into two parts.
 
 * BEFORE (GeoTools 2.3):
@@ -1468,7 +1468,7 @@ functions. You will now need to split up these expressions into two parts.
 GTRenderer
 ^^^^^^^^^^
 
-The GTRender interface was produced as a nuetral ground for client code; traditional users of
+The GTRender interface was produced as a neutral ground for client code; traditional users of
 LiteRenderer and LiteRenderer2 are asked to move to the implementation of GTRenderer called
 StreamingRenderer.
 

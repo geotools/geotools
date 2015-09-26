@@ -12,7 +12,7 @@ the facilities we use to wire the library together at runtime.
 The gt-metadata module is responsible for:
 
 * implementation of the metadata interfaces from :doc:`gt-opengis <../opengis/index>` such as Citation and Identifier
-* Configuring the library at runtime with **GeoTools** and **FactoryRegistery** and **Logging** facilities
+* Configuring the library at runtime with **GeoTools** and **FactoryRegistry** and **Logging** facilities
 * Utility classes with helpful implementations for Collections, Caching and Object pools
 
 **References**

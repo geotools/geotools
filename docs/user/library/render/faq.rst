@@ -68,8 +68,8 @@ order to draw something on screen.
 Q: What about Raster Advanced Projection Handling?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Advanced Proejction Handling is a feature provided by the GridCoverageRenderer class
-for handling Raster reprojection. It is expecially useful when trying to
+Advanced Projection Handling is a feature provided by the GridCoverageRenderer class
+for handling Raster reprojection. It is especially useful when trying to
 read a GridCoverage with a BoundingBox crossing the DateLine: the final image 
 is not cut on the DateLine but it is replicated as many times as the DateLine
 is crossed.

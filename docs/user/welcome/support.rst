@@ -6,7 +6,7 @@ Email
 
 The geotools-users email list is a great place to start out; ask questions and share tips and tricks on using the library.
 
-The users list is for questions regarding the installation or use of the GeoTools2 library. Users of GeoTools are usually java developers building applications with spatial capabilities.
+The users list is for questions regarding the installation or use of the GeoTools2 library. Users of GeoTools are usually Java developers building applications with spatial capabilities.
 
 * https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users
 * http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-gt2-users
@@ -32,7 +32,7 @@ The information you need to configure your IRC client are:
 Question and Answer Forums
 --------------------------
 
-A recent fad is the advent of question and answer forums, while these websites are not an official means of communication they do offer a an advantage over the traditional email list in that good answers can be voted relevant.
+A recent fad is the advent of question and answer forums, while these websites are not an official means of communication they do offer an advantage over the traditional email list in that good answers can be voted relevant.
 
 Tips for use:
 
@@ -65,8 +65,7 @@ or people like you hiring an organisation to for specific work.
 Issue Tracker
 -------------
 
-GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by Atlassian and
-hosted by CodeHaus. This is where all bugs should be reported, in addition to requested features
+GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by OSGeo and hosted by Atlassian. This is where all bugs should be reported, in addition to requested features
 and improvements.
 
 To create an issue:
@@ -115,7 +114,7 @@ To create an issue:
 
 7. When will your bug be fixed?
    
-   Well for the above bug report Andrea Aimie (the module maintainer) will get
+   Well for the above bug report Andrea Aime (the module maintainer) will get
    assigned the bug by default, and will probably respond with a nice email
    explaining the problem.::
      
@@ -131,8 +130,8 @@ To create an issue:
 
 8. For New Bugs we may need assistance to reproduce the issue before a fix can be considered.
    
-   Uually the a Developer (or the Module Maintainer) will need to ask you for more information.
-   Until they can reproduce you issue, or you volunteer to test, not much is going to happen.
+   Usually the a Developer (or the Module Maintainer) will need to ask you for more information.
+   Until they can reproduce your issue, or you volunteer to test, not much is going to happen.
    
    Example: If you are on some exotic hardware (like oracle on windows server) that we do not
    have public access to you will probably need to arrange to meet on IRC and test out different
@@ -140,7 +139,7 @@ To create an issue:
    
 9. For new bugs with a Patch.
    
-   You can attach a code patch to the Jira task and ask the module maintainer include
+   You can attach a code patch to the Jira task and ask the module maintainer to include
    your fix in the next release.
    
    * For fixes: please include a JUnit test case showing that your fix does something. If a developer needs

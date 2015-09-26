@@ -515,7 +515,7 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * graphic-resize(true): Stretches the graphic below a label to fit the label size. Possible values are 'stretch', 'proportional'.
   
-* group (false) If true, geometries with the same labels are grouped and considered a single entity to be labeled. This allows to avoid or control repeated labels
+* group (false) If true, geometries with the same labels are grouped and considered a single entity to be labelled. This allows to avoid or control repeated labels
   
 * labelAllGroup(false) When false,  only the biggest geometry in a group is labelled (the biggest is obtained by merging, when possible, the original geometries). When true, also the smaller items in the group are labeled. Works only on lines at the moment.
   
@@ -559,7 +559,7 @@ You will find that not all Style objects accept a StyleVisitor; as an example Fo
 
 **Ready to Use Implementations**
 
-There are a number of ready to use implementations; while we have provided some examples on this page please explore what is available in the library - you can do this quikly by checking the javadocs.
+There are a number of ready to use implementations; while we have provided some examples on this page please explore what is available in the library - you can do this quickly by checking the javadocs.
 
 * StyleAttributeExtractor - return all the attributes mentioned by this style; used by the renderer when constructing a Query
 * DuplicatingStyleVisitor - return a copy of the style

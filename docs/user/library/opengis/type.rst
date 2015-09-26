@@ -26,7 +26,7 @@ The type is represented by PropertyType, AttributeType, GeometryType, ComplexTyp
 
 .. image:: /images/feature_type_model.PNG
 
-This forms a "dynamic type system" indicating we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these faciities is considered experimental at present.
+This forms a "dynamic type system" indicating we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these facilities is considered experimental at present.
 
 PropertyDescriptor
 ^^^^^^^^^^^^^^^^^^

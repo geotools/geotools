@@ -14,7 +14,7 @@ If you would like to follow along with this workshop, start a new Java project i
 
 .. note:: Terminology
 
-   DataStore borrows most of its concepts (and some of its syntax) from the OpenGIS
+   DataStore borrows most of its concepts (and some of its syntax) from the Open Geospatial
    Consortium (OGC) Web Feature Server Specification:
 
    * Feature - atomic unit of geographic information

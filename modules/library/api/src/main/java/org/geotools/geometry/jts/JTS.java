@@ -980,7 +980,7 @@ public final class JTS {
      * 
      * @param geom
      *            Provided Geometry
-     * @return RefernecedEnveleope describing the bounds of the provided Geometry
+     * @return ReferencedEnvelope describing the bounds of the provided Geometry
      */
     public static ReferencedEnvelope toEnvelope(Geometry geom) {
         if (geom == null) {

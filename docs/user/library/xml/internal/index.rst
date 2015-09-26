@@ -12,7 +12,7 @@ The following material has been prepared by Justin Deolivera documenting the GTX
    code
    tutorial
 
-Generated objects matching the xml schema: 
+Generated objects matching the XML schema: 
 
 * :doc:`net.opengis.ows </extension/ogc/ows>` : open web services schema
 * :doc:`net.opengis.wfs </extension/ogc/wfs>` : web feature service
@@ -63,9 +63,9 @@ Frequently asked questions for binding developers.
     specific to your schema.
   * Ensure the Configuration class for your schema declares all the necessary dependencies.
 
-* Q: empty xml element when trying to encode my objects?
+* Q: empty XML element when trying to encode my objects?
   
-  When I try to encode an object ( for instance a polygon ), I get an empty xml element::
+  When I try to encode an object ( for instance a polygon ), I get an empty XML element::
     
     <ogc:Contains>
        <ogc:PropertyName>SERVICEBBOX</ogc:PropertyName>

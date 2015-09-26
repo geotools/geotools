@@ -2,7 +2,7 @@ Exporting
 ---------
 
 One common thing people want to do is grab data existing data and export to a shapefile or PostGIS.
-A lot of desktop and server applications work very well with shapefiles).
+A lot of desktop and server applications work very well with shapefiles.
 
 There are a few tricks to keep in mind when taking information between different formats
 and we cover a few examples on this page.

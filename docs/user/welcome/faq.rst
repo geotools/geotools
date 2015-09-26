@@ -42,7 +42,7 @@ Here is a sample of some of the great features in the library today:
 * Supports graphs and networks
 * Java Topology Suite (JTS) - with support for the OGC Simple Features Specification - used as the geometry model for vector features.
 * A stateless, low memory renderer, particularly useful in server-side environments
-* Powerful "schema asisted" parsing technology using XML Schema to bind to GML content
+* Powerful "schema assisted" parsing technology using XML Schema to bind to GML content
 * Interact with OGC web services with both Web Map Server and Web Feature Server support
 * Open plug-in system allowing you to teach the library additional formats
 * Plug-ins for the ImageIO-EXT project allowing GeoTools to read additional raster formats from GDAL
@@ -51,7 +51,7 @@ Q: Okay what data formats does GeoTools support?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 GeoTools supports additional formats through the use of plug-ins. You can control the formats supported
-by your application by only including the plug-ins you requrie.
+by your application by only including the plug-ins you require.
 
 * arcgrid
 * arcsde
@@ -105,17 +105,6 @@ Q. How are GeoTools versions organized?
 Like many open source projects, GeoTools has a *development* version and one or more *stable* versions active at any
 given time. By active, we mean that the project developers are working on new features, improvements and bug fixes.
 
-Source code for the stable branch(es) can be found in the *branches* folder of the GeoTools subversion repository. For
-example, at the time of writing the active stable branch is `branches/2.7.x <http://svn.osgeo.org/geotools/branches/2.7.x/>`_.
-
-Formal releases are based on a stable branch. The source code for a formal release is archived in the *tags* folder of
-the subversion repository. For example, the version 2.7.1 sources can be found in
-`tags/2.7.1 <http://svn.osgeo.org/geotools/tags/2.7.1/>`_.
-
-Source code for the development version are in the `trunk <http://svn.osgeo.org/geotools/trunk/>`_ folder. This is the
-bleeding edge code where the latest features are being worked on. Eventually this code will become the next stable
-branch.
-
 Commencing with GeoTools version 8, a major.minor.patch numbering system applies. 
 
 major
@@ -134,9 +123,9 @@ Q. What is a SNAPSHOT version and how do I use it?
 ''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A snapshot is the GeoTools code that the developers are actively working on. Usually there will be two active snapshots:
-one associated with the most recent formal release (e.g GeoTools 2.7-SNAPSHOT) and a second for the development version
-(e.g. GeoTools 8-SNAPSHOT). At times there will also be snapshot releases for an earlier stable branch that is still
-being maintained (e.g. GeoTools 2.6-SNAPSHOT).
+one associated with the most recent formal release (e.g GeoTools 14-SNAPSHOT) and a second for the development version
+(e.g. GeoTools 15-SNAPSHOT). At times there will also be snapshot releases for an earlier stable branch that is still
+being maintained (e.g. GeoTools 13-SNAPSHOT).
 
 New snapshot jars are built nightly and deployed to a repository separate from the one used for formal releases. If you
 are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml::

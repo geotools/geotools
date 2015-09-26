@@ -7,7 +7,7 @@ References:
 
 Related
 
-* http://www.foss4g2007.org/workshops/W-04/ PostGIS workshop if you need an intro to setting up PostGIS
+* http://www.foss4g2007.org/workshops/W-04/ PostGIS workshop if you need an introduction to setting up PostGIS
 
 **Maven**
 
@@ -55,7 +55,7 @@ Advanced
 | "loose bbox"         | Flag controlling loose bbox comparisons,       |
 |                      | default is true                                |
 +----------------------+------------------------------------------------+
-| "preparedStatements" | Flag controlling wether prepared statements    |
+| "preparedStatements" | Flag controlling whether prepared statements   |
 |                      | are used, default is false                     |
 +----------------------+------------------------------------------------+
 

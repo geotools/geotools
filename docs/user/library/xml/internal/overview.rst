@@ -8,7 +8,7 @@ Parsing the process of transforming xml elements and attributes in an instance d
 
 .. image:: /images/xml/parserOverview.png
 
-During parsing an xml schema is used to assist in the transformation. The parser uses the schema to determine which types of objects various elements and attributes should be transformed into.
+During parsing an XML schema is used to assist in the transformation. The parser uses the schema to determine which types of objects various elements and attributes should be transformed into.
 
 1. Schema Resolution
    

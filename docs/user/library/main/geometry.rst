@@ -51,7 +51,7 @@ ISO Geometry from WKT
    The first step to creating a Geometry is to acquire a GeometryFactory::
      
      GeometryFactory
-     CoordianteReferenceSystem crs = CRS.decode("EPSG:4326");
+     CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
      Precision precision = new PrecisionModel();
      
      GeometryFactory geometryFactory = new GeometryFactoryImpl( crs );

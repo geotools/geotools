@@ -3,12 +3,12 @@ NetBeans IDE Tips
 
 NetBeans is an Integrated Development Environment (IDE), a software package which can be used to develop programs. Several developers use NetBeans to develop GeoTools itself or GeoTools based software. NetBeans is available from Oracle as a free software download. There are also derivatives such as Sun ONE Studio (previously Forte for J).
 
-The GeoTools project offers a great "Netbeans Quickstart" describing how to set things up. NetBeans provides strong maven intergration making it an ideal environment to work with GeoTools smoothly and easily.
+The GeoTools project offers a great "Netbeans Quickstart" describing how to set things up. NetBeans provides strong maven integration making it an ideal environment to work with GeoTools smoothly and easily.
 
 Finding Geotools artifact containing a Class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When working on a Geotools / Maven project within Netbeansyou can take advantage of the repository search facility to find the Geotools artifact that you need to add to your project for a given class.
+When working on a Geotools / Maven project within Netbeans you can take advantage of the repository search facility to find the Geotools artifact that you need to add to your project for a given class.
 
 1. For instance, say you want to use the ShapefileDataStore class but don't know the 
    name of the artifact that contains it. In your code, enter the class name followed

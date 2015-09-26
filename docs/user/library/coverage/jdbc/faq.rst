@@ -19,7 +19,7 @@ The output of gdal_retile.py can be imported into the database with the import u
 A good practice is to use a color table for your source image(s). Less memory consumption and a
 better performance are the results. If you have an already tiled source image, be sure that each
 source tile uses the same color table, otherwise use gdal_merge.py (Gdal utility) to produce a big
-single image and apply rgb2pct.py (Gdal utility).
+single image and apply rgb2pct.py (GDAL utility).
 
 Q: How to import the tiles and the georeferencing information?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

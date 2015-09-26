@@ -1,7 +1,7 @@
 GeodeticCalculator
 ------------------
 
-The GeodeticCalculator is used to perform calculations on the Geoid (ie on the surface of
+The GeodeticCalculator is used to perform calculations on the Geoid (i.e. on the surface of
 the world).
 
 .. image:: /images/geodetic_calculator.PNG
@@ -23,7 +23,7 @@ Distance
      :start-after: // distance start
      :end-before: // distance end
    
-  Although the above shows quickly creating a DirectPosition from a JTS Coordiante; you
+  Although the above shows quickly creating a DirectPosition from a JTS Coordinate; you
   can use the GeodedicCalculator with any two positions, internally it will transform
   the points as needed.
 

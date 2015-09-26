@@ -1,10 +1,10 @@
 XSD
 ===
 
-These extensions are used by the gt-xml module to capture common xml schemas
+These extensions are used by the gt-xml module to capture common XML schemas
 (and represent them programatically using the eclipse XSD library). This work
-prevents GeoTools from needing to contact the internet when working with basic
-xml schema bindings and xlinks.
+prevents GeoTools from needing to contact the Internet when working with basic
+XML schema bindings and XLinks.
 
 .. toctree::
 

@@ -92,7 +92,7 @@ To generate WKT:
 
 * To generate WKT that matches a bit more the ESRI use:
   
-  As mentioned above differnt vendors don't exactly follow the standard. For the WKT above
+  As mentioned above different vendors don't exactly follow the standard. For the WKT above
   ESRI ArcMap produces the following::
      
      PROJCS["WGS_1984_UTM_Zone_35S",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],
@@ -257,7 +257,7 @@ Not all CoordinateReferenceSystems match a well defined axis order::
 CoordinateReferenceSystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The central user facing class for gt-referencing is **CoordianteReferenceSystem**.
+The central user facing class for gt-referencing is **CoordinateReferenceSystem**.
 
 Constants
 '''''''''
@@ -313,7 +313,7 @@ GENERIC_2D
 ''''''''''
 
 One constant deserves special mention as it is used as a "wild card" placeholder for when you
-are unsure of your data. The concept of a "Generic 2D" CoordianteReferenceSystem is formally
+are unsure of your data. The concept of a "Generic 2D" CoordinateReferenceSystem is formally
 intended for working with things like CAD drawings where the results are measured in meters.
 
 When considered in the context of GIS we treat it as a "wildcard" allowing you to get a visual
@@ -324,7 +324,7 @@ Formally this is expressed by the `DefaultEngineeringCRS.GENERIC_2D javadocs <ht
     CARTESIAN_2D, this coordinate system is treated specially by the default coordinate operation
     factory with loose transformation rules: if no transformation path were found (for example
     through a derived CRS), then the transformation from this CRS to any CRS with a compatible
-    number of dimensions is assumed to be the identity transform. This CRS is usefull as a
+    number of dimensions is assumed to be the identity transform. This CRS is useful as a
     kind of wildcard when no CRS were explicitly specified.
 
 The concept is available two ways:
@@ -344,7 +344,7 @@ The concept is available two ways:
      
      CartesianAuthoryFactory.GENERIC_2D
   
-  This is the preferred way to represent an unknown CoordianteReferenceSystem in GeoTools.
+  This is the preferred way to represent an unknown CoordinateReferenceSystem in GeoTools.
 
 Google Maps
 '''''''''''

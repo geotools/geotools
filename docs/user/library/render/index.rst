@@ -1,7 +1,7 @@
 Render
 ======
 
-Supports the rendering of geospatial information using the Java2D api.
+Supports the rendering of geospatial information using the Java2D API.
 
 .. image:: /images/gt-render.png
 

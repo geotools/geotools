@@ -1,7 +1,7 @@
 Data
 ====
 
-Supports access to feature information (ie vector information) from a range of data sources.
+Supports access to feature information (i.e. vector information) from a range of data sources.
 Additional DataStore plugins are available from :doc:`gt-jdbc <../jdbc/index>` for database access.
 
 The Data module is all about hoisting data (usually in the form of features) off of external

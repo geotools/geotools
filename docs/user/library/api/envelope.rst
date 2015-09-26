@@ -100,7 +100,7 @@ there are safe ways to create, copy, convert or reference ReferencedEnvelope ins
 OpenGIS Envelope
 ^^^^^^^^^^^^^^^^
 
-OpenGIS records a "rectangle" as a bounds along the axis mentioned by the CoordinateReferneceSystem object. You can use this idea to record a simple rectangle in space, a height range and and a range in time as needed.
+OpenGIS records a "rectangle" as a bounds along the axis mentioned by the CoordinateReferenceSystem object. You can use this idea to record a simple rectangle in space, a height range and and a range in time as needed.
 
 .. image:: /images/envelope2.PNG
 
@@ -108,7 +108,7 @@ OpenGIS records a "rectangle" as a bounds along the axis mentioned by the Coordi
 * ReferencedEnvelope - was introduced above; used to bridge to JTS Geometry
 * GeneralEnvelope - allows you to record spans in multiple dimensions (think depth, height or time)
 
-Since **Envelope** is just and interface, so we will use **RefernecedEnvelope** for the example:
+Since **Envelope** is just and interface, so we will use **ReferencedEnvelope** for the example:
   
   .. literalinclude:: /../src/main/java/org/geotools/api/APIExamples.java
      :language: java
@@ -119,7 +119,7 @@ You can see even in a simple example we should be looking at the CRS to figure o
 
 If you are super confident that you are working with data in X/Y order you can directly make use of BoundingBox box. BoundingBox is an extension of Envelope for working with 2D data, and it has been made method compatible with JTS Envelope where possible.
 
-Since **BoundingBox** is just an interface, so we will use **RefernecedEnvelope**
+Since **BoundingBox** is just an interface, so we will use **ReferencedEnvelope**
 for this example:
   
   .. literalinclude:: /../src/main/java/org/geotools/api/APIExamples.java

@@ -28,7 +28,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 /**
- * We need to ensure that the CoordianteWriter can output Z ordinates
+ * We need to ensure that the CoordinateWriter can output Z ordinates
  * (if they are actually around).
  * <p>
  * This test case added as part of fixing 

@@ -62,7 +62,7 @@ public class OrdinateList extends AbstractList
                 
         if( ARRAY.length % LEN != 0 ){
             throw new IllegalArgumentException(
-                "You have requested Coordiantes of "+LEN+" ordinates. " +
+                "You have requested Coordinates of "+LEN+" ordinates. " +
                 "This is inconsistent with an array of length "+ARRAY.length
             );
         }                        

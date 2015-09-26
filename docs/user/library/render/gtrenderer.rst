@@ -43,7 +43,7 @@ consider the following ideas:
 3D
 ^^
 
-A google summer of code student put together and example of rendering
+A Google summer of code student put together and example of rendering
 into a texture buffers and using OpenGL to handle panning and zooming.
 
 Personally I would look for an Graphics2D implementation that was
@@ -103,7 +103,7 @@ SVG
 
  The GeoVista team have used the Batik project to generate SVG output.
 
- You will need a dependency for gt-svg. This will bring it the correct version of batick for you and add support for svg icons.
+ You will need a dependency for gt-svg. This will bring it the correct version of batik for you and add support for SVG icons.
 
 Thanks to James Macgill for the following code example:
 

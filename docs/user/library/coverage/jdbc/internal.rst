@@ -8,11 +8,11 @@ Outline of the multithreaded architecture
 The multithreaded architecture is based on synchronized Queue available since SDK 5.0. The following threads will be used:
 
 * One ImageComposer thread which reads GridCoverages from the Queue, mosaicing the image and finally rescales the image for the requested dimension.
-* For each tile, a TileDecoder thread which decodes the tile, crops the tile if necessary und puts the result as GridCoverage in the queue.
+* For each tile, a TileDecoder thread which decodes the tile, crops the tile if necessary and puts the result as GridCoverage in the queue.
 * The Main thread for controlling this threads
 
 The Main threads performs the following steps in chronological order
-If the requested CRS ist not equal to the CRS of the tiles, transform the requested CRS
+If the requested CRS is not equal to the CRS of the tiles, transform the requested CRS
 
 1. Calculate the best pyramid and query the tiles needed from the database
 2. Create the queue and start the ImageComposer Thread
@@ -76,10 +76,10 @@ Tile_1_1   0x10011...
 Tile_1_2   0x00011..
 ========== ===============
 
-A spatial table contains the georeferencing information. Depending on your database installation, there are 2 possibilites.
+A spatial table contains the georeferencing information. Depending on your database installation, there are 2 possibilities.
 
 1. You have no spatial db extension implies storing the extent in 4 Double fields
-2. Having a spatial extension offers the possiblity to use a geometry column
+2. Having a spatial extension offers the possibility to use a geometry column
 
 A spatial Table without using a spatial extension needs the following attributes:
 
@@ -101,7 +101,7 @@ Tile_1_2    20    10    30    20
 A spatial Table using a spatial extension needs the following attributes:
 
 * Location (String) : A unique identifier used for joining into the tiles table
-* Geometry (Geometry): A Multipoligon type provided by your db
+* Geometry (Geometry): A Multipolygon type provided by your db
 
 The table EUTILE0 for example
 

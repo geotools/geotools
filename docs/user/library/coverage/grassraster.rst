@@ -17,7 +17,7 @@ if using a default styler.
 Data structure of a rastermap
 -----------------------------
 
-Raster data in GRASS are stricktly bound to their workspace. Since a workspace is something more on userlevel, I will from now on use grass database for the folder structure and workspce for what the user will interact with at application level.
+Raster data in GRASS are strictly bound to their workspace. Since a workspace is something more on userlevel, I will from now on use grass database for the folder structure and workspace for what the user will interact with at application level.
 
 A GRASS raster map consists of several files in several subdirectories in a mapset, organized as follows:
 

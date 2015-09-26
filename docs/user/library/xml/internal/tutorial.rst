@@ -1,7 +1,7 @@
 Purchase Order Tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-This tutorial covers how to implement xml support for a particular schema.
+This tutorial covers how to implement XML support for a particular schema.
 
 Prerequisites at the time of writing:
 
@@ -30,7 +30,7 @@ Somewhere on your system:
 Generate the Model
 ''''''''''''''''''
 
-The first step is to come up with an object model to work with. There are a number of technologies that will take an xml schema and generate java code from it. To name a few:
+The first step is to come up with an object model to work with. There are a number of technologies that will take an XML schema and generate Java code from it. To name a few:
 
 * Eclipse Modelling Framework
 * Java Architecture for XML Binding (JAXB)
@@ -46,7 +46,7 @@ First we must configure the pom.xml file of our project to use the `maven-jaxb2-
    
    * http://confluence.highsource.org/display/MJIIP/Sample+projects
    
-   You may wish to download a newer copy of the instructions seem out of date.
+   You may wish to download a newer copy of the instructions if they seem out of date.
 
 1. Add some additional repositories so we can find the latest copy of jaxb:
      
@@ -105,7 +105,7 @@ First we must configure the pom.xml file of our project to use the `maven-jaxb2-
 Generate the Bindings
 '''''''''''''''''''''
 
-At this point, we have generated objects from the original schema. The next step will be to generate xml bindings from the original schema. to do this we will make use of the geotools xml generation plugin.
+At this point, we have generated objects from the original schema. The next step will be to generate XML bindings from the original schema. To do this we will make use of the geotools XML generation plugin.
 
 1. Add a dependency on the geotools xml module:
    
@@ -132,7 +132,7 @@ At this point, we have generated objects from the original schema. The next step
 
 5. Now we are ready to generate the bindings.
    
-   Run the xml binding generator::
+   Run the XML binding generator::
 
     [xml-po]$ mvn org.geotools.maven:xmlcodegen:generate 
     [INFO] Scanning for projects...
@@ -292,7 +292,7 @@ SKU (Simple Type)
 5. Implement the getType method
    
    The last thing to do in implementing the SKU binding is to declare the type
-   of the object that it returns. From the implmentation parse it is clear that
+   of the object that it returns. From the implementation parse it is clear that
    this is java.lang.String.::
      
      Class getType() [
@@ -329,7 +329,7 @@ USAddress (Complex Type)
 
 3. The difference is the addition of the node parameter. A Node instance
    contains the parsed values of all elements and attributes contained within
-   the complex type. The node api is map like in which element and attribute
+   the complex type. The node API is map like in which element and attribute
    values can be looked up by name::
      
      interface Node {
@@ -343,7 +343,7 @@ USAddress (Complex Type)
 4. Implement the parse method
    
    The first step is to create a new instance of USAddress. To do so we make
-   use of the org.geotools.po.ObjectFactory. If you remember eariler when we
+   use of the org.geotools.po.ObjectFactory. If you remember earlier when we
    configured the binding generator, we specified that each binding should take
    one of these factories in its constructor. Well know we will put it to use.::
       
@@ -353,7 +353,7 @@ USAddress (Complex Type)
       }
 
 5. Next, we must get the values for each of the elements and attributes defined
-   in the xml schema type for USAddress from the node parameter::
+   in the XML schema type for USAddress from the node parameter::
       
       Object parse(ElementInstance instance, Node node, Object value) throws Exception {
          USAddress address = factory.createUSAddress();
@@ -550,4 +550,4 @@ Now that the bindings are implemented, it is time to do some testing.
       [xml-po]% mkdir -p src/test/resources/org/geotools/po
    
 7. Copy po.xml into the new directory
-8. Run the test from your ide
+8. Run the test from your IDE

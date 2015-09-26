@@ -56,7 +56,7 @@ This allows you to use only the factory gt-opengis interfaces and not worry abou
 
 When you ask for a factory, if the builder has a matching cached factory, it will return that. Otherwise the builder will create and return a new factory, caching it for later use. You can update the builder's CRS, like in the following example, and get a new factory using the new CRS.::
   
-  builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84_3D);
+  builder.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84_3D);
   PositionFactory posF3D = builder.getPositionFactory();
 
 Using a Container
@@ -385,7 +385,7 @@ The following are two quick examples of how you can render a Surface (Polygon):
   
     Please note:
     
-    * Review your CoordianteReferenceSystem to figure out which axis is to use for
+    * Review your CoordinateReferenceSystem to figure out which axis is to use for
       X and Y
     * Surface is a deep data structure, better suited to recursion or a visitor
     

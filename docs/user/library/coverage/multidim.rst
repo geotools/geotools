@@ -69,10 +69,10 @@ Here is described an example::
 		}
 	}
 	
-Grib
+GRIB
 ++++
 
-The Grib plugin does the same operations on the Grib files. The Maven dependency associated is::
+The GRIB plugin does the same operations on the GRIB files. The Maven dependency associated is::
 
 	<dependency>
 		<groupId>org.geotools</groupId>
@@ -80,5 +80,5 @@ The Grib plugin does the same operations on the Grib files. The Maven dependency
 		<version>${geotools.version}</version>
 	</dependency>
 	
-The Grib module only loads the Unidata libraries associated to the Grib format and it internally calls the NetCDF reader for 
-accessing the data. For this reason the example above can be used also for Grib data.
+The GRIB module only loads the Unidata libraries associated with the GRIB format and it internally calls the NetCDF reader for 
+accessing the data. For this reason the example above can also be used for GRIB data.

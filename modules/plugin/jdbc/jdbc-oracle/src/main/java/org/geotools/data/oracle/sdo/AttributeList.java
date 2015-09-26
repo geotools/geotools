@@ -68,7 +68,7 @@ public class AttributeList extends AbstractList
        		
 		if( Array.getLength( ARRAY ) % LEN != 0 ){
             throw new IllegalArgumentException(
-                "You have requested Coordiantes of "+LEN+" ordinates. " +
+                "You have requested Coordinates of "+LEN+" ordinates. " +
                 "This is inconsistent with an array of length "+Array.getLength( ARRAY )
             );
         }                        

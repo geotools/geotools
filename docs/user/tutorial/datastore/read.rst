@@ -182,7 +182,7 @@ FeatureSource defines:
 * FeatureSource.getFeatures( filter ) - request features based on constraints
 * FeatureSource.getFeatures() - request all features
 * FeatureSource.getSchema() - acquire FeatureType
-* FeatureSource.getBounds - return the bounding box of all features
+* FeatureSource.getBounds() - return the bounding box of all features
 * FeatureSource.getBounds( query ) - request bounding box of specified features
 * FeatureSource.getCount( query ) - request number of features specified by query
 

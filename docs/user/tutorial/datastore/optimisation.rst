@@ -287,7 +287,7 @@ The wrapper classes mentioned above are excellent examples on how to create your
    
    Historically Filter.ALL and Filter.NONE were used as placeholder,
    as crazy as it sounds, Filter.ALL filters out ALL (accepts none)
-   Filter.NONE filters out NONE (accepts ALL)/
+   Filter.NONE filters out NONE (accepts ALL).
    
    These two have been renamed in GeoTools 2.3 for the following:
    

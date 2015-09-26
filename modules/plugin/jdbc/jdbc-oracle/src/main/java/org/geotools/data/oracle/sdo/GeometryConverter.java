@@ -280,7 +280,7 @@ public class GeometryConverter {
      * </pre></code>
      * 
      * @param list     CoordinateList to be represented
-     * @param measures Per Coordiante Measures, <code>null</code> if not required
+     * @param measures Per Coordinate Measures, <code>null</code> if not required
      * @param D        Dimension of Coordinates (limited to 2d, 3d)         
      */
     protected final ARRAY toORDINATE( CoordinateList list,

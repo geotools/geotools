@@ -13,7 +13,7 @@ The gt-coverage module is responsible for:
 * Bridging between Java Advanced Imaging, JAI Image IO and Java Image facilities and the geospatial idea of a GridCoverage
 * Recognising additional formats available on the CLASSPATH using **GridFormatFinder**
   
-The module supports the use of coverage information (ie raster) from a range of sources.
+The module supports the use of coverage information (i.e. raster) from a range of sources.
 
 **Tutorial**
    

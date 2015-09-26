@@ -23,10 +23,10 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 
 
 /**
- * Allows manipulation of a Geometry's CoordianteSequece.
+ * Allows manipulation of a Geometry's CoordinateSequence.
  * 
  * <p>
- * The number of ordinates in each Coordiante is getDimension() + getNumAttributes()<br>
+ * The number of ordinates in each Coordinate is getDimension() + getNumAttributes()<br>
  * The examples given in this interface are based on a 2-dimensional
  * coordinate system, x and y,<br>
  * with two attributes: z and t.<br>
@@ -42,18 +42,18 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
  */
  public interface CoordinateAccess extends CoordinateSequence {
     /**
-     * Retrieve the number of spatial dimensions of Coordiantes.
+     * Retrieve the number of spatial dimensions of Coordinates.
      * 
      * <p>
-     * This is the number of spatially significant ordiantes (usually 2 or 3)
+     * This is the number of spatially significant ordinates (usually 2 or 3)
      * </p>
      *
-     * @return Number of spatially signficant ordinates
+     * @return Number of spatially significant ordinates
      */
     int getDimension();
 
     /**
-     * Retrieve number of measures associated with a Coordiantes
+     * Retrieve number of measures associated with a Coordinate
      * 
      * <p>
      * This is the number of non spatially significant ordinates.
@@ -66,8 +66,8 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
     /**
      * Retrive a single ordinate
      *
-     * @param coordinate Coordinate to retrive from
-     * @param ordinate Ordinate to retrive from coordiante
+     * @param coordinate Coordinate to retrieve from
+     * @param ordinate Ordinate to retrieve from coordinate
      *
      * @return Specified ordinate
      */
@@ -115,7 +115,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
      * Example: (x,y) getDimension()==2<br>
      * This is defined for the number of dimensions. If the other attributes
      * happen to be a double, they can still be accessed by using an ordinate
-     * value geater than getDimension().
+     * value greater than getDimension().
      * </p>
      * 
      * <ul>
@@ -157,7 +157,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
      Object[] toAttributeArray(int attribute);
 
     /**
-     * Supplies an array of ordiantes.
+     * Supplies an array of ordinates.
      * 
      * <p>
      * The ordinateArray should be the same length as the CoordinateSequence.<br>
@@ -176,7 +176,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
      * </p>
      *
      * @param attribute between 0 and getNumAttributes()
-     * @param attributeArray May be an object or primative array
+     * @param attributeArray May be an object or primitive array
      */
      void setAttributeArray(int attribute, Object attributeArray);
 
@@ -197,7 +197,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 
     /**
      * Retrieve Attribute information (an array of attributes for each
-     * coordiante).
+     * coordinate).
      * 
      * <p>
      * Example: (x,y,m,g) getDimension()==2, getAttributes()==2
@@ -208,7 +208,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
      * 
      * <p></p>
      *
-     * @return Attribute Arrays, may be object or primative arrays
+     * @return Attribute Arrays, may be object or primitive arrays
      */
      Object[] toAttributeArrays();
 
@@ -225,7 +225,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
      *
      * @param ordinateArrays  dimensions column major ordinate arrays 
      *                        (these are spatially significant)
-     * @param attributeArrays Indiviual attribute arrays may be primative or
+     * @param attributeArrays Individual attribute arrays may be primitive or
      *                        object arrays
      */
      void setCoordinateArrays(double[][] ordinateArrays,
@@ -257,7 +257,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
      * 
      * <p></p>
      *
-     * @param coordinate index of coordiante to be modified
+     * @param coordinate index of coordinate to be modified
      * @param ordinates array ordinate values (may be extended with attribute
      *        values)
      * @param attributes array of attribute values, or null is ordinates has

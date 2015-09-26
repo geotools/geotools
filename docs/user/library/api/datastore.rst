@@ -127,9 +127,9 @@ The **DataStore** interface is a DataAccess subclass that provides to explicitly
 * DataStore.getFeatureWriter(String, Transaction)
 * DataStore.getFeatureWriterAppend(String, Transaction)
   
-  Access to a low-level FeatureReader and FeatureWriter classe allowing direct access to DataStore contents (complete with IO Exceptions).
+  Access to a low-level FeatureReader and FeatureWriter class allowing direct access to DataStore contents (complete with IO Exceptions).
 
-  The various FeatureWriter methods require a Transaction (ie session) to perform their work on, and allow existing content to be updated
+  The various FeatureWriter methods require a Transaction (i.e. session) to perform their work on, and allow existing content to be updated
   or new content to be appended.
 
 * DataStore.getLockingManager()
@@ -228,8 +228,8 @@ Summary information:
 
 * FeatureSource.getCount(Query)
   
-  May return -1 if the information is not readily avaialble. Formats such as shapefile 
-  keep this information avaialble in the header for handy reference. WFS does not provide
+  May return -1 if the information is not readily available. Formats such as shapefile 
+  keep this information available in the header for handy reference. WFS does not provide
   any way to ask for this information and thus always returns -1.
 
 Where a request is captured by a **Query**:
@@ -300,7 +300,7 @@ Where a request is captured by a **Query**:
   * Query.setVersion(String)
   
   Override this value in the event the datasource is incorrect
-  and your user knows the correct CoordianteReferenceSystem.
+  and your user knows the correct CoordinateReferenceSystem.
   
   * Query.getCoordinateSystem()
   * Query.setCoordinateSystem(CoordinateReferenceSystem)
@@ -330,9 +330,9 @@ Examples:
   
   Because the getCount method just checks the file or database header information it is designed
   to be very fast. Not all implementations have access to this information making it a bit tricky
-  to count the number of avaialble features.
+  to count the number of available features.
   
-  The following code shows how to quickly count all the feautres available:
+  The following code shows how to quickly count all the features available:
   
   .. literalinclude:: /../src/main/java/org/geotools/api/DataStoreExamples.java
      :language: java
@@ -452,7 +452,7 @@ made with each call to lockFeatures.
   
   * FeatureLock.getAuthorization()
 
-DataAccecssFactorySpi
+DataAccessFactorySpi
 ^^^^^^^^^^^^^^^^^^^^^
 
 To create a DataStore GeoTools uses a plugin system based around the DataStoreFactorySpi class.
@@ -501,4 +501,4 @@ For most purposes this class is an internal details, however if you want to look
   database formats often require a JDBC driver to be present.
   
   This method will perform a check and confirm that the needed dependencies are available
-  providing a smooth way for the DataAcccessFactory to report if it is unable to connect.
+  providing a smooth way for the DataAccessFactory to report if it is unable to connect.

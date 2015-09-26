@@ -1,7 +1,7 @@
 Java Install
 -------------
 
-GeoTools is written in the Java Programming Language. The library is targeted for Java 6.
+GeoTools is written in the Java Programming Language. The library is targeted for Java 7.
 
 Java Runtime Environment:
 

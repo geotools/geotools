@@ -212,7 +212,7 @@ A couple common questions:
 
 * Q: How do you know what wrappers to use?
   
-  ContentFeatureSource checks to see if a wrapper is needed, and if so uses the MaxFetureReader
+  ContentFeatureSource checks to see if a wrapper is needed, and if so uses the MaxFeatureReader
   wrapper.
   
   .. code-block:: java
@@ -247,7 +247,7 @@ A couple common questions:
   and dynamically modifies the content to match any outstanding edits. When it reaches the end of
   your file, it keeps going listing any features that were added.
 
-* Q: That is fine for transaction independence, what if two FeatueSources are using the
+* Q: That is fine for transaction independence, what if two FeatureSources are using the
   same Transaction?
   
   Those two FeatureSources would be configured with the same ContentState, and thus have the same
@@ -343,7 +343,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    .. note::
    
       There are a large number of utility classes to perform common functions, take a look around
-      before building somehting yourself.
+      before building something yourself.
       
       * DataUtilities: Mix of methods helping developers use DataStore, with a few methods to help
         implementors perform common tasks. Acts as Facade for a wide range of services

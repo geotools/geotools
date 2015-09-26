@@ -42,7 +42,7 @@ public class DirectPositionTest extends TestCase {
         
         GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84); 
         gf2D = builder.getGeometryFactory();
-        builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84_3D);
+        builder.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84_3D);
         gf3D = builder.getGeometryFactory();
         
     }

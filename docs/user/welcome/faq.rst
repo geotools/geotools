@@ -205,10 +205,9 @@ project so the changes can be incorporated into the core source code.
 
 .. note::
 
-   This means you can use GeoTools as a library but you cannot
-   incorporate GeoTools code directly into your GLP application. Legally, the
-   latter amounts to re-licensing GeoTools under a new license and you do not have
-   the right to do so.
+   You can also incorporate GeoTools code directly into your GPL application. Legally, the
+   latter amounts to re-licensing GeoTools under the GPL, which is specifically allowed
+   by the LGPL. This re-licensing is one-way, and requires specific actions - see the LGPL.
 
 Q: What restrictions are there on my use of GeoTools?
 '''''''''''''''''''''''''''''''''''''''''''''''''''''

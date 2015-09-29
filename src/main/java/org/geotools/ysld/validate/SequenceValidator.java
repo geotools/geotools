@@ -1,5 +1,7 @@
 package org.geotools.ysld.validate;
 
+import org.geotools.ysld.validate.PermissiveValidator.State;
+import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 import org.yaml.snakeyaml.events.SequenceStartEvent;
@@ -89,5 +91,18 @@ public class SequenceValidator extends StatefulValidator {
         assert state==State.NEW || state==State.DONE;
         state = State.NEW;
     }
-
+    @Override
+    public void alias(AliasEvent evt, YsldValidateContext context) {
+        switch(state) {
+        case NEW:
+            state = State.DONE;
+            context.pop();
+            break;
+        case STARTED:
+            break;
+        default:
+            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
+            break;
+        }
+    }
 }

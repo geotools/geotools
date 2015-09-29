@@ -653,4 +653,114 @@ public class YsldValidateTest {
                 hasProperty("problemMark", problemOn(26))
                 ));
     }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testTupleInVariable() throws Exception {
+        String yaml =
+        "define: &s [400000,max]\n"+
+        "\n"+
+        "feature-styles:\n"+
+        "- rules:\n"+
+        "  - scale: *s\n"+
+        "    filter: ${x = true}\n";
+        
+        List<MarkedYAMLException> errors = validate(yaml,Collections.EMPTY_LIST);
+        assertThat(errors, empty());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testVariableInTuple() throws Exception {
+        String yaml =
+        "define: &s 400000\n"+
+        "\n"+
+        "feature-styles:\n"+
+        "- rules:\n"+
+        "  - scale: [*s, max]\n"+
+        "    filter: ${x = true}\n";
+        
+        List<MarkedYAMLException> errors = validate(yaml,Collections.EMPTY_LIST);
+        assertThat(errors, empty());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testVariableInPermissive() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("define: &p -5\n")
+               .append("transform:").append("\n")
+               .append("  name: ras:Contour").append("\n")
+               .append("  input: data").append("\n")
+               .append("  params:").append("\n")
+               .append("    levels:").append("\n")
+               .append("    - -10").append("\n")
+               .append("    - *p").append("\n")
+               .append("    - 0").append("\n")
+               .append("    - 5").append("\n")
+               .append("    - 10").append("\n")
+               .append("    simplify: true").append("\n")
+               .append("");
+        
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.EMPTY_LIST);
+        assertThat(errors, empty());
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testPermissiveInVariable() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("define: &p\n")
+               .append("    levels:").append("\n")
+               .append("    - -10").append("\n")
+               .append("    - -5").append("\n")
+               .append("    - 0").append("\n")
+               .append("    - 5").append("\n")
+               .append("    - 10").append("\n")
+               .append("    simplify: true").append("\n")
+               .append("transform:").append("\n")
+               .append("  name: ras:Contour").append("\n")
+               .append("  input: data").append("\n")
+               .append("  params: *p").append("\n")
+
+               .append("");
+        
+        
+        List<MarkedYAMLException> errors = validate(builder.toString(),Collections.EMPTY_LIST);
+        assertThat(errors, empty());
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testColourMapEntryAsVariable() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("define: &e [red, 1, 0, \"blah\"]\n");
+        builder.append("raster: \n"+
+                "  color-map:\n" +
+                "    type: values\n" +
+                "    entries:\n");
+        builder.append("    - [\"#ff0000\", 1.0, 0, \"start\"]\n");
+        builder.append("    - *e\n");
+        builder.append("    - [\"rgb(0,0,0)\", null, 0, \"start\"]\n");
+        builder.append("  filter: ${foo = true}\n");
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, empty());
+    }
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testColourMapAsVariable() throws Exception {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("define: &c \n");
+        builder.append("  - [\"#ff0000\", 1.0, 0, \"start\"]\n");
+        builder.append("  - [red, 1, 0, \"blah\"]\n");
+        builder.append("  - [\"rgb(0,0,0)\", null, 0, \"start\"]\n");
+        builder.append("raster: \n"+
+                "  color-map:\n" +
+                "    type: values\n" +
+                "    entries: *c\n");
+        builder.append("  filter: ${foo = true}\n");
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, empty());
+    }
 }

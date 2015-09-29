@@ -47,7 +47,7 @@ public class YsldValidator {
                     h.scalar((ScalarEvent) evt, context);
                 }
                 else if (evt instanceof AliasEvent) {
-
+                    h.alias((AliasEvent) evt, context);
                 }
             };
         }

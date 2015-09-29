@@ -1,5 +1,6 @@
 package org.geotools.ysld.validate;
 
+import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
@@ -24,5 +25,9 @@ public class YsldValidateHandler {
     }
 
     public void endSequence(SequenceEndEvent evt, YsldValidateContext context) {
+    }
+    
+
+    public void alias(AliasEvent evt, YsldValidateContext context) {
     }
 }

@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.geotools.ysld.parse.Util;
 import org.geotools.ysld.parse.ZoomContext;
+import org.yaml.snakeyaml.events.AliasEvent;
+import org.yaml.snakeyaml.events.MappingEndEvent;
+import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 import org.yaml.snakeyaml.events.SequenceStartEvent;
@@ -91,4 +94,23 @@ public class TupleValidator extends StatefulValidator{
         valuesValidated = 0;
     }
 
+    @Override
+    public void alias(AliasEvent evt, YsldValidateContext context) {
+        switch(state) {
+        case NEW:
+            // Can't validate this so just move on.
+            state = State.DONE;
+            context.pop();
+            break;
+        case STARTED:
+            // Can't validate this so just move on.
+            valuesValidated++;
+            break;
+        default:
+            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
+            break;
+        }
+    }
+    
+    
 }

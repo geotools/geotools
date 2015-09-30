@@ -362,6 +362,34 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
     }
     
+    public void testGetFeaturesWithOffsetLimitAndPostFilter() throws Exception {
+        Query q = new Query(featureSource.getSchema().getTypeName());
+        // no sorting, let's see if the database can use native one
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.literal("one"), ff.function("strToLowerCase", ff.property(aname("stringProperty"))), true);
+        q.setFilter(filter);
+        q.setStartIndex(0);
+        q.setMaxFeatures(1);
+        SimpleFeatureCollection features = featureSource.getFeatures(q);
+        
+        // check size
+        assertEquals(1, features.size());
+        
+        // check actual iteration
+        SimpleFeatureIterator it = features.features();
+        try {
+            assertTrue(it.hasNext());
+            SimpleFeature f = it.next();
+            ReferencedEnvelope fe = ReferencedEnvelope.reference(f.getBounds());
+            assertEquals(1, ((Number) f.getAttribute(aname("intProperty"))).intValue());
+            assertFalse(it.hasNext());
+            //assertEquals(fe, features.getBounds());
+            assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
+        } finally {
+            it.close();
+        }
+    }
+    
     /**
      * Makes sure the datastore works when the renderer uses the typical rendering hints
      * @throws Exception

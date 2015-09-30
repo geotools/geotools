@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Map;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -254,6 +255,12 @@ public class H2DialectBasic extends BasicSQLDialect {
     @Override
     protected boolean supportsSchemaForIndex() {
         return delegate.supportsSchemaForIndex();
+    }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        delegate.registerSqlTypeToSqlTypeNameOverrides(overrides);
     }
 
 }

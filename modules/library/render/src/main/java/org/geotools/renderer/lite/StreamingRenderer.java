@@ -16,6 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
+import static java.lang.Math.abs;
+
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -79,6 +81,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
@@ -101,6 +104,7 @@ import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
+import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.resources.coverage.FeatureUtilities;
@@ -144,7 +148,15 @@ import org.opengis.style.PolygonSymbolizer;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.TopologyException;
+import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
+import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
 /**
  * A streaming implementation of the GTRenderer interface.
@@ -2534,7 +2546,7 @@ public class StreamingRenderer implements GTRenderer {
                     Style2D style = styleFactory.createStyle(drawMe.feature, symbolizer);
                     
                     // clip to the visible area + the size of the symbolizer (with some extra 
-                    // to make sure we get no artefacts from polygon new borders)
+                    // to make sure we get no artifacts from polygon new borders)
                     double size = RendererUtilities.getStyle2DSize(style);
                     // take into account the meta buffer to try and clip all geometries by the same
                     // amount
@@ -2542,11 +2554,37 @@ public class StreamingRenderer implements GTRenderer {
                     Envelope env = new Envelope(screenSize.getMinX(), screenSize.getMaxX(), screenSize.getMinY(), screenSize.getMaxY());
                     env.expandBy(clipBuffer);
                     final GeometryClipper clipper = new GeometryClipper(env);
-                    Geometry g = clipper.clip(shape.getGeometry(), false);
+                    Geometry source = shape.getGeometry();
+                    // we need to preserve the topology if we end up applying buffer for perp. offset
+                    boolean preserveTopology = style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0 &&
+                            (source instanceof Polygon || source instanceof MultiPolygon);
+                    Geometry g = clip(shape.getGeometry(), clipper, preserveTopology);
+                    // handle perpendincular offset as needed
+                    if(style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0) {
+                        LineStyle2D ls = (LineStyle2D) style;
+                        double offset = ls.getPerpendicularOffset();
+                        // people applying an offset on a polygon really expect a buffer instead,
+                        // do so... however buffering is damn expensive, so let's apply some heuristics
+                        // to still run the offset curve builder for the simplest cases
+                        if(source instanceof Polygon || source instanceof MultiPolygon && abs(offset) > 3) {
+                            // buffering is expensive, we can be a bit off with the 
+                            // result, do simplify the geometry first 
+                            Geometry simplified = TopologyPreservingSimplifier.simplify(source, Math.max(abs(offset) / 10, 1));
+                            try {
+                                g = simplified.buffer(offset);
+                            } catch(Exception e) {
+                                LOGGER.log(Level.FINE, "Failed to apply JTS buffer to the geometry, falling back on the offset curve builder", e);
+                                OffsetCurveBuilder offseter = new OffsetCurveBuilder(offset);
+                                g = offseter.offset(g);
+                            }
+                        } else {
+                            OffsetCurveBuilder offseter = new OffsetCurveBuilder(offset);
+                            g = offseter.offset(g);
+                        }
+                    }
                     if(g == null) {
                         continue;
-                    }
-                    if(g != shape.getGeometry()) {
+                    } else {
                         shape = new LiteShape2(g, null, null, false);
                     }
                     
@@ -2565,6 +2603,22 @@ public class StreamingRenderer implements GTRenderer {
         // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
         if(paintCommands > 0) {
             requests.put(new FeatureRenderedRequest(drawMe.feature));
+        }
+    }
+
+    private Geometry clip(Geometry geometry, final GeometryClipper clipper,
+            boolean preserveTopology) {
+        try {
+            return clipper.clip(geometry, !preserveTopology);
+        } catch(TopologyException e) {
+            // go down to single pixel precision
+            GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(new PrecisionModel(1));
+            Geometry reduced = reducer.reduce(geometry);
+            try {
+                return clipper.clip(reduced, !preserveTopology);
+            } catch (Exception e2) {
+                return geometry;
+            }
         }
     }
 

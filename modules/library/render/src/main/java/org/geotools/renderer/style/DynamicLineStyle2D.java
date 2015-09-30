@@ -107,6 +107,19 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
 
         return stroke2d;
     }
+    
+    @Override
+    public double getPerpendicularOffset() {
+        if(ls.getPerpendicularOffset() == null) {
+            return 0d;
+        } 
+        Double offset = ls.getPerpendicularOffset().evaluate(feature, Double.class);
+        if(offset == null) {
+            return 0d;
+        } else {
+            return offset;
+        }
+    }
 
     /**
      * Computes and returns the contour style

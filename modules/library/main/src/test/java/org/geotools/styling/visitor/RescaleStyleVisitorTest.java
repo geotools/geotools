@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -231,6 +231,17 @@ public class RescaleStyleVisitorTest {
         LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
         
         assertEquals("4", clone.getStroke().getWidth().evaluate(null, String.class));
+    }
+    
+    @Test
+    public void testRescalePerpendicularOffset() throws Exception {
+        Stroke stroke = sb.createStroke(Color.RED, 2, new float[] {5, 10});
+        LineSymbolizer ls = sb.createLineSymbolizer(stroke);
+        ls.setPerpendicularOffset(ff.literal(2));
+        ls.accept(visitor);
+        LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
+        
+        assertEquals("4", clone.getPerpendicularOffset().evaluate(null, String.class));
     }
     
     

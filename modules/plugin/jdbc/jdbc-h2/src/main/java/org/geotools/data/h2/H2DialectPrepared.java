@@ -216,4 +216,10 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
     protected boolean supportsSchemaForIndex() {
         return delegate.supportsSchemaForIndex();
     }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        delegate.registerSqlTypeToSqlTypeNameOverrides(overrides);
+    }
 }

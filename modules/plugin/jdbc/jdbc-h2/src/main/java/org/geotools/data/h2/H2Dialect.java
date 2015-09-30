@@ -558,4 +558,10 @@ public class H2Dialect extends SQLDialect {
         return true;
     }
 
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        overrides.put(Types.BLOB, "BYTEA");
+    }
+
 }

@@ -773,6 +773,7 @@ public class PostGISDialect extends BasicSQLDialect {
             Map<Integer, String> overrides) {
         overrides.put(Types.VARCHAR, "VARCHAR");
         overrides.put(Types.BOOLEAN, "BOOL");
+        overrides.put(Types.BLOB, "BYTEA");
     }
 
     @Override

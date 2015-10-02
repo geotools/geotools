@@ -408,12 +408,16 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                         final SimpleFeature sf = (SimpleFeature) feature;
                         MultiLevelROI footprint = getGranuleFootprint(sf);
                         if(footprint == null || !footprint.isEmpty()) {
-                            final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                    suggestedRasterSPI, pathType, locationAttribute, parentLocation,
-                                    footprint,
-                                    heterogeneous, q.getHints());
-    
-                            visitor.visit(granule, null);
+                            try {
+                                final GranuleDescriptor granule = new GranuleDescriptor(sf,
+                                        suggestedRasterSPI, pathType, locationAttribute, parentLocation,
+                                        footprint,
+                                        heterogeneous, q.getHints());
+        
+                                visitor.visit(granule, null);
+                            } catch(Exception e) {
+                                LOGGER.log(Level.FINE, "Skipping invalid granule", e);
+                            }
                         }
 
                         // check if something bad occurred

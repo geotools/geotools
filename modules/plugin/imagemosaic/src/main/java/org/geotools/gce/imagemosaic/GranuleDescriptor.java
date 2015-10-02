@@ -604,8 +604,7 @@ public class GranuleDescriptor {
 		// If the granuleDescriptor is not there, dump a message and continue
 		final URL rasterFile = pathType.resolvePath(parentLocation, granuleLocation);
 		if (rasterFile == null) {
-	                throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"granuleLocation",granuleLocation));		    
-			
+		    throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"granuleLocation",granuleLocation));
 		}
 		if (LOGGER.isLoggable(Level.FINE))
 			LOGGER.fine("File found "+granuleLocation);

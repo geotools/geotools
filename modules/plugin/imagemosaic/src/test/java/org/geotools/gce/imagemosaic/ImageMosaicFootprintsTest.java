@@ -17,11 +17,13 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.Transparency;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -325,6 +327,8 @@ public class ImageMosaicFootprintsTest {
         GridCoverage2D coverage = reader.read(params);
         reader.dispose();
         assertNotNull(coverage);
+        RenderedImage ri = coverage.getRenderedImage();
+        assertNotEquals(Transparency.OPAQUE, ri.getColorModel().getTransparency());
     }
 
     @Test

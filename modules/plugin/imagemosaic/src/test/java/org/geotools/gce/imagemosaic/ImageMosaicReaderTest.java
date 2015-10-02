@@ -81,6 +81,7 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -3999,6 +4000,26 @@ public class ImageMosaicReaderTest extends Assert{
         assertNull(coverage);
         
         reader.dispose();
+    }
+    
+    @Test
+    public void testIgnoreInvalidGranule() throws Exception {
+        // Get the resources as needed.
+        final AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+        final ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+
+        GranuleStore granules = (GranuleStore) reader.getGranules(reader.getGridCoverageNames()[0], false);
+        SimpleFeature first = DataUtilities.first(granules.getGranules(Query.ALL));
+        // poison it
+        first.setAttribute("location", "global_mosaic_11-invalid.png");
+        Transaction t = new DefaultTransaction();
+        granules.setTransaction(t);
+        granules.addGranules(DataUtilities.collection(first));
+        t.commit();
+        t.close();
+
+        // Test the output coverage
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[0], "Ignore invalid granule");
     }
 
 

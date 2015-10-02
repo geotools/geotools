@@ -1700,7 +1700,7 @@ class RasterLayerResponse{
             }
             assert hasAlpha;
 
-        } else if (footprintBehavior != null && !footprintBehavior.handleFootprints()) {
+        } else if (footprintBehavior != null) {
             finalImage = footprintBehavior.postProcessBlankResponse(finalImage, renderingHints);
         }
 

@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.List;
 
 public class YsldValidator {
@@ -50,16 +51,15 @@ public class YsldValidator {
                     h.alias((AliasEvent) evt, context);
                 }
             };
+        } catch (MarkedYAMLException e) {
+            context.error(e);
+        } catch (EmptyStackException e) {
+            //The ECQLParser uses java.util.Stack for parsing. If we get an exception from here, 
+            // we can narrow the cause down to CQL.
+            throw new RuntimeException("Error parsing CQL expression", e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        catch(Exception e) {
-            if (e instanceof MarkedYAMLException) {
-                context.error((MarkedYAMLException)e);
-            }
-            else {
-                throw new RuntimeException(e);
-            }
-        }
-
         return context.errors();
     }
 

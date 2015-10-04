@@ -126,7 +126,24 @@ public class GeometryBuilder {
         return crs;
     }
 
+    /**
+         Set the CoordinateReferenceSystem for the geometries that will be produced.
+         
+         @param crs the CoordinateReferenceSystem to set
+         
+         @deprecated Use setCoordinateReferenceSystem() instead.
+     */
+    @Deprecated
     public void setCoordianteReferenceSystem( CoordinateReferenceSystem crs ) {
+            setCoordinateReferenceSystem( crs );
+    }
+    
+    /**
+        Set the CoordinateReferenceSystem for the geometries that will be produced.
+        
+        @param crs the CoordinateReferenceSystem to set
+     */
+    public void setCoordinateReferenceSystem( CoordinateReferenceSystem crs ) {
         if( this.crs != crs ){
             hints.remove(Hints.CRS);
             hints.put( Hints.CRS, crs );
@@ -314,14 +331,14 @@ public class GeometryBuilder {
 		if (position == null) {
 			throw new NullPointerException();
 		}
-		setCoordianteReferenceSystem(position.getDirectPosition().getCoordinateReferenceSystem());
+		setCoordinateReferenceSystem(position.getDirectPosition().getCoordinateReferenceSystem());
 		DirectPosition copy = (DirectPosition) getPositionFactory().createDirectPosition(position.getDirectPosition().getCoordinate());
 		return getPrimitiveFactory().createPoint(copy);
 	}
 
 	public Primitive createPrimitive(Envelope envelope) throws MismatchedReferenceSystemException, MismatchedDimensionException {
 		LineSegment segment = processBoundsToSegment(envelope);		
-		setCoordianteReferenceSystem(envelope.getCoordinateReferenceSystem());
+		setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
 		return processSegmentToPrimitive( envelope, segment, 1 );	
 	}
 	

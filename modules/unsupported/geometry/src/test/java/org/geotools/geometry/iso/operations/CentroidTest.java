@@ -63,7 +63,7 @@ public class CentroidTest extends TestCase {
 
 		
 		// === 3D ===
-		this.builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84_3D);
+		this.builder.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84_3D);
 		this.crs = DefaultGeographicCRS.WGS84_3D;
 		
 		// Test Points and MultiPoints

@@ -367,10 +367,10 @@ public class LabelPainter {
                 // for multiline labels we have to go thru the lines and apply
                 // the proper transformation
                 // to position each row within the label bounds
-                AffineTransform lineTx = new AffineTransform(transform);
+                AffineTransform lineTx = new AffineTransform();
                 for (LineInfo line : lines) {
                     for (LineComponent component : line.getComponents()) {
-                        lineTx.setTransform(transform);
+                        lineTx.setTransform(newTransform);
                         lineTx.translate(component.getX(), line.getY());
                         graphics.setTransform(lineTx);
                         drawGlyphVector(component.getGlyphVector());
@@ -594,8 +594,8 @@ public class LabelPainter {
                             ? glyphVector.getGlyphMetrics(i + 1).getAdvance() * 0.5f : 0;
 
                     c = cursor.getCurrentPosition(c);
-                    AffineTransform t = new AffineTransform();
-                    t.setToTranslation(c.x, c.y);
+                    AffineTransform t = new AffineTransform(graphics.getTransform());
+                    t.translate(c.x, c.y);
                     t.rotate(cursor.getCurrentAngle());
                     t.translate(-p.getX() - advance, -p.getY() + getLineHeight() * anchorY);
                     transforms[i] = t;

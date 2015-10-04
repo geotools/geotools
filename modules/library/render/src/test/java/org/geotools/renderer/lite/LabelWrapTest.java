@@ -3,9 +3,12 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -91,6 +94,30 @@ public class LabelWrapTest extends TestCase {
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
 
+    }
+    
+    public void testAutoWrapLocalTransform() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
+        
+        MapContent mc = new MapContent();
+        mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+        mc.addLayer(new FeatureLayer(fs, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        renderer.setMapContent(mc);
+
+        int SIZE = 300;
+        final BufferedImage image = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, SIZE, SIZE);
+        g.setTransform(new AffineTransform(1.1, Math.sin(Math.toRadians(15)), -Math.sin(Math.toRadians(15)), 1.1, 15, 20));
+        renderer.paint(g, new Rectangle(SIZE, SIZE), bounds);
+        renderer.getMapContent().dispose();
+
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledLocalTransform.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
     
     public void testDirectLayerLabelInteraction() throws Exception {

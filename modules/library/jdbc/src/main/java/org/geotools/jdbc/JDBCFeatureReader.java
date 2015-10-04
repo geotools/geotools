@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -145,11 +145,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         try {
             rs = st.executeQuery(sql);
         } catch (Exception e1) {
+            LOGGER.log(Level.SEVERE, "Failed to execute statement " + sql);
             // make sure to mark as closed, otherwise we are going to log that it was not
             try {
                 close();
             } catch (IOException e2) {
-
+                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
             }
             throw new SQLException(e1);
         }
@@ -165,7 +166,17 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.st = st;
         
         ((PreparedStatementSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
-        rs = st.executeQuery();
+        try {
+            rs = st.executeQuery();
+        } catch (Exception e1) {
+            // make sure to mark as closed, otherwise we are going to log that it was not
+            try {
+                close();
+            } catch (IOException e2) {
+                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
+            }
+            throw new SQLException(e1);
+        }
     }
     
     public JDBCFeatureReader(ResultSet rs, Connection cx, int offset, JDBCFeatureSource featureSource, 

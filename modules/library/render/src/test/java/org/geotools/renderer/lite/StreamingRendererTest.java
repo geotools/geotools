@@ -63,11 +63,15 @@ import org.geotools.map.MapContext;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.lite.StreamingRenderer.RenderCoverageReaderRequest;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.Symbolizer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -103,7 +107,7 @@ public class StreamingRendererTest {
     private GeometryFactory gf = new GeometryFactory();
     protected int errors;
     protected int features;
-    
+
     @Before
     public void setUp() throws Exception {
 
@@ -511,7 +515,53 @@ public class StreamingRendererTest {
         
         graphics.dispose();
     }
-    
+
+    /**
+     * Test that we don't have the geometry added twice by StreamingRenderer#findStyleAttributes when geofence is
+     * filtering a layer.
+     * @throws Exception
+     */
+    @Test
+    public void testFindLineStyleAttributeWithAddedFilter() throws Exception {
+        final List<Filter> filters = new ArrayList<Filter>();
+
+        SimpleFeatureSource testSource = new CollectionFeatureSource(createLineCollection()) {
+            @Override
+            public SimpleFeatureCollection getFeatures(Query query) {
+                filters.add(query.getFilter());
+                return super.getFeatures(query);
+            }
+        };
+
+        Style style = createPointStyle();
+        MapContent mc = new MapContent();
+        FeatureLayer layer = new FeatureLayer(testSource, style);
+        mc.addLayer(layer);
+
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84);
+
+        //simulate geofence adding a bbox
+        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "WGS84");
+        StyleFactoryImpl sf = new StyleFactoryImpl();
+        Rule bboxRule = sf.createRule(new Symbolizer[0], new DescriptionImpl(), new Graphic[0], "bbox", bbox, false,
+                1e12, 0);
+        style.featureTypeStyles().get(0).rules().add(bboxRule);
+
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        try {
+            sr.paint(graphics, new Rectangle(5, 5, 7, 7), envelope);
+        } finally {
+            graphics.dispose();
+        }
+
+        //must have only one bbox, not two
+        assertEquals(1, filters.size());
+        assertEquals(FastBBOX.class, filters.get(0).getClass());
+    }
 }
 
 

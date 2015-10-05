@@ -208,7 +208,7 @@ public class StreamingRenderer implements GTRenderer {
     int error = 0;
 
     /** Filter factory for creating bounding box filters */
-    private final static FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    protected final static FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 
     private final static PropertyName gridPropertyName = filterFactory.property("grid");
 
@@ -1600,8 +1600,8 @@ public class StreamingRenderer implements GTRenderer {
             // DJB:geos-469 if the default geometry was used in the style, we
             // need to grab it.
             if (sae.getDefaultGeometryUsed()
-                    && (!attributeNames.contains(schema.getGeometryDescriptor().getName().toString()))
-                    ) {
+                    && !attributeNames.contains(schema.getGeometryDescriptor().getName().toString())
+                    && !attributeNames.contains("")) {
                 atts.add(filterFactory.property ( schema.getGeometryDescriptor().getName() ));
             }
         } catch (Exception e) {

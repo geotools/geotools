@@ -1904,7 +1904,7 @@
       </snapshots>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>http://repo.boundlessgeo.com/main</url>
+      <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
     </repository>
 
   </repositories>

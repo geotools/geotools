@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -420,8 +420,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         break;
                 }
             }else {
-                if (LOGGER.isLoggable(Level.SEVERE)) {
-                    LOGGER.severe("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + this.getInput());
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Null coordinate variable: '" + axis.getFullName() + "' while processing input: " + this.getInput());
                 }
             }
         }
@@ -440,7 +440,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     private void extractCoordinatesVariable( ) throws IOException {
         // get the coordinate variables
         for( CoordinateAxis axis : dataset.getCoordinateAxes() ) {
-            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null) {
+            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null && !"reftime".equalsIgnoreCase(axis.getFullName())) {
                 coordinatesVariables.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
             } else {
                 // Workaround for Unsupported Axes
@@ -456,6 +456,10 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                     axis.setAxisType(AxisType.Time);
                     coordinatesVariables.put(axis.getFullName(),
                             CoordinateVariable.create((CoordinateAxis1D) axis));
+                } else if ("reftime".equals(axis.getFullName())) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Unable to support reftime which is not a CoordinateAxis1D");
+                    }
                 } else {
                     LOGGER.warning("Unsupported axis: " + axis + " in input: " + this.getInput()
                             + " has been found");
@@ -997,6 +1001,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         for (CoordinateAxis axis:cs.getCoordinateAxes()) {
             // get from coordinate vars
             final CoordinateVariable<?> cv = coordinatesVariables.get(axis.getFullName()); 
+            if (cv == null) { 
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                }
+                continue;
+            }
             final String name = cv.getName();
             switch(cv.getAxisType()){
             case GeoX: case GeoY: case Lat: case Lon:

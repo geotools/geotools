@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -644,6 +644,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         final List<CoordinateVariable<?>> otherAxes = new ArrayList<CoordinateVariable<?>>();
         for(CoordinateAxis axis :coordinateSystem.getCoordinateAxes()){
             CoordinateVariable<?> cv=reader.coordinatesVariables.get(axis.getShortName());
+            if (cv == null) { 
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                }
+                continue;
+            }
             switch(cv.getAxisType()){
             case Time:case RunTime:
                 initTemporalDomain(cv, dimensions);

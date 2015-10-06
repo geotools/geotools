@@ -1852,8 +1852,8 @@
     <snapshotRepository>
         <id>boundless</id>
         <uniqueVersion>false</uniqueVersion>
-        <name>Boundless Maven Repository</name>
-        <url>http://repo.boundlessgeo.com/main</url>
+        <name>Boundless Cloud Repository</name>
+        <url>https://boundless.artifactoryonline.com/boundless/main/</url>
     </snapshotRepository>
   </distributionManagement>
 

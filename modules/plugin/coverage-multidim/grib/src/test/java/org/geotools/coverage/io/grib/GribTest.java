@@ -86,37 +86,6 @@ public class GribTest extends Assert{
         assertTrue(spi.canDecodeInput(file));
     }
 
-    @Test
-    public void testGribEarthShape() throws FileNotFoundException, IOException {
-        final String referenceDir = "earthShape";
-        final File workDir = new File(TestData.file(this, "."), referenceDir);
-        if (!workDir.mkdir()) {
-            FileUtils.deleteDirectory(workDir);
-            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
-        }
-        final File zipFile = new File(workDir, "TT_FC_INCA_EarthShape.zip");
-        FileUtils.copyFile(TestData.file(this, "TT_FC_INCA_EarthShape.zip"), zipFile);
-
-        TestData.unzipFile(this, referenceDir + "/TT_FC_INCA_EarthShape.zip");
-        final File file = new File(workDir, "TT_FC_INCA_EarthShape.grb2");
-        NetcdfDataset dataset = NetcdfDataset.openDataset(file.getAbsolutePath());
-        Variable var = dataset.findVariable(null, "LambertConformal_Projection");
-        assertNotNull(var);
-
-        // Before switching to NetCDF 4.6.2 there was a bug which was returning
-        // semi_major_axis = 6.377397248E9 and inverse_flattening = 299.15349328722255;
-        // https://github.com/Unidata/thredds/issues/133
-
-        // Checking that it's now reporting proper values
-        Attribute attribute = var.findAttribute("semi_major_axis");
-        assertNotNull(attribute);
-
-        assertEquals(6377397.0, attribute.getNumericValue().doubleValue(), DELTA);
-        attribute = var.findAttribute("inverse_flattening");
-        assertNotNull(attribute);
-        assertEquals(299.15550239234693, attribute.getNumericValue().doubleValue(), DELTA);
-    }
-
     /**
      * Test if the Grib format is accepted by the NetCDF reader
      * 

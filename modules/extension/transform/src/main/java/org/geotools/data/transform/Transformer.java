@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2012 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -166,6 +166,27 @@ class Transformer {
         }
         
         return tb.buildFeatureType();
+    }
+
+    /**
+     * Utility method to transform feature ids based on the convention &lt;type name&gt;.&lt;id&gt;.
+     *
+     * <p>
+     * Should be invoked by classes using this Transformer instance to build transformed features.
+     * </p>
+     *
+     * @param sourceFeature the source feature
+     * @return the transformed feature identifier
+     */
+    String transformFid(SimpleFeature sourceFeature) {
+        String origFid = sourceFeature.getID();
+        String origFidPrefix = sourceFeature.getType().getTypeName() + ".";
+        if (origFid.startsWith(origFidPrefix)) {
+            String id = origFid.substring(origFidPrefix.length());
+            return schema.getTypeName() + "." + id;
+        } else {
+            return origFid;
+        }
     }
 
     public SimpleFeatureType getSchema() {

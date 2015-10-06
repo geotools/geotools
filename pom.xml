@@ -1853,7 +1853,7 @@
         <id>boundless</id>
         <uniqueVersion>false</uniqueVersion>
         <name>Boundless Cloud Repository</name>
-        <url>https://boundless.artifactoryonline.com/boundless/main/</url>
+        <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
     </snapshotRepository>
   </distributionManagement>
 

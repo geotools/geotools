@@ -1878,8 +1878,6 @@
       <name>Java.net repository</name>
       <url>http://download.java.net/maven/2</url>
     </repository>
-    
-
     <repository>
       <snapshots>
         <enabled>false</enabled>

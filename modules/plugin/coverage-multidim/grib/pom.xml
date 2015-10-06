@@ -30,12 +30,6 @@
       <artifactId>gt-netcdf</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>17.0</version>
-    </dependency>      
-
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>

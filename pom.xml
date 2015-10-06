@@ -167,14 +167,14 @@
         <repository>
           <id>boundless</id>
           <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Maven Repository</name>
-          <url>http://repo.boundlessgeo.com/main</url>
+          <name>Boundless Release Repository</name>
+          <url>http://repo.boundlessgeo.com/release/</url>
         </repository>
         <snapshotRepository>
           <id>boundless</id>
           <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Maven Repository</name>
-          <url>http://repo.boundlessgeo.com/main</url>
+          <name>Boundless Snapshot Repository</name>
+          <url>http://repo.boundlessgeo.com/release/</url>
         </snapshotRepository>
       </distributionManagement>
     </profile>
@@ -1852,8 +1852,8 @@
     <snapshotRepository>
         <id>boundless</id>
         <uniqueVersion>false</uniqueVersion>
-        <name>Boundless Maven Repository</name>
-        <url>http://repo.boundlessgeo.com/main</url>
+        <name>Boundless Snapshot Repository</name>
+        <url>http://repo.boundlessgeo.com/snapshot/</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -1904,7 +1904,7 @@
       </snapshots>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>http://repo.boundlessgeo.com/main</url>
+      <url>http://repo.boundlessgeo.com/main/</url>
     </repository>
 
   </repositories>
@@ -1928,7 +1928,7 @@
       </snapshots>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>http://repo.boundlessgeo.com/main</url>
+      <url>http://repo.boundlessgeo.com/main/</url>
     </pluginRepository> 
     <pluginRepository>
      <id>sonatype-snapshots</id>

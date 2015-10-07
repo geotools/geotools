@@ -1,0 +1,17 @@
+@mode "Flat";
+
+[type = 'Capital'] { 
+  mark: symbol(circle);
+}
+
+[type = 'Capital'] :mark {
+  fill: white;
+  stroke: black;
+  stroke-width: 2px;
+  size: 6px;
+}
+
+/* A rule that won't be translated */
+:mark {
+	fill: black;
+}

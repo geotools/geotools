@@ -124,6 +124,10 @@ public class CssTranslator {
     static final String DIRECTIVE_AUTO_THRESHOLD = "autoThreshold";
 
     static final String DIRECTIVE_TRANSLATION_MODE = "mode";
+    
+    static final String DIRECTIVE_STYLE_TITLE = "styleTitle";
+    
+    static final String DIRECTIVE_STYLE_ABSTRACT = "styleAbstract";
 
     static final int MAX_OUTPUT_RULES_DEFAULT = Integer
             .valueOf(System.getProperty("org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
@@ -285,6 +289,8 @@ public class CssTranslator {
         // prepare the full SLD builder
         StyleBuilder styleBuilder = new StyleBuilder();
         styleBuilder.name("Default Styler");
+        styleBuilder.title(stylesheet.getDirectiveValue(DIRECTIVE_STYLE_TITLE));
+        styleBuilder.styleAbstract(stylesheet.getDirectiveValue(DIRECTIVE_STYLE_ABSTRACT));
 
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers

@@ -114,6 +114,9 @@ public class CssTranslator {
         Simple, /**
                  * The translator will pick Exclusive by default, but if the rules to be turned into SLD go beyond
                  */
+        Flat,   /**
+                  * The translator will not try to combine the rules to get an 1:1 rule - sld rule relationship.
+                  */
         Auto;
     };
 
@@ -346,20 +349,26 @@ public class CssTranslator {
                 CachedSimplifyingFilterVisitor cachedSimplifier = new CachedSimplifyingFilterVisitor(
                         targetFeatureType);
 
-                // expand the css rules power set
-                RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
-                        cachedSimplifier, maxCombinations) {
-                    protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
-                        if (zIndex != null && zIndex > 0) {
-                            TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
-                            if (!zIndexes.contains(zIndex)) {
-                                return null;
-                            }
-                        }
-                        return super.buildResult(rules);
-                    }
-                };
-                List<CssRule> combinedRules = builder.buildPowerSet();
+                List<CssRule> combinedRules;
+
+                if (mode != TranslationMode.Flat) {
+                    // expand the css rules power set
+                    RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
+                            cachedSimplifier, maxCombinations) {
+                                protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
+                                    if (zIndex != null && zIndex > 0) {
+                                        TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
+                                        if (!zIndexes.contains(zIndex)) {
+                                            return null;
+                                        }
+                                    }
+                                    return super.buildResult(rules);
+                                }
+                            };
+                    combinedRules = builder.buildPowerSet();
+                } else {
+                    combinedRules = flattenedRules;
+                }
 
                 if (combinedRules.isEmpty()) {
                     continue;
@@ -370,8 +379,11 @@ public class CssTranslator {
                 // regardless of the translation mode, the first rule matching is
                 // the only one that we want to be applied (in exclusive mode it will be
                 // the only one matching, the simple mode we want the evaluation to stop there)
-                ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
-                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
+                // but if we use the flat mode the evaluation mode should not be set.
+                if (mode != TranslationMode.Flat) {
+                    ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
+                            FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
+                }
                 if (featureTypeName != null) {
                     ftsBuilder.setFeatureTypeNames(
                             Arrays.asList((Name) new NameImpl(featureTypeName)));

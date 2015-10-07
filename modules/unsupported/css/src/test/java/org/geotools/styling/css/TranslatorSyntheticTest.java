@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -37,6 +38,7 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
@@ -797,5 +799,42 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 + "* { mark: symbol('circle'); }";
         Style style = translate(css);
         assertEquals("style description", style.getDescription().getAbstract().toString());
+    }
+    
+    @Test
+    public void testModeFlat() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { fill: green; } " +
+                "[value2=2] { stroke: red; }";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().size());
+        assertEquals(2, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        
+        assertEquals("#008000", ((PolygonSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getFill().getColor().toString());
+        assertEquals(1, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
+        assertNull(((PolygonSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke());
+        
+        assertEquals(1, style.featureTypeStyles().get(0).rules().get(1).symbolizers().size());
+        assertEquals("#ff0000", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(1).symbolizers().get(0)).getStroke().getColor().toString());
+    }
+    
+    @Test
+    public void testModeFlat2() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "* { fill: blue; } " +
+                "[value1=1] { fill: green; } " +
+                "[value2=2] { stroke: red; }";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().size());
+        assertEquals(3, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        assertEquals(ECQL.toFilter("include"), style.featureTypeStyles().get(0).rules().get(2).getFilter());
+        
+        SLDTransformer transformer = new SLDTransformer();
+        String xml = transformer.transform( style );
+        System.out.println(xml);
     }
 }

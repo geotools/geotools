@@ -795,4 +795,20 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
 
+    
+    @Test
+    public void styleTitle() throws Exception {
+        String css = "@styleTitle \"test title\";\n" 
+                + "* { mark: symbol('circle'); }";
+        Style style = translate(css);
+        assertEquals("test title", style.getDescription().getTitle().toString());
+    }
+    
+    @Test
+    public void styleAbstract() throws Exception {
+        String css = "@styleAbstract \"style description\";\n" 
+                + "* { mark: symbol('circle'); }";
+        Style style = translate(css);
+        assertEquals("style description", style.getDescription().getAbstract().toString());
+    }
 }

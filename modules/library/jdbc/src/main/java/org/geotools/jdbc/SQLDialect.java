@@ -444,20 +444,6 @@ public abstract class SQLDialect {
      * Encodes the name of a column in an SQL statement.
      * <p>
      * This method wraps <tt>raw</tt> in the character provided by
-     * {@link #getNameEscape()}. Subclasses usually dont override this method
-     * and instead override {@link #getNameEscape()}.
-     * </p>
-     * 
-     * @deprecated use {@link #encodeColumnName(String, String, StringBuffer)}.
-     */
-    public final void encodeColumnName(String raw, StringBuffer sql) {
-        sql.append(ne()).append(raw).append(ne());
-    }
-
-    /**
-     * Encodes the name of a column in an SQL statement.
-     * <p>
-     * This method wraps <tt>raw</tt> in the character provided by
      * {@link #getNameEscape()}. Subclasses usually don't override this method
      * and instead override {@link #getNameEscape()}.
      * </p>
@@ -644,7 +630,7 @@ public abstract class SQLDialect {
      * Encodes the spatial extent function of a geometry column in a SELECT statement.
      * <p>
      * This method must also be sure to properly encode the name of the column
-     * with the {@link #encodeColumnName(String, StringBuffer)} function.
+     * with the {@link #encodeColumnName(String, String, StringBuffer)} function.
      * </p>
      * @param tableName 
      */
@@ -679,7 +665,7 @@ public abstract class SQLDialect {
      * </p>
      * <p>
      * This method must also be sure to properly encode the name of the column
-     * with the {@link #encodeColumnName(String, StringBuffer)} function.
+     * with the {@link #encodeColumnName(String, String, StringBuffer)} function.
      * </p>
      * <p>
      * Example:
@@ -700,7 +686,7 @@ public abstract class SQLDialect {
      * @deprecated use {@link #encodeGeometryColumn(GeometryDescriptor, String, int, StringBuffer)}
      */
     public final void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
-        encodeColumnName(gatt.getLocalName(), sql);
+        encodeColumnName(null, gatt.getLocalName(), sql);
     }
 
    /**

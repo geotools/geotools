@@ -200,7 +200,7 @@ public class MySQLDialectBasic extends BasicSQLDialect {
             StringBuffer sql) {
         sql.append("asWKB(");
         sql.append("envelope(");
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append("))");
     }
     

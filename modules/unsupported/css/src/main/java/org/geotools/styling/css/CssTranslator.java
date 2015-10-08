@@ -367,7 +367,7 @@ public class CssTranslator {
                         if (mode == TranslationMode.Flat && rules.size() > 1) {
                             return false;
                         }
-                        return super.accept(rules); //To change body of generated methods, choose Tools | Templates.
+                        return super.accept(rules); 
                     }
                         
                     };

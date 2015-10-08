@@ -167,14 +167,14 @@
         <repository>
           <id>boundless</id>
           <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Cloud Repository</name>
-          <url>https://boundless.artifactoryonline.com/boundless/release/</url>
+          <name>Boundless Release Repository</name>
+          <url>https://repo.boundlessgeo.com/release/</url>
         </repository>
         <snapshotRepository>
           <id>boundless</id>
           <uniqueVersion>false</uniqueVersion>
-          <name>Boundless Cloud Repository</name>
-          <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+          <name>Boundless Snapshot Repository</name>
+          <url>https://repo.boundlessgeo.com/release/</url>
         </snapshotRepository>
       </distributionManagement>
     </profile>
@@ -1852,8 +1852,8 @@
     <snapshotRepository>
         <id>boundless</id>
         <uniqueVersion>false</uniqueVersion>
-        <name>Boundless Cloud Repository</name>
-        <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+        <name>Boundless Snapshot Repository</name>
+        <url>https://repo.boundlessgeo.com/snapshot/</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -1903,8 +1903,8 @@
         <enabled>true</enabled>
       </snapshots>
       <id>boundless</id>
-      <name>Boundless Cloud Repository</name>
-      <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+      <name>Boundless Maven Repository</name>
+      <url>https://repo.boundlessgeo.com/main/</url>
     </repository>
 
   </repositories>
@@ -1927,8 +1927,8 @@
         <enabled>true</enabled>
       </snapshots>
       <id>boundless</id>
-      <name>Boundless Cloud Repository</name>
-      <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+      <name>Boundless Maven Repository</name>
+      <url>http://repo.boundlessgeo.com/main/</url>
     </pluginRepository> 
     <pluginRepository>
      <id>sonatype-snapshots</id>

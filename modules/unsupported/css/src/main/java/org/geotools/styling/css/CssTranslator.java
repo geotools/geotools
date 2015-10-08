@@ -65,6 +65,7 @@ import org.geotools.styling.builder.StrokeBuilder;
 import org.geotools.styling.builder.StyleBuilder;
 import org.geotools.styling.builder.SymbolizerBuilder;
 import org.geotools.styling.builder.TextSymbolizerBuilder;
+import org.geotools.styling.css.CssTranslator.TranslationMode;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.Value.MultiValue;
@@ -280,7 +281,7 @@ public class CssTranslator {
     public Style translate(Stylesheet stylesheet) {
         // get the directives influencing translation
         int maxCombinations = getMaxCombinations(stylesheet);
-        TranslationMode mode = getTranslationMode(stylesheet);
+        final TranslationMode mode = getTranslationMode(stylesheet);
         int autoThreshold = getAutoThreshold(stylesheet);
 
         List<CssRule> allRules = stylesheet.getRules();
@@ -349,26 +350,28 @@ public class CssTranslator {
                 CachedSimplifyingFilterVisitor cachedSimplifier = new CachedSimplifyingFilterVisitor(
                         targetFeatureType);
 
-                List<CssRule> combinedRules;
-
-                if (mode != TranslationMode.Flat) {
-                    // expand the css rules power set
-                    RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
-                            cachedSimplifier, maxCombinations) {
-                                protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
-                                    if (zIndex != null && zIndex > 0) {
-                                        TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
-                                        if (!zIndexes.contains(zIndex)) {
-                                            return null;
-                                        }
-                                    }
-                                    return super.buildResult(rules);
+                RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
+                    cachedSimplifier, maxCombinations) {
+                        protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
+                            if (zIndex != null && zIndex > 0) {
+                                TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
+                                if (!zIndexes.contains(zIndex)) {
+                                    return null;
                                 }
-                            };
-                    combinedRules = builder.buildPowerSet();
-                } else {
-                    combinedRules = flattenedRules;
-                }
+                            }
+                            return super.buildResult(rules);
+                        }
+
+                    @Override
+                    protected boolean accept(List<CssRule> rules) {
+                        if (mode == TranslationMode.Flat && rules.size() > 1) {
+                            return false;
+                        }
+                        return super.accept(rules); //To change body of generated methods, choose Tools | Templates.
+                    }
+                        
+                    };
+                List<CssRule> combinedRules = builder.buildPowerSet();
 
                 if (combinedRules.isEmpty()) {
                     continue;

@@ -52,14 +52,10 @@ Setup
 ^^^^^
 
 * JDBC Driver
-<<<<<<< HEAD
-  
-=======
   Since GeoTools version 14 this module is compiled using the JTDS driver which is an improved open source driver
   It can be freely distributed and is built by default now. If you require the use of the Microsoft driver follow 
   the instructions below.
  
->>>>>>> 6f102bc... [GEOT-5229] Minor documentation fixes.
   GeoTools is unable to ship the SQL Server JDBC driver with the standard
   distribution. It must be downloaded from Microsoft separately.
   

@@ -246,12 +246,22 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                 }
             }
 
-            if (found) {
+            if (found && acceptMixinCssRule(rule, mixin)) {
                 result.add(mixin);
             }
         }
 
         return result;
+    }
+    
+    /**
+     * Filter applicable mixin rules. Defaults to accepting all rules.
+     * @param rule
+     * @param mixinRule
+     * @return 
+     */
+    protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
+        return true;
     }
 
     private String getCombinedComment(List<CssRule> rules) {

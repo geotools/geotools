@@ -877,7 +877,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
                 "* { fill: blue; } " +
                 "[value1=1] { fill: green; } " +
                 "[value2=2] { stroke: red; } " +
-                "[value3=3] { mark: symbol(circle); mark-size: 10; mark-rotation: 45; mark-geometry: [centroid(the_geom)];} :mark { fill: blue; }";
+                "[value3=3] { mark: symbol(circle); mark-size: 10; mark-rotation: 45; mark-geometry: [centroid(the_geom)];} [value3=3] :mark { fill: blue; }";
         Style style = translate(css);
         assertEquals(1, style.featureTypeStyles().size());
         assertEquals(4, style.featureTypeStyles().get(0).rules().size());
@@ -914,5 +914,31 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         SLDTransformer transformer = new SLDTransformer();
         String xml = transformer.transform( style );
         System.out.println(xml);
+    }
+    
+    @Test
+    public void testModeFlat7_mark() throws Exception {
+        String css = "@mode \"Flat\"; " +
+                "[value1=1] { mark: symbol(circle); } [value1=1] :mark { fill: blue; } [value2=2] :mark { fill: green; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        assertLiteral("circle", mark.getWellKnownName());
+        assertLiteral("#0000ff", mark.getFill().getColor());
+    }
+    
+    @Test
+    public void testModeFlat8_mark() throws Exception {
+        String css = "@mode \"Flat\"; " +
+                "[value1=1] { mark: symbol(circle); } [value1=1] :mark { fill: green; } [value1=1] [value2=2] :mark { fill: blue; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        assertLiteral("circle", mark.getWellKnownName());
+        assertLiteral("#008000", mark.getFill().getColor());
     }
 }

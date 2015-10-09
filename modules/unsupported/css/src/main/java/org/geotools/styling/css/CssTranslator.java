@@ -369,6 +369,15 @@ public class CssTranslator {
                         }
                         return super.accept(rules); 
                     }
+
+                    @Override
+                    protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
+                        if (mode == TranslationMode.Flat) {
+                            return rule.getSelector().equals(mixinRule.getSelector());
+                        } else {
+                            return super.acceptMixinCssRule(rule, mixinRule);
+                        }
+                    }
                         
                     };
                 List<CssRule> combinedRules = builder.buildPowerSet();

@@ -34,11 +34,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
-import oracle.sql.Datum;
-import oracle.sql.STRUCT;
-
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.data.jdbc.datasource.UnWrapper;
@@ -73,6 +68,11 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+
+import oracle.jdbc.OracleConnection;
+import oracle.sql.ARRAY;
+import oracle.sql.Datum;
+import oracle.sql.STRUCT;
 
 /**
  * 
@@ -127,7 +127,12 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      */
     public static final String GEODETIC = "geodetic";
     
-    UnWrapper uw;
+    /**
+     * Map of <code>UnWrapper</code> objects keyed by the class of <code>Connection</code>
+     * it is an unwrapper for. This avoids the overhead of at each unwrap.
+     */
+    Map<Class<? extends Connection>, UnWrapper> uwMap = 
+            new HashMap<Class<? extends Connection>, UnWrapper>();
 
     /**
      * A map from JTS Geometry type to Oracle geometry type. See Oracle Spatial documentation,
@@ -617,23 +622,30 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
         
         try {
-            // first lookup ever? (we have UNWRAPPER_NOT_FOUND as a sentinel for a lookup that
-            // will not work (we assume the datasource will always return connections we can
-            // unwrap, or never).
-            if (uw == null) {
-                UnWrapper unwrapper = DataSourceFinder.getUnWrapper(cx);
+            // Unwrap the connection multiple levels as necessary to get at the underlying
+            // OracleConnection. Maintain a map of UnWrappers to avoid searching
+            // the registry every time we need to unwrap.
+            Connection testCon = cx;
+            do {
+                UnWrapper unwrapper = uwMap.get(testCon.getClass());
                 if (unwrapper == null) {
-                    uw = UNWRAPPER_NOT_FOUND;
-                } else {
-                    uw = unwrapper;
+                    unwrapper = DataSourceFinder.getUnWrapper(testCon);
+                    if (unwrapper == null) {
+                        unwrapper = UNWRAPPER_NOT_FOUND;
+                    }
+                    uwMap.put(testCon.getClass(), unwrapper);
                 }
-            }
-            if (uw != null && uw != UNWRAPPER_NOT_FOUND) {
-                Connection uwcx = uw.unwrap( cx );
-                if ( uwcx != null && uwcx instanceof OracleConnection ) {
-                    return (OracleConnection) uwcx;
+                if (unwrapper == UNWRAPPER_NOT_FOUND) {
+                    // give up and try legacy approaches below
+                    break;
                 }
-            } else if (cx instanceof Wrapper) {
+                testCon = unwrapper.unwrap(testCon);
+                if (testCon instanceof OracleConnection) {
+                    return (OracleConnection) testCon;
+                }
+            } while (testCon != null);
+
+            if (cx instanceof Wrapper) {
                 // try to use java 6 unwrapping
                 try {
                     Wrapper w = cx;

@@ -105,6 +105,18 @@ Q. How are GeoTools versions organized?
 Like many open source projects, GeoTools has a *development* version and one or more *stable* versions active at any
 given time. By active, we mean that the project developers are working on new features, improvements and bug fixes.
 
+The development version is the master branch in the GitHub repository (https://github.com/geotools/geotools).
+This is the 'bleeding edge' code where the latest features are being worked on. Eventually this code will become
+the next stable branch. 
+
+Stable versions are a branch in the GitHub repository. As an example, the 14.x stable branch can be found at 
+https://github.com/geotools/geotools/tree/14.x. Stable versions do not get new features, but do get bug fixes
+and sometimes other minor improvements.
+
+Formal releases are a tag in the GitHub repository. For example, GeoTools 14.0  can be found at
+https://github.com/geotools/geotools/releases/tag/14.0. Similarly, the 13.1 release can be found at
+https://github.com/geotools/geotools/releases/tag/13.1.
+
 Commencing with GeoTools version 8, a major.minor.patch numbering system applies. 
 
 major

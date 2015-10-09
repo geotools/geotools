@@ -37,8 +37,8 @@ The following connection parameters are available:
 | "timezone"              | Optional: Timezone used to parse dates in the      |
 |                         | DBF file                                           |
 +-------------------------+----------------------------------------------------+
-| "memory mapped buffer"  | Optional: memory map the files (not advised for    |
-|                         | large files under windows, defaults to false)      |
+| "memory mapped buffer"  | Optional: memory map the files (not recommended    |
+|                         | for large files under windows, defaults to false)  |
 +------------------------------------------------------------------------------+
 | "cache memory maps"     | Optional: when memory mapping, cache and reuse     |
 |                         | memory maps (defaults to true)                     |

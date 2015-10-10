@@ -20,9 +20,16 @@ public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
     
     @Override
     protected abstract JDBCDateTestSetup createTestSetup();
+
     TimeZone originalTimeZone;
+
     public void setTimeZone(TimeZone zone) {
-        originalTimeZone = TimeZone.getDefault();
+        if (originalTimeZone == null) {
+            // this method is called several times for each instance by the test setup
+            // infrastructure via subclass createTestSetup() and the time zone is only
+            // original during the first call (null originalTimeZone)
+            originalTimeZone = TimeZone.getDefault();
+        }
         // set JVM time zone
         TimeZone.setDefault(zone);
     }

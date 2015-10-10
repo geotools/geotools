@@ -19,11 +19,7 @@ package org.geotools.jdbc;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Properties;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -105,23 +101,6 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
             // we don't actually expect an exception to percolate up since it's happening
             // on the closeSafe method, that swallows exceptions
             featureStore.getCount(Query.ALL);
-        }
-    }
-    
-    public void testLifeCycleDoubleUnwrap() {
-        try {
-            // Use startup SQL when connecting so the connection is
-            // doubly wrapped (adding LifeCycleConnection).
-            // That tests ability of OracleDialect to unwrap properly.
-            Properties addStartupSql = (Properties) fixture.clone();
-            addStartupSql.setProperty(JDBCDataStoreFactory.SQL_ON_BORROW.key,
-                    "select sysdate from dual");
-            HashMap params = createDataStoreFactoryParams();
-            params.putAll(addStartupSql);
-            DataStore withWrap = (JDBCDataStore) DataStoreFinder.getDataStore(params);
-            withWrap.dispose();
-        } catch (Exception e) {
-            throw new RuntimeException("Connection unwrap test failed!", e);
         }
     }
     

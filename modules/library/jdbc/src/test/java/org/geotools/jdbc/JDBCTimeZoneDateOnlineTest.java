@@ -55,7 +55,6 @@ public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
         DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("dates"));
         Filter f = ff.lessOrEqual(ff.property(aname("d")), ff.literal(df.parse("2009-28-06")));
-        System.out.println(f);
         assertEquals("wrong number of records for " + TimeZone.getDefault().getDisplayName(), 2,
                 fs.getCount(new Query(tname("dates"), f)));
         TimeZone.setDefault(originalTimeZone);

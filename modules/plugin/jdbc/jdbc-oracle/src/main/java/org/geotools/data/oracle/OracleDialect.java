@@ -129,7 +129,8 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     
     /**
      * Map of <code>UnWrapper</code> objects keyed by the class of <code>Connection</code>
-     * it is an unwrapper for. This avoids the overhead of at each unwrap.
+     * it is an unwrapper for. This avoids the overhead of searching the 
+     * <code>DataSourceFinder</code> service registry at each unwrap.
      */
     Map<Class<? extends Connection>, UnWrapper> uwMap = 
             new HashMap<Class<? extends Connection>, UnWrapper>();
@@ -626,6 +627,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             // OracleConnection. Maintain a map of UnWrappers to avoid searching
             // the registry every time we need to unwrap.
             Connection testCon = cx;
+            Connection toUnwrap;
             do {
                 UnWrapper unwrapper = uwMap.get(testCon.getClass());
                 if (unwrapper == null) {
@@ -636,14 +638,15 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     uwMap.put(testCon.getClass(), unwrapper);
                 }
                 if (unwrapper == UNWRAPPER_NOT_FOUND) {
-                    // give up and try legacy approaches below
+                    // give up and do Java 6 unwrap below
                     break;
                 }
+                toUnwrap = testCon;
                 testCon = unwrapper.unwrap(testCon);
                 if (testCon instanceof OracleConnection) {
                     return (OracleConnection) testCon;
                 }
-            } while (testCon != null);
+            } while (testCon != null && testCon != toUnwrap);
 
             if (cx instanceof Wrapper) {
                 // try to use java 6 unwrapping

@@ -342,10 +342,15 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         if(fts.getOnlineResource() != null) {
             copy.setOnlineResource(fts.getOnlineResource());
         }
+        copy.getOptions().clear();
+        copy.getOptions().putAll(fts.getOptions());
         
         if( STRICT && !copy.equals( fts )){
             throw new IllegalStateException("Was unable to duplicate provided FeatureTypeStyle:"+fts );
         }
+        
+        
+        
         pages.push(copy);
     }
     

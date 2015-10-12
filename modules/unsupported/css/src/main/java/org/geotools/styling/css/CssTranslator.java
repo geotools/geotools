@@ -362,12 +362,24 @@ public class CssTranslator {
                             return super.buildResult(rules);
                         }
 
+                    private boolean haveSameSelector(List<CssRule> rules) {
+                        Selector selector = null;
+                        for (CssRule rule : rules) {
+                            if (selector == null) {
+                                selector = rule.selector;
+                            } else if (!selector.equals(rule.selector)) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+
                     @Override
                     protected boolean accept(List<CssRule> rules) {
-                        if (mode == TranslationMode.Flat && rules.size() > 1) {
+                        if (mode == TranslationMode.Flat && rules.size() > 1 && !haveSameSelector(rules)) {
                             return false;
                         }
-                        return super.accept(rules); 
+                        return super.accept(rules);
                     }
 
                     @Override

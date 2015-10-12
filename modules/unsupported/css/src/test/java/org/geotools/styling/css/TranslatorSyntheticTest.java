@@ -941,4 +941,40 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("circle", mark.getWellKnownName());
         assertLiteral("#008000", mark.getFill().getColor());
     }
+    
+    @Test
+    public void testModeFlat9() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { stroke: green; stroke-width:2px;}"
+                + "[value2=2] { stroke: green; stroke-width:2px;}"
+                + "[value1=1] { stroke: blue; stroke-width:10px;}";
+        Style style = translate(css);
+        assertEquals(2, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        assertEquals("10", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("2", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(1).symbolizers().get(0)).getStroke().getWidth().toString());
+        SLDTransformer transformer = new SLDTransformer();
+        String xml = transformer.transform( style );
+        System.out.println(xml);
+    }
+    
+    @Test
+    public void testModeFlat10() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { stroke: green; stroke-width:5px;z-index:1;}"
+                + "[value2=2] { stroke: green; stroke-width:2px;z-index:2;}"
+                + "[value1=1] { stroke: blue; stroke-width:10px;z-index:3;}";
+        Style style = translate(css);
+        assertEquals(3, style.featureTypeStyles().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(1).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(2).rules().get(0).getFilter());
+        assertEquals("5", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("2", ((LineSymbolizer)style.featureTypeStyles().get(1).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("10", ((LineSymbolizer)style.featureTypeStyles().get(2).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        SLDTransformer transformer = new SLDTransformer();
+        String xml = transformer.transform( style );
+        System.out.println(xml);
+    }
 }

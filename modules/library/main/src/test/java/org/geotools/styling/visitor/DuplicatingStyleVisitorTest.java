@@ -80,13 +80,13 @@ import org.opengis.util.Cloneable;
  *
  * @source $URL$
  */
-public class DuplicatorStyleVisitorTest extends TestCase {
+public class DuplicatingStyleVisitorTest extends TestCase {
     StyleBuilder sb;
     StyleFactory sf;
     FilterFactory2 ff;
     DuplicatingStyleVisitor visitor;
     
-    public DuplicatorStyleVisitorTest(String testName) {
+    public DuplicatingStyleVisitorTest(String testName) {
         super(testName);
     }
 
@@ -206,6 +206,7 @@ public class DuplicatorStyleVisitorTest extends TestCase {
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
         fts.setFeatureTypeName("feature-type");
+        fts.getOptions().put("key", "value");
 
         Rule rule1;
 

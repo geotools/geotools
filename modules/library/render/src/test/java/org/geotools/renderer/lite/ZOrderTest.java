@@ -203,6 +203,8 @@ public class ZOrderTest {
             }
         }
     }
+    
+    
 
     @Test
     public void testInvalidAttribute() throws Exception {
@@ -370,6 +372,24 @@ public class ZOrderTest {
         mc.addLayer(new FeatureLayer(zbuildings, buildingsStyle));
 
         runFailureTest(listener, mc);
+    }
+    
+    @Test
+    public void testZOrderComposite() throws Exception {
+        Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
+        forceSortBy(roadsStyle, "z");
+        forceSortByGroup(roadsStyle, "theGroup");
+        FeatureTypeStyle fts = roadsStyle.featureTypeStyles().get(0);
+        fts.getOptions().put(FeatureTypeStyle.COMPOSITE_BASE, "true");
+        fts.getOptions().put(FeatureTypeStyle.COMPOSITE, "destination-in");
+
+        Style buildingsStyle = RendererBaseTest.loadStyle(this, "zorder/zbuildings.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(zbuildings, buildingsStyle));
+        mc.addLayer(new FeatureLayer(zroads, roadsStyle));
+
+        runImageComparison("zorder-composite.png", mc);
     }
 
 }

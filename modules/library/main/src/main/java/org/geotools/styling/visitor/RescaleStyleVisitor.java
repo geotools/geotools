@@ -282,6 +282,8 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
+            LineSymbolizer copy = (LineSymbolizer) pages.peek();
+            copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset()));
         } finally {
             this.defaultUnit = null;
         }        

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -112,6 +112,14 @@ class GrowableOrdinateArray {
             return result;
         }
     }
+    
+    /**
+     * Returns the current data array, raw, uncut
+     * @return
+     */
+    public double[] getDataRaw() {
+        return data;
+    }
 
     /**
      * Turns the array of ordinates into a coordinate sequence
@@ -199,5 +207,25 @@ class GrowableOrdinateArray {
         return sb.toString();
     }
 
+    /**
+     *  Closes the sequence by adding the last point as first
+     */
+    public void close() {
+        add(data[0], data[1]);
+    }
+
+    /**
+     * Copies a sub-array from another growable array 
+     * 
+     * @param other
+     * @param from
+     * @param to
+     */
+    public void copy(GrowableOrdinateArray other, int from, int to) {
+        ensureLength(to + 1);
+        System.arraycopy(other.data, 0, data, 0, to + 1);
+        this.curr = to + 1;
+    }
+    
 
 }

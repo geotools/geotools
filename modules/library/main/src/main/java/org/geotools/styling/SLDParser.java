@@ -1063,8 +1063,8 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
                 parseVendorOption(symbol.getOptions(), child);
             } else if (childName.equalsIgnoreCase(PerpendicularOffsetString)) {
-                final String offsetValue = getFirstChildValue(child);
-                symbol.setPerpendicularOffset((ff.literal(Double.parseDouble(offsetValue))));
+                final Expression offsetValue = parseCssParameter(child);
+                symbol.setPerpendicularOffset(offsetValue);
             }
         }
 

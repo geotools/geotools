@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2012 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -10,6 +26,7 @@ import java.io.IOException;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
@@ -37,6 +54,8 @@ public class LineTest {
 
     ReferencedEnvelope bounds;
 
+    private ContentFeatureSource squares;
+
     @BeforeClass
     public static void setupClass() {
         System.clearProperty("org.geotools.referencing.forceXY");
@@ -49,6 +68,7 @@ public class LineTest {
         File property = new File(TestData.getResource(this, "line.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("line");
+        squares = ds.getFeatureSource("square");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // System.setProperty("org.geotools.test.interactive", "true");
@@ -83,8 +103,16 @@ public class LineTest {
     }
 
     private StreamingRenderer setupLineMap(String styleFile) throws IOException {
+        return setupMap(fs, styleFile);
+    }
+    
+    private StreamingRenderer setupMap(SimpleFeatureSource fs, String styleFile) throws IOException {
         Style style = RendererBaseTest.loadStyle(this, styleFile);
 
+        return setupMap(fs, style);
+    }
+
+    private StreamingRenderer setupMap(SimpleFeatureSource fs, Style style) {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
 
@@ -162,6 +190,24 @@ public class LineTest {
         BufferedImage image = RendererBaseTest.showRender("Lines with buffer rendering transform",
                 renderer, TIME, bounds);
         ImageAssert.assertEquals(file("renderingTransform"), image, 10);
+    }
+    
+    @Test
+    public void testPerpendicularOffsetLeftRight() throws Exception {
+        StreamingRenderer renderer = setupMap(fs, RendererBaseTest.loadSEStyle(this, "linePerpendicularOffset-se.sld"));
+
+        BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
+                renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("linePerpendincularOffset"), image, 10);
+    }
+    
+    @Test
+    public void testPerpendicularOffsetLeftRightSquares() throws Exception {
+        StreamingRenderer renderer = setupMap(squares, RendererBaseTest.loadSEStyle(this, "linePerpendicularOffset-se.sld"));
+
+        BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
+                renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("squaresPerpendincularOffset"), image, 10);
     }
 
 }

@@ -544,6 +544,8 @@ public class SLDStyleFactory {
 				feature, scaleRange));
 		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
         style.setContourComposite(composite);
+        
+        style.setPerpendicularOffset(evalToDouble(symbolizer.getPerpendicularOffset(), feature, 0d));
 
 		return style;
 	}

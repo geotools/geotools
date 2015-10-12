@@ -148,7 +148,7 @@ public enum FootprintBehavior {
                 // trick to get a 0 band
                 RenderedImage alpha=imageWorker2.retainFirstBand().multiplyConst(new double[]{0.0}).getRenderedImage(); 
                 imageWorker2.dispose();
-                imageWorker.addBand(alpha, false);
+                imageWorker.addBand(alpha, false, true, null);
             }
             
             RenderedImage result = imageWorker.getRenderedImage();

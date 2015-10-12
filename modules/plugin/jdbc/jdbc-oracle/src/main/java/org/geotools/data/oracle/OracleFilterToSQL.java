@@ -237,7 +237,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             } else {
                 sb.append(",");
             }
-            dialect.encodeColumnName(c.getName(), sb);
+            dialect.encodeColumnName(null, c.getName(), sb);
         }
         return sb.toString();
     }
@@ -271,7 +271,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             sb.append(" where SDO_NN(");
 
             // geometry column name
-            dialect.encodeColumnName(featureType.getGeometryDescriptor().getLocalName(), sb);
+            dialect.encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sb);
             sb.append(",");
 
             // reference geometry

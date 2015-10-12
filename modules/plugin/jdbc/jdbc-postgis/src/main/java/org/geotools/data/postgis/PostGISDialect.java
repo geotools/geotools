@@ -842,7 +842,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
-        encodeColumnName(column, sql);
+        encodeColumnName(null, column, sql);
         sql.append(" SERIAL PRIMARY KEY");
     }
 

@@ -779,7 +779,20 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Font f2 = fonts.get(1);
         assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
         assertEquals("10", f2.getSize().evaluate(null));
-
     }
+    
+    @Test
+    public void perpendicularOffset() throws Exception {
+        String css = "* { stroke: black, yellow; stroke-offset: 0, 5;} ";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(2, rule.symbolizers().size());
+        LineSymbolizer ls1 = (LineSymbolizer) rule.symbolizers().get(0);
+        assertNull(ls1.getPerpendicularOffset());
+        LineSymbolizer ls2 = (LineSymbolizer) rule.symbolizers().get(1);
+        assertNotNull(ls2.getPerpendicularOffset());
+        assertEquals(5, ls2.getPerpendicularOffset().evaluate(null, Double.class), 0);
+    }
+
 
 }

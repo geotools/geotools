@@ -1291,11 +1291,29 @@ public class CssTranslator {
             if (strokeGeometry != null) {
                 lb.geometry(strokeGeometry);
             }
+            
+            Expression strokeOffset = getExpression(values, "stroke-offset", i);
+            if (strokeOffset != null && !isZero(strokeOffset)) {
+                lb.perpendicularOffset(strokeOffset);
+            }
 
             StrokeBuilder strokeBuilder = lb.stroke();
             buildStroke(cssRule, strokeBuilder, values, i);
             addVendorOptions(lb, LINE_VENDOR_OPTIONS, values, i);
         }
+    }
+
+    /**
+     * Returns true if the expression is a constant value zero
+     * @param expression
+     * @return
+     */
+    private boolean isZero(Expression expression) {
+        if(!(expression instanceof org.opengis.filter.expression.Literal)) {
+            return false;
+        }
+        org.opengis.filter.expression.Literal l = (org.opengis.filter.expression.Literal) expression;
+        return l.evaluate(null, Double.class) == 0;
     }
 
     /**

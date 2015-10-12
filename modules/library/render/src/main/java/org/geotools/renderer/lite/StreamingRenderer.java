@@ -841,7 +841,6 @@ public class StreamingRenderer implements GTRenderer {
                 
                 // have we been painting on a back buffer? If so, merge on the main graphic
                 if (compositingGraphic instanceof DelayedBackbufferGraphic) {
-                    DelayedBackbufferGraphic delayedGraphic = (DelayedBackbufferGraphic) compositingGraphic;
                     RenderingRequest request = new MargeCompositingGroupRequest(graphics,
                             compositingGroup);
                     try {

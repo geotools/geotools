@@ -1248,20 +1248,20 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     @Override
     public String getSequenceForColumn(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
-        String sequenceName = (tableName + "_" + columnName + "_SEQUENCE").toUpperCase();
+        String sequenceName = (tableName + "_" + columnName + "_%").toUpperCase();
         PreparedStatement st = null;
         String sql;
         
         try {
-            sql = "SELECT * FROM USER_SEQUENCES WHERE SEQUENCE_NAME = ?";
+            sql = "SELECT SEQUENCE_NAME FROM USER_SEQUENCES WHERE SEQUENCE_NAME like ?";
             st = cx.prepareStatement(sql);
             st.setString(1, sequenceName);
-            
+
             // check the user owned sequences
             ResultSet rs = st.executeQuery();
             try {
                 if ( rs.next() ) {
-                    return sequenceName; 
+                    return rs.getString(1);
                 }    
             } finally {
                 dataStore.closeSafe( rs );
@@ -1269,14 +1269,14 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             }
             
             // that did not work, let's see if the sequence is available in someone else schema
-            sql = "SELECT * FROM ALL_SEQUENCES WHERE SEQUENCE_NAME = ?";
+            sql = "SELECT SEQUENCE_NAME, SEQUENCE_OWNER FROM ALL_SEQUENCES WHERE SEQUENCE_NAME like ?";
             st = cx.prepareStatement(sql);
             st.setString(1, sequenceName);
             rs = st.executeQuery();
             try {
                 if ( rs.next() ) {
-                    String schema = rs.getString("SEQUENCE_OWNER");
-                    return schema + "." + sequenceName;
+                    String schema = rs.getString(2);
+                    return schema + "." + rs.getString(1);
                 }    
             } finally {
                 dataStore.closeSafe( rs );
@@ -1295,7 +1295,8 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             Connection cx) throws SQLException {
         Statement st = cx.createStatement();
         try {
-            ResultSet rs = st.executeQuery( "SELECT " + sequenceName + ".NEXTVAL FROM DUAL");
+            ResultSet rs = st.executeQuery( "SELECT " +
+                    encodeNextSequenceValue(schemaName, sequenceName) + " FROM DUAL");
             try {
                 rs.next();
                 return rs.getInt( 1 );
@@ -1308,6 +1309,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe( st );
         }
         
+    }
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return sequenceName + ".NEXTVAL";
     }
 
     @Override
@@ -1327,6 +1333,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         } finally {
             dataStore.closeSafe(st);
         }
+    }
+
+    @Override
+    public boolean lookupGeneratedValuesPostInsert() {
+        return true;
     }
 
     /**

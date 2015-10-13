@@ -210,7 +210,12 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     	
         
     }
-    
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();
@@ -223,8 +228,8 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void prepareGeometryValue(Geometry geom, int dimension, int srid, Class binding, StringBuffer sql) {
-	    DB2Util.prepareGeometryValue(geom, srid, binding, sql);
+    public void prepareGeometryValue(Class<? extends Geometry> gClass, int dimension, int srid, Class binding, StringBuffer sql) {
+	    DB2Util.prepareGeometryValue(gClass, srid, binding, sql);
     }
 
     public boolean isLimitOffsetSupported() {

@@ -1,7 +1,7 @@
 /* GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
  *
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
@@ -36,7 +36,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -307,8 +306,11 @@ public class CSVWriteTest {
         String contents2 = new String(baos2.toByteArray(), StandardCharsets.UTF_8);
 
         // Making sure whitespace doesn't cause problems
+        // and adjust for potential windows line endings.
         contents1 = contents1.replace(" ", "").trim();
         contents2 = contents2.replace(" ", "").trim();
+        contents1 = contents1.replace("\r", "");
+        contents2 = contents2.replace("\r", "");
 
         assertEquals("Contents of both files should be the same", contents1, contents2);
     }

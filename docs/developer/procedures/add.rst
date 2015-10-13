@@ -158,7 +158,7 @@ Uploading to Ibiblio
    are one of the lucky few you will have to ask someone else to do that part for you.
 3. To do this create a JIRA task requesting that your jar be uploaded/
    
-   * http://jira.codehaus.org/secure/CreateIssue!default.jspa
+   * https://osgeo-org.atlassian.net/secure/CreateIssue!default.jspa
 
 4. In this task request include the following information:
    

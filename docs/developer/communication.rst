@@ -52,11 +52,11 @@ current activity of the project.
 Issue Tracker
 ---------------
 
-GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by Atlassian and hosted by CodeHaus.
+GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by OSGeo and hosted by Atlassian.
 
 This is where all bugs should be reported, in addition to requested features and improvements.
 
-* http://jira.codehaus.org/secure/BrowseProject.jspa?id=10270
+* https://osgeo-org.atlassian.net/projects/GEOT
 
 Filling out all fields is specially important for bug reports:
 
@@ -96,33 +96,16 @@ IRC Breakout Meetings
   email list allowing interested parties to attend.
 
 
-Confluence
-----------
+Wiki
+----
 
-Confluence has been used since March 2004 to allow anyone (developers and users) to
-work on design ideas and change proposals.
+The development team has migrated to the use of GitHub wiki (in April of 2015) to work on design ideas and change proposals. Prior to this time Confluence was used.
 
-Because of spammers our procedure to get read/write access to the wiki has gotten a tad annoying.
+* https://github.com/geotools/geotools/wiki
 
-It is documented at the bottom of our home wiki page:
+Developers can edit the wiki directly using the Edit button provided. 
 
-1. Create an account for confluence: http://docs.codehaus.org/signup.action
-2. Create an account for codehaus: http://xircles.codehaus.org/signup
-3. Go to your personal details page: http://xircles.codehaus.org/my/details
-4. Use the form to fill in your Confluence Username from step one.
-
-   http://xircles.codehaus.org/projects/geotools
-
-5. Go to the GeoTools project page: http://xircles.codehaus.org/projects/geotools
-6. And click on Apply to join as a developer
-7. Wait for a GeoTools Project Management Committee Member to grant you permission
-8. Once you have an account, you just need to login and click on the edit button to modify a page.
-
-Tips:
-
-* One way to start contributing to the wiki documentation is to fix mistakes, clarify confusing
-  content or by contributing an article on an area of the GeoTools code base you are
-  familiar with.
+If you do not have commit access and would like to submit a change proposal please email geotools-devel and a commmitter can post on your behalf.
 
 Websites
 --------
@@ -134,9 +117,8 @@ http://geotools.org/                          GeoTools website                  
 http://geotoolsnews.blogspot.com/             GeoTools Blog                               Blogger
 http://sourceforge.net/projects/geotools/     Used for project downloads.                 SourceForge
 https://github.com/geotools                   Source code                                 GitHub
-http://jira.codehaus.org/browse/GEOT          JIRA Issue Tracker                          CodeHaus
-http://docs.codehaus.org/display/GEOTOOLS     Confluence wiki for developer collaboration CodeHaus
-http://xircles.codehaus.org/projects/geotools CodeHaus project page for single sign on    CodeHaus
+https://osgeo-org.atlassian.net/projects/GEOT JIRA Issue Tracker                          Atlassian
+https://github.com/geotools/geotools/wiki     Wiki for developer collaboration            GitHub
 ============================================= =========================================== ============
 
 GeoTools has entries on a number of other public websites:
@@ -148,8 +130,9 @@ GeoTools has entries on a number of other public websites:
 * http://gis.stackexchange.com/questions/tagged/geotools
 * http://www.slashgeo.org/category/Tags/GeoTools
 
-We have a number of facilities we no longer use:
+We have a archived a number of facilities we no longer use:
 
+* http://old.geotools.org/
 * http://docs.codehaus.org/display/GEOTDOC/Home
 * http://docs.codehaus.org/display/GEOT/Home
 * http://svn.osgeo.org/geotools/trunk

@@ -13,10 +13,11 @@ For an overview of the capabilities of GeoTools please check the User Guide
 
 Current `version <http://docs.geotools.org/latest/developer/conventions/version.html>`_ information:
 
-* `12.x <http://sourceforge.net/projects/geotools/files/GeoTools%2012%20Releases/>`_: Development
-* `11.x <http://sourceforge.net/projects/geotools/files/GeoTools%2011%20Releases/>`_: Stable
+* `13.x <http://sourceforge.net/projects/geotools/files/GeoTools%2013%20Releases/>`_: Development
+* `12.x <http://sourceforge.net/projects/geotools/files/GeoTools%2012%20Releases/>`_: Stable
+* `11.x <http://sourceforge.net/projects/geotools/files/GeoTools%2011%20Releases/>`_: Maintenance
 
-GeoTools is used by a `number of projects <http://docs.codehaus.org/display/GEOTOOLS/Screenshots>`_
+GeoTools is used by a `number of projects <https://github.com/geotools/geotools/wiki/screenshots>`_
 including Web Feature Servers, Web Map Servers, and desktop applications.
 
 Open Source
@@ -39,4 +40,4 @@ release schedule. Please contact us on the
 
 GeoTools follows an open development process. Our policies and procedures are
 documented in the Developers Guide. Both our change proposals and 
-`issue tracker <http://jira.codehaus.org/browse/GEOT>`_ are open.
+`issue tracker <https://osgeo-org.atlassian.net/projects/GEOT>`_ are open.

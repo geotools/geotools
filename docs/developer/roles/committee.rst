@@ -25,7 +25,7 @@ The GeoTools PMC is the formal "Project Steering Committee" for GeoTools:
 * The PMC is responsible for providing a "GeoTools Officer" to the OSGeo Foundation to act as a
   point of contact.
   
-  * Jody Garnett ( `jgarnett <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jgarnett>`_ )
+  * Jody Garnett ( `jgarnett <https://github.com/jodygarnett>`_ )
 
 * Other Foundation committees may make request of the project in order to facilitate different
   initiatives such as promotion, fundraising, education and so forth. The only reliable request
@@ -73,9 +73,7 @@ PMC members:
 
 * Keep abreast of project administration communication
   
-  * `Issue Tracker "admin" <https://jira.codehaus.org/browse/GEOT/component/10520>`_
-    
-    watchers list: `aaime <https://jira.codehaus.org/secure/ViewProfile.jspa?name=aaime>`_ , `bencaradocdavies <https://jira.codehaus.org/secure/ViewProfile.jspa?name=bencaradocdavies>`_ , `christian.mueller@nvoe.at <https://jira.codehaus.org/secure/ViewProfile.jspa?name=christian.mueller%40nvoe.at>`_ , `ianturton <https://jira.codehaus.org/secure/ViewProfile.jspa?name=ianturton>`_ , `jgarnett <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jgarnett>`_ , `jdeolive <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jdeolive>`_ , `simboss <https://jira.codehaus.org/secure/ViewProfile.jspa?name=simboss>`_
+  * `Issue Tracker "admin" <https://osgeo-org.atlassian.net/projects/GEOT>`_
 
   * `Administration List <https://lists.sourceforge.net/lists/listinfo/geotools-administration>`_
 

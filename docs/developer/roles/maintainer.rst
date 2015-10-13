@@ -60,7 +60,7 @@ We have a "relaxed" set of requirements for "unsupported" modules - providing a 
    Recommended:
    
    * User documentation will help reduce the amount of email you recieve
-   * Set up a module wiki page (see `Module Matrix <http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix>`_ for the complete list)
+   * Set up a module README.md page
     
 3. We have no process for "volunteering" to work on an unsupported module at this time; email the
    developer list and we will figure it out.

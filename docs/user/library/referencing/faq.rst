@@ -21,7 +21,7 @@ If this doesn't work you can try this more brutal, System wide approach...
 See also:
 
 * :doc:`/library/referencing/order`
-* A `Jira issue <http://jira.codehaus.org/browse/GEOT-2995>`_ discussing this problem
+* A `Jira issue <https://osgeo-org.atlassian.net/projects/GEOT-2995>`_ discussing this problem
 
 Q: How to choose an EPSG Authority?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

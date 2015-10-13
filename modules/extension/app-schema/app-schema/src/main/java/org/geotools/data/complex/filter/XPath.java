@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,7 @@ import org.geotools.data.complex.config.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
@@ -629,12 +630,16 @@ public class XPath extends XPathUtil {
 
         if (type instanceof ComplexType && binding == Collection.class) {
             if (!(value instanceof Collection)) {
-                if (Types.isSimpleContentType(type)) {
+                if (Types.isSimpleContentType(type) || Types.hasUnrestrictedContent(type)) {
                     ArrayList<Property> list = new ArrayList<Property>();
                     if (value == null && !descriptor.isNillable()) {
                         return list;
                     }
-                    list.add(buildSimpleContent(type, value));
+                    if (Types.isSimpleContentType(type)) {
+                        list.add(buildSimpleContent(type, value));
+                    } else if (Types.hasUnrestrictedContent(type)) {
+                        list.add(buildUnrestrictedContent(type, value));
+                    }
                     return list;
                 }
             } else {
@@ -679,6 +684,27 @@ public class XPath extends XPathUtil {
         AttributeDescriptor descriptor = new AttributeDescriptorImpl(simpleContentType,
                 ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, (Object) null);
         return new AttributeImpl(convertedValue, descriptor, null);
+    }
+
+    /**
+     * Create a fake property to store arbitrary contents in a complex type.
+     * 
+     * <p>Passed in value is converted to string before being set.</p>
+     * 
+     * @param type
+     * @param value
+     * @return
+     */
+    Attribute buildUnrestrictedContent(AttributeType type, Object value) {
+        AttributeTypeBuilder atb = new AttributeTypeBuilder();
+        atb.setName(ComplexFeatureConstants.UNRESTRICTED_CONTENT.getLocalPart());
+        // unrestricted content is treated as text
+        atb.setBinding(String.class);
+        AttributeType unrestrictedContentType = atb.buildType();
+        String convertedValue = FF.literal(value).evaluate(value, String.class);
+        AttributeDescriptor unrestrictedContentDescr = new AttributeDescriptorImpl(unrestrictedContentType,
+                ComplexFeatureConstants.UNRESTRICTED_CONTENT, 1, 1, true, (Object) null);
+        return new AttributeImpl(convertedValue, unrestrictedContentDescr, null);
     }
 
     public boolean isComplexType(final StepList attrXPath, final AttributeDescriptor featureType) {

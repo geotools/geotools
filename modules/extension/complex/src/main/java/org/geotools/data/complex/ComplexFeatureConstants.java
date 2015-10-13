@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -75,6 +75,11 @@ public class ComplexFeatureConstants {
      */
     public static final Name SIMPLE_CONTENT = new NameImpl(null, "simpleContent");
     
+    /**
+     * Fake attribute name for arbitrary mixed contents of a complex type, eg. swe:DataArray/swe:values of swe:EncodedValuesPropertyType type
+     */
+    public static final Name UNRESTRICTED_CONTENT = new NameImpl(null, "unrestrictedContent");
+
     /**
      * Constant to indicate the last row from denormalised rows.
      */

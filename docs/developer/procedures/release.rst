@@ -101,7 +101,7 @@ When creating the first release candidate of a series, there are some extra step
       
 * Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
 
-* Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
+* Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
 
 Build the Release
 -----------------

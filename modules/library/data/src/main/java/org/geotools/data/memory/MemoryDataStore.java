@@ -70,7 +70,7 @@ import org.opengis.feature.type.Name;
  * </p>
  *
  * @author jgarnett
- * @author fgasdorf
+ * @author Frank Gasdorf
  *
  *
  * @source $URL$

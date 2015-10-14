@@ -56,6 +56,7 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
@@ -73,6 +74,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * DOCUMENT ME!
  * 
  * @author Jody Garnett, Refractions Research
+ * @author Frank Gasdorf
  *
  *
  * @source $URL$
@@ -1399,6 +1401,38 @@ public class MemoryDataStoreTest extends DataTestCase {
         }
     	// 2nd iterator.next() causes java.util.ConcurrentModificationException"
     	iterator.next();
+    	
+    }
+    
+    public void testRemoveSchema() throws IOException {
+    	// two featureTypes should be in 
+    	List<Name> names = data.getNames();
+    	assertNotNull(names);
+    	assertEquals(2, names.size());
+    	
+    	data.removeSchema("road");
+
+    	List<Name> namesAfterRemove = data.getNames();
+    	assertNotNull(namesAfterRemove);
+    	assertEquals(1, namesAfterRemove.size());
+    }
+    
+    public void testRemoveTypeThatDoesntExistsGracefulWithoutIOException() throws IOException {
+    	// two featureTypes should be in 
+    	List<Name> names = data.getNames();
+    	assertNotNull(names);
+    	assertEquals(2, names.size());
+    	
+    	try {
+			data.removeSchema("typeThatDoesntExists");
+		} catch (IOException e) {
+			fail("remove Schema should act gracfully if it has never been created for that type");
+		}
+
+    	// still the same size and no IOException
+    	List<Name> namesAfterRemove = data.getNames();
+    	assertNotNull(namesAfterRemove);
+    	assertEquals(2, namesAfterRemove.size());
     	
     }
 }

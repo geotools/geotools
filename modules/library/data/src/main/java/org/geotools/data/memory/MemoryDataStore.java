@@ -59,9 +59,18 @@ import org.opengis.feature.type.Name;
  * 
  * <p>
  * This class will also illustrate the use of In-Process locking when the time comes.
+ * 
+ * Note: While iteration through the Map using {@link #features(String)} its possible 
+ * other threads writing features at the same time. If so the iterator represents a slightly 
+ * out-of-date DataSet, depending on the amount of data has been written in between.
+ * 
+ * Adding and removing features is thread-safe.
+ * 
+ * Its possible to remove schemas to free memory, if required.
  * </p>
  *
  * @author jgarnett
+ * @author fgasdorf
  *
  *
  * @source $URL$
@@ -84,8 +93,7 @@ public class MemoryDataStore extends ContentDataStore {
     public MemoryDataStore(SimpleFeatureType featureType) {
     	ConcurrentSkipListMap<String,SimpleFeature> featureMap = new ConcurrentSkipListMap<String,SimpleFeature>();
         String typeName = featureType.getTypeName();
-        schema.put(typeName, featureType);
-        memory.put(typeName, featureMap);
+        putSchemaAndFeaturesSync(typeName, featureType, featureMap);
     }
     public MemoryDataStore(FeatureCollection<SimpleFeatureType,SimpleFeature> collection) {
         addFeatures(collection);
@@ -139,8 +147,7 @@ public class MemoryDataStore extends ContentDataStore {
                 featureMap.put(feature.getID(), feature);
             }
 
-            schema.put(typeName, featureType);
-            memory.put(typeName, featureMap);
+            putSchemaAndFeaturesSync(typeName, featureType, featureMap);
         } catch (IllegalAttributeException e) {
             throw new DataSourceException("Problem using reader", e);
         }
@@ -149,7 +156,7 @@ public class MemoryDataStore extends ContentDataStore {
         }
     }
 
-    /**
+	/**
      * Configures MemoryDataStore with FeatureReader.
      *
      * @param reader New contents to add
@@ -180,8 +187,7 @@ public class MemoryDataStore extends ContentDataStore {
                 featureMap.put(feature.getID(), feature);
             }
 
-            schema.put(typeName, featureType);
-            memory.put(typeName, featureMap);
+            putSchemaAndFeaturesSync(typeName, featureType, featureMap);
         }
         finally {
             reader.close();
@@ -203,27 +209,25 @@ public class MemoryDataStore extends ContentDataStore {
             throw new IllegalArgumentException("Provided SimpleFeatureCollection is empty");
         }
 
-        synchronized (memory) {
-            for (Iterator<?> i = collection.iterator(); i.hasNext();) {
-                addFeatureInternal((SimpleFeature) i.next());
-            }
+    
+        for (Iterator<?> i = collection.iterator(); i.hasNext();) {
+            addFeatureInternal((SimpleFeature) i.next());
         }
     }
+    
     public void addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> collection) {
         if ((collection == null) ) {
             throw new IllegalArgumentException("Provided SimpleFeatureCollection is empty");
         }
-        synchronized (memory) {
-            try {
-                collection.accepts( new FeatureVisitor(){
-                    public void visit(Feature feature) {
-                        addFeatureInternal( (SimpleFeature) feature );
-                    }                
-                }, null );
-            }
-            catch( IOException ignore){
-                LOGGER.log( Level.FINE, "Unable to add all features", ignore );
-            }
+        try {
+            collection.accepts( new FeatureVisitor(){
+                public void visit(Feature feature) {
+                    addFeatureInternal( (SimpleFeature) feature );
+                }                
+            }, null );
+        }
+        catch( IOException ignore){
+            LOGGER.log( Level.FINE, "Unable to add all features", ignore );
         }
     }
     /**
@@ -237,11 +241,9 @@ public class MemoryDataStore extends ContentDataStore {
         if ((features == null) || (features.length == 0)) {
             throw new IllegalArgumentException("Provided features are empty");
         }
-
-        synchronized (memory) {
-            for (int i = 0; i < features.length; i++) {
-                addFeatureInternal(features[i]);
-            }
+    
+        for (int i = 0; i < features.length; i++) {
+            addFeatureInternal(features[i]);
         }
     }
 
@@ -249,8 +251,8 @@ public class MemoryDataStore extends ContentDataStore {
      * Adds a single Feature to the correct typeName entry.
      * 
      * <p>
-     * This is an internal opperation used for setting up MemoryDataStore - please use
-     * FeatureWriter for generatl use.
+     * This is an internal operation used for setting up MemoryDataStore - please use
+     * FeatureWriter for general use.
      * </p>
      * 
      * <p>
@@ -260,9 +262,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @param feature Individual feature to add
      */
     public void addFeature(SimpleFeature feature) {
-        synchronized (memory) {
-            addFeatureInternal(feature);
-        }
+        addFeatureInternal(feature);
     }
 
     private void addFeatureInternal(SimpleFeature feature) {
@@ -275,9 +275,9 @@ public class MemoryDataStore extends ContentDataStore {
 
         String typeName = featureType.getTypeName();
 
-        Map<String,SimpleFeature> featuresMap;
-
-        if (!memory.containsKey(typeName)) {
+        Map<String,SimpleFeature> featuresMap = getFeatureMapSync(typeName);
+        
+        if (featuresMap == null) {
             try {
                 createSchema(featureType);
             } catch (IOException e) {
@@ -287,11 +287,12 @@ public class MemoryDataStore extends ContentDataStore {
             }
         }
 
-        featuresMap = memory.get(typeName);
+        featuresMap = getFeatureMapSync(typeName);
         featuresMap.put(feature.getID(), feature);
     }
 
-    /**
+
+	/**
      * Access featureMap for typeName.
      *
      * @param typeName
@@ -301,11 +302,11 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IOException If typeName cannot be found
      */
     protected Map<String,SimpleFeature> features(String typeName) throws IOException {
-        synchronized (memory) {
-            if (memory.containsKey(typeName)) {
-                return memory.get(typeName);
-            }
-        }
+    	Map<String, SimpleFeature> synchedFeatureMap = getFeatureMapSync(typeName);
+    	
+    	if (synchedFeatureMap != null) {
+    		return synchedFeatureMap;
+    	}
 
         throw new IOException("Type name " + typeName + " not found");
     }
@@ -355,13 +356,59 @@ public class MemoryDataStore extends ContentDataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         String typeName = featureType.getTypeName();
 
-        if (memory.containsKey(typeName)) {
+        Map<String, SimpleFeature> synchedFeatureMap = getFeatureMapSync(typeName);
+        
+        if (synchedFeatureMap != null) {
             // we have a conflict
             throw new IOException(typeName + " already exists");
         }
             // insertion order preserving map
-        ConcurrentSkipListMap<String,SimpleFeature> featuresMap = new ConcurrentSkipListMap<String,SimpleFeature>();
-        schema.put(typeName, featureType);
-        memory.put(typeName, featuresMap);
+        ConcurrentSkipListMap<String,SimpleFeature> featureMap = new ConcurrentSkipListMap<String,SimpleFeature>();
+        putSchemaAndFeaturesSync(typeName, featureType, featureMap);
     }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+    	if (typeName != null) {
+    		// graceful remove, its fine if the type has never been registered
+    		synchronized (schema) {
+    			schema.remove(typeName);
+			}
+    		
+    		synchronized (memory) {
+    			memory.remove(typeName);
+    		}
+    	}
+    }
+    
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+    	if (typeName != null && typeName.getLocalPart() != null) {
+    		removeSchema(typeName.getLocalPart());
+    	}
+    }
+    
+    private Map<String, SimpleFeature> getFeatureMapSync(String typeName) {
+    	if (typeName == null) {
+    		return null;
+    	}
+    	
+        synchronized (memory) {
+        	return memory.get(typeName);
+        }
+
+	}
+
+    private void putSchemaAndFeaturesSync(String typeName,
+			SimpleFeatureType featureType,
+			ConcurrentSkipListMap<String, SimpleFeature> featureMap) {
+        synchronized (schema) {
+        	schema.put(typeName, featureType);
+		}
+        
+        synchronized (memory) {
+        	memory.put(typeName, featureMap);
+		}
+	}
+
 }

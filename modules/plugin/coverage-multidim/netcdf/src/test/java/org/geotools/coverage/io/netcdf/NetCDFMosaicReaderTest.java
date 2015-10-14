@@ -64,6 +64,8 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.imageio.netcdf.NetCDFImageReader;
+import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
@@ -75,6 +77,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -83,6 +86,8 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+
+import ucar.nc2.Variable;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -196,6 +201,86 @@ public class NetCDFMosaicReaderTest extends Assert {
                 it.close();
             }
             reader.dispose();
+        }
+    }
+
+    @Test
+    public void testCustomTimeAttribute() throws IOException {
+        File nc1 = TestData.file(this,"polyphemus_20130301_NO2_time2.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_time2");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n" + 
+                        "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"; 
+        final String auxiliaryFilePath = mosaic.getAbsolutePath() + File.separatorChar + ".polyphemus_20130301_NO2_time2";
+        final File auxiliaryFileDir = new File(auxiliaryFilePath);
+        assertTrue(auxiliaryFileDir.mkdirs());
+
+        File nc1Aux = TestData.file(this,"polyphemus_20130301_NO2_time2.xml");
+        FileUtils.copyFileToDirectory(nc1Aux, auxiliaryFileDir);
+
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        NetCDFImageReader imageReader = null;
+        SimpleFeatureIterator it = null;
+        assertNotNull(reader);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertEquals(1, names.length);
+            assertEquals("NO2", names[0]);
+
+            // check we have the two granules we expect
+            GranuleSource source = reader.getGranules("NO2", true);
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            Query q = new Query(Query.ALL);
+            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            SimpleFeatureCollection granules = source.getGranules(q);
+            assertEquals(2, granules.size());
+            it = granules.features();
+            assertTrue(it.hasNext());
+            SimpleFeature f = it.next();
+            assertEquals("polyphemus_20130301_NO2_time2.nc", f.getAttribute("location"));
+            SimpleFeatureType featureType = f.getType();
+
+            // check the underlying data has a time2 dimension 
+            imageReader = (NetCDFImageReader) new NetCDFImageReaderSpi().createReaderInstance();
+            imageReader.setInput(nc1);
+            Variable var = imageReader.getVariableByName("NO2");
+            String dimensions = var.getDimensionsString();
+            assertTrue(dimensions.contains("time2"));
+
+            // check I'm getting a "time" attribute instead of "time2" due to the
+            // uniqueTimeAttribute remap
+            assertNotNull(featureType.getDescriptor("time"));
+
+        } finally {
+            if (it != null) {
+                it.close();
+            }
+
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Exception e) {
+                    // Ignore exception on dispose
+                }
+            }
+            if (imageReader != null) {
+                try {
+                    imageReader.dispose();
+                } catch (Exception e) {
+                    // Ignore exception on dispose
+                }
+            }
         }
     }
 

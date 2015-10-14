@@ -40,6 +40,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.test.TestData;
+import org.geotools.util.Utilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -307,11 +308,27 @@ public class CSVWriteTest {
 
         // Making sure whitespace doesn't cause problems
         // and adjust for potential windows line endings.
-        contents1 = contents1.replace(" ", "").trim();
-        contents2 = contents2.replace(" ", "").trim();
-        contents1 = contents1.replace("\r", "");
-        contents2 = contents2.replace("\r", "");
+        assertEqualsIgnoreWhitespace("Contents of both files should be the same", contents1,contents2);
+    }
+    
+    public static void assertEqualsIgnoreWhitespace(String message, String expected, String actual) {
+        expected = removeWhitespace(expected);
+        actual = removeWhitespace(actual);
+        assertEquals(message, expected, actual);
+    }
 
-        assertEquals("Contents of both files should be the same", contents1, contents2);
+    private static String removeWhitespace(String actual) {
+        if( actual == null ) return "";
+        StringBuffer crush = new StringBuffer(actual);
+        int ch = 0;
+        while( ch < crush.length() ){
+            char chracter = crush.charAt(ch);
+            if( Character.isWhitespace(chracter)){
+                crush.deleteCharAt(ch);
+                continue;
+            }
+            ch++;
+        }
+        return crush.toString();
     }
 }

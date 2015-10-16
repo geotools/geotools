@@ -326,14 +326,15 @@ public class GranuleDescriptor {
                 File granuleFile = DataUtilities.urlToFile(granuleUrl);
                 AbstractGridFormat format = GridFormatFinder.findFormat(granuleFile,
                         EXCLUDE_MOSAIC);
-                AbstractGridCoverage2DReader gcReader = format.getReader(granuleFile, hints);
-                // Getting Dataset Layout
-                layout = gcReader.getDatasetLayout();
-
 		// create the base grid to world transformation
+                AbstractGridCoverage2DReader gcReader = null; 
 		ImageInputStream inStream = null;
 		ImageReader reader = null;
 		try {
+		    
+		    gcReader = format.getReader(granuleFile, hints);
+		    // Getting Dataset Layout
+	                layout = gcReader.getDatasetLayout();
 			//
 			//get info about the raster we have to read
 			//
@@ -444,6 +445,14 @@ public class GranuleDescriptor {
 					reader.dispose();
 				}
 			}
+			if (gcReader != null) {
+			    try {
+			        gcReader.dispose();
+			    } catch (Throwable t) {
+			        // Ignore it
+			    }
+			}
+			
 		}
 	}
 	

@@ -372,6 +372,22 @@ public class GML3EncodingUtils {
         encodeAsText(document, element, value);
     }
 
+    /**
+     * Encode the unrestrictedContent property of a ComplexAttribute (if any) as an XML text node.
+     * 
+     * <p>A property named unrestrictedContent is a convention for representing XSD complexType with
+     * arbitrary mixed content.</p>
+     * 
+     * @param complex
+     * @param document
+     * @param element
+     */
+    public static void encodeUnrestrictedContent(ComplexAttribute complex, Document document,
+            Element element) {
+        Object value = getUnrestrictedContent(complex);
+        encodeAsText(document, element, value);
+    }
+
     public static void encodeAsText(Document document, Element element, Object value) {
         if (value != null) {
             Text text = document.createTextNode(Converters.convert(value, String.class));
@@ -395,4 +411,19 @@ public class GML3EncodingUtils {
         }
     }
 
+    /**
+     * Return the content of a {@link ComplexAttribute} if it represents a complexType with
+     * arbitrary mixed content, otherwise null.
+     * 
+     * @param complex
+     * @return
+     */
+    public static Object getUnrestrictedContent(ComplexAttribute complex) {
+        Property unrestrictedContent = complex.getProperty(new NameImpl("unrestrictedContent"));
+        if (unrestrictedContent == null) {
+            return null;
+        } else {
+            return unrestrictedContent.getValue();
+        }
+    }
 }

@@ -33,6 +33,7 @@ import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaLocator;
 import org.geotools.xml.XSD;
+import org.geotools.xs.XSSchema;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -47,6 +48,8 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
 
     private static final String SAMPLE_CLASS_VALUE = "1.1.1";
 
+    private static final String SAMPLE_UNRESTRICTED_VALUE = "Arbitrary <value>mixed</value> content.";
+
 
     static class ANYTYPETEST extends XSD {
         /**
@@ -58,6 +61,8 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
 
         public static final QName OBSERVATION = new QName("http://www.geotools.org/anytypetest",
                 "Observation");
+
+        public static final QName UNRESTRICTED = new QName(NAMESPACE, "unrestrictedEl");
 
         /**
          * private constructor.
@@ -135,7 +140,15 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         assertNotNull(dom.getDocumentElement().getElementsByTagName("test:class").item(0).getFirstChild());
         assertEquals(SAMPLE_CLASS_VALUE,dom.getDocumentElement().getElementsByTagName("test:class").item(0).getFirstChild().getNodeValue());
     }
-    
+
+    public void testEncodeUnrestricted() throws Exception {
+        QName typeName = ANYTYPETEST.UNRESTRICTED;
+        ComplexAttribute unrestricted = createUnrestrictedAttr(typeName, SAMPLE_UNRESTRICTED_VALUE);
+        Document dom = encode(unrestricted, typeName);
+        print(dom);
+        assertEquals("test:unrestrictedEl", dom.getDocumentElement().getNodeName());
+        assertEquals(SAMPLE_UNRESTRICTED_VALUE,dom.getDocumentElement().getTextContent());
+    }
 
     public ComplexAttribute testAnyTypeTest(QName typeName, String classValue) {
         Name myType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
@@ -159,6 +172,29 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
                 Collections.EMPTY_LIST, null, null);
 
         AttributeDescriptorImpl ai = new AttributeDescriptorImpl(at, myType, 0, 0, false, null);
+
+        return new ComplexAttributeImpl(properties, ai, null);
+    }
+
+    public ComplexAttribute createUnrestrictedAttr(QName typeName, String contents) {
+        Name unrestrictedType = new NameImpl(typeName.getNamespaceURI(), typeName.getLocalPart());
+
+        List<Property> properties = new ArrayList<Property>();
+        List<PropertyDescriptor> propertyDescriptors = new ArrayList<PropertyDescriptor>();
+
+        // create fake attribute unrestrictedContent
+        Name attName = new NameImpl(null, "unrestrictedContent");
+        AttributeType p = new AttributeTypeImpl(attName, String.class, false, false, null, null,
+                null);
+        AttributeDescriptor pd = new AttributeDescriptorImpl(p, attName, 0, 0, true, null);
+
+        propertyDescriptors.add(pd);
+        properties.add(new AttributeImpl(contents, pd, null));
+
+        ComplexTypeImpl at = new ComplexTypeImpl(unrestrictedType, propertyDescriptors, false, false,
+                Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+
+        AttributeDescriptorImpl ai = new AttributeDescriptorImpl(at, unrestrictedType, 0, 0, false, null);
 
         return new ComplexAttributeImpl(properties, ai, null);
     }

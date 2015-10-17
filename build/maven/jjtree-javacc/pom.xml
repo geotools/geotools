@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.maven</groupId>
     <artifactId>maven</artifactId>
-    <version>13-SNAPSHOT</version>
+    <version>13.3</version>
   </parent>
 
 

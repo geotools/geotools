@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>13-SNAPSHOT</version>
+    <version>13.3</version>
   </parent>
   
 

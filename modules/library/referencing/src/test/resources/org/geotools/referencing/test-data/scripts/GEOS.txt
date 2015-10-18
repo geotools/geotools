@@ -1,0 +1,95 @@
+// Test points for the Geostationary_Satellite/GEOS projection
+//
+// (C) 2015, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated proj4 geos projection as reference software
+//
+// Tom Kunicki - October 2015
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    java -cp target/classes:target/test-classes:_CLASS_PATH_ -ea org.geotools.referencing.ScriptRunner src/test/resources/org/geotools/referencing/test-data/scripts/GEOS.txt
+//
+// the _CLASS_PATH_ can be generated with
+//
+//    mvn dependency:build-classpath
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+
+// Ellipsoidal CRS
+set GEOG_E  = GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["degree",0.01745329251994328]]
+set PROJ_E = PROJCS["Geostationary_Satellite",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["degree",0.01745329251994328]],PROJECTION["Geostationary_Satellite"],PARAMETER["central_meridian", -135.0],PARAMETER["satellite_height",35785831.0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["meter",1]]
+// Spherical CRS (Spherical Geographic to avoid "Bursa-Wolf" errors transforming to WGS84)
+set GEOG_S = GEOGCS["Custom Geographic CS",DATUM["Custom Datum",SPHEROID["Sphere",6367451.5, 0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]
+set PROJ_S = PROJCS["Geostationary_Satellite",GEOGCS["Custom Geographic CS",DATUM["Custom Datum",SPHEROID["Sphere",6367451.5, 0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Geostationary_Satellite"],PARAMETER["central_meridian", -135],PARAMETER["satellite_height",35832548.5],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["meter", 1]]
+
+
+// proj +proj=geos +h=35785831 +lon_0=-135 +datum=WGS84
+source crs = GEOG_E
+target crs = PROJ_E
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-135,0)
+target pt = (0,0)
+
+source pt = (-175,45)
+target pt = (-2679937.38,4119172.91)
+
+source pt = (-95,-45)
+target pt = (2679937.38,-4119172.91)
+
+
+// proj +proj=geos +h=35785831 +lon_0=-135 +datum=WGS84 -I
+source crs = PROJ_E
+target crs = GEOG_E
+test tolerance = (1e-5, 1e-5)
+
+source pt = (0,0)
+target pt = (-135,0)
+
+source pt = (-2679937.38,4119172.91)
+target pt = (-175,45)
+
+source pt = (2679937.38,-4119172.91)
+target pt = (-95,-45)
+
+
+// proj +proj=geos +h=35832548.5 +lon_0=-135 +a=6367451.5
+source crs = GEOG_S
+target crs = PROJ_S
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-135,0)
+target pt = (0,0)
+
+source pt = (-175,45)
+target pt = (-2671212.28,4133389.15)
+
+source pt = (-95,-45)
+target pt = (2671212.28,-4133389.15)
+
+
+// proj +proj=geos +h=35832548.5 +lon_0=-135 +a=6367451.5 -I
+source crs = PROJ_S
+target crs = GEOG_S
+test tolerance = (1e-5, 1e-5)
+
+source pt = (0,0)
+target pt = (-135,0)
+
+source pt = (-2671212.28,4133389.15)
+target pt = (-175,45)
+
+source pt = (2671212.28,-4133389.15)
+target pt = (-95,-45)
+

@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2012 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.renderer.crs;
 
 import static org.junit.Assert.*;
@@ -827,5 +843,27 @@ public class ProjectionHandlerTest {
                 
             }
         });
+    }
+    
+    @Test
+    public void testReprojectBackwardsTo900913() throws Exception {
+        // use a WKT in order to miss the EPSG database support
+        String wkt = "PROJCS[\"WGS84 / Google Mercator\", GEOGCS[\"WGS 84\", DATUM[\"World Geodetic System 1984\", "
+                + "SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], AUTHORITY[\"EPSG\",\"6326\"]], "
+                + "PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], UNIT[\"degree\", 0.017453292519943295], AUTHORITY[\"EPSG\",\"4326\"]], "
+                + "PROJECTION[\"Mercator (1SP)\", AUTHORITY[\"EPSG\",\"9804\"]], PARAMETER[\"semi_major\", 6378137.0], PARAMETER[\"semi_minor\", 6378137.0], "
+                + "PARAMETER[\"latitude_of_origin\", 0.0], PARAMETER[\"central_meridian\", 0.0], PARAMETER[\"scale_factor\", 1.0], "
+                + "PARAMETER[\"false_easting\", 0.0], PARAMETER[\"false_northing\", 0.0], UNIT[\"m\", 1.0],  AUTHORITY[\"EPSG\",\"900913\"]]";
+       CoordinateReferenceSystem epsg900913 = CRS.parseWKT(wkt);
+       
+       // assume we are rendering in WGS84
+       ReferencedEnvelope renderingArea = new ReferencedEnvelope(-180, 0, 0, 90, DefaultGeographicCRS.WGS84);
+       ProjectionHandler ph = ProjectionHandlerFinder.getHandler(renderingArea, epsg900913, true);
+       List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+       assertEquals(1, queryEnvelopes.size());
+       
+       // the expected query envelope
+       ReferencedEnvelope expected = new ReferencedEnvelope(-180, 0, 0, 85, DefaultGeographicCRS.WGS84).transform(epsg900913, true);
+       assertEquals(expected, queryEnvelopes.get(0));
     }
 }

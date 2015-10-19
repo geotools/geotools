@@ -123,11 +123,6 @@ public class CssTranslator {
                  * direct following pseudo rules. There is no powerset building, no creation of additional 
                  * rules. After merging the rules are sorted by z-index.
                  */
-        FlatFilter, /**
-                  * The translator will not combine filters to create a rule powerset. All regarding filters exact matching 
-                  * rules are merge as usual.
-                  * 
-                  */
         Auto;
     };
 
@@ -392,23 +387,6 @@ public class CssTranslator {
                         }
                         return true;
                     }
-
-                    @Override
-                    protected boolean accept(List<CssRule> rules) {
-                        if (mode == TranslationMode.FlatFilter && rules.size() > 1 && !haveSameSelector(rules)) {
-                            return false;
-                        }
-                        return super.accept(rules);
-                    }
-
-                    @Override
-                    protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
-                        if (mode == TranslationMode.FlatFilter) {
-                            return rule.getSelector().equals(mixinRule.getSelector());
-                        } else {
-                            return super.acceptMixinCssRule(rule, mixinRule);
-                        }
-                    }
                 };
                 List<CssRule> combinedRules = builder.buildPowerSet();
                 if (combinedRules.isEmpty()) {
@@ -420,10 +398,9 @@ public class CssTranslator {
                 // the only one that we want to be applied (in exclusive mode it will be
                 // the only one matching, the simple mode we want the evaluation to stop there)
                 // but if we use the flat mode the evaluation mode should not be set.
-                if (mode != TranslationMode.FlatFilter) {
-                    ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
+                ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
                             FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
-                }
+                
                 if (featureTypeName != null) {
                     ftsBuilder.setFeatureTypeNames(
                             Arrays.asList((Name) new NameImpl(featureTypeName)));

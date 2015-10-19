@@ -77,6 +77,7 @@ import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
 import org.geotools.styling.css.util.FeatureTypeGuesser;
 import org.geotools.styling.css.util.OgcFilterBuilder;
+import org.geotools.styling.css.util.PseudoClassRemover;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
 import org.geotools.styling.css.util.TypeNameSimplifier;
@@ -305,26 +306,40 @@ public class CssTranslator {
         styleBuilder.title(stylesheet.getDirectiveValue(DIRECTIVE_STYLE_TITLE));
         styleBuilder.styleAbstract(stylesheet.getDirectiveValue(DIRECTIVE_STYLE_ABSTRACT));
 
+        int translatedRuleCount = 0;
+        if (mode == TranslationMode.Flat) {
+            translatedRuleCount = translateFlat(allRules, styleBuilder);
+        } else {
+            translatedRuleCount = translateCss(mode, allRules, styleBuilder, maxCombinations, autoThreshold);
+        }
+
+        // check that we have generated at least one rule in output
+        if (translatedRuleCount == 0) {
+            throw new IllegalArgumentException("Invalid CSS style, no rule seems to activate "
+                    + "any symbolization. The properties activating the symbolizers are fill, "
+                    + "stroke, mark, label, raster-channels, has any been used in a rule matching any feature?");
+        }
+
+        return styleBuilder.build();
+    }
+
+    private int translateCss(final TranslationMode mode, List<CssRule> allRules, StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
         Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(allRules);
-
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
-
         int translatedRuleCount = 0;
         for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
             final Integer zIndex = zEntry.getKey();
             List<CssRule> rules = zEntry.getValue();
             Collections.sort(rules, CssRuleComparator.DESCENDING);
             Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
-
             // build the SLD
             for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
-
                 final FeatureType targetFeatureType = getTargetFeatureType(featureTypeName,
                         localRules);
                 if (targetFeatureType != null) {
@@ -340,7 +355,6 @@ public class CssTranslator {
                         });
                     }
                 }
-
                 // at this point we can have rules with selectors having two scale ranges
                 // in or, we should split them, as we cannot represent them in SLD
                 // (and yes, this changes their selectivity a bit, could not find a reasonable
@@ -348,28 +362,24 @@ public class CssTranslator {
                 // and and of two selectors, that internally have ORs of scales, which could
                 // be quite complicated to un-tangle)
                 List<CssRule> flattenedRules = flattenScaleRanges(localRules);
-
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Preparing power set expansion with " + flattenedRules.size()
                             + "  rules for feature type: " + featureTypeName);
                 }
-
                 // The simplifying visitor that will cache the results to avoid re-computing
                 // over and over the same simplifications
                 CachedSimplifyingFilterVisitor cachedSimplifier = new CachedSimplifyingFilterVisitor(
                         targetFeatureType);
-
-                RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
-                    cachedSimplifier, maxCombinations) {
-                        protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
-                            if (zIndex != null && zIndex > 0) {
-                                TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
-                                if (!zIndexes.contains(zIndex)) {
-                                    return null;
-                                }
+                RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules, cachedSimplifier, maxCombinations) {
+                    protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
+                        if (zIndex != null && zIndex > 0) {
+                            TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
+                            if (!zIndexes.contains(zIndex)) {
+                                return null;
                             }
-                            return super.buildResult(rules);
                         }
+                        return super.buildResult(rules);
+                    }
 
                     private boolean haveSameSelector(List<CssRule> rules) {
                         Selector selector = null;
@@ -399,14 +409,11 @@ public class CssTranslator {
                             return super.acceptMixinCssRule(rule, mixinRule);
                         }
                     }
-                        
-                    };
+                };
                 List<CssRule> combinedRules = builder.buildPowerSet();
-
                 if (combinedRules.isEmpty()) {
                     continue;
                 }
-
                 // create the feature type style for this typename
                 FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
                 // regardless of the translation mode, the first rule matching is
@@ -421,20 +428,16 @@ public class CssTranslator {
                     ftsBuilder.setFeatureTypeNames(
                             Arrays.asList((Name) new NameImpl(featureTypeName)));
                 }
-
                 Collections.sort(combinedRules, CssRuleComparator.DESCENDING);
-
                 int rulesCount = combinedRules.size();
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Generated " + rulesCount
                             + " combined rules after filtered power set expansion");
                 }
-
                 String composite = null;
                 Boolean compositeBase = null;
                 String sortBy = null;
                 String sortByGroup = null;
-
                 // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
                 if (mode == TranslationMode.Exclusive) {
@@ -534,15 +537,135 @@ public class CssTranslator {
                 }
             }
         }
+        return translatedRuleCount;
+    }
+    
+    private int translateFlat(List<CssRule> allRules, StyleBuilder styleBuilder) {
+        List<CssRule> finalRules = new ArrayList<>();
+        CssRule actualRule = null;
+        Map<PseudoClass, List<Property>> properties = null;
+        Set<PseudoClass> mixablePseudoClasses = null;
 
-        // check that we have generated at least one rule in output
-        if (translatedRuleCount == 0) {
-            throw new IllegalArgumentException("Invalid CSS style, no rule seems to activate "
-                    + "any symbolization. The properties activating the symbolizers are fill, "
-                    + "stroke, mark, label, raster-channels, has any been used in a rule matching any feature?");
+        int translatedRuleCount = 0;
+        for (CssRule rule : allRules) {
+            if (rule.getProperties().get(PseudoClass.ROOT) == null) {
+                Selector simplified = (Selector) rule.selector.accept(new PseudoClassRemover());
+                if (actualRule != null && actualRule.getSelector().equals(simplified)) {
+                    boolean changed = false;
+                    for (Map.Entry<PseudoClass, List<Property>> item : rule.properties.entrySet()) {
+                        if (mixablePseudoClasses.contains(item.getKey())) {
+                            properties.put(item.getKey(), item.getValue());
+                            changed = true;
+                        }
+                    }
+                    if (changed) {
+                        actualRule = new CssRule(actualRule.selector, properties, actualRule.comment);
+                    }
+                }
+            } else {
+                if (actualRule != null) {
+                    finalRules.add(actualRule);
+                }
+                actualRule = rule;
+                mixablePseudoClasses = actualRule.getMixablePseudoClasses();
+                properties = new LinkedHashMap<>(actualRule.properties);
+            }
         }
 
-        return styleBuilder.build();
+        if (actualRule != null) {
+            finalRules.add(actualRule);
+        }
+
+        if (finalRules.isEmpty()) {
+            return 0;
+        }
+
+        Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(finalRules);
+
+        for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
+            List<CssRule> rules = zEntry.getValue();
+            Map<String, List<CssRule>> typenameRules = organizeByTypeName(rules);
+            // build the SLD
+            for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
+                String featureTypeName = entry.getKey();
+                List<CssRule> localRules = entry.getValue();
+                final FeatureType targetFeatureType = getTargetFeatureType(featureTypeName, localRules);
+                List<CssRule> flattenedRules = flattenScaleRanges(localRules);
+
+                FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
+                if (featureTypeName != null) {
+                    ftsBuilder.setFeatureTypeNames(
+                            Arrays.asList((Name) new NameImpl(featureTypeName)));
+                }
+
+                String composite = null;
+                Boolean compositeBase = null;
+                String sortBy = null;
+                String sortByGroup = null;
+
+                // generate the SLD rules
+                for (CssRule cssRule : flattenedRules) {
+                    if (!cssRule.hasSymbolizerProperty()) {
+                        continue;
+                    }
+
+                    buildSldRule(cssRule, ftsBuilder, targetFeatureType);
+                    translatedRuleCount++;
+
+                    // check if we have global composition going, and use the value of
+                    // the first rule providing the information (the one with the highest
+                    // priority)
+                    if (composite == null) {
+                        List<Value> values = cssRule
+                                .getPropertyValues(PseudoClass.ROOT, COMPOSITE).get(COMPOSITE);
+                        if (values != null && !values.isEmpty()) {
+                            composite = values.get(0).toLiteral();
+                        }
+                    }
+                    if (compositeBase == null) {
+                        List<Value> values = cssRule
+                                .getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
+                                .get(COMPOSITE_BASE);
+                        if (values != null && !values.isEmpty()) {
+                            compositeBase = Boolean.valueOf(values.get(0).toLiteral());
+                        }
+                    }
+
+                    // check if we have any sort-by
+                    if (sortBy == null) {
+                        List<Value> values = cssRule
+                                .getPropertyValues(PseudoClass.ROOT, SORT_BY).get(SORT_BY);
+                        if (values != null && !values.isEmpty()) {
+                            sortBy = values.get(0).toLiteral();
+                        }
+                    }
+
+                    // check if we have any sort-by-group
+                    if (sortByGroup == null) {
+                        List<Value> values = cssRule
+                                .getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
+                                .get(SORT_BY_GROUP);
+                        if (values != null && !values.isEmpty()) {
+                            sortByGroup = values.get(0).toLiteral();
+                        }
+                    }
+                }
+                if (composite != null) {
+                    ftsBuilder.option(COMPOSITE, composite);
+                }
+                if (Boolean.TRUE.equals(compositeBase)) {
+                    ftsBuilder.option(COMPOSITE_BASE, "true");
+                }
+                if (sortBy != null) {
+                    ftsBuilder.option(FeatureTypeStyle.SORT_BY, sortBy);
+                }
+                if (sortByGroup != null) {
+                    ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
+                }
+            }
+        }
+
+        return translatedRuleCount;
     }
 
     private TranslationMode getTranslationMode(Stylesheet stylesheet) {

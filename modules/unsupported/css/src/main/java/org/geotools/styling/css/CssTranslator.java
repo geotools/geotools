@@ -107,6 +107,8 @@ public class CssTranslator {
     static enum TranslationMode {
         /**
          * Generates fully exclusive rules, extra rules are removed
+         *//**
+         * Generates fully exclusive rules, extra rules are removed
          */
         Exclusive, /**
                     * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the first matching rules to the renderer,
@@ -116,7 +118,14 @@ public class CssTranslator {
                  * The translator will pick Exclusive by default, but if the rules to be turned into SLD go beyond
                  */
         Flat,   /**
-                  * The translator will not try to combine the rules to get an 1:1 rule - sld rule relationship.
+                 * All rules are merged straight forward if filters are exactly matching only with the
+                 * direct following pseudo rules. There is no powerset building, no creation of additional 
+                 * rules. After merging the rules are sorted by z-index.
+                 */
+        FlatFilter, /**
+                  * The translator will not combine filters to create a rule powerset. All regarding filters exact matching 
+                  * rules are merge as usual.
+                  * 
                   */
         Auto;
     };
@@ -376,7 +385,7 @@ public class CssTranslator {
 
                     @Override
                     protected boolean accept(List<CssRule> rules) {
-                        if (mode == TranslationMode.Flat && rules.size() > 1 && !haveSameSelector(rules)) {
+                        if (mode == TranslationMode.FlatFilter && rules.size() > 1 && !haveSameSelector(rules)) {
                             return false;
                         }
                         return super.accept(rules);
@@ -384,7 +393,7 @@ public class CssTranslator {
 
                     @Override
                     protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
-                        if (mode == TranslationMode.Flat) {
+                        if (mode == TranslationMode.FlatFilter) {
                             return rule.getSelector().equals(mixinRule.getSelector());
                         } else {
                             return super.acceptMixinCssRule(rule, mixinRule);
@@ -404,7 +413,7 @@ public class CssTranslator {
                 // the only one that we want to be applied (in exclusive mode it will be
                 // the only one matching, the simple mode we want the evaluation to stop there)
                 // but if we use the flat mode the evaluation mode should not be set.
-                if (mode != TranslationMode.Flat) {
+                if (mode != TranslationMode.FlatFilter) {
                     ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
                             FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
                 }

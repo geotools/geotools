@@ -367,48 +367,26 @@ public class MemoryDataStore extends ContentDataStore {
         putSchemaAndFeaturesSync(typeName, featureType, featureMap);
     }
 
-    @Override
-    public void removeSchema(String typeName) throws IOException {
-    	if (typeName != null) {
-    		// graceful remove, its fine if the type has never been registered
-    		synchronized (schema) {
-    			schema.remove(typeName);
-			}
-    		
-    		synchronized (memory) {
-    			memory.remove(typeName);
-    		}
-    	}
-    }
-    
-    @Override
-    public void removeSchema(Name typeName) throws IOException {
-    	if (typeName != null && typeName.getLocalPart() != null) {
-    		removeSchema(typeName.getLocalPart());
-    	}
-    }
-    
     private Map<String, SimpleFeature> getFeatureMapSync(String typeName) {
-    	if (typeName == null) {
-    		return null;
-    	}
-    	
-        synchronized (memory) {
-        	return memory.get(typeName);
+        if (typeName == null) {
+            return null;
         }
 
-	}
+        synchronized (memory) {
+            return memory.get(typeName);
+        }
+    }
 
     private void putSchemaAndFeaturesSync(String typeName,
-			SimpleFeatureType featureType,
-			ConcurrentSkipListMap<String, SimpleFeature> featureMap) {
+                        SimpleFeatureType featureType,
+                        ConcurrentSkipListMap<String, SimpleFeature> featureMap) {
         synchronized (schema) {
-        	schema.put(typeName, featureType);
-		}
-        
+            schema.put(typeName, featureType);
+        }
+
         synchronized (memory) {
-        	memory.put(typeName, featureMap);
-		}
-	}
+            memory.put(typeName, featureMap);
+        }
+    }
 
 }

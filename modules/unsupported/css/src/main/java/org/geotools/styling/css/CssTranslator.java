@@ -366,6 +366,7 @@ public class CssTranslator {
                 CachedSimplifyingFilterVisitor cachedSimplifier = new CachedSimplifyingFilterVisitor(
                         targetFeatureType);
                 RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules, cachedSimplifier, maxCombinations) {
+                    @Override
                     protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
                         if (zIndex != null && zIndex > 0) {
                             TreeSet<Integer> zIndexes = getZIndexesForRules(rules);
@@ -374,18 +375,6 @@ public class CssTranslator {
                             }
                         }
                         return super.buildResult(rules);
-                    }
-
-                    private boolean haveSameSelector(List<CssRule> rules) {
-                        Selector selector = null;
-                        for (CssRule rule : rules) {
-                            if (selector == null) {
-                                selector = rule.selector;
-                            } else if (!selector.equals(rule.selector)) {
-                                return false;
-                            }
-                        }
-                        return true;
                     }
                 };
                 List<CssRule> combinedRules = builder.buildPowerSet();

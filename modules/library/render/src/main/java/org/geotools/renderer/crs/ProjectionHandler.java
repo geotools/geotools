@@ -277,7 +277,7 @@ public class ProjectionHandler {
                     DefaultGeographicCRS.WGS84, false);
             if (handler != null && handler.validAreaBounds != null) {
                 ReferencedEnvelope validAreaBounds = handler.validAreaBounds;
-                envWGS84 = envWGS84.intersection(validAreaBounds);
+                envWGS84 = new ReferencedEnvelope(envWGS84.intersection(validAreaBounds), DefaultGeographicCRS.WGS84);
             }
 
             // let's see if we can restrict the area we're reprojecting back using a projection
@@ -286,7 +286,7 @@ public class ProjectionHandler {
                     envelope.getCoordinateReferenceSystem(), false);
             if (handler != null && handler.validAreaBounds != null) {
                 ReferencedEnvelope validAreaBounds = handler.validAreaBounds;
-                envWGS84 = envWGS84.intersection(validAreaBounds);
+                envWGS84 = new ReferencedEnvelope(envWGS84.intersection(validAreaBounds), DefaultGeographicCRS.WGS84);
             }
             
             // try to reproject

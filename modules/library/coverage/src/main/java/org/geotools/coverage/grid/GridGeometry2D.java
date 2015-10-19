@@ -31,6 +31,8 @@ import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.DimensionFilter;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.Classes;
@@ -1300,4 +1302,31 @@ public class GridGeometry2D extends GeneralGridGeometry {
 	    }
 	    return null;
 	}
+
+    /**
+     * Returns a "canonical" representation of the grid geometry, that is, one whose grid range
+     * originates in 0,0, but maps to the same real world coordinates. This setup helps in image
+     * processing, as JAI is not meant to be used for images whose ordinates are in the range of the
+     * millions and starts to exhibit numerical issues when used there.
+     * 
+     * @return
+     * 
+     * @since 13.3
+     */
+    public GridGeometry2D toCanonical() {
+        // see where we are
+        int lowX = gridRange.getLow(0);
+        int lowY = gridRange.getLow(1);
+        if (lowX == 0 && lowY == 0) {
+            // already canonical
+            return this;
+        }
+
+        GridEnvelope2D canonicalRange = new GridEnvelope2D(0, 0, gridRange.getSpan(0),
+                gridRange.getSpan(1));
+        AffineTransform2D translation = new AffineTransform2D(1, 0, 0, 1, lowX, lowY);
+        MathTransform canonicalTransform = ConcatenatedTransform.create(translation, gridToCRS2D);
+        return new GridGeometry2D(canonicalRange, canonicalTransform,
+                getCoordinateReferenceSystem());
+    }
 }

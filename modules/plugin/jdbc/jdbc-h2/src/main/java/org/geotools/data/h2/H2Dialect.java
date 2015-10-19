@@ -107,7 +107,7 @@ public class H2Dialect extends SQLDialect {
         String typeName = columnMetaData.getString("TYPE_NAME");
         if("UUID".equalsIgnoreCase(typeName)) {
             return UUID.class;
-        } else if ("BLOB".equalsIgnoreCase(typeName)) {
+        } else if ("BLOB".equalsIgnoreCase(typeName) || "VARBINARY".equalsIgnoreCase(typeName)) {
             String schemaName = columnMetaData.getString("TABLE_SCHEM");
             String tableName = columnMetaData.getString("TABLE_NAME");
             String columnName = columnMetaData.getString("COLUMN_NAME");
@@ -556,6 +556,12 @@ public class H2Dialect extends SQLDialect {
     @Override
     protected boolean supportsSchemaForIndex() {
         return true;
+    }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        overrides.put(Types.BLOB, "BYTEA");
     }
 
 }

@@ -566,7 +566,7 @@ public class BandMerge extends OperationJAI {
         Map properties = new HashMap();
 
         for (GridCoverage2D cov : sources) {
-            if (cov != null) {
+            if (cov != null && cov.getProperties() != null) {
                 properties.putAll(cov.getProperties());
             }
         }

@@ -1739,7 +1739,7 @@ public final class JDBCDataStore extends ContentDataStore
     }
     
     /**
-     * Returns a JDCB Connection to the underlying database for the specified GeoTools
+     * Returns a JDBC Connection to the underlying database for the specified GeoTools
      * {@link Transaction}. This has two main use cases:
      * <ul>
      * <li>Independently accessing the underlying database directly reusing the connection pool

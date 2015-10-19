@@ -17,11 +17,13 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.Transparency;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -313,18 +315,28 @@ public class ImageMosaicFootprintsTest {
 
         // limit yourself to reading just a bit of it
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
-        ReferencedEnvelope readEnvelope = new ReferencedEnvelope(8.3, 9.6, 43, 44,
-                DefaultGeographicCRS.WGS84);
-        Envelope2D rasterEnvelope = new Envelope2D(CRS.transform(mt, readEnvelope));
         GridEnvelope2D ge = new GridEnvelope2D(6, 44, 1, 1);
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
                 .createValue();
         gg.setValue(new GridGeometry2D(ge, mt, DefaultGeographicCRS.WGS84));
         params[2] = gg;
 
+        // read the first time, no sample_image yet present
         GridCoverage2D coverage = reader.read(params);
         reader.dispose();
         assertNotNull(coverage);
+        RenderedImage ri = coverage.getRenderedImage();
+        assertNotEquals(Transparency.OPAQUE, ri.getColorModel().getTransparency());
+        reader.dispose();
+        
+        // read a second time
+        reader = TestUtils.getReader(testMosaicUrl, format);
+        coverage = reader.read(params);
+        reader.dispose();
+        assertNotNull(coverage);
+        ri = coverage.getRenderedImage();
+        assertNotEquals(Transparency.OPAQUE, ri.getColorModel().getTransparency());
+        reader.dispose();
     }
 
     @Test

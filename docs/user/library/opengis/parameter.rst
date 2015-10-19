@@ -22,4 +22,4 @@ We have a default implementation in **gt-referencing** which we can use for a co
   ParameterValue value = (ParameterValue) RANGE.createValue();
   value.setValue( 2.0 );   
 
-Parameters are used in a few sections of the library, noticeability when working with imagery and referencing.
+Parameters are used in a few sections of the library, notably when working with imagery and referencing.

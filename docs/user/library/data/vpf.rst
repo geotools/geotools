@@ -1,7 +1,7 @@
 VPF Plugin
 ----------
 
-Unsupported plugin supporting vpf files; no documetnation has been provided.
+Unsupported plugin supporting vpf files; no documentation has been provided.
 
 **Maven**::
    

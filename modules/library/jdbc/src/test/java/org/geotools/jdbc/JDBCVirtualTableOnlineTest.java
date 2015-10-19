@@ -301,7 +301,9 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Handler handler = new Handler() {
             @Override
             public synchronized void publish(LogRecord record) {
-                fail("We should not have received any log statement");
+                if(!record.getMessage().contains("Failed to execute statement")) {
+                    fail("We should not have received any log statement");
+                }
             }
 
             @Override

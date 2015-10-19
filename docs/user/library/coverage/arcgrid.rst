@@ -1,7 +1,7 @@
 ArcGrid Plugin
 --------------
 
-The arcgrid module in the plugin group provides access to the ARCGRID raster format defined by ESRI and used in that company's software suites.
+The arcgrid module in the plugin group provides access to the ARC/INFO ASCII GRID raster format defined by ESRI and used in that company's software suites.
 
 This is a straightforward plugin with no additional information needed beyond that advertised by the GridCoverageExchange API.
 

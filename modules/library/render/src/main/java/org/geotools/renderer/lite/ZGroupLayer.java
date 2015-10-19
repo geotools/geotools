@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.geotools.data.FeatureSource;
@@ -30,7 +32,12 @@ import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
+import org.geotools.renderer.style.SLDStyleFactory;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Style;
+import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.util.DefaultProgressListener;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -49,21 +56,17 @@ import org.opengis.util.ProgressListener;
  */
 class ZGroupLayer extends Layer {
 
-    @Override
-    public ReferencedEnvelope getBounds() {
-        // no bounds to report
-        return null;
-    }
+    private String groupId;
 
+    private List<Layer> layers = new ArrayList<>();
+    
+    private boolean compositingBase = false;
+    
+    private Composite composite;
 
-
-    String groupId;
-
-    List<Layer> layers = new ArrayList<>();
-
-    public ZGroupLayer(String groupId, Layer singleGroupLayer) {
+    public ZGroupLayer(String groupId, FeatureLayer layer) {
         this.groupId = groupId;
-        layers.add(singleGroupLayer);
+        addLayer(layer);
     }
 
     public void drawFeatures(Graphics2D graphics, final StreamingRenderer renderer, String layerId)
@@ -123,7 +126,6 @@ class ZGroupLayer extends Layer {
                 }
             }
         }
-
     }
 
     private SortKey getSmallestKey(List<ZGroupLayerPainter> painters,
@@ -299,7 +301,6 @@ class ZGroupLayer extends Layer {
 
     private SortOrder[] getSortOrders(LiteFeatureTypeStyle style) {
         SortBy[] sb = style.sortBy;
-        FeatureType schema = style.layer.getFeatureSource().getSchema();
         SortOrder[] orders = new SortOrder[sb.length];
         for (int i = 0; i < orders.length; i++) {
             orders[i] = sb[i].getSortOrder();
@@ -332,4 +333,60 @@ class ZGroupLayer extends Layer {
 
         return sb.toString();
     }
+    
+    @Override
+    public ReferencedEnvelope getBounds() {
+        // no bounds to report
+        return null;
+    }
+    
+    public boolean isCompositingBase() {
+        return compositingBase;
+    }
+
+    public Composite getComposite() {
+        return composite;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void addLayer(FeatureLayer layer) {
+        List<FeatureTypeStyle> featureTypeStyles = layer.getStyle().featureTypeStyles();
+        boolean cleanupStyle = false;
+        for (FeatureTypeStyle fts : featureTypeStyles) {
+            Map<String, String> options = fts.getOptions();
+            String compositingBaseDefinition = options.get(FeatureTypeStyle.COMPOSITE_BASE);
+            if("true".equalsIgnoreCase(compositingBaseDefinition)) {
+                this.compositingBase = true;
+            }
+            // cannot really rely on equals here, we use a simple "last one wins" logic
+            Composite composite = SLDStyleFactory.getComposite(options);
+            if(composite != null) {
+                this.composite = composite;
+                cleanupStyle = true;
+            }
+        }
+        // compositing is now handled at the ZGroupLayer level, remove it from the 
+        // inner layer
+        if(cleanupStyle) {
+            DuplicatingStyleVisitor cleaner = new DuplicatingStyleVisitor() {
+                @Override
+                public void visit(FeatureTypeStyle fts) {
+                    super.visit(fts);
+                    FeatureTypeStyle copy = (FeatureTypeStyle) pages.peek();
+                    copy.getOptions().remove(FeatureTypeStyle.COMPOSITE);
+                    copy.getOptions().remove(FeatureTypeStyle.COMPOSITE_BASE);
+                }
+            };
+            layer.getStyle().accept(cleaner);
+            Style cleaned = (Style) cleaner.getCopy();
+            layer.setStyle(cleaned);
+        }
+        
+        layers.add(layer);
+    }
+
+
 }

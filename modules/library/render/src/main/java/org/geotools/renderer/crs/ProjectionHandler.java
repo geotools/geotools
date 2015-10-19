@@ -68,27 +68,27 @@ import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
  */
 public class ProjectionHandler {
 
-    static final double EPS = 1e-6;
+    protected static final double EPS = 1e-6;
 
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ProjectionHandler.class);
 
-    ReferencedEnvelope renderingEnvelope;
+    protected ReferencedEnvelope renderingEnvelope;
     
-    final ReferencedEnvelope validAreaBounds;
+    protected final ReferencedEnvelope validAreaBounds;
     
-    final Geometry validArea;
+    protected final Geometry validArea;
     
-    final PreparedGeometry validaAreaTester;
+    protected final PreparedGeometry validaAreaTester;
 
-    final CoordinateReferenceSystem sourceCRS;
+    protected final CoordinateReferenceSystem sourceCRS;
 
-    final CoordinateReferenceSystem targetCRS;
+    protected final CoordinateReferenceSystem targetCRS;
 
-    double datelineX = Double.NaN;
+    protected double datelineX = Double.NaN;
 
-    double radius = Double.NaN;
+    protected double radius = Double.NaN;
 
-    boolean queryAcrossDateline;
+    protected boolean queryAcrossDateline;
 
     /**
      * Initializes a projection handler 
@@ -246,7 +246,7 @@ public class ProjectionHandler {
         }
     }
 
-    private List<ReferencedEnvelope> getSourceEnvelopes(ReferencedEnvelope renderingEnvelope)
+    protected List<ReferencedEnvelope> getSourceEnvelopes(ReferencedEnvelope renderingEnvelope)
             throws TransformException, FactoryException {
         // check if we are crossing the dateline
         ReferencedEnvelope re = transformEnvelope(renderingEnvelope, WGS84);
@@ -273,7 +273,7 @@ public class ProjectionHandler {
         return envelopes;
     }
 
-    private ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,
+    protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,
             CoordinateReferenceSystem targetCRS) throws TransformException, FactoryException {
         try {
             return envelope.transform(targetCRS, true, 10);
@@ -340,7 +340,7 @@ public class ProjectionHandler {
         }
     }
 
-    private void mergeEnvelopes(List<ReferencedEnvelope> envelopes) {
+    protected void mergeEnvelopes(List<ReferencedEnvelope> envelopes) {
         // the envelopes generated might overlap, check and merge if necessary, we
         // don't want the data backend to deal with ORs against the spatial index
         // unless necessary
@@ -455,7 +455,7 @@ public class ProjectionHandler {
         return intersect(geometry, mask, geometryCRS);
     }
 
-    private Geometry intersect(Geometry geometry, Geometry mask,
+    protected Geometry intersect(Geometry geometry, Geometry mask,
             CoordinateReferenceSystem geometryCRS) {
         // this seems to cause issues to JTS, reduce to
         // single geometry when possible (http://jira.codehaus.org/browse/GEOS-6570)
@@ -600,34 +600,36 @@ public class ProjectionHandler {
         }
     }
 
-    private MathTransform concatenateTransforms(List<MathTransform> datumShiftChain) {
-		if(datumShiftChain.size() == 1) {
-			return datumShiftChain.get(0);
-		} else {
-			MathTransform mt = ConcatenatedTransform.create(datumShiftChain.get(0), datumShiftChain.get(1));
-			for (int i = 2; i < datumShiftChain.size(); i++) {
-				MathTransform curr = datumShiftChain.get(i);
-				mt = ConcatenatedTransform.create(mt, curr);
-			}
-			
-			return mt;
-		}
-	}
+    protected MathTransform concatenateTransforms(List<MathTransform> datumShiftChain) {
+        if (datumShiftChain.size() == 1) {
+            return datumShiftChain.get(0);
+        } else {
+            MathTransform mt = ConcatenatedTransform.create(datumShiftChain.get(0),
+                    datumShiftChain.get(1));
+            for (int i = 2; i < datumShiftChain.size(); i++) {
+                MathTransform curr = datumShiftChain.get(i);
+                mt = ConcatenatedTransform.create(mt, curr);
+            }
 
-	private void accumulateTransforms(MathTransform mt, List<MathTransform> elements) {
-		if(mt instanceof ConcatenatedTransform) {
-			ConcatenatedTransform ct = (ConcatenatedTransform) mt;
-			accumulateTransforms(ct.transform1, elements);
-			accumulateTransforms(ct.transform2, elements);
-		} else {
-			elements.add(mt);
-		}
-		
-	}
+            return mt;
+        }
+    }
 
-	/**
+    protected void accumulateTransforms(MathTransform mt, List<MathTransform> elements) {
+        if (mt instanceof ConcatenatedTransform) {
+            ConcatenatedTransform ct = (ConcatenatedTransform) mt;
+            accumulateTransforms(ct.transform1, elements);
+            accumulateTransforms(ct.transform2, elements);
+        } else {
+            elements.add(mt);
+        }
+
+    }
+
+    /**
      * Processes the geometry already projected to the target SRS. May return null if the geometry
      * is not to be drawn.
+     * 
      * @param mt optional reverse transformation to facilitate unwrapping
      */
     public Geometry postProcess(MathTransform mt, Geometry geometry) {
@@ -644,7 +646,7 @@ public class ProjectionHandler {
         return validAreaBounds;
     }
 
-    void setCentralMeridian(double centralMeridian) {
+    protected void setCentralMeridian(double centralMeridian) {
         // compute the earth radius
         try {
             CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
@@ -688,7 +690,7 @@ public class ProjectionHandler {
      * @param geoms
      * @param geometryType
      */
-    private void addGeometries(List<Geometry> geoms, GeometryCollection collection,
+    protected void addGeometries(List<Geometry> geoms, GeometryCollection collection,
             String geometryType) {
         // Check if the list exists
         if (geoms == null) {

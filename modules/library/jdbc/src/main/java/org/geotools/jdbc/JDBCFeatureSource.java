@@ -36,6 +36,7 @@ import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ReTypeFeatureReader;
@@ -573,10 +574,16 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         Filter[] split = splitFilter(query.getFilter());
         Filter preFilter = split[0];
         Filter postFilter = split[1];
+        boolean postFilterRequired = postFilter != null && postFilter != Filter.INCLUDE;
 
         // rebuild a new query with the same params, but just the pre-filter
         DefaultQuery preQuery = new DefaultQuery(query);
         preQuery.setFilter(preFilter);
+        // in case of post filtering, we cannot do native paging
+        if(postFilterRequired) {
+            preQuery.setStartIndex(0);
+            preQuery.setMaxFeatures(Integer.MAX_VALUE);
+        }
 
         // Build the feature type returned by this query. Also build an eventual extra feature type
         // containing the attributes we might need in order to evaluate the post filter
@@ -645,10 +652,25 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         
 
         // if post filter, wrap it
-        if (postFilter != null && postFilter != Filter.INCLUDE) {
-            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader,postFilter);
-            if(!returnedSchema.equals(querySchema))
+        if (postFilterRequired) {
+            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, postFilter);
+            if(!returnedSchema.equals(querySchema)) {
                 reader = new ReTypeFeatureReader(reader, returnedSchema);
+            }
+
+            // offset
+            int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
+            if(offset > 0 ) {
+                // skip the first n records
+                for(int i = 0; i < offset && reader.hasNext(); i++) {
+                    reader.next();
+                }
+            }
+
+            // max feature limit
+            if (query.getMaxFeatures() >= 0 && query.getMaxFeatures() < Integer.MAX_VALUE ) {
+                reader = new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, query.getMaxFeatures());
+            }
         }
 
         return reader;

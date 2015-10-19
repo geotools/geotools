@@ -50,7 +50,7 @@ The javadocs has additional examples of how to use this class safely.
   as a dependency - and that project is well known for offering a
   bang up implementation of ObjectPool. So your first question
   should very well be - why the heck does GeoTools have an
-  ObjectCace of its very own.
+  ObjectCache of its very own.
   
   Well the truth is that we actually need a cache (rather than a
   pool) and we need it to be threadsafe. You can configure an
@@ -61,7 +61,7 @@ The javadocs has additional examples of how to use this class safely.
   
   Since we are worried about stressing memory (rather than only
   performance) our ObjectCache is set up have "per entry"
-  read/write locks. We are using it to manage immutable objets so
+  read/write locks. We are using it to manage immutable objects so
   we do not mind returning the same value again and again.
 
 The following classes are current implementations of the ObjectCache:

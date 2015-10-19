@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -131,36 +131,8 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
     }
 
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
-        String database = (String) DATABASE.lookUp(params);
-        String host = (String) HOST.lookUp(params);
-        Boolean mvcc = (Boolean) MVCC.lookUp(params);
         BasicDataSource dataSource = new BasicDataSource();
-        
-        if (host != null && !host.equals("")) {
-            Integer port = (Integer) PORT.lookUp(params);
-            if (port != null && !port.equals("")) {
-                dataSource.setUrl("jdbc:h2:tcp://" + host + ":" + port + "/" + database);
-            }
-            else {
-                dataSource.setUrl("jdbc:h2:tcp://" + host + "/" + database);
-            }
-        } else if (baseDirectory == null) {
-            //use current working directory
-            dataSource.setUrl("jdbc:h2:" + database + ";AUTO_SERVER=TRUE"
-                    + (mvcc != null ? (";MVCC=" + mvcc) : ""));
-        } else {
-            //use directory specified if the patch is relative
-            String location;
-            if (!new File(database).isAbsolute()) {
-                location = new File(baseDirectory, database).getAbsolutePath();    
-            }
-            else {
-                location = database;
-            }
-
-            dataSource.setUrl("jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE"
-                    + (mvcc != null ? (";MVCC=" + mvcc) : ""));
-        }
+        dataSource.setUrl(getJDBCUrl(params));
         
         String username = (String) USER.lookUp(params);
         if (username != null) {
@@ -173,10 +145,41 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         
         dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setPoolPreparedStatements(false);
-        
-        
 
         return new DBCPDataSource(dataSource);
+    }
+    
+    @Override
+    protected String getJDBCUrl(Map params) throws IOException {
+        String database = (String) DATABASE.lookUp(params);
+        String host = (String) HOST.lookUp(params);
+        Boolean mvcc = (Boolean) MVCC.lookUp(params);
+        
+        if (host != null && !host.equals("")) {
+            Integer port = (Integer) PORT.lookUp(params);
+            if (port != null && !port.equals("")) {
+                return "jdbc:h2:tcp://" + host + ":" + port + "/" + database;
+            }
+            else {
+                return "jdbc:h2:tcp://" + host + "/" + database;
+            }
+        } else if (baseDirectory == null) {
+            //use current working directory
+            return "jdbc:h2:" + database + ";AUTO_SERVER=TRUE"
+                    + (mvcc != null ? (";MVCC=" + mvcc) : "");
+        } else {
+            //use directory specified if the patch is relative
+            String location;
+            if (!new File(database).isAbsolute()) {
+                location = new File(baseDirectory, database).getAbsolutePath();    
+            }
+            else {
+                location = database;
+            }
+
+            return "jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE"
+                    + (mvcc != null ? (";MVCC=" + mvcc) : "");
+        }
     }
 
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)

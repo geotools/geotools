@@ -185,6 +185,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Unit<Length> uom = copy.getUnitOfMeasure();
         Stroke copyStroke = copy.getStroke();
         rescaleStroke(copyStroke, uom);
+        copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset(), uom));
         copy.setUnitOfMeasure(NonSI.PIXEL);
     }
 

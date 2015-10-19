@@ -46,10 +46,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *     new ForceCoordinateSystemFeatureReader( originalReader, forceCS );
  * 
  * CoordinateReferenceSystem originalCS =
- *     originalReader.getFeatureType().getDefaultGeometry().getCoordianteSystem();
+ *     originalReader.getFeatureType().getDefaultGeometry().getCoordinateSystem();
  * 
  * CoordinateReferenceSystem newCS =
- *     reader.getFeatureType().getDefaultGeometry().getCoordianteSystem();
+ *     reader.getFeatureType().getDefaultGeometry().getCoordinateSystem();
  * 
  * assertEquals( forceCS, newCS );
  * </code></pre>

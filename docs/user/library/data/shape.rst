@@ -37,8 +37,8 @@ The following connection parameters are available:
 | "timezone"              | Optional: Timezone used to parse dates in the      |
 |                         | DBF file                                           |
 +-------------------------+----------------------------------------------------+
-| "memory mapped buffer"  | Optional: memory map the files (unadvisable for    |
-|                         | large files under windows, defaults to false)      |
+| "memory mapped buffer"  | Optional: memory map the files (not recommended    |
+|                         | for large files under windows, defaults to false)  |
 +------------------------------------------------------------------------------+
 | "cache memory maps"     | Optional: when memory mapping, cache and reuse     |
 |                         | memory maps (defaults to true)                     |
@@ -134,7 +134,7 @@ Limitations:
   has a restriction to help you check this, and warnings will be produced if
   your content ends up trimmed).
 * Only supports a single GeometryAttribute
-* Shapefile does not support plain Geometry (ie mixed LineString, Point and Polygon all in the same file).
+* Shapefile does not support plain Geometry (i.e. mixed LineString, Point and Polygon all in the same file).
 
 Force Projection
 ''''''''''''''''
@@ -144,21 +144,21 @@ If you run the above code, and then load the result in a GIS application like Ar
 You can "force" the projection using the following code::
   
   CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
-  shape.forceCoordianteReferneceSystem( crs );
+  shape.forceSchemaCRS( crs );
 
 This is only a problem if you did not specify the CoordinateReferenceSystem as part of your FeatureType's GeometryAttribute, or if a prj file has not been provided.
 
 Character Sets
 ''''''''''''''
 
-If you are working with Acerbic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Chartset or if you provide a String it will be converted to a Charset.
+If you are working with Arabic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Charset or if you provide a String it will be converted to a Charset.
 
 Thanks to the University of Soul for providing and testing this functionality.
 
 Timezone
 ''''''''
 
-The store will build dates using the default timezone. If you need to work against metereological data the timezone has normally to be forced to "UTC" instead.
+The store will build dates using the default timezone. If you need to work against meteorological data the timezone has normally to be forced to "UTC" instead.
 
 
 Reading PRJ

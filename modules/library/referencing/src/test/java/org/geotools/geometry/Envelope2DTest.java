@@ -99,7 +99,7 @@ public class Envelope2DTest {
 
         try {
             australia.include(newZealand);
-            fail("Expected a missmatch of CoordianteReferenceSystem");
+            fail("Expected a mismatch of CoordinateReferenceSystem");
         } catch (MismatchedReferenceSystemException t) {
             // expected
         }
@@ -111,7 +111,7 @@ public class Envelope2DTest {
             assertEquals("unexpected bounds width after include", 60, australia.width, 0);
             assertEquals("unexpected bounds height after include", 170, australia.height, 0);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
     }
 
@@ -121,7 +121,7 @@ public class Envelope2DTest {
 
         try {
             australia.intersects((BoundingBox) newZealand);
-            fail("Expected a missmatch of CoordianteReferenceSystem");
+            fail("Expected a mismatch of CoordinateReferenceSystem");
         } catch (MismatchedReferenceSystemException t) {
             // expected
         }
@@ -130,7 +130,7 @@ public class Envelope2DTest {
             // expected
             assertFalse(testIntersects);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
 
         try {
@@ -138,7 +138,7 @@ public class Envelope2DTest {
             // expected
             assertTrue(testIntersects);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
     }
 
@@ -151,7 +151,7 @@ public class Envelope2DTest {
             // expected
             assertFalse(testContains);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
 
         try {
@@ -159,7 +159,7 @@ public class Envelope2DTest {
             // expected
             assertTrue(testContains);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
     }
 
@@ -174,7 +174,7 @@ public class Envelope2DTest {
             // expected
             assertFalse(testContains);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
 
         try {
@@ -182,7 +182,7 @@ public class Envelope2DTest {
             // expected
             assertTrue(testContains);
         } catch (MismatchedReferenceSystemException t) {
-            fail("Expected a match of CoordianteReferenceSystem");
+            fail("Expected a match of CoordinateReferenceSystem");
         }
     }
 
@@ -192,7 +192,7 @@ public class Envelope2DTest {
 
         try {
             newZealand.toBounds(crs);
-            fail("Expected a missmatch of CoordianteReferenceSystem");
+            fail("Expected a mismatch of CoordinateReferenceSystem");
         } catch (TransformException t) {
             // expected
         }
@@ -205,7 +205,7 @@ public class Envelope2DTest {
             assertEquals("unexpected bounds y max after toBounds", 150, testBox.getMaxY(), 0);
 
         } catch (TransformException t) {
-            fail("Missmatch of CoordianteReferenceSystem");
+            fail("Missmatch of CoordinateReferenceSystem");
         }
     }
 

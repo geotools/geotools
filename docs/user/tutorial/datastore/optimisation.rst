@@ -11,7 +11,7 @@ In this part we will explore several Optimization techniques for CSVDataStore.
 Query Hints
 ^^^^^^^^^^^
 
-The GeoTools Hints system can be used to configure a DataStore for use by an application. This is often done by providing up the Factories that the DataStore will use during the course of its operation.
+The GeoTools Hints system can be used to configure a DataStore for use by an application. This is often done to speed things up by providing the Factories that the DataStore will use during the course of its operation.
 
 As an example a CurvedGeoemtryFactory with a specific tolerance can be passed in to aid in parsing WKT containing arcs:
 
@@ -147,7 +147,7 @@ in play.
 
 .. note:: 
 
-   Each wrappers represents post-processing that is being applied on your data. If you are making
+   Each wrapper represents a post-processing step that is being applied on your data. If you are making
    use of a service that supports reprojection - then you can implement canReproject() and avoid
    this overhead.
    
@@ -234,7 +234,7 @@ in play.
 
   The canRetype() operations is easy to support, check the query and only provide values for the
   requested attributes. This is an especially valuable Optimization to perform at a low-level as
-  you may be able to avoid and expensive step (like parsing Geometry) if it is not being requested
+  you may be able to avoid an expensive step (like parsing Geometry) if it is not being requested
   by the client.
   
   Tips:
@@ -287,7 +287,7 @@ The wrapper classes mentioned above are excellent examples on how to create your
    
    Historically Filter.ALL and Filter.NONE were used as placeholder,
    as crazy as it sounds, Filter.ALL filters out ALL (accepts none)
-   Filter.NONE filters out NONE (accepts ALL)/
+   Filter.NONE filters out NONE (accepts ALL).
    
    These two have been renamed in GeoTools 2.3 for the following:
    

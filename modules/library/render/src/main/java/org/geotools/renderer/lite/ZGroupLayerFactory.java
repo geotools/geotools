@@ -112,7 +112,7 @@ class ZGroupLayerFactory {
         if (previousGroup != null) {
             splitLayers.add(previousGroup);
         }
-        String currentGroupId = previousGroup != null ? previousGroup.groupId : null;
+        String currentGroupId = previousGroup != null ? previousGroup.getGroupId() : null;
         List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
         for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
             String groupName = fts.getOptions().get(FeatureTypeStyle.SORT_BY_GROUP);
@@ -139,18 +139,18 @@ class ZGroupLayerFactory {
         Style style = STYLE_FACTORY.createStyle();
         style.featureTypeStyles().addAll(featureTypeStyles);
         featureTypeStyles.clear();
-        Layer singleGroupLayer = buildNewFeatureLayer(layer, style);
+        FeatureLayer singleGroupLayer = buildNewFeatureLayer(layer, style);
         if (groupId == null) {
             splitLayers.add(singleGroupLayer);
-        } else if (previousGroup != null && groupId.equals(previousGroup.groupId)) {
-            previousGroup.layers.add(singleGroupLayer);
+        } else if (previousGroup != null && groupId.equals(previousGroup.getGroupId())) {
+            previousGroup.addLayer(singleGroupLayer);
         } else if (groupId != null) {
             ZGroupLayer newZGroup = new ZGroupLayer(groupId, singleGroupLayer);
             splitLayers.add(newZGroup);
         }
     }
 
-    private static Layer buildNewFeatureLayer(Layer layer, Style style) {
+    private static FeatureLayer buildNewFeatureLayer(Layer layer, Style style) {
         FeatureLayer singleGroupLayer = new FeatureLayer(layer.getFeatureSource(), style);
         SortBy[] sortBy = SLDStyleFactory.getSortBy(style.featureTypeStyles().get(0).getOptions());
         Query nativeQuery = layer.getQuery();

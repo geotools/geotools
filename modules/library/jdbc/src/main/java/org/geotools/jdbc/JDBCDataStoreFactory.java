@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -466,9 +466,11 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         // url
         dataSource.setUrl(getJDBCUrl(params));
 
-        // username
+        // username (on embedded dbs it can be optional)
         String user = (String) USER.lookUp(params);
-        dataSource.setUsername(user);
+        if(user != null) {
+            dataSource.setUsername(user);
+        }
 
         // password
         String passwd = (String) PASSWD.lookUp(params);

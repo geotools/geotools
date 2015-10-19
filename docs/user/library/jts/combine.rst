@@ -1,7 +1,7 @@
 Combine Geometry
 ----------------
 
-Doing the union operation on two geometries is one of the most expensive operations you can possibly do; while it is reasonable for small numbers (say 5-10) when you start to get up to hundreds of geometries the cost can be measured in minuets.
+Doing the union operation on two geometries is one of the most expensive operations you can possibly do; while it is reasonable for small numbers (say 5-10) when you start to get up to hundreds of geometries the cost can be measured in minutes.
 
 * Using GeometryCollection union()
   

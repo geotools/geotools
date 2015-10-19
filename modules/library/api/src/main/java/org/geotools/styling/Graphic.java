@@ -240,7 +240,7 @@ public interface Graphic extends GraphicLegend,
     void setMarks(Mark[] marks);
 
     /**
-     * @deprecated Please use grpahicSymbols().add( Mark )
+     * @deprecated Please use graphicSymbols().add( Mark )
      */
     void addMark(Mark mark);
 

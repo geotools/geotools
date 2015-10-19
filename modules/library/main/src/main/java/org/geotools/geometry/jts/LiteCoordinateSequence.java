@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -71,15 +71,15 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param dimensions
      */
     void init(double[] coords, int dimensions) {
-        this.dimension=dimensions;
-          if(dimensions < 2)
-              throw new IllegalArgumentException("Invalid dimensions, must be at least 2");
-          if (coords.length % dimension != 0) {
-            throw new IllegalArgumentException("Packed array does not contain "
-                + "an integral number of coordinates");
-          }
-          this.coords = coords;
-          this.size = coords.length / dimension;
+        this.dimension = dimensions;
+        if (dimensions < 2)
+            throw new IllegalArgumentException("Invalid dimensions, must be at least 2");
+        if (coords.length % dimension != 0) {
+            throw new IllegalArgumentException(
+                    "Packed array does not contain an integral number of coordinates");
+        }
+        this.coords = coords;
+        this.size = coords.length / dimensions;
     }
 
     /**
@@ -288,15 +288,12 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
 	 * @param coords2
 	 */
 	public void setArray(double[] coords2) {
-		coords = coords2;
-		size = coords.length / dimension;
+		init(coords2, dimension);
 		coordRef = null;
 	}
 	
 	public void setArray(double[] coords2, int dimension) {
-		coords = coords2;
-		this.dimension = dimension;
-		size = coords.length / dimension;
+	    init(coords2, dimension);
 		coordRef = null;
 	}
 	

@@ -106,7 +106,7 @@ To create a CircularString (or a CircularRing) use the GeoTools CurvedGeometryFa
    :start-after: // createCurve start
    :end-before: // createCurve end
 
-The circle arc is defined between coordinates 10,14 and 14, 10 passing through point 6,10. The example uses a PackedCoordianteSequence allowing an array of doubles to be used directly. Curve support is limited to 2D coordinates. A CircularLineString is returned in this case, a CircularRing would be produced if two or more curves were provided form a closed ring.
+The circle arc is defined between coordinates 10,14 and 14, 10 passing through point 6,10. The example uses a PackedCoordinateSequence allowing an array of doubles to be used directly. Curve support is limited to 2D coordinates. A CircularLineString is returned in this case, a CircularRing would be produced if two or more curves were provided form a closed ring.
 
 Reading a circular arc from WKT:
    
@@ -120,7 +120,7 @@ A CompoundCurve (or closed CompoundRing) consists mix of CircularString and/or p
 Custom Curves
 ^^^^^^^^^^^^^
 
-The JTS Topology Suite does not have any constructs to represent a "curve" or "circle" - GeoTools added that as an extension. The mathematics used by JTS is strictly limited to geometry made up of straight (ie linear) lines.
+The JTS Topology Suite does not have any constructs to represent a "curve" or "circle" - GeoTools added that as an extension. The mathematics used by JTS is strictly limited to geometry made up of straight (i.e. linear) lines.
 
 The GeoTools curve implementations rely on using control points to define a curve, and converting it to a straight lines at the last possible moment.
 
@@ -276,12 +276,12 @@ There are some book keeping methods to help discovery how the geometry was const
 * getGeometryFactory()
 * getPreceisionModel()
 * toText() - the WKT representation of the Geometry
-* getGeoemtryType() - factory method called (ie "point", "linestring", etc..)
+* getGeoemtryType() - factory method called (i.e. "point", "linestring", etc..)
 
 A couple of methods are there to store your developer information:
 
 * getSRID() - stores the "spatial reference id", used as an external key when working with databases
-* getUserData() - intended to be used by developers, a best practice is to store a java.util.Map. GeoTools will occasionally use this field to store a "srsName" or full CoordianteReferenceSystem. 
+* getUserData() - intended to be used by developers, a best practice is to store a java.util.Map. GeoTools will occasionally use this field to store a "srsName" or full CoordinateReferenceSystem. 
 
 Geometries Enum
 ^^^^^^^^^^^^^^^
@@ -345,7 +345,7 @@ CoordinateSequence
 
 You may wish to provide a custom CoordinateSequenceFactory for reasons of efficiency and/or reducing memory use.
 
-Internally Geometry often works with Coordinate[]. However many of the spatial formats used for JTS will store values as a flat doube[] or float[] for efficiency. By implementing a CoordinateSequenceFactory GeoTools can teach JTS how to handle the values directly out of a shapefile for example.
+Internally Geometry often works with Coordinate[]. However many of the spatial formats used for JTS will store values as a flat double[] or float[] for efficiency. By implementing a CoordinateSequenceFactory GeoTools can teach JTS how to handle the values directly out of a shapefile for example.
 
 This is an advanced feature that is not often used.
 

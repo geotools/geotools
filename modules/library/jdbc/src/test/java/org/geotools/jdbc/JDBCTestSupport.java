@@ -110,6 +110,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                 setup.tearDown();    
             } 
             catch(Exception e) {
+                e.printStackTrace();
                 System.out.println("Error occurred tearing down the test setup");
             }
         }

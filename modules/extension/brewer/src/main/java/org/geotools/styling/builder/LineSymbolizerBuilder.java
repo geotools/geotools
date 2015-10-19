@@ -35,6 +35,8 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
 
     Unit<Length> uom = null;
 
+    Expression perpendicularOffset;
+
     public LineSymbolizerBuilder() {
         this(null);
     }
@@ -79,6 +81,9 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         if (uom != null) {
             ls.setUnitOfMeasure(uom);
         }
+        if (perpendicularOffset != null) {
+            ls.setPerpendicularOffset(perpendicularOffset);
+        }
         ls.getOptions().putAll(options);
         if (parent == null) {
             reset();
@@ -91,6 +96,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         geometry = null;
         unset = false;
         uom = null;
+        perpendicularOffset = null;
         return this;
     }
 
@@ -101,6 +107,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         geometry = original.getGeometry();
         strokeBuilder.reset(original.getStroke());
         uom = original.getUnitOfMeasure();
+        perpendicularOffset = original.getPerpendicularOffset();
         return this;
     }
 
@@ -114,6 +121,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         geometry = property(original.getGeometryPropertyName());
         strokeBuilder.reset(original.getStroke());
         uom = original.getUnitOfMeasure();
+        perpendicularOffset = original.getPerpendicularOffset();
         return this;
     }
 
@@ -123,6 +131,16 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
 
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().line().init(this);
+    }
+
+    public LineSymbolizerBuilder perpendicularOffset(Expression perpendicularOffset) {
+        this.perpendicularOffset = perpendicularOffset;
+        return this;
+    }
+    
+    public LineSymbolizerBuilder perpendicularOffset(double perpendicularOffset) {
+        this.perpendicularOffset = literal(perpendicularOffset);
+        return this;
     }
 
 }

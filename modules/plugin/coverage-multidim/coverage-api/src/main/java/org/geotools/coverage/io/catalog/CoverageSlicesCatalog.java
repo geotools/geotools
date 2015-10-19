@@ -56,6 +56,7 @@ import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
@@ -469,8 +470,30 @@ public class CoverageSlicesCatalog {
         try {
             lock.lock();
             checkStore();
+            SimpleFeatureType existing = null;
 
-            slicesIndexStore.createSchema(featureType);
+            // Add existence checks
+            Name name = featureType.getName();
+            try {
+                // Check the store doesn't already exists
+                existing = slicesIndexStore.getSchema(name);
+            } catch (IOException ioe) {
+
+                // Logs existence check at finer level 
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.finer(ioe.getLocalizedMessage());
+                }
+            }
+
+            if (existing == null) {
+                slicesIndexStore.createSchema(featureType);
+            } else {
+
+                // Logs existence check at finer level 
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.finer("schema " + name + " already exists");
+                }
+            }
             typeName = featureType.getTypeName();
             if (typeName != null) {
                 addTypeName(typeName, true);

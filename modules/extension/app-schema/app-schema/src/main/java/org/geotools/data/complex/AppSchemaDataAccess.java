@@ -93,6 +93,12 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
     /**
+     * Flag to mark non-accessible data accesses, which should be automatically
+     * disposed of when no longer needed by any accessible data access.
+     */
+    boolean hidden = false;
+
+    /**
      * Constructor.
      * 
      * @param mappings
@@ -101,6 +107,22 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @throws IOException
      */
     public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings) throws IOException {
+        this(mappings, false);
+    }
+
+    /**
+     * Two args constructor.
+     *
+     * @param mappings
+     *          a Set containing a {@linkplain FeatureTypeMapping} for each FeatureType this
+     *          DataAccess is going to produce.
+     * @param hidden
+     *          marks this data access as non-accessible, which makes it a
+     *          candidate for automatic disposal
+     * @throws IOException
+     */
+    public AppSchemaDataAccess(Set<FeatureTypeMapping> mappings, boolean hidden) throws IOException {
+        this.hidden = hidden;
         try {
             for (FeatureTypeMapping mapping : mappings) {
                 Name name = mapping.getMappingName();

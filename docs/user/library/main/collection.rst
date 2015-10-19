@@ -6,7 +6,7 @@ A **FeatureCollection** is a collection of Features similar to a JDBC **ResultSe
 Overview
 ^^^^^^^^
 
-FeatureCollection is similar to a java Collection<Feature>. The crucial difference is the
+FeatureCollection is similar to a Java Collection<Feature>. The crucial difference is the
 requirement to close each FeatureIterator after use in order to prevent memory and connection
 leaks.
 
@@ -74,11 +74,11 @@ The interface provides the following methods::
 
 **Streaming Results**
 
-A FeatureCollection is not an in memory snapshot of your data (as you might expect), we work with the assumption that GIS data is larger than you can fit into memory.
+A FeatureCollection is not an in-memory snapshot of your data (as you might expect), we work with the assumption that GIS data is larger than you can fit into memory.
 
 Most implementations of FeatureCollection provide a memory footprint close to zero and each time you access the data will be loaded as you use it.
 
-Please note that you should not treat a FeatureCollection as a normal in memory Java collection - these are heavyweight objects and we must ask you to close any iterators you open.::
+Please note that you should not treat a FeatureCollection as a normal in-memory Java collection - these are heavyweight objects and we must ask you to close any iterators you open.::
   
   FeatureIterator<SimpleFeature> iterator = featureCollection.features();
   try {
@@ -94,7 +94,7 @@ Please note that you should not treat a FeatureCollection as a normal in memory 
 We ask that you treat interaction with FeatureCollection as a ResultSet carefully closing each object
 when you are done with it.
 
-In Java 7 this becomes easier with the try-with-resoruce syntax::
+In Java 7 this becomes easier with the try-with-resource syntax::
 
   try (FeatureIterator<SimpleFeature> iterator = featureCollection.features()){
        while( iterator.hasNext() ){
@@ -184,7 +184,7 @@ will be written out to the shapefile.
 
 * Load into Memory
   
-  If you would like to work with an in memory copy, you will need to explicitly take the following step::
+  If you would like to work with an in-memory copy, you will need to explicitly take the following step::
     
     SimpleFeatureCollection collection = myFeatureSource.getFeatures();
     SimpleFeatureCollection memory = DataUtilities.collection( collection );
@@ -363,7 +363,7 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
   Currently GeoTools follows a "fail first" policy; that is if the data does not exactly
   meet the requirements of the SimpleFeatureType a RuntimeException will be thrown.
   
-  However often you may in want to just "skip" the troubled Feature and carry on; very few dataset's are perfect.::
+  However often you may in want to just "skip" the troubled Feature and carry on; very few datasets are perfect.::
     
     SimpleFeatureCollection featureCollection = featureSource.getFeatures(filter);
     FeatureIterator iterator = null;
@@ -580,7 +580,7 @@ References:
   
   Thanks to Aaron Parks for sending us this example of using the bounding box of a polygon to
   quickly isolate interesting features; which can then be checked one by one for "intersects"
-  (ie the features touch or overlap our polygon).
+  (i.e. the features touch or overlap our polygon).
   
   .. literalinclude:: /../src/main/java/org/geotools/main/FilterExamples.java
     :language: java

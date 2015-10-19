@@ -9,5 +9,5 @@ If you find your WMS image scrambled you can try the following::
     
     ImageUtilities.allowNativeCodec("png", ImageReaderSpi.class, false);   
    
-This code fragments disables the native PNG reader (the pure java one
+This code fragments disables the native PNG reader (the pure Java one
 is fine; and in some platforms faster).

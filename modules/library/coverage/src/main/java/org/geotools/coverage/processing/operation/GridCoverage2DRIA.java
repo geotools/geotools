@@ -17,8 +17,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.iterators.RandomIterFactory;
-
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
@@ -66,6 +64,8 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.sun.media.jai.util.ImageUtil;
 import com.sun.media.jai.util.PropertyGeneratorImpl;
+
+import it.geosolutions.jaiext.iterators.RandomIterFactory;
 
 /**
  * A RenderedImage that provides values coming from a source GridCoverage2D, with a backing grid
@@ -296,7 +296,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             this.roiBounds = roi.getBounds();
             setProperty("roi", roi);
         }
-
     }
 
     @Override
@@ -488,10 +487,10 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     }
 
     private static float[] rect2PointArr(Rectangle rect) {
-        float dx0 = (float) rect.x;
-        float dy0 = (float) rect.y;
-        float dw = (float) (rect.width);
-        float dh = (float) (rect.height);
+        float dx0 = rect.x;
+        float dy0 = rect.y;
+        float dw = (rect.width);
+        float dh = (rect.height);
 
         return new float[] { dx0, dy0, (dx0 + dw), dy0, (dx0 + dw), (dy0 + dh), dx0, (dy0 + dh) };
     }
@@ -547,7 +546,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         RasterFormatTag formatTag = getFormatTags()[1];
         RasterAccessor d = new RasterAccessor(dest, destRect, formatTag, getColorModel());
 
-        ROI roiTile = null;
         RandomIter roiIter = null;
 
         boolean roiContainsTile = false;
@@ -584,14 +582,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                     srcRectExpanded.getMinY() - interp.getTopPadding(), 
                     srcRectExpanded.getWidth() + interp.getRightPadding() + interp.getLeftPadding(), 
                     srcRectExpanded.getHeight() + interp.getBottomPadding() + interp.getTopPadding());
-            roiTile = roi.intersect(new ROIShape(srcRectExpanded));
 
             if (!roiBounds.intersects(srcRectExpanded)) {
                 roiDisjointTile = true;
             } else {
-                roiContainsTile = roiTile.contains(srcRectExpanded);
+                roiContainsTile = roi.contains(srcRectExpanded);
                 if (!roiContainsTile) {
-                    if (!roiTile.intersects(srcRectExpanded)) {
+                    if (!roi.intersects(srcRectExpanded)) {
                         roiDisjointTile = true;
                     } else {
                         PlanarImage roiIMG = getImage();
@@ -1364,11 +1361,16 @@ public class GridCoverage2DRIA extends GeometricOpImage {
     
     private boolean inROI(int x, int y, RandomIter roiIter, boolean roiContainsTile){
         if(hasROI){
-            if(roiContainsTile){
+            if (roiContainsTile) {
                 return true;
             }
-            return roiBounds.contains(x, y) && (roiIter.getSample(x, y, 0) > 0);
-        }else{
+            if (!roiBounds.contains(x, y)) {
+                return false;
+            } else {
+                final int sample = roiIter.getSample(x, y, 0);
+                return sample > 0;
+            }
+        } else {
             return true;
         }
     }
@@ -1396,7 +1398,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 GridCoverage2DRIA op = (GridCoverage2DRIA) opNode;
 
                 // Retrieve the rendered source image and its ROI.
-                RenderedImage src = (RenderedImage) op.src.getRenderedImage();
+                RenderedImage src = op.src.getRenderedImage();
                 Object property = op.getProperty("ROI");
                 if (property == null || property.equals(java.awt.Image.UndefinedProperty)
                         || !(property instanceof ROI)) {

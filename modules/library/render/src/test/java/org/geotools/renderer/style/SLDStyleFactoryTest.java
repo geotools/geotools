@@ -112,6 +112,15 @@ public class SLDStyleFactoryTest extends TestCase {
         Style2D style = sld.createPointStyle(null, pointsym, scaleRange);
         assertNotNull( style );
     }
+    
+    public void testCreateLineStyle(){
+        LineSymbolizer ls = sf.createLineSymbolizer();
+        ls.setPerpendicularOffset(ff.literal(5));
+        NumberRange<Double> scaleRange = NumberRange.create( 1.0,50000.0);
+        LineStyle2D style = (LineStyle2D) sld.createLineStyle(null, ls, scaleRange);
+        assertNotNull( style );
+        assertEquals(5, style.getPerpendicularOffset(), 0d);
+    }
 
     /**
      * Test of createPolygonStyle method, of class org.geotools.renderer.style.SLDStyleFactory.
@@ -291,18 +300,20 @@ public class SLDStyleFactoryTest extends TestCase {
         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
         assertEquals(16.0, ms.getSize());
     }
+    
     public void testDefaultLineSymbolizerWithColor() throws Exception {
         LineSymbolizer symb = sf.createLineSymbolizer();
         symb.setStroke( sf.createStroke( ff.literal("#0000FF"), ff.literal(1.0)));
+        symb.setPerpendicularOffset( ff.literal(10) );
         
         Style2D s = sld.createLineStyle( feature, symb, range );
         assertNotNull( s );
         
         DynamicLineStyle2D s2 = (DynamicLineStyle2D) sld.createDynamicLineStyle( feature, symb, range );
         assertNotNull( s2 );
-        Stroke stroke = s2.getStroke();
         assertEquals( Color.BLUE, s2.getContour() );
         assertNotNull( s2.getStroke() );
+        assertEquals(10, s2.getPerpendicularOffset(), 0d);
     }
     
     public void testTexturePaintNoSize() throws Exception {

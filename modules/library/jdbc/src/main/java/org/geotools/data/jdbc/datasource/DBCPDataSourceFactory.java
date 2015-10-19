@@ -49,10 +49,10 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
             "Password used to login", false);
 
     public static final Param JDBC_URL = new Param("jdbcUrl", String.class,
-            "The JDBC url (check the JDCB driver docs to find out its format)", true);
+            "The JDBC url (check the JDBC driver docs to find out its format)", true);
 
     public static final Param DRIVERCLASS = new Param("driverClassName", String.class,
-            "The JDBC driver class name (check the JDCB driver docs to find out its name)", true);
+            "The JDBC driver class name (check the JDBC driver docs to find out its name)", true);
 
     public static final Param MAXACTIVE = new Param("maxActive", Integer.class,
             "The maximum number of active connections in the pool", true);

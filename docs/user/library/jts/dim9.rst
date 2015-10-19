@@ -1,7 +1,7 @@
 Point Set Theory and the DE-9IM Matrix
 --------------------------------------
 
-This page covers some of what the JTS Topology is made up of, and how you can use this information to increase the performance of your queries. optimise a bit.
+This page covers some of what the JTS Topology is made up of, and how you can use this information to increase the performance of your queries.
 
 This page has as little math as possible, quickly moving on to a normal String which we can do regular expression on. This page gives you enough information to optimise your own spatial relationship tests.
 
@@ -247,7 +247,7 @@ Within          TF*F*****         false       x is not within y
 Overlaps        T*T***T**         true        x overlaps y
 =============== ================= =========== =========================
 
-The only one that is not really intuitive here is "touches", yes x and y touch in the english sense of the word; but since x and y overlap they are not considered to be only touching. The relationship touches only works when the contact between geometries is limited to the border.
+The only one that is not really intuitive here is "touches", yes x and y touch in the English sense of the word; but since x and y overlap they are not considered to be only touching. The relationship touches only works when the contact between geometries is limited to the border.
 
 Optimisation
 ^^^^^^^^^^^^

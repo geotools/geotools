@@ -210,7 +210,21 @@ public abstract class DataStoreWrapper implements DataStore {
 
                 // Get the transformed featureType
                 final SimpleFeatureType mappedFeatureType = mapper.getMappedFeatureType();
-                datastore.createSchema(mappedFeatureType);
+                String typeName = mappedFeatureType.getTypeName();
+                boolean exists = false;
+                try {
+                    datastore.getSchema(typeName);
+                    exists = true;
+                } catch (IOException ioe) {
+                    
+                }
+                if (exists) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Schema already exists: " + typeName);
+                    }
+                } else {
+                    datastore.createSchema(mappedFeatureType);
+                }
                 mapping.put(name, mapper);
                 typeNames.add(name.getLocalPart());
 

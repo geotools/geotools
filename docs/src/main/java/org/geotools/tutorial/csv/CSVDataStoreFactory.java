@@ -113,7 +113,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
 
     // createNewDataStore start
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
-        return null;
+      throw new UnsupportedOperationException("CSV Datastore is read only");
     }
     // createNewDataStore end
 

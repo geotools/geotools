@@ -1,4 +1,4 @@
 XSD GML2
 --------
 
-GML2 schmea for gt-gml.
+GML2 schema for gt-gml.

@@ -10,7 +10,7 @@ Now that we have completed our CSVDataStore implementation, we can explore the r
 capabilities of the DataStore API.
 
 DataStore actually extends DataAccess which was introduced to allow GeoTools to work with more
-general content including properties, attributes and associations.
+general feature content including properties, attributes and associations.
 
 .. figure:: images/DataAccess.png
    
@@ -39,7 +39,7 @@ provided by an instance of FeatureSource, FeatureStore or FeatureLocking.
 
 Now that we have implemented writing operations, the result of this method supports:
 
-* FeatureSource: the query operations outlined in DataStore Tutorial 2: Use
+* FeatureSource: the query operations outlined in the :doc:`../filter/query` 
 * FeatureStore: modification and transaction support
 * FeatureLocking: Interaction with a Feature-based Locking
 

@@ -54,7 +54,7 @@ public class PrimitiveGeometryBuilderTest extends TestCase {
 		assertTrue(position.equals(point.getCentroid()));
 		
 		// change CRS and test
-		builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84_3D);
+		builder.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84_3D);
 		primitiveFactory = builder.getPrimitiveFactory();
 		Point point3D = primitiveFactory.createPoint(new double[] { 48.44, -123.37, 1.0 });
 		

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -171,6 +171,7 @@ public class UomRescaleStyleVisitorTest
             
             FilterFactory2 filterFactory  = new FilterFactoryImpl();
             lineSymb.getStroke().setWidth(filterFactory.literal(size));
+            lineSymb.setPerpendicularOffset(filterFactory.literal(size));
 
             visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
 
@@ -180,6 +181,7 @@ public class UomRescaleStyleVisitorTest
             
             assertEquals(Math.round(expectedRescaledSize), Math.round(rescaledSize));
             assertNotSame(rescaledLineSymb, lineSymb);
+            assertEquals(expectedRescaledSize, rescaledLineSymb.getPerpendicularOffset().evaluate(null, Double.class), 0.1d);
         }
         catch (Exception e2)
         {

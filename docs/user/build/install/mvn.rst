@@ -46,9 +46,9 @@ Download and Install Maven
 Do not use Apt-Get
 ^^^^^^^^^^^^^^^^^^
 
-It is very tempting to use apt-get to install maven, ubuntu users I am looking at you!
+It is very tempting to use apt-get to install maven, Ubuntu users I am looking at you!
 
-Please be careful of the maven provided out of the box by unbuntu::
+Please be careful of the maven provided out of the box by Ubuntu::
    
    Apache Maven 2.2.1 (rdebian-1)
 
@@ -69,7 +69,7 @@ It is not actually apache maven as provided by apache; and it has a build failur
    [INFO] ------------------------------------------------------------------------
    [INFO] Error extracting plugin descriptor: 'No mojo definitions were found for plugin: org.geotools.maven:javadoc.
 
-Kenneth Gulbrandsoy has supplied the following notes on unbuntu:
+Kenneth Gulbrandsoy has supplied the following notes on Ubuntu:
 
 References:
 
@@ -114,3 +114,5 @@ References:
 5. Test Maven. The following command should not produce any warnings::
      
      > mvn --version
+
+If you still need to use the packaged version, install "maven3", not "maven".

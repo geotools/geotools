@@ -37,7 +37,7 @@ gt-main        Implements filter, feature, etc...
 gt-api         Definition of interfaces for working with spatial information
 jts            Definition and implementation of Geometry
 gt-coverage    Implementation for accessing raster information
-gt-referencing Implementation of co-ordinate location and transofrmation
+gt-referencing Implementation of co-ordinate location and transformation
 gt-metadata    Implementation of identification and description
 gt-opengis     Definition of interfaces for common spatial concepts
 ============== ==============================================================
@@ -84,7 +84,7 @@ system authorities and so on.
 +---------------+------------------+--------------------------------------+
 | jts           |                  |                                      |
 +---------------+------------------+--------------------------------------+
-| gt-coverage   | gt-geotiff       | GeotTIFF raster format               |
+| gt-coverage   | gt-geotiff       | GeoTIFF raster format                |
 +---------------+------------------+--------------------------------------+
 |               | gt-arcgrid       | arcgrid format                       |
 +---------------+------------------+--------------------------------------+
@@ -108,7 +108,7 @@ system authorities and so on.
 +---------------+------------------+--------------------------------------+
 
 Usually at least one plug-in is needed for each layer for GeoTools to do something. As an
-example every time you use the referencing module please make sure you have an epsg plugin
+example every time you use the referencing module please make sure you have an EPSG plugin
 around (or the referencing module will not know that "EPSG:4326" is the world as we know it).
 
 GeoTools Extensions
@@ -133,8 +133,8 @@ gt-brewer      Generation of styles using color brewer
 XML
 ^^^
 
-To support the xml module in GeoTools we have bundled up several XML schemas in JAR form (to prevent needing to download them from
-the internet each time they are needed). In addition these jars contain a generated Java data structure produced with the Eclipse Modelling Framework.
+To support the XML module in GeoTools we have bundled up several XML schemas in JAR form (to prevent needing to download them from
+the Internet each time they are needed). In addition these jars contain a generated Java data structure produced with the Eclipse Modeling Framework.
 
 ================= =============================================
 JAR               Schema
@@ -157,7 +157,7 @@ JAR               Bindings
 ================= =============================================
 gt-xsd-core       Basic types defined by XML schema
 gt-xsd-fes        filter
-gt-xsd-filter     filter (used by ogc cat and wfs)
+gt-xsd-filter     filter (used by OGC cat and wfs)
 gt-xsd-kml        keyhole markup language
 gt-xsd-wfs        web feature service
 gt-xsd-wps        web processing service
@@ -172,7 +172,7 @@ gt-xsd-sld        style layer descriptor
 GeoTools Unsupported
 --------------------
 
-There is also a number of "unsupported" plugins and extensions. These modules are not
+There are also a number of "unsupported" plugins and extensions. These modules are not
 distributed by the project management committee as part of the GeoTools download,
 however they are available via maven or individual download.
 
@@ -189,7 +189,7 @@ however they are available via maven or individual download.
 +---------------+-----------------------------------------+
 | gt-db2        | retired db2 support                     |
 +---------------+-----------------------------------------+
-| gt-wps        | Web Processing Service cient            |
+| gt-wps        | Web Processing Service client           |
 +---------------+-----------------------------------------+
 | gt-process    | Job system for spatial data             |
 +---------------+-----------------------------------------+

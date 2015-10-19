@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -819,7 +819,8 @@ public final class RendererUtilities {
             if(ls.getStroke() instanceof BasicStroke) {
                 strokeSize = ((BasicStroke) ls.getStroke()).getLineWidth();
             }
-            return maxSize(gsSize, strokeSize);
+            double offset = ls.getPerpendicularOffset();
+            return maxSize(maxSize(gsSize, strokeSize), offset);
         } else {
             return 0;
         }

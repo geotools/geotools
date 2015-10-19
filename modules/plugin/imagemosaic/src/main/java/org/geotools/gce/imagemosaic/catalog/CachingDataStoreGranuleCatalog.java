@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -167,22 +167,27 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                         String featureId = sf.getID();
                         if(descriptorsCache.containsKey(featureId)){
                             granule = descriptorsCache.get(featureId);
-                        } else{
-                            // create the granule descriptor
-                            MultiLevelROI footprint = getGranuleFootprint(sf);
-                            if(footprint == null || !footprint.isEmpty()) {
-                                // caching only if the footprint is eithery absent or present and NON-empty
-                                granule = new GranuleDescriptor(
-                                                sf,
-                                                adaptee.suggestedRasterSPI,
-                                                adaptee.pathType,
-                                                adaptee.locationAttribute,
-                                                adaptee.parentLocation,
-                                                footprint,
-                                                adaptee.heterogeneous, 
-                                                adaptee.hints); // retain hints since this may contain a reader or anything
-                                descriptorsCache.put(featureId, granule);
+                        } else {
+                            try {
+                                // create the granule descriptor
+                                MultiLevelROI footprint = getGranuleFootprint(sf);
+                                if(footprint == null || !footprint.isEmpty()) {
+                                        // caching only if the footprint is either absent or present and NON-empty
+                                        granule = new GranuleDescriptor(
+                                                        sf,
+                                                        adaptee.suggestedRasterSPI,
+                                                        adaptee.pathType,
+                                                        adaptee.locationAttribute,
+                                                        adaptee.parentLocation,
+                                                        footprint,
+                                                        adaptee.heterogeneous, 
+                                                        adaptee.hints); // retain hints since this may contain a reader or anything
+                                        descriptorsCache.put(featureId, granule);
+                                }
+                            } catch(Exception e) {
+                                LOGGER.log(Level.FINE, "Skipping invalid granule", e);
                             }
+
                         }
                         
                         if(granule != null) {

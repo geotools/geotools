@@ -40,7 +40,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     /** Utility class used to build features */
     protected SimpleFeatureBuilder builder;
 
-    /** Factory class for goemetry creation */
+    /** Factory class for geometry creation */
     private GeometryFactory geometryFactory;
 
     public CSVFeatureReader(ContentState contentState, Query query) throws IOException {
@@ -55,7 +55,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
         row = 0;
     }
-    /** Access FeatureType (documenting avaiable attributes) */
+    /** Access FeatureType (documenting available attributes) */
     public SimpleFeatureType getFeatureType() {
         return (SimpleFeatureType) state.getFeatureType();
     }

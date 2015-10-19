@@ -112,7 +112,7 @@ The definition of the overlaps relationship is a little bit different than that 
 Relates
 ^^^^^^^
 
-Computes the "DE-9IM Matrix" for two Geometies allowing you to study exactly how they interact with each other.::
+Computes the "DE-9IM Matrix" for two Geometries allowing you to study exactly how they interact with each other.::
    
    IntersectionMatrix m = a.relate(b);
 

@@ -29,6 +29,7 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -170,15 +171,19 @@ public class GridCoverageReaderHelper {
      * Reads the data taking into account advanced projection handling in order to deal with date
      * line crossing, poles and other projection trouble areas. The result is a set of coverages
      * that can be either painted or reprojected safely
-     * 
-     * @param params
-     * @return
-     * @throws IOException
-     * @throws FactoryException
-     * @throws TransformException
      */
     public List<GridCoverage2D> readCoverages(final GeneralParameterValue[] readParams,
-            ProjectionHandler handler)
+            ProjectionHandler handler) throws IOException, FactoryException, TransformException {
+        return readCoverages(readParams, handler, new GridCoverageFactory());
+    }
+
+    /**
+     * Reads the data taking into account advanced projection handling in order to deal with date
+     * line crossing, poles and other projection trouble areas. The result is a set of coverages
+     * that can be either painted or reprojected safely
+     */
+    public List<GridCoverage2D> readCoverages(final GeneralParameterValue[] readParams,
+            ProjectionHandler handler, GridCoverageFactory gridCoverageFactory)
             throws IOException, FactoryException, TransformException {
         if (handler == null) {
             GridCoverage2D readCoverage = readCoverage(readParams);
@@ -191,7 +196,7 @@ public class GridCoverageReaderHelper {
         List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
         for (ReferencedEnvelope envelope : queryEnvelopes) {
             List<GridCoverage2D> readCoverages = readCoverageInEnvelope(envelope, readParams,
-                    handler);
+                    handler, paddingRequired);
             if (readCoverages != null) {
                 coverages.addAll(readCoverages);
             }
@@ -231,9 +236,14 @@ public class GridCoverageReaderHelper {
                         continue;
                     }
                     List<GridCoverage2D> readCoverages = readCoverageInEnvelope(intersection,
-                            readParams, handler);
+                            readParams, handler, false);
                     if (readCoverages != null) {
-                        coverages.addAll(readCoverages);
+                        for (GridCoverage2D gc : readCoverages) {
+                            GridCoverage2D displaced = GridCoverageRendererUtilities.displace(gc,
+                                    -tx, -ty,
+                                    gridCoverageFactory);
+                            coverages.add(displaced);
+                        }
                     }
                 }
             }
@@ -243,7 +253,7 @@ public class GridCoverageReaderHelper {
     }
 
     private List<GridCoverage2D> readCoverageInEnvelope(ReferencedEnvelope envelope,
-            GeneralParameterValue[] readParams, ProjectionHandler handler)
+            GeneralParameterValue[] readParams, ProjectionHandler handler, boolean paddingRequired)
                     throws TransformException, FactoryException, IOException {
         Polygon polygon = JTS.toGeometry(envelope);
         CoordinateReferenceSystem readerCRS = reader.getCoordinateReferenceSystem();

@@ -89,23 +89,18 @@
 
   <repositories>
     <repository>
-      <id>geosolutions</id>
-      <name>GeoSolutions libraries repository</name>
-      <url>http://maven.geo-solutions.it/</url>
-    </repository>
-    <repository>
       <id>unidata</id>
       <name>Unidata UCAR Libraries repository</name>
       <url>https://artifacts.unidata.ucar.edu/content/repositories/unidata/</url>
     </repository> 
-    </repositories>
+  </repositories>
 
   <!-- =========================================================== -->
   <!--     Modules for the build in approximate dependency order   -->
   <!-- =========================================================== -->
-      <modules>
-        <module>coverage-api</module>
-        <module>grib</module>
-        <module>netcdf</module>
+  <modules>
+    <module>coverage-api</module>
+    <module>grib</module>
+    <module>netcdf</module>
   </modules>
- </project>
+</project>

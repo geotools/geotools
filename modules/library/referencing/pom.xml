@@ -29,12 +29,6 @@
   <name>Referencing services</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/referencing/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/referencing/</url>
-  </scm>
 
   <description>
     Contains implementations of Coordinate Reference Systems (CRS),

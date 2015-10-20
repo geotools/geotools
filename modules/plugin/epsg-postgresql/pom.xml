@@ -29,12 +29,6 @@
   <name>EPSG Authority Service using PostgreSQL database</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-postgresql/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-postgresql/</url>
-  </scm>
 
   <description>
     Connection to an EPSG postgreSQL database.

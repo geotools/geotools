@@ -27,12 +27,6 @@
   <packaging>pom</packaging>
   <name>Coverage Multidimensional Module</name>
 
-  <scm>
-    <connection>
-      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-multidim/
-    </connection>
-  <url>https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-multidim/</url>
- </scm>
 
   <description>
     Module for Coverage experiment and ND GeoTools plugins.

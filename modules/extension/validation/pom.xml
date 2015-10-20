@@ -29,12 +29,6 @@
   <name>Validation Processor and Framework</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/validation/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/validation/</url>
-  </scm>
 
   <description>
     Validation module (and validator batch tool) for use with geotools2.

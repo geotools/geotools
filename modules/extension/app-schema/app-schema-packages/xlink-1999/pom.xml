@@ -9,10 +9,6 @@
     <version>1.0.0-1</version>
     <name>XLink 1999 schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/xlink-1999/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/xlink-1999/</url>
-    </scm>
 
     <developers>
         <developer>

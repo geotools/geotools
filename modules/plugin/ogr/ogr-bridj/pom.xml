@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>Bridj OGR DataStore Module</name>
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-bridj
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-bridj</url>
-  </scm>
 
   <description>
     A datastore levearing OGR BRIDJ bindings for reading/writing a slew of data formats

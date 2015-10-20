@@ -29,12 +29,6 @@
   <name>ArcSDE dummy api</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/sde-dummy/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/sde-dummy/</url>
-  </scm>
 
   <description>
     ArcSDE dummy api.

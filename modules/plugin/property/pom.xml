@@ -29,12 +29,6 @@
   <name>Property File DataStore</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/property/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/property/</url>
-  </scm>
 
   <description>
     DataStore using Java properties files, a useful reference implementation

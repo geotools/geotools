@@ -28,12 +28,6 @@
     <packaging>jar</packaging>
     <name>Rest based GeoJson DataStore</name>
 
-    <scm>
-        <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/georest/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/georest/</url>
-    </scm>
 
     <description>
     Provides a DataStore based on a GeoJson rest service.

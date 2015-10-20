@@ -28,12 +28,6 @@
   <name>WCS XML Support</name>
   <url>http://maven.geotools.fr/reports/modules/extension/xsd/xsd-wcs/</url>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/extension/xsd/xsd-wcs/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/extension/xsd/xsd-wcs/</url>
-  </scm>
 
   <description>
     WCS 1.0.0 Bindings.

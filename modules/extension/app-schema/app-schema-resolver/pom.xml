@@ -14,10 +14,6 @@
     <artifactId>gt-app-schema-resolver</artifactId>
     <name>Application Schema Resolver</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-resolver</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-resolver</url>
-    </scm>
 
     <description>
         Support for resolution of GML application schemas obtained from an OASIS Catalog,

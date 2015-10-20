@@ -15,12 +15,6 @@
   <name>Web Processing Service Model</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.wps
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.wps</url>
-  </scm>
 
   <description>Web Processing Service Schema EMF Model</description>
 

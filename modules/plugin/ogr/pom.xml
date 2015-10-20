@@ -28,12 +28,6 @@
   <packaging>pom</packaging>
   <name>OGR DataStore Module</name>
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/</url>
-  </scm>
 
   <description>
     A datastore leveraging OGR for reading/writing a slew of data formats

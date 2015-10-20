@@ -29,12 +29,6 @@
   <name>SLD XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/</url>
-  </scm>
 
   <description>
     SLD XML support for Geotools.

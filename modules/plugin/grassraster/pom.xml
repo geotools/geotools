@@ -29,12 +29,6 @@
   <name>grass raster datasource module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/</url>
-  </scm>
 
   <description>
     This datasource reads the GRASS DEM format.

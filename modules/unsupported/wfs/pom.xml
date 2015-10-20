@@ -29,12 +29,6 @@
   <name>WFS client module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/wfs/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/wfs/</url>
-  </scm>
 
   <description>
     Implementation of DataStore allowing geotools code to work with an

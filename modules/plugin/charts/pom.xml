@@ -29,12 +29,6 @@
   <name>Dynamic symbolizer module based on JFreeChart and Eastwood</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/charts/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/charts/</url>
-  </scm>
 
   <description>
     TODO

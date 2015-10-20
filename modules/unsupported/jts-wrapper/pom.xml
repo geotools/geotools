@@ -31,12 +31,6 @@
   <name>ISO 19107 implementation using JTS</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/jts-wrapper/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/jts-wrapper/</url>
-  </scm>
 
   <description>
      This is a basic 2D ISO 19107 implementation which uses 

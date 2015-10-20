@@ -29,12 +29,6 @@
   <name>ArcGrid datasource module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/arcgrid/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/arcgrid/</url>
-  </scm>
 
   <description>
     Datasource created to read ArcGrid raster format. Currently Serving

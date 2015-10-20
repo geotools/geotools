@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>Oracle DataStore</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-oracle/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-oracle/</url>
-  </scm>
 
   <description>
 	DataStore for Oracle Database.

@@ -29,12 +29,6 @@
   <name>GeoTIFF grid coverage exchange module</name>
   <url>http://maven.geotools.fr/reports/modules/plugin/geotiff/</url>
 
-  <scm>
-    <connection>
-      scm:svn:https://www.geo-solutions.it/svn/repo/geotoolsPlugins/gt-2.6.x/modules/unsupported/ndplugins/geotiff/
-    </connection>
-    <url>https://www.geo-solutions.it/svn/repo/geotoolsPlugins/gt-2.6.x/modules/unsupported/ndplugins/geotiff/</url>
-  </scm>
 
   <description>
     Datasource created to read GeoTIFF raster format.

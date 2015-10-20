@@ -26,12 +26,6 @@
   <name>ArcSDE support classes</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/</url>
-  </scm>
 
   <description> ArcSDE support classes, including session pooling and JNDI support. </description>
   <licenses>

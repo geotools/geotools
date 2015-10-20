@@ -29,12 +29,6 @@
   <name>GML3 XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/</url>
-  </scm>
 
   <description>
     GML3 XML support for Geotools.

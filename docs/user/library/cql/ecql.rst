@@ -5,7 +5,7 @@ The ECQL language is intended as an extension of CQL, thus you can write all pre
 
 References
 
-* `ECQL Parser Design <http://old.geotools.org/ECQL-Parser-Design_110493908.html>`__ (design doc with BNF)
+* `ECQL Parser Design <http://old.geotools.org/ECQL-Parser-Design_110493908.html`_ (design doc with BNF)
 * `GeoServer CQL Examples <http://docs.geoserver.org/latest/en/user/tutorials/cql/cql_tutorial.html>`_ (geoserver)
 
 ECQL Utility Class

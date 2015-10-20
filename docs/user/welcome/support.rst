@@ -65,7 +65,7 @@ or people like you hiring an organisation to for specific work.
 Issue Tracker
 -------------
 
-GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by OSGeo and hosted by Atlassian. This is where all bugs should be reported, in addition to requested features
+GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by OSGeo and hosted by. This is where all bugs should be reported, in addition to requested features
 and improvements.
 
 To create an issue:

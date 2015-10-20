@@ -134,12 +134,5 @@
     </dependency>
   </dependencies>
 
- <repositories>
-    <repository>
-      <id>geosolutions</id>
-      <name>GeoSolutions libraries repository</name>
-      <url>http://www.geo-solutions.it/maven_repo</url>
-    </repository>
- </repositories>
 
 </project>

@@ -127,8 +127,9 @@ Once you have the proposal page in place, and the Jira issue ready to capture di
   the GeoTools change proposal process and emailing the list.
   
   Here are the links:
-  - http://jira.codehaus.org/browse/GEOT-1083
-  - http://docs.codehaus.org/display/GEOTOOLS/FunctionImpl Library separation
+  
+  - https://osgeo-org.atlassian.net/projects/GEOT-1083
+  - https://github.com/geotools/geotools/wiki/Describe-Function-with-FunctionName
   
   This change requires the introduction of *new* API (namely Library), and
   will require the deprecation of our existing FunctionFactory extension

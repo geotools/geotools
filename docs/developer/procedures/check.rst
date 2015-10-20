@@ -1,9 +1,9 @@
 Gold Star Quality Assurance Check
 ==================================
 
-The GeoTools Module Matrix makes use of a gold star system, 3 stars or more is great, an X is used to indicate non working modules.
+GeoTools Modules makes use of a gold star system, 3 stars or more is great, an X is used to indicate non working modules.
 
-* http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix
+Check each module for a README.md for developer notes.
 
 This test is something quick, accessible and visible to end users.
 

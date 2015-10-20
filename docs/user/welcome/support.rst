@@ -65,18 +65,19 @@ or people like you hiring an organisation to for specific work.
 Issue Tracker
 -------------
 
-GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by OSGeo and hosted by Atlassian. This is where all bugs should be reported, in addition to requested features
+GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by OSGeo and hosted by. This is where all bugs should be reported, in addition to requested features
 and improvements.
 
 To create an issue:
 
-1. Sign up with CodeHaus: `Signup <http://xircles.codehaus.org/signup>`_ .
-   This CodeHaus username is used for both the issue tracker and the wiki.
-2. `Login <http://jira.codehaus.org/>`
-3. Once you are logged in you can create a new issue
+1. [Log In](https://osgeo-org.atlassian.net/login) to <osgeo-org.atlassian.net>.
    
-   * Navigate to the `GeoTools JIRA page <http://jira.codehaus.org/browse/GEOT>`_
-   * Press the **Create New Issue** at the top of the page
+   * If this is your first time you can [create an account](https://osgeo-org.atlassian.net/admin/users/sign-up) using the link at the bottom of the Sign In screen.
+
+3. Once logged in you can [Create](https://osgeo-org.atlassian.net/secure/CreateIssue!default.jspa) an issue from the button at the top of the page
+   
+   * Navigate to the `GeoTools JIRA page <https://osgeo-org.atlassian.net/projects/GEOT>`_
+   * Press the **Create** at the top of the page
    
    .. image:: /images/CreateIssue.png
    
@@ -109,8 +110,7 @@ To create an issue:
    Note: This is why you must sign up for an account, so that JIRA can email you
    when updates are done. Your email will not be used for anything else. One nice
    little feature of JIRA is that if you reply to the email sent for notification,
-   including jira@codehaus.org as a recipient, then the reply will show up as a
-   comment on the issue.
+   then the reply will show up as a comment on the issue.
 
 7. When will your bug be fixed?
    

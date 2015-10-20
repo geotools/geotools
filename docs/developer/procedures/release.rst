@@ -21,7 +21,7 @@ The following are necessary to perform a GeoTools release:
 #. Commit access to the GeoTools `Git repository <https://Github.com/geotools/geotools>`_
 #. Build access to `Jenkins <http://ares.boundlessgeo.com/jenkins/>`_
 #. Edit access to the GeoTools `Blog <http://www.blogger.com/blogger.g?blogID=5176900881057973693#overview>`_
-#. Administration rights to `GeoTools JIRA <https://jira.codehaus.org/browse/GEOT>`__
+#. Administration rights to `GeoTools JIRA <https://osgeo-org.atlassian.net/projects/GEOT/>`__
 #. Release/file management privileges in `SourceForge <https://sourceforge.net/projects/geotools/>`_
 
 Versions and revisions
@@ -65,7 +65,7 @@ Run the `geotools-release-jira <http://ares.boundlessgeo.com/jenkins/job/geotool
 
   The password for the ``JIRA_USER``.
      
-This job will perform the tasks in JIRA to release ``VERSION``. Navigate to `JIRA <http://jira.codehaus.org/browse/GEOT>`_ and verify that the version has actually been released.
+This job will perform the tasks in JIRA to release ``VERSION``. Navigate to `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ and verify that the version has actually been released.
 
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
@@ -86,6 +86,7 @@ When creating the first release candidate of a series some extra steps need to b
       git commit . -m "Updating version numbers to 11-SNAPSHOT"
       git push geotools master
 
+* Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
 
 * Announce on the mailing list that the new stable branch has been created and that the feature freeze on master is over
 
@@ -179,7 +180,7 @@ Announce on GeoTools Blog
 #. You will need to correct the following information: 
 
    * Update the Sourceforge links above to reflect the release
-   * Update the Release Notes by choosing the the correct version from `JIRA changelogs <https://jira.codehaus.org/browse/GEOT#selectedTab=com.atlassian.jira.plugin.system.project:changelog-panel&allVersions=false>`_
+:   * Update the Release Notes by choosing the the correct version from `JIRA changelogs <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page>`_
    * For a new stable series, be sure to thank those involved with the release (testing, completed proposals, docs, and so on)
 
 #. The public entry point will be here: http://geotoolsnews.blogspot.com/

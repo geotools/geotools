@@ -29,12 +29,6 @@
   <name>Filter XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-filter/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-filter/</url>
-  </scm>
 
   <description>
     Filter XML support for Geotools.

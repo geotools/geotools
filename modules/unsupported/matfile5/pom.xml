@@ -33,12 +33,6 @@
       <imageio.mat.version>1.1M012010</imageio.mat.version>
   </properties>
       
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5/</url>
-  </scm>
 
   <description>
     Extension of the of Grid Coverage plugins, to read matlab files with georefencing information.

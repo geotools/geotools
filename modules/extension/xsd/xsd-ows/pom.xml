@@ -28,12 +28,6 @@
   <name>OWS XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-ows/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-ows/</url>
-  </scm>
 
   <description>
     Filter XML support for Geotools.

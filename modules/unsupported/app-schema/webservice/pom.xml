@@ -14,10 +14,6 @@
     <artifactId>gt-webservice</artifactId>
     <name>Web Service DataAccess</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</url>
-    </scm>
 
     <description>
         DataAccess to create complex feature types defined in a GML application schema,

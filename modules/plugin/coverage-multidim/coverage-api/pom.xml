@@ -27,12 +27,6 @@
   <artifactId>gt-coverage-api</artifactId>
   <packaging>jar</packaging>
   <name>API interfaces</name>
-  <scm>
-    <connection>
-      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/plugin/coverage-multidim/coverage-api/
-    </connection>
-  <url>https://svn.osgeo.org/geotools/trunk/modules/plugin/coverage-multidim/coverage-api/</url>
- </scm>
 
   <description>
   </description>

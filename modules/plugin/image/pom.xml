@@ -29,12 +29,6 @@
   <name>WorldImage datasource module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/image/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/image/</url>
-  </scm>
 
   <description>
     Grid coverage reader for image georeferenced by a world file.

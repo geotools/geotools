@@ -29,12 +29,6 @@
   <name>Filter Encoding Specification XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-fes/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-fes/</url>
-  </scm>
 
   <description>
     Filter XML support for Geotools.

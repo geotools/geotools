@@ -29,12 +29,6 @@
   <name>Caching</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/caching/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/caching/</url>
-  </scm>
 
   <description>
     Originally a Google Summer of Code 2007 project (Caching data in uDig), 

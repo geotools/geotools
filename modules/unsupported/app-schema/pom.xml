@@ -15,10 +15,6 @@
     <packaging>pom</packaging>
     <name>Application Schema Support (Unsupported Modules)</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema</url>
-    </scm>
 
     <description>Modules to support creation of complex feature types defined in a GML application schema (unsupported modules)</description>
 

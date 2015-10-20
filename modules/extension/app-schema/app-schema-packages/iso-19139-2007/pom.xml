@@ -9,10 +9,6 @@
     <version>1.0.0-1</version>
     <name>ISO/TS 19139:2007 Geographic MetaData (gmd) schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/iso-19139-2007/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/iso-19139-2007/</url>
-    </scm>
 
     <developers>
         <developer>

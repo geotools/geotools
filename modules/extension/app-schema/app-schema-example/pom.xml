@@ -15,10 +15,6 @@
     <artifactId>gt-app-schema-example</artifactId>
     <name>Application Schema Support Example</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema-example</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema-example</url>
-    </scm>
 
     <description>Example for Application Schema Support</description>
 

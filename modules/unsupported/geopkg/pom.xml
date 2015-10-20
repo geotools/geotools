@@ -27,12 +27,6 @@
     <packaging>jar</packaging>
     <name>GeoPackage Module</name>
 
-    <scm>
-        <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/geopkg/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/geopkg/</url>
-    </scm>
 
     <description>
     Provides read and write support for GeoPackage SQLite format.

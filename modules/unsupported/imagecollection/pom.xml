@@ -29,12 +29,6 @@
   <name>ImageCollection module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/</url>
-  </scm>
 
   <description>
     Datasource created to read images from an ImageCollection available on a folder.

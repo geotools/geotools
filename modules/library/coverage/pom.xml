@@ -29,12 +29,6 @@
   <name>Grid Coverage module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/coverage/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/coverage/</url>
-  </scm>
 
   <description>
     Implementation of GridCoverage. Provides support

@@ -15,12 +15,6 @@
   <name>Xlink Model</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/org.w3.xlink
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/org.w3.xlink</url>
-  </scm>
 
   <description>Xlink Schema EMF Model</description>
 

@@ -32,12 +32,6 @@
   <name>imagepyramid datasource module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/imagepyramid/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/imagepyramid/</url>
-  </scm>
 
   <description>
     Datasource created to read a pyramid of georeferenced images or geotiff 

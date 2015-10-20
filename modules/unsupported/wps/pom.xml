@@ -27,12 +27,6 @@
   <packaging>jar</packaging>
   <name>Web Processing Service</name>
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/</url>
-  </scm>
   
   <description>
     Web Processing Service implementation.

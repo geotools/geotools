@@ -29,12 +29,6 @@
   <name>Dynamic symbolizers for SVG symbols</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/svg
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/svg</url>
-  </scm>
 
   <description>
     Plugin allowing gt-render to draw scalar vector graphic symbols.

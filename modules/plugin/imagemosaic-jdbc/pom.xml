@@ -29,12 +29,6 @@
   <name>imagemosaic-jdbc module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/
-    </connection>
-    <url>http://svn.geotools.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/</url>
-  </scm>
 
   <description>
 	Plugin for reading tiled images from a JDBC Data Source

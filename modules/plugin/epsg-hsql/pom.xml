@@ -29,12 +29,6 @@
   <name>EPSG Authority Service using HSQL database</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-hsql/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-hsql/</url>
-  </scm>
 
   <description>
     Connection to an embedded EPSG database in HSQL format.

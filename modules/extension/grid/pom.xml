@@ -15,12 +15,6 @@
     <packaging>jar</packaging>
     <name>Vector grids</name>
 
-    <scm>
-        <connection>
-            scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/</url>
-    </scm>
 
     <description>
         The grid module allows users to create vector grids (also known as

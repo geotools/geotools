@@ -30,12 +30,6 @@
   <name>Next Generation JDBC DataStores</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/jdbc-ng/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/jdbc-ng/</url>
-  </scm>
 
   <licenses>
     <license>

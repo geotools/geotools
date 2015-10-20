@@ -29,12 +29,6 @@
   <name>Render</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/render/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/render/</url>
-  </scm>
 
   <description>
     The render module contains a renderer built around the interface in

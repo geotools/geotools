@@ -14,12 +14,6 @@
 
   <name>Catalog Services for the Web Model</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/csw/net.opengis.csw
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/csw/net.opengis.csw</url>
-  </scm>
 
   <description>Catalog Services for the Web Schema EMF Model</description>
 

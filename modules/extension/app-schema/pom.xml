@@ -15,10 +15,6 @@
     <packaging>pom</packaging>
     <name>Application Schema Support</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema</url>
-    </scm>
 
     <description>Modules to support creation of complex feature types defined in a GML application schema</description>
 

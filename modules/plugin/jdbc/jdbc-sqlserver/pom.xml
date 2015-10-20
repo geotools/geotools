@@ -23,12 +23,6 @@
 	<name>SQL Server DataStore</name>
 	<url>http://maven.geotools.fr/reports/modules/plugin/jdbc/jdbc-sqlserver/</url>
 
-	<scm>
-		<connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/jdbc/jdbc-sqlserver
-    </connection>
-		<url>http://svn.geotools.org/trunk/modules/plugin/jdbc/jdbc-sqlserver</url>
-	</scm>
 
 	<description>
 	DataStore for SQL Server Database.

@@ -29,12 +29,6 @@
   <name>Web Map Server client</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/wms/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/wms/</url>
-  </scm>
 
   <description>
     An OGC Web Map Server client implementation that can be used directly or as 

@@ -23,12 +23,6 @@
   <packaging>jar</packaging>
 
   <name>Excel</name>
-<scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/excel
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/excel</url>
-  </scm>
 
   <description>
     Implementation of DataStore allowing geotools code to work with an

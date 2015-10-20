@@ -29,12 +29,6 @@
   <name>VPF Plugin</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/vpf/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/vpf/</url>
-  </scm>
 
   <description>
     DataStore plugin for VPF format.

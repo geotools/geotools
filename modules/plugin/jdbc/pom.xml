@@ -28,12 +28,6 @@
   <packaging>pom</packaging>
   <name>JDBC DataStore Plugins</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/jdbc/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/jdbc/</url>
-  </scm>
 
   <licenses>
     <license>

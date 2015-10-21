@@ -75,6 +75,7 @@ import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.ResourceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
@@ -977,5 +978,11 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
     @Override
     public boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException {
         return removeCoverage(coverageName, false);
+    }
+
+    @Override
+    public ResourceInfo getInfo(String coverageName) {
+        String name = checkUnspecifiedCoverage(coverageName);
+        return new NetCDFFileResourceInfo(this, name, ((NetCDFAccess) access).reader.getCatalog(), sourceURL);
     }
 }

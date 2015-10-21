@@ -1,8 +1,8 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *
- *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
+ * 
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,20 +14,22 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.shapefile.index;
+package org.geotools.data;
 
-import java.io.IOException;
-import java.util.Iterator;
 
 /**
- * An iterator backed by some resource that needs closing when done using
- * @author Andrea Aime - OpenGeo
- *
- *
- * @source $URL$
- * @deprecated use {@link org.geotools.data.CloseableIterator}
+ * Extends {@link ServiceInfo} with information about the underlying file structure 
+ * 
+ * @author Andrea Aime - GeoSolutions
+ * @author Daniele Romagnoli - GeoSolutions
  */
-public interface CloseableIterator<E> extends Iterator<E> {
+public interface FileServiceInfo extends ServiceInfo, FileGroupProvider {
 
-    public void close() throws IOException;
+    /**
+     * {@link FileGroupProvider} providing info content. 
+     *
+     * @return A {@link FileGroupProvider} instance providing info content.
+     */
+    CloseableIterator<FileGroup> getFiles(Query query);
+
 }

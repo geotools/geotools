@@ -191,6 +191,7 @@ public class Utils {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
         CLEANUP_FILTER = initCleanUpFilter(); 
+        MOSAIC_SUPPORT_FILES_FILTER = initMosaicSupportFilesFilter();
     }
     
     public static class Prop {
@@ -386,6 +387,18 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("sample_image"),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
                 FileFilterUtils.suffixFileFilter("xml"),
+                FileFilterUtils.suffixFileFilter("db"));
+        return filesFilter;
+    }
+
+    private static IOFileFilter initMosaicSupportFilesFilter() {
+        IOFileFilter filesFilter = FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("sample_image"),
                 FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
     }
@@ -1382,6 +1395,8 @@ public class Utils {
 
     public static final String SAMPLE_IMAGE_NAME = "sample_image";
 
+    public static final String BBOX = "BOUNDINGBOX";
+
     public static final String TIME_DOMAIN = "TIME";
 
     public static final String ELEVATION_DOMAIN = "ELEVATION";
@@ -1390,8 +1405,8 @@ public class Utils {
 
     public static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
-    private static IOFileFilter CLEANUP_FILTER;
-
+    static IOFileFilter CLEANUP_FILTER;
+    static IOFileFilter MOSAIC_SUPPORT_FILES_FILTER;
     /**
      * Private constructor to initialize the ehCache instance. It can be configured through a Bean.
      * 

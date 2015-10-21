@@ -56,6 +56,10 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultFileServiceInfo;
+import org.geotools.data.FileGroupProvider.FileGroup;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.ServiceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ExceptionEvent;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.FileProcessingEvent;
@@ -114,7 +118,6 @@ import org.opengis.referencing.operation.MathTransform;
  */
 @SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader implements StructuredGridCoverage2DReader {
-
 
     Set<String> names = new HashSet<String>();
 
@@ -1326,10 +1329,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         if (datastoreProperties != null && datastoreProperties.exists() && datastoreProperties.canRead()) {
             CatalogManager.dropDatastore(datastoreProperties);
         }
-
-        // Scan for MosaicConfigurationBeans from properties files
-        List<MosaicConfigurationBean> beans = new ArrayList<MosaicConfigurationBean>();
-        
     }
 
     /**
@@ -1442,5 +1441,25 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 }
             }
         }   
+    }
+
+    @Override
+    public ResourceInfo getInfo(String coverageName) {
+        String name = checkUnspecifiedCoverage(coverageName);
+        RasterManager manager = getRasterManager(name);
+        String parentLocation = DataUtilities.fileToURL(parentDirectory).toString();
+        return new ImageMosaicFileResourceInfo(manager, parentLocation, this.locationAttributeName);
+    }
+
+    @Override
+    public ServiceInfo getInfo() {
+        IOFileFilter filesFilter = Utils.MOSAIC_SUPPORT_FILES_FILTER;
+        Collection<File> files = FileUtils.listFiles(parentDirectory, filesFilter, null);
+        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
+        for (File file: files) {
+            fileGroups.add(new FileGroup(file, null, null));
+        }
+        return new DefaultFileServiceInfo(fileGroups);
+
     }
 }

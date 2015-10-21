@@ -27,6 +27,8 @@ import java.util.Set;
 import javax.media.jai.ImageLayout;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.ServiceInfo;
 import org.geotools.geometry.GeneralEnvelope;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -352,4 +354,19 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @throws IllegalArgumentException if the specified coverageName does not exist
      */
     double[][] getResolutionLevels(String coverageName) throws IOException;
+
+    /**
+     * Information about the store.
+     * 
+     * @return ServiceInfo describing the whole store.
+     */
+    ServiceInfo getInfo();
+
+    /**
+     * Information about a specific resource.
+     * 
+     * @return ResourceInfo describing a specific coverage.
+     */
+    ResourceInfo getInfo(String coverageName); 
+
 }

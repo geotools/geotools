@@ -17,6 +17,11 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.JAIExt;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -50,6 +55,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +65,9 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -79,10 +88,14 @@ import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.UnknownFormat;
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FileGroupProvider.FileGroup;
+import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
+import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
@@ -98,6 +111,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
@@ -111,6 +125,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
@@ -126,14 +141,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 /**
  * Testing {@link ImageMosaicReader}.
  * 
@@ -146,6 +153,12 @@ import junit.textui.TestRunner;
  * @source $URL$
  */
 public class ImageMosaicReaderTest extends Assert{
+
+    private final static String OS_NAME = System.getProperty("os.name");
+
+    private final static boolean IS_MAC = OS_NAME != null && OS_NAME.toUpperCase().contains("MAC");
+
+    private final static FilterFactory2 FF = FeatureUtilities.DEFAULT_FILTER_FACTORY;
 
     private final static double DELTA = 1E-4;
     
@@ -448,7 +461,43 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
 		elevation.setValue(Arrays.asList(100.0));
-	                
+
+        ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
+        assertTrue(info instanceof FileResourceInfo);
+        FileResourceInfo fileInfo = (FileResourceInfo) info;
+
+        // Testing the FileGroupProvider 
+        int groups = 0;
+        CloseableIterator<FileGroup> filesIterator = null;
+        try {
+            Query query = new Query("water_temp3");
+            query.setFilter(FF.like(FF.property("location"), "*100_20081031T00*"));
+            filesIterator = fileInfo.getFiles(query);
+            while (filesIterator.hasNext()) {
+                FileGroup group = filesIterator.next();
+                if (groups == 0) {
+                    Map<String, Object> md = group.getMetadata();
+                    DateRange metadataTime = (DateRange) md.get(Utils.TIME_DOMAIN);
+                    NumberRange metadataElevation = (NumberRange) md.get(Utils.ELEVATION_DOMAIN);
+                    ReferencedEnvelope metadataBBOX = (ReferencedEnvelope) md.get(Utils.BBOX);
+                    assertEquals(metadataTime.getMinValue().getTime(), date.getTime());
+                    assertEquals((Double) metadataElevation.getMinValue(), 100.0, DELTA);
+                    assertEquals(envelope.getMinimum(0), metadataBBOX.getMinX(), DELTA);
+                    assertEquals(envelope.getMinimum(1), metadataBBOX.getMinY(), DELTA);
+                    assertEquals(envelope.getMaximum(0), metadataBBOX.getMaxX(), DELTA);
+                    assertEquals(envelope.getMaximum(1), metadataBBOX.getMaxY(), DELTA);
+                }
+                groups++;
+            }
+        } finally {
+            if (filesIterator != null) {
+                filesIterator.close();
+            }
+        }
+        // Check the fileGroupProvider returned 4 fileGroups
+                assertEquals(1, groups);
+		
+		
 		// Test the output coverage
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
 		reader.dispose();
@@ -458,7 +507,7 @@ public class ImageMosaicReaderTest extends Assert{
         
                 // Test the output coverage
                 TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");
-                
+
          // clean up
          if (!INTERACTIVE){        	
          	FileUtils.deleteDirectory( TestData.file(this, "water_temp3"));
@@ -4022,5 +4071,76 @@ public class ImageMosaicReaderTest extends Assert{
         TestUtils.checkCoverage(reader, new GeneralParameterValue[0], "Ignore invalid granule");
     }
 
+    @Test
+    public void testGIFSupportFiles() throws Exception {
+        final AbstractGridFormat format = TestUtils.getFormat(indexURL);
+        ImageMosaicReader reader = TestUtils.getReader(indexURL, format);
+        ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
+        assertTrue(info instanceof FileResourceInfo);
+        FileResourceInfo fileInfo = (FileResourceInfo) info;
+        CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
+        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
+        Set<File> mainFiles = new HashSet<File>();
+        Set<File> supportFiles = new HashSet<File>();
+        while (files.hasNext()) {
+            FileGroup group = files.next();
+            fileGroups.add(group);
+            mainFiles.add(group.getMainFile());
+            supportFiles.addAll(group.getSupportFiles());
+        }
+        assertEquals(3, fileGroups.size());
+        assertEquals(3, mainFiles.size());
+        assertEquals(IS_MAC ? 12 : 6, supportFiles.size());
+        File dir = DataUtilities.urlToFile(indexURL);
+        String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".gif"));
+        String[] supportFilesPaths = dir.list(FileFilterUtils.and(FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter(".prj"), FileFilterUtils.suffixFileFilter(".wld")), 
+                FileFilterUtils.notFileFilter(FileFilterUtils.prefixFileFilter("index"))));
+        for (String filePath : mainFilesPaths) {
+            final File myFile = new File(dir, filePath);
+            assertTrue(mainFiles.contains(myFile));
+        }
+        for (String filePath : supportFilesPaths) {
+            final File myFile = new File(dir, filePath);
+            assertTrue(supportFiles.contains(myFile));
+        }
+    }
 
+    
+    @Test
+    public void testOverviewSupportFiles() throws Exception {
+        final File overviewDir = TestData.file(this, "ext-overview");
+        final URL overviewURL = DataUtilities.fileToURL(overviewDir);
+        final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
+        ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
+        ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
+        assertTrue(info instanceof FileResourceInfo);
+        FileResourceInfo fileInfo = (FileResourceInfo) info;
+        CloseableIterator<FileGroup> files = fileInfo.getFiles(null);
+        List<FileGroup> fileGroups = new ArrayList<FileGroup>();
+        Set<File> mainFiles = new HashSet<File>();
+        Set<File> supportFiles = new HashSet<File>();
+        while (files.hasNext()) {
+            FileGroup group = files.next();
+            fileGroups.add(group);
+            mainFiles.add(group.getMainFile());
+            supportFiles.addAll(group.getSupportFiles());
+        }
+        assertEquals(2, fileGroups.size());
+        assertEquals(2, mainFiles.size());
+        assertEquals(IS_MAC ? 4 : 2, supportFiles.size());
+        File dir = DataUtilities.urlToFile(overviewURL);
+        String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".tif"));
+        String[] supportFilesPaths = dir.list(FileFilterUtils.and(FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter(".ovr")), 
+                FileFilterUtils.notFileFilter(FileFilterUtils.prefixFileFilter("index"))));
+        for (String filePath : mainFilesPaths) {
+            final File myFile = new File(dir, filePath);
+            assertTrue(mainFiles.contains(myFile));
+        }
+        for (String filePath : supportFilesPaths) {
+            final File myFile = new File(dir, filePath);
+            assertTrue(supportFiles.contains(myFile));
+        }
+    }
 }

@@ -55,7 +55,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <pre>
  *  <code>
  *  //create the builder
- *  SimpleTypeBuilder builder = new SimpleTypeBuilder();
+ *  SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
  *  
  *  //set global state
  *  builder.setName( "testType" );

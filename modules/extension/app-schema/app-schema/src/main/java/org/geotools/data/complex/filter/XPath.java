@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,7 @@ import org.geotools.data.complex.config.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
@@ -177,7 +178,8 @@ public class XPath extends XPathUtil {
                 } else {
                     // except when the xpath is the root itself 
                     // where it is done for feature chaining for simple content
-                    if (Types.isSimpleContentType(parent.getType())) {
+                    if (Types.isSimpleContentType(parent.getType())
+                            || Types.canHaveTextContent(parent.getType())) {
                         return setSimpleContentValue(parent, value);
                     } else if (Types.isGeometryType(parent.getType())) {
                         ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
@@ -629,12 +631,18 @@ public class XPath extends XPathUtil {
 
         if (type instanceof ComplexType && binding == Collection.class) {
             if (!(value instanceof Collection)) {
-                if (Types.isSimpleContentType(type)) {
+                boolean isSimpleContent = Types.isSimpleContentType(type);
+                boolean canHaveTextContent = Types.canHaveTextContent(type);
+                if (isSimpleContent || canHaveTextContent) {
                     ArrayList<Property> list = new ArrayList<Property>();
                     if (value == null && !descriptor.isNillable()) {
                         return list;
                     }
-                    list.add(buildSimpleContent(type, value));
+                    if (isSimpleContent) {
+                        list.add(buildSimpleContent(type, value));
+                    } else if (canHaveTextContent) {
+                        list.add(buildTextContent(type, value));
+                    }
                     return list;
                 }
             } else {
@@ -674,8 +682,30 @@ public class XPath extends XPathUtil {
      */
     Attribute buildSimpleContent(AttributeType type, Object value) {
         AttributeType simpleContentType = getSimpleContentType(type);
-        Object convertedValue = FF.literal(value).evaluate(value,
-                getSimpleContentType(type).getBinding());
+        return buildSimpleContentInternal(simpleContentType, value);
+    }
+
+    /**
+     * Create a fake property to store arbitrary text in a complex type.
+     * 
+     * <p>
+     * Passed in value is converted to a string and then stored in the special <code>simpleContent</code> attribute.
+     * </p>
+     * 
+     * @param type
+     * @param value
+     * @return
+     */
+    Attribute buildTextContent(AttributeType type, Object value) {
+        AttributeTypeBuilder atb = new AttributeTypeBuilder();
+        atb.setName(ComplexFeatureConstants.SIMPLE_CONTENT.getLocalPart());
+        atb.setBinding(String.class);
+        AttributeType textContentType = atb.buildType();
+        return buildSimpleContentInternal(textContentType, value);
+    }
+
+    private Attribute buildSimpleContentInternal(AttributeType simpleContentType, Object value) {
+        Object convertedValue = FF.literal(value).evaluate(value, simpleContentType.getBinding());
         AttributeDescriptor descriptor = new AttributeDescriptorImpl(simpleContentType,
                 ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, (Object) null);
         return new AttributeImpl(convertedValue, descriptor, null);

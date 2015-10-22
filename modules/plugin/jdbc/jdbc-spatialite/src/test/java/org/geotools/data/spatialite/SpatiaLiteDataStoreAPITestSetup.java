@@ -39,6 +39,10 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
             dropRecreatedTable();
         } catch (SQLException e) {
         }
+        try {
+            dropDataTypesTable();
+        } catch (SQLException e) {
+        }
     }
 
     @Override
@@ -116,5 +120,9 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected void dropRecreatedTable() throws Exception {
         run( "DROP TABLE recreated");
         run( "DELETE FROM geometry_columns WHERE f_table_name = 'recreated'");
+    }
+
+    protected void dropDataTypesTable() throws Exception {
+        run( "DROP TABLE datatypes");
     }
 }

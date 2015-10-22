@@ -4076,11 +4076,13 @@ public class ImageWorker {
                 boolean similarROI = true;
                 boolean hasSameNodata =true;
                 // Minor checks on ROI and NoData
-                if(paramBlock.getNumParameters() > 5){
-                    nodata = (Range) paramBlock.getObjectParameter(7);
-                    r = (ROI)paramBlock.getObjectParameter(5);
-                    double[] sBgValues = (double[]) paramBlock.getObjectParameter(8);
-                    if(r != null){
+                final int numParameters = paramBlock.getNumParameters();
+                if (numParameters > 5){
+                    r = (ROI) paramBlock.getObjectParameter(5);
+                    nodata = numParameters > 7 ? (Range) paramBlock.getObjectParameter(7) : null;
+                    // The background may haven't been set
+                    double[] sBgValues = numParameters > 8 ? (double[]) paramBlock.getObjectParameter(8) : null;
+                    if (r != null) {
                         try {
                             AffineTransform sTx = AffineTransform.getScaleInstance(xScale, yScale);
                             sTx.concatenate(AffineTransform.getTranslateInstance(xTrans, yTrans));

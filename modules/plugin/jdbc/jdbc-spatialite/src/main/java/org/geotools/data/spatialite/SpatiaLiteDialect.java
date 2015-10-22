@@ -19,11 +19,15 @@ package org.geotools.data.spatialite;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Map;
 import java.util.logging.Level;
@@ -225,7 +229,30 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
         mappings.put(Long.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
     }
-    
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        super.registerSqlTypeToSqlTypeNameOverrides(overrides);
+
+        // The following SQL Data Types are just decorative in SQLite
+        // (see https://www.sqlite.org/datatype3.html),
+        // but will allow GeoTools to handle some usual java.sql.Types
+        // not mapped to raw SQL types by org.spatialite.MetaData.getTypeInfo()
+
+        // Numbers
+        overrides.put(Types.BOOLEAN, "BOOLEAN");
+        overrides.put(Types.SMALLINT, "SMALLINT");
+        overrides.put(Types.BIGINT, "BIGINT");
+        overrides.put(Types.DOUBLE, "DOUBLE");
+        overrides.put(Types.NUMERIC, "NUMERIC");
+
+        // Temporal
+        overrides.put(Types.DATE, "DATE");
+        overrides.put(Types.TIME, "TIME");
+        overrides.put(Types.TIMESTAMP, "TIMESTAMP");
+    }
+
     @Override
     public String getGeometryTypeName(Integer type) {
         return Geometries.getForSQLType( type ).getName();

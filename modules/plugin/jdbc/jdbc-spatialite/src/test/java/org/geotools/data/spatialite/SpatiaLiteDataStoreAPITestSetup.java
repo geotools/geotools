@@ -16,6 +16,8 @@
  */
 package org.geotools.data.spatialite;
 
+import java.sql.SQLException;
+
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 /**
@@ -28,7 +30,16 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected SpatiaLiteDataStoreAPITestSetup() {
         super(new SpatiaLiteTestSetup());
     }
-    
+
+    protected void setUpData() throws Exception {
+        //kill all the data
+        super.setUpData();
+        try {
+            dropDataTypesTable();
+        } catch (SQLException e) {
+        }
+    }
+
     @Override
     protected int getInitialPrimaryKeyValue() {
         return 0;
@@ -99,5 +110,9 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected void dropBuildingTable() throws Exception {
         run( "DROP TABLE building");
         run( "DELETE FROM geometry_columns WHERE f_table_name = 'building'");
+    }
+
+    protected void dropDataTypesTable() throws Exception {
+        run( "DROP TABLE datatypes");
     }
 }

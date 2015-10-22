@@ -20,8 +20,14 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.geotools.feature.IllegalAttributeException;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
+import org.geotools.referencing.CRS;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Point;
 
 
 
@@ -36,7 +42,38 @@ public class SpatiaLiteDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new SpatiaLiteDataStoreAPITestSetup();
     }
-    
+
+    public void testRecreateSchema() throws Exception {
+        String featureTypeName = tname("recreated");
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+
+        // Build feature type
+        SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName(featureTypeName);
+        ftb.add(aname("id"), Integer.class);
+        ftb.add(aname("name"), String.class);
+        ftb.add(aname("the_geom"), Point.class, crs);
+        SimpleFeatureType newFT = ftb.buildFeatureType();
+
+        // Crate a schema
+        dataStore.createSchema(newFT);
+        SimpleFeatureType newSchema = dataStore.getSchema(featureTypeName);
+        assertNotNull(newSchema);
+
+        // Delete it
+        dataStore.removeSchema(newFT.getTypeName());
+        try {
+            dataStore.getSchema(featureTypeName);
+            fail("Should have thrown an IOException because featureTypeName shouldn't exist");
+        } catch(IOException e) {
+        }
+
+        // Create the same schema again
+        dataStore.createSchema(newFT);
+        SimpleFeatureType recreatedSchema = dataStore.getSchema(featureTypeName);
+        assertNotNull(recreatedSchema);
+    }
+
     @Override
     public void testTransactionIsolation() throws Exception {
         //super.testTransactionIsolation();

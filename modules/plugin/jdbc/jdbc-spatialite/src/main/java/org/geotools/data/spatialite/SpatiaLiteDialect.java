@@ -422,7 +422,22 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             }
         }
     }
-    
+
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType,
+            Connection cx) throws SQLException {
+        String sql = "DELETE FROM geometry_columns WHERE f_table_name='"
+                + featureType.getTypeName() + "'";
+        LOGGER.fine(sql);
+
+        Statement st = cx.createStatement();
+        try {
+            st.executeUpdate(sql);
+        } finally {
+            dataStore.closeSafe(st);
+        }
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return true;

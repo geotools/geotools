@@ -23,6 +23,7 @@ import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.jai.ImageLayout;
+import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
@@ -40,6 +43,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.operator.MosaicDescriptor;
 
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -63,6 +67,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
 import org.jaitools.imageutils.ImageLayout2;
+import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -632,8 +637,24 @@ public class Mosaic extends OperationJAI {
 
         int numSources = rasters.length;
         // Setting the source rasters for the mosaic
-        for (int i = 0; i < numSources; i++) {
-            block.setSource(rasters[i], i);
+        if(Boolean.TRUE.equals(hints.get(JAI.KEY_REPLACE_INDEX_COLOR_MODEL))) {
+            // the mosaic operation will blow up in this case, internally the Raster accessors 
+            // are not getting configured to do expansion as needed. Work around it.
+            for (int i = 0; i < numSources; i++) {
+                RenderedImage source = rasters[i];
+                if(source.getColorModel() instanceof IndexColorModel) {
+                    source = new ImageWorker(source).forceComponentColorModel().getRenderedImage();
+                }
+                block.setSource(source, i);
+            }
+            
+            hints = new Hints(hints);
+            hints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
+            hints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
+        } else {
+            for (int i = 0; i < numSources; i++) {
+                block.setSource(rasters[i], i);
+            }
         }
         // Setting the nodata values for the areas not covered by any GridCoverage.
         double[] nodata = null;
@@ -728,6 +749,7 @@ public class Mosaic extends OperationJAI {
                 hints = new Hints(parameters.hints);
             }
         }
+        
         // Layout associated to the input RenderingHints
         ImageLayout layoutOld = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT)
                 : null;
@@ -740,6 +762,9 @@ public class Mosaic extends OperationJAI {
             layout.unsetValid(ImageLayout.MIN_Y_MASK);
             layout.unsetValid(ImageLayout.WIDTH_MASK);
             layout.unsetValid(ImageLayout.HEIGHT_MASK);
+            // there might be color expansion
+            layout.unsetValid(ImageLayout.COLOR_MODEL_MASK);
+            layout.unsetValid(ImageLayout.SAMPLE_MODEL_MASK);
         } else {
             // Create a new one
             layout = new ImageLayout2();
@@ -774,9 +799,55 @@ public class Mosaic extends OperationJAI {
                 data, // The underlying data
                 crs, // The coordinate system (may not be 2D).
                 toCRS, // The grid transform (may not be 2D).
-                primarySource.getSampleDimensions(), // The sample dimensions
+                getOutputSampleDimensions(primarySource.getSampleDimensions(), data), // The sample dimensions
                 sources, // The source grid coverages.
                 properties); // Properties
+    }
+
+    private GridSampleDimension[] getOutputSampleDimensions(GridSampleDimension[] sampleDimensions,
+            RenderedImage data) {
+        // if there was no color model expansion, we are fine
+        int outputNumBands = data.getSampleModel().getNumBands();
+        if(outputNumBands == sampleDimensions.length) {
+            return sampleDimensions;
+        }
+        GridSampleDimension[] newSampleDimensions = new GridSampleDimension[outputNumBands];
+//        GridSampleDimension reference = sampleDimensions[0];
+//        ColorInterpretation[] interpretations = new ColorInterpretation[outputNumBands];
+//        switch (outputNumBands) {
+//        case 1:
+//            interpretations[0] = ColorInterpretation.GRAY_INDEX;
+//            break;
+//        case 2:
+//            interpretations[0] = ColorInterpretation.GRAY_INDEX;
+//            interpretations[1] = ColorInterpretation.ALPHA_BAND;
+//            break;
+//            
+//        case 3:
+//            interpretations[0] = ColorInterpretation.RED_BAND;
+//            interpretations[1] = ColorInterpretation.GREEN_BAND;
+//            interpretations[2] = ColorInterpretation.BLUE_BAND;
+//            break;
+//            
+//        case 4:
+//            interpretations[0] = ColorInterpretation.RED_BAND;
+//            interpretations[1] = ColorInterpretation.GREEN_BAND;
+//            interpretations[2] = ColorInterpretation.BLUE_BAND;
+//            interpretations[3] = ColorInterpretation.ALPHA_BAND;
+//            break;
+//
+//        default:
+//            for (int i = 0; i < outputNumBands; i++) {
+//                interpretations[i] =  ColorInterpretation.UNDEFINED;
+//            }
+//            break;
+//        }
+        for (int i = 0; i < newSampleDimensions.length; i++) {
+            newSampleDimensions[i] = new GridSampleDimension("Band" + i);
+        }
+        
+        return newSampleDimensions;
+        
     }
 
     protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,

@@ -19,6 +19,8 @@ package org.geotools.coverage.processing;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
+import static org.junit.Assert.*;
+
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -54,6 +56,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.junit.AfterClass;
@@ -710,6 +713,44 @@ public class MosaicTest extends GridProcessingTestBase {
         // Coverage and RenderedImage disposal
         mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
+    }
+    
+    @Test
+    public void testPaletted() throws IOException {
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
+
+        // Creation of a List of the input Sources
+        List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
+        GridCoverage2D world = readWorldPaletted();
+        sources.add(world);
+        ReferencedEnvelope reShifted = new ReferencedEnvelope(-360, -180, -90, 90, DefaultGeographicCRS.WGS84);
+        GridCoverage2D shifted = new GridCoverageFactory().create(world.getName(),
+                world.getRenderedImage(), reShifted);
+        sources.add(shifted);
+        param.parameter("Sources").setValue(sources);
+        // Mosaic simulating a hints set that contains index color model expansion
+        Hints hints = new Hints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.TRUE);
+        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param, hints);
+        assertNotNull(mosaic);
+        assertEquals(3, mosaic.getRenderedImage().getSampleModel().getNumBands());
+        
+    }
+
+    private GridCoverage2D readWorldPaletted() throws IOException {
+        File tiff = TestData.copy(this, "geotiff/worldPalette.tiff");
+        final TIFFImageReader reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader) new TIFFImageReaderSpi()
+                .createReaderInstance();
+        reader.setInput(ImageIO.createImageInputStream(tiff));
+        final BufferedImage image = reader.read(0);
+        final MathTransform transform = new GridToEnvelopeMapper(new GridEnvelope2D(0, 0, image.getWidth(), image.getHeight()), 
+                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84)).createTransform();
+        final GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create("world",
+                        image,
+                        new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
+                                .getBounds()), transform, DefaultGeographicCRS.WGS84), null, null,
+                        null);
+        return coverage2D;
     }
 
     @AfterClass

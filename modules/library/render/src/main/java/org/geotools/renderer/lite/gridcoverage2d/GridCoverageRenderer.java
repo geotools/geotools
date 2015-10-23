@@ -971,9 +971,12 @@ public final class GridCoverageRenderer {
         } else if (symbolizedCoverages.size() == 1) {
             mosaicked = symbolizedCoverages.get(0);
         } else {
+            // do not expand index color models, we know they are all the same
+            Hints mosaicHints = new Hints(this.hints);
+            mosaicHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
             mosaicked = GridCoverageRendererUtilities.mosaic(symbolizedCoverages,
                     new ArrayList<GridCoverage2D>(),
-                    destinationEnvelope, hints, bgValues);
+                    destinationEnvelope, mosaicHints, bgValues);
         }
 
         // the mosaicking can cut off images that are just slightly out of the

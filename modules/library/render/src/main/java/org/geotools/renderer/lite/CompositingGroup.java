@@ -223,7 +223,8 @@ class CompositingGroup {
 
         public void preDispose() {
           //do nothing so as not to kill off the layer
-        	//before the label cache is completed
+          //before the label cache is completed
+          
         }
 
         public void setTitle(String title) {

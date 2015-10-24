@@ -16,21 +16,16 @@
  */
 package org.geotools.data.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.DataStore;
 import org.geotools.data.Query;
-import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -60,6 +55,8 @@ public class PropertyDataStore2Test extends TestCase {
     PropertyDataStore store;
     PropertyDataStore store3d;
     PropertyDataStore sridStore;
+	
+	private static final String TARGET_DIR="./target";
     
     /**
      * Constructor for SimpleDataStoreTest.
@@ -69,7 +66,7 @@ public class PropertyDataStore2Test extends TestCase {
         super(arg0);
     }
     protected void setUp() throws Exception {
-        File dir = new File(".", "propertyTestData" );
+        File dir = new File(TARGET_DIR, "propertyTestData" );
         dir.mkdir();
         
         File file = new File( dir ,"road.properties");
@@ -86,7 +83,7 @@ public class PropertyDataStore2Test extends TestCase {
         store = new PropertyDataStore( dir, "propertyTestData" );
         
         // Create a similar data store but with srid in the geometry column
-        File dir2 = new File(".", "propertyTestData2");
+        File dir2 = new File(TARGET_DIR, "propertyTestData2");
         dir2.mkdir();
         File file2 = new File(dir2, "road2.properties");
         if (file2.exists()) {
@@ -106,7 +103,7 @@ public class PropertyDataStore2Test extends TestCase {
         sridStore = new PropertyDataStore( dir2, "propertyTestData2" );
         
         // Create a data store with a 3D geometry
-        File dir3 = new File(".", "propertyTestData3");
+        File dir3 = new File(TARGET_DIR, "propertyTestData3");
         dir3.mkdir();
         File file3 = new File(dir3, "road3.properties");
         if (file3.exists()) {
@@ -125,21 +122,21 @@ public class PropertyDataStore2Test extends TestCase {
         super.setUp();
     }
     protected void tearDown() throws Exception {
-        File dir = new File( "propertyTestData" );
+        File dir = new File(TARGET_DIR, "propertyTestData" );
         File list[]=dir.listFiles();
         for( int i=0; i<list.length;i++){
             list[i].delete();
         }
         dir.delete();
         
-        dir = new File( "propertyTestData2" );
+        dir = new File(TARGET_DIR, "propertyTestData2" );
         list = dir.listFiles();
         for( int i=0; i<list.length;i++){
             list[i].delete();
         }
         dir.delete();
         
-        dir = new File( "propertyTestData3" );
+        dir = new File(TARGET_DIR, "propertyTestData3" );
         list = dir.listFiles();
         for( int i=0; i<list.length;i++){
             list[i].delete();

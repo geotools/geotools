@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General 
@@ -158,4 +158,48 @@ import junit.framework.Assert;
 	    ISENABLED=true;
 	}
 	
+	       
+                
+        public static void executecCreateSRS(String srsName,int srsId,double xoffset,double xscale, double yoffset,double yscale, 
+                String crsName, Connection con) throws SQLException {
+            String stmt =  "call db2gse.ST_create_srs(?,?,?,?,?,?,?,?,?,?,?,?,?,? )";
+            String s = "{" + stmt + "}";
+            CallableStatement ps = con.prepareCall(s);
+            ps.setString(1, quote(srsName));            
+            ps.setInt(2, srsId);
+            ps.setDouble(3,xoffset);
+            ps.setDouble(4,xscale);
+            ps.setDouble(5,yoffset);
+            ps.setDouble(6,yscale);
+            ps.setDouble(7,0.0);
+            ps.setDouble(8,1.0);
+            ps.setDouble(9,0.0);
+            ps.setDouble(10,1.0);
+            ps.setString(11, quote(crsName));
+            ps.setString(12, quote(crsName+" (created by geotools) "));
+            ps.registerOutParameter(13, Types.INTEGER);
+            ps.registerOutParameter(14, Types.CHAR);
+            ps.executeUpdate();
+            ps.close();
+
+
+        }
+        
+        
+        public static void executeDropSRS(String srsName,Connection con) throws SQLException {
+            String stmt =  "call db2gse.ST_drop_srs(?,?,?)";
+            
+            String s = "{" + stmt + "}";
+            CallableStatement ps = con.prepareCall(s);
+            ps.setString(1, quote(srsName));
+            ps.registerOutParameter(2, Types.INTEGER);
+            ps.registerOutParameter(3, Types.CHAR);
+            ps.executeUpdate();
+            ps.close();
+        }
+
+        private static String quote(String s) {
+            return "\""+s+"\"";
+    }
+
 }

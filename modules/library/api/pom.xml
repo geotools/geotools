@@ -29,12 +29,6 @@
   <name>API interfaces</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/api/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/api/</url>
-  </scm>
 
   <description>
     The api module contains the GeoTools public interfaces that are used by

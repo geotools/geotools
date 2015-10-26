@@ -14,10 +14,6 @@
     <artifactId>gt-app-schema</artifactId>
     <name>Application Schema DataAccess</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema</url>
-    </scm>
 
     <description>DataAccess to create complex feature types defined in a GML application schema.</description>
 

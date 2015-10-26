@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>Teradata DataStore</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/jdbc-teradata
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/jdbc-teradata</url>
-  </scm>
 
   <description>
     DataStore for Teradata Database.

@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>H2 DataStore</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-h2/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-h2/</url>
-  </scm>
 
   <description>
 	DataStore for H2 Database.

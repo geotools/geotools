@@ -9,10 +9,6 @@
     <version>1.1.2-2</version>
     <name>Web Feature Service (WFS) 1.1 schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/wfs-1.1/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/wfs-1.1/</url>
-    </scm>
 
     <developers>
         <developer>

@@ -28,12 +28,6 @@
   <name>GML2 XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml2/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml2/</url>
-  </scm>
 
   <description>
     GML2 XML support for Geotools.

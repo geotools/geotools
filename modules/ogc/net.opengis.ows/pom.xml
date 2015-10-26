@@ -15,12 +15,6 @@
   <name>Open Web Services Model</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.ows
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.ows</url>
-  </scm>
 
   <description>Open Web Services Schema EMF Model</description>
 

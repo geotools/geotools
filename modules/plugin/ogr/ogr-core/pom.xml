@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>Core OGR DataStore Module</name>
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-core
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/ogr/ogr-core</url>
-  </scm>
 
   <licenses>
     <license>

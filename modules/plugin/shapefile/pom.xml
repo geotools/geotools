@@ -29,12 +29,6 @@
   <name>Shapefile module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/shapefile/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/shapefile/</url>
-  </scm>
 
   <description>
     DataStore supporting the ESRI shapefile format. NG version

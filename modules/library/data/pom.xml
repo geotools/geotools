@@ -29,12 +29,6 @@
   <name>DataStore Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/data/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/data/</url>
-  </scm>
 
   <description>
     ContentDataStore implementation and support classes for those implementing

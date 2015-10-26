@@ -29,12 +29,6 @@
   <name>JDBC DataStore Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/</url>
-  </scm>
 
   <description>
     Abstract datastore implementation and helper classes / apis to be extended

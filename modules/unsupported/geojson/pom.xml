@@ -27,12 +27,6 @@
     <packaging>jar</packaging>
     <name>GeoJSON Support</name>
 
-    <scm>
-        <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/geojson/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/geojson/</url>
-    </scm>
 
     <description>
     Provides GeoJSON Encoding and Parsing support.

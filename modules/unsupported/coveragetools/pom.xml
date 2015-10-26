@@ -73,12 +73,6 @@
   <name>Coverage tools</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/coveragetools/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/coveragetools/</url>
-  </scm>
 
   <description>
     Coverage tools (tools for building overviews, pyramids and the like)

@@ -28,12 +28,6 @@
     <packaging>jar</packaging>
     <name>Process Raster</name>
 
-    <scm>
-        <connection>
-            scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-raster/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-raster/</url>
-    </scm>
 
     <description>
       Processes for handling of raster information; often wrapping up jai-tools

@@ -29,12 +29,6 @@
   <name>PostGIS DataStore</name>
   
 
-  <scm>
-    <connection> q
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis</url>
-  </scm>
 
   <description>
 	DataStore for PostGIS Database.

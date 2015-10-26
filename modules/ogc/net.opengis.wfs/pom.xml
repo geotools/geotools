@@ -15,12 +15,6 @@
   <name>Web Feature Service Model</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.wfs
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.wfs</url>
-  </scm>
 
   <description>Web Feature Service Schema EMF Model</description>
 

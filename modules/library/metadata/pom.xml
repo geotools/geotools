@@ -29,10 +29,6 @@
   <name>Metadata</name>
   
 
-  <scm>
-    <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/metadata/</connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/metadata/</url>
-  </scm>
 
   <description>
     Contains implementations of metadata and some core utilities classes.

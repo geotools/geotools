@@ -16,12 +16,6 @@
   <name>EDIGEO format module</name>
   
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/geotools/branches/2.5.x/modules/unsupported/edigeo/
-    </connection>
-    <url>http://svn.geotools.org/geotools/branches/2.5.x/modules/unsupported/edigeo/</url>
-  </scm>
  
   <description>
     Support for the EDIGEO format.

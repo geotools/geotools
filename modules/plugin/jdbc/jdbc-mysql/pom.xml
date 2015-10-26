@@ -29,12 +29,6 @@
   <name>MySQL DataStore</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-mysql
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-mysql</url>
-  </scm>
 
   <description>
 	DataStore for MySQL Database.

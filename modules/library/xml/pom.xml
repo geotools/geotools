@@ -29,12 +29,6 @@
   <name>XML Parsing Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/xml/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/xml/</url>
-  </scm>
 
   <description>
     XML Parser based on the XDO design.

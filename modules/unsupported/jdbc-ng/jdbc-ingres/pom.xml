@@ -30,12 +30,6 @@
   <name>Ingres DataStore</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/jdbc-ng/jdbc-ingres
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/jdbc-ng/jdbc-ingres</url>
-  </scm>
 
   <description>
 	DataStore for Ingres Database.

@@ -27,12 +27,6 @@
     <packaging>jar</packaging>
     <name>Swing widgets</name>
 
-    <scm>
-        <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/widgets-swing/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/widgets-swing/</url>
-    </scm>
 
     <description>
     Provides widgets for map display and other GUI elements

@@ -28,12 +28,6 @@
     <packaging>jar</packaging>
     <name>Process Geometry</name>
 
-    <scm>
-        <connection>
-            scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-geometry/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-geometry/</url>
-    </scm>
 
     <description>
       Processes for handling of geometry.

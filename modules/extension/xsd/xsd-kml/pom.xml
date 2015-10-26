@@ -28,12 +28,6 @@
   <name>KML XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-kml/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-kml/</url>
-  </scm>
 
   <description>
     Filter XML support for Geotools.

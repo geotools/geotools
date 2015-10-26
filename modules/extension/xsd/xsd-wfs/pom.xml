@@ -28,12 +28,6 @@
   <name>WFS XML Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wfs/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wfs/</url>
-  </scm>
 
   <description>
     Filter XML support for Geotools.

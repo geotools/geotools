@@ -15,12 +15,6 @@
   <name>Filter Encoding Specification Model</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.fes
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogc/net.opengis.fes</url>
-  </scm>
 
   <description>Filter Encoding Specification Schema EMF Model</description>
 

@@ -22,12 +22,6 @@
   <artifactId>gt-netcdf</artifactId>
   <packaging>jar</packaging>
   <name>NetCDF gridcoverage module</name>
-  <scm>
-    <connection>
-      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/plugin/coverage-multidim/netcdf/
-    </connection>
-  <url>https://svn.osgeo.org/geotools/trunk/modules/plugin/coverage-multidim/netcdf/</url>
- </scm>
 
   <description>
     Datasource created to read NetCDF format. 

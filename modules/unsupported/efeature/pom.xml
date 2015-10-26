@@ -38,12 +38,6 @@
     <url>www.osgeo.org</url>
   </organization>
   
-<!--  <scm>-->
-<!--     <connection>-->
-<!--        scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/efeature/-->
-<!--     </connection>-->
-<!--     <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/efeature/</url>-->
-<!--  </scm> -->
   
   <!-- for your project. -->
   <inceptionYear>2011</inceptionYear>

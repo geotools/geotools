@@ -200,5 +200,98 @@ class CompositingGroup {
     public Composite getComposite() {
         return composite;
     }
+    
+    /**
+     * Wraps direct layer so that dispose does not get called when wrapping
+     * inside a compositing group
+     * @author Andrea Aime
+     */
+    static class WrappingDirectLayer extends DirectLayer {
+        DirectLayer delegate;
+
+        public WrappingDirectLayer(DirectLayer delegate) {
+            super();
+            this.delegate = delegate;
+            //this prevents the annoying message about not calling predispose
+            //as we have no listeners it has no effect
+            super.preDispose();
+        }
+
+        public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
+            delegate.draw(graphics, map, viewport);
+        }
+
+        public void preDispose() {
+          //do nothing so as not to kill off the layer
+          //before the label cache is completed
+          
+        }
+
+        public void setTitle(String title) {
+            delegate.setTitle(title);
+        }
+
+        public boolean isSelected() {
+            return delegate.isSelected();
+        }
+
+        public ReferencedEnvelope getBounds() {
+            return delegate.getBounds();
+        }
+
+        public void addMapLayerListener(MapLayerListener listener) {
+            delegate.addMapLayerListener(listener);
+        }
+
+        public boolean equals(Object arg0) {
+            return delegate.equals(arg0);
+        }
+
+        public String getTitle() {
+            return delegate.getTitle();
+        }
+
+        public boolean isVisible() {
+            return delegate.isVisible();
+        }
+
+        public void setVisible(boolean visible) {
+            delegate.setVisible(visible);
+        }
+
+        public void setSelected(boolean selected) {
+            delegate.setSelected(selected);
+        }
+
+        public Map<String, Object> getUserData() {
+            return delegate.getUserData();
+        }
+
+        public void removeMapLayerListener(MapLayerListener listener) {
+            delegate.removeMapLayerListener(listener);
+        }
+
+        public Style getStyle() {
+            return delegate.getStyle();
+        }
+
+        public FeatureSource<?, ?> getFeatureSource() {
+            return delegate.getFeatureSource();
+        }
+
+        public Query getQuery() {
+            return delegate.getQuery();
+        }
+
+        public int hashCode() {
+            return delegate.hashCode();
+        }
+
+        public String toString() {
+            return delegate.toString();
+        }
+        
+        
+    }
 
 }

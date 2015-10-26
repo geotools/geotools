@@ -218,6 +218,9 @@ class CompositingGroup {
         public WrappingDirectLayer(DirectLayer delegate) {
             super();
             this.delegate = delegate;
+            //this prevents the annoying message about not calling predispose
+            //as we have no listeners it has no effect
+            super.preDispose();
         }
 
         public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
@@ -225,7 +228,9 @@ class CompositingGroup {
         }
 
         public void preDispose() {
-            delegate.preDispose();
+          //do nothing so as not to kill off the layer
+          //before the label cache is completed
+          
         }
 
         public void setTitle(String title) {

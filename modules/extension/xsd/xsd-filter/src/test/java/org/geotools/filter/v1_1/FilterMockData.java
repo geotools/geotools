@@ -35,6 +35,7 @@ import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -142,6 +143,10 @@ public class FilterMockData {
     
     public static Function function() {
         return f.function("abs", f.property("foo"));
+    }
+    
+    static PropertyIsLike propertyIsLike() {
+        return f.like(propertyName(), "foo", "x", "y", "z", false);
     }
     
     static Element propertyIsLike(Document document, Node parent) {

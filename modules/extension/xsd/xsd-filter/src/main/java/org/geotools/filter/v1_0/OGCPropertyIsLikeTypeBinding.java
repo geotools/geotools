@@ -133,6 +133,10 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
             return isLike.getEscape();
         }
 
+        if ("matchCase".equals(name.getLocalPart())) {
+            return isLike.isMatchingCase();
+        }
+        
         return null;
     }
 }

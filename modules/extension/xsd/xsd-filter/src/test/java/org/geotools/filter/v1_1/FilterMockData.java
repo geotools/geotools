@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -35,6 +35,7 @@ import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -142,6 +143,10 @@ public class FilterMockData {
     
     public static Function function() {
         return f.function("abs", f.property("foo"));
+    }
+    
+    static PropertyIsLike propertyIsLike() {
+        return f.like(propertyName(), "foo", "x", "y", "z", false);
     }
     
     static Element propertyIsLike(Document document, Node parent) {

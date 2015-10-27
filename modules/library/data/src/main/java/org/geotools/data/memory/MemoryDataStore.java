@@ -375,4 +375,32 @@ public class MemoryDataStore extends ContentDataStore {
             schema.put(typeName, featureType);
             memory.put(typeName, featuresMap);
     }
+
+    /* (non-Javadoc)
+     * @see org.geotools.data.store.ContentDataStore#removeSchema(java.lang.String)
+     */
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        if (typeName != null) {
+            // graceful remove, its fine if the type has never been registered
+            synchronized (schema) {
+                schema.remove(typeName);
+            }
+
+            synchronized (memory) {
+                memory.remove(typeName);
+            }
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.geotools.data.store.ContentDataStore#removeSchema(org.opengis.feature.type.Name)
+     */
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        if (typeName != null && typeName.getLocalPart() != null) {
+            removeSchema(typeName.getLocalPart());
+        }
+    }
+
 }

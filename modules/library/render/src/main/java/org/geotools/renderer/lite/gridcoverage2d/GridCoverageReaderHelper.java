@@ -187,7 +187,12 @@ public class GridCoverageReaderHelper {
             throws IOException, FactoryException, TransformException {
         if (handler == null) {
             GridCoverage2D readCoverage = readCoverage(readParams);
-            return Arrays.asList(readCoverage);
+            GridCoverage2D cropped = cropCoverageOnRequestedEnvelope(readCoverage);
+            if(cropped == null) {
+                return Collections.emptyList();
+            } else {
+                return Arrays.asList(cropped);
+            }
         }
 
         // get the areas that we are likely to have to read, and have the projection
@@ -250,6 +255,29 @@ public class GridCoverageReaderHelper {
         }
 
         return coverages;
+    }
+
+    private GridCoverage2D cropCoverageOnRequestedEnvelope(GridCoverage2D readCoverage) {
+        if(readCoverage == null) {
+            return null;
+        }
+        try {
+            ReferencedEnvelope requested = ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope());
+            ReferencedEnvelope requestedNativeCRS = requested.transform(readCoverage.getCoordinateReferenceSystem(), true);
+            
+            ReferencedEnvelope coverageEnvelope = ReferencedEnvelope.reference(readCoverage.getEnvelope());
+            ReferencedEnvelope cropEnvelope = new ReferencedEnvelope(
+                    requestedNativeCRS.intersection(coverageEnvelope), readCoverage.getCoordinateReferenceSystem());
+            if (isNotEmpty(cropEnvelope)) {
+                GridCoverage2D cropCoverage = cropCoverage(readCoverage, requestedNativeCRS);
+                return cropCoverage;
+            } else {
+                return null;
+            }
+        } catch(Exception e) {
+            LOGGER.log(Level.FINE, "Failed to crop coverage on the requested area, using the original one", e);
+            return readCoverage;
+        }
     }
 
     private List<GridCoverage2D> readCoverageInEnvelope(ReferencedEnvelope envelope,
@@ -491,6 +519,9 @@ public class GridCoverageReaderHelper {
         } else {
             coverage = reader.read(null);
         }
+        
+        // try to crop on the requested area
+        
 
         return coverage;
     }

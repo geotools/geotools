@@ -20,6 +20,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -181,7 +182,12 @@ public class GridCoverageReaderHelper {
             throws IOException, FactoryException, TransformException {
         if (handler == null) {
             GridCoverage2D readCoverage = readCoverage(readParams);
-            return Arrays.asList(readCoverage);
+            GridCoverage2D cropped = cropCoverageOnRequestedEnvelope(readCoverage);
+            if(cropped == null) {
+                return Collections.emptyList();
+            } else {
+                return Arrays.asList(cropped);
+            }
         }
 
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
@@ -248,6 +254,29 @@ public class GridCoverageReaderHelper {
         }
 
         return coverages;
+    }
+    
+    private GridCoverage2D cropCoverageOnRequestedEnvelope(GridCoverage2D readCoverage) {
+        if(readCoverage == null) {
+            return null;
+        }
+        try {
+            ReferencedEnvelope requested = ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope());
+            ReferencedEnvelope requestedNativeCRS = requested.transform(readCoverage.getCoordinateReferenceSystem(), true);
+            
+            ReferencedEnvelope coverageEnvelope = ReferencedEnvelope.reference(readCoverage.getEnvelope());
+            ReferencedEnvelope cropEnvelope = new ReferencedEnvelope(
+                    requestedNativeCRS.intersection(coverageEnvelope), readCoverage.getCoordinateReferenceSystem());
+            if (isNotEmpty(cropEnvelope)) {
+                GridCoverage2D cropCoverage = cropCoverage(readCoverage, requestedNativeCRS);
+                return cropCoverage;
+            } else {
+                return null;
+            }
+        } catch(Exception e) {
+            LOGGER.log(Level.FINE, "Failed to crop coverage on the requested area, using the original one", e);
+            return readCoverage;
+        }
     }
 
     private boolean isNotEmpty(ReferencedEnvelope envelope) {

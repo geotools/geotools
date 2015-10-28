@@ -5773,7 +5773,7 @@ public class GMLComplexTypes {
          */
         public void encode(Element element, Object value, PrintHandler output,
             Map hints) throws IOException, OperationNotSupportedException {
-            if ((value == null) || !(value instanceof Point)) {
+            if ((value == null) || !(value instanceof LineString)) {
             	throw new OperationNotSupportedException("Value is "+value == null?"null":value.getClass().getName());
             }
 

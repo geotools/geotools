@@ -144,7 +144,7 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **VERSION** 
 
-  The version being released. The same value s specified for ``VERSION`` when running the ``geoserver-release`` job.
+  The version being released. The same value specified for ``VERSION`` when running the ``geoserver-release`` job.
   
 **BRANCH** 
 
@@ -180,7 +180,7 @@ Announce on GeoTools Blog
 #. You will need to correct the following information: 
 
    * Update the Sourceforge links above to reflect the release
-:   * Update the Release Notes by choosing the the correct version from `JIRA changelogs <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page>`_
+   * Update the Release Notes by choosing the the correct version from `JIRA changelogs <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page>`_
    * For a new stable series, be sure to thank those involved with the release (testing, completed proposals, docs, and so on)
 
 #. The public entry point will be here: http://geotoolsnews.blogspot.com/

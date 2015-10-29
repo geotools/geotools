@@ -321,6 +321,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         Envelope bbox = new ReferencedEnvelope();
         if (q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+            if(bbox == null) {
+                bbox = new ReferencedEnvelope();
+            }
         }
 
         // see if we can use indexing to speedup the data access
@@ -333,7 +336,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
             }
-        } else if (getDataStore().isIndexed() && !bbox.isNull()
+        } else if (getDataStore().isIndexed() && !bbox.isNull() 
                 && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
             try {
                 if(indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {

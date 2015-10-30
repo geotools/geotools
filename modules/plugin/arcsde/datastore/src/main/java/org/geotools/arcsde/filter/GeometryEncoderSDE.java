@@ -259,9 +259,6 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
             SeShape extent = new SeShape(this.sdeLayer.getCoordRef());
             extent.generateRectangle(seExtent);
 
-            Geometry layerEnv = gb.construct(extent, new GeometryFactory());
-            geom = geom.intersection(layerEnv); // does the work
-
             // Now make an SeShape
             SeShape filterShape;
 

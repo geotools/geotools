@@ -710,7 +710,7 @@ public class ImageWorker {
     }
 
     /**
-     * Set the image background value, if input NoData are present, the first value will e used as NoData.
+     * Set the image background value
      * 
      * @param background The image background.
      * @return This ImageWorker
@@ -1341,8 +1341,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 5); // destination No Data value
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create((byte) background[0], (byte) background[0]));
                 }
             }
 
@@ -1408,8 +1406,6 @@ public class ImageWorker {
                 if (background != null && background.length > 0) {
                     int dest = (int) background[0];
                     pb.set(dest, 4);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(dest, dest));
                 }
             }
 
@@ -1432,8 +1428,6 @@ public class ImageWorker {
                 if (background != null && background.length > 0) {
                     int dest = (int) background[0];
                     pb.set(dest, 4);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(dest, dest));
                 }
             }
 
@@ -1559,8 +1553,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
                 }
             }
 
@@ -1792,8 +1784,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
                 }
             }
 
@@ -1936,16 +1926,6 @@ public class ImageWorker {
                     throw new IllegalArgumentException("Wrong DestinationNoData value defined");
                 }
                 pb.set(background, 3);
-                ColorSpace in = image.getColorModel().getColorSpace();
-                ColorSpace out = cm.getColorSpace();
-                float[] output = new float[background.length];
-                for (int i = 0; i < background.length; i++) {
-                    output[i] = (float) background[i];
-                }
-                float[] toXYZ = in.toCIEXYZ(output);
-                float[] fromXYZ = out.fromCIEXYZ(toXYZ);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(fromXYZ[0], fromXYZ[0]));
             }
         }
 
@@ -1987,8 +1967,6 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 // Elaborating the final NoData value
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         pb.set(roi, 3);
@@ -2038,9 +2016,7 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 double dest = background[0];
                 pb.set(dest, 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
-            }
+           }
         }
         pb.set(roi, 3);
         pb.set(addAlpha, 4);
@@ -2091,8 +2067,6 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 double dest = background[0];
                 pb.set(dest, 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
             }
         }
         pb.set(transformationList, 3);
@@ -2186,8 +2160,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 3);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -2413,8 +2385,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -2647,8 +2617,6 @@ public class ImageWorker {
         if(isNoDataNeeded()){
             if (background != null && background.length > 0) {
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -2690,8 +2658,6 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 double dest = background[0];
                 pb.set(dest, 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
             }
         }
         pb.set(roi, 3);
@@ -2720,8 +2686,6 @@ public class ImageWorker {
                 if (background != null && background.length > 0) {
                     double dest = background[0];
                     pb.set(dest, 3);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(dest, dest));
                 }
             }
             image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
@@ -3022,13 +2986,6 @@ public class ImageWorker {
         pb.set(threshold, 2);
         pb.set(filterSize, 3);
         pb.set(nodata, 4);
-        if (isNoDataNeeded()) {
-            if (background != null && background.length > 0) {
-                double dest = background[0];
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
-            }
-        }
         invalidateStatistics();
         return this;
     }
@@ -3200,8 +3157,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
                 }
             }
 
@@ -3237,8 +3192,6 @@ public class ImageWorker {
                     if (background != null && background.length > 0) {
                         double dest = background[0];
                         pb.set(dest, 1);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(dest, dest));
                     }
                 }
                 pb.set(roi, 3);
@@ -3260,8 +3213,6 @@ public class ImageWorker {
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         pb.set(background[0], 1);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(background[0], background[0]));
                     }
                 }
 
@@ -3856,9 +3807,6 @@ public class ImageWorker {
                     pb.set(roi, 3);
                     pb.set(true, 5);
                     pb.set(nodata, 6);
-                    if(isNoDataNeeded() && bgValues != null && bgValues.length > 0){
-                        setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                    }
                     RenderedOp at = JAI.create("Affine", pb, commonHints);
 
                     // commonHints);
@@ -3892,11 +3840,7 @@ public class ImageWorker {
                         // Boolean indicating if NoData are the same as for the source operation or are not present
                         Range oldNoData = (Range) (op.getParameterBlock().getNumParameters() > 3 ? op
                                 .getParameterBlock().getObjectParameter(4) : null);
-                        double[] oldBkg = (double[]) (op.getParameterBlock().getObjectParameter(2) != null ? op
-                                .getParameterBlock().getObjectParameter(2) : null);
-                        boolean hasSameNodata = oldNoData == null
-                                || (oldBkg != null && nodata != null && oldBkg.length > 0 && oldBkg[0] == nodata
-                                        .getMin().doubleValue());
+                        boolean hasSameNodata = (oldNoData == null && nodata == null) || (oldNoData != null && nodata != null && oldNoData.equals(nodata));
                         if (((property == null) || property.equals(java.awt.Image.UndefinedProperty)
                                 || !(property instanceof ROI))) {
                             paramBlk.add(warp).add(interpolation).add(bgValues);
@@ -3929,10 +3873,6 @@ public class ImageWorker {
                                 setROI(newROI);
                                 paramBlk.set(newROI, 3);
                             }
-                            if (((isNoDataNeeded() || newROI != null || oldNoData != null) && bgValues != null && bgValues.length > 0)
-                                    && hasSameNodata) {
-                                setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                            }
                         } else {
                             // Intersect ROIs
                             ROI newROI = null;
@@ -3963,10 +3903,6 @@ public class ImageWorker {
                             paramBlk.add(warp).add(interpolation).add(bgValues).add(newROI);
                             if (oldNoData != null) {
                                 paramBlk.set(oldNoData, 4);
-                            }
-                            if (((isNoDataNeeded() || newROI != null || oldNoData != null) && bgValues != null && bgValues.length > 0)
-                                    && hasSameNodata) {
-                                setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
                             }
                         }
 
@@ -4158,8 +4094,6 @@ public class ImageWorker {
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         pb.set(background, 8);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(background[0], background[0]));
                     }
                 }
                 image = JAI.create("Scale", pb, localHints);
@@ -4187,8 +4121,6 @@ public class ImageWorker {
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         pb.set(background, 8);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(background[0], background[0]));
                     }
                 }
                 image = JAI.create("Scale", pb, commonHints);
@@ -4210,12 +4142,6 @@ public class ImageWorker {
             pb.set(roi, 3);
             pb.set(true, 5);
             pb.set(nodata, 6);
-            if (isNoDataNeeded()) {
-                if (bgValues != null && bgValues.length > 0) {
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                }
-            }
             image = JAI.create("Affine", pb, commonHints);
             if (roi != null) {
                 PropertyGenerator gen = getOperationDescriptor("Affine")
@@ -4283,8 +4209,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background, 6);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         
@@ -4309,8 +4233,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.add((float)background[0]);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create((float)background[0], (float)background[0]));
             }
         }
         
@@ -4444,8 +4366,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.add(background);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         image = JAI.create("Border", pb, getRenderingHints());
@@ -4475,8 +4395,9 @@ public class ImageWorker {
         pb.set(background, 2);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
+//                // We must set the new NoData value
+//                setNoData(RangeFactory.create(background[0], background[0]));
+//                invalidateStatistics();
             }
         }
         image = JAI.create("Warp", pb, getRenderingHints());
@@ -4508,8 +4429,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background, 8);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         image = JAI.create("Scale", pb, getRenderingHints());
@@ -4541,8 +4460,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -4562,8 +4479,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background, 3);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         image = JAI.create("ColorIndexer", pb, getRenderingHints());
@@ -4627,8 +4542,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 5); // destination No Data value
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -4649,8 +4562,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 3);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 

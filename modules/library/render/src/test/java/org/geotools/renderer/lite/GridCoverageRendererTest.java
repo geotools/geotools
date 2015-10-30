@@ -86,6 +86,7 @@ import org.opengis.referencing.operation.MathTransform;
 import com.vividsolutions.jts.geom.Envelope;
 
 import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 
 /**
  * @author Simone Giannecchini

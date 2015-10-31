@@ -191,7 +191,7 @@ Indexing Service is not 100% compatible with maven, and causes some
 maven builds to break. Developers who use Windows 7 64-bit (or
 anything close like Vista or 32-bit) may have unsuccessful build due
 to "unable to delete directory". If that happens please try to disable
-Windows Indexing Service for the entire svn working copy and try
+Windows Indexing Service for the entire working copy and try
 again. Hopefully this will fix the problem.
 
 With this in mind it is also advisable for mac developers to "ignore" build directories from Time Machine (as the files change constantly and Time Machine will burn up your space trying to keep track of it all).

@@ -87,15 +87,15 @@ When adding a "Function" to GeoTools the name of the text file is the interface 
 
 For a good working example look at the cql module:
 
-* http://svn.osgeo.org/geotools/trunk/modules/library/cql/
+* https://github.com/geotools/geotools/tree/master/modules/library/cql
 
 It advertises one function here:
 
-* http://svn.osgeo.org/geotools/trunk/modules/library/cql/src/main/resources/META-INF/services/org.opengis.filter.expression.Function
+* https://github.com/geotools/geotools/blob/master/modules/library/cql/src/main/resources/META-INF/services/org.opengis.filter.expression.Function
 
 * And implements it here:
   
-  http://svn.osgeo.org/geotools/trunk/modules/library/cql/src/main/java/org/geotools/filter/function/PropertyExistsFunction.java
+  https://github.com/geotools/geotools/blob/master/modules/library/cql/src/main/java/org/geotools/filter/function/PropertyExistsFunction.java
 
 Combining the two Techniques
 ''''''''''''''''''''''''''''

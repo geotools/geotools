@@ -24,6 +24,6 @@ The **epsg.properties** file does contain definitions that go beyond those defin
 
 If you have any additions or corrections please raise a bug report.
 
-The complete definitions can be read directly out of svn:
+The complete definitions can be read directly out of Source Repository :
 
- * http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties
+ * https://github.com/geotools/geotools/blob/master/modules/plugin/epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties

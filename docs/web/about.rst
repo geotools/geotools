@@ -29,7 +29,7 @@ the copyright on the library and is a wonderful source of assistance and
 community spirit for our project. The GeoTools library is made available under
 the `LGPL <http://www.gnu.org/licenses/lgpl-2.1.html>`_ license. The source code
 is freely available in a public 
-`subversion repository <http://svn.osgeo.org/geotools>`_.
+`GIT repository <https://github.com/geotools/geotools>`_.
 
 Open Development
 ----------------

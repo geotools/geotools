@@ -321,7 +321,6 @@ public final class ScriptTest {
      * @throws Exception If a test failed.
      */
     @Test
-    @Ignore
     public void testGEOS() throws Exception {
         runScript("scripts/GEOS.txt");
     }

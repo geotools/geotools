@@ -104,7 +104,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             /* Calculation based on view angles from satellite.*/
             tmp = radius_g - Vx;
             double x = radius_g_1 * Math.atan(Vy / tmp);
-            double y = radius_g_1 * Math.atan(Vz / hypot(Vy, tmp));
+            double y = radius_g_1 * Math.atan(Vz / Math.hypot(Vy, tmp));
 
             p2d.setLocation(x, y);
 
@@ -174,7 +174,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             phi = Math.atan(radius_p2 * Math.tan(phi));
             /* Calculation of the three components of the vector from satellite to
             ** position on earth surface (lon,lat).*/
-            double r = radius_p / hypot(radius_p * Math.cos(phi), Math.sin(phi));
+            double r = radius_p / Math.hypot(radius_p * Math.cos(phi), Math.sin(phi));
             double Vx = r * Math.cos(lambda) * Math.cos(phi);
             double Vy = r * Math.sin(lambda) * Math.cos(phi);
             double Vz = r * Math.sin(phi);
@@ -185,7 +185,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             /* Calculation based on view angles from satellite. */
             double tmp = radius_g - Vx;
             double x = radius_g_1 * Math.atan(Vy / tmp);
-            double y = radius_g_1 * Math.atan(Vz / hypot(Vy, tmp));
+            double y = radius_g_1 * Math.atan(Vz / Math.hypot(Vy, tmp));
 
             p2d.setLocation(x, y);
 
@@ -198,7 +198,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             /* Setting three components of vector from satellite to position.*/
             double Vx = -1.;
             double Vy = Math.tan(x / radius_g_1);
-            double Vz = Math.tan(y / radius_g_1) * hypot(1., Vy);
+            double Vz = Math.tan(y / radius_g_1) * Math.hypot(1., Vy);
             /* Calculation of terms in cubic equation and determinant.*/
             double a = Vz / radius_p;
             a = Vy * Vy + a * a + Vx * Vx;
@@ -219,25 +219,6 @@ public abstract class GeostationarySatellite extends MapProjection {
             p2d.setLocation(lambda, phi);
 
             return p2d;
-        }
-    }
-
-    // from https://github.com/OSGeo/proj.4/blob/4.9/src/hypot.c
-    static double hypot(double x, double y) {
-        if (x < 0.)
-            x = -x;
-        else if (x == 0.)
-            return (y < 0. ? -y : y);
-        if (y < 0.)
-            y = -y;
-        else if (y == 0.)
-            return (x);
-        if (x < y) {
-            x /= y;
-            return (y * Math.sqrt(1. + x * x));
-        } else {
-            y /= x;
-            return (x * Math.sqrt(1. + y * y));
         }
     }
 

@@ -535,12 +535,10 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Point p = geometryFactory.createPoint(coordinate);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         final Filter testFilter = ff.intersects(ff.literal(p), ff.property("the_geom"));
-        System.out.println(testFilter);
+        //System.out.println(testFilter);
         features = featureSource.getFeatures(testFilter);
         assertNotNull(features);
-        for(SimpleFeature f:DataUtilities.list(features)) {
-            System.out.println(f);
-        }
+        
     }
     
     private ArrayList performQueryComparison(

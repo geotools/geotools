@@ -16,9 +16,20 @@
  */
 package org.geotools.data.wms;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.Response;
+import org.geotools.data.wms.request.AbstractGetStylesRequest;
+import org.geotools.data.wms.request.AbstractPutStylesRequest;
+import org.geotools.data.wms.request.GetStylesRequest;
+import org.geotools.data.wms.request.PutStylesRequest;
+import org.geotools.data.wms.response.GetStylesResponse;
+import org.geotools.data.wms.response.PutStylesResponse;
+import org.geotools.ows.ServiceException;
 
 /**
  * Provides support for the Web Map Server 1.1.1 Specificaiton.
@@ -95,4 +106,54 @@ public class WMS1_1_1 extends WMS1_1_0 {
     public org.geotools.data.wms.request.GetFeatureInfoRequest createGetFeatureInfoRequest( URL onlineResource, org.geotools.data.wms.request.GetMapRequest getMapRequest) {
         return new GetFeatureInfoRequest(onlineResource, getMapRequest);
     }
+
+    public GetStylesRequest createGetStylesRequest( URL onlineResource ) throws UnsupportedOperationException {
+        return new InternalGetStylesRequest(onlineResource, null);
+    }
+
+    /**
+     * @see org.geotools.data.wms.WMS1_0_0#createPutStylesRequest(java.net.URL)
+     */
+    public PutStylesRequest createPutStylesRequest( URL onlineResource) throws UnsupportedOperationException {
+        return new InternalPutStylesRequest(onlineResource);
+    }
+
+    public static class InternalGetStylesRequest extends AbstractGetStylesRequest {
+
+        /**
+         * @param onlineResource
+         * @param properties
+         */
+        public InternalGetStylesRequest( URL onlineResource, Properties properties ) {
+            super(onlineResource, properties);
+        }
+        /* (non-Javadoc)
+         * @see org.geotools.data.wms.request.AbstractGetStylesRequest#initVersion()
+         */
+        protected void initVersion() {
+            setProperty(VERSION, "1.1.1");
+        }
+
+
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+            return new GetStylesResponse(httpResponse);
+        }
+    }
+
+    public static class InternalPutStylesRequest extends AbstractPutStylesRequest {
+
+        public InternalPutStylesRequest( URL onlineResource ) {
+            super(onlineResource, null);
+        }
+
+        protected void initVersion() {
+            setProperty(VERSION, "1.1.1");
+        }
+
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+            return new PutStylesResponse(httpResponse);
+        }
+    }
+
+
 }

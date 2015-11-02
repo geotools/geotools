@@ -652,7 +652,8 @@ public class Crop extends Operation2D {
                     } catch (FactoryException ex) {
 						throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP), ex);
                     }
-                                        worker.setBackground(background);
+                    worker.setBackground(background);
+                    worker.setNoData(nodata);
                                         
                                         
  					

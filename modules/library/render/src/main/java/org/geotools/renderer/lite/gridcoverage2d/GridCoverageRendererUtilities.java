@@ -339,7 +339,6 @@ final class GridCoverageRendererUtilities {
         final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters().clone();
         param.parameter("source").setValue(gc);
         param.parameter("Envelope").setValue(intersectionEnvelope);
-        param.parameter("destNoData").setValue(background);
         return (GridCoverage2D) ((Crop)processor.getOperation("CoverageCrop")).doOperation(param, hints);
     
     }

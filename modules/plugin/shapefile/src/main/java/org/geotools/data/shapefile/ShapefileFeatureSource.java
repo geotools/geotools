@@ -321,6 +321,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         Envelope bbox = new ReferencedEnvelope();
         if (q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+            if(bbox == null) {
+              bbox = new ReferencedEnvelope();
+            }
         }
 
         // see if we can use indexing to speedup the data access

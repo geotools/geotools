@@ -17,11 +17,13 @@
 package org.geotools.image;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -30,6 +32,7 @@ import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -56,18 +59,22 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
+import org.jaitools.imageutils.ROIGeometry;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,6 +82,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
+import com.vividsolutions.jts.geom.Envelope;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
@@ -144,7 +152,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         JAIExt.initJAIEXT(false);
     }
 	
-    
 	/**
 	 * Creates a simple 128x128 {@link RenderedImage} for testing purposes.
 	 * 
@@ -190,6 +197,25 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 		}
 		return image;
 	} 
+	
+	/**
+     * Creates a test image in RGB with either {@link ComponentColorModel} or {@link DirectColorModel}.
+     * 
+     * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false</code> otherwise.
+     * @return 
+     */
+    private static BufferedImage getSyntheticRGB(Color color) {
+        final int width = 128;
+        final int height = 128;
+        final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        final WritableRaster raster =(WritableRaster) image.getData();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster.setSample(x, y, 0, color.getRGB());
+            }
+        }
+        return image;
+    } 
 	
 	/**
 	 * Creates a test paletted image with translucency.
@@ -1347,6 +1373,126 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             NoDataContainer container = (NoDataContainer) property;
             assertEquals(nodata, container.getAsRange());
         }
+    }
+    
+
+    @Test
+    public void testMosaicRasterROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicShapeROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIShape(new Rectangle2D.Double(0, 0, 64, 64));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIShape(new Rectangle2D.Double(63, 63, 64, 64));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicShapeRasterROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIShape(new Rectangle2D.Double(0, 0, 64, 64));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicRasterShapeROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIShape(new Rectangle2D.Double(63, 63, 64, 64));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicGeometryROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIGeometry(JTS.toGeometry(new Envelope(0, 64, 0, 64)));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicGeometryShapeROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIGeometry(JTS.toGeometry(new Envelope(0, 64, 0, 64)));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIShape(new Rectangle2D.Double(63, 63, 64, 64));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicShapeGeometryROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIShape(new Rectangle2D.Double(0, 0, 64, 64));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+
+    private void testMosaicRedBlue(BufferedImage red, ROI redROI, BufferedImage blue, ROI blueROI) {
+        ImageWorker iw = new ImageWorker();
+        iw.mosaic(new RenderedImage[] {red, blue}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, blueROI}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, instanceOf(ROI.class));
+        ROI roi = (ROI) roiProperty;
+        // check ROI
+        assertTrue(roi.contains(20, 20));
+        assertTrue(roi.contains(120, 120));
+        assertFalse(roi.contains(20, 120));
+        assertFalse(roi.contains(120, 20));
+    }
+    
+    @Test
+    public void testMosaicRasterGeometry() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+
+    @Test
+    public void testMosaicBackgroundColor() {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+
+        
+        ImageWorker iw = new ImageWorker();
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.mosaic(new RenderedImage[] {red, blue}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, blueROI}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, not((instanceOf(ROI.class))));
     }
     
 }

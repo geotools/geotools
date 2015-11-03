@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -106,6 +107,7 @@ import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
 import org.jaitools.imageutils.ImageLayout2;
+import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -125,6 +127,7 @@ import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
 import it.geosolutions.jaiext.colorindexer.ColorIndexer;
 import it.geosolutions.jaiext.lookup.LookupTable;
 import it.geosolutions.jaiext.lookup.LookupTableFactory;
+import it.geosolutions.jaiext.mosaic.MosaicDescriptor;
 import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
@@ -132,6 +135,7 @@ import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.stats.HistogramWrapper;
 import it.geosolutions.jaiext.stats.Statistics;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
+import jj2000.j2k.roi.ROIDeScaler;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain #ImageWorker(RenderedImage) creation time}. Sucessive
@@ -675,11 +679,14 @@ public class ImageWorker {
     public final ImageWorker setROI(final ROI roi) {
         this.roi = roi;
         // If ROI == null remove it also from the image properties
+        PlanarImage pl = getPlanarImage();
         if (roi == null) {
-            PlanarImage pl = getPlanarImage();
             pl.removeProperty("ROI");
-            image = pl;
+        } else {
+            pl.setProperty("ROI", roi);
         }
+        image = pl;
+
         invalidateStatistics();
         return this;
     }
@@ -4293,41 +4300,83 @@ public class ImageWorker {
         pb.add(thresholds);
         pb.add(background);
         pb.add(nodataNew);
-        Range nod = null;
-        if (background != null && background.length > 0) {
-            // We must set the new NoData value
-            nod = (RangeFactory.create(background[0], background[0]));
-        }
-        // Setting the final ROI as union of the older ROIs
-        if(roisNew != null){
-            int numROI = roisNew.length;
-            ROI roi2 = roisNew[0];
-            ROI finalROI = roi2 != null  ? new ROI(roi2.getAsImage()) : null;//roisNew[0];
-            for(int i = 1; i < numROI; i++){
-                ROI added = roisNew[i];
-                if(added != null){
-                    if(finalROI != null){
-                        finalROI.add(added);
-                    }else{
-                        finalROI = new ROI(added.getAsImage());
-                    }
-                }
-            }
-            if(numROI != srcNum){
-                for(int i = numROI; i < srcNum; i++){
-                    RenderedImage img = (RenderedImage) pb.getSource(i);
-                    ROI r = new ROIShape(new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
-                    finalROI.add(r);
-                }
-            }
-            setROI(finalROI);
-        }
         image = JAI.create("Mosaic", pb, getRenderingHints());
-        if(nodata != null || (!noInternalNoData && nodataNew != null)){
-            setNoData(nod);
+        // Setting the final ROI as union of the older ROIs, assuming
+        // we did not apply a background color, in that case, there is no more ROI to
+        // care for
+        if(background == null) {
+            if(roisNew != null ) {
+                ROI finalROI = mosaicROIs(pb.getSources(), roisNew);
+                setROI(finalROI);
+            }
+        } else {
+            setROI(null);
         }
         
         return this;
+    }
+
+    private ROI mosaicROIs(Vector sources, ROI... roiArray) {
+        if(roiArray == null) {
+            return null;
+        }
+        
+        // collect all ROIs
+        List<ROI> rois = new ArrayList<>(Arrays.asList(roiArray));
+        int numSources = sources.size();
+        if(roiArray.length < numSources){
+            for(int i = roiArray.length; i < numSources; i++){
+                RenderedImage img = (RenderedImage) sources.get(i);
+                ROI r = new ROIShape(new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
+                rois.add(r);
+            }
+        }
+        
+        // bail out for the simple case without creating new objects
+        if(rois.size() == 1) {
+            return rois.get(0);
+        }
+        
+        // prepare the vector union, take aside a ROIGeometry if possible
+        // as it can add both ROIShape and ROIGeometry
+        List<ROI> rasterROIs = new ArrayList<>();
+        List<ROI> vectorROIs = new ArrayList<>();
+        ROI vectorReference = null;
+        for (ROI roi : rois) {
+            if(roi instanceof ROIShape || roi instanceof ROIGeometry) {
+                if(vectorReference == null && roi instanceof ROIGeometry) {
+                    vectorReference = (ROIGeometry) roi;
+                } else {
+                    vectorROIs.add(roi);
+                }
+            } else {
+                rasterROIs.add(roi);
+            }
+        }
+        if(vectorReference == null && vectorROIs.size() > 0) {
+            vectorReference = vectorROIs.remove(0);
+        }
+        // accumulate the vector ROIs, if any
+        for (ROI roi : vectorROIs) {
+            vectorReference = vectorReference.add(roi);
+        }
+        
+        // do we have raster ones?
+        if(rasterROIs.size() == 0) {
+            return vectorReference;
+        } 
+        
+        // ok, rasterize the vector one if any and mosaic
+        ParameterBlock pb = new ParameterBlock();
+        if(vectorReference != null) {
+            pb.addSource(vectorReference.getAsImage());
+        }
+        for (ROI rasterROI : rasterROIs) {
+            pb.addSource(rasterROI.getAsImage());
+        }
+        pb.add(javax.media.jai.operator.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+        RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
+        return new ROI(roiMosaic);
     }
     
     private Range[] handleMosaicThresholds(double[][] thresholds, int srcNum) {

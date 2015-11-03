@@ -674,17 +674,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         CoordinateSystem cs = wrapper.variableDS.getCoordinateSystems().get(0);
         CoordinateAxis axis = georeferencing.isLonLat() ? cs.getLatAxis() : cs.getYaxis();
-        boolean flipYAxis = false;
-        try {
-            Array yAxisStart = axis.read(new Section().appendRange(2));
-            float y1 = yAxisStart.getFloat(0);
-            float y2 = yAxisStart.getFloat(1);
-            if (y2 > y1) {
-                flipYAxis=true;
-            }
-        } catch (InvalidRangeException e) {
-            throw new RuntimeException(e);
-        }
+        boolean flipYAxis = needFlipYAxis(axis);
         // Reads the requested sub-region only.
         processImageStarted(imageIndex);
         final int numDstBands = 1;
@@ -697,13 +687,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         for( int zi = 0; zi < numDstBands; zi++ ) {
             // final int srcBand = (srcBands == null) ? zi : srcBands[zi];
             final int dstBand = (dstBands == null) ? zi : dstBands[zi];
-            final Array array;
-            try {
-                // TODO leak through
-                array = wrapper.variableDS.read(section);
-            } catch (InvalidRangeException e) {
-                throw netcdfFailure(e);
-            }
+            final Array array = readSection(wrapper, section);
             if (flipYAxis) {
                 final IndexIterator it = array.getIndexIterator();
                 for (int y = ymax; --y >= ymin; ) {
@@ -790,6 +774,42 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
         processImageComplete();
         return image;
+    }
+
+    private synchronized Array readSection(VariableAdapter wrapper, Section section) throws IIOException, IOException {
+        try {
+            //Due to underlying NetCDF file system access (RAF based) 
+            // and internal caching we do this call within a 
+            // synchronized block
+            return wrapper.variableDS.read(section);
+        } catch (InvalidRangeException e) {
+            throw netcdfFailure(e);
+        }
+        
+    }
+
+    /**
+     * Check whether the Y axis need to be flipped.
+     * Note that the method is synchronized since it access 
+     * the underlying Variable
+     *  
+     * @param axis
+     * @return
+     * @throws IOException
+     */
+    private synchronized boolean needFlipYAxis(CoordinateAxis axis) throws IOException {
+        boolean flipYAxis = false; 
+        try {
+            Array yAxisStart = axis.read(new Section().appendRange(2));
+            float y1 = yAxisStart.getFloat(0);
+            float y2 = yAxisStart.getFloat(1);
+            if (y2 > y1) {
+                flipYAxis = true;
+            }
+        } catch (InvalidRangeException e) {
+            throw new RuntimeException(e);
+        }
+        return flipYAxis;
     }
 
     private Hashtable<String, Object> getNoDataProperties(VariableAdapter wrapper) {

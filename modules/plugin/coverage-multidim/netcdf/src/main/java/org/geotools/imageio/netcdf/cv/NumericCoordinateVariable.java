@@ -108,7 +108,9 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
      * @param index
      * @return
      */
-    private double handleValues(int index) {
+    private synchronized double handleValues(int index) {
+        // Made it synchronized since axis1D values retrieval
+        // does cached read on its underlying
         double val = coordinateAxis.getCoordValue(index);
         if (!Double.isNaN(scaleFactor)) {
             val *= scaleFactor;

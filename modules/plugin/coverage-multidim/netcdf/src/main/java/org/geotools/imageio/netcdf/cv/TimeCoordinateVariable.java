@@ -51,13 +51,13 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
 
         Date epoch;
 
-        CoordinateAxis1D axis1D;
+        CoordinateAxisWrapper axisWrapper;
 
         int baseTimeUnits;
 
-        public TimeBuilder(CoordinateAxis1D axis) {
-            axis1D = axis;
-            units = axis.getUnitsString();
+        public TimeBuilder(org.geotools.imageio.netcdf.cv.CoordinateVariable.CoordinateAxisWrapper axisWrapper) {
+            this.axisWrapper = axisWrapper;
+            units = axisWrapper.getUnit();
             /*
              * Gets the axis origin. In the particular case of time axis, units are typically written in the form "days since 1990-01-01
              * 00:00:00". We extract the part before "since" as the units and the part after "since" as the date.
@@ -68,7 +68,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
                 units = unitsParts[0].trim();
                 origin = unitsParts[1].trim();
             } else {
-                final Attribute attribute = axis.findAttribute("time_origin");
+                final Attribute attribute = axisWrapper.findAttribute("time_origin");
                 if (attribute != null) {
                     origin = attribute.getStringValue();
                 }
@@ -98,7 +98,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
                 final Calendar cal = new GregorianCalendar();
                 cal.setTime(epoch);
                 cal.setTimeZone(NetCDFTimeUtilities.UTC_TIMEZONE);
-                final double coordValue = axis1D.getCoordValue(timeIndex);
+                final double coordValue = getAxisValue(timeIndex);
                 long vi = (long) Math.floor(coordValue);
                 double vd = coordValue - vi;
                 NetCDFTimeUtilities.addTimeUnit(cal, baseTimeUnits, vi);
@@ -113,8 +113,12 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
 
         }
 
+        private double getAxisValue(int timeIndex) {
+            return axisWrapper.getCoordValue(timeIndex);
+        }
+
         public int getNumTimes() {
-            return axis1D.getShape(0);
+            return axisWrapper.getShape()[0];
         }
     }
 
@@ -128,7 +132,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
      */
     public TimeCoordinateVariable(CoordinateAxis1D coordinateAxis) {
         super(Date.class, coordinateAxis);
-        this.timeBuilder = new TimeBuilder(coordinateAxis);
+        this.timeBuilder = new TimeBuilder(axis);
     }
 
     @Override
@@ -171,7 +175,9 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         if (temporalCRS == null) {
             synchronized (this) {
-                this.temporalCRS = NetCDFCRSUtilities.buildTemporalCrs(coordinateAxis);
+                this.temporalCRS = NetCDFCRSUtilities.buildTemporalCrs(
+                        axis.getName(), axis.getAxisType(),axis.getUnit()
+                        , axis.getPositive(), axis.findAttribute("time_origin"));
             }
         }
         return temporalCRS;

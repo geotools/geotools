@@ -73,12 +73,11 @@ class NetCDFGeoreferenceManager {
     /** Boolean indicating if the input file needs flipping or not */
     private boolean needsFlipping = false;
 
-    /** The underlying NetCDF dataset */
-    private NetcdfDataset dataset;
-
     /** Flags telling whether the dataset is lonLat to avoid projections checks */
     private boolean isLonLat;
 
+    private String location;
+    
     public boolean isNeedsFlipping() {
         return needsFlipping;
     }
@@ -103,6 +102,9 @@ class NetCDFGeoreferenceManager {
         return coordinatesVariables.get(name);
     }
 
+    /**
+     * @deprecated 
+     */
     public Collection<CoordinateVariable<?>> getCoordinatesVariables() {
         return coordinatesVariables.values();
     }
@@ -149,10 +151,10 @@ class NetCDFGeoreferenceManager {
      * information stored within the NetCDF dataset. 
      * */
     public NetCDFGeoreferenceManager(NetcdfDataset dataset) {
-        this.dataset = dataset;
-        extractCoordinatesVariable();
+        location = dataset.getLocation();
+        extractCoordinatesVariable(dataset);
         try {
-            extractBBOX();
+            extractBBOX(dataset);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         } catch (FactoryException fe) {
@@ -163,8 +165,9 @@ class NetCDFGeoreferenceManager {
     /**
      * Parse the CoordinateAxes of the dataset and setup proper {@link CoordinateVariable} instances
      * on top of it.
+     * @param dataset 
      */
-    private void extractCoordinatesVariable() {
+    private void extractCoordinatesVariable(NetcdfDataset dataset) {
         // get the coordinate variables
         Map<String, CoordinateVariable<?>> coordinates = new HashMap<String, CoordinateVariable<?>>();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
@@ -200,16 +203,17 @@ class NetCDFGeoreferenceManager {
 
     /**
      * Extract the bbox information
+     * @param dataset 
      * 
      * @throws IOException 
      * @throws FactoryException 
      */
-    private void extractBBOX() throws IOException, FactoryException {
+    private void extractBBOX(NetcdfDataset dataset) throws IOException, FactoryException {
         double [] xLon = new double[2];
         double [] yLat = new double[2];
         byte set = 0;
         isLonLat = false;
-        for (CoordinateVariable<?> cv : getCoordinatesVariables()) {
+        for (CoordinateVariable<?> cv : coordinatesVariables.values()) {
             if (cv.isNumeric()) {
 
                 // is it lat or lon (or geoY or geoX)?
@@ -351,7 +355,7 @@ class NetCDFGeoreferenceManager {
                 }
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Null coordinate variable: '" + key + "' while processing input: " + dataset.getLocation());
+                    LOGGER.fine("Null coordinate variable: '" + key + "' while processing input: " + location);
                 }
             }
         }

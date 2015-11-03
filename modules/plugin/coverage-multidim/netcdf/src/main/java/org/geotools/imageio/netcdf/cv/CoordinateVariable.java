@@ -29,7 +29,6 @@ import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis1D;
-import ucar.nc2.dataset.CoordinateSystem;
 
 /**
  * @author Simone Giannecchini GeoSolutions SAS
@@ -37,6 +36,97 @@ import ucar.nc2.dataset.CoordinateSystem;
  * 
  */
 public abstract class CoordinateVariable<T> {
+
+    static class CoordinateAxisWrapper {
+        CoordinateAxis1D axis1D;
+
+        private AxisType axisType;
+
+        private String unit;
+
+        public AxisType getAxisType() {
+            return axisType;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public long getSize() {
+            return size;
+        }
+
+        public boolean isRegular() {
+            return isRegular;
+        }
+
+        public double getIncrement() {
+            return increment;
+        }
+
+        public double getStart() {
+            return start;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public String getPositive() {
+            return positive;
+        }
+
+        private String name;
+
+        private long size;
+
+        private boolean isRegular;
+
+        private double increment;
+
+        private double start;
+
+        private String fullName;
+
+        private String positive;
+        
+        public CoordinateAxisWrapper(CoordinateAxis1D coordinateAxis) {
+            this.axis1D = coordinateAxis;
+            axisType = coordinateAxis.getAxisType();
+            unit = coordinateAxis.getUnitsString();
+            fullName = coordinateAxis.getFullName();
+            name = coordinateAxis.getShortName();
+            size = coordinateAxis.getSize();
+            isRegular = coordinateAxis.isRegular();
+            increment = coordinateAxis.getIncrement();
+            start = coordinateAxis.getStart();
+            positive = coordinateAxis.getPositive();
+        }
+
+        public int[] getShape() {
+            return axis1D.getShape();
+        }
+
+        public synchronized Object getMinValue() {
+            return axis1D.getMinValue();
+        }
+
+        public synchronized Object getMaxValue() {
+            return axis1D.getMaxValue();
+        }
+
+        public synchronized double getCoordValue(int index) {
+            return axis1D.getCoordValue(index);
+        }
+
+        public synchronized Attribute findAttribute(String name) {
+            return axis1D.findAttribute(name);
+        }
+    }
 
     private static final double KM_TO_M = 1000d;
 
@@ -127,11 +217,12 @@ public abstract class CoordinateVariable<T> {
 
     protected final Class<T> binding;
 
-    protected final CoordinateAxis1D coordinateAxis;
+    CoordinateAxisWrapper axis;
 
     private double conversionFactor = Double.NaN;
 
     private boolean convertAxis = false;
+
     /**
      * @param binding
      * @param coordinateAxis
@@ -140,12 +231,13 @@ public abstract class CoordinateVariable<T> {
         Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
         Utilities.ensureNonNull("binding", binding);
         this.binding = binding;
-        this.coordinateAxis = coordinateAxis;
+        this.axis = new CoordinateAxisWrapper(coordinateAxis);
         this.conversionFactor = 1d;
         AxisType axisType = coordinateAxis.getAxisType();
+        String unit = coordinateAxis.getUnitsString();
         // Special management for projected coordinates with unit = km
         if ((axisType == AxisType.GeoX || axisType == AxisType.GeoY) && 
-                coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
+                "km".equalsIgnoreCase(unit)) {
             conversionFactor = KM_TO_M;
             convertAxis = true;
         }
@@ -156,35 +248,39 @@ public abstract class CoordinateVariable<T> {
     }
 
     public String getUnit() {
-        return coordinateAxis.getUnitsString();
-    }
-
-    public CoordinateAxis1D unwrap() {
-        return coordinateAxis;
+        return axis.unit;
     }
 
     public AxisType getAxisType() {
-        return coordinateAxis.getAxisType();
+        return axis.axisType;
     }
 
     public String getName() {
-        return coordinateAxis.getShortName();
+        return axis.name;
     }
 
-    public long getSize() throws IOException {
-        return coordinateAxis.getSize();
+    public String getFullName() {
+        return axis.fullName;
+    }
+
+    public long getSize() {
+        return axis.size;
     }
 
     public boolean isRegular() {
-        return coordinateAxis.isRegular();
+        return axis.isRegular;
     }
 
     public double getIncrement() {
-        return convertAxis ? coordinateAxis.getIncrement() * conversionFactor : coordinateAxis.getIncrement();
+        return convertAxis ? axis.increment * conversionFactor : axis.increment;
     }
 
     public double getStart() {
-        return convertAxis ? coordinateAxis.getStart() * conversionFactor : coordinateAxis.getStart();
+        return convertAxis ? axis.start * conversionFactor : axis.start;
+    }
+
+    public String getPositive() {
+        return axis.positive;
     }
 
     abstract public boolean isNumeric();
@@ -200,8 +296,8 @@ public abstract class CoordinateVariable<T> {
     @Override
     public String toString() {
         try {
-            return "CoordinateVariable [binding=" + binding + ", coordinateAxis=" + coordinateAxis
-                    + ", getType()=" + getType() + ", getUnit()=" + getUnit() + ", getAxisType()="
+            return "CoordinateVariable [binding=" + binding + ", coordinateAxis:"  
+                    + " getType()=" + getType() + ", getUnit()=" + getUnit() + ", getAxisType()="
                     + getAxisType() + ", getName()=" + getName() + ", getSize()=" + getSize()
                     + ", isRegular()=" + isRegular() + ", getIncrement()=" + getIncrement()
                     + ", getStart()=" + getStart() + ", isNumeric()=" + isNumeric()

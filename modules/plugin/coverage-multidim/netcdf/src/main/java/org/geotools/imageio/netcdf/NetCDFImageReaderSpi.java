@@ -111,7 +111,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
      * may access them anyway. NOTE that this behaviour
      * will be applied to any input dataset.
      */
-    private static boolean forceOpenCheck;
+    private static final boolean forceOpenCheck;
 
     static {
         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));

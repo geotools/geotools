@@ -96,6 +96,9 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
+import ucar.ma2.Array;
+import ucar.ma2.InvalidRangeException;
+import ucar.ma2.Section;
 import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
@@ -457,6 +460,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     private SimpleFeatureType indexSchema;
 
+    private int zDimensionLength;
+
     private final static java.util.logging.Logger LOGGER = Logging.getLogger(VariableAdapter.class);
 
     /** Usual schema are the_geom, imageIndex, so the first attribute (time or elevation) will have index = 2 */
@@ -464,27 +469,30 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     /**
      * Extracts the compound {@link CoordinateReferenceSystem} from the unidata variable.
+     * @param variable 
      * 
      * @return the compound {@link CoordinateReferenceSystem}.
      * @throws Exception
      */
-    private void init() throws Exception {
+    private void init(VariableDS variableDS) throws Exception {
 
         // initialize the various domains
-        initSpatialElements();
+        initSpatialElements(variableDS);
 
         // initialize rank and number of 2D slices
-        initRange();
+        initRange(variableDS);
 
         // initialize info about slice
-        initSlicesInfo();
+        initSlicesInfo(variableDS);
+        zDimensionLength = NetCDFUtilities.getZDimensionLength(variableDS);
     }
 
     /**
+     * @param variableDS 
      * @throws Exception 
      * 
      */
-    private void initSlicesInfo() throws Exception {
+    private void initSlicesInfo(VariableDS variableDS) throws Exception {
         // get the length of the coverageDescriptorsCache in each dimension
         shape = variableDS.getShape();
         switch (shape.length) {
@@ -506,19 +514,20 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
+     * @param variableDS 
      * @throws IOException 
      * 
      */
-    private void initSpatialElements() throws Exception {
+    private void initSpatialElements(VariableDS variableDS) throws Exception {
         
         final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
-        List<CoordinateVariable<?>> otherAxes = initCRS(dimensions);
+        List<CoordinateVariable<?>> otherAxes = initCRS(dimensions, variableDS);
 
         // SPATIAL DIMENSIONS
-        initSpatialDomain();
+        initSpatialDomain(variableDS);
 
         // ADDITIONAL DOMAINS
-        addAdditionalDomain(otherAxes, dimensions);
+        addAdditionalDomain(otherAxes, dimensions, variableDS);
 
         setDimensionDescriptors(dimensions);
         if (reader.ancillaryFileManager.isImposedSchema()) {
@@ -661,13 +670,14 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     /**
      * @param dimensions 
+     * @param variableDS 
      * @return
      * @throws IllegalArgumentException
      * @throws RuntimeException
      * @throws IOException
      * @throws IllegalStateException
      */
-    private List<CoordinateVariable<?>> initCRS(List<DimensionDescriptor> dimensions) throws IllegalArgumentException, RuntimeException,
+    private List<CoordinateVariable<?>> initCRS(List<DimensionDescriptor> dimensions, VariableDS variableDS) throws IllegalArgumentException, RuntimeException,
             IOException, IllegalStateException {
         // from UnidataVariableAdapter        
         this.coordinateSystem = NetCDFCRSUtilities.getCoordinateSystem(variableDS);
@@ -760,7 +770,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * @throws MismatchedDimensionException
      * @throws IOException 
      */
-    private void initSpatialDomain()
+    private void initSpatialDomain(VariableDS variableDS)
             throws Exception {
         // SPATIAL DOMAIN
         final UnidataSpatialDomain spatialDomain = new UnidataSpatialDomain();
@@ -769,13 +779,14 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         ReferencedEnvelope bbox = reader.georeferencing.getBoundingBox(variableDS.getShortName());
         spatialDomain.setCoordinateReferenceSystem(coordinateReferenceSystem);
         spatialDomain.setReferencedEnvelope(bbox);
-        spatialDomain.setGridGeometry(getGridGeometry());
+        spatialDomain.setGridGeometry(getGridGeometry(variableDS));
     }
 
     /**
+     * @param variableDS 
      * 
      */
-    private void initRange() {
+    private void initRange(VariableDS variableDS) {
         // set the rank
         rank = variableDS.getRank();
         
@@ -828,7 +839,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         this.setRangeType(range);
     }
 
-    private void addAdditionalDomain(List<CoordinateVariable<?>> otherAxes, List<DimensionDescriptor> dimensions) {
+    private void addAdditionalDomain(List<CoordinateVariable<?>> otherAxes, List<DimensionDescriptor> dimensions, VariableDS variableDS) {
 
         if (otherAxes == null||otherAxes.isEmpty()) {
             return;
@@ -854,11 +865,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     /**
      * Extracts the {@link GridGeometry2D grid geometry} from the unidata variable.
+     * @param variableDS 
      * 
      * @return the {@link GridGeometry2D}.
      * @throws IOException 
      */
-    protected GridGeometry2D getGridGeometry() throws IOException {
+    protected GridGeometry2D getGridGeometry(VariableDS variableDS) throws IOException {
         int[] low = new int[2];
         int[] high = new int[2];
         double[] origin = new double[2];
@@ -990,7 +1002,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         this.reader = reader;
         this.coverageName = coverageName;
         setName(variable.getFullName());
-        init();
+        init(variable);
     }
 
     @Override
@@ -1038,7 +1050,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             } else if (rank == 4){
                 // return (int) Math.ceil((imageIndex - range.first()) /
                 // var.getDimension(rank - (Z_DIMENSION + 1)).getLength());
-                return index % NetCDFUtilities.getZDimensionLength(variableDS);
+                return index % zDimensionLength;
             } else {
                 throw new IllegalStateException("Unable to handle more than 4 dimensions");
             }
@@ -1062,8 +1074,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             } else {
                 // return (imageIndex - range.first()) % var.getDimension(rank -
                 // (Z_DIMENSION + 1)).getLength();
-                return (int) Math.ceil(index
-                        / NetCDFUtilities.getZDimensionLength(variableDS));
+                return (int) Math.ceil(index / zDimensionLength);
             }
         }
         return -1;
@@ -1084,6 +1095,13 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     }
 
     /**
+     * @deprecated
+     */
+    public void getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection) {
+        getFeatures(startIndex, limit, collection, variableDS);
+    }
+    
+    /**
      * Return features for that variable adapter, starting from slices with index = "startIndex", and up to "limit" elements.
      * This allows for paging. Put the created features inside the provided collection
      * 
@@ -1091,7 +1109,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * @param limit the max number of features to be created
      * @param collection the feature collection where features need to be stored
      */
-    public void getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection) {
+    public void getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection,
+            VariableDS variableDS) {
         final boolean hasVerticalAxis = coordinateSystem.hasVerticalAxis();
         final SimpleFeatureType indexSchema = collection.getSchema();
         final int bandDimension = rank - NetCDFUtilities.Z_DIMENSION;
@@ -1341,5 +1360,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         public List<CoordinateAxis> getCoordinateAxes() {
             return cs.getCoordinateAxes();
         }
+    }
+
+    public synchronized Array read(Section section) throws IOException, InvalidRangeException {
+        // Due to underlying NetCDF file system access (RAF based)
+        // and internal caching we do this call within a
+        // synchronized block
+        return variableDS.read(section);
     }
 }

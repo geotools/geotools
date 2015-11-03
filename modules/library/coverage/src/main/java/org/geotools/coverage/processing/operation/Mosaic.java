@@ -23,6 +23,7 @@ import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -872,6 +873,10 @@ public class Mosaic extends OperationJAI {
             for (int i = 0; i < numSources; i++) {
                 if (finalROI == null) {
                     finalROI = rois[i];
+                } else if(rois[i] == null) {
+                    // no ROI, the image is full
+                    RenderedImage ri = sources[i].getRenderedImage();
+                    finalROI.add(new ROIShape(new Rectangle2D.Double(ri.getMinX(), ri.getMinY(), ri.getWidth(), ri.getHeight())));
                 } else {
                     finalROI.add(rois[i]);
                 }

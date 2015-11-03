@@ -23,16 +23,24 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.RenderedOp;
+
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.data.CloseableIterator;
+import org.geotools.data.FileGroupProvider.FileGroup;
+import org.geotools.data.FileServiceInfo;
+import org.geotools.data.ServiceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -43,9 +51,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
-
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 
 /**
@@ -408,6 +413,29 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
 		suite.addTest(new WorldImageReaderTest("testOverviewsQuality"));
 		suite.addTest(new WorldImageReaderTest("testOverviewsSpeed"));
 		suite.addTest(new WorldImageReaderTest("testRead"));
+		suite.addTest(new WorldImageReaderTest("testFileGroup"));
 		return suite;
 	}
+
+	 public void testFileGroup() throws Exception {
+	        final File file = TestData.file(this, "etopo.tif");
+	        WorldImageReader reader = new WorldImageReader(file);
+
+	        // prepare to read an overview
+	        ServiceInfo info = reader.getInfo();
+	        assertTrue(info instanceof FileServiceInfo);
+	        CloseableIterator<FileGroup> iterator = null;
+	        try {
+	            iterator = ((FileServiceInfo)info).getFiles(null);
+	            FileGroup group = iterator.next();
+	            assertTrue(group.getMainFile().getName().endsWith("etopo.tif"));
+	            List<File> files = group.getSupportFiles();
+	            assertFalse(files.isEmpty());
+	            assertEquals(2, files.size());
+	        } finally {
+	            if (iterator != null) {
+	                iterator.close();
+	            }
+	        }
+	    }
 }

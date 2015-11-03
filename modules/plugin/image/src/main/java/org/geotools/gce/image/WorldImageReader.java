@@ -792,7 +792,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         extensions.add(".prj");
         Set<String> worldExtensions = WorldImageFormat.getWorldExtension(getExtension());
         extensions.addAll(worldExtensions);
-        String[] siblingExtensions = worldExtensions.toArray(new String[worldExtensions.size()]);
+        String[] siblingExtensions = extensions.toArray(new String[extensions.size()]);
         addAllSiblings(file, files, siblingExtensions);
         return Collections.singletonList(new FileGroup(file, files, null));
     }

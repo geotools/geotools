@@ -89,7 +89,6 @@ public class GetStyleOnlineTest extends OnlineTestCase {
             parameters.put(keyValue[0],keyValue[1]);
         }
 
-        System.out.println("-------------------> " + parameters);
         assertEquals(4, parameters.size());
         assertEquals("WMS", parameters.get("SERVICE"));
         assertEquals("GetStyles", parameters.get("REQUEST"));

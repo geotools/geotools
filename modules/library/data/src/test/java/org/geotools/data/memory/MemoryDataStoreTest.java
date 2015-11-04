@@ -18,8 +18,10 @@ package org.geotools.data.memory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataStore;
@@ -1423,5 +1425,75 @@ public class MemoryDataStoreTest extends DataTestCase {
         List<Name> namesAfterRemove = data.getNames();
         assertNotNull(namesAfterRemove);
         assertEquals(2, namesAfterRemove.size());
+    }
+
+    public void testAddingTwoFeaturesWithSameType() throws IOException {
+        MemoryDataStore mds = new MemoryDataStore();
+        mds.addFeature(roadFeatures[0]);
+        mds.addFeature(roadFeatures[1]);
+
+        Map<String, SimpleFeature> features = mds.features("road");
+        assertEquals(2, features.size());
+    }
+
+    public void testCallingAddFeaturesWithArrayTwiceAndExtentInitialCollection() throws IOException {
+        MemoryDataStore mds = new MemoryDataStore();
+        mds.addFeatures(roadFeatures);
+
+        SimpleFeature road1 = SimpleFeatureBuilder.template(roadType, null);
+        mds.addFeatures(new SimpleFeature[] {road1});
+
+        Map<String, SimpleFeature> features = mds.features("road");
+        assertEquals(roadFeatures.length + 1, features.size());
+    }
+
+    public void testCallingAddFeaturesWithCollectionTwiceAndExtentInitialCollection() throws IOException {
+        MemoryDataStore mds = new MemoryDataStore();
+        mds.addFeatures(Arrays.asList(roadFeatures));
+
+        SimpleFeature road1 = SimpleFeatureBuilder.template(roadType, null);
+
+        mds.addFeatures(Collections.singletonList(road1));
+
+        Map<String, SimpleFeature> features = mds.features("road");
+        assertEquals(roadFeatures.length + 1, features.size());
+    }
+
+    public void testCallingAddFeaturesWithReaderTwiceAndExtentInitialCollection()
+            throws IOException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities
+                .reader(roadFeatures);
+        MemoryDataStore mds = new MemoryDataStore(reader);
+
+        assertEquals(roadFeatures.length, mds.features(roadType.getTypeName())
+                .size());
+
+        FeatureReader<SimpleFeatureType, SimpleFeature> secondReader = DataUtilities
+                .reader(new SimpleFeature[] { SimpleFeatureBuilder.template(
+                        roadType, null) });
+
+        mds.addFeatures(secondReader);
+
+        Map<String, SimpleFeature> features = mds.features("road");
+        assertEquals(roadFeatures.length + 1, features.size());
+    }
+
+    public void testCallingAddFeaturesWithIteratorTwiceAndExtentInitialCollection()
+            throws IOException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities
+                .reader(roadFeatures);
+        MemoryDataStore mds = new MemoryDataStore(reader);
+
+        assertEquals(roadFeatures.length, mds.features(roadType.getTypeName())
+                .size());
+
+        SimpleFeatureIterator featureIterator = DataUtilities
+                .collection(new SimpleFeature[] { SimpleFeatureBuilder.template(
+                        roadType, null) }).features();
+
+        mds.addFeatures(featureIterator);
+
+        Map<String, SimpleFeature> features = mds.features("road");
+        assertEquals(roadFeatures.length + 1, features.size());
     }
 }

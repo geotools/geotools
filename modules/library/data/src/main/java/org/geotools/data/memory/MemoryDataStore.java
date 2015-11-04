@@ -24,16 +24,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
-import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
-import org.geotools.data.SchemaNotFoundException;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
@@ -41,19 +36,12 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This is an example implementation of a DataStore used for testing.
@@ -126,32 +114,19 @@ public class MemoryDataStore extends ContentDataStore {
      */
     public void addFeatures(FeatureReader <SimpleFeatureType, SimpleFeature> reader) throws IOException {
         try {
-            SimpleFeatureType featureType;
-            // use an order preserving map, so that features are returned in the same
-            // order as they were inserted. This is important for repeatable rendering
-            // of overlapping features.
-            Map<String,SimpleFeature> featureMap = new LinkedHashMap<String,SimpleFeature>();
-            String typeName;
-            SimpleFeature feature;
-
-            feature = reader.next();
+            SimpleFeature feature = reader.next();
 
             if (feature == null) {
                 throw new IllegalArgumentException("Provided  FeatureReader<SimpleFeatureType, SimpleFeature> is closed");
             }
 
-            featureType = feature.getFeatureType();
-            typeName = featureType.getTypeName();
-
-            featureMap.put(feature.getID(), feature);
+            addFeatureInternal(feature);
 
             while (reader.hasNext()) {
                 feature = reader.next();
-                featureMap.put(feature.getID(), feature);
+                addFeatureInternal(feature);
             }
 
-            schema.put(typeName, featureType);
-            memory.put(typeName, featureMap);
         } catch (IllegalAttributeException e) {
             throw new DataSourceException("Problem using reader", e);
         }
@@ -170,29 +145,18 @@ public class MemoryDataStore extends ContentDataStore {
      */
     public void addFeatures(SimpleFeatureIterator reader) throws IOException {
         try {
-            SimpleFeatureType featureType;
-            Map<String,SimpleFeature> featureMap = new LinkedHashMap<String,SimpleFeature>();
-            String typeName;
-            SimpleFeature feature;
-
-            feature = reader.next();
+            SimpleFeature feature = reader.next();
 
             if (feature == null) {
                 throw new IllegalArgumentException("Provided  FeatureReader<SimpleFeatureType, SimpleFeature> is closed");
             }
 
-            featureType = feature.getFeatureType();
-            typeName = featureType.getTypeName();
-
-            featureMap.put(feature.getID(), feature);
+            addFeatureInternal(feature);
 
             while (reader.hasNext()) {
                 feature = reader.next();
-                featureMap.put(feature.getID(), feature);
+                addFeatureInternal(feature);
             }
-
-            schema.put(typeName, featureType);
-            memory.put(typeName, featureMap);
         }
         finally {
             reader.close();

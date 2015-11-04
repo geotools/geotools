@@ -307,16 +307,16 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
     /**
      * Optional {@code String} DataStore parameter indicating either "mapserver", "geoserver",
-     * "strict" or "nonstrict" strategy
+     * "strict", "nonstrict", "ionic", "cubwerx" or "arcgis" strategy
      */
     public static final WFSFactoryParam<String> WFS_STRATEGY;
     static {
         String key = "WFSDataStoreFactory:WFS_STRATEGY";
         String title = "WFS Strategy";
         String description = "Override wfs stragegy with either cubwerx, ionic, mapserver"
-                + ", geoserver, or nonstrict strategy.";
+                + ", geoserver, strict, nonstrict or arcgis strategy.";
         List<String> options = Arrays.asList(new String[] { "auto", "strict", "nonstrict",
-                "mapserver", "geoserver", "cubewerx", "ionic" });
+                "mapserver", "geoserver", "cubewerx", "ionic", "arcgis" });
         parametersInfo[11] = WFS_STRATEGY = new WFSFactoryParam<String>(key, String.class, title,
                 description, "auto", Parameter.OPTIONS, options);
     }

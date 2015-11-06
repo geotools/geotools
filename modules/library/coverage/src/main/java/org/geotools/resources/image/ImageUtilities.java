@@ -1232,30 +1232,23 @@ public final class ImageUtilities {
 
                 // Looking for an ROI image and disposing it too
                 final Object roi = inputImage.getProperty("ROI");
-                if ((roi != null) && ((roi instanceof ROI) || (roi instanceof RenderedImage))) {
+                if ((roi != null) && ((ROI.class.equals(roi) || (roi instanceof RenderedImage)))) {
                     if (roi instanceof ROI) {
                         ROI roiImage = (ROI) roi;
                         Rectangle bounds = roiImage.getBounds();
                         if (!(bounds.isEmpty())) {
                             PlanarImage image = roiImage.getAsImage();
                             if (image != null) {
-                                image.dispose();
-                                image = null;
-                                roiImage = null;
+                                disposeImage(image);
                             }
                         }
                     } else {
-                        PlanarImage roiImage = PlanarImage.wrapRenderedImage((RenderedImage) roi);
-                        roiImage.dispose();
-                        roiImage = null;
+                        disposeImage((RenderedImage) roi);
                     }
                 }
 
                 if (inputImage instanceof PlanarImage) {
                     ((PlanarImage) inputImage).dispose();
-                } else if (inputImage instanceof BufferedImage) {
-                    ((BufferedImage) inputImage).flush();
-                    inputImage = null;
                 }
             } else if (inputImage instanceof BufferedImage) {
                 ((BufferedImage) inputImage).flush();

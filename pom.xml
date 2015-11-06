@@ -92,7 +92,7 @@
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <test.forkMode>once</test.forkMode>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.12</imageio.ext.version>
+    <imageio.ext.version>1.1.13</imageio.ext.version>
     <jaiext.version>1.0.7</jaiext.version>
     <netcdf.version>4.6.2</netcdf.version>
     <jt.version>1.4.0</jt.version>

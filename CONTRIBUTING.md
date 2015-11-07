@@ -29,6 +29,8 @@ Regardless of what you want to achieve, there are some common steps to consider:
    ````
 3. Work on the fix, using commit as needed.
    * **Please remember to always include a test case, most pull requests/patches will be rejected if they don't contain one.**.
+   * Remember to update the copyright header with the year of the modification, e.g., if you are modifying a file whose copyright header states ``(C) 2002-2008, Open Source Geospatial Foundation (OSGeo)`` in January 2016 then update it to say ``(C) 2002-2016, Open Source Geospatial Foundation (OSGeo).``
+   * The commit message should refer an existing ticket in Jira, if there is none, create one. The commit message should look like ``[GEOT-XYWZ] Title of the ticket``
    * Please make sure you're following the [coding conventions](http://docs.geotools.org/latest/developer/conventions/code/style.html), and otherwise avoid any reformats to the existing code, as they make it harder to review your changes.
      If you find sections not following the coding convetions and you want to amend their formatting, that's fine, please do so in a separate commit/patch from the real code changes.
 

@@ -3099,7 +3099,7 @@ public class StreamingRenderer implements GTRenderer {
         public LiteShape2 getShape(Symbolizer symbolizer, AffineTransform at) throws FactoryException {
             Geometry g = findGeometry(content, symbolizer); // pulls the geometry
 
-            if ( g == null )
+            if (g == null || g.isEmpty())
                 return null;
             
             try {

@@ -27,8 +27,11 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,9 +47,13 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Query;
 import org.geotools.data.collection.CollectionFeatureSource;
+import org.geotools.data.property.PropertyDataStore;
+import org.geotools.data.property.PropertyFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -72,6 +79,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.Symbolizer;
+import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -561,6 +569,68 @@ public class StreamingRendererTest {
         //must have only one bbox, not two
         assertEquals(1, filters.size());
         assertEquals(FastBBOX.class, filters.get(0).getClass());
+    }
+    
+    /*
+     * https://osgeo-org.atlassian.net/browse/GEOT-5287
+     */
+    @Test
+    public void testEmptyGeometryRendering() throws Exception {
+
+        MapContent mc = new MapContent();
+
+        /*
+         * We simulate reading empty geometries with this properties and mocking the capability to
+         * filter, so that no filter layer is installed over our data and the empty geometry reaches
+         * rendering code. These geometries are in EPSG:32717 because the 0,0 coordinate is in the
+         * pole.
+         */
+        File dir = new File(TestData.getResource(this, "empty-geom-rendering.properties").toURI());
+        PropertyDataStore dataStore = new PropertyDataStore(dir.getParentFile()) {
+            @Override
+            protected ContentFeatureSource createFeatureSource(ContentEntry entry)
+                    throws IOException {
+                return new PropertyFeatureSource(entry, Query.ALL) {
+                    @Override
+                    protected boolean canFilter() {
+                        return true;
+                    }
+                };
+            }
+        };
+        /*
+         * Set up the rendering of previous empty geometry
+         */
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        Layer layer = new FeatureLayer(dataStore.getFeatureSource("empty-geom-rendering"), style);
+        mc.addLayer(layer);
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+        BufferedImage img = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = img.createGraphics();
+        Rectangle paintArea = new Rectangle(40, 40);
+        // An EPSG:8357 extent on the EPSG:32717 area of application. 
+        double minx = -8929252.1;
+        double maxx = -8708634.6;
+        double miny = -491855.7;
+        double maxy = -271204.3;
+        ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(
+                new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny),
+                CRS.decode("EPSG:3857"));
+        sr.addRenderListener(new RenderListener() {
+            public void featureRenderer(SimpleFeature feature) {
+            }
+
+            public void errorOccurred(Exception e) {
+                errors++;
+            }
+        });
+        errors = 0;
+
+        sr.paint(graphics, paintArea, referencedEnvelope);
+
+        assertTrue(errors == 0);
     }
 }
 

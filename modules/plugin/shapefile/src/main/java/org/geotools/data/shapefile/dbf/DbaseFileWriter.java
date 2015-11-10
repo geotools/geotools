@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -535,6 +535,10 @@ public class DbaseFileWriter {
 
 	public void setReportFieldSizeErrors(boolean reportFieldSizeErrors) {
 		this.reportFieldSizeErrors = reportFieldSizeErrors;
+	}
+
+	public DbaseFileHeader getHeader() {
+	    return this.header;
 	}
 
 	

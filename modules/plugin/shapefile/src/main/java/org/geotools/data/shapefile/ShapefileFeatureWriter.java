@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -60,6 +60,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+    
+    static final long DEFAULT_MAX_SHAPE_SIZE = Integer.MAX_VALUE;
+
+    static final long DEFAULT_MAX_DBF_SIZE = Integer.MAX_VALUE * 2l + 1;
 
     // the FeatureReader<SimpleFeatureType, SimpleFeature> to obtain the current Feature from
     protected ShapefileFeatureReader featureReader;
@@ -112,6 +116,10 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     private GeometryFactory gf = new GeometryFactory();
 
     private boolean guessShapeType;
+    
+    private long maxShpSize = DEFAULT_MAX_SHAPE_SIZE;
+    
+    private long maxDbfSize = DEFAULT_MAX_DBF_SIZE;
 
     public ShapefileFeatureWriter(ShpFiles shpFiles, ShapefileFeatureReader featureReader,
             Charset charset, TimeZone timezone) throws IOException {
@@ -159,6 +167,14 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         shapeType = featureReader.getShapeType();
         handler = shapeType.getShapeHandler(new GeometryFactory());
         shpWriter.writeHeaders(bounds, shapeType, records, shapefileLength);
+    }
+    
+    void setMaxShpSize(long maxShapeSize) {
+        this.maxShpSize = maxShapeSize;
+    }
+
+    void setMaxDbfSize(long maxDbfSize) {
+        this.maxDbfSize = maxDbfSize;
     }
 
     /**
@@ -214,7 +230,8 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
      */
     public void close() throws IOException {
         if (featureReader == null) {
-            throw new IOException("Writer closed");
+            // already closed
+            return;
         }
 
         try {
@@ -381,10 +398,23 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
 
         // file length update
-        if (g != null)
+        if (g != null) {
             shapefileLength += (handler.getLength(g) + 8);
-        else
+        } else {
             shapefileLength += (4 + 8);
+        }
+        
+        if (shapefileLength > maxShpSize) {
+            currentFeature = null;
+            throw new ShapefileSizeException(
+                    "Writing this feature will make the shapefile exceed the maximum size of "
+                            + maxShpSize + " bytes");
+        } else if (dbfWriter.getHeader().getLengthForRecords(records + 1) > maxDbfSize) {
+            currentFeature = null;
+            throw new ShapefileSizeException(
+                    "Writing this feature will make the DBF exceed the maximum size of "
+                            + maxDbfSize + " bytes");
+        }
 
         // write it
         shpWriter.writeGeometry(g);

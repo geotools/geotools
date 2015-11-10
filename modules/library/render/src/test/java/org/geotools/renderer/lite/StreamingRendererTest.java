@@ -576,12 +576,14 @@ public class StreamingRendererTest {
      */
     @Test
     public void testEmptyGeometryRendering() throws Exception {
+
         MapContent mc = new MapContent();
 
         /*
          * We simulate reading empty geometries with this properties and mocking the capability to
          * filter, so that no filter layer is installed over our data and the empty geometry reaches
-         * rendering code. These geometries are in EPSG:32717 because the 0,0 coordinate is in the pole. 
+         * rendering code. These geometries are in EPSG:32717 because the 0,0 coordinate is in the
+         * pole.
          */
         File dir = new File(TestData.getResource(this, "empty-geom-rendering.properties").toURI());
         PropertyDataStore dataStore = new PropertyDataStore(dir.getParentFile()) {
@@ -608,8 +610,14 @@ public class StreamingRendererTest {
         BufferedImage img = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = img.createGraphics();
         Rectangle paintArea = new Rectangle(40, 40);
+        // An EPSG:8357 extent on the EPSG:32717 area of application. 
+        double minx = -8929252.1;
+        double maxx = -8708634.6;
+        double miny = -491855.7;
+        double maxy = -271204.3;
         ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(
-                new Rectangle2D.Double(0, 0, 40, 40), CRS.decode("EPSG:3857"));
+                new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny),
+                CRS.decode("EPSG:3857"));
         sr.addRenderListener(new RenderListener() {
             public void featureRenderer(SimpleFeature feature) {
             }

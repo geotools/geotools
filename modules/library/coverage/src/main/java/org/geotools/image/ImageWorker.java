@@ -127,7 +127,6 @@ import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
 import it.geosolutions.jaiext.colorindexer.ColorIndexer;
 import it.geosolutions.jaiext.lookup.LookupTable;
 import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.mosaic.MosaicDescriptor;
 import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
@@ -135,7 +134,6 @@ import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.stats.HistogramWrapper;
 import it.geosolutions.jaiext.stats.Statistics;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import jj2000.j2k.roi.ROIDeScaler;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain #ImageWorker(RenderedImage) creation time}. Sucessive

@@ -44,6 +44,7 @@ import org.geotools.referencing.operation.projection.ObliqueMercator;
 import org.geotools.referencing.operation.projection.ObliqueStereographic;
 import org.geotools.referencing.operation.projection.Orthographic;
 import org.geotools.referencing.operation.projection.PolarStereographic;
+import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.projection.WorldVanDerGrintenI;
@@ -264,9 +265,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
 		// user defined projection
 		// key 3074
-		final String conversionName = conversion.getName().getCode();
 		metadata.addGeoShortParam(GeoTiffPCSCodes.ProjectionGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
-		metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, conversionName);
 
 		final OperationMethod method = conversion.getMethod();
 		// looking for the parameters
@@ -734,7 +733,27 @@ public final class CRS2GeoTiffMetadataAdapter {
                     metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey,parameters.parameter("false_northing").doubleValue());
                     return;
                 }
-		
+
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Sinusoidal
+        //
+        // /////////////////////////////////////////////////////////////////////
+        if (projTransf instanceof Sinusoidal && name.toLowerCase().contains("sinusoidal")) {
+
+            // key 3075
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjCoordTransGeoKey,
+                    GeoTiffCoordinateTransformationsCodes.CT_Sinusoidal);
+
+            // params
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjCenterLongGeoKey,
+                    parameters.parameter("central_meridian").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey, parameters
+                    .parameter("false_easting").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey, parameters
+                    .parameter("false_northing").doubleValue());
+            return;
+        }
                 // we did not support this one
                 throw new IllegalArgumentException("Unable to map projection"+projTransf.getName());
 	}

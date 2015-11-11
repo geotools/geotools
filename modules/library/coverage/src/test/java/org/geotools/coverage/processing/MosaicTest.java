@@ -16,11 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.jaiext.range.NoDataContainer;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
@@ -78,6 +75,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
+
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 /**
  * This class tests the {@link Mosaic} operation. The tests ensures that the final {@link GridCoverage2D} created contains the union of the input
@@ -217,8 +217,8 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that Tiling has been defined correctly
         RenderedImage renderedImage = mosaic.getRenderedImage();
-        Assert.assertTrue(renderedImage.getTileHeight() == TILE_SIZE);
-        Assert.assertTrue(renderedImage.getTileWidth() == TILE_SIZE);
+        assertEquals(TILE_SIZE, renderedImage.getTileHeight());
+        assertEquals(TILE_SIZE, renderedImage.getTileWidth());
 
         // Check that the final Coverage resolution is equal to that of the first coverage
         double initialRes = calculateResolution(coverage1);

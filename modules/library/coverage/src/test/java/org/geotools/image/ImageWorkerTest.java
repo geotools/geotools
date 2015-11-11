@@ -216,23 +216,42 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         }
         return image;
     } 
-	
-	/**
-	 * Creates a test paletted image with translucency.
-	 * 
-	 * @return 
-	 */
-	private static BufferedImage getSyntheticTranslucentIndexed() {
-		final byte bb[]= new byte[256];
-		for(int i =0;i<256;i++)
-			bb[i]=(byte)i;
-		final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb,bb);
-		final WritableRaster raster=RasterFactory.createWritableRaster(icm.createCompatibleSampleModel(1024, 1024), null);
-		for(int i= raster.getMinX();i<raster.getMinX()+raster.getWidth();i++)
-			for(int j= raster.getMinY();j<raster.getMinY()+raster.getHeight();j++)
-				raster.setSample(i,j, 0, (i+j)/32);
-		return new BufferedImage(icm, raster, false,null);		
-	}
+
+    /**
+     * Creates a test paletted image with translucency.
+     * 
+     * @return
+     */
+    private static BufferedImage getSyntheticTranslucentIndexed() {
+        final byte bb[] = new byte[256];
+        for (int i = 0; i < 256; i++)
+            bb[i] = (byte) i;
+        final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb, bb);
+        final WritableRaster raster = RasterFactory
+                .createWritableRaster(icm.createCompatibleSampleModel(1024, 1024), null);
+        for (int i = raster.getMinX(); i < raster.getMinX() + raster.getWidth(); i++)
+            for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++)
+                raster.setSample(i, j, 0, (i + j) / 32);
+        return new BufferedImage(icm, raster, false, null);
+    }
+    
+    /**
+     * Creates a test paletted image with a given number of entries in the map
+     * 
+     * @return
+     */
+    private static BufferedImage getSyntheticGrayIndexed(int entries) {
+        final byte bb[] = new byte[entries];
+        for (int i = 0; i < entries; i++)
+            bb[i] = (byte) i;
+        final IndexColorModel icm = new IndexColorModel(8, entries, bb, bb, bb, bb);
+        final WritableRaster raster = RasterFactory
+                .createWritableRaster(icm.createCompatibleSampleModel(512, 512), null);
+        for (int i = raster.getMinX(); i < raster.getMinX() + raster.getWidth(); i++)
+            for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++)
+                raster.setSample(i, j, 0, (i + j) / 32);
+        return new BufferedImage(icm, raster, false, null);
+    }
 
     /**
      * Loads the image (if not already loaded) and creates the worker instance.
@@ -1493,6 +1512,25 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage mosaicked = iw.getRenderedImage();
         Object roiProperty = mosaicked.getProperty("ROI");
         assertThat(roiProperty, not((instanceOf(ROI.class))));
+    }
+    
+    @Test
+    public void testMosaicIndexedBackgroundColor() {
+        BufferedImage gray = getSyntheticGrayIndexed(128);
+        
+        // test the case where the color is in the palette
+        ImageWorker iw = new ImageWorker();
+        iw.setBackground(new double[] {10, 10, 10});
+        iw.mosaic(new RenderedImage[] {gray}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null);
+        RenderedImage ri = iw.getRenderedImage();
+        assertThat(ri.getColorModel(), instanceOf(IndexColorModel.class));
+        
+        // and the case where it's not and we have to expand
+        iw = new ImageWorker();
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.mosaic(new RenderedImage[] {gray}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null);
+        ri = iw.getRenderedImage();
+        assertThat(ri.getColorModel(), instanceOf(ComponentColorModel.class));
     }
     
 }

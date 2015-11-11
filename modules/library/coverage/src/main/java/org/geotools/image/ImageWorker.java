@@ -4248,8 +4248,59 @@ public class ImageWorker {
         return this;
     }
     
+    /**
+     * Returns the background colors as a value, if at all possible (3 or 4 values in the right range)
+     * @return
+     */
+    private Color getBackgroundColor() {
+        if(background == null || background.length < 3 || background.length > 4) {
+            return null;
+        } 
+        
+        for (int i = 0; i < background.length; i++) {
+            double component = background[i];
+            if(component < 0 || component > 255) {
+                return null;
+            }
+        }
+        
+        if(background.length == 3) {
+            return new Color((int) background[0], (int) background[1], (int) background[2]);
+        } else if(background.length == 4) {
+            return new Color((int) background[0], (int) background[1], (int) background[2], (int) background[3]); 
+        } else {
+            return null;
+        }
+    }
+    
     public ImageWorker mosaic(RenderedImage[] images, MosaicType type, PlanarImage[] alphas, ROI[] rois, double[][] thresholds,
             Range[] nodata) {
+        // check if we might be applying a background value that's not in palettes, still assuming
+        // the input images have uniform palettes
+        double[] background = this.background;
+        if(images != null && images.length > 0) {
+            ColorModel cmref = images[0].getColorModel();
+            Color backgroundColor = getBackgroundColor();
+            if(cmref instanceof IndexColorModel && (cmref.getTransparency() != IndexColorModel.OPAQUE || images[0].getProperty("ROI") instanceof ROI) && backgroundColor != null) {
+                IndexColorModel icm = (IndexColorModel) cmref;
+                int index = ColorUtilities.getColorIndex(icm, backgroundColor, -1);
+                Color color;
+                if(icm.hasAlpha()) {
+                    color = new Color(icm.getRed(index), icm.getGreen(index), icm.getBlue(index));
+                } else {
+                    color = new Color(icm.getRed(index), icm.getGreen(index), icm.getBlue(index), icm.getAlpha(index));
+                }
+                if(color.equals(backgroundColor)) {
+                    background = new double[] {index};
+                } else {
+                    // we have to expand to RGB to apply that value
+                    for (int i = 0; i < images.length; i++) {
+                        images[i] = new ImageWorker(images[i]).forceComponentColorModel().getRenderedImage();
+                    }
+                }
+            }
+        }
+
         // ParameterBlock creation
         ParameterBlock pb = new ParameterBlock();
         int srcNum = 0;

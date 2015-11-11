@@ -20,6 +20,7 @@ import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
+import sun.font.CreatedFontTracker;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -43,6 +44,7 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.MosaicType;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -803,6 +805,34 @@ public class Mosaic extends OperationJAI {
                 getOutputSampleDimensions(primarySource.getSampleDimensions(), data), // The sample dimensions
                 sources, // The source grid coverages.
                 properties); // Properties
+    }
+    
+    /**
+     * We override this one to get some extra behavior that ImageWorker has (ROI, paletted images management) 
+     */
+    protected RenderedImage createRenderedImage(final ParameterBlockJAI parameters, final RenderingHints hints) {
+        parameters.getSources();
+        RenderedImage[] images = (RenderedImage[]) parameters.getSources()
+                .toArray(new RenderedImage[parameters.getSources().size()]);
+        MosaicType type = getParameter(parameters, 0);
+        PlanarImage[] alphas = getParameter(parameters, ALPHA_PARAM);
+        ROI[] rois = getParameter(parameters, ROI_PARAM);
+        double[][] thresholds = getParameter(parameters, THRESHOLD_PARAM);
+        Range[] noData = getParameter(parameters, NODATA_RANGE_PARAM);
+        double[] backgrounds = getParameter(parameters, BACKGROUND_PARAM);
+        ImageWorker iw = new ImageWorker();
+        iw.setRenderingHints(hints);
+        iw.setBackground(backgrounds);
+        iw.mosaic(images, type, alphas, rois, thresholds, noData);
+        return iw.getRenderedImage();
+    }
+    
+    private <T> T getParameter(ParameterBlockJAI pb, int index) {
+        if(pb.getNumParameters() > index) {
+            return (T) pb.getObjectParameter(index);
+        } else {
+            return null;
+        }
     }
 
     private GridSampleDimension[] getOutputSampleDimensions(GridSampleDimension[] sampleDimensions,

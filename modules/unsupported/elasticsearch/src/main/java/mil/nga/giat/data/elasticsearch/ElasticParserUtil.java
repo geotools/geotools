@@ -166,10 +166,33 @@ public class ElasticParserUtil {
             break;
         } default:
             // check if this is a geo_point
-            final Double lat = (Double) properties.get("lat");
-            final Double lon = (Double) properties.get("lon");
-            if (lat != null && lon != null) {
-                geometry = geometryFactory.createPoint(new Coordinate(lon,lat));
+            final Object latObj = properties.get("lat");
+            final Object lonObj = properties.get("lon");
+            if (latObj != null && lonObj != null) {
+                Double lat, lon;
+                if (latObj instanceof Double) {
+                    lat = (Double)latObj;
+                } else {
+                    if (latObj instanceof String) {
+                            lat = new Double((String)latObj);
+                    } else {
+                        lat = null;
+                    }
+                }
+                if (lonObj instanceof Double) {
+                    lon = (Double)lonObj;
+                } else {
+                    if (lonObj instanceof String) {
+                        lon = new Double((String)lonObj);
+                    } else {
+                        lon = null;
+                    }
+                }
+                if (lat != null && lon != null) {
+                    geometry = geometryFactory.createPoint(new Coordinate(lon,lat));
+                } else {
+                    geometry = null;
+                    }
             } else {
                 geometry = null;
             }

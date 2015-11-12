@@ -21,6 +21,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.Map;
@@ -41,6 +42,7 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RasterAccessor;
 import javax.media.jai.RasterFormatTag;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.TileCache;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.operator.ConstantDescriptor;
 
@@ -196,7 +198,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
         return new GridCoverage2DRIA(src, dst, vectorize(src.getRenderedImage()), imageLayout,
                 null, false, extender, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                nodata, roi);
+                nodata, roi, hints);
     }
     
     // need it
@@ -246,13 +248,13 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
         return new GridCoverage2DRIA(src, dst.getGridGeometry(), vectorize(src.getRenderedImage()), imageLayout,
                 null, false, extender, Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                nodata, roi);
+                nodata, roi, hints);
     }
 
     protected GridCoverage2DRIA(final GridCoverage2D src, final GridGeometry2D dst,
             final Vector sources, final ImageLayout layout, final Map configuration,
             final boolean cobbleSources, final BorderExtender extender, final Interpolation interp,
-            final double[] nodata, ROI roi) {
+            final double[] nodata, ROI roi, Hints hints) {
 
         super(sources, layout, configuration, cobbleSources, extender, interp, nodata);
 
@@ -296,6 +298,21 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             this.roiBounds = roi.getBounds();
             setProperty("roi", roi);
         }
+        
+        // ensure we have tile caching
+        if(hints != null) {
+            TileCache tc = (TileCache) hints.get(JAI.KEY_TILE_CACHE);
+            if(tc != null) {
+                setTileCache(tc);
+            } else {
+                setTileCache(JAI.getDefaultInstance().getTileCache());
+            }
+        }
+    }
+    
+    @Override
+    public Raster getTile(int tileX, int tileY) {
+        return super.getTile(tileX, tileY);
     }
 
     @Override
@@ -648,134 +665,140 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         int minX, maxX, minY, maxY;
-        RandomIter iter;
-        if (extender != null) {
-            minX = src.getMinX();
-            maxX = src.getMaxX();
-            minY = src.getMinY();
-            maxY = src.getMaxY();
-            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
-        } else {
-            minX = src.getMinX() + lpad;
-            maxX = src.getMaxX() - rpad;
-            minY = src.getMinY() + tpad;
-            maxY = src.getMaxY() - bpad;
-            iter = getRandomIterator(src);
-        }
-
-        int kwidth = interp.getWidth();
-        int kheight = interp.getHeight();
-
-        int dstWidth = dst.getWidth();
-        int dstHeight = dst.getHeight();
-        int dstBands = dst.getNumBands();
-
-        int lineStride = dst.getScanlineStride();
-        int pixelStride = dst.getPixelStride();
-        int[] bandOffsets = dst.getBandOffsets();
-        byte[][] data = dst.getByteDataArrays();
-
-        int precH = 1 << interp.getSubsampleBitsH();
-        int precV = 1 << interp.getSubsampleBitsV();
-
-        float[] warpData = new float[2 * dstWidth];
-
-        int[][] samples = new int[kheight][kwidth];
-
-        int lineOffset = 0;
-
-        byte[] backgroundByte = new byte[dstBands];
-        for (int i = 0; i < dstBands; i++) {
-            backgroundByte[i] = (byte) backgroundValues[i];
-        }
-
-        if (ctable == null) { // source does not have IndexColorModel
-            for (int h = 0; h < dstHeight; h++) {
-                int pixelOffset = lineOffset;
-                lineOffset += lineStride;
-
-                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-                int count = 0;
-                for (int w = 0; w < dstWidth; w++) {
-                    float sx = warpData[count++];
-                    float sy = warpData[count++];
-
-                    int xint = floor(sx);
-                    int yint = floor(sy);
-                    int xfrac = (int) ((sx - xint) * precH);
-                    int yfrac = (int) ((sy - yint) * precV);
-
-                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                        /* Fill with a background color. */
-                        if (setBackground) {
-                            for (int b = 0; b < dstBands; b++) {
-                                data[b][pixelOffset + bandOffsets[b]] = backgroundByte[b];
-                            }
-                        }
-                    } else {
-                        xint -= lpad;
-                        yint -= tpad;
-
-                        for (int b = 0; b < dstBands; b++) {
-                            for (int j = 0; j < kheight; j++) {
-                                for (int i = 0; i < kwidth; i++) {
-                                    samples[j][i] = iter.getSample(xint + i, yint + j, b) & 0xFF;
+        RandomIter iter = null;
+        try {
+            if (extender != null) {
+                minX = src.getMinX();
+                maxX = src.getMaxX();
+                minY = src.getMinY();
+                maxY = src.getMaxY();
+                iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
+            } else {
+                minX = src.getMinX() + lpad;
+                maxX = src.getMaxX() - rpad;
+                minY = src.getMinY() + tpad;
+                maxY = src.getMaxY() - bpad;
+                iter = getRandomIterator(src);
+            }
+    
+            int kwidth = interp.getWidth();
+            int kheight = interp.getHeight();
+    
+            int dstWidth = dst.getWidth();
+            int dstHeight = dst.getHeight();
+            int dstBands = dst.getNumBands();
+    
+            int lineStride = dst.getScanlineStride();
+            int pixelStride = dst.getPixelStride();
+            int[] bandOffsets = dst.getBandOffsets();
+            byte[][] data = dst.getByteDataArrays();
+    
+            int precH = 1 << interp.getSubsampleBitsH();
+            int precV = 1 << interp.getSubsampleBitsV();
+    
+            float[] warpData = new float[2 * dstWidth];
+    
+            int[][] samples = new int[kheight][kwidth];
+    
+            int lineOffset = 0;
+    
+            byte[] backgroundByte = new byte[dstBands];
+            for (int i = 0; i < dstBands; i++) {
+                backgroundByte[i] = (byte) backgroundValues[i];
+            }
+    
+            if (ctable == null) { // source does not have IndexColorModel
+                for (int h = 0; h < dstHeight; h++) {
+                    int pixelOffset = lineOffset;
+                    lineOffset += lineStride;
+    
+                    warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                    int count = 0;
+                    for (int w = 0; w < dstWidth; w++) {
+                        float sx = warpData[count++];
+                        float sy = warpData[count++];
+    
+                        int xint = floor(sx);
+                        int yint = floor(sy);
+                        int xfrac = (int) ((sx - xint) * precH);
+                        int yfrac = (int) ((sy - yint) * precV);
+    
+                        if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                            /* Fill with a background color. */
+                            if (setBackground) {
+                                for (int b = 0; b < dstBands; b++) {
+                                    data[b][pixelOffset + bandOffsets[b]] = backgroundByte[b];
                                 }
                             }
-
-                            data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampByte(interp
-                                    .interpolate(samples, xfrac, yfrac));
+                        } else {
+                            xint -= lpad;
+                            yint -= tpad;
+    
+                            for (int b = 0; b < dstBands; b++) {
+                                for (int j = 0; j < kheight; j++) {
+                                    for (int i = 0; i < kwidth; i++) {
+                                        samples[j][i] = iter.getSample(xint + i, yint + j, b) & 0xFF;
+                                    }
+                                }
+    
+                                data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampByte(interp
+                                        .interpolate(samples, xfrac, yfrac));
+                            }
                         }
+    
+                        pixelOffset += pixelStride;
                     }
-
-                    pixelOffset += pixelStride;
+                }
+            } else { // source has IndexColorModel
+                for (int h = 0; h < dstHeight; h++) {
+                    int pixelOffset = lineOffset;
+                    lineOffset += lineStride;
+    
+                    warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                    int count = 0;
+                    for (int w = 0; w < dstWidth; w++) {
+                        float sx = warpData[count++];
+                        float sy = warpData[count++];
+    
+                        int xint = floor(sx);
+                        int yint = floor(sy);
+                        int xfrac = (int) ((sx - xint) * precH);
+                        int yfrac = (int) ((sy - yint) * precV);
+    
+                        if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                            /* Fill with a background color. */
+                            if (setBackground) {
+                                for (int b = 0; b < dstBands; b++) {
+                                    data[b][pixelOffset + bandOffsets[b]] = backgroundByte[b];
+                                }
+                            }
+                        } else {
+                            xint -= lpad;
+                            yint -= tpad;
+    
+                            for (int b = 0; b < dstBands; b++) {
+                                byte[] t = ctable[b];
+    
+                                for (int j = 0; j < kheight; j++) {
+                                    for (int i = 0; i < kwidth; i++) {
+                                        samples[j][i] = t[iter.getSample(xint + i, yint + j, 0) & 0xFF] & 0xFF;
+                                    }
+                                }
+    
+                                data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampByte(interp
+                                        .interpolate(samples, xfrac, yfrac));
+                            }
+                        }
+    
+                        pixelOffset += pixelStride;
+                    }
                 }
             }
-        } else { // source has IndexColorModel
-            for (int h = 0; h < dstHeight; h++) {
-                int pixelOffset = lineOffset;
-                lineOffset += lineStride;
-
-                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-                int count = 0;
-                for (int w = 0; w < dstWidth; w++) {
-                    float sx = warpData[count++];
-                    float sy = warpData[count++];
-
-                    int xint = floor(sx);
-                    int yint = floor(sy);
-                    int xfrac = (int) ((sx - xint) * precH);
-                    int yfrac = (int) ((sy - yint) * precV);
-
-                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                        /* Fill with a background color. */
-                        if (setBackground) {
-                            for (int b = 0; b < dstBands; b++) {
-                                data[b][pixelOffset + bandOffsets[b]] = backgroundByte[b];
-                            }
-                        }
-                    } else {
-                        xint -= lpad;
-                        yint -= tpad;
-
-                        for (int b = 0; b < dstBands; b++) {
-                            byte[] t = ctable[b];
-
-                            for (int j = 0; j < kheight; j++) {
-                                for (int i = 0; i < kwidth; i++) {
-                                    samples[j][i] = t[iter.getSample(xint + i, yint + j, 0) & 0xFF] & 0xFF;
-                                }
-                            }
-
-                            data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampByte(interp
-                                    .interpolate(samples, xfrac, yfrac));
-                        }
-                    }
-
-                    pixelOffset += pixelStride;
-                }
+        } finally {
+            if(iter != null) {
+                iter.done();
             }
         }
     }
@@ -792,87 +815,93 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         int minX, maxX, minY, maxY;
-        RandomIter iter;
-        if (extender != null) {
-            minX = src.getMinX();
-            maxX = src.getMaxX();
-            minY = src.getMinY();
-            maxY = src.getMaxY();
-            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
-        } else {
-            minX = src.getMinX() + lpad;
-            maxX = src.getMaxX() - rpad;
-            minY = src.getMinY() + tpad;
-            maxY = src.getMaxY() - bpad;
-            iter = getRandomIterator(src);
-        }
-
-        int kwidth = interp.getWidth();
-        int kheight = interp.getHeight();
-
-        int dstWidth = dst.getWidth();
-        int dstHeight = dst.getHeight();
-        int dstBands = dst.getNumBands();
-
-        int lineStride = dst.getScanlineStride();
-        int pixelStride = dst.getPixelStride();
-        int[] bandOffsets = dst.getBandOffsets();
-        short[][] data = dst.getShortDataArrays();
-
-        int precH = 1 << interp.getSubsampleBitsH();
-        int precV = 1 << interp.getSubsampleBitsV();
-
-        float[] warpData = new float[2 * dstWidth];
-
-        int[][] samples = new int[kheight][kwidth];
-
-        int lineOffset = 0;
-
-        short[] backgroundUShort = new short[dstBands];
-        for (int i = 0; i < dstBands; i++) {
-            backgroundUShort[i] = (short) backgroundValues[i];
-        }
-
-        for (int h = 0; h < dstHeight; h++) {
-            int pixelOffset = lineOffset;
-            lineOffset += lineStride;
-
-            warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-            int count = 0;
-            for (int w = 0; w < dstWidth; w++) {
-                float sx = warpData[count++];
-                float sy = warpData[count++];
-
-                int xint = floor(sx);
-                int yint = floor(sy);
-                int xfrac = (int) ((sx - xint) * precH);
-                int yfrac = (int) ((sy - yint) * precV);
-
-                if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                    /* Fill with a background color. */
-                    if (setBackground) {
-                        for (int b = 0; b < dstBands; b++) {
-                            data[b][pixelOffset + bandOffsets[b]] = backgroundUShort[b];
-                        }
-                    }
-                } else {
-                    xint -= lpad;
-                    yint -= tpad;
-
-                    for (int b = 0; b < dstBands; b++) {
-                        for (int j = 0; j < kheight; j++) {
-                            for (int i = 0; i < kwidth; i++) {
-                                samples[j][i] = iter.getSample(xint + i, yint + j, b) & 0xFFFF;
+        RandomIter iter = null;
+        try {
+            if (extender != null) {
+                minX = src.getMinX();
+                maxX = src.getMaxX();
+                minY = src.getMinY();
+                maxY = src.getMaxY();
+                iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
+            } else {
+                minX = src.getMinX() + lpad;
+                maxX = src.getMaxX() - rpad;
+                minY = src.getMinY() + tpad;
+                maxY = src.getMaxY() - bpad;
+                iter = getRandomIterator(src);
+            }
+    
+            int kwidth = interp.getWidth();
+            int kheight = interp.getHeight();
+    
+            int dstWidth = dst.getWidth();
+            int dstHeight = dst.getHeight();
+            int dstBands = dst.getNumBands();
+    
+            int lineStride = dst.getScanlineStride();
+            int pixelStride = dst.getPixelStride();
+            int[] bandOffsets = dst.getBandOffsets();
+            short[][] data = dst.getShortDataArrays();
+    
+            int precH = 1 << interp.getSubsampleBitsH();
+            int precV = 1 << interp.getSubsampleBitsV();
+    
+            float[] warpData = new float[2 * dstWidth];
+    
+            int[][] samples = new int[kheight][kwidth];
+    
+            int lineOffset = 0;
+    
+            short[] backgroundUShort = new short[dstBands];
+            for (int i = 0; i < dstBands; i++) {
+                backgroundUShort[i] = (short) backgroundValues[i];
+            }
+    
+            for (int h = 0; h < dstHeight; h++) {
+                int pixelOffset = lineOffset;
+                lineOffset += lineStride;
+    
+                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                int count = 0;
+                for (int w = 0; w < dstWidth; w++) {
+                    float sx = warpData[count++];
+                    float sy = warpData[count++];
+    
+                    int xint = floor(sx);
+                    int yint = floor(sy);
+                    int xfrac = (int) ((sx - xint) * precH);
+                    int yfrac = (int) ((sy - yint) * precV);
+    
+                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                        /* Fill with a background color. */
+                        if (setBackground) {
+                            for (int b = 0; b < dstBands; b++) {
+                                data[b][pixelOffset + bandOffsets[b]] = backgroundUShort[b];
                             }
                         }
-
-                        data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampUShort(interp
-                                .interpolate(samples, xfrac, yfrac));
+                    } else {
+                        xint -= lpad;
+                        yint -= tpad;
+    
+                        for (int b = 0; b < dstBands; b++) {
+                            for (int j = 0; j < kheight; j++) {
+                                for (int i = 0; i < kwidth; i++) {
+                                    samples[j][i] = iter.getSample(xint + i, yint + j, b) & 0xFFFF;
+                                }
+                            }
+    
+                            data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampUShort(interp
+                                    .interpolate(samples, xfrac, yfrac));
+                        }
                     }
+    
+                    pixelOffset += pixelStride;
                 }
-
-                pixelOffset += pixelStride;
+            }
+        } finally {
+            if(iter != null) {
+                iter.done();
             }
         }
     }
@@ -889,87 +918,93 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         int minX, maxX, minY, maxY;
-        RandomIter iter;
-        if (extender != null) {
-            minX = src.getMinX();
-            maxX = src.getMaxX();
-            minY = src.getMinY();
-            maxY = src.getMaxY();
-            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
-        } else {
-            minX = src.getMinX() + lpad;
-            maxX = src.getMaxX() - rpad;
-            minY = src.getMinY() + tpad;
-            maxY = src.getMaxY() - bpad;
-            iter = getRandomIterator(src);
-        }
-
-        int kwidth = interp.getWidth();
-        int kheight = interp.getHeight();
-
-        int dstWidth = dst.getWidth();
-        int dstHeight = dst.getHeight();
-        int dstBands = dst.getNumBands();
-
-        int lineStride = dst.getScanlineStride();
-        int pixelStride = dst.getPixelStride();
-        int[] bandOffsets = dst.getBandOffsets();
-        short[][] data = dst.getShortDataArrays();
-
-        int precH = 1 << interp.getSubsampleBitsH();
-        int precV = 1 << interp.getSubsampleBitsV();
-
-        float[] warpData = new float[2 * dstWidth];
-
-        int[][] samples = new int[kheight][kwidth];
-
-        int lineOffset = 0;
-
-        short[] backgroundShort = new short[dstBands];
-        for (int i = 0; i < dstBands; i++) {
-            backgroundShort[i] = (short) backgroundValues[i];
-        }
-
-        for (int h = 0; h < dstHeight; h++) {
-            int pixelOffset = lineOffset;
-            lineOffset += lineStride;
-
-            warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-            int count = 0;
-            for (int w = 0; w < dstWidth; w++) {
-                float sx = warpData[count++];
-                float sy = warpData[count++];
-
-                int xint = floor(sx);
-                int yint = floor(sy);
-                int xfrac = (int) ((sx - xint) * precH);
-                int yfrac = (int) ((sy - yint) * precV);
-
-                if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                    /* Fill with a background color. */
-                    if (setBackground) {
-                        for (int b = 0; b < dstBands; b++) {
-                            data[b][pixelOffset + bandOffsets[b]] = backgroundShort[b];
-                        }
-                    }
-                } else {
-                    xint -= lpad;
-                    yint -= tpad;
-
-                    for (int b = 0; b < dstBands; b++) {
-                        for (int j = 0; j < kheight; j++) {
-                            for (int i = 0; i < kwidth; i++) {
-                                samples[j][i] = iter.getSample(xint + i, yint + j, b);
+        RandomIter iter = null;
+        try {
+            if (extender != null) {
+                minX = src.getMinX();
+                maxX = src.getMaxX();
+                minY = src.getMinY();
+                maxY = src.getMaxY();
+                iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
+            } else {
+                minX = src.getMinX() + lpad;
+                maxX = src.getMaxX() - rpad;
+                minY = src.getMinY() + tpad;
+                maxY = src.getMaxY() - bpad;
+                iter = getRandomIterator(src);
+            }
+    
+            int kwidth = interp.getWidth();
+            int kheight = interp.getHeight();
+    
+            int dstWidth = dst.getWidth();
+            int dstHeight = dst.getHeight();
+            int dstBands = dst.getNumBands();
+    
+            int lineStride = dst.getScanlineStride();
+            int pixelStride = dst.getPixelStride();
+            int[] bandOffsets = dst.getBandOffsets();
+            short[][] data = dst.getShortDataArrays();
+    
+            int precH = 1 << interp.getSubsampleBitsH();
+            int precV = 1 << interp.getSubsampleBitsV();
+    
+            float[] warpData = new float[2 * dstWidth];
+    
+            int[][] samples = new int[kheight][kwidth];
+    
+            int lineOffset = 0;
+    
+            short[] backgroundShort = new short[dstBands];
+            for (int i = 0; i < dstBands; i++) {
+                backgroundShort[i] = (short) backgroundValues[i];
+            }
+    
+            for (int h = 0; h < dstHeight; h++) {
+                int pixelOffset = lineOffset;
+                lineOffset += lineStride;
+    
+                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                int count = 0;
+                for (int w = 0; w < dstWidth; w++) {
+                    float sx = warpData[count++];
+                    float sy = warpData[count++];
+    
+                    int xint = floor(sx);
+                    int yint = floor(sy);
+                    int xfrac = (int) ((sx - xint) * precH);
+                    int yfrac = (int) ((sy - yint) * precV);
+    
+                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                        /* Fill with a background color. */
+                        if (setBackground) {
+                            for (int b = 0; b < dstBands; b++) {
+                                data[b][pixelOffset + bandOffsets[b]] = backgroundShort[b];
                             }
                         }
-
-                        data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampShort(interp
-                                .interpolate(samples, xfrac, yfrac));
+                    } else {
+                        xint -= lpad;
+                        yint -= tpad;
+    
+                        for (int b = 0; b < dstBands; b++) {
+                            for (int j = 0; j < kheight; j++) {
+                                for (int i = 0; i < kwidth; i++) {
+                                    samples[j][i] = iter.getSample(xint + i, yint + j, b);
+                                }
+                            }
+    
+                            data[b][pixelOffset + bandOffsets[b]] = ImageUtil.clampShort(interp
+                                    .interpolate(samples, xfrac, yfrac));
+                        }
                     }
+    
+                    pixelOffset += pixelStride;
                 }
-
-                pixelOffset += pixelStride;
+            }
+        } finally {
+            if(iter != null) {
+                iter.done();
             }
         }
     }
@@ -986,87 +1021,93 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         int minX, maxX, minY, maxY;
-        RandomIter iter;
-        if (extender != null) {
-            minX = src.getMinX();
-            maxX = src.getMaxX();
-            minY = src.getMinY();
-            maxY = src.getMaxY();
-            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
-        } else {
-            minX = src.getMinX() + lpad;
-            maxX = src.getMaxX() - rpad;
-            minY = src.getMinY() + tpad;
-            maxY = src.getMaxY() - bpad;
-            iter = getRandomIterator(src);
-        }
-
-        int kwidth = interp.getWidth();
-        int kheight = interp.getHeight();
-
-        int dstWidth = dst.getWidth();
-        int dstHeight = dst.getHeight();
-        int dstBands = dst.getNumBands();
-
-        int lineStride = dst.getScanlineStride();
-        int pixelStride = dst.getPixelStride();
-        int[] bandOffsets = dst.getBandOffsets();
-        int[][] data = dst.getIntDataArrays();
-
-        int precH = 1 << interp.getSubsampleBitsH();
-        int precV = 1 << interp.getSubsampleBitsV();
-
-        float[] warpData = new float[2 * dstWidth];
-
-        int[][] samples = new int[kheight][kwidth];
-
-        int lineOffset = 0;
-
-        int[] backgroundInt = new int[dstBands];
-        for (int i = 0; i < dstBands; i++) {
-            backgroundInt[i] = (int) backgroundValues[i];
-        }
-
-        for (int h = 0; h < dstHeight; h++) {
-            int pixelOffset = lineOffset;
-            lineOffset += lineStride;
-
-            warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-            int count = 0;
-            for (int w = 0; w < dstWidth; w++) {
-                float sx = warpData[count++];
-                float sy = warpData[count++];
-
-                int xint = floor(sx);
-                int yint = floor(sy);
-                int xfrac = (int) ((sx - xint) * precH);
-                int yfrac = (int) ((sy - yint) * precV);
-
-                if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                    /* Fill with a background color. */
-                    if (setBackground) {
-                        for (int b = 0; b < dstBands; b++) {
-                            data[b][pixelOffset + bandOffsets[b]] = backgroundInt[b];
-                        }
-                    }
-                } else {
-                    xint -= lpad;
-                    yint -= tpad;
-
-                    for (int b = 0; b < dstBands; b++) {
-                        for (int j = 0; j < kheight; j++) {
-                            for (int i = 0; i < kwidth; i++) {
-                                samples[j][i] = iter.getSample(xint + i, yint + j, b);
+        RandomIter iter = null;
+        try {
+            if (extender != null) {
+                minX = src.getMinX();
+                maxX = src.getMaxX();
+                minY = src.getMinY();
+                maxY = src.getMaxY();
+                iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
+            } else {
+                minX = src.getMinX() + lpad;
+                maxX = src.getMaxX() - rpad;
+                minY = src.getMinY() + tpad;
+                maxY = src.getMaxY() - bpad;
+                iter = getRandomIterator(src);
+            }
+    
+            int kwidth = interp.getWidth();
+            int kheight = interp.getHeight();
+    
+            int dstWidth = dst.getWidth();
+            int dstHeight = dst.getHeight();
+            int dstBands = dst.getNumBands();
+    
+            int lineStride = dst.getScanlineStride();
+            int pixelStride = dst.getPixelStride();
+            int[] bandOffsets = dst.getBandOffsets();
+            int[][] data = dst.getIntDataArrays();
+    
+            int precH = 1 << interp.getSubsampleBitsH();
+            int precV = 1 << interp.getSubsampleBitsV();
+    
+            float[] warpData = new float[2 * dstWidth];
+    
+            int[][] samples = new int[kheight][kwidth];
+    
+            int lineOffset = 0;
+    
+            int[] backgroundInt = new int[dstBands];
+            for (int i = 0; i < dstBands; i++) {
+                backgroundInt[i] = (int) backgroundValues[i];
+            }
+    
+            for (int h = 0; h < dstHeight; h++) {
+                int pixelOffset = lineOffset;
+                lineOffset += lineStride;
+    
+                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                int count = 0;
+                for (int w = 0; w < dstWidth; w++) {
+                    float sx = warpData[count++];
+                    float sy = warpData[count++];
+    
+                    int xint = floor(sx);
+                    int yint = floor(sy);
+                    int xfrac = (int) ((sx - xint) * precH);
+                    int yfrac = (int) ((sy - yint) * precV);
+    
+                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                        /* Fill with a background color. */
+                        if (setBackground) {
+                            for (int b = 0; b < dstBands; b++) {
+                                data[b][pixelOffset + bandOffsets[b]] = backgroundInt[b];
                             }
                         }
-
-                        data[b][pixelOffset + bandOffsets[b]] = interp.interpolate(samples, xfrac,
-                                yfrac);
+                    } else {
+                        xint -= lpad;
+                        yint -= tpad;
+    
+                        for (int b = 0; b < dstBands; b++) {
+                            for (int j = 0; j < kheight; j++) {
+                                for (int i = 0; i < kwidth; i++) {
+                                    samples[j][i] = iter.getSample(xint + i, yint + j, b);
+                                }
+                            }
+    
+                            data[b][pixelOffset + bandOffsets[b]] = interp.interpolate(samples, xfrac,
+                                    yfrac);
+                        }
                     }
+    
+                    pixelOffset += pixelStride;
                 }
-
-                pixelOffset += pixelStride;
+            }
+        } finally {
+            if(iter != null) {
+                iter.done();
             }
         }
     }
@@ -1083,84 +1124,90 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         int minX, maxX, minY, maxY;
-        RandomIter iter;
-        if (extender != null) {
-            minX = src.getMinX();
-            maxX = src.getMaxX();
-            minY = src.getMinY();
-            maxY = src.getMaxY();
-            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
-        } else {
-            minX = src.getMinX() + lpad;
-            maxX = src.getMaxX() - rpad;
-            minY = src.getMinY() + tpad;
-            maxY = src.getMaxY() - bpad;
-            iter = getRandomIterator(src);
-        }
-
-        int kwidth = interp.getWidth();
-        int kheight = interp.getHeight();
-
-        int dstWidth = dst.getWidth();
-        int dstHeight = dst.getHeight();
-        int dstBands = dst.getNumBands();
-
-        int lineStride = dst.getScanlineStride();
-        int pixelStride = dst.getPixelStride();
-        int[] bandOffsets = dst.getBandOffsets();
-        float[][] data = dst.getFloatDataArrays();
-
-        float[] warpData = new float[2 * dstWidth];
-
-        float[][] samples = new float[kheight][kwidth];
-
-        int lineOffset = 0;
-
-        float[] backgroundFloat = new float[dstBands];
-        for (int i = 0; i < dstBands; i++) {
-            backgroundFloat[i] = (float) backgroundValues[i];
-        }
-
-        for (int h = 0; h < dstHeight; h++) {
-            int pixelOffset = lineOffset;
-            lineOffset += lineStride;
-
-            warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-            int count = 0;
-            for (int w = 0; w < dstWidth; w++) {
-                float sx = warpData[count++];
-                float sy = warpData[count++];
-
-                int xint = floor(sx);
-                int yint = floor(sy);
-                float xfrac = sx - xint;
-                float yfrac = sy - yint;
-
-                if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                    /* Fill with a background color. */
-                    if (setBackground) {
-                        for (int b = 0; b < dstBands; b++) {
-                            data[b][pixelOffset + bandOffsets[b]] = backgroundFloat[b];
-                        }
-                    }
-                } else {
-                    xint -= lpad;
-                    yint -= tpad;
-
-                    for (int b = 0; b < dstBands; b++) {
-                        for (int j = 0; j < kheight; j++) {
-                            for (int i = 0; i < kwidth; i++) {
-                                samples[j][i] = iter.getSampleFloat(xint + i, yint + j, b);
+        RandomIter iter = null;
+        try {
+            if (extender != null) {
+                minX = src.getMinX();
+                maxX = src.getMaxX();
+                minY = src.getMinY();
+                maxY = src.getMaxY();
+                iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
+            } else {
+                minX = src.getMinX() + lpad;
+                maxX = src.getMaxX() - rpad;
+                minY = src.getMinY() + tpad;
+                maxY = src.getMaxY() - bpad;
+                iter = getRandomIterator(src);
+            }
+    
+            int kwidth = interp.getWidth();
+            int kheight = interp.getHeight();
+    
+            int dstWidth = dst.getWidth();
+            int dstHeight = dst.getHeight();
+            int dstBands = dst.getNumBands();
+    
+            int lineStride = dst.getScanlineStride();
+            int pixelStride = dst.getPixelStride();
+            int[] bandOffsets = dst.getBandOffsets();
+            float[][] data = dst.getFloatDataArrays();
+    
+            float[] warpData = new float[2 * dstWidth];
+    
+            float[][] samples = new float[kheight][kwidth];
+    
+            int lineOffset = 0;
+    
+            float[] backgroundFloat = new float[dstBands];
+            for (int i = 0; i < dstBands; i++) {
+                backgroundFloat[i] = (float) backgroundValues[i];
+            }
+    
+            for (int h = 0; h < dstHeight; h++) {
+                int pixelOffset = lineOffset;
+                lineOffset += lineStride;
+    
+                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                int count = 0;
+                for (int w = 0; w < dstWidth; w++) {
+                    float sx = warpData[count++];
+                    float sy = warpData[count++];
+    
+                    int xint = floor(sx);
+                    int yint = floor(sy);
+                    float xfrac = sx - xint;
+                    float yfrac = sy - yint;
+    
+                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                        /* Fill with a background color. */
+                        if (setBackground) {
+                            for (int b = 0; b < dstBands; b++) {
+                                data[b][pixelOffset + bandOffsets[b]] = backgroundFloat[b];
                             }
                         }
-
-                        data[b][pixelOffset + bandOffsets[b]] = interp.interpolate(samples, xfrac,
-                                yfrac);
+                    } else {
+                        xint -= lpad;
+                        yint -= tpad;
+    
+                        for (int b = 0; b < dstBands; b++) {
+                            for (int j = 0; j < kheight; j++) {
+                                for (int i = 0; i < kwidth; i++) {
+                                    samples[j][i] = iter.getSampleFloat(xint + i, yint + j, b);
+                                }
+                            }
+    
+                            data[b][pixelOffset + bandOffsets[b]] = interp.interpolate(samples, xfrac,
+                                    yfrac);
+                        }
                     }
+    
+                    pixelOffset += pixelStride;
                 }
-
-                pixelOffset += pixelStride;
+            }
+        } finally {
+            if(iter != null) {
+                iter.done();
             }
         }
     }
@@ -1177,79 +1224,85 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         }
 
         int minX, maxX, minY, maxY;
-        RandomIter iter;
-        if (extender != null) {
-            minX = src.getMinX();
-            maxX = src.getMaxX();
-            minY = src.getMinY();
-            maxY = src.getMaxY();
-            iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
-        } else {
-            minX = src.getMinX() + lpad;
-            maxX = src.getMaxX() - rpad;
-            minY = src.getMinY() + tpad;
-            maxY = src.getMaxY() - bpad;
-            iter = getRandomIterator(src);
-        }
-
-        int kwidth = interp.getWidth();
-        int kheight = interp.getHeight();
-
-        int dstWidth = dst.getWidth();
-        int dstHeight = dst.getHeight();
-        int dstBands = dst.getNumBands();
-
-        int lineStride = dst.getScanlineStride();
-        int pixelStride = dst.getPixelStride();
-        int[] bandOffsets = dst.getBandOffsets();
-        double[][] data = dst.getDoubleDataArrays();
-
-        float[] warpData = new float[2 * dstWidth];
-
-        double[][] samples = new double[kheight][kwidth];
-
-        int lineOffset = 0;
-
-        for (int h = 0; h < dstHeight; h++) {
-            int pixelOffset = lineOffset;
-            lineOffset += lineStride;
-
-            warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
-
-            int count = 0;
-            for (int w = 0; w < dstWidth; w++) {
-                float sx = warpData[count++];
-                float sy = warpData[count++];
-
-                int xint = floor(sx);
-                int yint = floor(sy);
-                float xfrac = sx - xint;
-                float yfrac = sy - yint;
-
-                if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
-                    /* Fill with a background color. */
-                    if (setBackground) {
-                        for (int b = 0; b < dstBands; b++) {
-                            data[b][pixelOffset + bandOffsets[b]] = backgroundValues[b];
-                        }
-                    }
-                } else {
-                    xint -= lpad;
-                    yint -= tpad;
-
-                    for (int b = 0; b < dstBands; b++) {
-                        for (int j = 0; j < kheight; j++) {
-                            for (int i = 0; i < kwidth; i++) {
-                                samples[j][i] = iter.getSampleDouble(xint + i, yint + j, b);
+        RandomIter iter = null;
+        try {
+            if (extender != null) {
+                minX = src.getMinX();
+                maxX = src.getMaxX();
+                minY = src.getMinY();
+                maxY = src.getMaxY();
+                iter = getRandomIterator(src, lpad, rpad, tpad, bpad, extender);
+            } else {
+                minX = src.getMinX() + lpad;
+                maxX = src.getMaxX() - rpad;
+                minY = src.getMinY() + tpad;
+                maxY = src.getMaxY() - bpad;
+                iter = getRandomIterator(src);
+            }
+    
+            int kwidth = interp.getWidth();
+            int kheight = interp.getHeight();
+    
+            int dstWidth = dst.getWidth();
+            int dstHeight = dst.getHeight();
+            int dstBands = dst.getNumBands();
+    
+            int lineStride = dst.getScanlineStride();
+            int pixelStride = dst.getPixelStride();
+            int[] bandOffsets = dst.getBandOffsets();
+            double[][] data = dst.getDoubleDataArrays();
+    
+            float[] warpData = new float[2 * dstWidth];
+    
+            double[][] samples = new double[kheight][kwidth];
+    
+            int lineOffset = 0;
+    
+            for (int h = 0; h < dstHeight; h++) {
+                int pixelOffset = lineOffset;
+                lineOffset += lineStride;
+    
+                warpRect(dst.getX(), dst.getY() + h, dstWidth, 1, warpData);
+    
+                int count = 0;
+                for (int w = 0; w < dstWidth; w++) {
+                    float sx = warpData[count++];
+                    float sy = warpData[count++];
+    
+                    int xint = floor(sx);
+                    int yint = floor(sy);
+                    float xfrac = sx - xint;
+                    float yfrac = sy - yint;
+    
+                    if (xint < minX || xint >= maxX || yint < minY || yint >= maxY || !inROI(xint, yint, roiIter, roiContainsTile)) {
+                        /* Fill with a background color. */
+                        if (setBackground) {
+                            for (int b = 0; b < dstBands; b++) {
+                                data[b][pixelOffset + bandOffsets[b]] = backgroundValues[b];
                             }
                         }
-
-                        data[b][pixelOffset + bandOffsets[b]] = interp.interpolate(samples, xfrac,
-                                yfrac);
+                    } else {
+                        xint -= lpad;
+                        yint -= tpad;
+    
+                        for (int b = 0; b < dstBands; b++) {
+                            for (int j = 0; j < kheight; j++) {
+                                for (int i = 0; i < kwidth; i++) {
+                                    samples[j][i] = iter.getSampleDouble(xint + i, yint + j, b);
+                                }
+                            }
+    
+                            data[b][pixelOffset + bandOffsets[b]] = interp.interpolate(samples, xfrac,
+                                    yfrac);
+                        }
                     }
+    
+                    pixelOffset += pixelStride;
                 }
-
-                pixelOffset += pixelStride;
+            }
+        } finally {
+            if(iter != null) {
+                iter.done();
             }
         }
     }
@@ -1329,15 +1382,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
     private RandomIter getRandomIterator(final PlanarImage src, int leftPad, int rightPad,
             int topPad, int bottomPad, BorderExtender extender) {
-        RandomIter iterSource;
-        if (extender != null) {
-            ImageWorker w = new ImageWorker(src).setRenderingHints(GeoTools.getDefaultHints());
-            RenderedOp op = w.border(leftPad, rightPad, topPad, bottomPad, extender).getRenderedOperation();
-            iterSource = RandomIterFactory.create(op, op.getBounds(), true, true);
-        } else {
-            iterSource = RandomIterFactory.create(src, src.getBounds(), true, true);
-        }
-        return iterSource;
+        return ExtendedRandomIter.getRandomIterator(src, leftPad, rightPad, topPad, bottomPad, extender);
     }
     
     /**

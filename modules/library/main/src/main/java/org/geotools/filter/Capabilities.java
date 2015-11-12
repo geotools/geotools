@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -178,7 +178,7 @@ public class Capabilities {
         SIMPLE_COMPARISONS.addType( PropertyIsGreaterThan.class ); // COMPARE_GREATER_THAN
         SIMPLE_COMPARISONS.addType( PropertyIsGreaterThanOrEqualTo.class ); // COMPARE_GREATER_THAN_EQUAL
         SIMPLE_COMPARISONS.addType( PropertyIsLessThan.class ); // COMPARE_LESS_THAN
-        SIMPLE_COMPARISONS.addType( PropertyIsGreaterThanOrEqualTo.class ); // COMPARE_LESS_THAN_EQUAL
+        SIMPLE_COMPARISONS.addType( PropertyIsLessThanOrEqualTo.class ); // COMPARE_LESS_THAN_EQUAL
         SIMPLE_COMPARISONS.addType( PropertyIsNotEqualTo.class ); // COMPARE_NOT_EQUALS;
     }
     public static Capabilities SIMPLE_COMPARISONS_OPENGIS = SIMPLE_COMPARISONS;

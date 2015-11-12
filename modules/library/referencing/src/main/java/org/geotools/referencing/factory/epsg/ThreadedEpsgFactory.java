@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,15 +20,10 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import javax.sql.DataSource;
-import java.util.Iterator;
-import java.util.Comparator;
-import java.util.Collections;
 import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import javax.imageio.spi.ServiceRegistry;
 import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.naming.NoInitialContextException;
 
@@ -41,7 +36,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
-import org.geotools.factory.FactoryRegistry;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
-
-import javax.imageio.spi.ServiceRegistry;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryFinder;
@@ -573,7 +571,7 @@ loop:       for (int i=0; ; i++) {
     /**
      * A filter for factories provided by a given vendor.
      */
-    private static final class VendorFilter implements ServiceRegistry.Filter {
+    private static final class VendorFilter implements FactoryRegistry.Filter {
         /** The vendor to filter. */
         private final String vendor;
 
@@ -630,7 +628,7 @@ loop:       for (int i=0; ; i++) {
     /**
      * A filter for factories provided for a given authority.
      */
-    private static final class AuthorityFilter implements ServiceRegistry.Filter {
+    private static final class AuthorityFilter implements FactoryRegistry.Filter {
         /** The authority to filter. */
         private final String authority;
 

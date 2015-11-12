@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
-
-import javax.imageio.spi.ServiceRegistry;
 
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wfs.WFSDataStore;
@@ -127,7 +126,7 @@ public class WFSExtensions {
                          * Now that we're on the correct classloader lets perform the lookup
                          */
                         Iterator<WFSResponseParserFactory> providers;
-                        providers = ServiceRegistry.lookupProviders(WFSResponseParserFactory.class);
+                        providers = ServiceLoader.load(WFSResponseParserFactory.class).iterator();
                         registry = new HashSet<WFSResponseParserFactory>();
                         while (providers.hasNext()) {
                             WFSResponseParserFactory provider = providers.next();

@@ -62,4 +62,13 @@ public class CapabilitiesTest extends TestCase {
         assertFalse( capabilities.getContents().getScalarCapabilities().hasLogicalOperators() );
         
     }
+    
+    public void testCapablities_PropertyIsLessThanOrEqualTo(){
+        Capabilities capabilities = new Capabilities();
+        capabilities.addAll(Capabilities.SIMPLE_COMPARISONS);
+        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Filter filter = ff.lessOrEqual(ff.property("x"), ff.literal( 2 ) );
+        assertTrue("supports", capabilities.supports( filter ) );
+    }
 }

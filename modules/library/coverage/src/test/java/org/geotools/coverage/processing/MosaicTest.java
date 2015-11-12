@@ -40,6 +40,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
+import javax.media.jai.TileCache;
 
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -75,6 +76,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
+
+import com.sun.media.jai.util.CacheDiagnostics;
+import com.sun.media.jai.util.SunTileCache;
 
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
@@ -181,6 +185,19 @@ public class MosaicTest extends GridProcessingTestBase {
         mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
+    
+    @Test
+    public void testCacheCleanup() {
+        // make sure the tile cache is empty
+        TileCache tc = JAI.getDefaultInstance().getTileCache();
+        tc.flush();
+        
+        testMosaicWithAnotherNoData();
+        
+        // the cleanup was full, no leftovers
+        assertEquals(0, ((CacheDiagnostics) tc).getCacheTileCount());
+        assertEquals(0, ((CacheDiagnostics) tc).getCacheMemoryUsed());
+    }
 
     private GridCoverage2D simpleMosaic(GridCoverage2D coverage1, GridCoverage2D coverage2) {
         /*
@@ -254,6 +271,7 @@ public class MosaicTest extends GridProcessingTestBase {
     
     @Test
     public void testMosaicSimpleWithNullROI() {
+        
         // mosaic the two coverages, one with a ROI, the other with none (used to blow up)
         GridCoverage2D mosaic = simpleMosaic(getCoverageWithFullROI(coverage1), coverage2);
         

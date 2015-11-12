@@ -86,7 +86,6 @@ import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;
 import ucar.ma2.Range;
 import ucar.ma2.Section;
-import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateSystem;
@@ -322,16 +321,17 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
                         int startPagingIndex = 0;
                         final int limit = INTERNAL_INDEX_CREATION_PAGE_SIZE;
-                        final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
+                        final ListFeatureCollection collection = new ListFeatureCollection(
+                                indexSchema);
 
                         int writtenFeatures = 0;
                         while (writtenFeatures < numberOfSlices) {
-                            // Get a bunch of features 
-                            vaAdapter.getFeatures(startPagingIndex, limit, collection);
+                            // Get a bunch of features
+                            vaAdapter.getFeatures(startPagingIndex, limit, collection, variable);
                             if (variableImageStartIndex != 0 || isShared) {
-                                // Need to updated the imageIndex of the features since all indexes 
+                                // Need to updated the imageIndex of the features since all indexes
                                 // are zero based inside each variable but we need to index them inside
-                                // the whole NetCDF dataset. 
+                                // the whole NetCDF dataset.
                                 updateFeaturesIndex(collection, variableImageStartIndex, isShared);
                             }
                             final int features = collection.size();
@@ -654,37 +654,24 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         } catch (InvalidRangeException e) {
             throw netcdfFailure(e);
         }
-    
+
         /*
-         * create the section of multidimensional array indices
-         * that defines the exact data that need to be read 
-         * for this image index and parameters 
+         * create the section of multidimensional array indices that defines the exact data that need to be read for this image index and parameters
          */
         final Section section = new Section(ranges);
-    
+
         /*
          * Setting SampleModel and ColorModel.
          */
-        final SampleModel sampleModel = wrapper.getSampleModel().createCompatibleSampleModel(destWidth, destHeight);
+        final SampleModel sampleModel = wrapper.getSampleModel().createCompatibleSampleModel(
+                destWidth, destHeight);
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
         Hashtable<String, Object> properties = getNoDataProperties(wrapper);
-        final BufferedImage image = new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), properties);
-
-        CoordinateSystem cs = wrapper.variableDS.getCoordinateSystems().get(0);
-        CoordinateAxis axis = georeferencing.isLonLat() ? cs.getLatAxis() : cs.getYaxis();
-        boolean flipYAxis = false;
-        try {
-            Array yAxisStart = axis.read(new Section().appendRange(2));
-            float y1 = yAxisStart.getFloat(0);
-            float y2 = yAxisStart.getFloat(1);
-            if (y2 > y1) {
-                flipYAxis=true;
-            }
-        } catch (InvalidRangeException e) {
-            throw new RuntimeException(e);
-        }
+        final BufferedImage image = new BufferedImage(colorModel, raster,
+                colorModel.isAlphaPremultiplied(), properties);
+        boolean flipYAxis = georeferencing.isNeedsFlipping();
         // Reads the requested sub-region only.
         processImageStarted(imageIndex);
         final int numDstBands = 1;
@@ -694,97 +681,95 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final int ymin = destRegion.y;
         final int xmax = destRegion.width + xmin;
         final int ymax = destRegion.height + ymin;
-        for( int zi = 0; zi < numDstBands; zi++ ) {
+        for (int zi = 0; zi < numDstBands; zi++) {
             // final int srcBand = (srcBands == null) ? zi : srcBands[zi];
             final int dstBand = (dstBands == null) ? zi : dstBands[zi];
-            final Array array;
+            Array array;
             try {
-                // TODO leak through
-                array = wrapper.variableDS.read(section);
+                array = wrapper.read(section);
             } catch (InvalidRangeException e) {
                 throw netcdfFailure(e);
             }
             if (flipYAxis) {
                 final IndexIterator it = array.getIndexIterator();
-                for (int y = ymax; --y >= ymin; ) {
+                for (int y = ymax; --y >= ymin;) {
                     for (int x = xmin; x < xmax; x++) {
                         switch (type) {
-                            case DataBuffer.TYPE_DOUBLE: {
-                                raster.setSample(x, y, dstBand, it.getDoubleNext());
-                                break;
-                            }
-                            case DataBuffer.TYPE_FLOAT: {
-                                raster.setSample(x, y, dstBand, it.getFloatNext());
-                                break;
-                            }
-                            case DataBuffer.TYPE_BYTE: {
-                                byte b = it.getByteNext();
-                                // int myByte = (0x000000FF & ((int) b));
-                                // short anUnsignedByte = (short) myByte;
-                                // raster.setSample(x, y, dstBand, anUnsignedByte);
-                                raster.setSample(x, y, dstBand, b);
-                                break;
-                            }
-                            default: {
-                                raster.setSample(x, y, dstBand, it.getIntNext());
-                                break;
-                            }
+                        case DataBuffer.TYPE_DOUBLE: {
+                            raster.setSample(x, y, dstBand, it.getDoubleNext());
+                            break;
+                        }
+                        case DataBuffer.TYPE_FLOAT: {
+                            raster.setSample(x, y, dstBand, it.getFloatNext());
+                            break;
+                        }
+                        case DataBuffer.TYPE_BYTE: {
+                            byte b = it.getByteNext();
+                            // int myByte = (0x000000FF & ((int) b));
+                            // short anUnsignedByte = (short) myByte;
+                            // raster.setSample(x, y, dstBand, anUnsignedByte);
+                            raster.setSample(x, y, dstBand, b);
+                            break;
+                        }
+                        default: {
+                            raster.setSample(x, y, dstBand, it.getIntNext());
+                            break;
+                        }
                         }
                     }
                 }
             } else {
                 switch (type) {
-                    case DataBuffer.TYPE_DOUBLE: {
-                        DoubleBuffer doubleBuffer = array.getDataAsByteBuffer().asDoubleBuffer();
-                        double[] samples = new double[destRegion.width * destRegion.height];
-                        doubleBuffer.get(samples);
-                        raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand, samples);
-                        break;
-                    }
-                    case DataBuffer.TYPE_FLOAT:
-                        float[] samples = new float[destRegion.width * destRegion.height];
-                        FloatBuffer floatBuffer = array.getDataAsByteBuffer().asFloatBuffer();
-                        floatBuffer.get(samples);
-                        raster.setSamples(xmin,ymin,destRegion.width,destRegion.height,dstBand,samples);
-                        break;
-                    case DataBuffer.TYPE_BYTE:
-                        //THIS ONLY WORKS FOR ONE BAND!!
-                        raster.setDataElements(xmin,ymin,destRegion.width,destRegion.height,array.getDataAsByteBuffer().array());
-                        break;
-                    case DataBuffer.TYPE_INT:
-                        IntBuffer intBuffer = array.getDataAsByteBuffer().asIntBuffer();
-                        int[] intSamples = new int[destRegion.width * destRegion.height];
-                        intBuffer.get(intSamples);
-                        raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand, intSamples);
-                        break;
-                    default: {
-                        final IndexIterator it = array.getIndexIterator();
-                        for (int y = ymin; y < ymax; y++ ) {
-                            for (int x = xmin; x < xmax; x++) {
-                                raster.setSample(x, y, dstBand, it.getIntNext());
-                            }
+                case DataBuffer.TYPE_DOUBLE: {
+                    DoubleBuffer doubleBuffer = array.getDataAsByteBuffer().asDoubleBuffer();
+                    double[] samples = new double[destRegion.width * destRegion.height];
+                    doubleBuffer.get(samples);
+                    raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand,
+                            samples);
+                    break;
+                }
+                case DataBuffer.TYPE_FLOAT:
+                    float[] samples = new float[destRegion.width * destRegion.height];
+                    FloatBuffer floatBuffer = array.getDataAsByteBuffer().asFloatBuffer();
+                    floatBuffer.get(samples);
+                    raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand,
+                            samples);
+                    break;
+                case DataBuffer.TYPE_BYTE:
+                    // THIS ONLY WORKS FOR ONE BAND!!
+                    raster.setDataElements(xmin, ymin, destRegion.width, destRegion.height, array
+                            .getDataAsByteBuffer().array());
+                    break;
+                case DataBuffer.TYPE_INT:
+                    IntBuffer intBuffer = array.getDataAsByteBuffer().asIntBuffer();
+                    int[] intSamples = new int[destRegion.width * destRegion.height];
+                    intBuffer.get(intSamples);
+                    raster.setSamples(xmin, ymin, destRegion.width, destRegion.height, dstBand,
+                            intSamples);
+                    break;
+                default: {
+                    final IndexIterator it = array.getIndexIterator();
+                    for (int y = ymin; y < ymax; y++) {
+                        for (int x = xmin; x < xmax; x++) {
+                            raster.setSample(x, y, dstBand, it.getIntNext());
                         }
-                        break;
                     }
+                    break;
+                }
                 }
             }
             /*
-             * Checks for abort requests after reading. It would be a waste of a
-             * potentially good image (maybe the abort request occurred after we
-             * just finished the reading) if we didn't implemented the
-             * 'isCancel()' method. But because of the later, which is checked
-             * by the NetCDF library, we can't assume that the image is
-             * complete.
+             * Checks for abort requests after reading. It would be a waste of a potentially good image (maybe the abort request occurred after we
+             * just finished the reading) if we didn't implemented the 'isCancel()' method. But because of the later, which is checked by the NetCDF
+             * library, we can't assume that the image is complete.
              */
             if (abortRequested()) {
                 processReadAborted();
                 return image;
             }
             /*
-             * Reports progress here, not in the deeper loop, because the costly
-             * part is the call to 'variable.read(...)' which can't report
-             * progress. The loop that copy pixel values is fast, so reporting
-             * progress there would be pointless.
+             * Reports progress here, not in the deeper loop, because the costly part is the call to 'variable.read(...)' which can't report progress.
+             * The loop that copy pixel values is fast, so reporting progress there would be pointless.
              */
             processImageProgress(zi * toPercent);
         }

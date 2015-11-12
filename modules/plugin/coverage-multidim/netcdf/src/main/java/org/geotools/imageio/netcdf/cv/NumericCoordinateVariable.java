@@ -26,7 +26,6 @@ import org.geotools.util.NumericConverterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import ucar.nc2.Attribute;
-import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis1D;
 
 /**
@@ -76,7 +75,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
     @Override
     public T getMinimum() throws IOException {
         try {
-            return converter.convert(coordinateAxis.getMinValue(), this.binding);
+            return converter.convert(axis.getMinValue(), this.binding);
         } catch (Exception e) {
             throw new IOException(e);
         }
@@ -85,7 +84,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
     @Override
     public T getMaximum() throws IOException {
         try {
-            return converter.convert(coordinateAxis.getMaxValue(), this.binding);
+            return converter.convert(axis.getMaxValue(), this.binding);
         } catch (Exception e) {
             throw new IOException(e);
         }
@@ -93,8 +92,8 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
 
     @Override
     public T read(int index) throws IndexOutOfBoundsException {
-        if (index >= this.coordinateAxis.getSize()) {
-            throw new IndexOutOfBoundsException("index >= " + coordinateAxis.getSize());
+        if (index >= getSize()) {
+            throw new IndexOutOfBoundsException("index >= " + getSize());
         }
         double val = handleValues(index);
         try {
@@ -109,7 +108,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
      * @return
      */
     private double handleValues(int index) {
-        double val = coordinateAxis.getCoordValue(index);
+        double val = axis.getCoordValue(index);
         if (!Double.isNaN(scaleFactor)) {
             val *= scaleFactor;
         }
@@ -136,7 +135,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
 
             @Override
             public int size() {
-                return coordinateAxis.getShape()[0];
+                return axis.getShape()[0];
             }
         };
 
@@ -151,14 +150,14 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         if (this.crs == null) {
             synchronized (this) {
-                final AxisType axisType = coordinateAxis.getAxisType();
-                switch (axisType) {
+                switch (getAxisType()) {
                 case GeoZ:
                 case Height:
                 case Pressure:
                     String axisName = getName();
                     if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(axisName)) {
-                        this.crs = NetCDFCRSUtilities.buildVerticalCrs(coordinateAxis);
+                        this.crs = NetCDFCRSUtilities.buildVerticalCrs(
+                                getFullName(), getName(), getAxisType(), getUnit(), getPositive());
                     }
                     break;
                 }

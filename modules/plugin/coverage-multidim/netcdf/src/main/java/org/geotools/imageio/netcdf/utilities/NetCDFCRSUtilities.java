@@ -223,17 +223,13 @@ public class NetCDFCRSUtilities {
         return false;
     }
 
-    public static VerticalCRS buildVerticalCrs(CoordinateAxis zAxis ) {
+    public static VerticalCRS buildVerticalCrs(String axisName,
+            String shortName, AxisType axisType, String units, String positive) {
         VerticalCRS verticalCRS = null;
         try {
-            if (zAxis != null) {
-                String axisName = zAxis.getFullName();
                 if (!NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(axisName)) {
                     return null;
                 }
-                String units = zAxis.getUnitsString();
-                AxisType axisType = zAxis.getAxisType();
-
                 String v_crsName = "Unknown";
                 String v_datumName = "Unknown";
                 String v_datumType = null;
@@ -242,7 +238,7 @@ public class NetCDFCRSUtilities {
                 if (axisType == AxisType.RadialAzimuth || axisType == AxisType.GeoZ || axisType == AxisType.RadialElevation)
                     v_datumType = "geoidal";
                 else if (axisType == AxisType.Height) {
-                    if (!zAxis.getShortName().equalsIgnoreCase("height")) {
+                    if (!"height".equalsIgnoreCase(shortName)) {
                         v_datumType = "depth";
                         v_crsName = new Identification("mean sea level depth", null, null, "EPSG:5715").getName();
                     } else {
@@ -265,7 +261,7 @@ public class NetCDFCRSUtilities {
                  */
                 String direction = DIRECTIONS.get(axisType);
                 if (direction != null) {
-                    if (CF.POSITIVE_DOWN.equalsIgnoreCase(zAxis.getPositive())) {
+                    if (CF.POSITIVE_DOWN.equalsIgnoreCase(positive)) {
                         direction = OPPOSITES.get(axisType);
                     }
                     final int offset = units.lastIndexOf('_');
@@ -283,7 +279,7 @@ public class NetCDFCRSUtilities {
                 }
                 final Map<String, String> csMap = Collections.singletonMap("name", "vertical_CS");
                 VerticalCS verticalCS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCSFactory().createVerticalCS(csMap,
-                        getAxis(zAxis.getShortName(), getDirection(direction), units));
+                        getAxis(shortName, getDirection(direction), units));
 
                 // Creating the Vertical Datum
                 final Map<String, String> datumMap = Collections.singletonMap("name", v_datumName);
@@ -292,7 +288,6 @@ public class NetCDFCRSUtilities {
 
                 final Map<String, String> crsMap = Collections.singletonMap("name", v_crsName);
                 verticalCRS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCRSFactory().createVerticalCRS(crsMap, verticalDatum, verticalCS);
-            }
         } catch (FactoryException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to parse vertical CRS", e);
@@ -301,92 +296,107 @@ public class NetCDFCRSUtilities {
         return verticalCRS;
     }
 
-    public static TemporalCRS buildTemporalCrs( CoordinateAxis timeAxis ) {
-        String t_datumName = new Identification("ISO8601", null, null, null).getName();
+    public static VerticalCRS buildVerticalCrs (CoordinateAxis axis) {
+        VerticalCRS verticalCRS = null;
+        if (axis != null) {
+            verticalCRS = buildVerticalCrs(axis.getFullName(), axis.getShortName(), 
+                axis.getAxisType(), axis.getUnitsString(), axis.getPositive());
+        }
+        return verticalCRS;
+    }
+
+    public static TemporalCRS buildTemporalCrs(CoordinateAxis axis) {
         TemporalCRS temporalCRS = null;
+        if (axis != null) {
+            temporalCRS = buildTemporalCrs(axis.getShortName(), axis.getAxisType(),
+                    axis.getUnitsString(), axis.getPositive(), axis.findAttribute("time_origin"));
+        }
+        return temporalCRS;
+    }
+
+    public static TemporalCRS buildTemporalCrs(String axisName, AxisType type, String units,
+            String positive, Attribute attribute) {
+        TemporalCRS temporalCRS = null;
+        String t_datumName = new Identification("ISO8601", null, null, null).getName();
+
         try {
-            if (timeAxis != null) {
-                AxisType type = timeAxis.getAxisType();
-                String units = timeAxis.getUnitsString();
-
-                /*
-                 * Gets the axis direction, taking in account the possible reversal or
-                 * vertical axis. Note that geographic and projected
-                 * CoordinateReferenceSystem have the same directions. We can
-                 * distinguish them either using the ISO CoordinateReferenceSystem type
-                 * ("geographic" or "projected"), the ISO CS type ("ellipsoidal" or
-                 * "cartesian") or the units ("degrees" or "m").
-                 */
-                String direction = DIRECTIONS.get(type);
-                if (direction != null) {
-                    if (CF.POSITIVE_DOWN.equalsIgnoreCase(timeAxis.getPositive())) {
-                        direction = OPPOSITES.get(type);
+            /*
+             * Gets the axis direction, taking in account the possible reversal or vertical axis. Note that geographic and projected
+             * CoordinateReferenceSystem have the same directions. We can distinguish them either using the ISO CoordinateReferenceSystem type
+             * ("geographic" or "projected"), the ISO CS type ("ellipsoidal" or "cartesian") or the units ("degrees" or "m").
+             */
+            String direction = DIRECTIONS.get(type);
+            if (direction != null) {
+                if (CF.POSITIVE_DOWN.equalsIgnoreCase(positive)) {
+                    direction = OPPOSITES.get(type);
+                }
+                final int offset = units.lastIndexOf('_');
+                if (offset >= 0) {
+                    final String unitsDirection = units.substring(offset + 1).trim();
+                    final String opposite = OPPOSITES.get(type);
+                    if (unitsDirection.equalsIgnoreCase(opposite)) {
+                        // TODO WARNING: INCONSISTENT AXIS ORIENTATION
+                        direction = opposite;
                     }
-                    final int offset = units.lastIndexOf('_');
-                    if (offset >= 0) {
-                        final String unitsDirection = units.substring(offset + 1).trim();
-                        final String opposite = OPPOSITES.get(type);
-                        if (unitsDirection.equalsIgnoreCase(opposite)) {
-                            // TODO WARNING: INCONSISTENT AXIS ORIENTATION
-                            direction = opposite;
-                        }
-                        if (unitsDirection.equalsIgnoreCase(direction)) {
-                            units = units.substring(0, offset).trim();
-                        }
+                    if (unitsDirection.equalsIgnoreCase(direction)) {
+                        units = units.substring(0, offset).trim();
                     }
                 }
-
-                Date epoch = null;
-                String t_originDate = null;
-                if (AxisType.Time.equals(type)) {
-                    String origin = null;
-                    final String[] unitsParts = units.split("(?i)\\s+since\\s+");
-                    if (unitsParts.length == 2) {
-                        units = unitsParts[0].trim();
-                        origin = unitsParts[1].trim();
-                    } else {
-                        final Attribute attribute = timeAxis.findAttribute("time_origin");
-                        if (attribute != null) {
-                            origin = attribute.getStringValue();
-                        }
-                    }
-                    if (origin != null) {
-                        origin = NetCDFTimeUtilities.trimFractionalPart(origin);
-                        // add 0 digits if absent
-                        origin = NetCDFTimeUtilities.checkDateDigits(origin);
-
-                        try {
-                            epoch = (Date) NetCDFUtilities.getAxisFormat(type, origin).parseObject(origin);
-                            GregorianCalendar cal = new GregorianCalendar();
-                            cal.setTime(epoch);
-                            DefaultInstant instant = new DefaultInstant(new DefaultPosition(cal.getTime()));
-                            t_originDate = instant.getPosition().getDateTime().toString();
-                        } catch (ParseException e) {
-                            throw new IllegalArgumentException(e);
-                            // TODO: Change the handle this exception
-                        }
-                    }
-                }
-
-                String axisName = timeAxis.getShortName();
-
-                String t_csName = "time_CS";
-                final Map<String, String> csMap = Collections.singletonMap("name", t_csName);
-                final TimeCS timeCS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCSFactory().createTimeCS(csMap, getAxis(axisName, getDirection(direction), units));
-
-                // Creating the Temporal Datum
-                if (t_datumName == null) {
-                    t_datumName = "Unknown";
-                }
-                final Map<String, String> datumMap = Collections.singletonMap("name", t_datumName);
-                final Position timeOrigin = new DefaultPosition(new SimpleInternationalString(t_originDate));
-                final TemporalDatum temporalDatum = NetCDFCRSUtilities.FACTORY_CONTAINER.getDatumFactory().createTemporalDatum(datumMap, timeOrigin.getDate());
-
-                // Finally creating the Temporal CoordinateReferenceSystem
-                String crsName = "time_CRS";
-                final Map<String, String> crsMap = Collections.singletonMap("name", crsName);
-                temporalCRS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCRSFactory().createTemporalCRS(crsMap, temporalDatum, timeCS);
             }
+
+            Date epoch = null;
+            String t_originDate = null;
+            if (AxisType.Time.equals(type)) {
+                String origin = null;
+                final String[] unitsParts = units.split("(?i)\\s+since\\s+");
+                if (unitsParts.length == 2) {
+                    units = unitsParts[0].trim();
+                    origin = unitsParts[1].trim();
+                } else {
+                    if (attribute != null) {
+                        origin = attribute.getStringValue();
+                    }
+                }
+                if (origin != null) {
+                    origin = NetCDFTimeUtilities.trimFractionalPart(origin);
+                    // add 0 digits if absent
+                    origin = NetCDFTimeUtilities.checkDateDigits(origin);
+
+                    try {
+                        epoch = (Date) NetCDFUtilities.getAxisFormat(type, origin).parseObject(
+                                origin);
+                        GregorianCalendar cal = new GregorianCalendar();
+                        cal.setTime(epoch);
+                        DefaultInstant instant = new DefaultInstant(new DefaultPosition(
+                                cal.getTime()));
+                        t_originDate = instant.getPosition().getDateTime().toString();
+                    } catch (ParseException e) {
+                        throw new IllegalArgumentException(e);
+                        // TODO: Change the handle this exception
+                    }
+                }
+            }
+
+            String t_csName = "time_CS";
+            final Map<String, String> csMap = Collections.singletonMap("name", t_csName);
+            final TimeCS timeCS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCSFactory().createTimeCS(
+                    csMap, getAxis(axisName, getDirection(direction), units));
+
+            // Creating the Temporal Datum
+            if (t_datumName == null) {
+                t_datumName = "Unknown";
+            }
+            final Map<String, String> datumMap = Collections.singletonMap("name", t_datumName);
+            final Position timeOrigin = new DefaultPosition(new SimpleInternationalString(
+                    t_originDate));
+            final TemporalDatum temporalDatum = NetCDFCRSUtilities.FACTORY_CONTAINER
+                    .getDatumFactory().createTemporalDatum(datumMap, timeOrigin.getDate());
+
+            // Finally creating the Temporal CoordinateReferenceSystem
+            String crsName = "time_CRS";
+            final Map<String, String> crsMap = Collections.singletonMap("name", crsName);
+            temporalCRS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCRSFactory().createTemporalCRS(
+                    crsMap, temporalDatum, timeCS);
         } catch (FactoryException e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, "Unable to parse temporal CRS", e);

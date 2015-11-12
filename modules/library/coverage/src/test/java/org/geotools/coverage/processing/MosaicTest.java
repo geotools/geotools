@@ -16,8 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
@@ -36,6 +35,7 @@ import javax.imageio.ImageIO;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.TileCache;
 
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -70,6 +70,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
+
+import com.sun.media.jai.util.CacheDiagnostics;
+
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 /**
  * This class tests the {@link Mosaic} operation. The tests ensures that the final {@link GridCoverage2D} created contains the union of the input
@@ -165,6 +170,27 @@ public class MosaicTest extends GridProcessingTestBase {
     // Simple test which mosaics two input coverages without any additional parameter
     @Test
     public void testMosaicSimple() {
+        GridCoverage2D mosaic = simpleMosaic(coverage1, coverage2);
+
+        // Coverage and RenderedImage disposal
+        mosaic.dispose(true);
+        disposeCoveragePlanarImage(mosaic);
+    }
+    
+    @Test
+    public void testCacheCleanup() {
+        // make sure the tile cache is empty
+        TileCache tc = JAI.getDefaultInstance().getTileCache();
+        tc.flush();
+        
+        testMosaicWithAnotherNoData();
+        
+        // the cleanup was full, no leftovers
+        assertEquals(0, ((CacheDiagnostics) tc).getCacheTileCount());
+        assertEquals(0, ((CacheDiagnostics) tc).getCacheMemoryUsed());
+    }
+
+    private GridCoverage2D simpleMosaic(GridCoverage2D coverage1, GridCoverage2D coverage2) {
         /*
          * Do the crop without conserving the envelope.
          */
@@ -231,10 +257,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(!layout.isValid(ImageLayout.HEIGHT_MASK));
         Assert.assertTrue(layout.isValid(ImageLayout.TILE_HEIGHT_MASK));
         Assert.assertTrue(layout.isValid(ImageLayout.TILE_WIDTH_MASK));
-
-        // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
-        disposeCoveragePlanarImage(mosaic);
+        return mosaic;
     }
 
     // Simple test which mosaics two input coverages with a different value for the output nodata

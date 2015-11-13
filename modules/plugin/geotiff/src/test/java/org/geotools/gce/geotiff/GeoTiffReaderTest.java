@@ -54,6 +54,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
@@ -68,8 +69,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Projection;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.jaiext.JAIExt;
@@ -350,24 +353,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                     }
 
     				// write and read back
-    				final File destFile = File.createTempFile("test", ".tif",writeDirectory);				
-    				final GeoTiffWriter writer= new GeoTiffWriter(destFile);
-    				writer.write(coverage, null);
-    				writer.dispose();
-    				
-    				// read back
-    				assertTrue(format.accepts(destFile));
-    				reader = new GeoTiffReader(destFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
-    				final GridCoverage2D destCoverage = reader.read(null);
-    				reader.dispose();
-    				
-    				final double eps=XAffineTransform.getScaleX0((AffineTransform)coverage.getGridGeometry().getGridToCRS())*1E-2;
-    				assertTrue("CRS comparison failed:" +o.toString(),CRS.findMathTransform(coverage.getCoordinateReferenceSystem(), destCoverage.getCoordinateReferenceSystem(), true).isIdentity());
-    				assertTrue("CRS comparison failed:" +o.toString(),CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), destCoverage.getCoordinateReferenceSystem()));
-    				assertTrue("GridRange comparison failed:" +o.toString(),coverage.getGridGeometry().getGridRange().equals(destCoverage.getGridGeometry().getGridRange()));
-    				assertTrue("Envelope comparison failed:" +o.toString(),((GeneralEnvelope)coverage.getGridGeometry().getEnvelope()).equals(destCoverage.getGridGeometry().getEnvelope(),eps,false));
-    				coverage.dispose(true);
-    				destCoverage.dispose(true);
+    				writeAndReadBackCheck(coverage, format, writeDirectory, o);
     			}
     
     		} else
@@ -379,6 +365,29 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     
     }
     
+    private void writeAndReadBackCheck(GridCoverage2D coverage, AbstractGridFormat format, File writeDirectory, Object o) throws IOException, FactoryException {
+        final File destFile = File.createTempFile("test", ".tif",writeDirectory);
+        final GeoTiffWriter writer= new GeoTiffWriter(destFile);
+        writer.write(coverage, null);
+        writer.dispose();
+
+        // read back
+        assertTrue(format.accepts(destFile));
+        GeoTiffReader reader = new GeoTiffReader(destFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+        final GridCoverage2D destCoverage = reader.read(null);
+        reader.dispose();
+
+        final double eps=XAffineTransform.getScaleX0((AffineTransform)coverage.getGridGeometry().getGridToCRS())*1E-2;
+        String toString = o.toString();
+        assertTrue("CRS comparison failed:" + toString, CRS.findMathTransform(coverage.getCoordinateReferenceSystem(), destCoverage.getCoordinateReferenceSystem(), true).isIdentity());
+        assertTrue("CRS comparison failed:" + toString, CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), destCoverage.getCoordinateReferenceSystem()));
+        assertTrue("GridRange comparison failed:" + toString, coverage.getGridGeometry().getGridRange().equals(destCoverage.getGridGeometry().getGridRange()));
+        assertTrue("Envelope comparison failed:" + toString,((GeneralEnvelope)coverage.getGridGeometry().getEnvelope()).equals(destCoverage.getGridGeometry().getEnvelope(),eps,false));
+        coverage.dispose(true);
+        destCoverage.dispose(true);
+        
+    }
+
     public void testBandNames() throws Exception {
         final File file = TestData.file(GeoTiffReaderTest.class, "wind.tiff");
         assertNotNull(file);
@@ -687,6 +696,43 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertEquals(51.8182, tiePoints.get(2).getValueAt(1), EPS);
         assertEquals(-83, tiePoints.get(2).getValueAt(3), EPS);
         assertEquals(34, tiePoints.get(2).getValueAt(4), EPS);
+    }
+
+    
+    /**
+     * Test that the reader can read a GeoTIFF with 
+     * Sinusoidal projection
+     */
+    @Test
+    public void testSinusoidalCRS() throws Exception {
+        // Reading file
+        final File file = TestData.file(GeoTiffReaderTest.class, "worldsinus.tif");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        assertTrue(format.accepts(file));
+        AbstractGridCoverage2DReader reader = null;
+        try {
+            reader = format.getReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            GridCoverage2D coverage = reader.read(null);
+
+            CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
+            assertTrue(crs instanceof ProjectedCRS);
+            Projection conversion = ((ProjectedCRS) crs).getConversionFromBase();
+            assertNotNull(conversion);
+
+            MathTransform transform = conversion.getMathTransform();
+            assertNotNull(transform);
+            assertTrue(transform instanceof Sinusoidal);
+            final File writeDirectory = new File(TestData.file(GeoTiffReaderTest.class, "."),
+                    Long.toString(System.currentTimeMillis()));
+            writeDirectory.mkdir();
+            writeAndReadBackCheck(coverage, format, writeDirectory, file);
+
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+
     }
 
     /**

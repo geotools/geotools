@@ -352,7 +352,8 @@ public class GeoTiffIIOMetadataEncoder {
                 replaceAsciiParam(newValue.toString(), currentEntry.getValueOffset(), currentEntry.getValueOffset()+currentLength);
             } else {
                 // now add to the geoascii metatag
-                addGeoAsciiParamsRef(keyID, value.length());
+                // +1 is required in advance since we need to add the pipe which will be encoded.
+                addGeoAsciiParamsRef(keyID, value.length() + 1);
                 
                 // +1 for the '|' character to be appended
                 appendAsciiParam(value);

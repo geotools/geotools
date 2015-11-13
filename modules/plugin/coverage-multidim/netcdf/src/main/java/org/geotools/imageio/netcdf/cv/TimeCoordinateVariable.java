@@ -98,7 +98,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
                 final Calendar cal = new GregorianCalendar();
                 cal.setTime(epoch);
                 cal.setTimeZone(NetCDFTimeUtilities.UTC_TIMEZONE);
-                final double coordValue = axis1D.getCoordValue(timeIndex);
+                final double coordValue = getAxisValue(timeIndex);
                 long vi = (long) Math.floor(coordValue);
                 double vd = coordValue - vi;
                 NetCDFTimeUtilities.addTimeUnit(cal, baseTimeUnits, vi);
@@ -111,6 +111,12 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
             }
             return null;
 
+        }
+
+        private synchronized double getAxisValue(int timeIndex) {
+            // Made it synchronized since axis1D values retrieval
+            // does cached read on its underlying
+            return axis1D.getCoordValue(timeIndex);
         }
 
         public int getNumTimes() {

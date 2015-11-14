@@ -205,16 +205,16 @@ public class FactoryRegistry {
      */
     private static class SubRegistry {
 
-    	private final FactoryRegistry registry;
+        private final FactoryRegistry registry;
 
-    	private final Class<?> category;
+        private final Class<?> category;
 
         // Provider Objects organized by partial ordering
         private final Class<?> cPartiallyOrderedSet;
-    	private final Object poset;
+        private final Object poset;
 
         // Class -> Provider Object of that class
-    	private final Map<Class<?>,Object> map = new HashMap<>();
+        private final Map<Class<?>,Object> map = new HashMap<>();
 
         public SubRegistry(FactoryRegistry registry, Class<?> category) {
             this.registry = registry;
@@ -320,7 +320,7 @@ public class FactoryRegistry {
         }
 
         @SuppressWarnings("unchecked")
-    	public <T> T getServiceProviderByClass(Class<T> providerClass) {
+        public <T> T getServiceProviderByClass(Class<T> providerClass) {
             return (T)map.get(providerClass);
         }
 

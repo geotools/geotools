@@ -114,17 +114,6 @@ class PartiallyOrderedSet<E> extends AbstractSet<E> {
         }
 
         /**
-         * Returns <code>true</code> if an edge exists between this node and the given node.
-         *
-         * @param node a <code>DigraphNode</code>.
-         *
-         * @return <code>true</code> if the node is the target of an edge.
-         */
-        public boolean hasEdge(DigraphNode node) {
-            return outNodes.contains(node);
-        }
-
-        /**
          * Removes a directed edge from the graph. The outNodes list of this node is updated
          * and the in-degree of the other node is decremented.
          *
@@ -144,6 +133,7 @@ class PartiallyOrderedSet<E> extends AbstractSet<E> {
         /**
          * Removes this node from the graph, updating neighboring nodes appropriately.
          */
+        @SuppressWarnings("unchecked")
         public void dispose() {
             Object[] inNodesArray = inNodes.toArray();
             for(int i=0; i<inNodesArray.length; i++) {
@@ -306,12 +296,5 @@ class PartiallyOrderedSet<E> extends AbstractSet<E> {
         DigraphNode secondPONode = poNodes.get(second);
 
         return firstPONode.removeEdge(secondPONode) || secondPONode.removeEdge(firstPONode);
-    }
-
-    /**
-     * Returns <code>true</code> if an ordering exists between two nodes.
-     */
-    public boolean hasOrdering(Object preferred, Object other) {
-        return poNodes.get(preferred).hasEdge(poNodes.get(other));
     }
 }

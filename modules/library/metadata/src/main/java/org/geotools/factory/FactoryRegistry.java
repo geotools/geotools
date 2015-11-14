@@ -21,6 +21,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.lang.ref.Reference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.awt.RenderingHints;
 
 import org.geotools.util.Utilities;
@@ -207,7 +210,8 @@ public class FactoryRegistry {
     	private final Class<?> category;
 
         // Provider Objects organized by partial ordering
-    	private final PartiallyOrderedSet<Object> poset = new PartiallyOrderedSet<>();
+        private final Class<?> cPartiallyOrderedSet;
+    	private final Object poset;
 
         // Class -> Provider Object of that class
     	private final Map<Class<?>,Object> map = new HashMap<>();
@@ -215,6 +219,48 @@ public class FactoryRegistry {
         public SubRegistry(FactoryRegistry registry, Class<?> category) {
             this.registry = registry;
             this.category = category;
+            try {
+                this.cPartiallyOrderedSet = Class.forName("javax.imageio.spi.PartiallyOrderedSet");
+                Constructor<?> constructor = cPartiallyOrderedSet.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                this.poset = constructor.newInstance();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
+                    NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
+                throw new FactoryRegistryException("Cannot instantiate PartiallyOrderedSet", e);
+            }
+        }
+        
+        private Object callReflection0(String name) {
+            try {
+                Method m = cPartiallyOrderedSet.getDeclaredMethod(name);
+                m.setAccessible(true);
+                return m.invoke(poset);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException e) {
+                throw new FactoryRegistryException("Cannot invoke PartiallyOrderedSet#" + name, e);
+            }
+        }
+
+        private Object callReflection1(String name, Object arg) {
+            try {
+                Method m = cPartiallyOrderedSet.getDeclaredMethod(name, Object.class);
+                m.setAccessible(true);
+                return m.invoke(poset, arg);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException e) {
+                throw new FactoryRegistryException("Cannot invoke PartiallyOrderedSet#" + name, e);
+            }
+        }
+
+        private boolean callReflection2(String name, Object arg1, Object arg2) {
+            try {
+                Method m = cPartiallyOrderedSet.getDeclaredMethod(name, Object.class, Object.class);
+                m.setAccessible(true);
+                return (boolean) m.invoke(poset, arg1, arg2);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException e) {
+                throw new FactoryRegistryException("Cannot invoke PartiallyOrderedSet#" + name, e);
+            }
         }
 
         public boolean registerServiceProvider(Object provider) {
@@ -225,7 +271,7 @@ public class FactoryRegistry {
                 deregisterServiceProvider(oprovider);
             }
             map.put(provider.getClass(), provider);
-            poset.add(provider);
+            callReflection1("add", provider);
             if (provider instanceof RegisterableService) {
                 ((RegisterableService)provider).onRegistration(registry, category);
             }
@@ -243,7 +289,7 @@ public class FactoryRegistry {
 
             if (provider == oprovider) {
                 map.remove(provider.getClass());
-                poset.remove(provider);
+                callReflection1("remove", provider);
                 if (provider instanceof RegisterableService) {
                     ((RegisterableService)provider).onDeregistration(registry, category);
                 }
@@ -258,16 +304,16 @@ public class FactoryRegistry {
         }
 
         public boolean setOrdering(Object firstProvider, Object secondProvider) {
-            return poset.setOrdering(firstProvider, secondProvider);
+            return callReflection2("setOrdering", firstProvider, secondProvider);
         }
 
         public boolean unsetOrdering(Object firstProvider, Object secondProvider) {
-            return poset.unsetOrdering(firstProvider, secondProvider);
+            return callReflection2("unsetOrdering", firstProvider, secondProvider);
         }
 
         public Iterator getServiceProviders(boolean useOrdering) {
             if (useOrdering) {
-                return poset.iterator();
+                return (Iterator) callReflection0("iterator");
             } else {
                 return map.values().iterator();
             }
@@ -288,7 +334,7 @@ public class FactoryRegistry {
                     ((RegisterableService)provider).onDeregistration(registry, category);
                 }
             }
-            poset.clear();
+            callReflection0("clear");
         }
 
         public void finalize() {

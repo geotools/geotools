@@ -589,6 +589,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             throws IOException {
         Map<String, String> dimensionsMapping = reader.georeferencing.getDimensions();
         Set<String> keys = dimensionsMapping.keySet();
+        if (keys == null || keys.isEmpty()) {
+            return;
+        }
         int indexAttribute = FIRST_ATTRIBUTE_INDEX;
         final AttributeDescriptor attributeDescriptor = indexSchema.getDescriptor(indexAttribute);
         final String updatedAttribute = attributeDescriptor.getLocalName();

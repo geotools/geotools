@@ -932,6 +932,9 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         String schemaAttributes = isShared ? CoverageSlice.Attributes.BASE_SCHEMA_LOCATION : CoverageSlice.Attributes.BASE_SCHEMA;
 
         // check other dimensions
+        String timeAttribute = "";
+        String elevationAttribute = "";
+        String otherAttributes = "";
         for (CoordinateAxis axis:cs.getCoordinateAxes()) {
             // get from coordinate vars
             final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axis.getFullName()); 
@@ -942,14 +945,26 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 continue;
             }
             String name = cv.getName();
+            String typeName = cv.getType().getName();
             switch(cv.getAxisType()){
             case GeoX: case GeoY: case Lat: case Lon:
                 continue;
             case Time:
                 name = uniqueTimeAttribute ? NetCDFUtilities.TIME : name;
+                timeAttribute+= ("," + name + ":" + typeName);
+                break;
+            case Height:
+            case Pressure:
+            case RadialElevation:
+            case RadialDistance:
+            case GeoZ:
+                elevationAttribute+= ("," + name + ":" + typeName);
+                break;
+            default:
+                otherAttributes+=("," + name + ":" + typeName);
             }
-            schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }
+        schemaAttributes+=timeAttribute + elevationAttribute + otherAttributes;
         return schemaAttributes;
     }
 

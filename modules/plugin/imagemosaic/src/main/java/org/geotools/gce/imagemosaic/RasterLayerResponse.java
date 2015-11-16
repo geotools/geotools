@@ -822,13 +822,8 @@ class RasterLayerResponse{
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
             
-            ROI overallROI = mosaicROIs(rois);
-            if (footprintBehavior != FootprintBehavior.None) {
-                // Adding globalRoi to the output
-                RenderedOp rop = (RenderedOp) mosaic;                
-                rop.setProperty("ROI", overallROI);
-            }
-            
+            Object property = mosaic.getProperty("ROI");
+            ROI overallROI = (property instanceof ROI) ? (ROI) property : null; 
             final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI,localHints);
     
             // prepare for next step
@@ -840,38 +835,6 @@ class RasterLayerResponse{
             
         }
 
-        private ROI mosaicROIs(ROI[] inputROIArray) {
-            if (inputROIArray == null || inputROIArray.length == 0) {
-                return null;
-            }
-
-            List<ROI> rois = new ArrayList<ROI>();
-            for (ROI roi : inputROIArray) {
-                if (roi != null) {
-                    rois.add(roi);
-                }
-            }
-
-            int roiCount = rois.size();
-            if (roiCount == 0) {
-                return null;
-            } else if (roiCount == 1) {
-                return rois.get(0);
-            } else {
-                PlanarImage[] images = new PlanarImage[rois.size()];
-                int i = 0;
-                for (ROI roi : rois) {
-                    images[i++] = roi.getAsImage();
-                }
-
-                ROI[] roisArray = rois.toArray(new ROI[rois.size()]);
-                RenderedImage overallROI = new ImageWorker(hints)
-                        .setBackground(new double[] { 0.0 })
-                        .mosaic(images, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
-                                new double[][] { { 1.0 } }, null).getRenderedImage();
-                return new ROI(overallROI);
-            }
-        }
     }
 
     /**

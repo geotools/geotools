@@ -738,6 +738,7 @@ public class GranuleDescriptor {
 
 		ImageInputStream inStream=null;
 		ImageReader reader=null;
+		boolean cleanupInFinally = request.getReadType() != ReadType.JAI_IMAGEREAD;
 		try {
 			//
 			//get info about the raster we have to read
@@ -843,7 +844,13 @@ public class GranuleDescriptor {
 			// take into account the fact that we might also decimate therefore
 			// we cannot just use the crop grid to world but we need to correct
 			// it.
-			final Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection).toRectangle2D().getBounds();
+			Rectangle2D r2d = CRS.transform(cropWorldToGrid, intersection).toRectangle2D();
+			// if we are reading basically nothing, bail out immediately
+			if(r2d.getWidth() < 0.1 || r2d.getHeight() < 0.1) {
+			    cleanupInFinally = true;
+			    return null;
+			}
+            final Rectangle sourceArea = r2d.getBounds();
 			//gutter
 			if(selectedlevel.baseToLevelTransform.isIdentity()){
 			    sourceArea.grow(2, 2);
@@ -1083,11 +1090,11 @@ public class GranuleDescriptor {
 
                 } finally {
                     try {
-                        if (request.getReadType() != ReadType.JAI_IMAGEREAD && inStream != null) {
+                        if (cleanupInFinally && inStream != null) {
                             inStream.close();
                         }
                     } finally {
-                        if (request.getReadType() != ReadType.JAI_IMAGEREAD && reader != null) {
+                        if (cleanupInFinally && reader != null) {
                             reader.dispose();
                         }
                     }

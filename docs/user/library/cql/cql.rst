@@ -5,7 +5,7 @@ The CQL utility class provides a nice front end to produce Filters and Expressio
 
 References:
 
-* `uDig Common Query Language <http://udig.refractions.net/confluence/display/EN/Common+Query+Language>`_ (wiki)
+* `uDig Common Query Language <http://udig.github.io/docs/user/concepts/Constraint%20Query%20Language.html>`_ (User docs)
 
 CQL Utility Class
 ^^^^^^^^^^^^^^^^^

@@ -58,6 +58,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import javax.media.jai.RenderedOp;
 import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
@@ -131,6 +132,7 @@ import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 
@@ -4020,6 +4022,42 @@ public class ImageMosaicReaderTest extends Assert{
 
         // Test the output coverage
         TestUtils.checkCoverage(reader, new GeneralParameterValue[0], "Ignore invalid granule");
+    }
+    
+    @Test
+    public void testReadSingleGranule() throws Exception {
+        final AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+        final ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+        
+        // a bounding box that is matching one tile, while numerically touching the nearby
+        // ones, but with no pixel contribution
+        final double EPS = 1e-6; 
+        ReferencedEnvelope re = new ReferencedEnvelope(9.2428766 - EPS, 12.1395782 + EPS,42.5511689 - EPS, 44.5709679 + EPS, DefaultGeographicCRS.WGS84);
+        final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(0 , 0, 50, 50) , re));
+        
+        // Test the output coverage, should be made of a single granule
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
+        RenderedImage ri = coverage.getRenderedImage();
+        assertEquals(1, getSourceGranules(ri));
+    }
+
+    private int getSourceGranules(RenderedImage ri) {
+        if(ri instanceof RenderedOp) {
+            RenderedOp ro = (RenderedOp) ri;
+            if(ro.getOperationName().startsWith("ImageRead")) {
+                return 1;
+            }
+            
+            int count = 0;
+            for(int i = 0; i < ro.getNumSources(); i++) {
+                count += getSourceGranules(((RenderedOp) ri).getSourceImage(i));
+            }
+            return count;
+        }
+        
+        // bufferedimage and friends
+        return 1;
     }
 
 

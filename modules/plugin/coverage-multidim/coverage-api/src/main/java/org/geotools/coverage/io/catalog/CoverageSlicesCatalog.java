@@ -395,20 +395,27 @@ public class CoverageSlicesCatalog {
                     ((FeatureStore) featureSource).setTransaction(tx);
                 }
                 final SimpleFeatureCollection features = featureSource.getFeatures(q);
-                if (features == null)
+                if (features == null) {
                     throw new NullPointerException(
                             "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
-
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Index Loaded");
+                }
 
                 // load the feature from the underlying datastore as needed
                 it = features.features();
-
-                if (!it.hasNext()) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("The provided SimpleFeatureCollection  or empty, it's impossible to create an index!");
+                if (it == null) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("The provided SimpleFeatureCollection returned a null iterator, it's impossible to create an index!");
+                    }
                     return Collections.emptyList();
+                }
+                if (!it.hasNext()) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("The provided SimpleFeatureCollection is empty, it's impossible to create an index!");
+                    }
+                    return Collections.emptyList();
+                }
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Index Loaded");
                 }
 
                 // getting the features
@@ -431,7 +438,9 @@ public class CoverageSlicesCatalog {
                     returnValue.add(slice);
                 }
             } finally {
-                it.close();
+                if (it != null) {
+                    it.close();
+                }
 
                 if (tx != null) {
                     tx.close();

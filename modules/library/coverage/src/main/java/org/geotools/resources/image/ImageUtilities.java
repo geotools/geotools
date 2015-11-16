@@ -36,6 +36,7 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.WritableRenderedImage;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -43,6 +44,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -56,7 +59,9 @@ import javax.media.jai.JAI;
 import javax.media.jai.OpImage;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.WritableRenderedImageAdapter;
 
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -66,6 +71,7 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 
@@ -95,6 +101,8 @@ public final class ImageUtilities {
     public static final double[][] RGB_TO_GRAY_MATRIX = { { 0.114, 0.587, 0.299, 0 } };
 
     public static final double[][] RGBA_TO_GRAY_MATRIX = { { 0.114, 0.587, 0.299, 0, 0 } };
+    
+    static final Logger LOGGER = Logging.getLogger(ImageUtilities.class);
 
     /**
      * {@code true} if JAI media lib is available.
@@ -1197,7 +1205,6 @@ public final class ImageUtilities {
                         Object source = null;
                         try {
                             source = planarImage.getSourceObject(k);
-
                         } catch (ArrayIndexOutOfBoundsException e) {
                             // Ignore
                         }
@@ -1247,14 +1254,39 @@ public final class ImageUtilities {
                     }
                 }
 
-                if (inputImage instanceof PlanarImage) {
-                    ((PlanarImage) inputImage).dispose();
+                try {
+                    if(planarImage instanceof RenderedImageAdapter) {
+                        cleanField(planarImage, "theImage");
+                    } 
+                    if(planarImage instanceof WritableRenderedImageAdapter) {
+                        cleanField(planarImage, "theWritableImage");
+                    }
+                } catch(NoSuchFieldException | IllegalAccessException e) {
+                    // fine, we tried
+                    LOGGER.log(Level.FINE, "Failed to clear rendered image adapters field to null. "
+                            + "Not a problem per se, but if the finalizer thread is not fast enough, this might result in a OOM", e);
                 }
+                
+                planarImage.dispose();
             } else if (inputImage instanceof BufferedImage) {
                 ((BufferedImage) inputImage).flush();
                 inputImage = null;
             }
         }
+    }
+
+    /**
+     * Helper that cleans up a field
+     * @param theObject
+     * @param fieldName
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    private static void cleanField(Object theObject, String fieldName)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field f = theObject.getClass().getDeclaredField(fieldName); 
+        f.setAccessible(true);
+        f.set(theObject, null);
     }
     /**
      * Transform a data type into a representative {@link String}.

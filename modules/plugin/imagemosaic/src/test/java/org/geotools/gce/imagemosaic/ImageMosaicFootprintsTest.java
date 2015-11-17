@@ -65,6 +65,7 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -556,6 +557,41 @@ public class ImageMosaicFootprintsTest {
         coverage.evaluate(new DirectPosition2D(8, 45), pixel);
         assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
         disposeCoverage(coverage);
+    }
+    
+    @Test
+    public void testFootprintA() throws IOException {
+        ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormatFactory().createFormat()
+                .getReader(TestData.file(this,"footprint_a"));
+        
+        GeneralParameterValue[] params = new GeneralParameterValue[1];
+        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+                .createValue();
+        footprintManagement.setValue(FootprintBehavior.Transparent.name());
+        params[0] = footprintManagement;
+        
+        GridCoverage2D coverage = reader.read(params);
+        
+        byte[] result = new byte[4];
+        DirectPosition2D position = new DirectPosition2D();
+        position.setLocation(1, 1);
+        coverage.evaluate(position, result);
+        
+        //RGBA
+        assertEquals(4, coverage.getSampleDimensions().length);
+        
+        //Transparent
+        assertEquals(0, result[3]);
+        
+        position = new DirectPosition2D();
+        position.setLocation(-1, -1);
+        coverage.evaluate(position, result);
+        
+        //Blue
+        assertEquals(0, result[0]);
+        assertEquals(0, result[1]);
+        assertTrue(0 != result[2]);
+        assertTrue(0 != result[3]);
     }
 
     @Test

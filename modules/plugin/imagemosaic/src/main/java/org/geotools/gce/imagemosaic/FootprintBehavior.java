@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
@@ -61,7 +60,7 @@ public enum FootprintBehavior {
             // do we already have a alpha band in the input image?
             if (imageWorker.getRenderedImage().getColorModel().hasAlpha()) {
                 // if so we reuse it applying the ROI on top of it
-                RenderedImage alpha = imageWorker.retainLastBand().getRenderedImage();
+                RenderedImage alpha = new ImageWorker(imageWorker.getRenderedImage()).retainLastBand().getRenderedImage();
                 RenderedImage maskedAlpha = new ImageWorker(hints).
                         mosaic(
                         new RenderedImage[] {alpha}, 
@@ -70,7 +69,7 @@ public enum FootprintBehavior {
                         new ROI[] {overallROI}, 
                         null, 
                         null).getRenderedImage();
-
+                
                 imageWorker.retainBands(mosaic.getColorModel().getNumColorComponents());
                 imageWorker.addBand(maskedAlpha, false, true, null);
             } else {

@@ -2916,6 +2916,29 @@ public class ImageWorker {
     }
 
     /**
+     * Takes two rendered or renderable source images, and myltiply form each pixel the related value of the second image, each one from each source
+     * image of the corresponding position and band. See JAI {@link MultiplyDescriptor} for details.
+     * 
+     * @param renderedImage the {@link RenderedImage} to be multiplied to this {@link ImageWorker}.
+     * @return this {@link ImageWorker}.
+     * 
+     * @see MultiplyDescriptor
+     */
+    public final ImageWorker multiply(RenderedImage renderedImage) {
+        ParameterBlock pb = new ParameterBlock();
+        pb.setSource(image, 0);
+        pb.setSource(renderedImage, 1);
+        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
+            prepareAlgebricOperation(Operator.MULTIPLY, pb, roi, nodata, true);
+            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        } else {
+            image = JAI.create("Multiply", pb, getRenderingHints());
+        }
+        invalidateStatistics();
+        return this;
+    }
+
+    /**
      * Takes one rendered or renderable image and an array of integer constants, and performs a bit-wise logical "xor" between every pixel in the same
      * band of the source and the constant from the corresponding array entry. See JAI {@link XorConstDescriptor} for details.
      * 

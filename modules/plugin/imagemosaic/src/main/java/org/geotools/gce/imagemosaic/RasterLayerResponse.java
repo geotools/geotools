@@ -31,6 +31,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -47,6 +48,7 @@ import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.measure.unit.Unit;
 import javax.media.jai.BorderExtender;
@@ -800,7 +802,17 @@ class RasterLayerResponse{
                 alphas[i] = mosaicElement.alphaChannel;
                 rois[i] = mosaicElement.roi;
                 pams[i] = mosaicElement.pamDataset;
-
+                
+                //If we have an alpha, mask it by the ROI
+                if (alphas[i] != null && rois[i] != null) {
+                    //Get ROI as image, fix color space
+                    ImageWorker roi = new ImageWorker(rois[i].getAsImage());
+                    roi.forceComponentColorModel();
+                    ImageWorker alpha = new ImageWorker(alphas[i]);
+                    alpha.multiply(roi.getRenderedImage());
+                    
+                    alphas[i] =  alpha.getPlanarImage();
+                }
                 // compose the overall ROI if needed
                 if (mosaicElement.roi != null) {
                     realROIs++;

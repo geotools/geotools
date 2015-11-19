@@ -11,7 +11,7 @@ an CoordinateReferenceSystem) and then use it to perform a number
 
 References:
 
-* http://udig.refractions.net/files/tutorials/ToolPluginTutorial.pdf
+* http://udig.github.io/docs/dev/tool_plugin_tutorial.html
 
 Distance
 ^^^^^^^^

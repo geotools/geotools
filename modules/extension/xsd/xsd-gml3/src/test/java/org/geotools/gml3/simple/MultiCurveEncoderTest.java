@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
 
     public void testEncodeMultiCompound() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml");
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", true);
         Geometry geometry = new WKTReader2()
                 .read("MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
         Document doc = encode(encoder, geometry);
@@ -63,8 +63,8 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                         doc));
     }
 
-    public void testEncodeMulti() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml");
+    public void testEncodeMultiCurve() throws Exception {
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", true);
         Geometry geometry = new WKTReader2()
                 .read("MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
@@ -89,6 +89,18 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                 xpath.evaluate(
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:ArcString/gml:posList",
                         doc));
+    }
+    
+    public void testEncodeMultiLineString() throws Exception {
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", false);
+        Geometry geometry = new WKTReader2()
+                .read("MULTILINESTRING((105 105, 125 125))");
+        Document doc = encode(encoder, geometry);
+        // XMLTestSupport.print(doc);
+        assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString", doc).getLength());
+        assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString/gml:lineStringMember", doc).getLength());
+        assertEquals("105 105 125 125", xpath.evaluate(
+                "//gml:MultiLineString/gml:lineStringMember[1]/gml:LineString/gml:posList", doc));
     }
 
 }

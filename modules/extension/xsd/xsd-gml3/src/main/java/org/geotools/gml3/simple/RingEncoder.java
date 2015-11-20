@@ -36,7 +36,7 @@ public class RingEncoder extends MultiLineStringEncoder {
     private QualifiedName ring;
 
     protected RingEncoder(Encoder e, String gmlPrefix) {
-        super(e, gmlPrefix);
+        super(e, gmlPrefix, true);
         this.ring = RING.derive(gmlPrefix);
     }
 

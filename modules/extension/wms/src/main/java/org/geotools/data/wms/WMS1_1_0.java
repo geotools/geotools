@@ -86,8 +86,18 @@ public class WMS1_1_0 extends WMS1_0_0 {
     public GetLegendGraphicRequest createGetLegendGraphicRequest( URL onlineResource) {
         return new InternalGetLegendGraphicRequest(onlineResource, this);
     }
-
-
+    
+    public GetStylesRequest createGetStylesRequest( URL onlineResource, Layer[] layers ) throws UnsupportedOperationException {
+        return new InternalGetStylesRequest(onlineResource, layers);
+    }
+    
+    /**
+     * @see org.geotools.data.wms.WMS1_0_0#createPutStylesRequest(java.net.URL)
+     */
+    public PutStylesRequest createPutStylesRequest( URL onlineResource) throws UnsupportedOperationException {
+        return new InternalPutStylesRequest(onlineResource);
+    }
+    
 	public static class GetCapsRequest extends WMS1_0_0.GetCapsRequest {
 
 		public GetCapsRequest(URL urlGetCapabilities) {
@@ -162,7 +172,6 @@ public class WMS1_1_0 extends WMS1_0_0 {
         protected void initVersion() {
             setProperty("VERSION", "1.1.0");
         }
-
         protected String processKey (String key ) {
             return key.trim().toUpperCase();
         }
@@ -203,12 +212,47 @@ public class WMS1_1_0 extends WMS1_0_0 {
         protected void initVersion() {
             setProperty(VERSION, "1.1.0");
         }
-
-
+        
         public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
 			return new GetLegendGraphicResponse(httpResponse);
 		}	    
 	}
 	
+	public static class InternalGetStylesRequest extends AbstractGetStylesRequest {
+
+        /**
+         * @param onlineResource
+         * @param layers
+         */
+        public InternalGetStylesRequest( URL onlineResource, Layer[] layers ) {
+            super(onlineResource, layers);
+        }
+
+        /* (non-Javadoc)
+         * @see org.geotools.data.wms.request.AbstractGetStylesRequest#initVersion()
+         */
+        protected void initVersion() {
+            setProperty(VERSION, "1.1.0");
+        }
+	    
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+			return new GetStylesResponse(httpResponse);
+		}
+	}
+	
+	public static class InternalPutStylesRequest extends AbstractPutStylesRequest {
+
+        public InternalPutStylesRequest( URL onlineResource ) {
+            super(onlineResource, null);
+        }
+
+        protected void initVersion() {
+            setProperty(VERSION, "1.1.0");            
+        }
+	    
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+			return new PutStylesResponse(httpResponse);
+		}
+	}
 
 }

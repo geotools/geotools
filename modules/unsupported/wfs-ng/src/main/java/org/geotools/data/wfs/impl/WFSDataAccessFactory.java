@@ -531,6 +531,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         http.setPassword(config.getPassword());
         int timeoutMillis = config.getTimeoutMillis();
         http.setConnectTimeout(timeoutMillis / 1000);
+        http.setReadTimeout(timeoutMillis / 1000);
 
         final URL capabilitiesURL = (URL)URL.lookUp(params);
 

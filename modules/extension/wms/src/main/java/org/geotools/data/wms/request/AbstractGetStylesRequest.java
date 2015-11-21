@@ -17,7 +17,6 @@
 package org.geotools.data.wms.request;
 
 import java.net.URL;
-import java.util.Properties;
 
 import org.geotools.data.ows.Layer;
 
@@ -35,10 +34,11 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest implem
 
     /**
      * @param onlineResource
-     * @param properties
+     * @param layers
      */
-    public AbstractGetStylesRequest( URL onlineResource, Properties properties ) {
-        super(onlineResource, properties);
+    public AbstractGetStylesRequest( URL onlineResource, Layer[] layers) {
+        super(onlineResource, null);
+        this.layers = layers;
     }
     
     protected void initRequest() {

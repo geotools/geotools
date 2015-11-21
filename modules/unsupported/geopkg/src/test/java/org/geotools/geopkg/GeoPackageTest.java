@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -56,15 +56,6 @@ import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.image.WorldImageReader;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geopkg.Entry;
-import org.geotools.geopkg.FeatureEntry;
-import org.geotools.geopkg.Features;
-import org.geotools.geopkg.GeoPackage;
-import org.geotools.geopkg.RasterEntry;
-import org.geotools.geopkg.Tile;
-import org.geotools.geopkg.TileEntry;
-import org.geotools.geopkg.TileMatrix;
-import org.geotools.geopkg.TileReader;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.sql.SqlUtil;
@@ -431,7 +422,7 @@ public class GeoPackageTest {
         tx.commit();
         tx.close();
         w.close();
-        
+
         //create spatial index
         geopkg.createSpatialIndex(entry);
                 
@@ -452,7 +443,7 @@ public class GeoPackageTest {
         tx.commit();
         tx.close();
         w.close();
-        
+
         it.close();
         
         //test if the index was properly created

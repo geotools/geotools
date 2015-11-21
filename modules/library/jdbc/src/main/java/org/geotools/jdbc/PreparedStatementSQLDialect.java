@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -57,16 +57,34 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * wrap the geometry placeholder in the function. The default implementationg
      * just appends the default placeholder: '?'.
      * </p>
-     * @param g The geometry value.
+     * @param gClass The geometry class.
      * @param srid The spatial reference system of the geometry, or -1 if unknown
      * @param dimension The dimensions (2,3,4) of the coordinates, or -1 if unknown
      * @param binding The class of the geometry.
      * @param sql The prepared sql statement buffer. 
      */
-    public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding, StringBuffer sql ) {
+    public void prepareGeometryValue(Class<? extends Geometry> gClass, int dimension, int srid, Class binding,
+                                     StringBuffer sql ) {
         sql.append( "?" );
     }
-    
+
+    /**
+     * Prepares the geometry value for a prepared statement.
+     * <p>
+     * This method should be overridden if the implementation needs to
+     * wrap the geometry placeholder in the function. The default implementationg
+     * just appends the default placeholder: '?'.
+     * </p>
+     * @param g The geometry value.
+     * @param srid The spatial reference system of the geometry, or -1 if unknown
+     * @param dimension The dimensions (2,3,4) of the coordinates, or -1 if unknown
+     * @param binding The class of the geometry.
+     * @param sql The prepared sql statement buffer.
+     */
+    public final void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding, StringBuffer sql ) {
+        prepareGeometryValue(g == null ? null : g.getClass(), dimension, srid, binding, sql);
+    }
+
     /**
      * Prepares a function argument for a prepared statement.
      * 

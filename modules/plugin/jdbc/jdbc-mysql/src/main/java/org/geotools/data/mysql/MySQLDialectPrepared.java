@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -187,14 +187,13 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
     // prepared statement api
     //
     @Override
-    public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding,
+    public void prepareGeometryValue(Class<? extends Geometry> gClass, int dimension, int srid, Class binding,
             StringBuffer sql) {
-        if ( g != null ) {
+        if ( gClass != null ) {
             sql.append( "GeomFromWKB(?)");
-            //sql.append( "GeomFromText(?)");            
         }
         else {
-            super.prepareGeometryValue(g, dimension, srid, binding, sql);
+            super.prepareGeometryValue(gClass, dimension, srid, binding, sql);
         }
     }
     

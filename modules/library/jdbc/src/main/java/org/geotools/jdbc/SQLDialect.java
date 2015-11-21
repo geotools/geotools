@@ -1154,7 +1154,17 @@ public abstract class SQLDialect {
         throws SQLException {
         return null;
     }
-    
+
+    /**
+     * Encodes how to get the next sequence value from the DB.
+     * <p>
+     * Implementations should handle the case where <tt>schemaName</tt> is <code>null</code>.
+     * </p>
+     */
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return null;
+    }
+
     /**
      * Returns true if this dialect can encode both {@linkplain Query#getStartIndex()}
      * and {@linkplain Query#getMaxFeatures()} into native SQL. 

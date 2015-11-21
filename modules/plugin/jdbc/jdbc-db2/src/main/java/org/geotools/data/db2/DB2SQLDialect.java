@@ -575,12 +575,8 @@ public class DB2SQLDialect extends SQLDialect  {
     public Object getNextSequenceValue(String schemaName, String sequenceName,
             Connection cx) throws SQLException {
     	
-    	StringBuffer sql = new StringBuffer("SELECT next value for ");
-    	if (schemaName!=null) {
-    		encodeSchemaName(schemaName, sql);
-    		sql.append(".");
-    	}	
-    	encodeTableName(sequenceName, sql);
+    	StringBuilder sql = new StringBuilder("SELECT ");
+        sql.append(encodeNextSequenceValue(schemaName, sequenceName));
     	sql.append( " from sysibm.sysdummy1");
         Statement st = cx.createStatement();
         try {
@@ -599,7 +595,18 @@ public class DB2SQLDialect extends SQLDialect  {
         
     }
 
-	@Override
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        StringBuffer sql = new StringBuffer("next value for ");
+        if (schemaName != null) {
+            encodeSchemaName(schemaName, sql);
+            sql.append(".");
+        }
+        encodeTableName(sequenceName, sql);
+        return sql.toString();
+    }
+
+    @Override
 	public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
 		
 	    return true;

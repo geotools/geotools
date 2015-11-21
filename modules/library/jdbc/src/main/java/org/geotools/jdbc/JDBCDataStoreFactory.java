@@ -95,10 +95,14 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     public static final Param VALIDATECONN = new Param("validate connections", Boolean .class,
             "check connection is alive before using it", false, Boolean.TRUE);
     
-    /** If connections should be validated before using them */
+    /** Number of records read */
     public static final Param FETCHSIZE = new Param("fetch size", Integer.class,
             "number of records read with each iteraction with the dbms", false, 1000);
-    
+
+    /** If different from one, the JDBCInsertFeatureWriter will buffer the features and insert them in batches */
+    public static final Param BATCH_INSERT_SIZE = new Param("Batch insert size", Integer.class,
+            "Number of records inserted in the same batch (default, 1). For optimal performance, set to 100.", false, 1);
+
     /** Maximum amount of time the pool will wait when trying to grab a new connection **/
     public static final Param MAXWAIT = new Param("Connection timeout", Integer.class,
             "number of seconds the connection pool will wait before timing out attempting to get a new connection (default, 20 seconds)", false, 20);
@@ -211,6 +215,11 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         Integer fetchSize = (Integer) FETCHSIZE.lookUp(params);
         if(fetchSize != null && fetchSize > 0)
             dataStore.setFetchSize(fetchSize);
+
+        Integer batchInsertSize = (Integer) BATCH_INSERT_SIZE.lookUp(params);
+        if (batchInsertSize != null && batchInsertSize > 0) {
+            dataStore.setBatchInsertSize(batchInsertSize);
+        }
 
         // namespace
         String namespace = (String) NAMESPACE.lookUp(params);
@@ -343,6 +352,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         parameters.put(MAXCONN.key, MAXCONN);
         parameters.put(MINCONN.key, MINCONN);
         parameters.put(FETCHSIZE.key, FETCHSIZE);
+        parameters.put(BATCH_INSERT_SIZE.key, BATCH_INSERT_SIZE);
         parameters.put(MAXWAIT.key, MAXWAIT);
         if(getValidationQuery() != null)
             parameters.put(VALIDATECONN.key, VALIDATECONN);

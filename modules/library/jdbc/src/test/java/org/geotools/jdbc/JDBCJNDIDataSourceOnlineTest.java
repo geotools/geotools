@@ -72,6 +72,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
         List<String> baseJndiParams = getBaseJNDIParams();
         List<String> jndiParams = getParamKeys(getJNDIStoreFactory());
         assertTrue(jndiParams.contains(JDBCDataStoreFactory.FETCHSIZE.key));
+        assertTrue(jndiParams.contains(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key));
         jndiParams.removeAll(baseJndiParams);
         assertEquals(standardParams, jndiParams);
     }

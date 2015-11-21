@@ -437,7 +437,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      * and connection. Use only if the above are shared with another object that will
      * take care of closing them.
      */
-    protected void cleanup() {
+    protected void cleanup() throws IOException {
         //throw away state
         rs = null;
         st = null;

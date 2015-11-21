@@ -528,6 +528,13 @@ public class TestData {
                 // 1000000.0,
                 // 1000000.0);
                 SeExtent ext = coordref.getXYEnvelope();
+                
+                // This is the extent of all the example test data
+                ext.setMinX(-170);
+                ext.setMaxX(170);
+                ext.setMinY(-80);
+                ext.setMaxY(80);
+
                 layer.setExtent(ext);
                 layer.setCoordRef(coordref);
 

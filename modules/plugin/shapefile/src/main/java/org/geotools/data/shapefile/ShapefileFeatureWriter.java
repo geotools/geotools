@@ -61,9 +61,16 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     
+    /**
+     * Shapefile uses signed integer offsets, so it cannot grow past this size
+     */
     static final long DEFAULT_MAX_SHAPE_SIZE = Integer.MAX_VALUE;
 
-    static final long DEFAULT_MAX_DBF_SIZE = Integer.MAX_VALUE * 2l + 1;
+    /**
+     * Many systems use signed integer offsets to handle the position in a DBF, making
+     * this a safe limit
+     */
+    static final long DEFAULT_MAX_DBF_SIZE = Integer.MAX_VALUE;
 
     // the FeatureReader<SimpleFeatureType, SimpleFeature> to obtain the current Feature from
     protected ShapefileFeatureReader featureReader;

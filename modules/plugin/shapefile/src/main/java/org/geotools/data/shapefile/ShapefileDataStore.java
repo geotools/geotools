@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -116,6 +116,10 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     IndexManager indexManager;
 
     ShapefileSetManager shpManager;
+    
+    long maxShpSize = ShapefileFeatureWriter.DEFAULT_MAX_SHAPE_SIZE;
+    
+    long maxDbfSize = ShapefileFeatureWriter.DEFAULT_MAX_DBF_SIZE;
 
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
@@ -194,6 +198,39 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public void setIndexed(boolean indexed) {
         this.indexed = indexed;
     }
+    
+    /**
+     * The current max shapefile size
+     * @return
+     */
+    long getMaxShpSize() {
+        return maxShpSize;
+    }
+
+    /**
+     * Allows to set the maximum shapefile size (the natural limit of 2GB is used by default)
+     * @param maxShapeSize
+     */
+    void setMaxShpSize(long maxShapeSize) {
+        this.maxShpSize = maxShapeSize;
+    }
+
+    /**
+     * The current max dbf file size
+     * @return
+     */
+    long getMaxDbfSize() {
+        return maxDbfSize;
+    }
+
+    /**
+     * Allows to set the maximum DBF size (the natural limit of 4GB is used by default)
+     * @param maxShpSize
+     */
+    void setMaxDbfSize(long maxDbfSize) {
+        this.maxDbfSize = maxDbfSize;
+    }
+
 
     public SimpleFeatureType getSchema() throws IOException {
         return getSchema(getTypeName());

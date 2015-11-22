@@ -3,7 +3,7 @@ Welcome to uDig Developers
 
 .. sidebar:: uDig
    
-   http://udig.refractions.net/
+   https://www.locationtech.org/projects/technology.udig
    
    .. image:: /images/logo/udig_64.gif
    
@@ -23,9 +23,8 @@ Catalog to allow the application to know when you are obtaining resources, and c
 if your code happens to crash.
 
 References:
-
 * :doc:`/library/main/repository`
-* http://udig.refractions.net/confluence/display/DEV/2+Catalog
+* http://udig.github.io/docs/dev/catalog.html
 
 How do I add stuff
 ------------------

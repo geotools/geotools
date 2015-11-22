@@ -103,4 +103,12 @@ public class JDBCDataStoreTest {
         executorService.awaitTermination(30, TimeUnit.SECONDS);
     }
 
+    @Test(expected=IOException.class)
+    public void testCheckAllInsertedPositive() throws IOException {
+        JDBCDataStore.checkAllInserted(new int[0], 0);
+        JDBCDataStore.checkAllInserted(new int[] {1,1,1}, 3);
+        JDBCDataStore.checkAllInserted(new int[] {3}, 3);
+        JDBCDataStore.checkAllInserted(new int[] {1, 1, 0}, 3);
+    }
 }
+

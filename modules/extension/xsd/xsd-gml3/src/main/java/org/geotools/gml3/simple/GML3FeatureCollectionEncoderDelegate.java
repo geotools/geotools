@@ -25,6 +25,7 @@ import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
@@ -161,7 +162,8 @@ public class GML3FeatureCollectionEncoderDelegate extends
             encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix));
             encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix));
             encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix));
-            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix));
+            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix, false));
+            encoders.put(MultiCurve.class, new MultiLineStringEncoder(encoder, gmlPrefix, true));
             encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix));
             encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix));
             encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix));

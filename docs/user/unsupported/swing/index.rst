@@ -14,7 +14,7 @@ you.
 
 .. tip::
         For a ready-made, fully-featured, extendible desktop GIS application based on
-        GeoTools, see `uDig <http://udig.refractions.net/>`_ which is based on `SWT
+        GeoTools, see `uDig <https://www.locationtech.org/projects/technology.udig>`_ which is based on `SWT
         <http://www.eclipse.org/swt/>`_ rather than Swing.
 
 **Maven**::

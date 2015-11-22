@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Map;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -147,7 +146,12 @@ public class H2DialectBasic extends BasicSQLDialect {
             Connection cx) throws SQLException {
         return delegate.getNextSequenceValue(schemaName, sequenceName, cx);
     }
-    
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();

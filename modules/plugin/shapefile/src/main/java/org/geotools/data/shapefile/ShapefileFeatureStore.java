@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,6 @@
 package org.geotools.data.shapefile;
 
 import java.io.IOException;
-import java.util.Set;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -62,7 +61,7 @@ class ShapefileFeatureStore extends ContentFeatureStore {
 
         ShapefileFeatureReader reader = (ShapefileFeatureReader) delegate
                 .getReaderInternal(Query.ALL);
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        ShapefileFeatureWriter writer;
         ShapefileDataStore ds = getDataStore();
         if(ds.indexManager.hasFidIndex(false) || ds.isFidIndexed() && ds.indexManager.hasFidIndex(true)) {
             writer = new IndexedShapefileFeatureWriter(ds.indexManager, reader, ds.getCharset(), ds.getTimeZone());
@@ -70,6 +69,8 @@ class ShapefileFeatureStore extends ContentFeatureStore {
             writer = new ShapefileFeatureWriter(delegate.shpFiles, reader, ds.getCharset(), 
                     ds.getTimeZone());
         }
+        writer.setMaxShpSize(getDataStore().getMaxShpSize());
+        writer.setMaxDbfSize(getDataStore().getMaxDbfSize());
 
         // if we only have to add move to the end.
         // TODO: just make the code transfer the bytes in bulk instead and start actual writing at
@@ -84,10 +85,10 @@ class ShapefileFeatureStore extends ContentFeatureStore {
         // but writes down the mall
         Filter filter = query.getFilter();
         if (filter != null && !Filter.INCLUDE.equals(filter)) {
-            writer = new FilteringFeatureWriter(writer, filter);
+            return new FilteringFeatureWriter(writer, filter);
+        } else {
+            return writer;
         }
-
-        return writer;
     }
 
     // ----------------------------------------------------------------------------------------

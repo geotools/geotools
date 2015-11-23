@@ -38,8 +38,14 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
     public static final Param DATA_PATH = new Param("data_path", String.class, "Data path (for testing)", false);
     
+    public static final Param SCROLL_ENABLED = new Param("scroll_enabled", Boolean.class, "Scroll enabled", false, false);
+    
+    public static final Param SCROLL_SIZE = new Param("scroll_size", Long.class, "Scroll size (Optional)", false, 20);
+
+    public static final Param SCROLL_TIME_SECONDS = new Param("scroll_time", Integer.class, "Time to keep the scroll open in seconds (Optional)", false, 120);
+    
     protected static final Param[] PARAMS = {
-        HOSTNAME, HOSTPORT, INDEX_NAME, SEARCH_INDICES, CLUSTERNAME, LOCAL_NODE, STORE_DATA
+        HOSTNAME, HOSTPORT, INDEX_NAME, SEARCH_INDICES, CLUSTERNAME, LOCAL_NODE, STORE_DATA, SCROLL_SIZE, SCROLL_TIME_SECONDS, SCROLL_ENABLED
     };
     
     protected static final String DISPLAY_NAME = "Elasticsearch";
@@ -99,8 +105,19 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         final Boolean storeData = (Boolean) getValue(STORE_DATA, params);
         final Boolean localNode = (Boolean) getValue(LOCAL_NODE, params);
         final String dataPath = (String) getValue(DATA_PATH, params);
+        final Long scrollSize;
+        if (getValue(SCROLL_SIZE, params) instanceof Integer) {
+        	scrollSize = ((Integer)getValue(SCROLL_SIZE, params)).longValue();
+        } else {
+        	scrollSize = (Long)getValue(SCROLL_SIZE, params);
+        }        
+        final Boolean scrollEnabled = (Boolean)getValue(SCROLL_ENABLED, params);
+        
+        final Integer scrollTime = (Integer)getValue(SCROLL_TIME_SECONDS, params);
+        
         return new ElasticDataStore(searchHost, hostPort, indexName, searchIndices, 
-                clusterName, localNode, storeData, dataPath);
+                clusterName, localNode, storeData, dataPath, scrollSize, scrollTime,
+                scrollEnabled);
     }
 
     @Override

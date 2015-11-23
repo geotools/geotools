@@ -49,12 +49,14 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
@@ -77,6 +79,8 @@ public abstract class ElasticTestSupport {
 
     protected static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
+    protected static int numShards = 5;
+    
     protected String layerName = "active";
 
     protected int SOURCE_SRID = 4326;
@@ -88,7 +92,13 @@ public abstract class ElasticTestSupport {
     protected static String dataPath;
     
     protected static int port;
+    
+    protected static boolean scrollEnabled;
+    
+    protected static long scrollSize;
 
+    protected static int activeNumShards;
+    
     protected ElasticFeatureSource featureSource;
 
     protected static ElasticDataStore dataStore;
@@ -104,6 +114,8 @@ public abstract class ElasticTestSupport {
         properties.load(inputStream);
         indexName = properties.getProperty("index_name");
         clusterName = properties.getProperty("cluster_name");
+        scrollEnabled = Boolean.valueOf(properties.getProperty("scroll_enabled"));
+        scrollSize = Long.valueOf(properties.getProperty("scroll_size"));
 
         if (node == null || node.isClosed()) {
             connect();
@@ -138,7 +150,11 @@ public abstract class ElasticTestSupport {
         Client client = node.client();
 
         // create index and add mappings
+        Settings indexSettings = ImmutableSettings.settingsBuilder()
+                .put("number_of_shards", numShards)
+                .build();
         CreateIndexRequestBuilder builder = client.admin().indices().prepareCreate(indexName);
+        builder.setSettings(indexSettings);
         try (Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream(ACTIVE_MAPPINGS_FILE))) {
             s.useDelimiter("\\A");
             builder.addMapping("active", s.next());
@@ -186,6 +202,8 @@ public abstract class ElasticTestSupport {
         params.put(ElasticDataStoreFactory.INDEX_NAME.key, indexName);
         params.put(ElasticDataStoreFactory.CLUSTERNAME.key, clusterName);
         params.put(ElasticDataStoreFactory.DATA_PATH.key, dataPath);
+        params.put(ElasticDataStoreFactory.SCROLL_ENABLED.key, scrollEnabled);
+        params.put(ElasticDataStoreFactory.SCROLL_SIZE.key, scrollSize);
         return params;
     }
 
@@ -230,4 +248,17 @@ public abstract class ElasticTestSupport {
     protected Period period(String d1, String d2) throws ParseException {
         return new DefaultPeriod(instant(d1), instant(d2));
     }
+    
+    protected List<SimpleFeature> readFeatures(SimpleFeatureIterator iterator) {
+        final List<SimpleFeature> features = new ArrayList<>();
+        try {
+            while (iterator.hasNext()) {
+                features.add(iterator.next());
+            }
+        } finally {
+            iterator.close();
+        }
+        return features;
+    }
+
 }

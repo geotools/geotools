@@ -45,13 +45,22 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
     private ElasticParserUtil parserUtil;
 
     public ElasticFeatureReader(ContentState contentState, SearchResponse response) {
-        state = contentState;
-        featureType = state.getFeatureType();
-        searchHitIterator = response.getHits().iterator();
-        builder = new SimpleFeatureBuilder(featureType);
-        parserUtil = new ElasticParserUtil();
-        maxScore = response.getHits().getMaxScore();
+    	this.state = contentState;
+    	this.featureType = state.getFeatureType();
+    	this.searchHitIterator = response.getHits().iterator();
+    	this.builder = new SimpleFeatureBuilder(featureType);
+    	this.parserUtil = new ElasticParserUtil();
+    	this.maxScore = response.getHits().getMaxScore();
     }
+    
+    public ElasticFeatureReader(ContentState contentState, Iterator<SearchHit> searchHitIterator) {
+    	this.state = contentState;
+        this.featureType = state.getFeatureType();
+        this.searchHitIterator = searchHitIterator;
+        this.builder = new SimpleFeatureBuilder(featureType);
+        this.parserUtil = new ElasticParserUtil();
+        this.maxScore = 0;
+    }    
 
     @Override
     public SimpleFeatureType getFeatureType() {
@@ -69,7 +78,7 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
         final Float score;
         final Float relativeScore;
-        if (!Float.isNaN(hit.getScore())) {
+        if (!Float.isNaN(hit.getScore()) && maxScore>0) {
             score = hit.getScore();
             relativeScore = score / maxScore;
         } else {

@@ -17,11 +17,15 @@
 
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.geotools.data.Query;
@@ -29,6 +33,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -56,6 +61,12 @@ import org.opengis.filter.spatial.BBOX;
 
 public class ElasticFeatureSourceTest extends ElasticTestSupport {
 
+    @After
+    public void tearDown() {
+        dataStore.setScrollEnabled(scrollEnabled);
+        dataStore.setScrollSize(scrollSize);
+    }
+    
     @Test
     public void testSchema() throws Exception {
         init();
@@ -491,6 +502,64 @@ public class ElasticFeatureSourceTest extends ElasticTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(8, features.size());
     }
+    
+    @Test
+    public void testScrollSizesDoesntChangesOutputSize() throws Exception {
+        init();
+        Long intialScrollSize = dataStore.getScrollSize();
+        dataStore.setScrollSize(3l);
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsGreaterThan f = ff.greater(ff.property("nested.parent.child"), ff.literal("ba"));
+        List<SimpleFeature> features = readFeatures(featureSource.getFeatures(f).features());
+        assertEquals(8, features.size());
+        dataStore.setScrollSize(intialScrollSize);       
+    }  
+    
+    @Test
+    public void testScrollTimeDoesntChangesOutputSize() throws Exception {
+        init();
+        Integer initialScrollTime = dataStore.getScrollTime();
+        dataStore.setScrollTime(initialScrollTime * 10);
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsGreaterThan f = ff.greater(ff.property("nested.parent.child"), ff.literal("ba"));
+        List<SimpleFeature> features = readFeatures(featureSource.getFeatures(f).features());
+        assertEquals(8, features.size());
+        dataStore.setScrollTime(initialScrollTime);       
+    }      
+    
+    @Test
+    public void testScrollEnabledDoesntChangesOutputSize() throws Exception {
+        init();
+        dataStore.setScrollEnabled(true);
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsGreaterThan f = ff.greater(ff.property("nested.parent.child"), ff.literal("ba"));
+        List<SimpleFeature> features = readFeatures(featureSource.getFeatures(f).features());
+        assertEquals(8, features.size());
+        dataStore.setScrollEnabled(scrollEnabled);       
+    }     
+    
+    @Test
+    public void testScrollHonorsMaxFeatures() throws Exception {
+        init();
+        dataStore.setScrollSize(1l);
+        Query q = new Query();
+        q.setMaxFeatures(7);
+        List<SimpleFeature> features = readFeatures(featureSource.getFeatures(q).features());
+        assertEquals(7, features.size());
+    }      
+    
+    @Test(expected=NoSuchElementException.class)
+    public void testScrollNoSuchElement() throws Exception {
+        init();
+        dataStore.setScrollSize(1l);
+        Query q = new Query();
+        q.setMaxFeatures(1);
+        SimpleFeatureIterator it = featureSource.getFeatures(q).features();
+        assertTrue(it.hasNext());
+        it.next();
+        assertTrue(!it.hasNext());
+        it.next();
+    }      
 
     void assertCovered(SimpleFeatureCollection features, Integer... ids) {
         assertEquals(ids.length, features.size());
@@ -502,6 +571,6 @@ public class ElasticFeatureSourceTest extends ElasticTestSupport {
             s.remove(Integer.parseInt(f.getAttribute("id").toString()));
         }
         assertTrue(s.isEmpty());
-    }
+    }      
 
 }

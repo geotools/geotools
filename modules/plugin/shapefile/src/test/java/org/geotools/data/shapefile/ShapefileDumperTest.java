@@ -184,12 +184,26 @@ public class ShapefileDumperTest {
     }
 
     @Test
+    public void testEmptyCollectionAllowNoDump() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(BASIC_POLYGONS)
+                .subCollection(Filter.EXCLUDE);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.setEmptyShapefileAllowed(false);
+        assertFalse(dumper.dump(fc));
+        assertEquals(0, dumperFolder.list().length);
+    }
+    
+    @Test
     public void testEmptyCollection() throws Exception {
         SimpleFeatureCollection fc = getFeaturesFromProperties(BASIC_POLYGONS)
                 .subCollection(Filter.EXCLUDE);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
         assertFalse(dumper.dump(fc));
-        assertEquals(0, dumperFolder.list().length);
+        
+        SimpleFeatureCollection actual = getFeaturesFromShapefile(BASIC_POLYGONS);
+        assertEquals(0, actual.size());
+        assertFieldsNotEmpty(actual);
+        checkTypeStructure(actual.getSchema(), MultiPolygon.class, "ID");
     }
 
     @Test
@@ -199,8 +213,22 @@ public class ShapefileDumperTest {
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
         assertFalse(dumper.dump(fc));
 
+        SimpleFeatureCollection allTypes = getFeaturesFromShapefile("AllTypes");
+        assertEquals(0, allTypes.size());
+        checkTypeStructure(allTypes.getSchema(), Point.class, "name");
+    }
+    
+    @Test
+    public void testEmptyMultipleTypesAllowNoDump() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(ALL_TYPES)
+                .subCollection(Filter.EXCLUDE);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.setEmptyShapefileAllowed(false);
+        assertFalse(dumper.dump(fc));
+
         assertEquals(0, dumperFolder.list().length);
     }
+
     
     @Test(expected = ShapefileSizeException.class)
     public void testImpossibleMaxShpSize() throws Exception {
@@ -226,7 +254,6 @@ public class ShapefileDumperTest {
         dumper.setMaxDbfSize(500);
         dumper.dump(fc);
         
-        System.out.println(Arrays.asList(dumperFolder.list()));
         testBasicPolygonCollection(1, BASIC_POLYGONS);
         testBasicPolygonCollection(1, BASIC_POLYGONS + "1");
         testBasicPolygonCollection(1, BASIC_POLYGONS + "2");

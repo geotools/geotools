@@ -117,6 +117,8 @@ public class ShapefileDumper {
     long maxShpSize = ShapefileFeatureWriter.DEFAULT_MAX_SHAPE_SIZE;
 
     long maxDbfSize = ShapefileFeatureWriter.DEFAULT_MAX_DBF_SIZE;
+    
+    boolean emptyShapefileAllowed = true;
 
     Charset charset = (Charset) ShapefileDataStoreFactory.DBFCHARSET.getDefaultValue();
 
@@ -173,14 +175,30 @@ public class ShapefileDumper {
     public void setCharset(Charset charset) {
         this.charset = charset;
     }
+    
+    /**
+     * Returns true if empty shpaefile dumping is allowed (true by default)
+     * @return
+     */
+    public boolean isEmptyShapefileAllowed() {
+        return emptyShapefileAllowed;
+    }
+
+    /**
+     * Settings this flag to false will avoid empty shapefiles to be created
+     * @param emptyShapefileAllowed
+     */
+    public void setEmptyShapefileAllowed(boolean emptyShapefileAllowed) {
+        this.emptyShapefileAllowed = emptyShapefileAllowed;
+    }
 
     /**
      * Dumps the collection into one or more shapefiles. Multiple files will be geneated when
      * the input collection contains multiple geometry types, or as the size limit for output files
      * get reached
      * 
-     * @param fc
-     * @return
+     * @param fc The input feature collection
+     * @return True if at least one feature got written, false otherwise
      * @throws IOException
      */
     public boolean dump(SimpleFeatureCollection fc) throws IOException {
@@ -195,7 +213,7 @@ public class ShapefileDumper {
         SimpleFeatureType schema = fc.getSchema();
 
         Map<Class, StoreWriter> writers = new HashMap<Class, StoreWriter>();
-        boolean shapefileCreated = false;
+        boolean featuresWritten = false;
         Class geomType = schema.getGeometryDescriptor().getType().getBinding();
         boolean multiWriter = GeometryCollection.class.equals(geomType)
                 || Geometry.class.equals(geomType);
@@ -213,8 +231,19 @@ public class ShapefileDumper {
                     storeWriter.nextWriter();
                     writeToShapefile(f, storeWriter.writer);
                 }
-                shapefileCreated = true;
+                featuresWritten = true;
             }
+            
+            // force writing out a empty shapefile if required
+            if(!featuresWritten && emptyShapefileAllowed) {
+                if(multiWriter) {
+                    // force the dump of a point file
+                    getStoreWriter(fc.getSchema(), writers, true, Point.class, null);
+                } else {
+                    getStoreWriter(fc.getSchema(), writers, false, geomType, null);
+                }
+            }
+            
         } catch (ShapefileSizeException e) {
             throw e;
         } catch (IOException ioe) {
@@ -243,8 +272,10 @@ public class ShapefileDumper {
                 throw new IOException(stored);
             }
         }
+        
+        
 
-        return shapefileCreated;
+        return featuresWritten;
     }
 
     private void writeToShapefile(SimpleFeature f,
@@ -373,11 +404,16 @@ public class ShapefileDumper {
             geometryType = "Geometry";
         }
 
+        return getStoreWriter(f.getFeatureType(), writers, multiWriter, target, geometryType);
+    }
+
+    private StoreWriter getStoreWriter(SimpleFeatureType original, Map<Class, StoreWriter> writers,
+            boolean multiWriter, Class<?> target, String geometryType)
+                    throws MalformedURLException, FileNotFoundException, IOException {
         // see if we already have a cached writer
         StoreWriter storeWriter = writers.get(target);
         if (storeWriter == null) {
             // retype the schema
-            SimpleFeatureType original = f.getFeatureType();
             SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
             for (AttributeDescriptor d : original.getAttributeDescriptors()) {
                 if (Geometry.class.isAssignableFrom(d.getType().getBinding()) && multiWriter) {
@@ -393,9 +429,9 @@ public class ShapefileDumper {
             // we need to associate the geometry type to the file name only if we can have be multiple types
             String fileName;
             if (multiWriter) {
-                fileName = getShapeName(f.getFeatureType(), geometryType);
+                fileName = getShapeName(original, geometryType);
             } else {
-                fileName = getShapeName(f.getFeatureType(), null);
+                fileName = getShapeName(original, null);
             }
             builder.setName(fileName);
 

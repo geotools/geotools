@@ -169,30 +169,29 @@ public class ElasticParserUtil {
             final Object latObj = properties.get("lat");
             final Object lonObj = properties.get("lon");
             if (latObj != null && lonObj != null) {
-                Double lat, lon;
+                final Double lat;
                 if (latObj instanceof Double) {
                     lat = (Double)latObj;
+                } else if (latObj instanceof String) {
+                    lat = new Double((String)latObj);
                 } else {
-                    if (latObj instanceof String) {
-                            lat = new Double((String)latObj);
-                    } else {
-                        lat = null;
-                    }
+                    lat = null;
                 }
+
+                final Double lon;
                 if (lonObj instanceof Double) {
                     lon = (Double)lonObj;
+                } else if (lonObj instanceof String) {
+                    lon = new Double((String)lonObj);
                 } else {
-                    if (lonObj instanceof String) {
-                        lon = new Double((String)lonObj);
-                    } else {
-                        lon = null;
-                    }
+                    lon = null;
                 }
+
                 if (lat != null && lon != null) {
                     geometry = geometryFactory.createPoint(new Coordinate(lon,lat));
                 } else {
                     geometry = null;
-                    }
+                }
             } else {
                 geometry = null;
             }

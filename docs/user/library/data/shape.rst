@@ -147,7 +147,7 @@ structural bridging work to the ``ShapefileDumper`` class.
 
 In particular, given one or more feature collections, the dumper will:
 
-* Reduce attribute names to the DFB accepted length, making sure there are not conflicts (counters being added at the end of the attribute name to handle this).
+* Reduce attribute names to the DBF accepted length, making sure there are not conflicts (counters being added at the end of the attribute name to handle this).
 * Fan out multiple geometry type into parallel shapefiles, named after the original feature type, plus the geometry type as a suffix.
 * Fan out multiple shapefiles in case the maximum size is reached.
 

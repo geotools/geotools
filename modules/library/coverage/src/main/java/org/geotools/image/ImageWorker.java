@@ -153,6 +153,10 @@ import it.geosolutions.jaiext.stats.Statistics.StatsType;
  * @author Martin Desruisseaux
  */
 public class ImageWorker {
+    private static final double[] ROI_BACKGROUND = new double[] {0};
+
+    private static final double[][] ROI_THRESHOLDS = new double[][] {{1.0}};
+
     private static final String OPERATION_CONST_OP_NAME = "operationConst";
 
     private static final String ALGEBRIC_OP_NAME = "algebric";
@@ -4410,10 +4414,12 @@ public class ImageWorker {
             vectorReference = vectorReference.add(roi);
         }
         
-        // do we have raster ones?
+        // optimization in case we end up with just one ROI, no need to mosaic
         if(rasterROIs.size() == 0) {
             return vectorReference;
-        } 
+        } else if(rasterROIs.size() == 1 && vectorReference == null) {
+            return rasterROIs.get(0);
+        }
         
         // ok, rasterize the vector one if any and mosaic
         ParameterBlock pb = new ParameterBlock();
@@ -4424,6 +4430,11 @@ public class ImageWorker {
             pb.addSource(rasterROI.getAsImage());
         }
         pb.add(javax.media.jai.operator.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+        pb.add(null); // alphas
+        pb.add(null); // ROI (null to avoid double bit -> byte expansion of the ROI data
+        pb.add(ROI_THRESHOLDS);
+        pb.add(ROI_BACKGROUND);
+        pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
         RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
         return new ROI(roiMosaic);
     }

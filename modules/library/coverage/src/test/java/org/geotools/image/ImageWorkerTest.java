@@ -208,10 +208,31 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final int width = 128;
         final int height = 128;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-        final WritableRaster raster =(WritableRaster) image.getData();
+        final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                raster.setSample(x, y, 0, color.getRGB());
+                raster.setSample(x, y, 0, color.getRed());
+                raster.setSample(x, y, 1, color.getGreen());
+                raster.setSample(x, y, 2, color.getBlue());
+            }
+        }
+        return image;
+    } 
+    
+    /**
+     * Creates a test image in RGB with either {@link ComponentColorModel} or {@link DirectColorModel}.
+     * 
+     * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false</code> otherwise.
+     * @return 
+     */
+    private static BufferedImage getSyntheticSolidGray(byte gray) {
+        final int width = 128;
+        final int height = 128;
+        final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        final WritableRaster raster = image.getRaster();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster.setSample(x, y, 0, gray);
             }
         }
         return image;
@@ -1402,6 +1423,18 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         
         BufferedImage blue = getSyntheticRGB(Color.BLUE);
         ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicRasterROI2() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(getSyntheticSolidGray((byte) 1), 1).subtract(new ROIShape(new Rectangle(0, 64, 128, 128))).subtract(new ROIShape(new Rectangle(64, 0, 64, 128)));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
         
         testMosaicRedBlue(red, redROI, blue, blueROI);
     }

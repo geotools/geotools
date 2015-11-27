@@ -59,7 +59,6 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
@@ -1566,4 +1565,18 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertThat(ri.getColorModel(), instanceOf(ComponentColorModel.class));
     }
     
+    @Test
+    public void testForceComponentColorModelIncompletePalette() throws IOException {
+        // small palette, but the image has values above it 
+        BufferedImage bi = getSyntheticGrayIndexed(10);
+        ImageWorker iw = new ImageWorker(bi);
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.forceComponentColorModel();
+        // used to crash here
+        RenderedImage ri = iw.getRenderedImage();
+        int[] pixel = new int[2];
+        ri.getData().getPixel(256, 256, pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(255, pixel[1]);
+    }
 }

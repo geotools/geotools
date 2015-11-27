@@ -1708,7 +1708,7 @@ public class ImageWorker {
 
             switch (datatype) {
             case DataBuffer.TYPE_BYTE: {
-                final byte data[][] = new byte[numDestinationBands][icm.getMapSize()];
+                final byte data[][] = new byte[numDestinationBands][256];
                 icm.getReds(data[0]);
                 if (numDestinationBands >= 2)
                     // remember to optimize for grayscale images
@@ -1720,6 +1720,33 @@ public class ImageWorker {
                     icm.getBlues(data[2]);
                 if (numDestinationBands == 4) {
                     icm.getAlphas(data[3]);
+                }
+                if(icm.getMapSize() < 256) {
+                    Color bgColor = getBackgroundColor();
+                    if(bgColor == null) {
+                        bgColor = Color.BLACK;
+                    }
+                    byte r = (byte) (bgColor.getRed() & 0xFF);
+                    byte g = (byte) (bgColor.getRed() & 0xFF);
+                    byte b  = (byte) (bgColor.getBlue() & 0xFF);
+                    byte a = (byte) (bgColor.getAlpha() & 0xFF);
+                    for (int i = icm.getMapSize(); i < 256; i++) {
+                        data[0][i] = r;
+                        if (numDestinationBands >= 2) {
+                            // remember to optimize for grayscale images
+                            if (!gray) {
+                                data[1][i] = g;
+                            } else {
+                                data[1][i] = a;
+                            }
+                        }
+                        if (numDestinationBands >= 3) {
+                            data[2][i] = b;
+                        }
+                        if (numDestinationBands == 4) {
+                            data[3][i] = a;
+                        }
+                    }
                 }
                 lut = LookupTableFactory.create(data, datatype);
 

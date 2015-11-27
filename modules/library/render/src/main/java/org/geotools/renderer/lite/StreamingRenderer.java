@@ -3196,7 +3196,7 @@ public class StreamingRenderer implements GTRenderer {
      * A request sent to the painting thread 
      * @author aaime
      */
-    abstract class RenderingRequest {
+    protected abstract class RenderingRequest {
         abstract void execute();
     }
     
@@ -3205,7 +3205,7 @@ public class StreamingRenderer implements GTRenderer {
      * @author aaime
      *
      */
-    class PaintShapeRequest extends RenderingRequest {
+    protected class PaintShapeRequest extends RenderingRequest {
         Graphics2D graphic;
         
         LiteShape2 shape;
@@ -3246,7 +3246,7 @@ public class StreamingRenderer implements GTRenderer {
      * @author aaime
      *
      */
-    class FeatureRenderedRequest extends RenderingRequest {
+    protected class FeatureRenderedRequest extends RenderingRequest {
         Object content; 
         
         public FeatureRenderedRequest(Object content) {
@@ -3264,7 +3264,7 @@ public class StreamingRenderer implements GTRenderer {
      * @author aaime
      *
      */
-    class MergeLayersRequest extends RenderingRequest {
+    protected class MergeLayersRequest extends RenderingRequest {
         Graphics2D graphics;
         List<LiteFeatureTypeStyle> lfts;
 
@@ -3302,7 +3302,7 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
     
-    class MargeCompositingGroupRequest extends RenderingRequest {
+    protected class MargeCompositingGroupRequest extends RenderingRequest {
         Graphics2D graphics;
 
         CompositingGroup compositingGroup;
@@ -3339,7 +3339,7 @@ public class StreamingRenderer implements GTRenderer {
      * A request to render a raster
      * @author aaime
      */
-    public class RenderRasterRequest extends RenderingRequest {
+    protected class RenderRasterRequest extends RenderingRequest {
 
         private Graphics2D graphics;
         private boolean disposeCoverage;
@@ -3410,7 +3410,7 @@ public class StreamingRenderer implements GTRenderer {
      * 
      * @author aaime
      */
-    public class RenderCoverageReaderRequest extends RenderingRequest {
+    protected class RenderCoverageReaderRequest extends RenderingRequest {
 
         private Graphics2D graphics;
 
@@ -3480,7 +3480,7 @@ public class StreamingRenderer implements GTRenderer {
 
     }
 
-    class RenderDirectLayerRequest extends RenderingRequest {
+    protected class RenderDirectLayerRequest extends RenderingRequest {
         private final Graphics2D graphics;
         private final DirectLayer layer;
 
@@ -3517,7 +3517,7 @@ public class StreamingRenderer implements GTRenderer {
      * Marks the end of the request flow, instructs the painting thread to exit
      * @author Andrea Aime - OpenGeo
      */
-    class EndRequest extends RenderingRequest {
+    protected class EndRequest extends RenderingRequest {
 
         @Override
         void execute() {
@@ -3557,7 +3557,7 @@ public class StreamingRenderer implements GTRenderer {
                         request.execute();
                     }
                 } catch(InterruptedException e) {
-                    // ok, we might have been interupped to stop processing
+                    // ok, we might have been interrupted to stop processing
                     if(renderingStopRequested) {
                         done = true;
                     }
@@ -3579,7 +3579,8 @@ public class StreamingRenderer implements GTRenderer {
      * @author Andrea Aime - GeoSolutions
      *
      */
-    class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+    public class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+        private static final long serialVersionUID = 4908029658595573833L;
 
         public RenderingBlockingQueue(int capacity) {
             super(capacity);

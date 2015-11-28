@@ -597,10 +597,10 @@ public final class JDBCDataStore extends ContentDataStore
      */
     public Map<Class<?>, Integer> getClassToSqlTypeMappings() {
         if (classToSqlTypeMappings == null) {
-            classToSqlTypeMappings = new HashMap<Class<?>, Integer>();
+            HashMap<Class<?>, Integer> classToSqlTypeMappings = new HashMap<Class<?>, Integer>();
             dialect.registerClassToSqlMappings(classToSqlTypeMappings);
+            this.classToSqlTypeMappings = classToSqlTypeMappings;
         }
-
         return classToSqlTypeMappings;
     }
 

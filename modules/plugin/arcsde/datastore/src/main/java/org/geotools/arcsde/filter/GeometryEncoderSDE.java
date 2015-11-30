@@ -256,30 +256,37 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         }
 
         try {
-            SeShape extent = new SeShape(this.sdeLayer.getCoordRef());
-            extent.generateRectangle(seExtent);
-
-            Geometry layerEnv = gb.construct(extent, new GeometryFactory());
-            geom = geom.intersection(layerEnv); // does the work
-
             // Now make an SeShape
             SeShape filterShape;
 
-            // this is a bit hacky, but I don't yet know this code well enough
-            // to do it right. Basically if the geometry collection is
-            // completely
-            // outside of the area of the layer then an intersection will return
-            // a geometryCollection (two seperate geometries not intersecting
-            // will
-            // be a collection of two). Passing this into GeometryBuilder causes
-            // an exception. So what I did was just look to see if it is a gc
-            // and if so then just make a null seshape, as it shouldn't match
-            // any features in arcsde. -ch
-            if (geom.getClass() == GeometryCollection.class) {
+            if(seExtent.isEmpty() == true)
+            {
+                // The extent of the sdeLayer is uninitialised so create an extent.
+                // If seExtent.isEmpty() == true, when passed to SeShape.generateRectangle()
+                // an exception occurs.
                 filterShape = new SeShape(this.sdeLayer.getCoordRef());
-            } else {
-                gb = ArcSDEGeometryBuilder.builderFor(geom.getClass());
-                filterShape = gb.constructShape(geom, this.sdeLayer.getCoordRef());
+            }
+            else
+            {
+                SeShape extent = new SeShape(this.sdeLayer.getCoordRef());
+                extent.generateRectangle(seExtent);
+
+                // this is a bit hacky, but I don't yet know this code well enough
+                // to do it right. Basically if the geometry collection is
+                // completely
+                // outside of the area of the layer then an intersection will return
+                // a geometryCollection (two seperate geometries not intersecting
+                // will
+                // be a collection of two). Passing this into GeometryBuilder causes
+                // an exception. So what I did was just look to see if it is a gc
+                // and if so then just make a null seshape, as it shouldn't match
+                // any features in arcsde. -ch
+                if (geom.getClass() == GeometryCollection.class) {
+                    filterShape = new SeShape(this.sdeLayer.getCoordRef());
+                } else {
+                    gb = ArcSDEGeometryBuilder.builderFor(geom.getClass());
+                    filterShape = gb.constructShape(geom, this.sdeLayer.getCoordRef());
+                }
             }
             // Add the filter to our list
             SeShapeFilter shapeFilter = new SeShapeFilter(getLayerName(),

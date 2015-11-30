@@ -17,6 +17,7 @@
 
 package mil.nga.giat.data.elasticsearch;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -54,7 +55,9 @@ import org.geotools.feature.NameImpl;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.temporal.Instant;
@@ -103,10 +106,12 @@ public abstract class ElasticTestSupport {
 
     protected static ElasticDataStore dataStore;
 
-    private List<ElasticAttribute> attributes;
+    protected ElasticLayerConfiguration config;
+    
+    protected List<ElasticAttribute> attributes;
     
     private static Node node;
-    
+        
     @BeforeClass
     public static synchronized void suiteSetup() throws Exception {
         Properties properties = new Properties();
@@ -120,16 +125,29 @@ public abstract class ElasticTestSupport {
         if (node == null || node.isClosed()) {
             connect();
         }
-        
-        Map<String,Serializable> params = createConnectionParams();
-        ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
-        dataStore = (ElasticDataStore) factory.createDataStore(params);        
     }
     
     @AfterClass
     public static synchronized void suiteTearDown() throws Exception {
-        dataStore.dispose();
         //node.close();
+    }
+    
+    @Before
+    public void setup() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
+        dataStore = (ElasticDataStore) factory.createDataStore(params);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) { }
+    }
+    
+    @After
+    public void tearDown() {
+        dataStore.dispose();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) { }
     }
 
     private static void connect() throws Exception {
@@ -219,7 +237,7 @@ public abstract class ElasticTestSupport {
     protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
         attributes = dataStore.getElasticAttributes(new NameImpl(this.layerName));
-        ElasticLayerConfiguration config = new ElasticLayerConfiguration(layerName);
+        config = new ElasticLayerConfiguration(layerName);
         List<ElasticAttribute> layerAttributes = new ArrayList<>();
         for (ElasticAttribute attribute : attributes) {
             attribute.setUse(true);

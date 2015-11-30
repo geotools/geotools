@@ -38,14 +38,14 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
     public static final Param DATA_PATH = new Param("data_path", String.class, "Data path (for testing)", false);
     
-    public static final Param SCROLL_ENABLED = new Param("scroll_enabled", Boolean.class, "Scroll enabled", false, false);
+    public static final Param SCROLL_ENABLED = new Param("scroll_enabled", Boolean.class, "Use scan search type instead of dfs_query_then_fetch", false, false);
     
-    public static final Param SCROLL_SIZE = new Param("scroll_size", Long.class, "Scroll size (Optional)", false, 20);
+    public static final Param SCROLL_SIZE = new Param("scroll_size", Long.class, "Scroll size (ignored if scroll_enabled=false)", false, 20);
 
-    public static final Param SCROLL_TIME_SECONDS = new Param("scroll_time", Integer.class, "Time to keep the scroll open in seconds (Optional)", false, 120);
+    public static final Param SCROLL_TIME_SECONDS = new Param("scroll_time", Integer.class, "Time to keep the scroll open in seconds (ignored if scroll_enabled=false)", false, 120);
     
     protected static final Param[] PARAMS = {
-        HOSTNAME, HOSTPORT, INDEX_NAME, SEARCH_INDICES, CLUSTERNAME, LOCAL_NODE, STORE_DATA, SCROLL_SIZE, SCROLL_TIME_SECONDS, SCROLL_ENABLED
+        HOSTNAME, HOSTPORT, INDEX_NAME, SEARCH_INDICES, CLUSTERNAME, LOCAL_NODE, STORE_DATA, SCROLL_ENABLED, SCROLL_SIZE, SCROLL_TIME_SECONDS
     };
     
     protected static final String DISPLAY_NAME = "Elasticsearch";

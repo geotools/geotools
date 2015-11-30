@@ -313,11 +313,14 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             if (attType.getUserData().containsKey(NESTED)) {
                 nested = (Boolean) attType.getUserData().get(NESTED);
             }
+            if (Date.class.isAssignableFrom(context)) {
+                updateDateFormatter(attType);
+            }
         } else {
             //assume it's a string?
             context = String.class;
         }
-
+        
         expr.accept(this, extraData);
         final String key = (String) field;
         lowerbounds.accept(this, context);
@@ -352,18 +355,24 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         String literal = filter.getLiteral();
         Expression att = filter.getExpression();
 
-        att.accept(this, extraData);
-        final String key = (String) field;
-
         AttributeDescriptor attType = (AttributeDescriptor) att.evaluate(featureType);
         boolean analyzed = false;
         boolean nested = false;
-        if (attType != null && attType.getUserData().containsKey(ANALYZED)) {
-            analyzed = (Boolean) attType.getUserData().get(ANALYZED);
+        if (attType != null) {
+            if (attType.getUserData().containsKey(ANALYZED)) {
+                analyzed = (Boolean) attType.getUserData().get(ANALYZED);
+            }
+            if (attType.getUserData().containsKey(NESTED)) {
+                nested = (Boolean) attType.getUserData().get(NESTED);
+            }
+            if (Date.class.isAssignableFrom(attType.getType().getBinding())) {
+                updateDateFormatter(attType);
+            }
         }
-        if (attType != null && attType.getUserData().containsKey(NESTED)) {
-            nested = (Boolean) attType.getUserData().get(NESTED);
-        }
+
+        att.accept(this, extraData);
+        final String key = (String) field;
+        
         if (analyzed) {
             // use query string query post filter for analyzed fields
             String pattern = convertToQueryString(esc, multi, single, matchCase, literal);
@@ -537,30 +546,34 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             throw new UnsupportedOperationException("Binary expressions not supported");
         }
 
+        AttributeDescriptor attType = null;
         Class leftContext = null, rightContext = null;
-        boolean nested = false;
         if (left instanceof PropertyName) {
             // It's a propertyname, we should get the class and pass it in
             // as context to the tree walker.
-            AttributeDescriptor attType = (AttributeDescriptor)left.evaluate(featureType);
+            attType = (AttributeDescriptor)left.evaluate(featureType);
             if (attType != null) {
                 rightContext = attType.getType().getBinding();
-                if (attType.getUserData().containsKey(NESTED)) {
-                    nested = (Boolean) attType.getUserData().get(NESTED);
-                }
             }
         }
         
         if (right instanceof PropertyName) {
-            AttributeDescriptor attType = (AttributeDescriptor)right.evaluate(featureType);
+            attType = (AttributeDescriptor)right.evaluate(featureType);
             if (attType != null) {
                 leftContext = attType.getType().getBinding();
-                if (attType.getUserData().containsKey(NESTED)) {
-                    nested = (Boolean) attType.getUserData().get(NESTED);
-                }
             }
         }
 
+        boolean nested = false;
+        if (attType != null) {
+            if (attType.getUserData().containsKey(NESTED)) {
+                nested = (Boolean) attType.getUserData().get(NESTED);
+            }
+            if (Date.class.isAssignableFrom(attType.getType().getBinding())) {
+                updateDateFormatter(attType);
+            }
+        }
+        
         //case sensitivity
         if ( !filter.isMatchingCase() ) {
             //we only do for = and !=
@@ -750,21 +763,18 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     protected Object visitBinaryTemporalOperator(BinaryTemporalOperator filter, 
             PropertyName property, Literal temporal, boolean swapped, Object extraData) { 
 
-        Class typeContext = null;
         AttributeDescriptor attType = (AttributeDescriptor)property.evaluate(featureType);
-        dateFormatter = DEFAULT_DATE_FORMATTER;
+
+        Class typeContext = null;
         boolean nested = false;
         if (attType != null) {
             typeContext = attType.getType().getBinding();
-            final String format = (String) attType.getUserData().get(DATE_FORMAT);
-            if (format != null) {
-                dateFormatter = Joda.forPattern(format).printer();
-            }
             if (attType.getUserData().containsKey(NESTED)) {
                 nested = (Boolean) attType.getUserData().get(NESTED);
             }
+            updateDateFormatter(attType);
         }
-
+        
         //check for time period
         Period period = null;
         if (temporal.evaluate(null) instanceof Period) {
@@ -1036,9 +1046,6 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      */
     protected void writeLiteral(Object literal) {
         if (Date.class.isAssignableFrom(literal.getClass())) {
-            if (dateFormatter == null) {
-                dateFormatter = DEFAULT_DATE_FORMATTER;
-            }
             field = dateFormatter.print(((Date) literal).getTime());
         } else {
             field = literal;
@@ -1149,6 +1156,16 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(Function function, Object extraData) {
         throw new UnsupportedOperationException("Function support not implemented");
+    }
+    
+    private void updateDateFormatter(AttributeDescriptor attType) {
+        dateFormatter = DEFAULT_DATE_FORMATTER;
+        if (attType != null) {
+            final String format = (String) attType.getUserData().get(DATE_FORMAT);
+            if (format != null) {
+                dateFormatter = Joda.forPattern(format).printer();
+            }
+        }
     }
 
     protected void addViewParams(Query query) {

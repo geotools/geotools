@@ -47,7 +47,7 @@ import org.opengis.filter.Filter;
 import com.vividsolutions.jts.geom.Point;
 
 /**
- * A FeatureCollection that completely delegates to a backing FetaureSource#getReader
+ * A FeatureCollection that completely delegates to a backing FeatureSource#getReader
  * 
  * @author Jody Garnett (Refractions Research, Inc.)
  *
@@ -58,11 +58,42 @@ import com.vividsolutions.jts.geom.Point;
 public class ContentFeatureCollection implements SimpleFeatureCollection {
     
     protected static final Logger LOGGER = Logging.getLogger("org.geotools.data.store");
+    
+    private static final String FEATURE_CACHE_LIMIT_KEY = 
+        "org.geotools.data.store.contentfeaturecollection.cachelimit";
+    
+    /**
+     * Defines the maximum number of cacheable features to avoid in some situations 
+     * successive readings of the data source.
+     * <p>
+     * With a minimun overload of memory, it takes advantage of a previous reading 
+     * of features when the data provider does not support direct count of the 
+     * collection managed (e.g. shapefile stores).
+     * </p>
+     * <p>
+     * It is very useful when the feature store needs to execute costly queries 
+     * and the filter returns empty or one-feature results. In some contexts, 
+     * the WFS requests of GeoServer need to precalculate the size of the 
+     * results, and (e.g. for shapefile stores) the query is executed at 
+     * least twice causing two readings of the data source.
+     * </p>
+     */
+    static int FEATURE_CACHE_LIMIT = 
+        Integer.valueOf(System.getProperty(FEATURE_CACHE_LIMIT_KEY, "16"));
+    
+    /**
+     * Allows to programmatically set the maximum number of cacheable features.
+     */
+    public static void setFeatureCacheLimit(int featureCacheLimit) {
+        FEATURE_CACHE_LIMIT = featureCacheLimit;
+    }
+    
     /**
      * feature store the collection originated from.
      */
     protected ContentFeatureSource featureSource;
     protected Query query;
+    private List<SimpleFeature> featureCache;
     
     /**
      * feature (possibly retyped from feautre source original) type
@@ -168,8 +199,36 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
     
+    static class CachedWrappingFeatureIterator implements SimpleFeatureIterator {
+        
+        private List<SimpleFeature> featureCache;
+        private int featureIndex = 0;
+        
+        public CachedWrappingFeatureIterator(List<SimpleFeature> featureCache) {
+            this.featureCache = featureCache;
+        }
+        
+        @Override
+        public boolean hasNext() {
+            return featureIndex < featureCache.size();
+        }
+        
+        @Override
+        public SimpleFeature next() throws java.util.NoSuchElementException {
+            return featureCache.get(featureIndex++);
+        }
+        
+        @Override
+        public void close() {
+            featureIndex = 0;
+        }
+    }
+    
     public SimpleFeatureIterator features(){
         try {
+            if (featureCache != null) {
+                return new CachedWrappingFeatureIterator( featureCache );
+            }
             return new WrappingFeatureIterator( featureSource.getReader(query) );    
         }
         catch( IOException e ) {
@@ -231,12 +290,17 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
     
     public int size() {
-        FeatureReader<?,?> fr = null;
+        FeatureReader<SimpleFeatureType,SimpleFeature> fr = null;
+        
+        if (featureCache != null) {
+            return featureCache.size();
+        }
+        
         try {
            int size = featureSource.getCount(query);
            if(size >= 0) {
                return size;
-           } else {
+           } else if (FEATURE_CACHE_LIMIT <= 0) {
                // we have to iterate, probably best if we do a minimal query that
                // only loads a short attribute
                AttributeDescriptor chosen = getSmallAttributeInSchema();
@@ -252,6 +316,24 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                while(fr.hasNext()) {
                    fr.next();
                    count++;
+               }
+               return count;
+           } else {
+               // we have to iterate, save to cache for later successive readings of data.
+               List<SimpleFeature> tempFeatureCache = new ArrayList<SimpleFeature>();
+               
+               // bean counting...
+               fr = featureSource.getReader(query);
+               int count = 0;
+               while(fr.hasNext()) {
+                   SimpleFeature feature = fr.next();
+                   if (tempFeatureCache.size() < FEATURE_CACHE_LIMIT) tempFeatureCache.add(feature);
+                   count++;
+               }
+               if (count <= FEATURE_CACHE_LIMIT) {
+                   featureCache = tempFeatureCache;
+               } else {
+                   tempFeatureCache.clear();
                }
                return count;
             }

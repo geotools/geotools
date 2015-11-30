@@ -4,17 +4,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.search.SearchHit;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.store.ContentState;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-        
+    
+    private final static Logger LOGGER = Logging.getLogger(ElasticFeatureReaderScroll.class);
+    
     private final ContentState contentState;
     
     private final int maxFeatures;
@@ -53,6 +57,7 @@ public class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureTy
         delegate = new ElasticFeatureReader(contentState, hits.iterator());
         nextScrollId = searchResponse.getScrollId();
         lastScroll = numHits == 0 || numFeatures+hits.size()>=maxFeatures;
+        LOGGER.fine("Scoll numHits=" + hits.size() + " (total=" + numFeatures+hits.size());
     }
     
     @Override

@@ -17,10 +17,7 @@
 
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,6 +28,7 @@ import java.util.Set;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentEntry;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.After;
@@ -65,6 +63,7 @@ public class ElasticFeatureSourceTest extends ElasticTestSupport {
     public void tearDown() {
         dataStore.setScrollEnabled(scrollEnabled);
         dataStore.setScrollSize(scrollSize);
+        dataStore.setLayerConfiguration(config);
     }
     
     @Test
@@ -78,6 +77,40 @@ public class ElasticFeatureSourceTest extends ElasticTestSupport {
         assertTrue(schema.getDescriptor("geo2") instanceof GeometryDescriptor);
         assertTrue(schema.getDescriptor("geo3") instanceof GeometryDescriptor);
     }
+    
+    @Test
+    public void testSchemaWithoutLayerConfig() throws Exception {
+        init();
+        ElasticFeatureSource featureSource = new ElasticFeatureSource(new ContentEntry(dataStore, new NameImpl("invalid")),null);
+        SimpleFeatureType schema = featureSource.getSchema();        
+        assertNotNull(schema);
+        assertTrue(schema.getAttributeCount()==0);
+    }
+    
+    @Test
+    public void testSchemaWithShortName() throws Exception {
+        init();
+        ElasticLayerConfiguration layerConfig = dataStore.getLayerConfigurations().get("active");
+        for (ElasticAttribute attribute : layerConfig.getAttributes()) {
+            attribute.setUseShortName(true);
+        }
+        SimpleFeatureType schema = featureSource.getSchema();
+        assertNotNull(schema);
+        assertNotNull(schema.getDescriptor("hejda"));
+    }
+//    
+//    @Test
+//    public void testSchemaWithInvalidSrid() throws Exception {
+//        init();
+//        ElasticLayerConfiguration layerConfig = dataStore.getLayerConfigurations().get("active");
+//        for (ElasticAttribute attribute : layerConfig.getAttributes()) {
+//            attribute.setSrid(-1);
+//        }
+//        SimpleFeatureType schema = featureSource.getSchema();
+//        assertNotNull(schema);
+//        assertNull(schema.getGeometryDescriptor());
+//        assertNull(schema.getDescriptor("geo"));
+//    }
 
     @Test
     public void testCount() throws Exception {

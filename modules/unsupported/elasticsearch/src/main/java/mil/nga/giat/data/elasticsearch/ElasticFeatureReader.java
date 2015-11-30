@@ -69,9 +69,6 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
     @Override
     public SimpleFeature next() {
-        if (!searchHitIterator.hasNext()) {
-            return null;
-        }
         final SearchHit hit = searchHitIterator.next();
         final SimpleFeatureType type = getFeatureType();
         final Map<String, Object> source = hit.getSource();

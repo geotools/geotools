@@ -112,6 +112,7 @@ import org.opengis.util.GenericName;
  * @source $URL$
  */
 public class LocalGeoServerOnlineTest extends TestCase {
+
     static private String LOCAL_GEOSERVER = "http://127.0.0.1:8080/geoserver/ows?SERVICE=WMS&";
     static private String LOCAL_LAYERS = "test_shp:TRONCON_ROUTE";
 
@@ -400,17 +401,17 @@ public class LocalGeoServerOnlineTest extends TestCase {
         getMap.setDimensions(500, 500);
         URL url = getMap.getFinalURL();
         
-        GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest( getMap );
+        GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest(getMap);
         getFeatureInfo.setInfoFormat("text/html");
         getFeatureInfo.setQueryLayers( Collections.singleton(layer));
-        getFeatureInfo.setQueryPoint( 75,  100 );
+        getFeatureInfo.setQueryPoint(75, 100);
         URL url2 = getFeatureInfo.getFinalURL();
         
         GetFeatureInfoResponse response = wms.issueRequest(getFeatureInfo);
-        assertEquals("text/html", response.getContentType() );
+        assertEquals("text/html", response.getContentType());
         InputStream stream = response.getInputStream();
         StringBuilderWriter writer = new StringBuilderWriter();
-        IOUtils.copy(stream, writer ); 
+        IOUtils.copy(stream, writer);
         
         String info = writer.toString();
         assertTrue( "response available", !info.isEmpty() );
@@ -455,7 +456,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
             parameters.put(keyValue[0],keyValue[1]);
         }
 
-        assertEquals(4, parameters.size());
+        assertTrue(parameters.size() >= 4);
         assertEquals("WMS", parameters.get("SERVICE"));
         assertEquals("GetStyles", parameters.get("REQUEST"));
         assertEquals("1.1.1", parameters.get("VERSION"));

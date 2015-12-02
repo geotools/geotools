@@ -370,11 +370,52 @@ public class TestData {
                 }
             });
 
-            tempTableColumns = createBaseTable(session, tempTable, tempTableLayer, configKeyword);
+            tempTableColumns = createBaseTable(session, tempTable, tempTableLayer, configKeyword, false);
 
             if (insertTestData) {
                 insertData(tempTableLayer, session, tempTableColumns);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            session.dispose();
+        }
+    }
+
+    /**
+     * Creates an ArcSDE feature type names as <code>getTemp_table()</code> on the underlying
+     * database with no sample values. Sets flag to set an empty extent
+     * 
+     * @throws Exception
+     *             for any error
+     */
+    public void createTempTableEmptyExtent() throws Exception {
+        ISessionPool connPool = getConnectionPool();
+
+        deleteTempTable(connPool);
+
+        ISession session = connPool.getSession();
+
+        try {
+            /*
+             * Create a qualified table name with current user's name and the name of the table to
+             * be created, "EXAMPLE".
+             */
+            final String tableName = getTempTableName(session);
+
+            final SeTable tempTable = session.createSeTable(tableName);
+            final SeLayer tempTableLayer = session.issue(new Command<SeLayer>() {
+                @Override
+                public SeLayer execute(ISession session, SeConnection connection)
+                        throws SeException, IOException {
+                    SeLayer tempTableLayer = new SeLayer(connection);
+                    tempTableLayer.setTableName(tableName);
+                    return tempTableLayer;
+                }
+            });
+
+            tempTableColumns = createBaseTable(session, tempTable, tempTableLayer, configKeyword, true);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -439,7 +480,8 @@ public class TestData {
      * 
      */
     private static SeColumnDefinition[] createBaseTable(final ISession session,
-            final SeTable table, final SeLayer layer, final String configKeyword)
+            final SeTable table, final SeLayer layer, final String configKeyword,
+            final boolean useEmptyExtent)
             throws IOException {
 
         Command<SeColumnDefinition[]> createTableCmd = new Command<SeColumnDefinition[]>() {
@@ -527,14 +569,16 @@ public class TestData {
                 // SeExtent ext = new SeExtent(-1000000.0, -1000000.0,
                 // 1000000.0,
                 // 1000000.0);
-                SeExtent ext = coordref.getXYEnvelope();
-                
-                // This is the extent of all the example test data
-                ext.setMinX(-170);
-                ext.setMaxX(170);
-                ext.setMinY(-80);
-                ext.setMaxY(80);
+                SeExtent ext;
 
+                if(useEmptyExtent)
+                {
+                    ext = new SeExtent();
+                }
+                else
+                {
+                    ext = coordref.getXYEnvelope();
+                }
                 layer.setExtent(ext);
                 layer.setCoordRef(coordref);
 

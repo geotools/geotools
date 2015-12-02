@@ -119,6 +119,8 @@ public class GridCoverageRendererTest  {
 
     private GridCoverage2DReader rainReader;
 
+    private GridCoverage2DReader worldPaletteReader;
+
     private GeoTiffReader worldReader_0_360;
 
     private GeoTiffReader worldRoiReader;
@@ -144,6 +146,10 @@ public class GridCoverageRendererTest  {
         coverageFile = TestData.copy(this, "geotiff/world_0_360.tiff");
         assertTrue(coverageFile.exists());
         worldReader_0_360 = new GeoTiffReader(coverageFile);
+
+        coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
+        assertTrue(coverageFile.exists());
+        worldPaletteReader = new GeoTiffReader(coverageFile);
 
         // grab also the global precipitation
         File file = TestData.copy(this, "arcgrid/arcgrid.zip");
@@ -677,6 +683,23 @@ public class GridCoverageRendererTest  {
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/north_polar.png");
         ImageAssert.assertEquals(reference, image, 40);
+    }
+
+    @Test
+    public void testIndexedWithNoBackground() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
+                -20037508.34, 20037508.34, googleMercator);
+        Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 200));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RenderedImage image = renderer.renderImage(worldPaletteReader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC), null, 256, 256);
+
+        assertNotNull(image);
     }
 
     @Test

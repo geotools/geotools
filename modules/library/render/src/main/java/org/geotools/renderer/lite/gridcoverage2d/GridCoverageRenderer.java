@@ -817,7 +817,7 @@ public final class GridCoverageRenderer {
         double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
         if (!coverages.isEmpty()) {
             ColorModel cm = coverages.get(0).getRenderedImage().getColorModel();
-            if (cm instanceof IndexColorModel) {
+            if (cm instanceof IndexColorModel && background != null) {
                 IndexColorModel icm = (IndexColorModel) cm;
                 int idx = ColorUtilities.findColorIndex(background, icm);
                 if (idx < 0) {

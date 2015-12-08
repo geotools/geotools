@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import java.util.List;
 import java.util.Map;
 
@@ -148,13 +149,14 @@ public class GML32FeatureCollectionEncoderDelegate extends
             encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix));
             encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix));
             encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix));
-            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix, true));
+//            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix));
             encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix));
             encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix));
             encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix));
             encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix));
             encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix));
             encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix));
+            encoders.put(GeometryCollection.class, new GeometryCollectionEncoder(encoder, gmlPrefix) );
         }
 
         @Override

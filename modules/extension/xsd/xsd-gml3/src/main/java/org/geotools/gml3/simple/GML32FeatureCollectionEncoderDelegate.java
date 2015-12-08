@@ -149,7 +149,7 @@ public class GML32FeatureCollectionEncoderDelegate extends
             encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix));
             encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix));
             encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix));
-//            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix));
+            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix, true));
             encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix));
             encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix));
             encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix));

@@ -35,7 +35,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  *
- * @author odie
+ * @author 
  */
 public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
 
@@ -70,22 +70,21 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
         } else if (geometry instanceof Polygon) {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix);
             polygon.encode((Polygon) geometry, atts, handler);
-//        } else if (geometry instanceof MultiLineString) {
-//            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(
-//                encoder,
-//                gmlPrefix);
-//            multiLineString.encode((MultiLineString) geometry, atts, handler);
+        } else if (geometry instanceof MultiLineString) {
+            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(
+                                                        encoder, gmlPrefix, true);
+            multiLineString.encode((MultiLineString) geometry, atts, handler);
         } else if (geometry instanceof MultiPoint) {
             MultiPointEncoder multiPoint = new MultiPointEncoder(encoder,
-                gmlPrefix);
+                                            gmlPrefix);
             multiPoint.encode((MultiPoint) geometry, atts, handler);
         } else if (geometry instanceof MultiPolygon) {
             MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder,
-                gmlPrefix);
+                                                gmlPrefix);
             multiPolygon.encode((MultiPolygon) geometry, atts, handler);
         } else if (geometry instanceof LinearRing) {
             LinearRingEncoder linearRing = new LinearRingEncoder(encoder,
-                gmlPrefix);
+                                                gmlPrefix);
             linearRing.encode((LinearRing) geometry, atts, handler);
         } else if (geometry instanceof CircularString || geometry instanceof CompoundCurve
                         || geometry instanceof CircularRing || geometry instanceof CompoundRing) {

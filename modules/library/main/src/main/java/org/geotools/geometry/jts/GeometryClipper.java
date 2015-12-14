@@ -32,6 +32,9 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.TopologyException;
+import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
 
 /**
  * A stateful geometry clipper, can clip linestring on a specified rectangle. Trivial benchmarks
@@ -73,6 +76,49 @@ public class GeometryClipper {
         this.xmax = bounds.getMaxX();
         this.ymax = bounds.getMaxY();
         this.bounds = bounds;
+    }
+    
+    /**
+     * This will try to handle failures when clipping - i.e. because of invalid input geometries (often 
+     * caused by simplification).
+     * 
+     * This attempts to do a normal clip().  If it fails, it will try to do more to ensure the clip 
+     * works properly.  
+     * 
+     * The first attempt to correct the geometry is to put the points on a precision grid and redo
+     * the clip. 
+     * If this fails, the original geometry is returned.
+     * 
+     * see {@link #clip(Geometry, boolean) clip}
+     * 
+     * @param g
+     * @param ensureValid
+     * @param scale 0=double precision Precision Model
+     * @return
+     */
+    public Geometry clipFailResistant(Geometry g, boolean ensureValid, double scale) {
+        try {
+            return clip(g, ensureValid); 
+        } catch(TopologyException e) {
+            // move the points to a precision grid
+            GeometryPrecisionReducer reducer;
+            if (scale == 0)
+                reducer = new GeometryPrecisionReducer(new PrecisionModel());//double precision model
+            else
+                reducer = new GeometryPrecisionReducer(new PrecisionModel(scale));
+            Geometry reduced = reducer.reduce(g); //this will try to fix problems with the geometry.
+            
+            //if the reducer can not construct a result, then return the unclipped geometry
+            // alternatively, we could try the clip with ensureValid=false
+            if (reduced.isEmpty())
+                return g; 
+            
+            try {
+                return clip(reduced, ensureValid);
+            } catch (Exception e2) {
+                return g;
+            }
+        }
     }
     
     /**

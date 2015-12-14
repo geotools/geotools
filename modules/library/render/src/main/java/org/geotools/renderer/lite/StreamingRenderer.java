@@ -2557,7 +2557,7 @@ public class StreamingRenderer implements GTRenderer {
                     // we need to preserve the topology if we end up applying buffer for perp. offset
                     boolean preserveTopology = style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0 &&
                             (source instanceof Polygon || source instanceof MultiPolygon);
-                    Geometry g = clip(shape.getGeometry(), clipper, preserveTopology);
+                    Geometry g = clipper.clipFailResistant(shape.getGeometry(),  preserveTopology,  1);
                     // handle perpendincular offset as needed
                     if(style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0) {
                         LineStyle2D ls = (LineStyle2D) style;
@@ -2602,22 +2602,6 @@ public class StreamingRenderer implements GTRenderer {
         // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
         if(paintCommands > 0) {
             requests.put(new FeatureRenderedRequest(drawMe.feature));
-        }
-    }
-
-    private Geometry clip(Geometry geometry, final GeometryClipper clipper,
-            boolean preserveTopology) {
-        try {
-            return clipper.clip(geometry, !preserveTopology);
-        } catch(TopologyException e) {
-            // go down to single pixel precision
-            GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(new PrecisionModel(1));
-            Geometry reduced = reducer.reduce(geometry);
-            try {
-                return clipper.clip(reduced, !preserveTopology);
-            } catch (Exception e2) {
-                return geometry;
-            }
         }
     }
 

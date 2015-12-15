@@ -85,9 +85,10 @@ public class GeometryClipper {
      * This attempts to do a normal clip().  If it fails, it will try to do more to ensure the clip 
      * works properly.  
      * 
-     * The first attempt to correct the geometry is to put the points on a precision grid and redo
-     * the clip. 
-     * If this fails, the original geometry is returned.
+     * a) if its a polygon/multipolygon it will try to make the polygon valid and re-try the clip
+     * b) it will attempt to put the geometry on a precision grid (this will move the points around) and re-try the clip
+     * 
+     * Otherwise, it will return the original (unclipped) geometry. 
      * 
      * see {@link #clip(Geometry, boolean) clip}
      * 
@@ -96,28 +97,36 @@ public class GeometryClipper {
      * @param scale 0=double precision Precision Model
      * @return
      */
-    public Geometry clipFailResistant(Geometry g, boolean ensureValid, double scale) {
+    public Geometry tryClip(Geometry g, boolean ensureValid, double scale) {
         try {
             return clip(g, ensureValid); 
-        } catch(TopologyException e) {
-            // move the points to a precision grid
-            GeometryPrecisionReducer reducer;
-            if (scale == 0)
-                reducer = new GeometryPrecisionReducer(new PrecisionModel());//double precision model
-            else
-                reducer = new GeometryPrecisionReducer(new PrecisionModel(scale));
-            Geometry reduced = reducer.reduce(g); //this will try to fix problems with the geometry.
-            
-            //if the reducer can not construct a result, then return the unclipped geometry
-            // alternatively, we could try the clip with ensureValid=false
-            if (reduced.isEmpty())
-                return g; 
+        } catch(TopologyException e) { 
             
             try {
-                return clip(reduced, ensureValid);
-            } catch (Exception e2) {
-                return g;
+                if ( ( (g instanceof Polygon) || (g instanceof MultiPolygon) ) && (!g.isValid()) ) {
+                    //its an invalid Polygon or MultiPolygon.  Use buffer(0) to attempt to fix it
+                    // do not use buffer(0) on points or lines - it returns an empty polygon
+                    return clip(g.buffer(0), ensureValid);
+                }
+            } catch(TopologyException e2) {
+                    // if this fails, continue with other methods
             }
+            
+            try {
+                GeometryPrecisionReducer reducer;
+                if (scale == 0) {
+                    reducer = new GeometryPrecisionReducer(new PrecisionModel());//double precision model
+                } else {
+                    reducer = new GeometryPrecisionReducer(new PrecisionModel(scale));
+                }
+                Geometry reduced = reducer.reduce(g); //this will try to fix problems with the geometry.
+                if (reduced.isEmpty()) { // reducer should have thrown an exception instead of null result!
+                    throw new TopologyException("couldnt put geometry on precision model"); 
+                }
+                return clip(reduced, ensureValid);
+             } catch(TopologyException e3) {
+                    return g; // could try again with ensureValid=false 
+             }                                  
         }
     }
     

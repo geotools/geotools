@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -259,7 +259,7 @@ public class GeometryClipperTest {
          
          clipper = new GeometryClipper(new Envelope(-12, 780.0, -12,  396.0));
          
-         Geometry result = clipper.clipFailResistant(g, true,1); //mimic streaming renderer
+         Geometry result = clipper.tryClip(g, true,1); //mimic streaming renderer
          assertTrue(!result.isEmpty());
          assertTrue(result.getArea() > 0);
     }

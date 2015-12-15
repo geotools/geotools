@@ -135,8 +135,48 @@ public class TemporalConverterFactory implements ConverterFactory {
                 };
             }
             
+            if (Long.class.isAssignableFrom(target)) {
+                return new Converter() {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        Date date = (Date) source;
+                        if (date == null) {
+                            return null;
+                        }
+                        return target.cast(new Long(date.getTime()));
+                    }
+                };
+            }
+            // if ( String.class.equals( target ) ) {
+            // final DateFormat fFormat;
+            // if ( dateFormat != null ) {
+            // fFormat = dateFormat;
+            // }
+            // else {
+            // //create a default
+            // fFormat = DateFormat.getDateInstance();
+            // }
+            //				
+            // return new Converter() {
+            // public Object convert(Object source, Class target) throws Exception {
+            // return fFormat.format( (Date)source );
+            // }
+            // };
+            // }
         }
-
+        
+        if (Long.class.isAssignableFrom(source)) {
+            if (Date.class.isAssignableFrom(target)) {
+                return new Converter() {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        if (source == null) {
+                            return null;
+                        }
+                        return (T) timeMillisToDate( ((Long) source).longValue(), target );
+                    }
+                };
+            }
+        }
+ 
         // this should handle java.util.Calendar to
         // (java.util.Date,java.sql.Timestamp,java.util.Time}
         if (Calendar.class.isAssignableFrom(source)) {

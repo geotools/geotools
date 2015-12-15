@@ -19,13 +19,24 @@ package org.geotools.data.postgis;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.UUID;
+import java.util.Arrays;
+import java.util.Date;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.data.postgis.PostGISDialect.XDate;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.jdbc.JDBCUDTOnlineTest;
 import org.geotools.jdbc.JDBCUDTTestSetup;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsEqualTo;
 
 /**
  * 
@@ -37,6 +48,49 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
     @Override
     protected JDBCUDTTestSetup createTestSetup() {
         return new PostgisUDTTestSetup();
+    }
+
+    public void testBigDates() throws Exception {
+        FeatureWriter w = dataStore.getFeatureWriterAppend(tname("bigdates"), Transaction.AUTO_COMMIT);
+        w.hasNext();
+        
+        SimpleFeature f = (SimpleFeature) w.next();
+        f.setAttribute(aname("d"), new java.util.Date());
+        
+        w.write();
+        w.close();
+        
+        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("bigdates")).getFeatures();
+        SimpleFeatureIterator fi = features.features();
+        while (fi.hasNext()) {
+            SimpleFeature n = fi.next();
+            System.out.println(n.getAttribute("d").getClass());
+        }
+        
+        fi.close();
+        
+        // build query to grab the dimension values
+        final Query dimQuery = new Query( tname("bigdates") );
+        dimQuery.setPropertyNames(Arrays.asList("d"));
+        features = dataStore.getFeatureSource(tname("bigdates")).getFeatures(dimQuery);
+        
+        UniqueVisitor v = new UniqueVisitor("d");
+        features.accepts(v, null);
+        System.out.println(v.getUnique());
+        
+        SimpleFeatureType schema = dataStore.getSchema(tname("bigdates"));
+        SimpleFeatureType newFeatureType = FeatureTypes.newFeatureType(schema.getAttributeDescriptors().toArray(new AttributeDescriptor[0]), "bigdates2");
+        dataStore.createSchema(newFeatureType);
+        schema = dataStore.getSchema(tname("bigdates2"));
+        assertEquals(XDate.class, schema.getType("d").getBinding());
+        
+        // make sure the string query works
+        FilterFactory ff = dataStore.getFilterFactory();
+        // @todo revisit - not sure if string query will ever get passed in this formatting...
+//        PropertyIsEqualTo eq = ff.equals(ff.property("d"), ff.literal(new Date().toString()));
+//        features = dataStore.getFeatureSource(tname("bigdates")).getFeatures(eq);
+//        System.out.println(features.size());
+        
     }
     
     public void testSchema() throws Exception {

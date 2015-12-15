@@ -31,6 +31,8 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
+import java.util.Date;
+import org.geotools.util.Converters;
 
 /**
  * 
@@ -90,6 +92,21 @@ public class PostgisFilterToSQL extends FilterToSQL {
             }
         }
     }
+
+    @Override
+    protected Object evaluateLiteral(Literal expression, Class target) {
+        Date converted = null;
+        if (target == PostGISDialect.XDate.class) {
+            converted = Converters.convert(expression.evaluate(null), Date.class);
+        }
+        if (converted != null) {
+            return converted.getTime();
+        } else {
+            return super.evaluateLiteral(expression, target);
+        }
+    }
+    
+    
 
     @Override
     protected FilterCapabilities createFilterCapabilities() {

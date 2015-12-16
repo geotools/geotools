@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,13 +19,13 @@ package org.geotools.geometry.jts;
 import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.AbstractDirectPosition;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
@@ -52,6 +52,7 @@ import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
+import com.vividsolutions.jts.awt.ShapeReader;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
@@ -64,7 +65,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
@@ -94,6 +95,8 @@ public final class JTS {
      * A pool of direct positions for use in {@link #orthodromicDistance}.
      */
     private static final GeneralDirectPosition[] POSITIONS = new GeneralDirectPosition[4];
+    
+    public static final AffineTransformation Y_INVERSION = new AffineTransformation(1, 0, 0, 0, -1, 0);
 
     static {
         for (int i = 0; i < POSITIONS.length; i++) {
@@ -1591,5 +1594,63 @@ public final class JTS {
         }
 
         return result;
+    }
+    
+    /**
+     * Converts a JTS Envelope into an equivalent {@link Rectangle2D}
+     * @param envelope The source envelope
+     */
+    public static Rectangle2D toRectangle2D(Envelope envelope) {
+        if(envelope == null) {
+            return null;
+        }
+        return new Rectangle2D.Double(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
+    }
+    
+    /**
+     * Converts a AWT {@link Rectangle2D} into a JTS Envelope
+     * @param rectangle The source rectangle
+     */
+    public static Envelope toEnvelope(Rectangle2D rectangle) {
+        if(rectangle == null) {
+            return null;
+        }
+        return new Envelope(rectangle.getMinX(), rectangle.getMaxX(), rectangle.getMinY(), rectangle.getMaxY());
+    }
+    
+    /**
+     * Converts a AWT polygon into a JTS one (unlike {@link toGeometry} which always returns
+     * lines instead)
+     * @return
+     */
+    public static Polygon toPolygon(java.awt.Polygon polygon) {
+        return toPolygonInternal(polygon);
+    }
+    
+    /**
+     * Converts a AWT rectangle into a JTS one (unlike {@link toGeometry} which always returns
+     * lines instead)
+     * @return
+     */
+    public static Polygon toPolygon(java.awt.Rectangle rectangle) {
+        return toPolygonInternal(rectangle);
+    }
+    
+    /**
+     * Converts a AWT rectangle into a JTS one (unlike {@link toGeometry} which always returns
+     * lines instead)
+     * @return
+     */
+    public static Polygon toPolygon(Rectangle2D rectangle) {
+        return toPolygonInternal(rectangle);
+    }
+
+    private static Polygon toPolygonInternal(Shape shape) {
+        Geometry geomROI = null;
+        if(shape != null) {
+            geomROI = ShapeReader.read(shape, 0, new GeometryFactory());
+            geomROI.apply(Y_INVERSION);
+        }
+        return (Polygon) geomROI;
     }
 }

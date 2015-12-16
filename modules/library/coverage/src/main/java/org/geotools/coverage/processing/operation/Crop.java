@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -33,9 +30,9 @@ import java.util.Map;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.coverage.GridSampleDimension;
@@ -51,7 +48,6 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
-import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.iso.citation.Citations;
@@ -65,6 +61,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.coverage.IntersectUtils;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -74,11 +71,11 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -86,6 +83,12 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.prep.PreparedGeometry;
+import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 
 /**
  * The crop operation is responsible for selecting geographic subarea of the
@@ -160,7 +163,7 @@ public class Crop extends Operation2D {
 	private static final long serialVersionUID = 4466072819239413456L;
 
     public static final double EPS = 1E-3;
-
+    
 	private final static GeometryFactory GFACTORY;
 
 	static {
@@ -630,27 +633,20 @@ public class Crop extends Operation2D {
 				if (doMosaic || cropROI != null || internalROI != null || nodata != null) {
 					// prepare the params for the mosaic
                     final ROI[] roiarr;
-                    try {
-                        if(cropROI != null) {
-                            final LiteShape2 cropRoiLS2 = new LiteShape2(cropROI, ProjectiveTransform.create(sourceWorldToGridTransform), null, false);
-                            ROI cropRS = new ROIShape(cropRoiLS2);
-                            Rectangle2D rt = cropRoiLS2.getBounds2D();
-                            if (!hasIntegerBounds(rt)) {
-                                // Approximate Geometry
-                                Geometry geo = (Geometry) cropRoiLS2.getGeometry().clone();
-                                transformGeometry(geo);
-                                cropRS = new ROIShape(new LiteShape2(geo, null, null, false));
-                            }
-                            roiarr = new ROI[]{cropRS};
-                        } else {
-                            ROI roi = new ROIShape(rasterSpaceROI);
-                            roiarr = new ROI[]{roi};
+                    if(cropROI != null) {
+                        Geometry txROI = JTS.transform(cropROI, ProjectiveTransform.create(sourceWorldToGridTransform));
+                        if (!hasIntegerBounds(JTS.toRectangle2D(txROI.getEnvelopeInternal()))) {
+                            // Approximate Geometry
+                            transformGeometry(txROI);
                         }
-                        if(roiarr[0].getBounds().isEmpty()){
-                            throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
-                        }
-                    } catch (FactoryException ex) {
-						throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP), ex);
+                        ROI cropRS = getAsROI(txROI);
+                        roiarr = new ROI[]{cropRS};
+                    } else {
+                        ROI roi = getAsROI(JTS.toPolygon(rasterSpaceROI));
+                        roiarr = new ROI[]{roi};
+                    }
+                    if(roiarr[0].getBounds().isEmpty()){
+                        throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
                     }
                     worker.setBackground(background);
                     worker.setNoData(nodata);
@@ -708,7 +704,7 @@ public class Crop extends Operation2D {
             if (rasterSpaceROI != null || internalROI != null) {
                 ROI finalROI = null;
                 if (rasterSpaceROI != null) {
-                    finalROI = new ROIShape(rasterSpaceROI);
+                    finalROI = getAsROI(JTS.toPolygon(rasterSpaceROI));
                 }
                 if (finalROI != null && internalROI != null) {
                     finalROI = finalROI.intersect(internalROI);
@@ -783,14 +779,14 @@ public class Crop extends Operation2D {
                 transformGeometry(polygon.getInteriorRingN(i));
             }
         } else if (geometry instanceof LineString) {
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((LineString) geometry)
+            CoordinateSequence cs = ((LineString) geometry)
                     .getCoordinateSequence();
-            double[] coords = seq.getArray();
-            for (int i = 0; i < coords.length; i++) {
-                coords[i] = (int) (coords[i] + 0.5d);
+            for (int i = 0; i < cs.size(); i++) {
+                cs.setOrdinate(i, 0, (int) (cs.getOrdinate(i, 0) + 0.5d));
+                cs.setOrdinate(i, 1, (int) (cs.getOrdinate(i, 1) + 0.5d));
             }
-            seq.setArray(coords);
         }
+        geometry.geometryChanged();
     }
     
     /**
@@ -860,5 +856,30 @@ public class Crop extends Operation2D {
         result.addPoint(rect.x + rect.width, rect.y + rect.height);
         result.addPoint(rect.x, rect.y + rect.height);
         return result;
+    }
+    
+    /**
+     * Stop gap measure to get a ROI that can scale up to massive images, until ROIGeometry
+     * gets fixed to be a good ROIShape replacement
+     * @param theGeom
+     * @return
+     */
+    private static ROI getAsROI(Geometry theGeom) {
+        com.vividsolutions.jts.geom.Envelope env = theGeom.getEnvelopeInternal();
+        int x = (int) Math.floor(env.getMinX());
+        int y = (int) Math.floor(env.getMinY());
+        int w = (int) Math.ceil(env.getMaxX()) - x;
+        int h = (int) Math.ceil(env.getMaxY()) - y;
+
+        ParameterBlockJAI pb = new ParameterBlockJAI("VectorBinarize");
+        pb.setParameter("minx", x);
+        pb.setParameter("miny", y);
+        pb.setParameter("width", w);
+        pb.setParameter("height", h);
+        pb.setParameter("geometry", PreparedGeometryFactory.prepare(theGeom));
+        pb.setParameter("antiAliasing", true);
+        RenderedImage roiImage = JAI.create("VectorBinarize", pb, null);
+        
+        return new ROI(roiImage);
     }
 }

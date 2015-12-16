@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,8 +22,12 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.util.Utilities;
 
 /**
@@ -36,7 +40,7 @@ import org.geotools.util.Utilities;
  * @source $URL$
  */
 public class IntersectUtils {
-
+    
     /**
      * Tests whether the two geometries intersect.
      *
@@ -193,7 +197,7 @@ public class IntersectUtils {
         } else if(geometry instanceof MultiPolygon) {
 
             MultiPolygon mp = (MultiPolygon)geometry;
-            return geometry.getFactory().createGeometryCollection(unrollGeometries(mp).toArray(new Geometry[0]));
+            return geometry.getFactory().createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
 
         } else if(geometry instanceof GeometryCollection) {
             List<com.vividsolutions.jts.geom.Polygon> ret = new ArrayList<Polygon>();
@@ -209,7 +213,7 @@ public class IntersectUtils {
                     throw new IllegalArgumentException(g.getClass().toString());
                 }
             }
-            return geometry.getFactory().createGeometryCollection(ret.toArray(new Geometry[0]));
+            return geometry.getFactory().createMultiPolygon(ret.toArray(new Polygon[0]));
         } else {
             throw new IllegalArgumentException(geometry.getClass().toString());
         }

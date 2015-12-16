@@ -84,49 +84,55 @@ public class GeometryClipper {
      * 
      * This attempts to do a normal clip().  If it fails, it will try to do more to ensure the clip 
      * works properly.  
-     * 
-     * a) if its a polygon/multipolygon it will try to make the polygon valid and re-try the clip
-     * b) it will attempt to put the geometry on a precision grid (this will move the points around) and re-try the clip
-     * 
-     * Otherwise, it will return the original (unclipped) geometry. 
-     * 
-     * see {@link #clip(Geometry, boolean) clip}
+     * <ol>
+     * <li>if its a polygon/multipolygon it will try to make the polygon valid and re-try the clip</li>
+     * <li>it will attempt to put the geometry on a precision grid (this will move the points around) and re-try the clip</li>
+     * <li>will attempt to clip with ensureValid = false (ie geotools simple clipping)</li>
+     * </ol>
+     * See {@link #clip(Geometry, boolean) clip}
      * 
      * @param g
      * @param ensureValid
-     * @param scale 0=double precision Precision Model
-     * @return
+     * @param scale Scale used to snap geometry to precision model, 0 to disable
+     * @return clipped geometry, or original geometry if clipping failed.
      */
-    public Geometry tryClip(Geometry g, boolean ensureValid, double scale) {
+    public Geometry clipSafe(Geometry g, boolean ensureValid, double scale) {
         try {
-            return clip(g, ensureValid); 
-        } catch(TopologyException e) { 
-            
+            return clip(g, ensureValid);
+        } catch (TopologyException e) {
             try {
-                if ( ( (g instanceof Polygon) || (g instanceof MultiPolygon) ) && (!g.isValid()) ) {
-                    //its an invalid Polygon or MultiPolygon.  Use buffer(0) to attempt to fix it
+                if (((g instanceof Polygon) || (g instanceof MultiPolygon)) && (!g.isValid())) {
+                    // its an invalid Polygon or MultiPolygon. Use buffer(0) to attempt to fix it
                     // do not use buffer(0) on points or lines - it returns an empty polygon
                     return clip(g.buffer(0), ensureValid);
                 }
-            } catch(TopologyException e2) {
-                    // if this fails, continue with other methods
+            } catch (TopologyException e2) {
             }
-            
-            try {
-                GeometryPrecisionReducer reducer;
-                if (scale == 0) {
-                    reducer = new GeometryPrecisionReducer(new PrecisionModel());//double precision model
-                } else {
-                    reducer = new GeometryPrecisionReducer(new PrecisionModel(scale));
+
+            if (scale != 0) {
+                // Step 2: Snap to provided scale
+                try {
+                    GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(
+                            new PrecisionModel(scale));
+
+                    // reduce method already tries to fix problems with geometry (ie buffer(0) if invalid)
+                    Geometry reduced = reducer.reduce(g);
+                    if (reduced.isEmpty()) {
+                        throw new TopologyException("Could not snap geometry to precision model");
+                    }
+                    return clip(reduced, ensureValid);
+                } catch (TopologyException e3) {
+                    // if this fails, continue with other methods
                 }
-                Geometry reduced = reducer.reduce(g); //this will try to fix problems with the geometry.
-                if (reduced.isEmpty()) { // reducer should have thrown an exception instead of null result!
-                    throw new TopologyException("couldnt put geometry on precision model"); 
+            }
+            if (ensureValid) {
+                try {
+                    // Step 3: try again with ensureValid false
+                    return clip(g, false);
+                } catch (TopologyException e3) {
                 }
-                return clip(reduced, ensureValid);
-             } catch(TopologyException e3) {
-                    return g; // could try again with ensureValid=false 
-             }                                  
+            }
+            return g; // unable to clip geometry
         }
     }
     

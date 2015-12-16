@@ -2557,7 +2557,9 @@ public class StreamingRenderer implements GTRenderer {
                     // we need to preserve the topology if we end up applying buffer for perp. offset
                     boolean preserveTopology = style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0 &&
                             (source instanceof Polygon || source instanceof MultiPolygon);
-                    Geometry g = clipper.tryClip(shape.getGeometry(),  preserveTopology,  1);
+                    
+                    Geometry g = clipper.clipSafe(shape.getGeometry(), preserveTopology, 1);
+                    
                     // handle perpendincular offset as needed
                     if(style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0) {
                         LineStyle2D ls = (LineStyle2D) style;

@@ -160,10 +160,15 @@ public class XmlConverterFactory implements ConverterFactory {
             } else if (unconvertedValue instanceof java.util.Date) {
 
                 Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-                cal.setTimeInMillis(((java.util.Date) unconvertedValue).getTime());
+                Date date = (java.util.Date) unconvertedValue;
+                long sourceMs = date.getTime();
+                cal.setTimeInMillis(sourceMs);
                 DatatypeConverterImpl converter = DatatypeConverterImpl.getInstance();
 
                 if (unconvertedValue instanceof java.sql.Date) {
+                    // see GEOT-5329
+                    long offset = Calendar.getInstance().getTimeZone().getOffset(sourceMs);
+                    cal.setTimeInMillis(offset + sourceMs);
                     textValue = converter.printDate(cal);
                 } else if (unconvertedValue instanceof java.sql.Time) {
                     textValue = converter.printTime(cal);

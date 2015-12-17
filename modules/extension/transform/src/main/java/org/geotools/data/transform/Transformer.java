@@ -266,7 +266,7 @@ class Transformer {
         if (query.getStartIndex() != null && !caps.isJoiningSupported()) {
             txQuery.setStartIndex(null);
         }
-        if (query.getSortBy() != null && !caps.supportsSorting(query.getSortBy())) {
+        if (query.getSortBy() != null && !caps.supportsSorting(txQuery.getSortBy())) {
             txQuery.setSortBy(null);
         }
 

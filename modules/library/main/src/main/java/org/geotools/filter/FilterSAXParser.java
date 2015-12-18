@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *        
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -283,9 +283,9 @@ public class FilterSAXParser {
                 ((LikeFilterImpl) curFilter).setExpression(expression);
                 curState = "pattern";
             } else if (curState.equals("pattern")) {
-                if (attributes.size() != NUM_LIKE_ATTS) {
+                if (attributes.size() < NUM_LIKE_ATTS) {
                     throw new IllegalFilterException(
-                        "Got wrong number of attributes (expecting 3): "
+                        "Got wrong number of attributes (expecting minimum 3): "
                         + attributes.size() + "\n" + attributes);
                 }
 
@@ -312,8 +312,12 @@ public class FilterSAXParser {
                 }
                 
                 LOGGER.fine("escape char is " + escapeChar);
-
-              
+                
+                String matchCase = (String) attributes.get("matchCase");
+                if (matchCase != null) {
+                    ((LikeFilterImpl) curFilter).setMatchingCase( Boolean.parseBoolean(matchCase) );
+                }
+                
                 ((LikeFilterImpl) curFilter).setPattern(expression, wildcard,
                     singleChar, escapeChar);
                 curState = "complete";

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,7 @@ import junit.framework.TestCase;
  */
 public class DateConversionTimezoneTest extends TestCase {
 
+    // "Systems under Test"
     private XmlConverterFactory sut1 = new XmlConverterFactory();
     private XSDateBinding sut2 = new XSDateBinding();
 

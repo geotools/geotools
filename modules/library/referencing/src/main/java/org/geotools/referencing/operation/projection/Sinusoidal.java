@@ -112,27 +112,27 @@ public class Sinusoidal extends MapProjection {
             throws ProjectionException {
         double phi;
         double lam;
-        
+
         if( isSpherical ) {
           phi = y;
           lam = x / cos( y);
         } else {
           phi = inv_mlfn(y);
           double s = Math.abs( phi );
+          double diff = Math.abs(s - HALFPI);
 
-          if (s < HALFPI) {
+          if (diff < EPS10) {
+              lam = 0.;
+          } else if (s < HALFPI) {
             s = sin(phi);
-            lam = x * sqrt(1. - excentricitySquared * s * s) / cos(phi);
-          } else if ((s - EPS10) < HALFPI) {
-            lam = 0.;
-          }
-          else {
+            lam = (x * sqrt(1. - excentricitySquared * s * s) / cos(phi)) % Math.PI;
+          } else {
             throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
             // throw new ProjectionException("Tolerance error occurred appling inverse Sinusoidal projection");
           }
         }
-        
-        if(ptDst != null) {
+
+        if (ptDst != null) {
             ptDst.setLocation(lam, phi);
             return ptDst;
         } else {

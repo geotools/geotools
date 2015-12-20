@@ -1488,7 +1488,7 @@
             <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
             <!-- Set an additional parameter for the command line. -->
-          <additionalparam>-keywords</additionalparam>
+          <additionalparam>-keywords -Xdoclint:none</additionalparam>
           <breakiterator>true</breakiterator>
           <excludePackageNames>
             org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions

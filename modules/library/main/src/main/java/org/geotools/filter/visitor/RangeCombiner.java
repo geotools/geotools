@@ -62,8 +62,7 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected <T extends Comparable<? super T>> MultiRange<T> combineRanges(MultiRange<T> r1,
-                MultiRange<T> r2) {
+        protected  MultiRange combineRanges(MultiRange r1, MultiRange r2) {
             return r1.merge(r2);
         }
 
@@ -91,8 +90,7 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected <T extends Comparable<? super T>> MultiRange<T> combineRanges(MultiRange<T> r1,
-                MultiRange<T> r2) {
+        protected MultiRange combineRanges(MultiRange r1, MultiRange r2) {
             return r1.intersect(r2);
         }
 
@@ -156,7 +154,7 @@ abstract class RangeCombiner {
 
     ExpressionTypeVisitor expressionTypeVisitor;
 
-    Map<Expression, MultiRange<?>> rangeMap = new HashMap<>();
+    Map<Expression, MultiRange> rangeMap = new HashMap<>();
 
     FeatureType featureType;
 
@@ -240,10 +238,10 @@ abstract class RangeCombiner {
                                 this.getClass()))) {
                     otherFilters.add(f);
                 } else {
-                    Map<Expression, MultiRange<?>> combined = subCombiner.rangeMap;
-                    for (Map.Entry<Expression, MultiRange<?>> entry : combined.entrySet()) {
+                    Map<Expression, MultiRange> combined = subCombiner.rangeMap;
+                    for (Map.Entry<Expression, MultiRange> entry : combined.entrySet()) {
                         Expression ex = entry.getKey();
-                        MultiRange<?> ranges = entry.getValue();
+                        MultiRange ranges = entry.getValue();
                         addRange(rangeMap, ex, ranges);
                     }
                 }
@@ -335,7 +333,7 @@ abstract class RangeCombiner {
 
         List<Filter> result = new ArrayList<>(otherFilters);
         for (Expression ex : new ArrayList<Expression>(rangeMap.keySet())) {
-            MultiRange<?> multiRange = rangeMap.get(ex);
+            MultiRange multiRange = rangeMap.get(ex);
             addFiltersToResults(result, multiRange.toFilter(ff, ex));
         }
 
@@ -347,11 +345,10 @@ abstract class RangeCombiner {
     /**
      * Combines two multiranges
      */
-    protected abstract <T extends Comparable<? super T>> MultiRange<T> combineRanges(
-            MultiRange<T> r1, MultiRange<T> r2);
+    protected abstract MultiRange combineRanges(MultiRange r1, MultiRange r2);
 
-    private void addRange(Map<Expression, MultiRange<?>> rangeMap, Expression expression,
-            MultiRange<?> other) {
+    private void addRange(Map<Expression, MultiRange> rangeMap, Expression expression,
+            MultiRange other) {
         MultiRange ranges = rangeMap.get(expression);
         if (ranges == null) {
             rangeMap.put(expression, other);

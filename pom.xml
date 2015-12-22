@@ -1307,14 +1307,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.7</source>  <!-- The -source argument for the Java compiler. -->
-          <target>1.7</target>  <!-- The -target argument for the Java compiler. -->
+          <source>1.8</source>  <!-- The -source argument for the Java compiler. -->
+          <target>1.8</target>  <!-- The -target argument for the Java compiler. -->
           <debug>true</debug>   <!-- Whether to include debugging information.   -->
           <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
-          <!-- 
-               On java6 the build oom's otherwise due to the compiler accumulating
-               too many classes in the permanent generation, see GEOT-2462  
-          -->
           <fork>${fork.javac}</fork> 
           <maxmem>${javac.maxHeapSize}</maxmem>
         </configuration>
@@ -1475,8 +1471,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
 
         <configuration>
-            <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->
-          <source>1.7</source>
+          <source>1.8</source>
             <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
             <!-- Omit qualifying package name before class names in output.-->
@@ -1673,8 +1668,7 @@
         <version>${maven.javadoc.plugin.version}</version>
 
         <configuration>
-            <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->
-          <source>1.7</source>
+          <source>1.8</source>
             <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
             <!-- Omit qualifying package name before class names in output.-->

@@ -1,16 +1,17 @@
 Java Install
 -------------
 
-GeoTools is written in the Java Programming Language. The library is targeted for Java 7.
+GeoTools is written in the Java Programming Language. The library is targeted for Java 8.
 
 Java Runtime Environment:
 
-* Java 7 - GeoTools 11.x and above (OpenJDK and Oracle JRE tested)
+* Java 8 - GeoTools 15.x and above (OpenJDK and Oracle JRE tested)
+* Java 7 - GeoTools 11.x to GeoTools 14.x (OpenJDK and Oracle JRE tested)
 * Java 6 - Geotools 8.x to GeoTools 10.x (Oracle JRE tested)
 * Java 5 - GeoTools 2.5.x to GeoTools 8.x (Sun JRE tested)
 * Java 1.4 - GeoTools 2.x to GeoTools 2.4.x (Sun JRE tested)
 
-If you wish to experiment with Java 8 please visit the user list for discussion. The GeoTools user list has previously reported success with JREs provided by IBM, Apple and OpenJDK.
+If you wish to experiment with Java 9 please visit the user list for discussion.
 
 Java Extension:
 
@@ -20,8 +21,8 @@ Java Extension:
 
 When developing GeoTools please change your compile options to:
 
-* IDE: Produce Java 7 compliant code
-* Maven: source=1.7
+* IDE: Produce Java 8 compliant code
+* Maven: source=1.8
 
 Java Standard Edition Software Developers Kit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -30,17 +31,18 @@ Java Standard Edition Software Developers Kit
 2. Use the one click installer
 3. When it asks if you want to install a JRE you can say yes
 
-Use Java 7 starting with GeoTools 11.0
+Use Java 8 starting with GeoTools 15.x
 ''''''''''''''''''''''''''''''''''''''
 
 Since the API changes from Java version to version, building a GeoTOols version with a newer Java SDK is risky (you may accidentally use a new method).
 
-GeoTools requires a Java 1.7 SDK for versions 11.0 and above. If your project uses an older version of Java use an appropriate version of GeoTools as shown in the table below.
+GeoTools requires a Java 1.8 SDK for versions 15.x and above. If your project uses an older version of Java use an appropriate version of GeoTools as shown in the table below.
 
 ========= ================ ================ =================
 Java      Initial          Final            Compiler Setting 
 ========= ================ ================ =================
-Java 7    GeoTools 11.x    And Above        compiler=1.7 
+Java 8    GeoTools 15.x    And Above        compiler=1.8 
+Java 7    GeoTools 11.x    GeoTools 14.x    compiler=1.7 
 Java 6    Geotools 8.x     GeoTools 10.x    compiler=1.6 
 Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5 
 Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler=1.4 
@@ -61,13 +63,13 @@ One technique is to set up a batch file similar to the following:
 1. Hunt down the cmd.exe ( Start menu > Accessories > Command Prompt) and right click to send it to the desktop
 2. Edit the desktop cmd.exe short cut and change the target to::
       
-      %SystemRoot%\system32\cmd.exe /k C:\java\java6.bat
+      %SystemRoot%\system32\cmd.exe /k C:\java\java8.bat
 
-3. Create the C:\java\java6.bat file mentioned above::
+3. Create the C:\java\java8.bat file mentioned above::
    
       set ANT_HOME=C:\java\apache-ant-1.9.4
       set M2_HOME=C:\java\maven-3.0.5
-      set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
+      set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_66
       
       set PATH=%JAVA_HOME%\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Program Files\Subversion\bin;%M2_HOME%\bin;%ANT_HOME%\bin
 
@@ -79,9 +81,9 @@ One technique is to set up a batch file similar to the following:
    
 5. You can see in the above screen snap that the
    ``My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft > Java Development Kit > CurrentVersion``
-   is set to **1.6**.
+   is set to **1.8**.
    
-   The **1.6** entry documents the path to the version of java to run.
+   The **1.8** entry documents the path to the version of java to run.
    
    Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
 

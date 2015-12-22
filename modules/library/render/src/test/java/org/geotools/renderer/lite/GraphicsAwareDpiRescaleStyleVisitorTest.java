@@ -24,7 +24,7 @@ public class GraphicsAwareDpiRescaleStyleVisitorTest {
         PointSymbolizer resized = (PointSymbolizer) visitor.getCopy();
         Expression size = resized.getGraphic().getSize();
         assertTrue(size instanceof Literal);
-        assertEquals(32, size.evaluate(null, Integer.class), 0d);
+        assertEquals(32, size.evaluate(null, Integer.class).intValue());
     }
     
     @Test
@@ -40,6 +40,6 @@ public class GraphicsAwareDpiRescaleStyleVisitorTest {
         Expression size = resized.getGraphic().getSize();
         assertTrue(size instanceof Literal);
         // original image height was 22
-        assertEquals(44, size.evaluate(null, Integer.class), 0d);
+        assertEquals(44, size.evaluate(null, Integer.class).intValue());
     }
 }

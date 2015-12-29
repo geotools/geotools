@@ -141,7 +141,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertTrue(wkt.read("POINT (4 6)").equals(gc.getGeometryN(0)));
         assertTrue(wkt.read("LINESTRING (4 6, 7 10)").equals(gc.getGeometryN(1)));
 
-        assertEquals("fid-0", f1.getID());
+        assertEquals("fid-7205cfc1_138e7ce8900_-7ffe", f1.getID());
         assertEquals("Name123", f1.getAttribute("name"));
         assertEquals("Label321", f1.getAttribute("label"));
         assertEquals("[1,2,3]", f1.getAttribute("roles"));
@@ -181,7 +181,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertTrue(wkt.read("POLYGON ((-28.1107 142.998, -28.1107 148.623, -30.2591 148.623, -30.2591 142.998, -28.1107 142.998))").equals(gc.getGeometryN(0)));
         assertTrue(wkt.read("POLYGON((-27.1765 142.998, -25.6811 146.4258, -27.1765 148.5352, -27.1765 142.998))").equals(gc.getGeometryN(1)));
 
-        assertEquals("fid-0", f1.getID());
+        assertEquals("fid-397164b3_13880d348b9_-7a5c", f1.getID());
         assertEquals("", f1.getAttribute("name"));
         assertEquals("x_2000a", f1.getAttribute("caseSN"));
         assertEquals(2l, f1.getAttribute("siteNum"));

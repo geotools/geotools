@@ -1,4 +1,5 @@
 package org.geotools.data.geojson;
+
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -24,6 +25,7 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -35,89 +37,96 @@ import org.opengis.util.ProgressListener;
 
 public class GeoJSONFeatureStore extends ContentFeatureStore {
 
-	public GeoJSONFeatureStore(ContentEntry entry, Query query) {
-		super(entry, query);
-		
-	}
+    public GeoJSONFeatureStore(ContentEntry entry, Query query) {
+        super(entry, query);
 
-	@Override
-	protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
-	    throws IOException {
-		return new GeoJSONFeatureWriter(getState(), query);
-	}
+    }
+    
+    
 
-	GeoJSONFeatureSource delegate = new GeoJSONFeatureSource(entry, query) {
-		@Override
-		public void setTransaction(Transaction transaction) {
-			super.setTransaction(transaction);
-			GeoJSONFeatureStore.this.setTransaction(transaction); // Keep these two
-	                                                          // implementations
-	                                                          // on the same
-	                                                          // transaction
-		}
-	};
-	@Override
-  public void setTransaction(Transaction transaction) {
-      super.setTransaction(transaction);
-      if( delegate.getTransaction() != transaction ){
-          delegate.setTransaction( transaction );
-      }
-  }
-	@Override
-	protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-		return delegate.getBoundsInternal(query);
-	}
+    @Override
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
+            int flags) throws IOException {
+        return new GeoJSONFeatureWriter(getState(), query);
+    }
 
-	@Override
-	protected int getCountInternal(Query query) throws IOException {
-		return delegate.getCountInternal(query);
-	}
+    GeoJSONFeatureSource delegate = new GeoJSONFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            GeoJSONFeatureStore.this.setTransaction(transaction); // Keep these two
+            // implementations
+            // on the same
+            // transaction
+        }
+    };
 
-	@Override
-	protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
-		return delegate.getReaderInternal(query);
-	}
 
-	@Override
-  protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-      return delegate.handleVisitor(query, visitor);
-  }
-	
-	@Override
-	protected SimpleFeatureType buildFeatureType() throws IOException {
-		return delegate.buildFeatureType();
-	}
+    @Override
+    public void setTransaction(Transaction transaction) {
+        super.setTransaction(transaction);
+        if (delegate.getTransaction() != transaction) {
+            delegate.setTransaction(transaction);
+        }
+    }
 
-	public GeoJSONDataStore getDataStore() {
-		return delegate.getDataStore();
-	}
+    @Override
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        return delegate.getBoundsInternal(query);
+    }
 
-	public ContentEntry getEntry() {
-		return delegate.getEntry();
-	}
+    @Override
+    protected int getCountInternal(Query query) throws IOException {
+        return delegate.getCountInternal(query);
+    }
 
-	public Transaction getTransaction() {
-		return delegate.getTransaction();
-	}
+    @Override
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
+        return delegate.getReaderInternal(query);
+    }
 
-	public ContentState getState() {
-		return delegate.getState();
-	}
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return delegate.handleVisitor(query, visitor);
+    }
 
-	public ResourceInfo getInfo() {
-		return delegate.getInfo();
-	}
+    @Override
+    protected SimpleFeatureType buildFeatureType() throws IOException {
+        return delegate.buildFeatureType();
+    }
 
-	public Name getName() {
-		return delegate.getName();
-	}
+    public GeoJSONDataStore getDataStore() {
+        return delegate.getDataStore();
+    }
 
-	public void accepts(Query query, FeatureVisitor visitor, ProgressListener progress) throws IOException {
-		delegate.accepts(query, visitor, progress);
-	}
+    public ContentEntry getEntry() {
+        return delegate.getEntry();
+    }
 
-	public QueryCapabilities getQueryCapabilities() {
-		return delegate.getQueryCapabilities();
-	}
-	
+    public Transaction getTransaction() {
+        return delegate.getTransaction();
+    }
+
+    public ContentState getState() {
+        return delegate.getState();
+    }
+
+    public ResourceInfo getInfo() {
+        return delegate.getInfo();
+    }
+
+    public Name getName() {
+        return delegate.getName();
+    }
+
+    public void accepts(Query query, FeatureVisitor visitor, ProgressListener progress)
+            throws IOException {
+        delegate.accepts(query, visitor, progress);
+    }
+
+    public QueryCapabilities getQueryCapabilities() {
+        return delegate.getQueryCapabilities();
+    }
+
 }

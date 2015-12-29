@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
@@ -65,11 +66,9 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore {
         String host = url.getHost();
         if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
             GeoJSONFeatureStore geoJSONFeatureStore = new GeoJSONFeatureStore(entry, Query.ALL);
-
             return geoJSONFeatureStore;
         } else {
             GeoJSONFeatureSource geoJSONFeatureSource = new GeoJSONFeatureSource(entry, Query.ALL);
-
             return geoJSONFeatureSource;
         }
     }
@@ -78,5 +77,5 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.schema = featureType;
     }
-
+    
 }

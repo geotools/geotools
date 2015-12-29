@@ -112,7 +112,7 @@ public class GeoJSONDataStoreTest {
 		FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
 		SimpleFeatureType schema = reader.getFeatureType();
 		System.out.println(schema);
-		assertEquals("Geometry", schema.getGeometryDescriptor().getType().getBinding());
+		assertEquals("com.vividsolutions.jts.geom.Point", schema.getGeometryDescriptor().getType().getBinding().getName());
 		assertNotNull(schema);
 		int count = 0;
 		while (reader.hasNext()) {

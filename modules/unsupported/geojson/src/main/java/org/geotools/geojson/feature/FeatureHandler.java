@@ -41,6 +41,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
+    private int fid=0;
+    private String separator = "-";
     String id;
     Geometry geometry;
     List<Object> values;
@@ -51,6 +53,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     AttributeIO attio;
     
     SimpleFeature feature;
+    private String baseId="feature";
 
     public FeatureHandler() {
         this(null, new DefaultAttributeIO());
@@ -193,6 +196,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         }
         else if ("".equals(id)) {
             id = value.toString();
+            setFID(id);
             return true;
         }
         else if (values != null && delegate == NULL) {
@@ -250,7 +254,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
       
         SimpleFeatureBuilder builder = this.builder != null ? this.builder : createBuilder();
         SimpleFeatureType featureType = builder.getFeatureType();
-        SimpleFeature f = builder.buildFeature(id);
+        SimpleFeature f = builder.buildFeature(getFID());
         if (geometry != null) {
             if(featureType.getGeometryDescriptor() == null) {
                 //GEOT-4293, case of geometry coming after properties, we have to retype 
@@ -265,10 +269,11 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
                 featureType = typeBuilder.buildFeatureType();
                 SimpleFeatureBuilder newBuilder = new SimpleFeatureBuilder(featureType);
                 newBuilder.init(f);
-                f = newBuilder.buildFeature(id);
+                f = newBuilder.buildFeature(getFID());
             }
             f.setAttribute(featureType.getGeometryDescriptor().getLocalName(), geometry);
         }        
+        incrementFID();
         return f;
     }
 //    "{" +
@@ -284,5 +289,41 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 //    "   }," +
 //    "   'id':'widgets." + val + "'" +
 //    "}";
-    
+
+    /**
+     * set the ID to 0 
+     */
+    private void resetFID() {
+        fid =0;
+        
+    }
+
+    /**
+     * Add one to the current ID 
+     */
+    private void incrementFID() {
+        fid = fid + 1;
+        
+    }
+    private void setFID(String f) {
+        int index = f.lastIndexOf('.');
+        if(index<0) {
+            index = f.indexOf('-');
+            if(index>=0) {
+                separator = "-";
+            }
+        }else {
+            separator = ".";
+        }
+        baseId = f.substring(0, index);
+        try {
+        fid = Integer.parseInt(f.substring(index+1));
+        }catch (NumberFormatException e) {
+            fid = 0;
+        }
+    }
+    private String getFID() {
+        
+        return baseId +separator+ fid;
+    }
 }

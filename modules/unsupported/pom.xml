@@ -169,6 +169,16 @@
        </modules>
      </profile>
      <profile>
+      <id>geojsonstore</id>
+      <activation>
+         <property><name>all</name></property>
+       </activation>
+	  <modules>
+        <module>geojsonstore</module>
+        <module>geojson</module>
+	  </modules>
+     </profile>
+     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>
@@ -184,6 +194,7 @@
          <module>mongodb</module>
          <module>solr</module>
          <module>css</module>
+         <module>geojsonstore</module>
        </modules>
      </profile>
   </profiles>

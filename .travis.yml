@@ -13,21 +13,8 @@ branches:
   only:
     - master
     - 14.x
-os:
-  - linux
-  - osx
 jdk: 
-  - oraclejdk7
   - oraclejdk8
-matrix:
-  allow_failures:
-    - os: osx
-  exclude:
-    - branch: master 
-      jdk: oraclejdk7
-  include:
-    - os: linux
-      jdk: openjdk7
 before_install:
    # JAVA_HOME is not available on OSX, set it to allow Maven run
    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home); fi

@@ -9,12 +9,5 @@ notifications:
   email: false
   on_failure: never
 env: GDAL_LIBRARY_NAME=disabled_see_geot-4733
-branches:
-  only:
-    - master
-    - 14.x
 jdk: 
   - oraclejdk8
-before_install:
-   # JAVA_HOME is not available on OSX, set it to allow Maven run
-   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home); fi

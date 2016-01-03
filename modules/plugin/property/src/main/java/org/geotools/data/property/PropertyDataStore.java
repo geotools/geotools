@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -146,5 +146,22 @@ public class PropertyDataStore extends ContentDataStore {
         } else {
             return new PropertyFeatureSource( entry, Query.ALL );
         }
+    }
+
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        super.removeSchema(typeName.getLocalPart());
+    }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        if (!typeName.endsWith(".properties")) {
+            typeName = typeName + ".properties";
+        }
+        File file = new File(dir, typeName);
+        if (!file.exists()) {
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+        }
+        file.delete();
     }
 }

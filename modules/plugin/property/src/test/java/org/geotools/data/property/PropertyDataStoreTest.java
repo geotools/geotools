@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,12 +23,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
@@ -79,7 +86,7 @@ import junit.framework.TestCase;
 public class PropertyDataStoreTest extends TestCase {
     private PropertyDataStore store;
     static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
-    
+
     /**
      * Constructor for SimpleDataStoreTest.
      * @param arg0
@@ -675,5 +682,22 @@ public class PropertyDataStoreTest extends TestCase {
                 i++;
             }
         }
+    }
+
+    public void testRemoveSchema() throws Exception {
+        File dir = Files.createTempDirectory("layers").toFile();
+        File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.properties")).toFile();
+        File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.properties")).toFile();
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("directory", dir);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        // File 1
+        assertTrue(file1.exists());
+        store.removeSchema("points");
+        assertFalse(file1.exists());
+        // File 2
+        assertTrue(file2.exists());
+        store.removeSchema("lines.properties");
+        assertFalse(file2.exists());
     }
 }

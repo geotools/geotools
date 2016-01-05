@@ -79,6 +79,7 @@ public class PropertyDataStore extends ContentDataStore {
     // constructor end
     
     // createSchema start
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         String typeName = featureType.getTypeName();
         File file = new File(dir, typeName + ".properties");
@@ -94,6 +95,7 @@ public class PropertyDataStore extends ContentDataStore {
     // createSchema end
     
     // info start
+    @Override
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from Directory " + dir);
@@ -106,11 +108,13 @@ public class PropertyDataStore extends ContentDataStore {
         return info;
     }
     // info end
-    
+
+    @Override
     public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI;
     }
-    
+
+    @Override
     protected java.util.List<Name> createTypeNames() throws IOException {
         String list[] = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -124,7 +128,8 @@ public class PropertyDataStore extends ContentDataStore {
         }
         return typeNames;
     }
-    
+
+    @Override
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
         List<Name> names = new ArrayList<Name>(typeNames.length);
@@ -150,7 +155,7 @@ public class PropertyDataStore extends ContentDataStore {
 
     @Override
     public void removeSchema(Name typeName) throws IOException {
-        super.removeSchema(typeName.getLocalPart());
+        this.removeSchema(typeName.getLocalPart());
     }
 
     @Override

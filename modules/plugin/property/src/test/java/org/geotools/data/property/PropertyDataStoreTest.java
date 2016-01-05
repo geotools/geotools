@@ -50,6 +50,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
@@ -667,7 +668,7 @@ public class PropertyDataStoreTest extends TestCase {
     public void testSortOnUnrequestedProperties() throws Exception {
         ContentFeatureSource fs = store.getFeatureSource("road");
         Query q = new Query("road");
-        q.setPropertyNames(new String[] { "name" });
+        q.setPropertyNames(new String[]{"name"});
         q.setSortBy(new SortBy[] { ff.sort("id", SortOrder.DESCENDING) });
 
         ContentFeatureCollection fc = fs.getFeatures(q);
@@ -688,6 +689,7 @@ public class PropertyDataStoreTest extends TestCase {
         File dir = Files.createTempDirectory("layers").toFile();
         File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.properties")).toFile();
         File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.properties")).toFile();
+        File file3 = Files.createFile(Paths.get(dir.getAbsolutePath(), "polygon.properties")).toFile();
         Map<String, Serializable> params = new HashMap<>();
         params.put("directory", dir);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -699,5 +701,9 @@ public class PropertyDataStoreTest extends TestCase {
         assertTrue(file2.exists());
         store.removeSchema("lines.properties");
         assertFalse(file2.exists());
+        // File 3
+        assertTrue(file3.exists());
+        store.removeSchema(new NameImpl("polygon"));
+        assertFalse(file3.exists());
     }
 }

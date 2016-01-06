@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -41,13 +41,13 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotCropException;
+import org.geotools.coverage.processing.EmptyIntersectionException;
 import org.geotools.coverage.processing.Operation2D;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.iso.citation.Citations;
@@ -61,7 +61,6 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.coverage.IntersectUtils;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -83,9 +82,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
@@ -403,8 +400,9 @@ public class Crop extends Operation2D {
 		intersectionEnvelope.setCoordinateReferenceSystem(source.getCoordinateReferenceSystem());
 		// intersect the envelopes
 		intersectionEnvelope.intersect(sourceEnvelope);
-		if (intersectionEnvelope.isEmpty())
-			throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
+		if (intersectionEnvelope.isEmpty()) {
+			throw new EmptyIntersectionException("Crop envelope does not intersect in model space");
+		} 
 
         // intersect the ROI with the intersection envelope and throw an error if they do not intersect
         if(cropRoi != null) {
@@ -553,7 +551,7 @@ public class Crop extends Operation2D {
 
 			// //
 			//
-                        // finalRasterArea will hold the smallest rectangular integer raster area that contains the floating point raster
+            // finalRasterArea will hold the smallest rectangular integer raster area that contains the floating point raster
 			// area which we obtain when applying the world-to-grid transform to the cropEnvelope. Note that we need to intersect
 			// such an area with the area covered by the source coverage in order to be sure we do not try to crop outside the
 			// bounds of the source raster.
@@ -564,8 +562,9 @@ public class Crop extends Operation2D {
 
             // intersection with the original range in order to not try to crop outside the image bounds
             Rectangle.intersect(finalRasterArea, sourceGridRange, finalRasterArea);
-            if(finalRasterArea.isEmpty())
-            	throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
+            if (finalRasterArea.isEmpty()) {
+                throw new EmptyIntersectionException("Crop envelope intersects in model space, but not in raster space");
+            }
 
             // //
             //

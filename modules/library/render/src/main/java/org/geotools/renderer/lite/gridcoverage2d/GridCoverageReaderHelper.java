@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.ReadResolutionCalculator;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.coverage.processing.EmptyIntersectionException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
@@ -313,12 +314,10 @@ public class GridCoverageReaderHelper {
                 if (!readingEnvelope.contains((Envelope) coverageEnvelope)) {
                     ReferencedEnvelope cropEnvelope = new ReferencedEnvelope(
                             readingEnvelope.intersection(coverageEnvelope), readerCRS);
-                    if (isNotEmpty(cropEnvelope)) {
-                        GridCoverage2D cropped = cropCoverage(coverage, cropEnvelope);
-                        return Collections.singletonList(cropped);
-                    }
+                    GridCoverage2D cropped = cropCoverage(coverage, cropEnvelope);
+                    return singleton(cropped);
                 } else {
-                    return Collections.singletonList(coverage);
+                    return singleton(coverage);
                 }
             } else {
                 final List<Polygon> polygons = PolygonExtractor.INSTANCE.getPolygons(preProcessed);
@@ -330,8 +329,8 @@ public class GridCoverageReaderHelper {
                             cropEnvelope.intersection(coverageEnvelope), readerCRS);
                     cropEnvelope = new ReferencedEnvelope(
                             cropEnvelope.intersection(readingEnvelope), readerCRS);
-                    if (isNotEmpty(cropEnvelope)) {
-                        GridCoverage2D cropped = cropCoverage(coverage, cropEnvelope);
+                    GridCoverage2D cropped = cropCoverage(coverage, cropEnvelope);
+                    if(cropped != null) {
                         coverages.add(cropped);
                     }
                 }
@@ -342,18 +341,34 @@ public class GridCoverageReaderHelper {
         return null;
     }
 
+    private List<GridCoverage2D> singleton(GridCoverage2D coverage) {
+        if(coverage == null) {
+            return null;
+        } else {
+            return Collections.singletonList(coverage);
+        }
+    }
+
     private boolean isNotEmpty(ReferencedEnvelope envelope) {
         return !envelope.isEmpty() && !envelope.isNull() && envelope.getWidth() > 0
                 && envelope.getHeight() > 0;
     }
 
     private GridCoverage2D cropCoverage(GridCoverage2D coverage, ReferencedEnvelope cropEnvelope) {
-        final ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
-        param.parameter("Source").setValue(coverage);
-        param.parameter("Envelope").setValue(cropEnvelope);
-
-        GridCoverage2D cropped = (GridCoverage2D) PROCESSOR.doOperation(param);
-        return cropped;
+        if (isNotEmpty(cropEnvelope)) {
+            final ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
+            param.parameter("Source").setValue(coverage);
+            param.parameter("Envelope").setValue(cropEnvelope);
+    
+            try {
+                GridCoverage2D cropped = (GridCoverage2D) PROCESSOR.doOperation(param);
+                return cropped;
+            } catch(EmptyIntersectionException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     private GridGeometry2D computeReadingGeometry(GridGeometry2D gg,

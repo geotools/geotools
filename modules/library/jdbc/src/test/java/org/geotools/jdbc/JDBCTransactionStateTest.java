@@ -55,7 +55,7 @@ public class JDBCTransactionStateTest {
     private int warningsCount;
 
     /**
-     * Setup a log handler counting {@link LogRecord} having {@link Level#WARNING}.
+     * Setup a log handler counting {@link LogRecord}s having {@link Level#WARNING}.
      */
     @Before
     public void setupLogHandler() {
@@ -81,11 +81,10 @@ public class JDBCTransactionStateTest {
     /**
      * Tests if connection gets closed on internally managed connections and creation of log statements.
      * 
-     * @throws IOException
      * @throws SQLException
      */
     @Test
-    public void testSetTransactionNullWithInternalConnection() throws IOException, SQLException {
+    public void testSetTransactionNullWithInternalConnection() throws SQLException {
         JDBCTransactionState state = new JDBCTransactionState(mockConnection, dataStore);
         // init state
         state.setTransaction(mockTransaction);
@@ -98,8 +97,13 @@ public class JDBCTransactionStateTest {
         testLogWarnings(state);
     }
 
+    /**
+     * Tests if connection stays open on externally managed connections and creation of log statements.
+     * 
+     * @throws SQLException
+     */
     @Test
-    public void testSetTransactionNullWithExternalConnection() throws Exception {
+    public void testSetTransactionNullWithExternalConnection() throws SQLException {
         JDBCTransactionState state = new JDBCTransactionState(mockConnection, dataStore, true);
         // init state
         state.setTransaction(mockTransaction);
@@ -107,7 +111,7 @@ public class JDBCTransactionStateTest {
         // clear state
         state.setTransaction(null);
 
-        // make sure connection is closed
+        // make sure connection is NOT closed
         verify(mockConnection, times(0)).close();
         testLogWarnings(state);
     }

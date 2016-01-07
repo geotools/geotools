@@ -65,8 +65,10 @@ final class JDBCTransactionState implements State {
         }
             
         if ( tx == null ) {
-            if ( cx != null && !external) {
-                dataStore.closeSafe(cx);
+            if ( cx != null) {
+                if (!external) {
+                    dataStore.closeSafe(cx);
+                }
             }  else {
                 dataStore.getLogger().warning("Transaction is attempting to " +
                     "close an already closed connection");

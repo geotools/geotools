@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -466,4 +466,17 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         assertTrue(gc.getGeometryN(0) instanceof Point);
         assertTrue(gc.getGeometryN(1) instanceof LineString);
     }
+    
+    public void testPointOrderParsing() throws Exception {
+        String input1 = "{\n" + "  \"type\": \"Point\",\n" + "  \"coordinates\": [10, 10]\n" + "}";
+        String input2 = "{\n" + "  \"coordinates\": [10, 10],\n" + "  \"type\": \"Point\"\n" + "}";
+        org.geotools.geojson.geom.GeometryJSON geometryJSON = new org.geotools.geojson.geom.GeometryJSON();
+        Point p1 = geometryJSON.readPoint(input1);
+        assertEquals(10, p1.getX(), 0d);
+        assertEquals(10, p1.getY(), 0d);
+        Point p2 = geometryJSON.readPoint(input2);
+        assertEquals(10, p2.getX(), 0d);
+        assertEquals(10, p2.getY(), 0d);
+    }
+    
 }

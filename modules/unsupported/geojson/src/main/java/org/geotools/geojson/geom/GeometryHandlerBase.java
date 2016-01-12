@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -59,6 +59,11 @@ public class GeometryHandlerBase<G extends Geometry> extends HandlerBase impleme
     }
 
     public boolean primitive(Object value) throws ParseException, IOException {
-        return addOrdinate(ordinates, value);
+        // we could be receiving the "type" attribute value
+        if(value instanceof Number) {
+            return addOrdinate(ordinates, value);
+        } else {
+            return true;
+        }
     }
 }

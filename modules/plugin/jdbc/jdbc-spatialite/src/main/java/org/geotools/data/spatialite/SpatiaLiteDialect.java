@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -422,7 +422,22 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             }
         }
     }
-    
+
+    @Override
+    public void postDropTable(String schemaName, SimpleFeatureType featureType,
+            Connection cx) throws SQLException {
+        String sql = "DELETE FROM geometry_columns WHERE f_table_name='"
+                + featureType.getTypeName() + "'";
+        LOGGER.fine(sql);
+
+        Statement st = cx.createStatement();
+        try {
+            st.executeUpdate(sql);
+        } finally {
+            dataStore.closeSafe(st);
+        }
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return true;

@@ -24,11 +24,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
-import org.elasticsearch.common.collect.ImmutableList;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
-import org.elasticsearch.common.joda.Joda;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.ImmutableSettings.Builder;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
@@ -42,15 +38,29 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
-import org.geotools.util.logging.Logging;
+import org.joda.time.format.DateTimeFormat;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
+import com.google.common.collect.ImmutableList;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
-import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
+
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
  * A data store for an Elasticsearch index containing geo_point or geo_shape
@@ -123,13 +133,10 @@ public class ElasticDataStore extends ContentDataStore {
             isLocal = false;
         } else {
             final TransportAddress address;
-            address = new InetSocketTransportAddress(searchHost, hostPort);
-            Builder settings = ImmutableSettings.settingsBuilder()
-                    .put("cluster.name", clusterName);
-            client = new TransportClient(settings);
-            ((TransportClient) client).addTransportAddress(address);
-            node = null;
-            isLocal = false;
+            address = new InetSocketTransportAddress(getInetAddress(searchHost), hostPort);
+            Settings settings = Settings.settingsBuilder()
+                    .put("cluster.name", clusterName).build();
+            this.client = TransportClient.builder().settings(settings).build().addTransportAddress(address);
         }
         LOGGER.fine("client connection established");
 
@@ -148,7 +155,7 @@ public class ElasticDataStore extends ContentDataStore {
         IndexMetaData metadata = state.metaData().index(indexName);
         if (metadata != null) {
             final ImmutableOpenMap<String, MappingMetaData> mappings;
-            mappings = state.metaData().index(indexName).mappings();
+            mappings = state.metaData().index(indexName).getMappings();
             final Iterator<String> elasticTypes = mappings.keysIt();
             final Vector<Name> names = new Vector<Name>();
             while (elasticTypes.hasNext()) {
@@ -162,6 +169,15 @@ public class ElasticDataStore extends ContentDataStore {
         layerConfigurations = new ConcurrentHashMap<>();
         docTypes = new HashMap<>();
     }
+
+	private InetAddress getInetAddress(String searchHost) {
+		try {
+			return InetAddress.getByName(searchHost);
+		} catch (UnknownHostException e) {
+//			LOGGER.severe(e.getLocalizedMessage());
+			throw new RuntimeException(e);
+		}
+	}
 
     @Override
     protected List<Name> createTypeNames() {
@@ -439,4 +455,38 @@ public class ElasticDataStore extends ContentDataStore {
             }
         }
     }
+
+    @Override
+    public void dispose() {
+        this.client.close();
+        if (this.node != null) {
+            this.node.close();
+        }
+        super.dispose();
+        LOGGER.fine("disposed");
+    }
+
+    public String getIndexName() {
+        return indexName;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    /**
+     * Gets the attributes configuration for the types in this datastore
+     */
+    public Map<String, ElasticLayerConfiguration> getElasticConfigurations() {
+        return elasticConfigurations;
+    }
+
+    /**
+     * Add the type configuration to this datastore
+     */
+    public void setElasticConfigurations(ElasticLayerConfiguration configuration) {
+        entries.remove(new NameImpl(namespaceURI, configuration.getLayerName()));
+        this.elasticConfigurations.put(configuration.getLayerName(), configuration);
+    }
+
 }

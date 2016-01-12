@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -181,7 +179,11 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                     + " Additional post-query filtering will be performed.");
         }
         final QueryBuilder elasticQuery = filterToElastic.getQueryBuilder();
-        final FilterBuilder postFilter = filterToElastic.getFilterBuilder();
+        final QueryBuilder postFilter = filterToElastic.getFilterBuilder();
+        LOGGER.fine("Elasticsearch query: " + elasticQuery);
+        LOGGER.fine("Elasticsearch post filter: " + postFilter);
+        
+        //Why post filter??        
         searchRequest.setQuery(elasticQuery).setPostFilter(postFilter);
 
         if (isSort(query) && elasticQuery.toString().equals(QueryBuilders.matchAllQuery().toString())) {

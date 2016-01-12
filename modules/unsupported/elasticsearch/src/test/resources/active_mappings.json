@@ -7,13 +7,11 @@
           },
           "geo2" : {
             "type" : "geo_shape",
-            "tree" : "quadtree",
-            "tree_levels" : 26
+            "tree" : "quadtree"
           },
           "geo3" : {
             "type" : "geo_shape",
-            "tree" : "quadtree",
-            "tree_levels" : 26
+            "tree" : "quadtree"
           },
           "id" : {
             "type" : "string",

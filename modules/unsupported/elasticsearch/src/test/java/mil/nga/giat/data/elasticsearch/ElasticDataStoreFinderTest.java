@@ -114,67 +114,11 @@ public class ElasticDataStoreFinderTest extends ElasticTestSupport {
         assertTrue(new ElasticDataStoreFactory().isAvailable());
         scanForPlugins();
 
-        Map<String,Serializable> map = new HashMap<>();
-        map.put(ElasticDataStoreFactory.HOSTNAME.key, "localhost");
-        map.put(ElasticDataStoreFactory.HOSTPORT.key, String.valueOf(9300));
-        map.put(ElasticDataStoreFactory.INDEX_NAME.key, "sample");
-        map.put(ElasticDataStoreFactory.LOCAL_NODE.key, true);
-
-        Iterator<DataStoreFactorySpi> ps = getAvailableDataSources();
-        ElasticDataStoreFactory fac;
-        while (ps.hasNext()) {
-            fac = (ElasticDataStoreFactory) ps.next();
-
-            try {
-                if (fac.canProcess(map)) {
-                    source = fac.createDataStore(map);
-                }
-            } catch (Throwable t) {
-                LOGGER.log(Level.WARNING, "Could not acquire " + fac.getDescription() + ":" + t, t);
-            }
-        }
-
-        assertNotNull(source);
-        assertTrue(source instanceof ElasticDataStore);
-        node.close();
-    }
-
-    @Test
-    public void testFactoryWithDataPath() throws IOException {
-        assertTrue(new ElasticDataStoreFactory().isAvailable());
-        scanForPlugins();
-
-        Map<String,Serializable> map = new HashMap<>();
-        map.put(ElasticDataStoreFactory.DATA_PATH.key, dataPath);
-        map.put(ElasticDataStoreFactory.INDEX_NAME.key, "sample");
-
-        Iterator<DataStoreFactorySpi> ps = getAvailableDataSources();
-        ElasticDataStoreFactory fac;
-        while (ps.hasNext()) {
-            fac = (ElasticDataStoreFactory) ps.next();
-
-            try {
-                if (fac.canProcess(map)) {
-                    source = fac.createDataStore(map);
-                }
-            } catch (Throwable t) {
-                LOGGER.log(Level.WARNING, "Could not acquire " + fac.getDescription() + ":" + t, t);
-            }
-        }
-
-        assertNotNull(source);
-        assertTrue(source instanceof ElasticDataStore);
-    }
-
-    @Test
-    public void testFactoryWithSearchIndices() throws IOException {
-        assertTrue(new ElasticDataStoreFactory().isAvailable());
-        scanForPlugins();
-
-        Map<String,Serializable> map = new HashMap<>();
-        map.put(ElasticDataStoreFactory.DATA_PATH.key, dataPath);
-        map.put(ElasticDataStoreFactory.INDEX_NAME.key, "sample");
-        map.put(ElasticDataStoreFactory.SEARCH_INDICES.key, "sample1,sample2");
+        Map<String,Serializable> map = createConnectionParams();
+//        Map<String,Serializable> map =  new HashMap<>();
+//        map.put(ElasticDataStoreFactory.HOSTNAME.key, "localhost");
+//        map.put(ElasticDataStoreFactory.HOSTPORT.key, "9300");
+//        map.put(ElasticDataStoreFactory.INDEX_NAME.key, "sample");
 
         Iterator<DataStoreFactorySpi> ps = getAvailableDataSources();
         ElasticDataStoreFactory fac;

@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -78,7 +77,8 @@ public class ElasticViewParametersTest extends ElasticTestSupport {
     public void testSinglesFQParameters() throws Exception {
         init("not-active");
         Map<String, String> vparams = new HashMap<String, String>();
-        vparams.put("f", FilterBuilders.termFilter("security_ss", "WPA").toString());
+        vparams.put("f", QueryBuilders.termQuery("security_ss", "WPA").toString());
+//        vparams.put("f", FilterBuilders.termFilter("security_ss", "WPA").toString());
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
@@ -96,9 +96,12 @@ public class ElasticViewParametersTest extends ElasticTestSupport {
     public void testMultipleFQParameters() throws Exception {
         init();
         Map<String, String> vparams = new HashMap<String, String>();
-        vparams.put("f", FilterBuilders.andFilter(
-                FilterBuilders.termFilter("security_ss", "WPA"),
-                FilterBuilders.termFilter("modem_b", true)).toString());
+        vparams.put("f", QueryBuilders.boolQuery()
+        		.must(QueryBuilders.termQuery("security_ss", "WPA"))
+        		.must(QueryBuilders.termQuery("modem_b", true)).toString());
+//        vparams.put("f", FilterBuilders.andFilter(
+//                FilterBuilders.termFilter("security_ss", "WPA"),
+//                FilterBuilders.termFilter("modem_b", true)).toString());
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
@@ -117,7 +120,8 @@ public class ElasticViewParametersTest extends ElasticTestSupport {
         init();
         Map<String, String> vparams = new HashMap<String, String>();
         vparams.put("q", QueryBuilders.termQuery("security_ss", "WPA").toString());
-        vparams.put("f", FilterBuilders.termFilter("modem_b", true).toString());
+        vparams.put("f", QueryBuilders.termQuery("modem_b", true).toString());
+//        vparams.put("f", FilterBuilders.termFilter("modem_b", true).toString());
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);

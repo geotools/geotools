@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WMS_Capabilities xmlns:srv="http://schemas.opengis.net/iso/19139/20060504/srv/srv.xsd" xmlns:gmd="http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd" xmlns:gco="http://schemas.opengis.net/iso/19139/20060504/gco/gco.xsd" xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0" xmlns:gml="http://schemas.opengis.net/gml" xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" version="1.3.0" updateSequence="4593" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Service>
+    <Name>WMS</Name>
+    <Title>Finnish Meteorological Institute Open Data Web Map Service</Title>
+    <Abstract>Finnish Meteorological Institute Open Data Web Map Service provides INSPIRE View Service along with radar data.</Abstract>
+    <KeywordList>
+      <Keyword>WMS</Keyword>
+    </KeywordList>
+    <OnlineResource xlink:type="simple" xlink:href="http://ilmatieteenlaitos.fi"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Mikko Visa</ContactPerson>
+        <ContactOrganization>Finnish Meteorological Institute</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition/>
+      <ContactAddress>
+        <AddressType/>
+        <Address/>
+        <City/>
+        <StateOrProvince/>
+        <PostCode/>
+        <Country>Finland</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+358 29 539 2990</ContactVoiceTelephone>
+      <ContactFacsimileTelephone/>
+      <ContactElectronicMailAddress>avoin-data@fmi.fi</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>NONE</Fees>
+    <AccessConstraints>NONE</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="http://testHost:8080/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Get>
+            <Post>
+              <OnlineResource xlink:type="simple" xlink:href="http://testHost:8080/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>application/atom+xml</Format>
+        <Format>application/pdf</Format>
+        <Format>application/rss+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kml+xml;mode=networklink</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
+        <Format>image/geotiff</Format>
+        <Format>image/geotiff8</Format>
+        <Format>image/gif</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>image/tiff8</Format>
+        <Format>text/html; subtype=openlayers</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="http://testHost:8080/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/xml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <Format>application/json</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:type="simple" xlink:href="http://testHost:8080/geoserver/ows?SERVICE=WMS&amp;"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+    </Exception>
+    <Layer>
+      <Title>Finnish Meteorological Institute Open Data Web Map Service</Title>
+      <Abstract>Finnish Meteorological Institute Open Data Web Map Service provides INSPIRE View Service along with radar data.</Abstract>
+      <!--Limited list of EPSG projections:-->
+      <CRS>EPSG:3035</CRS>
+      <CRS>EPSG:3067</CRS>
+      <CRS>EPSG:3857</CRS>
+      <CRS>EPSG:4258</CRS>
+      <CRS>EPSG:4326</CRS>
+      <CRS>CRS:84</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>-180.0</westBoundLongitude>
+        <eastBoundLongitude>180.0</eastBoundLongitude>
+        <southBoundLatitude>19.518313729608458</southBoundLatitude>
+        <northBoundLatitude>90.0</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="CRS:84" minx="-180.0" miny="19.518313729608458" maxx="180.0" maxy="90.0"/>
+      <Layer queryable="1" opaque="0">
+        <Name>Radar:kesalahti_etop_20</Name>
+        <Title>kesalahti_etop_20</Title>
+        <Abstract>Kesälahti etop 20</Abstract>
+        <KeywordList>
+          <Keyword>WCS</Keyword>
+          <Keyword>ImageMosaic</Keyword>
+          <Keyword>kesalahti_etop_20</Keyword>
+        </KeywordList>
+        <CRS>EPSG:3067</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>24.88046690372676</westBoundLongitude>
+          <eastBoundLongitude>35.118414725822824</eastBoundLongitude>
+          <southBoundLatitude>59.502351788177336</southBoundLatitude>
+          <northBoundLatitude>64.17851779187536</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" minx="24.88046690372676" miny="59.502351788177336" maxx="35.118414725822824" maxy="64.17851779187536"/>
+        <BoundingBox CRS="EPSG:3067" minx="396950.998" miny="6616985.02" maxx="896950.998" maxy="7116985.021"/>
+        <Dimension name="time" default="current" units="ISO8601">2016-01-08T12:45:00.000Z</Dimension>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>
+

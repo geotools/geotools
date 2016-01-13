@@ -1,5 +1,5 @@
 /*
- * Copyright 2004  The Apache Software Foundation
+ * Copyright 2004 - 2016 The Apache Software Foundation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -261,8 +261,13 @@ public class XsDateTimeFormat extends Format {
                             return null;
                         }
                     }
-                    for (int i = digits.length();  i < 3;  i++) {
-                        millis *= 10;
+                    if(digits.length() < 3) {
+                        for (int i = digits.length();  i < 3;  i++) {
+                            millis *= 10;
+                        }
+                    } else if(digits.length() > 3) {
+                        int power = digits.length() - 3;
+                        millis = (int) Math.round(millis / Math.pow(10, power));
                     }
 	            } else {
 	                millis = 0;

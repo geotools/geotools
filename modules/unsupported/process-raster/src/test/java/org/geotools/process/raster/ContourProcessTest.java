@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,21 +17,37 @@
 package org.geotools.process.raster;
 
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.process.raster.ContourProcess;
-import org.opengis.feature.simple.SimpleFeature;
-
+import org.geotools.referencing.CRS;
+import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 
 
 /**
@@ -49,13 +65,12 @@ public class ContourProcessTest {
 
     private static final GridCoverageFactory covFactory = CoverageFactoryFinder.getGridCoverageFactory(null);
     private ContourProcess process;
-    
-    @Before
-    public void setup() {
-        process = new ContourProcess();
-    }
 
-    
+    @Before
+    public void setup() throws FileNotFoundException, IOException {
+        process = new ContourProcess();
+        TestData.unzipFile(this, "contours.zip");
+    }
     /**
      * Creates a coverage with just two rows where values are constant within rows
      * and differ between rows, then checks for correctly generated single contour
@@ -128,12 +143,67 @@ public class ContourProcessTest {
         GridCoverage2D cov = createVerticalGradient(10, 10, null, 0, 10);
 
         // Run process asking for contours at level = 20
-        SimpleFeatureCollection fc = process.execute(cov, 0, new double[20], null, null, null, null, null);
+        SimpleFeatureCollection fc = process.execute(cov, 0, new double[]{20}, null, null, null, null, null);
         assertNotNull(fc);
         assertTrue(fc.isEmpty());
     }
-    
-    
+
+    /**
+     * Tests that the process doesn't blow up when the contour process provides invalid lineStrings
+     * 
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    @Test
+    public void invalidLinestrings() throws FileNotFoundException, IOException,
+            NoSuchAuthorityCodeException, FactoryException {
+        File input = TestData.file(ContourProcessTest.class, "contoursample.tif");
+        AbstractGridFormat format = GridFormatFinder.findFormat(input);
+        AbstractGridCoverage2DReader reader = null;
+        boolean success = true;
+        try {
+            reader = format.getReader(input);
+
+            GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+            CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+
+            // Run process asking for contours at different levels
+            double[] levels = new double[40];
+            double start = -2.0;
+            for (int i = 0; i < levels.length; i++) {
+                levels[i] = start + (0.2 * i);
+            }
+
+            SimpleFeatureCollection fc = process.execute(coverage, 0, levels, null, null, null,
+                    null, null);
+            SimpleFeatureIterator features = fc.features();
+
+            while (features.hasNext()) {
+                // Apply a set of transformations to the feature geometries to make sure 
+                // no exceptions are thrown. (This would happen when dealing with invalid
+                // lineStrings, resulting into IllegalArgumentException)
+                SimpleFeature feature = features.next();
+                Geometry geometry = (Geometry) feature.getDefaultGeometry();
+                ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(),
+                        wgs84);
+                JTS.toGeometry((Envelope) ge);
+            }
+        } catch (IllegalArgumentException iae) {
+            success = false;
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Ignore exception on dispose
+                }
+            }
+        }
+        assertTrue(success);
+    }
+
     private GridCoverage2D createVerticalGradient(
             final int dataRows, final int dataCols, 
             ReferencedEnvelope worldEnv,

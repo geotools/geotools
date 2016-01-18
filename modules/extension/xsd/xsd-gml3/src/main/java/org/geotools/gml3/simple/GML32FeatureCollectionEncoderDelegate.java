@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import java.util.List;
 import java.util.Map;
 
@@ -155,6 +156,7 @@ public class GML32FeatureCollectionEncoderDelegate extends
             encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix));
             encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix));
             encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix));
+            encoders.put(GeometryCollection.class, new GeometryCollectionEncoder(encoder, gmlPrefix));
         }
 
         @Override

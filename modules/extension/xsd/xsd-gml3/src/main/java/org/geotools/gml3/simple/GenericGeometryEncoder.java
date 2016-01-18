@@ -60,15 +60,16 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
 
     @Override
     public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
+        
         if (geometry instanceof LineString) {
             LineStringEncoder lineString = new LineStringEncoder(encoder,
                 LineStringEncoder.LINE_STRING);
             lineString.encode((LineString) geometry, atts, handler);
         } else if (geometry instanceof Point) {
-            PointEncoder pt = new PointEncoder(encoder, gmlPrefix);
+            PointEncoder pt = new PointEncoder(encoder, gmlPrefix == null ? "gml" : gmlPrefix);
             pt.encode((Point) geometry, atts, handler);
         } else if (geometry instanceof Polygon) {
-            PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix);
+            PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix == null ? "gml" : gmlPrefix);
             polygon.encode((Polygon) geometry, atts, handler);
         } else if (geometry instanceof MultiLineString) {
             MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.filter.function;
 
 import static org.junit.Assert.assertEquals;
@@ -42,10 +41,13 @@ import org.junit.After;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 
 /**
  * @author Andrea Aime
  * @author Michael Bedward
+ * @author Frank Gasdorf
+ * 
  * @since 2.6
  *
  *
@@ -358,5 +360,61 @@ public class EnvFunctionTest {
         } finally {
             logger.removeHandler(handler);
         }
+    }
+
+    @Test
+    public void testRemoveEntryFromGlobalDefault() {
+        String expectedString = "test";
+        EnvFunction.setGlobalValue("foo", "test");
+        assertEvalStringEquals(expectedString, ff.function("env", ff.literal("foo")));
+
+        // remove from global lookup table
+        String expectedFallback = "does not exist";
+        EnvFunction.removeGlobalValue("foo");
+        assertEvalStringEquals(expectedFallback, ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
+    }
+
+    @Test
+    public void testRemoveEntryFromLocalWithDefault() {
+        String expectedString = "test";
+        EnvFunction.setLocalValue("foo", "test");
+        assertEvalStringEquals(expectedString, ff.function("env", ff.literal("foo")));
+
+        // remove from local lookup table
+        String expectedFallback = "does not exist";
+        EnvFunction.removeLocalValue("foo");
+        assertEvalStringEquals(expectedFallback, ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
+    }
+
+    @Test
+    public void testNonExistingKeyEvalIsNilWithoutDefault() {
+        boolean isNil = ff.isNil(ff.function("env", ff.literal("not existig key")), null).evaluate(null);
+        assertTrue(isNil);
+    }
+
+    @Test
+    public void testExistingKeyEvalIsNotNil() {
+        EnvFunction.setGlobalValue("foo", "whatever");
+        boolean isNil = ff.isNil(ff.function("env", ff.literal("foo")), null).evaluate(null);
+        assertTrue(!isNil);
+    }
+
+    @Test
+    public void testExistingKeyNullValueAndIsNullGlobal() {
+        EnvFunction.setGlobalValue("foo", null);
+        boolean isNull = ff.isNull(ff.function("env", ff.literal("foo"))).evaluate(null);
+        assertTrue(isNull);
+    }
+
+    @Test
+    public void testExistingKeyNullValueAndIsNullLocal() {
+        EnvFunction.setLocalValue("foo", null);
+        boolean isNull = ff.isNull(ff.function("env", ff.literal("foo"))).evaluate(null);
+        assertTrue(isNull);
+    }
+
+    private void assertEvalStringEquals(final String expectedString, final Function function) {
+        String result = (String) function.evaluate(null);        
+        assertEquals(expectedString, result);
     }
 }

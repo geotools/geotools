@@ -92,8 +92,8 @@
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <test.forkMode>once</test.forkMode>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.12</imageio.ext.version>
-    <jaiext.version>1.0.6</jaiext.version>
+    <imageio.ext.version>1.1.13</imageio.ext.version>
+    <jaiext.version>1.0.8</jaiext.version>
     <netcdf.version>4.6.2</netcdf.version>
     <jt.version>1.4.0</jt.version>
     <jvm.opts></jvm.opts>
@@ -168,13 +168,13 @@
           <id>boundless</id>
           <uniqueVersion>false</uniqueVersion>
           <name>Boundless Release Repository</name>
-          <url>https://boundless.artifactoryonline.com/boundless/release/</url>
+          <url>https://repo.boundlessgeo.com/release/</url>
         </repository>
         <snapshotRepository>
           <id>boundless</id>
           <uniqueVersion>false</uniqueVersion>
           <name>Boundless Snapshot Repository</name>
-          <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+          <url>https://repo.boundlessgeo.com/snapshot/</url>
         </snapshotRepository>
       </distributionManagement>
     </profile>
@@ -1307,14 +1307,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.7</source>  <!-- The -source argument for the Java compiler. -->
-          <target>1.7</target>  <!-- The -target argument for the Java compiler. -->
+          <source>1.8</source>  <!-- The -source argument for the Java compiler. -->
+          <target>1.8</target>  <!-- The -target argument for the Java compiler. -->
           <debug>true</debug>   <!-- Whether to include debugging information.   -->
           <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
-          <!-- 
-               On java6 the build oom's otherwise due to the compiler accumulating
-               too many classes in the permanent generation, see GEOT-2462  
-          -->
           <fork>${fork.javac}</fork> 
           <maxmem>${javac.maxHeapSize}</maxmem>
         </configuration>
@@ -1475,8 +1471,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
 
         <configuration>
-            <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->
-          <source>1.7</source>
+          <source>1.8</source>
             <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
             <!-- Omit qualifying package name before class names in output.-->
@@ -1488,7 +1483,7 @@
             <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
             <!-- Set an additional parameter for the command line. -->
-          <additionalparam>-keywords</additionalparam>
+          <additionalparam>-keywords -Xdoclint:none</additionalparam>
           <breakiterator>true</breakiterator>
           <excludePackageNames>
             org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
@@ -1673,8 +1668,7 @@
         <version>${maven.javadoc.plugin.version}</version>
 
         <configuration>
-            <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->
-          <source>1.7</source>
+          <source>1.8</source>
             <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
             <!-- Omit qualifying package name before class names in output.-->
@@ -1847,7 +1841,7 @@
         <id>boundless</id>
         <uniqueVersion>false</uniqueVersion>
         <name>Boundless Snapshot Repository</name>
-        <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+        <url>https://repo.boundlessgeo.com/snapshot/</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -1865,6 +1859,8 @@
       </snapshots>
     </repository>
 
+    <!-- contained above -->
+    <!--
     <repository>
       <snapshots>
         <enabled>false</enabled>
@@ -1873,7 +1869,7 @@
       <name>geosolutions repository</name>
       <url>http://maven.geo-solutions.it/</url>
     </repository>
-
+    -->
     <repository>
       <snapshots>
         <enabled>false</enabled>
@@ -1884,12 +1880,19 @@
     </repository>
 
     <repository>
+      <!-- contains snapshot and release (including third-party-dependences)               -->
+      <!-- Restlet maven Repository (http://maven.restlet.org)                             -->
+      <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
+      <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+      <url>https://repo.boundlessgeo.com/main/</url>
     </repository>
 
   </repositories>
@@ -1913,7 +1916,7 @@
       </snapshots>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+      <url>https://repo.boundlessgeo.com/snapshot/</url>
     </pluginRepository> 
     <pluginRepository>
      <id>sonatype-snapshots</id>

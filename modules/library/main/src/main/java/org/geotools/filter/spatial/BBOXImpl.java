@@ -48,6 +48,10 @@ import com.vividsolutions.jts.geom.prep.PreparedGeometry;
  * @source $URL$
  */
 public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
+    
+    /** Factory for creating geometries */
+    static final GeometryFactory GEOMETRY_FACTORY = JTSFactoryFinder.getGeometryFactory();
+
 
     double minx, miny, maxx, maxy;
 
@@ -284,9 +288,6 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
      *       with JTS when it comes to doing spatial tests
      */
     public static Polygon boundingPolygon( Envelope env ){
-        /** Factory for creating geometries */
-        GeometryFactory gfac = JTSFactoryFinder.getGeometryFactory();
-        
         Coordinate[] coords = new Coordinate[5];
         coords[0] = new Coordinate(env.getMinX(), env.getMinY());
         coords[1] = new Coordinate(env.getMinX(), env.getMaxY());
@@ -297,12 +298,12 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         LinearRing ring = null;
 
         try {
-            ring = gfac.createLinearRing(coords);
+            ring = GEOMETRY_FACTORY.createLinearRing(coords);
         } catch (TopologyException tex) {
             throw new IllegalFilterException(tex.toString());
         }
 
-        Polygon polygon = gfac.createPolygon(ring, null);
+        Polygon polygon = GEOMETRY_FACTORY.createPolygon(ring, null);
         if (env instanceof ReferencedEnvelope) {
             ReferencedEnvelope refEnv = (ReferencedEnvelope) env;
             polygon.setUserData(refEnv.getCoordinateReferenceSystem());

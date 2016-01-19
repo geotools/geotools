@@ -56,23 +56,6 @@
     
   </developers>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <encoding>UTF-8</encoding>
-          <target>1.7</target>
-          <source>1.7</source>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

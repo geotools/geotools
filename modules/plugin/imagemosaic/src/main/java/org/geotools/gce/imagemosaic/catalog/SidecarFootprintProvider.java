@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -74,10 +74,16 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
                 }
                 if (result == null) {
                     for (FootprintLoader test : LOADERS) {
-                        result = test.loadFootprint(noExtension);
-                        if (result != null) {
-                            lastLoader = test;
-                            break;
+                        try {
+                            result = test.loadFootprint(noExtension);
+                            if (result != null) {
+                                lastLoader = test;
+                                break;
+                            }
+                        } catch (Exception e) {
+                            if (LOGGER.isLoggable(Level.FINE)) {
+                                LOGGER.log(Level.FINE, test.getClass().getName()+" threw exception loading footprint", e);
+                            }
                         }
                     }
                 }

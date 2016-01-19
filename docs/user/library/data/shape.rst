@@ -135,6 +135,28 @@ Limitations:
   your content ends up trimmed).
 * Only supports a single GeometryAttribute
 * Shapefile does not support plain Geometry (i.e. mixed LineString, Point and Polygon all in the same file).
+* The shapefile maximum size is limited to 2GB (its sidecar DBF file often to 2GB, some system being able
+  to read 4GB or more)
+
+Dumping almost anything into a shapefile
+''''''''''''''''''''''''''''''''''''''''
+
+In case the feature collection to be turned into a shapefile is not fitting the shapefile format
+limitations it's still possible to create shapefiles out of it, at ease, leaving all the
+structural bridging work to the ``ShapefileDumper`` class.
+
+In particular, given one or more feature collections, the dumper will:
+
+* Reduce attribute names to the DBF accepted length, making sure there are not conflicts (counters being added at the end of the attribute name to handle this).
+* Fan out multiple geometry type into parallel shapefiles, named after the original feature type, plus the geometry type as a suffix.
+* Fan out multiple shapefiles in case the maximum size is reached.
+
+Example usage:
+
+.. literalinclude:: /../src/main/java/org/geotools/data/ShapefileExample.java
+   :language: java
+   :start-after: // start dumper
+   :end-before: // end dumper
 
 Force Projection
 ''''''''''''''''

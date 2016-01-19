@@ -298,11 +298,11 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
         // them...
         List<CoverageSlice> fc = null;
         try {
-            Query updatedQuery = query != null ? query : new Query();
-            
             // WrappedCoverageSlicesCatalog share the DB. Therefore I have to deal with 
             // the location attribute 
             boolean sharedCatalog = slicesCatalog instanceof WrappedCoverageSlicesCatalog; 
+            Query updatedQuery = (query != null && sharedCatalog) ? query : new Query();
+
             if (sharedCatalog) {
                 final List<SortBy> clauses = new ArrayList<SortBy>(1);
                 clauses.add(new SortByImpl(

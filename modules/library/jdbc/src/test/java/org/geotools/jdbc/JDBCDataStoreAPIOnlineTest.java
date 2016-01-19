@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -58,7 +59,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -799,6 +799,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FINAL[FINAL.length - 1] = td.newRoad;
         reader.close();
 
+        writer2.close();
+
         // We still have ORIGINAL and t2 has ADD
         reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
@@ -808,8 +810,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t2);
         assertMatched(ADD, reader); // broken due to FID problem
         reader.close();
-
-        writer2.close();
 
         // Still have ORIGIONAL and t2 has ADD
         reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
@@ -1720,4 +1720,12 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             }    
 	    assertTrue(original.getNumPoints()>=simplified.getNumPoints());
 	}
+
+    @Override
+    protected HashMap createDataStoreFactoryParams() throws Exception {
+        HashMap params = super.createDataStoreFactoryParams();
+        // This test expects the write to happen right away. Disable buffering.
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
+        return params;
+    }
 }

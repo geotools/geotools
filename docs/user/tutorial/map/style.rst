@@ -160,7 +160,7 @@ Example
 -------
 
 The example code is available
- * Directly from svn: SelectionLab.java_
+ * Directly from Source repository: SelectionLab.java_
  * Included in the demo directory when you download the GeoTools source code
 
 .. _SelectionLab.java: http://github.com/geotools/geotools/blob/master/docs/src/main/java/org/geotools/tutorial/style/SelectionLab.java

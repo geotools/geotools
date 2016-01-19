@@ -3,8 +3,9 @@ CREATE TABLE IF NOT EXISTS gpkg_data_column_constraints (
   constraint_type TEXT NOT NULL,
   value TEXT,
   min NUMERIC,
-  minIsInclusive BOOLEAN,
+  min_is_inclusive BOOLEAN,
   max NUMERIC,
-  maxIsInclusive BOOLEAN,
+  max_is_inclusive BOOLEAN,
+  description TEXT,
   CONSTRAINT gdcc_ntv UNIQUE (constraint_name, constraint_type, value)
 );

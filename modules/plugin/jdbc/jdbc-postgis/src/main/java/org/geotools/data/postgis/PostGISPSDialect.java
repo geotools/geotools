@@ -146,6 +146,11 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         return delegate.getNextSequenceValue(schemaName, sequenceName, cx);
     }
 
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
     public String getSequenceForColumn(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
         return delegate.getSequenceForColumn(schemaName, tableName, columnName,
@@ -207,9 +212,9 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding,
+    public void prepareGeometryValue(Class<? extends Geometry> gClass, int dimension, int srid, Class binding,
             StringBuffer sql) {
-        if (g != null) {
+        if (gClass != null) {
             sql.append("ST_GeomFromWKB(?, " + srid + ")");
         } else {
             sql.append("?");

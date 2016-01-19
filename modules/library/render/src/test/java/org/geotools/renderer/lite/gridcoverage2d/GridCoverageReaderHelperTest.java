@@ -30,11 +30,13 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.crs.ProjectionHandler;
@@ -43,9 +45,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.Format;
+import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.EngineeringCRS;
 
 public class GridCoverageReaderHelperTest {
 
@@ -53,10 +59,12 @@ public class GridCoverageReaderHelperTest {
 
     private GeoTiffReader reader;
 
+    File coverageFile;
+
     @Before
     public void getData() throws IOException {
         MapProjection.SKIP_SANITY_CHECKS = true;
-        File coverageFile = TestData.copy(this, "geotiff/world.tiff");
+        coverageFile = TestData.copy(this, "geotiff/world.tiff");
         assertTrue(coverageFile.exists());
         reader = new GeoTiffReader(coverageFile);
     }
@@ -239,7 +247,34 @@ public class GridCoverageReaderHelperTest {
                 reader.getCoordinateReferenceSystem(), true);
         List<GridCoverage2D> coverages = helper.readCoverages(null, handler);
         assertEquals(1, coverages.size());
+    }
+    
+    @Test
+    public void testCutUnreferenced() throws Exception {
+        // force a CRS that does not have a projection handler (and most likely never will)
+        Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultEngineeringCRS.GENERIC_2D);
+        GridCoverage2DReader reader = null;
         
-        
+        try {
+            reader = new GeoTiffReader(coverageFile, hints);
+            // setup the read
+            ReferencedEnvelope mapExtent = new ReferencedEnvelope(-90, 0, -45,  45, DefaultEngineeringCRS.GENERIC_2D);
+            GridCoverageReaderHelper helper = new GridCoverageReaderHelper(reader, new Rectangle(200,
+                    200), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            List<GridCoverage2D> coverages = helper.readCoverages(null, null);
+            assertEquals(1, coverages.size());
+            // check it has been cut
+            GridCoverage2D gc = coverages.get(0);
+            Envelope envelope = gc.getEnvelope();
+            assertEquals(-90, envelope.getMinimum(0), EPS);
+            assertEquals(0, envelope.getMaximum(0), EPS);
+            assertEquals(-45, envelope.getMinimum(1), EPS);
+            assertEquals(45, envelope.getMaximum(1), EPS);
+        } finally {
+            if(reader != null) {
+                reader.dispose();
+            }
+        }
+
     }
 }

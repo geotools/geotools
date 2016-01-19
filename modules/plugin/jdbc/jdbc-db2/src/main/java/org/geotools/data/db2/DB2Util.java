@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -154,14 +154,13 @@ public class DB2Util {
 		return CAST_EPXPRESSIONS.get(aClass); 
 	}
 	
-	static public void prepareGeometryValue(Geometry geom, int srid, Class binding, StringBuffer sql) {
-		//String pattern = PARAMETER_MARKES.get(binding);
-	        String pattern = null;
-	    
-	        if (geom != null ) 
-	                pattern = PARAMETER_MARKES.get(geom.getClass());
-	        if (pattern==null )
-	                pattern = PARAMETER_MARKES.get(binding);
+	static public void prepareGeometryValue(Class<? extends Geometry> gClass, int srid, Class binding, StringBuffer sql) {
+		String pattern = null;
+
+		if (gClass != null )
+				pattern = PARAMETER_MARKES.get(gClass);
+		if (pattern == null )
+				pattern = PARAMETER_MARKES.get(binding);
 		sql.append(MessageFormat.format(pattern, new Object[]{Integer.toString(srid)}));		
 	}
 

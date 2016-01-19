@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -693,28 +693,29 @@ public class GeoPackage {
         create(e, collection.getSchema());
 
         Transaction tx = new DefaultTransaction();
-        SimpleFeatureWriter w = writer(e, true, null, tx);
-        SimpleFeatureIterator it = collection.features();
         try {
-            while(it.hasNext()) {
-                SimpleFeature f = it.next(); 
-                SimpleFeature g = w.next();
-                for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
-                    String name = pd.getName().getLocalPart();
-                    g.setAttribute(name, f.getAttribute(name));
+            SimpleFeatureWriter w = writer(e, true, null, tx);
+            SimpleFeatureIterator it = collection.features();
+            try {
+                while (it.hasNext()) {
+                    SimpleFeature f = it.next();
+                    SimpleFeature g = w.next();
+                    for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
+                        String name = pd.getName().getLocalPart();
+                        g.setAttribute(name, f.getAttribute(name));
+                    }
+
+                    w.write();
                 }
-                                             
-                w.write();
+            } finally {
+                w.close();
+                it.close();
             }
             tx.commit();
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             tx.rollback();
             throw new IOException(ex);
-        }
-        finally {
-            w.close();
-            it.close();
+        } finally {
             tx.close();
         }
 

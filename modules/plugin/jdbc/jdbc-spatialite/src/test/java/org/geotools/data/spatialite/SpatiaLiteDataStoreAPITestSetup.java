@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,6 @@
 package org.geotools.data.spatialite;
 
 import java.sql.SQLException;
-
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 /**
@@ -31,10 +30,12 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         super(new SpatiaLiteTestSetup());
     }
 
+    @Override
     protected void setUpData() throws Exception {
         //kill all the data
         super.setUpData();
         try {
+            dropRecreatedTable();
             dropDataTypesTable();
         } catch (SQLException e) {
         }
@@ -110,6 +111,11 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected void dropBuildingTable() throws Exception {
         run( "DROP TABLE building");
         run( "DELETE FROM geometry_columns WHERE f_table_name = 'building'");
+    }
+
+    protected void dropRecreatedTable() throws Exception {
+        run( "DROP TABLE recreated");
+        run( "DELETE FROM geometry_columns WHERE f_table_name = 'recreated'");
     }
 
     protected void dropDataTypesTable() throws Exception {

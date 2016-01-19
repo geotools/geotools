@@ -314,7 +314,17 @@ public final class ScriptTest {
     public void testGnomonic() throws Exception {
         runScript("scripts/Gnomonic.txt");
     }
-    
+
+    /**
+     * Run "GEOS.txt"
+     *
+     * @throws Exception If a test failed.
+     */
+    @Test
+    public void testGEOS() throws Exception {
+        runScript("scripts/GEOS.txt");
+    }
+
     /**
      * Run "WagnerIV.txt". Disabled as the projection is not really
      * working as expected, but don't have time to investigate.

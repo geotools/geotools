@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -79,6 +79,7 @@ public class PropertyDataStore extends ContentDataStore {
     // constructor end
     
     // createSchema start
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         String typeName = featureType.getTypeName();
         File file = new File(dir, typeName + ".properties");
@@ -94,6 +95,7 @@ public class PropertyDataStore extends ContentDataStore {
     // createSchema end
     
     // info start
+    @Override
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from Directory " + dir);
@@ -106,11 +108,13 @@ public class PropertyDataStore extends ContentDataStore {
         return info;
     }
     // info end
-    
+
+    @Override
     public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI;
     }
-    
+
+    @Override
     protected java.util.List<Name> createTypeNames() throws IOException {
         String list[] = dir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -124,7 +128,8 @@ public class PropertyDataStore extends ContentDataStore {
         }
         return typeNames;
     }
-    
+
+    @Override
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
         List<Name> names = new ArrayList<Name>(typeNames.length);
@@ -146,5 +151,22 @@ public class PropertyDataStore extends ContentDataStore {
         } else {
             return new PropertyFeatureSource( entry, Query.ALL );
         }
+    }
+
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        this.removeSchema(typeName.getLocalPart());
+    }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        if (!typeName.endsWith(".properties")) {
+            typeName = typeName + ".properties";
+        }
+        File file = new File(dir, typeName);
+        if (!file.exists()) {
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+        }
+        file.delete();
     }
 }

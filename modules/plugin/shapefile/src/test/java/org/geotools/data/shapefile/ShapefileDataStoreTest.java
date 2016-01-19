@@ -520,6 +520,27 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ds.dispose();
     }
     
+    @Test
+    public void testGeometryFilter() throws Exception {
+        File shpFile = copyShapefiles(STREAM);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        SimpleFeatureSource featureSource = ds.getFeatureSource();
+        SimpleFeatureCollection features;// = featureSource.getFeatures();
+        
+
+        
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(-99.0,38.0);
+        Point p = geometryFactory.createPoint(coordinate);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        final Filter testFilter = ff.intersects(ff.literal(p), ff.property("the_geom"));
+        //System.out.println(testFilter);
+        features = featureSource.getFeatures(testFilter);
+        assertNotNull(features);
+        
+    }
+    
     private ArrayList performQueryComparison(
             ShapefileDataStore indexedDS,
             ShapefileDataStore baselineDS, ReferencedEnvelope newBounds)

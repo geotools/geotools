@@ -166,4 +166,4 @@ References:
 
 * http://geoserver.org/display/GEOS/Configuration+Proposal
 * http://help.eclipse.org/helios/topic/org.eclipse.platform.doc.isv/resInt_filesystem.htm
-* http://udig.refractions.net/confluence/display/DEV/2+Catalog
+* http://udig.github.io/docs/dev/catalog.html

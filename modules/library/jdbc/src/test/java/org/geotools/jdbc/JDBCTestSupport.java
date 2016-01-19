@@ -152,10 +152,16 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected abstract JDBCTestSetup createTestSetup();
 
     protected HashMap createDataStoreFactoryParams() throws Exception{
-	HashMap params = new HashMap();
+        HashMap params = new HashMap();
         params.put( JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test" );
         params.put( JDBCDataStoreFactory.SCHEMA.key, "geotools" );
         params.put( JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource() );
+
+        // Enable batch insert in the tests. Some tests will revert that back to the default because
+        // their code is not closing the writer correctly and would fail. They are left as is to
+        // check that production code behaving like that would be saved by the fact that the default
+        // value is 1.
+        params.put( JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 100);
         return params;
     }
 

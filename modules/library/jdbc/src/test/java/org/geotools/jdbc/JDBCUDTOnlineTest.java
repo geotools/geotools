@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import java.util.HashMap;
 
 /**
  * 
@@ -72,11 +74,18 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
         }
         catch(Exception e) {
         }
-        
         f.setAttribute(aname("ut"), "34cd");
         w.write();
         w.close();
         
         assertEquals(count+1, dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL));
+    }
+
+    @Override
+    protected HashMap createDataStoreFactoryParams() throws Exception {
+        HashMap params = super.createDataStoreFactoryParams();
+        // Set the batch insert size in order to be sure the failures happens while write is called.
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
+        return params;
     }
 }

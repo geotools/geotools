@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,16 +24,20 @@ import static org.junit.Assert.fail;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 
+import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.DirectPosition2D;
@@ -44,7 +48,9 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
+import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.junit.Before;
@@ -204,6 +210,70 @@ public final class CropTest extends GridProcessingTestBase {
                     cropped.getGridGeometry().getGridToCRS2D());
         assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
 
+    }
+    
+    /**
+     * Tests the specific catchable exception thrown when the area has no overlap
+     */
+    @Test
+    public void testCropOutsideCoverageRealWorld() throws TransformException {
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+        ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+        // push it fully outside of the coverage area
+        re.translate(re.getWidth() + 10, 0);
+        
+        /*
+         * Do the crop 
+         */
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(coverage);
+        param.parameter("Envelope").setValue(re);
+        try {
+            processor.doOperation(param);
+            fail("Should have thrown an exception here, there is no overlap");
+        } catch(EmptyIntersectionException e) {
+            assertEquals("Crop envelope does not intersect in model space", e.getMessage());
+        }
+    }
+    
+    /**
+     * Tests the specific catchable exception thrown when the area has no overlap
+     */
+    @Test
+    public void testCropOutsideCoverageRasterSpace() throws TransformException {
+        // Reproducing a real world setup that exhibits a numerical issue. Unsure if the
+        // same issue can be reproduced on all platforms, we might have to guard this one
+        // for OS/architecture
+        final int width  = 450;
+        final int height = 225;
+        final BufferedImage image= new BufferedImage(width, height, BufferedImage.TYPE_USHORT_GRAY);
+        final WritableRaster raster =(WritableRaster) image.getData();
+        for (int y=0; y< height; y++) {
+            for (int x=0; x< width; x++) {
+                raster.setSample(x, y, 0,(int)( 1+(x+y)*65534.0/1000.0));
+            }
+        }
+        image.setData(raster);
+        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 450, 225), new AffineTransform2D(0.8, 0, 0, -0.8, -179.6, 89.6), DefaultGeographicCRS.WGS84);
+        GridCoverage2D coverage = factory.create("UInt16 coverage", image, gg, null, null, null);
+        
+        
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+        ReferencedEnvelope re = new ReferencedEnvelope(-180, 0, -270, -90, DefaultGeographicCRS.WGS84);
+        
+        /*
+         * Do the crop 
+         */
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(coverage);
+        param.parameter("Envelope").setValue(re);
+        try {
+            processor.doOperation(param);
+            fail("Should have thrown an exception here, there is no overlap");
+        } catch(EmptyIntersectionException e) {
+            assertEquals("Crop envelope intersects in model space, but not in raster space", e.getMessage());
+        }
     }
 
     /**

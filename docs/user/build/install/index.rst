@@ -24,9 +24,9 @@ The following tools are required to build GeoTools:
   
   * http://maven.apache.org/download.html  
 
-* Java 2 Software Developers Kit (Java 7)
+* Java Development Kit 8 (JDK 8)
   
-  * http://www.oracle.com/technetwork/java/javase/overview/index.html
+  * http://www.oracle.com/technetwork/java/javase/downloads/
 
 The following optional downloads provide increased functionality or performance:
 
@@ -52,7 +52,7 @@ The following optional downloads provide increased functionality or performance:
 
 * Oracle (Optional):
     
-  * ojdbc14.jar
+  * Obtain an ojdbc jar from Oracle or your Oracle installation
 
 * DB2 (Optional)
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -45,6 +45,23 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
         return directory;
     }
 
+    @Override
+    public void removeSchema(Name typeName) throws IOException {
+        this.removeSchema(typeName.getLocalPart());
+    }
+
+    @Override
+    public void removeSchema(String typeName) throws IOException {
+        if (!typeName.endsWith(".pbf")) {
+            typeName = typeName + ".pbf";
+        }
+        File file = new File(directory, typeName);
+        if (!file.exists()) {
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+        }
+        file.delete();
+    }
+
     protected GeobufDataStore getDataStore(String name) {
         File file = new File(directory, name + ".pbf");
         return new GeobufDataStore(file, precision, dimension);
@@ -75,4 +92,7 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
     protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry) throws IOException {
         return getDataStore(contentEntry.getTypeName()).createFeatureSource(contentEntry);
     }
+
+
+
 }

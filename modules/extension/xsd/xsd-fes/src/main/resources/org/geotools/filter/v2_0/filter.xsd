@@ -257,6 +257,7 @@
     <xsd:attribute name="wildCard" type="xsd:string" use="required"/>
     <xsd:attribute name="singleChar" type="xsd:string" use="required"/>
     <xsd:attribute name="escapeChar" type="xsd:string" use="required"/>
+    <xsd:attribute name="matchCase" type="xsd:boolean" use="optional" default="true"/>
    </xsd:extension>
   </xsd:complexContent>
  </xsd:complexType>

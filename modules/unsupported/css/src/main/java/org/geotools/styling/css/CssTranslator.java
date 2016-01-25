@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -65,7 +65,6 @@ import org.geotools.styling.builder.StrokeBuilder;
 import org.geotools.styling.builder.StyleBuilder;
 import org.geotools.styling.builder.SymbolizerBuilder;
 import org.geotools.styling.builder.TextSymbolizerBuilder;
-import org.geotools.styling.css.CssTranslator.TranslationMode;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.Value.MultiValue;

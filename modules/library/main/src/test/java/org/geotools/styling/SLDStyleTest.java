@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -846,6 +846,29 @@ public class SLDStyleTest extends TestCase {
         Map<String, String> options = fts.getOptions();
         assertEquals(1, options.size());
         assertEquals(FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST, options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+    }
+    
+    public void testMultipleFonts() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "multifont.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        List<FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
+        assertEquals(1, featureTypeStyles.size());
+        List<Rule> rules = featureTypeStyles.get(0).rules();
+        assertEquals(1, rules.size());
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        assertEquals(1, symbolizers.size());
+        TextSymbolizer ts = (TextSymbolizer) symbolizers.get(0);
+        assertEquals(1, ts.fonts().size());
+        List<Expression> families = ts.fonts().get(0).getFamily();
+        assertEquals(3, families.size());
+        assertEquals("Comic Sans MS", families.get(0).evaluate(null, String.class));
+        assertEquals("Droid Sans Fallback", families.get(1).evaluate(null, String.class));
+        assertEquals("Arial", families.get(2).evaluate(null, String.class));
     }
 
     public void testParseBase64EncodedContent() throws Exception {

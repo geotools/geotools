@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -762,7 +762,24 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Font f2 = fonts.get(1);
         assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
         assertEquals("15", f2.getSize().evaluate(null));
-
+    }
+    
+    @Test
+    public void testMultipleFontsDefaltSize() throws Exception {
+        String css = "* { label: \"static\"; font-family: \"Serif\" \"Sans\"}";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        List<Font> fonts = ts.fonts();
+        assertEquals(2, fonts.size());
+        Font f1 = fonts.get(0);
+        assertEquals("Serif", f1.getFamily().get(0).evaluate(null));
+        assertEquals(10, f1.getSize().evaluate(null));
+        Font f2 = fonts.get(1);
+        assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
+        assertEquals(10, f2.getSize().evaluate(null));
     }
 
     @Test

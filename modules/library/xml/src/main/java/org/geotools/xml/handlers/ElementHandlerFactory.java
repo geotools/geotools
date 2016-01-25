@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.xml.SchemaFactory;
@@ -83,8 +84,15 @@ public class ElementHandlerFactory {
         logger.finest("Target == '" + targ + "'");
         logger.finest("URI == '" + uri + "'");
 
+        URI tns = null;
         try {
-            URI tns = new URI(targ);
+            tns = new URI(targ);
+        } catch (URISyntaxException e) {
+            logger.warning(e.toString());
+            throw new SAXException(e);
+        }
+        
+        try {
             Schema s = SchemaFactory.getInstance(tns, uri, logger.getLevel());
 
             if (s != null) {
@@ -94,13 +102,17 @@ public class ElementHandlerFactory {
 
                 targSchemas.put(s.getTargetNamespace(), s);
                 prefixURIs.put(prefix, tns); 
-            }else{
+            } else {
                 prefixURIs.put(prefix, tns); 
             }
-        } catch (URISyntaxException e) {
-            logger.warning(e.toString());
-            throw new SAXException(e);
+        } catch(Exception e) {
+            logger.log(Level.FINE, "Failed to parse schema from location " + uri 
+                    + ", ignoring and moving on, this might result in some elements not being parsed properly");
+            // treating an error the same way as not being able to 
+            // get to the schema, e.g., s == null above
+            prefixURIs.put(prefix, tns);
         }
+    
     }
 
     /**

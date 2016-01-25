@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -2321,6 +2321,7 @@ public class SLDParser {
         }
 
         Font font = factory.getDefaultFont();
+        boolean firstFontFamily = true;
         NodeList list = findElements(((Element) root), "CssParameter");
         int length = list.getLength();
         for (int i = 0; i < length; i++) {
@@ -2337,7 +2338,13 @@ public class SLDParser {
                 String res = map.item(k).getNodeValue();
 
                 if (res.equalsIgnoreCase("font-family")) {
-                    font.setFontFamily(parseCssParameter(child));
+                    if(firstFontFamily) {
+                        // wipe out the default font
+                        font.getFamily().clear();
+                        firstFontFamily = false;
+                    }
+                    // use add instead of set as we might have multiple fonts here
+                    font.getFamily().add(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-style")) {
                     font.setFontStyle(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-size")) {

@@ -3,7 +3,6 @@
     <sld:Name/>
     <sld:UserStyle>
       <sld:Name>Default Styler</sld:Name>
-      <sld:Title>basemap_osm_roads</sld:Title>
       <sld:FeatureTypeStyle>
         <sld:Rule>
           <ogc:Filter>

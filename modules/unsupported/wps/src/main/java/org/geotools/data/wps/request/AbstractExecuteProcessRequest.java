@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import net.opengis.ows11.CodeType;
 import net.opengis.ows11.Ows11Factory;
@@ -36,6 +37,8 @@ import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.Wps10Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.data.wps.WPSProcess;
+import org.geotools.util.logging.Logging;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
 import org.geotools.xml.Configuration;
@@ -55,7 +58,7 @@ import org.geotools.xml.Encoder;
  */
 public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest implements ExecuteProcessRequest
 {
-
+	private static final Logger LOGGER = Logging.getLogger(AbstractExecuteProcessRequest.class.getName());
     /** only support POST for execute requests right now (in the future this
      * could be dynamically set based on what properties are set
      * for this request).
@@ -114,6 +117,7 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
         // http://schemas.opengis.net/wps/1.0.0/wpsExecute_request.xsd
         ExecuteType request = createExecuteType();
         encoder.encode(request, WPS.Execute, outputStream);
+        LOGGER.fine(outputStream.toString());
         // System.out.println(outputStream.toString());
     }
 

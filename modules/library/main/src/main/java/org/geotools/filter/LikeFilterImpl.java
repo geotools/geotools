@@ -197,8 +197,8 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     private Matcher getMatcher(String string) {
         if (compPattern == null) {
             String pattern = new LikeToRegexConverter(this).getPattern();
-            compPattern = isMatchingCase() ? Pattern.compile(pattern, Pattern.UNICODE_CASE) : Pattern.compile(pattern,
-                    Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+            compPattern = isMatchingCase() ? Pattern.compile(pattern)
+                    : Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         }
         return compPattern.matcher(string);
     }

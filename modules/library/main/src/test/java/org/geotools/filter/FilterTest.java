@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -176,6 +176,7 @@ public class FilterTest extends TestCase {
         ftb.add("datetime1", java.util.Date.class);
         ftb.add("datetime2", java.sql.Timestamp.class);
         ftb.add("nullInt", Integer.class);
+        ftb.add("unicodeString", String.class);
         testSchema = ftb.buildFeatureType();
 
         //LOGGER.finer("added string to feature type");
@@ -186,7 +187,7 @@ public class FilterTest extends TestCase {
         coords[2] = new Coordinate(5, 6);
 
         // Builds the test feature
-        Object[] attributes = new Object[16];
+        Object[] attributes = new Object[17];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = new Boolean(true);
@@ -215,6 +216,9 @@ public class FilterTest extends TestCase {
         attributes[13] = calDateTime.getTime();
         attributes[14] = new java.sql.Timestamp(calDateTime.getTimeInMillis());
 
+        // Unicode string
+        attributes[16] = "Barañáin";
+        
         // Creates the feature itself
         //FlatFeatureFactory factory = new FlatFeatureFactory(testSchema);
         testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
@@ -562,6 +566,35 @@ public class FilterTest extends TestCase {
         assertTrue(filter.evaluate(testFeature));
     }
 
+    /**
+     * Tests the like operator with unicode chars.
+     *
+     * @throws IllegalFilterException If the constructed filter is not valid.
+     */
+    public void testUnicodeLike() throws IllegalFilterException {
+        
+        // Set up string
+        PropertyName testAttribute = new AttributeExpressionImpl(testSchema, "unicodeString");
+        
+        PropertyIsLike filter = fac.like(testAttribute, "Barañá*", "*", ".", "!", false);
+        assertTrue(filter.evaluate(testFeature));
+        
+        filter = fac.like(testAttribute, "Barañá*", "*", ".", "!", true);
+        assertTrue(filter.evaluate(testFeature));
+        
+        filter = fac.like(testAttribute, "barañá*", "*", ".", "!", false);
+        assertTrue(filter.evaluate(testFeature));
+        
+        filter = fac.like(testAttribute, "barañá*", "*", ".", "!", true);
+        assertFalse(filter.evaluate(testFeature));
+        
+        filter = fac.like(testAttribute, "BARAÑÁ*", "*", ".", "!", false);
+        assertTrue(filter.evaluate(testFeature));
+        
+        filter = fac.like(testAttribute, "BARAÑÁ*", "*", ".", "!", true);
+        assertFalse(filter.evaluate(testFeature));
+    }
+    
     /**
      * Test the null operator.
      *

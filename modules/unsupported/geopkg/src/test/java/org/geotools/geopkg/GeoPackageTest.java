@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
@@ -162,6 +166,35 @@ public class GeoPackageTest {
         finally {
             st.close();
             cx.close();
+        }
+    }
+    
+    void assertLastChangedDateString() throws Exception {
+        final TimeZone tz = TimeZone.getTimeZone("GMT");
+        // get the date now for comparison
+        final Calendar c = Calendar.getInstance(tz);
+        final Date now = c.getTime();
+        // this is what should be used for the date string format in the DB
+        final String dateFomratString = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        final SimpleDateFormat sdf = new SimpleDateFormat(dateFomratString);
+        sdf.setTimeZone(tz);
+
+        try (Connection cx = geopkg.getDataSource().getConnection();
+            Statement st = cx.createStatement();
+            ResultSet rs = st.executeQuery(String.format("SELECT last_change FROM %s;",
+                GeoPackage.GEOPACKAGE_CONTENTS))){
+            
+            if (rs.next()) {
+                final String dateString = rs.getString(1);
+                // parse the date with the expected format string
+                Date parsedDate = sdf.parse(dateString);
+                // assert the month value is the same for NOW and the parsed date.
+                assertEquals("Month value does not match", new SimpleDateFormat("MMMM").format(now),
+                    new SimpleDateFormat("MMMM").format(parsedDate));
+                // assert the minute value is the same for NOW and the parsed date.
+                assertEquals("Minutes value does not match", new SimpleDateFormat("mm").format(now),
+                    new SimpleDateFormat("mm").format(parsedDate));
+            }
         }
     }
 
@@ -561,6 +594,8 @@ public class GeoPackageTest {
         List<FeatureEntry> lf = geopkg.features();
         assertEquals(1, lf.size());
         assertEquals("bugsites", lf.get(0).getTableName());
+        // make sure Date format String is fine
+        assertLastChangedDateString();
 
         List<RasterEntry> lr = geopkg.rasters();
         assertEquals(1, lr.size());

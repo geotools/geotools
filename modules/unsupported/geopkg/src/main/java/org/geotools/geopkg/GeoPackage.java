@@ -144,6 +144,7 @@ public class GeoPackage {
         }
     }
 
+    static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     /**
      * database file
      */
@@ -824,7 +825,7 @@ public class GeoPackage {
     }
 
     void addGeoPackageContentsEntry(Entry e) throws IOException {
-        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss.SSS'Z'");
+        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
         addCRS(e.getSrid());
 
@@ -1832,7 +1833,7 @@ public class GeoPackage {
         e.setDescription(rs.getString("description"));
         e.setTableName(rs.getString("table_name"));
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss.SSS'Z'");
+            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
             
             DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
             

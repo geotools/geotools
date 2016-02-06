@@ -178,11 +178,10 @@ public class GeoPackageTest {
         }
     }
     
-    void assertLastChangedDateString() throws Exception {
+    void assertLastChangedDateString(Calendar startTime, Calendar endTime) throws Exception {
         final TimeZone tz = TimeZone.getTimeZone("GMT");
         // get the date now for comparison
         final Calendar c = Calendar.getInstance(tz);
-        final Date now = c.getTime();
         // this is what should be used for the date string format in the DB
         final String dateFomratString = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
         final SimpleDateFormat sdf = new SimpleDateFormat(dateFomratString);
@@ -197,12 +196,12 @@ public class GeoPackageTest {
                 final String dateString = rs.getString(1);
                 // parse the date with the expected format string
                 Date parsedDate = sdf.parse(dateString);
-                // assert the month value is the same for NOW and the parsed date.
-                assertEquals("Month value does not match", new SimpleDateFormat("MMMM").format(now),
-                    new SimpleDateFormat("MMMM").format(parsedDate));
-                // assert the minute value is the same for NOW and the parsed date.
-                assertEquals("Minutes value does not match", new SimpleDateFormat("mm").format(now),
-                    new SimpleDateFormat("mm").format(parsedDate));
+                // assert the parsed time is between the start and end time
+                c.setTime(parsedDate);
+                assertTrue("Start time should be less than or equal to last_change time",
+                    startTime.compareTo(c) <= 0);
+                assertTrue("End time should be greater than or equal to last_change time",
+                    endTime.compareTo(c) >= 0);
             }
         }
     }
@@ -596,15 +595,19 @@ public class GeoPackageTest {
 
     @Test
     public void testListEntries() throws Exception {
+        // grab the start and end time to ensure the last_change time range
+        final TimeZone tz = TimeZone.getTimeZone("GMT");
+        final Calendar startTime = Calendar.getInstance(tz);
         testCreateFeatureEntry();
         testCreateRasterEntry();
         testCreateTileEntry();
+        final Calendar endTime = Calendar.getInstance(tz);
 
         List<FeatureEntry> lf = geopkg.features();
         assertEquals(1, lf.size());
         assertEquals("bugsites", lf.get(0).getTableName());
         // make sure Date format String is fine
-        assertLastChangedDateString();
+        assertLastChangedDateString(startTime, endTime);
 
         List<RasterEntry> lr = geopkg.rasters();
         assertEquals(1, lr.size());

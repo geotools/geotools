@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,17 +27,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
-import net.opengis.wfs.FeatureCollectionType;
-import net.opengis.wfs.WfsFactory;
 
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDCompositor;
@@ -53,8 +53,10 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.NameImpl;
@@ -62,7 +64,9 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.gml.producer.FeatureTransformer;
+import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.GMLConfiguration;
+import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.gtxml.GTXML;
 import org.geotools.referencing.CRS;
 import org.geotools.xml.Configuration;
@@ -70,6 +74,7 @@ import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.geotools.xml.StreamingParser;
 import org.geotools.xml.XSD;
+import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
 import org.geotools.xs.XS;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xs.XSSchema;
@@ -83,9 +88,14 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.Schema;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
 import com.vividsolutions.jts.geom.Geometry;
+
+import net.opengis.wfs.FeatureCollectionType;
+import net.opengis.wfs.WfsFactory;
+
 
 /**
  * UtilityClass for encoding GML content.
@@ -102,6 +112,45 @@ public class GML {
     /** Version of encoder to use */
     public static enum Version {
         GML2, GML3, WFS1_0, WFS1_1
+    }
+    
+    
+    /**
+     * {@link ContextCustomizer} setting up a {@link FeatureTypeCache} that will not cache
+     * dynamically build feature types, thus allowing all features to have their own schema,
+     * instead of relying on the schema of the first feature found
+     */
+    private static class DynamicFeatureTypeCacheCustomizer implements ContextCustomizer {
+        
+        boolean dynamicTypeFound = false;
+        
+        /**
+         * Does not cache feature types generated from a feature instance (as opposed to a feature schema)
+         */
+        FeatureTypeCache dynamicFeatureTypeCache = new FeatureTypeCache() {
+            @Override
+            public void put(FeatureType type) {
+                // only add to cache if the feature type has been parsed from schema
+                if(Boolean.TRUE.equals(type.getUserData().get(GML2ParsingUtils.PARSED_FROM_SCHEMA_KEY))) {
+                    super.put(type);
+                } else {
+                    dynamicTypeFound = true;
+                }
+            }
+        };
+
+        
+        public boolean isDynamicTypeFound() {
+            return dynamicTypeFound;
+        }
+
+        @Override
+        public void customizeContext(MutablePicoContainer context) {
+            Object instance = context.getComponentInstanceOfType(FeatureTypeCache.class);
+            context.unregisterComponentByInstance(instance);
+            context.registerComponentInstance(dynamicFeatureTypeCache);
+        }
+
     }
 
     private Charset encoding = Charset.forName("UTF-8");
@@ -459,19 +508,110 @@ public class GML {
         }
         return null;
     }
+    
+    /**
+     * Decodes a feature collection from the stream provided. It assumes the features are uniform and that all
+     * attributes are available in the first feature
+     * 
+     * @param in
+     * @return
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
+    public SimpleFeatureCollection decodeFeatureCollection(InputStream in) throws IOException, SAXException, ParserConfigurationException {
+        return decodeFeatureCollection(in, false);
+    }
 
-    public SimpleFeatureCollection decodeFeatureCollection(InputStream in) throws IOException,
+    /**
+     * Decodes a feature collection from the stream provided.
+     * 
+     * @param in
+     * @param computeFullFeatureType When true, all features are parsed and then a global feature type is determined that has attributes
+     * covering all feature needs, when false, the first feature attributes 
+     * @return
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
+    public SimpleFeatureCollection decodeFeatureCollection(InputStream in, boolean computeFullFeatureType) throws IOException,
             SAXException, ParserConfigurationException {
         if (Version.GML2 == version || Version.WFS1_0 == version || Version.GML2 == version
                 || Version.GML3 == version || Version.WFS1_0 == version
                 || Version.WFS1_1 == version) {
-            Parser parser = new Parser(gmlConfiguration);
+            Configuration cfg = gmlConfiguration;
+            Parser parser = new Parser(cfg);
+            DynamicFeatureTypeCacheCustomizer customizer = null;
+            if(computeFullFeatureType) {
+                customizer = new DynamicFeatureTypeCacheCustomizer();
+                parser.setContextCustomizer(customizer);
+            }
             Object obj = parser.parse(in);
             SimpleFeatureCollection collection = toFeatureCollection(obj);
+            // have we figured out the schema feature by feature? If so, harmonize
+            if(computeFullFeatureType && customizer.isDynamicTypeFound()) {
+                SimpleFeatureType harmonizedType = getCompleteFeatureType(collection);
+                collection = new ReTypingFeatureCollection(collection, harmonizedType);
+            }
+            
             return collection;
         }
         return null;
     }
+
+    /**
+     * Gets the complete feature type of a collection having potentially mixed attributes
+     * @param collection
+     * @return
+     */
+    private SimpleFeatureType getCompleteFeatureType(SimpleFeatureCollection collection) {
+        if(collection.isEmpty()) {
+            return collection.getSchema();
+        }
+        
+        // compute the largest feature type from features, assuming some attributes
+        // are shared, while others appear only in some features
+        PartiallyOrderedSet<AttributeDescriptor> attributes = new PartiallyOrderedSet<AttributeDescriptor>();
+        Set<String> attributeNames = new HashSet<>();
+        
+        String typeName = null;
+        try(SimpleFeatureIterator fi = collection.features()) {
+            while(fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                SimpleFeatureType type = f.getFeatureType();
+                if(typeName == null) {
+                    typeName = type.getTypeName();
+                }
+                List<AttributeDescriptor> descriptorList = f.getFeatureType().getAttributeDescriptors();
+                for (int i = 0; i < descriptorList.size(); i++) {
+                    AttributeDescriptor curr = descriptorList.get(i);
+                    String name = curr.getLocalName();
+                    if(!attributeNames.contains(name)) {
+                        attributes.add(curr);
+                        if(i > 0) {
+                            AttributeDescriptor prev = descriptorList.get(i - 1);
+                            attributes.setOrder(prev, curr);
+                        }
+                        if(i < descriptorList.size() - 1) {
+                            AttributeDescriptor next = descriptorList.get(i + 1);
+                            attributes.add(next);
+                            attributes.setOrder(curr, next);
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName(typeName);
+        for (AttributeDescriptor ad : attributes) {
+            tb.add(ad);
+        }
+        
+        return tb.buildFeatureType();
+    }
+
     /**
      * Convert parse results into a SimpleFeatureCollection.
      * 

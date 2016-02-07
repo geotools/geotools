@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -346,6 +349,53 @@ public class GMLTest {
             count++;
         }
         assertEquals(2, count);
+    }
+    
+    @Test
+    public void testGMLNoSchemaUnrelated() throws Exception {
+        URL url = TestData.getResource(this, "states_noschema_unrelated_atts.xml");
+        InputStream in = url.openStream();
+
+        GML gml = new GML(Version.GML3);
+        SimpleFeatureCollection fc = gml.decodeFeatureCollection(in, true);
+        assertEquals(2, fc.size());
+        SimpleFeatureType schema = fc.getSchema();
+        assertNotNull(schema.getGeometryDescriptor());
+        assertEquals(9, schema.getAttributeDescriptors().size());
+        Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
+        // System.out.println(attributePositions);
+        assertTrue(attributePositions.keySet().containsAll(Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE", "STATE_FIPS", "SAMP_POP")));
+        assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
+        assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
+        assertTrue(attributePositions.get("P_FEMALE") < attributePositions.get("SAMP_POP"));
+    }
+    
+    @Test
+    public void testGMLNoSchemaRelated() throws Exception {
+        URL url = TestData.getResource(this, "states_noschema_linked_atts.xml");
+        InputStream in = url.openStream();
+
+        GML gml = new GML(Version.GML3);
+        SimpleFeatureCollection fc = gml.decodeFeatureCollection(in, true);
+        assertEquals(2, fc.size());
+        SimpleFeatureType schema = fc.getSchema();
+        assertNotNull(schema.getGeometryDescriptor());
+        Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
+        // System.out.println(attributePositions);
+        assertTrue(attributePositions.keySet().containsAll(Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE")));
+        assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
+        assertTrue(attributePositions.get("STATE_FIPS") < attributePositions.get("SUB_REGION"));
+        assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("P_MALE"));
+        assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
+    }
+    
+    Map<String, Integer> getAttributePositionsMap(SimpleFeatureType schema) {
+        Map<String, Integer> map = new LinkedHashMap<>();
+        int idx = 0;
+        for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
+            map.put(ad.getLocalName(), idx++);
+        }
+        return map;
     }
 
 }

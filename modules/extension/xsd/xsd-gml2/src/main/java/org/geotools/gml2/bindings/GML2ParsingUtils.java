@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -79,6 +79,12 @@ public class GML2ParsingUtils {
      * logging instance
      */
     static Logger LOGGER = Logging.getLogger( "org.geotools.gml" );
+    
+    /**
+     * Metadata key used to indicate if a feature type has been parsed from a XML schema, or
+     * reflected out of a sample feature
+     */
+    public static String PARSED_FROM_SCHEMA_KEY; 
     
     /**
      * Utility method to implement Binding.parse for a binding which parses
@@ -217,6 +223,7 @@ public class GML2ParsingUtils {
 
             ftBuilder.add(name, (valu != null) ? valu.getClass() : Object.class);
         }
+        ftBuilder.userData(PARSED_FROM_SCHEMA_KEY, false);
 
         return ftBuilder.buildFeatureType();
     }
@@ -323,6 +330,7 @@ public class GML2ParsingUtils {
                 }
             }
         }
+        ftBuilder.userData(PARSED_FROM_SCHEMA_KEY, true);
 
         return ftBuilder.buildFeatureType();
     }

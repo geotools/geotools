@@ -2,7 +2,7 @@
  *    GeoTools - OpenSource mapping toolkit
  *    http://geotools.org
  *
- *   (C) 2000-2008, Open Source Geospatial Foundation (OSGeo)
+ *   (C) 2000-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -65,10 +65,10 @@ public class CassiniSoldner extends MapProjection {
      * case of the Cassini-Soldner.
      */
     private static final double  C1= 0.16666666666666666666,
-    							 C2= 0.08333333333333333333,
-    							 C3= 0.41666666666666666666,
+    							 C2= 0.00833333333333333333,
+    							 C3= 0.04166666666666666666,
     							 C4= 0.33333333333333333333,
-    							 C5= 0.66666666666666666666;
+    							 C5= 0.06666666666666666666;
     
     
 	protected CassiniSoldner(ParameterValueGroup values)

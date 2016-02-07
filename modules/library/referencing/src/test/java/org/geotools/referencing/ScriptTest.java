@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.referencing;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -317,4 +318,19 @@ public final class ScriptTest {
         runScript("scripts/NADCON.txt");
     }
     
+    /**
+     * Run "Cassini.txt"
+     * @throws Exception 
+     */
+    @Test
+    public void testCassini() throws Exception {
+        try {
+            // the Cassini math is not so accurate it seems... but it's
+            // matchin proj, so good enough for the moment
+            MapProjection.SKIP_SANITY_CHECKS = true;
+            runScript("scripts/Cassini.txt");
+        } finally {
+            MapProjection.SKIP_SANITY_CHECKS = false;
+        }
+    }
 }

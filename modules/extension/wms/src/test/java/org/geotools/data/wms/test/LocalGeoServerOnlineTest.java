@@ -16,6 +16,44 @@
  */
 package org.geotools.data.wms.test;
 
+import junit.framework.TestCase;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.StringBuilderWriter;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.ServiceInfo;
+import org.geotools.data.ows.CRSEnvelope;
+import org.geotools.data.ows.Layer;
+import org.geotools.data.ows.MultithreadedHttpClient;
+import org.geotools.data.ows.OperationType;
+import org.geotools.data.ows.Specification;
+import org.geotools.data.ows.WMSCapabilities;
+import org.geotools.data.wms.WMS1_1_1;
+import org.geotools.data.wms.WebMapServer;
+import org.geotools.data.wms.request.GetFeatureInfoRequest;
+import org.geotools.data.wms.request.GetMapRequest;
+import org.geotools.data.wms.request.GetStylesRequest;
+import org.geotools.data.wms.response.GetFeatureInfoResponse;
+import org.geotools.data.wms.response.GetMapResponse;
+import org.geotools.data.wms.response.GetStylesResponse;
+import org.geotools.factory.GeoTools;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.SLDParser;
+import org.geotools.styling.SLDTransformer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.builder.NamedLayerBuilder;
+import org.geotools.styling.builder.StyledLayerDescriptorBuilder;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import javax.imageio.ImageIO;
+import javax.mail.internet.ContentType;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -26,43 +64,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.imageio.ImageIO;
-import javax.mail.internet.ContentType;
-
-import junit.framework.TestCase;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.StringBuilderWriter;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
-import org.geotools.data.ows.*;
-import org.geotools.data.wms.WMS1_1_1;
-import org.geotools.data.wms.WebMapServer;
-import org.geotools.data.wms.request.GetFeatureInfoRequest;
-import org.geotools.data.wms.request.GetMapRequest;
-import org.geotools.data.wms.request.GetStylesRequest;
-import org.geotools.data.wms.response.GetFeatureInfoResponse;
-import org.geotools.data.wms.response.GetMapResponse;
-import org.geotools.data.wms.response.GetStylesResponse;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
-import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.CRS.AxisOrder;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.*;
-import org.geotools.styling.builder.*;
-import org.junit.Test;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.util.GenericName;
 
 /**
  * This test case assume you have a default GeoServer 2.2 installed on 127.0.0.1 (ie localhost).

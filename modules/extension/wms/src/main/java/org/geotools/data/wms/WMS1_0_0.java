@@ -17,7 +17,6 @@
 package org.geotools.data.wms;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -25,8 +24,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.geotools.data.ows.*;
-import org.geotools.data.wms.request.*;
+import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
+import org.geotools.data.ows.AbstractRequest;
+import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.Response;
+import org.geotools.data.wms.request.AbstractGetFeatureInfoRequest;
+import org.geotools.data.wms.request.AbstractGetMapRequest;
+import org.geotools.data.wms.request.AbstractGetStylesRequest;
+import org.geotools.data.wms.request.DescribeLayerRequest;
+import org.geotools.data.wms.request.GetLegendGraphicRequest;
+import org.geotools.data.wms.request.GetStylesRequest;
+import org.geotools.data.wms.request.PutStylesRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.data.wms.response.GetStylesResponse;

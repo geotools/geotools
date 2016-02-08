@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -141,6 +141,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      */
     private NetcdfDataset dataset;
 
+    /** The underlying NetCDF georeferencing manager instance */
     NetCDFGeoreferenceManager georeferencing;
 
     private CheckType checkType = CheckType.UNSET;
@@ -299,7 +300,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         }
 
                         // is it acceptable?
-                        if (!NetCDFUtilities.isVariableAccepted(variable, checkType)) {
+                        if (!NetCDFUtilities.isVariableAccepted(variable, checkType, dataset)) {
                             continue;
                         }
 
@@ -307,13 +308,15 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         // Add the accepted variable to the list of coverages name
                         final Name coverageName = getCoverageName(varName);
                         final CoordinateSystem cs = NetCDFCRSUtilities.getCoordinateSystem(variable);
-
                         final SimpleFeatureType indexSchema = getIndexSchema(coverageName, cs, isShared);
                         // get variable adapter which maps to a coverage in the end
                         final VariableAdapter vaAdapter = getCoverageDescriptor(coverageName);
 
                         if (indexSchema == null) {
                             throw new IllegalStateException("Unable to created index schema for coverage:"+coverageName);
+                        }
+                        if (LOGGER.isLoggable(Level.FINEST)) {
+                            LOGGER.finest("Collecting slices for: " + coverageName);
                         }
 
                         final int variableImageStartIndex = numImages;
@@ -870,13 +873,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final CoverageSlicesCatalog catalog = getCatalog();
         if (typeName != null && catalog != null) {
             // Check if already existing
-            String[] typeNames = catalog.getTypeNames();
-            if (typeNames != null) {
-                for (String tn : typeNames) {
-                    if (tn.equalsIgnoreCase(typeName)) {
-                        return;
-                    }
-                }
+            if (catalog.hasTypeName(typeName)) {
+                return;
             }
             catalog.createType(indexSchema);
         }

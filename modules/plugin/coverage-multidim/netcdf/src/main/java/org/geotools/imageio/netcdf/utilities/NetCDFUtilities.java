@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -232,6 +232,8 @@ public class NetCDFUtilities {
 
     public final static String COORDINATE_TRANSFORM_TYPE = "_CoordinateTransformType";
 
+    public final static String COORDINATES = "coordinates";
+
     // They are recognized from GDAL
     public final static String SPATIAL_REF = "spatial_ref";
 
@@ -432,6 +434,14 @@ public class NetCDFUtilities {
      * if the specified variable is accepted.
      */
     public static boolean isVariableAccepted( final Variable var, final CheckType checkType ) {
+        return isVariableAccepted(var, checkType, null);
+    }
+    
+    /**
+     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful for our purposes. The method returns {@code true}
+     * if the specified variable is accepted.
+     */
+    public static boolean isVariableAccepted( final Variable var, final CheckType checkType, final NetcdfDataset dataset ) {
         if (var instanceof CoordinateAxis1D) {
             return false;
         } else if (checkType == CheckType.NOSCALARS) {
@@ -462,8 +472,9 @@ public class NetCDFUtilities {
                     return false;
                 }
                 Variable dimVariable = group.findVariable(dimName);
-                if (dimVariable == null) {
-                    return false;
+                if (dimVariable == null && dataset != null) {
+                    //fallback on coordinates attribute for auxiliary coordinates.
+                    dimVariable = getAuxiliaryCoordinate(dataset, group, var, dimName);
                 }
                 if (dimVariable instanceof CoordinateAxis1D) {
                     CoordinateAxis1D axis = (CoordinateAxis1D) dimVariable;
@@ -496,6 +507,25 @@ public class NetCDFUtilities {
         } else {
             return isVariableAccepted(var.getFullName(), checkType);
         }
+    }
+
+    private static Variable getAuxiliaryCoordinate(NetcdfDataset dataset, Group group,
+            Variable var, String dimName) {
+        Variable coordinateVariable = null;
+        Attribute attribute = var.findAttribute(NetCDFUtilities.COORDINATES);
+        if (attribute != null) {
+            String coordinates = attribute.getStringValue();
+            String [] coords = coordinates.split(" ");
+            for (String coord: coords) {
+                Variable coordVar = dataset.findVariable(group, coord);
+                List<Dimension> varDimensions = coordVar.getDimensions();
+                if (varDimensions != null && varDimensions.size() == 1 && varDimensions.get(0).getFullName().equalsIgnoreCase(dimName)) {
+                    coordinateVariable = coordVar;
+                    break;
+                }
+            }
+        }
+        return coordinateVariable;
     }
 
     /**

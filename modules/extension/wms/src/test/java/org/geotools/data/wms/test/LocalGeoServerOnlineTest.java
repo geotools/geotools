@@ -16,18 +16,7 @@
  */
 package org.geotools.data.wms.test;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.Properties;
-
-import javax.imageio.ImageIO;
-
 import junit.framework.TestCase;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.geotools.data.ResourceInfo;
@@ -36,27 +25,45 @@ import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.MultithreadedHttpClient;
 import org.geotools.data.ows.OperationType;
+import org.geotools.data.ows.Specification;
 import org.geotools.data.ows.WMSCapabilities;
+import org.geotools.data.wms.WMS1_1_1;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.request.GetFeatureInfoRequest;
 import org.geotools.data.wms.request.GetMapRequest;
+import org.geotools.data.wms.request.GetStylesRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.response.GetMapResponse;
+import org.geotools.data.wms.response.GetStylesResponse;
 import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.SLDParser;
+import org.geotools.styling.SLDTransformer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.builder.NamedLayerBuilder;
+import org.geotools.styling.builder.StyledLayerDescriptorBuilder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.util.GenericName;
+
+import javax.imageio.ImageIO;
+import javax.mail.internet.ContentType;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This test case assume you have a default GeoServer 2.2 installed on 127.0.0.1 (ie localhost).
@@ -106,7 +113,9 @@ import org.opengis.util.GenericName;
  * @source $URL$
  */
 public class LocalGeoServerOnlineTest extends TestCase {
+
     static private String LOCAL_GEOSERVER = "http://127.0.0.1:8080/geoserver/ows?SERVICE=WMS&";
+    static private String LOCAL_LAYERS = "test_shp:TRONCON_ROUTE";
 
     static private WebMapServer wms;
 
@@ -393,17 +402,17 @@ public class LocalGeoServerOnlineTest extends TestCase {
         getMap.setDimensions(500, 500);
         URL url = getMap.getFinalURL();
         
-        GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest( getMap );
+        GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest(getMap);
         getFeatureInfo.setInfoFormat("text/html");
         getFeatureInfo.setQueryLayers( Collections.singleton(layer));
-        getFeatureInfo.setQueryPoint( 75,  100 );
+        getFeatureInfo.setQueryPoint(75, 100);
         URL url2 = getFeatureInfo.getFinalURL();
         
         GetFeatureInfoResponse response = wms.issueRequest(getFeatureInfo);
-        assertEquals("text/html", response.getContentType() );
+        assertEquals("text/html", response.getContentType());
         InputStream stream = response.getInputStream();
         StringBuilderWriter writer = new StringBuilderWriter();
-        IOUtils.copy(stream, writer ); 
+        IOUtils.copy(stream, writer);
         
         String info = writer.toString();
         assertTrue( "response available", !info.isEmpty() );
@@ -417,4 +426,80 @@ public class LocalGeoServerOnlineTest extends TestCase {
             fail( context+": GetFeatureInfo BBOX=" + envelope );
         }
     }
+
+    public void testGetStyle() throws Exception {
+
+        String baseUrl = LocalGeoServerOnlineTest.LOCAL_GEOSERVER;
+        String layers = LocalGeoServerOnlineTest.LOCAL_LAYERS;
+
+        URL url = new URL(baseUrl);
+
+        GetStylesResponse wmsResponse = null;
+        GetStylesRequest wmsRequest = null;
+        StyleFactory styleFactory = new StyleFactoryImpl();
+
+        WebMapServer server = new WebMapServer(url) {
+            // GetStyle is only implemented in WMS 1.1.1
+            protected void setupSpecifications() {
+                specs = new Specification[1];
+                specs[0] = new WMS1_1_1();
+            }
+        };
+
+        wmsRequest = server.createGetStylesRequest();
+        wmsRequest.setLayers(layers);
+        // Test URL
+        String queryParamters = wmsRequest.getFinalURL().getQuery();
+        Map parameters = new HashMap();
+        String[] rawParameters = queryParamters.split("&");
+        for(String param : rawParameters){
+            String [] keyValue = param.split("=");
+            parameters.put(keyValue[0],keyValue[1]);
+        }
+
+        assertTrue(parameters.size() >= 4);
+        assertEquals("WMS", parameters.get("SERVICE"));
+        assertEquals("GetStyles", parameters.get("REQUEST"));
+        assertEquals("1.1.1", parameters.get("VERSION"));
+        assertEquals(layers, parameters.get("LAYERS"));
+
+        wmsResponse = server.issueRequest(wmsRequest);
+
+        // Set encoding of response from HTTP content-type header
+        ContentType contentType = new ContentType(wmsResponse.getContentType());
+        InputStreamReader stream;
+        if(contentType.getParameter("charset") != null)
+            stream = new InputStreamReader(wmsResponse.getInputStream(), contentType.getParameter("charset"));
+        else
+            stream = new InputStreamReader(wmsResponse.getInputStream());
+
+        Style[] styles = (new SLDParser(styleFactory, stream)).readXML();
+
+        assert styles.length > 0;
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        StyledLayerDescriptorBuilder SLDBuilder = new StyledLayerDescriptorBuilder();
+
+        NamedLayerBuilder namedLayerBuilder = SLDBuilder.namedLayer();
+        namedLayerBuilder.name(layers);
+        org.geotools.styling.builder.StyleBuilder styleBuilder = namedLayerBuilder.style();
+
+        for(int i =0; i<styles.length; i++){
+            styleBuilder.reset(styles[i]);
+            styles[i] = styleBuilder.build();
+        }
+
+        NamedLayer namedLayer = namedLayerBuilder.build();
+
+        for(Style style: styles)
+            namedLayer.addStyle(style);
+
+        StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
+        sld.addStyledLayer(namedLayer);
+        String xml = styleTransform.transform(sld);
+        assert xml.length() > 300;
+    }
+
+
+
 }

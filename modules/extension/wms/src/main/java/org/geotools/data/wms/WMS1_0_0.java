@@ -17,7 +17,6 @@
 package org.geotools.data.wms;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -32,12 +31,14 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wms.request.AbstractGetFeatureInfoRequest;
 import org.geotools.data.wms.request.AbstractGetMapRequest;
+import org.geotools.data.wms.request.AbstractGetStylesRequest;
 import org.geotools.data.wms.request.DescribeLayerRequest;
 import org.geotools.data.wms.request.GetLegendGraphicRequest;
 import org.geotools.data.wms.request.GetStylesRequest;
 import org.geotools.data.wms.request.PutStylesRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.response.GetMapResponse;
+import org.geotools.data.wms.response.GetStylesResponse;
 import org.geotools.data.wms.response.WMSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
 
@@ -180,7 +181,7 @@ public class WMS1_0_0 extends WMSSpecification {
     /**
      * Create a request for performing GetCapabilities requests on a 1.0.0 server.
      * 
-     * @see org.geotools.data.wms.Specification#createGetCapabilitiesRequest(java.net.URL)
+     * @see org.geotools.data.wms.WMSSpecification#createGetCapabilitiesRequest(java.net.URL)
      * @param server a URL that points to the 1.0.0 server
      * @return a AbstractGetCapabilitiesRequest object that can provide a valid request
      */
@@ -330,14 +331,14 @@ public class WMS1_0_0 extends WMSSpecification {
     }
 
     /** 
-     * @see org.geotools.data.wms.Specification#createGetMapRequest(java.net.URL)
+     * @see org.geotools.data.wms.WMSSpecification#createGetMapRequest(java.net.URL)
      */
     public org.geotools.data.wms.request.GetMapRequest createGetMapRequest( URL get ) {
         return new GetMapRequest(get);
     }
 
     /**
-     * @see org.geotools.data.wms.Specification#createGetFeatureInfoRequest(java.net.URL,
+     * @see org.geotools.data.wms.WMSSpecification#createGetFeatureInfoRequest(java.net.URL,
      *      org.geotools.data.wms.request.GetMapRequest)
      */
     public org.geotools.data.wms.request.GetFeatureInfoRequest createGetFeatureInfoRequest( URL onlineResource,
@@ -347,7 +348,7 @@ public class WMS1_0_0 extends WMSSpecification {
 
     /**
      * Note that WMS 1.0.0 does not support this method.
-     * @see org.geotools.data.wms.Specification#createDescribeLayerRequest(java.net.URL)
+     * @see org.geotools.data.wms.WMSSpecification#createDescribeLayerRequest(java.net.URL)
      */
     public DescribeLayerRequest createDescribeLayerRequest( URL onlineResource ) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("WMS 1.0.0 does not support DescribeLayer");
@@ -355,23 +356,43 @@ public class WMS1_0_0 extends WMSSpecification {
 
     /**
      * Note that WMS 1.0.0 does not support this method.
-     * @see org.geotools.data.wms.Specification#createGetLegendGraphicRequest(java.net.URL)
+     * @see org.geotools.data.wms.WMSSpecification#createGetLegendGraphicRequest(java.net.URL)
      */
     public GetLegendGraphicRequest createGetLegendGraphicRequest( URL onlineResource) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("WMS 1.0.0 does not support GetLegendGraphic");
     }
 
     /**
-     * Note that WMS 1.0.0 does not support this method
-     * @see org.geotools.data.wms.Specification#createGetStylesRequest(java.net.URL)
+     * @see org.geotools.data.wms.WMSSpecification#createGetStylesRequest(java.net.URL)
      */
     public GetStylesRequest createGetStylesRequest( URL onlineResource) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("WMS 1.0.0 does not support GetStyles");
+        return new InternalGetStylesRequest(onlineResource);
+    }
+
+    public static class InternalGetStylesRequest extends AbstractGetStylesRequest {
+
+        /**
+         * @param onlineResource
+         */
+        public InternalGetStylesRequest( URL onlineResource) {
+            super(onlineResource, null);
+        }
+
+        /* (non-Javadoc)
+         * @see org.geotools.data.wms.request.AbstractGetStylesRequest#initVersion()
+         */
+        protected void initVersion() {
+            setProperty(VERSION, "1.1.0");
+        }
+
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+            return new GetStylesResponse(httpResponse);
+        }
     }
 
     /**
      * Note that WMS 1.0.0 does not support this method
-     * @see org.geotools.data.wms.Specification#createPutStylesRequest(java.net.URL)
+     * @see org.geotools.data.wms.WMSSpecification#createPutStylesRequest(java.net.URL)
      */
     public PutStylesRequest createPutStylesRequest( URL onlineResource ) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("WMS 1.0.0 does not support PutStyles");

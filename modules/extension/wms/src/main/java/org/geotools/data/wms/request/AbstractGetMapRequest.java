@@ -77,7 +77,8 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 String styleName = (String) styleIter.previous();
                 
                 try {
-                    layerString = layerString + URLEncoder.encode(layerName, "UTF-8");
+                    // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
+                    layerString = layerString + URLEncoder.encode(layerName, "UTF-8").replaceAll("\\+", "%20");
                 } catch (UnsupportedEncodingException e) {
                     layerString = layerString + layerName;
                 }

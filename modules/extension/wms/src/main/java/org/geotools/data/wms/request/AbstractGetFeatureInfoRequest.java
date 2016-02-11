@@ -72,7 +72,8 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest i
         while( iter.hasNext() ) {
             Layer layer = (Layer) iter.next();
             try {
-                queryLayerString = queryLayerString + URLEncoder.encode(layer.getName(), "UTF-8"); //$NON-NLS-1$
+                // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
+                queryLayerString = queryLayerString + URLEncoder.encode(layer.getName(), "UTF-8").replaceAll("\\+", "%20");; //$NON-NLS-1$
             } catch (UnsupportedEncodingException e) {
                 queryLayerString = queryLayerString + layer.getName();
             }

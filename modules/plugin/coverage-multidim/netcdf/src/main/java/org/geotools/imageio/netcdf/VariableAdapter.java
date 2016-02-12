@@ -821,7 +821,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 }
             }
         }
-        sampleDims.add(new GridSampleDimension(description + ":sd", categories, unit));
+        sampleDims.add(new GridSampleDimension(description, categories, unit));
 
         InternationalString desc = null;
         if (description != null && !description.isEmpty()) {

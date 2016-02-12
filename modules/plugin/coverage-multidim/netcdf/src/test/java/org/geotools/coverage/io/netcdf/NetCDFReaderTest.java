@@ -155,6 +155,7 @@ public class NetCDFReaderTest extends Assert {
             assertEquals(2,names.length);
 
             GridCoverage2D grid = reader.read("O3", null);
+            assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
             float[] value = grid.evaluate((DirectPosition) new
                     DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45 ), new float[1]);

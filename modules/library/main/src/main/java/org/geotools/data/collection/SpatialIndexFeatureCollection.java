@@ -16,10 +16,10 @@ import org.geotools.feature.CollectionEvent;
 import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -57,17 +57,18 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     public SpatialIndexFeatureCollection() {
         this.index = new STRtree();
     }
-    
+
     public SpatialIndexFeatureCollection(SimpleFeatureType schema) {
         this.index = new STRtree();
         this.schema = schema;
     }
-    
-    public SpatialIndexFeatureCollection(SimpleFeatureCollection copy ) throws IOException {
-        this( copy.getSchema() );
-        addAll( copy );
+
+    public SpatialIndexFeatureCollection(SimpleFeatureCollection copy) throws IOException {
+        this(copy.getSchema());
+        
+        addAll(copy);
     }
-    
+
     public synchronized void addListener(CollectionListener listener) throws NullPointerException {
         if (listeners == null) {
             listeners = Collections.synchronizedList(new ArrayList<CollectionListener>());
@@ -103,7 +104,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     public SimpleFeatureIterator features() {
         Envelope everything = new Envelope(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        
+
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
         final Iterator<SimpleFeature> iterator = list.iterator();
         return new SimpleFeatureIterator() {
@@ -125,10 +126,38 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     }
 
     public SimpleFeatureCollection subCollection(Filter filter) {
-        throw new UnsupportedOperationException();
+        // split out the spatial part of the filter
+        SpatialIndexFeatureCollection ret = new SpatialIndexFeatureCollection(schema);
+        Envelope env = new Envelope();
+        env = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, env);
+        if (LOGGER.isLoggable(Level.FINEST)&& Double.isInfinite(env.getWidth())) {
+            LOGGER.fine("Found no spatial element in "+filter);
+            LOGGER.fine("Just going to iterate");
+        }
+        for (Iterator<SimpleFeature> iter = (Iterator<SimpleFeature>) index.query(env).iterator(); iter
+                .hasNext();) {
+            
+            SimpleFeature sample = iter.next();
+
+            if(LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.finest("Looking at "+sample);
+            }
+            if (filter.evaluate(sample)) {
+
+                if(LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("accepting "+sample);
+                }
+                ret.add(sample);
+            }
+        }
+
+        return ret;
+
     }
 
-    public void accepts(final FeatureVisitor visitor, ProgressListener listener) throws IOException {
+    @Override
+    public void accepts(final FeatureVisitor visitor, ProgressListener listener)
+            throws IOException {
         Envelope everything = new Envelope(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         final ProgressListener progress = listener != null ? listener : new NullProgressListener();
@@ -152,7 +181,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                 }
             }
         });
-        if( problem[0] != null ){
+        if (problem[0] != null) {
             throw problem[0];
         }
         progress.complete();
@@ -259,7 +288,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         Envelope everything = new Envelope(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
-        return (Iterator<SimpleFeature> ) list.iterator();
+        return (Iterator<SimpleFeature>) list.iterator();
     }
 
     public void purge() {

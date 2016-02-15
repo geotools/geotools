@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -951,6 +951,17 @@ public class Hints extends RenderingHints {
      * @since 2.6
      */
     public static final DoubleKey COMPARISON_TOLERANCE = new DoubleKey(0.0);
+    
+    
+    /**
+     * Controls date field handling. If true, all {@link java.sql.Date} fields are treated as local dates being
+     * unrelated to time zones. Otherwise they are treated as time zone related. Local dates are serialized to
+     * string using the local time zone (JVM default time zone). Time zone related dates are serialized to string
+     * using GMT. Default: Date are treated as time zone related.
+     * 
+     * @since 15.0
+     */
+    public static final Key LOCAL_DATE_TIME_HANDLING = new Key(Boolean.class);
 
     /**
      * Constructs an initially empty set of hints.

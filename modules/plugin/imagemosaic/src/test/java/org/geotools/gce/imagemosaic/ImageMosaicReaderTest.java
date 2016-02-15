@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -91,6 +91,11 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
+import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
+import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
+import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -135,7 +140,6 @@ import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
-
 /**
  * Testing {@link ImageMosaicReader}.
  * 
@@ -1150,6 +1154,29 @@ public class ImageMosaicReaderTest extends Assert{
         } finally {
             reader.dispose();
         }
+    }
+
+    /**
+     * Simple test method to test absolute filePath management
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testImageMosaicConfigFilePath() throws Exception {
+        CatalogBuilderConfiguration builderConfig = new CatalogBuilderConfiguration();
+        Indexer indexer = builderConfig.getIndexer();
+        ParametersType parameters = indexer.getParameters();
+        List<Parameter> parameterList = parameters.getParameter();
+        File file = TestData.file(this, "merge");
+        File auxFile = new File(file, "aux.xml");
+        IndexerUtils.setParam(parameterList, Prop.ROOT_MOSAIC_DIR, file.getAbsolutePath());
+        IndexerUtils.setParam(parameterList, Prop.INDEXING_DIRECTORIES, file.getAbsolutePath());
+        IndexerUtils.setParam(parameterList, Prop.AUXILIARY_FILE, auxFile.getAbsolutePath());
+        IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH, "true");
+        ImageMosaicConfigHandler handler = new ImageMosaicConfigHandler(builderConfig, new ImageMosaicEventHandlers());
+        Hints hints = handler.getRunConfiguration().getHints();
+        String auxiliaryFilePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+        assertEquals(auxFile.getAbsolutePath(), auxiliaryFilePath);
     }
 
     /**

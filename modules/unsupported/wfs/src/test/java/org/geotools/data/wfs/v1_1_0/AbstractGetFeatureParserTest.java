@@ -20,6 +20,7 @@ import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_GOVUNITCE;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_ROADSEG;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_ARCHSITES;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_CURVE_ROADS;
+import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_SIMPLECURVE_ROADS;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_ROADS;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_STATES;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_TASMANIA_CITIES;
@@ -37,6 +38,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.protocol.wfs.GetFeatureParser;
+import org.geotools.data.wfs.v1_1_0.DataTestSupport.TestDataType;
 import org.geotools.data.wfs.v1_1_0.parsers.EmfAppSchemaParser;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
@@ -52,6 +54,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -359,6 +363,40 @@ public abstract class AbstractGetFeatureParserTest {
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 
+    @Test
+    public void testParseGeoserver_simplecurveroads_LineString() throws Exception {	
+        final QName featureName = GEOS_SIMPLECURVE_ROADS.TYPENAME;
+        final int expectedCount = 1;
+        final String schemaLocation = GEOS_SIMPLECURVE_ROADS.SCHEMA;
+
+        final String[] properties = { "geom",  "label"};
+        final SimpleFeatureType featureType;
+        featureType = getTypeView(featureName, schemaLocation, GEOS_SIMPLECURVE_ROADS.CRS, properties);
+
+        final FeatureVisitor assertor = new FeatureAssertor(featureType) {
+            @Override
+            public void visit(final Feature feature) {
+                super.visit(feature);
+                int numLines = 1;
+                GeometryAttribute defaultGeometryProperty = feature.getDefaultGeometryProperty();
+                assertNotNull(defaultGeometryProperty);
+                final Object value = defaultGeometryProperty.getValue();
+                assertNotNull(value);
+                assertTrue("value: " + value, value instanceof LineString);
+                LineString mp = (LineString) value;
+
+                assertEquals(numLines, mp.getNumGeometries());
+            }
+        };
+        URL url = TestData.getResource(this, GEOS_SIMPLECURVE_ROADS.DATA);
+        GetFeatureParser parser = getParser(featureName, schemaLocation, featureType, url);
+        
+        int nof = parser.getNumberOfFeatures();
+        assertEquals(expectedCount, nof);
+
+        testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);      
+    }
+    
     /**
      * Verifies correctness on parsing a sample CubeWerx WFS 1.1.0 GetFeature response.
      * 

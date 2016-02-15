@@ -281,6 +281,8 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             geom = parseLineString(dimension, crs);
         } else if (GML.Polygon.equals(startingGeometryTagName)) {
             geom = parsePolygon(dimension, crs);
+        } else if (GML.Curve.equals(startingGeometryTagName)) {
+            geom = parseCurve(dimension, crs);
         } else if (GML.MultiPoint.equals(startingGeometryTagName)) {
             geom = parseMultiPoint(dimension, crs);
         } else if (GML.MultiLineString.equals(startingGeometryTagName)) {
@@ -303,6 +305,60 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
     }
 
     /**
+     * Parses a MultiLineString out of a Curve element (because our geometry model only supports
+     * LineString).
+     * <p>
+     * Precondition : parser positioned at a {@link GML#Curve Curve} start tag
+     * </p>
+     * <p>
+     * Postcondition : parser position at the {@link GML#Curve Curve} end tag of the
+     * starting tag
+     * </p>
+     * @throws IOException 
+     * @throws XmlPullParserException 
+     * @throws FactoryException 
+     * @throws NoSuchAuthorityCodeException 
+     */
+    private Geometry parseCurve(int dimension, CoordinateReferenceSystem crs) throws XmlPullParserException, IOException, NoSuchAuthorityCodeException, FactoryException {
+        Geometry geom;
+    	parser.nextTag();
+    	parser.require(XmlPullParser.START_TAG, GML.NAMESPACE, GML.segments.getLocalPart());
+        final QName segmentsTag = new QName(parser.getNamespace(), parser.getName());
+        List<LineString> lineStrings = new ArrayList<LineString>(2);
+        if (GML.segments.equals(segmentsTag)) {
+        	parser.nextTag();
+        	while (true) {
+                
+                parser.require(XmlPullParser.START_TAG, GML.NAMESPACE, GML.LineStringSegment.getLocalPart());
+                parser.nextTag();
+                parser.require(XmlPullParser.START_TAG, GML.NAMESPACE, GML.posList.getLocalPart());	
+               
+                crs = crs(crs);
+                Coordinate[] coords = parseCoordList(dimension, crs);
+                LineString lineString = geomFac.createLineString(coords);
+                lineString.setUserData(crs);
+                lineStrings.add(lineString);
+                
+                parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.posList.getLocalPart());  
+                parser.nextTag();
+                parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.LineStringSegment.getLocalPart());   
+                parser.nextTag();
+                if (XmlPullParser.END_TAG == parser.getEventType()
+                        && GML.segments.getLocalPart().equals(parser.getName())) {
+                    // we're done
+                    break;
+                }      		
+        	}
+        
+            parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.segments.getLocalPart());
+        }
+        parser.nextTag();
+        parser.require(XmlPullParser.END_TAG, GML.NAMESPACE, GML.Curve.getLocalPart());
+        geom = geomFac.createMultiLineString(lineStrings.toArray(new LineString[lineStrings.size()]));
+        return geom;
+	}
+
+	/**
      * Parses a MultiPoint.
      * <p>
      * Precondition: parser positioned at a {@link GML#MultiPoint MultiPoint} start tag

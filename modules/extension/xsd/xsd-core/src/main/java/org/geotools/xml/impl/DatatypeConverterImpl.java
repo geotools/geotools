@@ -1,5 +1,5 @@
 /*
- * Copyright 2003,2004  The Apache Software Foundation
+ * Copyright 2003-2016  The Apache Software Foundation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import java.util.Calendar;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
+
+import org.geotools.factory.Hints;
 
 
 /**
@@ -286,7 +288,11 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
   	}
 
   	public String printDate(Calendar arg0) {
-  	    return new XsDateFormat().format(arg0);
+  	  Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
+  	  if(Boolean.TRUE.equals(hint)){
+  	    return new XsLocalDateFormat().format(arg0);
+  	  }
+  	  return new XsDateFormat().format(arg0);
   	}
 
   	public String printAnySimpleType(String arg0) {

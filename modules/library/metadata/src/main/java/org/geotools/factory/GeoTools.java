@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -203,6 +203,21 @@ public final class GeoTools {
             "org.geotools.referencing.resampleTolerance";
     static {
         bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE);
+    }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#LOCAL_DATE_TIME_HANDLING} hint.
+     *
+     * This setting specifies if dates shall be treated as local dates ignoring time zones.
+     *
+     * @see Hints#LOCAL_DATE_TIME_HANDLING
+     * @see #getDefaultHints
+     * @since 15.0
+     */
+    public static final String LOCAL_DATE_TIME_HANDLING = "org.geotools.localDateTimeHandling";
+    static {
+        bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING);
     }
 
     /**

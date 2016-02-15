@@ -214,6 +214,8 @@ class NetCDFGeoreferenceManager {
             public String getCoordinateNames(Variable var) {
                 String coordinates = null;
                 Attribute coordinatesAttribute = var.findAttribute(NetCDFUtilities.COORDINATES);
+                boolean hasXLon = false;
+                boolean hasYLat = false;
                 if (coordinatesAttribute != null) {
                     // Look for coordinates attribute first
                     coordinates = coordinatesAttribute.getStringValue();
@@ -224,7 +226,16 @@ class NetCDFGeoreferenceManager {
                         coordinates = dimensions;
                     }
                 }
-                return coordinates;
+                if (coordinates != null) {
+                    for (String coord : coordinates.split(" ")) {
+                        if (xLonCoords.containsKey(coord)) {
+                            hasXLon = true;
+                        } else if (yLatCoords.containsKey(coord)) {
+                            hasYLat = true;
+                        }
+                    }
+                }
+                return (hasXLon && hasYLat) ? coordinates : null;
             }
 
             public void dispose() {
@@ -579,7 +590,7 @@ class NetCDFGeoreferenceManager {
                     axis.setAxisType(AxisType.Time);
                     coordinates.put(axis.getFullName(),
                             CoordinateVariable.create((CoordinateAxis1D) axis));
-                } else if ("reftime".equals(axis.getFullName())) {
+                } else if ("reftime".equals(axis.getFullName()) || AxisType.RunTime.equals(axis.getAxisType())) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("Unable to support reftime which is not a CoordinateAxis1D");
                     }

@@ -60,7 +60,9 @@ import org.jdom.xpath.XPath;
  */
 public class CreateIndexer {
 
-    private static final String ELEVATION_ATTRIB_TYPE = "java.lang.Float";
+    private static final String ELEVATION_ATTRIB_TYPE_FLOAT = "java.lang.Float";
+
+    private static final String ELEVATION_ATTRIB_TYPE_DOUBLE = "java.lang.Double";
 
     private static final String TIME_ATTRIB_TYPE = "java.util.Date";
 
@@ -259,7 +261,7 @@ public class CreateIndexer {
                 String[] nameTypePair = schemaAttr.split(":");
                 domains.add(nameTypePair[0]);
             }
-            if (schemaAttr.contains(ELEVATION_ATTRIB_TYPE)) {
+            if (schemaAttr.contains(ELEVATION_ATTRIB_TYPE_FLOAT) || schemaAttr.contains(ELEVATION_ATTRIB_TYPE_DOUBLE)) {
                 String[] nameTypePair = schemaAttr.split(":");
                 domains.add(nameTypePair[0]);
             }
@@ -290,7 +292,7 @@ public class CreateIndexer {
                         timeAttributes.add(name);
                     }
 
-                } else if (attrib.contains(ELEVATION_ATTRIB_TYPE)) {
+                } else if (attrib.contains(ELEVATION_ATTRIB_TYPE_FLOAT) || attrib.contains(ELEVATION_ATTRIB_TYPE_DOUBLE)) {
                     String[] nameTypePair = attrib.split(":");
                     String name = nameTypePair[0];
                     if (!elevationAttributes.contains(name)) {

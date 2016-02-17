@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -784,7 +784,7 @@ public class OperationJAI extends Operation2D {
                     result[numBands] = sampleDim;
                     continue;
                 }
-                categoryArray       = (Category[]) categories.toArray();
+                categoryArray = (Category[]) categories.toArray(new Category[categories.size()]);
                 indexOfQuantitative = getQuantitative(categoryArray);
                 if (indexOfQuantitative < 0) {
                     return null;

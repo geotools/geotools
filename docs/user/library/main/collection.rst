@@ -499,6 +499,95 @@ Collection_Unique      UniqueVisitor              Set<Object> of unique values
   you can run the same visitor across several collections and look at
   the maximum for all of them.
 
+Group By Visitor
+''''''''''''''''
+
+This visitor allow us to group features by some attributes and apply an aggregation function on each group. This 
+visitor acts like the SQL group by command with an aggregation function. 
+
+This visitor is implemented as a feature visitor that produces a calculation result. Internally the aggregation
+function is mapped to a correspondent visitor and for each features group a different instance of that visitor 
+will be applied.
+
+For SQL data stores that support group by statements and are able to handle the aggregation function this visitor 
+will be translated to raw SQL optimizing significantly is execution.
+
+Here are the currently supported aggregate functions:
+
+====================== ==========================
+Function               Visitor                     
+====================== ==========================
+Average                AverageVisitor            
+Count                  CountVisitor              
+Max                    MaxVisitor                 
+Median                 MedianVisitor              
+Min                    MinVisitor   
+StdDev                 StandardDeviationVisitor                  
+Sum                    SumVisitor                         
+====================== ==========================
+
+Follow some examples about how to use the group by visitor to compute some stats about the following example data:
+
+================= =============== ====================
+Building Type     Energy Type     Energy Consumption                     
+================= =============== ====================
+School            Solar           50.0
+School            Wind            75.0
+School            Solar           65.0
+Hospital          Nuclear         550.0
+Hospital          Solar           225.0
+Fabric            Fuel            125.0
+Fabric            Wind            150.0
+================= =============== ====================
+
+* Average energy consumption per building type::
+  
+    SimpleFeatureType buildingType = ...;
+    FeatureCollection featureCollection = ...;
+
+    GroupByVisitor visitor = new GroupByVisitorBuilder()
+                      .withAggregateAttribute("energy_consumption", buildingType)
+                      .withAggregateVisitor("Average")
+                      .withGroupByAttribute("building_type", buildingType)
+                      .build();
+
+    featureCollection.accepts(visitor, new NullProgressListener());
+
+    CalcResult result = visitor.getResult();
+
+  The result of a group by visitor can be converted to multiple formats, 
+  in this case we will use the Map conversion::
+
+    Map values = result.toMap();
+
+  The content of the Map will be something like this::
+
+    List("School")    ->  63.333
+    List("Hospital")  ->  387.5
+    List("Fabric")    ->  137.5
+
+* Max energy consumption per building type and energy type::
+  
+    GroupByVisitor visitor = new GroupByVisitorBuilder()
+                      .withAggregateAttribute("energy_consumption", buildingType)
+                      .withAggregateVisitor("Max")
+                      .withGroupByAttribute("building_type", buildingType)
+                      .withGroupByAttribute("energy_type", buildingType)
+                      .build();
+
+  The content of the Map will be something like this::
+
+    List("School",   "Wind")     ->   75.0
+    List("School",   "Solar")    ->   65.0
+    List("Hospital", "Nuclear")  ->   550.0
+    List("Hospital", "Solar")    ->   225.0
+    List("Fabric",   "Fuel")     ->   125.0
+    List("Fabric",   "Wind")     ->   150.0
+    
+As showed in the examples multiple group by attributes can be used but only one aggregate 
+function and only one aggregate attribute can be used. To compute several aggregations
+multiple group by visitors need to be created and executed.
+
 Classifier Functions
 ''''''''''''''''''''
 

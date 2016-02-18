@@ -1,5 +1,6 @@
 /*
- * Copyright 2004 - 2016 The Apache Software Foundation
+ * (C) 2011-2016 Open Source Geospatial Foundation (OSGeo)
+ * (C) 2004 The Apache Software Foundation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

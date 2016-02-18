@@ -780,6 +780,12 @@ public class Hints extends RenderingHints {
     /**
      * Resample tolerance (defaults to 0.333)
      * 
+     * <p>
+     * To set on the command line:
+     * <blockquote><pre>
+     * -D{@value GeoTools#RESAMPLE_TOLERANCE}=<var>0.333</var>
+     * </pre></blockquote>
+     * 
      * @since 2.7
      */
     public static final Key RESAMPLE_TOLERANCE = new Key(Double.class);
@@ -957,7 +963,13 @@ public class Hints extends RenderingHints {
      * Controls date field handling. If true, all {@link java.sql.Date} fields are treated as local dates being
      * unrelated to time zones. Otherwise they are treated as time zone related. Local dates are serialized to
      * string using the local time zone (JVM default time zone). Time zone related dates are serialized to string
-     * using GMT. Default: Date are treated as time zone related.
+     * using GMT. Default is false, Date treated as time zone related.
+     * 
+     * <p>
+     * To set on the command line:
+     * <blockquote><pre>
+     * -D{@value GeoTools#LOCAL_DATE_TIME_HANDLING}=<var>true</var>
+     * </pre></blockquote>
      * 
      * @since 15.0
      */

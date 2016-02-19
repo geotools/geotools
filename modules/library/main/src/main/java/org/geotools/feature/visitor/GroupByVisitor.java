@@ -34,9 +34,9 @@ import java.util.stream.Collectors;
  */
 public class GroupByVisitor implements FeatureCalc {
 
-    private final GroupByInternalVisitor aggregateVisitor;
-    private final Expression aggregateAttribute;
-    private final FeatureCalc aggregateVisitorProtoType;
+    private final Aggregate aggregate;
+    private final Expression expression;
+    private final FeatureCalc visitorProtoType;
     private final List<Expression> groupByAttributes;
     private final ProgressListener progressListener;
 
@@ -44,13 +44,13 @@ public class GroupByVisitor implements FeatureCalc {
 
     private CalcResult optimizationResult = CalcResult.NULL_RESULT;
 
-    public GroupByVisitor(GroupByInternalVisitor aggregateVisitor, Expression aggregateAttribute,
+    public GroupByVisitor(Aggregate aggregateVisitor, Expression expression,
                           List<Expression> groupByAttributes, ProgressListener progressListener) {
-        this.aggregateVisitor = aggregateVisitor;
-        this.aggregateAttribute = aggregateAttribute;
+        this.aggregate = aggregateVisitor;
+        this.expression = expression;
         this.groupByAttributes = groupByAttributes;
         this.progressListener = progressListener;
-        aggregateVisitorProtoType = aggregateVisitor.create(aggregateAttribute);
+        visitorProtoType = aggregateVisitor.create(expression);
     }
 
     public boolean wasOptimized() {
@@ -74,7 +74,7 @@ public class GroupByVisitor implements FeatureCalc {
         // do a in memory computation for any visited feature
         Map<List<Object>, CalcResult> results = inMemoryGroupBy.visit();
         // create the result, if no feature was visited this will be an empty result that can be safely merged
-        GroupByResult result = new GroupByResult(results, aggregateVisitor, groupByAttributes);
+        GroupByResult result = new GroupByResult(results, aggregate, groupByAttributes);
         if (optimizationResult == CalcResult.NULL_RESULT) {
             // there is no optimization result so we just return the created one
             return result;
@@ -89,11 +89,11 @@ public class GroupByVisitor implements FeatureCalc {
     }
 
     public Expression getExpression() {
-        return aggregateAttribute;
+        return expression;
     }
 
     public FeatureVisitor getAggregateVisitor() {
-        return aggregateVisitorProtoType;
+        return visitorProtoType;
     }
 
     public List<Expression> getGroupByAttributes() {
@@ -111,10 +111,10 @@ public class GroupByVisitor implements FeatureCalc {
         Map<List<Object>, CalcResult> results = new HashMap<>();
         for (GroupByRawResult groupByRawResult : value) {
             // wrap the aggregate visitor result with the appropriate feature calculation type
-            results.put(groupByRawResult.groupByValues, aggregateVisitor.wrap(aggregateAttribute, groupByRawResult.visitorValue));
+            results.put(groupByRawResult.groupByValues, aggregate.wrap(expression, groupByRawResult.visitorValue));
         }
         // create a new group by result using the raw values returned by the optimization
-        GroupByResult newResult = new GroupByResult(results, aggregateVisitor, groupByAttributes);
+        GroupByResult newResult = new GroupByResult(results, aggregate, groupByAttributes);
         if (optimizationResult == CalcResult.NULL_RESULT) {
             // if no current result we simply return the new one
             optimizationResult = newResult;
@@ -174,7 +174,7 @@ public class GroupByVisitor implements FeatureCalc {
             Map<List<Object>, CalcResult> results = new HashMap<>();
             for (Map.Entry<List<Object>, DefaultFeatureCollection> entry : groupByIndexes.entrySet()) {
                 // creating a new aggregation visitor for the current feature collection
-                FeatureCalc visitor = aggregateVisitor.create(aggregateAttribute);
+                FeatureCalc visitor = aggregate.create(expression);
                 try {
                     // visiting the feature collection with the aggregation visitor
                     entry.getValue().accepts(visitor, progressListener);
@@ -194,10 +194,10 @@ public class GroupByVisitor implements FeatureCalc {
     public static class GroupByResult implements CalcResult {
 
         private final Map<List<Object>, CalcResult> results;
-        private final GroupByInternalVisitor aggregateVisitor;
+        private final Aggregate aggregateVisitor;
         private final List<Expression> groupByAttributes;
 
-        public GroupByResult(Map<List<Object>, CalcResult> results, GroupByInternalVisitor aggregateVisitor, List<Expression> groupByAttributes) {
+        public GroupByResult(Map<List<Object>, CalcResult> results, Aggregate aggregateVisitor, List<Expression> groupByAttributes) {
             this.results = results;
             this.aggregateVisitor = aggregateVisitor;
             this.groupByAttributes = groupByAttributes;
@@ -207,7 +207,7 @@ public class GroupByVisitor implements FeatureCalc {
             return results;
         }
 
-        public GroupByInternalVisitor getAggregateVisitor() {
+        public Aggregate getAggregateVisitor() {
             return aggregateVisitor;
         }
 

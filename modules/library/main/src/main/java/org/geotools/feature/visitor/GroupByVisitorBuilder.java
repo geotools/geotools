@@ -35,7 +35,7 @@ import java.util.List;
 public final class GroupByVisitorBuilder {
 
     private Expression aggregateAttribute;
-    private GroupByInternalVisitor aggregateVisitor;
+    private Aggregate aggregateVisitor;
     private List<Expression> groupByAttributes = new ArrayList<>();
     private ProgressListener progressListener;
 
@@ -54,13 +54,13 @@ public final class GroupByVisitorBuilder {
         return this;
     }
 
-    public GroupByVisitorBuilder withAggregateVisitor(GroupByInternalVisitor aggregateVisitor) {
+    public GroupByVisitorBuilder withAggregateVisitor(Aggregate aggregateVisitor) {
         this.aggregateVisitor = aggregateVisitor;
         return this;
     }
 
     public GroupByVisitorBuilder withAggregateVisitor(String aggregateVisitorName) {
-        this.aggregateVisitor = GroupByInternalVisitor.permissiveValueOf(aggregateVisitorName);
+        this.aggregateVisitor = Aggregate.valueOfIgnoreCase(aggregateVisitorName);
         return this;
     }
 

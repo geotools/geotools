@@ -235,5 +235,10 @@ class PartiallyOrderedSet<E> extends AbstractSet<E> {
             return next.getValue();
         }
         
+        
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

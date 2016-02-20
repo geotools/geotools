@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -69,6 +70,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.LimitingVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -1421,40 +1423,31 @@ public final class JDBCDataStore extends ContentDataStore
      * Results the value of an aggregate function over a query.
      * @return generated result, or null if unsupported
      */
-    protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx ) 
-        throws IOException {
-        
-        // get the name of the function
-        String function = getAggregateFunctions().get( visitor.getClass() );
-        if ( function == null ) {
-            //try walking up the hierarchy
-            Class clazz = visitor.getClass();
-            while( clazz != null && function == null ) {
-                clazz = clazz.getSuperclass();
-                function = getAggregateFunctions().get( clazz );
-            }
-            
-            if ( function == null ) {
-                //not supported
-                LOGGER.info( "Unable to find aggregate function matching visitor: " + visitor.getClass());
-                return null;
-            }
+    protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx)
+            throws IOException {
+        // check if group by is supported by the udnerlign store
+        if(isGroupByVisitor(visitor) && !dialect.isGroupBySupported()) {
+            return null;
         }
-        
-        AttributeDescriptor att = null;
-        Expression expression = getExpression(visitor);
-        if (expression != null) {
-            att = (AttributeDescriptor) expression.evaluate( featureType );
+        // try to match the visitor with an aggregate function
+        String function = matchAggregateFunction(visitor);
+        if (function == null) {
+            // this visitor is not supported
+            return null;
         }
-        if(att == null && !(visitor instanceof CountVisitor)){
+        // try to extract an aggregate attribute from the visitor
+        AttributeDescriptor att = extractAggregateAttribute(visitor, featureType);
+        if (att == null && !isCountVisitor(visitor)) {
             return null; // aggregate function optimization only supported for PropertyName expression
         }
         // if the visitor is limiting the result to a given start - max, we will
         // try to apply limits to the aggregate query
         LimitingVisitor limitingVisitor = null;
-        if(visitor instanceof LimitingVisitor) {
+        if (visitor instanceof LimitingVisitor) {
             limitingVisitor = (LimitingVisitor) visitor;
         }
+        // if the visitor is a group by visitor we extract the group by attributes
+        List<AttributeDescriptor> groupByAttributes = extractGroupByAttributes(visitor, featureType);
         //result of the function
         try {
             Object result = null;
@@ -1464,11 +1457,11 @@ public final class JDBCDataStore extends ContentDataStore
             
             try {
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
-                    st = selectAggregateSQLPS(function, att, featureType, query, limitingVisitor,  cx);
+                    st = selectAggregateSQLPS(function, att, groupByAttributes, featureType, query, limitingVisitor,  cx);
                     rs = ((PreparedStatement)st).executeQuery();
                 } 
                 else {
-                    String sql = selectAggregateSQL(function, att, featureType, query, limitingVisitor);
+                    String sql = selectAggregateSQL(function, att, groupByAttributes, featureType, query, limitingVisitor);
                     LOGGER.fine( sql );
                     
                     st = cx.createStatement();
@@ -1477,9 +1470,14 @@ public final class JDBCDataStore extends ContentDataStore
                 }
              
                 while(rs.next()) {
-                    Object value = rs.getObject(1);
-                    result = value;
-                    results.add(value);
+                    if (groupByAttributes == null || groupByAttributes.isEmpty()) {
+                        Object value = rs.getObject(1);
+                        result = value;
+                        results.add(value);
+                    }
+                    else {
+                        results.add(extractValuesFromResultSet(rs, groupByAttributes.size()));
+                    }
                 }
             } finally {
                 closeSafe( rs );
@@ -1487,7 +1485,7 @@ public final class JDBCDataStore extends ContentDataStore
             }
             
             if ( setResult(visitor, results.size() > 1 ? results : result) ){
-                return result;    
+                return result == null ? results : result;
             }
             
             return null;
@@ -1495,6 +1493,100 @@ public final class JDBCDataStore extends ContentDataStore
         catch( SQLException e ) {
             throw (IOException) new IOException().initCause(e);
         }
+    }
+
+    // Helper method that checks if the visitor is of type count visitor.
+    protected boolean isCountVisitor(FeatureVisitor visitor) {
+        if (visitor instanceof CountVisitor) {
+            // is count visitor nothing else to test
+            return true;
+        }
+        // the visitor maybe wrapper by a group by visitor
+        return isGroupByVisitor(visitor) && ((GroupByVisitor) visitor).getAggregateVisitor() instanceof CountVisitor;
+    }
+
+    /**
+     * Helper method the checks if a feature visitor is a group by visitor,
+     *
+     * @param visitor the feature visitor
+     * @return TRUE if the visitor is a group by visitor otherwise FALSE
+     */
+    protected boolean isGroupByVisitor(FeatureVisitor visitor) {
+        return visitor instanceof GroupByVisitor;
+    }
+
+    /**
+     * Helper method that will try to match a feature visitor with an aggregate function.
+     * If no aggregate function machs the visitor NULL will be returned.
+     *
+     * @param visitor the feature visitor
+     * @return the match aggregate function name, or NULL if no match
+     */
+    protected String matchAggregateFunction(FeatureVisitor visitor) {
+        // if is a group by visitor we use use the internal aggregate visitor class otherwise we use the visitor class
+        Class visitorClass = isGroupByVisitor(visitor) ?
+                ((GroupByVisitor) visitor).getAggregateVisitor().getClass() : visitor.getClass();
+        String function = null;
+        // try to find a matching aggregate function walking up the hierarchy if necessary
+        while (function == null && visitorClass != null) {
+            function = getAggregateFunctions().get(visitorClass);
+            visitorClass = visitorClass.getSuperclass();
+        }
+        if (function == null) {
+            // this visitor don't match any aggregate function NULL will be returned
+            LOGGER.info("Unable to find aggregate function matching visitor: " + visitor.getClass());
+        }
+        return function;
+    }
+
+    /**
+     * Helper method that extract the attribute that will be used by the aggregate function.
+     *
+     * @param visitor     the feature visitor
+     * @param featureType the feature type
+     * @return the aggregate attribute or NULL if the visitor don't contains an aggregate attribute
+     */
+    protected AttributeDescriptor extractAggregateAttribute(FeatureVisitor visitor, SimpleFeatureType featureType) {
+        // if is a group by visitor we need to use the internal aggregate visitor
+        FeatureVisitor aggregateVisitor = isGroupByVisitor(visitor) ? ((GroupByVisitor) visitor).getAggregateVisitor() : visitor;
+        Expression expression = getExpression(aggregateVisitor);
+        if (expression == null) {
+            // no aggregate attribute available, NULL will be returned
+            LOGGER.info("Visitor " + visitor.getClass() + " has no aggregate attribute.");
+            return null;
+        }
+        // we evaluate the expression and return the aggregate attribute
+        return (AttributeDescriptor) expression.evaluate(featureType);
+    }
+
+    /**
+     * Helper method that extracts a list of group by attributes from a group by visitor.
+     * If the visitor is not a group by visitor an empty list will be returned.
+     *
+     * @param visitor     the feature visitor
+     * @param featureType the feature type
+     * @return the list of the group by attributes or an empty list
+     */
+    protected List<AttributeDescriptor> extractGroupByAttributes(FeatureVisitor visitor, SimpleFeatureType featureType) {
+        // if is a group by visitor we get the list of attributes expressions otherwise we get an empty list
+        List<Expression> expressions = isGroupByVisitor(visitor) ?
+                ((GroupByVisitor) visitor).getGroupByAttributes() : new ArrayList<>();
+        // we convert the list of attributes expressions to a list of attributes descriptors
+        return expressions.stream()
+                .map(expression -> (AttributeDescriptor) expression.evaluate(featureType))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Helper method that translate the result set to the appropriate group by visitor result format
+     */
+    protected GroupByVisitor.GroupByRawResult extractValuesFromResultSet(ResultSet resultSet,
+                                                                         int numberOfGroupByAttributes) throws SQLException {
+        List<Object> groupByValues = new ArrayList<>();
+        for (int i = 0; i < numberOfGroupByAttributes; i++) {
+            groupByValues.add(resultSet.getObject(i + 1));
+        }
+        return new GroupByVisitor.GroupByRawResult(groupByValues, resultSet.getObject(numberOfGroupByAttributes + 1));
     }
 
     /**
@@ -3662,21 +3754,34 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Generates a 'SELECT <function>() FROM' statement.
      */
-    protected String selectAggregateSQL(String function, AttributeDescriptor att, 
+    protected String selectAggregateSQL(String function, AttributeDescriptor att,
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
+        return selectAggregateSQL(function, att, null, featureType, query, visitor);
+    }
+
+    protected String selectAggregateSQL(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+                                        SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
-        doSelectAggregateSQL(function, att, featureType, query, visitor, sql);
+        doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
         return sql.toString();
     }
     
     /**
      * Generates a 'SELECT <function>() FROM' prepared statement.
      */
-    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
+    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att,
+                                                     SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
+            throws SQLException, IOException {
+
+        return selectAggregateSQLPS(function, att, null, featureType, query, visitor, cx);
+    }
+
+    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+                                                     SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
         throws SQLException, IOException {
         
         StringBuffer sql = new StringBuffer();
-        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, featureType, query, visitor, sql);
+        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
         
         LOGGER.fine( sql.toString() );
           
@@ -3691,7 +3796,7 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Helper method to factor out some commonalities between selectAggregateSQL, and selectAggregateSQLPS 
      */
-    List<FilterToSQL> doSelectAggregateSQL(String function, AttributeDescriptor att, 
+    List<FilterToSQL> doSelectAggregateSQL(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor, StringBuffer sql) throws SQLException, IOException {
 
         JoinInfo join = !query.getJoins().isEmpty() 
@@ -3712,6 +3817,10 @@ public final class JDBCDataStore extends ContentDataStore
             }
         } else {
             sql.append("SELECT ");
+            if (groupByAttributes != null && !groupByAttributes.isEmpty()) {
+                encodeGroupByAttributes(groupByAttributes, query, sql);
+                sql.append(",");
+            }
             encodeFunction(function,att,query,sql);
             sql.append( " FROM ");
         }
@@ -3746,17 +3855,65 @@ public final class JDBCDataStore extends ContentDataStore
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             
             StringBuffer sql2 = new StringBuffer("SELECT ");
+            if (groupByAttributes != null && !groupByAttributes.isEmpty()) {
+                encodeGroupByAttributes(groupByAttributes, query, sql2);
+                sql2.append(",");
+            }
             encodeFunction(function,att,query,sql2);
             sql2.append(" AS gt_result_");
             sql2.append(" FROM (");
             sql.insert(0,sql2.toString());
             sql.append(") gt_limited_");
         }
-        
+
+        encodeGroupByStatement(groupByAttributes, query, sql);
+
         // add search hints if the dialect supports them
         applySearchHints(featureType, query, sql);
 
         return toSQL;
+    }
+
+    protected void encodeGroupByAttributes(List<AttributeDescriptor> attributes, Query query, StringBuffer sql) {
+        // we encode all the group by attributes as columns names
+        attributes.forEach(attribute -> {
+            encodeAttribute(attribute, query, sql);
+            sql.append(",");
+        });
+        // removes the extra comma added during the attributes encoding
+        sql.setLength(sql.length() - 1);
+    }
+
+    /**
+     * Helper method that adds a group by statement to the SQL query. If the list of group by attributes
+     * is empty or NULL no group by statement is add.
+     *
+     * @param attributes the group by attributes to be encoded
+     * @param query      the query information
+     * @param sql        the sql query buffer
+     */
+    protected void encodeGroupByStatement(List<AttributeDescriptor> attributes, Query query, StringBuffer sql) {
+        if (attributes == null || attributes.isEmpty()) {
+            // there is not group by attributes to encode so nothing to do
+            return;
+        }
+        sql.append(" GROUP BY ");
+        encodeGroupByAttributes(attributes, query, sql);
+    }
+
+    /**
+     * Helper method that adds an attribute to SQL query with a special handling for geometry descriptor.
+     *
+     * @param attribute the attribute descriptor to be encoded
+     * @param query     the query information
+     * @param sql       the sql query buffer
+     */
+    protected void encodeAttribute(AttributeDescriptor attribute, Query query, StringBuffer sql) {
+        if (attribute instanceof GeometryDescriptor) {
+            encodeGeometryColumn((GeometryDescriptor) attribute, sql, query.getHints());
+        } else {
+            dialect.encodeColumnName(attribute.getLocalName(), sql);
+        }
     }
 
     protected void encodeFunction( String function, AttributeDescriptor att, Query query, StringBuffer sql ) {

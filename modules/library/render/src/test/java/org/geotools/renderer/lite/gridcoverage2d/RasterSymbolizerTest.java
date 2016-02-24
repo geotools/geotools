@@ -1941,6 +1941,31 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
         rsh.visit(rs);
         testRasterSymbolizerHelper(rsh);
     }
+	
+	@org.junit.Test
+    public void demColorJump() throws IOException, TransformerException {
+        
+        // An SLD file where two entries have the same value
+        ////
+        java.net.URL surl = TestData.url(this, "dem_colorJump.sld");
+        SLDParser stylereader = new SLDParser(sf, surl);
+        StyledLayerDescriptor sld = stylereader.parseSLD();
+
+        // get a coverage
+        GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+        envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);          
+        GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "name",
+                        JAI.create("ImageRead", TestData.file(this,"smalldem.tif")),
+                        envelope,new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+        SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
+        final RasterSymbolizer rs = extractRasterSymbolizer(sld);
+        
+        // used to blow up here with an exception
+        rsh.visit(rs);
+        testRasterSymbolizerHelper(rsh);
+    }
 
 	
 	@org.junit.Test

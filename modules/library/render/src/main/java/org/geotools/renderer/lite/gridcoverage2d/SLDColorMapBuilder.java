@@ -25,6 +25,7 @@ import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -301,13 +302,23 @@ public class SLDColorMapBuilder {
 			//
 			// //
             double previousMax = ((Range) previous.getRange()).getMax().doubleValue();
+            Color[] previousColors = previous.getColors();
             if (PiecewiseUtilities.compare(previousMax, q) != 0) {
                 Range valueRange = RangeFactory.create(previousMax, true, q, false);
+
                 switch (linearColorMapType) {
                 case ColorMap.TYPE_RAMP:
                     Color[] colors = new Color[] { lastColorValue, newColorValue };
-                    Range sampleRange = RangeFactory.create((int) previous.getOutputMaximum(),
-                            colorsPerColorMapElement + (int) previous.getOutputMaximum());
+                    int previousMaximum = (int) previous.getOutputRange().getMax().intValue();
+                    // the piecewise machinery will complain if we have different colors
+                    // on touching ranges, work around it by not including the previous
+                    // max at the beginning of the range in case that happens (uses might
+                    // want to have a sharp jump in a ramp, achieved by having two subseqent
+                    // entries with the same value, but different color)
+                    boolean minIncluded = previousColors[previousColors.length - 1].equals(colors[0]);
+                    Range sampleRange = RangeFactory.create(previousMaximum, minIncluded,
+                            colorsPerColorMapElement + previousMaximum, true);
+                    System.out.println(valueRange + " -> " + sampleRange + "(" + Arrays.toString(colors) + ")");
                     colormapElements.add(
                             LinearColorMapElement.create(label, colors, valueRange, sampleRange));
                     break;
@@ -643,7 +654,7 @@ public class SLDColorMapBuilder {
 					"ColorMapEntry"+this.colormapElements.size(), lastColorValue, RangeFactory.create(
 						 previous.getRange().getMax().doubleValue(),
 							true, Double.POSITIVE_INFINITY, false),
-					(int) previous.getOutputMaximum());
+					previous.getOutputRange().getMax().intValue());
 			this.colormapElements.add(last);
 
 		}

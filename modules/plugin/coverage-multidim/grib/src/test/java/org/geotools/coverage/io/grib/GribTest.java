@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,10 +29,10 @@ import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.netcdf.NetCDFDriver;
-import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -57,9 +57,18 @@ public class GribTest extends Assert{
 
     private final static Double DELTA = 1E-9;
 
+    protected File cacheDir;
+
     @Before
-    public void setupForceCheck() {
+    public void setup() throws FileNotFoundException, IOException {
         System.setProperty("NETCDF_FORCE_OPEN_CHECK", "true");
+        final File testDir = TestData.file(this, ".").getCanonicalFile();
+        cacheDir = new File(testDir, "cache");
+        if (!cacheDir.exists()) {
+            cacheDir.mkdir();
+        }
+        String cacheDirPath = cacheDir.getAbsolutePath();
+        System.setProperty("GRIB_CACHE_DIR", cacheDirPath);
     }
 
     @After
@@ -206,16 +215,22 @@ public class GribTest extends Assert{
         // Get format
         final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
                 inputFile.toURI().toURL(), null);
-        final NetCDFReader reader = new NetCDFReader(inputFile, null);
-        Assert.assertNotNull(format);
-        Assert.assertNotNull(reader);
+
+        assertTrue(format.accepts(inputFile));
+
+        AbstractGridCoverage2DReader reader = null;
+        assertNotNull(format);
         try {
+
+            reader = format.getReader(inputFile, null);
+            assertNotNull(reader);
+
             // Selection of all the Coverage names
             String[] names = reader.getGridCoverageNames();
-            Assert.assertNotNull(names);
+            assertNotNull(names);
             // Selections of one Coverage
             GridCoverage2D grid = reader.read(names[0], null);
-            Assert.assertNotNull(grid);
+            assertNotNull(grid);
             // Selection of one coordinate from the Coverage and check if the
             // value is not a NaN
             float[] result = new float[1];
@@ -227,6 +242,7 @@ public class GribTest extends Assert{
             grid.evaluate(nodataPoint, result_2);
             Assert.assertTrue(Float.isNaN(result_2[0]));
         } finally {
+            // Dispose
             if (reader != null) {
                 try {
                     reader.dispose();
@@ -251,13 +267,17 @@ public class GribTest extends Assert{
         // Get format
         final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
                 inputFile.toURI().toURL(), null);
-        final NetCDFReader reader = new NetCDFReader(inputFile, null);
-        Assert.assertNotNull(format);
-        Assert.assertNotNull(reader);
+        assertTrue(format.accepts(inputFile));
+        AbstractGridCoverage2DReader reader = null;
+        assertNotNull(format);
         try {
+
+            reader = format.getReader(inputFile, null);
+            assertNotNull(reader);
+
             // Selection of all the Coverage names
             String[] names = reader.getGridCoverageNames();
-            Assert.assertNotNull(names);
+            assertNotNull(names);
 
             // Name of the first coverage
             String coverageName = names[0];
@@ -285,6 +305,7 @@ public class GribTest extends Assert{
             // Check if the result is not null
             assertNotNull(grid);
         } finally {
+            // Dispose
             if (reader != null) {
                 try {
                     reader.dispose();

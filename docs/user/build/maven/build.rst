@@ -97,6 +97,7 @@ Common Build Problems
 ^^^^^^^^^^^^^^^^^^^^^
 
 The following common problems occur during a::
+
    mvn -U clean install
 
 Unable to find org.geotools.maven:javadoc:jar
@@ -118,67 +119,12 @@ To fix you need to build the javadoc jar by hand.
 
 Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the tools.jar (in order to build javadocs).
 
-Failure of Metadata RangeSetTest
-''''''''''''''''''''''''''''''''
+Popup windows steal focus
+'''''''''''''''''''''''''
 
-This looks like the following::
+You can run headless::
 
-   [INFO] ----------------------------------------------------------------------------
-   [INFO] Building Metadata
-   [INFO]    task-segment: [clean, install]
-   [INFO] ----------------------------------------------------------------------------
-   [INFO] [clean:clean]
-   ...
-   Running org.geotools.util.RangeSetTest
-   Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.031 sec <<< FAILURE!
-
-Navigating into the directory to look at the actual error::
-
-   C:\java\geotools\trunk\modules\library\metadata\target\surefire-reports>more *RangeSetTest.txt
-   -------------------------------------------------------------------------------
-   Test set: org.geotools.util.RangeSetTest
-   -------------------------------------------------------------------------------
-   Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.031 sec <<< FAILURE!
-   testRangeRemoval(org.geotools.util.RangeSetTest)  Time elapsed: 0 sec  <<< ERROR!
-   java.lang.NoClassDefFoundError: javax/media/jai/util/Range
-           at org.geotools.util.RangeSetTest.testRangeRemoval(RangeSetTest.java:58)
-
-This indicates that Java Advanced Imaging has not been installed into the JRE (please see the dependencies section and try again).
-
-On GeoTools trunk you can try the following experimental option. This will download and use just the JAI jar files, you wont get native performance - but for a build do you even care?::
-
-   mvn install -Pnojai
-
-Failure of GridCoverageRendererTest
-'''''''''''''''''''''''''''''''''''
-
-This looks like the following::
-
-   [INFO] ----------------------------------------------------------------------------
-   [INFO] Building Render
-   [INFO]    task-segment: [install]
-   [INFO] ----------------------------------------------------------------------------
-   ...
-   Running org.geotools.renderer.lite.GridCoverageRendererTest
-   Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.062 sec <<< FAILURE!
-   Details:
-
-   C:\java\geotools\trunk\modules\library\render\target\surefire-reports>more *GridCoverageRendererTest.txt
-   -------------------------------------------------------------------------------
-   Test set: org.geotools.renderer.lite.GridCoverageRendererTest
-   -------------------------------------------------------------------------------
-   Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.062 sec <<< FAILURE!
-   testPaint(org.geotools.renderer.lite.GridCoverageRendererTest)  Time elapsed: 0.047 sec  <<< ERROR!
-   java.lang.NullPointerException
-        at org.geotools.renderer.lite.GridCoverageRendererTest.getGC(GridCoverageRendererTest.java:103)
-        at org.geotools.renderer.lite.GridCoverageRendererTest.testPaint(GridCoverageRendererTest.java:163)
-
-   testReproject(org.geotools.renderer.lite.GridCoverageRendererTest)  Time elapsed: 0 sec  <<< ERROR!
-   java.lang.NullPointerException
-        at org.geotools.renderer.lite.GridCoverageRendererTest.getGC(GridCoverageRendererTest.java:103)
-        at org.geotools.renderer.lite.GridCoverageRendererTest.testReproject(GridCoverageRendererTest.java:199)
-
-This indicates that Image IO support has not been installed into the JRE (please see the dependencies section and try again).
+  mvn install -Djava.awt.headless=true
 
 Unable to Delete Directory on Windows
 '''''''''''''''''''''''''''''''''''''

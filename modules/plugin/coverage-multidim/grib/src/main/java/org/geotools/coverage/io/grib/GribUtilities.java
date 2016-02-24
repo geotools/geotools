@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -47,8 +47,12 @@ public class GribUtilities {
             String dir = (String) cacheDir;
             final File file = new File(dir);
             if (isValid(file)) {
-                DiskCache2 cache = new DiskCache2(dir, true, 0, 0);
+                DiskCache2 cache = new DiskCache2(dir, false, 0, 0);
+                cache.setAlwaysUseCache(true);
                 GribIndexCache.setDiskCache2(cache);
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.info("Setting the GribIndexCache folder to: " + dir);
+                }
             }
         }
     }

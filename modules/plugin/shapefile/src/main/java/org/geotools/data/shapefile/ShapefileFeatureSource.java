@@ -317,15 +317,6 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         SimpleFeatureType readSchema = getReadSchema(q);
         GeometryFactory geometryFactory = getGeometryFactory(q);
 
-        // grab the target bbox, if any
-        Envelope bbox = new ReferencedEnvelope();
-        if (q.getFilter() != null) {
-            bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
-            if(bbox == null) {
-                bbox = new ReferencedEnvelope();
-            }
-        }
-
         // see if we can use indexing to speedup the data access
         Filter filter = q != null ? q.getFilter() : null;
         IndexManager indexManager = getDataStore().indexManager;
@@ -336,13 +327,10 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
             }
-        } else if (getDataStore().isIndexed() && !bbox.isNull() 
-                && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
+        } else if (getDataStore().isIndexed() && filter != null) {
             try {
-                if(indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {
-                    goodRecs = indexManager.querySpatialIndex(bbox);
-                }
-            } catch (TreeException e) {
+                goodRecs = indexManager.queryFilterIndex(filter, q.getMaxFeatures());
+            } catch (IOException e) {
                 throw new IOException("Error querying index: " + e.getMessage());
             }
         }
@@ -382,12 +370,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             reader.setFilter(filter);
         }
 
-        // setup the target bbox if any, and the generalization hints if available
+        // setup the generalization hints if available
         if (q != null) {
-            if (bbox != null && !bbox.isNull()) {
-                reader.setTargetBBox(bbox);
-            }
-
             Hints hints = q.getHints();
             if (hints != null) {
                 Number simplificationDistance = (Number) hints.get(Hints.GEOMETRY_DISTANCE);

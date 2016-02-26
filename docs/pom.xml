@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>geotools</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>15-beta</version>
   </parent>
 
 

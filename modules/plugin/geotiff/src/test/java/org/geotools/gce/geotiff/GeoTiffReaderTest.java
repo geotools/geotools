@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,8 +25,14 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
@@ -61,6 +67,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
+
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 /**
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
@@ -363,6 +371,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     
     }
     
+    @Test
     public void testBandNames() throws Exception {
         final File file = TestData.file(GeoTiffReaderTest.class, "wind.tiff");
         assertNotNull(file);
@@ -372,6 +381,61 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         String band2Name = coverage.getSampleDimension(1).getDescription().toString();
         assertEquals("Band1", band1Name);
         assertEquals("Band2", band2Name);
+    }
+    
+    @Test
+    public void testThreadedTransformations() throws Exception {
+        Callable<Void> callable = new Callable<Void>() {
+
+            @Override
+            public Void call() throws Exception {
+                final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
+                final File files[] = baseDirectory.listFiles(new FilenameFilter() {
+                    
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        String lcName = name.toLowerCase();
+                        return lcName.endsWith("tif") || lcName.endsWith("tiff");
+                    }
+                });
+                final AbstractGridFormat format = new GeoTiffFormat();
+                for (File file : files) {
+                    AbstractGridCoverage2DReader reader = null;
+                    try {
+                        reader = format.getReader(file);
+                        if(reader != null) {
+                            GridCoverage2D coverage = reader.read(null);
+                            ImageIOUtilities.disposeImage(coverage.getRenderedImage());
+                            coverage.dispose(true);
+                        }
+                    } finally {
+                        if(reader != null) {
+                            reader.dispose();
+                        }
+                    }
+                    
+                }
+                return null;
+            }
+            
+        };
+        
+        // used to deadlock under load, check it does not now
+        ExecutorService executor = Executors.newCachedThreadPool();
+        try {
+            List<Future<Void>> futures = new ArrayList<>();
+            for (int i = 0; i < 8; i++) {
+                Future<Void> f = executor.submit(callable);
+                futures.add(f);
+            }
+            
+            for (Future<Void> f : futures) {
+                f.get();
+            }
+            
+        } finally {
+            executor.shutdown();
+        }
     }
 
     /**

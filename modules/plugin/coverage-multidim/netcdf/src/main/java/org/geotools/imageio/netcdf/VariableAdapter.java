@@ -594,7 +594,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             throws IOException {
         DimensionMapper mapper = reader.georeferencing.getDimensionMapper();
         Set<String> dimensionNames = mapper.getDimensionNames();
-        if (dimensionNames == null || dimensionNames.isEmpty()) {
+        // No need to do the mapping update in case one of these conditions apply
+        if (dimensionNames == null || dimensionNames.isEmpty() || descriptors == null
+                || descriptors.isEmpty() || indexSchema.getAttributeCount() <= FIRST_ATTRIBUTE_INDEX ) {
             return;
         }
         int indexAttribute = FIRST_ATTRIBUTE_INDEX;

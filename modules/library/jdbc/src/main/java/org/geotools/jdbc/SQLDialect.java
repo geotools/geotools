@@ -903,6 +903,17 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Encodes the CREATE TABLE statement.
+     * <p>
+     * Default implementation adds “CREATE TABLE” to the sql buffer.
+     * Subclasses may choose to override to handle db specific syntax.
+     * </p>
+     */
+    public void encodeCreateTable(StringBuffer sql) {
+        sql.append("CREATE TABLE ");
+    }
+
+    /**
      * Encodes anything post a column in a CREATE TABLE statement.
      * <p>
      * This is appended after the column name and type. Subclasses may choose to override

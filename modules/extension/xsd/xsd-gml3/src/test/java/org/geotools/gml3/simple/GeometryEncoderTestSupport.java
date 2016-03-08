@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -75,7 +75,7 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
         Properties outputProps = new Properties();
         outputProps.setProperty(INDENT_AMOUNT_KEY, "2");
         xmls.getTransformer().setOutputProperties(outputProps);
-        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
 
         GMLWriter handler = new GMLWriter(xmls, gtEncoder.getNamespaces(), 6, false, "gml");

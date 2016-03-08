@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -89,7 +89,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
     private void encodeLinestring(LineString geometry, GMLWriter handler)
             throws Exception {
         AttributesImpl atts = new AttributesImpl();
-        atts.addAttribute(null, "interpolation", "interpolation", null, "linear");
+        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "", "linear");
         handler.startElement(lineStringSegment, atts);
 
         handler.posList(geometry.getCoordinateSequence());
@@ -100,7 +100,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
     private void encodeCurve(SingleCurvedGeometry curve, GMLWriter handler)
             throws Exception {
         AttributesImpl atts = new AttributesImpl();
-        atts.addAttribute(null, "interpolation", "interpolation", null, "circularArc3Points");
+        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "", "circularArc3Points");
         handler.startElement(arcString, atts);
 
         handler.posList(new LiteCoordinateSequence(curve.getControlPoints()));

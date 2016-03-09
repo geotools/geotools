@@ -91,6 +91,7 @@
     <test.maxHeapSize>256M</test.maxHeapSize>
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <test.forkMode>once</test.forkMode>
+    <test.args></test.args>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.13</imageio.ext.version>
     <jaiext.version>1.0.8</jaiext.version>
@@ -1370,7 +1371,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}"</argLine>
+          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->

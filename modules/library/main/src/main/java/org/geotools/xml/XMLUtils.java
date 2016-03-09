@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,10 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.xml;
+
+import org.xml.sax.helpers.NamespaceSupport;
+
+import javax.xml.namespace.QName;
 
 /**
  * XML related utilities not otherwise found in base libraries
@@ -62,6 +66,26 @@ public class XMLUtils {
     }
 
     /**
+     * Creates a qualified name from a string by parsing out the colon as the 
+     * prefix / local separator. 
+     * 
+     * @param name The possibly qualified name.
+     * @param namespaces The namespace prefix uri mappings.
+     */
+    public static QName qName(String name, NamespaceSupport namespaces) {
+        int dot = name.indexOf(':');
+        if (dot > -1) {
+            String[] split = name.split(":");
+            String prefix = split[0];
+            String local = split[1];
+            
+            return new QName(namespaces.getURI(prefix), local, prefix);
+        }
+
+        return new QName(name);
+    }
+
+    /**
      * Returns true if the character provided is valid according to XML 1.0
      * 
      * @param c
@@ -71,4 +95,5 @@ public class XMLUtils {
         return (c == 0x9) || (c == 0xA) || (c == 0xD) || ((c >= 0x20) && (c <= 0xD7FF))
                 || ((c >= 0xE000) && (c <= 0xFFFD)) || ((c >= 0x10000) && (c <= 0x10FFFF));
     }
+
 }

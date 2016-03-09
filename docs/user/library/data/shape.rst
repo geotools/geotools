@@ -31,7 +31,7 @@ The following connection parameters are available:
 +-------------------------+----------------------------------------------------+
 | "create spatial index"  | Optional: Use Boolean.TRUE to create an index      |
 +-------------------------+----------------------------------------------------+
-| "charset"               | Optional: Charset used to decode strings in the   |
+| "charset"               | Optional: Charset used to decode strings in the    |
 |                         | DBF file                                           |
 +-------------------------+----------------------------------------------------+
 | "timezone"              | Optional: Timezone used to parse dates in the      |

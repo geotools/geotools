@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  */
 package org.geotools.gml2.bindings;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -129,9 +131,16 @@ public class GML2EncodingUtils {
             return srsSyntax.getPrefix() + code;
         }
         
-        // allow for non epsg codes to be encoded
-        if (crs != null && crs.getName() != null) {
-            return crs.getName().getCode();
+        // if crs has no EPSG code but its identifier is a URI, then use its identifier
+        if (crs != null && crs.getName() != null && crs.getName().getCode() != null) {
+            try {
+                // test whether identifier is a valid URI
+                new URI(crs.getName().getCode());
+                // acceptable to java.net.URI so return it
+                return crs.getName().getCode();
+            } catch (URISyntaxException e) {
+                // not a valid URI so ignore
+            }
         }
         return null;
     }

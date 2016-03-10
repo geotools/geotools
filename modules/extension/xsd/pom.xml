@@ -81,6 +81,23 @@
     </plugins>
   </build-->
 
+  <profiles>
+    <profile>
+      <id>saxon</id>
+      <dependencies>
+         <dependency>
+           <groupId>net.sf.saxon</groupId>
+           <artifactId>Saxon-HE</artifactId>
+           <version>9.6.0-6</version>
+           <scope>test</scope>
+         </dependency>
+      </dependencies>
+      <properties>
+        <test.args>-Djavax.xml.transform.TransformerFactory=net.sf.saxon.jaxp.SaxonTransformerFactory</test.args>
+      </properties>
+    </profile>
+  </profiles>
+
   <modules>
     <module>xsd-core</module>
     <module>xsd-gml2</module>

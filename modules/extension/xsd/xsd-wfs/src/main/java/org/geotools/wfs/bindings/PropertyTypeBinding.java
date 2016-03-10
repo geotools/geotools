@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.ContentHandler;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.xml.sax.helpers.AttributesImpl;
 
 
 /**
@@ -113,9 +114,10 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
                     
                     Object value = ((PropertyType) object).getValue();
                     
-                    output.startElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE, null);
+                    output.startElement(WFS.NAMESPACE, VALUE, "wfs:" + VALUE, new AttributesImpl());
                     if (value instanceof Geometry) {
                         Encoder encoder = new Encoder(new org.geotools.gml2.GMLConfiguration());
+                        encoder.setInline(true);
                         encoder.encode(value, org.geotools.gml2.GML._Geometry, output);
                     }
                     else {

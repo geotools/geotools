@@ -3025,7 +3025,7 @@ public final class JDBCDataStore extends ContentDataStore
         boolean[] nillable, String pkeyColumn, SimpleFeatureType featureType ) throws SQLException {
         //build the create table sql
         StringBuffer sql = new StringBuffer();
-        encodeCreateTable(sql);
+        dialect.encodeCreateTable(sql);
 
         encodeTableName(tableName, sql, null);
         sql.append(" ( ");

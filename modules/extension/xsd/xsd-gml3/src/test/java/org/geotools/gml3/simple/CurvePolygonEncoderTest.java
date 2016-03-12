@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
 package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.gml3.GML;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -25,7 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
 
     public void testCircle() throws Exception {
-        PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml");
+        PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2()
                 .read("CURVEPOLYGON(CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
@@ -42,7 +43,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
     }
 
     public void testDonut() throws Exception {
-        PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml");
+        PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2()
                 .read("CURVEPOLYGON(CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -5 -10, -7 -8),CIRCULARSTRING(-6 -8, -5 -7, -4 -8, -5 -9, -6 -8))");
         Document doc = encode(encoder, geometry);
@@ -65,7 +66,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
     }
 
     public void testComplex() throws Exception {
-        PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml");
+        PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2()
                 .read("CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)), "
                         + "CIRCULARSTRING(1.7 1, 1.4 0.4, 1.6 0.4, 1.6 0.5, 1.7 1) )");

@@ -38,8 +38,8 @@ public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollectio
     QualifiedName element;
     static Encoder encoder;
 
-    public GeometryCollectionEncoder(Encoder encoder, String gmlPrefix) {
-        this(encoder, GEOMETRY_COLLECTION.derive(gmlPrefix));
+    public GeometryCollectionEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
+        this(encoder, GEOMETRY_COLLECTION.derive(gmlPrefix, gmlUri));
     }
 
     public GeometryCollectionEncoder(Encoder encoder, QualifiedName name) {

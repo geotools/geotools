@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -57,18 +57,18 @@ class MultiLineStringEncoder extends GeometryEncoder<Geometry> {
 
     boolean curveEncoding;
 
-    protected MultiLineStringEncoder(Encoder encoder, String gmlPrefix, boolean curveEncoding) {
+    protected MultiLineStringEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean curveEncoding) {
         super(encoder);
-        lse = new LineStringEncoder(encoder, gmlPrefix);
-        lre = new LinearRingEncoder(encoder, gmlPrefix);
-        ce = new CurveEncoder(encoder, gmlPrefix);
+        lse = new LineStringEncoder(encoder, gmlPrefix, gmlUri);
+        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
+        ce = new CurveEncoder(encoder, gmlPrefix, gmlUri);
         this.curveEncoding = curveEncoding;
         if(curveEncoding) {
-            multiContainer = MULTI_CURVE.derive(gmlPrefix);
-            member = CURVE_MEMBER.derive(gmlPrefix);
+            multiContainer = MULTI_CURVE.derive(gmlPrefix, gmlUri);
+            member = CURVE_MEMBER.derive(gmlPrefix, gmlUri);
         } else {
-            multiContainer = MULTI_LINE_STRING.derive(gmlPrefix);
-            member = LINE_STRING_MEMBER.derive(gmlPrefix);
+            multiContainer = MULTI_LINE_STRING.derive(gmlPrefix, gmlUri);
+            member = LINE_STRING_MEMBER.derive(gmlPrefix, gmlUri);
         }
     }
 

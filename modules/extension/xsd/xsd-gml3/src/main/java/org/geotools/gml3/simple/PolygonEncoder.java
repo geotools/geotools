@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,13 +50,13 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
 
     RingEncoder re;
 
-    protected PolygonEncoder(Encoder encoder, String gmlPrefix) {
+    protected PolygonEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
-        polygon = POLYGON.derive(gmlPrefix);
-        exterior = EXTERIOR.derive(gmlPrefix);
-        interior = INTERIOR.derive(gmlPrefix);
-        lre = new LinearRingEncoder(encoder, gmlPrefix);
-        re = new RingEncoder(encoder, gmlPrefix);
+        polygon = POLYGON.derive(gmlPrefix, gmlUri);
+        exterior = EXTERIOR.derive(gmlPrefix, gmlUri);
+        interior = INTERIOR.derive(gmlPrefix, gmlUri);
+        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
+        re = new RingEncoder(encoder, gmlPrefix, gmlUri);
     }
     
     @Override

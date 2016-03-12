@@ -20,6 +20,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.gml3.GML;
 import org.w3c.dom.Document;
 /**
  * Unit test for GeometryCollectionEncoder
@@ -29,8 +30,7 @@ import org.w3c.dom.Document;
 public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
 
     public void testGeometryCollectionEncoder() throws ParseException, Exception {
-        GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder,
-            "gml");
+        GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder,"gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2().read(
             "GEOMETRYCOLLECTION (LINESTRING"
             + " (180 200, 160 180), POINT (19 19), POINT (20 10))");

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,11 +43,11 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
 
     QualifiedName pointMember;
 
-    protected MultiPointEncoder(Encoder encoder, String gmlPrefix) {
+    protected MultiPointEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
-        pe = new PointEncoder(encoder, gmlPrefix);
-        multiPoint = MULTI_POINT.derive(gmlPrefix);
-        pointMember = POINT_MEMBER.derive(gmlPrefix);
+        pe = new PointEncoder(encoder, gmlPrefix, gmlUri);
+        multiPoint = MULTI_POINT.derive(gmlPrefix, gmlUri);
+        pointMember = POINT_MEMBER.derive(gmlPrefix, gmlUri);
     }
 
     @Override

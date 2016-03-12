@@ -118,8 +118,14 @@ public class GMLWriter {
             boolean forceDecimal, String gmlPrefix) {
         this.handler = delegate;
         this.namespaces = namespaces;
-        this.coordinates = COORDINATES.derive(gmlPrefix);
-        this.posList = POS_LIST.derive(gmlPrefix);
+
+        String gmlUri = namespaces.getURI(gmlPrefix);
+        if (gmlUri == null) {
+            gmlUri = GML.NAMESPACE;
+        }
+
+        this.coordinates = COORDINATES.derive(gmlPrefix, gmlUri);
+        this.posList = POS_LIST.derive(gmlPrefix, gmlUri);
 
         this.coordFormatter.setMaximumFractionDigits(numDecimals);
         this.coordFormatter.setGroupingUsed(false);

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,11 +46,11 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
 
     PolygonEncoder pe;
 
-    protected MultiPolygonEncoder(Encoder encoder, String gmlPrefix) {
+    protected MultiPolygonEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
-        pe = new PolygonEncoder(encoder, gmlPrefix);
-        multiSurface = MULTI_SURFACE.derive(gmlPrefix);
-        surfaceMember = SURFACE_MEMBER.derive(gmlPrefix);
+        pe = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
+        multiSurface = MULTI_SURFACE.derive(gmlPrefix, gmlUri);
+        surfaceMember = SURFACE_MEMBER.derive(gmlPrefix, gmlUri);
     }
 
     @Override

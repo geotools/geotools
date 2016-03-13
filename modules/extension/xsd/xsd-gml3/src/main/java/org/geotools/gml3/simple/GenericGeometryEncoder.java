@@ -31,6 +31,7 @@ import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
+import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -43,10 +44,10 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
 
     Encoder encoder;
     String gmlPrefix;
+    String gmlUri;
 
     public GenericGeometryEncoder(Encoder encoder) {
-        super(encoder);
-        this.encoder = encoder;
+        this(encoder, "gml", GML.NAMESPACE);
     }
 
     /**
@@ -54,10 +55,11 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
      * @param encoder
      * @param gmlPrefix
      */
-    public GenericGeometryEncoder(Encoder encoder, String gmlPrefix) {
+    public GenericGeometryEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
         this.encoder = encoder;
         this.gmlPrefix = gmlPrefix;
+        this.gmlUri = gmlUri;
     }
 
     @Override
@@ -68,30 +70,26 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
                 LineStringEncoder.LINE_STRING);
             lineString.encode((LineString) geometry, atts, handler);
         } else if (geometry instanceof Point) {
-            PointEncoder pt = new PointEncoder(encoder, gmlPrefix == null ? "gml" : gmlPrefix);
+            PointEncoder pt = new PointEncoder(encoder, gmlPrefix, gmlUri);
             pt.encode((Point) geometry, atts, handler);
         } else if (geometry instanceof Polygon) {
-            PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix == null ? "gml" : gmlPrefix);
+            PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
             polygon.encode((Polygon) geometry, atts, handler);
         } else if (geometry instanceof MultiLineString) {
-            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(
-                                                        encoder, gmlPrefix, true);
+            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
             multiLineString.encode((MultiLineString) geometry, atts, handler);
         } else if (geometry instanceof MultiPoint) {
-            MultiPointEncoder multiPoint = new MultiPointEncoder(encoder,
-                                            gmlPrefix);
+            MultiPointEncoder multiPoint = new MultiPointEncoder(encoder, gmlPrefix, gmlUri);
             multiPoint.encode((MultiPoint) geometry, atts, handler);
         } else if (geometry instanceof MultiPolygon) {
-            MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder,
-                                                gmlPrefix);
+            MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri);
             multiPolygon.encode((MultiPolygon) geometry, atts, handler);
         } else if (geometry instanceof LinearRing) {
-            LinearRingEncoder linearRing = new LinearRingEncoder(encoder,
-                                                gmlPrefix);
+            LinearRingEncoder linearRing = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
             linearRing.encode((LinearRing) geometry, atts, handler);
         } else if (geometry instanceof CircularString || geometry instanceof CompoundCurve
                         || geometry instanceof CircularRing || geometry instanceof CompoundRing) {
-            CurveEncoder curve = new CurveEncoder(encoder, gmlPrefix);
+            CurveEncoder curve = new CurveEncoder(encoder, gmlPrefix, gmlUri);
             curve.encode((LineString) geometry, atts, handler);
         } else {
             throw new Exception("Unsupported geometry " + geometry.toString());

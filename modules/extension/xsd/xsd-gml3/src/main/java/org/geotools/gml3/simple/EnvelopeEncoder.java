@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -47,11 +47,11 @@ class EnvelopeEncoder extends ObjectEncoder<Envelope> {
 
     QualifiedName upperCorner;
 
-    protected EnvelopeEncoder(Encoder e, String gmlPrefix) {
+    protected EnvelopeEncoder(Encoder e, String gmlPrefix, String gmlNamespace) {
         super(e);
-        this.envelope = ENVELOPE.derive(gmlPrefix);
-        this.lowerCorner = LOWER_CORNER.derive(gmlPrefix);
-        this.upperCorner = UPPER_CORNER.derive(gmlPrefix);
+        this.envelope = ENVELOPE.derive(gmlPrefix, gmlNamespace);
+        this.lowerCorner = LOWER_CORNER.derive(gmlPrefix, gmlNamespace);
+        this.upperCorner = UPPER_CORNER.derive(gmlPrefix, gmlNamespace);
     }
 
     @Override

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -40,10 +40,10 @@ class PointEncoder extends GeometryEncoder<Point> {
 
     QualifiedName pos;
 
-    protected PointEncoder(Encoder encoder, String gmlPrefix) {
+    protected PointEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
-        point = POINT.derive(gmlPrefix);
-        pos = POS.derive(gmlPrefix);
+        point = POINT.derive(gmlPrefix, gmlUri);
+        pos = POS.derive(gmlPrefix, gmlUri);
     }
 
     @Override

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -35,9 +35,9 @@ public class RingEncoder extends MultiLineStringEncoder {
 
     private QualifiedName ring;
 
-    protected RingEncoder(Encoder e, String gmlPrefix) {
-        super(e, gmlPrefix, true);
-        this.ring = RING.derive(gmlPrefix);
+    protected RingEncoder(Encoder e, String gmlPrefix, String gmlUri) {
+        super(e, gmlPrefix, gmlUri, true);
+        this.ring = RING.derive(gmlPrefix, gmlUri);
     }
 
     @Override

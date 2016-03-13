@@ -52,12 +52,12 @@ class CurveEncoder extends GeometryEncoder<LineString> {
 
     QualifiedName arcString;
 
-    protected CurveEncoder(Encoder e, String gmlPrefix) {
+    protected CurveEncoder(Encoder e, String gmlPrefix, String gmlUri) {
         super(e);
-        this.curve = CURVE.derive(gmlPrefix);
-        this.segments = SEGMENTS.derive(gmlPrefix);
-        this.lineStringSegment = LINE_STRING_SEGMENT.derive(gmlPrefix);
-        this.arcString = ARC_STRING.derive(gmlPrefix);
+        this.curve = CURVE.derive(gmlPrefix, gmlUri);
+        this.segments = SEGMENTS.derive(gmlPrefix, gmlUri);
+        this.lineStringSegment = LINE_STRING_SEGMENT.derive(gmlPrefix, gmlUri);
+        this.arcString = ARC_STRING.derive(gmlPrefix, gmlUri);
     }
 
     public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler)

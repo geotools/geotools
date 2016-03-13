@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
 package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.gml3.GML;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -25,7 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
 
     public void testEncodeMultiCompound() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", true);
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
         Geometry geometry = new WKTReader2()
                 .read("MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
         Document doc = encode(encoder, geometry);
@@ -64,7 +65,7 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
     }
 
     public void testEncodeMultiCurve() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", true);
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
         Geometry geometry = new WKTReader2()
                 .read("MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
@@ -92,7 +93,7 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
     }
     
     public void testEncodeMultiLineString() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", false);
+        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
         Geometry geometry = new WKTReader2()
                 .read("MULTILINESTRING((105 105, 125 125))");
         Document doc = encode(encoder, geometry);

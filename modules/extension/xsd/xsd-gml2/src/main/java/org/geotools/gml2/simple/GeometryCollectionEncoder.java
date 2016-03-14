@@ -41,6 +41,7 @@ public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollectio
     @Override
     public void encode(GeometryCollection geometry, AttributesImpl atts,
         GMLWriter handler) throws Exception {
+        handler.startElement(GEOMETRY_COLLECTION, atts);
         if (geometry.getNumGeometries() < 1) {
             throw new Exception("More than 1 geometry required!");
         } else {
@@ -51,5 +52,6 @@ public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollectio
                 gec.encode(geometry.getGeometryN(i), atts, handler);
             }
         }
+        handler.endElement(GEOMETRY_COLLECTION);
     }
 }

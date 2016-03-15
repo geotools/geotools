@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -49,11 +48,13 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 
 /**
- * 
+ * Similar to {@link FillTest}, but uses the vector rendering hint, and only
+ * tests stuff that can work with such hint. Also accounts for the fact the
+ * texture paint and the full vector rendering do not provide the same output
  * 
  * @source $URL$
  */
-public class FillTest {
+public class VectorFillTest {
     private static final long TIME = 40000;
 
     SimpleFeatureSource fs;
@@ -93,18 +94,16 @@ public class FillTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        Map<String, Object> rendererParams = new HashMap<String, Object>();
+        rendererParams.put(StreamingRenderer.VECTOR_RENDERING_KEY, Boolean.TRUE);
+        renderer.setRendererHints(rendererParams);
         
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/"
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/vector"
                 + styleName + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
     
-
-    @Test
-    public void testSolidFill() throws Exception {
-        runSingleLayerTest("fillSolid.sld");
-    }
 
     @Test
     public void testCrossFill() throws Exception {
@@ -160,82 +159,4 @@ public class FillTest {
         runSingleLayerTest("fillTTFDecorative.sld");
     }
     
-    @Test
-    public void testRandomSlash() throws Exception {
-        runSingleLayerTest("fillRandomSlash.sld");
-    }
-    
-    @Test
-    public void testRandomRotatedSlash() throws Exception {
-        runSingleLayerTest("fillRandomRotatedSlash.sld");
-    }
-    
-    @Test
-    public void testFillRandomGraphic() throws Exception {
-        runSingleLayerTest("fillRandomGraphic.sld");
-    }
-    
-    @Test
-    public void testFillRandomRotatedGraphic() throws Exception {
-        runSingleLayerTest("fillRandomRotatedGraphic.sld");
-    }
-    
-    @Test
-    public void testFillRandomTwoMarks() throws Exception {
-        runSingleLayerTest("fillRandomTwoMarks.sld");
-    }
-    
-    @Test
-    public void testFillRandomGridSlash() throws Exception {
-        runSingleLayerTest("fillRandomGridSlash.sld");
-    }
-    
-    @Test
-    public void testFillRandomGridGraphic() throws Exception {
-        runSingleLayerTest("fillRandomGridGraphic.sld");
-    }
-    
-    @Test
-    public void testFillRandomGridRotatedSlash() throws Exception {
-        runSingleLayerTest("fillRandomGridRotatedSlash.sld");
-    }
-    
-    @Test
-    public void testFillRandomGridRotatedGraphic() throws Exception {
-        runSingleLayerTest("fillRandomGridRotatedGraphic.sld");
-    }
-
-    @Test
-    public void testFTSComposition() throws Exception {
-        Style bgStyle = RendererBaseTest.loadStyle(this, "fillSolid.sld");
-        Style fgStyle = RendererBaseTest.loadStyle(this, "fillSolidFTS.sld");
-
-        MapContent mc = new MapContent();
-        mc.addLayer(new FeatureLayer(bfs, bgStyle));
-        mc.addLayer(new FeatureLayer(fs, fgStyle));
-
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        renderer.setMapContent(mc);
-
-        RendererBaseTest.showRender("FTS composition", renderer, TIME, bounds);
-    }
-
-    @Test
-    public void testGEOT3111() throws Exception {
-        FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        Symbolizer sym = sf.createPolygonSymbolizer(Stroke.NULL,
-                sf.createFill(ff2.literal(Color.CYAN)), null);
-        Style style = SLD.wrapSymbolizers(sym);
-
-        MapContent mc = new MapContent();
-        mc.addLayer(new FeatureLayer(fs, style));
-
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setMapContent(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-
-        RendererBaseTest.showRender("GEOT-3111", renderer, TIME, bounds);
-    }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -474,8 +474,10 @@ public class SLDStyleFactory {
 				// enabled
 				Style2D style2DFill = createPointStyle(feature, symbolizer, fill
 						.getGraphicFill(), scaleRange, false);
-				style.setGraphicFill(style2DFill);
-				return;
+				if(!(style2DFill instanceof GraphicStyle2D)) {
+    				style.setGraphicFill(style2DFill);
+    				return;
+				}
 			}
 		}
 		// otherwise, sets regular fill using Java raster-based Paint objects
@@ -655,9 +657,7 @@ public class SLDStyleFactory {
 					    // when the icon is an image better use the graphic style, we have
 					    // better rendering code for it
 					    GraphicStyle2D g2d = getGraphicStyle(eg, feature, size, 1);
-	                    if (g2d == null) {
-	                        continue;
-	                    } else {
+	                    if (g2d != null) {
 	                        g2d.setRotation(rotation);
 	                        retval = g2d;
 	                        break;

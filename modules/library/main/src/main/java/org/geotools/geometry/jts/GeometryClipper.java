@@ -32,9 +32,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.TopologyException;
-import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
 
 /**
  * A stateful geometry clipper, can clip linestring on a specified rectangle. Trivial benchmarks
@@ -76,64 +73,6 @@ public class GeometryClipper {
         this.xmax = bounds.getMaxX();
         this.ymax = bounds.getMaxY();
         this.bounds = bounds;
-    }
-    
-    /**
-     * This will try to handle failures when clipping - i.e. because of invalid input geometries (often 
-     * caused by simplification).
-     * 
-     * This attempts to do a normal clip().  If it fails, it will try to do more to ensure the clip 
-     * works properly.  
-     * <ol>
-     * <li>if its a polygon/multipolygon it will try to make the polygon valid and re-try the clip</li>
-     * <li>it will attempt to put the geometry on a precision grid (this will move the points around) and re-try the clip</li>
-     * <li>will attempt to clip with ensureValid = false (ie geotools simple clipping)</li>
-     * </ol>
-     * See {@link #clip(Geometry, boolean) clip}
-     * 
-     * @param g
-     * @param ensureValid
-     * @param scale Scale used to snap geometry to precision model, 0 to disable
-     * @return clipped geometry, or original geometry if clipping failed.
-     */
-    public Geometry clipSafe(Geometry g, boolean ensureValid, double scale) {
-        try {
-            return clip(g, ensureValid);
-        } catch (TopologyException e) {
-            try {
-                if (((g instanceof Polygon) || (g instanceof MultiPolygon)) && (!g.isValid())) {
-                    // its an invalid Polygon or MultiPolygon. Use buffer(0) to attempt to fix it
-                    // do not use buffer(0) on points or lines - it returns an empty polygon
-                    return clip(g.buffer(0), ensureValid);
-                }
-            } catch (TopologyException e2) {
-            }
-
-            if (scale != 0) {
-                // Step 2: Snap to provided scale
-                try {
-                    GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(
-                            new PrecisionModel(scale));
-
-                    // reduce method already tries to fix problems with geometry (ie buffer(0) if invalid)
-                    Geometry reduced = reducer.reduce(g);
-                    if (reduced.isEmpty()) {
-                        throw new TopologyException("Could not snap geometry to precision model");
-                    }
-                    return clip(reduced, ensureValid);
-                } catch (TopologyException e3) {
-                    // if this fails, continue with other methods
-                }
-            }
-            if (ensureValid) {
-                try {
-                    // Step 3: try again with ensureValid false
-                    return clip(g, false);
-                } catch (TopologyException e3) {
-                }
-            }
-            return g; // unable to clip geometry
-        }
     }
     
     /**

@@ -2541,8 +2541,7 @@ public class StreamingRenderer implements GTRenderer {
                     Envelope env = new Envelope(screenSize.getMinX(), screenSize.getMaxX(), screenSize.getMinY(), screenSize.getMaxY());
                     env.expandBy(clipBuffer);
                     final GeometryClipper clipper = new GeometryClipper(env);
-
-                    Geometry g = clipper.clipSafe(shape.getGeometry(), true, 1);
+                    Geometry g = clipper.clip(shape.getGeometry(), false);
                     if(g == null) {
                         continue;
                     }

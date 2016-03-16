@@ -14,32 +14,23 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.io;
+package org.geotools.coverage.grid.io.footprint;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * @author Daniele Romagnoli, GeoSolutions SaS
+ * Helper that loads a sidecar footprint file in a certain format
+ *
+ * @author Andrea Aime - GeoSolutions
  */
-public interface FileSetManager {
-
-    /** 
-     * Add a file to the file set manager 
-     */
-    void addFile(final String filePath);
-
-    /** 
-     * Return the list of all the files currently added to the manager
-     */
-    List<String> list();
+public interface FootprintLoader {
 
     /**
-     * Remove a file from the manager (An implementation may also physically remove the file)
+     * Tries to load the sidecar geometry given the granule path without extension.
+     * 
+     * @param pathNoExtension
+     * @return The footprint, or null if the file was not found
+     * @throws Exception In case the file was found, but there were issues loading the geometry
      */
-    void removeFile(final String filePath);
-
-    /**
-     * Remove all the files from the manager (An implementation may also physically remove all the files)
-     */
-    void purge();
+    Geometry loadFootprint(String pathNoExtension) throws Exception;
 }

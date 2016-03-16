@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
@@ -35,18 +36,30 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
+import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
+import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a
@@ -54,7 +67,6 @@ import org.opengis.referencing.operation.MathTransform;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  */
-@SuppressWarnings("deprecation")
 class RasterLayerResponse {
 
     /** Logger. */
@@ -95,6 +107,11 @@ class RasterLayerResponse {
     /** The name of the input coverage */
     private String coverageName;
 
+    /** The {@link MultiLevelROI} instance, if any*/
+    private MultiLevelROI multiLevelRoi;
+
+    private FootprintBehavior footprintBehavior = FootprintBehavior.None;
+
     /**
      * Construct a {@code RasterLayerResponse} given a specific
      * {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
@@ -120,6 +137,8 @@ class RasterLayerResponse {
         this.coverageName = request.getCoverageName();
         this.coverageFactory = coverageFactory;
         this.readerSpi = readerSpi;
+        this.multiLevelRoi = request.getMultiLevelRoi();
+        this.footprintBehavior = request.getFootprintBehavior();
     }
 
     /**
@@ -149,10 +168,10 @@ class RasterLayerResponse {
      */
     public void compute() throws IOException {
         originatingCoverageRequest.prepare();
-        if (originatingCoverageRequest.isEmptyRequest())
-        	//something bad happened
+        if (originatingCoverageRequest.isEmptyRequest()) {
+            //something bad happened
             gridCoverage = null;
-        else {
+        } else {
             final ImageReadParam imageReadParam = originatingCoverageRequest.getImageReadParam();
             final File input = originatingCoverageRequest.getInput();
             final boolean useMultithreading = originatingCoverageRequest.useMultithreading();
@@ -188,8 +207,84 @@ class RasterLayerResponse {
         // Doing an image read for reading the coverage.
         //
         // ////////////////////////////////////////////////////////////////////
-        final PlanarImage image = readRaster(input, useJAI, imageReadParam,
-                useMultithreading);
+        PlanarImage raster = readRaster(input, useJAI, imageReadParam, useMultithreading);
+
+        final boolean useFootprint = multiLevelRoi != null && footprintBehavior != null && footprintBehavior.handleFootprints();
+        Geometry inclusionGeometry = useFootprint ? multiLevelRoi.getFootprint(): null;
+        ReferencedEnvelope granuleBBOX = originatingCoverageRequest.getCoverageBBOX();
+        ReferencedEnvelope cropBBox = new ReferencedEnvelope(originatingCoverageRequest.getRequestedBBox());
+        final ReferencedEnvelope bbox = useFootprint ? new ReferencedEnvelope(
+                granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()),
+                granuleBBOX.getCoordinateReferenceSystem()) : granuleBBOX;
+
+        // intersection of this tile bound with the current crop bbox
+        final ReferencedEnvelope intersection = new ReferencedEnvelope(bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
+        if (intersection.isEmpty() || 
+                (useFootprint && inclusionGeometry != null && !JTS.toGeometry(cropBBox).intersects(inclusionGeometry))) {
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE)){
+                LOGGER.fine("Got empty intersection for granule " + this.toString() + " with request " 
+                    + originatingCoverageRequest.toString() + " Resulting in no data loaded: Empty result");
+            }
+            return null;
+        }
+
+        // adjust roi
+        if (useFootprint) {
+
+            ROI transformed;
+            try {
+                // Getting Image Bounds
+                final int width = raster.getWidth();
+                final int height = raster.getHeight();
+                Rectangle imgBounds = new Rectangle(raster.getMinX(), raster.getMinY(),width, height);
+                Rectangle sourceArea = imageReadParam.getSourceRegion();
+
+                // Getting Transformed ROI
+                final AffineTransform finalRaster2Model = new AffineTransform((AffineTransform) originatingCoverageRequest.getRaster2Model());
+                finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+
+                // Compute scale and translate factors
+                double decimationScaleX = ((1.0 * sourceArea.width) / width);
+                double decimationScaleY = ((1.0 * sourceArea.height) / height);
+                final AffineTransform decimationScaleTranform = XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
+                final AffineTransform afterDecimationTranslateTranform = XAffineTransform.getTranslateInstance(sourceArea.x, sourceArea.y);
+
+                if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, CoverageUtilities.AFFINE_IDENTITY_EPS)) {
+                        finalRaster2Model.concatenate(afterDecimationTranslateTranform);
+                }
+                if(!XAffineTransform.isIdentity(decimationScaleTranform, CoverageUtilities.AFFINE_IDENTITY_EPS)) {
+                        finalRaster2Model.concatenate(decimationScaleTranform);
+                }
+
+                transformed = multiLevelRoi.getTransformedROI(finalRaster2Model.createInverse(),
+                        0, imgBounds, imageReadParam, originatingCoverageRequest.getReadType());
+                // Check for vectorial ROI
+                if (transformed instanceof ROIGeometry
+                        && ((ROIGeometry) transformed).getAsGeometry().isEmpty()) {
+                    // inset might have killed the geometry fully
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("The transformed geometry became empty, maybe due to inset having "
+                                + "wiped out the geometry. Returning null");
+                    }
+                    return null;
+                }
+
+                PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
+                if (!transformed.intersects(pi.getBounds())) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("The transformed geometry doesn't intersect the image bounds. Returning null");
+                    }
+                    return null;
+                }
+                pi.setProperty("ROI", transformed);
+                raster = PlanarImage.wrapRenderedImage(footprintBehavior.postProcessMosaic(raster, transformed, hints));
+
+            } catch (NoninvertibleTransformException e) {
+                if (LOGGER.isLoggable(java.util.logging.Level.INFO))
+                    LOGGER.info("Unable to create inverse transformation from GridToWorld when managing the ROI");
+                return null;
+            }
+        }
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -199,8 +294,8 @@ class RasterLayerResponse {
         if (adjustGridToWorld) {
             // I need to calculate a new transformation (raster2Model)
             // between the cropped image and the required envelope
-            final int ssWidth = image.getWidth();
-            final int ssHeight = image.getHeight();
+            final int ssWidth = raster.getWidth();
+            final int ssHeight = raster.getHeight();
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "Coverage read: width = " + ssWidth
                         + " height = " + ssHeight);
@@ -224,13 +319,13 @@ class RasterLayerResponse {
             final double scaleY = sourceRegion.height / (1.0 * ssHeight);
             final double translateX = sourceRegion.x;
             final double translateY = sourceRegion.y;
-            return createCoverageFromImage(image, ConcatenatedTransform.create(
+            return createCoverageFromImage(raster, ConcatenatedTransform.create(
                     ProjectiveTransform.create(new AffineTransform(scaleX, 0,
                             0, scaleY, translateX, translateY)), raster2Model));
         } else {
             // In case of no transformation is required (As an instance,
             // when reading the whole image)
-            return createCoverageFromImage(image);
+            return createCoverageFromImage(raster);
         }
     }
 
@@ -250,15 +345,14 @@ class RasterLayerResponse {
      * @return a {@link GridCoverage}
      * @throws IOException
      */
-    protected GridCoverage createCoverageFromImage(PlanarImage image,
-            MathTransform raster2Model) throws IOException {
-		// creating bands
-        final SampleModel sm=image.getSampleModel();
-        final ColorModel cm=image.getColorModel();
-		final int numBands = sm.getNumBands();
-		final GridSampleDimension[] bands = new GridSampleDimension[numBands];
+    protected GridCoverage createCoverageFromImage(PlanarImage image, MathTransform raster2Model) throws IOException {
+        // creating bands
+        final SampleModel sm = image.getSampleModel();
+        final ColorModel cm = image.getColorModel();
+        final int numBands = sm.getNumBands();
+        final GridSampleDimension[] bands = new GridSampleDimension[numBands];
         // setting bands names.
-		Set<String> bandNames = new HashSet<String>();
+        Set<String> bandNames = new HashSet<String>();
         for (int i = 0; i < numBands; i++) {
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
             // make sure we create no duplicate band names
@@ -274,8 +368,7 @@ class RasterLayerResponse {
 
         // creating coverage
         if (raster2Model != null) {
-            return coverageFactory.create(coverageName, image, coverageCRS,
-                    raster2Model, bands, null, null);
+            return coverageFactory.create(coverageName, image, coverageCRS, raster2Model, bands, null, null);
         }
 
         return coverageFactory.create(coverageName, image, new GeneralEnvelope(
@@ -291,8 +384,7 @@ class RasterLayerResponse {
      * @return a {@link GridCoverage}
      * @throws IOException
      */
-    protected GridCoverage createCoverageFromImage(PlanarImage image)
-            throws IOException {
+    protected GridCoverage createCoverageFromImage(PlanarImage image) throws IOException {
         return createCoverageFromImage(image, null);
     }
 
@@ -368,7 +460,6 @@ class RasterLayerResponse {
                         }
                     }
             }
-            
         }
         return raster;
     }

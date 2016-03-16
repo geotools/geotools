@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,8 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
@@ -371,7 +373,7 @@ class RasterLayerRequest {
 				continue;
 			}	 	
 			
-            if (name.equals(ImageMosaicFormat.FOOTPRINT_BEHAVIOR.getName())) {
+            if (name.equals(AbstractGridFormat.FOOTPRINT_BEHAVIOR.getName())) {
                 if (value == null)
                     continue;
                 footprintBehavior = FootprintBehavior.valueOf((String) value);
@@ -605,7 +607,7 @@ class RasterLayerRequest {
 			return;
 		}	 	
 		
-        if (name.equals(ImageMosaicFormat.FOOTPRINT_BEHAVIOR.getName())) {
+        if (name.equals(AbstractGridFormat.FOOTPRINT_BEHAVIOR.getName())) {
             final Object value = param.getValue();
             if (value == null)
                 return;

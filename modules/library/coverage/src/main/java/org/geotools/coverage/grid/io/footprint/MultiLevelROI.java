@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.imagemosaic.catalog;
+package org.geotools.coverage.grid.io.footprint;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -22,7 +22,7 @@ import java.awt.geom.AffineTransform;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ROI;
 
-import org.geotools.gce.imagemosaic.ReadType;
+import org.geotools.coverage.grid.io.imageio.ReadType;
 
 import com.vividsolutions.jts.geom.Geometry;
 

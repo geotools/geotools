@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.gce.imagemosaic.catalog.index;
 
 import java.io.File;
@@ -15,6 +31,7 @@ import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
 
 public class IndexerUtils {
@@ -110,7 +127,7 @@ public class IndexerUtils {
                     }
                     continue;
                 } else {
-                    final Properties properties = Utils.loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
+                    final Properties properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
                     if (properties.containsKey("regex")) {
                         value = properties.getProperty("regex");
                     }

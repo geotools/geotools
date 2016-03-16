@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.imagemosaic.catalog;
+package org.geotools.coverage.grid.io.footprint;
 
 import java.io.IOException;
 
@@ -22,14 +22,14 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
 public interface FootprintGeometryProvider {
 
     /**
-     * Retrieves the footprint from the current granule represenative feature (as it comes from
-     * the mosaic index)
+     * Retrieves the footprint. If a feature is specified, return the footprint from the current granule 
+     * representative feature as it comes from the index.
      * 
-     * @param feature
+     * @param feature the granule representative feature (if any). 
+     * Specifying a null feature will return a default footprint (this is used in general for single-granule stores) 
      * @return
      * @throws IOException
      */

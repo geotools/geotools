@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,6 @@ package org.geotools.coverageio.gdal.aig;
 
 import it.geosolutions.imageio.plugins.arcbinarygrid.ArcBinaryGridImageReaderSpi;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,23 +58,13 @@ public final class AIGFormat extends BaseGDALGridFormat implements Format {
         setInfo();
     }
 
+    private final static InfoWrapper INFO = new InfoWrapper("Arc/Info Binary Grid (AIG) Coverage Format", "AIG");
+
     /**
      * Sets the metadata information.
      */
     protected void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
-        info.put("name", "AIG");
-        info.put("description", "Arc/Info Binary Grid (AIG) Coverage Format");
-        info.put("vendor", "Geotools");
-        info.put("docURL", ""); // TODO: set something
-        info.put("version", "1.0");
-        mInfo = Collections.unmodifiableMap(info);
-
-        // writing parameters
-        writeParameters = null;
-
-        // reading parameters
-        readParameters = getDefaultParameterGroup(info);
+        setInfo(INFO);
     }
 
     /**

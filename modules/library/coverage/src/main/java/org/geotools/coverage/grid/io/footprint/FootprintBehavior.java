@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.imagemosaic;
+package org.geotools.coverage.grid.io.footprint;
 
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
@@ -36,8 +36,7 @@ import org.geotools.image.ImageWorker;
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 public enum FootprintBehavior {
-    
-    
+
     None(false),
     Cut(true),
     Transparent(true) {
@@ -88,8 +87,7 @@ public enum FootprintBehavior {
                             mosaic.getMinY(), 
                             mosaic.getWidth(), 
                             mosaic.getHeight());
-                    
-                    // 
+
                     final SampleModel sampleModel = mosaic.getSampleModel();
                     layout.setTileHeight(sampleModel.getWidth()).setTileWidth(sampleModel.getHeight());
                     hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.awt.RenderingHints;
+import java.sql.Connection;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -132,5 +133,15 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
         assertEquals(0d, ls.getStartPoint().getY());
         assertEquals(4d, ls.getEndPoint().getX());
         assertEquals(4d, ls.getEndPoint().getY());
+    }
+
+    public void testDimensionFromFirstGeography() throws Exception {
+        Connection cx = dataStore.getDataSource().getConnection();
+        PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());
+        assertEquals((Integer) 0, dialect.getDimensionFromFirstGeo("public",
+                "geopoint", "geo", cx));
+        assertEquals((Integer) 1, dialect.getDimensionFromFirstGeo("public",
+                "geoline", "geo", cx));
+        dataStore.closeSafe(cx);
     }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -653,7 +653,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 } catch(SQLException e) {
                     LOGGER.log(Level.WARNING, "Failed to retrieve information about " 
                             + schemaName + "." + tableName + "."  + columnName 
-                            + " from the geometry_columns table, checking geometry_columns instead", e);
+                            + " from the geography_columns table, checking geometry_columns instead", e);
                 } finally {
                     dataStore.closeSafe(result);
                 }
@@ -680,29 +680,55 @@ public class PostGISDialect extends BasicSQLDialect {
             } finally {
                 dataStore.closeSafe(result);
             }
-            
-            // fall back on inspection of the first geometry, assuming uniform srid (fair assumption
-            // an unpredictable srid makes the table un-queriable)
-            if(dimension == null) {
-                String sqlStatement = "SELECT DIMENSION(\"" + columnName + "\") " +
-                               "FROM \"" + schemaName + "\".\"" + tableName + "\" " +
-                               "WHERE " + columnName + " IS NOT NULL " +
-                               "LIMIT 1";
-                result = statement.executeQuery(sqlStatement);
-                if (result.next()) {
-                    dimension = result.getInt(1);
-                }
-            }
         } finally {
             dataStore.closeSafe(result);
             dataStore.closeSafe(statement);
         }
-        
+
+        // fall back on inspection of the first geometry, assuming uniform srid (fair assumption
+        // an unpredictable srid makes the table un-queriable)
+        if(dimension == null) {
+            dimension = getDimensionFromFirstGeo(schemaName, tableName, columnName, cx);
+        }
+
         if(dimension == null) {
             dimension = 2;
         }
 
         return dimension;
+    }
+
+    protected Integer getDimensionFromFirstGeo(String schemaName, String tableName, String columnName,
+            Connection cx) throws SQLException {
+
+        // If PostGIS >= 2.0.0, use ST_DIMENSION
+        // http://postgis.net/docs/ST_Dimension.html
+        // If PostGIS < 2.0.0, use DIMENSION
+        String dimFunction = getVersion(cx).compareTo(V_2_0_0) >= 0 ? "ST_DIMENSION" : "DIMENSION";
+
+        Statement statement = null;
+        ResultSet result = null;
+        try {
+            // cast column to a geometry so this will work on both geometry and geography columns
+            String sqlStatement = "SELECT " + dimFunction + "(\"" + columnName + "\"::geometry) " +
+                    "FROM \"" + schemaName + "\".\"" + tableName + "\" " +
+                    "WHERE " + columnName + " IS NOT NULL " +
+                    "LIMIT 1";
+            statement = cx.createStatement();
+            result = statement.executeQuery(sqlStatement);
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        } catch(SQLException e) {
+            LOGGER.log(Level.WARNING, "Failed to retrieve information about "
+                    + schemaName + "." + tableName + "."  + columnName
+                    + " by examining the first sample geometry", e);
+        } finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+        // unable to determine dimension from sample geometry
+        return null;
     }
 
     @Override

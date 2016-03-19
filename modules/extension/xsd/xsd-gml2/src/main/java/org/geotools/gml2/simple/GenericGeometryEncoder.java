@@ -63,7 +63,7 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
                 LineStringEncoder.LINE_STRING);
             lineString.encode((LineString) geometry, atts, handler);
         } else if (geometry instanceof Point) {
-            PointEncoder pt = new PointEncoder(encoder, gmlPrefix);
+            PointEncoder pt = new PointEncoder(encoder, gmlPrefix == null? "gml": gmlPrefix);
             pt.encode((Point) geometry, atts, handler);
         } else if (geometry instanceof Polygon) {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix);

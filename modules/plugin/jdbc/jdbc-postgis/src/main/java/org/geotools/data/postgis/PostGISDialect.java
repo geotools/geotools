@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -152,6 +152,8 @@ public class PostGISDialect extends BasicSQLDialect {
     static final Version V_1_5_0 = new Version("1.5.0");
 
     static final Version V_2_0_0 = new Version("2.0.0");
+
+    static final Version V_2_2_0 = new Version("2.2.0");
 
     static final Version PGSQL_V_9_0 = new Version("9.0");
     
@@ -321,6 +323,10 @@ public class PostGISDialect extends BasicSQLDialect {
         if(!isSimplifyEnabled()) {
             super.encodeGeometryColumnSimplified(gatt, prefix, srid, sql, distance);
         } else {
+            // add preserveCollapsed argument if it's supported (PostGIS 2.2+)
+            // http://postgis.net/docs/manual-2.2/ST_Simplify.html
+            String preserveCollapsed = version.compareTo(V_2_2_0) >= 0 ? ", true" : "";
+
             boolean geography = "geography".equals(gatt.getUserData().get(
                     JDBCDataStore.JDBC_NATIVE_TYPENAME));
     
@@ -332,7 +338,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 if (NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding())) {
                     sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
                     encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append("), " + distance + ")),'base64')");
+                    sql.append("), " + distance + preserveCollapsed + ")),'base64')");
                 } else {
                     // we can have curves mixed in
                     sql.append("encode(ST_AsBinary(");
@@ -343,7 +349,7 @@ public class PostGISDialect extends BasicSQLDialect {
                     sql.append(" ELSE ");
                     sql.append("ST_Simplify(ST_Force_2D(");
                     encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append("), " + distance + ") END),'base64')");
+                    sql.append("), " + distance + preserveCollapsed + ") END),'base64')");
                 }
 
             }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,6 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -35,17 +34,9 @@ class PointEncoder extends GeometryEncoder<Point> {
 
     static final QualifiedName COORD = new QualifiedName(GML.NAMESPACE, "coord", "gml");
 
-    static final QualifiedName X = new QualifiedName(GML.NAMESPACE, "X", "gml");
-
-    static final QualifiedName Y = new QualifiedName(GML.NAMESPACE, "Y", "gml");
-
     QualifiedName point;
 
     QualifiedName coord;
-
-    QualifiedName x;
-
-    QualifiedName y;
 
     QualifiedName multiPolygon;
 
@@ -53,26 +44,12 @@ class PointEncoder extends GeometryEncoder<Point> {
         super(encoder);
         point = POINT.derive(gmlPrefix);
         coord = COORD.derive(gmlPrefix);
-        x = X.derive(gmlPrefix);
-        y = Y.derive(gmlPrefix);
     }
 
     @Override
     public void encode(Point geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(point, atts);
-        handler.startElement(coord, null);
-
-        Coordinate c = geometry.getCoordinate();
-
-        handler.startElement(x, null);
-        handler.ordinate(c.x);
-        handler.endElement(x);
-
-        handler.startElement(y, null);
-        handler.ordinate(c.y);
-        handler.endElement(y);
-
-        handler.endElement(coord);
+        handler.coordinates(geometry.getCoordinateSequence());
         handler.endElement(point);
     }
 }

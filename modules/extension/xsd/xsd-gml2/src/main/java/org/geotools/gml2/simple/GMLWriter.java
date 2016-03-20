@@ -20,6 +20,7 @@ import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml2.GML;
 import org.geotools.xml.XMLUtils;
 import org.xml.sax.Attributes;
@@ -287,17 +288,21 @@ public class GMLWriter {
      * @param y
      * @throws SAXException
      */
-    public void position(double x, double y) throws SAXException {
-        position(x, y, sb);
+    public void position(double x, double y, double z) throws SAXException {
+        position(x, y, z, sb);
         characters(sb);
     }
 
-    void position(double x, double y, StringBuffer sb) {
+    void position(double x, double y, double z, StringBuffer sb) {
         sb.setLength(0);
         appendDecimal(x);
         if (!Double.isNaN(y)) {
             sb.append(" ");
             appendDecimal(y);
+        }
+        if (!Double.isNaN(z)) {
+            sb.append(" ");
+            appendDecimal(z);
         }
     }
 
@@ -308,9 +313,14 @@ public class GMLWriter {
     void coordinates(CoordinateSequence coordinates, char cs, char ts, StringBuffer sb) {
         sb.setLength(0);
         int n = coordinates.size();
+        int dim = CoordinateSequences.coordinateDimension(coordinates);
         for (int i = 0; i < n; i++) {
             appendDecimal(coordinates.getX(i)).append(cs);
             appendDecimal(coordinates.getY(i));
+            if(dim == 3) {
+                sb.append(cs);
+                appendDecimal(coordinates.getOrdinate(i, 2));
+            }
             sb.append(ts);
         }
         sb.setLength(sb.length() - 1);

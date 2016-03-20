@@ -16,15 +16,13 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -34,44 +32,31 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import junit.framework.TestCase;
-import static junit.framework.TestCase.assertEquals;
+
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.custommonkey.xmlunit.XpathEngine;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
+import org.geotools.gml2.bindings.GMLTestSupport;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.w3c.dom.Document;
 import org.xml.sax.helpers.AttributesImpl;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.custommonkey.xmlunit.XpathEngine;
-import org.geotools.xml.test.XMLTestSupport;
 
-public class GeometryCollectionEncoderTest extends TestCase {
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+
+public class GMLWriterTest extends GMLTestSupport{
 
     Encoder gtEncoder;
     static final String INDENT_AMOUNT_KEY =
         "{http://xml.apache.org/xslt}indent-amount";
     protected XpathEngine xpath;
-
-    public void testGeometryCollectionEncoder() throws ParseException, Exception {
-        xpath = XMLUnit.newXpathEngine();
-        GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder,
-            "gml");
-        Geometry geometry = new WKTReader2().read(
-            "GEOMETRYCOLLECTION (LINESTRING"
-            + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
-        Document doc = encode(gce, geometry);
-
-        assertEquals(1,
-            xpath.getMatchingNodes("//gml:LineString", doc).getLength());
-        assertEquals(2, xpath.getMatchingNodes("//gml:Point", doc).getLength());
-        assertEquals(1,
-            xpath.getMatchingNodes("//gml:coordinates", doc).getLength());
-        assertEquals(2, xpath.getMatchingNodes("//gml:coord", doc).getLength());
-    }
-
+    
     @Override
     protected void setUp() throws Exception {
         Map<String, String> namespaces = new HashMap<String, String>();
@@ -83,6 +68,46 @@ public class GeometryCollectionEncoderTest extends TestCase {
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
         this.gtEncoder = new Encoder(createConfiguration());
         this.xpath = XMLUnit.newXpathEngine();
+    }
+
+    public void testGeometryCollectionEncoder() throws Exception {
+        GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder,
+            "gml");
+        Geometry geometry = new WKTReader2().read(
+            "GEOMETRYCOLLECTION (LINESTRING"
+            + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
+        Document doc = encode(gce, geometry);
+        print(doc);
+        assertEquals(1,
+            xpath.getMatchingNodes("//gml:LineString", doc).getLength());
+        assertEquals(2, xpath.getMatchingNodes("//gml:Point", doc).getLength());
+        assertEquals(3,
+            xpath.getMatchingNodes("//gml:coordinates", doc).getLength());
+    }
+    
+    public void testEncode3DLine() throws Exception {
+        LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml");
+        Geometry geometry = new WKTReader2().read("LINESTRING(0 0 50, 120 0 100)");
+        Document doc = encode(encoder, geometry);
+        // print(doc);
+        assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
+    }
+    
+    public void testEncode3DLineFromLiteCS() throws Exception {
+        LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml");
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 0, 50, 120, 0, 100}, 3);
+        LineString geometry = new GeometryFactory().createLineString(cs);
+        Document doc = encode(encoder, geometry);
+        // print(doc);
+        assertEquals("0,0,50 120,0,100", xpath.evaluate("//gml:coordinates", doc));
+    }
+    
+    public void testEncode3DPoint() throws Exception {
+        PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
+        Geometry geometry = new WKTReader2().read("POINT(0 0 50)");
+        Document doc = encode(encoder, geometry);
+        // print(doc);
+        assertEquals("0,0,50", xpath.evaluate("//gml:coordinates", doc));
     }
 
     protected Configuration createConfiguration() {
@@ -111,10 +136,6 @@ public class GeometryCollectionEncoderTest extends TestCase {
 
         GMLWriter handler = new GMLWriter(xmls, gtEncoder.getNamespaces(), 6,
             false, "gml");
-        Enumeration thing = gtEncoder.getNamespaces().getPrefixes();
-        while (thing.hasMoreElements()) {
-            System.out.println(thing.nextElement().toString());
-        }
         handler.startDocument();
         handler.startPrefixMapping("gml", GML.NAMESPACE);
         handler.endPrefixMapping("gml");

@@ -58,11 +58,11 @@ class EnvelopeEncoder extends ObjectEncoder<Envelope> {
     public void encode(Envelope e, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(envelope, atts);
         handler.startElement(lowerCorner, null);
-        handler.position(e.getMinX(), e.getMinY());
+        handler.position(e.getMinX(), e.getMinY(), Double.NaN);
         handler.endElement(lowerCorner);
 
         handler.startElement(upperCorner, null);
-        handler.position(e.getMaxX(), e.getMaxY());
+        handler.position(e.getMaxX(), e.getMaxY(), Double.NaN);
         handler.endElement(upperCorner);
         handler.endElement(envelope);
     }

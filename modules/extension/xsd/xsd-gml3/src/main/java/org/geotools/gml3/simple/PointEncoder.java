@@ -23,6 +23,7 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -52,7 +53,8 @@ class PointEncoder extends GeometryEncoder<Point> {
         handler.startElement(point, atts);
         handler.startElement(pos, null);
         
-        handler.position(geometry.getCoordinate().x, geometry.getCoordinate().y);
+        Coordinate coordinate = geometry.getCoordinate();
+        handler.position(coordinate.x, coordinate.y, coordinate.z);
         
         handler.endElement(pos);
         handler.endElement(point);

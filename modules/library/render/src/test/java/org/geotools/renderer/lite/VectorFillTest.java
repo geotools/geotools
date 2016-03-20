@@ -107,7 +107,7 @@ public class VectorFillTest {
 
     @Test
     public void testCrossFill() throws Exception {
-        runSingleLayerTest("fillCross.sld");
+        runSingleLayerTest("fillCross.sld", 300);
     }
 
     @Test

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1291,25 +1291,27 @@ class RasterLayerResponse{
                 return returnValue;
             }
 
-            // Redo the query without filter to check whether we got no granules due
-            // to a filter. In that case we need to return null
-            // Notice that we are using a dryRun visitor to make sure we don't
-            // spawn any loading tasks, we also ensure we get only 1 feature at most
-            // to make this blazing fast
-            LOGGER.fine("We got no granules, let's do a dry run with no filters");
-            final MosaicProducer dryRunVisitor = new MosaicProducer(true);
-            final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
-            query.getFilter().accept(bboxExtractor, null);
-            query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
-                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-                            rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
-                    bboxExtractor.getBBox()));
-            query.setMaxFeatures(1);
-            rasterManager.getGranuleDescriptors(query, dryRunVisitor);
-            if (dryRunVisitor.granulesNumber > 0) {
-                LOGGER.fine("Dry run got a target granule, returning null as the additional filters did filter all the granules out");
-                // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
-                return null;
+            if (visitor.granulesNumber == 0) {
+                // Redo the query without filter to check whether we got no granules due
+                // to a filter. In that case we need to return null
+                // Notice that we are using a dryRun visitor to make sure we don't
+                // spawn any loading tasks, we also ensure we get only 1 feature at most
+                // to make this blazing fast
+                LOGGER.fine("We got no granules, let's do a dry run with no filters");
+                final MosaicProducer dryRunVisitor = new MosaicProducer(true);
+                final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
+                query.getFilter().accept(bboxExtractor, null);
+                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
+                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
+                                rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
+                        bboxExtractor.getBBox()));
+                query.setMaxFeatures(1);
+                rasterManager.getGranuleDescriptors(query, dryRunVisitor);
+                if (dryRunVisitor.granulesNumber > 0) {
+                    LOGGER.fine("Dry run got a target granule, returning null as the additional filters did filter all the granules out");
+                    // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
+                    return null;
+                }
             }
 
             // prepare a blank response

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,8 +20,7 @@ import java.io.File;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 
@@ -66,28 +65,10 @@ class GridCoverageUtilities {
      */
     public static ReferencedEnvelope getReferencedEnvelopeFromGeographicBoundingBox(
             final GeographicBoundingBox geographicBBox) {
-        ensureNonNull("GeographicBoundingBox", geographicBBox);
+        Utilities.ensureNonNull("GeographicBoundingBox", geographicBBox);
         return new ReferencedEnvelope(geographicBBox.getEastBoundLongitude(),
                 geographicBBox.getWestBoundLongitude(), geographicBBox
                         .getSouthBoundLatitude(), geographicBBox
                         .getNorthBoundLatitude(), DefaultGeographicCRS.WGS84);
-    }
-
-    /**
-     * Makes sure that an argument is non-null.
-     * 
-     * @param name
-     *                Argument name.
-     * @param object
-     *                User argument.
-     * @throws IllegalArgumentException
-     *                 if {@code object} is null.
-     */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
-        if (object == null) {
-            throw new IllegalArgumentException(Errors.format(
-                    ErrorKeys.NULL_ARGUMENT_$1, name));
-        }
     }
 }

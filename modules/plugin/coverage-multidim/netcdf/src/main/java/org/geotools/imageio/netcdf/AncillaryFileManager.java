@@ -64,6 +64,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.factory.gridshift.DataUtilities;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
@@ -795,7 +796,7 @@ public class AncillaryFileManager implements FileSetManager{
         DataStoreConfiguration datastoreConfiguration = null;
         if (datastoreIndexFile != null) {
             URL datastoreURL = DataUtilities.fileToURL(datastoreIndexFile);
-            Properties properties = Utils.loadPropertiesFromURL(datastoreURL);
+            Properties properties = CoverageUtilities.loadPropertiesFromURL(datastoreURL);
             if (properties != null) {
                 final String SPIClass = properties.getProperty("SPI");
                 try {

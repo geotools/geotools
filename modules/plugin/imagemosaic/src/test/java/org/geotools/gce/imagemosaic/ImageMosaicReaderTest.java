@@ -1377,7 +1377,7 @@ public class ImageMosaicReaderTest extends Assert{
         File propFile = new File(covFile, "time_domainsRanges.properties");
         // Ensure the file exists
         assertTrue(propFile.exists());
-        Properties props = Utils.loadPropertiesFromURL(DataUtilities.fileToURL(propFile));
+        Properties props = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(propFile));
         // ImageReaderSpi property
         String suggestedSpi = props.getProperty(Utils.Prop.SUGGESTED_SPI);
         // Check if the property exists

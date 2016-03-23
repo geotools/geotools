@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,15 +42,15 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.footprint.FootprintInsetPolicy;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -65,7 +65,6 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -235,7 +234,7 @@ public class ImageMosaicFootprintsTest {
         final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[2];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Cut.name());
         params[0] = footprintManagement;
         
@@ -253,14 +252,14 @@ public class ImageMosaicFootprintsTest {
         // copy the footprints mosaic over
         FileUtils.copyDirectory(footprintsSource, testMosaic);
         Properties p = new Properties();
-        p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1"); 
+        p.put(FootprintInsetPolicy.INSET_PROPERTY, "0.1"); 
         saveFootprintProperties(p);
         final AbstractGridFormat format = TestUtils.getFormat(testMosaicUrl);
         final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);     
         
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.None.name());
         params[0] = footprintManagement;
         
@@ -290,7 +289,7 @@ public class ImageMosaicFootprintsTest {
         // copy the footprints mosaic over
         FileUtils.copyDirectory(footprintsSource, testMosaic);
         Properties p = new Properties();
-        p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1");
+        p.put(FootprintInsetPolicy.INSET_PROPERTY, "0.1");
         saveFootprintProperties(p);
         final AbstractGridFormat format = TestUtils.getFormat(testMosaicUrl);
         ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);
@@ -304,7 +303,7 @@ public class ImageMosaicFootprintsTest {
 
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR
                 .createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
@@ -345,8 +344,8 @@ public class ImageMosaicFootprintsTest {
         // copy the footprints mosaic over
         FileUtils.copyDirectory(footprintsSource, testMosaic);
         Properties p = new Properties();
-        p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1"); 
-        p.put(MultiLevelROIProviderFactory.INSET_TYPE_PROPERTY, "full");
+        p.put(FootprintInsetPolicy.INSET_PROPERTY, "0.1"); 
+        p.put(FootprintInsetPolicy.INSET_TYPE_PROPERTY, "full");
         saveFootprintProperties(p);
 
         GridCoverage2D coverage = readCoverage();
@@ -379,7 +378,7 @@ public class ImageMosaicFootprintsTest {
         final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, new ImageMosaicFormat());
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
         
@@ -422,8 +421,8 @@ public class ImageMosaicFootprintsTest {
         // copy the footprints mosaic over
         FileUtils.copyDirectory(footprintsSource, testMosaic);
         Properties p = new Properties();
-        p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1"); 
-        p.put(MultiLevelROIProviderFactory.INSET_TYPE_PROPERTY, "border");
+        p.put(FootprintInsetPolicy.INSET_PROPERTY, "0.1"); 
+        p.put(FootprintInsetPolicy.INSET_TYPE_PROPERTY, "border");
         saveFootprintProperties(p);
 
         GridCoverage2D coverage = readCoverage();
@@ -454,7 +453,7 @@ public class ImageMosaicFootprintsTest {
         final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, new ImageMosaicFormat());
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
         
@@ -535,7 +534,7 @@ public class ImageMosaicFootprintsTest {
         // copy the footprints mosaic over
         FileUtils.copyDirectory(footprintsSource, testMosaic);
         Properties p = new Properties();
-        p.put(MultiLevelROIProviderFactory.INSET_PROPERTY, "0.1");
+        p.put(FootprintInsetPolicy.INSET_PROPERTY, "0.1");
         saveFootprintProperties(p);
         GridCoverage2D coverage = readCoverage();
         // check the footprints have been applied by pocking the output image
@@ -564,7 +563,7 @@ public class ImageMosaicFootprintsTest {
         ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormatFactory().createFormat()
                 .getReader(TestData.file(this,"footprint_a"));
         GeneralParameterValue[] params = new GeneralParameterValue[1];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR
                 .createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
@@ -608,7 +607,7 @@ public class ImageMosaicFootprintsTest {
                 .getReader(mosaic);
         
         GeneralParameterValue[] params = new GeneralParameterValue[1];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR
                 .createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
@@ -894,7 +893,7 @@ public class ImageMosaicFootprintsTest {
 
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement = ImageMosaicFormat.FOOTPRINT_BEHAVIOR
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR
                 .createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;

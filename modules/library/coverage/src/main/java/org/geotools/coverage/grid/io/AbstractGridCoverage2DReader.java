@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005 - 2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -53,6 +53,7 @@ import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.ServiceInfo;
@@ -1282,4 +1283,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return tempRaster2Model;
     }
 
+    protected MultiLevelROIProvider getMultiLevelROIProvider (String coverageName) {
+        throw new UnsupportedOperationException("The abstract reader doesn't implement this method yet");
+    }
 }

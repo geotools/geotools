@@ -41,7 +41,7 @@ import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
 
 /**
- * A DbaseFileReader is used to read a dbase III format file. The general use of
+ * A DbaseFileWriter is used to write a dbase III format file. The general use of
  * this class is: <CODE><PRE>
  * DbaseFileHeader header = ...
  * WritableFileChannel out = new FileOutputStream(&quot;thefile.dbf&quot;).getChannel();

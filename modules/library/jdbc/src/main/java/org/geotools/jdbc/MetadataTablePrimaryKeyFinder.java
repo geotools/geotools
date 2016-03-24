@@ -127,7 +127,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                             StringBuffer sb = new StringBuffer();
                             sb.append("SELECT * FROM ");
                             if (metadataSchema != null) {
-                                sb.append(metadataSchema);
+                                store.getSQLDialect().encodeSchemaName(metadataSchema, sb);
                                 sb.append(".");
                             }
                             sb.append(tableName).append(" WHERE 1 = 0");
@@ -154,7 +154,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT * FROM ");
             if (metadataSchema != null) {
-                sb.append(metadataSchema);
+                store.getSQLDialect().encodeSchemaName(metadataSchema, sb);
                 sb.append(".");
             }
             sb.append(tableName);

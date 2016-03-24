@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,19 @@ public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     public PostgisDataStoreAPITestSetup(JDBCTestSetup delegate) {
         super(delegate);
+    }
+
+    @Override
+    protected void setUpData() throws Exception {
+        super.setUpData();
+        dropSimplifyPolygonTable();
+        createSimplifyPolygonTable();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        dropSimplifyPolygonTable();
     }
 
     @Override
@@ -121,4 +134,14 @@ public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         runSafe("DROP TABLE \"road\"");
     }
 
+    protected void createSimplifyPolygonTable() throws Exception {
+        run("CREATE TABLE \"simplify_polygon\" AS SELECT ST_GeomFromText('POLYGON(("
+                + "-165.96 64.51,-165.96 64.5,-165.97 64.5,-165.97 64.51,-165.96 64.51))'"
+                + ",4326) as \"geom\"");
+    }
+
+    protected void dropSimplifyPolygonTable() {
+        runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'simplify_polygon'");
+        runSafe("DROP TABLE \"simplify_polygon\"");
+    }
 }

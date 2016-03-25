@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -49,7 +49,7 @@ public class GranuleDescriptorTest {
         new GranuleDescriptor(feature, null, PathType.ABSOLUTE, "location", "/tmp") {
             protected void init(org.opengis.geometry.BoundingBox granuleBBOX,
                     java.net.URL granuleUrl, javax.imageio.spi.ImageReaderSpi suggestedSPI,
-                    org.geotools.gce.imagemosaic.catalog.MultiLevelROI roiProvider,
+                    org.geotools.coverage.grid.io.footprint.MultiLevelROI roiProvider,
                     boolean heterogeneousGranules, boolean handleArtifactsFiltering,
                     org.geotools.factory.Hints hints) {
                 // check the bbox is the one of the first geometry, not the entire feature

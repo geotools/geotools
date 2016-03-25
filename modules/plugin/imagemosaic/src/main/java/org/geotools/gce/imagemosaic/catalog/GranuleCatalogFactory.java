@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,7 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -117,7 +118,7 @@ public abstract class GranuleCatalogFactory {
 		else
 		{
 			// read the properties file
-			Properties properties = Utils.loadPropertiesFromURL(sourceURL);
+			Properties properties = CoverageUtilities.loadPropertiesFromURL(sourceURL);
 			if (properties == null)
 				return null;
 			

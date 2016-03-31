@@ -903,10 +903,14 @@ public class ImageMosaicConfigHandler {
             boolean needUpdate = false;
             if (Utils.homogeneousCheck(Math.min(numberOfLevels, originalNumberOfLevels), 
                     resolutionLevels, mosaicConfiguration.getLevels())) {
-                if (numberOfLevels > originalNumberOfLevels) {
-                    needUpdate = true; // pick the one with highest number of levels
+                if (numberOfLevels != originalNumberOfLevels) {
+                    catalogConfigurationBean.setHeterogeneous(true);
+                    if (numberOfLevels > originalNumberOfLevels) {
+                        needUpdate = true; // pick the one with highest number of levels
+                    }
                 }
             } else {
+                catalogConfigurationBean.setHeterogeneous(true);
                 if (isHigherResolution(resolutionLevels, mosaicConfiguration.getLevels())) {
                     needUpdate = true; // pick the one with the highest resolution
                 }
@@ -914,7 +918,6 @@ public class ImageMosaicConfigHandler {
 
             // configuration need to be updated
             if (needUpdate) {
-                catalogConfigurationBean.setHeterogeneous(true);                
                 mosaicConfiguration.setLevels(resolutionLevels);
                 mosaicConfiguration.setLevelsNum(numberOfLevels);
                 getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);

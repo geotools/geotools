@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -59,13 +59,13 @@ public class SweValuesTest {
 
     public static final String XLINK_NS = "http://www.w3.org/1999/xlink";
 
-    static final Name OBSERVATION_TYPE = Types.typeName(OM_NS, "OM_ObservationType");
+    public static final Name OBSERVATION_TYPE = Types.typeName(OM_NS, "OM_ObservationType");
 
-    static final Name OBSERVATION_FEATURE = Types.typeName(OM_NS, "OM_Observation");
+    public static final Name OBSERVATION_FEATURE = Types.typeName(OM_NS, "OM_Observation");
 
-    static FilterFactory2 ff;
+    public static final String SWE_VALUES_MAPPING = "/test-data/sweValuesAsList.xml";
 
-    private static final String schemaBase = "/test-data/";
+    private static FilterFactory2 ff;
 
     private static FeatureSource<FeatureType, Feature> obsSource;
 
@@ -100,8 +100,7 @@ public class SweValuesTest {
          * Load observation data access
          */
         Map dsParams = new HashMap();
-        URL url = SweValuesTest.class.getResource(schemaBase
-                + "sweValuesAsList.xml");
+        URL url = SweValuesTest.class.getResource(SWE_VALUES_MAPPING);
         assertNotNull(url);
 
         dsParams.put("dbtype", "app-schema");
@@ -117,7 +116,7 @@ public class SweValuesTest {
         assertEquals(2, size(obsFeatures));
     }
 
-    private static int size(FeatureCollection<FeatureType, Feature> features) {
+    static int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
         FeatureIterator<Feature> iterator = features.features();
         while (iterator.hasNext()) {

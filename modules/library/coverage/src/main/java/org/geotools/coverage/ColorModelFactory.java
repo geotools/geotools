@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -223,7 +223,7 @@ final class ColorModelFactory {
     @Override
     public int hashCode() {
         final int categoryCount = categories.length;
-        int code = 962745549 + (numBands*37 + visibleBand)*37 + categoryCount;
+        int code = 962745549 + ((numBands*37 + visibleBand)*37 + type)*37 + categoryCount;
         for (int i=0; i<categoryCount; i++) {
             code += categories[i].hashCode();
             // Better be independant of categories order.
@@ -243,6 +243,7 @@ final class ColorModelFactory {
             final ColorModelFactory that = (ColorModelFactory) other;
             return this.numBands    == that.numBands    &&
                    this.visibleBand == that.visibleBand &&
+                   this.type        == that.type        &&
                    Arrays.equals(this.categories, that.categories);
         }
         return false;

@@ -364,7 +364,8 @@ public class LabelPainter {
 
             // draw the label
             if (lines.size() == 1 && lines.get(0).getComponents().size() == 1) {
-                drawGlyphVector(lines.get(0).getComponents().get(0).getGlyphVector());
+                final LineComponent component = lines.get(0).getComponents().get(0);
+                drawGlyphVector(component);
             } else {
                 // for multiline labels we have to go thru the lines and apply
                 // the proper transformation
@@ -375,7 +376,7 @@ public class LabelPainter {
                         lineTx.setTransform(newTransform);
                         lineTx.translate(component.getX(), line.getY());
                         graphics.setTransform(lineTx);
-                        drawGlyphVector(component.getGlyphVector());
+                        drawGlyphVector(component);
                     }
 
                 }
@@ -489,7 +490,8 @@ public class LabelPainter {
      * 
      * @param gv
      */
-    private void drawGlyphVector(GlyphVector gv) {
+    private void drawGlyphVector(LineComponent component) {
+        GlyphVector gv = component.getGlyphVector();
         java.awt.Shape outline = gv.getOutline();
         if (labelItem.getTextStyle().getHaloFill() != null) {
             configureHalo();
@@ -497,7 +499,10 @@ public class LabelPainter {
         }
         configureLabelStyle();
         
-        if(labelRenderingMode == LabelRenderingMode.STRING) {
+        if(labelRenderingMode == LabelRenderingMode.LEGACY) {
+            graphics.setFont(gv.getFont());
+            graphics.drawString(component.getText(), 0, 0);
+        } else if(labelRenderingMode == LabelRenderingMode.STRING) {
             graphics.drawGlyphVector(gv, 0, 0);
         } else if(labelRenderingMode == LabelRenderingMode.OUTLINE) {
             graphics.fill(outline);

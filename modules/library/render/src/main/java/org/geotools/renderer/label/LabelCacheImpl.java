@@ -117,7 +117,12 @@ public final class LabelCacheImpl implements LabelCache {
          * Gives the best results when coupled with {@link RenderingHints#VALUE_FRACTIONALMETRICS_ON}
          * for good label/halo centering 
          */
-        ADAPTIVE};
+        ADAPTIVE,
+        /**
+         * Draws all strings using Graphics2D#drawString.  
+         */
+        LEGACY,
+        };
     
     static final Logger LOGGER = Logging.getLogger(LabelCacheImpl.class);
 

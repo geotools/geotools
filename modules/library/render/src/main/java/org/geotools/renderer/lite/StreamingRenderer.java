@@ -297,6 +297,11 @@ public class StreamingRenderer implements GTRenderer {
      * and its eventual halo are not properly centered.
      */
     public static final String TEXT_RENDERING_STRING = LabelCacheImpl.LabelRenderingMode.STRING.name();
+    
+    /**
+     * add javadoc
+     */
+    public static final String TEXT_RENDERING_LEGACY = LabelCacheImpl.LabelRenderingMode.LEGACY.name();
 
     /**
      * Text will be rendered using the associated {@link GlyphVector} outline, that is, a {@link Shape}.

@@ -74,5 +74,30 @@ public class MultiResolutionTest {
         //gc would be null before bug fix
         Assert.assertNotNull(gc);
     }
+    
+    @Test
+    public void testPickHighestResolution() throws IOException, TransformException {
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File srtm = folder.newFile("srtm.tiff");
+        File sfdem = folder.newFile("sfdem.tiff");
+        Files.copy(TestData.file(this, "multiresolution/srtm.tiff"), srtm);
+        Files.copy(TestData.file(this, "multiresolution/sfdem.tiff"), sfdem);
+       
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(folder.getRoot());
+        
+        GeoTiffFormat tiffFormat = new GeoTiffFormat();
+        GeoTiffReader sfdemReader = tiffFormat.getReader(sfdem);
+                
+        assertEquals(sfdemReader.getResolutionLevels()[0], reader.getResolutionLevels()[0], 0.001);
+    }
+    
+    private void assertEquals(double[] expected, double[] actuals, double epsilon) {
+        Assert.assertEquals(expected.length, actuals.length);
+        for (int i = 0; i < expected.length; i++) {
+            Assert.assertEquals(expected[i], actuals[i], epsilon);
+        }        
+    }
 
 }

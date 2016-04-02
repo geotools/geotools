@@ -894,40 +894,35 @@ public class ImageMosaicConfigHandler {
             // Check its properties are compatible with the existing coverage.
 
             CatalogConfigurationBean catalogConfigurationBean = bean;
-            if (!catalogConfigurationBean.isHeterogeneous()) {
 
-                // There is no need to check resolutions if the mosaic
-                // has been already marked as heterogeneous
-
-                numberOfLevels = coverageReader.getNumOverviews(inputCoverageName) + 1;
-                boolean needUpdate = false;
-
-                //
-                // Heterogeneousity check
-                //
-                if (numberOfLevels != mosaicConfiguration.getLevelsNum()) {
+            // make sure we pick the same resolution irrespective of order of harvest
+            numberOfLevels = coverageReader.getNumOverviews(inputCoverageName) + 1;
+            resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
+            
+            int originalNumberOfLevels = mosaicConfiguration.getLevelsNum();
+            boolean needUpdate = false;
+            if (Utils.homogeneousCheck(Math.min(numberOfLevels, originalNumberOfLevels), 
+                    resolutionLevels, mosaicConfiguration.getLevels())) {
+                if (numberOfLevels != originalNumberOfLevels) {
                     catalogConfigurationBean.setHeterogeneous(true);
-                    if (numberOfLevels > mosaicConfiguration.getLevelsNum()) {
-                        resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
-                        mosaicConfiguration.setLevels(resolutionLevels);
-                        mosaicConfiguration.setLevelsNum(numberOfLevels);
-                        needUpdate = true;
-                    }
-                } else {
-                    final double[][] mosaicLevels = mosaicConfiguration.getLevels();
-                    resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
-                    final boolean homogeneousLevels = Utils.homogeneousCheck(numberOfLevels,
-                            resolutionLevels, mosaicLevels);
-                    if (!homogeneousLevels) {
-                        catalogConfigurationBean.setHeterogeneous(true);
-                        needUpdate = true;
+                    if (numberOfLevels > originalNumberOfLevels) {
+                        needUpdate = true; // pick the one with highest number of levels
                     }
                 }
-                // configuration need to be updated
-                if (needUpdate) {
-                    getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
+            } else {
+                catalogConfigurationBean.setHeterogeneous(true);
+                if (isHigherResolution(resolutionLevels, mosaicConfiguration.getLevels())) {
+                    needUpdate = true; // pick the one with the highest resolution
                 }
             }
+
+            // configuration need to be updated
+            if (needUpdate) {
+                mosaicConfiguration.setLevels(resolutionLevels);
+                mosaicConfiguration.setLevelsNum(numberOfLevels);
+                getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
+            }
+
             ImageLayout layout = coverageReader.getImageLayout(inputCoverageName);
             cm = layout.getColorModel(null);
             sm = layout.getSampleModel(null);
@@ -973,6 +968,19 @@ public class ImageMosaicConfigHandler {
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }
+    }
+
+    private boolean isHigherResolution(double[][] a, double[][] b) {
+        for (int i = 0; i < Math.min(a.length, b.length); i++) {
+            for (int j = 0; i < Math.min(a[i].length, b[i].length); i++) {
+                if (a[i][j] < b[i][j]) {
+                    return true;
+                } else if (a[i][j] > b[i][j]) {
+                    return false;
+                } 
+            }
+        } 
+        return false;
     }
 
     public void dispose() {

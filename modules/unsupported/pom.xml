@@ -176,6 +176,12 @@
        </modules>
      </profile>
      <profile>
+       <id>yld</id>
+       <modules>
+         <module>yld</module>
+       </modules>
+     </profile>
+     <profile>
       <id>geojsonstore</id>
       <activation>
          <property><name>all</name></property>

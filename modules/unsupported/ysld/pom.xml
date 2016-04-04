@@ -14,6 +14,26 @@
   <artifactId>gt-ysld</artifactId>
   <name>YSLD Parser/Encoder</name>
   
+  <developers>
+    <developer>
+      <name>Kevin Smith</name>
+      <id>smithkm</id>
+      <organization>Boundless</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <id>jdeolive</id>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>

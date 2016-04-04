@@ -75,13 +75,23 @@ public class GeometryAttributeImpl extends AttributeImpl implements
 	    return (GeometryDescriptor) super.getDescriptor();
 	}
 	
-	public Object getValue() {
+	/** 
+	 * @deprecated
+	 */
+	public Geometry getValue() {
 	    return (Geometry) super.getValue();
 	}
 
 	public void setValue(Object newValue) throws IllegalArgumentException,
 	        IllegalStateException {
 	    super.setValue( (Geometry) newValue );
+	}
+	
+	/** 
+         * @deprecated
+         */
+	public void setValue(Geometry geometry) {
+	    super.setValue(geometry);
 	}
 
 	/**

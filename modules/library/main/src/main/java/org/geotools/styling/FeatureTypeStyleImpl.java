@@ -270,30 +270,25 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
         try {
             clone = (FeatureTypeStyle) super.clone();
-        } catch (CloneNotSupportedException e) {
+        } catch (final CloneNotSupportedException e) {
             throw new AssertionError(e); // this should never happen.
         }
 
         final List<Rule> rulesCopy = new ArrayList<Rule>();
-        
-        for(Rule rl : rules){
-            rulesCopy.add( (Rule) ((Cloneable) rl).clone() );
+
+        for (final Rule rl : rules) {
+            rulesCopy.add((Rule) ((Cloneable) rl).clone());
         }
-        
-        clone.rules().clear();
-        ((List<Rule>)clone.rules()).addAll(rulesCopy);
-        clone.featureTypeNames().clear();
+
+        ((FeatureTypeStyleImpl) clone).rules = new ArrayList<Rule>();
+        ((FeatureTypeStyleImpl) clone).featureTypeNames = new LinkedHashSet<Name>();
+        ((FeatureTypeStyleImpl) clone).semantics = new LinkedHashSet<SemanticType>();
+        @SuppressWarnings("unchecked")
+        final List<Rule> cloneRules = (List<Rule>) clone.rules();
+        cloneRules.addAll(rulesCopy);
         clone.featureTypeNames().addAll(featureTypeNames);
-        clone.semanticTypeIdentifiers().clear();
         clone.semanticTypeIdentifiers().addAll(semantics);
-        
-        // copy FeatureTypeStyleImpl specific properties
-        if(clone instanceof FeatureTypeStyleImpl) {
-            FeatureTypeStyleImpl ftsi = (FeatureTypeStyleImpl)clone;
-            ftsi.setTransformation(transformation);
-            ftsi.setOnlineResource(online);
-        }
-        
+
         return clone;
     }
 

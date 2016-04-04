@@ -118,6 +118,13 @@
        </modules>
      </profile>
      <profile>
+       <id>dem</id>
+       <modules>
+         <module>process-raster</module>
+         <module>dem</module>
+       </modules>
+     </profile>
+     <profile>
        <id>swt</id>
        <modules>
          <module>swt</module>

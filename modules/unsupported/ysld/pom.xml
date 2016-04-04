@@ -12,7 +12,7 @@
   
   <groupId>org.geotools</groupId>
   <artifactId>gt-ysld</artifactId>
-  <name>Ysld Parser/Encoder</name>
+  <name>YSLD Parser/Encoder</name>
   
   <dependencies>
     <dependency>

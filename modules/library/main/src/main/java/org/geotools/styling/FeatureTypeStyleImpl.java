@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -266,34 +266,28 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
      * @see org.geotools.styling.FeatureTypeStyle#clone()
      */
     public Object clone() {
-        FeatureTypeStyle clone;
+        FeatureTypeStyleImpl clone;
 
         try {
-            clone = (FeatureTypeStyle) super.clone();
-        } catch (CloneNotSupportedException e) {
+            clone = (FeatureTypeStyleImpl) super.clone();
+        } catch (final CloneNotSupportedException e) {
             throw new AssertionError(e); // this should never happen.
         }
 
         final List<Rule> rulesCopy = new ArrayList<Rule>();
-        
-        for(Rule rl : rules){
-            rulesCopy.add( (Rule) ((Cloneable) rl).clone() );
+
+        for (final Rule rl : rules) {
+            rulesCopy.add((Rule) ((Cloneable) rl).clone());
         }
-        
-        clone.rules().clear();
-        ((List<Rule>)clone.rules()).addAll(rulesCopy);
-        clone.featureTypeNames().clear();
+
+        clone.rules = new ArrayList<Rule>();
+        clone.featureTypeNames = new LinkedHashSet<Name>();
+        clone.semantics = new LinkedHashSet<SemanticType>();
+        final List<Rule> cloneRules = (List<Rule>) clone.rules();
+        cloneRules.addAll(rulesCopy);
         clone.featureTypeNames().addAll(featureTypeNames);
-        clone.semanticTypeIdentifiers().clear();
         clone.semanticTypeIdentifiers().addAll(semantics);
-        
-        // copy FeatureTypeStyleImpl specific properties
-        if(clone instanceof FeatureTypeStyleImpl) {
-            FeatureTypeStyleImpl ftsi = (FeatureTypeStyleImpl)clone;
-            ftsi.setTransformation(transformation);
-            ftsi.setOnlineResource(online);
-        }
-        
+
         return clone;
     }
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<as:AppSchemaDataAccess xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:as="http://www.geotools.org/app-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.geotools.org/app-schema ../AppSchemaDataAccess.xsd">
+    <namespaces>
+        <Namespace>
+            <prefix>om</prefix>
+            <uri>http://www.opengis.net/om/2.0</uri>
+        </Namespace>
+        <Namespace>
+            <prefix>gml</prefix>
+            <uri>http://www.opengis.net/gml/3.2</uri>
+        </Namespace>
+        <Namespace>
+            <prefix>xlink</prefix>
+            <uri>http://www.w3.org/1999/xlink</uri>
+        </Namespace>
+    </namespaces>
+    <sourceDataStores>
+        <DataStore>
+            <id>PropertyFiles</id>
+            <parameters>
+                <Parameter>
+                    <name>directory</name>
+                    <!-- path can be relative to this file if starts with "file: -->
+                    <value>file:./</value>
+                </Parameter>
+            </parameters>
+        </DataStore>
+    </sourceDataStores>
+    <catalog>catalog.oasis.xml</catalog>
+    <targetTypes>
+        <FeatureType>
+            <schemaUri>http://schemas.opengis.net/om/2.0/observation.xsd</schemaUri>
+        </FeatureType>
+    </targetTypes>
+    <typeMappings>
+        <FeatureTypeMapping>
+            <sourceDataStore>PropertyFiles</sourceDataStore>
+            <sourceType>ObsTimeSeries</sourceType>
+            <targetElement>om:OM_Observation</targetElement>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>om:OM_Observation</targetAttribute>
+                    <idExpression>
+                        <OCQL>TIMESERIES_ID</OCQL>
+                    </idExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>om:resultTime/gml:TimeInstant</targetAttribute>
+                    <ClientProperty>
+                        <name>gml:id</name>
+                        <value>strConcat('TI.', getId())</value>
+                    </ClientProperty>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>om:resultTime/gml:TimeInstant/gml:timePosition</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>POSITION</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
+    </typeMappings>
+</as:AppSchemaDataAccess>

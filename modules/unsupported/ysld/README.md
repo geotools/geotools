@@ -27,6 +27,27 @@ Rules example (the FeatureTypeStyle is auto-generated):
           stroke-color: '#666666'
           stroke-width: 1
 
+Complete example with names, titles and comments:
+
+    # Created on 2016-03-4
+    name: water
+    title: Lakes and Rivers 
+    abstract: Water style using transparency to allow for hill
+              shade bathymetry effects.
+    feature-styles:
+    - rules:
+      - name: hydro
+        title: Hydro
+        symbolizers:
+        - polygon:
+            stroke-color: '#333089'
+            stroke-width: 1.25
+            fill-color: '#333089'
+            fill-opacity: 0.45
+
+Yet another markup language (YAML) uses indentation to form a document structure of mappings and lists. The [specification](http://yaml.org/spec/1.2/spec.html) supports comments, multiline text and definition reuse.
+
+
 ## Expressions
 
 Expressions are specified as CQL/ECQL parse-able expression strings. See the 
@@ -37,8 +58,9 @@ Expressions are specified as CQL/ECQL parse-able expression strings. See the
 
 Literal examples:
 
-    stroke-width: 10
-    stroke-linecap: 'butt'
+    line:
+      stroke-width: 10
+      stroke-linecap: 'butt'
 
 Note: Single quotes are needed for string literals to differentiate them from
 attribute references. 
@@ -126,6 +148,262 @@ the `*` character. This same feature can be used to do "mix-ins" as well:
 
 The syntax in this case is slightly different and is used when referencing an 
 entire mapping object rather than just a simple scalar value. 
+
+# YSLD Grammar
+
+Document structure:
+    
+    <YAML variable definition>
+    <grid definition>
+    <style definition>
+    
+Grid definition (predefined `WGS84`, `WebMercator`):
+    
+    # grid definition
+    grid:
+      name: <text>
+
+Style definition:
+
+    # style definition 
+    name: <text>
+    title: <text>
+    abstract: <text>
+    feature-styles:
+    - <feature style>
+
+Feature style definition:
+   
+    feature-styles:
+    - name: <text>
+      title: <text>
+      abstract: <text>
+      transform:
+        <transform>
+      rules:
+      - <rules>
+      x-firstMatch: <boolean>
+      x-composite: <text>
+      x-composite-base: <boolean>
+
+Rule definition:
+    
+    # rules
+    rules:
+    - name: <text>
+      title: <text>
+      filter: <filter>
+      else: <boolean>
+      scale: [<min>,<max>]
+      zoom: [<min>,<max>]
+      symbolizers:
+      - <symbolizers>
+
+Line symbolizer definition:
+
+    symbolizers:
+    - line:
+        geometry: <expression>
+        uom: <text>
+        x-labelObstacle: <boolean>
+        x-composite-base: <boolean>
+        x-composite: <text>
+        stroke-color: <color>
+        stroke-width: <expression>
+        stroke-opacity: <expression>
+        stroke-linejoin: <expression>
+        stroke-linecap: <expression>
+        stroke-dasharray: <float list>
+        stroke-dashoffset: <expression>
+        stroke-graphic:
+          <graphic_options>
+        stroke-graphic-fill:
+          <graphic_options>
+        offset: <expression>
+
+Polygon symbolizer definition:
+
+    symbolizers:
+    - polygon:
+        geometry: <expression>
+        uom: <text>
+        x-labelObstacle: <boolean>
+        x-composite-base: <boolean>
+        x-composite: <text>
+        fill-color: <color>
+        fill-opacity: <expression>
+        fill-graphic:
+          <graphic_options>
+        stroke-color: <color>
+        stroke-width: <expression>
+        stroke-opacity: <expression>
+        stroke-linejoin: <expression>
+        stroke-linecap: <expression>
+        stroke-dasharray: <float list>
+        stroke-dashoffset: <expression>
+        stroke-graphic:
+          <graphic_options>
+        stroke-graphic-fill:
+          <graphic_options>
+        offset: <expression>
+        displacement: <expression>
+
+Point symbolizer definition:
+      
+    symbolizers:
+    - point:
+        geometry: <expression>
+        uom: <text>
+        x-labelObstacle: <boolean>
+        x-composite-base: <boolean>
+        x-composite: <text>
+        symbols:
+        - external:
+            url: <text>
+            format: <text>
+        - mark:
+            shape: <shape>
+            fill-color: <color>
+            fill-opacity: <expression>
+            fill-graphic:
+              <graphic_options>
+            stroke-color: <color>
+            stroke-width: <expression>
+            stroke-opacity: <expression>
+            stroke-linejoin: <expression>
+            stroke-linecap: <expression>
+            stroke-dasharray: <float list>
+            stroke-dashoffset: <expression>
+            stroke-graphic:
+              <graphic_options>
+            stroke-graphic-fill:
+              <graphic_options>
+        size: <expression>
+        rotation: <expression>
+        anchor: <tuple>
+        displacement: <tuple>
+        opacity: <expression>
+
+Raster symbolizer definition:
+
+    symbolizers:
+    - raster:
+        opacity: <expression>
+        channels:
+          gray:
+            <channel_options>
+          red:
+            <channel_options>
+          green:
+            <channel_options>
+          blue:
+            <channel_options>
+        color-map:
+          type: <ramp|interval|values>
+          entries:
+          - [color, entry_opacity, band_value, text_label]
+        contrast-enhancement:
+          mode: <normalize|histogram>
+          gamma: <expression>
+          
+Text symbolizer definition:
+
+    symbolizers:
+    - text:
+        geometry: <expression>
+        uom: <text>
+        x-composite-base: <boolean>
+        x-composite: <text>
+        label: <expression>
+        fill-color: <color>
+        fill-opacity: <expression>
+        fill-graphic:
+          <graphic_options>
+        stroke-graphic:
+          <graphic_options>
+        stroke-graphic-fill:
+          <graphic_options>
+        font-family: <expression>
+        font-size: <expression>
+        font-style: <expression>
+        font-weight: <expression>
+        placement: <point|line>
+        offset: <expression>
+        anchor: <tuple>
+        displacement: <tuple>
+        rotation: <expression>
+        halo:
+          radius: <expression>
+          fill-color: <color>
+          fill-opacity: <expression>
+          fill-graphic:
+            <graphic_options>
+        graphic:
+          symbols:
+            <graphic_options>
+          size: <expression>
+          opacity: <expression>
+          rotation: <expression>
+        x-allowOverruns: <boolean>
+        x-autoWrap: <expression>
+        x-conflictResolution: <boolean>
+        x-followLine: <boolean>
+        x-forceLeftToRight: <boolean>
+        x-goodnessOfFit: <expression>
+        x-graphic-margin: <expression>
+        x-graphic-resize: <none|proportional|stretch>
+        x-group: <boolean>
+        x-labelAllGroup: <boolean>
+        x-labelPriority: <expression>
+        x-repeat: <expression>
+        x-maxAngleDelta: <expression>
+        x-maxDisplacement: <expression>
+        x-minGroupDistance: <expression>
+        x-partials: <boolean>
+        x-polygonAlign: <boolean>
+        x-spaceAround: <expression>
+
+Graphic options used above:
+
+    symbols:
+    - mark:
+        shape: <shape>
+        <<: *fill
+        <<: *stroke
+    - external:
+        url: <text>
+        format: <text>
+    anchor: <tuple>
+    displacement: <tuple>
+    opacity: <expression>
+    rotation: <expression>
+    size: <expression>
+    options: <options>
+    gap: <expression>
+    initial-gap: <expression>
+
+Fill used above:
+
+    fill: &fill
+      fill-color: <color>
+      fill-opacity: <expression>
+      fill-graphic: 
+        <<: *graphic
+
+Stroke used above:
+
+    stroke: &stroke 
+      stroke-color: <color>
+      stroke-width: <expression>
+      stroke-opacity: <expression>
+      stroke-linejoin: <expression>
+      stroke-linecap: <expression>
+      stroke-dasharray: <float[]>
+      stroke-dashoffset: <expression>
+      stroke-graphic-fill: 
+        <<: *graphic
+      stroke-graphic-stroke: 
+        <<: *graphic
 
 ## Hints
 
@@ -255,112 +533,3 @@ Additional hints for working with graphic fills:
      # The “seed” used to generate the random distribution. Changing this value will result in a
      # different symbol distribution.
      x-random-seed property: 42
-
-# Grammer
-
-The following is an outline of the YSLD language:
-
-    #
-    # common definitions, not actually part of the syntax
-    #
-    define:
-      graphic: &graphic
-        symbols:
-        - mark:
-            shape: <shape>
-            <<: *fill
-            <<: *stroke
-        - external:
-            url: <text>
-            format: <text>
-        anchor: <tuple>
-        displacement: <tuple>
-        opacity: <expression>
-        rotation: <expression>
-        size: <expression>
-        options: <options>
-        gap: <expression>
-        initial-gap: <expression>
-
-      fill: &fill
-        fill-color: <color>
-        fill-opacity: <expression>
-        fill-graphic: 
-          <<: *graphic
-
-      stroke: &stroke 
-        stroke-color: <color>
-        stroke-width: <expression>
-        stroke-opacity: <expression>
-        stroke-linejoin: <expression>
-        stroke-linecap: <expression>
-        stroke-dasharray: <float[]>
-        stroke-dashoffset: <expression>
-        stroke-graphic-fill: 
-          <<: *graphic
-        stroke-graphic-stroke: 
-          <<: *graphic
-
-      symbolizer: &symbolizer
-        geometry: <expression>
-        <options>
-
-    #
-    # start of syntax
-    #
-    name: <text>
-    title: <text>
-    abstract: <text>
-    feature-styles:
-    - name: <text>
-      title: <text>
-      abstract: <text>
-      transform:
-        name: <text>
-        params: <args>
-      rules:
-      - name: <text>
-        title: <text>
-        abstract: <text>
-        scale: <tuple>
-        filter: <filter>
-        else: <bool>
-        symbolizers:
-        - point:
-            <<: *graphic
-            <<: *symbolizer
-        - line: 
-            <<: *stroke
-            offset: <expression>
-            <<: *symbolizer
-        - polygon:
-            <<: *fill
-            <<: *stroke
-            offset: <expression>
-            displacement: <tuple>
-            <<: *symbolizer
-        - raster: 
-            color-map: 
-              type: ramp|intervals|values
-              entries:
-              - <quad> # color, opacity, value, label
-            opacity: <expression>
-            contrast-enhancement: 
-              mode: normalize|histogram|none
-              gamma: <expression>
-            <<: *symbolizer
-        - text:
-            label: <expression>
-            font-family: <expression>
-            font-size: <expression>
-            font-style: <expression>
-            font-weight: <expression>
-            placement:
-              type: point|line
-              offset: <expression>
-              anchor: <tuple>
-              displacement: <tuple>
-              rotation: <expression>
-            <<: *fill
-            <<: *symbolizer
-            <<: *graphic

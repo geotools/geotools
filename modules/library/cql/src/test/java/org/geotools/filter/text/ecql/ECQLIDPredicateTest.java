@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -246,5 +246,37 @@ public class ECQLIDPredicateTest {
     	Filter filter = ECQL.toFilter("ID IN ('river.1', 'river.2')");
     
     	Assert.assertTrue(filter instanceof Id);
+    }
+    
+    /**
+     * Keyword ID is deprecated but still accepted by the parser.
+     * 
+     */
+    @Test
+    public void propertyNameIdIsBeingDelimited() {
+
+        try { ECQL.toFilter("id = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("Id = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("iD = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("ID = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        assertToFilterToECQLEquals("\"id\" = 'river.3'");
+        assertToFilterToECQLEquals("\"Id\" = 'river.3'");
+        assertToFilterToECQLEquals("\"iD\" = 'river.3'");
+        assertToFilterToECQLEquals("\"ID\" = 'river.3'");
+    }
+    
+    /**
+     * Parse ecql, format ecql, and compare result to input.
+     * 
+     */
+    private static void assertToFilterToECQLEquals(final String ecqlPredicate) 
+    {
+        
+        try {
+            final Filter filter = ECQL.toFilter(ecqlPredicate);
+            Assert.assertTrue(ecqlPredicate.equals(ECQL.toCQL(filter)));
+        } catch (CQLException e) {
+            Assert.fail();
+        }
     }
 }

@@ -20,8 +20,19 @@ import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
+import javax.media.jai.JAI;
+
+import org.apache.commons.logging.LogFactory;
+import org.geotools.util.Version;
 import org.junit.*;
+import org.opengis.filter.Filter;
+import org.opengis.geometry.coordinate.GeometryFactory;
+
+import com.vividsolutions.jts.geom.Geometry;
+
 import static org.junit.Assert.*;
 
 
@@ -98,6 +109,51 @@ public final class GeoToolsTest {
         assertTrue(GeoTools.getDefaultHints().isEmpty());
     }
 
+    /**
+     * Test Manifest version lookup
+     */
+    @Test
+    public void testManifest() {
+        // jar manifest lookup 
+        Manifest jai = GeoTools.getManifest( JAI.class );
+        assertFalse("manifest metadata", jai.getMainAttributes().isEmpty() );
+
+        // this should always be generated during a maven or ide build
+        Manifest metadata = GeoTools.getManifest( GeoTools.class );
+        assertFalse("manifest metadata", metadata.getMainAttributes().isEmpty() );
+        Attributes attributes = metadata.getAttributes("Project-Version");
+        assertEquals( GeoTools.getVersion().toString(), metadata.getMainAttributes().getValue("Project-Version") );
+        
+        // should be a jar durning maven build, generated during IDE build
+        Manifest opengis = GeoTools.getManifest( Filter.class );
+        assertFalse("manifest metadata", opengis.getMainAttributes().isEmpty() );
+        
+        Manifest commons_logging = GeoTools.getManifest( LogFactory.class );
+        assertNotNull( commons_logging );
+        assertFalse("manifest metadata", commons_logging.getMainAttributes().isEmpty() );
+        assertEquals("1.1.1", commons_logging.getMainAttributes().getValue("Implementation-Version"));
+    }
+
+    /**
+     * Test version lookup
+     */
+    @Test
+    public void testVersion(){
+        Version opengis = GeoTools.getVersion( Filter.class );
+        assertNotNull( opengis );
+        
+        Version version = GeoTools.getVersion( JAI.class );
+        assertNotNull( version );
+        assertEquals("1.1.3", version.toString() );
+        
+        version = GeoTools.getVersion( LogFactory.class );
+        assertNotNull( version );
+        assertEquals("1.1.1", version.toString() );
+
+        version = GeoTools.getVersion( Geometry.class );
+        assertNotNull( version );
+        assertEquals("1.13", version.toString() );
+    }
     /**
      * Tests the use of system properties.
      */

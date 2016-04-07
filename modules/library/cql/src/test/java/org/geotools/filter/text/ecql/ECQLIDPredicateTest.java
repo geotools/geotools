@@ -247,4 +247,20 @@ public class ECQLIDPredicateTest {
     
     	Assert.assertTrue(filter instanceof Id);
     }
+    
+    /**
+     * 
+     */
+    @Test
+    public void propertyNameIdIsBeingDelimited() {
+
+        try { ECQL.toFilter("id = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("Id = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("iD = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("ID = 'river.3'"); Assert.fail(); } catch (CQLException e) {}
+        try { ECQL.toFilter("\"id\" = 'river.3'"); } catch (CQLException e) { Assert.fail(); }
+        try { ECQL.toFilter("\"Id\" = 'river.3'"); } catch (CQLException e) { Assert.fail(); }
+        try { ECQL.toFilter("\"iD\" = 'river.3'"); } catch (CQLException e) { Assert.fail(); }
+        try { ECQL.toFilter("\"ID\" = 'river.3'"); } catch (CQLException e) { Assert.fail(); }
+    }
 }

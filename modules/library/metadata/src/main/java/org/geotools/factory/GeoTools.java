@@ -353,15 +353,6 @@ public final class GeoTools {
     }
     
     /**
-     * Reports back the version of GeoTools being used.
-     *
-     * @return The current GeoTools version.
-     */
-    public static Version getVersion(){
-         return VERSION;
-    }
-    
-    /**
      * Reports back the vcs revision at which the version of GeoTools was built. 
      * 
      * @return The svn revision.
@@ -396,6 +387,27 @@ public final class GeoTools {
         return props;
     }
 
+    /**
+     * Reports back the version of GeoTools being used.
+     *
+     * @return The current GeoTools version.
+     */
+    public static Version getVersion(){
+         return VERSION;
+    }
+
+    /**
+     * Lookup version for provided class.
+     * <p>
+     * Version number is determined by either:
+     * <ul>
+     * <li>Use of jar naming convention, matching jars such as jts-1.13.jar</li>
+     * <li>Use of MANIFEST.MF (to check Implementation-Version, Project-Version)</li>
+     * <li>
+     * <li>To assist  
+     * @param type
+     * @return Version (or null if unavailable)
+     */
     public static Version getVersion(Class<?> type) {
         final URL classLocation = type.getResource(type.getSimpleName() + ".class");
         String path = classLocation.toString();

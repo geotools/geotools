@@ -286,7 +286,16 @@ public final class ScriptTest {
     @Test
     public void testMeteosatSG() throws Exception {
         runScript("scripts/MeteosatSG.txt");
-    }    
+    }
+
+    /**
+     *      * Run "RotatedPole.txt"
+     *           * @throws Exception
+     *                */
+    @Test
+    public void testRotatedPole() throws Exception {
+        runScript("scripts/RotatedPole.txt");
+    }
 
     /**
      * Run "WorldVanDerGrintenI.txt"

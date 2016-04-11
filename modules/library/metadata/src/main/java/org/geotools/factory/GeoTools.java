@@ -409,23 +409,18 @@ public final class GeoTools {
      * @return Version (or null if unavailable)
      */
     public static Version getVersion(Class<?> type) {
-        final URL classLocation = type.getResource(type.getSimpleName() + ".class");
+        final URL classLocation = classLocation(type);
         String path = classLocation.toString();
 
         // try and extract from maven jar naming convention
         if (classLocation.getProtocol().equalsIgnoreCase("jar")) {
-            String location = path.substring(0, path.lastIndexOf("!") + 1);
-            int dash = location.lastIndexOf("-");
-            int dot = location.lastIndexOf(".jar");
-
-            if (dash != -1 && dot != -1) {
-                String version = location.substring(dash + 1, dot);
-                return new Version(version);
+            String jarVersion = jarVersion(path);
+            if( jarVersion != null ){
+                return new Version(jarVersion);
             }
             // try manifest
             try {
-                URL manifestLocation = new URL(location.substring(0, location.lastIndexOf("!") + 1)
-                        + "/META-INF/MANIFEST.MF");
+                URL manifestLocation = manifestLocation( path );
                 Manifest manifest = new Manifest();
                 try (InputStream content = manifestLocation.openStream()) {
                     manifest.read(content);
@@ -447,6 +442,74 @@ public final class GeoTools {
         }
         return null;
     }
+    
+    /**
+     * Class location.
+     * 
+     * @param type
+     * @return class location
+     */
+    static URL classLocation( Class<?> type ){
+        return type.getResource(type.getSimpleName() + ".class");
+    }
+    
+    /**
+     * Determine jar version from static analysis of classLocation path.
+     * @param classLocation
+     * @return jar version, or null if unknown
+     */
+    static String jarVersion( String classLocation){
+        if (classLocation.startsWith("jar:") || classLocation.contains(".jar!")){
+            String location = classLocation.substring(0, classLocation.lastIndexOf("!") + 1);
+            int dash = location.lastIndexOf("-");
+            int dot = location.lastIndexOf(".jar");
+    
+            if (dash != -1 && dot != -1) {
+                return location.substring(dash + 1, dot);
+            }
+        }
+        // handle custom protocols such as jboss "vfs:" or OSGi "resource"
+        if( classLocation.contains(".jar/")){
+            String location = classLocation.substring(0, classLocation.indexOf(".jar/") + 4);
+            int dash = location.lastIndexOf("-");
+            int dot = location.lastIndexOf(".jar");
+    
+            if (dash != -1 && dot != -1) {
+                return location.substring(dash + 1, dot);
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Generate URL of MANIFEST.MF file for provided class location.
+     * 
+     * @param classLocation
+     * @return MANIFEST.MF location, or null if unknown
+     */
+    static URL manifestLocation(String classLocation) {
+        URL url;
+        if (classLocation.startsWith("jar:")) {
+            try {
+                url = new URL(classLocation.substring(0, classLocation.lastIndexOf("!") + 1)
+                        + "/META-INF/MANIFEST.MF");
+                return url;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        // handle custom protocols such as jboss "vfs:" or OSGi "resource"
+        if (classLocation.contains(".jar/")) {
+            String location = classLocation.substring(0, classLocation.indexOf(".jar/") + 4);
+            try {
+                url = new URL(location + "/META-INF/MANIFEST.MF");
+                return url;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        return null;
+    }
     /**
      * Lookup the MANIFEST.MF for the provided class.
      * <p>
@@ -455,23 +518,16 @@ public final class GeoTools {
      * @return MANIFEST.MF contents, please note contents may be empty when running from IDE
      */
     public static Manifest getManifest(Class<?> type) {
-        final URL classLocation = type.getResource(type.getSimpleName() + ".class");
-
+        final URL classLocation = classLocation(type);
         Manifest manifest = new Manifest();
 
-        if (classLocation.getProtocol().equalsIgnoreCase("jar")) {
-            String path = classLocation.toString();
-            URL manifestLocation;
+        URL manifestLocation = manifestLocation( classLocation.toString() );
+        if( manifestLocation != null ){
             try {
-                manifestLocation = new URL(
-                        path.substring(0, path.lastIndexOf("!") + 1) + "/META-INF/MANIFEST.MF");
                 try (InputStream content = manifestLocation.openStream()) {
                     manifest.read(content);
                 }
-            } catch (FileNotFoundException ignore) {
-                ignore.printStackTrace();
-            } catch (IOException invalid) {
-                invalid.printStackTrace();
+            } catch (IOException ignore) {
             }
         }
         if (manifest.getMainAttributes().isEmpty()) {

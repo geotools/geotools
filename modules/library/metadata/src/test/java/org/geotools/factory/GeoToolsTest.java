@@ -17,6 +17,7 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,10 +140,24 @@ public final class GeoToolsTest {
      */
     @Test
     public void testVersion(){
-        Version opengis = GeoTools.getVersion( Filter.class );
-        assertNotNull( opengis );
+        String location;
         
-        Version version = GeoTools.getVersion( JAI.class );
+        location = "jar:file:/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar!/com/vividsolutions/jts/geom/Geometry.class";
+        assertEquals( "1.13", GeoTools.jarVersion( location ));
+        
+        location = "jar:file:/Users/jody/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/org/apache/commons/logging/LogFactory.class";
+        assertEquals( "1.1.1", GeoTools.jarVersion( location ));
+        
+        location = "jar:file:/Users/jody/Library/Java/Extensions/jai_core.jar!/javax/media/jai/JAI.class";
+        assertNull( GeoTools.jarVersion( location ));
+        
+        location = "vfs:/var/jboss/workspace/BuildSvr_FNMOC/jboss/geoserver/deployments/geoserver.war/WEB-INF/lib/gt-xsd-wcs-13.2.jar/org/geotools/wcs/WCS.class";
+        assertEquals( "13.2", GeoTools.jarVersion( location ));
+        
+        Version version = GeoTools.getVersion( Filter.class );
+        assertNotNull( version );
+        
+        version = GeoTools.getVersion( JAI.class );
         assertNotNull( version );
         assertEquals("1.1.3", version.toString() );
         

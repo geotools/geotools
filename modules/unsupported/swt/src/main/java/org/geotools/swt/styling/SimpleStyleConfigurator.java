@@ -576,7 +576,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
         if (!Utils.isGridLayer(layer)) {
             SimpleFeatureSource featureSource = (SimpleFeatureSource) layer.getFeatureSource();
             Style style = layer.getStyle();
-            showDialog(parent, featureSource, style);
+            return showDialog(parent, featureSource, style);
         }
         return null;
     }

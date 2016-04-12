@@ -17,7 +17,11 @@
 package org.geotools.data.memory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
@@ -30,20 +34,27 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature>{
-    ContentState state;
+
     SimpleFeatureType featureType;
     Iterator<SimpleFeature> iterator;
 
     public MemoryFeatureReader(ContentState state, Query query) throws IOException {
-        this.state = state;
         featureType = state.getFeatureType();
-        String typeName = getFeatureType().getTypeName();
-        MemoryDataStore store = (MemoryDataStore) state.getEntry().getDataStore();
-        iterator = store.features(typeName).values().iterator();
+
+        final MemoryDataStore store = (MemoryDataStore) state.getEntry().getDataStore();
+        final Map<String, SimpleFeature> features = store.features(featureType.getTypeName());
+        synchronized (features) {
+            final Collection<SimpleFeature> featureCollection = features.values();
+            final List<SimpleFeature> internalCollection = new ArrayList<SimpleFeature>();
+            if (features != null) {
+                internalCollection.addAll(featureCollection);
+            }
+            iterator = internalCollection.iterator();
+        }
     }
 
     public SimpleFeatureType getFeatureType() {
-        return state.getFeatureType();
+        return featureType;
     }
 
     public SimpleFeature next()

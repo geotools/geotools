@@ -31,6 +31,9 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * Update contents of MemoryDataStore. 
+ */
 public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature>{
     ContentState state;
     SimpleFeatureType featureType;
@@ -48,8 +51,6 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         MemoryDataStore store = (MemoryDataStore) state.getEntry().getDataStore();
         contents = store.features(typeName);
         iterator = contents.values().iterator();
-        
-        
     }
     
     public SimpleFeatureType getFeatureType() {

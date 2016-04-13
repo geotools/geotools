@@ -13,4 +13,6 @@ org.geotools.process.raster.RasterAsPointCollectionProcess
 org.geotools.process.raster.RasterZonalStatistics
 org.geotools.process.raster.RasterZonalStatistics2
 org.geotools.process.raster.ScaleCoverage 
-org.geotools.process.raster.StyleCoverageorg.geotools.process.raster.ConvolveCoverageProcess
+org.geotools.process.raster.StyleCoverage
+org.geotools.process.raster.ConvolveCoverageProcess
+org.geotools.process.raster.NormalizeCoverageProcess

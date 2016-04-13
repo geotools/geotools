@@ -1,0 +1,79 @@
+// Test points for the RotatedPole projection
+//
+// (C) 2016, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with eqtoll and proj.4 tools.
+// "eqtoll" is a part of the MetOffice Unified Model suite 
+// 
+//
+// Maciej Filocha (ICM) - May 2015, April 2016
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    java -cp target/classes:target/test-classes:_CLASS_PATH_ -ea org.geotools.referencing.ScriptRunner src/test/resources/org/geotools/referencing/test-data/scripts/RotatedPole.txt
+//
+// the _CLASS_PATH_ can be generated with
+//
+//    mvn dependency:build-classpath
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563 ] ], PRIMEM["Greenwich",0.0], UNIT["degree",0.01745329251994328 ]]
+set _WebM_ = PROJCS["WGS84 / Google Mercator", GEOGCS["WGS 84", DATUM["World Geodetic System 1984", SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], AUTHORITY["EPSG","6326"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AUTHORITY["EPSG","4326"]], PROJECTION["Mercator (1SP)", AUTHORITY["EPSG","9804"]], PARAMETER["semi_major", 6378137.0], PARAMETER["semi_minor", 6378137.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["central_meridian", 0.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["m", 1.0]]
+set _UM_ = PROJCS["UM", GEOGCS["UM GeogCS",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563],TOWGS84[0,0,0]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Longitude", EAST],AXIS["Latitude", NORTH]],PROJECTION["Rotated_Pole"],PARAMETER["central_meridian", 19.3],PARAMETER["latitude_of_origin", 52.5],PARAMETER["scale_factor", 1.0],PARAMETER["false_easting", 0.0],PARAMETER["false_northing", 0.0],UNIT["degree", 1.0]]
+
+//
+// Rough tolerance, but acceptable for intended usage - NWP models grids have typical horizontal
+// resolution on the order of kilometers   
+test tolerance = (1.5, 1.5)
+
+
+//  
+// First part test points are taken from output of the "eqtoll" tool
+// 
+source crs = _UM_
+target crs = _WGS84_
+//print crs
+
+source pt = (0, 0)
+target pt = (19.30000,52.500000)
+//print pts
+
+source pt = (-7.970000, -7.84000)
+target pt = ( 8.281982, 44.05167)
+//print pts
+
+source pt = ( 8.1220,  14.30000)
+target pt = (38.73398, 65.70290)
+//print pts
+
+//
+// proj ob_tran conversion
+// Proj uses as a parameter latitude of rotated pole (37.5), whereas GeoTools expect latitude of origin here (52.5).
+
+// echo -7.97 -7.84 |  cs2cs -f %.6f +proj=ob_tran +o_proj=longlat +to_meter=0.0174533 +lon_0=19.3 +o_lat_p=37.5 +a=6378137 +b=6378137 +no_defs +to  +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs
+// 921947.603732   5473440.829158 0.000000 
+
+source crs = _UM_
+target crs = _WebM_
+//print crs
+
+source pt = (-7.97, -7.84)
+target pt = (921947.603732, 5473440.829158)
+//print pts
+
+source pt = (8.122, 14.30)
+target pt = (4311848.341418, 9796005.730920)
+//print pts
+

@@ -120,5 +120,15 @@ parameters::
           .getFormat()).USE_JAI_IMAGEREAD.createValue();
   useJaiRead.setValue(true);
   
+  // //
+  //
+  // Setting the footprint behavior
+  //
+  // For this example, there should be a C:/testdata/sampledata.wkt file containing 
+  // the footprint, so that the masking can occur
+  // //
+  final ParameterValue<String> footprint = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+  footprint.setValue(FootprintBehavior.Transparent.toString());
+  
   GridCoverage gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg,
-          policy, mt, tilesize, useJaiRead });
+          policy, mt, tilesize, useJaiRead, footprint});

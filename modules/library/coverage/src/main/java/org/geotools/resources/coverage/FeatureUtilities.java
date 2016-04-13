@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,17 @@ package org.geotools.resources.coverage;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -81,6 +90,8 @@ public final class FeatureUtilities {
     public final static PropertyName GRID_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("grid");
     public static final PropertyName PARAMS_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("params");
 
+
+    final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureUtilities.class.toString());
     
     /**
      * Do not allows instantiation of this class.
@@ -371,4 +382,5 @@ public final class FeatureUtilities {
 		area /= 2.0;
 		return (area);
 	}
+
 }

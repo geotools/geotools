@@ -72,6 +72,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -163,7 +164,7 @@ public class ImageMosaicConfigHandler {
             indexerFile = new File(parent, Utils.INDEXER_PROPERTIES);
             if (Utils.checkFileReadable(indexerFile)) {
                 // load it and parse it
-                final Properties props = Utils.loadPropertiesFromURL(DataUtilities
+                final Properties props = CoverageUtilities.loadPropertiesFromURL(DataUtilities
                         .fileToURL(indexerFile));
                 indexer = createIndexer(props, params);
             }

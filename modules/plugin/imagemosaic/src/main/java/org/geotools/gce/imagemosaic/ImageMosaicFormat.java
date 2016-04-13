@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -134,10 +134,6 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
             "AllowMultithreading", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
     
-    /** Control the footprint management.*/
-    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR = new DefaultParameterDescriptor<String>(
-            "FootprintBehavior", String.class, FootprintBehavior.valuesAsStrings(), FootprintBehavior.None.name());
-    
     /** Control the background values for the output coverage */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<double[]>(
             "BackgroundValues", double[].class, null, null);
@@ -197,7 +193,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 ACCURATE_RESOLUTION,
                 SORT_BY,
                 MERGE_BEHAVIOR,
-                FOOTPRINT_BEHAVIOR
+                AbstractGridFormat.FOOTPRINT_BEHAVIOR
         }));
 
         // reading parameters

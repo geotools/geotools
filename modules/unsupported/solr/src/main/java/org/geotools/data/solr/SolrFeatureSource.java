@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
@@ -155,7 +155,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 if (store.getLogger().isLoggable(Level.FINE)) {
                     store.getLogger().log(Level.FINE, q.toString());
                 }
-                HttpSolrServer server = store.getSolrServer();
+                HttpSolrClient server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
                 count = new Long(rsp.getResults().getNumFound()-rsp.getResults().getStart()).intValue();
                 //Manage max manually

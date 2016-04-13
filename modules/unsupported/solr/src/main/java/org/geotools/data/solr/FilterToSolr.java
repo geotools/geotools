@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -189,7 +189,9 @@ public class FilterToSolr implements FilterVisitor {
         capabilities.addType(FilterCapabilities.LIKE);
         capabilities.addType(FilterCapabilities.NULL_CHECK);
         capabilities.addType(FilterCapabilities.SPATIAL_BBOX);
-        capabilities.addType(FilterCapabilities.SPATIAL_DISJOINT);
+        // JD: as of solr 5 the disjoint filter no longer works directly so we disable it 
+        // See https://issues.apache.org/jira/browse/LUCENE-5692
+        //capabilities.addType(FilterCapabilities.SPATIAL_DISJOINT);
         capabilities.addType(FilterCapabilities.SPATIAL_WITHIN);
         capabilities.addType(FilterCapabilities.SPATIAL_INTERSECT);
         capabilities.addType(FilterCapabilities.SPATIAL_CONTAINS);

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
@@ -57,6 +57,7 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.logging.Logger;
 
 /**
  * Datastore implementation for SOLR document <br>
@@ -84,7 +85,7 @@ public class SolrDataStore extends ContentDataStore {
     // Attributes configurations of the store entries
     private Map<String, SolrLayerConfiguration> solrConfigurations = new ConcurrentHashMap<String, SolrLayerConfiguration>();
 
-    HttpSolrServer solrServer;
+    HttpSolrClient solrServer;
 
     /**
      * Create the data store, using the {@link FieldLayerMapper}.
@@ -103,9 +104,10 @@ public class SolrDataStore extends ContentDataStore {
      * @param layerMapper The document loader.
      */
     public SolrDataStore(URL url, SolrLayerMapper layerMapper) {
+        // TODO: make connection timeouts configurable
         this.url = url;
         this.layerMapper = layerMapper;
-        this.solrServer = new HttpSolrServer(url.toString());
+        this.solrServer = new HttpSolrClient(url.toString());
         this.solrServer.setAllowCompression(true);
         this.solrServer.setConnectionTimeout(10000);
         this.solrServer.setFollowRedirects(true);
@@ -446,14 +448,16 @@ public class SolrDataStore extends ContentDataStore {
         }
     }
 
-    HttpSolrServer getSolrServer() {
+    HttpSolrClient getSolrServer() {
         return solrServer;
     }
 
     @Override
     public void dispose() {
         try {
-            solrServer.shutdown();
+            solrServer.close();
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         } finally {
             super.dispose();
         }

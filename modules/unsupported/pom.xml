@@ -176,9 +176,12 @@
        </modules>
      </profile>
      <profile>
-       <id>yld</id>
+       <id>ysld</id>
+       <activation>
+          <property><name>all</name></property>
+        </activation>
        <modules>
-         <module>yld</module>
+         <module>ysld</module>
        </modules>
      </profile>
      <profile>
@@ -222,6 +225,7 @@
     <module>geopkg</module>
     <module>mbtiles</module>
     <module>wfs-ng</module>
+    <module>ysld</module>
   </modules>
 
 </project>

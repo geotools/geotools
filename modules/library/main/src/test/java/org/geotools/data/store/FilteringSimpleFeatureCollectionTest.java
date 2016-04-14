@@ -17,7 +17,12 @@ import org.opengis.filter.FilterFactory;
  */
 public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-
+    
+    public void testNext() {
+        Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
+        SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);
+        assertNotNull(collection.features().next());
+    }
     public void testCount() {
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
         SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);

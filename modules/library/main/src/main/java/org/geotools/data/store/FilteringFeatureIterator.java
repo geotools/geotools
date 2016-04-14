@@ -67,6 +67,9 @@ public class FilteringFeatureIterator<F extends Feature> implements FeatureItera
     }
 
     public F next() throws NoSuchElementException {
+        if(next==null&&this.hasNext()==false) {
+            throw new NoSuchElementException();
+        }
         F f = next;
         next = null;
         return f;

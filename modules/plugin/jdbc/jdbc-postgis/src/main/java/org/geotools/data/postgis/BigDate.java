@@ -14,22 +14,21 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.postgis.ps;
+package org.geotools.data.postgis;
 
-import org.geotools.data.postgis.PostgisUDTTestSetup;
-import org.geotools.jdbc.JDBCUDTOnlineTest;
-import org.geotools.jdbc.JDBCUDTTestSetup;
+import java.util.Date;
 
 /**
- * 
- *
- * @source $URL$
+ * Used internally by PostGIS dialect to signal the use of the "bigdate" domain type.
+ * <p>
+ * This type is used to store a date as a raw long value in order to provide a greather range of 
+ * date values than the built in postgresql timestamp types. Using a raw long allows for representing
+ * a date range of approximately +- 290 million.
+ * </p>
  */
-public class PostgisUDTOnlineTest extends org.geotools.data.postgis.PostgisUDTOnlineTest {
+class BigDate extends Date {
 
-    @Override
-    protected JDBCUDTTestSetup createTestSetup() {
-        return new PostgisUDTTestSetup(new PostGISPSTestSetup());
+    private BigDate(long milliseconds) {
+        super(milliseconds);
     }
-
 }

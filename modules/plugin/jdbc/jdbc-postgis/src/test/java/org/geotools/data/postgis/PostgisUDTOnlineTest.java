@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,30 @@
  */
 package org.geotools.data.postgis;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.UUID;
 
+import org.geotools.data.FeatureSource;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.JDBCUDTOnlineTest;
 import org.geotools.jdbc.JDBCUDTTestSetup;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 
 /**
  * 
@@ -88,4 +102,86 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
         
     }
 
+    @Test
+    public void testBigDate() throws Exception {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss G");
+        df.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        SimpleFeatureType schema = dataStore.getSchema(tname("date_udt"));
+        assertTrue(Date.class.isAssignableFrom(schema.getType("bd").getBinding()));
+
+        FeatureSource source = dataStore.getFeatureSource(tname("date_udt"));
+
+        Date d = date(source, "epoch");
+        assertEquals("1970-01-01T00:00:00 AD", df.format(d));
+
+        d = date(source, "epoch+1");
+        assertEquals("1970-01-01T00:00:01 AD", df.format(d));
+
+        d = date(source, "epoch-1");
+        assertEquals("1969-12-31T23:59:59 AD", df.format(d));
+
+        d = date(source, "ce");
+        assertEquals("0001-01-01T00:00:00 AD", df.format(d));
+
+        d = date(source, "bc");
+        assertEquals("0001-12-31T23:59:59 BC", df.format(d));
+
+        d = date(source, "min");
+        assertEquals("292269055-12-02T16:47:04 BC", df.format(d));
+
+        // test round trip
+        try (FeatureWriter w = dataStore.getFeatureWriterAppend(tname("date_udt"), Transaction.AUTO_COMMIT)) {
+            SimpleFeature f = (SimpleFeature) w.next();
+            f.setAttribute(aname("bd"), new Date(-62135769600000L));
+            f.setAttribute(aname("name"), "ce2");
+            w.write();    
+        }
+
+        d = date(source, "ce2");
+        assertEquals("0001-01-01T00:00:00 AD", df.format(d));
+
+        // test filters
+        FilterFactory ff = dataStore.getFilterFactory();
+        Filter filter = ff.equals(ff.property(aname("bd")), ff.literal(df.parse("1970-01-01T00:00:00 AD")));
+        
+        FeatureCollection features = source.getFeatures(filter);
+        try (FeatureIterator it = features.features()) {
+            assertTrue(it.hasNext());
+
+            SimpleFeature f = (SimpleFeature) it.next();
+            assertEquals("epoch", f.getAttribute("name"));
+
+            assertFalse(it.hasNext());
+        }
+
+        filter = ff.greaterOrEqual(ff.property(aname("bd")), ff.literal(df.parse("1970-01-01T00:00:00 AD")));
+        features = source.getFeatures(filter);
+
+        Set<String> names = new HashSet<>();
+        try (FeatureIterator it = features.features()) {
+            while(it.hasNext()) {
+                names.add((((SimpleFeature)it.next()).getAttribute("name")).toString());
+            }
+        }
+
+        assertEquals(2, names.size());
+        assertTrue(names.contains("epoch"));
+        assertTrue(names.contains("epoch+1"));
+
+    }
+
+    Date date(FeatureSource source, String name) throws Exception {
+        return (Date) feature(source, name).getAttribute("bd");
+    }
+
+    SimpleFeature feature(FeatureSource source, String name) throws IOException {
+        FilterFactory ff = dataStore.getFilterFactory();
+        FeatureCollection features = source.getFeatures(ff.equals(ff.property(aname("name")), ff.literal(name)));
+        try (FeatureIterator it = features.features()) {
+            assertTrue("No feature with name: " + name, it.hasNext());
+
+            return (SimpleFeature) it.next();
+        }
+    }
 }

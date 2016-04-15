@@ -27,6 +27,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -78,6 +79,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @source $URL$
  */
 public class PostGISDialect extends BasicSQLDialect {
+
+    public static final String BIGDATE_UDT = "bigdate";
 
 	//geometry type to class map
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
@@ -464,7 +467,11 @@ public class PostGISDialect extends BasicSQLDialect {
         if("citext".equalsIgnoreCase(typeName)) {
     	    return String.class;
         }
-        
+
+        if (BIGDATE_UDT.equalsIgnoreCase(typeName)) {
+            return BigDate.class;
+        }
+
         String gType = null;
         if ("geometry".equalsIgnoreCase(typeName)) {
             gType = lookupGeometryType(columnMetaData, cx, "geometry_columns", "f_geometry_column");
@@ -844,6 +851,7 @@ public class PostGISDialect extends BasicSQLDialect {
         // jdbc metadata for geom columns reports DATA_TYPE=1111=Types.OTHER
         mappings.put(Geometry.class, Types.OTHER);
         mappings.put(UUID.class, Types.OTHER);
+        mappings.put(BigDate.class, Types.BIGINT);
     }
 
     @Override
@@ -1125,10 +1133,16 @@ public class PostGISDialect extends BasicSQLDialect {
             else {
                 encodeByteArrayAsEscape(input, sql);
             }
-
-        } else {
-            super.encodeValue(value, type, sql);
         }
+
+        if (BigDate.class.isAssignableFrom(type)) {
+            if (value instanceof Date) {
+                super.encodeValue(((Date)value).getTime(), Long.class, sql);
+                return;
+            }
+        }
+
+        super.encodeValue(value, type, sql);
     }
 
     void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {

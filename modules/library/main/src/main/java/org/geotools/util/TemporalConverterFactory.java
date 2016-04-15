@@ -134,7 +134,14 @@ public class TemporalConverterFactory implements ConverterFactory {
                     }
                 };
             }
-            
+
+            if (Long.class.equals(target)) {
+                return new Converter() {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        return (T) Long.valueOf(((Date)source).getTime());
+                    }
+                };
+            }
         }
 
         // this should handle java.util.Calendar to

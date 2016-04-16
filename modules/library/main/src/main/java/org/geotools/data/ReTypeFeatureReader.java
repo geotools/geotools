@@ -78,7 +78,7 @@ public class ReTypeFeatureReader implements DelegatingFeatureReader<SimpleFeatur
     /**
      * Constructs a FetureReader that will ReType streaming content.
      *
-     * @param reader Origional FeatureReader
+     * @param reader Original FeatureReader
      * @param featureType Target FeatureType
      */
     public ReTypeFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType featureType) {

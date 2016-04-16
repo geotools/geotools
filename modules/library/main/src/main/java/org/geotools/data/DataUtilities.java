@@ -1735,15 +1735,11 @@ public class DataUtilities {
     /**
      * Create a derived FeatureType
      * 
-     * <p>
-     * </p>
+     * @param featureType Original feature type to derive from.
+     * @param properties If null, every property of the featureType in input will be used
+     * @param override Intended CoordinateReferenceSystem, if null original will be used
      * 
-     * @param featureType
-     * @param properties
-     *            - if null, every property of the feature type in input will be used
-     * @param override
-     * 
-     * 
+     * @return derived FeatureType
      * @throws SchemaException
      */
     public static SimpleFeatureType createSubType(SimpleFeatureType featureType,
@@ -1761,7 +1757,17 @@ public class DataUtilities {
                 namespaceURI);
 
     }
-
+    /**
+     * Create a derived FeatureType
+     * 
+     * @param featureType Original feature type to derive from.
+     * @param properties If null, every property of the featureType in input will be used
+     * @param override Intended CoordinateReferenceSystem, if null original will be used
+     * @param typeName Type name override
+     * @param namespace Namespace override
+     * @return derived FeatureType
+     * @throws SchemaException
+     */
     public static SimpleFeatureType createSubType(SimpleFeatureType featureType,
             String[] properties, CoordinateReferenceSystem override, String typeName, URI namespace)
             throws SchemaException {

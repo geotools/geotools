@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,25 +19,23 @@ package org.geotools.data.memory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.NameImpl;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.FeatureTypes;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -66,14 +64,16 @@ import org.opengis.feature.type.Name;
  * @source $URL$
  */
 public class MemoryDataStore extends ContentDataStore {
-    /** Memory holds Map of Feature by fid by typeName. */
-    protected Map<String,Map<String,SimpleFeature>> memory = new LinkedHashMap<String,Map<String,SimpleFeature>>();
-
-    /** Schema holds FeatureType by typeName */
-    protected Map<String,SimpleFeatureType> schema = new HashMap<String,SimpleFeatureType>();
 
     public MemoryDataStore() {
         super();
+    }
+
+    /**
+     * Use MemoryState to manage internal storage.
+     */
+    protected MemoryState createContentState(ContentEntry entry) {
+        return new MemoryState( (MemoryEntry) entry);
     }
 
     /**
@@ -81,11 +81,14 @@ public class MemoryDataStore extends ContentDataStore {
      * @param schema An empty feature collection of this type will be made available
      */
     public MemoryDataStore(SimpleFeatureType featureType) {
-        Map<String,SimpleFeature> featureMap = new LinkedHashMap<String,SimpleFeature>();
-        String typeName = featureType.getTypeName();
-        schema.put(typeName, featureType);
-        memory.put(typeName, featureMap);
+        try {
+            // creates new entry for FeatureType
+            entry( featureType );
+        } catch (IOException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
+        }
     }
+
     public MemoryDataStore(FeatureCollection<SimpleFeatureType,SimpleFeature> collection) {
         addFeatures(collection);
     }
@@ -175,29 +178,21 @@ public class MemoryDataStore extends ContentDataStore {
      */
     public void addFeatures(Collection<?> collection) {
         if ((collection == null) || collection.isEmpty()) {
-            throw new IllegalArgumentException("Provided SimpleFeatureCollection is empty");
+            throw new IllegalArgumentException("Provided Collection is empty");
         }
-
-        synchronized (memory) {
-            for (Iterator<?> i = collection.iterator(); i.hasNext();) {
-                addFeatureInternal((SimpleFeature) i.next());
+        synchronized (entries) {
+            for(Object item : collection ){
+                addFeatureInternal( (SimpleFeature) item);
             }
         }
     }
     public void addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> collection) {
         if ((collection == null) ) {
-            throw new IllegalArgumentException("Provided SimpleFeatureCollection is empty");
+            throw new IllegalArgumentException("Provided FeatureCollection is empty");
         }
-        synchronized (memory) {
-            try {
-                collection.accepts( new FeatureVisitor(){
-                    public void visit(Feature feature) {
-                        addFeatureInternal( (SimpleFeature) feature );
-                    }                
-                }, null );
-            }
-            catch( IOException ignore){
-                LOGGER.log( Level.FINE, "Unable to add all features", ignore );
+        synchronized (entries) {
+            try( FeatureIterator<SimpleFeature> iterator = collection.features()){
+                addFeatureInternal( iterator.next() );
             }
         }
     }
@@ -212,8 +207,7 @@ public class MemoryDataStore extends ContentDataStore {
         if ((features == null) || (features.length == 0)) {
             throw new IllegalArgumentException("Provided features are empty");
         }
-
-        synchronized (memory) {
+        synchronized (entries) {
             for (int i = 0; i < features.length; i++) {
                 addFeatureInternal(features[i]);
             }
@@ -224,8 +218,8 @@ public class MemoryDataStore extends ContentDataStore {
      * Adds a single Feature to the correct typeName entry.
      * 
      * <p>
-     * This is an internal opperation used for setting up MemoryDataStore - please use
-     * FeatureWriter for generatl use.
+     * This is an internal operation used for setting up MemoryDataStore - please use
+     * FeatureWriter for general use.
      * </p>
      * 
      * <p>
@@ -235,7 +229,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @param feature Individual feature to add
      */
     public void addFeature(SimpleFeature feature) {
-        synchronized (memory) {
+        synchronized (entries) {
             addFeatureInternal(feature);
         }
     }
@@ -244,48 +238,64 @@ public class MemoryDataStore extends ContentDataStore {
         if (feature == null) {
             throw new IllegalArgumentException("Provided Feature is empty");
         }
-
-        SimpleFeatureType featureType;
-        featureType = feature.getFeatureType();
-
-        String typeName = featureType.getTypeName();
-
-        Map<String,SimpleFeature> featuresMap;
-
-        if (!memory.containsKey(typeName)) {
-            try {
-                createSchema(featureType);
-            } catch (IOException e) {
-                // this should not of happened ?!?
-                // only happens if typeNames is taken and
-                // we just checked                    
-            }
+        SimpleFeatureType featureType = feature.getFeatureType();
+        try {
+            MemoryEntry entry = entry(featureType);
+            entry.memory.put( feature.getID(),  feature );
+        } catch (IOException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
         }
-
-        featuresMap = memory.get(typeName);
-        featuresMap.put(feature.getID(), feature);
     }
 
     /**
-     * Access featureMap for typeName.
+     * Access MemoryState for typeName.
+     * <p>
+     * Technically this is accessing the MemoryState for {@link Transaction#AUTO_COMMIT}, which
+     * is the definitive storage for the feature content.
      *
      * @param typeName
      *
-     * @return A Map of Features by FID
-     *
+     * @return MemoryState storing feature (by FeatureID)
      * @throws IOException If typeName cannot be found
      */
-    protected Map<String,SimpleFeature> features(String typeName) throws IOException {
-        synchronized (memory) {
-            if (memory.containsKey(typeName)) {
-                return memory.get(typeName);
+    protected MemoryEntry entry(String typeName) throws IOException {
+        synchronized (entries) {
+            for( ContentEntry entry : this.entries.values() ){
+                if( entry.getName().getLocalPart().equals( typeName )){
+                    return (MemoryEntry) entry;
+                }
             }
         }
-
         throw new IOException("Type name " + typeName + " not found");
     }
     
-    
+    /**
+     * Access to entry to store content of the provided schema, will create new entry if needed.
+     * <p>
+     * @param schema
+     * @return MemoryState used for content storage
+     * @throws IOException If new entry could not be created due to typeName conflict
+     */
+    protected MemoryEntry entry(SimpleFeatureType schema) throws IOException {
+        Name typeName = schema.getName();
+        synchronized (entries) {
+            if (entries.containsKey(typeName)) {
+                MemoryEntry entry = (MemoryEntry) entries.get(typeName);
+                if( FeatureTypes.equals(entry.schema,schema)){
+                    return entry;
+                }
+                else {
+                    throw new IOException("Entry " + typeName + " schema " + entry.schema
+                            + " incompatible with provided " + schema);
+                }
+            }
+            else {
+                MemoryEntry entry = new MemoryEntry(this, schema );
+                entries.put(typeName,  entry);
+                return entry;
+            }
+        }
+    }
 
     /**
      * List of available types provided by this DataStore.
@@ -295,14 +305,13 @@ public class MemoryDataStore extends ContentDataStore {
      * @see org.geotools.data.ContentDataStore#getFeatureTypes()
      */
     protected List<Name> createTypeNames() {
-        synchronized (memory) {
-            List<Name> typeNames = new ArrayList<Name>();
-            
-            for (Iterator<String> i = schema.keySet().iterator(); i.hasNext();) {
-                typeNames.add( new NameImpl(namespaceURI, i.next()));
+        List<Name> names = new ArrayList<Name>( this.entries.keySet() );
+        Collections.sort( names, new Comparator<Name>() {
+            public int compare(Name n1, Name n2) {
+                return n1.toString().compareTo(n2.toString());
             }
-            return typeNames;
-        }
+        });
+        return names;
     }
     
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) {
@@ -328,42 +337,32 @@ public class MemoryDataStore extends ContentDataStore {
      * @see org.geotools.data.DataStore#createSchema(org.geotools.feature.SimpleFeatureType)
      */
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-        String typeName = featureType.getTypeName();
-
-        if (memory.containsKey(typeName)) {
+        Name typeName = featureType.getName();
+        if (entries.containsKey(typeName)) {
             // we have a conflict
             throw new IOException(typeName + " already exists");
         }
-            // insertion order preserving map
-            Map<String,SimpleFeature> featuresMap = new LinkedHashMap<String,SimpleFeature>();
-            schema.put(typeName, featureType);
-            memory.put(typeName, featuresMap);
+        MemoryEntry entry = new MemoryEntry(this, featureType);
+        entries.put(typeName, entry );
     }
 
-    /* (non-Javadoc)
-     * @see org.geotools.data.store.ContentDataStore#removeSchema(java.lang.String)
-     */
     @Override
     public void removeSchema(String typeName) throws IOException {
-        if (typeName != null) {
-            // graceful remove, its fine if the type has never been registered
-            synchronized (schema) {
-                schema.remove(typeName);
-            }
-
-            synchronized (memory) {
-                memory.remove(typeName);
+        for( Name name : entries.keySet() ){
+            if( name.getLocalPart().equals(typeName)){
+                removeSchema( name );
+                return;
             }
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.geotools.data.store.ContentDataStore#removeSchema(org.opengis.feature.type.Name)
-     */
     @Override
     public void removeSchema(Name typeName) throws IOException {
-        if (typeName != null && typeName.getLocalPart() != null) {
-            removeSchema(typeName.getLocalPart());
+        if (typeName != null) {
+            // graceful remove, its fine if the type has never been registered
+            synchronized (entries) {
+                entries.remove(typeName);
+            }
         }
     }
 

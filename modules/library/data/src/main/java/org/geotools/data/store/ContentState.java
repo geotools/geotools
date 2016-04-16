@@ -38,7 +38,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
 /**
- * The state of an entry in a datastore, maintained on a per-transaction basis. For information
+ * The state of an entry in a DataStore, maintained on a per-transaction basis. For information
  * maintained on a typeName basis see {@link ContentEntry}.
  *
  * <h3>Data Cache Synchronization Required</h2>
@@ -455,7 +455,7 @@ public class ContentState {
     /**
      * Copies the state.
      * <p>
-     * Subclasses shold override this method. Any mutable state objects should be cloned.
+     * Subclasses should override this method. Any mutable state objects should be cloned.
      * </p>
      * 
      * @return A copy of the state.

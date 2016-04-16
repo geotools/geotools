@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -29,6 +30,7 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
+import org.geotools.factory.Hints.Key;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -41,15 +43,15 @@ import org.opengis.filter.Filter;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-@SuppressWarnings("rawtypes")
 class ShapefileFeatureStore extends ContentFeatureStore {
 
     ShapefileFeatureSource delegate;
 
+    @SuppressWarnings("unchecked")
     public ShapefileFeatureStore(ContentEntry entry, ShpFiles files) {
         super(entry, Query.ALL);
         this.delegate = new ShapefileFeatureSource(entry, files);
-        this.hints = delegate.getSupportedHints();
+        this.hints = (Set<Key>) (Set<?>) delegate.getSupportedHints();
     }
 
     @Override

@@ -30,7 +30,6 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
@@ -60,9 +59,9 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     }
     
     @Override
-    protected void addHints(Set<Key> hints) {
+    protected void addHints(Set<Hints.Key> hints) {
         // mark the features as detached, that is, the user can directly alter them
-        // without altering the state of the datastore
+        // without altering the state of the DataStore
         hints.add(Hints.FEATURE_DETACHED);
     }
     

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.geotools.data.Query;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
@@ -1069,29 +1070,30 @@ public class SimpleFeatureTypeBuilder {
         }
         return bindings;
     }
-	
-	/**
-	 * Decodes a srs, supplying a useful error message if there is a problem.
-	 */
-	protected CoordinateReferenceSystem decode( String srs ) {
-	    try {
+
+    /**
+     * Decodes a srs, supplying a useful error message if there is a problem.
+     */
+    protected CoordinateReferenceSystem decode(String srs) {
+        try {
             return CRS.decode(srs);
-        } catch (Exception  e) {
-            String msg = "SRS '" + srs + "' unknown:" + e.getLocalizedMessage(); 
-            throw (IllegalArgumentException) new IllegalArgumentException( msg ).initCause( e );
+        } catch (Exception e) {
+            String msg = "SRS '" + srs + "' unknown:" + e.getLocalizedMessage();
+            throw (IllegalArgumentException) new IllegalArgumentException(msg).initCause(e);
         }
-	}
-	
-	/**
-	 * Create a SimpleFeatureType containing just the descriptors indicated.
-	 * @param original SimpleFeatureType
-	 * @param types name of types to include in result
-	 * @return SimpleFeatureType containing just the types indicated by name
-	 */
-	public static SimpleFeatureType retype( SimpleFeatureType original, String[] types ) {
-	    return retype(original, Arrays.asList(types));
-	}
-	
+    }
+
+    /**
+     * Create a SimpleFeatureType containing just the descriptors indicated.
+     * 
+     * @param original SimpleFeatureType
+     * @param types name of types to include in result
+     * @return SimpleFeatureType containing just the types indicated by name
+     */
+    public static SimpleFeatureType retype(SimpleFeatureType original, String[] types) {
+        return retype(original, Arrays.asList(types));
+    }
+
     public static SimpleFeatureType retype(SimpleFeatureType original, List<String> types) {
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
 
@@ -1114,6 +1116,7 @@ public class SimpleFeatureTypeBuilder {
 
         return b.buildFeatureType();
     }
+
 
 	/**
          * Create a SimpleFeatureType with the same content; just updating the geometry
@@ -1142,8 +1145,31 @@ public class SimpleFeatureTypeBuilder {
                     continue;
                 }
                 b.add( descriptor);
-            }            
+            }
             return b.buildFeatureType();
+        }
+
+        /**
+         * Configure expected 
+         * @param origional
+         * @param query
+         * @return
+         */
+        public static SimpleFeatureType retype(SimpleFeatureType origional, Query query) {
+            CoordinateReferenceSystem crs = null;
+            if( query.getCoordinateSystem() != null ){
+                crs = query.getCoordinateSystem();
+            }
+            if( query.getCoordinateSystemReproject() != null ){
+                crs = query.getCoordinateSystemReproject();
+            }
+            return retype( origional, query.getPropertyNames(), crs );
+        }
+        
+        private static SimpleFeatureType retype(SimpleFeatureType origional, String[] propertyNames,
+                CoordinateReferenceSystem crs) {
+            // TODO Auto-generated method stub
+            return null;
         }
 
         /**

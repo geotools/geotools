@@ -52,7 +52,7 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
 			.toString());
 
 	/** The format for the image e will write. */
-	private String format;
+	//private String format;
 
 
 	public WorldImageWriterTest(String name) {
@@ -83,35 +83,28 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
 
 		// checking test data directory for all kind of inputs
 		final File test_data_dir = TestData.file(this, null);
+		File output;
 		final String[] fileList = test_data_dir.list(new MyFileFilter());
-		final int length = fileList.length;
-		final int numSupportedFormat = supportedFormat.length;
-		for (int j = 0; j < numSupportedFormat; j++) {
-			format = supportedFormat[j];
+		for (String format : supportedFormat) {
 			final StringBuffer buff = new StringBuffer("Format is ").append(
 					format).append("\n");
-			for (int i = 0; i < length; i++) {
-				buff.append(" file is ").append(fileList[i]).append("\n");
+			for( String filePath : fileList ){
+				buff.append(" Testing ability to write ").append(filePath);
 				// url
-				final URL url = TestData.getResource(this, fileList[i]);
+				final URL url = TestData.getResource(this, filePath);
 				assertTrue(url != null);
-				this.write(url);
+				output = this.write(url, format);
+				buff.append(" as url ").append(filePath).append(output.getName());
 
 				// getting file
-				final File file = TestData.file(this, fileList[i]);
+				final File file = TestData.file(this, filePath);
 				assertTrue(file != null);
 				// starting write test
-				this.write(file);
-
+				output = this.write(file, format);
+				buff.append(" and file ").append(filePath).append(output.getName()+"\n");
 			}
-			// logger.info(buff.toString());
-			assertTrue( "jpeg expected", buff.indexOf("Format is jpeg") != -1 );
-			assertTrue( "box_gcp.tif expected", buff.indexOf("box_gcp.tif") != -1 );
-			assertTrue( "etopo.tif expected", buff.indexOf("etopo.tif") != -1 );
-			assertTrue( "Pk50095.tif expected", buff.indexOf("Pk50095.tif") != -1 );
-			assertTrue( "usa.tif expected", buff.indexOf("usa.tif") != -1 );
+			logger.info(buff.toString());
 		}
-
 	}
 
 	/**
@@ -128,7 +121,7 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
 	 * @throws TransformException
 	 * @throws ParseException
 	 */
-	private void write(Object source) throws IOException,
+	private File write(Object source, String format) throws IOException,
 			IllegalArgumentException, FactoryException, TransformException,
 			ParseException {
 		// instantiating a reader
@@ -176,6 +169,8 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
 			coverage.getRenderedImage().getData();
 		wiReader.dispose();
         coverage.dispose(true);
+        
+            return tempFile;
 	}
 
     

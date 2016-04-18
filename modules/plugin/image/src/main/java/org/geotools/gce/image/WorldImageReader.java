@@ -633,7 +633,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         }
         if (crs == null) {
             crs = AbstractGridFormat.getDefaultCRS();
-            LOGGER.info("Unable to find crs, continuing with default CRS");
+            LOGGER.fine("Unable to find crs, continuing with default CRS");
         }
 
     }

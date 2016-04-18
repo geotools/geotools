@@ -104,7 +104,12 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
 				this.write(file);
 
 			}
-			logger.info(buff.toString());
+			// logger.info(buff.toString());
+			assertTrue( "jpeg expected", buff.indexOf("Format is jpeg") != -1 );
+			assertTrue( "box_gcp.tif expected", buff.indexOf("box_gcp.tif") != -1 );
+			assertTrue( "etopo.tif expected", buff.indexOf("etopo.tif") != -1 );
+			assertTrue( "Pk50095.tif expected", buff.indexOf("Pk50095.tif") != -1 );
+			assertTrue( "usa.tif expected", buff.indexOf("usa.tif") != -1 );
 		}
 
 	}

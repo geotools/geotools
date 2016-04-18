@@ -703,7 +703,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
 		}
 		if (crs == null) {
 			crs = AbstractGridFormat.getDefaultCRS();
-			LOGGER.info( "Unable to find crs, continuing with default CRS" );
+			LOGGER.fine( "Unable to find crs, continuing with default CRS" );
 		}
 	}
 

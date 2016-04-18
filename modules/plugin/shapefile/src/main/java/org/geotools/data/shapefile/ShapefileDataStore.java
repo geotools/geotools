@@ -320,7 +320,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 prjWriter.close();
             }
         } else {
-            LOGGER.warning("PRJ file not generated for null CoordinateReferenceSystem");
+            LOGGER.fine("PRJ file not generated for null CoordinateReferenceSystem");
         }
         StorageFile
                 .replaceOriginals(shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);

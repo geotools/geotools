@@ -1133,6 +1133,7 @@ public class PostGISDialect extends BasicSQLDialect {
             else {
                 encodeByteArrayAsEscape(input, sql);
             }
+            return;
         }
 
         if (BigDate.class.isAssignableFrom(type)) {

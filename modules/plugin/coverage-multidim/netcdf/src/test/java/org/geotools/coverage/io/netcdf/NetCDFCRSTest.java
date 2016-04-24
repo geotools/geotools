@@ -312,7 +312,21 @@ public class NetCDFCRSTest extends Assert {
             }
         }
     }
-    
+
+    /**
+     * Test that an unsupported grid_mapping_name falls back to WGS 84.
+     */
+    @Test
+    public void testUnsupportedGridMappingName() throws IOException {
+        File file = TestData.file(this, "unsupported-grid-mapping-name.nc");
+        NetCDFReader reader = new NetCDFReader(file, null);
+        assertNotNull(reader);
+        assertTrue(CRS.equalsIgnoreMetadata(reader.getCoordinateReferenceSystem(),
+                DefaultGeographicCRS.WGS84));
+        assertTrue(CRS.equalsIgnoreMetadata(reader.getCoordinateReferenceSystem("foo"),
+                DefaultGeographicCRS.WGS84));
+    }
+
     /**
      * Cleanup the custom definitions
      */

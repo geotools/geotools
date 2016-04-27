@@ -16,7 +16,15 @@
  */
 package org.geotools.feature.visitor;
 
-import com.vividsolutions.jts.io.WKTReader;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -25,9 +33,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * This class implement the test that checks the group by visitor behavior with different aggregate visitors.
@@ -282,6 +291,21 @@ public class GroupByVisitorTest {
                 new Object[]{"THEATER", 200.0}
         });
     }
+    
+    @Test
+    public void testFeatureAttributeVisitor() {
+        GroupByVisitor visitor = buildVisitor("energy_consumption", "Average", new String[]{"building_type"});
+        List<Expression> expressions = visitor.getExpressions();
+        Set<String> names = new HashSet<>();
+        for (Expression expression : expressions) {
+            PropertyName pn = (PropertyName) expression;
+            names.add(pn.getPropertyName());
+        }
+        assertEquals(2, names.size());
+        assertTrue(names.contains("energy_consumption"));
+        assertTrue(names.contains("building_type"));
+
+    }
 
     private void testVisitor(String aggregateAttribute, String aggregateVisitor,
                              String groupByAttribute, Object[][] expectedResults) throws Exception {
@@ -305,15 +329,21 @@ public class GroupByVisitorTest {
      */
     private GroupByVisitor executeVisitor(FeatureCollection featureCollection, String aggregateAttribute,
                                           String aggregateVisitor, String[] groupByAttributes) throws Exception {
+        GroupByVisitor visitor = buildVisitor(aggregateAttribute, aggregateVisitor,
+                groupByAttributes);
+        featureCollection.accepts(visitor, new NullProgressListener());
+        return visitor;
+    }
+
+    private GroupByVisitor buildVisitor(String aggregateAttribute, String aggregateVisitor,
+            String[] groupByAttributes) {
         GroupByVisitorBuilder visitorBuilder = new GroupByVisitorBuilder()
                 .withAggregateAttribute(aggregateAttribute, buildingType)
                 .withAggregateVisitor(aggregateVisitor);
         for (String groupByAttribute : groupByAttributes) {
             visitorBuilder.withGroupByAttribute(groupByAttribute, buildingType);
         }
-        GroupByVisitor visitor = visitorBuilder.build();
-        featureCollection.accepts(visitor, new NullProgressListener());
-        return visitor;
+        return visitorBuilder.build();
     }
 
     /**

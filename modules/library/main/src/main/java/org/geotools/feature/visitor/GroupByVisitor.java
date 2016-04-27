@@ -16,9 +16,14 @@
  */
 package org.geotools.feature.visitor;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.geotools.feature.DefaultFeatureCollection;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -26,13 +31,14 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 import org.opengis.util.ProgressListener;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Group features by one or several attributes and applies an aggregator visitor to each group.
  */
-public class GroupByVisitor implements FeatureCalc {
+public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
     private final Aggregate aggregate;
     private final Expression expression;
@@ -336,5 +342,12 @@ public class GroupByVisitor implements FeatureCalc {
             result[entry.getKey().size()] = entry.getValue().getValue();
             return result;
         }
+    }
+
+    @Override
+    public List<Expression> getExpressions() {
+        List<Expression> result = new ArrayList<>(groupByAttributes);
+        result.add(expression);
+        return result;
     }
 }

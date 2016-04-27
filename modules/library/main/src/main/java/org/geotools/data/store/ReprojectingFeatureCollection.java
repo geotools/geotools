@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
+import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
@@ -241,6 +242,15 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
 
     @Override
     protected boolean canDelegate(FeatureVisitor visitor) {
+        return isGeometryless(visitor, schema);
+    }
+    
+    /**
+     * Returns true if the visitor is geometryless, that is, it's not accessing a geometry field in the target schema
+     * @param visitor
+     * @return
+     */
+    public static boolean isGeometryless(FeatureVisitor visitor, SimpleFeatureType schema) {
         if (visitor instanceof FeatureAttributeVisitor) {
             //pass through unless one of the expressions requires the geometry attribute
             FilterAttributeExtractor extractor = new FilterAttributeExtractor(schema);
@@ -254,6 +264,8 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
                     return false;
                 }
             }
+            return true;
+        } else if(visitor instanceof CountVisitor) {
             return true;
         }
         return false;

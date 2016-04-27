@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.data.crs;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -32,7 +33,10 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.OperationNotFoundException;
+import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -46,12 +50,11 @@ import junit.framework.TestCase;
  *
  * @source $URL$
  */
-public class ForceCoordinateFeatureResultsTest extends TestCase {
+public class ReprojectFeatureResultsTest extends TestCase {
     
     private static final String FEATURE_TYPE_NAME = "testType";
     private CoordinateReferenceSystem wgs84;
     private CoordinateReferenceSystem utm32n;
-    private ListFeatureCollection featureCollection;
     
     FeatureVisitor lastVisitor = null;
     private ListFeatureCollection visitorCollection;
@@ -73,9 +76,6 @@ public class ForceCoordinateFeatureResultsTest extends TestCase {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(ft);
         b.add( p );
         
-        featureCollection = new ListFeatureCollection( ft );
-        featureCollection.add( b.buildFeature(null));
-        
         visitorCollection = new ListFeatureCollection(ft) {
             public void accepts(FeatureVisitor visitor, ProgressListener progress) throws java.io.IOException {
                 lastVisitor = visitor; 
@@ -93,40 +93,25 @@ public class ForceCoordinateFeatureResultsTest extends TestCase {
 
     }
 
-    public void testSchema() throws Exception {
-        SimpleFeatureCollection original = featureCollection;
-        assertEquals(wgs84, original.getSchema().getCoordinateReferenceSystem());
-        
-        SimpleFeatureCollection forced = new ForceCoordinateSystemFeatureResults(original, utm32n);
-        assertEquals(utm32n, forced.getSchema().getCoordinateReferenceSystem());
-    }
-    
-    public void testBounds() throws Exception {
-        SimpleFeatureCollection original = featureCollection;
-        assertFalse(original.getBounds().isEmpty());
-        SimpleFeatureCollection forced = new ForceCoordinateSystemFeatureResults(original, utm32n);
-        assertEquals(new ReferencedEnvelope(10,10,10,10, utm32n), forced.getBounds());
-    }
-    
-    public void testMaxVisitorDelegation() throws SchemaException, IOException {
+    public void testMaxVisitorDelegation() throws Exception {
         MaxVisitor visitor = new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
         assertOptimalVisit(visitor);
     }
     
-    public void testCountVisitorDelegation() throws SchemaException, IOException {
+    public void testCountVisitorDelegation() throws Exception {
         FeatureVisitor visitor = new CountVisitor();
         assertOptimalVisit(visitor);
     }
 
-    private void assertOptimalVisit(FeatureVisitor visitor) throws IOException, SchemaException {
-        SimpleFeatureCollection retypedCollection = new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
+    private void assertOptimalVisit(FeatureVisitor visitor) throws Exception {
+        SimpleFeatureCollection retypedCollection = new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(visitor, null);
         assertSame(lastVisitor, visitor);
     }
     
-    public void testBoundsNotOptimized() throws IOException, SchemaException {
+    public void testBoundsNotOptimized() throws Exception {
         BoundsVisitor boundsVisitor = new BoundsVisitor();
-        SimpleFeatureCollection retypedCollection = new ForceCoordinateSystemFeatureResults(visitorCollection, utm32n);
+        SimpleFeatureCollection retypedCollection = new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(boundsVisitor, null);
         // not optimized
         assertNull(lastVisitor);

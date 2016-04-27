@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
+import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.feature.FeatureVisitor;
@@ -68,6 +69,18 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
 
     @Override
     protected boolean canDelegate(FeatureVisitor visitor) {
+        return isTypeCompatible(visitor, featureType);
+    }
+    
+    /**
+     * Checks if the visitor is accessing only properties available in the specified feature type,
+     * or as a special case, if it's a count visitor accessing no properties at all
+     *  
+     * @param visitor
+     * @param featureType
+     * @return
+     */
+    public static boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
         if (visitor instanceof FeatureAttributeVisitor) {
             //pass through if the target schema contains all the necessary attributes
             FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
@@ -81,6 +94,8 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
                     return false;
                 }
             }
+            return true;
+        } else if(visitor instanceof CountVisitor) {
             return true;
         }
         return false;

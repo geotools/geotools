@@ -19,13 +19,21 @@ package org.geotools.data.store;
 
 import java.io.IOException;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
+import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.util.ProgressListener;
 
 /**
  * 
@@ -34,6 +42,28 @@ import org.opengis.filter.FilterFactory;
  */
 public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    
+    FeatureVisitor lastVisitor = null;
+    private ListFeatureCollection visitorCollection;
+    
+    protected void setUp() throws Exception {
+        super.setUp();
+        SimpleFeatureType schema = DataUtilities.createType("BasicPolygons", "the_geom:MultiPolygon:srid=4326,ID:String,value:int");
+        visitorCollection = new ListFeatureCollection(schema) {
+            public void accepts(FeatureVisitor visitor, ProgressListener progress) throws java.io.IOException {
+                lastVisitor = visitor; 
+            };
+            
+            @Override
+            public SimpleFeatureCollection subCollection(Filter filter) {
+                if(filter == Filter.INCLUDE) {
+                    return this;
+                } else {
+                    return super.subCollection(filter);
+                }
+            }
+        };
+    }
     
     public void testNext() {
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
@@ -56,5 +86,24 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
                 
             }
         }, null);
+    }
+    
+    @Test
+    public void testMaxVisitorDelegation() throws SchemaException, IOException {
+        MaxVisitor visitor = new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
+        assertOptimalVisit(visitor);
+    }
+    
+    @Test
+    public void testCountVisitorDelegation() throws SchemaException, IOException {
+        FeatureVisitor visitor = new CountVisitor();
+        assertOptimalVisit(visitor);
+    }
+
+
+    private void assertOptimalVisit(FeatureVisitor visitor) throws IOException {
+        FilteringSimpleFeatureCollection retypedCollection = new FilteringSimpleFeatureCollection(visitorCollection, Filter.INCLUDE);
+        retypedCollection.accepts(visitor, null);
+        assertSame(lastVisitor, visitor);
     }
 }

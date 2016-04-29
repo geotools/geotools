@@ -5,7 +5,7 @@
     <parent>
         <artifactId>unsupported</artifactId>
         <groupId>org.geotools</groupId>
-        <version>15-SNAPSHOT</version>
+        <version>16-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

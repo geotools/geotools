@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -256,7 +256,8 @@ public class GeometryClipper {
 
         LinearRing exterior = (LinearRing) polygon.getExteriorRing();
         LinearRing shell = polygonClip(exterior);
-        if(shell == null || shell.isEmpty()) {
+        shell = cleanupRings(shell);
+        if(shell == null) {
             return null;
         }
 
@@ -264,12 +265,57 @@ public class GeometryClipper {
         for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
             LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);
             hole = polygonClip(hole);
-            if(hole != null && !hole.isEmpty()) {
+            hole = cleanupRings(hole);
+            if(hole != null) {
                 holes.add(hole);
             }
         }
 
         return gf.createPolygon(shell, (LinearRing[]) holes.toArray(new LinearRing[holes.size()]));
+    }
+
+    
+    /**
+     * The {@link #polygonClip(LinearRing)} routine can generate invalid rings fully on top of the clipping area borders (with no inside). Do a quick
+     * check that does not involve an expensive isValid() call
+     * 
+     * @param ring
+     * @return The ring, or null if the ring was not valid
+     */
+    private LinearRing cleanupRings(LinearRing ring) {
+        if(ring == null || ring.isEmpty()) {
+            return null;
+        }
+        
+        final CoordinateSequence cs = ring.getCoordinateSequence();
+        double px = cs.getX(0);
+        double py = cs.getY(0);
+        boolean fullyOnBorders = true;
+        for (int i = 1; i < cs.size() && fullyOnBorders; i++) {
+            double x = cs.getX(i);
+            double y = cs.getY(i);
+            // check if the current segment lies on the bbox side fully
+            if((x == px && (x == xmin || x == xmax)) || (y == py && (y == ymin || y == ymax))) {
+                px = x;
+                py = y;
+            } else {
+                fullyOnBorders = false;
+            }
+        }
+        // all sides are sitting on the bbox borders, this is the degenerate case
+        // we are trying to filter out
+        if(fullyOnBorders) {
+            // could still be a case of a polygon equal to the clipping border itself
+            // This area test could actually replace the whole method,
+            // but it's more expensive to run, so we use it as a last resort for a specific case
+            if(ring.getFactory().createPolygon(ring).getArea() > 0) {
+                return ring;
+            } else {
+                return null;
+            }
+        } else {
+            return ring;
+        }
     }
 
     /**

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -238,6 +238,14 @@ public class GeometryClipperTest {
         Geometry clipped = clipper.clip(g, true);
         assertTrue(clipped.equalsExact(wkt.read("POLYGON ((10 2, 6 2, 6 8, 10 8, 10 6, 8 6, 8 4, 10 4, 10 2))")));
         showResult("Donut crossing, valid geom", g, clipped);
+    }
+    
+    @Test
+    public void testFullyOutsideAround() throws Exception {
+        Geometry g = wkt.read("POLYGON((0 -10, 20 -10, 20 10, 30 10, 30 -20, 0 -20, 0 -10))");
+        Geometry clipped = clipper.clip(g, false);
+        assertNull(clipped);
+        showResult("Fully outside around", g, clipped);
     }
     
     @Test

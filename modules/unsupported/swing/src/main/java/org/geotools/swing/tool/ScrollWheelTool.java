@@ -26,6 +26,7 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.swing.JMapPane;
 import org.geotools.swing.event.MapMouseEvent;
+
 /**
  * Allow scrolling with the mouse wheel.
  * 

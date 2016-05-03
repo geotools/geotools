@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -669,7 +669,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         }
         
         public void setAttribute(String name, Object value) {
-            dataStore.getLogger().fine("Setting " + name + " to " + value);
+            if (dataStore.getLogger().isLoggable(Level.FINE)) {
+                dataStore.getLogger().fine("Setting " + name + " to " + value);
+            }
 
             int i = index.get(name);
             setAttribute(i, value);
@@ -681,7 +683,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
 
         public void setAttribute(int index, Object value)
             throws IndexOutOfBoundsException {
-            dataStore.getLogger().fine("Setting " + index + " to " + value);
+            if (dataStore.getLogger().isLoggable(Level.FINE)) {
+                dataStore.getLogger().fine("Setting " + index + " to " + value);
+            }
             values[index] = value;
             dirty[index] = true;
         }

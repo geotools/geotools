@@ -153,6 +153,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     static final Version V_2_0_0 = new Version("2.0.0");
 
+    static final Version V_2_1_0 = new Version("2.1.0");
+
     static final Version V_2_2_0 = new Version("2.2.0");
 
     static final Version PGSQL_V_9_0 = new Version("9.0");
@@ -229,6 +231,7 @@ public class PostGISDialect extends BasicSQLDialect {
     public void initializeConnection(Connection cx) throws SQLException {
         super.initializeConnection(cx);
         getPostgreSQLVersion(cx);
+        getVersion(cx);
     }
 
     @Override
@@ -306,7 +309,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
 
             if (force2D) {
-                sql.append("encode(ST_AsBinary(ST_Force_2D(");
+                sql.append("encode(ST_AsBinary(" + getForce2DFunction() + "(");
                 encodeColumnName(prefix, gatt.getLocalName(), sql);
                 sql.append(")),'base64')");
             } else {
@@ -336,7 +339,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 sql.append("),'base64')");
             } else {
                 if (NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding())) {
-                    sql.append("encode(ST_AsBinary(ST_Simplify(ST_Force_2D(");
+                    sql.append("encode(ST_AsBinary(ST_Simplify(" + getForce2DFunction() + "(");
                     encodeColumnName(prefix, gatt.getLocalName(), sql);
                     sql.append("), " + distance + preserveCollapsed + ")),'base64')");
                 } else {
@@ -347,7 +350,7 @@ public class PostGISDialect extends BasicSQLDialect {
                     sql.append(") THEN ");
                     encodeColumnName(prefix, gatt.getLocalName(), sql);
                     sql.append(" ELSE ");
-                    sql.append("ST_Simplify(ST_Force_2D(");
+                    sql.append("ST_Simplify(" + getForce2DFunction() + "(");
                     encodeColumnName(prefix, gatt.getLocalName(), sql);
                     sql.append("), " + distance + preserveCollapsed + ") END),'base64')");
                 }
@@ -359,7 +362,7 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn,
             StringBuffer sql) {
-        sql.append("ST_AsText(ST_Force_2D(ST_Envelope(");
+        sql.append("ST_AsText(" + getForce2DFunction() + "(ST_Envelope(");
         sql.append("ST_Extent(\"" + geometryColumn + "\"::geometry))))");
     }
     
@@ -389,7 +392,8 @@ public class PostGISDialect extends BasicSQLDialect {
                 if (att instanceof GeometryDescriptor) {
                     // use estimated extent (optimizer statistics)
                     StringBuffer sql = new StringBuffer();
-                    sql.append("select ST_AsText(ST_force_2d(ST_Envelope(ST_Estimated_Extent('");
+                    sql.append("select ST_AsText(" + getForce2DFunction() + "(ST_Envelope("
+                            + getEstimatedExtentFunction() + "('");
                     if(schema != null) {
                         sql.append(schema);
                         sql.append("', '");
@@ -418,7 +422,8 @@ public class PostGISDialect extends BasicSQLDialect {
             if(savePoint != null) {
                 cx.rollback(savePoint);
             }
-            LOGGER.log(Level.WARNING, "Failed to use ST_Estimated_Extent, falling back on envelope aggregation", e);
+            LOGGER.log(Level.WARNING, "Failed to use " + getEstimatedExtentFunction()
+                    + ", falling back on envelope aggregation", e);
             return null;
         } finally {
             if(savePoint != null) {
@@ -1207,5 +1212,23 @@ public class PostGISDialect extends BasicSQLDialect {
             hints.add(Hints.GEOMETRY_SIMPLIFICATION);
         }
     }
-    
+
+    /**
+     * Returns "ST_Force2D" if PostGIS version is >= 2.1.0, otherwise "ST_Force_2D"
+     * @return Force2D function name
+     */
+    protected String getForce2DFunction() {
+        return version == null || version.compareTo(V_2_1_0) >= 0
+                ? "ST_Force2D" : "ST_Force_2D";
+    }
+
+    /**
+     * Returns "ST_EstimatedExtent" if PostGIS version is >= 2.1.0, otherwise "ST_Estimated_Extent"
+     * @return EstimatedExtent function name
+     */
+    protected String getEstimatedExtentFunction() {
+        return version == null || version.compareTo(V_2_1_0) >= 0
+                ? "ST_EstimatedExtent" : "ST_Estimated_Extent";
+    }
+
 }

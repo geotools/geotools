@@ -18,10 +18,8 @@ package org.geotools.data.memory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
@@ -43,15 +41,11 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
 
     public MemoryFeatureReader(ContentState state, Query query) throws IOException {
         featureType = state.getFeatureType();
-
-        final MemoryDataStore store = (MemoryDataStore) state.getEntry().getDataStore();
-        final Map<String, SimpleFeature> features = store.features(featureType.getTypeName());
-        synchronized (features) {
-            final Collection<SimpleFeature> featureCollection = features.values();
-            final List<SimpleFeature> internalCollection = new ArrayList<SimpleFeature>();
-            if (features != null) {
-                internalCollection.addAll(featureCollection);
-            }
+        MemoryEntry entry = (MemoryEntry) state.getEntry();
+        
+        synchronized (entry) {
+            final List<SimpleFeature> internalCollection = new ArrayList<SimpleFeature>(
+                    entry.memory.values());
             iterator = internalCollection.iterator();
         }
     }

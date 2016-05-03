@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataStore;
@@ -71,10 +70,9 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 /**
- * DOCUMENT ME!
+ * API Test for FeatureSource using MemoryDataStore as a reference implementation.
  * 
  * @author Jody Garnett, Refractions Research
- *
  *
  * @source $URL$
  */
@@ -646,7 +644,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
         }
 
-        assertEquals(roadFeatures.length - 1, data.features("road").size());
+        assertEquals(roadFeatures.length - 1, data.entry("road").memory.size());
     }
 
     public void testGetFeaturesWriterAdd() throws IOException {
@@ -662,7 +660,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         feature.setAttributes(newRoad.getAttributes());
         writer.write();
         assertFalse(writer.hasNext());
-        assertEquals(roadFeatures.length + 1, data.features("road").size());
+        assertEquals(roadFeatures.length + 1, data.entry("road").memory.size());
     }
 
     public void testGetFeaturesWriterModify() throws IOException {
@@ -678,7 +676,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
         }
 
-        feature = (SimpleFeature) data.features("road").get("road.rd1");
+        feature = data.entry("road").memory.get("road.rd1");
         assertEquals("changed", feature.getAttribute("name"));
     }
 
@@ -1101,8 +1099,8 @@ public class MemoryDataStoreTest extends DataTestCase {
     //
     public void testGetFeatureStoreModifyFeatures1() throws IOException {
         SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
-        AttributeDescriptor name = roadType.getDescriptor("name");
-        road.modifyFeatures(name, "changed", rd1Filter);
+        AttributeDescriptor descriptor = roadType.getDescriptor("name");
+        road.modifyFeatures(descriptor.getName(), "changed", rd1Filter);
 
         SimpleFeatureCollection results = road.getFeatures(rd1Filter);
         assertEquals("changed", results.features().next().getAttribute("name"));
@@ -1110,8 +1108,8 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     public void testGetFeatureStoreModifyFeatures2() throws IOException {
         SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
-        AttributeDescriptor name = roadType.getDescriptor("name");
-        road.modifyFeatures(new AttributeDescriptor[]{name}, new Object[]{"changed",}, rd1Filter);
+        AttributeDescriptor descriptor = roadType.getDescriptor("name");
+        road.modifyFeatures(new Name[]{descriptor.getName()}, new Object[]{"changed",}, rd1Filter);
 
         SimpleFeatureCollection results = road.getFeatures(rd1Filter);
         assertEquals("changed", results.features().next().getAttribute("name"));
@@ -1234,9 +1232,8 @@ public class MemoryDataStoreTest extends DataTestCase {
                 .getTypeName());
         store1.setTransaction(defaultTransaction);
         class Listener implements FeatureListener {
-
             String name;
-            List events = new ArrayList();
+            List<FeatureEvent> events = new ArrayList<FeatureEvent>();
             public Listener( String name ) {
                 this.name = name;
             }
@@ -1247,7 +1244,9 @@ public class MemoryDataStoreTest extends DataTestCase {
             FeatureEvent getEvent( int i ) {
                 return (FeatureEvent) events.get(i);
             }
-
+            public String toString() {
+                return "Feature Listener "+name;
+            }
         }
         Listener listener1 = new Listener("one");
         Listener listener2 = new Listener("two");
@@ -1332,6 +1331,8 @@ public class MemoryDataStoreTest extends DataTestCase {
     }
     public void testUnLockFeatures() throws IOException {
         FeatureLock lock = new FeatureLock("test", 3600);
+        
+        @SuppressWarnings("unchecked")
         FeatureLocking<SimpleFeatureType, SimpleFeature> road = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
         road.setFeatureLock(lock);
         road.lockFeatures();
@@ -1359,55 +1360,58 @@ public class MemoryDataStoreTest extends DataTestCase {
         Transaction t1 = new DefaultTransaction();
         Transaction t2 = new DefaultTransaction();
         try {
-	        FeatureLocking<SimpleFeatureType, SimpleFeature> road1 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
-	        FeatureLocking<SimpleFeatureType, SimpleFeature> road2 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
-	        road1.setTransaction(t1);
-	        road2.setTransaction(t2);
-	        road1.setFeatureLock(lockA);
-	        road2.setFeatureLock(lockB);
-	
-	        assertFalse(isLocked("road", "road.rd1"));
-	        assertFalse(isLocked("road", "road.rd2"));
-	        assertFalse(isLocked("road", "road.rd3"));
-	
-	        road1.lockFeatures(rd1Filter);
-	        assertTrue(isLocked("road", "road.rd1"));
-	        assertFalse(isLocked("road", "road.rd2"));
-	        assertFalse(isLocked("road", "road.rd3"));
-	
-	        road2.lockFeatures(rd2Filter);
-	        assertTrue(isLocked("road", "road.rd1"));
-	        assertTrue(isLocked("road", "road.rd2"));
-	        assertFalse(isLocked("road", "road.rd3"));
-	
-	        try {
-	            road1.unLockFeatures(rd1Filter);
-	            fail("need authorization");
-	        } catch (IOException expected) {
-	        }
-	        t1.addAuthorization(lockA.getAuthorization());
-	        try {
-	            road1.unLockFeatures(rd2Filter);
-	            fail("need correct authorization");
-	        } catch (IOException expected) {
-	        }
-	        road1.unLockFeatures(rd1Filter);
-	        assertFalse(isLocked("road", "road.rd1"));
-	        assertTrue(isLocked("road", "road.rd2"));
-	        assertFalse(isLocked("road", "road.rd3"));
-	
-	        t2.addAuthorization(lockB.getAuthorization());
-	        road2.unLockFeatures(rd2Filter);
-	        assertFalse(isLocked("road", "road.rd1"));
-	        assertFalse(isLocked("road", "road.rd2"));
-	        assertFalse(isLocked("road", "road.rd3"));
+            @SuppressWarnings("unchecked")    
+            FeatureLocking<SimpleFeatureType, SimpleFeature> road1 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
+            @SuppressWarnings("unchecked")    
+            FeatureLocking<SimpleFeatureType, SimpleFeature> road2 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
+            road1.setTransaction(t1);
+            road2.setTransaction(t2);
+            road1.setFeatureLock(lockA);
+            road2.setFeatureLock(lockB);
+
+            assertFalse(isLocked("road", "road.rd1"));
+            assertFalse(isLocked("road", "road.rd2"));
+            assertFalse(isLocked("road", "road.rd3"));
+
+            road1.lockFeatures(rd1Filter);
+            assertTrue(isLocked("road", "road.rd1"));
+            assertFalse(isLocked("road", "road.rd2"));
+            assertFalse(isLocked("road", "road.rd3"));
+
+            road2.lockFeatures(rd2Filter);
+            assertTrue(isLocked("road", "road.rd1"));
+            assertTrue(isLocked("road", "road.rd2"));
+            assertFalse(isLocked("road", "road.rd3"));
+
+            try {
+                road1.unLockFeatures(rd1Filter);
+                fail("need authorization");
+            } catch (IOException expected) {
+            }
+            t1.addAuthorization(lockA.getAuthorization());
+            try {
+                road1.unLockFeatures(rd2Filter);
+                fail("need correct authorization");
+            } catch (IOException expected) {
+            }
+            road1.unLockFeatures(rd1Filter);
+            assertFalse(isLocked("road", "road.rd1"));
+            assertTrue(isLocked("road", "road.rd2"));
+            assertFalse(isLocked("road", "road.rd3"));
+
+            t2.addAuthorization(lockB.getAuthorization());
+            road2.unLockFeatures(rd2Filter);
+            assertFalse(isLocked("road", "road.rd1"));
+            assertFalse(isLocked("road", "road.rd2"));
+            assertFalse(isLocked("road", "road.rd3"));
         } finally {
-        	t1.close();
-        	t2.close();
+            t1.close();
+            t2.close();
         }
     }
     public void testGetFeatureLockingExpire() throws Exception {
-        FeatureLock lock = new FeatureLock("Timed", 500);        
+        FeatureLock lock = new FeatureLock("Timed", 500);
+        @SuppressWarnings("unchecked")
         FeatureLocking<SimpleFeatureType, SimpleFeature> road = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
         road.setFeatureLock(lock);
         assertFalse(isLocked("road", "road.rd1"));
@@ -1456,8 +1460,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         mds.addFeature(roadFeatures[0]);
         mds.addFeature(roadFeatures[1]);
 
-        Map<String, SimpleFeature> features = mds.features("road");
-        assertEquals(2, features.size());
+        assertEquals(2, mds.entry("road").memory.size());
     }
 
     public void testCallingAddFeaturesWithArrayTwiceAndExtentInitialCollection() throws IOException {
@@ -1467,8 +1470,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature road1 = SimpleFeatureBuilder.template(roadType, null);
         mds.addFeatures(new SimpleFeature[] {road1});
 
-        Map<String, SimpleFeature> features = mds.features("road");
-        assertEquals(roadFeatures.length + 1, features.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
     }
 
     public void testCallingAddFeaturesWithCollectionTwiceAndExtentInitialCollection() throws IOException {
@@ -1479,8 +1481,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         mds.addFeatures(Collections.singletonList(road1));
 
-        Map<String, SimpleFeature> features = mds.features("road");
-        assertEquals(roadFeatures.length + 1, features.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
     }
 
     public void testCallingAddFeaturesWithReaderTwiceAndExtentInitialCollection()
@@ -1489,18 +1490,14 @@ public class MemoryDataStoreTest extends DataTestCase {
                 .reader(roadFeatures);
         MemoryDataStore mds = new MemoryDataStore(reader);
 
-        assertEquals(roadFeatures.length, mds.features(roadType.getTypeName())
-                .size());
+        assertEquals(roadFeatures.length, mds.entry(roadType.getTypeName()).memory.size());
 
         FeatureReader<SimpleFeatureType, SimpleFeature> secondReader = DataUtilities
                 .reader(new SimpleFeature[] { SimpleFeatureBuilder.template(
                         roadType, null) });
 
         mds.addFeatures(secondReader);
-
-        Map<String, SimpleFeature> features = mds.features("road");
-        assertEquals(roadFeatures.length + 1, features.size());
-
+        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
     }
 
     public void testCallingAddFeaturesWithIteratorTwiceAndExtentInitialCollection()
@@ -1509,8 +1506,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                 .reader(roadFeatures);
         MemoryDataStore mds = new MemoryDataStore(reader);
 
-        assertEquals(roadFeatures.length, mds.features(roadType.getTypeName())
-                .size());
+        assertEquals(roadFeatures.length, mds.entry(roadType.getTypeName()).memory.size());
 
         SimpleFeatureIterator featureIterator = DataUtilities
                 .collection(new SimpleFeature[] { SimpleFeatureBuilder.template(
@@ -1518,7 +1514,6 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         mds.addFeatures(featureIterator);
 
-        Map<String, SimpleFeature> features = mds.features("road");
-        assertEquals(roadFeatures.length + 1, features.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
 
     }}

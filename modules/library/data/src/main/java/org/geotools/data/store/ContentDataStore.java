@@ -533,10 +533,9 @@ public abstract class ContentDataStore implements DataStore {
      * @param entry The entry.
      * 
      * @return A new instance of {@link ContentState} for the entry.	
-     *
      */
     protected ContentState createContentState(ContentEntry entry) {
-    	return new ContentState( entry );
+        return new ContentState( entry );
     }
     
     /**

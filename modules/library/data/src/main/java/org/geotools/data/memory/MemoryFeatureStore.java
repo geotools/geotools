@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,9 +33,12 @@ public class MemoryFeatureStore extends ContentFeatureStore {
     
     public MemoryFeatureStore(ContentEntry entry, Query query) {
         super(entry, query);
-        // TODO Auto-generated constructor stub
     }
     
+    @Override
+    public MemoryState getState() {
+        return (MemoryState) super.getState();
+    }
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {

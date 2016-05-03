@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -62,7 +61,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public final class JDBCFeatureStore extends ContentFeatureStore {
     
-    private static final Query QUERY_NONE = new DefaultQuery(null, Filter.EXCLUDE); 
+    private static final Query QUERY_NONE = new Query(null, Filter.EXCLUDE); 
     
     /**
      * jdbc feature source to delegate to, we do this b/c we can't inherit from
@@ -75,6 +74,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
      * @param entry The datastore entry.
      * @param query The defining query.
      */
+    @SuppressWarnings("unchecked")
     public JDBCFeatureStore(ContentEntry entry,Query query) throws IOException {
         super(entry,query);
         
@@ -88,10 +88,11 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             }
         };
         
-    	Set<Hints.Key> jdbcHints = new HashSet<Hints.Key>();      		
-    	jdbcHints.addAll(delegate.getSupportedHints());
-    	getDataStore().getSQLDialect().addSupportedHints(jdbcHints);
-    	hints=Collections.unmodifiableSet(jdbcHints);    	
+        Set<Hints.Key> jdbcHints = new HashSet<Hints.Key>();
+
+        jdbcHints.addAll((Set<Hints.Key>) (Set<?>) delegate.getSupportedHints());
+        getDataStore().getSQLDialect().addSupportedHints(jdbcHints);
+        hints=Collections.unmodifiableSet(jdbcHints);    	
     }
     
     /** We handle events internally */
@@ -265,7 +266,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         try {
             //check for insert only
             if ( (flags | WRITER_ADD) == WRITER_ADD ) {
-                DefaultQuery queryNone = new DefaultQuery(query);
+                Query queryNone = new Query(query);
                 queryNone.setFilter(Filter.EXCLUDE);
                 if ( getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect ) {
                     PreparedStatement ps = getDataStore().selectSQLPS(getSchema(), queryNone, cx);
@@ -287,7 +288,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             postFilter = split[1];
             
             // build up a statement for the content
-            DefaultQuery preQuery = new DefaultQuery(query);
+            Query preQuery = new Query(query);
             preQuery.setFilter(preFilter);
             if(getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
                 PreparedStatement ps = getDataStore().selectSQLPS(getSchema(), preQuery, cx);
@@ -367,7 +368,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                 ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
                 if( state.hasListener() ){
                     // gather bounds before modification
-                    ReferencedEnvelope before = getBounds( new DefaultQuery( getSchema().getTypeName(), preFilter ) );                
+                    ReferencedEnvelope before = getBounds( new Query( getSchema().getTypeName(), preFilter ) );                
                     if( before != null && !before.isEmpty() ){
                         bounds = before;
                     }
@@ -428,7 +429,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                 ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
                 if( state.hasListener() ){
                     // gather bounds before modification
-                    ReferencedEnvelope before = getBounds( new DefaultQuery( getSchema().getTypeName(), preFilter ) );                
+                    ReferencedEnvelope before = getBounds( new Query( getSchema().getTypeName(), preFilter ) );                
                     if( before != null && !before.isEmpty() ){
                         bounds = before;
                     }

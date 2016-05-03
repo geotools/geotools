@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,33 +17,30 @@
 package org.geotools.data.memory;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
-import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
-import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * Read access to feature content held in memory.
+ * @author Jody Garnett (Boundless)
+ */
 public class MemoryFeatureSource extends ContentFeatureSource {
-    String typeName;
-    SimpleFeatureType featureType;
-    //MemoryDataStore store;
+
+    public MemoryFeatureSource(ContentEntry entry) {
+        this(entry, Query.ALL );
+    }
     
     public MemoryFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
-        this.typeName = entry.getTypeName();
-        this.featureType = getDataStore().schema.get(typeName);
-        
     }
     
     /**
@@ -52,13 +49,23 @@ public class MemoryFeatureSource extends ContentFeatureSource {
     public MemoryDataStore getDataStore() {
         return (MemoryDataStore) super.getDataStore();
     }
+    
+    public MemoryState getState(){
+        return (MemoryState) super.getState();
+    }
+    /**
+     * The entry for the feature source.
+     */
+    public MemoryEntry getEntry() {
+        return (MemoryEntry) super.getEntry();
+    }
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
-            ReferencedEnvelope bounds = ReferencedEnvelope.create( 
-                    getSchema().getCoordinateReferenceSystem() ); 
             FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+            CoordinateReferenceSystem crs = featureReader.getFeatureType().getCoordinateReferenceSystem();
+            ReferencedEnvelope bounds = ReferencedEnvelope.create(crs);
             try {
                 while (featureReader.hasNext()) {
                     SimpleFeature feature = featureReader.next();
@@ -75,7 +82,10 @@ public class MemoryFeatureSource extends ContentFeatureSource {
     @Override
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
-            return getDataStore().features(typeName).size();
+            MemoryEntry entry = getEntry();
+            synchronized (entry) {
+                return entry.memory.size();
+            }
         }
         //feature by feature count required
         return -1;
@@ -89,12 +99,11 @@ public class MemoryFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() {
-        return featureType;
+        return getState().getEntry().schema; // cache schema unchanged (as we do not retype/reproject)
     }
-    
+
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
     }
-
 }

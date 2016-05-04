@@ -451,7 +451,7 @@ public abstract class SQLDialect {
      * @deprecated use {@link #encodeColumnName(String, String, StringBuffer)}.
      */
     public final void encodeColumnName(String raw, StringBuffer sql) {
-        sql.append(ne()).append(raw).append(ne());
+        encodeColumnName(null, raw, sql);
     }
 
     /**

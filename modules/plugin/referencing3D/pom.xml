@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>Vertical coordinate transformations</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/referencing3D/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/referencing3D/</url>
-  </scm>
 
   <description>
     Transforms coordinates from "heights above the ellipsoid" to "heights above

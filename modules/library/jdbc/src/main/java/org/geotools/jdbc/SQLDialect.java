@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -900,6 +900,17 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Encodes the CREATE TABLE statement.
+     * <p>
+     * Default implementation adds “CREATE TABLE” to the sql buffer.
+     * Subclasses may choose to override to handle db specific syntax.
+     * </p>
+     */
+    public void encodeCreateTable(StringBuffer sql) {
+        sql.append("CREATE TABLE ");
+    }
+
+    /**
      * Encodes anything post a column in a CREATE TABLE statement.
      * <p>
      * This is appended after the column name and type. Subclasses may choose to override
@@ -1151,7 +1162,17 @@ public abstract class SQLDialect {
         throws SQLException {
         return null;
     }
-    
+
+    /**
+     * Encodes how to get the next sequence value from the DB.
+     * <p>
+     * Implementations should handle the case where <tt>schemaName</tt> is <code>null</code>.
+     * </p>
+     */
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return null;
+    }
+
     /**
      * Returns true if this dialect can encode both {@linkplain Query#getStartIndex()}
      * and {@linkplain Query#getMaxFeatures()} into native SQL. 
@@ -1170,6 +1191,13 @@ public abstract class SQLDialect {
      */
     public boolean isAggregatedSortSupported(String function) {
         return false;
+    }
+
+    /**
+     * Returns true if this dialect supports group by clause.
+     */
+    public boolean isGroupBySupported() {
+        return true;
     }
     
     /**

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
   
   <profiles>
@@ -73,12 +73,6 @@
   <name>Coverage tools</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/coveragetools/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/coveragetools/</url>
-  </scm>
 
   <description>
     Coverage tools (tools for building overviews, pyramids and the like)

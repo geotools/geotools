@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -64,6 +64,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.factory.gridshift.DataUtilities;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
@@ -407,6 +408,7 @@ public class AncillaryFileManager implements FileSetManager{
         }
         // Marshalling the indexer to XML on disk
         Marshaller marshaller = CONTEXT.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshaller.marshal(indexer, indexerFile);
     }
 
@@ -794,7 +796,7 @@ public class AncillaryFileManager implements FileSetManager{
         DataStoreConfiguration datastoreConfiguration = null;
         if (datastoreIndexFile != null) {
             URL datastoreURL = DataUtilities.fileToURL(datastoreIndexFile);
-            Properties properties = Utils.loadPropertiesFromURL(datastoreURL);
+            Properties properties = CoverageUtilities.loadPropertiesFromURL(datastoreURL);
             if (properties != null) {
                 final String SPIClass = properties.getProperty("SPI");
                 try {

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -55,12 +55,14 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
+import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
-import org.geotools.gce.imagemosaic.catalog.MultiLevelROI;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -326,14 +328,15 @@ public class GranuleDescriptor {
                 File granuleFile = DataUtilities.urlToFile(granuleUrl);
                 AbstractGridFormat format = GridFormatFinder.findFormat(granuleFile,
                         EXCLUDE_MOSAIC);
-                AbstractGridCoverage2DReader gcReader = format.getReader(granuleFile, hints);
-                // Getting Dataset Layout
-                layout = gcReader.getDatasetLayout();
-
 		// create the base grid to world transformation
+                AbstractGridCoverage2DReader gcReader = null; 
 		ImageInputStream inStream = null;
 		ImageReader reader = null;
 		try {
+		    
+		    gcReader = format.getReader(granuleFile, hints);
+		    // Getting Dataset Layout
+	                layout = gcReader.getDatasetLayout();
 			//
 			//get info about the raster we have to read
 			//
@@ -444,6 +447,14 @@ public class GranuleDescriptor {
 					reader.dispose();
 				}
 			}
+			if (gcReader != null) {
+			    try {
+			        gcReader.dispose();
+			    } catch (Throwable t) {
+			        // Ignore it
+			    }
+			}
+			
 		}
 	}
 	
@@ -729,6 +740,7 @@ public class GranuleDescriptor {
 
 		ImageInputStream inStream=null;
 		ImageReader reader=null;
+		boolean cleanupInFinally = request.getReadType() != ReadType.JAI_IMAGEREAD;
 		try {
 			//
 			//get info about the raster we have to read
@@ -834,7 +846,13 @@ public class GranuleDescriptor {
 			// take into account the fact that we might also decimate therefore
 			// we cannot just use the crop grid to world but we need to correct
 			// it.
-			final Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection).toRectangle2D().getBounds();
+			Rectangle2D r2d = CRS.transform(cropWorldToGrid, intersection).toRectangle2D();
+			// if we are reading basically nothing, bail out immediately
+			if(r2d.getWidth() < 0.1 || r2d.getHeight() < 0.1) {
+			    cleanupInFinally = true;
+			    return null;
+			}
+            final Rectangle sourceArea = r2d.getBounds();
 			//gutter
 			if(selectedlevel.baseToLevelTransform.isIdentity()){
 			    sourceArea.grow(2, 2);
@@ -917,11 +935,11 @@ public class GranuleDescriptor {
 			final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
 			finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
                         
-			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS))
+			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, CoverageUtilities.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
-			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS))
+			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, CoverageUtilities.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(afterDecimationTranslateTranform);
-			if(!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS))
+			if(!XAffineTransform.isIdentity(decimationScaleTranform, CoverageUtilities.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(decimationScaleTranform);
 			
             // adjust roi
@@ -987,7 +1005,7 @@ public class GranuleDescriptor {
                         
 			// apply the affine transform  conserving indexed color model
 			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
-			if(XAffineTransform.isIdentity(finalRaster2Model,Utils.AFFINE_IDENTITY_EPS)) {
+			if(XAffineTransform.isIdentity(finalRaster2Model, CoverageUtilities.AFFINE_IDENTITY_EPS)) {
 			    return new GranuleLoadingResult(raster, null, granuleURLUpdated, doFiltering, pamDataset);
 			} else {
 				//
@@ -1074,11 +1092,11 @@ public class GranuleDescriptor {
 
                 } finally {
                     try {
-                        if (request.getReadType() != ReadType.JAI_IMAGEREAD && inStream != null) {
+                        if (cleanupInFinally && inStream != null) {
                             inStream.close();
                         }
                     } finally {
-                        if (request.getReadType() != ReadType.JAI_IMAGEREAD && reader != null) {
+                        if (cleanupInFinally && reader != null) {
                             reader.dispose();
                         }
                     }

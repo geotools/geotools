@@ -61,6 +61,10 @@ class CompositingGroup {
             if (layer instanceof DirectLayer) {
                 layers.add(new WrappingDirectLayer((DirectLayer) layer));
             } else if (layer instanceof ZGroupLayer) {
+                ZGroupLayer zLayer = (ZGroupLayer) layer;
+                if(zLayer.isCompositingBase()) {
+                    addToCompositingMapContents(graphics, screenSize, result, layers);
+                } 
                 layers.add(layer);
             } else {
                 List<Style> styles = splitOnCompositingBase(style);
@@ -96,6 +100,11 @@ class CompositingGroup {
     private static void addToCompositingMapContents(Graphics2D graphics, Rectangle screenSize,
             List<CompositingGroup> compositingContents, List<Layer> layers) {
         Composite composite = getComposite(layers);
+        addToCompositingMapContents(graphics, screenSize, compositingContents, layers, composite);
+    }
+
+    private static void addToCompositingMapContents(Graphics2D graphics, Rectangle screenSize,
+            List<CompositingGroup> compositingContents, List<Layer> layers, Composite composite) {
         Graphics2D cmcGraphic;
         if (compositingContents.size() == 0 && !hasAlphaCompositing(layers)) {
             cmcGraphic = graphics;
@@ -111,7 +120,11 @@ class CompositingGroup {
     }
 
     private static Composite getComposite(List<Layer> layers) {
-        Style styles = layers.get(0).getStyle();
+        Layer layer = layers.get(0);
+        if(layer instanceof ZGroupLayer) {
+            return ((ZGroupLayer) layer).getComposite();
+        }
+        Style styles = layer.getStyle();
         List<FeatureTypeStyle> featureTypeStyles = styles.featureTypeStyles();
         if (featureTypeStyles.size() > 0) {
             FeatureTypeStyle firstFts = featureTypeStyles.get(0);
@@ -165,7 +178,7 @@ class CompositingGroup {
         }
     }
 
-    private static boolean isCompositingBase(FeatureTypeStyle fts) {
+    static boolean isCompositingBase(FeatureTypeStyle fts) {
         return "true".equalsIgnoreCase(fts.getOptions().get(FeatureTypeStyle.COMPOSITE_BASE));
     }
 
@@ -205,6 +218,9 @@ class CompositingGroup {
         public WrappingDirectLayer(DirectLayer delegate) {
             super();
             this.delegate = delegate;
+            //this prevents the annoying message about not calling predispose
+            //as we have no listeners it has no effect
+            super.preDispose();
         }
 
         public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
@@ -212,7 +228,9 @@ class CompositingGroup {
         }
 
         public void preDispose() {
-            delegate.preDispose();
+          //do nothing so as not to kill off the layer
+          //before the label cache is completed
+          
         }
 
         public void setTitle(String title) {

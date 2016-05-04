@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>Feature Based Graphs and Networks</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/graph/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/graph/</url>
-  </scm>
 
   <description>
     Graph classes that builds and walk networks based on Feature relationships.

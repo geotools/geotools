@@ -62,7 +62,7 @@ Specifying and monitoring memory usage
 
 Netbeans is itself a Java application. It automatically sets the amount of memory (heap) that will be available to the Java runtime when it is starting, but you may find that this default size is not large enough. If you get out of memory errors, or if Netbeans seems very sluggish, you can explicitly set the maximum heap size in the file etc/netbeans.conf by adding -J-XmxNb (where N is an integer number of Mb) to the 'netbeans_default_options' variable near the top of the file. For example, here we are requesting a maximum heap size of 640Mb::
    
-   netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-Xmx640m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Xverify:none "
+   netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-Xmx640m -J-Xverify:none "
 
 You can monitor memory use within the IDE:
 

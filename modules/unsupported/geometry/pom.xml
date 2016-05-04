@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>Geometries</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/geometry/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/geometry/</url>
-  </scm>
 
   <description>
     Implementations of ISO 19107 (Spatial Schema).

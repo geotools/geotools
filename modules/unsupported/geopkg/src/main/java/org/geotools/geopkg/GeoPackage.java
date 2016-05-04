@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -144,6 +144,7 @@ public class GeoPackage {
         }
     }
 
+    static final String DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     /**
      * database file
      */
@@ -693,28 +694,29 @@ public class GeoPackage {
         create(e, collection.getSchema());
 
         Transaction tx = new DefaultTransaction();
-        SimpleFeatureWriter w = writer(e, true, null, tx);
-        SimpleFeatureIterator it = collection.features();
         try {
-            while(it.hasNext()) {
-                SimpleFeature f = it.next(); 
-                SimpleFeature g = w.next();
-                for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
-                    String name = pd.getName().getLocalPart();
-                    g.setAttribute(name, f.getAttribute(name));
+            SimpleFeatureWriter w = writer(e, true, null, tx);
+            SimpleFeatureIterator it = collection.features();
+            try {
+                while (it.hasNext()) {
+                    SimpleFeature f = it.next();
+                    SimpleFeature g = w.next();
+                    for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
+                        String name = pd.getName().getLocalPart();
+                        g.setAttribute(name, f.getAttribute(name));
+                    }
+
+                    w.write();
                 }
-                                             
-                w.write();
+            } finally {
+                w.close();
+                it.close();
             }
             tx.commit();
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             tx.rollback();
             throw new IOException(ex);
-        }
-        finally {
-            w.close();
-            it.close();
+        } finally {
             tx.close();
         }
 
@@ -824,7 +826,7 @@ public class GeoPackage {
     }
 
     void addGeoPackageContentsEntry(Entry e) throws IOException {
-        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss.SSS'Z'");
+        final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
         addCRS(e.getSrid());
 
@@ -1832,7 +1834,7 @@ public class GeoPackage {
         e.setDescription(rs.getString("description"));
         e.setTableName(rs.getString("table_name"));
         try {
-            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd'T'HH:MM:ss.SSS'Z'");
+            final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
             
             DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
             

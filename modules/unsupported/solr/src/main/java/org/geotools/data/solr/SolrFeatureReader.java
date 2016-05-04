@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,9 +26,9 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.params.CursorMarkParams;
@@ -59,7 +59,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     private SolrAttribute pkey;
 
-    private HttpSolrServer server;
+    private HttpSolrClient server;
 
     private SolrDataStore solrDataStore;
 
@@ -83,9 +83,10 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @param solrQuery the SOLR query to execute
      * @param solrDataStore the SOLR store
      * @throws SolrServerException
+     * @throws java.io.IOException
      */
-    public SolrFeatureReader(SimpleFeatureType featureType, HttpSolrServer server,
-            SolrQuery solrQuery, SolrDataStore solrDataStore) throws SolrServerException {
+    public SolrFeatureReader(SimpleFeatureType featureType, HttpSolrClient server,
+            SolrQuery solrQuery, SolrDataStore solrDataStore) throws SolrServerException, IOException {
         this.featureType = featureType;
         this.solrQuery = solrQuery;
         this.solrDataStore = solrDataStore;
@@ -130,8 +131,8 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * Can't use CURSOR MARK with "start" parameter, so get initial SOLR CURSOR MARK to positioning
      * CURSOR at the row specified by start query parameter
      */
-    private String getCursorMarkForStart(HttpSolrServer server, SolrQuery solrQuery)
-            throws SolrServerException {
+    private String getCursorMarkForStart(HttpSolrClient server, SolrQuery solrQuery)
+            throws SolrServerException, IOException {
         Integer prevRows = solrQuery.getRows();
         solrQuery.setRows(solrQuery.getStart());
         solrQuery.setStart(0);
@@ -211,7 +212,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * SOLR CURSOR MARK is used to retrieve data until no more cursor and no more data is available
      */
     @Override
-    public boolean hasNext() {
+    public boolean hasNext() throws IOException {
         if (next == null) {
             if (this.solrDocIterator.hasNext()) {
                 next = true;

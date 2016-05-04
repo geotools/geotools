@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,10 +29,6 @@
   <name>Metadata</name>
   
 
-  <scm>
-    <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/metadata/</connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/metadata/</url>
-  </scm>
 
   <description>
     Contains implementations of metadata and some core utilities classes.
@@ -120,6 +116,12 @@
       <artifactId>commons-logging</artifactId>
       <!-- The version number is specified in the parent POM. -->
       <scope>provided</scope>  <!-- Not required for default execution. -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <!-- The version number is specified in the parent POM. -->
       <optional>true</optional>
     </dependency>
     <dependency>

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -72,6 +72,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -800,7 +801,17 @@ class RasterLayerResponse{
                 alphas[i] = mosaicElement.alphaChannel;
                 rois[i] = mosaicElement.roi;
                 pams[i] = mosaicElement.pamDataset;
-
+                
+                //If we have an alpha, mask it by the ROI
+                if (alphas[i] != null && rois[i] != null) {
+                    //Get ROI as image, fix color space
+                    ImageWorker roi = new ImageWorker(rois[i].getAsImage());
+                    roi.forceComponentColorModel();
+                    ImageWorker alpha = new ImageWorker(alphas[i]);
+                    alpha.multiply(roi.getRenderedImage());
+                    
+                    alphas[i] =  alpha.getPlanarImage();
+                }
                 // compose the overall ROI if needed
                 if (mosaicElement.roi != null) {
                     realROIs++;
@@ -822,13 +833,8 @@ class RasterLayerResponse{
                         request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
                         localHints);
             
-            ROI overallROI = mosaicROIs(rois);
-            if (footprintBehavior != FootprintBehavior.None) {
-                // Adding globalRoi to the output
-                RenderedOp rop = (RenderedOp) mosaic;                
-                rop.setProperty("ROI", overallROI);
-            }
-            
+            Object property = mosaic.getProperty("ROI");
+            ROI overallROI = (property instanceof ROI) ? (ROI) property : null; 
             final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic, overallROI,localHints);
     
             // prepare for next step
@@ -840,38 +846,6 @@ class RasterLayerResponse{
             
         }
 
-        private ROI mosaicROIs(ROI[] inputROIArray) {
-            if (inputROIArray == null || inputROIArray.length == 0) {
-                return null;
-            }
-
-            List<ROI> rois = new ArrayList<ROI>();
-            for (ROI roi : inputROIArray) {
-                if (roi != null) {
-                    rois.add(roi);
-                }
-            }
-
-            int roiCount = rois.size();
-            if (roiCount == 0) {
-                return null;
-            } else if (roiCount == 1) {
-                return rois.get(0);
-            } else {
-                PlanarImage[] images = new PlanarImage[rois.size()];
-                int i = 0;
-                for (ROI roi : rois) {
-                    images[i++] = roi.getAsImage();
-                }
-
-                ROI[] roisArray = rois.toArray(new ROI[rois.size()]);
-                RenderedImage overallROI = new ImageWorker(hints)
-                        .setBackground(new double[] { 0.0 })
-                        .mosaic(images, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, roisArray,
-                                new double[][] { { 1.0 } }, null).getRenderedImage();
-                return new ROI(overallROI);
-            }
-        }
     }
 
     /**
@@ -1316,25 +1290,27 @@ class RasterLayerResponse{
                 return returnValue;
             }
 
-            // Redo the query without filter to check whether we got no granules due
-            // to a filter. In that case we need to return null
-            // Notice that we are using a dryRun visitor to make sure we don't
-            // spawn any loading tasks, we also ensure we get only 1 feature at most
-            // to make this blazing fast
-            LOGGER.fine("We got no granules, let's do a dry run with no filters");
-            final MosaicProducer dryRunVisitor = new MosaicProducer(true);
-            final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
-            query.getFilter().accept(bboxExtractor, null);
-            query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
-                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-                            rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
-                    bboxExtractor.getBBox()));
-            query.setMaxFeatures(1);
-            rasterManager.getGranuleDescriptors(query, dryRunVisitor);
-            if (dryRunVisitor.granulesNumber > 0) {
-                LOGGER.fine("Dry run got a target granule, returning null as the additional filters did filter all the granules out");
-                // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
-                return null;
+            if (visitor.granulesNumber == 0) {
+                // Redo the query without filter to check whether we got no granules due
+                // to a filter. In that case we need to return null
+                // Notice that we are using a dryRun visitor to make sure we don't
+                // spawn any loading tasks, we also ensure we get only 1 feature at most
+                // to make this blazing fast
+                LOGGER.fine("We got no granules, let's do a dry run with no filters");
+                final MosaicProducer dryRunVisitor = new MosaicProducer(true);
+                final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
+                query.getFilter().accept(bboxExtractor, null);
+                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
+                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
+                                rasterManager.getGranuleCatalog().getType(rasterManager.getTypeName()).getGeometryDescriptor().getName()),
+                        bboxExtractor.getBBox()));
+                query.setMaxFeatures(1);
+                rasterManager.getGranuleDescriptors(query, dryRunVisitor);
+                if (dryRunVisitor.granulesNumber > 0) {
+                    LOGGER.fine("Dry run got a target granule, returning null as the additional filters did filter all the granules out");
+                    // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
+                    return null;
+                }
             }
 
             // prepare a blank response

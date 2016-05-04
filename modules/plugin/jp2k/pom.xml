@@ -15,7 +15,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -26,12 +26,6 @@
   <artifactId>gt-jp2k</artifactId>
   <packaging>jar</packaging>
   <name>JP2K based grid coverage readers</name>
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jp2k/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jp2k/</url>
-  </scm>
 
   <description>
     Extension of the of Grid Coverage plugins, leveraging on the JP2K raster data access

@@ -21,6 +21,7 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
    filter/query
    raster/image
    raster/jaiext
+   coverage/coverage
    map/style
    affinetransform
    factory

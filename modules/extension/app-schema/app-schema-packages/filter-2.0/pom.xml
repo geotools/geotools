@@ -9,10 +9,6 @@
     <version>2.0.0-2</version>
     <name>OGC Filter 2.0 schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/filter-2.0/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/filter-2.0/</url>
-    </scm>
 
     <developers>
         <developer>

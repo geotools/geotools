@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,11 +17,23 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
+import javax.media.jai.JAI;
+
+import org.apache.commons.logging.LogFactory;
+import org.geotools.util.Version;
 import org.junit.*;
+import org.opengis.filter.Filter;
+import org.opengis.geometry.coordinate.GeometryFactory;
+
+import com.vividsolutions.jts.geom.Geometry;
+
 import static org.junit.Assert.*;
 
 
@@ -98,6 +110,65 @@ public final class GeoToolsTest {
         assertTrue(GeoTools.getDefaultHints().isEmpty());
     }
 
+    /**
+     * Test Manifest version lookup
+     */
+    @Test
+    public void testManifest() {
+        // jar manifest lookup 
+        Manifest jai = GeoTools.getManifest( JAI.class );
+        assertFalse("manifest metadata", jai.getMainAttributes().isEmpty() );
+
+        // this should always be generated during a maven or ide build
+        Manifest metadata = GeoTools.getManifest( GeoTools.class );
+        assertFalse("manifest metadata", metadata.getMainAttributes().isEmpty() );
+        Attributes attributes = metadata.getAttributes("Project-Version");
+        assertEquals( GeoTools.getVersion().toString(), metadata.getMainAttributes().getValue("Project-Version") );
+        
+        // should be a jar durning maven build, generated during IDE build
+        Manifest opengis = GeoTools.getManifest( Filter.class );
+        assertFalse("manifest metadata", opengis.getMainAttributes().isEmpty() );
+        
+        Manifest commons_logging = GeoTools.getManifest( LogFactory.class );
+        assertNotNull( commons_logging );
+        assertFalse("manifest metadata", commons_logging.getMainAttributes().isEmpty() );
+        assertEquals("1.1.1", commons_logging.getMainAttributes().getValue("Implementation-Version"));
+    }
+
+    /**
+     * Test version lookup
+     */
+    @Test
+    public void testVersion(){
+        String location;
+        
+        location = "jar:file:/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar!/com/vividsolutions/jts/geom/Geometry.class";
+        assertEquals( "1.13", GeoTools.jarVersion( location ));
+        
+        location = "jar:file:/Users/jody/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/org/apache/commons/logging/LogFactory.class";
+        assertEquals( "1.1.1", GeoTools.jarVersion( location ));
+        
+        location = "jar:file:/Users/jody/Library/Java/Extensions/jai_core.jar!/javax/media/jai/JAI.class";
+        assertNull( GeoTools.jarVersion( location ));
+        
+        location = "vfs:/var/jboss/workspace/BuildSvr_FNMOC/jboss/geoserver/deployments/geoserver.war/WEB-INF/lib/gt-xsd-wcs-13.2.jar/org/geotools/wcs/WCS.class";
+        assertEquals( "13.2", GeoTools.jarVersion( location ));
+        
+        Version version = GeoTools.getVersion( Filter.class );
+        assertNotNull( version );
+        
+        version = GeoTools.getVersion( JAI.class );
+        assertNotNull( version );
+        assertEquals("1.1.3", version.toString() );
+        
+        version = GeoTools.getVersion( LogFactory.class );
+        assertNotNull( version );
+        assertEquals("1.1.1", version.toString() );
+
+        version = GeoTools.getVersion( Geometry.class );
+        assertNotNull( version );
+        assertEquals("1.13", version.toString() );
+    }
     /**
      * Tests the use of system properties.
      */

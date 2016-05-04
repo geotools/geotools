@@ -12,7 +12,7 @@
     <parent>
       <groupId>org.geotools</groupId>
       <artifactId>unsupported</artifactId>
-      <version>15-SNAPSHOT</version>
+      <version>16-SNAPSHOT</version>
   </parent>
   
   <properties>
@@ -27,12 +27,6 @@
   <packaging>pom</packaging>
   <name>Coverage Multidimensional Module</name>
 
-  <scm>
-    <connection>
-      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-multidim/
-    </connection>
-  <url>https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-multidim/</url>
- </scm>
 
   <description>
     Module for Coverage experiment and ND GeoTools plugins.
@@ -93,22 +87,17 @@
 
   <repositories>
     <repository>
-      <id>geosolutions</id>
-      <name>GeoSolutions libraries repository</name>
-      <url>http://maven.geo-solutions.it/</url>
-    </repository>
-    <repository>
       <id>unidata</id>
       <name>Unidata UCAR Libraries repository</name>
       <url>https://artifacts.unidata.ucar.edu/content/repositories/unidata/</url>
     </repository> 
-    </repositories>
+  </repositories>
 
   <!-- =========================================================== -->
   <!--     Modules for the build in approximate dependency order   -->
   <!-- =========================================================== -->
-      <modules>
-        <module>geotiff</module>
-        <module>hdf4</module>
+  <modules>
+    <module>geotiff</module>
+    <module>hdf4</module>
   </modules>
- </project>
+</project>

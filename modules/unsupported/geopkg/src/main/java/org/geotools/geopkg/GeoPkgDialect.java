@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -159,6 +159,29 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         //override some internal defaults
         mappings.put(Long.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
+    }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        super.registerSqlTypeToSqlTypeNameOverrides(overrides);
+
+        // The following SQL Data Types are just decorative in SQLite
+        // (see https://www.sqlite.org/datatype3.html),
+        // but will allow GeoTools to handle some usual java.sql.Types
+        // not mapped to raw SQL types by org.sqlite.jdbc3.JDBC3DatabaseMetaData.getTypeInfo()
+
+        // Numbers
+        overrides.put(Types.BOOLEAN, "BOOLEAN");
+        overrides.put(Types.SMALLINT, "SMALLINT");
+        overrides.put(Types.BIGINT, "BIGINT");
+        overrides.put(Types.DOUBLE, "DOUBLE");
+        overrides.put(Types.NUMERIC, "NUMERIC");
+
+        // Temporal
+        overrides.put(Types.DATE, "DATE");
+        overrides.put(Types.TIME, "TIME");
+        overrides.put(Types.TIMESTAMP, "TIMESTAMP");
     }
 
     @Override

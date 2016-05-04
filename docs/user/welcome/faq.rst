@@ -93,8 +93,8 @@ There are also some "unsupported" formats that are either popular or under devel
 
 The current authoritative list of plugins is of course the source code: 
 
-* http://svn.osgeo.org/geotools/trunk/modules/plugin/
-* http://svn.osgeo.org/geotools/trunk/modules/unsupported/
+* https://github.com/geotools/geotools/tree/master/modules/plugin
+* https://github.com/geotools/geotools/tree/master/modules/unsupported
 
 GeoTools versions
 ^^^^^^^^^^^^^^^^^
@@ -206,10 +206,9 @@ project so the changes can be incorporated into the core source code.
 
 .. note::
 
-   This means you can use GeoTools as a library but you cannot
-   incorporate GeoTools code directly into your GLP application. Legally, the
-   latter amounts to re-licensing GeoTools under a new license and you do not have
-   the right to do so.
+   You can also incorporate GeoTools code directly into your GPL application. Legally, the
+   latter amounts to re-licensing GeoTools under the GPL, which is specifically allowed
+   by the LGPL. This re-licensing is one-way, and requires specific actions - see the LGPL.
 
 Q: What restrictions are there on my use of GeoTools?
 '''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -252,15 +251,15 @@ Q: Why can't I find module X in the GeoTools distribution or javadocs?
 
 If you're working with a recent GeoTools release then chances are the module that you're looking for is an
 :doc:`unsupported module </unsupported/index>`. These modules not part of the standard GeoTools distribution but are
-available from the `Subversion repository <http://svn.osgeo.org/geotools>`_ in the **modules/unsupported** folder. If
+available from the `GIT repository <https://github.com/geotools/geotools>`_ in the **modules/unsupported** folder. If
 you are using Maven as your build tool you can include a dependency for an unsupported module as you would any other
 GeoTools module.
 
 Q: What is an unsupported module?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Unsupported modules are those found in the **modules/unsupported** folder of each GeoTools version in the `Subversion
-repository <http://svn.osgeo.org/geotools>`_. They are not part of the standard GeoTools distribution but are still
+Unsupported modules are those found in the **modules/unsupported** folder of each GeoTools version in the `GIT
+repository <https://github.com/geotools/geotools>`_. They are not part of the standard GeoTools distribution but are still
 available for use via Subversion, Maven and manual download.
 
 A module can be unsupported for one or more of the following reasons:

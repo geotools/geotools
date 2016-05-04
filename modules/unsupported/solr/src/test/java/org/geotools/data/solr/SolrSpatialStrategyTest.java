@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -67,18 +67,20 @@ public class SolrSpatialStrategyTest {
     public void testBBoxStrategy() throws Exception {
         SolrSpatialStrategy ss = new BBoxStrategy();
 
-        Geometry g = ss.decode("1 2 3 4");
+        Geometry g = ss.decode("ENVELOPE(1, 3, 4, 2)");
         assertNotNull(g);
         assertTrue(g instanceof Polygon);
 
-        String[] bbox = ss.encode(g).split("\\s+");
+        String[] bbox = ss.encode(g).split(",");
+        bbox[0] = bbox[0].substring(bbox[0].indexOf("(")+1, bbox[0].length());
+        bbox[3] = bbox[3].substring(0, bbox[3].indexOf(")"));
         NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
         assertEquals(1.0, format.parse(bbox[0]).doubleValue(), 0.1);
-        assertEquals(2.0, format.parse(bbox[1]).doubleValue(), 0.1);
-        assertEquals(3.0, format.parse(bbox[2]).doubleValue(), 0.1);
-        assertEquals(4.0, format.parse(bbox[3]).doubleValue(), 0.1);
+        assertEquals(3.0, format.parse(bbox[1]).doubleValue(), 0.1);
+        assertEquals(4.0, format.parse(bbox[2]).doubleValue(), 0.1);
+        assertEquals(2.0, format.parse(bbox[3]).doubleValue(), 0.1);
     }
-
+    
     GeometryDescriptor newDescriptor(String solrTypeValue) {
         FeatureTypeFactory ftf = new FeatureTypeFactoryImpl();
         GeometryType type =

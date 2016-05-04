@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>imagemosaic datasource module</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/</url>
-  </scm>
 
   <description>
     Datasource created to read a mosaic of georeferenced images or geotiff, jp2k, ...

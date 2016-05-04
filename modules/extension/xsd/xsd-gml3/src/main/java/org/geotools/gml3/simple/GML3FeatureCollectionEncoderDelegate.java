@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.simple;
 
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
@@ -46,6 +48,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * {@link SimpleFeatureCollection} encoder delegate for fast GML3 encoding
@@ -76,19 +79,40 @@ public class GML3FeatureCollectionEncoderDelegate extends
 
         private String gmlPrefix;
 
+        private String gmlUri;
+
         private int numDecimals;
 
         private boolean encodeSeparateMember;
 
         public GML3Delegate(Encoder encoder) {
-            this.gmlPrefix = encoder.getNamespaces().getPrefix(GML.NAMESPACE);
-            this.featureMembers = FEATURE_MEMBERS.derive(gmlPrefix);
-            this.featureMember = FEATURE_MEMBER.derive(gmlPrefix);
+            this.gmlPrefix = findGMLPrefix(encoder);
+            
+            String gmlURI = encoder.getNamespaces().getURI(gmlPrefix);
+            this.gmlUri = gmlURI != null ? gmlURI : GML.NAMESPACE;
+
+            this.featureMembers = FEATURE_MEMBERS.derive(gmlPrefix, gmlURI);
+            this.featureMember = FEATURE_MEMBER.derive(gmlPrefix, gmlURI);
             this.srsSyntax = (SrsSyntax) encoder.getContext().getComponentInstanceOfType(
                     SrsSyntax.class);
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
             this.encodeSeparateMember = encoder.getConfiguration().hasProperty(
                     GMLConfiguration.ENCODE_FEATURE_MEMBER);
+        }
+
+        String findGMLPrefix(Encoder encoder) {
+            NamespaceSupport ns = encoder.getNamespaces();
+            Enumeration<String> p = ns.getPrefixes();
+            while (p.hasMoreElements()) {
+                String prefix = p.nextElement();
+                String uri = ns.getURI(prefix);
+
+                if (uri.startsWith(GML.NAMESPACE)) {
+                    return prefix;
+                }
+            }
+
+            return "gml";
         }
 
         private int getNumDecimals(Configuration configuration) {
@@ -112,7 +136,7 @@ public class GML3FeatureCollectionEncoderDelegate extends
         }
 
         public EnvelopeEncoder createEnvelopeEncoder(Encoder e) {
-            return new EnvelopeEncoder(e, gmlPrefix);
+            return new EnvelopeEncoder(e, gmlPrefix, gmlUri);
         }
 
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
@@ -157,17 +181,18 @@ public class GML3FeatureCollectionEncoderDelegate extends
 
         @Override
         public void registerGeometryEncoders(Map<Class, GeometryEncoder> encoders, Encoder encoder) {
-            encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix));
-            encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix));
-            encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix));
-            encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix));
-            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix));
-            encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix));
-            encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix));
-            encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix));
-            encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix));
-            encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix));
-            encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix));
+            encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(MultiCurve.class, new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true));
+            encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
         }
 
         @Override

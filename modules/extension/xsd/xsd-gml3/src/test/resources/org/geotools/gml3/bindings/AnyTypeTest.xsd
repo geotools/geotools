@@ -17,4 +17,13 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
+
+    <xsd:complexType name="UnrestrictedType">
+        <xsd:complexContent>
+            <xsd:extension base="xsd:anyType">
+                <xsd:attribute name="attr1" type="xsd:string" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:element name="unrestrictedEl" type="test:UnrestrictedType" substitutionGroup="gml:AbstractObject" />
 </xsd:schema>

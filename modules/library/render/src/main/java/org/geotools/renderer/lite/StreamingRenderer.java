@@ -841,7 +841,6 @@ public class StreamingRenderer implements GTRenderer {
                 
                 // have we been painting on a back buffer? If so, merge on the main graphic
                 if (compositingGraphic instanceof DelayedBackbufferGraphic) {
-                    DelayedBackbufferGraphic delayedGraphic = (DelayedBackbufferGraphic) compositingGraphic;
                     RenderingRequest request = new MargeCompositingGroupRequest(graphics,
                             compositingGroup);
                     try {
@@ -2558,7 +2557,9 @@ public class StreamingRenderer implements GTRenderer {
                     // we need to preserve the topology if we end up applying buffer for perp. offset
                     boolean preserveTopology = style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0 &&
                             (source instanceof Polygon || source instanceof MultiPolygon);
-                    Geometry g = clip(shape.getGeometry(), clipper, preserveTopology);
+                    
+                    Geometry g = clipper.clipSafe(shape.getGeometry(), preserveTopology, 1);
+                    
                     // handle perpendincular offset as needed
                     if(style instanceof LineStyle2D && ((LineStyle2D) style).getPerpendicularOffset() != 0) {
                         LineStyle2D ls = (LineStyle2D) style;
@@ -2603,22 +2604,6 @@ public class StreamingRenderer implements GTRenderer {
         // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
         if(paintCommands > 0) {
             requests.put(new FeatureRenderedRequest(drawMe.feature));
-        }
-    }
-
-    private Geometry clip(Geometry geometry, final GeometryClipper clipper,
-            boolean preserveTopology) {
-        try {
-            return clipper.clip(geometry, !preserveTopology);
-        } catch(TopologyException e) {
-            // go down to single pixel precision
-            GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(new PrecisionModel(1));
-            Geometry reduced = reducer.reduce(geometry);
-            try {
-                return clipper.clip(reduced, !preserveTopology);
-            } catch (Exception e2) {
-                return geometry;
-            }
         }
     }
 
@@ -2993,7 +2978,7 @@ public class StreamingRenderer implements GTRenderer {
         public LiteShape2 getShape(Symbolizer symbolizer, AffineTransform at) throws FactoryException {
             Geometry g = findGeometry(feature, symbolizer); // pulls the geometry
 
-            if ( g == null )
+            if (g == null || g.isEmpty())
                 return null;
             
             try {
@@ -3197,7 +3182,7 @@ public class StreamingRenderer implements GTRenderer {
      * A request sent to the painting thread 
      * @author aaime
      */
-    abstract class RenderingRequest {
+    protected abstract class RenderingRequest {
         abstract void execute();
     }
     
@@ -3206,7 +3191,7 @@ public class StreamingRenderer implements GTRenderer {
      * @author aaime
      *
      */
-    class PaintShapeRequest extends RenderingRequest {
+    protected class PaintShapeRequest extends RenderingRequest {
         Graphics2D graphic;
         
         LiteShape2 shape;
@@ -3247,7 +3232,7 @@ public class StreamingRenderer implements GTRenderer {
      * @author aaime
      *
      */
-    class FeatureRenderedRequest extends RenderingRequest {
+    protected class FeatureRenderedRequest extends RenderingRequest {
         Object content; 
         
         public FeatureRenderedRequest(Object content) {
@@ -3265,7 +3250,7 @@ public class StreamingRenderer implements GTRenderer {
      * @author aaime
      *
      */
-    class MergeLayersRequest extends RenderingRequest {
+    protected class MergeLayersRequest extends RenderingRequest {
         Graphics2D graphics;
         List<LiteFeatureTypeStyle> lfts;
 
@@ -3303,7 +3288,7 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
     
-    class MargeCompositingGroupRequest extends RenderingRequest {
+    protected class MargeCompositingGroupRequest extends RenderingRequest {
         Graphics2D graphics;
 
         CompositingGroup compositingGroup;
@@ -3340,7 +3325,7 @@ public class StreamingRenderer implements GTRenderer {
      * A request to render a raster
      * @author aaime
      */
-    public class RenderRasterRequest extends RenderingRequest {
+    protected class RenderRasterRequest extends RenderingRequest {
 
         private Graphics2D graphics;
         private boolean disposeCoverage;
@@ -3411,7 +3396,7 @@ public class StreamingRenderer implements GTRenderer {
      * 
      * @author aaime
      */
-    public class RenderCoverageReaderRequest extends RenderingRequest {
+    protected class RenderCoverageReaderRequest extends RenderingRequest {
 
         private Graphics2D graphics;
 
@@ -3481,7 +3466,7 @@ public class StreamingRenderer implements GTRenderer {
 
     }
 
-    class RenderDirectLayerRequest extends RenderingRequest {
+    protected class RenderDirectLayerRequest extends RenderingRequest {
         private final Graphics2D graphics;
         private final DirectLayer layer;
 
@@ -3518,7 +3503,7 @@ public class StreamingRenderer implements GTRenderer {
      * Marks the end of the request flow, instructs the painting thread to exit
      * @author Andrea Aime - OpenGeo
      */
-    class EndRequest extends RenderingRequest {
+    protected class EndRequest extends RenderingRequest {
 
         @Override
         void execute() {
@@ -3558,7 +3543,7 @@ public class StreamingRenderer implements GTRenderer {
                         request.execute();
                     }
                 } catch(InterruptedException e) {
-                    // ok, we might have been interupped to stop processing
+                    // ok, we might have been interrupted to stop processing
                     if(renderingStopRequested) {
                         done = true;
                     }
@@ -3580,7 +3565,8 @@ public class StreamingRenderer implements GTRenderer {
      * @author Andrea Aime - GeoSolutions
      *
      */
-    class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+    public class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+        private static final long serialVersionUID = 4908029658595573833L;
 
         public RenderingBlockingQueue(int capacity) {
             super(capacity);

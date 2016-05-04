@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>Open GIS Interfaces</name>
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/opengis/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/opengis/</url>
-  </scm>
 
   <description>
     Standard interfaces implemented throughout the library.

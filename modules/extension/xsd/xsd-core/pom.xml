@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>XML Parsing</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-core/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-core/</url>
-  </scm>
 
   <description>
     Schema based xml parsing. This module contains tools for creating 
@@ -82,7 +76,7 @@
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
-        <version>3.1</version>
+        <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -100,6 +94,12 @@
       <groupId>picocontainer</groupId>
       <artifactId>picocontainer</artifactId>
       <version>1.2</version>
+      <exclusions>
+        <exclusion>
+         <groupId>xml-apis</groupId>
+         <artifactId>xml-apis</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>commons-jxpath</groupId>

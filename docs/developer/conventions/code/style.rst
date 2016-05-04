@@ -127,10 +127,10 @@ If you must:
 Eclipse
 '''''''
 
-Here are some eclipse settings that you can import when working on geotools work:
+Here are some eclipse settings that you can import when working on geotools (checkout folder down below `build/eclipse`) work:
 
-* http://svn.osgeo.org/geotools/trunk/build/eclipse/codetemplates.xml
-* http://svn.osgeo.org/geotools/trunk/build/eclipse/formatter.xml
+* https://github.com/geotools/geotools/blob/master/build/eclipse/codetemplates.xml 
+* https://github.com/geotools/geotools/blob/master/build/eclipse/formatter.xml
 
 To use:
 

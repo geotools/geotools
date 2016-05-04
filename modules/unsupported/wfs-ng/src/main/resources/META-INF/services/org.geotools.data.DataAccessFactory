@@ -1,1 +1,4 @@
-org.geotools.data.wfs.impl.WFSDataAccessFactory
+# [GEOT-5361] Complex feature WFS client breaks GeoServer external WFS data store
+# https://osgeo-org.atlassian.net/browse/GEOT-5361
+#
+# org.geotools.data.wfs.impl.WFSDataAccessFactory

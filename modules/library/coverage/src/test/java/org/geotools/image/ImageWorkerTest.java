@@ -16,7 +16,15 @@
  */
 package org.geotools.image;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -24,6 +32,7 @@ import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -55,23 +64,32 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
+import org.jaitools.imageutils.ROIGeometry;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
+import com.vividsolutions.jts.geom.Envelope;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.lookup.LookupTable;
 import it.geosolutions.jaiext.lookup.LookupTableFactory;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 
 
@@ -121,7 +139,18 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     private static final boolean SHOW = TestData.isInteractiveTest();
 
 	private static BufferedImage worldDEMImage = null;
-    
+	
+   
+    @BeforeClass
+    public static void setupJaiExt() {
+        JAIExt.initJAIEXT(true);
+    }
+
+    @AfterClass
+    public static void teardownJaiExt() {
+        JAIExt.initJAIEXT(false);
+    }
+	
 	/**
 	 * Creates a simple 128x128 {@link RenderedImage} for testing purposes.
 	 * 
@@ -169,21 +198,80 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 	} 
 	
 	/**
-	 * Creates a test paletted image with translucency.
-	 * 
-	 * @return 
-	 */
-	private static BufferedImage getSyntheticTranslucentIndexed() {
-		final byte bb[]= new byte[256];
-		for(int i =0;i<256;i++)
-			bb[i]=(byte)i;
-		final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb,bb);
-		final WritableRaster raster=RasterFactory.createWritableRaster(icm.createCompatibleSampleModel(1024, 1024), null);
-		for(int i= raster.getMinX();i<raster.getMinX()+raster.getWidth();i++)
-			for(int j= raster.getMinY();j<raster.getMinY()+raster.getHeight();j++)
-				raster.setSample(i,j, 0, (i+j)/32);
-		return new BufferedImage(icm, raster, false,null);		
-	}
+     * Creates a test image in RGB with either {@link ComponentColorModel} or {@link DirectColorModel}.
+     * 
+     * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false</code> otherwise.
+     * @return 
+     */
+    private static BufferedImage getSyntheticRGB(Color color) {
+        final int width = 128;
+        final int height = 128;
+        final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        final WritableRaster raster = image.getRaster();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster.setSample(x, y, 0, color.getRed());
+                raster.setSample(x, y, 1, color.getGreen());
+                raster.setSample(x, y, 2, color.getBlue());
+            }
+        }
+        return image;
+    } 
+    
+    /**
+     * Creates a test image in RGB with either {@link ComponentColorModel} or {@link DirectColorModel}.
+     * 
+     * @param direct <code>true</code> when we request a {@link DirectColorModel}, <code>false</code> otherwise.
+     * @return 
+     */
+    private static BufferedImage getSyntheticSolidGray(byte gray) {
+        final int width = 128;
+        final int height = 128;
+        final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        final WritableRaster raster = image.getRaster();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster.setSample(x, y, 0, gray);
+            }
+        }
+        return image;
+    } 
+
+    /**
+     * Creates a test paletted image with translucency.
+     * 
+     * @return
+     */
+    private static BufferedImage getSyntheticTranslucentIndexed() {
+        final byte bb[] = new byte[256];
+        for (int i = 0; i < 256; i++)
+            bb[i] = (byte) i;
+        final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb, bb);
+        final WritableRaster raster = RasterFactory
+                .createWritableRaster(icm.createCompatibleSampleModel(1024, 1024), null);
+        for (int i = raster.getMinX(); i < raster.getMinX() + raster.getWidth(); i++)
+            for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++)
+                raster.setSample(i, j, 0, (i + j) / 32);
+        return new BufferedImage(icm, raster, false, null);
+    }
+    
+    /**
+     * Creates a test paletted image with a given number of entries in the map
+     * 
+     * @return
+     */
+    private static BufferedImage getSyntheticGrayIndexed(int entries) {
+        final byte bb[] = new byte[entries];
+        for (int i = 0; i < entries; i++)
+            bb[i] = (byte) i;
+        final IndexColorModel icm = new IndexColorModel(8, entries, bb, bb, bb, bb);
+        final WritableRaster raster = RasterFactory
+                .createWritableRaster(icm.createCompatibleSampleModel(512, 512), null);
+        for (int i = raster.getMinX(); i < raster.getMinX() + raster.getWidth(); i++)
+            for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++)
+                raster.setSample(i, j, 0, (i + j) / 32);
+        return new BufferedImage(icm, raster, false, null);
+    }
 
     /**
      * Loads the image (if not already loaded) and creates the worker instance.
@@ -252,6 +340,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue  (     worker.isColorSpaceRGB());
         assertFalse (     worker.isColorSpaceGRAYScale());
         assertFalse (     worker.isTranslucent());
+        assertNoData(worker, null);
 
         final BufferedImage directRGB= getSyntheticRGB(true);
         worker = new ImageWorker(directRGB);        
@@ -264,6 +353,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue  (     worker.isColorSpaceRGB());
         assertFalse (     worker.isColorSpaceGRAYScale());
         assertFalse (     worker.isTranslucent());
+        assertNoData(worker, null);
         
         final BufferedImage componentRGB= getSyntheticRGB(false);
         worker = new ImageWorker(componentRGB);        
@@ -276,6 +366,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue  (     worker.isColorSpaceRGB());
         assertFalse (     worker.isColorSpaceGRAYScale());
         assertFalse (     worker.isTranslucent());
+        assertNoData(worker, null);
         
         
         final BufferedImage translucentIndexed= getSyntheticTranslucentIndexed();
@@ -285,6 +376,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue  (     worker.isIndexed());
         assertTrue  (     worker.isColorSpaceRGB());       
         assertTrue (     worker.isTranslucent());    
+        assertNoData(worker, null);
         
         
         worker.forceIndexColorModelForGIF(true);
@@ -295,7 +387,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue  (     worker.isIndexed());
         assertTrue  (     worker.isColorSpaceRGB());
         assertFalse (     worker.isTranslucent());        
-        
+        assertNoData(worker, null);
     }
     /**
      * Tests capability to write GIF image.
@@ -622,6 +714,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final ImageWorker worker = new ImageWorker(worldImage);
         show(worker, "Input file");
         worker.forceIndexColorModelForGIF(true);
+        assertNoData(worker, null);
 
         // Convert to to index color bitmask
         ColorModel cm = worker.getRenderedImage().getColorModel();
@@ -635,6 +728,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         cm = worker.getRenderedImage().getColorModel();
         assertTrue("wrong color model", cm instanceof ComponentColorModel);
         assertEquals("wrong bands number", 4, cm.getNumComponents());
+        assertNoData(worker, null);
 
         show(worker, "RGB translucent");
         assertEquals("wrong transparency model", Transparency.TRANSLUCENT, cm.getTransparency());
@@ -666,6 +760,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	final double[] minimums1 = test1I.getMinimums();
     	Assert.assertTrue(minimums1.length==1);
     	Assert.assertEquals(255.0,minimums1[0],1E-10);
+    	assertNoData(test1I, null);
     	
     	
     	// single band value does not exceed the byte upper bound and is constant
@@ -676,7 +771,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	Assert.assertEquals(255.0,maximums2[0],1E-10);    	
     	final double[] minimums2 = test1I.getMinimums();
     	Assert.assertTrue(minimums2.length==1);
-    	Assert.assertEquals(255.0,minimums2[0],1E-10);    	
+    	Assert.assertEquals(255.0,minimums2[0],1E-10);   
+    	assertNoData(test2I, null);
     	
     	// single band value exceed the byte upper bound
     	ImageWorker test3I=new ImageWorker(test3);
@@ -686,6 +782,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	Assert.assertEquals("Rescale",test3I.getRenderedOperation().getOperationName());
     	final double[] maximums3b = test3I.getMaximums();
     	final double[] minimums3b = test3I.getMinimums();
+    	assertNoData(test3I, null);
 
     	if(maximums3a[0]>255)
     	{
@@ -708,6 +805,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	final double[] minimums4b = test4I.getMinimums();
     	Assert.assertEquals(maximums4a[0],maximums4b[0],1E-10);
     	Assert.assertEquals(minimums4a[0],minimums4b[0],1E-10);
+    	assertNoData(test4I, null);
     	
     	// now test multibands case
     	ParameterBlock pb = new ParameterBlock();
@@ -721,6 +819,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	final double[] minimums5b = testmultibandI.getMinimums();
     	Assert.assertEquals(maximums5a[0],maximums5b[0],1E-10);
     	Assert.assertEquals(minimums5a[0],minimums5b[0],1E-10);    
+    	assertNoData(testmultibandI, null);
 
     	Assert.assertTrue(Math.abs(maximums5a[1]-maximums5b[1])>1E-10);
     	Assert.assertTrue(Math.abs(minimums5a[1]-minimums5b[1])>1E-10);    
@@ -749,6 +848,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue  (     worker.isColorSpaceRGB());
         assertFalse (     worker.isColorSpaceGRAYScale());
         assertFalse (     worker.isTranslucent());
+        assertNoData(worker, null);
 
         assertSame("Expected no operation.", sstImage, worker.forceIndexColorModel(false).getRenderedImage());
         assertSame("Expected no operation.", sstImage, worker.forceIndexColorModel(true ).getRenderedImage());
@@ -770,6 +870,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertSame("Expected same databuffer, i.e. pixels should not be duplicated.",
                    sstImage.getTile(0,0).getDataBuffer(),
                    worker.getRenderedImage().getTile(0,0).getDataBuffer());
+        assertNoData(worker, null);
         
 
         // INDEX TO INDEX-ALPHA
@@ -787,6 +888,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         IndexColorModel iColorModel=(IndexColorModel) image.getColorModel();
         int transparentColor=iColorModel.getRGB(worker.getTransparentPixel())&0x00ffffff;
         assertTrue  (     transparentColor==0);
+        assertNoData(image, null);
         
 
         
@@ -805,6 +907,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         iColorModel=(IndexColorModel) image.getColorModel();
         transparentColor=iColorModel.getRGB(worker.getTransparentPixel())&0x00ffffff;
         assertTrue  (     transparentColor==(Color.WHITE.getRGB()&0x00ffffff));        
+        assertNoData(image, null);
         
         // RGB TO RGBA
         worker=new ImageWorker(smallWorld).makeColorTransparent(new Color(11,10,50));
@@ -818,6 +921,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue (     worker.isTranslucent());        
         image= worker.getRenderedImage();
         assertTrue  (     image.getColorModel() instanceof ComponentColorModel);  
+        assertNoData(image, null);
                 
         
         // RGBA to RGBA
@@ -831,7 +935,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertFalse (     worker.isColorSpaceGRAYScale());
         assertTrue (     worker.isTranslucent());        
         image= worker.getRenderedImage();
-        assertTrue  (     image.getColorModel() instanceof ComponentColorModel);  
+        assertTrue  (     image.getColorModel() instanceof ComponentColorModel);
+        assertNoData(image, null);
         
         
         // GRAY TO GRAY-ALPHA
@@ -846,6 +951,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue (     worker.isTranslucent());        
         image= worker.getRenderedImage();
         assertTrue  (     image.getColorModel() instanceof ComponentColorModel);  
+        assertNoData(image, null);
         
         // GRAY-ALPHA TO GRAY-ALPHA.
         worker=new ImageWorker(grayAlpha).makeColorTransparent(Color.black);
@@ -859,7 +965,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue (     worker.isTranslucent());        
         image= worker.getRenderedImage();
         assertTrue  (     image.getColorModel() instanceof ComponentColorModel);         
-        
+        assertNoData(image, null);
         
     }
     
@@ -873,6 +979,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker worker = new ImageWorker(worldImage);
         
         assertSame(worldImage, worker.getRenderedImage());
+        assertNoData(worker.getRenderedImage(), null);
         assertEquals(  4, worker.getNumBands());
         assertEquals( -1, worker.getTransparentPixel());
         assertTrue  (     worker.isBytes());
@@ -931,6 +1038,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker worker = new ImageWorker(getSyntheticRGB(false));
         
         RenderedImage image = worker.getRenderedImage();
+        assertNoData(image, null);
         assertTrue(image.getColorModel() instanceof ComponentColorModel);
         assertTrue(!image.getColorModel().hasAlpha());
         int sample = image.getTile(0, 0).getSample(0, 0, 2);
@@ -946,6 +1054,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // RGB Palette
         worker.forceBitmaskIndexColorModel();
         image = worker.getRenderedImage();
+        assertNoData(image, null);
         assertTrue(image.getColorModel() instanceof IndexColorModel);
         assertTrue(!image.getColorModel().hasAlpha());
         
@@ -959,6 +1068,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // RGB DirectColorModel
         worker = new ImageWorker(getSyntheticRGB(true));        
         image = worker.getRenderedImage();
+        assertNoData(image, null);
         assertTrue(image.getColorModel() instanceof DirectColorModel);
         assertTrue(!image.getColorModel().hasAlpha());
         sample = image.getTile(0, 0).getSample(0, 0, 2);
@@ -981,6 +1091,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = worker.getRenderedImage();
         assertTrue(image.getColorModel() instanceof ComponentColorModel);
         assertTrue(image.getColorModel().hasAlpha());
+        assertNoData(image, null);
         int sample = image.getTile(0, 0).getSample(0, 0, 3);
         assertEquals(128, sample);
     }
@@ -996,6 +1107,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = worker.getRenderedImage();
         assertTrue(image.getColorModel() instanceof ComponentColorModel);
         assertTrue(image.getColorModel().hasAlpha());
+        assertNoData(image, null);
         Raster tile = worldImage.getTile(0, 0);
         Raster outputTile = image.getTile(0, 0);
         for(int i = 0; i < tile.getWidth(); i++) {
@@ -1018,6 +1130,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(image.getColorModel().hasAlpha());
         int sample = image.getTile(0, 0).getSample(0, 0, 1);
         assertEquals(128, sample);
+        assertNoData(image, null);
     }
 
     @Test
@@ -1032,13 +1145,15 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(image.getColorModel().hasAlpha());
         int sample = image.getTile(0, 0).getSample(0, 0, 1);
         assertEquals(0, sample);
+        assertNoData(image, null);
     }
     
     @Test
     public void testOpacityGrayNoData() {
         assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
         ImageWorker worker = new ImageWorker(gray);
-        worker.setNoData(RangeFactory.convert(RangeFactory.create(255, 255), gray.getSampleModel().getDataType()));
+        Range noData = RangeFactory.convert(RangeFactory.create(255, 255), gray.getSampleModel().getDataType());
+        worker.setNoData(noData);
         worker.applyOpacity(0.5f);
         
         RenderedImage image = worker.getRenderedImage();
@@ -1046,6 +1161,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(image.getColorModel().hasAlpha());
         int sample = image.getTile(0, 0).getSample(0, 0, 1);
         assertEquals(0, sample);
+        assertNoData(image, noData);
     }
 
     @Test
@@ -1057,6 +1173,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = worker.getRenderedImage();
         assertTrue(image.getColorModel() instanceof ComponentColorModel);
         assertTrue(image.getColorModel().hasAlpha());
+        assertNoData(image, null);
         Raster tile = gray.getTile(0, 0);
         Raster outputTile = image.getTile(0, 0);
         for(int i = 0; i < tile.getWidth(); i++) {
@@ -1078,6 +1195,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = worker.getRenderedImage();
         assertTrue(image.getColorModel() instanceof IndexColorModel);
         assertTrue(image.getColorModel().hasAlpha());
+        assertNoData(image, null);
         
         // check the resulting palette
         IndexColorModel index = (IndexColorModel) image.getColorModel();
@@ -1097,6 +1215,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage image = worker.getRenderedImage();
         assertTrue(image.getColorModel() instanceof IndexColorModel);
         assertTrue(image.getColorModel().hasAlpha());
+        assertNoData(image, null);
         
         // check the resulting palette
         IndexColorModel outputCM = (IndexColorModel) image.getColorModel();
@@ -1117,6 +1236,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage t1 = iw.getRenderedImage();
         assertEquals(100, t1.getMinX());
         assertEquals(100, t1.getMinY());
+        assertNoData(t1, null);
         
         // now go back
         AffineTransform atInverse = AffineTransform.getTranslateInstance(-100, -100);
@@ -1125,6 +1245,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(0, t2.getMinX());
         assertEquals(0, t2.getMinY());
         assertSame(bi, t2);
+        assertNoData(t2, null);
     }
     
     @Test
@@ -1138,6 +1259,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage t1 = iw.getRenderedImage();
         assertEquals(-100, t1.getMinX());
         assertEquals(-100, t1.getMinY());
+        assertNoData(t1, null);
     }
     
     @Test
@@ -1155,6 +1277,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 .getRenderedImage();
         assertEquals("Scale", fullChain.getOperationName());
         fullChain.getTiles();
+        assertNoData(fullChain, null);
 
         ImageWorker.WARP_REDUCTION_ENABLED = true;
         RenderedOp reduced = (RenderedOp) new ImageWorker(ri).affine(at,
@@ -1166,6 +1289,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals("Warp", reduced.getOperationName());
         assertEquals(1, reduced.getSources().size());
         assertSame(ushortCoverage.getRenderedImage(), reduced.getSourceImage(0));
+        assertNoData(reduced, null);
 
         // check the bounds of the output image has not changed
         assertEquals(fullChain.getBounds(), reduced.getBounds());
@@ -1187,7 +1311,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Formatting to int (avoid to convert values greater to 127 into negative values during rescaling)
         w.format(DataBuffer.TYPE_INT);
         // Setting NoData
-        w.setNoData(RangeFactory.create(0, 0));
+        Range noData = RangeFactory.create(0, 0);
+        w.setNoData(noData);
         // Setting background to 10
         w.setBackground(new double[] { 10d });
         // Rescaling data
@@ -1196,6 +1321,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Getting Minimum value, It cannot be equal or lower than the offset value (2)
         double minimum = w.getMinimums()[0];
         assertTrue(minimum > 2);
+        assertNoData(w.getRenderedImage(), noData);
     }
 
     @Test
@@ -1227,6 +1353,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // Ensuring minimum is 0 and maximum 50
         assertEquals(min, 0, 1E-7);
         assertEquals(max, 50, 1E-7);
+        
+        assertNoData(w.getRenderedImage(), null);
     }
 
     @Test
@@ -1251,6 +1379,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // check intermediate crop elimination
         RenderedOp op = (RenderedOp) ri2;
         assertEquals(gray, op.getSourceObject(0));
+        assertNoData(op, null);
     }
 
     @Test
@@ -1259,6 +1388,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage input = iw.getRenderedImage();
         RenderedImage image = iw.addBands(new RenderedImage[]{input, input, input, input}, false, null).getRenderedImage();
         assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
+        assertNoData(image, null);
     }
 
     @Test
@@ -1266,5 +1396,187 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker iw = new ImageWorker(gray).retainBands(1);
         RenderedImage image = iw.bandMerge(4).getRenderedImage();
         assertEquals(4, image.getTile(0, 0).getSampleModel().getNumBands());
+        assertNoData(image, null);
+    }
+    
+    static void assertNoData(ImageWorker worker, Range nodata) {
+        assertNoData(worker.getRenderedImage(), nodata);
+    }
+    
+    static void assertNoData(RenderedImage image, Range nodata) {
+        Object property = image.getProperty(NoDataContainer.GC_NODATA);
+        if(nodata == null) {
+            // image properties return an instance of Object in case the property is not found
+            assertEquals("We expect lack of noData, but one was found", Object.class, property.getClass());
+        } else {
+            NoDataContainer container = (NoDataContainer) property;
+            assertEquals(nodata, container.getAsRange());
+        }
+    }
+    
+
+    @Test
+    public void testMosaicRasterROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicRasterROI2() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(getSyntheticSolidGray((byte) 1), 1).subtract(new ROIShape(new Rectangle(0, 64, 128, 128))).subtract(new ROIShape(new Rectangle(64, 0, 64, 128)));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicShapeROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIShape(new Rectangle2D.Double(0, 0, 64, 64));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIShape(new Rectangle2D.Double(63, 63, 64, 64));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicShapeRasterROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIShape(new Rectangle2D.Double(0, 0, 64, 64));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROI(new ROIShape(new Rectangle2D.Double(63, 63, 64, 64)).getAsImage());
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicRasterShapeROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIShape(new Rectangle2D.Double(63, 63, 64, 64));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicGeometryROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIGeometry(JTS.toGeometry(new Envelope(0, 64, 0, 64)));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicGeometryShapeROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIGeometry(JTS.toGeometry(new Envelope(0, 64, 0, 64)));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIShape(new Rectangle2D.Double(63, 63, 64, 64));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+    
+    @Test
+    public void testMosaicShapeGeometryROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROIShape(new Rectangle2D.Double(0, 0, 64, 64));
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+
+    private void testMosaicRedBlue(BufferedImage red, ROI redROI, BufferedImage blue, ROI blueROI) {
+        ImageWorker iw = new ImageWorker();
+        iw.mosaic(new RenderedImage[] {red, blue}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, blueROI}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, instanceOf(ROI.class));
+        ROI roi = (ROI) roiProperty;
+        // check ROI
+        assertTrue(roi.contains(20, 20));
+        assertTrue(roi.contains(120, 120));
+        assertFalse(roi.contains(20, 120));
+        assertFalse(roi.contains(120, 20));
+    }
+    
+    @Test
+    public void testMosaicRasterGeometry() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        
+        testMosaicRedBlue(red, redROI, blue, blueROI);
+    }
+
+    @Test
+    public void testMosaicBackgroundColor() {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+
+        
+        ImageWorker iw = new ImageWorker();
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.mosaic(new RenderedImage[] {red, blue}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, blueROI}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, not((instanceOf(ROI.class))));
+    }
+    
+    @Test
+    public void testMosaicIndexedBackgroundColor() {
+        BufferedImage gray = getSyntheticGrayIndexed(128);
+        
+        // test the case where the color is in the palette
+        ImageWorker iw = new ImageWorker();
+        iw.setBackground(new double[] {10, 10, 10});
+        iw.mosaic(new RenderedImage[] {gray}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null);
+        RenderedImage ri = iw.getRenderedImage();
+        assertThat(ri.getColorModel(), instanceOf(IndexColorModel.class));
+        
+        // and the case where it's not and we have to expand
+        iw = new ImageWorker();
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.mosaic(new RenderedImage[] {gray}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null);
+        ri = iw.getRenderedImage();
+        assertThat(ri.getColorModel(), instanceOf(ComponentColorModel.class));
+    }
+    
+    @Test
+    public void testForceComponentColorModelIncompletePalette() throws IOException {
+        // small palette, but the image has values above it 
+        BufferedImage bi = getSyntheticGrayIndexed(10);
+        ImageWorker iw = new ImageWorker(bi);
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.forceComponentColorModel();
+        // used to crash here
+        RenderedImage ri = iw.getRenderedImage();
+        int[] pixel = new int[2];
+        ri.getData().getPixel(256, 256, pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(255, pixel[1]);
     }
 }

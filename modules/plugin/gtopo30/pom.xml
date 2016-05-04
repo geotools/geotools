@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>GTopo30 datasource module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/gtopo30/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/gtopo30/</url>
-  </scm>
 
   <description>
     This datasource reads the GTOPO30 DEM format.

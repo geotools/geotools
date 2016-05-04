@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *     (C) 2002-2016, Open Source Geospatial Foundation (OSGeo). 
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
@@ -47,6 +47,19 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.NearestVisitor;
+import org.geotools.filter.SortByImpl;
+import org.opengis.feature.FeatureVisitor;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 /**
  * Feature source for SOLR datastore
@@ -58,6 +71,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
      */
     static final String KEY_SOLR_TYPE = "solr_type";
 
+    protected SimpleDateFormat dateFormatUTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     /**
      * Creates the new SOLR feature store.
      * 
@@ -141,7 +155,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 if (store.getLogger().isLoggable(Level.FINE)) {
                     store.getLogger().log(Level.FINE, q.toString());
                 }
-                HttpSolrServer server = store.getSolrServer();
+                HttpSolrClient server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
                 count = new Long(rsp.getResults().getNumFound()-rsp.getResults().getStart()).intValue();
                 //Manage max manually
@@ -338,4 +352,77 @@ public class SolrFeatureSource extends ContentFeatureSource {
         return split;
     }
 
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        // Don't do the following shortcuts if we don't request all features as that
+        // might introduce subtle bugs.
+        if (query.getMaxFeatures() != Integer.MAX_VALUE) {
+            return false;
+        }
+
+        SortBy sortBy;
+
+        if (visitor instanceof MinVisitor) {
+            //Get Minimum value
+            MinVisitor minVisitor = (MinVisitor) visitor;
+            List<Expression> exprs = minVisitor.getExpressions();
+            if (exprs.size() != 1 || !(exprs.get(0) instanceof PropertyName)) {
+                return false;
+            }
+
+            PropertyName propName = (PropertyName) exprs.get(0);
+            sortBy = new SortByImpl(propName, SortOrder.ASCENDING);
+        } else if (visitor instanceof MaxVisitor) {
+            // Get Maximum Value
+            MaxVisitor maxVisitor = (MaxVisitor) visitor;
+            List<Expression> exprs = maxVisitor.getExpressions();
+            if (exprs.size() != 1 || !(exprs.get(0) instanceof PropertyName)) {
+                return false;
+            }
+
+            PropertyName propName = (PropertyName) exprs.get(0);
+            sortBy = new SortByImpl(propName, SortOrder.DESCENDING);
+        } else if (visitor instanceof NearestVisitor) {
+            NearestVisitor nearestVisitor = (NearestVisitor) visitor;
+            Expression exp = nearestVisitor.getExpression();
+
+            if (!(exp instanceof PropertyName)) {
+                return false;
+            }
+
+            PropertyName propName = (PropertyName) exp;
+
+            if(!(nearestVisitor.getValueToMatch() instanceof Date)) {
+                return false;
+            }
+
+            FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
+
+            // Sort by difference from getValueToMatch, should return closest value
+            // at the top of the sort
+            PropertyName expr = factory.property(
+                "abs(ms(" + dateFormatUTC.format(nearestVisitor.getValueToMatch())
+                + "," + propName.getPropertyName() + "))");
+
+            sortBy = new SortByImpl(expr, SortOrder.ASCENDING);
+
+        } else {
+            // Otherwise let the caller iterate through the entire collection
+            return false;
+        }
+
+        Query newQuery = new Query(query);
+        newQuery.setSortBy(new SortBy[] {sortBy});
+
+        // We set up the sortBy where we only need a single value instead of the
+        // entire collection.
+        newQuery.setMaxFeatures(1);
+
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
+        while (reader.hasNext()) {
+            visitor.visit(reader.next());
+        }
+
+        return true;
+    }
 }

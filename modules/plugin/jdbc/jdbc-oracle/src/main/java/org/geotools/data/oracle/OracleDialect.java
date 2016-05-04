@@ -34,11 +34,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
-import oracle.sql.Datum;
-import oracle.sql.STRUCT;
-
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.data.jdbc.datasource.UnWrapper;
@@ -73,6 +68,11 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+
+import oracle.jdbc.OracleConnection;
+import oracle.sql.ARRAY;
+import oracle.sql.Datum;
+import oracle.sql.STRUCT;
 
 /**
  * 
@@ -127,7 +127,13 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      */
     public static final String GEODETIC = "geodetic";
     
-    UnWrapper uw;
+    /**
+     * Map of <code>UnWrapper</code> objects keyed by the class of <code>Connection</code>
+     * it is an unwrapper for. This avoids the overhead of searching the 
+     * <code>DataSourceFinder</code> service registry at each unwrap.
+     */
+    Map<Class<? extends Connection>, UnWrapper> uwMap = 
+            new HashMap<Class<? extends Connection>, UnWrapper>();
 
     /**
      * A map from JTS Geometry type to Oracle geometry type. See Oracle Spatial documentation,
@@ -617,23 +623,32 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         }
         
         try {
-            // first lookup ever? (we have UNWRAPPER_NOT_FOUND as a sentinel for a lookup that
-            // will not work (we assume the datasource will always return connections we can
-            // unwrap, or never).
-            if (uw == null) {
-                UnWrapper unwrapper = DataSourceFinder.getUnWrapper(cx);
+            // Unwrap the connection multiple levels as necessary to get at the underlying
+            // OracleConnection. Maintain a map of UnWrappers to avoid searching
+            // the registry every time we need to unwrap.
+            Connection testCon = cx;
+            Connection toUnwrap;
+            do {
+                UnWrapper unwrapper = uwMap.get(testCon.getClass());
                 if (unwrapper == null) {
-                    uw = UNWRAPPER_NOT_FOUND;
-                } else {
-                    uw = unwrapper;
+                    unwrapper = DataSourceFinder.getUnWrapper(testCon);
+                    if (unwrapper == null) {
+                        unwrapper = UNWRAPPER_NOT_FOUND;
+                    }
+                    uwMap.put(testCon.getClass(), unwrapper);
                 }
-            }
-            if (uw != null && uw != UNWRAPPER_NOT_FOUND) {
-                Connection uwcx = uw.unwrap( cx );
-                if ( uwcx != null && uwcx instanceof OracleConnection ) {
-                    return (OracleConnection) uwcx;
+                if (unwrapper == UNWRAPPER_NOT_FOUND) {
+                    // give up and do Java 6 unwrap below
+                    break;
                 }
-            } else if (cx instanceof Wrapper) {
+                toUnwrap = testCon;
+                testCon = unwrapper.unwrap(testCon);
+                if (testCon instanceof OracleConnection) {
+                    return (OracleConnection) testCon;
+                }
+            } while (testCon != null && testCon != toUnwrap);
+
+            if (cx instanceof Wrapper) {
                 // try to use java 6 unwrapping
                 try {
                     Wrapper w = cx;
@@ -1233,20 +1248,20 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     @Override
     public String getSequenceForColumn(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
-        String sequenceName = (tableName + "_" + columnName + "_SEQUENCE").toUpperCase();
+        String sequenceName = (tableName + "_" + columnName + "_%").toUpperCase();
         PreparedStatement st = null;
         String sql;
         
         try {
-            sql = "SELECT * FROM USER_SEQUENCES WHERE SEQUENCE_NAME = ?";
+            sql = "SELECT SEQUENCE_NAME FROM USER_SEQUENCES WHERE SEQUENCE_NAME like ?";
             st = cx.prepareStatement(sql);
             st.setString(1, sequenceName);
-            
+
             // check the user owned sequences
             ResultSet rs = st.executeQuery();
             try {
                 if ( rs.next() ) {
-                    return sequenceName; 
+                    return rs.getString(1);
                 }    
             } finally {
                 dataStore.closeSafe( rs );
@@ -1254,14 +1269,14 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             }
             
             // that did not work, let's see if the sequence is available in someone else schema
-            sql = "SELECT * FROM ALL_SEQUENCES WHERE SEQUENCE_NAME = ?";
+            sql = "SELECT SEQUENCE_NAME, SEQUENCE_OWNER FROM ALL_SEQUENCES WHERE SEQUENCE_NAME like ?";
             st = cx.prepareStatement(sql);
             st.setString(1, sequenceName);
             rs = st.executeQuery();
             try {
                 if ( rs.next() ) {
-                    String schema = rs.getString("SEQUENCE_OWNER");
-                    return schema + "." + sequenceName;
+                    String schema = rs.getString(2);
+                    return schema + "." + rs.getString(1);
                 }    
             } finally {
                 dataStore.closeSafe( rs );
@@ -1280,7 +1295,8 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             Connection cx) throws SQLException {
         Statement st = cx.createStatement();
         try {
-            ResultSet rs = st.executeQuery( "SELECT " + sequenceName + ".NEXTVAL FROM DUAL");
+            ResultSet rs = st.executeQuery( "SELECT " +
+                    encodeNextSequenceValue(schemaName, sequenceName) + " FROM DUAL");
             try {
                 rs.next();
                 return rs.getInt( 1 );
@@ -1293,6 +1309,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe( st );
         }
         
+    }
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return sequenceName + ".NEXTVAL";
     }
 
     @Override
@@ -1312,6 +1333,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         } finally {
             dataStore.closeSafe(st);
         }
+    }
+
+    @Override
+    public boolean lookupGeneratedValuesPostInsert() {
+        return true;
     }
 
     /**

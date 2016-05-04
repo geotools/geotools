@@ -188,6 +188,11 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     }
 
     @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
+    @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();
     }

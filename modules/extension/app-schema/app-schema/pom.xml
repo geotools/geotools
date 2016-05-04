@@ -7,17 +7,13 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema</artifactId>
-        <version>15-SNAPSHOT</version>
+        <version>16-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-app-schema</artifactId>
     <name>Application Schema DataAccess</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema</url>
-    </scm>
 
     <description>DataAccess to create complex feature types defined in a GML application schema.</description>
 
@@ -77,7 +73,7 @@
         2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.1</version>
+            <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
         </dependency>
         <dependency>
             <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections 

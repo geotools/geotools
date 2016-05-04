@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.InputSource;
@@ -108,6 +109,52 @@ public class FilterFilterTest extends TestCase {
         assertEquals(FilterType.GEOMETRY_INTERSECTS,Filters.getFilterType(f1));
         assertEquals(FilterType.GEOMETRY_BBOX, Filters.getFilterType( f2));
         
+    }
+	
+    public void testLikeMatchCase_v1_0()  throws Exception {
+        testLikeMatchCase_v1_0(true);
+        testLikeMatchCase_v1_0(false);
+    }
+    private void testLikeMatchCase_v1_0(boolean matchCase)  throws Exception {
+        String filter = "<wfs:GetFeature service=\"WFS\" version=\"1.0.0\" " +
+             "outputFormat=\"GML2\" " +
+             "xmlns:topp=\"http://www.openplans.org/topp\" " +
+             "xmlns:wfs=\"http://www.opengis.net/wfs\" " +
+             "xmlns:ogc=\"http://www.opengis.net/ogc\" " +
+             "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+             "xsi:schemaLocation=\"http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\">" +
+             "<wfs:Query typeName=\"cite:Buildings\">" +
+               "<Filter xmlns=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\">" +
+                 "<PropertyIsLike wildCard=\"*\" singleChar=\".\" escapeChar=\"\\\" matchCase=\"" + matchCase + "\">" +
+                   "<PropertyName>ADDRESS</PropertyName>" +
+                   "<Literal>* MAIN STREET</Literal>" +
+                 "</PropertyIsLike>" +
+               "</Filter>" +
+             "</wfs:Query>" + 
+           "</wfs:GetFeature>";
+        
+        StringReader reader = new StringReader( filter );
+        
+        InputSource requestSource = new InputSource(reader);
+        
+        // instantiante parsers and content handlers
+        MyHandler contentHandler = new MyHandler();
+        FilterFilter filterParser = new FilterFilter(contentHandler, null);
+        GMLFilterGeometry geometryFilter = new GMLFilterGeometry(filterParser);
+        GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
+        
+        // read in XML file and parse to content handler
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        ParserAdapter adapter = new ParserAdapter(parser.getParser());
+        adapter.setContentHandler(documentFilter);
+        adapter.parse(requestSource);
+        
+        assertEquals(contentHandler.filters.size(),1);
+        
+        assertTrue(contentHandler.filters.get(0) instanceof PropertyIsLike);
+        PropertyIsLike like = (PropertyIsLike)contentHandler.filters.get(0);
+        assertEquals(matchCase, like.isMatchingCase());
     }
 
 	public void testWithFunction() throws Exception {
@@ -308,7 +355,7 @@ StringReader reader = new StringReader( filter );
 
     static class MyHandler extends XMLFilterImpl implements FilterHandler {
 	
-		public List filters = new ArrayList();
+		public List<org.opengis.filter.Filter> filters = new ArrayList<org.opengis.filter.Filter>();
 		
 		public void filter(org.opengis.filter.Filter filter) {
 			filters.add(filter);

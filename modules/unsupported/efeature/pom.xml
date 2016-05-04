@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
   
 
@@ -27,7 +27,7 @@
   <artifactId>gt-efeature</artifactId>
   <packaging>jar</packaging>
   <name>EFeature DataStore Implementation</name>
-  <version>15-SNAPSHOT</version>
+  <version>16-SNAPSHOT</version>
   
   <description>
     The EFeature DataStore module adds support for spatial read and write operations to EMF models. 
@@ -38,12 +38,6 @@
     <url>www.osgeo.org</url>
   </organization>
   
-<!--  <scm>-->
-<!--     <connection>-->
-<!--        scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/efeature/-->
-<!--     </connection>-->
-<!--     <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/efeature/</url>-->
-<!--  </scm> -->
   
   <!-- for your project. -->
   <inceptionYear>2011</inceptionYear>
@@ -243,14 +237,6 @@
           </excludes>
         </configuration>
       </plugin>
-      <plugin>
-	   <artifactId>maven-compiler-plugin</artifactId>
-	   <version>2.0.2</version>
-	   <configuration>
-	       <source>1.6</source>
-	       <target>1.6</target>
-	   </configuration>
-      </plugin>      
       
       <!-- ====    Testing          ============================== -->
       <!-- ====    Code Formatting  ============================== -->

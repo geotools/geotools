@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema</artifactId>
-        <version>15-SNAPSHOT</version>
+        <version>16-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
@@ -15,10 +15,6 @@
     <packaging>pom</packaging>
     <name>Application Schema Packages</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/</url>
-    </scm>
 
     <description>
         This is an aggregating pom used to build remote schema resources into

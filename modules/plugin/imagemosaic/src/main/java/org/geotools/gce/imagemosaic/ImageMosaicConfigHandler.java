@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -72,6 +72,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -163,7 +164,7 @@ public class ImageMosaicConfigHandler {
             indexerFile = new File(parent, Utils.INDEXER_PROPERTIES);
             if (Utils.checkFileReadable(indexerFile)) {
                 // load it and parse it
-                final Properties props = Utils.loadPropertiesFromURL(DataUtilities
+                final Properties props = CoverageUtilities.loadPropertiesFromURL(DataUtilities
                         .fileToURL(indexerFile));
                 indexer = createIndexer(props, params);
             }
@@ -226,7 +227,7 @@ public class ImageMosaicConfigHandler {
             Hints hints, Key key) {
         String updatedFilePath = null;
         if (filePath != null) {
-            if (isAbsolutePath) {
+            if (isAbsolutePath && !filePath.startsWith(rootMosaicDir)) {
                 updatedFilePath = rootMosaicDir + File.separatorChar + filePath;
             } else {
                 updatedFilePath = filePath;
@@ -894,40 +895,35 @@ public class ImageMosaicConfigHandler {
             // Check its properties are compatible with the existing coverage.
 
             CatalogConfigurationBean catalogConfigurationBean = bean;
-            if (!catalogConfigurationBean.isHeterogeneous()) {
 
-                // There is no need to check resolutions if the mosaic
-                // has been already marked as heterogeneous
-
-                numberOfLevels = coverageReader.getNumOverviews(inputCoverageName) + 1;
-                boolean needUpdate = false;
-
-                //
-                // Heterogeneousity check
-                //
-                if (numberOfLevels != mosaicConfiguration.getLevelsNum()) {
+            // make sure we pick the same resolution irrespective of order of harvest
+            numberOfLevels = coverageReader.getNumOverviews(inputCoverageName) + 1;
+            resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
+            
+            int originalNumberOfLevels = mosaicConfiguration.getLevelsNum();
+            boolean needUpdate = false;
+            if (Utils.homogeneousCheck(Math.min(numberOfLevels, originalNumberOfLevels), 
+                    resolutionLevels, mosaicConfiguration.getLevels())) {
+                if (numberOfLevels != originalNumberOfLevels) {
                     catalogConfigurationBean.setHeterogeneous(true);
-                    if (numberOfLevels > mosaicConfiguration.getLevelsNum()) {
-                        resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
-                        mosaicConfiguration.setLevels(resolutionLevels);
-                        mosaicConfiguration.setLevelsNum(numberOfLevels);
-                        needUpdate = true;
-                    }
-                } else {
-                    final double[][] mosaicLevels = mosaicConfiguration.getLevels();
-                    resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
-                    final boolean homogeneousLevels = Utils.homogeneousCheck(numberOfLevels,
-                            resolutionLevels, mosaicLevels);
-                    if (!homogeneousLevels) {
-                        catalogConfigurationBean.setHeterogeneous(true);
-                        needUpdate = true;
+                    if (numberOfLevels > originalNumberOfLevels) {
+                        needUpdate = true; // pick the one with highest number of levels
                     }
                 }
-                // configuration need to be updated
-                if (needUpdate) {
-                    getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
+            } else {
+                catalogConfigurationBean.setHeterogeneous(true);
+                if (isHigherResolution(resolutionLevels, mosaicConfiguration.getLevels())) {
+                    needUpdate = true; // pick the one with the highest resolution
                 }
             }
+
+            // configuration need to be updated
+            if (needUpdate) {
+                mosaicConfiguration.setLevels(resolutionLevels);
+                mosaicConfiguration.setLevelsNum(numberOfLevels);
+                getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
+            }
+
             ImageLayout layout = coverageReader.getImageLayout(inputCoverageName);
             cm = layout.getColorModel(null);
             sm = layout.getSampleModel(null);
@@ -973,6 +969,19 @@ public class ImageMosaicConfigHandler {
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }
+    }
+
+    private boolean isHigherResolution(double[][] a, double[][] b) {
+        for (int i = 0; i < Math.min(a.length, b.length); i++) {
+            for (int j = 0; i < Math.min(a[i].length, b[i].length); i++) {
+                if (a[i][j] < b[i][j]) {
+                    return true;
+                } else if (a[i][j] > b[i][j]) {
+                    return false;
+                } 
+            }
+        } 
+        return false;
     }
 
     public void dispose() {

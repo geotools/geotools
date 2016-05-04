@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,9 @@
 package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCUDTTestSetup;
+
+import static java.lang.String.format;
+import static org.geotools.data.postgis.PostGISDialect.BIGDATE_UDT;
 
 /**
  * 
@@ -35,6 +38,18 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
 
     public PostGISTestSetup getDelegate() {
         return (PostGISTestSetup) delegate;
+    }
+
+    @Override
+    protected void setUpData() throws Exception {
+        super.setUpData();
+
+        try {
+            dropDateUdtTable();
+        }
+        catch(Exception e) {}
+
+        createDateUdtTable();
     }
 
     @Override
@@ -81,4 +96,21 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
         runSafe("DROP DOMAIN foo13");
     }
 
+    public void createDateUdtTable() throws Exception {
+        run(format("CREATE DOMAIN %s AS bigint;", BIGDATE_UDT));
+        run(format("CREATE TABLE \"date_udt\" (id serial PRIMARY KEY, bd %s, name varchar);", BIGDATE_UDT));
+
+        run("INSERT INTO \"date_udt\" (bd, name) VALUES (0, 'epoch');");
+        run("INSERT INTO \"date_udt\" (bd, name) VALUES (-1000, 'epoch-1');");
+        run("INSERT INTO \"date_udt\" (bd, name) VALUES (1000, 'epoch+1');");
+        run(format("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'ce');", -62135769600000L));
+        run(format("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'bc');", -62135769600000L-1));
+        run(format("INSERT INTO \"date_udt\" (bd, name) VALUES (%d, 'min');", Long.MIN_VALUE));
+    }
+
+    public void dropDateUdtTable() throws Exception {
+        runSafe(format("DROP TABLE \"date_udt\";"));
+        runSafe(format("DROP DOMAIN %s;", BIGDATE_UDT));
+    }
+    
 }

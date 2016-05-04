@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,14 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.classifier.LinearColorMap;
 import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
+import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -299,33 +301,41 @@ public class SLDColorMapBuilder {
 			// Build the new one.
 			//
 			// //
-			switch (linearColorMapType) {
-			case ColorMap.TYPE_RAMP:
-				colormapElements.add(LinearColorMapElement.create(label,
-						new Color[] { lastColorValue, newColorValue },
-						RangeFactory.create(((Range) previous.getRange())
-								.getMax().doubleValue(), true, q, false),
-								RangeFactory.create((int) previous.getOutputMaximum() ,
-								colorsPerColorMapElement
-										+ (int) previous.getOutputMaximum())));
-				break;
-			case ColorMap.TYPE_VALUES:
-				colormapElements.add(LinearColorMapElement.create(label,
-						newColorValue, q, newColorMapElementIndex));
-				break;
-			case ColorMap.TYPE_INTERVALS:
-				colormapElements.add(LinearColorMapElement.create(label,
-						newColorValue, RangeFactory.create(((Range) previous
-								.getRange()).getMax().doubleValue(), true, q, false),
-						newColorMapElementIndex));
-				break;
-			default:
-				throw new IllegalArgumentException(Errors.format(
-						ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapTransform.type", Double
-								.toString(opacityValue), Integer.valueOf(
-								linearColorMapType)));
+            double previousMax = ((Range) previous.getRange()).getMax().doubleValue();
+            Color[] previousColors = previous.getColors();
+            if (PiecewiseUtilities.compare(previousMax, q) != 0) {
+                Range valueRange = RangeFactory.create(previousMax, true, q, false);
 
-			}
+                switch (linearColorMapType) {
+                case ColorMap.TYPE_RAMP:
+                    Color[] colors = new Color[] { lastColorValue, newColorValue };
+                    int previousMaximum = (int) previous.getOutputRange().getMax().intValue();
+                    // the piecewise machinery will complain if we have different colors
+                    // on touching ranges, work around it by not including the previous
+                    // max at the beginning of the range in case that happens (uses might
+                    // want to have a sharp jump in a ramp, achieved by having two subseqent
+                    // entries with the same value, but different color)
+                    boolean minIncluded = previousColors[previousColors.length - 1].equals(colors[0]);
+                    Range sampleRange = RangeFactory.create(previousMaximum, minIncluded,
+                            colorsPerColorMapElement + previousMaximum, true);
+                    colormapElements.add(
+                            LinearColorMapElement.create(label, colors, valueRange, sampleRange));
+                    break;
+                case ColorMap.TYPE_VALUES:
+                    colormapElements.add(LinearColorMapElement.create(label, newColorValue, q,
+                            newColorMapElementIndex));
+                    break;
+                case ColorMap.TYPE_INTERVALS:
+                    colormapElements.add(LinearColorMapElement.create(label, newColorValue,
+                            valueRange, newColorMapElementIndex));
+                    break;
+                default:
+                    throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
+                            "ColorMapTransform.type", Double.toString(opacityValue),
+                            Integer.valueOf(linearColorMapType)));
+
+                }
+            }
 			
 		}
 		lastColorValue = newColorValue;
@@ -643,7 +653,7 @@ public class SLDColorMapBuilder {
 					"ColorMapEntry"+this.colormapElements.size(), lastColorValue, RangeFactory.create(
 						 previous.getRange().getMax().doubleValue(),
 							true, Double.POSITIVE_INFINITY, false),
-					(int) previous.getOutputMaximum());
+					previous.getOutputRange().getMax().intValue());
 			this.colormapElements.add(last);
 
 		}

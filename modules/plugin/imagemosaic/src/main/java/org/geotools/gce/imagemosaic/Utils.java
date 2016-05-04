@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -97,6 +97,7 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
@@ -191,6 +192,7 @@ public class Utils {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
         CLEANUP_FILTER = initCleanUpFilter(); 
+        MOSAIC_SUPPORT_FILES_FILTER = initMosaicSupportFilesFilter();
     }
     
     public static class Prop {
@@ -390,6 +392,18 @@ public class Utils {
         return filesFilter;
     }
 
+    private static IOFileFilter initMosaicSupportFilesFilter() {
+        IOFileFilter filesFilter = FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter("db"));
+        return filesFilter;
+    }
+
     public static String getMessageFromException(Exception exception) {
 		if (exception.getLocalizedMessage() != null)
 			return exception.getLocalizedMessage();
@@ -441,7 +455,7 @@ public class Utils {
             }
         }
 		
-		final Properties properties = loadPropertiesFromURL(propsURL);
+		final Properties properties = CoverageUtilities.loadPropertiesFromURL(propsURL);
 		if (properties == null) {
 			if (LOGGER.isLoggable(Level.INFO))
 				LOGGER.info("Unable to load mosaic properties file");
@@ -672,34 +686,6 @@ public class Utils {
 		return null;
 	}
 
-	public static Properties loadPropertiesFromURL(URL propsURL) {
-		final Properties properties = new Properties();
-		InputStream stream = null;
-		InputStream openStream = null;
-		try {
-			openStream = propsURL.openStream();
-			stream = new BufferedInputStream(openStream);
-			properties.load(stream);
-		} catch (FileNotFoundException e) {
-			if (LOGGER.isLoggable(Level.SEVERE))
-				LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			return null;
-		} catch (IOException e) {
-			if (LOGGER.isLoggable(Level.SEVERE))
-				LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			return null;
-		} finally {
-
-			if (stream != null)
-				IOUtils.closeQuietly(stream);
-
-			if (openStream != null)
-				IOUtils.closeQuietly(openStream);
-
-		}
-		return properties;
-	}
-
 	public static IOFileFilter excludeFilters(final IOFileFilter inputFilter,
 			IOFileFilter... filters) {
 		IOFileFilter retFilter = inputFilter;
@@ -904,7 +890,7 @@ public class Utils {
 			final URL datastoreProperties)
 			throws IOException {
 		// read the properties file
-		Properties properties = loadPropertiesFromURL(datastoreProperties);
+		Properties properties = CoverageUtilities.loadPropertiesFromURL(datastoreProperties);
 		if (properties == null)
 			return null;
 
@@ -1273,7 +1259,7 @@ public class Utils {
             File indexer = new File(file, INDEXER_PROPERTIES);
             if (indexer.exists()) {
                 URL indexerUrl = DataUtilities.fileToURL(indexer);
-                Properties config = Utils.loadPropertiesFromURL(indexerUrl);
+                Properties config = CoverageUtilities.loadPropertiesFromURL(indexerUrl);
                 if (config != null && config.get(Utils.Prop.NAME) != null) {
                     return (String) config.get(Utils.Prop.NAME);
                 }
@@ -1353,7 +1339,7 @@ public class Utils {
         indexFile = new File(locationPath, INDEXER_PROPERTIES);
         if (Utils.checkFileReadable(indexFile)) {
             URL url = DataUtilities.fileToURL(indexFile);
-            final Properties properties = loadPropertiesFromURL(url);
+            final Properties properties = CoverageUtilities.loadPropertiesFromURL(url);
             if (properties != null) {
                 String canBeEmpty = properties.getProperty(Prop.CAN_BE_EMPTY, null);
                 if (canBeEmpty != null) {
@@ -1368,8 +1354,6 @@ public class Utils {
 
     static final double SAMEBBOX_THRESHOLD_FACTOR = 20;
 
-    static final double AFFINE_IDENTITY_EPS = 1E-6;
-
     public static final boolean DEFAULT_COLOR_EXPANSION_BEHAVIOR = false;
 
     public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
@@ -1382,6 +1366,8 @@ public class Utils {
 
     public static final String SAMPLE_IMAGE_NAME = "sample_image";
 
+    public static final String BBOX = "BOUNDINGBOX";
+
     public static final String TIME_DOMAIN = "TIME";
 
     public static final String ELEVATION_DOMAIN = "ELEVATION";
@@ -1390,8 +1376,8 @@ public class Utils {
 
     public static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
-    private static IOFileFilter CLEANUP_FILTER;
-
+    static IOFileFilter CLEANUP_FILTER;
+    static IOFileFilter MOSAIC_SUPPORT_FILES_FILTER;
     /**
      * Private constructor to initialize the ehCache instance. It can be configured through a Bean.
      * 

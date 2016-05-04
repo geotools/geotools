@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1688,6 +1688,47 @@ public class SLDTransformerTest {
         
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
     }
+    
+    @Test
+    public void testMultipleFontsUniform() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Font f1 = sb.createFont("Arial", 10);
+        Font f2 = sb.createFont("Comic Sans MS", 10);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, new Font[] {f1,  f2}, "label");
+        
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(ts);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font)", doc);
+        assertXpathEvaluatesTo("2", "count(//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"])", doc);
+        assertXpathEvaluatesTo("Arial", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][1]", doc);
+        assertXpathEvaluatesTo("Comic Sans MS", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][2]", doc);
+        assertXpathEvaluatesTo("10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
+    }
+    
+    @Test
+    public void testMultipleFontsNotUniform() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Font f1 = sb.createFont("Arial", 10);
+        Font f2 = sb.createFont("Comic Sans MS", 12);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, new Font[] {f1,  f2}, "label");
+        
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(ts);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("2", "count(//sld:TextSymbolizer/sld:Font)", doc);
+        // <sld:CssParameter name="font-family">Comic Sans MS</sld:CssParameter>
+        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"])", doc);
+        assertXpathEvaluatesTo("Arial", "//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"][1]", doc);
+        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"])", doc);
+        assertXpathEvaluatesTo("Comic Sans MS", "//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"]", doc);
+        assertXpathEvaluatesTo("10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
+    }
+    
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(symbolizer);

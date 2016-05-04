@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -118,6 +118,13 @@
        </modules>
      </profile>
      <profile>
+       <id>dem</id>
+       <modules>
+         <module>process-raster</module>
+         <module>dem</module>
+       </modules>
+     </profile>
+     <profile>
        <id>swt</id>
        <modules>
          <module>swt</module>
@@ -169,6 +176,25 @@
        </modules>
      </profile>
      <profile>
+       <id>ysld</id>
+       <activation>
+          <property><name>all</name></property>
+        </activation>
+       <modules>
+         <module>ysld</module>
+       </modules>
+     </profile>
+     <profile>
+      <id>geojsonstore</id>
+      <activation>
+         <property><name>all</name></property>
+       </activation>
+	  <modules>
+        <module>geojsonstore</module>
+        <module>geojson</module>
+	  </modules>
+     </profile>
+     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>
@@ -184,6 +210,7 @@
          <module>mongodb</module>
          <module>solr</module>
          <module>css</module>
+         <module>geojsonstore</module>
        </modules>
      </profile>
   </profiles>
@@ -198,6 +225,7 @@
     <module>geopkg</module>
     <module>mbtiles</module>
     <module>wfs-ng</module>
+    <module>ysld</module>
   </modules>
 
 </project>

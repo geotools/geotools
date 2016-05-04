@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,8 +17,13 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +33,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-
+import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.naming.Context;
@@ -105,7 +110,7 @@ public final class GeoTools {
     /**
      * The current GeoTools version. The separator character must be the dot.
      */
-    private static final Version VERSION = new Version(PROPS.getProperty("version", "15-SNAPSHOT"));
+    private static final Version VERSION = new Version(PROPS.getProperty("version", "16-SNAPSHOT"));
 
     /**
      * The version control (svn) revision at which this version of geotools was built.
@@ -203,6 +208,21 @@ public final class GeoTools {
             "org.geotools.referencing.resampleTolerance";
     static {
         bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE);
+    }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#LOCAL_DATE_TIME_HANDLING} hint.
+     *
+     * This setting specifies if dates shall be treated as local dates ignoring time zones.
+     *
+     * @see Hints#LOCAL_DATE_TIME_HANDLING
+     * @see #getDefaultHints
+     * @since 15.0
+     */
+    public static final String LOCAL_DATE_TIME_HANDLING = "org.geotools.localDateTimeHandling";
+    static {
+        bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING);
     }
 
     /**
@@ -333,15 +353,6 @@ public final class GeoTools {
     }
     
     /**
-     * Reports back the version of GeoTools being used.
-     *
-     * @return The current GeoTools version.
-     */
-    public static Version getVersion(){
-         return VERSION;
-    }
-    
-    /**
      * Reports back the vcs revision at which the version of GeoTools was built. 
      * 
      * @return The svn revision.
@@ -361,6 +372,14 @@ public final class GeoTools {
 
     /**
      * Returns the raw properties object containing all properties about this GeoTools build.
+     * <p>
+     * Example from the 14.3 release:
+     * <ul>
+     * <li>version=14.3</li>
+     * <li>build.revision=2298d56000bef6f526b521a480316ea544c74571</li>
+     * <li>build.branch=rel_14.3</li>
+     * <li>build.timestamp=21-Mar-2016 21:30</li>
+     * </ul>
      */
     public static Properties getBuildProperties() {
         Properties props = new Properties();
@@ -368,6 +387,165 @@ public final class GeoTools {
         return props;
     }
 
+    /**
+     * Reports back the version of GeoTools being used.
+     *
+     * @return The current GeoTools version.
+     */
+    public static Version getVersion(){
+         return VERSION;
+    }
+
+    /**
+     * Lookup version for provided class.
+     * <p>
+     * Version number is determined by either:
+     * <ul>
+     * <li>Use of jar naming convention, matching jars such as jts-1.13.jar</li>
+     * <li>Use of MANIFEST.MF (to check Implementation-Version, Project-Version)</li>
+     * <li>
+     * <li>To assist  
+     * @param type
+     * @return Version (or null if unavailable)
+     */
+    public static Version getVersion(Class<?> type) {
+        final URL classLocation = classLocation(type);
+        String path = classLocation.toString();
+
+        // try and extract from maven jar naming convention
+        if (classLocation.getProtocol().equalsIgnoreCase("jar")) {
+            String jarVersion = jarVersion(path);
+            if( jarVersion != null ){
+                return new Version(jarVersion);
+            }
+            // try manifest
+            try {
+                URL manifestLocation = manifestLocation( path );
+                Manifest manifest = new Manifest();
+                try (InputStream content = manifestLocation.openStream()) {
+                    manifest.read(content);
+                }
+                for (String attribute : new String[] { "Implementation-Version", "Project-Version",
+                        "Specification-Version" }) {
+                    String value = manifest.getMainAttributes().getValue(attribute);
+                    if (value != null) {
+                        return new Version(value);
+                    }
+                }
+            } catch (IOException e) {
+                // unavailable
+            }
+        }
+        String name = type.getName();
+        if (name.startsWith("org.geotools") || name.startsWith("org.opengis")) {
+            return GeoTools.getVersion();
+        }
+        return null;
+    }
+    
+    /**
+     * Class location.
+     * 
+     * @param type
+     * @return class location
+     */
+    static URL classLocation( Class<?> type ){
+        return type.getResource(type.getSimpleName() + ".class");
+    }
+    
+    /**
+     * Determine jar version from static analysis of classLocation path.
+     * @param classLocation
+     * @return jar version, or null if unknown
+     */
+    static String jarVersion( String classLocation){
+        if (classLocation.startsWith("jar:") || classLocation.contains(".jar!")){
+            String location = classLocation.substring(0, classLocation.lastIndexOf("!") + 1);
+            int dash = location.lastIndexOf("-");
+            int dot = location.lastIndexOf(".jar");
+    
+            if (dash != -1 && dot != -1) {
+                return location.substring(dash + 1, dot);
+            }
+        }
+        // handle custom protocols such as jboss "vfs:" or OSGi "resource"
+        if( classLocation.contains(".jar/")){
+            String location = classLocation.substring(0, classLocation.indexOf(".jar/") + 4);
+            int dash = location.lastIndexOf("-");
+            int dot = location.lastIndexOf(".jar");
+    
+            if (dash != -1 && dot != -1) {
+                return location.substring(dash + 1, dot);
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Generate URL of MANIFEST.MF file for provided class location.
+     * 
+     * @param classLocation
+     * @return MANIFEST.MF location, or null if unknown
+     */
+    static URL manifestLocation(String classLocation) {
+        URL url;
+        if (classLocation.startsWith("jar:")) {
+            try {
+                url = new URL(classLocation.substring(0, classLocation.lastIndexOf("!") + 1)
+                        + "/META-INF/MANIFEST.MF");
+                return url;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        // handle custom protocols such as jboss "vfs:" or OSGi "resource"
+        if (classLocation.contains(".jar/")) {
+            String location = classLocation.substring(0, classLocation.indexOf(".jar/") + 4);
+            try {
+                url = new URL(location + "/META-INF/MANIFEST.MF");
+                return url;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+    /**
+     * Lookup the MANIFEST.MF for the provided class.
+     * <p>
+     * This can be used to quickly verify packaging information.
+     * @param type
+     * @return MANIFEST.MF contents, please note contents may be empty when running from IDE
+     */
+    public static Manifest getManifest(Class<?> type) {
+        final URL classLocation = classLocation(type);
+        Manifest manifest = new Manifest();
+
+        URL manifestLocation = manifestLocation( classLocation.toString() );
+        if( manifestLocation != null ){
+            try {
+                try (InputStream content = manifestLocation.openStream()) {
+                    manifest.read(content);
+                }
+            } catch (IOException ignore) {
+            }
+        }
+        if (manifest.getMainAttributes().isEmpty()) {
+            // must be running in IDE
+            String name = type.getName();
+            if (name.startsWith("org.geotools") || name.startsWith("org.opengis")
+                    || name.startsWith("net.opengis")) {
+                String generated = "Manifest-Version: 1.0\n" + "Project-Version: " + getVersion()
+                        + "\n";
+
+                try {
+                    manifest.read(new ByteArrayInputStream(generated.getBytes()));
+                } catch (IOException e) {
+                }
+            }
+        }
+        return manifest;
+    }
     /**
      * Sets the global {@linkplain LoggerFactory logger factory}.
      *

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003 - 2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -76,6 +76,8 @@ public class SLDTransformer extends TransformerBase {
     static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    
+    static final Font DEFAULT_FONT = CommonFactoryFinder.getStyleFactory().getDefaultFont();
 
     /**
      * Additional namespace mappings to emit in the start element of the generated. Each entry has a URI key and an associated prefix string value.
@@ -446,16 +448,32 @@ public class SLDTransformer extends TransformerBase {
             }
 
             if ((text.fonts() != null) && (!text.fonts().isEmpty())) {
-                start("Font");
                 List<Font> fonts = text.fonts();
-                Font initialFont = fonts.get(0);
-                for (Font font : fonts ) {
-                    encodeCssParam("font-family", font.getFamily().get(0));
+                if(areFontsUniform(fonts)) {
+                    // go for standard encoding, SLD 1.0 does not allow more than one 
+                    // Font item in a TextSymbolizer
+                    start("Font");
+                    
+                    Font initialFont = fonts.get(0);
+                    for (Font font : fonts ) {
+                        encodeCssParam("font-family", font.getFamily().get(0));
+                    }
+                    encodeCssParam("font-size", initialFont.getSize());
+                    encodeCssParam("font-style", initialFont.getStyle());
+                    encodeCssParam("font-weight", initialFont.getWeight());
+                    end("Font");
+                } else {
+                    // use a GT specific encoding with multiple fonts, matching our
+                    // internal data model (which we can also parse)
+                    for (Font font : fonts ) {
+                        start("Font");
+                        encodeCssParam("font-family", font.getFamily().get(0));
+                        encodeCssParam("font-size", font.getSize());
+                        encodeCssParam("font-style", font.getStyle());
+                        encodeCssParam("font-weight", font.getWeight());
+                        end("Font");
+                    }
                 }
-                encodeCssParam("font-size", initialFont.getSize());
-                encodeCssParam("font-style", initialFont.getStyle());
-                encodeCssParam("font-weight", initialFont.getWeight());
-                end("Font");
             }
 
             if (text.getLabelPlacement() != null) {
@@ -495,6 +513,51 @@ public class SLDTransformer extends TransformerBase {
             }
 
             end("TextSymbolizer");
+        }
+
+        /**
+         * Returns true if the list of fonts has the same settings for
+         * everything besides the font family, and can thus be represented
+         * as a single Font element
+         * @param fonts
+         * @return
+         */
+        private boolean areFontsUniform(List<Font> fonts) {
+            if(fonts.size() == 1) {
+                return true;
+            }
+            
+            Font reference = fonts.get(0);
+            Expression referenceSize = reference.getSize();
+            Expression referenceStyle = reference.getStyle();
+            Expression referenceWeight = reference.getWeight();
+            for (int i = 1; i < fonts.size() ; i++) {
+                Font f = fonts.get(i);
+                Expression size = f.getSize();
+                if(!expressionEquals(referenceSize, size, DEFAULT_FONT.getSize())) {
+                    return false;
+                }
+                Expression style = f.getStyle();
+                if(!expressionEquals(referenceStyle, style, DEFAULT_FONT.getStyle())) {
+                    return false;
+                }
+                Expression weight = f.getWeight();
+                if(!expressionEquals(referenceWeight, weight, DEFAULT_FONT.getWeight())) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        private boolean expressionEquals(Expression reference, Expression exp, Expression defaultValue) {
+            if(exp == null) {
+                return reference == null || defaultValue.equals(reference);
+            } else if(reference == null) {
+                return defaultValue.equals(exp);
+            } else {
+                return reference.equals(exp);
+            }
         }
 
         public void visit(RasterSymbolizer raster) {

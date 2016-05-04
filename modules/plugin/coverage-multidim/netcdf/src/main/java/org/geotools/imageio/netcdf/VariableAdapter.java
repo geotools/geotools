@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -68,6 +68,7 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.imageio.netcdf.NetCDFGeoreferenceManager.DimensionMapper;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
@@ -111,6 +112,9 @@ import ucar.nc2.dataset.VariableDS;
  */
 public class VariableAdapter extends CoverageSourceDescriptor {
 
+    private final static boolean QUICK_SCAN;
+    private final static String QUICK_SCAN_KEY = "org.geotools.netcdf.quickscan"; 
+
     /** 
      * Simple chars replacing classes to deal with "custom" 
      * chars. 
@@ -141,6 +145,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     final static  Set<UnitCharReplacement> UNIT_CHARS_REPLACEMENTS;
 
     static {
+        QUICK_SCAN = Boolean.getBoolean(QUICK_SCAN_KEY);
         UNIT_CHARS_REPLACEMENTS = new HashSet<UnitCharReplacement>();
         UNIT_CHARS_REPLACEMENTS.add(new UnitCharReplacement("-", "^-"));
         UNIT_CHARS_REPLACEMENTS.add(new UnitCharReplacement(".", "*"));
@@ -587,8 +592,13 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      */
     public void updateMapping(SimpleFeatureType indexSchema, List<DimensionDescriptor> descriptors)
             throws IOException {
-        Map<String, String> dimensionsMapping = reader.georeferencing.getDimensions();
-        Set<String> keys = dimensionsMapping.keySet();
+        DimensionMapper mapper = reader.georeferencing.getDimensionMapper();
+        Set<String> dimensionNames = mapper.getDimensionNames();
+        // No need to do the mapping update in case one of these conditions apply
+        if (dimensionNames == null || dimensionNames.isEmpty() || descriptors == null
+                || descriptors.isEmpty() || indexSchema.getAttributeCount() <= FIRST_ATTRIBUTE_INDEX ) {
+            return;
+        }
         int indexAttribute = FIRST_ATTRIBUTE_INDEX;
         final AttributeDescriptor attributeDescriptor = indexSchema.getDescriptor(indexAttribute);
         final String updatedAttribute = attributeDescriptor.getLocalName();
@@ -599,18 +609,16 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
         // Remap time
         String currentDimName = NetCDFUtilities.TIME_DIM;
-        if (keys.contains(currentDimName)) {
-            if (remapAttribute(indexSchema, currentDimName, indexAttribute, descriptors,
-                    dimensionsMapping)) {
+        if (dimensionNames.contains(currentDimName)) {
+            if (remapAttribute(indexSchema, currentDimName, indexAttribute, descriptors, mapper)) {
                 indexAttribute++;
             }
         }
 
         // Remap elevation
         currentDimName = NetCDFUtilities.ELEVATION_DIM;
-        if (keys.contains(currentDimName)) {
-            if (remapAttribute(indexSchema, currentDimName, indexAttribute, descriptors,
-                    dimensionsMapping)) {
+        if (dimensionNames.contains(currentDimName)) {
+            if (remapAttribute(indexSchema, currentDimName, indexAttribute, descriptors, mapper)) {
                 indexAttribute++;
             }
         }
@@ -624,12 +632,11 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * @param currentDimName
      * @param indexAttribute
      * @param descriptors
-     * @param dimensionsMapping
+     * @param mapper
      * @return
      */
     private boolean remapAttribute(final SimpleFeatureType indexSchema, final String currentDimName,
-            final int indexAttribute, final List<DimensionDescriptor> descriptors,
-            Map<String, String> dimensionsMapping) {
+            final int indexAttribute, final List<DimensionDescriptor> descriptors, DimensionMapper mapper) {
         final int numAttributes = indexSchema.getAttributeCount();
         if (numAttributes <= indexAttribute) {
             // Stop looking for attributes in case there aren't anymore
@@ -650,7 +657,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                     ((DefaultDimensionDescriptor) descriptor).setStartAttribute(updatedAttribute);
 
                     // Update the dimensions mapping too
-                    dimensionsMapping.put(currentDimName, updatedAttribute);
+                    mapper.remap(currentDimName, updatedAttribute);
                 }
                 // the attribute has been found, prepare for the next one
                 return true;
@@ -816,7 +823,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 }
             }
         }
-        sampleDims.add(new GridSampleDimension(description + ":sd", categories, unit));
+        sampleDims.add(new GridSampleDimension(description, categories, unit));
 
         InternationalString desc = null;
         if (description != null && !description.isEmpty()) {
@@ -1073,7 +1080,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * @return the numberOfSlices
      */
     public int getNumberOfSlices() {
-        return numberOfSlices;
+        return QUICK_SCAN ? 1 : numberOfSlices;
     }
 
     /**
@@ -1194,7 +1201,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         // ELEVATION or other dimension
         if (!Double.isNaN(verticalValue.doubleValue())) {
             String attribute = null;
-            final String elevationCVName = reader.georeferencing.getDimension(NetCDFUtilities.ELEVATION_DIM);
+            final String elevationCVName = reader.georeferencing.getDimensionMapper().getDimension(NetCDFUtilities.ELEVATION_DIM);
             // Once we don't deal anymore with old coverage APIs, we can consider directly use the dimension name as attribute
             for (AttributeDescriptor descriptor: descriptors) {
                 if (descriptor.getLocalName().equalsIgnoreCase(elevationCVName)) {
@@ -1236,9 +1243,11 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     private String getTimeAttribute(CoordinateSystem cs) {
         CoordinateAxis timeAxis = cs.getTaxis();
         String name = timeAxis.getFullName();
-        String timeAttribute = reader.georeferencing.getDimension(name.toUpperCase());
+        DimensionMapper dimensionMapper = reader.georeferencing.getDimensionMapper();
+        String timeAttribute = dimensionMapper.getDimension(name.toUpperCase());
         if (timeAttribute == null) {
-            timeAttribute = reader.georeferencing.getDimension(NetCDFUtilities.TIME_DIM);
+            //Fallback on standard name
+            timeAttribute = dimensionMapper.getDimension(NetCDFUtilities.TIME_DIM);
         }
         return timeAttribute;
     }

@@ -155,4 +155,12 @@ public class ReferencedEnvelope3DTest {
         ReferencedEnvelope worldBounds2D = bounds.transform( DefaultGeographicCRS.WGS84, true );
         assertEquals( DefaultGeographicCRS.WGS84, worldBounds2D.getCoordinateReferenceSystem() );
     }
+    
+    @Test
+    public void testDistanceWhenMinZOfThisIsGreaterThanMaxZOfOther() {
+        CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_3D;
+        ReferencedEnvelope3D a = new ReferencedEnvelope3D( 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, crs );
+        ReferencedEnvelope3D b = new ReferencedEnvelope3D( 0.0, 1.0, 0.0, 1.0, 0.0, 0.5, crs );
+        assertEquals(Math.sqrt(1*1+1*1+1.5*1.5), a.distance(b), 0.00001);
+    }
 }

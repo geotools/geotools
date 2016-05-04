@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,9 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.TopologyException;
+import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
 
 /**
  * A stateful geometry clipper, can clip linestring on a specified rectangle. Trivial benchmarks
@@ -73,6 +76,64 @@ public class GeometryClipper {
         this.xmax = bounds.getMaxX();
         this.ymax = bounds.getMaxY();
         this.bounds = bounds;
+    }
+    
+    /**
+     * This will try to handle failures when clipping - i.e. because of invalid input geometries (often 
+     * caused by simplification).
+     * 
+     * This attempts to do a normal clip().  If it fails, it will try to do more to ensure the clip 
+     * works properly.  
+     * <ol>
+     * <li>if its a polygon/multipolygon it will try to make the polygon valid and re-try the clip</li>
+     * <li>it will attempt to put the geometry on a precision grid (this will move the points around) and re-try the clip</li>
+     * <li>will attempt to clip with ensureValid = false (ie geotools simple clipping)</li>
+     * </ol>
+     * See {@link #clip(Geometry, boolean) clip}
+     * 
+     * @param g
+     * @param ensureValid
+     * @param scale Scale used to snap geometry to precision model, 0 to disable
+     * @return clipped geometry, or original geometry if clipping failed.
+     */
+    public Geometry clipSafe(Geometry g, boolean ensureValid, double scale) {
+        try {
+            return clip(g, ensureValid);
+        } catch (TopologyException e) {
+            try {
+                if (((g instanceof Polygon) || (g instanceof MultiPolygon)) && (!g.isValid())) {
+                    // its an invalid Polygon or MultiPolygon. Use buffer(0) to attempt to fix it
+                    // do not use buffer(0) on points or lines - it returns an empty polygon
+                    return clip(g.buffer(0), ensureValid);
+                }
+            } catch (TopologyException e2) {
+            }
+
+            if (scale != 0) {
+                // Step 2: Snap to provided scale
+                try {
+                    GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(
+                            new PrecisionModel(scale));
+
+                    // reduce method already tries to fix problems with geometry (ie buffer(0) if invalid)
+                    Geometry reduced = reducer.reduce(g);
+                    if (reduced.isEmpty()) {
+                        throw new TopologyException("Could not snap geometry to precision model");
+                    }
+                    return clip(reduced, ensureValid);
+                } catch (TopologyException e3) {
+                    // if this fails, continue with other methods
+                }
+            }
+            if (ensureValid) {
+                try {
+                    // Step 3: try again with ensureValid false
+                    return clip(g, false);
+                } catch (TopologyException e3) {
+                }
+            }
+            return g; // unable to clip geometry
+        }
     }
     
     /**
@@ -257,7 +318,8 @@ public class GeometryClipper {
 
         LinearRing exterior = (LinearRing) polygon.getExteriorRing();
         LinearRing shell = polygonClip(exterior);
-        if(shell == null || shell.isEmpty()) {
+        shell = cleanupRings(shell);
+        if(shell == null) {
             return null;
         }
 
@@ -265,12 +327,57 @@ public class GeometryClipper {
         for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
             LinearRing hole = (LinearRing) polygon.getInteriorRingN(i);
             hole = polygonClip(hole);
-            if(hole != null && !hole.isEmpty()) {
+            hole = cleanupRings(hole);
+            if(hole != null) {
                 holes.add(hole);
             }
         }
 
         return gf.createPolygon(shell, (LinearRing[]) holes.toArray(new LinearRing[holes.size()]));
+    }
+
+    
+    /**
+     * The {@link #polygonClip(LinearRing)} routine can generate invalid rings fully on top of the clipping area borders (with no inside). Do a quick
+     * check that does not involve an expensive isValid() call
+     * 
+     * @param ring
+     * @return The ring, or null if the ring was not valid
+     */
+    private LinearRing cleanupRings(LinearRing ring) {
+        if(ring == null || ring.isEmpty()) {
+            return null;
+        }
+        
+        final CoordinateSequence cs = ring.getCoordinateSequence();
+        double px = cs.getX(0);
+        double py = cs.getY(0);
+        boolean fullyOnBorders = true;
+        for (int i = 1; i < cs.size() && fullyOnBorders; i++) {
+            double x = cs.getX(i);
+            double y = cs.getY(i);
+            // check if the current segment lies on the bbox side fully
+            if((x == px && (x == xmin || x == xmax)) || (y == py && (y == ymin || y == ymax))) {
+                px = x;
+                py = y;
+            } else {
+                fullyOnBorders = false;
+            }
+        }
+        // all sides are sitting on the bbox borders, this is the degenerate case
+        // we are trying to filter out
+        if(fullyOnBorders) {
+            // could still be a case of a polygon equal to the clipping border itself
+            // This area test could actually replace the whole method,
+            // but it's more expensive to run, so we use it as a last resort for a specific case
+            if(ring.getFactory().createPolygon(ring).getArea() > 0) {
+                return ring;
+            } else {
+                return null;
+            }
+        } else {
+            return ring;
+        }
     }
 
     /**

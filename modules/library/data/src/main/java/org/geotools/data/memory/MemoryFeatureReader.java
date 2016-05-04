@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,9 @@
 package org.geotools.data.memory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
@@ -29,21 +31,27 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * Read contents from MemoryDataStore.
+ */
 public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature>{
-    ContentState state;
+
     SimpleFeatureType featureType;
     Iterator<SimpleFeature> iterator;
 
     public MemoryFeatureReader(ContentState state, Query query) throws IOException {
-        this.state = state;
         featureType = state.getFeatureType();
-        String typeName = getFeatureType().getTypeName();
-        MemoryDataStore store = (MemoryDataStore) state.getEntry().getDataStore();
-        iterator = store.features(typeName).values().iterator();
+        MemoryEntry entry = (MemoryEntry) state.getEntry();
+        
+        synchronized (entry) {
+            final List<SimpleFeature> internalCollection = new ArrayList<SimpleFeature>(
+                    entry.memory.values());
+            iterator = internalCollection.iterator();
+        }
     }
 
     public SimpleFeatureType getFeatureType() {
-        return state.getFeatureType();
+        return featureType;
     }
 
     public SimpleFeature next()

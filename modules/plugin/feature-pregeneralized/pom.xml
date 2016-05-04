@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>Feature-Pregeneralized</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/feature-pregeneralized/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/feature-pregeneralized/</url>
-  </scm>
 
   <description>
 	Feature Source with prebuild generalizations

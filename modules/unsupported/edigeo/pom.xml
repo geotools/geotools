@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -16,12 +16,6 @@
   <name>EDIGEO format module</name>
   
   
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/geotools/branches/2.5.x/modules/unsupported/edigeo/
-    </connection>
-    <url>http://svn.geotools.org/geotools/branches/2.5.x/modules/unsupported/edigeo/</url>
-  </scm>
  
   <description>
     Support for the EDIGEO format.

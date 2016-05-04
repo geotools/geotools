@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *        
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -197,8 +197,8 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     private Matcher getMatcher(String string) {
         if (compPattern == null) {
             String pattern = new LikeToRegexConverter(this).getPattern();
-            compPattern = isMatchingCase() ? Pattern.compile(pattern) : Pattern.compile(pattern,
-                    Pattern.CASE_INSENSITIVE);
+            compPattern = isMatchingCase() ? Pattern.compile(pattern)
+                    : Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         }
         return compPattern.matcher(string);
     }

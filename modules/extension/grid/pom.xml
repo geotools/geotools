@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>extension</artifactId>
-        <version>15-SNAPSHOT</version>
+        <version>16-SNAPSHOT</version>
     </parent>
 
     <!-- =========================================================== -->
@@ -15,12 +15,6 @@
     <packaging>jar</packaging>
     <name>Vector grids</name>
 
-    <scm>
-        <connection>
-            scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/
-        </connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/</url>
-    </scm>
 
     <description>
         The grid module allows users to create vector grids (also known as

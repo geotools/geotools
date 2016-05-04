@@ -45,10 +45,10 @@ Example
 -------
 
 The example code is available
- * Directly from svn: StyleLab.java_
+ * Directly from git: StyleLab.java_
  * Included in the demo directory when you download the GeoTools source code
 
-.. _StyleLab.java: http://svn.osgeo.org/geotools/tags/2.6.4/demo/example/src/main/java/org/geotools/demo/StyleLab.java 
+.. _StyleLab.java: http://github.com/geotools/geotools/blob/master/docs/src/main/java/org/geotools/tutorial/style/StyleLab.java
 
 Main Application
 ----------------
@@ -135,7 +135,7 @@ Dependencies
 Please ensure your pom.xml includes the following::
 
   <properties>
-      <geotools.version>2.7-SNAPSHOT</geotools.version>
+      <geotools.version>14.0</geotools.version>
   </properties>
 
   <dependencies>
@@ -160,10 +160,10 @@ Example
 -------
 
 The example code is available
- * Directly from svn: SelectionLab.java_
+ * Directly from Source repository: SelectionLab.java_
  * Included in the demo directory when you download the GeoTools source code
 
-.. _SelectionLab.java: http://svn.osgeo.org/geotools/trunk/demo/example/src/main/java/org/geotools/demo/SelectionLab.java
+.. _SelectionLab.java: http://github.com/geotools/geotools/blob/master/docs/src/main/java/org/geotools/tutorial/style/SelectionLab.java
  
 Main Application
 ----------------

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -62,10 +62,10 @@ import org.opengis.geometry.BoundingBox;
  */
 public class ListFeatureCollection extends AbstractFeatureCollection implements Collection<SimpleFeature> {
     /** wrapped list of features containing the contents */
-     private List<SimpleFeature> list;
+     protected List<SimpleFeature> list;
      
      /** Cached bounds */
-     private ReferencedEnvelope bounds = null;
+     protected ReferencedEnvelope bounds = null;
     
      /**
       * Create a ListFeatureCollection for the provided schema
@@ -184,7 +184,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
      * Calculate bounds from features
      * @return 
      */
-    private ReferencedEnvelope calculateBounds() {
+    protected ReferencedEnvelope calculateBounds() {
         ReferencedEnvelope extent = new ReferencedEnvelope();
         for( SimpleFeature feature : list ){
             if( feature == null ) continue;
@@ -192,7 +192,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
             if( bbox == null || bbox.isEmpty() || bbox.isNull() ) continue;
             extent.expandToInclude( bbox );
         }
-        return new ReferencedEnvelope(extent, schema.getCoordinateReferenceSystem());
+        return new ReferencedEnvelope(extent, getSchema().getCoordinateReferenceSystem());
     }
 
     @Override

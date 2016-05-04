@@ -7,17 +7,13 @@
     <parent>
         <artifactId>app-schema</artifactId>
         <groupId>org.geotools</groupId>
-        <version>15-SNAPSHOT</version>
+        <version>16-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-sample-data-access</artifactId>
     <name>Sample DataAccess</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/sample-data-access</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/sample-data-access</url>
-    </scm>
 
     <description>DataAccess for testing complex feature integration without introducing app-schema dependency.</description>
 

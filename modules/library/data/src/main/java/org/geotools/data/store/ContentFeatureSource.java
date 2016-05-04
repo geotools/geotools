@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  */
 package org.geotools.data.store;
 
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;
@@ -53,6 +54,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -112,26 +114,37 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class ContentFeatureSource implements SimpleFeatureSource {
     /**
      * The entry for the feature source.
+     * <p>
+     * This entry is managed by the DataStore and is shared between all live ContentFeatureSource and
+     * ContentFeatureStore instances.
      */
     protected ContentEntry entry;
+
     /**
-     * The transaction to work from
+     * The transaction to work from, use {link {@link ContentEntry#getState(Transaction)} to access
+     * shared state in common to ContentFeatureSource and ContentFeatureStore working on this
+     * Transaction. The use of {@link Transaction#AUTO_COMMIT} is used access the origional/live
+     * content.
      */
     protected Transaction transaction;
+    
     /**
-     * current feature lock
+     * Current feature lock
      */
-    protected FeatureLock lock = FeatureLock.TRANSACTION;    
+    protected FeatureLock lock = FeatureLock.TRANSACTION;
+
     /**
-     * hints
+     * Hints
      */
-    protected Set<Hints.Key> hints;
+    protected Set<Key> hints;
+
     /**
      * The query defining the feature source
      */
     protected Query query;
+
     /**
-     * cached feature type (only set if this instance is a view)
+     * Cached feature type (only set if this instance is a view)
      */
     protected SimpleFeatureType schema;
     
@@ -170,7 +183,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * The entry for the feature source.
      */
     public ContentEntry getEntry() {
-    	return entry;
+        return entry;
     }
     
     /**
@@ -1093,8 +1106,9 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * 
      * @see FeatureSource#getSupportedHints()
      */
-    public final Set getSupportedHints() {
-        return hints;
+    @SuppressWarnings("unchecked")
+    public final Set<RenderingHints.Key> getSupportedHints() {
+        return (Set<RenderingHints.Key>) (Set<?>) hints;
     }
     //
     // Internal API
@@ -1111,7 +1125,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * </p>
      * @param hints The set of hints supported by the feature source.
      */
-    protected void addHints( Set<Hints.Key> hints ) {
+    protected void addHints( Set<Key> hints ) {
         
     }
  
@@ -1145,7 +1159,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>
      * Implementations should use {@link SimpleFeatureTypeBuilder} to build the 
      * feature type. Also, the builder should be injected with the feature factory
-     * which has been set on the datastore (see {@link ContentDataStore#getFeatureFactory()}.
+     * which has been set on the DataStore (see {@link ContentDataStore#getFeatureFactory()}.
      * Example:
      * <pre>
      *   SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();

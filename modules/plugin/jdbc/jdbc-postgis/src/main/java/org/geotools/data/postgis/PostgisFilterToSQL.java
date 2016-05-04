@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -133,7 +134,18 @@ public class PostgisFilterToSQL extends FilterToSQL {
             throw new RuntimeException(e);
         }
     }
-    
+
+    @Override
+    public Object visit(Literal literal, Object extraData) {
+        // handle BigDate udt, encode it as a long
+        if (extraData instanceof Class && BigDate.class.isAssignableFrom((Class<?>) extraData)) {
+            if (literal.getValue() instanceof Date) {
+                return super.visit(filterFactory.literal(((Date) literal.getValue()).getTime()), Long.class);
+            }
+        }
+        return super.visit(literal, extraData);
+    }
+
     @Override
     protected String getFunctionName(Function function) {
         return helper.getFunctionName(function);

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -600,7 +600,7 @@ public class Encoder {
             throw new IOException(e);
         }
         xmls.getTransformer().setOutputProperties(outputProps);
-        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
         
         //TODO
@@ -657,6 +657,10 @@ public class Encoder {
                     continue;
                 }
 
+                // skip ones already registered
+                if (namespaces.getPrefix(ns) != null) {
+                    continue;
+                }
                 serializer.startPrefixMapping(pre != null ? pre : "", ns);
                 serializer.endPrefixMapping(pre != null ? pre : "");
 
@@ -1355,7 +1359,19 @@ O:
         }
 
         public String getLocalName(int index) {
-            return atts.item(index).getLocalName();
+            String local = atts.item(index).getLocalName();
+            if (nullOrEmpty(local)) {
+                // check the qname
+                String qName = getQName(index);
+                if (!nullOrEmpty(qName)) {
+                    int dot = qName.indexOf(':');
+                    if (dot > -1) {
+                        local = qName.split(":")[1];
+                    }
+                }
+            }
+
+            return emptyIfNull(local);
         }
 
         public String getQName(int index) {
@@ -1378,7 +1394,12 @@ O:
         }
 
         public String getURI(int index) {
-            return atts.item(index).getNamespaceURI();
+            String ns = atts.item(index).getNamespaceURI();
+            if (ns == null) {
+                ns = XMLUtils.qName(getQName(index), namespaces).getNamespaceURI();
+            }
+
+            return emptyIfNull(ns);
         }
 
         public String getValue(int index) {
@@ -1439,6 +1460,14 @@ O:
 
         public String getValue(String uri, String localName) {
             return getValue(getIndex(uri, localName));
+        }
+
+        boolean nullOrEmpty(String val) {
+            return val == null || "".equals(val);
+        }
+
+        String emptyIfNull(String val) {
+            return val != null ? val : "";
         }
     }
 

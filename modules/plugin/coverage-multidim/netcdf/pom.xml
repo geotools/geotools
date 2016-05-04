@@ -12,7 +12,7 @@
    <parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-coverage-multidim</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
    </parent>
 
   <!-- =========================================================== -->
@@ -22,12 +22,6 @@
   <artifactId>gt-netcdf</artifactId>
   <packaging>jar</packaging>
   <name>NetCDF gridcoverage module</name>
-  <scm>
-    <connection>
-      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/plugin/coverage-multidim/netcdf/
-    </connection>
-  <url>https://svn.osgeo.org/geotools/trunk/modules/plugin/coverage-multidim/netcdf/</url>
- </scm>
 
   <description>
     Datasource created to read NetCDF format. 
@@ -143,6 +137,18 @@
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-postgis</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.1.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-exec</artifactId>
+      <version>1.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

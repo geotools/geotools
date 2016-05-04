@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.fid.FidIndexer;
@@ -20,7 +21,6 @@ import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.index.CachedQuadTree;
-import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.DataDefinition;
 import org.geotools.data.shapefile.index.TreeException;

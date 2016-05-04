@@ -34,6 +34,10 @@
  */
 package org.geotools.gce.geotiff;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -48,9 +52,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -86,6 +93,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.MapInfoFileReader;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
@@ -113,10 +121,6 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
-
 
 /**
  * this class is responsible for exposing the data and the Georeferencing
@@ -969,27 +973,17 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     static MapInfoFileReader parseMapInfoFile(Object source) throws IOException {
         if (source instanceof File) {
             final File sourceFile = ((File) source);
-            String parentPath = sourceFile.getParent();
-            String filename = sourceFile.getName();
-            final int i = filename.lastIndexOf('.');
-            filename = (i == -1) ? filename : filename.substring(0, i);
-            
-            // getting name and extension
-            final String base = (parentPath != null) ? new StringBuilder(
-                    parentPath).append(File.separator).append(filename)
-                    .toString() : filename;
+            File file2Parse = getSibling(sourceFile, ".tab");
 
-            // We can now construct the baseURL from this string.
-            File file2Parse = new File(new StringBuilder(base).append(".tab")
-                    .toString());
-
-            if (file2Parse.exists()) {
+            if (file2Parse != null && file2Parse.exists()) {
                 final MapInfoFileReader reader = new MapInfoFileReader(file2Parse);
                 return reader;
             }
         }
         return null;
     }
+
+
 
 	/**
 	 * Number of coverages for this reader is 1
@@ -1006,4 +1000,21 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         return gcps;
     }
 
+    @Override
+    protected List<FileGroup> getFiles() {
+        File file = getSourceAsFile();
+        if (file == null) {
+            return null;
+        }
+
+        List<File> files = new ArrayList<>();
+        // add all common sidecars
+        addAllSiblings(file, files, ".prj", ".tab", ".wld", ".tfw");
+        if (hasMaskOvrProvider) {
+            DatasetLayout layout = maskOvrProvider.getLayout();
+            addSiblings(files, layout.getExternalMaskOverviews(), layout.getExternalOverviews(),
+                    layout.getExternalMasks());
+        }
+        return Collections.singletonList(new FileGroup(file, files, null));
+    }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -52,12 +52,12 @@ class CurveEncoder extends GeometryEncoder<LineString> {
 
     QualifiedName arcString;
 
-    protected CurveEncoder(Encoder e, String gmlPrefix) {
+    protected CurveEncoder(Encoder e, String gmlPrefix, String gmlUri) {
         super(e);
-        this.curve = CURVE.derive(gmlPrefix);
-        this.segments = SEGMENTS.derive(gmlPrefix);
-        this.lineStringSegment = LINE_STRING_SEGMENT.derive(gmlPrefix);
-        this.arcString = ARC_STRING.derive(gmlPrefix);
+        this.curve = CURVE.derive(gmlPrefix, gmlUri);
+        this.segments = SEGMENTS.derive(gmlPrefix, gmlUri);
+        this.lineStringSegment = LINE_STRING_SEGMENT.derive(gmlPrefix, gmlUri);
+        this.arcString = ARC_STRING.derive(gmlPrefix, gmlUri);
     }
 
     public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler)
@@ -89,7 +89,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
     private void encodeLinestring(LineString geometry, GMLWriter handler)
             throws Exception {
         AttributesImpl atts = new AttributesImpl();
-        atts.addAttribute(null, "interpolation", "interpolation", null, "linear");
+        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "", "linear");
         handler.startElement(lineStringSegment, atts);
 
         handler.posList(geometry.getCoordinateSequence());
@@ -100,7 +100,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
     private void encodeCurve(SingleCurvedGeometry curve, GMLWriter handler)
             throws Exception {
         AttributesImpl atts = new AttributesImpl();
-        atts.addAttribute(null, "interpolation", "interpolation", null, "circularArc3Points");
+        atts.addAttribute(GML.NAMESPACE, "interpolation", "interpolation", "", "circularArc3Points");
         handler.startElement(arcString, atts);
 
         handler.posList(new LiteCoordinateSequence(curve.getControlPoints()));

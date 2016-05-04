@@ -9,10 +9,6 @@
     <version>1.0.1-1</version>
     <name>Sensor Web Enablement (SWE) Common 1.0 (GML 3.2) application schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/sweCommon-1.0-gml32/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/sweCommon-1.0-gml-32/</url>
-    </scm>
 
     <developers>
         <developer>

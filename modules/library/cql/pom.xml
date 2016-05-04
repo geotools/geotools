@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>OGC CQL to Filter parser</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/cql/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/cql/</url>
-  </scm>
 
   <description>
     A parser that takes a Constraint Query Language input string and produces

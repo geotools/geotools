@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>Grid Coverage module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/coverage/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/coverage/</url>
-  </scm>
 
   <description>
     Implementation of GridCoverage. Provides support
@@ -292,8 +286,10 @@
       <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
     </dependency>
-    
-    
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
   
 
@@ -29,12 +29,6 @@
   <name>XML Parsing Support</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/xml/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/xml/</url>
-  </scm>
 
   <description>
     XML Parser based on the XDO design.
@@ -134,6 +128,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>1.9.5</version>
+        <scope>test</scope>
     </dependency>
 
   </dependencies>

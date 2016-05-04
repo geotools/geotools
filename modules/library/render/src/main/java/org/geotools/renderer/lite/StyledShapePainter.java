@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -733,6 +733,9 @@ public final class StyledShapePainter {
         } else if(graphicFill instanceof IconStyle2D) {
             Icon icon = ((IconStyle2D)graphicFill).getIcon();
             stippleSize = new Rectangle2D.Double(0, 0, icon.getIconWidth(), icon.getIconHeight());
+        } else if(graphicFill instanceof GraphicStyle2D) {
+            BufferedImage image = ((GraphicStyle2D) graphicFill).getImage();
+            stippleSize = new Rectangle2D.Double(0, 0, image.getWidth(), image.getHeight());
         } else {
             // if graphic fill does not provide bounds information, it is considered
             // to be unsupported for stipple painting
@@ -769,6 +772,15 @@ public final class StyledShapePainter {
             toY -= (int) Math.floor((boundsShape.getMaxY() - boundsClip.getMaxY()) / stippleSize.getHeight());
         }
         
+        // builds the JTS geometry for the translated stipple
+        GeometryFactory geomFactory = new GeometryFactory();
+        Coordinate stippleCoord = new Coordinate(stippleSize.getCenterX(), stippleSize.getCenterY());
+        Geometry stipplePoint = geomFactory.createPoint(stippleCoord);
+        
+        // builds a LiteShape2 object from the JTS geometry
+        AffineTransform2D identityTransf = new AffineTransform2D(new AffineTransform());
+        Decimator nullDecimator = new Decimator(-1, -1);
+        
         // paints graphic fill as a stipple
         for (int i = fromX; i < toX; i++)
         {
@@ -778,47 +790,22 @@ public final class StyledShapePainter {
                 double translateX = boundsShape.getMinX() + i * stippleSize.getWidth();
                 double translateY = boundsShape.getMinY() + j * stippleSize.getHeight();
                 
-                // only does anything if current stipple intersects the clip region
-                if (!clipShape.intersects(translateX, translateY, stippleSize.getWidth(), stippleSize.getHeight()))
-                    continue;
-                
-                // creates a LiteShape2 for the stipple and paints it 
-                LiteShape2 stippleShape = createStippleShape(stippleSize, translateX, translateY);
+                // translate the stipple point 
+                stippleCoord.x = stippleSize.getCenterX() + translateX;
+                stippleCoord.y = stippleSize.getCenterY() + translateY;
+                stipplePoint.geometryChanged();
+                LiteShape2 stippleShape;
+                try {
+                    stippleShape = new LiteShape2(stipplePoint, identityTransf, nullDecimator, false);
+                } catch(Exception e) {
+                    throw new RuntimeException("Unxpected exception building lite shape", e);
+                }
                 paint(g, stippleShape, graphicFill, scale);
             }
         }
     }
 
-    /**
-     * Creates a stipple shape given a stipple size and a shift in the x and y directions.
-     * The returned shape should be appropriate for painting a stipple using a GraphicFill.
-     * 
-     * @param stippleSize a Rectangle whose width and height indicate the size of the stipple.
-     * @param translateX a translation value in the X dimension.
-     * @param translateY a translation value in the Y dimension.
-     * @return a LiteShape2 appropriate for painting a stipple using a GraphicFill.
-     * @throws TransformException
-     * @throws FactoryException
-     */
-    private LiteShape2 createStippleShape(Rectangle2D stippleSize, double translateX, double translateY)
-    {
-        // builds the JTS geometry for the translated stipple
-        GeometryFactory geomFactory = new GeometryFactory();
-        Coordinate coord = new Coordinate(stippleSize.getCenterX() + translateX, stippleSize.getCenterY() + translateY);
-        Geometry geom = geomFactory.createPoint(coord);
-        
-        // builds a LiteShape2 object from the JTS geometry
-        AffineTransform2D identityTransf = new AffineTransform2D(new AffineTransform());
-        Decimator nullDecimator = new Decimator(-1, -1);
-        LiteShape2 stippleShape;
-        try {
-            stippleShape = new LiteShape2(geom, identityTransf, nullDecimator, false);
-        } catch(Exception e) {
-            throw new RuntimeException("Unxpected exception building lite shape", e);
-        }
-        
-        return stippleShape;
-    }
+    
 
     public static class TextureAnchorKey extends Key {
         protected TextureAnchorKey() {

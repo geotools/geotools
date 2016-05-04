@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,39 +20,59 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.factory.Hints;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * 
+ * Inserts features in the database. Buffers the insertions until BUFFER_SIZE is reached or
+ * the writer is closed.
  *
  * @source $URL$
  */
 public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-
-    
-    ResultSetFeature last;
+    /**
+     * Grouping elements together in order to have a decent batch size.
+     */
+    private final ResultSetFeature[] buffer;
+    private int curBufferPos = 0;
     
     public JDBCInsertFeatureWriter(String sql, Connection cx,
             JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
         super(sql, cx, featureSource, featureSource.getSchema(), hints);
-        last = new ResultSetFeature( rs, cx );
+        buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
 
     public JDBCInsertFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Hints hints)
         throws SQLException, IOException {
         super( ps, cx, featureSource, featureSource.getSchema(), hints );
-        last = new ResultSetFeature( rs, ps.getConnection() );
+        buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
     
-    public JDBCInsertFeatureWriter(JDBCUpdateFeatureWriter other) {
+    public JDBCInsertFeatureWriter(JDBCUpdateFeatureWriter other) throws IOException {
         super(other);
-        last = other.last;
+        buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
+    }
+
+    private ResultSetFeature getOrCreateRSF() throws IOException {
+        ResultSetFeature result = buffer[curBufferPos];
+        if (result == null) {
+            try {
+                result = new ResultSetFeature(rs, cx);
+                buffer[curBufferPos] = result;
+            } catch (SQLException e) {
+                throw new IOException(e);
+            }
+        }
+        return result;
     }
 
     public boolean hasNext() throws IOException {
@@ -62,8 +82,9 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     public SimpleFeature next() throws IOException {
         //init, setting id to null explicity since the feature is yet to be 
         // inserted
-        last.init(null);
-        return last;
+        ResultSetFeature rsf = getOrCreateRSF();
+        rsf.init(null);
+        return rsf;
     }
 
     public void remove() throws IOException {
@@ -71,28 +92,66 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     }
 
     public void write() throws IOException {
+        if (++curBufferPos >= buffer.length) {
+            //buffer full => do the inserts
+            flush();
+        }
+    }
+
+    @Override
+    protected void cleanup() throws IOException {
+        try {
+            flush();
+        } finally {
+            for (int i = 0; i < buffer.length; i++) {
+                if (buffer[i] == null) {
+                    break;
+                }
+                buffer[i].close();
+                buffer[i] = null;
+            }
+            super.cleanup();
+        }
+    }
+
+    private void flush() throws IOException {
+        if(curBufferPos == 0) {
+            return;
+        }
         try {
             //do the insert
-            dataStore.insert(last, featureType, st.getConnection());
-            
-            //the datastore sets as userData, grab it and update the fid
-            String fid = (String) last.getUserData().get( "fid" );
-            last.setID( fid );
-            
-            ContentEntry entry = featureSource.getEntry();
-            ContentState state = entry.getState( this.tx );            
-            state.fireFeatureAdded( featureSource, last );
+            Collection<ResultSetFeature> features =
+                    Arrays.asList(Arrays.copyOfRange(buffer, 0, curBufferPos));
+            dataStore.insert(features, featureType, st.getConnection());
+
+            for (ResultSetFeature cur : features) {
+                //the datastore sets as userData, grab it and update the fid
+                final String fid = (String) cur.getUserData().get("fid");
+                cur.setID(fid);
+                final SimpleFeature orig =(SimpleFeature)cur.getUserData().
+                        get(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
+                if (orig != null) {
+                    ((FeatureIdImpl)orig.getIdentifier()).setID(fid);
+                    orig.getUserData().putAll(cur.getUserData());
+                    orig.getUserData().remove(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
+                }
+
+                final ContentEntry entry = featureSource.getEntry();
+                final ContentState state = entry.getState(this.tx);
+                state.fireFeatureAdded(featureSource, cur);
+            }
         } catch (SQLException e) {
-            throw (IOException) new IOException().initCause(e);
+            throw new IOException(e);
+        } finally {
+            curBufferPos = 0;
         }
     }
 
     public void close() throws IOException {
-        super.close();
-        
-        if ( last != null ) {
-            last.close();
-            last = null;
+        try {
+            flush();
+        } finally {
+            super.close();
         }
     }
 }

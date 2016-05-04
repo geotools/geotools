@@ -1,14 +1,19 @@
 package org.geotools.data;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.ShapefileDumper;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.SchemaException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -78,6 +83,27 @@ public void read() throws Exception {
         }
     }
     // end read
+}
+
+public void dump() throws Exception {
+    // start dumper
+    ShapefileDumper dumper = new ShapefileDumper(new File("./target/demo"));
+    // optiona, set a target charset (ISO-8859-1 is the default)
+    dumper.setCharset(Charset.forName("ISO-8859-15"));
+    // split when shp or dbf reaches 100MB
+    int maxSize = 100 * 1024 * 1024;
+    dumper.setMaxDbfSize(maxSize);
+    dumper.setMaxDbfSize(maxSize);
+    // actually dump data
+    SimpleFeatureCollection fc = getFeatureCollection();
+    dumper.dump(fc);
+    // end dumper
+}
+
+private SimpleFeatureCollection getFeatureCollection() throws SchemaException {
+    SimpleFeatureType featureType =
+            DataUtilities.createType( "my", "geom:Point,name:String,age:Integer,description:String" );
+    return new ListFeatureCollection(featureType);
 }
 
 }

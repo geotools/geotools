@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>EPSG Authority Service using WKT file</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-wkt/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-wkt/</url>
-  </scm>
 
   <description>
     EPSG and AUTO authority factories are defined for data.crs.CRSService.

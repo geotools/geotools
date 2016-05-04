@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -77,15 +77,16 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 String styleName = (String) styleIter.previous();
                 
                 try {
-                    layerString = layerString + URLEncoder.encode(layerName, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
+                    // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
+                    layerString = layerString + URLEncoder.encode(layerName, "UTF-8").replaceAll("\\+", "%20");
+                } catch (UnsupportedEncodingException | NullPointerException e) {
                     layerString = layerString + layerName;
                 }
                 styleName = styleName == null ? "" : styleName;
                 try {
 
-                    styleString = styleString + URLEncoder.encode(styleName, "UTF-8");
-                } catch (UnsupportedEncodingException e1) {
+                    styleString = styleString + URLEncoder.encode(styleName, "UTF-8").replaceAll("\\+", "%20");
+                } catch (UnsupportedEncodingException | NullPointerException e1) {
                     styleString = styleString + styleName;
                 }
                 

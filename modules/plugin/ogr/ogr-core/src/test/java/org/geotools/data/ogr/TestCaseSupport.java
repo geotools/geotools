@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -49,20 +49,17 @@ import com.vividsolutions.jts.io.WKTReader;
  * <p>
  * Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
- *
- *
- *
  * @source $URL$
  * @version $Id$
  * @author  Ian Schneider
  * @author  Martin Desruisseaux
  */
 public abstract class TestCaseSupport extends TestCase {
-	final static String STATE_POP = "shapes/statepop.shp";
+    final static String STATE_POP = "shapes/statepop.shp";
 
-	final static String MIXED = "mif/mixed.MIF";
+    final static String MIXED = "mif/mixed.MIF";
 
-	
+    
     /**
      * Set to {@code true} if {@code println} are wanted during normal execution.
      * It doesn't apply to message displayed in case of errors.
@@ -115,7 +112,7 @@ public abstract class TestCaseSupport extends TestCase {
         if (gdalAvailable()) {
             super.run(result);
         } else {
-            System.out.println("Skipping tests " + result.toString() + " since GDAL is not available");
+            System.out.println("Skipping test " + getClass().getSimpleName()+ " "+ getName() + " since GDAL is not available");
         }
     }
 

@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -816,7 +817,7 @@ public final class GridCoverageRenderer {
         double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
         if (!coverages.isEmpty()) {
             ColorModel cm = coverages.get(0).getRenderedImage().getColorModel();
-            if (cm instanceof IndexColorModel) {
+            if (cm instanceof IndexColorModel && background != null) {
                 IndexColorModel icm = (IndexColorModel) cm;
                 int idx = ColorUtilities.findColorIndex(background, icm);
                 if (idx < 0) {
@@ -895,8 +896,6 @@ public final class GridCoverageRenderer {
 
         // reproject if needed
         List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
-        // Index value for the alpha bands
-        int index = 0;
         for (GridCoverage2D coverage : coverages) {
             if (coverage == null) {
                 continue;
@@ -918,10 +917,8 @@ public final class GridCoverageRenderer {
             Envelope testEnvelope = ReferencedEnvelope.reference(destinationEnvelope);
             MathTransform mt = CRS.findMathTransform(sourceCRS, targetCRS);
             PolygonExtractor polygonExtractor = new PolygonExtractor();
-            int i = 0;
             for (GridCoverage2D coverage : reprojectedCoverages) {
                 // Check on the alpha band
-                GridCoverage2D alpha = null;
                 Polygon polygon = JTS.toGeometry((BoundingBox) coverage.getEnvelope2D());
                 Geometry postProcessed = handler.postProcess(mt, polygon);
                 // extract sub-polygons and displace
@@ -945,10 +942,29 @@ public final class GridCoverageRenderer {
                         }
                     }
                 }
-                i++;
             }
         } else {
             displacedCoverages.addAll(reprojectedCoverages);
+        }
+        
+        // after reprojection and displacement we could have some coverage
+        // that are completely out of the destination area (due to numerical issues 
+        // their source bbox was interesting the request area, but their reprojected version does not
+        for (Iterator<GridCoverage2D> it = displacedCoverages.iterator(); it.hasNext();) {
+            GridCoverage2D coverage = it.next();
+            ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+            MathTransform2D gridToWorld = coverage.getGridGeometry().getGridToCRS2D();
+            if(gridToWorld instanceof AffineTransform2D) {
+                double[] resolutions = CoverageUtilities.getResolution((AffineTransform2D) gridToWorld);
+                if(resolutions != null) {
+                    // make sure the coverage contributes at least one pixel... we could use / 2, but
+                    // being a bit extra cautious
+                    re.expandBy(-resolutions[0] / 2, -resolutions[1] / 2);
+                }
+            }
+            if(!destinationEnvelope.intersects(re, false)) {
+                it.remove();
+            }
         }
         
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
@@ -971,9 +987,12 @@ public final class GridCoverageRenderer {
         } else if (symbolizedCoverages.size() == 1) {
             mosaicked = symbolizedCoverages.get(0);
         } else {
+            // do not expand index color models, we know they are all the same
+            Hints mosaicHints = new Hints(this.hints);
+            mosaicHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
             mosaicked = GridCoverageRendererUtilities.mosaic(symbolizedCoverages,
                     new ArrayList<GridCoverage2D>(),
-                    destinationEnvelope, hints, bgValues);
+                    destinationEnvelope, mosaicHints, bgValues);
         }
 
         // the mosaicking can cut off images that are just slightly out of the

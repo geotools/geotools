@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,10 +36,14 @@ import com.vividsolutions.jts.geom.LinearRing;
  * @author Andrea Aime - GeoSolutions
  */
 class MultiLineStringEncoder extends GeometryEncoder<Geometry> {
-
+    
     static final QualifiedName MULTI_CURVE = new QualifiedName(GML.NAMESPACE, "MultiCurve", "gml");
 
     static final QualifiedName CURVE_MEMBER = new QualifiedName(GML.NAMESPACE, "curveMember", "gml");
+
+    static final QualifiedName MULTI_LINE_STRING = new QualifiedName(GML.NAMESPACE, "MultiLineString", "gml");
+
+    static final QualifiedName LINE_STRING_MEMBER = new QualifiedName(GML.NAMESPACE, "lineStringMember", "gml");
 
     LineStringEncoder lse;
 
@@ -47,42 +51,50 @@ class MultiLineStringEncoder extends GeometryEncoder<Geometry> {
 
     CurveEncoder ce;
 
-    QualifiedName multiCurve;
+    QualifiedName multiContainer;
 
-    QualifiedName curveMember;
+    QualifiedName member;
 
-    protected MultiLineStringEncoder(Encoder encoder, String gmlPrefix) {
+    boolean curveEncoding;
+
+    protected MultiLineStringEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean curveEncoding) {
         super(encoder);
-        lse = new LineStringEncoder(encoder, gmlPrefix);
-        lre = new LinearRingEncoder(encoder, gmlPrefix);
-        ce = new CurveEncoder(encoder, gmlPrefix);
-        multiCurve = MULTI_CURVE.derive(gmlPrefix);
-        curveMember = CURVE_MEMBER.derive(gmlPrefix);
+        lse = new LineStringEncoder(encoder, gmlPrefix, gmlUri);
+        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
+        ce = new CurveEncoder(encoder, gmlPrefix, gmlUri);
+        this.curveEncoding = curveEncoding;
+        if(curveEncoding) {
+            multiContainer = MULTI_CURVE.derive(gmlPrefix, gmlUri);
+            member = CURVE_MEMBER.derive(gmlPrefix, gmlUri);
+        } else {
+            multiContainer = MULTI_LINE_STRING.derive(gmlPrefix, gmlUri);
+            member = LINE_STRING_MEMBER.derive(gmlPrefix, gmlUri);
+        }
     }
 
     @Override
     public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler)
             throws Exception {
-        handler.startElement(multiCurve, atts);
+        handler.startElement(multiContainer, atts);
 
         encodeMembers(geometry, handler);
 
-        handler.endElement(multiCurve);
+        handler.endElement(multiContainer);
     }
 
     protected void encodeMembers(Geometry geometry, GMLWriter handler) throws SAXException,
             Exception {
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
-            handler.startElement(curveMember, null);
+            handler.startElement(member, null);
             LineString line = (LineString) geometry.getGeometryN(i);
-            if (line instanceof CurvedGeometry) {
+            if (curveEncoding && line instanceof CurvedGeometry) {
                 ce.encode(line, null, handler);
             } else if (line instanceof LinearRing) {
                 lre.encode(line, null, handler);
             } else {
                 lse.encode(line, null, handler);
             }
-            handler.endElement(curveMember);
+            handler.endElement(member);
         }
     }
 

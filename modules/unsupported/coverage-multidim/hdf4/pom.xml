@@ -12,7 +12,7 @@
    <parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-coverage-multidim</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
    </parent>
 
   <!-- =========================================================== -->
@@ -22,12 +22,6 @@
   <artifactId>gt-hdf4</artifactId>
   <packaging>jar</packaging>
   <name>HDF4 gridcoverage module</name>
-  <scm>
-    <connection>
-      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/hdf4/
-    </connection>
-  <url>https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/hdf4/</url>
- </scm>
 
   <description>
     Core of the ND GeoTools plugin.

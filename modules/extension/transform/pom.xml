@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -23,12 +23,6 @@
   <name>Feature transforming feature source wrapper</name>
 
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/transform/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/transform/</url>
-  </scm>
 
   <description>
     A FeatureSource/FeatureStore wrapper that can rename attributes, hide others, and create new ones by applying expressions on the wrapped ones

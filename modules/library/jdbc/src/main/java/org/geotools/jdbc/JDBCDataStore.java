@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,8 +19,6 @@ package org.geotools.jdbc;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -45,6 +43,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -71,6 +70,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.LimitingVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -275,7 +275,15 @@ public final class JDBCDataStore extends ContentDataStore
      * to 0 to disable fetch size limit and grab all the records in one shot.
      */
     protected int fetchSize;
-    
+
+    /**
+     * The number of features to bufferize while inserting in order to do batch inserts.
+     *
+     * By default 1 to avoid backward compatibility with badly written code that forgets to close
+     * the JDBCInsertFeatureWriter or does it after closing the DB connection.
+     */
+    protected int batchInsertSize = 1;
+
     /**
      * flag controlling whether primary key columns of a table are exposed via the 
      * feature type.
@@ -416,6 +424,27 @@ public final class JDBCDataStore extends ContentDataStore
      */
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
+    }
+
+    /**
+     * @return the number of features to bufferize while inserting in order to do batch inserts.
+     */
+    public int getBatchInsertSize() {
+        return batchInsertSize;
+    }
+
+    /**
+     * Set the number of features to bufferize while inserting in order to do batch inserts.
+     *
+     * Warning: when changing this value from its default of 1, the behavior of the
+     * {@link JDBCInsertFeatureWriter} is changed in non backward compatible ways. If your code
+     * closes the writer before closing the connection, you are fine. Plus, the feature added events
+     * will be delayed until a batch is actually inserted.
+     *
+     * @param batchInsertSize
+     */
+    public void setBatchInsertSize(int batchInsertSize) {
+        this.batchInsertSize = batchInsertSize;
     }
 
     /**
@@ -597,10 +626,10 @@ public final class JDBCDataStore extends ContentDataStore
      */
     public Map<Class<?>, Integer> getClassToSqlTypeMappings() {
         if (classToSqlTypeMappings == null) {
-            classToSqlTypeMappings = new HashMap<Class<?>, Integer>();
+            HashMap<Class<?>, Integer> classToSqlTypeMappings = new HashMap<Class<?>, Integer>();
             dialect.registerClassToSqlMappings(classToSqlTypeMappings);
+            this.classToSqlTypeMappings = classToSqlTypeMappings;
         }
-
         return classToSqlTypeMappings;
     }
 
@@ -1394,40 +1423,31 @@ public final class JDBCDataStore extends ContentDataStore
      * Results the value of an aggregate function over a query.
      * @return generated result, or null if unsupported
      */
-    protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx ) 
-        throws IOException {
-        
-        // get the name of the function
-        String function = getAggregateFunctions().get( visitor.getClass() );
-        if ( function == null ) {
-            //try walking up the hierarchy
-            Class clazz = visitor.getClass();
-            while( clazz != null && function == null ) {
-                clazz = clazz.getSuperclass();
-                function = getAggregateFunctions().get( clazz );
-            }
-            
-            if ( function == null ) {
-                //not supported
-                LOGGER.info( "Unable to find aggregate function matching visitor: " + visitor.getClass());
-                return null;
-            }
+    protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx)
+            throws IOException {
+        // check if group by is supported by the udnerlign store
+        if(isGroupByVisitor(visitor) && !dialect.isGroupBySupported()) {
+            return null;
         }
-        
-        AttributeDescriptor att = null;
-        Expression expression = getExpression(visitor);
-        if (expression != null) {
-            att = (AttributeDescriptor) expression.evaluate( featureType );
+        // try to match the visitor with an aggregate function
+        String function = matchAggregateFunction(visitor);
+        if (function == null) {
+            // this visitor is not supported
+            return null;
         }
-        if(att == null && !(visitor instanceof CountVisitor)){
+        // try to extract an aggregate attribute from the visitor
+        AttributeDescriptor att = extractAggregateAttribute(visitor, featureType);
+        if (att == null && !isCountVisitor(visitor)) {
             return null; // aggregate function optimization only supported for PropertyName expression
         }
         // if the visitor is limiting the result to a given start - max, we will
         // try to apply limits to the aggregate query
         LimitingVisitor limitingVisitor = null;
-        if(visitor instanceof LimitingVisitor) {
+        if (visitor instanceof LimitingVisitor) {
             limitingVisitor = (LimitingVisitor) visitor;
         }
+        // if the visitor is a group by visitor we extract the group by attributes
+        List<AttributeDescriptor> groupByAttributes = extractGroupByAttributes(visitor, featureType);
         //result of the function
         try {
             Object result = null;
@@ -1437,11 +1457,11 @@ public final class JDBCDataStore extends ContentDataStore
             
             try {
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
-                    st = selectAggregateSQLPS(function, att, featureType, query, limitingVisitor,  cx);
+                    st = selectAggregateSQLPS(function, att, groupByAttributes, featureType, query, limitingVisitor,  cx);
                     rs = ((PreparedStatement)st).executeQuery();
                 } 
                 else {
-                    String sql = selectAggregateSQL(function, att, featureType, query, limitingVisitor);
+                    String sql = selectAggregateSQL(function, att, groupByAttributes, featureType, query, limitingVisitor);
                     LOGGER.fine( sql );
                     
                     st = cx.createStatement();
@@ -1450,9 +1470,14 @@ public final class JDBCDataStore extends ContentDataStore
                 }
              
                 while(rs.next()) {
-                    Object value = rs.getObject(1);
-                    result = value;
-                    results.add(value);
+                    if (groupByAttributes == null || groupByAttributes.isEmpty()) {
+                        Object value = rs.getObject(1);
+                        result = value;
+                        results.add(value);
+                    }
+                    else {
+                        results.add(extractValuesFromResultSet(rs, groupByAttributes.size()));
+                    }
                 }
             } finally {
                 closeSafe( rs );
@@ -1460,7 +1485,7 @@ public final class JDBCDataStore extends ContentDataStore
             }
             
             if ( setResult(visitor, results.size() > 1 ? results : result) ){
-                return result;    
+                return result == null ? results : result;
             }
             
             return null;
@@ -1468,6 +1493,100 @@ public final class JDBCDataStore extends ContentDataStore
         catch( SQLException e ) {
             throw (IOException) new IOException().initCause(e);
         }
+    }
+
+    // Helper method that checks if the visitor is of type count visitor.
+    protected boolean isCountVisitor(FeatureVisitor visitor) {
+        if (visitor instanceof CountVisitor) {
+            // is count visitor nothing else to test
+            return true;
+        }
+        // the visitor maybe wrapper by a group by visitor
+        return isGroupByVisitor(visitor) && ((GroupByVisitor) visitor).getAggregateVisitor() instanceof CountVisitor;
+    }
+
+    /**
+     * Helper method the checks if a feature visitor is a group by visitor,
+     *
+     * @param visitor the feature visitor
+     * @return TRUE if the visitor is a group by visitor otherwise FALSE
+     */
+    protected boolean isGroupByVisitor(FeatureVisitor visitor) {
+        return visitor instanceof GroupByVisitor;
+    }
+
+    /**
+     * Helper method that will try to match a feature visitor with an aggregate function.
+     * If no aggregate function machs the visitor NULL will be returned.
+     *
+     * @param visitor the feature visitor
+     * @return the match aggregate function name, or NULL if no match
+     */
+    protected String matchAggregateFunction(FeatureVisitor visitor) {
+        // if is a group by visitor we use use the internal aggregate visitor class otherwise we use the visitor class
+        Class visitorClass = isGroupByVisitor(visitor) ?
+                ((GroupByVisitor) visitor).getAggregateVisitor().getClass() : visitor.getClass();
+        String function = null;
+        // try to find a matching aggregate function walking up the hierarchy if necessary
+        while (function == null && visitorClass != null) {
+            function = getAggregateFunctions().get(visitorClass);
+            visitorClass = visitorClass.getSuperclass();
+        }
+        if (function == null) {
+            // this visitor don't match any aggregate function NULL will be returned
+            LOGGER.info("Unable to find aggregate function matching visitor: " + visitor.getClass());
+        }
+        return function;
+    }
+
+    /**
+     * Helper method that extract the attribute that will be used by the aggregate function.
+     *
+     * @param visitor     the feature visitor
+     * @param featureType the feature type
+     * @return the aggregate attribute or NULL if the visitor don't contains an aggregate attribute
+     */
+    protected AttributeDescriptor extractAggregateAttribute(FeatureVisitor visitor, SimpleFeatureType featureType) {
+        // if is a group by visitor we need to use the internal aggregate visitor
+        FeatureVisitor aggregateVisitor = isGroupByVisitor(visitor) ? ((GroupByVisitor) visitor).getAggregateVisitor() : visitor;
+        Expression expression = getExpression(aggregateVisitor);
+        if (expression == null) {
+            // no aggregate attribute available, NULL will be returned
+            LOGGER.info("Visitor " + visitor.getClass() + " has no aggregate attribute.");
+            return null;
+        }
+        // we evaluate the expression and return the aggregate attribute
+        return (AttributeDescriptor) expression.evaluate(featureType);
+    }
+
+    /**
+     * Helper method that extracts a list of group by attributes from a group by visitor.
+     * If the visitor is not a group by visitor an empty list will be returned.
+     *
+     * @param visitor     the feature visitor
+     * @param featureType the feature type
+     * @return the list of the group by attributes or an empty list
+     */
+    protected List<AttributeDescriptor> extractGroupByAttributes(FeatureVisitor visitor, SimpleFeatureType featureType) {
+        // if is a group by visitor we get the list of attributes expressions otherwise we get an empty list
+        List<Expression> expressions = isGroupByVisitor(visitor) ?
+                ((GroupByVisitor) visitor).getGroupByAttributes() : new ArrayList<>();
+        // we convert the list of attributes expressions to a list of attributes descriptors
+        return expressions.stream()
+                .map(expression -> (AttributeDescriptor) expression.evaluate(featureType))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Helper method that translate the result set to the appropriate group by visitor result format
+     */
+    protected GroupByVisitor.GroupByRawResult extractValuesFromResultSet(ResultSet resultSet,
+                                                                         int numberOfGroupByAttributes) throws SQLException {
+        List<Object> groupByValues = new ArrayList<>();
+        for (int i = 0; i < numberOfGroupByAttributes; i++) {
+            groupByValues.add(resultSet.getObject(i + 1));
+        }
+        return new GroupByVisitor.GroupByRawResult(groupByValues, resultSet.getObject(numberOfGroupByAttributes + 1));
     }
 
     /**
@@ -1549,70 +1668,200 @@ public final class JDBCDataStore extends ContentDataStore
      * Inserts a collection of new features into the database for a particular
      * feature type / table.
      */
-    protected void insert(Collection features, SimpleFeatureType featureType, Connection cx)
+    protected void insert(Collection<? extends SimpleFeature> features, SimpleFeatureType featureType, Connection cx)
         throws IOException {
         PrimaryKey key = getPrimaryKey(featureType);
 
         // we do this in a synchronized block because we need to do two queries,
         // first to figure out what the id will be, then the insert statement
         synchronized (this) {
-            Statement st = null;
-
             try {
-                if ( !(dialect instanceof PreparedStatementSQLDialect) ) {
-                    st = cx.createStatement();    
+                if (dialect instanceof PreparedStatementSQLDialect) {
+                    Map<InsertionClassifier, Collection<SimpleFeature>> kinds =
+                            InsertionClassifier.classify(featureType, features);
+                    for (InsertionClassifier kind: kinds.keySet()) {
+                        insertPS(kinds.get(kind), kind, featureType, cx, key);
+                    }
+                } else {
+                    Collection<SimpleFeature> useExistings = new ArrayList<>();
+                    Collection<SimpleFeature> notUseExistings = new ArrayList<>();
+                    for (SimpleFeature cur : features) {
+                        (InsertionClassifier.useExisting(cur) ? useExistings : notUseExistings).
+                                add(cur);
+                    }
+                    insertNonPS(useExistings, featureType, cx, key, true);
+                    insertNonPS(notUseExistings, featureType, cx, key, false);
                 }
-                
-                // figure out if we should determine what the fid is pre or post insert
-                boolean postInsert = dialect.lookupGeneratedValuesPostInsert() && isGenerated(key);
-                
-                for (Iterator f = features.iterator(); f.hasNext();) {
-                    SimpleFeature feature = (SimpleFeature) f.next();
-                    
-                    List<Object> keyValues = null;
-                    boolean useExisting = Boolean.TRUE.equals(feature.getUserData().get(Hints.USE_PROVIDED_FID));
-                    if(useExisting) {
-                        keyValues = decodeFID(key, feature.getID(), true);
-                    } else if (!postInsert) {
-                        keyValues = getNextValues( key, cx );
-                    }
-                    
-
-                    if ( dialect instanceof PreparedStatementSQLDialect ) {
-                        PreparedStatement ps = insertSQLPS( featureType, feature, keyValues, cx );
-                        try {
-                            ((PreparedStatementSQLDialect)dialect).onInsert(ps, cx, featureType);
-                            ps.execute();
-                        } finally {
-                            closeSafe( ps );
-                        }
-                    } else {
-                        String sql = insertSQL(featureType, feature, keyValues, cx);
-                        
-                        //TODO: execute in batch to improve performance?
-                        ((BasicSQLDialect)dialect).onInsert(st, cx, featureType);
-                        
-                        LOGGER.log(Level.FINE, "Inserting new feature: {0}", sql);
-                        st.execute(sql);
-                    }
-                    
-                    if ( keyValues == null ) {
-                        //grab the key values post insert
-                        keyValues = getLastValues(key,cx);
-                    }
-                    
-                    //report the feature id as user data since we cant set the fid
-                    String fid = featureType.getTypeName() + "." + encodeFID(keyValues);
-                    feature.getUserData().put("fid", fid);
-                }
-
-                //st.executeBatch();
             } catch (SQLException e) {
                 String msg = "Error inserting features";
                 throw (IOException) new IOException(msg).initCause(e);
-            } finally {
-                closeSafe(st);
             }
+        }
+    }
+
+    /**
+     * Specialized insertion for dialects that are using prepared statements.
+     */
+    private void insertPS(Collection<SimpleFeature> features, InsertionClassifier kind,
+                          SimpleFeatureType featureType, Connection cx, PrimaryKey key)
+            throws IOException, SQLException {
+        final PreparedStatementSQLDialect dialect = (PreparedStatementSQLDialect) getSQLDialect();
+
+        final KeysFetcher keysFetcher = KeysFetcher.create(this, cx,kind.useExisting, key);
+
+        final String sql = buildInsertPS(kind, featureType, keysFetcher, dialect);
+        LOGGER.log(Level.FINE, "Inserting new features with ps: {0}", sql);
+
+        //create the prepared statement
+        final PreparedStatement ps;
+        if (keysFetcher.isPostInsert()) {
+            // ask the DB to return the values of all the keys after the insertion
+            ps = cx.prepareStatement(sql, keysFetcher.getColumnNames());
+        } else {
+            ps = cx.prepareStatement(sql);
+        }
+        try {
+            for (SimpleFeature feature : features) {
+                //set the attribute values
+                int i = 1;
+                for(AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+                    String colName = att.getLocalName();
+                    // skip the pk columns in case we have exposed them, we grab the
+                    // value from the pk itself
+                    if(keysFetcher.isKey(colName)) {
+                        continue;
+                    }
+
+                    Class binding = att.getType().getBinding();
+
+                    Object value = feature.getAttribute(colName);
+                    if (value == null && !att.isNillable()) {
+                        throw new IOException("Cannot set a NULL value on the not null column " +
+                                colName);
+                    }
+
+                    if (Geometry.class.isAssignableFrom(binding)) {
+                        Geometry g = (Geometry) value;
+                        int srid = getGeometrySRID(g, att);
+                        int dimension = getGeometryDimension(g, att);
+                        dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
+                    } else {
+                        dialect.setValue(value, binding, ps, i, cx);
+                    }
+                    if ( LOGGER.isLoggable( Level.FINE ) ) {
+                        LOGGER.fine( (i) + " = " + value );
+                    }
+                    i++;
+                }
+
+                keysFetcher.setKeyValues(dialect, ps, cx, featureType, feature, i);
+
+                dialect.onInsert(ps, cx, featureType);
+                ps.addBatch();
+            }
+            int[] inserts = ps.executeBatch();
+            checkAllInserted(inserts, features.size());
+            keysFetcher.postInsert(featureType, features, ps);
+        } finally {
+            closeSafe(ps);
+        }
+    }
+
+    static void checkAllInserted(int[] inserts, int size) throws IOException {
+        int sum = 0;
+        for (int cur: inserts) {
+            if (cur == PreparedStatement.SUCCESS_NO_INFO) {
+                return;  // cannot check
+            } else if (cur == PreparedStatement.EXECUTE_FAILED) {
+                throw new IOException("Failed to insert some features");
+            }
+            sum += cur;
+        }
+        if (sum != size) {
+            throw new IOException("Failed to insert some features");
+        }
+    }
+
+    /**
+     * Build the insert statement that will be used in a PreparedStatement.
+     */
+    private String buildInsertPS(InsertionClassifier kind,
+                                 SimpleFeatureType featureType, KeysFetcher keysFetcher,
+                                 PreparedStatementSQLDialect dialect) throws SQLException {
+        StringBuffer sql = new StringBuffer();
+        sql.append("INSERT INTO ");
+        encodeTableName(featureType.getTypeName(), sql, null);
+
+        // column names
+        sql.append(" ( ");
+
+        for (int i = 0; i < featureType.getAttributeCount(); i++) {
+            String colName = featureType.getDescriptor(i).getLocalName();
+            // skip the pk columns in case we have exposed them
+            if(keysFetcher.isKey(colName)) {
+                continue;
+            }
+
+            dialect.encodeColumnName(null, colName, sql);
+            sql.append(",");
+        }
+
+        // primary key values
+        keysFetcher.addKeyColumns(sql);
+        sql.setLength(sql.length() - 1);  // remove the last coma
+
+        // values
+        sql.append(" ) VALUES ( ");
+        for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+            String colName = att.getLocalName();
+            // skip the pk columns in case we have exposed them, we grab the
+            // value from the pk itself
+            if(keysFetcher.isKey(colName)) {
+                continue;
+            }
+
+            // geometries might need special treatment, delegate to the dialect
+            if(att instanceof GeometryDescriptor) {
+                Class<? extends Geometry> geometryClass =
+                        kind.geometryTypes.get(att.getName().getLocalPart());
+                dialect.prepareGeometryValue(geometryClass, getDescriptorDimension(att),
+                        getDescriptorSRID(att), att.getType().getBinding(), sql);
+            } else {
+                sql.append("?");
+            }
+            sql.append(",");
+        }
+        keysFetcher.addKeyBindings(sql);
+
+        sql.setLength(sql.length()-1);
+        sql.append(")");
+        return sql.toString();
+    }
+
+    /**
+     * Specialized insertion for dialects that are not using prepared statements.
+     */
+    private void insertNonPS(Collection<? extends SimpleFeature> features,
+                             SimpleFeatureType featureType, Connection cx, PrimaryKey key,
+                             boolean useExisting) throws IOException, SQLException {
+        if (features.isEmpty()) {
+            return;
+        }
+        final Statement st = cx.createStatement();
+        final KeysFetcher keysFetcher = KeysFetcher.create(this, cx, useExisting, key);
+        try {
+            for (SimpleFeature feature : features) {
+                String sql = insertSQL(featureType, feature, keysFetcher, cx);
+
+                ((BasicSQLDialect) dialect).onInsert(st, cx, featureType);
+
+                LOGGER.log(Level.FINE, "Inserting new feature: {0}", sql);
+                st.execute(sql);
+
+                keysFetcher.postInsert(featureType, feature, cx);
+            }
+        } finally {
+            closeSafe(st);
         }
     }
 
@@ -1878,7 +2127,7 @@ public final class JDBCDataStore extends ContentDataStore
         return encodeFID( keyValues );
     }
 
-    protected String encodeFID( List<Object> keyValues ) {
+    protected static String encodeFID( List<Object> keyValues ) {
         StringBuffer fid = new StringBuffer();
         for ( Object o : keyValues ) {
             fid.append(o).append(".");
@@ -1893,7 +2142,7 @@ public final class JDBCDataStore extends ContentDataStore
      * @param strict If set to true the value of the fid will be validated against
      *   the type of the key columns. If a conversion can not be made, an exception will be thrown. 
      */
-    protected List<Object> decodeFID( PrimaryKey key, String FID, boolean strict) {
+    protected static List<Object> decodeFID( PrimaryKey key, String FID, boolean strict) {
         //strip off the feature type name
         if (FID.startsWith(key.getTableName() + ".")) {
             FID = FID.substring(key.getTableName().length() + 1);
@@ -1958,112 +2207,6 @@ public final class JDBCDataStore extends ContentDataStore
         }
         
         return true;
-    }
-    
-    /**
-     * Gets the next value of a primary key.
-     */
-    protected List<Object> getNextValues( PrimaryKey pkey, Connection cx ) throws SQLException, IOException {
-        ArrayList<Object> next = new ArrayList<Object>();
-        for( PrimaryKeyColumn col : pkey.getColumns() ) {
-            next.add( getNextValue( col, pkey, cx ) );
-        }
-        return next;
-    }
-    
-    /**
-     * Gets the next value for the column of a primary key.
-     */
-    protected Object getNextValue( PrimaryKeyColumn col, PrimaryKey pkey, Connection cx ) throws SQLException, IOException {
-        Object next = null;
-        
-        if ( col instanceof AutoGeneratedPrimaryKeyColumn ) {
-            next = dialect.getNextAutoGeneratedValue(databaseSchema, pkey.getTableName(), col.getName(), cx );
-        }
-        else if ( col instanceof SequencedPrimaryKeyColumn ) {
-            String sequenceName = ((SequencedPrimaryKeyColumn)col).getSequenceName();
-            next = dialect.getNextSequenceValue(databaseSchema, sequenceName, cx );
-        }
-        else {
-            //try to calculate
-            Class t =  col.getType();
-          
-          //is the column numeric?
-          if ( Number.class.isAssignableFrom( t ) ) {
-              //is the column integral? 
-              if ( t == Short.class || t == Integer.class || t == Long.class 
-                  || BigInteger.class.isAssignableFrom( t ) || BigDecimal.class.isAssignableFrom(t) ) {
-                  
-                  StringBuffer sql = new StringBuffer();
-                  sql.append( "SELECT MAX(");
-                  dialect.encodeColumnName( col.getName() , sql );
-                  sql.append( ") + 1 FROM ");
-                  encodeTableName(pkey.getTableName(), sql, null);
-                  
-                  LOGGER.log(Level.FINE, "Getting next FID: {0}", sql);
-                  
-                  Statement st = cx.createStatement();
-                  try {
-                      ResultSet rs = st.executeQuery( sql.toString() );
-                      try {
-                          rs.next();
-                          next = rs.getObject( 1 );
-                          
-                          if ( next == null ) {
-                              //this probably means there was no data in the table, set to 1
-                              //TODO: probably better to do a count to check... but if this 
-                              // value already exists the db will throw an error when it tries
-                              // to insert
-                              next = new Integer(1);
-                          }
-                      }
-                      finally {
-                          closeSafe( rs );
-                      }
-                  }
-                  finally {
-                      closeSafe( st );
-                  }
-              }
-          }
-          else if ( CharSequence.class.isAssignableFrom( t ) ) {
-              //generate a random string
-              next = SimpleFeatureBuilder.createDefaultFeatureId();
-          }
-          
-          if ( next == null ) {
-              throw new IOException( "Cannot generate key value for column of type: " + t.getName() );    
-          }
-        }
-        
-        return next;
-    }
-
-    /**
-     * Gets the last value of a generated primary key.
-     */
-    protected List<Object> getLastValues( PrimaryKey pkey, Connection cx ) throws SQLException, IOException {
-        ArrayList<Object> last = new ArrayList<Object>();
-        for( PrimaryKeyColumn col : pkey.getColumns() ) {
-            last.add( getLastValue( col, pkey, cx ) );
-        }
-        return last;
-    }
-    
-    /**
-     * Gets the last value of a generated primary key column.
-     */
-    protected Object getLastValue( PrimaryKeyColumn col, PrimaryKey pkey, Connection cx ) throws SQLException, IOException {
-        Object last = null;
-        
-        if ( col instanceof AutoGeneratedPrimaryKeyColumn ) {
-            last = dialect.getLastAutoGeneratedValue(databaseSchema, pkey.getTableName(), col.getName(), cx );
-        }
-        else {
-            throw new IllegalArgumentException("Column " + col.getName() + " is not generated." );
-        }
-        
-        return last;
     }
     
     //
@@ -2882,7 +3025,7 @@ public final class JDBCDataStore extends ContentDataStore
         boolean[] nillable, String pkeyColumn, SimpleFeatureType featureType ) throws SQLException {
         //build the create table sql
         StringBuffer sql = new StringBuffer();
-        sql.append("CREATE TABLE ");
+        dialect.encodeCreateTable(sql);
 
         encodeTableName(tableName, sql, null);
         sql.append(" ( ");
@@ -3611,21 +3754,34 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Generates a 'SELECT <function>() FROM' statement.
      */
-    protected String selectAggregateSQL(String function, AttributeDescriptor att, 
+    protected String selectAggregateSQL(String function, AttributeDescriptor att,
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
+        return selectAggregateSQL(function, att, null, featureType, query, visitor);
+    }
+
+    protected String selectAggregateSQL(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+                                        SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
-        doSelectAggregateSQL(function, att, featureType, query, visitor, sql);
+        doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
         return sql.toString();
     }
     
     /**
      * Generates a 'SELECT <function>() FROM' prepared statement.
      */
-    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
+    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att,
+                                                     SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
+            throws SQLException, IOException {
+
+        return selectAggregateSQLPS(function, att, null, featureType, query, visitor, cx);
+    }
+
+    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+                                                     SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
         throws SQLException, IOException {
         
         StringBuffer sql = new StringBuffer();
-        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, featureType, query, visitor, sql);
+        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
         
         LOGGER.fine( sql.toString() );
           
@@ -3640,7 +3796,7 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Helper method to factor out some commonalities between selectAggregateSQL, and selectAggregateSQLPS 
      */
-    List<FilterToSQL> doSelectAggregateSQL(String function, AttributeDescriptor att, 
+    List<FilterToSQL> doSelectAggregateSQL(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor, StringBuffer sql) throws SQLException, IOException {
 
         JoinInfo join = !query.getJoins().isEmpty() 
@@ -3661,6 +3817,10 @@ public final class JDBCDataStore extends ContentDataStore
             }
         } else {
             sql.append("SELECT ");
+            if (groupByAttributes != null && !groupByAttributes.isEmpty()) {
+                encodeGroupByAttributes(groupByAttributes, query, sql);
+                sql.append(",");
+            }
             encodeFunction(function,att,query,sql);
             sql.append( " FROM ");
         }
@@ -3695,17 +3855,65 @@ public final class JDBCDataStore extends ContentDataStore
             applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
             
             StringBuffer sql2 = new StringBuffer("SELECT ");
+            if (groupByAttributes != null && !groupByAttributes.isEmpty()) {
+                encodeGroupByAttributes(groupByAttributes, query, sql2);
+                sql2.append(",");
+            }
             encodeFunction(function,att,query,sql2);
             sql2.append(" AS gt_result_");
             sql2.append(" FROM (");
             sql.insert(0,sql2.toString());
             sql.append(") gt_limited_");
         }
-        
+
+        encodeGroupByStatement(groupByAttributes, query, sql);
+
         // add search hints if the dialect supports them
         applySearchHints(featureType, query, sql);
 
         return toSQL;
+    }
+
+    protected void encodeGroupByAttributes(List<AttributeDescriptor> attributes, Query query, StringBuffer sql) {
+        // we encode all the group by attributes as columns names
+        attributes.forEach(attribute -> {
+            encodeAttribute(attribute, query, sql);
+            sql.append(",");
+        });
+        // removes the extra comma added during the attributes encoding
+        sql.setLength(sql.length() - 1);
+    }
+
+    /**
+     * Helper method that adds a group by statement to the SQL query. If the list of group by attributes
+     * is empty or NULL no group by statement is add.
+     *
+     * @param attributes the group by attributes to be encoded
+     * @param query      the query information
+     * @param sql        the sql query buffer
+     */
+    protected void encodeGroupByStatement(List<AttributeDescriptor> attributes, Query query, StringBuffer sql) {
+        if (attributes == null || attributes.isEmpty()) {
+            // there is not group by attributes to encode so nothing to do
+            return;
+        }
+        sql.append(" GROUP BY ");
+        encodeGroupByAttributes(attributes, query, sql);
+    }
+
+    /**
+     * Helper method that adds an attribute to SQL query with a special handling for geometry descriptor.
+     *
+     * @param attribute the attribute descriptor to be encoded
+     * @param query     the query information
+     * @param sql       the sql query buffer
+     */
+    protected void encodeAttribute(AttributeDescriptor attribute, Query query, StringBuffer sql) {
+        if (attribute instanceof GeometryDescriptor) {
+            encodeGeometryColumn((GeometryDescriptor) attribute, sql, query.getHints());
+        } else {
+            dialect.encodeColumnName(attribute.getLocalName(), sql);
+        }
     }
 
     protected void encodeFunction( String function, AttributeDescriptor att, Query query, StringBuffer sql ) {
@@ -3783,18 +3991,10 @@ public final class JDBCDataStore extends ContentDataStore
      * @throws IOException 
      */
     protected String insertSQL(SimpleFeatureType featureType, SimpleFeature feature, 
-            List keyValues, Connection cx) throws SQLException {
+            KeysFetcher keysFetcher, Connection cx) throws SQLException, IOException {
         BasicSQLDialect dialect = (BasicSQLDialect) getSQLDialect();
         
-        // grab the primary key and collect the pk column names 
-        PrimaryKey key = null; 
-        try {
-            key = getPrimaryKey(featureType);
-        } catch (IOException e) {
-            throw new RuntimeException( e );
-        }
-        Set<String> pkColumnNames = getColumnNames(key);
-       
+
         StringBuffer sql = new StringBuffer();
         sql.append("INSERT INTO ");
         encodeTableName(featureType.getTypeName(), sql, null);
@@ -3805,22 +4005,15 @@ public final class JDBCDataStore extends ContentDataStore
         for (int i = 0; i < featureType.getAttributeCount(); i++) {
             String colName = featureType.getDescriptor(i).getLocalName();
             // skip the pk columns in case we have exposed them
-            if(pkColumnNames.contains(colName)) {
+            if(keysFetcher.isKey(colName)) {
                 continue;
             }
-            dialect.encodeColumnName(colName, sql);
+            dialect.encodeColumnName(null, colName, sql);
             sql.append(",");
         }
 
         //primary key values
-        boolean useExisting = Boolean.TRUE.equals(feature.getUserData().get(Hints.USE_PROVIDED_FID));
-        for (PrimaryKeyColumn col : key.getColumns() ) {
-            //only include if its non auto generating
-            if ( !(col instanceof AutoGeneratedPrimaryKeyColumn )  || useExisting) {
-                dialect.encodeColumnName(col.getName(), sql);
-                sql.append( ",");
-            }
-        } 
+        keysFetcher.addKeyColumns(sql);
         sql.setLength(sql.length() - 1);
 
         //values
@@ -3831,7 +4024,7 @@ public final class JDBCDataStore extends ContentDataStore
             String colName = att.getLocalName();
             // skip the pk columns in case we have exposed them, we grab the
             // value from the pk itself
-            if(pkColumnNames.contains(colName)) {
+            if(keysFetcher.isKey(colName)) {
                 continue;
             }
             
@@ -3841,7 +4034,8 @@ public final class JDBCDataStore extends ContentDataStore
 
             if (value == null) {
                 if (!att.isNillable()) {
-                    //TODO: throw an exception    
+                    throw new IOException("Cannot set a NULL value on the not null column " +
+                            colName);
                 }
 
                 sql.append("null");
@@ -3863,23 +4057,8 @@ public final class JDBCDataStore extends ContentDataStore
             sql.append(",");
         }
         // handle the primary key
-        for ( int i = 0; i < key.getColumns().size(); i++ ) {
-            PrimaryKeyColumn col = key.getColumns().get( i );
-            
-            //only include if its non auto generating
-            if (!(col instanceof AutoGeneratedPrimaryKeyColumn ) || useExisting) {
-                try {
-                    //Object value = getNextValue(col, key, cx);
-                    Object value = keyValues.get( i );
-                    dialect.encodeValue( value, col.getType(), sql );
-                    sql.append( "," );
-                } 
-                catch( Exception e ) {
-                    throw new RuntimeException( e );
-                }
-            }
-        }
-        sql.setLength(sql.length() - 1);
+        keysFetcher.setKeyValues(this, cx, featureType, feature, sql);
+        sql.setLength(sql.length() - 1);  //remove last comma
 
         sql.append(")");
 
@@ -3889,9 +4068,8 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Returns the set of the primary key column names. The set is guaranteed to have the same
      * iteration order as the primary key.
-     * @param key
      */
-    protected LinkedHashSet<String> getColumnNames(PrimaryKey key) {
+    protected static LinkedHashSet<String> getColumnNames(PrimaryKey key) {
         LinkedHashSet<String> pkColumnNames = new LinkedHashSet<String>();
         for (PrimaryKeyColumn pkcol : key.getColumns()) {
             pkColumnNames.add(pkcol.getName());
@@ -3899,137 +4077,6 @@ public final class JDBCDataStore extends ContentDataStore
         return pkColumnNames;
     }
 
-    /**
-     * Generates a 'INSERT INFO' prepared statement.
-     */
-    protected PreparedStatement insertSQLPS(SimpleFeatureType featureType, SimpleFeature feature, List keyValues, Connection cx) 
-        throws IOException, SQLException {
-        PreparedStatementSQLDialect dialect = (PreparedStatementSQLDialect) getSQLDialect();
-        
-        // grab the primary key and collect the pk column names 
-        PrimaryKey key = null; 
-        try {
-            key = getPrimaryKey(featureType);
-        } catch (IOException e) {
-            throw new RuntimeException( e );
-        }
-        Set<String> pkColumnNames = getColumnNames(key);
-        
-        StringBuffer sql = new StringBuffer();
-        sql.append("INSERT INTO ");
-        encodeTableName(featureType.getTypeName(), sql, null);
-
-        // column names
-        sql.append(" ( ");
-
-        for (int i = 0; i < featureType.getAttributeCount(); i++) {
-            String colName = featureType.getDescriptor(i).getLocalName();
-            // skip the pk columns in case we have exposed them
-            if(pkColumnNames.contains(colName)) {
-                continue;
-            }
-
-            dialect.encodeColumnName(colName, sql);
-            sql.append(",");
-        }
-
-        // primary key values
-        boolean useExisting = Boolean.TRUE.equals(feature.getUserData().get(Hints.USE_PROVIDED_FID));
-        for (PrimaryKeyColumn col : key.getColumns() ) {
-            //only include if its non auto generating
-            if ( !(col instanceof AutoGeneratedPrimaryKeyColumn ) || useExisting ) {
-                dialect.encodeColumnName(col.getName(), sql);
-                sql.append( ",");
-            }
-        }
-        sql.setLength(sql.length() - 1);
-
-        // values
-        sql.append(" ) VALUES ( ");
-        for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-            String colName = att.getLocalName();
-            // skip the pk columns in case we have exposed them, we grab the
-            // value from the pk itself
-            if(pkColumnNames.contains(colName)) {
-                continue;
-            }
-            
-            // geometries might need special treatment, delegate to the dialect
-            if(att instanceof GeometryDescriptor) {
-                Geometry geometry = (Geometry) feature.getAttribute(att.getName());
-                dialect.prepareGeometryValue(geometry, getDescriptorDimension(att), getDescriptorSRID(att), att.getType().getBinding(),  sql );
-            } else {
-                sql.append("?");
-            }
-            sql.append(",");
-        }
-        for (PrimaryKeyColumn col : key.getColumns() ) {
-            //only include if its non auto generating
-            if ( !(col instanceof AutoGeneratedPrimaryKeyColumn ) || useExisting) {
-                sql.append("?").append( ",");
-            }
-        }
-        
-        sql.setLength(sql.length()-1);
-        sql.append(")");
-        LOGGER.log(Level.FINE, "Inserting new feature with ps: {0}", sql);
-        
-        //create the prepared statement
-        PreparedStatement ps = cx.prepareStatement(sql.toString());
-        
-        //set the attribute values
-        int i = 1;
-        for(AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-            String colName = att.getLocalName();
-            // skip the pk columns in case we have exposed them, we grab the
-            // value from the pk itself
-            if(pkColumnNames.contains(colName)) {
-                continue;
-            }
-            
-            Class binding = att.getType().getBinding();
-
-            Object value = feature.getAttribute(colName);
-            if (value == null) {
-                if (!att.isNillable()) {
-                    //TODO: throw an exception    
-                }
-            }
-            
-            if (Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = (Geometry) value;
-                int srid = getGeometrySRID(g, att);
-                int dimension = getGeometryDimension(g, att);
-                dialect.setGeometryValue( g, dimension, srid, binding, ps, i );
-            } else {
-                dialect.setValue( value, binding, ps, i, cx );
-            }
-            if ( LOGGER.isLoggable( Level.FINE ) ) {
-                LOGGER.fine( (i) + " = " + value );    
-            }
-            i++;
-        }
-        
-        //set the key values 
-        //mind, we are reusing the i index from the previous loop
-        for ( int j = 0; j < key.getColumns().size(); j++ ) {
-            PrimaryKeyColumn col = key.getColumns().get( j );
-            //only include if its non auto generating
-            if (!(col instanceof AutoGeneratedPrimaryKeyColumn ) || useExisting) {
-                //get the next value for the column
-                //Object value = getNextValue( col, key, cx );
-                Object value = keyValues.get( j );
-                dialect.setValue( value, col.getType(), ps, i, cx);
-                i++;
-                if ( LOGGER.isLoggable( Level.FINE ) ) {
-                    LOGGER.fine( (i) + " = " + value );    
-                }
-            }
-        }
-        
-        return ps;
-    }
-    
     /**
      * Looks up the geometry srs by trying a number of heuristics. Returns -1 if all attempts
      * at guessing the srid failed.

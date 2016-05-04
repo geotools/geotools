@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2013-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
@@ -50,8 +51,7 @@ import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
-import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProvider;
-import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderFactory;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
@@ -63,6 +63,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
@@ -151,7 +152,7 @@ public class CatalogManager {
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
             params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
             catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, Utils.SHAPE_SPI,runConfiguration.getHints());
-            MultiLevelROIProvider roi = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+            MultiLevelROIProvider roi = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(roi);
         }
 
@@ -181,7 +182,7 @@ public class CatalogManager {
     }
 
     public static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
-        Properties properties = Utils.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
+        Properties properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
         if (properties == null) {
             throw new IOException("Unable to load properties from:" + datastoreProperties.getAbsolutePath());
         }
@@ -218,7 +219,7 @@ public class CatalogManager {
             }
 
             catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,hints);
-            MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+            MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(rois);
         } catch (Exception e) {
             final IOException ioe = new IOException();
@@ -633,7 +634,7 @@ public class CatalogManager {
         // Create the catalog
         GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
         File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
-        MultiLevelROIProvider rois = MultiLevelROIProviderFactory.createFootprintProvider(parent);
+        MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
         catalog.setMultiScaleROIProvider(rois);
         
         return catalog;

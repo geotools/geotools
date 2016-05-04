@@ -80,6 +80,7 @@ import org.opengis.filter.temporal.EndedBy;
 import org.opengis.filter.temporal.Ends;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.geometry.BoundingBox;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -324,7 +325,10 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
                 out.write("db2gse.ST_Intersects");
                 checkValue="0";
             } else if (filter instanceof Intersects || filter instanceof BBOX) {
-                out.write("db2gse.ST_Intersects");
+                if (isLooseBBOXEnabled())
+                    out.write("db2gse.EnvelopesIntersect");
+                else 
+                    out.write("db2gse.ST_Intersects");
             } else if (filter instanceof Crosses) {
                 out.write("db2gse.ST_Crosses");
             } else if (filter instanceof Within) {
@@ -634,32 +638,5 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-    
-    public Object visit(BBOX filter, Object extraData) throws RuntimeException {
-        if (isLooseBBOXEnabled()==false)
-            return super.visit(filter,extraData);
-        
-                        
-        
-        double minx = filter.getMinX();
-        double maxx = filter.getMaxX();
-        double miny = filter.getMinY();
-        double maxy = filter.getMaxY();
-        String propertyName = filter.getPropertyName();
-        Integer srid =getSRID(propertyName);
-                
-        try {
-            out.write("db2gse.EnvelopesIntersect(");
-            out.write(escapeName(propertyName));
-            out.write(","+minx + ", " + miny + ", "
-                    + maxx + ", " + maxy + ", " + srid);
-            out.write(") =1 ");
-            addSelectivity();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return extraData;        
-    }
-
+    }    
 }

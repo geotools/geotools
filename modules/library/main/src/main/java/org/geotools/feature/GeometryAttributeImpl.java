@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -75,17 +75,23 @@ public class GeometryAttributeImpl extends AttributeImpl implements
 	    return (GeometryDescriptor) super.getDescriptor();
 	}
 	
+	/** 
+	 * @deprecated
+	 */
 	public Geometry getValue() {
-		return (Geometry) super.getValue();
+	    return (Geometry) super.getValue();
 	}
 
 	public void setValue(Object newValue) throws IllegalArgumentException,
 	        IllegalStateException {
-	    setValue( (Geometry) newValue );
+	    super.setValue( (Geometry) newValue );
 	}
 	
+	/** 
+         * @deprecated
+         */
 	public void setValue(Geometry geometry) {
-		super.setValue(geometry);
+	    super.setValue(geometry);
 	}
 
 	/**

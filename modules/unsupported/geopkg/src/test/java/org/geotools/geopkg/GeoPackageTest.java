@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
@@ -56,15 +60,6 @@ import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.image.WorldImageReader;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geopkg.Entry;
-import org.geotools.geopkg.FeatureEntry;
-import org.geotools.geopkg.Features;
-import org.geotools.geopkg.GeoPackage;
-import org.geotools.geopkg.RasterEntry;
-import org.geotools.geopkg.Tile;
-import org.geotools.geopkg.TileEntry;
-import org.geotools.geopkg.TileMatrix;
-import org.geotools.geopkg.TileReader;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.sql.SqlUtil;
@@ -171,6 +166,34 @@ public class GeoPackageTest {
         finally {
             st.close();
             cx.close();
+        }
+    }
+    
+    void assertLastChangedDateString(Calendar startTime, Calendar endTime) throws Exception {
+        final TimeZone tz = TimeZone.getTimeZone("GMT");
+        // get the date now for comparison
+        final Calendar c = Calendar.getInstance(tz);
+        // this is what should be used for the date string format in the DB
+        final String dateFomratString = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        final SimpleDateFormat sdf = new SimpleDateFormat(dateFomratString);
+        sdf.setTimeZone(tz);
+
+        try (Connection cx = geopkg.getDataSource().getConnection();
+            Statement st = cx.createStatement();
+            ResultSet rs = st.executeQuery(String.format("SELECT last_change FROM %s;",
+                GeoPackage.GEOPACKAGE_CONTENTS))){
+            
+            if (rs.next()) {
+                final String dateString = rs.getString(1);
+                // parse the date with the expected format string
+                Date parsedDate = sdf.parse(dateString);
+                // assert the parsed time is between the start and end time
+                c.setTime(parsedDate);
+                assertTrue("Start time should be less than or equal to last_change time",
+                    startTime.compareTo(c) <= 0);
+                assertTrue("End time should be greater than or equal to last_change time",
+                    endTime.compareTo(c) >= 0);
+            }
         }
     }
 
@@ -431,7 +454,7 @@ public class GeoPackageTest {
         tx.commit();
         tx.close();
         w.close();
-        
+
         //create spatial index
         geopkg.createSpatialIndex(entry);
                 
@@ -452,7 +475,7 @@ public class GeoPackageTest {
         tx.commit();
         tx.close();
         w.close();
-        
+
         it.close();
         
         //test if the index was properly created
@@ -563,13 +586,19 @@ public class GeoPackageTest {
 
     @Test
     public void testListEntries() throws Exception {
+        // grab the start and end time to ensure the last_change time range
+        final TimeZone tz = TimeZone.getTimeZone("GMT");
+        final Calendar startTime = Calendar.getInstance(tz);
         testCreateFeatureEntry();
         testCreateRasterEntry();
         testCreateTileEntry();
+        final Calendar endTime = Calendar.getInstance(tz);
 
         List<FeatureEntry> lf = geopkg.features();
         assertEquals(1, lf.size());
         assertEquals("bugsites", lf.get(0).getTableName());
+        // make sure Date format String is fine
+        assertLastChangedDateString(startTime, endTime);
 
         List<RasterEntry> lr = geopkg.rasters();
         assertEquals(1, lr.size());

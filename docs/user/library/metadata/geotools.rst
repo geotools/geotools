@@ -5,7 +5,22 @@ The first utility class we have is helpfully called GeoTools. This class is used
 
 It also provides the version number of the library, in case you want to check at runtime.::
   
-  GeoTools.getVersion(); // Example 2.7.1
+  GeoTools.getVersion(); // Example 15.0
+
+Hints
+^^^^^
+
+Hints are used to configure the GeoTools library for use in your application. The method GeoTools.getDefaultHints() can be configured as part of your application startup.
+
+In addition the following following bindings to system properties are defined:
+
+================================= ===============================================
+CRS_AUTHORITY_EXTRA_DIRECTORY     org.geotools.referencing.crs-directory
+EPSG_DATA_SOURCE                  org.geotools.referencing.epsg-datasource
+FORCE_LONGITUDE_FIRST_AXIS_ORDER  org.geotools.referencing.forceXY
+LOCAL_DATE_TIME_HANDLING          org.geotools.localDateTimeHandling
+RESAMPLE_TOLERANCE                org.geotools.referencing.resampleTolerance
+================================= ===============================================
 
 Plug-ins
 ^^^^^^^^

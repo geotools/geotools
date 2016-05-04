@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2012 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -307,16 +307,16 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
     /**
      * Optional {@code String} DataStore parameter indicating either "mapserver", "geoserver",
-     * "strict" or "nonstrict" strategy
+     * "strict", "nonstrict", "ionic", "cubwerx" or "arcgis" strategy
      */
     public static final WFSFactoryParam<String> WFS_STRATEGY;
     static {
         String key = "WFSDataStoreFactory:WFS_STRATEGY";
         String title = "WFS Strategy";
         String description = "Override wfs stragegy with either cubwerx, ionic, mapserver"
-                + ", geoserver, or nonstrict strategy.";
+                + ", geoserver, strict, nonstrict or arcgis strategy.";
         List<String> options = Arrays.asList(new String[] { "auto", "strict", "nonstrict",
-                "mapserver", "geoserver", "cubewerx", "ionic" });
+                "mapserver", "geoserver", "cubewerx", "ionic", "arcgis" });
         parametersInfo[11] = WFS_STRATEGY = new WFSFactoryParam<String>(key, String.class, title,
                 description, "auto", Parameter.OPTIONS, options);
     }
@@ -416,6 +416,10 @@ public class WFSDataAccessFactory implements DataAccessFactory {
      */
     @Override
     public boolean canProcess(@SuppressWarnings("rawtypes") final Map params) {
+        return canProcess(params, GMLComplianceLevel);
+    }
+
+    protected boolean canProcess(final Map params, int maximumGmlComplianceLevel) {
         /*
          * check required params exist and are of the correct type
          */
@@ -428,8 +432,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             if (!"http".equalsIgnoreCase(url.getProtocol())
                     && !"https".equalsIgnoreCase(url.getProtocol())) {
                 if (!Boolean.TRUE.equals(params.get("TESTING"))) {
-					Loggers.MODULE
-							.finest("Can't process non http or https GetCapabilities URLs");
+                    Loggers.MODULE.finest("Can't process non http or https GetCapabilities URLs");
                     return false; // must be http or https since we use
                                   // SimpleHTTPClient class
                 }
@@ -450,10 +453,13 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         }
 
         // Check compliance level
-        if (params.containsKey(GML_COMPLIANCE_LEVEL.key)) {
-            if ((Integer) params.get(GML_COMPLIANCE_LEVEL.key) > GMLComplianceLevel) {
+        try {
+            Integer complianceLevel = (Integer) GML_COMPLIANCE_LEVEL.lookUp(params);
+            if (complianceLevel != null && complianceLevel > maximumGmlComplianceLevel) {
                 return false;
             }
+        } catch(Exception e) {
+            return false;
         }
 
         return true;
@@ -531,6 +537,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         http.setPassword(config.getPassword());
         int timeoutMillis = config.getTimeoutMillis();
         http.setConnectTimeout(timeoutMillis / 1000);
+        http.setReadTimeout(timeoutMillis / 1000);
 
         final URL capabilitiesURL = (URL)URL.lookUp(params);
 

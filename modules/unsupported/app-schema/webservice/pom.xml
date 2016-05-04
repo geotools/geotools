@@ -7,17 +7,13 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema-unsupported</artifactId>
-        <version>15-SNAPSHOT</version>
+        <version>16-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-webservice</artifactId>
     <name>Web Service DataAccess</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</url>
-    </scm>
 
     <description>
         DataAccess to create complex feature types defined in a GML application schema,

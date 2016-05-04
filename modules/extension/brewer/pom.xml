@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
   
 
@@ -29,12 +29,6 @@
   <name>Brewer module</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/brewer/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/brewer/</url>
-  </scm>
 
   <description>
     Brewer module, which contains ColorBrewer, etc.

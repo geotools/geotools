@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>WFS client module (NG)</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/wfs/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/wfs/</url>
-  </scm>
 
   <description>
     Implementation of DataStore allowing geotools code to work with an

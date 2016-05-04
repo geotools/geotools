@@ -37,13 +37,13 @@ We are going to be making use of Java, so if you don't have a Java Development K
 the time to do so. Even if you have Java installed already check out the optional Java Advanced
 Imaging and Java Image IO section.
    
-#. Download the latest Java Developer Kit (JDK) from the the java.sun.com website:
+#. Download the latest Java Development Kit (JDK) from the Oracle website:
 
-   http://www.oracle.com/technetwork/java/javase/downloads/index.html
+   http://www.oracle.com/technetwork/java/javase/downloads/
    
-#. At the time of writing the latest JDK was:
+#. At the time of writing the latest was JDK 8. Choose a download for your platform, for example:
    
-   jdk-8u51-windows-i586.exe
+   jdk-8u66-windows-i586.exe
    
 #. Click through the installer. You will need to accept a license agreement, choose a directory
    and so forth.
@@ -433,7 +433,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 
    Add the following system variables:
    
-   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.7.0_67`
+   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.8.0_66`
    * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
    
    And add the following to your PATH:
@@ -498,7 +498,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 17. Navigate to the pom.xml file and double click to open it up.
 18. We are going to start by defining the version number of GeoTools we wish to use. This workbook
     was written for |release| although you may wish to try a newer version, or make use of a
-    nightly build by using 8-SNAPSHOT.
+    nightly build by using 15-SNAPSHOT.
     
 .. literalinclude:: artifacts/pom.xml
         :language: xml

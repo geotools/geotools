@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>Extensions to EPSG authority factory</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-extension/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-extension/</url>
-  </scm>
 
   <description>
     Contains extra CRS defined by ESRI (and other parties) in the EPSG namespace.

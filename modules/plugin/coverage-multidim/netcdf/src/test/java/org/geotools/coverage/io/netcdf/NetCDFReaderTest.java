@@ -30,12 +30,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
 import javax.media.jai.PlanarImage;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -44,6 +46,10 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.data.CloseableIterator;
+import org.geotools.data.FileGroupProvider.FileGroup;
+import org.geotools.data.FileResourceInfo;
+import org.geotools.data.ResourceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
@@ -55,6 +61,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.DateRange;
+import org.geotools.util.NumberRange;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -155,6 +163,7 @@ public class NetCDFReaderTest extends Assert {
             assertEquals(2,names.length);
 
             GridCoverage2D grid = reader.read("O3", null);
+            assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
             float[] value = grid.evaluate((DirectPosition) new
                     DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45 ), new float[1]);
@@ -767,6 +776,87 @@ public class NetCDFReaderTest extends Assert {
         }
     }
 
+    @Test
+    public void testFileInfo() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File nc2 = new File(TestData.file(this,"."), "nc2");
+        if (nc2.exists()) {
+            FileUtils.deleteDirectory(nc2);
+        }
+        assertTrue(nc2.mkdirs());
+
+        File file = TestData.file(this, "O3-NO2.nc");
+        FileUtils.copyFileToDirectory(file, nc2);
+        file = new File(nc2, "O3-NO2.nc");
+        final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
+
+        assertNotNull(format);
+        CloseableIterator<FileGroup> files = null;
+        try {
+            String[] names = reader.getGridCoverageNames();
+            names = new String[] { names[1] };
+
+            for (String coverageName : names) {
+
+                final String[] metadataNames = reader.getMetadataNames(coverageName);
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length, 12);
+
+                ResourceInfo info = reader.getInfo(coverageName);
+                assertTrue (info instanceof FileResourceInfo);
+                FileResourceInfo fileInfo = (FileResourceInfo) info;
+                files = fileInfo.getFiles(null);
+
+                int fileGroups = 0;
+                FileGroup fg = null;
+                while (files.hasNext()) {
+                    fg = files.next();
+                    fileGroups++;
+
+                }
+                assertEquals(1, fileGroups);
+                File mainFile = fg.getMainFile();
+                assertEquals("O3-NO2", FilenameUtils.getBaseName(mainFile.getAbsolutePath()));
+                Map<String, Object> metadata = fg.getMetadata();
+                assertNotNull(metadata);
+                assertFalse(metadata.isEmpty());
+                Set<String> keys = metadata.keySet();
+
+                // envelope, time, elevation = 3 elements
+                assertEquals(3, keys.size());
+
+                // Check time
+                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                Date start = sdf.parse("2012-04-01T00:00:00.000Z");
+                Date end = sdf.parse("2012-04-01T01:00:00.000Z");
+                DateRange timeRange = new DateRange(start, end);
+                assertEquals(timeRange, metadata.get(Utils.TIME_DOMAIN));
+
+                // Check elevation
+                NumberRange<Double> elevationRange = NumberRange.create(10.0, 450.0);
+                assertEquals(elevationRange , metadata.get(Utils.ELEVATION_DOMAIN));
+                
+            }
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (files != null) {
+                files.close();
+            }
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    
     @Test
     public void NetCDFProjectedEnvelopeTest() throws NoSuchAuthorityCodeException,
             FactoryException, IOException, ParseException {

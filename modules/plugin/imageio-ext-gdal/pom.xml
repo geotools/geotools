@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -28,12 +28,6 @@
   <name>ImageI/O-Ext based grid coverage readers</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/imageio-ext-gdal/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/imageio-ext-gdal/</url>
-  </scm>
 
   <description>
     Extension of the of Grid Coverage plugins, leveraging on the GDAL raster data access

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003 - 2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -204,6 +205,10 @@ public abstract class AbstractGridFormat implements Format {
      */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION = new DefaultParameterDescriptor<Interpolation>(
             "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+
+    /** Control the footprint management.*/
+    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR = new DefaultParameterDescriptor<String>(
+            "FootprintBehavior", String.class, FootprintBehavior.valuesAsStrings(), FootprintBehavior.None.name());
 
         /**
 	 * @see org.opengis.coverage.grid.Format#getName()

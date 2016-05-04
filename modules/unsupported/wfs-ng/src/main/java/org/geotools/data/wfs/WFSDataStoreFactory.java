@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -107,6 +107,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         http.setPassword(config.getPassword());
         int timeoutMillis = config.getTimeoutMillis();
         http.setConnectTimeout(timeoutMillis / 1000);
+        http.setReadTimeout(timeoutMillis / 1000);
 
         final URL capabilitiesURL = (URL) URL.lookUp(params);
 
@@ -162,20 +163,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      */
     @Override
     public boolean canProcess(@SuppressWarnings("rawtypes") final Map params) {
-        /*
-         * check required params exist and are of the correct type
-         */
-        boolean canProcess = super.canProcess(params);
-        if (!canProcess) {
-            return false;
-        }
-        // Check compliance level
-        if (params.containsKey(GML_COMPLIANCE_LEVEL.key)) {
-            if ((Integer) params.get(GML_COMPLIANCE_LEVEL.key) > GMLComplianceLevel) {
-                return false;
-            }
-        }
-        return true;
+        return super.canProcess(params, GMLComplianceLevel);
     }
     
     /**

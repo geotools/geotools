@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>15-SNAPSHOT</version>
+    <version>16-SNAPSHOT</version>
   </parent>
 
 
@@ -28,12 +28,6 @@
   <packaging>pom</packaging>
   <name>JDBC DataStore Plugins</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/plugin/jdbc/
-    </connection>
-    <url>http://svn.geotools.org/trunk/modules/plugin/jdbc/</url>
-  </scm>
 
   <licenses>
     <license>

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -139,16 +140,17 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         //assertEquals(ft2, featureType);
 
         //grab a writer
-        FeatureWriter w = dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> w =
+                dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
         w.hasNext();
 
-        SimpleFeature f = (SimpleFeature) w.next();
+        SimpleFeature f = w.next();
         f.setAttribute( 1, new Integer(0));
         f.setAttribute( 2, "hello");
         w.write();
 
         w.hasNext();
-        f = (SimpleFeature) w.next();
+        f = w.next();
         f.setAttribute( 1, null );
         try {
             w.write();
@@ -470,5 +472,13 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
 
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures();
         assertEquals(6, features.size());
+    }
+
+    @Override
+    protected HashMap createDataStoreFactoryParams() throws Exception {
+        HashMap params = super.createDataStoreFactoryParams();
+        // This test expects the write to happen right away. Disable buffering.
+        params.put(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 1);
+        return params;
     }
 }

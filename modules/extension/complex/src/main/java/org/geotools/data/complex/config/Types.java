@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,15 @@
 package org.geotools.data.complex.config;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDContentTypeCategory;
+import org.eclipse.xsd.XSDDerivationMethod;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.util.logging.Logging;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -46,7 +53,9 @@ import org.opengis.feature.type.PropertyType;
  *         /java/org/geotools/feature/Types.java $
  */
 public class Types extends org.geotools.feature.type.Types {
-    
+
+    private static final Logger LOGGER = Logging.getLogger(Types.class);
+
     /**
      * Return true if an attribute from a type is an element.
      * 
@@ -87,7 +96,7 @@ public class Types extends org.geotools.feature.type.Types {
             return isSimpleContentType(superType);
         }
     }
-    
+
     public static boolean isGeometryType(AttributeType type) {
         if (type instanceof GeometryType) {
             return true;
@@ -99,4 +108,54 @@ public class Types extends org.geotools.feature.type.Types {
         }
         return false;
     }
+
+    /**
+     * Returns true if the type is either <code>xs:anyType</code> or is derived from <code>xs:anyType</code> by extension and has mixed content.
+     * 
+     * <p>
+     * Example:
+     * 
+     * <pre>
+     *  &lt;complexType name="TestType"&gt;
+     *    &lt;complexContent&gt;
+     *      &lt;extension base="anyType"&gt;
+     *        &lt;attribute name="attr1" type="string" /&gt;
+     *      &lt;/extension&gt;
+     *    &lt;/complexContent&gt;
+     *  &lt;/complexType&gt;
+     * </pre>
+     * 
+     * </p>
+     * 
+     * @param type
+     * @return
+     */
+    public static boolean canHaveTextContent(PropertyType type) {
+        if (type == XSSchema.ANYTYPE_TYPE) {
+            return true;
+        }
+        PropertyType superType = type.getSuper();
+        if (superType == XSSchema.ANYTYPE_TYPE) {
+            // type was derived from xs:anyType: check derivation mode and content type category
+            Map<Object, Object> userData = type.getUserData();
+            if (userData != null && userData.get(XSDTypeDefinition.class) != null) {
+                XSDTypeDefinition typeDef = (XSDTypeDefinition) userData.get(XSDTypeDefinition.class);
+                if (typeDef instanceof XSDComplexTypeDefinition) {
+                    XSDComplexTypeDefinition complexTypeDef = (XSDComplexTypeDefinition) typeDef;
+                    XSDContentTypeCategory category = complexTypeDef.getContentTypeCategory();
+                    XSDDerivationMethod derivMethod = complexTypeDef.getDerivationMethod();
+
+                    boolean hasMixedContent = XSDContentTypeCategory.MIXED_LITERAL.equals(category);
+                    boolean isExtension = XSDDerivationMethod.EXTENSION_LITERAL.equals(derivMethod);
+                    return isExtension && hasMixedContent;
+                }
+            } else {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.finer("No XSDTypeDefinition found for type " + type.getName());
+                }
+            }
+        }
+        return false;
+    }
+
 }

@@ -26,12 +26,6 @@ Custom javadoc tags
 ^^^^^^^^^^^^^^^^^^^
 Geotools code contains a few custom javadoc tags, including:
 
-* Tag: @Source
-  
-  The file URL, usually provided by SVN itself::
-     
-     @Source $URL$
-
 * Tag: @Tutorial
   
   Link a tutorial page on this server.	 

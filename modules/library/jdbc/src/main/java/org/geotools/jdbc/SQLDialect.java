@@ -446,6 +446,9 @@ public abstract class SQLDialect {
      * This method wraps <tt>raw</tt> in the character provided by
      * {@link #getNameEscape()}. Subclasses usually dont override this method
      * and instead override {@link #getNameEscape()}.
+     * </p>
+     * 
+     * @deprecated use {@link #encodeColumnName(String, String, StringBuffer)}.
      */
     public final void encodeColumnName(String raw, StringBuffer sql) {
         encodeColumnName(null, raw, sql);

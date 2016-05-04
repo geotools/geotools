@@ -476,9 +476,10 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return "";
     }
     
+   
     @Override
     public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
-        if (prefix != null) {
+        if (prefix != null && !prefix.isEmpty()) {
             prefix = prefix.toUpperCase();
             if (prefix.length() > 30) {
                 prefix = prefix.substring(0,30);

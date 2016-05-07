@@ -47,21 +47,23 @@ public class WarpTransform2DProvider extends MathTransformProvider {
             "degree", 2, 1, WarpTransform2D.MAX_DEGREE);
 
     /** Descriptor for the "{@link WarpPolynomial#getXCoeffs xCoeffs}" parameter value. */
-    public static final ParameterDescriptor X_COEFFS = new DefaultParameterDescriptor(
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static final ParameterDescriptor<?> X_COEFFS = new DefaultParameterDescriptor(
             "xCoeffs", float[].class, null, null);
 
     /** Descriptor for the "{@link WarpPolynomial#getYCoeffs yCoeffs}" parameter value. */
-    public static final ParameterDescriptor Y_COEFFS = new DefaultParameterDescriptor(
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static final ParameterDescriptor<?> Y_COEFFS = new DefaultParameterDescriptor(
             "yCoeffs", float[].class, null, null);
 
     /** Descriptor for the "{@link WarpPolynomial#getPreScaleX preScaleX}" parameter value. */
-    public static final ParameterDescriptor PRE_SCALE_X;
+    public static final ParameterDescriptor<Float> PRE_SCALE_X;
 
     /** Descriptor for the "{@link WarpPolynomial#getPreScaleY preScaleY}" parameter value. */
-    public static final ParameterDescriptor PRE_SCALE_Y;
+    public static final ParameterDescriptor<Float> PRE_SCALE_Y;
 
     /** Descriptor for the "{@link WarpPolynomial#getPostScaleX postScaleX}" parameter value. */
-    public static final ParameterDescriptor POST_SCALE_X;
+    public static final ParameterDescriptor<Float> POST_SCALE_X;
 
     /** Descriptor for the "{@link WarpPolynomial#getPostScaleY postScaleY}" parameter value. */
     public static final ParameterDescriptor<Float> POST_SCALE_Y;

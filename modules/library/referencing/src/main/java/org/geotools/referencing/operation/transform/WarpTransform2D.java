@@ -41,6 +41,7 @@ import org.geotools.resources.XArray;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
@@ -86,6 +87,21 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
      */
     private static final long serialVersionUID = -7949539694656719923L;
     
+    /**
+     * Placeholder interface to preserve parameter references in client code.
+     * 
+     * @deprecated Please use {@link WarpTransform2DProvider}
+     */
+    static interface Provider {
+        ParameterDescriptor<Integer> DEGREE = WarpTransform2DProvider.DEGREE;
+        ParameterDescriptorGroup PARAMETERS = WarpTransform2DProvider.PARAMETERS;
+        ParameterDescriptor<Float> POST_SCALE_X = WarpTransform2DProvider.POST_SCALE_X;
+        ParameterDescriptor<Float> POST_SCALE_Y = WarpTransform2DProvider.POST_SCALE_Y;
+        ParameterDescriptor<Float> PRE_SCALE_X = WarpTransform2DProvider.PRE_SCALE_X;
+        ParameterDescriptor<Float> PRE_SCALE_Y = WarpTransform2DProvider.PRE_SCALE_Y;
+        ParameterDescriptor<?> X_COEFFS = WarpTransform2DProvider.X_COEFFS;
+        ParameterDescriptor<?> Y_COEFFS = WarpTransform2DProvider.Y_COEFFS;
+    }
     private final static boolean USE_HACK;
     static{
     	final String buildVersion=JAI.getBuildVersion();

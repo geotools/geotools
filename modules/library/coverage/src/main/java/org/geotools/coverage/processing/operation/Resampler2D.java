@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -800,9 +800,9 @@ final class Resampler2D extends GridCoverage2D {
                 /*  {7} */ targetImage.getOperationName(),
                 /*  {8} */ Integer.valueOf(1),
                 /*  {9} */ ImageUtilities.getInterpolationName(interpolation),
-                /* {10} */ (background != null) ? background.length == 1 ? (Double.isNaN(background[0]) ? (Object) "NaN"
-                                 : (Object) Double.valueOf(background[0]))
-                                 : (Object) XArray.toString(background, locale)
+                /* {10} */ (background != null) ? background.length == 1 ? (Double.isNaN(background[0]) ? "NaN"
+                                 : Double.valueOf(background[0]))
+                                 : XArray.toString(background, locale)
                                  : "No background used" }));
         }
         

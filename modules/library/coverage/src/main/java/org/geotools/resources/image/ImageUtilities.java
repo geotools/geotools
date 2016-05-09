@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -525,13 +525,13 @@ public final class ImageUtilities {
         if (n != 0) {
             // If layout is not set, OpImage uses the layout of the *first*
             // source image according OpImage constructor javadoc.
-            RenderedImage source = (RenderedImage) sources.get(0);
+            RenderedImage source = sources.get(0);
             int minXL = result.getMinX  (source);
             int minYL = result.getMinY  (source);
             int maxXL = result.getWidth (source) + minXL;
             int maxYL = result.getHeight(source) + minYL;
             for (int i=0; i<n; i++) {
-                source = (RenderedImage) sources.get(i);
+                source = sources.get(i);
                 final int minX = source.getMinX  ();
                 final int minY = source.getMinY  ();
                 final int maxX = source.getWidth () + minX;
@@ -553,7 +553,7 @@ public final class ImageUtilities {
             }
             // If the bounds changed, adjust the tile size.
             if (result != layout) {
-                source = (RenderedImage) sources.get(0);
+                source = sources.get(0);
                 if (result.isValid(ImageLayout.TILE_WIDTH_MASK)) {
                     final int oldSize = result.getTileWidth(source);
                     final int newSize = toTileSize(result.getWidth(source), oldSize);
@@ -917,18 +917,18 @@ public final class ImageUtilities {
             Rational scaleXRational = Rational.approximate(scaleX,RATIONAL_TOLERANCE);
             Rational scaleYRational = Rational.approximate(scaleY,RATIONAL_TOLERANCE);
     
-            long scaleXRationalNum = (long) scaleXRational.num;
-            long scaleXRationalDenom = (long) scaleXRational.denom;
-            long scaleYRationalNum = (long) scaleYRational.num;
-            long scaleYRationalDenom = (long) scaleYRational.denom;
+            long scaleXRationalNum = scaleXRational.num;
+            long scaleXRationalDenom = scaleXRational.denom;
+            long scaleYRationalNum = scaleYRational.num;
+            long scaleYRationalDenom = scaleYRational.denom;
     
             Rational transXRational = Rational.approximate(transX,RATIONAL_TOLERANCE);
             Rational transYRational = Rational.approximate(transY,RATIONAL_TOLERANCE);
     
-            long transXRationalNum = (long) transXRational.num;
-            long transXRationalDenom = (long) transXRational.denom;
-            long transYRationalNum = (long) transYRational.num;
-            long transYRationalDenom = (long) transYRational.denom;
+            long transXRationalNum = transXRational.num;
+            long transXRationalDenom = transXRational.denom;
+            long transYRationalNum = transYRational.num;
+            long transYRationalDenom = transYRational.denom;
     
             int x0 = source.getMinX();
             int y0 = source.getMinY();

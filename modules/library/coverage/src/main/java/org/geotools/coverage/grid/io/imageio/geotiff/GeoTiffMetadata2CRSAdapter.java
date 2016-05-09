@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -801,7 +801,7 @@ public final class GeoTiffMetadata2CRSAdapter {
     private void refineParameters(final GeographicCRS baseCRS, final ParameterValueGroup parameters)
             throws InvalidParameterValueException, ParameterNotFoundException {
             // set the remaining parameters.
-            final GeodeticDatum tempDatum = ((GeodeticDatum) baseCRS.getDatum());
+            final GeodeticDatum tempDatum = baseCRS.getDatum();
             final DefaultEllipsoid tempEll = (DefaultEllipsoid) tempDatum.getEllipsoid();
             double inverseFlattening = tempEll.getInverseFlattening();
             double semiMajorAxis = tempEll.getSemiMajorAxis();

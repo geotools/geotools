@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -75,7 +75,7 @@ public class IntersectUtils {
     private static boolean intersects(GeometryCollection gc, Geometry g) {
     	final int size=gc.getNumGeometries();
         for (int i = 0; i < size; i++) {
-            Geometry g1 = (Geometry)gc.getGeometryN(i);
+            Geometry g1 = gc.getGeometryN(i);
             if( g1.intersects(g) )
                 return true;
         }
@@ -88,7 +88,7 @@ public class IntersectUtils {
     private static boolean intersects(GeometryCollection gc1, GeometryCollection gc2) {
     	final int size=gc1.getNumGeometries();
         for (int i = 0; i < size; i++) {
-            Geometry g1 = (Geometry)gc1.getGeometryN(i);
+            Geometry g1 = gc1.getGeometryN(i);
             if( intersects(gc2, g1) )
                 return true;
         }
@@ -130,7 +130,7 @@ public class IntersectUtils {
         List<Geometry> ret = new ArrayList<Geometry>();
         final int size=gc.getNumGeometries();
         for (int i = 0; i < size; i++) {
-            Geometry g1 = (Geometry)gc.getGeometryN(i);
+            Geometry g1 = gc.getGeometryN(i);
             collect(g1.intersection(g), ret);
         }
         return ret;
@@ -143,7 +143,7 @@ public class IntersectUtils {
         List<Geometry> ret = new ArrayList<Geometry>();
         final int size=gc1.getNumGeometries();
         for (int i = 0; i < size; i++) {
-            Geometry g1 = (Geometry)gc1.getGeometryN(i);
+            Geometry g1 = gc1.getGeometryN(i);
             List<Geometry> partial = intersection(gc2, g1);
             ret.addAll(partial);
         }

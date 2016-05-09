@@ -445,7 +445,7 @@ public class Crop extends Operation2D {
 					cropRoi, 
 					roiTolerance,
 					forceMosaic,
-                    (hints instanceof Hints) ? (Hints) hints: new Hints(hints),
+                    (hints instanceof Hints) ? hints: new Hints(hints),
                     source,
                     sourceCornerGridToWorld);
 		} else {

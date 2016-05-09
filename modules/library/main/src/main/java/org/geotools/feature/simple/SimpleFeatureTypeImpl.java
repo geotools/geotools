@@ -76,10 +76,11 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements
         if (types == null) {
             synchronized (this) {
                 if (types == null) {
-                    types = new ArrayList<AttributeType>();
+                    ArrayList<AttributeType> temp = new ArrayList<AttributeType>();
                     for (AttributeDescriptor ad : getAttributeDescriptors()) {
-                        types.add(ad.getType());
+                        temp.add(ad.getType());
                     }
+                    types = temp;
                 }
             }
         }

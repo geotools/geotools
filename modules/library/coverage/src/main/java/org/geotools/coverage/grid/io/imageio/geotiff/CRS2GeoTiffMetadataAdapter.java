@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -795,7 +795,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 		parseDatum(datum, metadata);
 
 		// angular unit
-		final Unit<?> angularUnit = ((EllipsoidalCS) geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
+		final Unit<?> angularUnit = (geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
 		parseUnit(angularUnit, 0, metadata);
 
 		// prime meridian

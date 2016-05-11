@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -82,7 +82,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             ParameterBlock pb = op.getParameterBlock();
 
             // Retrieve the rendered source image and its ROI.
-            RenderedImage src = (RenderedImage) pb.getRenderedSource(0);
+            RenderedImage src = pb.getRenderedSource(0);
             Object property = src.getProperty("ROI");
             if (property == null || property.equals(java.awt.Image.UndefinedProperty)
                     || !(property instanceof ROI)) {

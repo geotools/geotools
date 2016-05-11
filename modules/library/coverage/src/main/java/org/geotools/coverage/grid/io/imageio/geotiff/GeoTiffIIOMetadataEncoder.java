@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -769,7 +769,7 @@ public class GeoTiffIIOMetadataEncoder {
 			Iterator<String> keys = tiffTagsMetadata.keySet().iterator();
 			while (keys.hasNext()){
 				String key = keys.next();
-				String setIdPair[] = key.split(":");
+				String[] setIdPair = key.split(":");
 				String set = TagSet.BASELINE.toString();
 				if (setIdPair.length > 1){
 					set = setIdPair[0].toUpperCase();

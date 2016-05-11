@@ -135,12 +135,12 @@ public final class ImageUtilities {
 	                mediaLib=AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
 	                     public Boolean run() {
 	                    	 try {
-	                    		//get the method
-	                    		final Class<?> params[] = {};
-								Method method= mImage.getDeclaredMethod("isAvailable", params);
+	                                //get the method
+	                                final Class<?>[] params = {};
+	                                Method method= mImage.getDeclaredMethod("isAvailable", params);
 
 								//invoke
-	                    		final Object paramsObj[] = {};
+	                                final Object[] paramsObj = {};
 
 	        		        	final Object o=mImage.newInstance();
 		                        return (Boolean) method.invoke(o, paramsObj);

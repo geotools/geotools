@@ -39,7 +39,7 @@ THE SOFTWARE.
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -330,12 +330,12 @@ public final class GeoTiffIIOMetadataDecoder {
         if (node == null) {
             return null;
         }
-        final double tiePoints[] = getTiffDoubles(node);
+        final double[] tiePoints = getTiffDoubles(node);
         if (tiePoints == null || tiePoints.length <= 0) {
             return null;
         }
         final int numTiePoints = tiePoints.length / 6;
-        final TiePoint retVal[] = new TiePoint[numTiePoints];
+        final TiePoint[] retVal = new TiePoint[numTiePoints];
         int initialIndex = 0;
         for (int i = 0; i < numTiePoints; i++) {
             initialIndex = i * 6;

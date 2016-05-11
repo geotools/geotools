@@ -619,7 +619,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected final void decimationOnReadingControl(String coverageName, Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
         {
             int w, h;
-            double selectedRes[] = new double[2];
+            double[] selectedRes = new double[2];
             final int choice = imageChoice.intValue();
             if (choice == 0) {
                 // highest resolution

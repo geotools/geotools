@@ -312,7 +312,7 @@ public final class FeatureUtilities {
 			MathTransform worldToGridTransform, List<Point2D> points)
 			throws TransformException {
 		final boolean isIdentity = worldToGridTransform.isIdentity();
-		final double coords[] = new double[2];
+		final double[] coords = new double[2];
 		final LineString exteriorRing = roiInput.getExteriorRing();
 		final CoordinateSequence exteriorRingCS = exteriorRing
 				.getCoordinateSequence();

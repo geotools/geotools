@@ -116,6 +116,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -2395,6 +2396,7 @@ public class DataUtilities {
             };
         } else {
             final PropertyName PROPERTY = sortBy.getPropertyName();
+            final SortOrder ORDER = sortBy.getSortOrder();
             return new Comparator<SimpleFeature>() {
                 @SuppressWarnings("unchecked")
                 public int compare(SimpleFeature f1, SimpleFeature f2) {
@@ -2404,7 +2406,11 @@ public class DataUtilities {
                         return 0; // cannot perform comparison
                     }
                     if (value1 instanceof Comparable && value1.getClass().isInstance(value2)) {
-                        return ((Comparable<Object>) value1).compareTo(value2);
+                        if(ORDER == SortOrder.ASCENDING) {
+                            return ((Comparable<Object>) value1).compareTo(value2);
+                        }else {
+                            return ((Comparable<Object>) value2).compareTo(value1);
+                        }
                     } else {
                         return 0; // cannot perform comparison
                     }

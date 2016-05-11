@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -116,6 +116,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -2388,17 +2389,22 @@ public class DataUtilities {
                 }
             };
         } else {
-            final PropertyName PROPERTY = sortBy.getPropertyName();
+            final PropertyName propertyName = sortBy.getPropertyName();
+            final SortOrder sortOrder = sortBy.getSortOrder();
             return new Comparator<SimpleFeature>() {
                 @SuppressWarnings("unchecked")
                 public int compare(SimpleFeature f1, SimpleFeature f2) {
-                    Object value1 = PROPERTY.evaluate(f1, Comparable.class);
-                    Object value2 = PROPERTY.evaluate(f2, Comparable.class);
+                    Object value1 = propertyName.evaluate(f1, Comparable.class);
+                    Object value2 = propertyName.evaluate(f2, Comparable.class);
                     if (value1 == null || value2 == null) {
                         return 0; // cannot perform comparison
                     }
                     if (value1 instanceof Comparable && value1.getClass().isInstance(value2)) {
-                        return ((Comparable<Object>) value1).compareTo(value2);
+                        if (sortOrder == SortOrder.ASCENDING) {
+                            return ((Comparable<Object>) value1).compareTo(value2);
+                        } else {
+                            return ((Comparable<Object>) value2).compareTo(value1);
+                        }
                     } else {
                         return 0; // cannot perform comparison
                     }

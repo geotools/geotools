@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,6 +46,13 @@ public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSup
 
     public void testSortAttribute() throws Exception {
         SortBy sort = ff.sort("someAtt", SortOrder.ASCENDING);
+        SortedSimpleFeatureCollection sorted = new SortedSimpleFeatureCollection(delegate,
+                new SortBy[] { sort });
+        checkSorted(sorted, DataUtilities.sortComparator(sort));
+    }
+    
+    public void testSortAttributeDescending() throws Exception {
+        SortBy sort = ff.sort("someAtt", SortOrder.DESCENDING);
         SortedSimpleFeatureCollection sorted = new SortedSimpleFeatureCollection(delegate,
                 new SortBy[] { sort });
         checkSorted(sorted, DataUtilities.sortComparator(sort));

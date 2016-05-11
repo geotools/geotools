@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1708,7 +1708,7 @@ public class ImageWorker {
 
             switch (datatype) {
             case DataBuffer.TYPE_BYTE: {
-                final byte data[][] = new byte[numDestinationBands][256];
+                final byte[][] data = new byte[numDestinationBands][256];
                 icm.getReds(data[0]);
                 if (numDestinationBands >= 2)
                     // remember to optimize for grayscale images
@@ -1755,7 +1755,7 @@ public class ImageWorker {
 
             case DataBuffer.TYPE_USHORT: {
                 final int mapSize = icm.getMapSize();
-                final short data[][] = new short[numDestinationBands][mapSize];
+                final short[][] data = new short[numDestinationBands][mapSize];
                 for (int i = 0; i < mapSize; i++) {
                     data[0][i] = (short) icm.getRed(i);
                     if (numDestinationBands >= 2)
@@ -2515,7 +2515,7 @@ public class ImageWorker {
 
         // Prepare the new ColorModel.
         // Get the old map and update it as needed.
-        final byte rgb[][] = new byte[4][mapSize];
+        final byte[][] rgb = new byte[4][mapSize];
         cm.getReds(rgb[0]);
         cm.getGreens(rgb[1]);
         cm.getBlues(rgb[2]);

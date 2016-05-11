@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -131,7 +131,7 @@ public final class InverseColorMapRasterOp implements RasterOp {
 		final int numBands = src.getSampleModel().getNumBands();
 		final boolean sourceHasAlpha = (numBands % 2 == 0);
 		final int alphaBand = sourceHasAlpha ? numBands - 1 : -1;
-		final int rgba[] = new int[numBands];
+		final int[] rgba = new int[numBands];
 		for (int y = srcMinY, y_ = dstMinY; y < srcMaxY; y++, y_++) {
 			for (int x = srcMinX, x_ = dstMinX; x < srcMaxX; x++, x_++) {
 				src.getPixel(x, y, rgba);

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -329,7 +329,7 @@ public abstract class BaseStatisticsOperationJAI extends
 			MathTransform worldToGridTransform) throws TransformException {
 		final boolean isIdentity = worldToGridTransform.isIdentity();
 		final java.awt.Polygon retValue = new java.awt.Polygon();
-		final double coords[] = new double[2];
+		final double[] coords = new double[2];
 		final LineString exteriorRing = roiInput.getExteriorRing();
 		final CoordinateSequence exteriorRingCS = exteriorRing
 				.getCoordinateSequence();

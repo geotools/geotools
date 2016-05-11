@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2016, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -323,7 +323,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             throw new IndexOutOfBoundsException("Bad src");// JaiI18N.getString("Generic1"));
         }
 
-        double coords[] = new double[] { srcPt.getX(), srcPt.getY() };
+        double[] coords = new double[] { srcPt.getX(), srcPt.getY() };
 
         try {
             mapSrcPoint(coords);
@@ -416,7 +416,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             throw new IndexOutOfBoundsException("Bad src");// JaiI18N.getString("Generic1"));
         }
 
-        double coords[] = new double[] { destPt.getX(), destPt.getY() };
+        double[] coords = new double[] { destPt.getX(), destPt.getY() };
 
         try {
             mapDestPoint(coords);
@@ -1355,7 +1355,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         height += y0;
         int index = 0; // destRect index
 
-        double xy[] = new double[2];
+        double[] xy = new double[2];
 
         for (int y = y0; y < height; y += periodY) {
             for (int x = x0; x < width; x += periodX) {

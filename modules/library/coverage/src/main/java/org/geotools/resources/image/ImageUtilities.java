@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -135,12 +135,12 @@ public final class ImageUtilities {
 	                mediaLib=AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
 	                     public Boolean run() {
 	                    	 try {
-	                    		//get the method
-	                    		final Class<?> params[] = {};
-								Method method= mImage.getDeclaredMethod("isAvailable", params);
+	                                //get the method
+	                                final Class<?>[] params = {};
+	                                Method method= mImage.getDeclaredMethod("isAvailable", params);
 
 								//invoke
-	                    		final Object paramsObj[] = {};
+	                                final Object[] paramsObj = {};
 
 	        		        	final Object o=mImage.newInstance();
 		                        return (Boolean) method.invoke(o, paramsObj);

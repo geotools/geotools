@@ -50,6 +50,7 @@ public class SortedFeatureCollectionTest extends FeatureCollectionWrapperTestSup
                 new SortBy[] { sort });
         checkSorted(sorted, DataUtilities.sortComparator(sort));
     }
+    
     public void testSortAttributeDescending() throws Exception {
         SortBy sort = ff.sort("someAtt", SortOrder.DESCENDING);
         SortedSimpleFeatureCollection sorted = new SortedSimpleFeatureCollection(delegate,

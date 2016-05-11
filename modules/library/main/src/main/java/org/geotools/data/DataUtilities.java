@@ -2395,20 +2395,20 @@ public class DataUtilities {
                 }
             };
         } else {
-            final PropertyName PROPERTY = sortBy.getPropertyName();
-            final SortOrder ORDER = sortBy.getSortOrder();
+            final PropertyName propertyName = sortBy.getPropertyName();
+            final SortOrder sortOrder = sortBy.getSortOrder();
             return new Comparator<SimpleFeature>() {
                 @SuppressWarnings("unchecked")
                 public int compare(SimpleFeature f1, SimpleFeature f2) {
-                    Object value1 = PROPERTY.evaluate(f1, Comparable.class);
-                    Object value2 = PROPERTY.evaluate(f2, Comparable.class);
+                    Object value1 = propertyName.evaluate(f1, Comparable.class);
+                    Object value2 = propertyName.evaluate(f2, Comparable.class);
                     if (value1 == null || value2 == null) {
                         return 0; // cannot perform comparison
                     }
                     if (value1 instanceof Comparable && value1.getClass().isInstance(value2)) {
-                        if(ORDER == SortOrder.ASCENDING) {
+                        if (sortOrder == SortOrder.ASCENDING) {
                             return ((Comparable<Object>) value1).compareTo(value2);
-                        }else {
+                        } else {
                             return ((Comparable<Object>) value2).compareTo(value1);
                         }
                     } else {

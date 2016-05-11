@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -83,7 +83,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     /**
      * Helpers methods for 2D CRS creation. Will be constructed only when first needed.
      */
-    private static ReferencingFactoryContainer FACTORIES;
+    private static ReferencingFactoryContainer factories;
 
     /**
      * The two-dimensional part of the coordinate reference system.
@@ -716,13 +716,13 @@ public class GridGeometry2D extends GeneralGridGeometry {
         if (crs == null || crs.getCoordinateSystem().getDimension() <= 2) {
             return crs;
         }
-        if (FACTORIES == null) {
-            FACTORIES = ReferencingFactoryContainer.instance(null);
+        if (factories == null) {
+            factories = ReferencingFactoryContainer.instance(null);
             // No need to synchronize: this is not a big deal if
             // two ReferencingFactoryContainer instances are created.
         }
         final CoordinateReferenceSystem reducedCRS;
-        reducedCRS = FACTORIES.separate(crs, new int[] {axisDimensionX, axisDimensionY});
+        reducedCRS = factories.separate(crs, new int[] {axisDimensionX, axisDimensionY});
         assert reducedCRS.getCoordinateSystem().getDimension() == 2 : reducedCRS;
         return reducedCRS;
     }

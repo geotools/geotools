@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -81,7 +81,7 @@ public final class Interpolator2D extends GridCoverage2D {
     /**
      * Default interpolations, in preference order. Will be constructed only when first needed.
      */
-    private static Interpolation[] DEFAULTS;
+    private static Interpolation[] defaults;
 
     /**
      * Transform from "real world" coordinates to grid coordinates.
@@ -159,7 +159,7 @@ public final class Interpolator2D extends GridCoverage2D {
 	/**
 	 * Default {@link BorderExtender} is {@link BorderExtenderCopy}.
 	 */
-	public static int DEFAULT_BORDER_EXTENDER_TYPE=BorderExtender.BORDER_COPY;
+	public static int defaultBorderExtenderType=BorderExtender.BORDER_COPY;
 
     /**
      * Constructs a new interpolator using default interpolations.
@@ -168,14 +168,14 @@ public final class Interpolator2D extends GridCoverage2D {
      */
     public static GridCoverage2D create(final GridCoverage2D coverage) {
         // No need to synchronize: not a big deal if two arrays are created.
-        if (DEFAULTS == null) {
-            DEFAULTS = new Interpolation[] {
+        if (defaults == null) {
+            defaults = new Interpolation[] {
                 Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
                 Interpolation.getInstance(Interpolation.INTERP_BILINEAR),
                 Interpolation.getInstance(Interpolation.INTERP_NEAREST)
             };
         }
-        return create(coverage, DEFAULTS);
+        return create(coverage, defaults);
     }
 
     /**
@@ -244,7 +244,7 @@ public final class Interpolator2D extends GridCoverage2D {
 	    this.interpolation = interpolations[index];
 	    //border extender
 	    if(be== null){
-	    	this.borderExtender= BorderExtender.createInstance(DEFAULT_BORDER_EXTENDER_TYPE);
+	    	this.borderExtender= BorderExtender.createInstance(defaultBorderExtenderType);
 	    }
 	    else
 	    	this.borderExtender=be;

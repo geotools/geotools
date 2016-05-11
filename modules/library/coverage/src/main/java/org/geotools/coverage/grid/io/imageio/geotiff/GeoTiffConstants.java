@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -147,7 +147,7 @@ public final class GeoTiffConstants {
 
 	public static final int UNDEFINED = 0;
 	
-	public static TIFFTag NODATA_TAG = new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, 
+	public static TIFFTag nodataTag = new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, 
                 TIFFTag.TIFF_ASCII);
 
 	

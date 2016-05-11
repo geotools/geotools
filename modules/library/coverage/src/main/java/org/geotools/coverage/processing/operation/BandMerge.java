@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -155,7 +155,7 @@ public class BandMerge extends OperationJAI {
 
     private static final Logger LOGGER = Logging.getLogger(BandMerge.class);
 
-    private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
+    private static final Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
     // Replace the old parameter descriptor group with a new one with the old parameters and the new
     // ones defined above.

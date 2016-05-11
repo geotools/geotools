@@ -118,7 +118,7 @@ public abstract class BaseStatisticsOperationJAI extends
 			null, // Unit of measure
 			true);
 
-	private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
+	private static final Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
 	static {
 		final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();

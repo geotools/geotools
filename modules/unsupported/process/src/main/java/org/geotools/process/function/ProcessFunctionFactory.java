@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
@@ -41,9 +42,6 @@ import org.opengis.filter.expression.Literal;
  * value can be seen as a filter function
  * 
  * @author Andrea Aime - GeoSolutions
- * 
- *
- *
  *
  * @source $URL$
  */
@@ -137,32 +135,39 @@ public class ProcessFunctionFactory implements FunctionFactory {
             processToFunction = new HashMap<Name,FunctionName>();
             functionNames = new ArrayList<FunctionName>();
             for (ProcessFactory factory : factories) {
+                if( !factory.isAvailable() ) continue;
+
                 for (Name processName : factory.getNames()) {
                     Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
                     
                     org.opengis.parameter.Parameter<?> result = getPrimary(resultInfo);
                     // check there is a single output
                     if (result != null) {
-                        Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
-                        List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
-                        List<org.opengis.parameter.Parameter<?>> args = new ArrayList<org.opengis.parameter.Parameter<?>>( argumentNames.size() );
-                        for(String argumentName : argumentNames ){
-                            args.add( parameterInfo.get(argumentName));
+                        try {
+                            Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
+                            List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
+                            List<org.opengis.parameter.Parameter<?>> args = new ArrayList<org.opengis.parameter.Parameter<?>>( argumentNames.size() );
+                            for(String argumentName : argumentNames ){
+                                args.add( parameterInfo.get(argumentName));
+                            }
+                            FunctionName functionName = new FunctionNameImpl(processName, result, args);
+                            functionNames.add(functionName);
+                            processToFunction.put(processName, functionName);
                         }
-
-                        FunctionName functionName = new FunctionNameImpl(processName, result, args);
-                        functionNames.add(functionName);
-                        processToFunction.put(processName, functionName);
+                        catch (Throwable unavailable){
+                            Logger log = Logger.getLogger(factory.getClass().getName());
+                            log.finer( "Process "+ processName + " unavailable:"+unavailable);
+                            continue;
+                        }
                     }
                 }
             }
-            
             // add the parameter function
             functionNames.add(ParameterFunction.NAME);
         }
     }
     
-    private Parameter getPrimary(Map<String, Parameter<?>> resultInfo) {
+    private Parameter<?> getPrimary(Map<String, Parameter<?>> resultInfo) {
         if(resultInfo == null ){
             return null;
         }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,18 +17,20 @@
 
 package org.geotools.feature.simple;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
+import com.vividsolutions.jts.geom.Point;
 import junit.framework.TestCase;
-
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Tests for {@link SimpleFeatureImpl}.
@@ -77,6 +79,50 @@ public class SimpleFeatureTypeImplTest extends TestCase {
     public void testCountLocationEquals() {
         assertEquals("Identical simple feature types must be equal", buildCountLocationType(),
                 buildCountLocationType());
+    }
+
+    /**
+     * Test that calls to getType(int) from multiple threads will not throw an IndexOutOfBoundsException
+     * due to poor synchronization
+     */
+    public void testGetTypeThreadSafety() {
+        SimpleFeatureTypeBuilder builder = buildPartialBuilder();
+        builder.add("location", Point.class, (CoordinateReferenceSystem) null);
+        // add attributes to increase the time spend adding types to the array,
+        // increasing the chance of a threading issue
+        for (int i = 0; i < 100; i++) {
+            builder.add("" + i, String.class);
+        }
+        SimpleFeatureType schema = builder.buildFeatureType();
+        assertNotNull(schema);
+        assertEquals(SimpleFeatureTypeImpl.class, schema.getClass());
+
+        final CountDownLatch latch = new CountDownLatch(8);
+        class Task implements Runnable {
+            @Override
+            public void run() {
+                // this should return, then count down the latch
+                // if there is an exception, the latch won't be triggered
+                schema.getType(99);
+                latch.countDown();
+            }
+        }
+
+        final ExecutorService exec = Executors.newFixedThreadPool(8);
+
+        for (int i = 0; i < 8; i++) {
+            final Task task = new Task();
+            exec.submit(task);
+        }
+        exec.shutdown();
+        try {
+            exec.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            fail("Interrupted");
+        }
+
+        // verify all threads ran successfully and triggered the latch
+        assertEquals(0, latch.getCount());
     }
 
     /**

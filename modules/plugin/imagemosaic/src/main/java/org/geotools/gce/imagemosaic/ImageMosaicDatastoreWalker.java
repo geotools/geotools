@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.gce.imagemosaic;
 
 import java.io.File;
@@ -57,8 +73,14 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
                     Prop.LOCATION_ATTRIBUTE);
             String requestedTypeName = configHandler.getRunConfiguration().getParameter(
                     Prop.TYPENAME);
+            String location = configHandler.getRunConfiguration().getParameter(Prop.LOCATION_ATTRIBUTE);
             for (String typeName : catalog.getTypeNames()) {
                 if (requestedTypeName != null && !requestedTypeName.equals(typeName)) {
+                    continue;
+                }
+                
+                if(!Utils.isValidMosaicSchema(catalog.getType(typeName), location)) {
+                    LOGGER.log(Level.FINE, "Skipping invalid mosaic index table " + typeName);
                     continue;
                 }
 

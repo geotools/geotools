@@ -103,6 +103,8 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 
@@ -2006,5 +2008,20 @@ public class Utils {
             indexColorModel.getAlphas(palette[0]);
         }
         return palette;
+    }
+    
+    /**
+     * Returns true if the type is usable as a mosaic index
+     */
+    public static boolean isValidMosaicSchema(SimpleFeatureType schema, String locationAttributeName) {
+        // does it have a geometry?
+        if (schema.getGeometryDescriptor() == null) {
+            return false;
+        }
+
+        // does it have the location property?
+        AttributeDescriptor location = schema.getDescriptor(locationAttributeName);
+        return location != null
+                && CharSequence.class.isAssignableFrom(location.getType().getBinding());
     }
 }

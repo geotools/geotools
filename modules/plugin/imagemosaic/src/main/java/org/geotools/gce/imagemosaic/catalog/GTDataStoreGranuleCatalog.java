@@ -180,9 +180,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 String[] typeNames = tileIndexStore.getTypeNames();
                 if (typeNames != null) {
                     for (String tn : typeNames) {
-                        if (isValidMosaicSchema(tn)) {
-                            this.typeNames.add(tn);
-                        }
+                        this.typeNames.add(tn);
                     }
                 }
             } else if (typeName != null) {
@@ -244,24 +242,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     private boolean isValidMosaicSchema(String typeName) throws IOException {
         SimpleFeatureType schema = tileIndexStore.getSchema(typeName);
 
-        return isValidMosaicSchema(schema);
-    }
-
-    /**
-     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the
-     * expected location property
-     */
-    private boolean isValidMosaicSchema(SimpleFeatureType schema) {
-        // does it have a geometry?
-        if (schema.getGeometryDescriptor() == null) {
-            return false;
-        }
-
-        // does it have the location property
-        String locationName = getLocationAttributeName();
-        AttributeDescriptor location = schema.getDescriptor(locationName);
-        return location != null
-                && CharSequence.class.isAssignableFrom(location.getType().getBinding());
+        return Utils.isValidMosaicSchema(schema, getLocationAttributeName());
     }
 
     private String getLocationAttributeName() {
@@ -293,7 +274,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
      * @param schema
      */
     private void checkMosaicSchema(SimpleFeatureType schema) {
-        if(!isValidMosaicSchema(schema)) {
+        if(!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
             throw new IllegalArgumentException("Invalid mosaic schema " + schema + ", "
                     + "it should have a geometry and a location property of name " + locationAttribute);
         }

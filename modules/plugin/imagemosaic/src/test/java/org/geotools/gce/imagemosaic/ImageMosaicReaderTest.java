@@ -3819,6 +3819,9 @@ public class ImageMosaicReaderTest extends Assert{
         JDBCDataStore store = (JDBCDataStore) DataStoreFinder.getDataStore(h2Connection);
         try (Connection c = store.getConnection(Transaction.AUTO_COMMIT);
                 Statement st = c.createStatement()) {
+            st.execute("CREATE TABLE GEOMETRYLESS(id serial, location varchar)");
+            st.execute("CREATE TABLE INVALID1(id serial, geometry POLYGON, location int)");
+            st.execute("CREATE TABLE INVALID2(id serial, geometry POLYGON, nolocation varchar)");
             st.execute("ALTER TABLE \"existingStore\" RENAME TO \"testMosaic\"");
             st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'testMosaic'");
         }

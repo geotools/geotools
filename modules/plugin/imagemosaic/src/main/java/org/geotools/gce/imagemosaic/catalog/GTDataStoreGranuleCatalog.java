@@ -176,18 +176,22 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             // if this is not a new store let's extract basic properties from it
-            if (scanForTypeNames) {
+            if (typeName != null) {
+                checkMosaicSchema(typeName);
+                addTypeName(typeName, false);
+            } else if (scanForTypeNames) {
                 String[] typeNames = tileIndexStore.getTypeNames();
                 if (typeNames != null) {
                     for (String tn : typeNames) {
                         if (isValidMosaicSchema(tn)) {
-                            this.typeNames.add(tn);
+                            // stop on the first one valid, the code uses only this one regardless
+                            // and we have had complaints about this taking too much time to execute
+                            // on large databases (mimicks what the path for tileIndexStore does btw)
+                            addTypeName(tn, false);
+                            break;
                         }
                     }
                 }
-            } else if (typeName != null) {
-                checkMosaicSchema(typeName);
-                addTypeName(typeName, false);
             } else {
                 // pick the first suitable type name
                 String[] typeNames = tileIndexStore.getTypeNames();

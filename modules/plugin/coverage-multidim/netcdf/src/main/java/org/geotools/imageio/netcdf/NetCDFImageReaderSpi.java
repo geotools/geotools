@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -251,11 +252,15 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         return canDecode;
     }
 
-    private boolean isNcML(File input) throws IOException {
-        final StreamSource streamSource = new StreamSource(input);
+    private boolean isNcML(File file) throws IOException {
+        FileInputStream input = null;
+        StreamSource streamSource = null;
         XMLStreamReader reader = null;
         try {
-            reader = XMLInputFactory.newInstance().createXMLStreamReader(streamSource);
+            input  = new FileInputStream(file);
+            streamSource = new StreamSource(input);
+            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            reader = inputFactory.createXMLStreamReader(streamSource);
             reader.nextTag();
             if ("netcdf".equals(reader.getName().getLocalPart())) {
                 return true;
@@ -265,6 +270,9 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         } catch (FactoryConfigurationError e) {
 
         } finally {
+            if (input != null) {
+                input.close();
+            }
             if (reader != null) {
                 if (streamSource.getInputStream() != null) {
                     streamSource.getInputStream().close();

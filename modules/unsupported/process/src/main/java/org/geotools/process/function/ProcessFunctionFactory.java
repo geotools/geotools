@@ -136,14 +136,12 @@ public class ProcessFunctionFactory implements FunctionFactory {
             functionNames = new ArrayList<FunctionName>();
             for (ProcessFactory factory : factories) {
                 if( !factory.isAvailable() ) continue;
-
                 for (Name processName : factory.getNames()) {
-                    Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
-                    
-                    org.opengis.parameter.Parameter<?> result = getPrimary(resultInfo);
-                    // check there is a single output
-                    if (result != null) {
-                        try {
+                    try {
+                        Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
+                        Parameter<?> result = getPrimary(resultInfo);
+                        // check there is a single output
+                        if (result != null) {
                             Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
                             List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
                             List<org.opengis.parameter.Parameter<?>> args = new ArrayList<org.opengis.parameter.Parameter<?>>( argumentNames.size() );
@@ -154,11 +152,11 @@ public class ProcessFunctionFactory implements FunctionFactory {
                             functionNames.add(functionName);
                             processToFunction.put(processName, functionName);
                         }
-                        catch (Throwable unavailable){
-                            Logger log = Logger.getLogger(factory.getClass().getName());
-                            log.finer( "Process "+ processName + " unavailable:"+unavailable);
-                            continue;
-                        }
+                    }
+                    catch (Throwable unavailable){
+                        Logger log = Logger.getLogger(factory.getClass().getName());
+                        log.finer( "Process "+ processName + " unavailable:"+unavailable);
+                        continue;
                     }
                 }
             }

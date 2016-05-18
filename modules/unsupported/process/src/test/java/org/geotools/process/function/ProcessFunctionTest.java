@@ -16,34 +16,24 @@
  */
 package org.geotools.process.function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import java.awt.RenderingHints.Key;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.geotools.TestData;
-import org.geotools.data.Parameter;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.process.Process;
-import org.geotools.process.ProcessFactory;
-import org.geotools.process.Processors;
 import org.geotools.process.feature.BufferFeatureCollectionFactory;
-import org.geotools.text.Text;
 import org.junit.Test;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
-import org.opengis.util.InternationalString;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
 

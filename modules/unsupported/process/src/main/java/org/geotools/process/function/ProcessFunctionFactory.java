@@ -135,7 +135,9 @@ public class ProcessFunctionFactory implements FunctionFactory {
             processToFunction = new HashMap<Name,FunctionName>();
             functionNames = new ArrayList<FunctionName>();
             for (ProcessFactory factory : factories) {
-                if( !factory.isAvailable() ) continue;
+                if (!factory.isAvailable()) {
+                    continue;
+                }
                 for (Name processName : factory.getNames()) {
                     try {
                         Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
@@ -152,10 +154,9 @@ public class ProcessFunctionFactory implements FunctionFactory {
                             functionNames.add(functionName);
                             processToFunction.put(processName, functionName);
                         }
-                    }
-                    catch (Throwable unavailable){
+                    } catch (Throwable unavailable) {
                         Logger log = Logger.getLogger(factory.getClass().getName());
-                        log.finer( "Process "+ processName + " unavailable:"+unavailable);
+                        log.finer("Process " + processName + " unavailable:" + unavailable);
                         continue;
                     }
                 }

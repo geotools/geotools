@@ -206,7 +206,13 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             if (this.typeNames.size() > 0) {
-                extractBasicProperties(typeNames.iterator().next());
+                // pick the first valid schema found
+                for (String tn : typeNames) {
+                    if(isValidMosaicSchema(tn)) {
+                        extractBasicProperties(tn);
+                        break;
+                    }
+                }
             } else if (typeName != null && typeName.contains(",")) {
                 String[] typeNames = typeName.split(",");
                 for (String tn : typeNames) {

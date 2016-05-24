@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,8 @@
  *
  */
 package org.geotools.coverageio.gdal.ecw;
+
+import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -35,14 +37,17 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -197,4 +202,51 @@ public final class ECWTest extends GDALTestCase {
         Assert.assertTrue("ECWFormatFactory not available", fac.isAvailable());
         Assert.assertNotNull(new ECWFormatFactory().createFormat());
     }	
+
+    @Test
+    public void testAfricaMask() throws Exception {
+        if (!testingEnabled()) {
+            return;
+        }
+
+        // get a reader
+        File file = null;
+        try {
+            file = TestData.file(this, fileName);
+        } catch (FileNotFoundException fnfe) {
+            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
+            return;
+        } catch (IOException ioe) {
+            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
+            return;
+        }
+        final URL url = file.toURI().toURL();
+        final BaseGDALGridCoverage2DReader reader = new ECWReader(url, null);
+
+        final ParameterValue<Boolean> jai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        jai.setValue(true);
+
+        // Setting the footprint behavior
+        ParameterValue<String> footprint = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        footprint.setValue(FootprintBehavior.Transparent.toString());
+
+        GridCoverage2D gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { jai,
+                footprint });
+        LOGGER.info(gc.toString());
+        forceDataLoading(gc);
+
+        DirectPosition pointInGreenland = new DirectPosition2D(-43.3, 75.9);
+        DirectPosition pointInAfrica = new DirectPosition2D(20, 0);
+        byte[] pixel = new byte[4];
+
+        // Assert point in Greenland is masked out
+        gc.evaluate(pointInGreenland, pixel);
+        assertTrue((pixel[3] & 0xFF) == 0);
+
+        // Assert point in Africa is present
+        gc.evaluate(pointInAfrica, pixel);
+        assertTrue((pixel[3] & 0xFF) == 255);
+
+    }
+
 }

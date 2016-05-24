@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,8 @@
 package org.geotools.coverageio.gdal;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +51,16 @@ import org.opengis.parameter.GeneralParameterValue;
  */
 public abstract class BaseGDALGridFormat extends AbstractGridFormat implements
         Format {
+
+    protected static class InfoWrapper {
+        public InfoWrapper(String description, String name) {
+            this.description = description;
+            this.name = name;
+        }
+        String description;
+        String name;
+    }
+
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.coverageio.gdal");
 
@@ -83,6 +95,10 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements
      */
     public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
             USE_MT, Boolean.class, new Boolean[] { Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
+
+    /** Base Parameter Descriptor */
+    protected static final GeneralParameterDescriptor[] PARAM_DESCRIPTOR = new GeneralParameterDescriptor[] {
+            READ_GRIDGEOMETRY2D, USE_JAI_IMAGEREAD, USE_MULTITHREADING, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR };
 
     /**
      * Each plugin needs to implement this method defining format specific
@@ -146,15 +162,9 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements
      * @return a {@link ParameterGroup} with Default {@link GeneralParameterDescriptors}.
      */
     protected static ParameterGroup getDefaultParameterGroup(Map<String,String> mInfo){
-        return new ParameterGroup(
-                new DefaultParameterDescriptorGroup(mInfo,
-                        new GeneralParameterDescriptor[] { 
-                                READ_GRIDGEOMETRY2D,
-                                USE_JAI_IMAGEREAD, 
-                                USE_MULTITHREADING, 
-                                SUGGESTED_TILE_SIZE }));
+        return new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, PARAM_DESCRIPTOR));
     }
-    
+
     /**
      * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object
      *      source)
@@ -162,6 +172,22 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements
     @Override
     public AbstractGridCoverage2DReader getReader(Object source) {
         return getReader(source, null);
+    }
+
+    protected void setInfo(InfoWrapper infoWrapper) {
+        final HashMap<String, String> info = new HashMap<String, String>();
+        info.put("name", infoWrapper.name);
+        info.put("description", infoWrapper.description);
+        info.put("vendor", "Geotools");
+        info.put("docURL", ""); 
+        info.put("version", "1.0");
+        mInfo = Collections.unmodifiableMap(info);
+
+        // writing parameters
+        writeParameters = null;
+
+        // reading parameters
+        readParameters = getDefaultParameterGroup(info);
     }
 
 }

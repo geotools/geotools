@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,10 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.imagemosaic.catalog;
+package org.geotools.coverage.grid.io.footprint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import org.geotools.util.Converters;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
@@ -31,8 +34,8 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-enum FootprintInsetPolicy {
-
+public enum FootprintInsetPolicy {
+    
     /**
      * Full inset from all direction. Works best with fully overlapping granules
      */
@@ -156,6 +159,10 @@ enum FootprintInsetPolicy {
         }
     };
 
+    public static final String INSET_PROPERTY = "footprint_inset";
+
+    public static final String INSET_TYPE_PROPERTY = "footprint_inset_type";
+
     public abstract Geometry applyInset(Geometry footprint, Geometry granuleBounds, double inset);
     
     /**
@@ -171,5 +178,32 @@ enum FootprintInsetPolicy {
         }
 
         return names;
+    }
+
+    public static FootprintInsetPolicy getInsetPolicy(Properties properties) {
+        String insetTypeValue = (String) properties.get(INSET_TYPE_PROPERTY);
+        if (insetTypeValue == null || insetTypeValue.trim().isEmpty()) {
+            return FootprintInsetPolicy.border;
+        } else {
+            try {
+                return FootprintInsetPolicy.valueOf(insetTypeValue.trim());
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid inset type '" + insetTypeValue
+                        + "', valid values are: " + FootprintInsetPolicy.names());
+            }
+        }
+    }
+
+    public static double getInset(Properties properties) {
+        String inset = (String) properties.get(INSET_PROPERTY);
+        if (inset == null) {
+            return 0;
+        }
+        Double converted = Converters.convert(inset, Double.class);
+        if (converted == null) {
+            throw new IllegalArgumentException("Invalid inset value, should be a "
+                    + "floating point number, but instead it is: '" + inset + "'");
+        }
+        return converted;
     }
 }

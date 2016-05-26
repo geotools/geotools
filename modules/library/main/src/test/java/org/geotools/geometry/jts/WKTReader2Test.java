@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -85,7 +85,7 @@ public class WKTReader2Test {
         assertNotNull("parsed circularstring", geometry);
         assertTrue(geometry instanceof CircularString);
         CircularString cs1 = (CircularString) geometry;
-        System.out.println(cs1.toText());
+        // System.out.println(cs1.toText());
         assertEquals("segmentized as expected", 86, cs1.getNumPoints());
         
         WKT = "CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 145.96132309891922 -34.985671061528784, 149.57565307617188 -33.41153335571289, 149.41972407584802 -29.824672680573517, 146.1209416055467 -30.19711586270431, 143.62025166838282 -30.037497356076827)";
@@ -196,5 +196,39 @@ public class WKTReader2Test {
 
         assertNotNull( reader.read("LINESTRING(0 2, 2 0, 8 6)") );
         assertNotNull( reader.read("LineString(0 2, 2 0, 8 6)") );
+    }
+    
+    @Test
+    public void testMultiSurfaceStraightPolygon() throws Exception {
+        String wkt = "MULTISURFACE (((0 0, 1 0, 1 4, 0 0)), CURVEPOLYGON (COMPOUNDCURVE (CIRCULARSTRING (0 2, 7 5, 2 10), (2 10, 0 2)), COMPOUNDCURVE (CIRCULARSTRING (3 9, 6 5, 3 2), (3 2, 3 9))))";
+        Geometry geometry = new WKTReader2().read(wkt);
+        // System.out.println(geometry);
+        MultiSurface ms = (MultiSurface) geometry;
+        assertEquals(2, ms.getNumGeometries());
+        assertFalse(ms.getGeometryN(0) instanceof CurvePolygon);
+        assertTrue(ms.getGeometryN(1) instanceof CurvePolygon);
+    }
+    
+    @Test
+    public void testMultiSurfaceStraightPolygon2() throws Exception {
+        String wkt = "MULTISURFACE (CURVEPOLYGON (COMPOUNDCURVE (CIRCULARSTRING (0 2, 7 5, 2 10), (2 10, 0 2)), COMPOUNDCURVE (CIRCULARSTRING (3 9, 6 5, 3 2), (3 2, 3 9))), ((0 0, 1 0, 1 4, 0 0)))";
+        Geometry geometry = new WKTReader2().read(wkt);
+        // System.out.println(geometry);
+        MultiSurface ms = (MultiSurface) geometry;
+        assertEquals(2, ms.getNumGeometries());
+        assertTrue(ms.getGeometryN(0) instanceof CurvePolygon);
+        assertFalse(ms.getGeometryN(1) instanceof CurvePolygon);
+    }
+    
+    @Test
+    public void testMultiSurfaceEmpty() throws Exception {
+        String wkt = "MULTISURFACE (EMPTY, CURVEPOLYGON (COMPOUNDCURVE (CIRCULARSTRING (0 2, 7 5, 2 10), (2 10, 0 2)), COMPOUNDCURVE (CIRCULARSTRING (3 9, 6 5, 3 2), (3 2, 3 9))), ((0 0, 1 0, 1 4, 0 0)))";
+        Geometry geometry = new WKTReader2().read(wkt);
+        // System.out.println(geometry);
+        MultiSurface ms = (MultiSurface) geometry;
+        assertEquals(3, ms.getNumGeometries());
+        assertFalse(ms.getGeometryN(0) instanceof CurvePolygon);
+        assertTrue(ms.getGeometryN(1) instanceof CurvePolygon);
+        assertFalse(ms.getGeometryN(2) instanceof CurvePolygon);
     }
 }

@@ -116,7 +116,7 @@ Time to create a new project making use of this library:
       :start-after: </dependencies>
       :end-before: <build>
 
-#. Finally we get to switch to Java 7:
+#. Finally we get to switch to Java 8:
 
    .. literalinclude:: artifacts/pom.xml
       :language: xml

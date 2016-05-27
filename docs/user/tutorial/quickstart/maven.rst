@@ -112,7 +112,7 @@ Installing Maven
       Apache Maven 3.2.3 (33f8c3e1027c3ddde99d3cdebad2656a31e8fdf4; 2014-08-11T13:58:10-07:00)
       Maven home: C:\java\apache-maven-3.2.3
       Java version: 1.8.0_66, vendor: Oracle Corporation
-      Java home: C:\Program Files (x86)\Java\jdk1.7.0_67\jre
+      Java home: C:\Program Files (x86)\Java\jdk1.8.0_66\jre
       Default locale: en_US, platform encoding: Cp1252
       OS name: "windows 7", version: "6.1", arch: "x86", family: "windows"
 
@@ -188,19 +188,26 @@ Creating a new project
         :start-after: </properties>
         :end-before: <repositories>
 
-#. Finally, we tell maven which repositories to download jars from:
+#. We tell maven which repositories to download jars from:
    
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </project>
+        :end-before: <build>
 
    If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
    
    .. literalinclude:: artifacts/pom2.xml
      :language: xml
      :start-after: </dependencies>
-     :end-before: </project>
+     :end-before: <build>
+
+#. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
+
+   .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: </repositories>
+        :end-before: <project>
      
 #. Return to the command line and get maven to download the required jars for your project with this
    command::

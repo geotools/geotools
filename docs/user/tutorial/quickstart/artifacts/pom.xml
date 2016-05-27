@@ -11,7 +11,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>13.2</geotools.version>
+        <geotools.version>14.3</geotools.version>
     </properties>
     <dependencies>
         <dependency>
@@ -43,4 +43,18 @@
           <url>http://download.osgeo.org/webdav/geotools/</url>
       </repository>
     </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

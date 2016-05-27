@@ -245,7 +245,7 @@ such as GeoTools publish their work.
 5. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note we
    are making use of the geotools.version defined above.
    
-.. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: <repositories>
@@ -256,16 +256,24 @@ such as GeoTools publish their work.
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </project>
+        :end-before: </build>
 
    If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
    
    .. literalinclude:: artifacts/pom2.xml
      :language: xml
      :start-after: </dependencies>
-     :end-before: </project>
+     :end-before: <build>
 
-7. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
+7. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
+
+
+   .. literalinclude:: artifacts/pom2.xml
+      :language: xml
+      :start-after: </repositories>
+      :end-before: </project>
+
+8. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
 
    You may find cutting and pasting to be easier than typing, you can choose Source --> Format to
    fix indentation

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,11 +25,13 @@ import java.util.Set;
 
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IdBuilder;
+import org.geotools.filter.expression.ExpressionBuilder;
 import org.geotools.styling.Description;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.SemanticType;
 
 /**
@@ -52,6 +54,8 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     private Set<SemanticType> types = new LinkedHashSet<SemanticType>();
     
     Map<String, String> options = new HashMap<>();
+    
+    Expression transformation = null;
 
     // TODO : add semantic type identifier, provided it makes any sense to have it
 
@@ -143,6 +147,12 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         options.put(name, value);
         return this;
     }
+    
+    public FeatureTypeStyleBuilder transformation(Expression transformation) {
+        this.unset = false;
+        this.transformation = transformation;
+        return this;
+    }
 
     /**
      * Accumulates another feature type name in the list of the feature type names for this
@@ -170,6 +180,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         if(!options.isEmpty()) {
             fts.getOptions().putAll(options);
         }
+        fts.setTransformation(transformation);
         if (parent == null) {
             reset();
         }
@@ -184,6 +195,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         this.featureTypeNames.clear();
         this.rules.clear();
         this.options.clear();
+        this.transformation = null;
 
         this.unset = false;
         return this;
@@ -208,6 +220,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         }
         this.options.clear();
         this.options.putAll(fts.getOptions());
+        this.transformation = fts.getTransformation();
         this.unset = false;
         return this;
     }
@@ -231,6 +244,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         this.types = other.types;
         this.options = other.options;
         this.unset = other.unset;
+        this.transformation = other.transformation;
     }
 
 }

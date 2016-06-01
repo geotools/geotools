@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2013-2016, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
@@ -13,6 +29,9 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ColorMapEntryImpl;
 import org.geotools.styling.ColorMapImpl;
+import org.geotools.util.ColorConverterFactory;
+import org.geotools.util.Converter;
+import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory;
@@ -35,12 +54,16 @@ public class GradientColorMapGenerator {
 
     public static final String RGB_INLINEVALUE_MARKER = "rgb(";
     
+    public static final String RGBA_INLINEVALUE_MARKER = "rgba(";
+    
     public static final String HEX_INLINEVALUE_MARKER = "#";
 
     private LinearGradientEntry[] entries;
 
     private static SoftValueHashMap<String, GradientColorMapGenerator> cache = new SoftValueHashMap<String, GradientColorMapGenerator>();
-
+    
+    private static final  Converter COLOR_CONVERTER = new ColorConverterFactory().createConverter(Color.class, String.class, null);
+    
     private GradientColorMapGenerator(LinearGradientEntry[] entries) {
         this.entries = entries;
     }
@@ -137,8 +160,11 @@ public class GradientColorMapGenerator {
          */
         private static String toHexColor(final Color color) {
             Utilities.ensureNonNull("color", color);
-            String hexColour = Integer.toHexString(color.getRGB() & 0xffffff);
-            return "#" + hexColour;
+            try {
+                return COLOR_CONVERTER.convert(color, String.class);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -176,7 +202,7 @@ public class GradientColorMapGenerator {
      */
     public static GradientColorMapGenerator getColorMapGenerator(String colorValues) throws IOException, ParserConfigurationException {
         Utilities.ensureNonNull("colorValues", colorValues);
-        if (colorValues.startsWith(RGB_INLINEVALUE_MARKER) || colorValues.startsWith(HEX_INLINEVALUE_MARKER)) {
+        if (colorValues.startsWith(RGB_INLINEVALUE_MARKER) || colorValues.startsWith(RGBA_INLINEVALUE_MARKER) || colorValues.startsWith(HEX_INLINEVALUE_MARKER)) {
             String rampType = "ramp";
             if (colorValues.contains(":")) {
                 final int rampTypeIndex = colorValues.indexOf(":");
@@ -188,7 +214,9 @@ public class GradientColorMapGenerator {
             LinearGradientEntry[] entries = new LinearGradientEntry[numEntries];
             final double step = 1d / (numEntries-1);
             for (int i=0; i<numEntries; i++) {
-                entries[i] = new LinearGradientEntry(step*i, createColor(colors[i]), 1);
+                final Color color = createColor(colors[i]);
+                final float opacity = getOpacity(colors[i]);
+                entries[i] = new LinearGradientEntry(step*i, color, opacity);
             }
             GradientColorMapGenerator generator = new GradientColorMapGenerator(entries);
             return generator;
@@ -240,21 +268,35 @@ public class GradientColorMapGenerator {
     }
 
     /** 
-     * Create a {@link Color} from a color String which may be an SVG color: rgb(R0,G0,B0) or hex color: #RRGGBB
+     * Create a {@link Color} from a color String which may be an SVG color: rgb(R0,G0,B0), rgba(R0,G0,B0,Alpha) or hex color: #RRGGBB
      * @param the String color representation
      * @return the {@link Color} instance related to that string definition
      */
     private static Color createColor(String color) {
         Utilities.ensureNonNull("color", color);
-        if (color.contains("rgb")) {
+        if (color.startsWith(RGB_INLINEVALUE_MARKER)) {
             String colorString  = color.substring(4, color.length()-1);
-            String rgbs[] = colorString.split(",");
-            return new Color(Integer.parseInt(rgbs[0]), Integer.parseInt(rgbs[1]), Integer.parseInt(rgbs[2]));
+            String rgb[] = colorString.split("\\s*,\\s*");
+            return new Color(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
+        } else if (color.startsWith(RGBA_INLINEVALUE_MARKER)) {
+            String colorString  = color.substring(5, color.length()-1);
+            String rgba[] = colorString.split("\\s*,\\s*");
+            return new Color(Integer.parseInt(rgba[0]), Integer.parseInt(rgba[1]), Integer.parseInt(rgba[2]));
         } else if (color.startsWith("#") && color.length() == 7) {
             // Try to parse it as an HEX code
             return hex2Rgb(color);
         }
         throw new UnsupportedOperationException("Support for the following color ins't currently supported: " + color);
+    }
+    
+    private static float getOpacity(String color) {
+        if (color.startsWith(RGBA_INLINEVALUE_MARKER)) {
+            String colorString  = color.substring(5, color.length()-1);
+            String rgba[] = colorString.split("\\s*,\\s*");
+            return Float.parseFloat(rgba[3]);
+        } else {
+            return 1f;
+        }
     }
 
     /**

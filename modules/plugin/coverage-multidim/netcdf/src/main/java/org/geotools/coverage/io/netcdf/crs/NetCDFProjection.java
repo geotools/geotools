@@ -42,6 +42,7 @@ import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.CF;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.unidata.geoloc.LatLonPointImpl;
 
 /** 
  * Class used to properly setup NetCDF CF Projection parameters. 
@@ -111,6 +112,29 @@ public class NetCDFProjection {
     public String getOGCName() {
         return ogcName;
     }
+
+    /**
+     * Subclasses override this if they wish to adjust OGC parameters after they are read from NetCDF. This is the inverse of
+     * {@link #getNetcdfParameters(ParameterValueGroup)}.
+     * 
+     * @param netcdfParameters parameter values read from NetCDF
+     * @return parameter values used for OGC projection
+     */
+    public ParameterValueGroup getOgcParameters(ParameterValueGroup netcdfParameters) {
+        return netcdfParameters;
+    }
+
+    /**
+     * Subclasses override this if they wish to adjust OGC parameters before they are written to NetCDF. This is the inverse of
+     * {@link #getOgcParameters(ParameterValueGroup)}.
+     * 
+     * @param ogcParameters parameter values used for OGC projection
+     * @return parameter values written to NetCDF
+     */
+    public ParameterValueGroup getNetcdfParameters(ParameterValueGroup ogcParameters) {
+        return ogcParameters;
+    }
+
     /**
      * Currently supported NetCDF projections. Check the CF Document
      * 
@@ -127,6 +151,7 @@ public class NetCDFProjection {
     public final static NetCDFProjection STEREOGRAPHIC;
     public final static NetCDFProjection LAMBERT_CONFORMAL_CONIC_1SP;
     public final static NetCDFProjection LAMBERT_CONFORMAL_CONIC_2SP;
+    public final static NetCDFProjection ROTATED_POLE;
 
     /** The map of currently supported NetCDF CF Grid mappings */
     private final static Map<String, NetCDFProjection> supportedProjections = new HashMap<String, NetCDFProjection>();
@@ -232,6 +257,59 @@ public class NetCDFProjection {
         mercator_2sp_mapping.put(NetCDFUtilities.STANDARD_PARALLEL_1, CF.STANDARD_PARALLEL);
         MERCATOR_2SP = new NetCDFProjection(CF.MERCATOR, CF.MERCATOR + "_2SP", mercator_2sp_mapping);
 
+        // Setting up Rotated Pole
+        Map<String, String> rotated_pole_mapping = new HashMap<String, String>();
+        rotated_pole_mapping.put(NetCDFUtilities.CENTRAL_MERIDIAN, CF.GRID_NORTH_POLE_LONGITUDE);
+        rotated_pole_mapping.put(NetCDFUtilities.LATITUDE_OF_ORIGIN, CF.GRID_NORTH_POLE_LATITUDE);
+        ROTATED_POLE = new NetCDFProjection(CF.ROTATED_LATITUDE_LONGITUDE, "Rotated_Pole",
+                rotated_pole_mapping) {
+
+            /*
+             * Convert north_pole_longitude and north_pole_latitude to central_meridian and latitude_of_origin.
+             */
+            @Override
+            public ParameterValueGroup getOgcParameters(ParameterValueGroup netcdfParameters) {
+                double lonNorthPole = (Double) netcdfParameters
+                        .parameter(NetCDFUtilities.CENTRAL_MERIDIAN).getValue();
+                double latNorthPole = (Double) netcdfParameters
+                        .parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).getValue();
+                // Rotated pole is ambiguous so we assume an origin in the northern hemisphere
+                if (latNorthPole >= 90 || latNorthPole <= 0) {
+                    throw new RuntimeException("Unexpected north pole latitude: " + latNorthPole);
+                }
+                double lonOrigin = LatLonPointImpl.lonNormal(lonNorthPole + 180);
+                double latOrigin = 90 - latNorthPole;
+                ParameterValueGroup ogcParameters = netcdfParameters.clone();
+                ogcParameters.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).setValue(lonOrigin);
+                ogcParameters.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).setValue(latOrigin);
+                return ogcParameters;
+            }
+
+            /*
+             * Convert central_meridian and latitude_of_origin to north_pole_longitude and north_pole_latitude.
+             */
+            @Override
+            public ParameterValueGroup getNetcdfParameters(ParameterValueGroup ogcParameters) {
+                double lonOrigin = (Double) ogcParameters
+                        .parameter(NetCDFUtilities.CENTRAL_MERIDIAN).getValue();
+                double latOrigin = (Double) ogcParameters
+                        .parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).getValue();
+                // Rotated pole is ambiguous so we assumed above an origin in the
+                // northern hemisphere and do not expect anything else here
+                if (latOrigin >= 90 || latOrigin <= 0) {
+                    throw new RuntimeException("Unexpected latitude of origin: " + latOrigin);
+                }
+                double lonNorthPole = LatLonPointImpl.lonNormal(lonOrigin + 180);
+                double latNorthPole = 90 - latOrigin;
+                ParameterValueGroup netcdfParameters = ogcParameters.clone();
+                netcdfParameters.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).setValue(lonNorthPole);
+                netcdfParameters.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN)
+                        .setValue(latNorthPole);
+                return netcdfParameters;
+            }
+
+        };
+
         supportedProjections.put(CF.ALBERS_CONICAL_EQUAL_AREA, ALBERS_EQUAL_AREA);
         supportedProjections.put(CF.MERCATOR + "_1SP", MERCATOR_1SP);
         supportedProjections.put(CF.MERCATOR + "_1SP", MERCATOR_2SP);
@@ -242,6 +320,7 @@ public class NetCDFProjection {
         supportedProjections.put(ORTHOGRAPHIC.name, ORTHOGRAPHIC);
         supportedProjections.put(POLAR_STEREOGRAPHIC.name, POLAR_STEREOGRAPHIC);
         supportedProjections.put(STEREOGRAPHIC.name, STEREOGRAPHIC);
+        supportedProjections.put(ROTATED_POLE.name, ROTATED_POLE);
 
         for (final CRSAuthorityFactory factory : ReferencingFactoryFinder
                 .getCRSAuthorityFactories(null)) {
@@ -259,7 +338,7 @@ public class NetCDFProjection {
         }
         
         // TODO:
-        // AZIMUTHAL_EQUIDISTANT, LAMBERT_CYLINDRICAL_EQUAL_AREA, ROTATED_POLE,
+        // AZIMUTHAL_EQUIDISTANT, LAMBERT_CYLINDRICAL_EQUAL_AREA,
     }
 
     /** 
@@ -316,14 +395,15 @@ public class NetCDFProjection {
         String ogcName = projection.getOGCName();
 
         // The OGC projection parameters
-        ParameterValueGroup ogcParameters = ProjectionBuilder.getDefaultparameters(ogcName);
+        ParameterValueGroup netcdfParameters = ProjectionBuilder.getDefaultparameters(ogcName);
 
         // Get the OGC to NetCDF projection parameters
         Map<String, String> netCDFParamsMapping = projection.getParameters();
         Set<String> ogcParameterKeys = netCDFParamsMapping.keySet();
         for (String ogcParameterKey: ogcParameterKeys) {
-            handleParam(netCDFParamsMapping, ogcParameters, ogcParameterKey, var);
+            handleParam(netCDFParamsMapping, netcdfParameters, ogcParameterKey, var);
         }
+        ParameterValueGroup ogcParameters = projection.getOgcParameters(netcdfParameters);
 
         // Ellipsoid
         Ellipsoid ellipsoid = buildEllipsoid(var, SI.METER);

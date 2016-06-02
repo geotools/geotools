@@ -94,7 +94,7 @@ public class GeometryClipper {
      * @param g
      * @param ensureValid
      * @param scale Scale used to snap geometry to precision model, 0 to disable
-     * @return clipped geometry, or original geometry if clipping failed.
+     * @return a clipped geometry, which may be empty, or null
      */
     public Geometry clipSafe(Geometry g, boolean ensureValid, double scale) {
         try {

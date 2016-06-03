@@ -218,7 +218,6 @@ public class LineTest {
     }
 
     @Test
-    @Ignore
     public void testPerpendicularOffsetNPE() throws Exception {
         StreamingRenderer renderer = setupMap(fsAround, RendererBaseTest.loadStyle(this, "linePerpendicularOffsetSmall.sld"));
 

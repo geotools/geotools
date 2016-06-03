@@ -391,7 +391,9 @@ public final class GridCoverageRenderer {
             final double[] bkgValues )throws Exception {
 
         final GridCoverage2D symbolizerGC = renderCoverage(gridCoverage, symbolizer, bkgValues);
-        return symbolizerGC.getRenderedImage();
+        //symbolizerGC will be null if the coverage is outside of the view area.  Returning null here is handled appropriately
+        //by the calling method
+        return symbolizerGC == null ? null : symbolizerGC.getRenderedImage();
     }
 
 
@@ -815,7 +817,8 @@ public final class GridCoverageRenderer {
 
         // establish the background values, and expand palettes if the bgcolor cannot be represented
         double[] bgValues = GridCoverageRendererUtilities.colorToArray(background);
-        if (!coverages.isEmpty()) {
+        //If coverage is out of view area, coverages has size 1 but the first element is null
+        if (!coverages.isEmpty() && coverages.get(0) != null) {
             ColorModel cm = coverages.get(0).getRenderedImage().getColorModel();
             if (cm instanceof IndexColorModel && background != null) {
                 IndexColorModel icm = (IndexColorModel) cm;

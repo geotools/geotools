@@ -2567,7 +2567,7 @@ public class StreamingRenderer implements GTRenderer {
                         // people applying an offset on a polygon really expect a buffer instead,
                         // do so... however buffering is damn expensive, so let's apply some heuristics
                         // to still run the offset curve builder for the simplest cases
-                        if(source instanceof Polygon || source instanceof MultiPolygon && abs(offset) > 3) {
+                        if((source instanceof Polygon || source instanceof MultiPolygon) && abs(offset) > 3) {
                             // buffering is expensive, we can be a bit off with the 
                             // result, do simplify the geometry first 
                             Geometry simplified = TopologyPreservingSimplifier.simplify(source, Math.max(abs(offset) / 10, 1));

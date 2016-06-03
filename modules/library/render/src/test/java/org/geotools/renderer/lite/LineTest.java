@@ -18,11 +18,13 @@ package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.junit.Assert.*;
 
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -34,12 +36,14 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * 
@@ -56,6 +60,8 @@ public class LineTest {
 
     private ContentFeatureSource squares;
 
+    private ContentFeatureSource fsAround;
+
     @BeforeClass
     public static void setupClass() {
         System.clearProperty("org.geotools.referencing.forceXY");
@@ -68,6 +74,7 @@ public class LineTest {
         File property = new File(TestData.getResource(this, "line.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("line");
+        fsAround = ds.getFeatureSource("around");
         squares = ds.getFeatureSource("square");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
@@ -208,6 +215,29 @@ public class LineTest {
         BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
                 renderer, TIME, bounds);
         ImageAssert.assertEquals(file("squaresPerpendincularOffset"), image, 10);
+    }
+
+    @Test
+    @Ignore
+    public void testPerpendicularOffsetNPE() throws Exception {
+        StreamingRenderer renderer = setupMap(fsAround, RendererBaseTest.loadStyle(this, "linePerpendicularOffsetSmall.sld"));
+
+        final AtomicInteger errors = new AtomicInteger(0);
+        BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
+                renderer, TIME, new ReferencedEnvelope[] {new ReferencedEnvelope(1, 4, 1, 4, DefaultGeographicCRS.WGS84)}, new RenderListener() {
+                    
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        // nothing to do
+                    }
+                    
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        errors.incrementAndGet();
+                        
+                    }
+                } );
+        assertEquals(0, errors.get());
     }
 
 }

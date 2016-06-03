@@ -57,7 +57,15 @@ public class GradientColorMapGenerator {
     public static final String RGBA_INLINEVALUE_MARKER = "rgba(";
     
     public static final String HEX_INLINEVALUE_MARKER = "#";
+    
+    public static final String HEX2_INLINEVALUE_MARKER = "0x";
+    
+    private static Color TRANSPARENT = new Color(0, 0, 0, 0);
 
+    private Color beforeColor = TRANSPARENT;
+    
+    private Color afterColor = TRANSPARENT;
+    
     private LinearGradientEntry[] entries;
 
     private static SoftValueHashMap<String, GradientColorMapGenerator> cache = new SoftValueHashMap<String, GradientColorMapGenerator>();
@@ -66,6 +74,38 @@ public class GradientColorMapGenerator {
     
     private GradientColorMapGenerator(LinearGradientEntry[] entries) {
         this.entries = entries;
+    }
+    
+    /**
+     * Sets the color to be used before the min value. By default it's transparent 
+     * @param color
+     */
+    public void setBeforeColor(Color color) {
+        this.beforeColor = color;
+    }
+
+    /**
+     * Sets the color to be used before the min value, as a string, it accepts the same syntax as {@link GradientColorMapGenerator#getColorMapGenerator(String)} 
+     * @param color
+     */
+    public void setBeforeColor(String color) {
+        this.beforeColor = getColorWithOpacity(color);
+    }
+
+    /**
+     * Sets the color to be used after the max value. By default it's transparent 
+     * @param color
+     */
+    public void setAfterColor(Color color) {
+        this.afterColor = color;
+    }
+    
+    /**
+     * Sets the color to be used after the max value, as a string, it accepts the same syntax as {@link GradientColorMapGenerator#getColorMapGenerator(String)} 
+     * @param color
+     */
+    public void setAfterColor(String color) {
+        this.afterColor = getColorWithOpacity(color);
     }
 
     /**
@@ -91,9 +131,9 @@ public class GradientColorMapGenerator {
 
         // Adding transparent color entry before the min
         double start = min - (intervals ? 0 : 1E-2);
-        ColorMapEntry entry = entries[0].getColorMapEntry(start);
-        entry.setOpacity(filterFactory.literal(0));
-        colorMap.addColorMapEntry(entry);
+        ColorMapEntry startEntry = entries[0].getColorMapEntry(start);
+        fillColorInEntry(startEntry, beforeColor);
+        colorMap.addColorMapEntry(startEntry);
 
         if (intervals) {
             colorMap.setType(ColorMap.TYPE_INTERVALS);
@@ -109,11 +149,19 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(entries[numEntries - 1].getColorMapEntry(max));
 
         // Adding transparent color entry after the max
-        ColorMapEntry entryEnd = entries[numEntries - 1].getColorMapEntry(max + 1E-2);
-        entryEnd.setOpacity(filterFactory.literal(0));
-        colorMap.addColorMapEntry(entryEnd);
+        ColorMapEntry endEntry = entries[numEntries - 1].getColorMapEntry(max + 1E-2);
+        fillColorInEntry(endEntry, afterColor);
+        colorMap.addColorMapEntry(endEntry);
 
         return colorMap;
+    }
+
+    private void fillColorInEntry(ColorMapEntry startEntry, Color color) {
+        if(color == null) {
+            color = TRANSPARENT;
+        }
+        startEntry.setColor(filterFactory.literal(toHexColor(color)));
+        startEntry.setOpacity(filterFactory.literal(color.getAlpha() / 255.));
     }
 
     private static FilterFactory filterFactory = new FilterFactoryImpl();
@@ -153,19 +201,6 @@ public class GradientColorMapGenerator {
             return entry;
         }
 
-        /** 
-         * Return an HEX representation of a Color
-         * @param color
-         * @return
-         */
-        private static String toHexColor(final Color color) {
-            Utilities.ensureNonNull("color", color);
-            try {
-                return COLOR_CONVERTER.convert(color, String.class);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     /**
@@ -194,7 +229,7 @@ public class GradientColorMapGenerator {
     
     /**
      * Get an SVG ColorMap generator for the specified file
-     * @param a ";" separated list of colors in the form rgb(r0,g0,b0);rgb(r1,g1,b1);... or #RRGGBB;#RRGGBB;#RRGGBB;...
+     * @param a ";" separated list of colors in the form c1;c2;c3;... where each color can use syntaxes as  rgb(r0,g0,b0), rgba(r0,g0,b0,alpha_0_to_1), #RRGGBB or 0xRRGGBB
      * @return
      * @throws SAXException
      * @throws IOException
@@ -202,7 +237,8 @@ public class GradientColorMapGenerator {
      */
     public static GradientColorMapGenerator getColorMapGenerator(String colorValues) throws IOException, ParserConfigurationException {
         Utilities.ensureNonNull("colorValues", colorValues);
-        if (colorValues.startsWith(RGB_INLINEVALUE_MARKER) || colorValues.startsWith(RGBA_INLINEVALUE_MARKER) || colorValues.startsWith(HEX_INLINEVALUE_MARKER)) {
+        if (colorValues.startsWith(RGB_INLINEVALUE_MARKER) || colorValues.startsWith(RGBA_INLINEVALUE_MARKER) || colorValues.startsWith(HEX_INLINEVALUE_MARKER) ||
+                colorValues.startsWith(HEX2_INLINEVALUE_MARKER)) {
             String rampType = "ramp";
             if (colorValues.contains(":")) {
                 final int rampTypeIndex = colorValues.indexOf(":");
@@ -273,7 +309,6 @@ public class GradientColorMapGenerator {
      * @return the {@link Color} instance related to that string definition
      */
     private static Color createColor(String color) {
-        Utilities.ensureNonNull("color", color);
         if (color.startsWith(RGB_INLINEVALUE_MARKER)) {
             String colorString  = color.substring(4, color.length()-1);
             String rgb[] = colorString.split("\\s*,\\s*");
@@ -282,7 +317,7 @@ public class GradientColorMapGenerator {
             String colorString  = color.substring(5, color.length()-1);
             String rgba[] = colorString.split("\\s*,\\s*");
             return new Color(Integer.parseInt(rgba[0]), Integer.parseInt(rgba[1]), Integer.parseInt(rgba[2]));
-        } else if (color.startsWith("#") && color.length() == 7) {
+        } else if ((color.startsWith("#") && color.length() == 7) || (color.startsWith("0x") && color.length() == 8)) {
             // Try to parse it as an HEX code
             return hex2Rgb(color);
         }
@@ -298,6 +333,18 @@ public class GradientColorMapGenerator {
             return 1f;
         }
     }
+    
+    private Color getColorWithOpacity(String color) {
+        if(color == null) {
+            return null;
+        }
+        Color c = createColor(color);
+        float opacity = getOpacity(color);
+        if(opacity < 1) {
+            c = new Color(c.getRed(), c.getGreen(), c.getBlue(), (int) (opacity * 255));
+        }
+        return c;
+    }
 
     /**
      * Convert an hex color representation to a {@link Color}
@@ -305,10 +352,31 @@ public class GradientColorMapGenerator {
      * @return the {@link Color} instance related to that color HEX string
      */
     public static Color hex2Rgb(String colorStr) {
-        return new Color(
-            Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
-            Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
-            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+        if(colorStr.startsWith("#")) {
+            return new Color(
+                Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
+                Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
+                Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+        } else {
+            return new Color(
+                Integer.valueOf( colorStr.substring( 2, 4 ), 16 ),
+                Integer.valueOf( colorStr.substring( 4, 6 ), 16 ),
+                Integer.valueOf( colorStr.substring( 6, 8 ), 16 ) );
+        }
+    }
+    
+    /** 
+     * Return an HEX representation of a Color
+     * @param color
+     * @return
+     */
+    private static String toHexColor(final Color color) {
+        Utilities.ensureNonNull("color", color);
+        try {
+            return COLOR_CONVERTER.convert(color, String.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

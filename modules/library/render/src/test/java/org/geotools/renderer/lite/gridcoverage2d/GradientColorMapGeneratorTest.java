@@ -45,8 +45,8 @@ public class GradientColorMapGeneratorTest {
         assertEquals(6, colorEntries.length);
 
         // First and last color entry are transparent
-        assertEquals("0", colorEntries[0].getOpacity().toString());
-        assertEquals("0", colorEntries[5].getOpacity().toString());
+        assertEquals(0, colorEntries[0].getOpacity().evaluate(null, Double.class), 0d);
+        assertEquals(0, colorEntries[5].getOpacity().evaluate(null, Double.class), 0d);
 
         assertEquals("#0000FF", colorEntries[1].getColor().toString());
         assertEquals("#00FFFF", colorEntries[2].getColor().toString());
@@ -66,6 +66,13 @@ public class GradientColorMapGeneratorTest {
     }
     
     @Test
+    public void testHEXcolors2() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException {
+        GradientColorMapGenerator colorMapGenerator = GradientColorMapGenerator.getColorMapGenerator("0x0000ff;0x00ffff;0xffff00;0xff0000");
+        testBlueAcquaYellowRed(colorMapGenerator);
+    }
+
+    
+    @Test
     public void testRGBcolors() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException {
         GradientColorMapGenerator colorMapGenerator = GradientColorMapGenerator.getColorMapGenerator("rgb(0,0,255);rgb(0,255,255);rgb(255,255,0);rgb(255,0,0)");
         testBlueAcquaYellowRed(colorMapGenerator);
@@ -79,8 +86,8 @@ public class GradientColorMapGeneratorTest {
         assertEquals(6, colorEntries.length);
 
         // First and last color entry are transparent
-        assertEquals("0", colorEntries[0].getOpacity().toString());
-        assertEquals("0", colorEntries[5].getOpacity().toString());
+        assertEquals(0, colorEntries[0].getOpacity().evaluate(null, Double.class), 0d);
+        assertEquals(0, colorEntries[5].getOpacity().evaluate(null, Double.class), 0d);
 
         assertEquals("#0000FF", colorEntries[1].getColor().toString());
         assertEquals("#00FFFF", colorEntries[2].getColor().toString());
@@ -112,11 +119,69 @@ public class GradientColorMapGeneratorTest {
         assertEntry(colorEntries[3], 100, Color.BLUE, 0f);
 
     }
+    
+    @Test
+    public void testBeforeAfterColors() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException {
+        GradientColorMapGenerator colorMapGenerator = GradientColorMapGenerator.getColorMapGenerator("rgba(0,0,0,1);rgba(255,0,0,0.5);rgba(0,0,255,0.1)");
+        colorMapGenerator.setBeforeColor(Color.RED);
+        colorMapGenerator.setAfterColor(new Color(0,0,0,0));
+        ColorMap colorMap = colorMapGenerator.generateColorMap(10, 100);
+        assertNotNull(colorMap);
+        ColorMapEntry[] colorEntries = colorMap.getColorMapEntries();
+        assertNotNull(colorEntries);
+        assertEquals(5, colorEntries.length);
+
+        // checking colors and ranges
+        assertEntry(colorEntries[0], 9.99, Color.RED, 1f);
+        assertEntry(colorEntries[1], 10, Color.BLACK, 1f);
+        assertEntry(colorEntries[2], 55, Color.RED, 0.5f);
+        assertEntry(colorEntries[3], 100, Color.BLUE, 0.1f);
+        assertEntry(colorEntries[4], 100.01, Color.BLACK, 0f);
+    }
+    
+    @Test
+    public void testBeforeAfterColorsString() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException {
+        GradientColorMapGenerator colorMapGenerator = GradientColorMapGenerator.getColorMapGenerator("rgba(0,0,0,1);rgba(255,0,0,0.5);rgba(0,0,255,0.1)");
+        colorMapGenerator.setBeforeColor("rgba(0,0,255,0.5)");
+        colorMapGenerator.setAfterColor("rgba(255,0,0,0.5)");
+        ColorMap colorMap = colorMapGenerator.generateColorMap(10, 100);
+        assertNotNull(colorMap);
+        ColorMapEntry[] colorEntries = colorMap.getColorMapEntries();
+        assertNotNull(colorEntries);
+        assertEquals(5, colorEntries.length);
+
+        // checking colors and ranges
+        assertEntry(colorEntries[0], 9.99, Color.BLUE, 0.5f);
+        assertEntry(colorEntries[1], 10, Color.BLACK, 1f);
+        assertEntry(colorEntries[2], 55, Color.RED, 0.5f);
+        assertEntry(colorEntries[3], 100, Color.BLUE, 0.1f);
+        assertEntry(colorEntries[4], 100.01, Color.RED, 0.5f);
+    }
+    
+    @Test
+    public void testBeforeAfterNullColors() throws FileNotFoundException, IOException, SAXException, ParserConfigurationException {
+        GradientColorMapGenerator colorMapGenerator = GradientColorMapGenerator.getColorMapGenerator("rgba(0,0,0,1);rgba(255,0,0,0.5);rgba(0,0,255,0.1)");
+        colorMapGenerator.setBeforeColor((String) null);
+        colorMapGenerator.setAfterColor((String) null);
+        ColorMap colorMap = colorMapGenerator.generateColorMap(10, 100);
+        assertNotNull(colorMap);
+        ColorMapEntry[] colorEntries = colorMap.getColorMapEntries();
+        assertNotNull(colorEntries);
+        assertEquals(5, colorEntries.length);
+
+        // checking colors and ranges
+        assertEntry(colorEntries[0], 9.99, Color.BLACK, 0f);
+        assertEntry(colorEntries[1], 10, Color.BLACK, 1f);
+        assertEntry(colorEntries[2], 55, Color.RED, 0.5f);
+        assertEntry(colorEntries[3], 100, Color.BLUE, 0.1f);
+        assertEntry(colorEntries[4], 100.01, Color.BLACK, 0f);
+
+    }
 
     private void assertEntry(ColorMapEntry entry, double quantity, Color color, float opacity) {
         assertEquals(quantity, entry.getQuantity().evaluate(null, Double.class), 0d);
         assertEquals(color, entry.getColor().evaluate(null, Color.class));
-        assertEquals(opacity, entry.getOpacity().evaluate(null, Double.class), 0.001f);
+        assertEquals(opacity, entry.getOpacity().evaluate(null, Double.class), 0.01f);
     }
 
 }

@@ -95,7 +95,7 @@
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.13</imageio.ext.version>
     <jaiext.version>1.0.9</jaiext.version>
-    <netcdf.version>4.6.2</netcdf.version>
+    <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.4.0</jt.version>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>

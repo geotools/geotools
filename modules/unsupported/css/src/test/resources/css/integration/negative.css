@@ -1,0 +1,6 @@
+[population < -5] {  stroke: #72b0fc; }
+[population  >= -5][population  < -1] { stroke: #b8d4ff; }
+[population  >= -1][population  < 1] {  stroke: #ffebbe; }
+[population  >= 1][population  < 5] {  stroke: #fd5912; }
+[population  >= 5][population  < 10] { stroke: #fd5912; }
+[population  >= 10] {  stroke: #d7191c; }

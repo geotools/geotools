@@ -196,7 +196,7 @@ public class GribTest extends Assert{
         // Selection of the input file
         final File file = TestData.file(this, "sampleGrib.grb2");
         // Testing the 2 points
-        testGribFile(file, new Point2D.Double(-56, 8), new Point2D.Double(-56, 4));
+        testGribFile(file, new Point2D.Double(304, 8), new Point2D.Double(304, 4));
     }
 
     /**

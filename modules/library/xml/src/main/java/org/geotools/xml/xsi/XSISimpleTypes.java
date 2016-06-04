@@ -1169,7 +1169,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.sql.Date parsed = Converters.convert(svalue, java.sql.Date.class);
                 if (null == parsed) {
@@ -1218,7 +1218,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 Timestamp parsed = Converters.convert(svalue, java.sql.Timestamp.class);
                 if (null == parsed) {
@@ -1267,7 +1267,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 int year;
                 int month;
                 int day;
@@ -1648,7 +1648,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.sql.Time parsed = Converters.convert(svalue, java.sql.Time.class);
                 if (null == parsed) {

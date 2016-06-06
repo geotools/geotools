@@ -24,6 +24,7 @@ import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.NATIVE_SERIA
 import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.TABLE_HINTS;
 
 import java.util.Map;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
@@ -42,7 +43,11 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     public SQLServerJNDIDataStoreFactory() {
         super(new SQLServerDataStoreFactory());
     }
-    
+
+    protected SQLServerJNDIDataStoreFactory(JDBCDataStoreFactory delegate) {
+        super(delegate);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected void setupParameters(Map parameters) {

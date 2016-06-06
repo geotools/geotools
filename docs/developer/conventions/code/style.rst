@@ -3,7 +3,7 @@ Coding Style
 
 Coding conventions describe the coding styles developers should use when writing code.
 
-For example, whether you use 2, 4, or 8 space indents. Standardising on a coding style across a project improves legibility of the code, and automatic code formatters make conforming to these standards easy.
+For example, whether you use 2, 4, or 8 space indents. Standardising on a coding style across a project improves legibility of the code, and automatic code formatters make conforming to these standards easier.
 
 Sun Coding Conventions and a little bit more
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -21,22 +21,13 @@ But what about the header?
 Most of the time all you need to do is update the header boilerplate to include the correct
 dates on the copyright statement, the boilerplate itself covers project name and LGPL license.
 
-* If the code is being created by you strictly for the GeoTools project it should be a simple copy
-  and paste, followed filling in the current year:
-  
-  \(c\) YEAR, Open Source Geospatial Foundation
-
-* If you are updating a file (perhaps fixing a bug) you will need to update the header:
-  
-  \(c\) START-UPDATE, Open Source Geospatial Foundation
-  
-* The header boilerplate for core GeoTools code is::
+* If the code is being created by you strictly for the GeoTools project it should be a simple copy   and paste, followed filling in the current year::
    
        /*
         *    GeoTools - The Open Source Java GIS Toolkit
         *    http://geotools.org
         *
-        *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+        *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
         *
         *    This library is free software; you can redistribute it and/or
         *    modify it under the terms of the GNU Lesser General Public
@@ -49,10 +40,7 @@ dates on the copyright statement, the boilerplate itself covers project name and
         *    Lesser General Public License for more details.
         */
    
-  The above code reflects a file that was created in 2011 and explicitly contributed to the
-  GeoTools project (the Open Source Geospatial Foundation is our legal entity holding the
-  copywrite). The file is being made available under the LGPL License (which we include in our
-  project documentation).
+  The above code reflects a file that was created in 2016 and explicitly contributed to the GeoTools project (the Open Source Geospatial Foundation is our legal entity holding the copywrite). The file is being published by OSGeo using an LGPL License (which we include with our source code and in our project documentation).
 
 * The header for all demo code is::
    
@@ -60,25 +48,22 @@ dates on the copyright statement, the boilerplate itself covers project name and
         *    GeoTools - The Open Source Java GIS Toolkit
         *    http://geotools.org
         *
-        *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+        *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
         *
         *    This file is hereby placed into the Public Domain. This means anyone is
         *    free to do whatever they wish with this file. Use it well and enjoy!
         */
   
-  In this case we are just placing the demo code into the public domain so people can cut and paste
+  In this case we are placing the demo code into the public domain so people can cut and paste
   the examples into their own code as they are learning.
 
-* Example of Reusing LGPL Published Code
-  
-  A more interesting example is one that has to reflect of code attribution of a number of
-  organisations and the time range they were custodians of the code.::
+* When reusing code from another LGPL project reflect the prior organizations that were custodians of the code::
   
        /*
         *    GeoTools - The Open Source Java GIS Toolkit
         *    http://geotools.org
         *    
-        *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+        *    (C) 2006, Open Source Geospatial Foundation (OSGeo)
         *    (C) 2002, Navel Ltd.
         *
         *    This library is free software; you can redistribute it and/or
@@ -94,20 +79,38 @@ dates on the copyright statement, the boilerplate itself covers project name and
 
   The the above example from the gt-caching module some of the spatial index functionality
   has been produced using of code from Navel Ltd that was published under the LGPL license in 2002.
-  The work was added to GeoTools 2006 - and the last modification was made in 2008.
+  The work was contributed to GeoTools 2006.
 
-* Example of Reusing Code under another license
-  
-  The simple rule of thumb here is to not modify the initial header at all; and
-  stick the geotools header on top.
+* When reusing code published under another compatible license do not modify the header at all (if you make a chance you can add the GeoTools header on top).
 
   * :download:`DateUtil.java </../../modules/library/main/src/main/java/org/geotools/feature/type/DateUtil.java>`    
   
-  Based on the license restrictions you may need
-  to add some credits to the GeoTools user guide; and list the license in your jar.
+  Based on the license restrictions you may need to add some credits to the GeoTools user guide; and list the license in your jar.
   
   * `user guide license <http://docs.geotools.org/latest/userguide/welcome/license.html>`_ lists all licenses
   * `gt-main license page <http://docs.geotools.org/latest/userguide/library/main/index.html>`_ lists license for DateUtil.java
+
+* When given explicit permission to relicense code (for an example an email from the GeoServer Project Steering Committee) be very careful to update the header appropriately::
+  
+     /*
+      *    GeoTools - The Open Source Java GIS Toolkit
+      *    http://geotools.org
+      *
+      *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+      *    (C) 2008-2011 OpenPlans - www.openplans.org.
+      *
+      *    This library is free software; you can redistribute it and/or
+      *    modify it under the terms of the GNU Lesser General Public
+      *    License as published by the Free Software Foundation;
+      *    version 2.1 of the License.
+      *
+      *    This library is distributed in the hope that it will be useful,
+      *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+      *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+      *    Lesser General Public License for more details.
+      */
+  
+  In this case we are carefully crediting the GeoServer project and distributing the code under the LGPL license because we have obtained permission to do so.
   
 Use of Formatting Tools
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -129,8 +132,8 @@ Eclipse
 
 Here are some eclipse settings that you can import when working on geotools (checkout folder down below `build/eclipse`) work:
 
-* https://github.com/geotools/geotools/blob/master/build/eclipse/codetemplates.xml 
-* https://github.com/geotools/geotools/blob/master/build/eclipse/formatter.xml
+* `codetemplates.xml  <https://github.com/geotools/geotools/blob/master/build/eclipse/codetemplates.xml>`__
+* `formatter.xml <https://github.com/geotools/geotools/blob/master/build/eclipse/formatter.xml>`__
 
 To use:
 

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.sqlserver.jdts;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import static junit.framework.TestCase.fail;
@@ -34,6 +35,10 @@ public class SQLServerJTDSJNDITest {
     public void setUp() {
         jndiProps.put("jndiReferenceName", JNDINAME);
         jndiProps.put("schema", "dbo");
+
+        // copied from org.geotools.jdbc.JDBCJNDITestSetup#setupJNDIEnvironment()
+        File jndi = new File("target/jndi");
+        jndi.mkdirs();
     }
 
     /**
@@ -56,7 +61,7 @@ public class SQLServerJTDSJNDITest {
     /**
      * This test should fail with an IOException because there is actually no
      * such JNDI to connect to, but the factory lookup will have succeeded
-     * before     * throwing the exception.
+     * before throwing the exception.
      *
      * @throws IOException always with the message: "Cannot find JNDI data
      * source: java:comp/env/jdbc/geotools"

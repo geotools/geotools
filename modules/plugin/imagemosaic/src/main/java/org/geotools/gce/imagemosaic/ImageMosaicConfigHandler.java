@@ -94,6 +94,8 @@ public class ImageMosaicConfigHandler {
 
     private Map<String, MosaicConfigurationBean> configurations = new HashMap<String, MosaicConfigurationBean>();
 
+    private CatalogManager catalogManager;
+
     /**
      * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable that can be checked in order to notify a terminating
      * condition.
@@ -118,17 +120,22 @@ public class ImageMosaicConfigHandler {
 
     private boolean useExistingSchema;
 
+    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+            final ImageMosaicEventHandlers eventHandler) {
+        this(configuration, eventHandler, new CatalogManager());
+    }
+
     /**
      * Default constructor
      * 
-     * @throws
      * @throws IllegalArgumentException
      */
-    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
-            final ImageMosaicEventHandlers eventHandler) {
+    ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+            final ImageMosaicEventHandlers eventHandler, CatalogManager catalogManager) {
         Utilities.ensureNonNull("runConfiguration", configuration);
-
         Utilities.ensureNonNull("eventHandler", eventHandler);
+
+        this.catalogManager = catalogManager;
         this.eventHandler = eventHandler;
 
         Indexer defaultIndexer = configuration.getIndexer();
@@ -321,7 +328,7 @@ public class ImageMosaicConfigHandler {
     }
 
     protected GranuleCatalog buildCatalog() throws IOException {
-        GranuleCatalog catalog = CatalogManager.createCatalog(runConfiguration, !useExistingSchema);
+        GranuleCatalog catalog = catalogManager.createCatalog(runConfiguration, !useExistingSchema);
         getParentReader().granuleCatalog = catalog;
         return catalog;
     }
@@ -447,12 +454,12 @@ public class ImageMosaicConfigHandler {
             }
         } else {
             // processing information
-            eventHandler.fireEvent(Level.FINE, "Canceled!!!", 100);
+            eventHandler.fireEvent(Level.FINE, "Cancelled!!!", 100);
         }
     }
 
     /**
-     * Store a sample image frmo which we can derive the default SM and CM
+     * Store a sample image from which we can derive the default SM and CM
      */
     private void createSampleImage(final MosaicConfigurationBean mosaicConfiguration,
             final boolean useName) {
@@ -875,7 +882,7 @@ public class ImageMosaicConfigHandler {
             // Creating a granuleStore
             if (!useExistingSchema) {
                 // creating the schema
-                SimpleFeatureType indexSchema = CatalogManager.createSchema(getRunConfiguration(),
+                SimpleFeatureType indexSchema = catalogManager.createSchema(getRunConfiguration(),
                         currentConfigurationBean.getName(), actualCRS);
                 getParentReader().createCoverage(coverageName, indexSchema);
 //            } else {
@@ -965,7 +972,7 @@ public class ImageMosaicConfigHandler {
         // STEP 3
         if (!useExistingSchema) {
             // create and store features
-            CatalogManager.updateCatalog(coverageName, fileBeingProcessed, coverageReader,
+            catalogManager.updateCatalog(coverageName, fileBeingProcessed, coverageReader,
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }

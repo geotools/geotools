@@ -99,32 +99,31 @@ public class CatalogManager {
 
     /** Default Logger * */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogManager.class);
-    
+
     /**
      * Create a GranuleCatalog on top of the provided configuration
-     * @param runConfiguration
-     * @return
+     * @param runConfiguration configuration used to create the catalog
      * @throws IOException
      */
-    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
+    GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
         return createCatalog(runConfiguration, true);
     }
 
     /**
      * Create or load a GranuleCatalog on top of the provided configuration
-     * @param runConfiguration
+     * @param runConfiguration configuration used to create the catalog
      * @param create if true create a new catalog, otherwise it is loaded
-     * @return
+     * @return created catalog
      * @throws IOException
      */
-    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
+    GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
         //
         // create the index
         //
         // do we have a datastore.properties file?
         final File parent = new File(runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR));
         GranuleCatalog catalog;
-        
+
         // Consider checking that from the indexer if any
         final File datastoreProperties = new File(parent, "datastore.properties");
         // GranuleCatalog catalog = null;
@@ -168,7 +167,7 @@ public class CatalogManager {
      * @param datastoreProperties
      * @throws IOException
      */
-    public static void dropDatastore(File datastoreProperties) throws IOException {
+    public void dropDatastore(File datastoreProperties) throws IOException {
         final Properties properties = createGranuleCatalogProperties(datastoreProperties);
         final String SPIClass = properties.getProperty("SPI");
         try {
@@ -176,12 +175,12 @@ public class CatalogManager {
             final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
             Utils.dropDB(spi, properties);
         } catch (Exception e) {
-            final IOException ioe = new IOException();
-            throw (IOException) ioe.initCause(e);
+            final IOException ioe = new IOException(e);
+            throw ioe;
         } 
     }
 
-    public static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
+    public Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
         Properties properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
         if (properties == null) {
             throw new IOException("Unable to load properties from:" + datastoreProperties.getAbsolutePath());
@@ -189,14 +188,14 @@ public class CatalogManager {
         return properties;
     }
 
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
+    public GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
         return createGranuleCatalogFromDatastore(parent, datastoreProperties, create, false, hints);
     }
 
     /**
      * Create a granule catalog from a datastore properties file
      */
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
+    public GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
         return createGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
@@ -224,7 +223,7 @@ public class CatalogManager {
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
-        } 
+        }
         return catalog;
     }
 
@@ -234,7 +233,7 @@ public class CatalogManager {
      * @param actualCRS
      * @return
      */
-    public static SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration, String name,
+    public SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration, String name,
             CoordinateReferenceSystem actualCRS) {
         SimpleFeatureType indexSchema = null;
         SchemaType schema = null;
@@ -279,7 +278,7 @@ public class CatalogManager {
                         }
                     }
                 }
-                
+
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -301,7 +300,7 @@ public class CatalogManager {
         }
         return indexSchema;
     }
-    
+
     /**
      * Add splitted attributes to the featureBuilder
      *
@@ -345,7 +344,7 @@ public class CatalogManager {
      * @param propertiesCollectors
      * @throws IOException
      */
-    static void updateCatalog(
+    void updateCatalog(
             final String coverageName,
             final File fileBeingProcessed,
             final GridCoverage2DReader inputReader,
@@ -619,7 +618,7 @@ public class CatalogManager {
      * @return
      * @throws IOException 
      */
-    static GranuleCatalog createCatalog(final URL sourceURL, final MosaicConfigurationBean configuration, Hints hints) throws IOException {
+    GranuleCatalog createCatalog(final URL sourceURL, final MosaicConfigurationBean configuration, Hints hints) throws IOException {
         CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
         
         // Check the typeName

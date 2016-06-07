@@ -294,7 +294,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             
             
             
-            URL sourceURL = Utils.checkSource(source, hints);
+            URL sourceURL = Utils.checkSource(source, hints, reader.getCatalogManager());
             if(sourceURL == null){
             	return false;
             }

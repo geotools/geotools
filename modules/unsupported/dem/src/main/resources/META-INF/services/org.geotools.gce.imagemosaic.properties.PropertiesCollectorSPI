@@ -1,0 +1,4 @@
+org.geotools.dem.attributes.ResolutionExtractorSPI
+org.geotools.dem.attributes.DateExtractorSPI
+org.geotools.dem.attributes.FSDateExtractorSPI
+org.geotools.dem.attributes.CRSExtractorSPI

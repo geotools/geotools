@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -639,4 +640,42 @@ public class CatalogManager {
         return catalog;
     }
 
+    /**
+     * Whether a coverage should be accepted as part of this catalog. A raster may not qualify for
+     * a number of reasons, such as its color model being unfit, the CRS being different, etc.
+     *
+     * @param coverageReader the coverage in question
+     * @param mosaicConfiguration the configuration of the mosaic in question
+     * @param rasterManager the raster manager being used
+     * @return whether the catalog accepts the given coverage
+     */
+    public boolean accepts(GridCoverage2DReader coverageReader,
+            MosaicConfigurationBean mosaicConfiguration, RasterManager rasterManager)
+            throws IOException {
+
+        CoordinateReferenceSystem expectedCRS;
+        if (mosaicConfiguration.getCrs() != null) {
+            expectedCRS = mosaicConfiguration.getCrs();
+        } else {
+            expectedCRS = rasterManager.spatialDomainManager.coverageCRS;
+        }
+        if (!(CRS.equalsIgnoreMetadata(expectedCRS, coverageReader.getCoordinateReferenceSystem()))) {
+            return false;
+        }
+
+        byte[][] palette = mosaicConfiguration.getPalette();
+        ColorModel colorModel = mosaicConfiguration.getColorModel();
+        ColorModel actualCM = coverageReader.getImageLayout().getColorModel(null);
+        if (colorModel == null) {
+            colorModel = rasterManager.defaultCM;
+        }
+        if (palette == null) {
+            palette = rasterManager.defaultPalette;
+        }
+        if (Utils.checkColorModels(colorModel, palette, actualCM)) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -541,7 +541,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         try {
             if (sourceURL.getProtocol().equals("file")) {
                 final File sourceFile = DataUtilities.urlToFile(sourceURL);
-                if (!sourceFile.exists()) {
+                if (sourceFile == null || !sourceFile.exists()) {
                     throw new DataSourceException("The specified sourceURL doesn't refer to an existing file");
                 }
             }

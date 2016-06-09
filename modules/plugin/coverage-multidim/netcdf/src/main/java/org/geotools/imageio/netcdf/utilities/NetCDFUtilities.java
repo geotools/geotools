@@ -172,6 +172,14 @@ public class NetCDFUtilities {
 
     public final static String LON = "lon";
 
+    public final static String GRID_LATITUDE = "grid_latitude";
+
+    public final static String RLAT = "rlat";
+
+    public final static String GRID_LONGITUDE = "grid_longitude";
+
+    public final static String RLON = "rlon";
+
     public final static String DEPTH = "depth";
 
     public final static String ZETA = "z";
@@ -207,6 +215,8 @@ public class NetCDFUtilities {
     public final static String LON_UNITS = "degrees_east";
 
     public final static String LAT_UNITS = "degrees_north";
+
+    public final static String RLATLON_UNITS = "degrees";
 
     public final static String NO_COORDS = "NoCoords";
 

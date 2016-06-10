@@ -306,12 +306,12 @@ public class CatalogManager {
     /**
      * Add splitted attributes to the featureBuilder
      *
-     * @param attribute
-     * @param featureBuilder
-     * @param classType
+     * @param attribute attribute to add
+     * @param featureBuilder feature builder to use
+     * @param classType class of attribute value
      * TODO: Remove that once reworking on the dimension stuff
      */
-    private static void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder,
+    public void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder,
             Class classType) {
         if (attribute != null) {
             if (!attribute.contains(Utils.RANGE_SPLITTER_CHAR)) {

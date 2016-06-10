@@ -1028,7 +1028,7 @@ class RasterLayerResponse{
             
             // STEP 1 collect all the mosaics from each single dimension
             LOGGER.fine("Producing the final mosaic, step 1, loop through granule collectors");   
-            final List<MosaicElement> mosaicInputs = new ArrayList<RasterLayerResponse.MosaicElement>();
+            final List<MosaicElement> mosaicInputs = new ArrayList<>();
             GranuleCollector first = null; // we take this apart to steal some val
             int size = granuleCollectors.size();
             for (GranuleCollector collector : granuleCollectors) {

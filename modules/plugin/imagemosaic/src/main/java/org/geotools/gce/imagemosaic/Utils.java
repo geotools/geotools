@@ -1769,13 +1769,11 @@ public class Utils {
      * It is worth to point out that we also check if, in case we have two index color model image, we also try to suggest whether or not we
      * should do a color expansion.
      *
-     * @param defaultCM
-     * @param defaultPalette
-     * @param actualCM
-     * @return a boolean asking to skip this feature.
+     * @param defaultCM the mosaic's color model
+     * @param actualCM the color model of the coverage being processed
+     * @return true if the color models *aren't* compatible for mosaic purposes, false otherwise
      */
-    static boolean checkColorModels(ColorModel defaultCM, byte[][] defaultPalette,
-            ColorModel actualCM) {
+    static boolean checkColorModels(ColorModel defaultCM, ColorModel actualCM) {
 
         // check the number of color components
         final int defNumComponents = defaultCM.getNumColorComponents();

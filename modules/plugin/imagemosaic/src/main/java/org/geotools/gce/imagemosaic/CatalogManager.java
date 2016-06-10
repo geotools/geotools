@@ -74,6 +74,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.geometry.Envelope;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -367,6 +368,9 @@ public class CatalogManager {
         final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
         final String fileLocation = prepareLocation(configuration, fileBeingProcessed);
         final String locationAttribute = configuration.getParameter(Prop.LOCATION_ATTRIBUTE);
+        MosaicConfigurationBean mosaicConfig =
+                mosaicReader.getRasterManager(coverageName).getConfiguration();
+
 
         // getting input granules
         if (inputReader instanceof StructuredGridCoverage2DReader) {
@@ -405,7 +409,12 @@ public class CatalogManager {
                                 
                                 // Matching attributes are set
                                 if (destAttributes.contains(propName)) {
-                                    destFeature.setAttribute(propName, propValue);
+                                    Object destPropValue = propValue;
+                                    if (indexSchema.getGeometryDescriptor().getName() == propName) {
+                                        destPropValue = CatalogManager.this.processGeometryFeature(
+                                                propValue, indexSchema.getGeometryDescriptor(), mosaicConfig);
+                                    }
+                                    destFeature.setAttribute(propName, destPropValue);
                                 }
                             }
                             
@@ -424,14 +433,15 @@ public class CatalogManager {
                                     throw new IllegalStateException("Feature visitor has been canceled");
                             }
                     }
-                } 
+                }
             }, listener);
         } else {
-            //
-            // Case B: old style reader, proceed with classic way, using properties collectors 
-            // 
+            // Case B: old style reader, proceed with classic way, using properties collectors
             feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
-                    GEOM_FACTORY.toGeometry(new ReferencedEnvelope(envelope)));
+                    this.processGeometryFeature(
+                            envelope,
+                            indexSchema.getGeometryDescriptor(),
+                            mosaicConfig));
             feature.setAttribute(locationAttribute, fileLocation);
             
             updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);
@@ -445,6 +455,21 @@ public class CatalogManager {
         
         // Add the granules collection to the store
         store.addGranules(collection);
+    }
+
+    /**
+     * Process the coverage geometry before adding it to the mosaic index
+     * @param propValue value of the geometry attribute
+     * @param propName name of the geometry attribute
+     * @param mosaicConfig mosaic configuration
+     * @return the processed geometry ready to be added to the image mosaic index
+     */
+    private Object processGeometryFeature(Object propValue, GeometryDescriptor propName,
+            MosaicConfigurationBean mosaicConfig) {
+        if (propValue instanceof Envelope) {
+            return GEOM_FACTORY.toGeometry(new ReferencedEnvelope((Envelope)propValue));
+        }
+        return propValue;
     }
 
     /**
@@ -672,7 +697,7 @@ public class CatalogManager {
         if (palette == null) {
             palette = rasterManager.defaultPalette;
         }
-        if (Utils.checkColorModels(colorModel, palette, actualCM)) {
+        if (Utils.checkColorModels(colorModel, actualCM)) {
             return false;
         }
 

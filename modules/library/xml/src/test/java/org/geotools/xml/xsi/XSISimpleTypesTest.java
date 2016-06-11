@@ -50,6 +50,11 @@ public class XSISimpleTypesTest extends TestCase {
         assertEquals(expected.getClass().getName() + "[" + expected + "] : "
                 + actual.getClass().getName() + "[" + actual + "]", expected, actual);
 
+        sval = "";
+        value = new ElementValue[] { new ElementValueGT(null, sval) };
+        actual = dateBinding.getValue(element, value, attrs, hints);
+        assertNull(actual);
+
         sval = "10:53:24.255+03:00";
         value = new ElementValue[] { new ElementValueGT(null, sval) };
         try {
@@ -102,6 +107,11 @@ public class XSISimpleTypesTest extends TestCase {
         assertEquals(expected.getClass().getName() + "[" + expected + "] : "
                 + actual.getClass().getName() + "[" + actual + "]", expected, actual);
 
+        sval = "";
+        value = new ElementValue[] { new ElementValueGT(null, sval) };
+        actual = dateTimeBinding.getValue(element, value, attrs, hints);
+        assertNull(actual);
+
         sval = "10:53:24.255+03:00";
         value = new ElementValue[] { new ElementValueGT(null, sval) };
         try {
@@ -146,6 +156,11 @@ public class XSISimpleTypesTest extends TestCase {
         assertEquals(expected.getClass().getName() + "[" + expected + "] : "
                 + actual.getClass().getName() + "[" + actual + "]", expected, actual);
 
+        sval = "";
+        value = new ElementValue[] { new ElementValueGT(null, sval) };
+        actual = timeBinding.getValue(element, value, attrs, hints);
+        assertNull(actual);
+
         sval = "2012-02-14";
         value = new ElementValue[] { new ElementValueGT(null, sval) };
         try {
@@ -153,5 +168,21 @@ public class XSISimpleTypesTest extends TestCase {
         } catch (SAXException e) {
             assertTrue(true);
         }
+    }
+
+
+    public void testParseDuration() throws Exception {
+        SimpleType durationBinding = XSISimpleTypes.Duration.getInstance();
+
+        Element element = null;
+        Map hints = null;
+        Attributes attrs = null;
+        ElementValue[] value;
+        String sval = "";
+        Object actual;
+
+        value = new ElementValue[]{new ElementValueGT(null, sval)};
+        actual = durationBinding.getValue(element, value, attrs, hints);
+        assertNull(actual);
     }
 }

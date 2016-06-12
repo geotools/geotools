@@ -29,57 +29,57 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import com.vividsolutions.jts.geom.Envelope;
 
 public class GridCoverageRenderingOutOfViewTest {
-	private final String rasterBase = "test_raster_NZTM";
+    private final String rasterBase = "test_raster_NZTM";
 
-	@Test
-	public void test() throws IOException, URISyntaxException, MismatchedDimensionException, NoSuchAuthorityCodeException, FactoryException {
-		StreamingRenderer renderer = new StreamingRenderer();
+    @Test
+    public void test() throws IOException, URISyntaxException, MismatchedDimensionException, NoSuchAuthorityCodeException, FactoryException {
+        StreamingRenderer renderer = new StreamingRenderer();
 
-		MapContent map = new MapContent();
-		URL raster = getClass().getResource(rasterBase+".png");
-		GridCoverage2D gc = readGeoReferencedImageFile(new File(raster.toURI()));
+        MapContent map = new MapContent();
+        URL raster = getClass().getResource(rasterBase+".png");
+        GridCoverage2D gc = readGeoReferencedImageFile(new File(raster.toURI()));
 
-		map.addLayer(loadGeoReferencedImageFile(gc, "test"));
+        map.addLayer(loadGeoReferencedImageFile(gc, "test"));
 
-		renderer.setMapContent(map);
-		BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_ARGB);
-		Envelope env = new Envelope(1880352, 5825436, 1884352, 5828436);
-		ReferencedEnvelope refenv = new ReferencedEnvelope(env, gc.getCoordinateReferenceSystem());
+        renderer.setMapContent(map);
+        BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_ARGB);
+        Envelope env = new Envelope(1880352, 5825436, 1884352, 5828436);
+        ReferencedEnvelope refenv = new ReferencedEnvelope(env, gc.getCoordinateReferenceSystem());
 
-		AtomicReference<Exception> error = new AtomicReference<>();
-		renderer.addRenderListener(new RenderListener() {
+        AtomicReference<Exception> error = new AtomicReference<>();
+        renderer.addRenderListener(new RenderListener() {
 
-			@Override
-			public void featureRenderer(SimpleFeature feature) {
-			}
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+            }
 
-			@Override
-			public void errorOccurred(Exception e) {
-				error.set(e);
-			}
-		});
-		renderer.paint(image.createGraphics(), new Rectangle(400, 300), refenv);
+            @Override
+            public void errorOccurred(Exception e) {
+                error.set(e);
+            }
+        });
+        renderer.paint(image.createGraphics(), new Rectangle(400, 300), refenv);
 
-		assertNull(error.get());
-	}
+        assertNull(error.get());
+    }
 
-	public Layer loadGeoReferencedImageFile(GridCoverage2D gc, String title) throws IOException, URISyntaxException {
+    public Layer loadGeoReferencedImageFile(GridCoverage2D gc, String title) throws IOException, URISyntaxException {
 
 
-		StyleBuilder sb = new StyleBuilder();
-		RasterSymbolizer rs = sb.createRasterSymbolizer();
-		return new GridCoverageLayer(gc, sb.createStyle(rs), "");
-	} 
+        StyleBuilder sb = new StyleBuilder();
+        RasterSymbolizer rs = sb.createRasterSymbolizer();
+        return new GridCoverageLayer(gc, sb.createStyle(rs), "");
+    } 
 
-	public GridCoverage2D readGeoReferencedImageFile(File f) throws IOException {
-		WorldImageReader reader = null;
-		try {
-			reader = new WorldImageReader(f);
-			return reader.read(null);
-		} finally {
-			if (reader != null)
-				reader.dispose();
-		}
-	}
+    public GridCoverage2D readGeoReferencedImageFile(File f) throws IOException {
+        WorldImageReader reader = null;
+        try {
+            reader = new WorldImageReader(f);
+            return reader.read(null);
+        } finally {
+            if (reader != null)
+                reader.dispose();
+        }
+    }
 
 }

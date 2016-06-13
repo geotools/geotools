@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -320,16 +321,18 @@ public class ImageMosaicConfigHandler {
      * Load properties collectors from the configuration
      */
     private void loadPropertyCollectors() {
-        // load property collectors
+        // load property collectors first check indexing configuration for list of collectors,
+        // if none are found ask the catalog manager for the default list of property collectors.
         Indexer indexer = runConfiguration.getIndexer();
         Collectors collectors = indexer.getCollectors();
-        if (collectors == null) {
-            if (LOGGER.isLoggable(Level.FINE)) {
+        List<Collector> collectorList = new ArrayList<>(collectors.getCollector());
+        if (collectorList.isEmpty()) {
+            getParentReader().getCatalogManager().customCollectors();
+            if (collectorList.isEmpty()) {
                 LOGGER.fine("No properties collector have been found");
             }
             return;
         }
-        List<Collector> collectorList = collectors.getCollector();
 
         // load the SPI set
         final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder

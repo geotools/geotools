@@ -419,8 +419,8 @@ public class CatalogManager {
                                 if (destAttributes.contains(propName)) {
                                     Object destPropValue = propValue;
                                     if (indexSchema.getGeometryDescriptor().getName() == propName) {
-                                        destPropValue = CatalogManager.this.processGeometryFeature(
-                                                propValue, indexSchema.getGeometryDescriptor(), mosaicConfig);
+                                        destPropValue = CatalogManager.this.processGranuleGeometry(
+                                                propValue, indexSchema.getGeometryDescriptor(), mosaicConfig, inputReader);
                                     }
                                     destFeature.setAttribute(propName, destPropValue);
                                 }
@@ -446,10 +446,10 @@ public class CatalogManager {
         } else {
             // Case B: old style reader, proceed with classic way, using properties collectors
             feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
-                    this.processGeometryFeature(
+                    this.processGranuleGeometry(
                             envelope,
                             indexSchema.getGeometryDescriptor(),
-                            mosaicConfig));
+                            mosaicConfig, inputReader));
             feature.setAttribute(locationAttribute, fileLocation);
             
             updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);
@@ -470,10 +470,11 @@ public class CatalogManager {
      * @param propValue value of the geometry attribute
      * @param propName name of the geometry attribute
      * @param mosaicConfig mosaic configuration
+     * @param inputReader
      * @return the processed geometry ready to be added to the image mosaic index
      */
-    private Object processGeometryFeature(Object propValue, GeometryDescriptor propName,
-            MosaicConfigurationBean mosaicConfig) {
+    protected Object processGranuleGeometry(Object propValue, GeometryDescriptor propName,
+            MosaicConfigurationBean mosaicConfig, GridCoverage2DReader inputReader) {
         if (propValue instanceof Envelope) {
             return GEOM_FACTORY.toGeometry(new ReferencedEnvelope((Envelope)propValue));
         }

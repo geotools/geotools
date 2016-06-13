@@ -1773,7 +1773,7 @@ public class Utils {
      * @param actualCM the color model of the coverage being processed
      * @return true if the color models *aren't* compatible for mosaic purposes, false otherwise
      */
-    static boolean checkColorModels(ColorModel defaultCM, ColorModel actualCM) {
+    public static boolean checkColorModels(ColorModel defaultCM, ColorModel actualCM) {
 
         // check the number of color components
         final int defNumComponents = defaultCM.getNumColorComponents();

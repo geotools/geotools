@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -289,17 +290,24 @@ public class CatalogManager {
         }
 
         if (indexSchema == null) {
-            // Proceed with default Schema
-            final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
-            featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-            featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
-            featureBuilder.add("the_geom", Polygon.class, actualCRS);
-            featureBuilder.setDefaultGeometry("the_geom");
-            String timeAttribute = runConfiguration.getTimeAttribute();
-            addAttributes(timeAttribute, featureBuilder, Date.class);
-            indexSchema = featureBuilder.buildFeatureType();
+            indexSchema = createDefaultSchema(runConfiguration, actualCRS);
+
         }
+        return indexSchema;
+    }
+
+    protected SimpleFeatureType createDefaultSchema(CatalogBuilderConfiguration runConfiguration,
+            CoordinateReferenceSystem actualCRS) {
+        SimpleFeatureType indexSchema;// Proceed with default Schema
+        final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
+        featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
+        featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
+        featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
+        featureBuilder.add("the_geom", Polygon.class, actualCRS);
+        featureBuilder.setDefaultGeometry("the_geom");
+        String timeAttribute = runConfiguration.getTimeAttribute();
+        addAttributes(timeAttribute, featureBuilder, Date.class);
+        indexSchema = featureBuilder.buildFeatureType();
         return indexSchema;
     }
 
@@ -688,19 +696,19 @@ public class CatalogManager {
             return false;
         }
 
-        byte[][] palette = mosaicConfiguration.getPalette();
         ColorModel colorModel = mosaicConfiguration.getColorModel();
         ColorModel actualCM = coverageReader.getImageLayout().getColorModel(null);
         if (colorModel == null) {
             colorModel = rasterManager.defaultCM;
-        }
-        if (palette == null) {
-            palette = rasterManager.defaultPalette;
         }
         if (Utils.checkColorModels(colorModel, actualCM)) {
             return false;
         }
 
         return true;
+    }
+
+    public List<Indexer.Collectors.Collector> customCollectors() {
+        return Collections.emptyList();
     }
 }

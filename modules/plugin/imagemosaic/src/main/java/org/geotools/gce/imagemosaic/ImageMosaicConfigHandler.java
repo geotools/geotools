@@ -325,12 +325,13 @@ public class ImageMosaicConfigHandler {
         // if none are found ask the catalog manager for the default list of property collectors.
         Indexer indexer = runConfiguration.getIndexer();
         Collectors collectors = indexer.getCollectors();
-        List<Collector> collectorList = new ArrayList<>(collectors.getCollector());
+        List<Collector> collectorList = new ArrayList<>(
+                collectors != null ?
+                        collectors.getCollector() :
+                        getParentReader().getCatalogManager().customCollectors());
+
         if (collectorList.isEmpty()) {
-            getParentReader().getCatalogManager().customCollectors();
-            if (collectorList.isEmpty()) {
-                LOGGER.fine("No properties collector have been found");
-            }
+            LOGGER.fine("No properties collector have been found");
             return;
         }
 

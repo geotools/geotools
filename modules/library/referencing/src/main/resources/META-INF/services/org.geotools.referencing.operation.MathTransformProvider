@@ -12,7 +12,7 @@ org.geotools.referencing.operation.transform.MolodenskiTransform$ProviderAbridge
 org.geotools.referencing.operation.transform.NADCONTransform$Provider
 org.geotools.referencing.operation.transform.NTv2Transform$Provider
 org.geotools.referencing.operation.transform.SimilarityTransformProvider
-org.geotools.referencing.operation.transform.WarpTransform2D$Provider
+org.geotools.referencing.operation.transform.WarpTransform2DProvider
 org.geotools.referencing.operation.projection.EquidistantCylindrical$Provider
 org.geotools.referencing.operation.projection.EquidistantCylindrical$SphericalProvider
 org.geotools.referencing.operation.projection.PlateCarree$Provider

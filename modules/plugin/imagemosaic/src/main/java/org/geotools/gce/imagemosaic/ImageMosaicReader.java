@@ -576,7 +576,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 
                 // Catalog initialization from datastore
                 GranuleCatalog catalog = null;
-                final Properties params = CatalogManager.createGranuleCatalogProperties(datastoreProperties);
+                final Properties params = ImageMosaicConfigHandler.createGranuleCatalogProperties(datastoreProperties);
 
                 // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
                 final Object typeNames=params.get(Utils.SCAN_FOR_TYPENAMES);
@@ -588,7 +588,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 if (beans.size() > 0) {
                     catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, beans.get(0).getCatalogConfigurationBean(), params, getHints());
                 } else {
-                    catalog = CatalogManager.createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
+                    catalog = ImageMosaicConfigHandler
+                            .createGranuleCatalogFromDatastore(parent, datastoreProperties, true, getHints());
                 } 
                 MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
                 catalog.setMultiScaleROIProvider(rois);
@@ -609,7 +610,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             } else {
                 
                 // Old style code: we have a single MosaicConfigurationBean. Use that to create the catalog 
-                granuleCatalog = CatalogManager.createCatalog(sourceURL, configuration, this.hints);
+                granuleCatalog = ImageMosaicConfigHandler
+                        .createCatalog(sourceURL, configuration, this.hints);
                 File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
                 MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
                 granuleCatalog.setMultiScaleROIProvider(rois);

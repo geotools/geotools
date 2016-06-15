@@ -16,10 +16,12 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -73,6 +75,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.geometry.Envelope;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -99,32 +102,31 @@ public class CatalogManager {
 
     /** Default Logger * */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogManager.class);
-    
+
     /**
      * Create a GranuleCatalog on top of the provided configuration
-     * @param runConfiguration
-     * @return
+     * @param runConfiguration configuration used to create the catalog
      * @throws IOException
      */
-    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
+    GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
         return createCatalog(runConfiguration, true);
     }
 
     /**
      * Create or load a GranuleCatalog on top of the provided configuration
-     * @param runConfiguration
+     * @param runConfiguration configuration used to create the catalog
      * @param create if true create a new catalog, otherwise it is loaded
-     * @return
+     * @return created catalog
      * @throws IOException
      */
-    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
+    GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
         //
         // create the index
         //
         // do we have a datastore.properties file?
         final File parent = new File(runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR));
         GranuleCatalog catalog;
-        
+
         // Consider checking that from the indexer if any
         final File datastoreProperties = new File(parent, "datastore.properties");
         // GranuleCatalog catalog = null;
@@ -168,7 +170,7 @@ public class CatalogManager {
      * @param datastoreProperties
      * @throws IOException
      */
-    public static void dropDatastore(File datastoreProperties) throws IOException {
+    public void dropDatastore(File datastoreProperties) throws IOException {
         final Properties properties = createGranuleCatalogProperties(datastoreProperties);
         final String SPIClass = properties.getProperty("SPI");
         try {
@@ -176,12 +178,12 @@ public class CatalogManager {
             final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
             Utils.dropDB(spi, properties);
         } catch (Exception e) {
-            final IOException ioe = new IOException();
-            throw (IOException) ioe.initCause(e);
+            final IOException ioe = new IOException(e);
+            throw ioe;
         } 
     }
 
-    public static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
+    public Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
         Properties properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
         if (properties == null) {
             throw new IOException("Unable to load properties from:" + datastoreProperties.getAbsolutePath());
@@ -189,14 +191,14 @@ public class CatalogManager {
         return properties;
     }
 
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
+    public GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
         return createGranuleCatalogFromDatastore(parent, datastoreProperties, create, false, hints);
     }
 
     /**
      * Create a granule catalog from a datastore properties file
      */
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
+    public GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
         return createGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
@@ -224,7 +226,7 @@ public class CatalogManager {
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
-        } 
+        }
         return catalog;
     }
 
@@ -234,7 +236,7 @@ public class CatalogManager {
      * @param actualCRS
      * @return
      */
-    public static SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration, String name,
+    public SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration, String name,
             CoordinateReferenceSystem actualCRS) {
         SimpleFeatureType indexSchema = null;
         SchemaType schema = null;
@@ -279,7 +281,7 @@ public class CatalogManager {
                         }
                     }
                 }
-                
+
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -288,29 +290,36 @@ public class CatalogManager {
         }
 
         if (indexSchema == null) {
-            // Proceed with default Schema
-            final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
-            featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-            featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
-            featureBuilder.add("the_geom", Polygon.class, actualCRS);
-            featureBuilder.setDefaultGeometry("the_geom");
-            String timeAttribute = runConfiguration.getTimeAttribute();
-            addAttributes(timeAttribute, featureBuilder, Date.class);
-            indexSchema = featureBuilder.buildFeatureType();
+            indexSchema = createDefaultSchema(runConfiguration, actualCRS);
+
         }
         return indexSchema;
     }
-    
+
+    protected SimpleFeatureType createDefaultSchema(CatalogBuilderConfiguration runConfiguration,
+            CoordinateReferenceSystem actualCRS) {
+        SimpleFeatureType indexSchema;// Proceed with default Schema
+        final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
+        featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
+        featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
+        featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
+        featureBuilder.add("the_geom", Polygon.class, actualCRS);
+        featureBuilder.setDefaultGeometry("the_geom");
+        String timeAttribute = runConfiguration.getTimeAttribute();
+        addAttributes(timeAttribute, featureBuilder, Date.class);
+        indexSchema = featureBuilder.buildFeatureType();
+        return indexSchema;
+    }
+
     /**
      * Add splitted attributes to the featureBuilder
      *
-     * @param attribute
-     * @param featureBuilder
-     * @param classType
+     * @param attribute attribute to add
+     * @param featureBuilder feature builder to use
+     * @param classType class of attribute value
      * TODO: Remove that once reworking on the dimension stuff
      */
-    private static void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder,
+    public void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder,
             Class classType) {
         if (attribute != null) {
             if (!attribute.contains(Utils.RANGE_SPLITTER_CHAR)) {
@@ -345,7 +354,7 @@ public class CatalogManager {
      * @param propertiesCollectors
      * @throws IOException
      */
-    static void updateCatalog(
+    void updateCatalog(
             final String coverageName,
             final File fileBeingProcessed,
             final GridCoverage2DReader inputReader,
@@ -367,6 +376,9 @@ public class CatalogManager {
         final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
         final String fileLocation = prepareLocation(configuration, fileBeingProcessed);
         final String locationAttribute = configuration.getParameter(Prop.LOCATION_ATTRIBUTE);
+        MosaicConfigurationBean mosaicConfig =
+                mosaicReader.getRasterManager(coverageName).getConfiguration();
+
 
         // getting input granules
         if (inputReader instanceof StructuredGridCoverage2DReader) {
@@ -405,7 +417,12 @@ public class CatalogManager {
                                 
                                 // Matching attributes are set
                                 if (destAttributes.contains(propName)) {
-                                    destFeature.setAttribute(propName, propValue);
+                                    Object destPropValue = propValue;
+                                    if (indexSchema.getGeometryDescriptor().getName() == propName) {
+                                        destPropValue = CatalogManager.this.processGranuleGeometry(
+                                                propValue, indexSchema.getGeometryDescriptor(), mosaicConfig, inputReader);
+                                    }
+                                    destFeature.setAttribute(propName, destPropValue);
                                 }
                             }
                             
@@ -424,14 +441,15 @@ public class CatalogManager {
                                     throw new IllegalStateException("Feature visitor has been canceled");
                             }
                     }
-                } 
+                }
             }, listener);
         } else {
-            //
-            // Case B: old style reader, proceed with classic way, using properties collectors 
-            // 
+            // Case B: old style reader, proceed with classic way, using properties collectors
             feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
-                    GEOM_FACTORY.toGeometry(new ReferencedEnvelope(envelope)));
+                    this.processGranuleGeometry(
+                            envelope,
+                            indexSchema.getGeometryDescriptor(),
+                            mosaicConfig, inputReader));
             feature.setAttribute(locationAttribute, fileLocation);
             
             updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);
@@ -445,6 +463,22 @@ public class CatalogManager {
         
         // Add the granules collection to the store
         store.addGranules(collection);
+    }
+
+    /**
+     * Process the coverage geometry before adding it to the mosaic index
+     * @param propValue value of the geometry attribute
+     * @param propName name of the geometry attribute
+     * @param mosaicConfig mosaic configuration
+     * @param inputReader
+     * @return the processed geometry ready to be added to the image mosaic index
+     */
+    protected Object processGranuleGeometry(Object propValue, GeometryDescriptor propName,
+            MosaicConfigurationBean mosaicConfig, GridCoverage2DReader inputReader) {
+        if (propValue instanceof Envelope) {
+            return GEOM_FACTORY.toGeometry(new ReferencedEnvelope((Envelope)propValue));
+        }
+        return propValue;
     }
 
     /**
@@ -619,7 +653,7 @@ public class CatalogManager {
      * @return
      * @throws IOException 
      */
-    static GranuleCatalog createCatalog(final URL sourceURL, final MosaicConfigurationBean configuration, Hints hints) throws IOException {
+    GranuleCatalog createCatalog(final URL sourceURL, final MosaicConfigurationBean configuration, Hints hints) throws IOException {
         CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
         
         // Check the typeName
@@ -640,4 +674,42 @@ public class CatalogManager {
         return catalog;
     }
 
+    /**
+     * Whether a coverage should be accepted as part of this catalog. A raster may not qualify for
+     * a number of reasons, such as its color model being unfit, the CRS being different, etc.
+     *
+     * @param coverageReader the coverage in question
+     * @param mosaicConfiguration the configuration of the mosaic in question
+     * @param rasterManager the raster manager being used
+     * @return whether the catalog accepts the given coverage
+     */
+    public boolean accepts(GridCoverage2DReader coverageReader,
+            MosaicConfigurationBean mosaicConfiguration, RasterManager rasterManager)
+            throws IOException {
+
+        CoordinateReferenceSystem expectedCRS;
+        if (mosaicConfiguration.getCrs() != null) {
+            expectedCRS = mosaicConfiguration.getCrs();
+        } else {
+            expectedCRS = rasterManager.spatialDomainManager.coverageCRS;
+        }
+        if (!(CRS.equalsIgnoreMetadata(expectedCRS, coverageReader.getCoordinateReferenceSystem()))) {
+            return false;
+        }
+
+        ColorModel colorModel = mosaicConfiguration.getColorModel();
+        ColorModel actualCM = coverageReader.getImageLayout().getColorModel(null);
+        if (colorModel == null) {
+            colorModel = rasterManager.defaultCM;
+        }
+        if (Utils.checkColorModels(colorModel, actualCM)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public List<Indexer.Collectors.Collector> customCollectors() {
+        return Collections.emptyList();
+    }
 }

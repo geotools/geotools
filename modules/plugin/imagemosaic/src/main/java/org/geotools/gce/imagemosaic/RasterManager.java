@@ -838,7 +838,7 @@ public class RasterManager {
     }
     
     /** Default {@link ColorModel}. */
-    ColorModel defaultCM;
+    public ColorModel defaultCM;
 
     /** Default {@link SampleModel}. */
     SampleModel defaultSM;

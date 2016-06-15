@@ -350,7 +350,7 @@ public class CatalogBuilderTest extends Assert {
 
                 ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
                 final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(c1,
-                        eventHandler);
+                        eventHandler, new CatalogManager());
                 // TODO
                 // build the index
                 builder = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);

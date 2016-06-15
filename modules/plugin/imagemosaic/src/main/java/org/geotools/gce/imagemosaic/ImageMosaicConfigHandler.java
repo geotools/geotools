@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -92,13 +93,9 @@ public class ImageMosaicConfigHandler {
 
     private List<PropertiesCollector> propertiesCollectors = null;
 
-    private Map<String, MosaicConfigurationBean> configurations = new HashMap<String, MosaicConfigurationBean>();
+    private Map<String, MosaicConfigurationBean> configurations = new HashMap<>();
 
-    /**
-     * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable that can be checked in order to notify a terminating
-     * condition.
-     */
-    private volatile boolean stop = false;
+    private CatalogManager catalogManager;
 
     protected GranuleCatalog catalog;
 
@@ -118,17 +115,22 @@ public class ImageMosaicConfigHandler {
 
     private boolean useExistingSchema;
 
+    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+            final ImageMosaicEventHandlers eventHandler) {
+        this(configuration, eventHandler, new CatalogManager());
+    }
+
     /**
      * Default constructor
      * 
-     * @throws
      * @throws IllegalArgumentException
      */
-    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
-            final ImageMosaicEventHandlers eventHandler) {
+    ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+            final ImageMosaicEventHandlers eventHandler, CatalogManager catalogManager) {
         Utilities.ensureNonNull("runConfiguration", configuration);
-
         Utilities.ensureNonNull("eventHandler", eventHandler);
+
+        this.catalogManager = catalogManager;
         this.eventHandler = eventHandler;
 
         Indexer defaultIndexer = configuration.getIndexer();
@@ -282,20 +284,9 @@ public class ImageMosaicConfigHandler {
      */
     public void reset() {
         eventHandler.removeAllProcessingEventListeners();
-        // clear stop
-        stop = false;
 
         // fileIndex = 0;
         runConfiguration = null;
-
-    }
-
-    public boolean getStop() {
-        return stop;
-    }
-
-    public void stop() {
-        stop = true;
     }
 
     void indexingPreamble() throws IOException {
@@ -321,7 +312,7 @@ public class ImageMosaicConfigHandler {
     }
 
     protected GranuleCatalog buildCatalog() throws IOException {
-        GranuleCatalog catalog = CatalogManager.createCatalog(runConfiguration, !useExistingSchema);
+        GranuleCatalog catalog = catalogManager.createCatalog(runConfiguration, !useExistingSchema);
         getParentReader().granuleCatalog = catalog;
         return catalog;
     }
@@ -330,16 +321,19 @@ public class ImageMosaicConfigHandler {
      * Load properties collectors from the configuration
      */
     private void loadPropertyCollectors() {
-        // load property collectors
+        // load property collectors first check indexing configuration for list of collectors,
+        // if none are found ask the catalog manager for the default list of property collectors.
         Indexer indexer = runConfiguration.getIndexer();
         Collectors collectors = indexer.getCollectors();
-        if (collectors == null) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("No properties collector have been found");
-            }
+        List<Collector> collectorList = new ArrayList<>(
+                collectors != null ?
+                        collectors.getCollector() :
+                        getParentReader().getCatalogManager().customCollectors());
+
+        if (collectorList.isEmpty()) {
+            LOGGER.fine("No properties collector have been found");
             return;
         }
-        List<Collector> collectorList = collectors.getCollector();
 
         // load the SPI set
         final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder
@@ -447,12 +441,12 @@ public class ImageMosaicConfigHandler {
             }
         } else {
             // processing information
-            eventHandler.fireEvent(Level.FINE, "Canceled!!!", 100);
+            eventHandler.fireEvent(Level.FINE, "Cancelled!!!", 100);
         }
     }
 
     /**
-     * Store a sample image frmo which we can derive the default SM and CM
+     * Store a sample image from which we can derive the default SM and CM
      */
     private void createSampleImage(final MosaicConfigurationBean mosaicConfiguration,
             final boolean useName) {
@@ -757,8 +751,8 @@ public class ImageMosaicConfigHandler {
             double numFiles, DefaultTransaction transaction) throws IOException {
 
         final String indexName = getRunConfiguration().getParameter(Prop.INDEX_NAME);
-        final String coverageName = coverageReader instanceof StructuredGridCoverage2DReader ? inputCoverageName
-                : indexName;
+        final String coverageName = coverageReader instanceof StructuredGridCoverage2DReader
+                ? inputCoverageName : indexName;
 
         final Indexer indexer = getRunConfiguration().getIndexer();
 
@@ -784,19 +778,20 @@ public class ImageMosaicConfigHandler {
         final CoordinateReferenceSystem actualCRS = coverageReader
                 .getCoordinateReferenceSystem(inputCoverageName);
 
-        SampleModel sm = null;
-        ColorModel cm = null;
-        int numberOfLevels = 1;
-        double[][] resolutionLevels = null;
+        SampleModel sm;
+        ColorModel cm;
+        int numberOfLevels;
+        double[][] resolutionLevels;
         CatalogBuilderConfiguration catalogConfig;
+
+        //no existing configuration, we create one using the properties of the coverage being
+        //processed
         if (mosaicConfiguration == null) {
             catalogConfig = getRunConfiguration();
-            // We don't have a configuration for this configuration
 
             // Get the type specifier for this image and the check that the
             // image has the correct sample model and color model.
             // If this is the first cycle of the loop we initialize everything.
-            //
             ImageLayout layout = coverageReader.getImageLayout(inputCoverageName);
             cm = layout.getColorModel(null);
             sm = layout.getSampleModel(null);
@@ -806,7 +801,6 @@ public class ImageMosaicConfigHandler {
             // at the first step we initialize everything that we will
             // reuse afterwards starting with color models, sample
             // models, crs, etc....
-
             configBuilder.setSampleModel(sm);
             configBuilder.setColorModel(cm);
             ColorModel defaultCM = cm;
@@ -870,102 +864,67 @@ public class ImageMosaicConfigHandler {
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
 
             // Creating a rasterManager which will be initialized after populating the catalog
-            rasterManager = getParentReader().addRasterManager(currentConfigurationBean, false);
+            getParentReader().addRasterManager(currentConfigurationBean, false);
 
-            // Creating a granuleStore
+            //No schema, let's create one
             if (!useExistingSchema) {
-                // creating the schema
-                SimpleFeatureType indexSchema = CatalogManager.createSchema(getRunConfiguration(),
+                SimpleFeatureType indexSchema = catalogManager.createSchema(getRunConfiguration(),
                         currentConfigurationBean.getName(), actualCRS);
                 getParentReader().createCoverage(coverageName, indexSchema);
-//            } else {
-//                rasterManager.typeName = coverageName;
             }
             getConfigurations().put(currentConfigurationBean.getName(), currentConfigurationBean);
 
         } else {
-            catalogConfig = new CatalogBuilderConfiguration();
-            CatalogConfigurationBean bean = mosaicConfiguration.getCatalogConfigurationBean();
-            catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, (bean.getLocationAttribute()));
-            catalogConfig.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(bean.isAbsolutePath()));
-            catalogConfig.setParameter(Prop.ROOT_MOSAIC_DIR/* setRootMosaicDirectory( */,
-                    getRunConfiguration().getParameter(Prop.ROOT_MOSAIC_DIR));
+            //mosaic configuration already exists, ask the catalogmanager whether we should process
+            //this coverage then update configuration as needed
+            if (catalogManager.accepts(coverageReader, mosaicConfiguration, rasterManager)) {
 
-            // We already have a Configuration for this coverage.
-            // Check its properties are compatible with the existing coverage.
+                catalogConfig = new CatalogBuilderConfiguration();
+                CatalogConfigurationBean catalogConfigurationBean = mosaicConfiguration.getCatalogConfigurationBean();
+                catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, (catalogConfigurationBean.getLocationAttribute()));
+                catalogConfig.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(catalogConfigurationBean.isAbsolutePath()));
+                catalogConfig.setParameter(Prop.ROOT_MOSAIC_DIR/* setRootMosaicDirectory( */,
+                        getRunConfiguration().getParameter(Prop.ROOT_MOSAIC_DIR));
 
-            CatalogConfigurationBean catalogConfigurationBean = bean;
+                // make sure we pick the same resolution irrespective of order of harvest
+                numberOfLevels = coverageReader.getNumOverviews(inputCoverageName) + 1;
+                resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
 
-            // make sure we pick the same resolution irrespective of order of harvest
-            numberOfLevels = coverageReader.getNumOverviews(inputCoverageName) + 1;
-            resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
-            
-            int originalNumberOfLevels = mosaicConfiguration.getLevelsNum();
-            boolean needUpdate = false;
-            if (Utils.homogeneousCheck(Math.min(numberOfLevels, originalNumberOfLevels), 
-                    resolutionLevels, mosaicConfiguration.getLevels())) {
-                if (numberOfLevels != originalNumberOfLevels) {
+                int originalNumberOfLevels = mosaicConfiguration.getLevelsNum();
+                boolean needUpdate = false;
+                if (Utils.homogeneousCheck(Math.min(numberOfLevels, originalNumberOfLevels),
+                        resolutionLevels, mosaicConfiguration.getLevels())) {
+                    if (numberOfLevels != originalNumberOfLevels) {
+                        catalogConfigurationBean.setHeterogeneous(true);
+                        if (numberOfLevels > originalNumberOfLevels) {
+                            needUpdate = true; // pick the one with highest number of levels
+                        }
+                    }
+                } else {
                     catalogConfigurationBean.setHeterogeneous(true);
-                    if (numberOfLevels > originalNumberOfLevels) {
-                        needUpdate = true; // pick the one with highest number of levels
+                    if (isHigherResolution(resolutionLevels, mosaicConfiguration.getLevels())) {
+                        needUpdate = true; // pick the one with the highest resolution
                     }
                 }
-            } else {
-                catalogConfigurationBean.setHeterogeneous(true);
-                if (isHigherResolution(resolutionLevels, mosaicConfiguration.getLevels())) {
-                    needUpdate = true; // pick the one with the highest resolution
+
+                // configuration need to be updated
+                if (needUpdate) {
+                    mosaicConfiguration.setLevels(resolutionLevels);
+                    mosaicConfiguration.setLevelsNum(numberOfLevels);
+                    getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
                 }
             }
-
-            // configuration need to be updated
-            if (needUpdate) {
-                mosaicConfiguration.setLevels(resolutionLevels);
-                mosaicConfiguration.setLevelsNum(numberOfLevels);
-                getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
-            }
-
-            ImageLayout layout = coverageReader.getImageLayout(inputCoverageName);
-            cm = layout.getColorModel(null);
-            sm = layout.getSampleModel(null);
-
-            // comparing ColorModel
-            // comparing SampeModel
-            // comparing CRSs
-            ColorModel actualCM = cm;
-            CoordinateReferenceSystem expectedCRS;
-            if (mosaicConfiguration.getCrs() != null) {
-                expectedCRS = mosaicConfiguration.getCrs();
-            } else {
-                expectedCRS = rasterManager.spatialDomainManager.coverageCRS;
-            }
-            if (!(CRS.equalsIgnoreMetadata(expectedCRS, actualCRS))) {
-                // if ((fileIndex > 0 ? !(CRS.equalsIgnoreMetadata(defaultCRS, actualCRS)) : false)) {
+            else {
                 eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipping image "
-                        + fileBeingProcessed + " because CRSs do not match.",
+                                + fileBeingProcessed + " because catalog manager rejected it.",
                         (((fileIndex + 1) * 99.0) / numFiles));
                 return;
             }
-
-            byte[][] palette = mosaicConfiguration.getPalette();
-            ColorModel colorModel = mosaicConfiguration.getColorModel();
-            if (colorModel == null) {
-                colorModel = rasterManager.defaultCM;
-            }
-            if (palette == null) {
-                palette = rasterManager.defaultPalette;
-            }
-            if (Utils.checkColorModels(colorModel, palette, actualCM)) {
-                eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipping image "
-                        + fileBeingProcessed + " because color models do not match.",
-                        (((fileIndex + 1) * 99.0) / numFiles));
-                return;
-            }
-
         }
         // STEP 3
         if (!useExistingSchema) {
             // create and store features
-            CatalogManager.updateCatalog(coverageName, fileBeingProcessed, coverageReader,
+            catalogManager.updateCatalog(coverageName, fileBeingProcessed, coverageReader,
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }

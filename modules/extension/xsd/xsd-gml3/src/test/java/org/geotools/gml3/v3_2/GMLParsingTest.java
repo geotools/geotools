@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.v3_2;
 
+import com.vividsolutions.jts.geom.MultiPolygon;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,6 +42,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import org.xml.sax.SAXException;
 
 /**
  * 
@@ -154,4 +161,37 @@ public class GMLParsingTest extends TestCase {
                 parsePointSrsname("http://www.opengis.net/def/crs/EPSG/0/4326"));
     }
 
+    public void testCoordinateList() throws IOException, SAXException, ParserConfigurationException{
+        GMLConfiguration gml = new GMLConfiguration(true);
+        Parser p = new Parser(gml);
+        Object multiSurface = p.parse(getClass().getResourceAsStream("surfacePatches.xml"));
+        assertFalse(multiSurface instanceof String);
+        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        MultiPolygon geom = (MultiPolygon) multiSurface;
+
+        assertFalse(geom.isEmpty());
+    }
+
+    public void testSurfacememberPatches() throws IOException, SAXException, ParserConfigurationException{
+        GMLConfiguration gml = new GMLConfiguration(true);
+        Parser p = new Parser(gml);
+        Object multiSurface = p.parse(getClass().getResourceAsStream("surfacememberPatches.xml"));
+        assertFalse(multiSurface instanceof String);
+        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        MultiPolygon geom = (MultiPolygon) multiSurface;
+
+        assertFalse(geom.isEmpty());
+    }
+
+    public void testNestedInteriors() throws IOException, SAXException, ParserConfigurationException{
+        GMLConfiguration gml = new GMLConfiguration(true);
+        Parser p = new Parser(gml);
+        Object multiSurface = p.parse(getClass().getResourceAsStream("nestedInteriors.xml"));
+        assertFalse(multiSurface instanceof String);
+        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        MultiPolygon geom = (MultiPolygon) multiSurface;
+
+        assertFalse(geom.isEmpty());
+    }
+    
 }

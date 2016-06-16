@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Surface srsName="urn:ogc:def:crs:EPSG::28992">
+    <patches>
+        <PolygonPatch>
+            <exterior>
+                <Ring>
+                    <curveMember>
+                        <Curve>
+                            <segments>
+                                <LineStringSegment>
+                                    <posList count="11" srsDimension="2">50363.54 387915.31 50384.68 387925.31 50396.07 387949.41 50395.17 387958.22 50389.45 387966.56 50370.98 387980.96 50350.95 387964.19 50342.17 387949.04 50343.07 387939.31 50350.83 387915.59 50363.54 387915.31</posList>
+                                </LineStringSegment>
+                            </segments>
+                        </Curve>
+                    </curveMember>
+                </Ring>
+            </exterior>
+        </PolygonPatch>
+    </patches>
+</Surface>

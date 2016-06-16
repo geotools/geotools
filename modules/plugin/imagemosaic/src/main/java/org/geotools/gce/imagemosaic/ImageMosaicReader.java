@@ -1302,8 +1302,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
     }
 
     @Override
-    public void delete(boolean deleteData) throws IOException {
-        // TODO: Should we make it synchronized?
+    public synchronized void delete(boolean deleteData) throws IOException {
 
         String[] coverageNames = getGridCoverageNames();
         for (String coverageName: coverageNames) {
@@ -1312,7 +1311,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
 
         // Dispose before deleting to make sure any lock on files or resources is released
         dispose();
-        removeDB();
+
+        //drop the DB
+        granuleCatalog.drop();
+
+        // try to delete data
         if (deleteData) {
             // quick way: delete everything
             final File[] list = parentDirectory.listFiles();
@@ -1321,15 +1324,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             }
         } else {
             finalizeCleanup();
-        }
-    }
-
-    private void removeDB() throws IOException {
-        final File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
-
-        final File datastoreProperties = new File(parent, "datastore.properties");
-        if (datastoreProperties != null && datastoreProperties.exists() && datastoreProperties.canRead()) {
-            CatalogManager.dropDatastore(datastoreProperties);
         }
     }
 

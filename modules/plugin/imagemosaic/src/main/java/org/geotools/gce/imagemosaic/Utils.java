@@ -1939,21 +1939,6 @@ public class Utils {
         datastoreParams.put("create database", true);
     }
 
-    public static void dropDB(DataStoreFactorySpi spi, Properties properties) throws IOException {
-        if (Utils.isPostgisStore(spi)) {
-            final Map params = filterDataStoreParams(properties, spi);
-            // Use reflection to invoke dropDatabase on postGis factory DB 
-            try {
-                MethodUtils.invokeMethod(spi, "dropDatabase", params);
-            } catch (NoSuchMethodException e) {
-                throw new IOException("Unable to drop the database: ", e);
-            } catch (IllegalAccessException e) {
-                throw new IOException("Unable to drop the database: ", e);
-            } catch (InvocationTargetException e) {
-                throw new IOException("Unable to drop the database: ", e);
-            }
-        }
-    }
 
     public static ImageReaderSpi getReaderSpiFromStream(ImageReaderSpi suggestedSPI,
             ImageInputStream inStream) throws IOException {

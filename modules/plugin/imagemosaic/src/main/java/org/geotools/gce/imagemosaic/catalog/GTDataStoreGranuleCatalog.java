@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -61,7 +62,6 @@ import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
@@ -107,11 +107,17 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
 
     boolean wrapstore = false;
 
+    private Properties params;
+
+    private DataStoreFactorySpi spi;
+
     public GTDataStoreGranuleCatalog(final Properties params, final boolean create,
             final DataStoreFactorySpi spi, final Hints hints) {
         super(hints);
         Utilities.ensureNonNull("params", params);
         Utilities.ensureNonNull("spi", spi);
+        this.spi=spi;
+        this.params=params;
 
         try {
             this.pathType = (PathType) params.get(Utils.Prop.PATH_TYPE);
@@ -775,6 +781,34 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
 
+        }
+    }
+
+    @Override
+    public void drop() throws IOException {
+
+        // drop a datastore. Right now, only postGIS drop is supported
+
+        final Map<?, ?> params = Utils.filterDataStoreParams(this.params, spi);
+        // Use reflection to invoke dropDatabase on postGis factory DB 
+        
+        final Method[] methods = spi.getClass().getMethods();
+        boolean dropped=false;
+        for(Method method: methods){
+            if(method.getName().equalsIgnoreCase("dropDatabase")){
+                try{
+                    method.invoke(spi, params);
+                } catch (Exception e) {
+                    throw new IOException("Unable to drop the database: ", e);
+                }                         
+                dropped=true;
+                break;
+            }
+        }
+        if(!dropped){
+            if(LOGGER.isLoggable(Level.WARNING)){
+                LOGGER.log(Level.WARNING,"Unable to drop catalog for SPI "+spi.getDisplayName());
+            }
         }
     }
 }

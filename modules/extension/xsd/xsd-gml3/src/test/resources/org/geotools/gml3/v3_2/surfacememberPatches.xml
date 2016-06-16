@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Surface>
+    <surfaceMember>
+        <Surface id="ID2">
+            <patches>
+                <PolygonPatch>
+                    <exterior>
+                        <LinearRing>
+                            <posList>0 0 0 1 1 1 1 0 0 0</posList>
+                        </LinearRing>
+                    </exterior>
+                </PolygonPatch>
+            </patches>
+        </Surface>
+    </surfaceMember>
+</Surface>

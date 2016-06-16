@@ -86,7 +86,13 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
         if (members.isEmpty()) {
             return null;
         } else if (members.size() == 1) {
-            return members.get(0);
+            Object o = members.get(0);
+            if (o.getClass() == LineString.class) {
+                LineString ls = (LineString)o;
+                return this.gf.createLinearRing(ls.getCoordinates());
+            }else{
+                return members.get(0);
+            }
         } else {
             LineString curved = null;
             List<LineString> components = new ArrayList<>();

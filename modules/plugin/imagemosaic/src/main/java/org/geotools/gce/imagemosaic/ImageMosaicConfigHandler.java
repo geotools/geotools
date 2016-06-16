@@ -305,7 +305,7 @@ public class ImageMosaicConfigHandler {
             File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
-        return crieateGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
+        return createGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
     }
 
     private static GranuleCatalog createGranuleCatalogFromDatastore(File parent,

@@ -131,12 +131,22 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
         CoordinateSequence seq = null;
         int i = 0;
         int ncoords = tuples.countTokens(); //number of coordinates
+        if(cs.equals(ts)) {
+            ncoords = ncoords/2;
+        }
 
         while (tuples.hasMoreTokens()) {
             String tuple = tuples.nextToken();
 
             //next tokenize by coordinate seperator
             String[] oords = tuple.split(cs);
+
+            if(cs.equals(ts) && oords.length == 1 && tuples.hasMoreTokens()){
+                String tempX = oords[0];
+                oords = new String[2];
+                oords[0] = tempX;
+                oords[1] = tuples.nextToken();
+            }
 
             //next tokenize by decimal
             String x = null;

@@ -18,18 +18,30 @@
 package org.geotools.gce.imagemosaic.acceptors;
 
 import java.io.File;
+import java.util.logging.Level;
 
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers;
-import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
-import org.opengis.coverage.grid.GridCoverageReader;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Class responsible for determining whether a given coverage should or should not be part of the
- * image mosaic.
+ * Default predicate for accepting/rejecting granules in an image mosaic
  */
-public interface GranuleAcceptor {
-    boolean accepts(GridCoverage2DReader coverage, String coverageName, File fileBeingProcessed,
-            ImageMosaicConfigHandler mosaicConfig);
+public class DefaultGranuleAcceptor implements GranuleAcceptor {
+    @Override
+    public boolean accepts(GridCoverage2DReader coverage, String coverageName,
+            File fileBeingProcessed, ImageMosaicConfigHandler mosaicConfig) {
+        CoordinateReferenceSystem expectedCRS = mosaicConfig.getDefaultCRS(coverageName);
+        CoordinateReferenceSystem actualCRS = coverage.getCoordinateReferenceSystem();
+
+        if (!(CRS.equalsIgnoreMetadata(expectedCRS, actualCRS))) {
+            return false;
+        }
+
+
+
+        return true;
+    }
 }

@@ -17,23 +17,13 @@
 
 package org.geotools.gce.imagemosaic.acceptors;
 
-import java.io.File;
-
-import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
-import org.opengis.coverage.grid.GridCoverageReader;
-
 /**
  * Factory to create the default granule acceptor
  */
 public class DefaultGranuleAcceptorFactory implements GranuleAcceptorFactorySPI {
     @Override
     public GranuleAcceptor create() {
-        return new GranuleAcceptor() {
-            @Override
-            public boolean accepts(GridCoverageReader coverage, String coverageName,
-                    File fileBeingProcessed, MosaicConfigurationBean mosaicConfig) {
-                return false;
-            }
-        };
+        return new DefaultGranuleAcceptor();
     }
+
 }

@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
 import java.awt.image.SampleModel;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -29,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +55,7 @@ import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
+import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
@@ -65,6 +68,8 @@ import org.geotools.factory.Hints.Key;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptor;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
@@ -157,6 +162,8 @@ public class ImageMosaicConfigHandler {
 
     private boolean useExistingSchema;
 
+    private List<GranuleAcceptor> granuleAcceptors;
+
     /**
      * Default constructor
      *
@@ -165,7 +172,6 @@ public class ImageMosaicConfigHandler {
     ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
             final ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("runConfiguration", configuration);
-
         Utilities.ensureNonNull("eventHandler", eventHandler);
         this.eventHandler = eventHandler;
 
@@ -226,6 +232,8 @@ public class ImageMosaicConfigHandler {
             }
         }
 
+        this.initializeGranuleAcceptors(indexer);
+
         updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile, 
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
 
@@ -233,6 +241,15 @@ public class ImageMosaicConfigHandler {
         configuration.check();
 
         this.runConfiguration = new CatalogBuilderConfiguration(configuration);
+    }
+
+    /**
+     * Initialize the list of granule collectors from the indexer.
+     * @param indexer the indexer configuration
+     */
+    private List<GranuleAcceptor> initializeGranuleAcceptors(Indexer indexer) {
+        // TODO update to actually do something useful, just want to get a stub here for now
+        return Collections.singletonList(new DefaultGranuleAcceptor());
     }
 
     /**
@@ -1418,7 +1435,7 @@ public class ImageMosaicConfigHandler {
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
 
             // Creating a rasterManager which will be initialized after populating the catalog
-            rasterManager = getParentReader().addRasterManager(currentConfigurationBean, false);
+            getParentReader().addRasterManager(currentConfigurationBean, false);
 
             // Creating a granuleStore
             if (!useExistingSchema) {
@@ -1426,8 +1443,6 @@ public class ImageMosaicConfigHandler {
                 SimpleFeatureType indexSchema = createSchema(getRunConfiguration(),
                         currentConfigurationBean.getName(), actualCRS);
                 getParentReader().createCoverage(coverageName, indexSchema);
-//            } else {
-//                rasterManager.typeName = coverageName;
             }
             getConfigurations().put(currentConfigurationBean.getName(), currentConfigurationBean);
 
@@ -1480,12 +1495,7 @@ public class ImageMosaicConfigHandler {
             // comparing SampeModel
             // comparing CRSs
             ColorModel actualCM = cm;
-            CoordinateReferenceSystem expectedCRS;
-            if (mosaicConfiguration.getCrs() != null) {
-                expectedCRS = mosaicConfiguration.getCrs();
-            } else {
-                expectedCRS = rasterManager.spatialDomainManager.coverageCRS;
-            }
+            CoordinateReferenceSystem expectedCRS = this.getDefaultCRS(coverageName);
             if (!(CRS.equalsIgnoreMetadata(expectedCRS, actualCRS))) {
                 // if ((fileIndex > 0 ? !(CRS.equalsIgnoreMetadata(defaultCRS, actualCRS)) : false)) {
                 eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipping image "
@@ -1571,5 +1581,26 @@ public class ImageMosaicConfigHandler {
 
     public void setCachedReaderSPI(ImageReaderSpi cachedReaderSPI) {
         this.cachedReaderSPI = cachedReaderSPI;
+    }
+
+    public List<GranuleAcceptor> getGranuleAcceptors() {
+        return granuleAcceptors;
+    }
+
+    /**
+     * Get the default for a coverage in the mosaic. In most cases this is just the default CRS for
+     * the entire image mosaic.
+     * @param coverageName name of the coverage
+     * @return default CRS for the coverage, unless the given coverage name has specific config
+     */
+    public CoordinateReferenceSystem getDefaultCRS(String coverageName) {
+        RasterManager rasterManager = this.getParentReader().getRasterManager(coverageName);
+        MosaicConfigurationBean config = rasterManager.getConfiguration();
+        if (config != null && config.getCrs() != null) {
+            return config.getCrs();
+        }
+        else {
+            return rasterManager.spatialDomainManager.coverageCRS;
+        }
     }
 }

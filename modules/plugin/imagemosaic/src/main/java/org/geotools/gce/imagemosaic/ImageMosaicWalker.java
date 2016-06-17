@@ -3,7 +3,9 @@ package org.geotools.gce.imagemosaic;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,7 @@ import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.util.Utilities;
 
 /**
@@ -42,6 +45,8 @@ abstract class ImageMosaicWalker implements Runnable {
 
     /** Default Logger * */
     final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
+
+    private List<GranuleAcceptor> granuleAcceptors;
 
     private DefaultTransaction transaction;
 
@@ -76,16 +81,17 @@ abstract class ImageMosaicWalker implements Runnable {
 
     /**
      * @param updateFeatures if true update catalog with loaded granules
-     * @param imageMosaicConfigHandler TODO
+     * @param imageMosaicConfigHandler configuration handler being used
+     * @param granuleAcceptors list of acceptors to deterrmine granule inclusion
      */
     public ImageMosaicWalker(ImageMosaicConfigHandler configHandler,
             ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);
         Utilities.ensureNonNull("event handler", eventHandler);
-        
+        Utilities.ensureNonNull("granule acceptors", granuleAcceptors);
         this.configHandler = configHandler;
         this.eventHandler = eventHandler;
-
+        this.granuleAcceptors = configHandler.getGranuleAcceptors();
     }
 
     public boolean getStop() {
@@ -206,9 +212,23 @@ abstract class ImageMosaicWalker implements Runnable {
             String[] coverageNames = coverageReader.getGridCoverageNames();
 
             for (String cvName : coverageNames) {
+                boolean shouldAccept = true;
+                for (GranuleAcceptor acceptor : this.configHandler.getGranuleAcceptors()) {
+                    if (!acceptor.accepts(coverageReader, cvName, fileBeingProcessed,
+                            configHandler)) {
+                        shouldAccept = false;
+                        eventHandler.fireFileEvent(Level.FINE, fileBeingProcessed, true,
+                                "Granule acceptor  " + acceptor.getClass().getName() +
+                                        " rejected the granule being processed"
+                                        + fileBeingProcessed, ((fileIndex + 1) * 99.0) / numFiles);
+                        break;
+                    }
+                }
 
-                configHandler.updateConfiguration(coverageReader, cvName, fileBeingProcessed,
-                        fileIndex, numFiles, transaction);
+                if (shouldAccept) {
+                    configHandler.updateConfiguration(coverageReader, cvName, fileBeingProcessed,
+                            fileIndex, numFiles, transaction);
+                }
 
                 // fire event
                 eventHandler.fireFileEvent(Level.FINE, fileBeingProcessed, true, "Done with file "
@@ -239,7 +259,8 @@ abstract class ImageMosaicWalker implements Runnable {
         }
 
     }
-    
+
+
     /**
      * Create a transaction for being used in this walker
      */
@@ -309,5 +330,4 @@ abstract class ImageMosaicWalker implements Runnable {
         fileIndex++;
         
     }
-
 }

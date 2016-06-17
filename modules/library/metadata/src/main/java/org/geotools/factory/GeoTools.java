@@ -105,7 +105,7 @@ public final class GeoTools {
     /**
      * The current GeoTools version. The separator character must be the dot.
      */
-    private static final Version VERSION = new Version(PROPS.getProperty("version", "14-SNAPSHOT"));
+    private static final Version VERSION = new Version(PROPS.getProperty("version", "14.4"));
 
     /**
      * The version control (svn) revision at which this version of geotools was built.

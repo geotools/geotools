@@ -18,18 +18,29 @@
 package org.geotools.gce.imagemosaic.acceptors;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.opengis.coverage.grid.GridCoverageReader;
 
 /**
  * Class responsible for determining whether a given coverage should or should not be part of the
  * image mosaic.
+ *
  */
 public interface GranuleAcceptor {
-    boolean accepts(GridCoverage2DReader coverage, String coverageName, File fileBeingProcessed,
-            ImageMosaicConfigHandler mosaicConfig);
+    /**
+     *
+     * @param coverage the coverage being added to the catalog
+     * @param inputCoverageName the name of the coverage being added
+     * @param fileBeingProcessed File handle of the coverage being handled
+     * @param mosaicConfigHandler the mosaic config handler being used
+     * @return whether coverage should be added to the mosaic or not
+     */
+    boolean accepts(GridCoverage2DReader coverage, String inputCoverageName, File fileBeingProcessed,
+            ImageMosaicConfigHandler mosaicConfigHandler) throws IOException;
 }

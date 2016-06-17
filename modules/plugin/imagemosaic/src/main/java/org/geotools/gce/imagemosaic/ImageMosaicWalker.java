@@ -88,7 +88,6 @@ abstract class ImageMosaicWalker implements Runnable {
             ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);
         Utilities.ensureNonNull("event handler", eventHandler);
-        Utilities.ensureNonNull("granule acceptors", granuleAcceptors);
         this.configHandler = configHandler;
         this.eventHandler = eventHandler;
         this.granuleAcceptors = configHandler.getGranuleAcceptors();

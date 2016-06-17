@@ -1749,8 +1749,8 @@ public class Utils {
      * @param actualCM
      * @return a boolean asking to skip this feature.
      */
-    static boolean checkColorModels(ColorModel defaultCM, byte[][] defaultPalette,
-            ColorModel actualCM) {
+    public static boolean checkColorModels(ColorModel defaultCM, byte[][] defaultPalette,
+			ColorModel actualCM) {
 
         // check the number of color components
         final int defNumComponents = defaultCM.getNumColorComponents();

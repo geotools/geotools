@@ -232,7 +232,7 @@ public class ImageMosaicConfigHandler {
             }
         }
 
-        this.initializeGranuleAcceptors(indexer);
+        this.granuleAcceptors = this.initializeGranuleAcceptors(indexer);
 
         updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile, 
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
@@ -1321,9 +1321,7 @@ public class ImageMosaicConfigHandler {
             final String inputCoverageName, File fileBeingProcessed, int fileIndex,
             double numFiles, DefaultTransaction transaction) throws IOException {
 
-        final String indexName = getRunConfiguration().getParameter(Prop.INDEX_NAME);
-        final String coverageName = coverageReader instanceof StructuredGridCoverage2DReader ? inputCoverageName
-                : indexName;
+        final String coverageName = getTargetCoverageName(coverageReader, inputCoverageName);
 
         final Indexer indexer = getRunConfiguration().getIndexer();
 
@@ -1486,39 +1484,6 @@ public class ImageMosaicConfigHandler {
                 mosaicConfiguration.setLevelsNum(numberOfLevels);
                 getConfigurations().put(mosaicConfiguration.getName(), mosaicConfiguration);
             }
-
-            ImageLayout layout = coverageReader.getImageLayout(inputCoverageName);
-            cm = layout.getColorModel(null);
-            sm = layout.getSampleModel(null);
-
-            // comparing ColorModel
-            // comparing SampeModel
-            // comparing CRSs
-            ColorModel actualCM = cm;
-            CoordinateReferenceSystem expectedCRS = this.getDefaultCRS(coverageName);
-            if (!(CRS.equalsIgnoreMetadata(expectedCRS, actualCRS))) {
-                // if ((fileIndex > 0 ? !(CRS.equalsIgnoreMetadata(defaultCRS, actualCRS)) : false)) {
-                eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipping image "
-                        + fileBeingProcessed + " because CRSs do not match.",
-                        (((fileIndex + 1) * 99.0) / numFiles));
-                return;
-            }
-
-            byte[][] palette = mosaicConfiguration.getPalette();
-            ColorModel colorModel = mosaicConfiguration.getColorModel();
-            if (colorModel == null) {
-                colorModel = rasterManager.defaultCM;
-            }
-            if (palette == null) {
-                palette = rasterManager.defaultPalette;
-            }
-            if (Utils.checkColorModels(colorModel, palette, actualCM)) {
-                eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipping image "
-                        + fileBeingProcessed + " because color models do not match.",
-                        (((fileIndex + 1) * 99.0) / numFiles));
-                return;
-            }
-
         }
         // STEP 3
         if (!useExistingSchema) {
@@ -1527,6 +1492,21 @@ public class ImageMosaicConfigHandler {
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }
+    }
+
+    /**
+     * Get the name of the target coverage for a given reader. For most input coverages, the target
+     * coverage is simply the default coverage. For structured coverages the target coverage has the
+     * same name as the input coverage.
+     * @param inputCoverageReader the coverage being added to the index
+     * @param inputCoverageName the name if the input coverage
+     * @return the target coverage name for the input coverage
+     */
+    public String getTargetCoverageName(GridCoverage2DReader inputCoverageReader,
+            String inputCoverageName) {
+        String indexName = getRunConfiguration().getParameter(Prop.INDEX_NAME);
+        return inputCoverageReader instanceof StructuredGridCoverage2DReader ? inputCoverageName
+                : indexName;
     }
 
     private boolean isHigherResolution(double[][] a, double[][] b) {
@@ -1587,20 +1567,7 @@ public class ImageMosaicConfigHandler {
         return granuleAcceptors;
     }
 
-    /**
-     * Get the default for a coverage in the mosaic. In most cases this is just the default CRS for
-     * the entire image mosaic.
-     * @param coverageName name of the coverage
-     * @return default CRS for the coverage, unless the given coverage name has specific config
-     */
-    public CoordinateReferenceSystem getDefaultCRS(String coverageName) {
-        RasterManager rasterManager = this.getParentReader().getRasterManager(coverageName);
-        MosaicConfigurationBean config = rasterManager.getConfiguration();
-        if (config != null && config.getCrs() != null) {
-            return config.getCrs();
-        }
-        else {
-            return rasterManager.spatialDomainManager.coverageCRS;
-        }
+    public RasterManager getRasterManagerForTargetCoverage(String targetCoverageName) {
+        return this.getParentReader().getRasterManager(targetCoverageName);
     }
 }

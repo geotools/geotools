@@ -1505,7 +1505,11 @@ public class RasterManager {
         return metadataNames.toArray(new String[metadataNames.size()]);
     }
 
-    /** 
+    public ColorModel getDefaultCM() {
+        return defaultCM;
+    }
+
+    /**
      * Return the metadata value for the specified metadata name 
      * @param name the name of the metadata to be returned
      * @return
@@ -1565,5 +1569,9 @@ public class RasterManager {
 
         //
         return value;
+    }
+
+    public byte[][] getDefaultPalette() {
+        return defaultPalette;
     }
 }

@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -63,6 +64,7 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.FactoryRegistry;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
@@ -70,6 +72,8 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptor;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPI;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFinder;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
@@ -248,8 +252,27 @@ public class ImageMosaicConfigHandler {
      * @param indexer the indexer configuration
      */
     private List<GranuleAcceptor> initializeGranuleAcceptors(Indexer indexer) {
-        // TODO update to actually do something useful, just want to get a stub here for now
-        return Collections.singletonList(new DefaultGranuleAcceptor());
+        List<GranuleAcceptor> finalGranuleAcceptors = new ArrayList<>();
+
+        if (indexer != null) {
+            String granuleAcceptorsString = IndexerUtils.getParameter(Prop.GRANULE_ACCEPTORS, indexer);
+            Map<String, GranuleAcceptorFactorySPI> granuleAcceptorsMap =
+                    GranuleAcceptorFinder.getPropertiesCollectorSPI();
+            if (granuleAcceptors != null && !granuleAcceptors.isEmpty()) {
+                Arrays.stream(granuleAcceptorsString.split(",")).forEach((factoryImpl) -> {
+                    if (granuleAcceptorsMap.containsKey(factoryImpl)) {
+                        finalGranuleAcceptors.add(granuleAcceptorsMap.get(factoryImpl).create());
+                    }
+                });
+            }
+        }
+
+        //if we didn't find any granule acceptors in the index configuration, use the default
+        if (finalGranuleAcceptors.isEmpty()) {
+            finalGranuleAcceptors.add(new DefaultGranuleAcceptor());
+        }
+
+        return finalGranuleAcceptors;
     }
 
     /**
@@ -911,7 +934,7 @@ public class ImageMosaicConfigHandler {
                 .getPropertiesCollectorSPI();
 
         // parse the string
-        final List<PropertiesCollector> pcs = new ArrayList<PropertiesCollector>();
+        final List<PropertiesCollector> pcs = new ArrayList<>();
         for (Collector collector : collectorList) {
             PropertiesCollectorSPI selectedSPI = null;
             final String spiName = collector.getSpi();

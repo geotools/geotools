@@ -270,6 +270,8 @@ public class Utils {
         public final static String CACHING = "Caching";
 
         public static final String WRAP_STORE = "WrapStore";
+
+        public static final String GRANULE_ACCEPTORS = "GranuleAcceptors";
     }
 
     /**

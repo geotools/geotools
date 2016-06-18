@@ -21,6 +21,7 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.HeadlessException;
@@ -44,6 +45,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
@@ -97,6 +99,9 @@ public class LetterConflictTest extends TestCase {
 
         fs_line4 = ds_line.getFeatureSource("letterConflict4");
         bounds2 = new ReferencedEnvelope(20, 80, 23, 86, DefaultGeographicCRS.WGS84);
+
+        FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT,
+                TestData.getResource(this, "Vera.ttf").openStream()));
 
     }
 

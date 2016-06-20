@@ -132,11 +132,11 @@ public class GradientColorMapGeneratorTest {
         assertEquals(5, colorEntries.length);
 
         // checking colors and ranges
-        assertEntry(colorEntries[0], 9.99, Color.RED, 1f);
+        assertEntry(colorEntries[0], 10, Color.RED, 1f);
         assertEntry(colorEntries[1], 10, Color.BLACK, 1f);
         assertEntry(colorEntries[2], 55, Color.RED, 0.5f);
         assertEntry(colorEntries[3], 100, Color.BLUE, 0.1f);
-        assertEntry(colorEntries[4], 100.01, Color.BLACK, 0f);
+        assertEntry(colorEntries[4], 100, Color.BLACK, 0f);
     }
     
     @Test
@@ -151,11 +151,11 @@ public class GradientColorMapGeneratorTest {
         assertEquals(5, colorEntries.length);
 
         // checking colors and ranges
-        assertEntry(colorEntries[0], 9.99, Color.BLUE, 0.5f);
+        assertEntry(colorEntries[0], 10, Color.BLUE, 0.5f);
         assertEntry(colorEntries[1], 10, Color.BLACK, 1f);
         assertEntry(colorEntries[2], 55, Color.RED, 0.5f);
         assertEntry(colorEntries[3], 100, Color.BLUE, 0.1f);
-        assertEntry(colorEntries[4], 100.01, Color.RED, 0.5f);
+        assertEntry(colorEntries[4], 100, Color.RED, 0.5f);
     }
     
     @Test
@@ -170,11 +170,11 @@ public class GradientColorMapGeneratorTest {
         assertEquals(5, colorEntries.length);
 
         // checking colors and ranges
-        assertEntry(colorEntries[0], 9.99, Color.BLACK, 0f);
+        assertEntry(colorEntries[0], 10, Color.BLACK, 0f);
         assertEntry(colorEntries[1], 10, Color.BLACK, 1f);
         assertEntry(colorEntries[2], 55, Color.RED, 0.5f);
         assertEntry(colorEntries[3], 100, Color.BLUE, 0.1f);
-        assertEntry(colorEntries[4], 100.01, Color.BLACK, 0f);
+        assertEntry(colorEntries[4], 100, Color.BLACK, 0f);
 
     }
 

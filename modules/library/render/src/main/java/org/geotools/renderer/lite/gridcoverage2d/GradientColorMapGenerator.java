@@ -130,7 +130,8 @@ public class GradientColorMapGenerator {
         ColorMap colorMap = new ColorMapImpl();
 
         // Adding transparent color entry before the min
-        double start = min - (intervals ? 0 : 1E-2);
+        final double offset = 0 /* intervals ? 0 : 1E-2 */;
+        double start = min - offset;
         ColorMapEntry startEntry = entries[0].getColorMapEntry(start);
         fillColorInEntry(startEntry, beforeColor);
         colorMap.addColorMapEntry(startEntry);
@@ -149,7 +150,7 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(entries[numEntries - 1].getColorMapEntry(max));
 
         // Adding transparent color entry after the max
-        ColorMapEntry endEntry = entries[numEntries - 1].getColorMapEntry(max + 1E-2);
+        ColorMapEntry endEntry = entries[numEntries - 1].getColorMapEntry(max + offset);
         fillColorInEntry(endEntry, afterColor);
         colorMap.addColorMapEntry(endEntry);
 

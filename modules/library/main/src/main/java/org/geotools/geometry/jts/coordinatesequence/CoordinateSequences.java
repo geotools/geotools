@@ -18,11 +18,15 @@
  */
 package org.geotools.geometry.jts.coordinatesequence;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geotools.geometry.jts.CurvedGeometry;
 
 import com.vividsolutions.jts.algorithm.RobustDeterminant;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
 import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
@@ -197,6 +201,44 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
         }
         return 3;
     }
+    
+    /**
+     * Returns true if the two geometries are equal in N dimensions (normal geometry equality is only 2D)
+     * @param g1
+     * @param g2
+     * @return
+     */
+    public static boolean equalsND(Geometry g1, Geometry g2) {
+        // if not even in 2d, they are not equal
+        if(!g1.equals(g2)) {
+            return false;
+        }
+        int dim1 = coordinateDimension(g1);
+        int dim2 = coordinateDimension(g2);
+        if(dim1 != dim2) {
+            return false;
+        }
+        if(dim1 == 2) {
+            return true;
+        }
+        
+        // ok, 2d equal, it means they have the same list of geometries and coordinate sequences, in the same order
+        List<CoordinateSequence> sequences1 = CoordinateSequenceCollector.find(g1);
+        List<CoordinateSequence> sequences2 = CoordinateSequenceCollector.find(g2);
+        if(sequences1.size() != sequences2.size()) {
+            return false;
+        }
+        CoordinateSequenceComparator comparator = new CoordinateSequenceComparator();
+        for (int i = 0; i < sequences1.size(); i++) {
+            CoordinateSequence cs1 = sequences1.get(i);
+            CoordinateSequence cs2 = sequences2.get(i);
+            if(comparator.compare(cs1, cs2) != 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
     private static class CoordinateSequenceFinder implements CoordinateSequenceFilter {
         
@@ -226,6 +268,35 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
 
         public boolean isDone() {
             return firstSeqFound != null;
+        }
+
+        public boolean isGeometryChanged() {
+            return false;
+        }
+    
+    }
+    
+    private static class CoordinateSequenceCollector implements CoordinateSequenceFilter {
+        
+        public static List<CoordinateSequence> find(Geometry g) {
+            CoordinateSequenceCollector finder = new CoordinateSequenceCollector();
+            g.apply(finder);
+            return finder.getSequences();
+        }
+        
+        private List<CoordinateSequence> sequences = new ArrayList<>();
+        
+        public List<CoordinateSequence> getSequences() {
+            return sequences;
+        }
+
+        public void filter(CoordinateSequence seq, int i) {
+            sequences.add(seq);
+        
+        }
+
+        public boolean isDone() {
+            return false;
         }
 
         public boolean isGeometryChanged() {

@@ -18,11 +18,16 @@ package org.geotools.feature.simple;
 
 import junit.framework.TestCase;
 
+import static org.junit.Assert.assertNotEquals;
+
 import org.geotools.data.DataUtilities;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * 
@@ -33,12 +38,14 @@ public class SimpleFeatureImplTest extends TestCase {
     
     SimpleFeatureType schema;
     SimpleFeature feature;
+    WKTReader wkt;
     
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        schema = DataUtilities.createType("buildings", "the_geom:MultiPolygon,name:String,ADDRESS:String");
+        schema = DataUtilities.createType("buildings", "the_geom:Geometry,name:String,ADDRESS:String");
         feature = SimpleFeatureBuilder.build(schema, new Object[] {null, "ABC", "Random Road, 12"}, "building.1");
+        wkt = new WKTReader();
     }
     
     // see GEOT-2061
@@ -90,5 +97,24 @@ public class SimpleFeatureImplTest extends TestCase {
     	for (int i = 0; i < feature.getAttributeCount(); i++) {
     		assertEquals(feature.getAttribute(i), myFeature.getAttribute(i));
     	}
+    }
+    
+    public void testCompare2D() throws ParseException {
+        SimpleFeature f1 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f2 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f3 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(3 4)"), "ABC", "Random Road, 12"}, "building.1");
+        assertEquals(f1, f2);
+        assertNotEquals(f1, f3);
+    }
+    
+    public void testCompare3D() throws ParseException {
+        SimpleFeature f1 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(1 2)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f2 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(1 2 15)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f3 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(1 2 18)"), "ABC", "Random Road, 12"}, "building.1");
+        SimpleFeature f4 = SimpleFeatureBuilder.build(schema, new Object[] {wkt.read("POINT(1 2 18)"), "ABC", "Random Road, 12"}, "building.1");
+        assertNotEquals(f1, f2);
+        assertNotEquals(f1, f3);
+        assertNotEquals(f2, f3);
+        assertEquals(f3, f4);
     }
 }

@@ -34,6 +34,7 @@ import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.opengis.feature.GeometryAttribute;
@@ -50,6 +51,7 @@ import org.opengis.filter.identity.Identifier;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -446,9 +448,15 @@ public class SimpleFeatureImpl implements SimpleFeature {
                     return false;
                 }
             } else {
-                if (!values[i].equals(otherAtt)) {
+                if(values[i] instanceof Geometry) {
+                    if(!(otherAtt instanceof Geometry)) {
+                        return false;
+                    } else if(!CoordinateSequences.equalsND((Geometry) values[i], (Geometry) otherAtt)) {
+                        return false;
+                    }
+                } else if (!values[i].equals(otherAtt)) {
                     return false;
-                }
+                } 
             }
         }
 

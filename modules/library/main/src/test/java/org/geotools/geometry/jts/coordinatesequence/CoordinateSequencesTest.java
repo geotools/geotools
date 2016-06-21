@@ -1,6 +1,8 @@
 package org.geotools.geometry.jts.coordinatesequence;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
@@ -111,4 +113,22 @@ public class CoordinateSequencesTest {
         assertEquals(3, CoordinateSequences.coordinateDimension(geom));
     }
 
+    @Test
+    public void testEqualityND() {
+        Geometry g1 = liteGF.createPolygon(
+                liteGF.createLinearRing(liteCSF.create(new double[] { 1, 1, 100, 2, 1, 99, 2, 2,
+                        98, 1, 2, 97, 1, 1, 100 }, 3)), null);
+        Geometry g2 = liteGF.createPolygon(
+                liteGF.createLinearRing(liteCSF.create(new double[] { 1, 1, 2, 1, 2, 2,
+                        1, 2, 1, 1 }, 2)), null);
+        Geometry g3 = liteGF.createPolygon(
+                liteGF.createLinearRing(liteCSF.create(new double[] { 1, 1, 200, 2, 1, 199, 2, 2,
+                        198, 1, 2, 197, 1, 1, 200 }, 3)), null);
+        Geometry g4 = liteGF.createPolygon(
+                liteGF.createLinearRing(liteCSF.create(new double[] { 1, 1, 100, 2, 1, 99, 2, 2,
+                        98, 1, 2, 97, 1, 1, 100 }, 3)), null);
+        assertTrue(CoordinateSequences.equalsND(g1, g4));
+        assertFalse(CoordinateSequences.equalsND(g1, g2));
+        assertFalse(CoordinateSequences.equalsND(g1, g3));
+    }
 }

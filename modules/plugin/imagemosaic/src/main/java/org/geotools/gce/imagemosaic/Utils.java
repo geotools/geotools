@@ -272,6 +272,8 @@ public class Utils {
         public static final String WRAP_STORE = "WrapStore";
 
         public static final String GRANULE_ACCEPTORS = "GranuleAcceptors";
+
+        public static final String GEOMETRY_HANDLER = "GeometryHandlerFactorySPI";
     }
 
     /**

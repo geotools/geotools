@@ -87,6 +87,10 @@ import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.MosaicBeanBuilder;
+import org.geotools.gce.imagemosaic.geomhandler.DefaultGranuleGeometryHandler;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleGeometryHandler;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleGeometryHandlerFactoryFinder;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleGeometryHandlerFactorySPI;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
@@ -108,9 +112,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * This class is in responsible for creating and managing the catalog and the configuration of the mosaic
@@ -128,10 +130,6 @@ public class ImageMosaicConfigHandler {
          * do not use memory mapped buffers */
     private final static Boolean USE_MEMORY_MAPPED_BUFFERS = !System.getProperty("os.name",
             "Windows").contains("Windows");
-
-    private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
-
-    private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     private List<PropertiesCollector> propertiesCollectors = null;
 
@@ -162,6 +160,8 @@ public class ImageMosaicConfigHandler {
     private boolean useExistingSchema;
 
     private List<GranuleAcceptor> granuleAcceptors;
+
+    private GranuleGeometryHandler granuleGeomHandler;
 
     /**
      * Default constructor
@@ -232,6 +232,7 @@ public class ImageMosaicConfigHandler {
         }
 
         this.granuleAcceptors = this.initializeGranuleAcceptors(indexer);
+        this.granuleGeomHandler = this.initializeGeometryHandler(indexer);
 
         updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile, 
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
@@ -268,6 +269,27 @@ public class ImageMosaicConfigHandler {
         }
 
         return finalGranuleAcceptors;
+    }
+
+    private GranuleGeometryHandler initializeGeometryHandler(Indexer indexer) {
+
+        GranuleGeometryHandler geomHandler = null;
+        if (indexer != null) {
+            String geometryHandlerString = IndexerUtils.getParameter(Prop.GEOMETRY_HANDLER, indexer);
+            GranuleGeometryHandlerFactorySPI factory =
+                    GranuleGeometryHandlerFactoryFinder.getGeometryHandlersSPI()
+                            .get(geometryHandlerString);
+            if (factory != null) {
+                geomHandler = factory.create();
+            }
+        }
+
+        if (geomHandler == null) {
+            geomHandler = new DefaultGranuleGeometryHandler();
+        }
+
+
+        return geomHandler;
     }
 
     /**
@@ -507,71 +529,26 @@ public class ImageMosaicConfigHandler {
         final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
         final String fileLocation = prepareLocation(configuration, fileBeingProcessed);
         final String locationAttribute = configuration.getParameter(Prop.LOCATION_ATTRIBUTE);
+        MosaicConfigurationBean mosaicConfiguration = this.getConfigurations().get(coverageName);
+        GranuleGeometryHandler geometryHandler = this.getGeometryHandler();
 
         // getting input granules
         if (inputReader instanceof StructuredGridCoverage2DReader) {
-
             //
             // Case A: input reader is a StructuredGridCoverage2DReader. We can get granules from a source
             //
-            // Getting granule source and its input granules
-            final GranuleSource source = ((StructuredGridCoverage2DReader) inputReader).getGranules(coverageName, true);
-            final SimpleFeatureCollection originCollection = source.getGranules(null);
-            final DefaultProgressListener listener = new DefaultProgressListener();
+            handleStructuredGridCoverage(
+                    ((StructuredGridCoverage2DReader) inputReader).getGranules(coverageName, true),
+                    fileBeingProcessed, inputReader, propertiesCollectors, indexSchema, feature,
+                    collection, fileLocation, locationAttribute, mosaicConfiguration,
+                    geometryHandler);
 
-            // Getting attributes structure to be filled
-            final Collection<Property> destProps = feature.getProperties();
-            final Set<Name> destAttributes = new HashSet<>();
-            for (Property prop: destProps) {
-                destAttributes.add(prop.getName());
-            }
-
-            // Collecting granules
-            originCollection.accepts( new AbstractFeatureVisitor(){
-                public void visit( Feature feature ) {
-                    if(feature instanceof SimpleFeature)
-                    {
-                            // get the feature
-                            final SimpleFeature sourceFeature = (SimpleFeature) feature;
-                            final SimpleFeature destFeature = DataUtilities.template(indexSchema);
-                            Collection<Property> props = sourceFeature.getProperties();
-                            Name propName = null;
-                            Object propValue = null;
-
-                            // Assigning value to dest feature for matching attributes
-                            for (Property prop: props) {
-                                propName = prop.getName();
-                                propValue = prop.getValue();
-
-                                // Matching attributes are set
-                                if (destAttributes.contains(propName)) {
-                                    destFeature.setAttribute(propName, propValue);
-                                }
-                            }
-
-                            // Set location
-                            destFeature.setAttribute(locationAttribute, fileLocation);
-
-                            // delegate remaining attributes set to properties collector
-                            updateAttributesFromCollectors(destFeature, fileBeingProcessed, inputReader, propertiesCollectors);
-                            collection.add(destFeature);
-
-                            // check if something bad occurred
-                            if(listener.isCanceled()||listener.hasExceptions()){
-                                if(listener.hasExceptions())
-                                    throw new RuntimeException(listener.getExceptions().peek());
-                                else
-                                    throw new IllegalStateException("Feature visitor has been canceled");
-                            }
-                    }
-                }
-            }, listener);
         } else {
             //
             // Case B: old style reader, proceed with classic way, using properties collectors
             //
-            feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
-                    GEOM_FACTORY.toGeometry(new ReferencedEnvelope(envelope)));
+            geometryHandler.handleGeometry(
+                    inputReader, feature, indexSchema, mosaicConfiguration);
             feature.setAttribute(locationAttribute, fileLocation);
 
             updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);
@@ -585,6 +562,86 @@ public class ImageMosaicConfigHandler {
 
         // Add the granules collection to the store
         store.addGranules(collection);
+    }
+
+    private void handleStructuredGridCoverage(GranuleSource granules, final File fileBeingProcessed,
+            final GridCoverage2DReader inputReader,
+            final List<PropertiesCollector> propertiesCollectors,
+            final SimpleFeatureType indexSchema, SimpleFeature feature,
+            final ListFeatureCollection collection, final String fileLocation,
+            final String locationAttribute, final MosaicConfigurationBean mosaicConfiguration,
+            final GranuleGeometryHandler geometryHandler) throws IOException
+    {
+
+        // Getting granule source and its input granules
+        final GranuleSource source = granules;
+        final SimpleFeatureCollection originCollection = source.getGranules(null);
+        final DefaultProgressListener listener = new DefaultProgressListener();
+
+        // Getting attributes structure to be filled
+        final Collection<Property> destProps = feature.getProperties();
+        final Set<Name> destAttributes = new HashSet<>();
+        for (Property prop: destProps) {
+            destAttributes.add(prop.getName());
+        }
+
+        // Collecting granules
+        originCollection.accepts( new AbstractFeatureVisitor(){
+            public void visit( Feature feature ) {
+                if(feature instanceof SimpleFeature)
+                {
+                        // get the feature
+                        final SimpleFeature sourceFeature = (SimpleFeature) feature;
+                        final SimpleFeature destFeature = DataUtilities.template(indexSchema);
+                        Collection<Property> props = sourceFeature.getProperties();
+                        Name propName = null;
+                        Object propValue = null;
+
+                        // Assigning value to dest feature for matching attributes
+                        for (Property prop: props) {
+                            Name geometryName = sourceFeature.getFeatureType().getGeometryDescriptor()
+                                    .getName();
+                            if (prop.getName().equals(geometryName)) {
+                                geometryHandler.handleGeometry(
+                                        (StructuredGridCoverage2DReader) inputReader,
+                                        destFeature,
+                                        destFeature.getFeatureType(),
+                                        sourceFeature,
+                                        sourceFeature.getFeatureType(),
+                                        mosaicConfiguration);
+                            }
+                            else {
+                                propName = prop.getName();
+                                propValue = prop.getValue();
+
+                                // Matching attributes are set
+                                if (destAttributes.contains(propName)) {
+                                    destFeature.setAttribute(propName, propValue);
+                                }
+                            }
+                        }
+
+                        // Set location
+                        destFeature.setAttribute(locationAttribute, fileLocation);
+
+                        // delegate remaining attributes set to properties collector
+                        updateAttributesFromCollectors(destFeature, fileBeingProcessed, inputReader, propertiesCollectors);
+                        collection.add(destFeature);
+
+                        // check if something bad occurred
+                        if(listener.isCanceled()||listener.hasExceptions()){
+                            if(listener.hasExceptions())
+                                throw new RuntimeException(listener.getExceptions().peek());
+                            else
+                                throw new IllegalStateException("Feature visitor has been canceled");
+                        }
+                }
+            }
+        }, listener);
+    }
+
+    private GranuleGeometryHandler getGeometryHandler() {
+        return this.granuleGeomHandler;
     }
 
     /**
@@ -1339,19 +1396,19 @@ public class ImageMosaicConfigHandler {
             final String inputCoverageName, File fileBeingProcessed, int fileIndex,
             double numFiles, DefaultTransaction transaction) throws IOException {
 
-        final String coverageName = getTargetCoverageName(coverageReader, inputCoverageName);
+        final String targetCoverageName = getTargetCoverageName(coverageReader, inputCoverageName);
 
         final Indexer indexer = getRunConfiguration().getIndexer();
 
         // checking whether the coverage already exists
-        final boolean coverageExists = coverageExists(coverageName);
+        final boolean coverageExists = coverageExists(targetCoverageName);
         MosaicConfigurationBean mosaicConfiguration = null;
         MosaicConfigurationBean currentConfigurationBean = null;
         RasterManager rasterManager = null;
         if (coverageExists) {
 
             // Get the manager for this coverage so it can be updated
-            rasterManager = getParentReader().getRasterManager(coverageName);
+            rasterManager = getParentReader().getRasterManager(targetCoverageName);
             mosaicConfiguration = rasterManager.getConfiguration();
         }
 
@@ -1404,12 +1461,12 @@ public class ImageMosaicConfigHandler {
             configBuilder.setCrs(actualCRS);
             configBuilder.setLevels(resolutionLevels);
             configBuilder.setLevelsNum(numberOfLevels);
-            configBuilder.setName(coverageName);
-            configBuilder.setTimeAttribute(IndexerUtils.getAttribute(coverageName,
+            configBuilder.setName(targetCoverageName);
+            configBuilder.setTimeAttribute(IndexerUtils.getAttribute(targetCoverageName,
                     Utils.TIME_DOMAIN, indexer));
-            configBuilder.setElevationAttribute(IndexerUtils.getAttribute(coverageName,
+            configBuilder.setElevationAttribute(IndexerUtils.getAttribute(targetCoverageName,
                     Utils.ELEVATION_DOMAIN, indexer));
-            configBuilder.setAdditionalDomainAttributes(IndexerUtils.getAttribute(coverageName,
+            configBuilder.setAdditionalDomainAttributes(IndexerUtils.getAttribute(targetCoverageName,
                     Utils.ADDITIONAL_DOMAIN, indexer));
 
             final Hints runHints = getRunConfiguration().getHints();
@@ -1443,7 +1500,7 @@ public class ImageMosaicConfigHandler {
             if (configuredTypeName != null) {
                 catalogConfigurationBean.setTypeName(configuredTypeName);
             } else {
-                catalogConfigurationBean.setTypeName(coverageName);
+                catalogConfigurationBean.setTypeName(targetCoverageName);
             }
             configBuilder.setCatalogConfigurationBean(catalogConfigurationBean);
             configBuilder.setCheckAuxiliaryMetadata(IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
@@ -1458,7 +1515,7 @@ public class ImageMosaicConfigHandler {
                 // creating the schema
                 SimpleFeatureType indexSchema = createSchema(getRunConfiguration(),
                         currentConfigurationBean.getName(), actualCRS);
-                getParentReader().createCoverage(coverageName, indexSchema);
+                getParentReader().createCoverage(targetCoverageName, indexSchema);
             }
             getConfigurations().put(currentConfigurationBean.getName(), currentConfigurationBean);
 
@@ -1506,7 +1563,7 @@ public class ImageMosaicConfigHandler {
         // STEP 3
         if (!useExistingSchema) {
             // create and store features
-            updateCatalog(coverageName, fileBeingProcessed, coverageReader,
+            updateCatalog(targetCoverageName, fileBeingProcessed, coverageReader,
                     getParentReader(), catalogConfig, envelope, transaction,
                     getPropertiesCollectors());
         }

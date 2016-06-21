@@ -58,7 +58,8 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     private PropertyFeatureReader delegate;
     File write;
 
-    WKTWriter wktWriter = new WKTWriter2();
+    // the writer will dump the z only when avaialble, so 3 can be the default
+    WKTWriter wktWriter = new WKTWriter2(3);
     BufferedWriter writer;
     SimpleFeatureType type;
     
@@ -210,8 +211,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             //String typeName = live.getFeatureType().getTypeName();
             //Transaction autoCommit = Transaction.AUTO_COMMIT;
             if (origional != null) {
-                ReferencedEnvelope bounds = new ReferencedEnvelope();
-                bounds.include(live.getBounds());
+                ReferencedEnvelope bounds = ReferencedEnvelope.reference(live.getBounds());
                 bounds.include(origional.getBounds());
                 state.fireFeatureUpdated(featureSource, live, bounds);
                 //store.listenerManager.fireFeaturesChanged(typeName, autoCommit, bounds, false);

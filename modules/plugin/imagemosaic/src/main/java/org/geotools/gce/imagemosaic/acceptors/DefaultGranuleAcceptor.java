@@ -48,7 +48,7 @@ public class DefaultGranuleAcceptor implements GranuleAcceptor {
         if (config != null) {
             RasterManager rasterManager =
                     mosaicConfigHandler.getRasterManagerForTargetCoverage(targetCoverageName);
-            return checkCRS(coverage, config) && checkColorModel(coverage, config, rasterManager);
+            return checkCRS(coverage, config, coverageName) && checkColorModel(coverage, config, rasterManager, coverageName);
         }
         else {
             //can't validate with empty configuration. usually this means we have a brand new mosaic
@@ -59,12 +59,12 @@ public class DefaultGranuleAcceptor implements GranuleAcceptor {
     }
 
     private boolean checkColorModel(GridCoverage2DReader coverage, MosaicConfigurationBean config,
-            RasterManager rasterManager)
+            RasterManager rasterManager, String inputCoverageName)
             throws IOException
     {
         byte[][] palette = config.getPalette();
         ColorModel colorModel = config.getColorModel();
-        ColorModel actualCM = coverage.getImageLayout().getColorModel(null);
+        ColorModel actualCM = coverage.getImageLayout(inputCoverageName).getColorModel(null);
         if (colorModel == null) {
             colorModel = rasterManager.getDefaultCM();
         }
@@ -74,9 +74,9 @@ public class DefaultGranuleAcceptor implements GranuleAcceptor {
         return !Utils.checkColorModels(colorModel, palette, actualCM);
     }
 
-    private boolean checkCRS(GridCoverage2DReader coverage, MosaicConfigurationBean config) {
+    private boolean checkCRS(GridCoverage2DReader coverage, MosaicConfigurationBean config, String inputCoverageName) {
         CoordinateReferenceSystem expectedCRS = config.getCrs();
-        CoordinateReferenceSystem actualCRS = coverage.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem actualCRS = coverage.getCoordinateReferenceSystem(inputCoverageName);
 
         return CRS.equalsIgnoreMetadata(expectedCRS, actualCRS);
     }

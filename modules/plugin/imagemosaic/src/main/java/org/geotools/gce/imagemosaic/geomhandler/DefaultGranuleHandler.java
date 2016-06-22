@@ -45,9 +45,9 @@ public class DefaultGranuleHandler implements GranuleHandler {
         if(inputReader instanceof StructuredGridCoverage2DReader){
             Object geometryAttribute = feature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
             targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute); 
-        }else {
+        } else {
             Envelope coverageEnvelope = inputReader.getOriginalEnvelope();
-            feature.setAttribute(inputFeatureType.getGeometryDescriptor().getLocalName(),
+            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getLocalName(),
                     GEOM_FACTORY.toGeometry(new ReferencedEnvelope(coverageEnvelope)));
         }
 

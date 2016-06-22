@@ -26,17 +26,17 @@ import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 
 /**
- * Access the granule geometry handler factories
+ * Access the granule handler factories
  */
-public class GranuleGeometryHandlerFactoryFinder {
+public class GranuleHandlerFactoryFinder {
     private static FactoryCreator registry;
 
-    public static synchronized Map<String, GranuleGeometryHandlerFactorySPI> getGeometryHandlersSPI() {
+    public static synchronized Map<String, GranuleHandlerFactorySPI> getGeometryHandlersSPI() {
         // get all GridFormatFactorySpi implementations
-        final Iterator<GranuleGeometryHandlerFactorySPI> it = getServiceRegistry().getServiceProviders(GranuleGeometryHandlerFactorySPI.class, true);
-        Map<String, GranuleGeometryHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
+        final Iterator<GranuleHandlerFactorySPI> it = getServiceRegistry().getServiceProviders(GranuleHandlerFactorySPI.class, true);
+        Map<String, GranuleHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
         while (it.hasNext()) {
-            GranuleGeometryHandlerFactorySPI GranuleGeometryHandlerFactorySPI = it.next();
+            GranuleHandlerFactorySPI GranuleGeometryHandlerFactorySPI = it.next();
             acceptorFactorySPIMap.put(GranuleGeometryHandlerFactorySPI.getClass().getName(),
                     GranuleGeometryHandlerFactorySPI);
         }
@@ -49,7 +49,7 @@ public class GranuleGeometryHandlerFactoryFinder {
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry = new FactoryCreator(Arrays.asList(new Class<?>[] { GranuleGeometryHandlerFactorySPI.class }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] { GranuleHandlerFactorySPI.class }));
         }
         return registry;
     }

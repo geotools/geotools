@@ -20,9 +20,9 @@ package org.geotools.gce.imagemosaic.geomhandler;
 /**
  * Default factory for geometry handler
  */
-public class DefaultGeometryHandlerFactory implements GranuleGeometryHandlerFactorySPI {
+public class DefaultGranuleHandlerFactory implements GranuleHandlerFactorySPI {
     @Override
-    public GranuleGeometryHandler create() {
-        return new DefaultGranuleGeometryHandler();
+    public GranuleHandler create() {
+        return new DefaultGranuleHandler();
     }
 }

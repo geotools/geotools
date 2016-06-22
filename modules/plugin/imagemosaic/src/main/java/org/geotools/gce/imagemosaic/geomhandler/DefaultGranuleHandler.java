@@ -29,28 +29,27 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * Default granule geometry handling
+ * Default granule handling
  */
-public class DefaultGranuleGeometryHandler implements GranuleGeometryHandler {
+public class DefaultGranuleHandler implements GranuleHandler {
 
     private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
     private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     @Override
-    public void handleGeometry(GridCoverage2DReader inputReader, SimpleFeature feature,
-            SimpleFeatureType indexSchema, MosaicConfigurationBean mosaicConfigurationBean) {
-        Envelope coverageEnvelope = inputReader.getOriginalEnvelope();
-        feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
-                GEOM_FACTORY.toGeometry(new ReferencedEnvelope(coverageEnvelope)));
-    }
-
-    @Override
-    public void handleGeometry(StructuredGridCoverage2DReader inputReader,
+    public void handleGeometry(GridCoverage2DReader inputReader,
             SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
-            SimpleFeature inputFeature, SimpleFeatureType inputFeatureType,
+            SimpleFeature feature, SimpleFeatureType inputFeatureType,
             MosaicConfigurationBean mosaicConfiguration) {
 
-        Object geometryAttribute = inputFeature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
-        targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute);
+        if(inputReader instanceof StructuredGridCoverage2DReader){
+            Object geometryAttribute = feature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
+            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute); 
+        }else {
+            Envelope coverageEnvelope = inputReader.getOriginalEnvelope();
+            feature.setAttribute(inputFeatureType.getGeometryDescriptor().getLocalName(),
+                    GEOM_FACTORY.toGeometry(new ReferencedEnvelope(coverageEnvelope)));
+        }
+
     }
 }

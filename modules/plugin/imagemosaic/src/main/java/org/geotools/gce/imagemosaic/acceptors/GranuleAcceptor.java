@@ -22,10 +22,6 @@ import java.io.IOException;
 
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
-import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers;
-import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
-import org.opengis.coverage.grid.GridCoverageReader;
 
 /**
  * Class responsible for determining whether a given coverage should or should not be part of the

@@ -20,15 +20,12 @@ package org.geotools.gce.imagemosaic.acceptors;
 import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
-import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

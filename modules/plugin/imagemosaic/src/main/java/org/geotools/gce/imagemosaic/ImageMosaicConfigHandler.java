@@ -87,10 +87,10 @@ import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.MosaicBeanBuilder;
-import org.geotools.gce.imagemosaic.geomhandler.DefaultGranuleGeometryHandler;
-import org.geotools.gce.imagemosaic.geomhandler.GranuleGeometryHandler;
-import org.geotools.gce.imagemosaic.geomhandler.GranuleGeometryHandlerFactoryFinder;
-import org.geotools.gce.imagemosaic.geomhandler.GranuleGeometryHandlerFactorySPI;
+import org.geotools.gce.imagemosaic.geomhandler.DefaultGranuleHandler;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleHandler;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleHandlerFactoryFinder;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleHandlerFactorySPI;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
@@ -161,7 +161,7 @@ public class ImageMosaicConfigHandler {
 
     private List<GranuleAcceptor> granuleAcceptors;
 
-    private GranuleGeometryHandler granuleGeomHandler;
+    private GranuleHandler granuleGeomHandler;
 
     /**
      * Default constructor
@@ -271,13 +271,13 @@ public class ImageMosaicConfigHandler {
         return finalGranuleAcceptors;
     }
 
-    private GranuleGeometryHandler initializeGeometryHandler(Indexer indexer) {
+    private GranuleHandler initializeGeometryHandler(Indexer indexer) {
 
-        GranuleGeometryHandler geomHandler = null;
+        GranuleHandler geomHandler = null;
         if (indexer != null) {
             String geometryHandlerString = IndexerUtils.getParameter(Prop.GEOMETRY_HANDLER, indexer);
-            GranuleGeometryHandlerFactorySPI factory =
-                    GranuleGeometryHandlerFactoryFinder.getGeometryHandlersSPI()
+            GranuleHandlerFactorySPI factory =
+                    GranuleHandlerFactoryFinder.getGeometryHandlersSPI()
                             .get(geometryHandlerString);
             if (factory != null) {
                 geomHandler = factory.create();
@@ -285,7 +285,7 @@ public class ImageMosaicConfigHandler {
         }
 
         if (geomHandler == null) {
-            geomHandler = new DefaultGranuleGeometryHandler();
+            geomHandler = new DefaultGranuleHandler();
         }
 
 
@@ -530,7 +530,7 @@ public class ImageMosaicConfigHandler {
         final String fileLocation = prepareLocation(configuration, fileBeingProcessed);
         final String locationAttribute = configuration.getParameter(Prop.LOCATION_ATTRIBUTE);
         MosaicConfigurationBean mosaicConfiguration = this.getConfigurations().get(coverageName);
-        GranuleGeometryHandler geometryHandler = this.getGeometryHandler();
+        GranuleHandler geometryHandler = this.getGeometryHandler();
 
         // getting input granules
         if (inputReader instanceof StructuredGridCoverage2DReader) {
@@ -540,15 +540,14 @@ public class ImageMosaicConfigHandler {
             handleStructuredGridCoverage(
                     ((StructuredGridCoverage2DReader) inputReader).getGranules(coverageName, true),
                     fileBeingProcessed, inputReader, propertiesCollectors, indexSchema, feature,
-                    collection, fileLocation, locationAttribute, mosaicConfiguration,
-                    geometryHandler);
+                    collection, fileLocation, locationAttribute, mosaicConfiguration);
 
         } else {
             //
             // Case B: old style reader, proceed with classic way, using properties collectors
             //
             geometryHandler.handleGeometry(
-                    inputReader, feature, indexSchema, mosaicConfiguration);
+                    inputReader, feature, indexSchema,null,null, mosaicConfiguration);
             feature.setAttribute(locationAttribute, fileLocation);
 
             updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);
@@ -569,8 +568,7 @@ public class ImageMosaicConfigHandler {
             final List<PropertiesCollector> propertiesCollectors,
             final SimpleFeatureType indexSchema, SimpleFeature feature,
             final ListFeatureCollection collection, final String fileLocation,
-            final String locationAttribute, final MosaicConfigurationBean mosaicConfiguration,
-            final GranuleGeometryHandler geometryHandler) throws IOException
+            final String locationAttribute, final MosaicConfigurationBean mosaicConfiguration) throws IOException
     {
 
         // Getting granule source and its input granules
@@ -586,6 +584,7 @@ public class ImageMosaicConfigHandler {
         }
 
         // Collecting granules
+        final GranuleHandler geometryHandler=this.granuleGeomHandler;
         originCollection.accepts( new AbstractFeatureVisitor(){
             public void visit( Feature feature ) {
                 if(feature instanceof SimpleFeature)
@@ -640,7 +639,7 @@ public class ImageMosaicConfigHandler {
         }, listener);
     }
 
-    private GranuleGeometryHandler getGeometryHandler() {
+    private GranuleHandler getGeometryHandler() {
         return this.granuleGeomHandler;
     }
 

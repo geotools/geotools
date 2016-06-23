@@ -180,7 +180,7 @@ public class ContentState {
 
         featureType = state.featureType;
         count = state.count;
-        bounds = state.bounds == null ? null : new ReferencedEnvelope( state.bounds );
+        bounds = state.bounds == null ? null : ReferencedEnvelope.reference(state.bounds);
         batchFeatureEvent = null;
    }
 
@@ -309,7 +309,7 @@ public class ContentState {
             return; // nobody is listenting
 
         Filter filter = idFilter(feature);
-        ReferencedEnvelope bounds = new ReferencedEnvelope(feature.getBounds());
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
         if( bounds != null ){
             bounds.expandToInclude(before);
         }
@@ -329,7 +329,7 @@ public class ContentState {
             return;
 
         Filter filter = idFilter(feature);
-        ReferencedEnvelope bounds = new ReferencedEnvelope(feature.getBounds());
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
 
         FeatureEvent event = new FeatureEvent(source, Type.ADDED, bounds, filter);
 
@@ -341,7 +341,7 @@ public class ContentState {
             return;
 
         Filter filter = idFilter(feature);
-        ReferencedEnvelope bounds = new ReferencedEnvelope(feature.getBounds());
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
 
         FeatureEvent event = new FeatureEvent(source, Type.REMOVED, bounds, filter);
 

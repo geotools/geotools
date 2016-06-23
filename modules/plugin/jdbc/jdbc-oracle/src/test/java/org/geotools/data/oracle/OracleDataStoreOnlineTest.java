@@ -99,6 +99,8 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         	vBuffer.append("x");
         }
         fBuilder.add(vBuffer.toString());
+     // used to fail here
+        dataStore.createSchema(featureType);
     }
 
 }

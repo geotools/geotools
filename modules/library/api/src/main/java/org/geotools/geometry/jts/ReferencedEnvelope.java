@@ -533,7 +533,8 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             ensureCompatibleReferenceSystem( bbox );
         }
         return new ReferencedEnvelope(super.intersection(env), this.getCoordinateReferenceSystem());
-    }    
+    }  
+    
     /**
      * Include the provided bounding box, expanding as necessary.
      *
@@ -546,7 +547,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         else {
             ensureCompatibleReferenceSystem(bbox);
         }
-        super.expandToInclude(getJTSEnvelope(bbox));        
+        expandToInclude(ReferencedEnvelope.reference(bbox));
     }
     /**
      * Expand to include the provided DirectPosition

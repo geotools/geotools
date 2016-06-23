@@ -16,9 +16,7 @@
  */
 package org.geotools.data.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,13 +29,18 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.referencing.CRS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
@@ -242,6 +245,30 @@ public class PropertyDataStore3DTest {
         getOneFeature("full3d.poly");
         getOneFeature("full3d.point");
         assertEquals(2, fs.getCount(Query.ALL));
+    }
+    
+    @Test
+    public void testBounds() throws Exception {
+        ContentFeatureSource fs = store.getFeatureSource("full3d");
+        ContentFeatureCollection fc = fs.getFeatures(Filter.INCLUDE);
+        // used to throw an exception here
+        ReferencedEnvelope3D bounds = (ReferencedEnvelope3D) fc.getBounds();
+        assertNotNull(bounds);
+        assertFalse(bounds.isEmpty());
+        assertEquals(CRS.decode("EPSG:7415"), bounds.getCoordinateReferenceSystem());
+        assertEquals(12, bounds.getMinZ(), 0d);
+        assertEquals(16, bounds.getMaxZ(), 0d);
+    }
+    
+    @Test
+    public void testEmptyBounds() throws Exception {
+        ContentFeatureSource fs = store.getFeatureSource("full3d");
+        ContentFeatureCollection fc = fs.getFeatures(Filter.EXCLUDE);
+        // used to throw an exception here
+        ReferencedEnvelope bounds = fc.getBounds();
+        assertNotNull(bounds);
+        assertTrue(bounds.isEmpty());
+        assertEquals(CRS.decode("EPSG:7415"), bounds.getCoordinateReferenceSystem());
     }
 
     private SimpleFeature getOneFeature(String featureId) throws IOException {

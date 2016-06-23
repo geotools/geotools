@@ -65,7 +65,7 @@ import org.geotools.factory.Hints.Key;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.Utils.Prop;
-import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptor;
+import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptorFactory;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPI;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFinder;
@@ -254,18 +254,16 @@ public class ImageMosaicConfigHandler {
             String granuleAcceptorsString = IndexerUtils.getParameter(Prop.GRANULE_ACCEPTORS, indexer);
             Map<String, GranuleAcceptorFactorySPI> granuleAcceptorsMap =
                     GranuleAcceptorFinder.getPropertiesCollectorSPI();
-            if (granuleAcceptors != null && !granuleAcceptors.isEmpty()) {
-                Arrays.stream(granuleAcceptorsString.split(",")).forEach((factoryImpl) -> {
-                    if (granuleAcceptorsMap.containsKey(factoryImpl)) {
-                        finalGranuleAcceptors.add(granuleAcceptorsMap.get(factoryImpl).create());
-                    }
-                });
-            }
+            Arrays.stream(granuleAcceptorsString.split(",")).forEach((factoryImpl) -> {
+                if (granuleAcceptorsMap.containsKey(factoryImpl)) {
+                    finalGranuleAcceptors.addAll(granuleAcceptorsMap.get(factoryImpl).create());
+                }
+            });
         }
 
         //if we didn't find any granule acceptors in the index configuration, use the default
         if (finalGranuleAcceptors.isEmpty()) {
-            finalGranuleAcceptors.add(new DefaultGranuleAcceptor());
+            finalGranuleAcceptors.addAll(new DefaultGranuleAcceptorFactory().create());
         }
 
         return finalGranuleAcceptors;
@@ -1151,6 +1149,15 @@ public class ImageMosaicConfigHandler {
         // wildcard
         if (props.containsKey(Prop.WILDCARD))
             IndexerUtils.setParam(parameters, props, Prop.WILDCARD);
+
+        //granule acceptors string
+        if (props.containsKey(Prop.GRANULE_ACCEPTORS)) {
+            IndexerUtils.setParam(parameters, props, Prop.GRANULE_ACCEPTORS);
+        }
+
+        if (props.containsKey(Prop.GEOMETRY_HANDLER)) {
+            IndexerUtils.setParam(parameters, props, Prop.GEOMETRY_HANDLER);
+        }
 
         // schema
         if (props.containsKey(Prop.SCHEMA)) {

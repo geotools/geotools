@@ -34,6 +34,7 @@ public class GranuleAcceptorFinder {
 
     public static synchronized Map<String, GranuleAcceptorFactorySPI> getPropertiesCollectorSPI() {
         // get all GridFormatFactorySpi implementations
+        getServiceRegistry().scanForPlugins();
         final Iterator<GranuleAcceptorFactorySPI> it = getServiceRegistry().getServiceProviders(GranuleAcceptorFactorySPI.class, true);
         Map<String, GranuleAcceptorFactorySPI> acceptorFactorySPIMap = new HashMap<>();
         while (it.hasNext()) {

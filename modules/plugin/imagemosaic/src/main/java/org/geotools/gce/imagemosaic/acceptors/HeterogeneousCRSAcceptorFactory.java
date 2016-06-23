@@ -17,12 +17,15 @@
 
 package org.geotools.gce.imagemosaic.acceptors;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Factory for creating GranuleAcceptor instances
+ * Acceptor factory that only checks color model limitations
  */
-public interface GranuleAcceptorFactorySPI {
-    List<GranuleAcceptor> create();
+public class HeterogeneousCRSAcceptorFactory implements GranuleAcceptorFactorySPI {
+    @Override
+    public List<GranuleAcceptor> create() {
+        return Collections.singletonList(new ColorCheckAcceptor());
+    }
 }
-

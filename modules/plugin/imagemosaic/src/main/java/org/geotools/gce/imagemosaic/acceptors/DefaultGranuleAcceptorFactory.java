@@ -17,13 +17,16 @@
 
 package org.geotools.gce.imagemosaic.acceptors;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Factory to create the default granule acceptor
  */
 public class DefaultGranuleAcceptorFactory implements GranuleAcceptorFactorySPI {
     @Override
-    public GranuleAcceptor create() {
-        return new DefaultGranuleAcceptor();
+    public List<GranuleAcceptor> create() {
+        return Arrays.asList(new ColorCheckAcceptor(), new CRSCheckAcceptor());
     }
 
 }

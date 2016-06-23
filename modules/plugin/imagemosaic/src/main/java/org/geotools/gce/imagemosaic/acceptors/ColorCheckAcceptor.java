@@ -26,26 +26,23 @@ import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.referencing.CRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Default predicate for accepting/rejecting granules in an image mosaic
+ * Check the color model of the input granule
  */
-public class DefaultGranuleAcceptor implements GranuleAcceptor {
+public class ColorCheckAcceptor implements GranuleAcceptor {
     @Override
-    public boolean accepts(GridCoverage2DReader coverage, String coverageName,
+    public boolean accepts(GridCoverage2DReader coverage, String inputCoverageName,
             File fileBeingProcessed, ImageMosaicConfigHandler mosaicConfigHandler)
             throws IOException {
         String targetCoverageName = mosaicConfigHandler
-                .getTargetCoverageName(coverage, coverageName);
+                .getTargetCoverageName(coverage, inputCoverageName);
         MosaicConfigurationBean config = mosaicConfigHandler.getConfigurations().get(
                 targetCoverageName);
-
         if (config != null) {
             RasterManager rasterManager =
                     mosaicConfigHandler.getRasterManagerForTargetCoverage(targetCoverageName);
-            return checkCRS(coverage, config, coverageName) && checkColorModel(coverage, config, rasterManager, coverageName);
+            return checkColorModel(coverage, config, rasterManager, inputCoverageName);
         }
         else {
             //can't validate with empty configuration. usually this means we have a brand new mosaic
@@ -69,12 +66,5 @@ public class DefaultGranuleAcceptor implements GranuleAcceptor {
             palette = rasterManager.getDefaultPalette();
         }
         return !Utils.checkColorModels(colorModel, palette, actualCM);
-    }
-
-    private boolean checkCRS(GridCoverage2DReader coverage, MosaicConfigurationBean config, String inputCoverageName) {
-        CoordinateReferenceSystem expectedCRS = config.getCrs();
-        CoordinateReferenceSystem actualCRS = coverage.getCoordinateReferenceSystem(inputCoverageName);
-
-        return CRS.equalsIgnoreMetadata(expectedCRS, actualCRS);
     }
 }

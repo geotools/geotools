@@ -18,6 +18,7 @@ package org.geotools.data.oracle;
 
 import java.sql.Date;
 
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -76,6 +77,28 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         SimpleFeatureType featureType = builder.buildFeatureType();
         // used to fail here
         dataStore.createSchema(featureType);
+    }
+    
+    public void testCreateLongVarChar() throws Exception {
+       SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(tname("ft2"));
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.add(aname("geometry_one_two_three_four"), Geometry.class);
+        builder.add(aname("longvar"), String.class);
+        
+
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        
+        dataStore.createSchema(featureType);
+        SimpleFeatureBuilder fBuilder = new SimpleFeatureBuilder(featureType);
+        fBuilder.add(null);
+        StringBuffer vBuffer = new StringBuffer(4000);
+        //to be honest I can't tell from the oracle docs if 4000 or 3999 is the actual limit
+        for(int i=0;i<3999;i++) {
+        	vBuffer.append("x");
+        }
+        fBuilder.add(vBuffer.toString());
     }
 
 }

@@ -91,6 +91,7 @@ import org.geotools.gce.imagemosaic.geomhandler.DefaultGranuleHandler;
 import org.geotools.gce.imagemosaic.geomhandler.GranuleHandler;
 import org.geotools.gce.imagemosaic.geomhandler.GranuleHandlerFactoryFinder;
 import org.geotools.gce.imagemosaic.geomhandler.GranuleHandlerFactorySPI;
+import org.geotools.gce.imagemosaic.geomhandler.GranuleHandlingException;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
@@ -513,7 +514,8 @@ public class ImageMosaicConfigHandler {
             final CatalogBuilderConfiguration configuration,
             final GeneralEnvelope envelope,
             final DefaultTransaction transaction,
-            final List<PropertiesCollector> propertiesCollectors) throws IOException {
+            final List<PropertiesCollector> propertiesCollectors)
+            throws IOException, GranuleHandlingException {
 
         // Retrieving the store and the destination schema
         final GranuleStore store = (GranuleStore) mosaicReader.getGranules(coverageName, false);
@@ -599,13 +601,17 @@ public class ImageMosaicConfigHandler {
                             Name geometryName = sourceFeature.getFeatureType().getGeometryDescriptor()
                                     .getName();
                             if (prop.getName().equals(geometryName)) {
-                                geometryHandler.handleGeometry(
-                                        (StructuredGridCoverage2DReader) inputReader,
-                                        destFeature,
-                                        destFeature.getFeatureType(),
-                                        sourceFeature,
-                                        sourceFeature.getFeatureType(),
-                                        mosaicConfiguration);
+                                try {
+                                    geometryHandler.handleGeometry(
+                                            (StructuredGridCoverage2DReader) inputReader,
+                                            destFeature,
+                                            destFeature.getFeatureType(),
+                                            sourceFeature,
+                                            sourceFeature.getFeatureType(),
+                                            mosaicConfiguration);
+                                } catch (GranuleHandlingException e) {
+                                    throw new RuntimeException("Error handling structured coverage granule", e);
+                                }
                             }
                             else {
                                 propName = prop.getName();
@@ -1400,7 +1406,8 @@ public class ImageMosaicConfigHandler {
      */
     public void updateConfiguration(GridCoverage2DReader coverageReader,
             final String inputCoverageName, File fileBeingProcessed, int fileIndex,
-            double numFiles, DefaultTransaction transaction) throws IOException {
+            double numFiles, DefaultTransaction transaction)
+            throws IOException, GranuleHandlingException {
 
         final String targetCoverageName = getTargetCoverageName(coverageReader, inputCoverageName);
 

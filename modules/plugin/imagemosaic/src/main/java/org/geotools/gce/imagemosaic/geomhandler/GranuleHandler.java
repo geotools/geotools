@@ -47,5 +47,5 @@ public interface GranuleHandler {
             SimpleFeatureType targetFeatureType,
             SimpleFeature inputFeature,
             SimpleFeatureType inputFeatureType,
-            MosaicConfigurationBean mosaicConfiguration);
+            MosaicConfigurationBean mosaicConfiguration) throws GranuleHandlingException;
 }

@@ -32,7 +32,7 @@ public class GranuleHandlerFactoryFinder {
     private static FactoryCreator registry;
 
     public static synchronized Map<String, GranuleHandlerFactorySPI> getGeometryHandlersSPI() {
-        // get all GridFormatFactorySpi implementations
+        getServiceRegistry().scanForPlugins();
         final Iterator<GranuleHandlerFactorySPI> it = getServiceRegistry().getServiceProviders(GranuleHandlerFactorySPI.class, true);
         Map<String, GranuleHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
         while (it.hasNext()) {

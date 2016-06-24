@@ -23,14 +23,17 @@ import java.io.IOException;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
-import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- *  Check for homogeneous CRS
+ *  Check for homogeneous CRS in the upcoming granule.
+ *  
+ *  If the upcoming granules has a CRS which is not homogenenous with the one for the mosaic we have to discard it.
+ *  
  */
-public class CRSCheckAcceptor implements GranuleAcceptor {
+public class HomogeneousCRSAcceptor implements GranuleAcceptor {
+
     @Override
     public boolean accepts(GridCoverage2DReader coverage, String inputCoverageName,
             File fileBeingProcessed, ImageMosaicConfigHandler mosaicConfigHandler)

@@ -15,7 +15,7 @@
  * Lesser General Public License for more details.
  */
 
-package org.geotools.gce.imagemosaic.geomhandler;
+package org.geotools.gce.imagemosaic.granulehandler;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,11 +29,14 @@ import org.geotools.factory.FactoryRegistry;
  * Access the granule handler factories
  */
 public class GranuleHandlerFactoryFinder {
+
     private static FactoryCreator registry;
 
-    public static synchronized Map<String, GranuleHandlerFactorySPI> getGeometryHandlersSPI() {
-        // get all GridFormatFactorySpi implementations
-        final Iterator<GranuleHandlerFactorySPI> it = getServiceRegistry().getServiceProviders(GranuleHandlerFactorySPI.class, true);
+    public static synchronized Map<String, GranuleHandlerFactorySPI> getGranuleHandlersSPI() {
+        // get all GranuleHandlerFactorySPI implementations
+        FactoryRegistry serviceRegistry = getServiceRegistry();
+        serviceRegistry.scanForPlugins();
+        final Iterator<GranuleHandlerFactorySPI> it = serviceRegistry.getServiceProviders(GranuleHandlerFactorySPI.class, true);
         Map<String, GranuleHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
         while (it.hasNext()) {
             GranuleHandlerFactorySPI GranuleGeometryHandlerFactorySPI = it.next();

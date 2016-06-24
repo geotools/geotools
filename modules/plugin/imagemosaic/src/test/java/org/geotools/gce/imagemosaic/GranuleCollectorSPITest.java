@@ -24,10 +24,20 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.acceptors.ColorCheckAcceptor;
+import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptorFactory;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPI;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPIFinder;
+import org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory;
+import org.geotools.gce.imagemosaic.acceptors.HomogeneousCRSAcceptor;
 import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -55,6 +65,44 @@ public class GranuleCollectorSPITest {
         assertEquals(imReader.getGranules(
                 imReader.getGridCoverageNames()[0], true).getCount(null),
                 2);
+    }
+    
+    @Test
+    public void basicTest(){
+        // get the SPIs
+        Map<String, GranuleAcceptorFactorySPI> spiMap = GranuleAcceptorFactorySPIFinder.getGranuleAcceptorFactorySPI();
+        
+        // make sure it is not empty
+        assertNotNull(spiMap);
+        Assert.assertTrue(!spiMap.isEmpty());
+        
+        // check the default ones are there
+        Assert.assertTrue(spiMap.containsKey(HeterogeneousCRSAcceptorFactory.class.getName()));
+        Assert.assertTrue(spiMap.containsKey(DefaultGranuleAcceptorFactory.class.getName()));
+        
+        // check the content
+        
+        // HeterogeneousCRSAcceptorFactory
+        assertNotNull(spiMap.get(HeterogeneousCRSAcceptorFactory.class.getName()));
+        GranuleAcceptorFactorySPI spi = spiMap.get(HeterogeneousCRSAcceptorFactory.class.getName());
+        List<GranuleAcceptor> acceptors = spi.create();
+        assertNotNull(acceptors);
+        Assert.assertTrue(acceptors.size()==1);
+        GranuleAcceptor granuleAcceptor = acceptors.get(0);
+        Assert.assertTrue(granuleAcceptor.getClass().equals(ColorCheckAcceptor.class));
+        
+        // DefaultGranuleAcceptorFactory
+        assertNotNull(spiMap.get(DefaultGranuleAcceptorFactory.class.getName()));
+        spi = spiMap.get(DefaultGranuleAcceptorFactory.class.getName());
+        acceptors = spi.create();
+        assertNotNull(acceptors);
+        Assert.assertTrue(acceptors.size()==2);
+        granuleAcceptor = acceptors.get(0);
+        Assert.assertTrue(granuleAcceptor.getClass().equals(ColorCheckAcceptor.class)||granuleAcceptor.getClass().equals(HomogeneousCRSAcceptor.class));
+        granuleAcceptor = acceptors.get(1);
+        Assert.assertTrue(granuleAcceptor.getClass().equals(ColorCheckAcceptor.class)||granuleAcceptor.getClass().equals(HomogeneousCRSAcceptor.class));
+        
+        
     }
 
 }

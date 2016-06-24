@@ -28,14 +28,15 @@ import org.geotools.factory.FactoryRegistry;
 /**
  * Helper to find GranuleFactorySPI instances
  */
-public class GranuleAcceptorFinder {
+public class GranuleAcceptorFactorySPIFinder {
 
     private static FactoryCreator registry;
 
-    public static synchronized Map<String, GranuleAcceptorFactorySPI> getPropertiesCollectorSPI() {
+    public static synchronized Map<String, GranuleAcceptorFactorySPI> getGranuleAcceptorFactorySPI() {
         // get all GridFormatFactorySpi implementations
-        getServiceRegistry().scanForPlugins();
-        final Iterator<GranuleAcceptorFactorySPI> it = getServiceRegistry().getServiceProviders(GranuleAcceptorFactorySPI.class, true);
+        FactoryRegistry serviceRegistry = getServiceRegistry();
+        serviceRegistry.scanForPlugins();
+        final Iterator<GranuleAcceptorFactorySPI> it = serviceRegistry.getServiceProviders(GranuleAcceptorFactorySPI.class, true);
         Map<String, GranuleAcceptorFactorySPI> acceptorFactorySPIMap = new HashMap<>();
         while (it.hasNext()) {
             GranuleAcceptorFactorySPI granuleAcceptorFactorySPI = it.next();

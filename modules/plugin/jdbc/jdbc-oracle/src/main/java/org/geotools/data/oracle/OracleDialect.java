@@ -1498,5 +1498,8 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         
         return new Envelope(minx,maxx,miny,maxy);
     }
-
+    
+    public int getDefaultVarcharSize(){
+        return 4000;
+    }
 }

@@ -624,30 +624,38 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
         int destWidth = destRegion.x + destRegion.width;
         int destHeight = destRegion.y + destRegion.height;
-    
+
         /*
          * build the ranges that need to be read from each 
          * dimension based on the source region
          */
         final List<Range> ranges = new LinkedList<Range>();
         try {
+
+            // Eventual ignored dimensions are at the beginning (lower index)
+            // (Based on COARDS convention)
+            if (!wrapper.ignoredDimensions.isEmpty()){
+                for (int i=0; i <wrapper.ignoredDimensions.size(); i++) {
+                    // Setting up range to specify ignored dimension
+                    ranges.add(new Range(0, 0, 1));
+                }
+            }
+
             // add the ranges the COARDS way: T, Z, Y, X
             // T
             int first = slice2DIndex.getTIndex();
-            int length = 1;
-            int stride = 1;
             if (first != -1){
-                ranges.add(new Range(first, first + length - 1, stride));
+                ranges.add(new Range(first, first, 1));
             }
             // Z
             first = slice2DIndex.getZIndex();
             if (first != -1){
-                ranges.add(new Range(first, first + length - 1, stride));
+                ranges.add(new Range(first, first, 1));
             }
             // Y
             first = srcRegion.y;
-            length = srcRegion.height;
-            stride = strideY;
+            int length = srcRegion.height;
+            int stride = strideY;
             ranges.add(new Range(first, first + length - 1, stride));
             // X
             first = srcRegion.x;
@@ -657,17 +665,15 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         } catch (InvalidRangeException e) {
             throw netcdfFailure(e);
         }
-    
+
         /*
          * create the section of multidimensional array indices
          * that defines the exact data that need to be read 
          * for this image index and parameters 
          */
         final Section section = new Section(ranges);
-    
-        /*
-         * Setting SampleModel and ColorModel.
-         */
+
+        // Setting SampleModel and ColorModel.
         final SampleModel sampleModel = wrapper.getSampleModel().createCompatibleSampleModel(destWidth, destHeight);
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
@@ -935,10 +941,14 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         String otherAttributes = "";
         for (CoordinateAxis axis:cs.getCoordinateAxes()) {
             // get from coordinate vars
-            final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axis.getFullName()); 
+            String axisName = axis.getFullName();
+            if (NetCDFUtilities.getIgnoredDimensions().contains(axisName)) {
+                continue;
+            }
+            final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axisName); 
             if (cv == null) { 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                    LOGGER.fine("Unable to find a coordinate variable for " + axisName);
                 }
                 continue;
             }

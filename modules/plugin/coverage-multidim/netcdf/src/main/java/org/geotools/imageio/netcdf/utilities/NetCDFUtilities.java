@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -41,6 +42,8 @@ import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -72,6 +75,10 @@ import ucar.nc2.jni.netcdf.Nc4Iosp;
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 public class NetCDFUtilities {
+
+    public static final boolean CHECK_COORDINATE_PLUGINS; 
+
+    public static final String CHECK_COORDINATE_PLUGINS_KEY = "netcdf.coordinates.enablePlugins";
 
     public static final String NETCDF4_MIMETYPE = "application/x-netcdf4";
 
@@ -128,6 +135,9 @@ public class NetCDFUtilities {
     /** Set containing all the definition of the UNSUPPORTED DIMENSIONS to set as vertical ones*/
     private static final Set<String> UNSUPPORTED_DIMENSIONS;
 
+    /** Set containing all the dimensions to be ignored */
+    private static final Set<String> IGNORED_DIMENSIONS;
+    
     /** Boolean indicating if GRIB library is available*/
     private static boolean IS_GRIB_AVAILABLE;
 
@@ -302,6 +312,16 @@ public class NetCDFUtilities {
             + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
+        String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
+        CHECK_COORDINATE_PLUGINS = Boolean.getBoolean(CHECK_COORDINATE_PLUGINS_KEY);
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Value of Check Coordinate Plugins:" + property);
+            LOGGER.info("Should check for coordinate handler plugins:" 
+                + CHECK_COORDINATE_PLUGINS);
+        }
+
+        IGNORED_DIMENSIONS = initializeIgnoreSet();
+
         // Setting the LINUX Epoch as start time
         final GregorianCalendar calendar = new GregorianCalendar(1970, 00, 01, 00, 00, 00);
         UTC = TimeZone.getTimeZone("UTC");
@@ -314,8 +334,9 @@ public class NetCDFUtilities {
         EXCLUDED_ATTRIBUTES.add(STANDARD_NAME);
 
         NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
-        UNSUPPORTED_DIMENSIONS = new HashSet<String>();
-        UNSUPPORTED_DIMENSIONS.add("OSEQD");
+        HashSet<String> unsupportedSet = new HashSet<String>();
+        unsupportedSet.add("OSEQD");
+        UNSUPPORTED_DIMENSIONS = Collections.unmodifiableSet(unsupportedSet);
 
         VALID_TYPES.add(DataType.BOOLEAN);
         VALID_TYPES.add(DataType.BYTE);
@@ -359,6 +380,23 @@ public class NetCDFUtilities {
         return bandName.equalsIgnoreCase(LON) || bandName.equalsIgnoreCase(LAT);
     }
 
+    private static Set<String> initializeIgnoreSet() {
+        Set<CoordinateHandlerSpi> handlers = CoordinateHandlerFinder.getAvailableHandlers();
+        Iterator<CoordinateHandlerSpi> iterator = handlers.iterator();
+        Set<String> ignoredSet = new HashSet<String>();
+        while (iterator.hasNext()) {
+            CoordinateHandlerSpi handler = iterator.next();
+            Set<String> ignored = handler.getIgnoreSet();
+            if (ignored != null && !ignored.isEmpty()) {
+                ignoredSet.addAll(ignored);
+            }
+        }
+        if (!ignoredSet.isEmpty()) {
+            return Collections.unmodifiableSet(ignoredSet);
+        }
+        return Collections.<String>emptySet();
+    }
+
     public static boolean isValidDir(File file) {
         String dir = file.getAbsolutePath();
         if (!file.exists()) {
@@ -384,6 +422,11 @@ public class NetCDFUtilities {
         return true;
     }
 
+    /**
+     * Get Z Dimension Lenght for standard CF variables
+     * @param var
+     * @return
+     */
     public static int getZDimensionLength(Variable var) {
         final int rank = var.getRank();
         if (rank > 2) {
@@ -391,6 +434,10 @@ public class NetCDFUtilities {
         }
         // TODO: Should I avoid use this method in case of 2D Variables?
         return 0;
+    }
+
+    public static int getDimensionLength(Variable var, final int dimensionIndex) {
+        return var.getDimension(dimensionIndex).getLength();
     }
 
     /**
@@ -480,6 +527,9 @@ public class NetCDFUtilities {
                 // for displaying the final raster.
                 if (group == null) {
                     return false;
+                }
+                if (IGNORED_DIMENSIONS.contains(dimName)) {
+                    continue;
                 }
                 Variable dimVariable = group.findVariable(dimName);
                 if (dimVariable == null && dataset != null) {
@@ -823,11 +873,23 @@ public class NetCDFUtilities {
         return IS_NC4_LIBRARY_AVAILABLE;
     }
 
+    public static boolean isCheckCoordinatePlugins() {
+        return CHECK_COORDINATE_PLUGINS;
+    }
+
     /**
      * @return An unmodifiable Set of Unsupported Dimension names
      */
     public static Set<String> getUnsupportedDimensions() {
-        return Collections.unmodifiableSet(UNSUPPORTED_DIMENSIONS);
+        return UNSUPPORTED_DIMENSIONS;
+    }
+
+    /** 
+     * @return an unmodifiable Set of the Dimensions to be ignored by the 
+     * Coordinate parsing machinery
+     */
+    public static Set<String> getIgnoredDimensions() {
+        return IGNORED_DIMENSIONS;
     }
 
     /**

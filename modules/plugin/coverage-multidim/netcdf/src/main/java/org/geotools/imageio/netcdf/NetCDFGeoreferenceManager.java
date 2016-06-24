@@ -573,28 +573,30 @@ class NetCDFGeoreferenceManager {
     private void initCoordinates() {
         // get the coordinate variables
         Map<String, CoordinateVariable<?>> coordinates = new HashMap<String, CoordinateVariable<?>>();
+        Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
+        Set<String> ignored = NetCDFUtilities.getIgnoredDimensions();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
-            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null && !"reftime".equalsIgnoreCase(axis.getFullName())) {
-                coordinates.put(axis.getFullName(), CoordinateVariable.create((CoordinateAxis1D)axis));
+            String axisName = axis.getFullName(); 
+            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null && !"reftime".equalsIgnoreCase(axisName)) {
+                coordinates.put(axisName, CoordinateVariable.create((CoordinateAxis1D)axis));
             } else {
                 // Workaround for Unsupported Axes
-                Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
-                if (axis instanceof CoordinateAxis1D && unsupported.contains(axis.getFullName())) {
+                if (axis instanceof CoordinateAxis1D && unsupported.contains(axisName)) {
                     axis.setAxisType(AxisType.GeoZ);
-                    coordinates.put(axis.getFullName(),
-                            CoordinateVariable.create((CoordinateAxis1D) axis));
+                    coordinates.put(axisName, CoordinateVariable.create((CoordinateAxis1D) axis));
                 // Workaround for files that have a time dimension, but in a format that could not be parsed
-                } else if ("time".equals(axis.getFullName())) {
-                    LOGGER.warning("Detected unparseable unit string in time axis: '"
+                } else if ("time".equals(axisName)) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Detected unparseable unit string in time axis: '"
                             + axis.getUnitsString() + "'.");
+                    }
                     axis.setAxisType(AxisType.Time);
-                    coordinates.put(axis.getFullName(),
-                            CoordinateVariable.create((CoordinateAxis1D) axis));
-                } else if ("reftime".equals(axis.getFullName()) || AxisType.RunTime.equals(axis.getAxisType())) {
+                    coordinates.put(axisName, CoordinateVariable.create((CoordinateAxis1D) axis));
+                } else if ("reftime".equals(axisName) || AxisType.RunTime.equals(axis.getAxisType())) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("Unable to support reftime which is not a CoordinateAxis1D");
                     }
-                } else {
+                } else if (!ignored.contains(axisName)){
                     LOGGER.warning("Unsupported axis: " + axis + " in input: " + dataset.getLocation()
                             + " has been found");
                 }

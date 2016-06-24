@@ -28,32 +28,45 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+
 /**
  * Granule handler that reprojects envelopes of non-structured grid coverages
  */
 public class ReprojectingGranuleHandler implements GranuleHandler {
+
+    private PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
+    private GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     @Override
     public void handleGranule(Object source, GridCoverage2DReader inputReader,
             SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
             SimpleFeature inputFeature, SimpleFeatureType inputFeatureType,
             MosaicConfigurationBean mosaicConfiguration) throws GranuleHandlingException {
+
         CoordinateReferenceSystem targetCRS = mosaicConfiguration.getCrs();
         if (inputFeature instanceof StructuredGridCoverage2DReader) {
-            //don't need to do anything with structured coverages, since we mainly just copy
-            //their indexes
+            handleStructuredGranule(source, inputReader, targetFeature, targetFeatureType,
+                    inputFeature, inputFeatureType, mosaicConfiguration);
         } else {
             GeneralEnvelope coverageEnvelope = inputReader.getOriginalEnvelope();
             CoordinateReferenceSystem coverageCRS = inputReader.getCoordinateReferenceSystem();
+            ReferencedEnvelope finalEnvelope = new ReferencedEnvelope(coverageEnvelope);
             if (!CRS.equalsIgnoreMetadata(targetCRS, coverageCRS)) {
                 try {
-                    ReferencedEnvelope targetReprojectedEnvelope = new ReferencedEnvelope(
-                            CRS.transform(coverageEnvelope, targetCRS));
+                    finalEnvelope = new ReferencedEnvelope(
+                            CRS.transform(finalEnvelope, targetCRS));
                 } catch (TransformException e) {
                     throw new GranuleHandlingException(
-                            "Unable to reproject incoming granule, but target and granule CRS differ.", e);
+                            "Unable to reproject incoming granule, but target and granule CRS "
+                                    + "differ so we can't continue", e);
                 }
             }
+
+            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(),
+                    GEOM_FACTORY.toGeometry(finalEnvelope));
+
         }
 
     }

@@ -45,8 +45,9 @@ public class DefaultGranuleHandler implements GranuleHandler {
             MosaicConfigurationBean mosaicConfiguration) {
 
         if(inputReader instanceof StructuredGridCoverage2DReader){
-            Object geometryAttribute = feature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
-            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute); 
+            handleStructuredGranule(
+                    source, inputReader, targetFeature, targetFeatureType, feature,
+                    inputFeatureType, mosaicConfiguration);
         } else {
             Envelope coverageEnvelope = inputReader.getOriginalEnvelope();
             targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getLocalName(),

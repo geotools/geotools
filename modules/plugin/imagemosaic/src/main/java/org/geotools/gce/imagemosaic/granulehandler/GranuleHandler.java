@@ -46,4 +46,16 @@ public interface GranuleHandler {
             SimpleFeature inputFeature,
             SimpleFeatureType inputFeatureType,
             MosaicConfigurationBean mosaicConfiguration) throws GranuleHandlingException;
+
+    default void handleStructuredGranule(
+            Object source,
+            GridCoverage2DReader inputReader,
+            SimpleFeature targetFeature,
+            SimpleFeatureType targetFeatureType,
+            SimpleFeature inputFeature,
+            SimpleFeatureType inputFeatureType,
+            MosaicConfigurationBean mosaicConfiguration) {
+        Object geometryAttribute = inputFeature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
+        targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute);
+    }
 }

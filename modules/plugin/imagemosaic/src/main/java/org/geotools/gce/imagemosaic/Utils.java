@@ -16,10 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -43,7 +40,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -75,7 +71,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -273,7 +268,7 @@ public class Utils {
 
         public static final String GRANULE_ACCEPTORS = "GranuleAcceptors";
 
-        public static final String GEOMETRY_HANDLER = "GeometryHandlerFactorySPI";
+        public static final String GEOMETRY_HANDLER = "GranuleHandler";
     }
 
     /**

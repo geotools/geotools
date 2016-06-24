@@ -15,7 +15,7 @@
  * Lesser General Public License for more details.
  */
 
-package org.geotools.gce.imagemosaic.geomhandler;
+package org.geotools.gce.imagemosaic.granulehandler;
 
 /**
  * Class signifying issues handling a granule

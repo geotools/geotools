@@ -15,7 +15,7 @@
  * Lesser General Public License for more details.
  */
 
-package org.geotools.gce.imagemosaic.geomhandler;
+package org.geotools.gce.imagemosaic.granulehandler;
 
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
@@ -32,12 +32,12 @@ import org.opengis.referencing.operation.TransformException;
  * Granule handler that reprojects envelopes of non-structured grid coverages
  */
 public class ReprojectingGranuleHandler implements GranuleHandler {
-    @Override
-    public void handleGeometry(GridCoverage2DReader inputReader, SimpleFeature targetFeature,
-            SimpleFeatureType targetFeatureType, SimpleFeature inputFeature,
-            SimpleFeatureType inputFeatureType, MosaicConfigurationBean mosaicConfiguration)
-            throws GranuleHandlingException {
 
+    @Override
+    public void handleGranule(Object source, GridCoverage2DReader inputReader,
+            SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
+            SimpleFeature inputFeature, SimpleFeatureType inputFeatureType,
+            MosaicConfigurationBean mosaicConfiguration) throws GranuleHandlingException {
         CoordinateReferenceSystem targetCRS = mosaicConfiguration.getCrs();
         if (inputFeature instanceof StructuredGridCoverage2DReader) {
             //don't need to do anything with structured coverages, since we mainly just copy
@@ -55,5 +55,6 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
                 }
             }
         }
+
     }
 }

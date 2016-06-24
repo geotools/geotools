@@ -15,11 +15,14 @@
  * Lesser General Public License for more details.
  */
 
-package org.geotools.gce.imagemosaic.geomhandler;
+package org.geotools.gce.imagemosaic.granulehandler;
 
 /**
- * Simple factory for GranuleGeometryHandlers
+ * Default factory for {@link GranuleHandler} handler
  */
-public interface GranuleHandlerFactorySPI {
-    GranuleHandler create();
+public class DefaultGranuleHandlerFactory implements GranuleHandlerFactorySPI {
+    @Override
+    public GranuleHandler create() {
+        return new DefaultGranuleHandler();
+    }
 }

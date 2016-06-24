@@ -17,8 +17,45 @@
 
 package org.geotools.gce.imagemosaic;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.util.Map;
+
+import org.geotools.gce.imagemosaic.granulehandler.DefaultGranuleHandler;
+import org.geotools.gce.imagemosaic.granulehandler.DefaultGranuleHandlerFactory;
+import org.geotools.gce.imagemosaic.granulehandler.GranuleHandler;
+import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactoryFinder;
+import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactorySPI;
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
- * Created by devon on Jun/23/2016.
+ * Testing that granule handler correctly get configured and initialized
  */
 public class GranuleHandlerSPITest {
+
+
+    @Test
+    public void basicTest(){
+        // get the SPIs
+        Map<String, GranuleHandlerFactorySPI> spiMap = GranuleHandlerFactoryFinder.getGranuleHandlersSPI();
+
+        // make sure it is not empty
+        assertNotNull(spiMap);
+        Assert.assertTrue(!spiMap.isEmpty());
+
+        // check the default one is there
+        Assert.assertTrue(spiMap.containsKey(DefaultGranuleHandlerFactory.class.getName()));
+
+        // check the content
+
+        // DefaultGranuleHandlerFactory
+        assertNotNull(spiMap.get(DefaultGranuleHandlerFactory.class.getName()));
+        GranuleHandlerFactorySPI spi = spiMap.get(DefaultGranuleHandlerFactory.class.getName());
+        GranuleHandler handler = spi.create();
+        assertNotNull(handler);
+        Assert.assertTrue(handler.getClass().equals(DefaultGranuleHandler.class));
+
+    }
+
 }

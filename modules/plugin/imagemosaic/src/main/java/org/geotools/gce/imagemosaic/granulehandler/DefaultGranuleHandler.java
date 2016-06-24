@@ -15,7 +15,7 @@
  * Lesser General Public License for more details.
  */
 
-package org.geotools.gce.imagemosaic.geomhandler;
+package org.geotools.gce.imagemosaic.granulehandler;
 
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
@@ -37,7 +37,9 @@ public class DefaultGranuleHandler implements GranuleHandler {
     private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     @Override
-    public void handleGeometry(GridCoverage2DReader inputReader,
+    public void handleGranule(
+            Object source,
+            GridCoverage2DReader inputReader,
             SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
             SimpleFeature feature, SimpleFeatureType inputFeatureType,
             MosaicConfigurationBean mosaicConfiguration) {

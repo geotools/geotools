@@ -855,7 +855,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         if (env == null) {
             return null;
         }
-        if (crs.getCoordinateSystem().getDimension() >= 3) {
+        if (crs != null && crs.getCoordinateSystem().getDimension() >= 3) {
             if(env.isNull()) {
                 return new ReferencedEnvelope3D(crs);
             } else {

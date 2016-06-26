@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,28 +26,28 @@ package org.geotools.jdbc;
  * 
  * @source $URL$
  */
-public abstract class JDBC3DOnlineTest extends JDBCGeneric3DOnlineTest {
-
-    protected abstract JDBC3DTestSetup createTestSetup();
+public abstract class JDBCCompound3DOnlineTest extends JDBCGeneric3DOnlineTest {
+    
+    protected abstract JDBCCompound3DTestSetup createTestSetup();
 
     @Override
     protected int getEpsgCode() {
-        return 4326;
+        return 7415;
     }
     
     @Override
     protected String getLine3d() {
-        return "line3d";
+        return "lineCompound3d";
     }
 
     @Override
     protected String getPoint3d() {
-        return "point3d";
+        return "pointCompound3d";
     }
 
     @Override
     protected String getPoly3d() {
-        return "poly3d";
+        return "polyCompound3d";
     }
 
 }

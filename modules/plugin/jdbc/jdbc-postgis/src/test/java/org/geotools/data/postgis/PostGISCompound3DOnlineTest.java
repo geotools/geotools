@@ -14,40 +14,21 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.jdbc;
+package org.geotools.data.postgis;
+
+import org.geotools.jdbc.JDBCCompound3DOnlineTest;
+import org.geotools.jdbc.JDBCCompound3DTestSetup;
 
 /**
- * Tests the ability of the datastore to cope with 3D data
  * 
- * @author Andrea Aime - OpenGeo
- * @author Martin Davis - OpenGeo
- * 
- * 
- * 
+ *
  * @source $URL$
  */
-public abstract class JDBC3DOnlineTest extends JDBCGeneric3DOnlineTest {
-
-    protected abstract JDBC3DTestSetup createTestSetup();
+public class PostGISCompound3DOnlineTest extends JDBCCompound3DOnlineTest {
 
     @Override
-    protected int getEpsgCode() {
-        return 4326;
+    protected JDBCCompound3DTestSetup createTestSetup() {
+        return new PostGISCompound3DTestSetup(new PostGISTestSetup());
     }
     
-    @Override
-    protected String getLine3d() {
-        return "line3d";
-    }
-
-    @Override
-    protected String getPoint3d() {
-        return "point3d";
-    }
-
-    @Override
-    protected String getPoly3d() {
-        return "poly3d";
-    }
-
 }

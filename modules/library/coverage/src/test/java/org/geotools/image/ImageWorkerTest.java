@@ -66,6 +66,7 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
@@ -540,16 +541,17 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream = ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
         GZIPInputStream is = new GZIPInputStream(gzippedStream);
+        ImageInputStream iis = null;
+        ImageReader reader = null;
         try {
-            ImageInputStream iis = ImageIO.createImageInputStream(is);
-            ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
+            iis = ImageIO.createImageInputStream(is);
+            reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
             if(TestData.isInteractiveTest()){
                 ImageIOUtilities.visualize(bi,"before");
             }
             reader.dispose();
-            iis.close();
             IndexColorModel icm = (IndexColorModel) bi.getColorModel();
             assertEquals(65536, icm.getMapSize());
             
@@ -570,7 +572,15 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             assertEquals("wrong component size", 8, indexColorModel.getComponentSize(0));
             outFile.delete();
         } finally {
-            is.close();
+            if (reader != null){
+                try {
+                    reader.dispose();
+                } catch (Exception e) {
+                    // Silent dispose
+                }
+            }
+            IOUtils.closeQuietly(iis);
+            IOUtils.closeQuietly(is);
         }
     }
     
@@ -580,13 +590,14 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream = ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
         GZIPInputStream is = new GZIPInputStream(gzippedStream);
+        ImageInputStream iis = null;
+        ImageReader reader = null;
         try {
-            ImageInputStream iis = ImageIO.createImageInputStream(is);
-            ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
+            iis = ImageIO.createImageInputStream(is);
+            reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
             reader.dispose();
-            iis.close();
             IndexColorModel icm = (IndexColorModel) bi.getColorModel();
             assertEquals(65536, icm.getMapSize());
             
@@ -616,7 +627,15 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             assertEquals(3, icm.getNumColorComponents());
             assertTrue(icm.getMapSize() <= 256);  
         } finally {
-            is.close();
+            if (reader != null){
+                try {
+                    reader.dispose();
+                } catch (Exception e) {
+                    // Silent dispose
+                }
+            }
+            IOUtils.closeQuietly(iis);
+            IOUtils.closeQuietly(is);
         }
     }
     

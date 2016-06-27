@@ -93,7 +93,7 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.14</imageio.ext.version>
+    <imageio.ext.version>1.1.13</imageio.ext.version>
     <jaiext.version>1.0.11</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.4.0</jt.version>

@@ -35,6 +35,7 @@ import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.jdbc.NamespaceAwareAttributeRenameVisitor;
 import org.geotools.xlink.XLINK;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
@@ -87,10 +88,9 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
 
         // only simple/complex features are supported
         if (!(object instanceof Feature)) {
-            throw new UnsupportedOperationException(
-                    "Expecting a feature to apply filter, but found: " + object);
+            return null;
         }
-        
+
         return getValues(((Feature)object), rootMapping, fullSteps);
     }
     
@@ -372,7 +372,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         //Workaround for GEOT-4981: NestedAttributeExpresionImpl is incompatible with DuplicatingFilterVisitor
-        if (visitor instanceof DuplicatingFilterVisitor) {
+        if (visitor instanceof DuplicatingFilterVisitor && !(visitor instanceof NamespaceAwareAttributeRenameVisitor)) {
             return new NestedAttributeExpression(fullSteps, rootMapping);
         }
         return visitor.visit(this,extraData);

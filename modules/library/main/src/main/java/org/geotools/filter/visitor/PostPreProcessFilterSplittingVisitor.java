@@ -424,7 +424,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
             return null;
         }
         
-	    private void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
+	    protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
 	        if( original==null )
 	        	original=filter;
 
@@ -521,7 +521,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
             return null;
         }
         
-	    private void visitBinarySpatialOperator(BinarySpatialOperator filter) {
+	    protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
 	        if( original==null )
 	        	original=filter;
             
@@ -823,7 +823,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
             return null;
         }
         
-	    private void visitMathExpression(BinaryExpression expression) {
+	    protected void visitMathExpression(BinaryExpression expression) {
 	        if (!fcs.supports(Add.class) && !fcs.supports(Subtract.class)
                     && !fcs.supports(Multiply.class) && !fcs.supports(Divide.class)) {
 	        	postStack.push(expression);

@@ -515,5 +515,20 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
                 lock.unlock();
         }        
     }
+
+    @Override
+    public void drop() throws IOException {
+        final Lock lock=rwLock.writeLock();
+        try{
+                lock.lock();
+                checkStore();
+                this.wrappedCatalogue.drop();
+        }catch(Exception e){
+            throw new IOException(e);
+        }finally{
+                lock.unlock();
+        }  
+        
+    }
 }
 

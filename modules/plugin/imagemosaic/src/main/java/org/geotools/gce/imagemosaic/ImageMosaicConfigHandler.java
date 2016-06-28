@@ -169,7 +169,7 @@ public class ImageMosaicConfigHandler {
      *
      * @throws IllegalArgumentException
      */
-    ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
             final ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("runConfiguration", configuration);
         Utilities.ensureNonNull("eventHandler", eventHandler);

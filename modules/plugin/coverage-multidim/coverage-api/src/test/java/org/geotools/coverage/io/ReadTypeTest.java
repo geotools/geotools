@@ -32,6 +32,7 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -129,48 +130,63 @@ public class ReadTypeTest {
     @Test
     public void testDirectReadType() throws IOException {
         // Definition of the reader
-        ImageReader reader = new TIFFImageReaderSpi().createReaderInstance();
-        FileImageInputStream in = new FileImageInputStream(DataUtilities.urlToFile(granuleUrl));
 
+
+        // Definition of the read type
+        ReadType directRead = ReadType.DIRECT_READ;
+
+        // Test 1 = wrong region
+        RenderedImage output = testRead(directRead, readParameters, IMAGE_INDEX, granuleUrl,
+                rasterDimensionsWrong, hints, CLOSE_ELEMENTS, true);
+        assertNull(output);
+
+        // Test 2 = null URL
+        output = testRead(directRead, readParameters, IMAGE_INDEX, null, rasterDimensions, 
+                hints, CLOSE_ELEMENTS, true);
+        assertNull(output);
+
+        // Test 3 = null Reader
+        output = testRead(directRead, readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
+                hints, CLOSE_ELEMENTS, false);
+        assertNull(output);
+
+        // Test 4 = correct
+        output = testRead(directRead, readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
+                hints, CLOSE_ELEMENTS, true);
+        assertNotNull(output);
+
+        Rectangle sourceRegion = readParameters.getSourceRegion();
+        // Calculate the intersection between the raster dimension and the read parameters
+        Rectangle.intersect(sourceRegion, rasterDimensions, sourceRegion);
+        // Check dimensions
+        assertEquals(output.getMinX(), sourceRegion.x);
+        assertEquals(output.getMinY(), sourceRegion.y);
+        assertEquals(output.getWidth(), sourceRegion.width);
+        assertEquals(output.getHeight(), sourceRegion.height);
+    }
+
+    private RenderedImage testRead(ReadType directRead, ImageReadParam readParameters, int imageIndex,
+            URL granuleUrl, Rectangle rasterDimensions, Hints hints, boolean closeElements, 
+            boolean getReader) throws IOException {
+        ImageReader reader = null;
+        FileImageInputStream in = null;
         try {
-            reader.setInput(in);
-            // Definition of the read type
-            ReadType directRead = ReadType.DIRECT_READ;
-
-            // Test 1 = wrong region
-            RenderedImage output = directRead.read(readParameters, IMAGE_INDEX, granuleUrl,
-                    rasterDimensionsWrong, reader, hints, CLOSE_ELEMENTS);
-            assertNull(output);
-
-            // Test 2 = null URL
-            output = directRead.read(readParameters, IMAGE_INDEX, null, rasterDimensions, reader,
-                    hints, CLOSE_ELEMENTS);
-            assertNull(output);
-
-            // Test 3 = null Reader
-            output = directRead.read(readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
-                    null, hints, CLOSE_ELEMENTS);
-            assertNull(output);
-
-            // Test 4 = correct
-            output = directRead.read(readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
-                    reader, hints, CLOSE_ELEMENTS);
-            assertNotNull(output);
-            Rectangle sourceRegion = readParameters.getSourceRegion();
-            // Calculate the intersection between the raster dimension and the read parameters
-            Rectangle.intersect(sourceRegion, rasterDimensions, sourceRegion);
-            // Check dimensions
-            assertEquals(output.getMinX(), sourceRegion.x);
-            assertEquals(output.getMinY(), sourceRegion.y);
-            assertEquals(output.getWidth(), sourceRegion.width);
-            assertEquals(output.getHeight(), sourceRegion.height);
+            if (getReader && granuleUrl != null) {
+                in = new FileImageInputStream(DataUtilities.urlToFile(granuleUrl));
+                reader = new TIFFImageReaderSpi().createReaderInstance();
+                reader.setInput(in);
+            }
+            return directRead.read(readParameters, imageIndex, granuleUrl,
+                    rasterDimensions, reader, hints, closeElements);
         } finally {
-            if (in != null) {
-                in.close();
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Exception e) {
+                    // silent dispose
+                }
             }
-            if(reader != null){
-                reader.dispose();
-            }
+            IOUtils.closeQuietly(in);
         }
     }
 

@@ -182,4 +182,16 @@ public class GMLParsingTest extends TestCase {
 
         assertFalse(geom.isEmpty());
     }
+
+    public void testNestedInteriors() throws IOException, SAXException, ParserConfigurationException{
+        GMLConfiguration gml = new GMLConfiguration(true);
+        Parser p = new Parser(gml);
+        Object multiSurface = p.parse(getClass().getResourceAsStream("nestedInteriors.xml"));
+        assertFalse(multiSurface instanceof String);
+        assertTrue("wrong element type", multiSurface instanceof MultiPolygon);
+        MultiPolygon geom = (MultiPolygon) multiSurface;
+
+        assertFalse(geom.isEmpty());
+    }
+    
 }

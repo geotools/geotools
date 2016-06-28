@@ -1119,8 +1119,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     String[] axisNames;
                     if(geom.getCoordinateReferenceSystem() != null) {
                         CoordinateSystem cs = geom.getCoordinateReferenceSystem().getCoordinateSystem();
-                        if(geom.getUserData().get(Hints.COORDINATE_DIMENSION) != null) {
-                            dims = ((Number) geom.getUserData().get(Hints.COORDINATE_DIMENSION)).intValue();
+                        Object userDims = geom.getUserData().get(Hints.COORDINATE_DIMENSION);
+                        if(userDims != null && ((Number) userDims).intValue()> 0) {
+                            dims = ((Number) userDims).intValue();
                         } else {
                             dims = cs.getDimension();
                         }

@@ -147,7 +147,7 @@ public final class SDO {
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
-        } else if(geom.isEmpty()){
+        } else if(geom==null || geom.isEmpty()){
         	return 2;
         } else {
             //return 3;

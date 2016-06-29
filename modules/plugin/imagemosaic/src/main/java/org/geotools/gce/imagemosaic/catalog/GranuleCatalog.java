@@ -138,4 +138,13 @@ public abstract class GranuleCatalog {
         }
         return null;
     }
+
+    /**
+     * Drop the underlying catalog, all the individual granule indexes.
+     * 
+     * This is usuallu done when deleting an ImageMosaic storre.
+     * 
+     * @throws IOException in case something bad happens
+     */
+    public abstract void drop()throws IOException;
 }

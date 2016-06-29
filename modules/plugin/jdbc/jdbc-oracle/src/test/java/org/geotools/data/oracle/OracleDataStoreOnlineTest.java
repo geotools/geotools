@@ -50,6 +50,21 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         return new OracleTestSetup();
     }
     
+    public void testCreateSchemaOSGBCrs() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(tname("ft2"));
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:27700");
+        builder.setCRS(crs);
+        builder.add(aname("geometry"), Geometry.class);
+        builder.add(aname("intProperty"), Integer.class);
+        builder.add(aname("dateProperty"), Date.class);
+
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        // used to fail here - with index creation error
+        dataStore.createSchema(featureType);
+    }
+    
     public void testCreateSchemaWktCrs() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));

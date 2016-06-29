@@ -2994,6 +2994,7 @@ public class ImageMosaicReaderTest extends Assert{
         try {
 
             reader = new ImageMosaicReader(timeElevURL);
+            assertNotNull(reader);
 
             // delete metadata only (auxiliary files, DB entries, ...)
             File[] files = workDir.listFiles();
@@ -3002,7 +3003,9 @@ public class ImageMosaicReaderTest extends Assert{
             files = workDir.listFiles();
             assertEquals(4, files.length);
         } finally {
-            reader.dispose();
+            if(reader!=null){
+                reader.dispose();
+            }
         }
     }
 

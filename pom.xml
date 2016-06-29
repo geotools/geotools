@@ -93,7 +93,7 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.13</imageio.ext.version>
+    <imageio.ext.version>1.1.15</imageio.ext.version>
     <jaiext.version>1.0.11</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.4.0</jt.version>
@@ -304,7 +304,7 @@
       <name>Ian Turton</name>
       <id>ianturton</id>
       <email>ianturton@users.sourceforge.net</email>
-      <organization>Envitia Ltd</organization>
+      <organization>Astun Technology</organization>
       <roles>
         <role>Java Developer</role>
         <role>Project Management Committee (PMC) Member</role>

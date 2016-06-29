@@ -66,6 +66,7 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
@@ -580,13 +581,13 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream = ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
         GZIPInputStream is = new GZIPInputStream(gzippedStream);
+        ImageInputStream iis = null;
         try {
-            ImageInputStream iis = ImageIO.createImageInputStream(is);
+            iis = ImageIO.createImageInputStream(is);
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
             reader.dispose();
-            iis.close();
             IndexColorModel icm = (IndexColorModel) bi.getColorModel();
             assertEquals(65536, icm.getMapSize());
             
@@ -616,7 +617,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             assertEquals(3, icm.getNumColorComponents());
             assertTrue(icm.getMapSize() <= 256);  
         } finally {
-            is.close();
+            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(iis);
         }
     }
     

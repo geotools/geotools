@@ -1098,15 +1098,16 @@ public final class SDO {
      */
     private static void addCoordinatesInterpretation1(List list, Polygon polygon) {
         int holes = polygon.getNumInteriorRing();
-		if (!polygon.isEmpty()) {
-			addCoordinates(list, counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-					polygon.getExteriorRing().getCoordinateSequence()));
+        if (!polygon.isEmpty()) {
+            addCoordinates(list,
+                    counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+                            polygon.getExteriorRing().getCoordinateSequence()));
 
-			for (int i = 0; i < holes; i++) {
-				addCoordinates(list, clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-						polygon.getInteriorRingN(i).getCoordinateSequence()));
-			}
-		}
+            for (int i = 0; i < holes; i++) {
+                addCoordinates(list, clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+                        polygon.getInteriorRingN(i).getCoordinateSequence()));
+            }
+        }
     }
 
     private static void addCoordinates(List list, MultiPoint points) {

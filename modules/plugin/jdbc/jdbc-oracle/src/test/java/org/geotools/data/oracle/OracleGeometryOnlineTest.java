@@ -71,15 +71,19 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         GeometryFactory gf = new GeometryFactory();
         ArrayList<SimpleFeature> list = new ArrayList<>();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(source.getSchema());
-        builder.add(10);//mkt_id
+        
         builder.add("empty point");
         builder.add(gf.createPoint((Coordinate)null));
-        builder.add(11);//mkt_id
+        SimpleFeature f = builder.buildFeature(null);
+        list.add(f);
         builder.add("empty line");
         builder.add(gf.createLineString((CoordinateSequence)null));
-        builder.add(12);//mkt_id
+        f = builder.buildFeature(null);
+        list.add(f);
         builder.add("empty polygon");
         builder.add(gf.createPolygon(null,null));
+        f = builder.buildFeature(null);
+        list.add(f);
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = DataUtilities
                 .collection(list);
         SimpleFeatureStore store = (SimpleFeatureStore) source;
@@ -87,12 +91,11 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         store.setTransaction(transaction);
 
         try {
-            List<FeatureId> ids = store.addFeatures(collection);
-            System.out.println("wrote " + ids.size() + " features");
+            //GEOT-724 https://osgeo-org.atlassian.net/browse/GEOT-724 
+        	//throws exception here
+        	List<FeatureId> ids = store.addFeatures(collection);
+            
             transaction.commit();
-        } catch (Exception problem) {
-            problem.printStackTrace();
-            transaction.rollback();
         } finally {
             transaction.close();
         }

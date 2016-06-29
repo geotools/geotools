@@ -147,6 +147,8 @@ public final class SDO {
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
+        } else if(geom.isEmpty()){
+        	return 2;
         } else {
             //return 3;
             return Double.isNaN(geom.getCoordinate().z) ? 2 : 3;
@@ -1096,16 +1098,15 @@ public final class SDO {
      */
     private static void addCoordinatesInterpretation1(List list, Polygon polygon) {
         int holes = polygon.getNumInteriorRing();
+		if (!polygon.isEmpty()) {
+			addCoordinates(list, counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+					polygon.getExteriorRing().getCoordinateSequence()));
 
-        addCoordinates(list,
-            counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-                polygon.getExteriorRing().getCoordinateSequence()));
-
-        for (int i = 0; i < holes; i++) {
-            addCoordinates(list,
-                clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-                    polygon.getInteriorRingN(i).getCoordinateSequence()));
-        }
+			for (int i = 0; i < holes; i++) {
+				addCoordinates(list, clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+						polygon.getInteriorRingN(i).getCoordinateSequence()));
+			}
+		}
     }
 
     private static void addCoordinates(List list, MultiPoint points) {

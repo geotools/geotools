@@ -40,8 +40,10 @@ import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPIFinder;
 import org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory;
 import org.geotools.gce.imagemosaic.acceptors.HomogeneousCRSAcceptor;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
+import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -56,11 +58,16 @@ public class GranuleCollectorSPITest {
 
     @Rule
     public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
+    
+    @BeforeClass
+    public static void setupReferencing() {
+        System.setProperty("org.geotools.referencing.forceXY", "true");
+        CRS.reset("all");
+    }
 
     @Test
     public void testCustomizedGranuleAcceptor() throws IOException, URISyntaxException,
             CQLException {
-        System.setProperty("org.geotools.referencing.forceXY", "true");
         URL testDataURL = TestData.url(this, "diffprojections");
         File testDataFolder = new File(testDataURL.toURI());
         File testDirectory = testFolder.newFolder("diffprojectionstest");

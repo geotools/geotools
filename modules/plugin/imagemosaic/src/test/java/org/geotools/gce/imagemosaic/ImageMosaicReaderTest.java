@@ -17,15 +17,8 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -45,7 +38,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -66,10 +58,7 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.media.jai.RenderedOp;
-import javax.swing.JFrame;
-
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
+import javax.swing.*;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -102,8 +91,6 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -149,6 +136,14 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.JAIExt;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -4215,26 +4210,4 @@ public class ImageMosaicReaderTest extends Assert{
         }
     }
 
-	@Test
-	public void testCustomizedGranuleAcceptor() throws IOException, URISyntaxException,
-	        CQLException {
-	    URL testDataURL = TestData.url(this, "diffprojections");
-	    File testDataFolder = new File(testDataURL.toURI());
-	
-	    Hints creationHints = new Hints();
-	    ImageMosaicReader imReader = new ImageMosaicReader(testDataFolder, creationHints);
-	    assertNotNull(imReader);
-	    String[] gridCoverageNames = imReader.getGridCoverageNames();
-	    assertNotNull(gridCoverageNames);
-	    Assert.assertTrue(gridCoverageNames.length==1);
-		String coverageName = gridCoverageNames[0];
-		assertEquals(imReader.getGranules(
-	            coverageName, true).getCount(null),
-	            2);
-	
-	    GranuleCatalog gc = imReader.getRasterManager(coverageName).getGranuleCatalog();
-	    assertNotNull(gc);
-	    Query q = new Query(gc.getTypeNames()[0], CQL.toFilter("BBOX(the_geom, -180, -90, 180, 90)"));
-	    assertEquals(2, gc.getGranules(q).size());
-	}
 }

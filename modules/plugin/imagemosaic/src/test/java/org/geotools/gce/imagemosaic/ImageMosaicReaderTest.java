@@ -45,6 +45,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -101,6 +102,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -3922,10 +3925,10 @@ public class ImageMosaicReaderTest extends Assert{
         }
     }
 
-        @AfterClass
+    @AfterClass
 	public static void close(){
 		System.clearProperty("org.geotools.referencing.forceXY");
-	        CRS.reset("all");
+		CRS.reset("all");
 	}
         
     /**
@@ -4211,4 +4214,27 @@ public class ImageMosaicReaderTest extends Assert{
             assertTrue(supportFiles.contains(myFile));
         }
     }
+
+	@Test
+	public void testCustomizedGranuleAcceptor() throws IOException, URISyntaxException,
+	        CQLException {
+	    URL testDataURL = TestData.url(this, "diffprojections");
+	    File testDataFolder = new File(testDataURL.toURI());
+	
+	    Hints creationHints = new Hints();
+	    ImageMosaicReader imReader = new ImageMosaicReader(testDataFolder, creationHints);
+	    assertNotNull(imReader);
+	    String[] gridCoverageNames = imReader.getGridCoverageNames();
+	    assertNotNull(gridCoverageNames);
+	    Assert.assertTrue(gridCoverageNames.length==1);
+		String coverageName = gridCoverageNames[0];
+		assertEquals(imReader.getGranules(
+	            coverageName, true).getCount(null),
+	            2);
+	
+	    GranuleCatalog gc = imReader.getRasterManager(coverageName).getGranuleCatalog();
+	    assertNotNull(gc);
+	    Query q = new Query(gc.getTypeNames()[0], CQL.toFilter("BBOX(the_geom, -180, -90, 180, 90)"));
+	    assertEquals(2, gc.getGranules(q).size());
+	}
 }

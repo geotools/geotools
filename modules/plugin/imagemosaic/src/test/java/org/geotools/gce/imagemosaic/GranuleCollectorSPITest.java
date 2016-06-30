@@ -17,21 +17,11 @@
 
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.geotools.data.Query;
-import org.geotools.factory.Hints;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.imagemosaic.acceptors.ColorCheckAcceptor;
 import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptorFactory;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
@@ -39,52 +29,15 @@ import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPI;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptorFactorySPIFinder;
 import org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory;
 import org.geotools.gce.imagemosaic.acceptors.HomogeneousCRSAcceptor;
-import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
-import org.geotools.referencing.CRS;
-import org.geotools.test.TestData;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+
 
 /**
  * Testing that granule collectors correctly get configured and initialized
  */
 public class GranuleCollectorSPITest {
 
-    @Rule
-    public TemporaryFolder testFolder = new TemporaryFolder();
-
-    @Rule
-    public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
-    
-    @BeforeClass
-    public static void setupReferencing() {
-        System.setProperty("org.geotools.referencing.forceXY", "true");
-        CRS.reset("all");
-    }
-
-    @Test
-    public void testCustomizedGranuleAcceptor() throws IOException, URISyntaxException,
-            CQLException {
-        URL testDataURL = TestData.url(this, "diffprojections");
-        File testDataFolder = new File(testDataURL.toURI());
-        File testDirectory = testFolder.newFolder("diffprojectionstest");
-        FileUtils.copyDirectory(testDataFolder, testDirectory);
-        Hints creationHints = new Hints();
-        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
-        assertNotNull(imReader);
-        assertEquals(imReader.getGranules(
-                imReader.getGridCoverageNames()[0], true).getCount(null),
-                2);
-
-        GranuleCatalog gc = imReader.getRasterManager("diffprojectionstest").getGranuleCatalog();
-        assertNotNull(gc);
-        Query q = new Query(gc.getTypeNames()[0], CQL.toFilter("BBOX(the_geom, -180, -90, 180, 90)"));
-        assertEquals(2, gc.getGranules(q).size());
-    }
-    
     @Test
     public void basicTest(){
         // get the SPIs

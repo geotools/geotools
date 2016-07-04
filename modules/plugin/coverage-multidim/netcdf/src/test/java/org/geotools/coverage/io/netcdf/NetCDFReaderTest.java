@@ -27,8 +27,10 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -89,6 +91,7 @@ public class NetCDFReaderTest extends Assert {
     @Before
     public void setup() {
         JAIExt.initJAIEXT(true, true);
+        System.setProperty("netcdf.coordinates.enablePlugins", "true");
     }
 
     @After
@@ -945,6 +948,103 @@ public class NetCDFReaderTest extends Assert {
             Double d =  ((NoDataContainer)noData).getAsSingleValue();
             assertEquals(d, -999d, DELTA);
 
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void NetCDFTestOnClimatologicalTime() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        final File workDir = new File(TestData.file(this, "."), "climatological");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        FileUtils.copyFile(TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
+        TestData.unzipFile(this, "climatological/climatological.zip");
+
+        File file = new File(workDir, "climatological.nc");
+
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), null);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), null);
+
+        assertNotNull(format);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            names = new String[] { names[1] };
+
+            for (String coverageName : names) {
+
+                final String[] metadataNames = reader.getMetadataNames(coverageName);
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length, 12);
+
+                // Parsing metadata values
+                assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
+                final String timeMetadata = reader.getMetadataValue(coverageName, "TIME_DOMAIN");
+                assertNotNull(timeMetadata);
+                assertEquals("0001-01-16T00:00:00.000Z/0001-01-16T00:00:00.000Z,0001-02-16T00:00:00.000Z/0001-02-16T00:00:00.000Z,0001-03-16T00:00:00.000Z/0001-03-16T00:00:00.000Z,0001-04-16T00:00:00.000Z/0001-04-16T00:00:00.000Z,0001-05-16T00:00:00.000Z/0001-05-16T00:00:00.000Z,0001-06-16T00:00:00.000Z/0001-06-16T00:00:00.000Z,0001-07-16T00:00:00.000Z/0001-07-16T00:00:00.000Z,0001-08-16T00:00:00.000Z/0001-08-16T00:00:00.000Z,0001-09-16T00:00:00.000Z/0001-09-16T00:00:00.000Z,0001-10-16T00:00:00.000Z/0001-10-16T00:00:00.000Z,0001-11-16T00:00:00.000Z/0001-11-16T00:00:00.000Z,0001-12-16T00:00:00.000Z/0001-12-16T00:00:00.000Z",
+                        timeMetadata);
+                assertEquals(12, timeMetadata.split(",").length);
+                assertEquals("0001-01-16T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("0001-12-16T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+
+                assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                assertNotNull(elevationMetadata);
+                assertEquals("0.0/0.0,10.0/10.0,20.0/20.0,30.0/30.0,50.0/50.0,75.0/75.0", elevationMetadata);
+                assertEquals(6, elevationMetadata.split(",").length);
+                assertEquals("0.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                assertEquals("75.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
+
+                List<DimensionDescriptor> descriptors = ((StructuredGridCoverage2DReader)reader).getDimensionDescriptors(coverageName);
+                assertNotNull(descriptors);
+                assertEquals(2, descriptors.size());
+
+                DimensionDescriptor descriptor = descriptors.get(0);
+                assertEquals("TIME", descriptor.getName());
+                assertEquals("time", descriptor.getStartAttribute());
+
+                descriptor = descriptors.get(1);
+                assertEquals("ELEVATION", descriptor.getName());
+                assertEquals("depth", descriptor.getStartAttribute());
+
+                final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+                Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+                calendar.set(0, 0, 16, 0, 0, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                time.setValue(new ArrayList() {
+                    {
+                        add(calendar.getTime());
+                    }
+                });
+
+                final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+                elevation.setValue(new ArrayList() {
+                    {
+                        add(50d); // Elevation
+                    }
+                });
+
+                GeneralParameterValue[] values = new GeneralParameterValue[] {time, elevation };
+                GridCoverage2D coverage = reader.read(coverageName, values);
+                assertNotNull(coverage);
+                if (TestData.isInteractiveTest()) {
+                    coverage.show();
+                } else {
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+                }
+            }
         } catch (Throwable t) {
             throw new RuntimeException(t);
         } finally {

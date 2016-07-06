@@ -45,6 +45,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.opengis.filter.Filter;
 
 /**
  * Testing that granule collectors correctly get configured and initialized
@@ -73,7 +74,7 @@ public class GranuleCollectorSPITest {
 
         GranuleCatalog gc = imReader.getRasterManager("diffprojectionstest").getGranuleCatalog();
         assertNotNull(gc);
-        Query q = new Query(gc.getTypeNames()[0], CQL.toFilter("BBOX(the_geom, -11575371.717655, 5522913.211892, -11521556.424943, 5561374.032840)"));
+        Query q = new Query(gc.getTypeNames()[0], Filter.INCLUDE);
         assertEquals(2, gc.getGranules(q).size());
     }
     

@@ -63,6 +63,7 @@ import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -136,6 +137,16 @@ public class GranuleDescriptor {
     }
 
     OverviewsController overviewsController;
+
+    private GeneralEnvelope granuleEnvelope;
+
+    public GeneralEnvelope getGranuleEnvelope() {
+        return granuleEnvelope;
+    }
+
+    public void setGranuleEnvelope(GeneralEnvelope granuleEnvelope) {
+        this.granuleEnvelope = granuleEnvelope;
+    }
 
     /**
      * This class represent an overview level in a single granuleDescriptor.
@@ -228,7 +239,7 @@ public class GranuleDescriptor {
      * @author Daniele Romagnoli, GeoSolutions S.A.S.
      * 
      */
-    static class GranuleLoadingResult {
+    public static class GranuleLoadingResult {
 
         RenderedImage loadedImage;
 
@@ -294,7 +305,7 @@ public class GranuleDescriptor {
 
     ImageReaderSpi cachedReaderSPI;
 
-    SimpleFeature originator;
+    private SimpleFeature originator;
 
     PAMDataset pamDataset;
 
@@ -309,7 +320,9 @@ public class GranuleDescriptor {
     /** {@link DatasetLayout} object containing information about granule internal structure */
     private DatasetLayout layout;
 
-    /** {@link MaskOverviewProvider} used for handling external ROIs and Overviews */
+    /**
+     * {@link MaskOverviewProvider} used for handling external ROIs and Overviews
+     */
     private MaskOverviewProvider ovrProvider;
 
     protected void init(final BoundingBox granuleBBOX, final URL granuleUrl,
@@ -339,6 +352,9 @@ public class GranuleDescriptor {
             //
             SpiHelper spiProvider = new SpiHelper(granuleFile, suggestedSPI);
             boolean isMultidim = spiProvider.isMultidim();
+
+            GeneralEnvelope envelope = gcReader.getOriginalEnvelope();
+            this.granuleEnvelope = envelope;
 
             ovrProvider = new MaskOverviewProvider(layout, granuleFile, spiProvider);
 
@@ -470,7 +486,7 @@ public class GranuleDescriptor {
 
     /**
      * Look for GDAL Auxiliary File and unmarshall it to setup a PamDataset if available
-     * 
+     *
      * @throws IOException
      */
     private void checkPamDataset() throws IOException {
@@ -1254,5 +1270,4 @@ public class GranuleDescriptor {
             return roiProvider.getFootprint();
         }
     }
-
 }

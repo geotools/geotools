@@ -36,6 +36,10 @@ import org.geotools.util.Utilities;
 
 public class IndexerUtils {
 
+    public final static String INDEXER_XML = "indexer.xml";
+
+    public final static String INDEXER_PROPERTIES = "indexer.properties";
+
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(IndexerUtils.class.toString());
 
@@ -61,24 +65,6 @@ public class IndexerUtils {
                 final int roundLPos = pcDef.indexOf("(");
                 final int roundRPos = pcDef.indexOf(")");
                 final int roundRPosLast = pcDef.lastIndexOf(")");
-                if (squareRPos != squareRPosLast) {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
-                    }
-                    continue;
-                }
-                if (squareLPos == -1 || squareRPos == -1) {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
-                    }
-                    continue;
-                }
-                if (squareLPos == 0) {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
-                    }
-                    continue;
-                }
 
                 if (roundRPos != roundRPosLast) {
                     if (LOGGER.isLoggable(Level.INFO)) {
@@ -98,12 +84,6 @@ public class IndexerUtils {
                     }
                     continue;
                 }
-                if (roundLPos != squareRPos + 1) {// ]( or exit
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
-                    }
-                    continue;
-                }
                 if (roundRPos != (pcDef.length() - 1)) {// end with )
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
@@ -112,27 +92,37 @@ public class IndexerUtils {
                 }
 
                 // name
-                final String spi = pcDef.substring(0, squareLPos);
+                String spi = null;
+                if (squareLPos != -1) {
+                    spi = pcDef.substring(0, squareLPos);
+                } else {
+                    spi = pcDef.substring(0, roundLPos);
+                }
 
                 // config
                 final String config = squareLPos < squareRPos
                         ? pcDef.substring(squareLPos + 1, squareRPos) : "";
+
                 String value = null;
-                final File configFile = new File(getParameter(Utils.Prop.ROOT_MOSAIC_DIR, indexer),
+                //only need config if provided, some property collectors don't need it
+                if (config.length() > 0) {
+                    final File configFile = new File(getParameter(Utils.Prop.ROOT_MOSAIC_DIR, indexer),
                         config + ".properties");
-                if (!Utils.checkFileReadable(configFile)) {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Unable to access the file for this PropertyCollector: "
+
+                    if (!Utils.checkFileReadable(configFile)) {
+                        if (LOGGER.isLoggable(Level.INFO)) {
+                            LOGGER.info("Unable to access the file for this PropertyCollector: "
                                 + configFile.getAbsolutePath());
-                    }
-                    continue;
-                } else {
-                    final Properties properties = CoverageUtilities
+                        }
+                    } else {
+                        final Properties properties = CoverageUtilities
                             .loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
-                    if (properties.containsKey("regex")) {
-                        value = properties.getProperty("regex");
+                        if (properties.containsKey("regex")) {
+                            value = properties.getProperty("regex");
+                        }
                     }
                 }
+
 
                 // property names
                 final String propertyNames[] = pcDef.substring(roundLPos + 1, roundRPos).split(",");
@@ -309,7 +299,7 @@ public class IndexerUtils {
     public static String getParameter(String parameterName, File indexerFile) {
         if (indexerFile != null && indexerFile.exists()) {
             try {
-                Indexer indexerInstance = (Indexer) Utils.unmarshal(indexerFile);
+                Indexer indexerInstance = Utils.unmarshal(indexerFile);
                 if (indexerInstance != null) {
                     String value = IndexerUtils.getParameter(parameterName, indexerInstance);
                     if (value != null) {
@@ -507,4 +497,241 @@ public class IndexerUtils {
         return null;
     }
 
+    public static Indexer createDefaultIndexer() {
+        final Indexer defaultIndexer = Utils.OBJECT_FACTORY.createIndexer();
+        final ParametersType parameters = Utils.OBJECT_FACTORY.createParametersType();
+        final List<Parameter> parameterList = parameters.getParameter();
+        defaultIndexer.setParameters(parameters);
+        setParam(parameterList, Utils.Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE);
+        setParam(parameterList, Utils.Prop.WILDCARD, Utils.DEFAULT_WILCARD);
+        setParam(parameterList, Utils.Prop.FOOTPRINT_MANAGEMENT,
+                Boolean.toString(Utils.DEFAULT_FOOTPRINT_MANAGEMENT));
+        setParam(parameterList, Utils.Prop.ABSOLUTE_PATH,
+                Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
+        setParam(parameterList, Utils.Prop.RECURSIVE,
+                Boolean.toString(Utils.DEFAULT_RECURSION_BEHAVIOR));
+        setParam(parameterList, Utils.Prop.INDEX_NAME, Utils.DEFAULT_INDEX_NAME);
+
+        return defaultIndexer;
+    }
+
+    public static Indexer initializeIndexer(ParametersType params, File parent) {
+        File indexerFile = new File(parent, INDEXER_XML);
+        Indexer indexer = null;
+        if (Utils.checkFileReadable(indexerFile)) {
+            try {
+                indexer = Utils.unmarshal(indexerFile);
+                if (indexer != null) {
+                    copyDefaultParams(params, indexer);
+                }
+            } catch (JAXBException e) {
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
+            }
+        } else {
+            // Backward compatible with old indexing
+            indexerFile = new File(parent, INDEXER_PROPERTIES);
+            if (Utils.checkFileReadable(indexerFile)) {
+                // load it and parse it
+                final Properties props = CoverageUtilities
+                        .loadPropertiesFromURL(DataUtilities.fileToURL(indexerFile));
+                indexer = createIndexer(props, params);
+            }
+        }
+        if (indexer != null) {
+            indexer.setIndexerFile(indexerFile);
+        }
+        return indexer;
+    }
+
+    /**
+     * Setup default params to the indexer.
+     *
+     * @param params
+     * @param indexer
+     */
+    private static void copyDefaultParams(ParametersType params, Indexer indexer) {
+        if (params != null) {
+            List<Parameter> defaultParamList = params.getParameter();
+            if (defaultParamList != null && !defaultParamList.isEmpty()) {
+                ParametersType parameters = indexer.getParameters();
+                if (parameters == null) {
+                    parameters = Utils.OBJECT_FACTORY.createParametersType();
+                    indexer.setParameters(parameters);
+                }
+                List<Parameter> parameterList = parameters.getParameter();
+                for (Parameter defaultParameter : defaultParamList) {
+                    final String defaultParameterName = defaultParameter.getName();
+                    if (getParameter(defaultParameterName, indexer) == null) {
+                        setParam(parameterList, defaultParameterName, defaultParameter.getValue());
+                    }
+                }
+            }
+        }
+    }
+
+
+    private static Indexer createIndexer(Properties props, ParametersType params) {
+        // Initializing Indexer objects
+        Indexer indexer = Utils.OBJECT_FACTORY.createIndexer();
+        indexer.setParameters(
+            params != null ? params : Utils.OBJECT_FACTORY.createParametersType());
+        Coverages coverages = Utils.OBJECT_FACTORY.createIndexerCoverages();
+        indexer.setCoverages(coverages);
+        List<Coverage> coverageList = coverages.getCoverage();
+
+        Coverage coverage = Utils.OBJECT_FACTORY.createIndexerCoveragesCoverage();
+        coverageList.add(coverage);
+
+        indexer.setParameters(params);
+        List<Parameter> parameters = params.getParameter();
+
+        // name
+        if (props.containsKey(Utils.Prop.NAME)) {
+            setParam(parameters, props, Utils.Prop.NAME);
+            coverage.setName(props.getProperty(Utils.Prop.NAME));
+        }
+
+        // type name
+        if (props.containsKey(Utils.Prop.TYPENAME)) {
+            setParam(parameters, props, Utils.Prop.TYPENAME);
+            coverage.setName(props.getProperty(Utils.Prop.TYPENAME));
+        }
+
+        // absolute
+        if (props.containsKey(Utils.Prop.ABSOLUTE_PATH))
+            setParam(parameters, props, Utils.Prop.ABSOLUTE_PATH);
+
+        // recursive
+        if (props.containsKey(Utils.Prop.RECURSIVE))
+            setParam(parameters, props, Utils.Prop.RECURSIVE);
+
+        // wildcard
+        if (props.containsKey(Utils.Prop.WILDCARD))
+            setParam(parameters, props, Utils.Prop.WILDCARD);
+
+        // granule acceptors string
+        if (props.containsKey(Utils.Prop.GRANULE_ACCEPTORS)) {
+            setParam(parameters, props, Utils.Prop.GRANULE_ACCEPTORS);
+        }
+
+        if (props.containsKey(Utils.Prop.GEOMETRY_HANDLER)) {
+            setParam(parameters, props, Utils.Prop.GEOMETRY_HANDLER);
+        }
+
+        if (props.containsKey(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI)) {
+            IndexerUtils.setParam(parameters, props, Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI);
+        }
+
+        // schema
+        if (props.containsKey(Utils.Prop.SCHEMA)) {
+            SchemasType schemas = Utils.OBJECT_FACTORY.createSchemasType();
+            SchemaType schema = Utils.OBJECT_FACTORY.createSchemaType();
+            indexer.setSchemas(schemas);
+            schemas.getSchema().add(schema);
+            schema.setAttributes(props.getProperty(Utils.Prop.SCHEMA));
+            schema.setName(getParameter(Utils.Prop.INDEX_NAME, indexer));
+        }
+
+        DomainsType domains = coverage.getDomains();
+        List<DomainType> domainList = null;
+        // time attr
+        if (props.containsKey(Utils.Prop.TIME_ATTRIBUTE)) {
+            if (domains == null) {
+                domains = Utils.OBJECT_FACTORY.createDomainsType();
+                coverage.setDomains(domains);
+                domainList = domains.getDomain();
+            }
+            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
+            domain.setName(Utils.TIME_DOMAIN.toLowerCase());
+            setAttributes(domain, props.getProperty(Utils.Prop.TIME_ATTRIBUTE));
+            domainList.add(domain);
+        }
+
+        // elevation attr
+        if (props.containsKey(Utils.Prop.ELEVATION_ATTRIBUTE)) {
+            if (domains == null) {
+                domains = Utils.OBJECT_FACTORY.createDomainsType();
+                coverage.setDomains(domains);
+                domainList = domains.getDomain();
+            }
+            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
+            domain.setName(Utils.ELEVATION_DOMAIN.toLowerCase());
+            setAttributes(domain, props.getProperty(Utils.Prop.ELEVATION_ATTRIBUTE));
+            domainList.add(domain);
+        }
+
+        // Additional domain attr
+        if (props.containsKey(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {
+            if (domains == null) {
+                domains = Utils.OBJECT_FACTORY.createDomainsType();
+                coverage.setDomains(domains);
+                domainList = domains.getDomain();
+            }
+            String attributes = props.getProperty(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES);
+            parseAdditionalDomains(attributes, domainList);
+        }
+
+        // imposed BBOX
+        if (props.containsKey(Utils.Prop.ENVELOPE2D))
+            setParam(parameters, props, Utils.Prop.ENVELOPE2D);
+
+        // imposed Pyramid Layout
+        if (props.containsKey(Utils.Prop.RESOLUTION_LEVELS))
+            setParam(parameters, props, Utils.Prop.RESOLUTION_LEVELS);
+
+        // collectors
+        if (props.containsKey(Utils.Prop.PROPERTY_COLLECTORS)) {
+            setPropertyCollectors(indexer, props.getProperty(Utils.Prop.PROPERTY_COLLECTORS));
+        }
+
+        if (props.containsKey(Utils.Prop.CACHING))
+            setParam(parameters, props, Utils.Prop.CACHING);
+
+        if (props.containsKey(Utils.Prop.ROOT_MOSAIC_DIR)) {
+            // Overriding root mosaic directory
+            setParam(parameters, props, Utils.Prop.ROOT_MOSAIC_DIR);
+        }
+
+        if (props.containsKey(Utils.Prop.INDEXING_DIRECTORIES)) {
+            setParam(parameters, props, Utils.Prop.INDEXING_DIRECTORIES);
+        }
+        if (props.containsKey(Utils.Prop.AUXILIARY_FILE)) {
+            setParam(parameters, props, Utils.Prop.AUXILIARY_FILE);
+        }
+        if (props.containsKey(Utils.Prop.AUXILIARY_DATASTORE_FILE)) {
+            setParam(parameters, props, Utils.Prop.AUXILIARY_DATASTORE_FILE);
+        }
+        if (props.containsKey(Utils.Prop.CAN_BE_EMPTY)) {
+            setParam(parameters, props, Utils.Prop.CAN_BE_EMPTY);
+        }
+        if (props.containsKey(Utils.Prop.WRAP_STORE)) {
+            setParam(parameters, props, Utils.Prop.WRAP_STORE);
+        }
+        if (props.containsKey(Utils.Prop.USE_EXISTING_SCHEMA)) {
+            setParam(parameters, props, Utils.Prop.USE_EXISTING_SCHEMA);
+        }
+        if (props.containsKey(Utils.Prop.CHECK_AUXILIARY_METADATA)) {
+            setParam(parameters, props, Utils.Prop.CHECK_AUXILIARY_METADATA);
+        }
+
+        if (props.containsKey(Utils.Prop.GRANULE_COLLECTOR_FACTORY)) {
+            setParam(parameters, props, Utils.Prop.GRANULE_COLLECTOR_FACTORY);
+        }
+
+        if (props.containsKey(Utils.Prop.HETEROGENEOUS_CRS)) {
+            setParam(parameters, props, Utils.Prop.HETEROGENEOUS_CRS);
+        }
+
+        return indexer;
+    }
+
+    /**
+     * Set the given parameter on the given indexer
+     * @param indexer indexer on which to set the param
+     * @param paramName parameter name
+     * @param paramValue parameter value
+     */
+    public static void setParam(Indexer indexer, String paramName, String paramValue) {
+        setParam(indexer.getParameters().getParameter(), paramName, paramValue);
+    }
 }

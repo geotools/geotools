@@ -32,13 +32,15 @@ public class ElasticCompatLoader {
             className = classOverride;
         } else {
             ClassLoader classLoader = ElasticCompatLoader.class.getClassLoader();
-            try (InputStream in = classLoader.getResourceAsStream("es-build.properties"); Scanner s = new Scanner(in)) {
+            try (InputStream in = classLoader.getResourceAsStream("es-build.properties")) {
                 if (in != null) {
-                    s.useDelimiter("\\A");
-                    Matcher m = VERSION_PATTERN.matcher(s.next());
-                    if (m.find()) {
-                        final String majorVersion = m.group(1);
-                        className = ElasticCompat.class.getName() + majorVersion;
+                    try (Scanner s = new Scanner(in)) {
+                        s.useDelimiter("\\A");
+                        Matcher m = VERSION_PATTERN.matcher(s.next());
+                        if (m.find()) {
+                            final String majorVersion = m.group(1);
+                            className = ElasticCompat.class.getName() + majorVersion;
+                        }
                     }
                 }
             } catch (IOException e) {

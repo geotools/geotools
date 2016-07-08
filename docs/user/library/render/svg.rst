@@ -23,3 +23,4 @@ Here is the example fillHouse.sld:
 
 .. literalinclude:: /../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/fillHouse.sld
      :language: xml
+

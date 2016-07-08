@@ -157,7 +157,7 @@ The next step is to count the dimensions of the shapes in the above 9-Intersecti
 DE-9IM    Interior        Boundary        Exterior
 Interior  2               1               2
 Boundary  1               0               1
-Exterior  2               1               1
+Exterior  2               1               2
 ========= =============== =============== ===============
 
 As you can see this matrix is a summary of the relationship between the two geometries. Depending on the geometry involves; and their arrangement you will get different numbers here. The above numbers are taken by looking at what kind of shapes are displayed in the above pictures and writing down their dimension.

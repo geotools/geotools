@@ -56,12 +56,6 @@ You can read **dim( obj )** as "the dimension of obj". Hopefully this line up wi
 We are going to leave 3D stuff out as we are focusing on JTS.
 
 Intersection of Two Geometries
-
-Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or DE-9IM.
-
-The relationship between two geometries x and y (point line or region) as defined by their Interior, Boundary and Exterior results in a matrix based on: x INTERSECTION y.
-
-Intersection of Two Geometries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or **DE-9IM**.

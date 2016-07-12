@@ -1129,6 +1129,11 @@
         <artifactId>jt-crop</artifactId>
         <version>${jaiext.version}</version>
       </dependency>	
+     <dependency>
+        <groupId>it.geosolutions.jaiext.iterators</groupId>
+        <artifactId>jt-iterators</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.lookup</groupId>
         <artifactId>jt-lookup</artifactId>
@@ -1150,10 +1155,25 @@
         <version>${jaiext.version}</version>
       </dependency>	
       <dependency>
+        <groupId>it.geosolutions.jaiext.scale</groupId>
+        <artifactId>jt-scale</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
+      <dependency>
         <groupId>it.geosolutions.jaiext.stats</groupId>
         <artifactId>jt-stats</artifactId>
         <version>${jaiext.version}</version>
       </dependency>	
+      <dependency>
+        <groupId>it.geosolutions.jaiext.translate</groupId>
+        <artifactId>jt-translate</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.jaiext.utilities</groupId>
+        <artifactId>jt-utilities</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.warp</groupId>
         <artifactId>jt-warp</artifactId>
@@ -1184,7 +1204,7 @@
         <artifactId>jt-errordiffusion</artifactId>
         <version>${jaiext.version}</version>
       </dependency>	
-	      <dependency>
+      <dependency>
         <groupId>it.geosolutions.jaiext.orderdither</groupId>
         <artifactId>jt-orderdither</artifactId>
         <version>${jaiext.version}</version>
@@ -1208,18 +1228,19 @@
         <groupId>it.geosolutions.jaiext.classifier</groupId>
         <artifactId>jt-classifier</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
-	  <dependency>
+      </dependency>
+ 	  <dependency>
 		<groupId>it.geosolutions.jaiext.rlookup</groupId>
 		<artifactId>jt-rlookup</artifactId>
 		<version>${jaiext.version}</version>
-	  </dependency>		
+	  </dependency>
 	  <dependency>
 		<groupId>it.geosolutions.jaiext.vectorbin</groupId>
 		<artifactId>jt-vectorbin</artifactId>
 		<version>${jaiext.version}</version>
-	  </dependency>		  
+	  </dependency>
     </dependencies>
+
   </dependencyManagement>
 
 

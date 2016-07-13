@@ -65,6 +65,7 @@ public class WFSOnlineTestSupport {
 
         Map<String, Serializable> m = new HashMap<String, Serializable>();
         m.put(WFSDataStoreFactory.URL.key, server);
+        m.put(WFSDataStoreFactory.PROTOCOL.key, false);
         m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(10000)); // not debug
         m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(1000000)); // for debug
 

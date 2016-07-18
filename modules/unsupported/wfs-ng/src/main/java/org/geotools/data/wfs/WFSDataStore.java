@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs20.ListStoredQueriesResponseType;
@@ -111,10 +110,7 @@ public class WFSDataStore extends ContentDataStore {
         Set<QName> remoteTypeNames = client.getRemoteTypeNames();
         List<Name> names = new ArrayList<Name>(remoteTypeNames.size());
         for (QName remoteTypeName : remoteTypeNames) {
-            String localTypeName = remoteTypeName.getLocalPart();
-            if (!XMLConstants.DEFAULT_NS_PREFIX.equals(remoteTypeName.getPrefix())) {
-                localTypeName = remoteTypeName.getPrefix() + "_" + localTypeName;
-            }
+            String localTypeName = client.getConfig().localTypeName(remoteTypeName);
             Name typeName = new NameImpl(namespaceURI==null? remoteTypeName.getNamespaceURI() : namespaceURI, localTypeName);
             
             names.add(typeName);

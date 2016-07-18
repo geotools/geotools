@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -301,6 +301,16 @@ public class WFSTestData {
         public void setOutputformatOverride(String outputFormatOverride) {
             this.outputFormatOverride = outputFormatOverride;
         }   
+        
+        public void setGmlCompatibleTypeNames(boolean gmlCompatibleTypeNames) {
+            this.gmlCompatibleTypenames = gmlCompatibleTypeNames;
+        }
+    }
+    
+    public static WFSConfig getGmlCompatibleConfig() {
+        MutableWFSConfig config = new MutableWFSConfig();
+        config.setGmlCompatibleTypeNames(true);
+        return config;
     }
     
     public static class TestWFSClient extends WFSClient {
@@ -310,7 +320,7 @@ public class WFSTestData {
         private GetFeatureRequest request;
         
         public TestWFSClient(URL capabilitiesURL, HTTPClient http) throws IOException, ServiceException {
-            super(capabilitiesURL, http, new MutableWFSConfig());
+            super(capabilitiesURL, http, getGmlCompatibleConfig());
         }
 
         /**

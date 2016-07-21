@@ -65,6 +65,8 @@ public class MapServerOnlineTest {
 
     private WFSDataStore wfs110;
 
+    private WFSDataStore wfs110_with_get;
+
     @Before
     public void setUp() throws Exception {
         url_100 = new URL(SERVER_URL_100);
@@ -83,9 +85,13 @@ public class MapServerOnlineTest {
                 params.put(WFSDataStoreFactory.WFS_STRATEGY.key, "mapserver");
                 params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, Boolean.TRUE);
                 wfs110 = new WFSDataStoreFactory().createDataStore(params);
+                
+                params.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
+                wfs110_with_get = new WFSDataStoreFactory().createDataStore(params);
 
                 assertEquals("1.0.0", wfs100.getInfo().getVersion());
                 assertEquals("1.1.0", wfs110.getInfo().getVersion());
+                assertEquals("1.1.0", wfs110_with_get.getInfo().getVersion());
             }
             catch(Exception e) {
                 System.err.println("Server is not available. test disabled ");
@@ -110,6 +116,11 @@ public class MapServerOnlineTest {
     @Test
     public void testSingleType_WFS_1_1() throws IOException, NoSuchElementException {
         testSingleType(wfs110);
+    }
+    
+    @Test
+    public void testSingleType_WFS_1_1_with_get() throws IOException, NoSuchElementException {
+        testSingleType(wfs110_with_get);
     }
 
     private void testSingleType(DataStore wfs) throws IOException, NoSuchElementException {
@@ -139,6 +150,8 @@ public class MapServerOnlineTest {
         Query query = new Query();
         query.setTypeName(typeName);
         query.setFilter(filter);
+        //test property names
+        query.setPropertyNames(new String[] {"POPULATION", "NAME"});
         
         features = source.getFeatures(query);
         

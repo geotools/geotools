@@ -1006,7 +1006,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setColor(copy(colorMapEntry.getColor()));
         copy.setLabel(colorMapEntry.getLabel());
         copy.setOpacity(copy(colorMapEntry.getOpacity()));
-        copy.setQuantity(colorMapEntry.getQuantity());
+        copy.setQuantity(copy(colorMapEntry.getQuantity()));
 
         if (STRICT && !copy.equals(colorMapEntry)) {
             throw new IllegalStateException("Was unable to duplicate provided ColorMapEntry:" + colorMapEntry);

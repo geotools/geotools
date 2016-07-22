@@ -2490,12 +2490,17 @@ public class StreamingRenderer implements GTRenderer {
                     // It is a grid coverage
                     // //
                     final Object grid = gridPropertyName.evaluate(drawMe.feature);
+                    // resolve color map entry cql expressions before getting into another thread
+                    ColorMapEntryResolver simplifier = new ColorMapEntryResolver();
+                    symbolizer.accept(simplifier);
+                    final RasterSymbolizer rs = (RasterSymbolizer) simplifier.getCopy();
+                    
                     if (grid instanceof GridCoverage2D) {
                         coverage = (GridCoverage2D) grid;
                         if (coverage != null) {
                             disposeCoverage = grid instanceof DisposableGridCoverage;
                             requests.put(new RenderRasterRequest(graphics, coverage,
-                                    disposeCoverage, (RasterSymbolizer) symbolizer, destinationCrs,
+                                    disposeCoverage, rs, destinationCrs,
                                     worldToScreenTransform));
                             paintCommands++;
                         }
@@ -2504,7 +2509,7 @@ public class StreamingRenderer implements GTRenderer {
                                 .evaluate(drawMe.feature);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
                         requests.put(new RenderCoverageReaderRequest(graphics, reader, params,
-                                (RasterSymbolizer) symbolizer, destinationCrs,
+                                rs, destinationCrs,
                                 worldToScreenTransform,
                                 getRenderingInterpolation(drawMe.layer)));
                     }

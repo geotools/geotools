@@ -823,8 +823,11 @@ public final class ImageUtilities {
                     ImageInputStream iis = (ImageInputStream) param;
                     try {
                         iis.close();
-                    } catch(IOException e) {
+                    } catch(Throwable e) {
                         // fine, we tried
+                    	if(LOGGER.isLoggable(Level.FINE)){
+                    		LOGGER.log(Level.FINE, e.getLocalizedMessage());
+                    	}
                     }
                 }
             }

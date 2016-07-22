@@ -18,7 +18,10 @@
 package org.geotools.gce.gtopo30;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.zip.ZipOutputStream;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -85,6 +88,59 @@ public class GT30ZipWriterTest extends GT30TestBase {
 		
 			gc.dispose(false);
 		}
+	}
+	
+	/**
+	 * Testing zipped-package writing capabilites.
+	 * 
+	 * @throws Exception
+	 */
+	public void testExternalZIP() throws Exception {
+		final URL sourceURL = TestData.getResource(this, this.fileName + ".DEM");
+		final AbstractGridFormat format = (AbstractGridFormat) new GTopo30FormatFactory()
+				.createFormat();
+
+		assertTrue("Unable to parse source data for this GTOPO30 write test",format.accepts(sourceURL));
+
+		// get a reader
+		final GridCoverageReader reader = format.getReader(sourceURL);
+
+		// get a grid coverage
+		final GridCoverage2D gc = ((GridCoverage2D) reader.read(null));
+
+		// preparing to write it down
+		File testDir = TestData.file(this, ".");
+		File outputFile = new File(testDir.getAbsolutePath(),"test.zip");
+		
+		
+		final OutputStream outputStream= new ZipOutputStream(new FileOutputStream(outputFile));
+		GridCoverageWriter writer=null;
+		try{
+			writer = format.getWriter(outputStream);
+			// ATTENTION we do not require to specify that we want compression as we are doing that 
+			// on our own
+			writer.write(gc, null);
+		}catch (Exception e) {
+			assertTrue(e.getLocalizedMessage(),false);
+		}finally{
+			// close source GC
+			gc.dispose(false);
+			
+			//close writer and outputstream
+			if(writer!=null){
+				writer.dispose();
+			}
+			if(outputStream!=null){
+				outputStream.close();
+			}
+			
+			// delete test file, or at least try to
+			outputFile.delete();
+			
+		}
+
+		
+			
 	}
 
 	public static final void main(String[] args) throws Exception {

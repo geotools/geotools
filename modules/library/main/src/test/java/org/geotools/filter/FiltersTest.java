@@ -1,10 +1,6 @@
 package org.geotools.filter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -18,6 +14,8 @@ import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
 
 @SuppressWarnings("deprecation")
 /**
@@ -215,5 +213,11 @@ public class FiltersTest {
         Filter f = ff.equals(ff.literal("bar"), ff.literal("foo"));
         String results = Filters.findPropertyName(b);
         assertNull(Filters.findPropertyName(f));
+    }
+    
+    @Test
+    public void testEmptyEscape() {
+        PropertyIsLike like = ff.like(ff.literal("abc def"), "*de*", "*", "_", "");
+        assertTrue(like.evaluate(null));
     }
 }

@@ -29,6 +29,10 @@ import org.opengis.feature.FeatureFactory;
  */
 public class CommonFactoryFinderTest extends TestCase {
 
+    public void testGetFeatureFactory() {
+        assertNotNull( CommonFactoryFinder.getFeatureFactory(null));
+    }
+    
     public void testGetStyleFactory() {
         assertNotNull( CommonFactoryFinder.getStyleFactories( GeoTools.getDefaultHints() ));
     }

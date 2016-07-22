@@ -19,19 +19,56 @@ package org.geotools.feature.type;
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.FactoryNotFoundException;
+import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.And;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
 /**
- * 
+ * Test classes used to create and build {@link FeatureType} data structure.
  *
  * @source $URL$
  */
 public class TypesTest extends TestCase {
+    
+    public void testAttributeBuilder(){
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        AttributeTypeBuilder builder = new AttributeTypeBuilder();
+        
+        builder.binding(Integer.class);
+        builder.minOccurs(1).maxOccurs(1);
+        builder.defaultValue(0);
+        builder.name("percent").description("Percent between 0 and 100");
+        builder
+            .restriction( ff.greaterOrEqual(ff.property("."), ff.literal(0)) )
+            .restriction(ff.lessOrEqual(ff.property("."), ff.literal(100)) );
+        
+        final AttributeType PERCENT = builder.buildType();
+        
+        builder.minOccurs(1).maxOccurs(1);
+        builder.defaultValue(0);
+        builder.name("percent").description("Percent between 0 and 100");
+        
+        AttributeDescriptor a = builder.buildDescriptor("a", PERCENT );
+        
+        assertSame( a.getType(), PERCENT );
+        assertEquals( a.getDefaultValue(), 0 );
+        
+        Filter restrictions = ff.and(PERCENT.getRestrictions());
+        assertTrue( restrictions.evaluate(50) );
+        assertFalse( restrictions.evaluate(150) );
+    }
+    
     public void testWithoutRestriction(){
         // used to prevent warning
         FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);

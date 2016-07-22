@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
 import org.geotools.resources.Classes;
@@ -49,7 +48,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <pre>
  * <code>
  *  //create the builder
- * 	AttributeTypeBuilder builder = new AttributeTypeBuilder();
+ *  AttributeTypeBuilder builder = new AttributeTypeBuilder();
  *  
  *  //set type information
  *  builder.setName( "intType" ):
@@ -66,7 +65,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <pre>
  * <code>
  *  //create the builder
- * 	AttributeTypeBuilder builder = new AttributeTypeBuilder();
+ *  AttributeTypeBuilder builder = new AttributeTypeBuilder();
  *  
  *  //set type information
  *  builder.setName( "intType" ):
@@ -135,7 +134,7 @@ public class AttributeTypeBuilder {
 	/**
 	 * bound java class
 	 */
-	protected Class binding;
+	protected Class<?> binding;
 	/**
 	 * super type
 	 */
@@ -185,7 +184,7 @@ public class AttributeTypeBuilder {
     /**
      * User data for the attribute.
      */
-    protected Map userData = null;
+    protected Map<Object,Object> userData = null;
     
     /**
      * filter factory
@@ -197,9 +196,8 @@ public class AttributeTypeBuilder {
 	 *
 	 */
     public AttributeTypeBuilder() {
-		this( new FeatureTypeFactoryImpl() );
+		this( CommonFactoryFinder.getFeatureTypeFactory(null) );
 		init();
-		
 	}
 	
 	/**
@@ -246,7 +244,7 @@ public class AttributeTypeBuilder {
 		minOccurs = null;
 		maxOccurs = null;
 		isNillable = true;
-		userData = new HashMap();
+		userData = new HashMap<Object,Object>();
 		defaultValue = null; 
 		isDefaultValueSet = false; 
 	}
@@ -295,7 +293,7 @@ public class AttributeTypeBuilder {
 	// Type methods
 	//
 	
-	public void setBinding(Class binding) {
+	public void setBinding(Class<?> binding) {
 		this.binding = binding;
 	}
 
@@ -360,7 +358,7 @@ public class AttributeTypeBuilder {
 		isDefaultValueSet = true;
 	}
 	
-	public AttributeTypeBuilder binding(Class binding) {
+	public AttributeTypeBuilder binding(Class<?> binding) {
 		setBinding(binding);
 		return this;
 	}
@@ -599,7 +597,7 @@ public class AttributeTypeBuilder {
 	
 	protected List<Filter> restrictions() {
 		if (restrictions == null ) {
-			restrictions = new ArrayList();		
+			restrictions = new ArrayList<Filter>();		
 		}
 		
 		return restrictions;

@@ -17,8 +17,6 @@
  */
 package org.geotools.gce.gtopo30;
 
-import it.geosolutions.jaiext.lookup.LookupTable;
-
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
@@ -42,7 +40,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
@@ -51,7 +48,6 @@ import javax.media.jai.JAI;
 import javax.media.jai.LookupTableJAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedOp;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
@@ -85,7 +81,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.TransformException;
 
-import com.sun.media.jai.operator.ImageWriteDescriptor;
+import it.geosolutions.jaiext.lookup.LookupTable;
 
 /**
  * Class used for encoding a {@link GridCoverage2D} into a GTOPO30 file.
@@ -204,7 +200,7 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 					destination = null;
 				}
 			}
-		} else if (dest instanceof ImageOutputStream) {
+		} else if (dest instanceof ZipOutputStream) {
 			this.destination = dest;
 		} else {
 			throw new IllegalArgumentException(
@@ -217,11 +213,6 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		// managing hints
 		//
 		// /////////////////////////////////////////////////////////////////////
-		// //
-		//
-		// managing hints
-		//
-		// //
 		if (this.hints == null)
 			this.hints= new Hints();	
 		if (hints != null) {
@@ -277,8 +268,9 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 				}
 			}
 		}
-		if (gtParams == null)
+		if (gtParams == null){
 			gtParams = new GTopo30WriteParams();
+		}
 		// compression
 		final boolean compressed = gtParams.getCompressionMode() == ImageWriteParam.MODE_EXPLICIT;
 		// write band
@@ -295,12 +287,37 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		// destination file name
 		String fileName = gc2D.getName().toString();
 
-		// destination XXX HAS to be a dir
+		// handling compression
 		if (compressed) {
-			destination = new ZipOutputStream(new BufferedOutputStream(
-					new FileOutputStream(new File((File) destination,
-							new StringBuffer(fileName).append(".zip")
-									.toString()))));
+			
+			if(destination instanceof File){
+				destination = new ZipOutputStream(new BufferedOutputStream(
+						new FileOutputStream(new File((File) destination,
+								new StringBuffer(fileName).append(".zip")
+										.toString()))));
+			}else{
+				if(!(destination instanceof ZipOutputStream)){
+					throw new IllegalArgumentException("Asking compression on a source that does not support it: "
+					    +destination.getClass().getSimpleName());
+				}
+			}
+			
+		}
+		
+		//now it's either a dir or a ZipOutputStream
+		
+		// if the caller has not asked us to compress explicitly it's usually a file ( a directory) or it is already
+		// compressing hence it is a ZipOutputStream
+		if (!compressed && 
+				!(destination instanceof File && ((File)destination).isDirectory())&&!(destination instanceof ZipOutputStream)){
+				throw new IllegalArgumentException("Asking to write, without compression, on a source that does not support it: "
+					    +destination.getClass().getSimpleName());	
+		}else{
+			// if the caller has asked us to compress explicitly then it is a ZipOutputStream
+			if(compressed &&!(destination instanceof ZipOutputStream)){
+				throw new IllegalArgumentException("Asking to write, with compression, on a source that does not support it: "
+					    +destination.getClass().getSimpleName());	
+			}
 		}
 
 		// /////////////////////////////////////////////////////////////////////
@@ -348,7 +365,7 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		//
 		// //
 		this.writeStats(reFormattedData2Short, fileName, destination, gc2D);
-		// we won't use this image anymore let's release the resources.
+		
 
 		// //
 		//
@@ -385,8 +402,7 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		// //
 		this.writeSRC(gc2D, fileName, destination);
 
-		if (compressed) {
-
+		if (destination instanceof ZipOutputStream) {
 			((ZipOutputStream) destination).close();
 		}
 	}
@@ -434,6 +450,10 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 
 				break;
 			}
+		}
+		// do nothing?
+		if(candidate==null){
+			return image;
 		}
 
 		// new no data category
@@ -706,23 +726,14 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		pbj.addSource(image);
 		pbj.setParameter("Format", "raw");
 		pbj.setParameter("Output", out);
-		final RenderedOp wOp = JAI.create("ImageWrite", pbj);
+		JAI.create("ImageWrite", pbj);
 
-		// /////////////////////////////////////////////////////////////////////
-		//
-		// Dispose things
-		//
-		// /////////////////////////////////////////////////////////////////////
-		final Object o = wOp
-				.getProperty(ImageWriteDescriptor.PROPERTY_NAME_IMAGE_WRITER);
-		if (o instanceof ImageWriter)
-			((ImageWriter) o).dispose();
-
-		if (!(dest instanceof File)) {
-			((ZipOutputStream) dest).closeEntry();
-		}
 		out.flush();
 		out.close();
+		if (dest instanceof ZipOutputStream) {
+			((ZipOutputStream) dest).closeEntry();
+		}
+
 
 	}
 
@@ -802,10 +813,8 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		JAI.create("ImageWrite", pbj, new RenderingHints(JAI.KEY_TILE_CACHE,
 				null));
 
-		if (dest instanceof File) {
-			out.close();
-		} else {
-			out.flush();
+		out.close();
+		if (dest instanceof ZipOutputStream) {
 			((ZipOutputStream) dest).closeEntry();
 		}
 
@@ -1097,10 +1106,8 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		pbjW.setParameter("Output", out);
 		JAI.create("ImageWrite", pbjW);
 
-		if (dest instanceof File) {
-			out.flush();
-			out.close();
-		} else {
+		out.close();
+		if (dest instanceof ZipOutputStream) {
 			((ZipOutputStream) dest).closeEntry();
 		}
 	}

@@ -177,9 +177,6 @@ public class SimpleFeatureTypeBuilder {
 	 * attribute builder
 	 */
 	protected AttributeTypeBuilder attributeBuilder;
-
-	/** Length for next filter */
-	//private int length = -1;
 	
 	/**
 	 * Constructs the builder.
@@ -195,7 +192,7 @@ public class SimpleFeatureTypeBuilder {
 	public SimpleFeatureTypeBuilder(FeatureTypeFactory factory) {
 		this.factory = factory;
 		
-		attributeBuilder = new AttributeTypeBuilder();
+		attributeBuilder = new AttributeTypeBuilder(factory);
 		setBindings( new SimpleSchema() );
 		reset();
 	}

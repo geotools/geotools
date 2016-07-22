@@ -470,6 +470,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 } 
                 initReaderFromURL(source, localHints);
             } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Exception generated while trying to initialize ImageMosaicReader: "
+                        + e.getMessage(), e);
                 throw new DataSourceException(e);
             }
         }

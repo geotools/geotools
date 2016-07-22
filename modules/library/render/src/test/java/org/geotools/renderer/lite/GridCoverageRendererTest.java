@@ -48,6 +48,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.GeoTools;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.geotiff.GeoTiffWriter;
@@ -86,7 +87,6 @@ import org.opengis.referencing.operation.MathTransform;
 import com.vividsolutions.jts.geom.Envelope;
 
 import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 
 /**
  * @author Simone Giannecchini
@@ -172,6 +172,7 @@ public class GridCoverageRendererTest  {
     public void close() throws IOException {
         MapProjection.SKIP_SANITY_CHECKS = false;
         worldReader.dispose();
+        EnvFunction.clearLocalValues();
     }
 
 	/**
@@ -894,6 +895,33 @@ public class GridCoverageRendererTest  {
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/flippedAffine.png");
         ImageAssert.assertEquals(reference, image, 2);
     }
+    
+    @Test
+    public void testEnvFunctionInColorMap() throws Exception {
+        EnvFunction.setLocalValue("low", "-0.001");
+        EnvFunction.setLocalValue("lowColor", "#000000");
+        
+        // get the source data
+        File coverageFile = TestData.copy(this, "geotiff/float64.tif");
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
+
+        // Apply the symbolizer
+        Style style = RendererBaseTest.loadStyle(this, "float64.sld");
+        
+        final MapContent mc = new MapContent();
+        mc.addLayer(new GridReaderLayer(reader, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        BufferedImage image = RendererBaseTest.renderImage(renderer, mc.getViewport().getBounds(), null, 50, 50);
+
+        // Check the image
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/flippedAffineParametric.png");
+        ImageAssert.assertEquals(reference, image, 2);
+    }
+
 
     @Test
     public void testCoverage_0_360() throws Exception {

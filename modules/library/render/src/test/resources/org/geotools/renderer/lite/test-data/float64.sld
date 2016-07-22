@@ -23,8 +23,8 @@
               <ogc:PropertyName>geom</ogc:PropertyName>
             </sld:Geometry>
             <sld:ColorMap>
-              <sld:ColorMapEntry color="#D7191C" opacity="1"
-                quantity="0" label="1" />
+              <sld:ColorMapEntry color="${env('lowColor', '#D7191C')}" opacity="1"
+                quantity="${env('low', 0)}" label="1" />
               <sld:ColorMapEntry color="#FDAE61" opacity="1"
                 quantity="0.002383" label="2" />
               <sld:ColorMapEntry color="#FFFFBF" opacity="1"

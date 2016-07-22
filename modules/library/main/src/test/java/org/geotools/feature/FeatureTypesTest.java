@@ -20,7 +20,7 @@ import org.opengis.filter.expression.Function;
 import com.vividsolutions.jts.geom.Point;
 
 /**
- * 
+ * Test FeatureTypes utility class abilities to inspect FeatureType data structure.
  *
  * @source $URL$
  */

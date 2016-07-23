@@ -284,4 +284,13 @@ public class InterpolationProperties {
     }
   
 
+    /**
+     * Copy all properties from another {@link InterpolationProperties} into this one.
+     * 
+     * @param other the source {@link InterpolationProperties}.
+     */
+    public void putAll(InterpolationProperties other) {
+        theProperties.putAll(other.theProperties);
+    }
+
 }

@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex.config;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -28,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.digester.Digester;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.AppSchemaDataAccessFactory;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.util.InterpolationProperties;
@@ -54,7 +56,17 @@ public class XMLConfigDigester {
 
     /** Namespace URI for the AppSchemaDataAccess configuration files */
     private static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";
-    
+
+    /**
+     * Name of the interpolation property for the configuration file.
+     */
+    private static final String CONFIG_FILE_PROPERTY = "config.file";
+
+    /**
+     * Name of the interpolation property for the parent directory of the configuration file.
+     */
+    private static final String CONFIG_PARENT_PROPERTY = "config.parent";
+
     /** 
      * Properties
      */
@@ -119,7 +131,18 @@ public class XMLConfigDigester {
             if (configStream == null) {
                 throw new IOException("Can't open datastore config file " + dataStoreConfigUrl);
             } else {
-                configString = properties.interpolate(InterpolationProperties.readAll(configStream));
+                InterpolationProperties props = new InterpolationProperties();
+                props.putAll(properties);
+                File dataStoreConfigFile = DataUtilities.urlToFile(dataStoreConfigUrl);
+                if (dataStoreConfigFile != null) {
+                    if (props.getProperty(CONFIG_FILE_PROPERTY) == null) {
+                        props.setProperty(CONFIG_FILE_PROPERTY, dataStoreConfigFile.getPath());
+                    }
+                    if (props.getProperty(CONFIG_PARENT_PROPERTY) == null) {
+                        props.setProperty(CONFIG_PARENT_PROPERTY, dataStoreConfigFile.getParent());
+                    }
+                }
+                configString = props.interpolate(InterpolationProperties.readAll(configStream));
             }
         } finally {
             if (configStream != null) {

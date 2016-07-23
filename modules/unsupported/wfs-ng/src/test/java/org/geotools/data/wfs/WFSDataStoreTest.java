@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,47 +42,50 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.feature.NameImpl;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
 public class WFSDataStoreTest {
 
-    private static final QName TYPE1 = new QName("http://example.com/1", "points", "prefix1");
+    protected static final QName TYPE1 = new QName("http://example.com/1", "points", "prefix1");
 
-    private static final QName TYPE2 = new QName("http://example.com/2", "points", "prefix2");
+    protected static final QName TYPE2 = new QName("http://example.com/2", "points", "prefix2");
 
-    private static SimpleFeatureType featureType1;
+    static SimpleFeatureType featureType1;
 
-    private static SimpleFeatureType featureType2;
+    static SimpleFeatureType featureType2;
 
-    private static Name simpleTypeName1;
+    static Name simpleTypeName1;
 
-    private static Name simpleTypeName2;
+    static Name simpleTypeName2;
 
-    private WFSDataStore dataStore;
+    protected WFSDataStore dataStore;
 
-    private WFSClient wfs;
-
-    @BeforeClass
-    public static void oneTimeSetUp() throws Exception {
-        simpleTypeName1 = new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
-        simpleTypeName2 = new NameImpl(TYPE2.getNamespaceURI(), TYPE2.getPrefix() + "_" + TYPE2.getLocalPart());
+    protected WFSClient wfs;
+    
+    protected WFSConfig createConfig() {
+        return WFSTestData.getGmlCompatibleConfig();
+    }
+    
+    @Before
+    public void setUp() throws Exception {
+        WFSConfig config = createConfig();
+        
+        simpleTypeName1 = new NameImpl(TYPE1.getNamespaceURI(), config.localTypeName(TYPE1));
+        simpleTypeName2 = new NameImpl(TYPE2.getNamespaceURI(), config.localTypeName(TYPE2));
 
         featureType1 = createType("http://example.com/1", "prefix1_points",
                 "name:String,geom:Point:srid=4326");
         featureType2 = createType("http://example.com/2", "prefix2_points",
                 "name:String,geom:Point:srid=3857");
-
-    }
-
-    @Before
-    public void setUp() throws Exception {
+        
         wfs = mock(WFSClient.class);
+        when(wfs.getConfig()).thenReturn(config);
         when(wfs.getRemoteTypeNames()).thenReturn(new HashSet<QName>(Arrays.asList(TYPE1, TYPE2)));
         when(wfs.supportsTransaction(TYPE1)).thenReturn(Boolean.TRUE);
         when(wfs.supportsTransaction(TYPE2)).thenReturn(Boolean.FALSE);

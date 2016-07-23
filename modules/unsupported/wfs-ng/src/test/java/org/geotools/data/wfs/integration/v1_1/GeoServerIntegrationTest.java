@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.integration.AbstractIntegrationTest;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
 import org.geotools.data.wfs.internal.WFSClient;
@@ -52,7 +53,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
     }
 
     private WFSClient mockUpWfsClient() throws Exception {
-        WFSConfig config = new WFSConfig();
+        WFSConfig config = WFSTestData.getGmlCompatibleConfig();
         String baseDirectory = "GeoServer_2.0/1.1.0/";
 
         return new IntegrationTestWFSClient(baseDirectory, config);

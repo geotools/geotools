@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -41,6 +41,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.AbstractTestHTTPClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
@@ -64,7 +65,8 @@ public class TinyOwsTest {
     private WFSDataStore getWFSDataStore(HTTPClient httpClient) throws IOException, ServiceException {
         URL capabilitiesUrl = new URL("http://127.0.0.1:8888/cgi-bin/tinyows?service=WFS&version=1.1.0&REQUEST=GetCapabilities");        
                 
-        WFSDataStore wfs = new WFSDataStore( new WFSClient(capabilitiesUrl, httpClient, WFSConfig.fromParams(Collections.EMPTY_MAP) ));
+        WFSDataStore wfs = new WFSDataStore( new WFSClient(capabilitiesUrl, httpClient, 
+                WFSTestData.getGmlCompatibleConfig() ));
         return wfs;
     }
 

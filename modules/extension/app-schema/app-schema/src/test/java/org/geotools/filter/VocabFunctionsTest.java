@@ -247,4 +247,33 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         }
     }
 
+    /**
+     * Test VocabFunction in a mapping file with the <code>${config.parent}</code> interpolation property.
+     */
+    @Test
+    public void testVocabFunctionInMappingFileWithConfigParent() {
+        @SuppressWarnings("serial")
+        final Map<String, String> expectedValues = new HashMap<String, String>() {
+            {
+                put("sc.1", "urn:cgi:classifier:CGI:SimpleLithology:2008:gravel");
+                put("sc.2", "urn:cgi:classifier:CGI:SimpleLithology:2008:diamictite");
+                put("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment");
+            }
+        };
+        FeatureIterator<Feature> features = exCollection.features();
+        try {
+            while (features.hasNext()) {
+                Feature feature = features.next();
+                String fid = feature.getIdentifier().getID();
+                ComplexAttribute complexAttribute = (ComplexAttribute) ff.property("gml:name[4]")
+                        .evaluate(feature);
+                String value = Converters.convert(
+                        GML3EncodingUtils.getSimpleContent(complexAttribute), String.class);
+                assertEquals(expectedValues.get(fid), value);
+            }
+        } finally {
+            features.close();
+        }
+    }
+
 }

@@ -88,6 +88,15 @@
 						<OCQL>Recode(STRING, 'string_one', 'a', 'string_two', 'b', 'string_three', 'c')</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
+                <AttributeMapping>
+                    <!-- Test Vocab function with the ${config.parent} interpolation property -->
+                    <targetAttribute>
+                        gml:name[4]
+                    </targetAttribute>
+                    <sourceExpression>
+                        <OCQL>Vocab(URN_ID, strconcat('${config.parent}', '/minoc_lithology_mapping.properties'))</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
 			</attributeMappings>
 		</FeatureTypeMapping>
 	</typeMappings>

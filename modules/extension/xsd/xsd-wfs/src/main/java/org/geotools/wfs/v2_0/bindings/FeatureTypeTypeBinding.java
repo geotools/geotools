@@ -21,6 +21,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -93,20 +94,20 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 return;
             }
         } else if ("OutputFormats".equals(property)) {
-            String outputFormatValue = null;
-            if (value instanceof String) {
-                outputFormatValue = (String)value;
-            }
-            
-            if (outputFormatValue != null) {
+            if (value != null) {
                 OutputFormatListType oflt = ((FeatureTypeType)object).getOutputFormats();
                 
                 if (oflt == null) {
                     oflt = ((Wfs20Factory)factory).createOutputFormatListType();
                 }
                 
-                oflt.getFormat().add(outputFormatValue);
+                if (value instanceof Map<?, ?>) {
+                    oflt.getFormat().addAll(((Map<String, ArrayList<String>>) value).get("Format"));
+                } else {
+                    oflt.getFormat().add(value.toString());
+                }
                 
+                ((FeatureTypeType) object).setOutputFormats(oflt);
                 return;
             }
         }

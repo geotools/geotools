@@ -20,6 +20,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.geotools.util.logging.Logging;
 
 import ucar.nc2.dataset.CoordinateAxis1D;
 
@@ -27,18 +31,26 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
 
     private static final String CLIMATOLOGICAL_UNITS = "CCYYMMDDHHMMSS";
 
+    private final static Logger LOGGER = Logging.getLogger(ClimatologicalTimeHandlerSpi.class.toString());
+
     private final static Set<String> IGNORED;
 
     static {
         Set<String> set = new HashSet<String>();
         set.add("n_profiles");
         IGNORED = Collections.unmodifiableSet(set);
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("ClimatologicalTimeHandlerSpi being initialized");
+        }
     }
 
     @Override
     public boolean canHandle(CoordinateAxis1D axis) {
         if (axis != null && "time".equalsIgnoreCase(axis.getShortName())
                 && CLIMATOLOGICAL_UNITS.equalsIgnoreCase(axis.getUnitsString())) {
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.finest("Climatological Time Handler Spi can handle the axis");
+            }
             return true;
         }
         return false;
@@ -53,6 +65,9 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
 
         @Override
         public CoordinateVariable<Date> createCoordinateVariable(CoordinateAxis1D axis) {
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.finest("Creating ClimatologicalTimeCoordinateVariable");
+            }
             return new ClimatologicalTimeCoordinateVariable(axis);
         }
     }

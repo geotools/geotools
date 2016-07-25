@@ -312,7 +312,13 @@ public class NetCDFUtilities {
             + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
-        CHECK_COORDINATE_PLUGINS = Boolean.getBoolean(CHECK_COORDINATE_PLUGINS_KEY); 
+        String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
+        CHECK_COORDINATE_PLUGINS = Boolean.getBoolean(CHECK_COORDINATE_PLUGINS_KEY);
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Value of Check Coordinate Plugins:" + property);
+            LOGGER.info("Should check for coordinate handler plugins:" 
+                + CHECK_COORDINATE_PLUGINS);
+        }
 
         IGNORED_DIMENSIONS = initializeIgnoreSet();
 

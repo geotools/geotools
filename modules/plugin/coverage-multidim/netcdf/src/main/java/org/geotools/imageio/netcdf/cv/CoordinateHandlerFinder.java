@@ -21,10 +21,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
+import org.geotools.util.logging.Logging;
 
 import ucar.nc2.dataset.CoordinateAxis1D;
 
@@ -53,6 +56,9 @@ import ucar.nc2.dataset.CoordinateAxis1D;
  *
  */
 public final class CoordinateHandlerFinder {
+
+    private final static Logger LOGGER = Logging.getLogger(CoordinateHandlerFinder.class.toString());
+
     /**
      * The service registry for this manager. Will be initialized only when first needed.
      */
@@ -73,8 +79,13 @@ public final class CoordinateHandlerFinder {
      * have registered factories
      */
     public static synchronized Set<CoordinateHandlerSpi> getAvailableHandlers() {
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Coordinate Handlers scan");
+        }
         // get all CoordinateHandlerSpi implementations
         scanForPlugins();
+
         final Iterator<CoordinateHandlerSpi> it = getServiceRegistry().getServiceProviders(
                 CoordinateHandlerSpi.class, true);
         final Set<CoordinateHandlerSpi> handlers = new HashSet<CoordinateHandlerSpi>();

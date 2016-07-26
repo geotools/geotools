@@ -221,6 +221,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             outputFormat = getDefaultOutputFormat(WFSOperationType.GET_FEATURE);
         }
         map.put("OUTPUTFORMAT", outputFormat);
+        map.put("RESULTTYPE", request.getResultType().name());
 
         if (request.getMaxFeatures() != null) {
             map.put("MAXFEATURES", String.valueOf(request.getMaxFeatures()));

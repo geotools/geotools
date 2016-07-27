@@ -96,6 +96,7 @@
     <jaiext.version>1.0.9</jaiext.version>
     <netcdf.version>4.6.2</netcdf.version>
     <jt.version>1.4.0</jt.version>
+    <java.awt.headless>true</java.awt.headless>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
@@ -133,12 +134,14 @@
       <id>interactive.tests</id>
       <properties>
         <interactive.tests>true</interactive.tests>
+        <java.awt.headless>false</java.awt.headless>
       </properties>
     </profile>
     <profile>
       <id>interactive.image</id>
       <properties>
         <interactive.image>true</interactive.image>
+        <java.awt.headless>false</java.awt.headless>
       </properties>
     </profile>
     <profile>

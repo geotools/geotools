@@ -119,13 +119,6 @@ To fix you need to build the javadoc jar by hand.
 
 Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the tools.jar (in order to build javadocs).
 
-Popup windows steal focus
-'''''''''''''''''''''''''
-
-You can run headless::
-
-  mvn install -Djava.awt.headless=true
-
 Unable to Delete Directory on Windows
 '''''''''''''''''''''''''''''''''''''
 

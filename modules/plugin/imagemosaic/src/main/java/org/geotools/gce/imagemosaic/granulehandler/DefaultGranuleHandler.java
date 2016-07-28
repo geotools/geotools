@@ -33,20 +33,18 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class DefaultGranuleHandler implements GranuleHandler {
 
-    private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
+    private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(
+            PrecisionModel.FLOATING);
+
     private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     @Override
-    public void handleGranule(
-            Object source,
-            GridCoverage2DReader inputReader,
-            SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
-            SimpleFeature feature, SimpleFeatureType inputFeatureType,
-            MosaicConfigurationBean mosaicConfiguration) {
+    public void handleGranule(Object source, GridCoverage2DReader inputReader,
+            SimpleFeature targetFeature, SimpleFeatureType targetFeatureType, SimpleFeature feature,
+            SimpleFeatureType inputFeatureType, MosaicConfigurationBean mosaicConfiguration) {
 
-        if(inputReader instanceof StructuredGridCoverage2DReader){
-            handleStructuredGranule(
-                    source, inputReader, targetFeature, targetFeatureType, feature,
+        if (inputReader instanceof StructuredGridCoverage2DReader) {
+            handleStructuredGranule(source, inputReader, targetFeature, targetFeatureType, feature,
                     inputFeatureType, mosaicConfiguration);
         } else {
             Envelope coverageEnvelope = inputReader.getOriginalEnvelope();

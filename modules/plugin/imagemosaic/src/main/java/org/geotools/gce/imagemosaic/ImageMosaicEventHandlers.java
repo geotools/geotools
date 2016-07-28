@@ -111,7 +111,8 @@ public class ImageMosaicEventHandlers {
 
         private Exception exception;
 
-        public ExceptionEvent(Object source, String message, double percentage, Exception exception) {
+        public ExceptionEvent(Object source, String message, double percentage,
+                Exception exception) {
             super(source, message, percentage);
             this.exception = exception;
         }

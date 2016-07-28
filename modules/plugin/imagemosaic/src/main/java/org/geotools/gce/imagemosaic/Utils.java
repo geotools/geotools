@@ -114,8 +114,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
 /**
- * Sparse utilities for the various mosaic classes. I use them to extract
- * complex code from other places.
+ * Sparse utilities for the various mosaic classes. I use them to extract complex code from other places.
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @source $URL$
@@ -165,8 +164,8 @@ public class Utils {
     public final static double RGB_TO_GRAY_MATRIX[][] = { { 0.114, 0.587, 0.299, 0 } };
 
     /**
-     * Flag indicating whether to compute optimized crop ops (instead of standard
-     * mosaicking op) when possible (As an instance when mosaicking a single granule)
+     * Flag indicating whether to compute optimized crop ops (instead of standard mosaicking op) when possible (As an instance when mosaicking a
+     * single granule)
      */
     final static boolean OPTIMIZE_CROP;
 
@@ -251,7 +250,7 @@ public class Utils {
          */
         public static final String CHECK_AUXILIARY_METADATA = "CheckAuxiliaryMetadata";
 
-        //Indexer Properties specific properties
+        // Indexer Properties specific properties
         public static final String RECURSIVE = "Recursive";
 
         public static final String WILDCARD = "Wildcard";
@@ -274,8 +273,7 @@ public class Utils {
     /**
      * Extracts a bbox from a filter in case there is at least one.
      * <p>
-     * I am simply looking for the BBOX filter but I am sure we could
-     * use other filters as well. I will leave this as a todo for the moment.
+     * I am simply looking for the BBOX filter but I am sure we could use other filters as well. I will leave this as a todo for the moment.
      *
      * @author Simone Giannecchini, GeoSolutions SAS.
      * @todo TODO use other spatial filters as well
@@ -319,24 +317,20 @@ public class Utils {
     /**
      * Creates a mosaic for the provided input parameters.
      *
-     * @param location     path to the directory where to gather the elements for the
-     *                     mosaic.
-     * @param indexName    name to give to this mosaic
-     * @param wildcard     wildcard to use for walking through files. We are using
-     *                     commonsIO for this task
+     * @param location path to the directory where to gather the elements for the mosaic.
+     * @param indexName name to give to this mosaic
+     * @param wildcard wildcard to use for walking through files. We are using commonsIO for this task
      * @param absolutePath tells the catalogue builder to use absolute paths.
-     * @param hints        hints to control reader instantiations
-     * @return <code>true</code> if everything is right, <code>false</code>if
-     * something bad happens, in which case the reason should be logged
-     * to the logger.
+     * @param hints hints to control reader instantiations
+     * @return <code>true</code> if everything is right, <code>false</code>if something bad happens, in which case the reason should be logged to the
+     *         logger.
      */
     static boolean createMosaic(final String location, final String indexName,
             final String wildcard, final boolean absolutePath, final Hints hints) {
 
         // create a mosaic index builder and set the relevant elements
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-        configuration.setHints(
-                hints);// retain hints as this may contain an instance of an ImageMosaicReader
+        configuration.setHints(hints);// retain hints as this may contain an instance of an ImageMosaicReader
         List<Parameter> parameterList = configuration.getIndexer().getParameters().getParameter();
 
         IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH, Boolean.toString(absolutePath));
@@ -401,42 +395,31 @@ public class Utils {
 
     // Make additional filters pluggable
     private static IOFileFilter initCleanUpFilter() {
-        IOFileFilter filesFilter = FileFilterUtils
-                .or(FileFilterUtils.suffixFileFilter("properties"),
-                        FileFilterUtils.suffixFileFilter("shp"),
-                        FileFilterUtils.suffixFileFilter("dbf"),
-                        FileFilterUtils.suffixFileFilter("sbn"),
-                        FileFilterUtils.suffixFileFilter("sbx"),
-                        FileFilterUtils.suffixFileFilter("shx"),
-                        FileFilterUtils.suffixFileFilter("qix"),
-                        FileFilterUtils.suffixFileFilter("lyr"),
-                        FileFilterUtils.suffixFileFilter("prj"),
-                        FileFilterUtils.suffixFileFilter("ncx"),
-                        FileFilterUtils.suffixFileFilter("gbx9"),
-                        FileFilterUtils.suffixFileFilter("ncx2"),
-                        FileFilterUtils.suffixFileFilter("ncx3"),
-                        FileFilterUtils.nameFileFilter("error.txt"),
-                        FileFilterUtils.nameFileFilter("_metadata"),
-                        FileFilterUtils.suffixFileFilter("sample_image"),
-                        FileFilterUtils.nameFileFilter("error.txt.lck"),
-                        FileFilterUtils.suffixFileFilter("xml"),
-                        FileFilterUtils.suffixFileFilter("db"));
+        IOFileFilter filesFilter = FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("ncx"), FileFilterUtils.suffixFileFilter("gbx9"),
+                FileFilterUtils.suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"),
+                FileFilterUtils.nameFileFilter("error.txt"),
+                FileFilterUtils.nameFileFilter("_metadata"),
+                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.nameFileFilter("error.txt.lck"),
+                FileFilterUtils.suffixFileFilter("xml"), FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
     }
 
     private static IOFileFilter initMosaicSupportFilesFilter() {
-        IOFileFilter filesFilter = FileFilterUtils
-                .or(FileFilterUtils.suffixFileFilter("properties"),
-                        FileFilterUtils.suffixFileFilter("shp"),
-                        FileFilterUtils.suffixFileFilter("dbf"),
-                        FileFilterUtils.suffixFileFilter("sbn"),
-                        FileFilterUtils.suffixFileFilter("sbx"),
-                        FileFilterUtils.suffixFileFilter("shx"),
-                        FileFilterUtils.suffixFileFilter("qix"),
-                        FileFilterUtils.suffixFileFilter("lyr"),
-                        FileFilterUtils.suffixFileFilter("prj"),
-                        FileFilterUtils.suffixFileFilter("sample_image"),
-                        FileFilterUtils.suffixFileFilter("db"));
+        IOFileFilter filesFilter = FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
     }
 
@@ -447,10 +430,10 @@ public class Utils {
             return exception.getMessage();
     }
 
-    //	static URL checkSource(Object source) throws MalformedURLException,
-    //			DataSourceException {
-    //		return checkSource(source, null);
-    //	}
+    // static URL checkSource(Object source) throws MalformedURLException,
+    // DataSourceException {
+    // return checkSource(source, null);
+    // }
 
     static MosaicConfigurationBean loadMosaicProperties(final URL sourceURL,
             final String defaultLocationAttribute) {
@@ -727,16 +710,13 @@ public class Utils {
     }
 
     /**
-     * Look for an {@link ImageReader} instance that is able to read the
-     * provided {@link ImageInputStream}, which must be non null.
+     * Look for an {@link ImageReader} instance that is able to read the provided {@link ImageInputStream}, which must be non null.
      * <p>
      * <p>
      * In case no reader is found, <code>null</code> is returned.
      *
-     * @param inStream an instance of {@link ImageInputStream} for which we need to
-     *                 find a suitable {@link ImageReader}.
-     * @return a suitable instance of {@link ImageReader} or <code>null</code>
-     * if one cannot be found.
+     * @param inStream an instance of {@link ImageInputStream} for which we need to find a suitable {@link ImageReader}.
+     * @return a suitable instance of {@link ImageReader} or <code>null</code> if one cannot be found.
      */
     static ImageReader getReader(final ImageInputStream inStream) {
         Utilities.ensureNonNull("inStream", inStream);
@@ -750,23 +730,18 @@ public class Utils {
     }
 
     /**
-     * Retrieves the dimensions of the {@link RenderedImage} at index
-     * <code>imageIndex</code> for the provided {@link ImageReader} and
+     * Retrieves the dimensions of the {@link RenderedImage} at index <code>imageIndex</code> for the provided {@link ImageReader} and
      * {@link ImageInputStream}.
      * <p>
      * <p>
-     * Notice that none of the input parameters can be <code>null</code> or a
-     * {@link NullPointerException} will be thrown. Morevoer the
-     * <code>imageIndex</code> cannot be negative or an
-     * {@link IllegalArgumentException} will be thrown.
+     * Notice that none of the input parameters can be <code>null</code> or a {@link NullPointerException} will be thrown. Morevoer the
+     * <code>imageIndex</code> cannot be negative or an {@link IllegalArgumentException} will be thrown.
      *
      * @param imageIndex the index of the image to get the dimensions for.
-     * @param inStream   the {@link ImageInputStream} to use as an input
-     * @param reader     the {@link ImageReader} to decode the image dimensions.
-     * @return a {@link Rectangle} that contains the dimensions for the image at
-     * index <code>imageIndex</code>
-     * @throws IOException in case the {@link ImageReader} or the
-     *                     {@link ImageInputStream} fail.
+     * @param inStream the {@link ImageInputStream} to use as an input
+     * @param reader the {@link ImageReader} to decode the image dimensions.
+     * @return a {@link Rectangle} that contains the dimensions for the image at index <code>imageIndex</code>
+     * @throws IOException in case the {@link ImageReader} or the {@link ImageInputStream} fail.
      */
     static Rectangle getDimension(final int imageIndex, final ImageReader reader)
             throws IOException {
@@ -793,8 +768,7 @@ public class Utils {
      * Checks that a {@link File} is a real file, exists and is readable.
      *
      * @param file the {@link File} instance to check. Must not be null.
-     * @return <code>true</code> in case the file is a real file, exists and is
-     * readable; <code>false </code> otherwise.
+     * @return <code>true</code> in case the file is a real file, exists and is readable; <code>false </code> otherwise.
      */
     public static boolean checkFileReadable(final File file) {
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -842,19 +816,17 @@ public class Utils {
             throws IllegalArgumentException {
 
         File inDir = new File(testingDirectory);
-        boolean failure =
-                !inDir.exists() || !inDir.isDirectory() || inDir.isHidden() || !inDir.canRead();
+        boolean failure = !inDir.exists() || !inDir.isDirectory() || inDir.isHidden()
+                || !inDir.canRead();
         if (writable) {
             failure |= !inDir.canWrite();
         }
         if (failure) {
-            String message = "Unable to create the mosaic\n" +
-                    "location is:" + testingDirectory + "\n" +
-                    "location exists:" + inDir.exists() + "\n" +
-                    "location is a directory:" + inDir.isDirectory() + "\n" +
-                    "location is writable:" + inDir.canWrite() + "\n" +
-                    "location is readable:" + inDir.canRead() + "\n" +
-                    "location is hidden:" + inDir.isHidden() + "\n";
+            String message = "Unable to create the mosaic\n" + "location is:" + testingDirectory
+                    + "\n" + "location exists:" + inDir.exists() + "\n" + "location is a directory:"
+                    + inDir.isDirectory() + "\n" + "location is writable:" + inDir.canWrite() + "\n"
+                    + "location is readable:" + inDir.canRead() + "\n" + "location is hidden:"
+                    + inDir.isHidden() + "\n";
             LOGGER.severe(message);
             throw new IllegalArgumentException(message);
         }
@@ -873,13 +845,11 @@ public class Utils {
             failure |= !inDir.canWrite();
         }
         if (failure) {
-            String message = "Unable to create the mosaic\n" +
-                    "location is:" + testingDirectory + "\n" +
-                    "location exists:" + inDir.exists() + "\n" +
-                    "location is a directory:" + inDir.isDirectory() + "\n" +
-                    "location is writable:" + inDir.canWrite() + "\n" +
-                    "location is readable:" + inDir.canRead() + "\n" +
-                    "location is hidden:" + inDir.isHidden() + "\n";
+            String message = "Unable to create the mosaic\n" + "location is:" + testingDirectory
+                    + "\n" + "location exists:" + inDir.exists() + "\n" + "location is a directory:"
+                    + inDir.isDirectory() + "\n" + "location is writable:" + inDir.canWrite() + "\n"
+                    + "location is readable:" + inDir.canRead() + "\n" + "location is hidden:"
+                    + inDir.isHidden() + "\n";
             LOGGER.severe(message);
             throw new IllegalArgumentException(message);
         }
@@ -930,8 +900,8 @@ public class Utils {
      * Store a sample image from which we can derive the default SM and CM
      *
      * @param sampleImageFile where we should store the image
-     * @param defaultSM       the {@link SampleModel} for the sample image.
-     * @param defaultCM       the {@link ColorModel} for the sample image.
+     * @param defaultSM the {@link SampleModel} for the sample image.
+     * @param defaultCM the {@link ColorModel} for the sample image.
      * @throws IOException in case something bad occurs during writing.
      */
     public static void storeSampleImage(final File sampleImageFile, final SampleModel defaultSM,
@@ -973,12 +943,10 @@ public class Utils {
     }
 
     /**
-     * Load a sample image from which we can take the sample model and color
-     * model to be used to fill holes in responses.
+     * Load a sample image from which we can take the sample model and color model to be used to fill holes in responses.
      *
      * @param sampleImageFile the path to sample image.
-     * @return a sample image from which we can take the sample model and color
-     * model to be used to fill holes in responses.
+     * @return a sample image from which we can take the sample model and color model to be used to fill holes in responses.
      */
     public static RenderedImage loadSampleImage(final File sampleImageFile) {
         // serialize it
@@ -1137,15 +1105,15 @@ public class Utils {
                 // TODO: Refactor these checks once we integrate datastore on indexer.xml
                 //
                 File dataStoreProperties = new File(locationPath, "datastore.properties");
-                //                        File emptyFile = new File(locationPath,"empty");
+                // File emptyFile = new File(locationPath,"empty");
 
                 // this can be used to look for properties files that do NOT
                 // define a datastore
-                final File[] properties = sourceFile.listFiles((FilenameFilter) FileFilterUtils
-                        .and(FileFilterUtils.notFileFilter(
+                final File[] properties = sourceFile.listFiles((FilenameFilter) FileFilterUtils.and(
+                        FileFilterUtils.notFileFilter(
                                 FileFilterUtils.nameFileFilter("datastore.properties")),
-                                FileFilterUtils.makeFileOnly(
-                                        FileFilterUtils.suffixFileFilter(".properties"))));
+                        FileFilterUtils
+                                .makeFileOnly(FileFilterUtils.suffixFileFilter(".properties"))));
 
                 // do we have a valid datastore + mosaic properties pair?
                 if (Utils.checkFileReadable(dataStoreProperties)) {
@@ -1157,9 +1125,9 @@ public class Utils {
                     for (File propFile : properties)
                         if (Utils.checkFileReadable(propFile)) {
                             // load it
-                            if (null != Utils
-                                    .loadMosaicProperties(DataUtilities.fileToURL(propFile),
-                                            Utils.DEFAULT_LOCATION_ATTRIBUTE)) {
+                            if (null != Utils.loadMosaicProperties(
+                                    DataUtilities.fileToURL(propFile),
+                                    Utils.DEFAULT_LOCATION_ATTRIBUTE)) {
                                 found = true;
                                 break;
                             }
@@ -1192,8 +1160,8 @@ public class Utils {
                         // look for a couple shapefile, mosaic properties file
                         shapeFile = new File(locationPath,
                                 FilenameUtils.getBaseName(propFile.getName()) + ".shp");
-                        if (!Utils.checkFileReadable(shapeFile) && Utils
-                                .checkFileReadable(propFile))
+                        if (!Utils.checkFileReadable(shapeFile)
+                                && Utils.checkFileReadable(propFile))
                             buildMosaic = true;
                         else {
                             buildMosaic = false;
@@ -1215,20 +1183,19 @@ public class Utils {
 
                     // preliminar checks
                     final File mosaicDirectory = new File(locationPath);
-                    if (!mosaicDirectory.exists() || mosaicDirectory.isFile() || !mosaicDirectory
-                            .canWrite()) {
+                    if (!mosaicDirectory.exists() || mosaicDirectory.isFile()
+                            || !mosaicDirectory.canWrite()) {
                         if (LOGGER.isLoggable(Level.SEVERE)) {
                             LOGGER.log(Level.SEVERE,
-                                    "Unable to create the mosaic, check the location:\n" +
-                                            "location is:" + locationPath + "\n" +
-                                            "location exists:" + mosaicDirectory.exists() + "\n" +
-                                            "location is a directory:" + mosaicDirectory
-                                            .isDirectory() + "\n" +
-                                            "location is writable:" + mosaicDirectory.canWrite()
-                                            + "\n" +
-                                            "location is readable:" + mosaicDirectory.canRead()
-                                            + "\n" +
-                                            "location is hidden:" + mosaicDirectory.isHidden()
+                                    "Unable to create the mosaic, check the location:\n"
+                                            + "location is:" + locationPath + "\n"
+                                            + "location exists:" + mosaicDirectory.exists() + "\n"
+                                            + "location is a directory:"
+                                            + mosaicDirectory.isDirectory() + "\n"
+                                            + "location is writable:" + mosaicDirectory.canWrite()
+                                            + "\n" + "location is readable:"
+                                            + mosaicDirectory.canRead() + "\n"
+                                            + "location is hidden:" + mosaicDirectory.isHidden()
                                             + "\n");
                         }
                         return null;
@@ -1252,13 +1219,12 @@ public class Utils {
                     // check that the shapefile was correctly created in case it
                     // was needed
                     sourceURL = updateSourceURL(sourceURL, datastoreFound, locationPath,
-                            defaultIndexName/*, emptyFile*/);
+                            defaultIndexName/* , emptyFile */);
 
                 } else
                     // now set the new source and proceed
-                    sourceURL = datastoreFound ?
-                            DataUtilities.fileToURL(dataStoreProperties) :
-                            DataUtilities.fileToURL(shapeFile);
+                    sourceURL = datastoreFound ? DataUtilities.fileToURL(dataStoreProperties)
+                            : DataUtilities.fileToURL(shapeFile);
 
             }
         } else {
@@ -1304,17 +1270,18 @@ public class Utils {
      * @return
      */
     private static URL updateSourceURL(URL sourceURL, boolean datastoreFound, String locationPath,
-            String defaultIndexName/*,
-            File emptyFile*/) {
+            String defaultIndexName/*
+                                    * , File emptyFile
+                                    */) {
         if (!datastoreFound) {
             File shapeFile = new File(locationPath, defaultIndexName + ".shp");
 
             if (!Utils.checkFileReadable(shapeFile)) {
-                //                if (!Utils.checkFileReadable(emptyFile)) {
+                // if (!Utils.checkFileReadable(emptyFile)) {
                 sourceURL = null;
-                //                } else {
-                //                    sourceURL = DataUtilities.fileToURL(emptyFile);
-                //                }
+                // } else {
+                // sourceURL = DataUtilities.fileToURL(emptyFile);
+                // }
             } else {
                 // now set the new source and proceed
                 sourceURL = DataUtilities.fileToURL(shapeFile);
@@ -1408,8 +1375,7 @@ public class Utils {
     }
 
     /**
-     * Setup a {@link Histogram} object by deserializing
-     * a file representing a serialized Histogram.
+     * Setup a {@link Histogram} object by deserializing a file representing a serialized Histogram.
      *
      * @param file
      * @return the deserialized histogram.
@@ -1473,7 +1439,7 @@ public class Utils {
      * Check if the provided granule's footprint covers the same area of the granule's bbox.
      *
      * @param granuleFootprint the granule Footprint
-     * @param granuleBBOX      the granule bbox
+     * @param granuleBBOX the granule bbox
      * @return {@code true} in case the footprint isn't covering the FULL granule's bbox.
      */
     static boolean areaIsDifferent(final Geometry granuleFootprint,
@@ -1518,7 +1484,7 @@ public class Utils {
         //
         // //
         final double footprintArea = granuleFootprint.getArea();
-        //final double bboxArea = granuleBBOX.getArea();
+        // final double bboxArea = granuleBBOX.getArea();
         final double bboxArea = granuleBBOX.getHeight() * granuleBBOX.getWidth();
 
         // If 2 areas are different more than the cellArea, then they are not the same area
@@ -1732,10 +1698,11 @@ public class Utils {
     public static boolean homogeneousCheck(final int numberOfLevels, double[][] resolutionLevels,
             double[][] compareLevels) {
         for (int k = 0; k < numberOfLevels; k++) {
-            if (Math.abs(resolutionLevels[k][0] - compareLevels[k][0])
-                    > RESOLUTION_TOLERANCE_FACTOR * compareLevels[k][0]
-                    || Math.abs(resolutionLevels[k][1] - compareLevels[k][1])
-                    > RESOLUTION_TOLERANCE_FACTOR * compareLevels[k][1]) {
+            if (Math.abs(resolutionLevels[k][0] - compareLevels[k][0]) > RESOLUTION_TOLERANCE_FACTOR
+                    * compareLevels[k][0]
+                    || Math.abs(resolutionLevels[k][1]
+                            - compareLevels[k][1]) > RESOLUTION_TOLERANCE_FACTOR
+                                    * compareLevels[k][1]) {
                 return false;
             }
         }
@@ -1760,12 +1727,12 @@ public class Utils {
     }
 
     /**
-     * This method checks the {@link ColorModel} of the current image with the one of the first image in order to check if they are compatible or
-     * not in order to perform a mosaic operation.
+     * This method checks the {@link ColorModel} of the current image with the one of the first image in order to check if they are compatible or not
+     * in order to perform a mosaic operation.
      * <p>
      * <p>
-     * It is worth to point out that we also check if, in case we have two index color model image, we also try to suggest whether or not we
-     * should do a color expansion.
+     * It is worth to point out that we also check if, in case we have two index color model image, we also try to suggest whether or not we should do
+     * a color expansion.
      *
      * @param defaultCM
      * @param defaultPalette
@@ -1781,8 +1748,8 @@ public class Utils {
         int colorComponentsDifference = Math.abs(defNumComponents - actualNumComponents);
 
         if (colorComponentsDifference != 0) {
-            if ((defNumComponents == 1 && defaultCM instanceof ComponentColorModel) || (
-                    actualNumComponents == 1 && actualCM instanceof ComponentColorModel)) {
+            if ((defNumComponents == 1 && defaultCM instanceof ComponentColorModel)
+                    || (actualNumComponents == 1 && actualCM instanceof ComponentColorModel)) {
                 // gray expansion can be performed
                 return false;
             }
@@ -1822,9 +1789,9 @@ public class Utils {
      */
     public static boolean isOracleStore(DataStoreFactorySpi spi) {
         String spiName = spi == null ? null : spi.getClass().getName();
-        return "org.geotools.data.oracle.OracleNGOCIDataStoreFactory".equals(spiName) ||
-                "org.geotools.data.oracle.OracleNGJNDIDataStoreFactory".equals(spiName) ||
-                "org.geotools.data.oracle.OracleNGDataStoreFactory".equals(spiName);
+        return "org.geotools.data.oracle.OracleNGOCIDataStoreFactory".equals(spiName)
+                || "org.geotools.data.oracle.OracleNGJNDIDataStoreFactory".equals(spiName)
+                || "org.geotools.data.oracle.OracleNGDataStoreFactory".equals(spiName);
     }
 
     /**
@@ -1856,8 +1823,7 @@ public class Utils {
     }
 
     /**
-     * Merge basic statistics on destination {@link PAMDataset}
-     * {@link PAMRasterBand}s need to have same size. No checks are performed here
+     * Merge basic statistics on destination {@link PAMDataset} {@link PAMRasterBand}s need to have same size. No checks are performed here
      *
      * @param inputPamDataset
      * @param outputPamDataset
@@ -1872,9 +1838,8 @@ public class Utils {
     }
 
     /**
-     * Merge basic statistics on {@link PAMRasterBand} by updating min/max
-     * Other statistics still need some work.
-     * {@link MDI}s need to have same size. No checks are performed here
+     * Merge basic statistics on {@link PAMRasterBand} by updating min/max Other statistics still need some work. {@link MDI}s need to have same size.
+     * No checks are performed here
      *
      * @param inputPamRasterBand
      * @param outputPamRasterBand
@@ -1892,9 +1857,7 @@ public class Utils {
     }
 
     /**
-     * Update min and max for mdiOutput.
-     * Other statistics need better management.
-     * For the moment we simply returns the min between them
+     * Update min and max for mdiOutput. Other statistics need better management. For the moment we simply returns the min between them
      *
      * @param mdiInput
      * @param mdiOutput
@@ -1918,8 +1881,7 @@ public class Utils {
     }
 
     /**
-     * Initialize a list of {@link PAMRasterBand}s having same size of the
-     * sample {@link PAMDataset} and same metadata names.
+     * Initialize a list of {@link PAMRasterBand}s having same size of the sample {@link PAMDataset} and same metadata names.
      *
      * @param merged
      * @param samplePam
@@ -1994,8 +1956,8 @@ public class Utils {
                 }
             }
             throw new IllegalArgumentException(
-                    "Unable to get an input stream for the provided granule " + granuleUrl
-                            .toString());
+                    "Unable to get an input stream for the provided granule "
+                            + granuleUrl.toString());
         }
         return streamSPI;
     }
@@ -2032,7 +1994,7 @@ public class Utils {
 
         // does it have the location property?
         AttributeDescriptor location = schema.getDescriptor(locationAttributeName);
-        return location != null && CharSequence.class
-                .isAssignableFrom(location.getType().getBinding());
+        return location != null
+                && CharSequence.class.isAssignableFrom(location.getType().getBinding());
     }
 }

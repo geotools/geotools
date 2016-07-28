@@ -24,8 +24,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.ImageMosaicConfigHandler;
 
 /**
- * Class responsible for determining whether a given coverage should or should not be part of the
- * image mosaic.
+ * Class responsible for determining whether a given coverage should or should not be part of the image mosaic.
  *
  */
 public interface GranuleAcceptor {
@@ -37,6 +36,7 @@ public interface GranuleAcceptor {
      * @param mosaicConfigHandler the mosaic config handler being used
      * @return whether coverage should be added to the mosaic or not
      */
-    boolean accepts(GridCoverage2DReader coverage, String inputCoverageName, File fileBeingProcessed,
-            ImageMosaicConfigHandler mosaicConfigHandler) throws IOException;
+    boolean accepts(GridCoverage2DReader coverage, String inputCoverageName,
+            File fileBeingProcessed, ImageMosaicConfigHandler mosaicConfigHandler)
+            throws IOException;
 }

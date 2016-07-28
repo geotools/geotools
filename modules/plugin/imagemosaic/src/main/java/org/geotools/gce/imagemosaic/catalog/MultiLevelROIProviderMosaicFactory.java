@@ -31,8 +31,7 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.opengis.filter.Filter;
 
 /**
- * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint properties
- * and files for mosaics
+ * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint properties and files for mosaics
  * 
  * @author Andrea Aime GeoSolutions
  * @author Nicola Lagomarsini GeoSolutions
@@ -71,20 +70,20 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
             provider = new SidecarFootprintProvider(mosaicFolder);
         } else if (source.toLowerCase().endsWith(".shp")) {
             provider = buildShapefileSource(mosaicFolder, source, properties);
-        } else if(MultiLevelROIProviderFactory.TYPE_RASTER.equals(source)){
+        } else if (MultiLevelROIProviderFactory.TYPE_RASTER.equals(source)) {
             // Raster masking
             return new MultiLevelROIRasterProvider(mosaicFolder);
         } else {
             throw new IllegalArgumentException("Invalid source type, it should be a reference "
                     + "to a shapefile or 'sidecar', but was '" + source + "' instead");
         }
-        
+
         // Create the provider
         return createProvider(provider, properties, null);
     }
 
-    private static FootprintGeometryProvider buildShapefileSource(File mosaicFolder, String location,
-            Properties properties) {
+    private static FootprintGeometryProvider buildShapefileSource(File mosaicFolder,
+            String location, Properties properties) {
         File shapefile = new File(location);
         if (!shapefile.isAbsolute()) {
             shapefile = new File(mosaicFolder, location);

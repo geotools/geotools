@@ -72,7 +72,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 CancelException cancel) throws IOException {
             super.handleCancelled(startDirectory, results, cancel);
             // clean up objects and rollback transaction
-            if (LOGGER.isLoggable(Level.INFO)){
+            if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.info("Stop requested when walking directory " + startDirectory);
             }
             super.handleEnd(results);
@@ -114,14 +114,14 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                     walk(new File(indexingDirectory), null);
 
                     // did we cancel?
-                    if (getStop()){
+                    if (getStop()) {
                         break;
                     }
                 }
                 // did we cancel?
-                if (getStop()){
+                if (getStop()) {
                     rollbackTransaction();
-                }else{
+                } else {
                     commitTransaction();
                 }
             } catch (Exception e) {
@@ -170,10 +170,10 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
 
             // TODO we might want to remove this in the future for performance
             int numFiles = 0;
-            String harvestDirectory = configHandler.getRunConfiguration().getParameter(
-                    Prop.HARVEST_DIRECTORY);
-            String indexDirs = configHandler.getRunConfiguration().getParameter(
-                    Prop.INDEXING_DIRECTORIES);
+            String harvestDirectory = configHandler.getRunConfiguration()
+                    .getParameter(Prop.HARVEST_DIRECTORY);
+            String indexDirs = configHandler.getRunConfiguration()
+                    .getParameter(Prop.INDEXING_DIRECTORIES);
             if (harvestDirectory != null) {
                 indexDirs = harvestDirectory;
             }
@@ -181,10 +181,10 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
             for (String indexingDirectory : indexDirectories) {
                 indexingDirectory = Utils.checkDirectory(indexingDirectory, false);
                 final File directoryToScan = new File(indexingDirectory);
-                final Collection files = FileUtils.listFiles(directoryToScan, finalFilter, Boolean
-                        .parseBoolean(configHandler.getRunConfiguration().getParameter(
-                                Prop.RECURSIVE)) ? TrueFileFilter.INSTANCE
-                        : FalseFileFilter.INSTANCE);
+                final Collection files = FileUtils.listFiles(directoryToScan, finalFilter,
+                        Boolean.parseBoolean(
+                                configHandler.getRunConfiguration().getParameter(Prop.RECURSIVE))
+                                        ? TrueFileFilter.INSTANCE : FalseFileFilter.INSTANCE);
                 numFiles += files.size();
             }
             //
@@ -192,11 +192,12 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
             //
             if (numFiles > 0) {
                 setNumFiles(numFiles);
-                final List<String> indexingDirectories = new ArrayList<String>(Arrays.asList(indexDirectories));
+                final List<String> indexingDirectories = new ArrayList<String>(
+                        Arrays.asList(indexDirectories));
                 new MosaicDirectoryWalker(indexingDirectories, finalFilter, this);
 
-            }else{
-                LOGGER.log(Level.INFO, "No files to process!"); 
+            } else {
+                LOGGER.log(Level.INFO, "No files to process!");
             }
 
         } catch (IOException e) {
@@ -209,22 +210,24 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
      * @return
      */
     private IOFileFilter createDefaultGranuleExclusionFilter() {
-        final IOFileFilter specialWildCardFileFilter = new WildcardFileFilter(configHandler
-                .getRunConfiguration().getParameter(Prop.WILDCARD), IOCase.INSENSITIVE);
+        final IOFileFilter specialWildCardFileFilter = new WildcardFileFilter(
+                configHandler.getRunConfiguration().getParameter(Prop.WILDCARD),
+                IOCase.INSENSITIVE);
         IOFileFilter dirFilter = FileFilterUtils.and(FileFilterUtils.directoryFileFilter(),
                 HiddenFileFilter.VISIBLE);
-        IOFileFilter filesFilter = Utils.excludeFilters(FileFilterUtils
-                .makeSVNAware(FileFilterUtils.makeFileOnly(FileFilterUtils.and(
-                        specialWildCardFileFilter, HiddenFileFilter.VISIBLE))), FileFilterUtils
-                .suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"), FileFilterUtils
-                .suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"), FileFilterUtils
-                .suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"), FileFilterUtils
-                .suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"), FileFilterUtils
-                .suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"), FileFilterUtils
-                .suffixFileFilter("gbx9"), FileFilterUtils.suffixFileFilter("ncx"), FileFilterUtils
-                .nameFileFilter("error.txt"), FileFilterUtils.nameFileFilter("error.txt.lck"),
-                FileFilterUtils.suffixFileFilter("properties"), FileFilterUtils
-                        .suffixFileFilter("svn-base"));
+        IOFileFilter filesFilter = Utils.excludeFilters(
+                FileFilterUtils.makeSVNAware(FileFilterUtils.makeFileOnly(
+                        FileFilterUtils.and(specialWildCardFileFilter, HiddenFileFilter.VISIBLE))),
+                FileFilterUtils.suffixFileFilter("shp"), FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"),
+                FileFilterUtils.suffixFileFilter("gbx9"), FileFilterUtils.suffixFileFilter("ncx"),
+                FileFilterUtils.nameFileFilter("error.txt"),
+                FileFilterUtils.nameFileFilter("error.txt.lck"),
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("svn-base"));
         filesFilter = FileFilterUtils.or(filesFilter,
                 FileFilterUtils.nameFileFilter("indexer.properties"));
 
@@ -257,10 +260,10 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
 
         // sdw
         filesFilter = FileFilterUtils.and(filesFilter,
-                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("sdw"))
-                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("aux"))
-                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld"))
-                , FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("svn")));
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("sdw")),
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("aux")),
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld")),
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("svn")));
 
         if (this.fileFilter != null) {
             filesFilter = FileFilterUtils.and(this.fileFilter, filesFilter);
@@ -275,7 +278,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
      * 
      * Sets a filter that can reduce the file the mosaic walker will take into consideration (in a more flexible way than the wildcards)
      * 
-     * @param filter 
+     * @param filter
      * 
      * @throws IllegalArgumentException
      */

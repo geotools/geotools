@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 public class ReprojectingGranuleHandler implements GranuleHandler {
 
     private PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
+
     private GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     @Override
@@ -55,12 +56,12 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
             ReferencedEnvelope finalEnvelope = new ReferencedEnvelope(coverageEnvelope);
             if (!CRS.equalsIgnoreMetadata(targetCRS, coverageCRS)) {
                 try {
-                    finalEnvelope = new ReferencedEnvelope(
-                            CRS.transform(finalEnvelope, targetCRS));
+                    finalEnvelope = new ReferencedEnvelope(CRS.transform(finalEnvelope, targetCRS));
                 } catch (TransformException e) {
                     throw new GranuleHandlingException(
                             "Unable to reproject incoming granule, but target and granule CRS "
-                                    + "differ so we can't continue", e);
+                                    + "differ so we can't continue",
+                            e);
                 }
             }
 

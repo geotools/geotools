@@ -47,6 +47,13 @@ public class ParseCapabilitesTest extends TestCase {
 		super.setUp();
 	}
 
+    public void testEmptyOnlineResource() throws Exception {
+        Map hints=new HashMap();
+        InputStream in = TestData.openStream("xml/capabilities/WFSGetCapsEmptyOnlineResource.xml");
+        WFSCapabilities obj=(WFSCapabilities) DocumentFactory.getInstance(in, hints, Level.WARNING);
+        assertEquals(null, obj.getService().getOnlineResource());
+    }
+
 	public void testNoSupportedFunctionExpression() throws Exception {
 		Map hints=new HashMap();
 		InputStream in = TestData.openStream("xml/capabilities/WFSGetCapsNoFunctionExpressions.xml");

@@ -1102,8 +1102,8 @@ public class Utils {
                     sourceURL = new URL(tempSource);
                     source = DataUtilities.urlToFile(sourceURL);
                 } catch (MalformedURLException e) {
-                    sourceURL = null;
-                    source = null;
+                    LOGGER.log(Level.FINE, "Malformed URL given to ImageMosaicReader.", e);
+                    throw new IllegalArgumentException(e);
                 }
             } else {
                 sourceURL = DataUtilities.fileToURL(tempFile);
@@ -1244,6 +1244,9 @@ public class Utils {
                     if (!Utils.checkFileReadable(propertiesFile)) {
                         // retrieve a null so that we shows that a problem occurred
                         if (!checkMosaicHasBeenInitialized(locationPath, defaultIndexName)) {
+                            LOGGER.fine("An image mosaic was created, however post-creation sanity "
+                                    + "checks for an indexer file or properties file failed. "
+                                    + "Please see previous logs for details.");
                             sourceURL = null;
                             return sourceURL;
                         }
@@ -1265,6 +1268,9 @@ public class Utils {
             // SK: We don't set SourceURL to null now, just because it doesn't
             // point to a file
             // sourceURL=null;
+            LOGGER.fine("Source URL given is still null despite numerous attempts to coerce it to "
+                    + "something usable or otherwise build a mosaic out of it. Please see previous "
+                    + "logs for details");
         }
         return sourceURL;
     }
@@ -1312,6 +1318,8 @@ public class Utils {
             if (!Utils.checkFileReadable(shapeFile)) {
                 //                if (!Utils.checkFileReadable(emptyFile)) {
                 sourceURL = null;
+                LOGGER.fine("ImageMosaic was created, but after creation the shapefile store can't "
+                        + "be read.");
                 //                } else {
                 //                    sourceURL = DataUtilities.fileToURL(emptyFile);
                 //                }
@@ -1324,6 +1332,8 @@ public class Utils {
 
             // datastore.properties as the source
             if (!Utils.checkFileReadable(dataStoreProperties)) {
+                LOGGER.fine("ImageMosaic was created, but after creation the properties store can't "
+                        + "be read.");
                 sourceURL = null;
             } else {
                 sourceURL = DataUtilities.fileToURL(dataStoreProperties);

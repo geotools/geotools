@@ -198,7 +198,21 @@ class Utils {
                     LOGGER.fine("Trying to build mosaic for the directory:"
                             + subdir.getAbsolutePath());
                 }
-                mosaics.add(new MosaicInfo(subdir, mosaicFactory.getReader(subdir, hints)));
+                ImageMosaicReader reader = null;
+                try {
+                    reader = mosaicFactory.getReader(subdir, hints);
+                    String referenceName = checkConsistency(reader);
+                    MosaicInfo mosaicInfo = new MosaicInfo(subdir, reader, referenceName);
+                    mosaics.add(mosaicInfo);
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.dispose();
+                        } catch (Throwable t) {
+                            // Does nothing
+                        }
+                    }
+                }
             } else {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info("Unable to build mosaic for the directory:"
@@ -216,8 +230,8 @@ class Utils {
         // for both X and Y resolutions
         Collections.sort(mosaics);
         for (int i = 1; i < mosaics.size(); i++) {
-            double[] resprev = mosaics.get(i - 1).getResolutions();
-            double[] res = mosaics.get(i).getResolutions();
+            double[] resprev = mosaics.get(i - 1).getResolutions()[0];
+            double[] res = mosaics.get(i).getResolutions()[0];
             if (resprev[1] > res[1]) {
                 LOGGER.log(Level.INFO, "Invalid mosaic, y resolution in "
                         + mosaics.get(i - 1).getPath() + " is greater than the one in "
@@ -232,13 +246,14 @@ class Utils {
         //
         // build the property file
         Properties properties = new Properties();
-        properties.put("Name", directory.getName());
+        String coverageNames = mosaics.get(0).getCoverageNames();
+        properties.put("Name", coverageNames != null ? coverageNames : directory.getName());
         properties.put("LevelsNum", String.valueOf(mosaics.size()));
         StringBuilder sbDirNames = new StringBuilder();
         StringBuilder sbLevels = new StringBuilder();
         for (MosaicInfo mi : mosaics) {
             sbDirNames.append(mi.getName()).append(" ");
-            double[] resolutions = mi.getResolutions();
+            double[] resolutions = mi.getResolutions()[0];
             sbLevels.append(resolutions[0]).append(",").append(resolutions[1]).append(" ");
         }
         properties.put("LevelsDirs", sbDirNames.toString());
@@ -252,11 +267,12 @@ class Utils {
             properties.store(os, "Automatically generated");
         } catch (IOException e) {
             LOGGER.log(Level.INFO,
-                    "We could not generate the pyramid propert file " + sourceFile.getPath(), e);
+                    "We could not generate the pyramid property file " + sourceFile.getPath(), e);
             return null;
         } finally {
-            if (os != null)
+            if (os != null) {
                 IOUtils.closeQuietly(os);
+            }
         }
 
         // build the .prj file if possible
@@ -276,6 +292,41 @@ class Utils {
         }
 
         return DataUtilities.fileToURL(sourceFile);
+    }
+
+    private static String checkConsistency(ImageMosaicReader reader) {
+        // Current assumption: different coverages stored into a single mosaic have the same:
+        // - levels structure
+        // - bbox
+        // - resolutions
+        // this allows us to use the first coverage of each mosaic as a reference to collect
+        // properties.
+        // Throws an exception if that condition isn't respected.
+        final int count = reader.getGridCoverageCount();
+        double[][] resolutionLevels = null;
+        String referenceName = ImageMosaicReader.UNSPECIFIED;
+        try {
+            if (count > 1) {
+                for (String coverageName : reader.getGridCoverageNames()) {
+                    if (ImageMosaicReader.UNSPECIFIED.equalsIgnoreCase(referenceName)) {
+                        referenceName = coverageName;
+                        resolutionLevels = reader.getResolutionLevels(coverageName);
+                        continue;
+                    }
+                    double compareLevels[][] = reader.getResolutionLevels(coverageName);
+                    boolean homogeneous = org.geotools.gce.imagemosaic.Utils.homogeneousCheck(
+                            resolutionLevels.length, resolutionLevels, compareLevels);
+                    if (!homogeneous) {
+                        // Relax this in the future
+                        throw new IllegalArgumentException(
+                                "Coverages need to have same levels structure");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return referenceName;
     }
 
     /**
@@ -315,19 +366,41 @@ class Utils {
 
         File directory;
 
-        ImageMosaicReader reader;
+        double[][] resolutions;
 
-        double[] resolutions;
+        String coverageName;
 
-        MosaicInfo(File directory, ImageMosaicReader reader) {
+        GeneralEnvelope envelope;
+
+        String coverageNames = null;
+
+        MosaicInfo(File directory, ImageMosaicReader reader, String coverageName) {
             this.directory = directory;
-            this.reader = reader;
-            this.resolutions = CoverageUtilities.getResolution((AffineTransform) reader
-                    .getOriginalGridToWorld(PixelInCell.CELL_CORNER));
+            this.coverageName = coverageName;
+            try {
+                this.envelope = reader.getOriginalEnvelope(coverageName);
+                this.resolutions = reader.getResolutionLevels(coverageName);
+                final int coverageCount = reader.getGridCoverageCount();
+                if (coverageCount > 1) {
+                    String[] coverages = reader.getGridCoverageNames();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < coverageCount - 1; i++) {
+                        sb.append(coverages[i]).append(",");
+                    }
+                    sb.append(coverages[coverageCount - 1]);
+                    coverageNames = sb.toString();
+                }
+            } catch (IOException ioe) {
+                throw new IllegalArgumentException(ioe);
+            }
         }
 
-        double[] getResolutions() {
+        double[][] getResolutions() {
             return resolutions;
+        }
+
+        String getCoverageNames() {
+            return coverageNames;
         }
 
         String getPath() {
@@ -339,13 +412,13 @@ class Utils {
         }
 
         GeneralEnvelope getEnvelope() {
-            return reader.getOriginalEnvelope();
+            return envelope;
         }
 
         public int compareTo(MosaicInfo other) {
             // we make an easy comparison against the x resolution, we'll do a sanity
             // check about the y resolution later
-            return resolutions[0] > other.resolutions[0] ? 1 : -1;
+            return resolutions[0][0] > other.resolutions[0][0] ? 1 : -1;
         }
     }
 

@@ -19,6 +19,8 @@ package org.geotools.gce.imagepyramid;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.color.ColorSpace;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -27,13 +29,12 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
-
-import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -51,7 +52,9 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
+import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -74,6 +77,7 @@ public class ImagePyramidReaderTest extends Assert {
      * File to be used for testing purposes.
      */
     private final static String TEST_FILE = "pyramid.properties";
+    private static final Double DELTA = 1E-6;
 
     // private final static String TEST_JAR_FILE = "pyramid.jar";
 
@@ -847,92 +851,66 @@ public class ImagePyramidReaderTest extends Assert {
                 new GeneralParameterValue[] { gg, useJai, time }, "time test");
     }
 
-    // /**
-    // * Tests to read a pyramid from inside a JAR. The source is passed as an {@link URL}
-    // */
-    // @Test
-    // @Ignore
-    // public void testDefaultParameterValueURLtoJAR() throws IOException,
-    // MismatchedDimensionException, NoSuchAuthorityCodeException {
-    //
-    // //
-    // // Get the resource.
-    // //
-    // final URL testJarFile = TestData.getResource(this, TEST_JAR_FILE);
-    // assertNotNull(testJarFile);
-    //
-    // final String spec = "jar:"+testJarFile.toExternalForm()+"!/"+TEST_FILE;
-    // final URL testFile = new URL(spec);
-    //
-    // assertNotNull(testFile);
-    //
-    // //
-    // // Get a reader
-    // //
-    // final AbstractGridFormat format = new ImagePyramidFormat();
-    // assertTrue(format.accepts(testFile));
-    // final ImagePyramidReader reader = (ImagePyramidReader) format
-    // .getReader(testFile);
-    // assertNotNull(reader);
-    //
-    // //
-    // // Show the coverage
-    // //
-    // final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
-    // assertNotNull("Null value returned instead of a coverage", coverage);
-    // assertTrue("coverage dimensions different from what we expected",
-    // coverage.getGridGeometry().getGridRange().getSpan(0) == 250
-    // && coverage.getGridGeometry().getGridRange().getSpan(
-    // 1) == 250);
-    // if (TestData.isInteractiveTest())
-    // coverage.show("testDefaultParameterValue");
-    // else
-    // ((GridCoverage2D) coverage).getRenderedImage().getData();
-    //
-    // }
+    /**
+     *
+     */
+    @Test
+    public void multicoveragePyramid() throws IOException, MismatchedDimensionException,
+            NoSuchAuthorityCodeException, InvalidParameterValueException, ParseException {
 
-    //
-    // /**
-    // * Tests to read a pyramid from inside a JAR. The source is passed as a {@link String}
-    // */
-    // @Test
-    // @Ignore
-    // public void testDefaultParameterValueStringtoURLtoJAR() throws IOException,
-    // MismatchedDimensionException, NoSuchAuthorityCodeException {
-    //
-    // //
-    // // Get the resource.
-    // //
-    // final URL testJarFile = TestData.getResource(this, TEST_JAR_FILE);
-    // assertNotNull(testJarFile);
-    //
-    // final String spec = "jar:"+testJarFile.toExternalForm()+"!/"+TEST_FILE;
-    //
-    // assertNotNull(spec);
-    //
-    // //
-    // // Get a reader
-    // //
-    //
-    // final AbstractGridFormat format = new ImagePyramidFormat();
-    // assertTrue(format.accepts(spec));
-    // final ImagePyramidReader reader = (ImagePyramidReader) format
-    // .getReader(spec);
-    // assertNotNull(reader);
-    //
-    // //
-    // // Show the coverage
-    // //
-    // final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
-    // assertNotNull("Null value returned instead of a coverage", coverage);
-    // assertTrue("coverage dimensions different from what we expected",
-    // coverage.getGridGeometry().getGridRange().getSpan(0) == 250
-    // && coverage.getGridGeometry().getGridRange().getSpan(
-    // 1) == 250);
-    // if (TestData.isInteractiveTest())
-    // coverage.show("testDefaultParameterValue");
-    // else
-    // ((GridCoverage2D) coverage).getRenderedImage().getData();
-    //
-    // }
+        //
+        // Get the resource.
+        //
+        final URL testFile = TestData.getResource(this, "multipyramid");
+        File mosaicFolder = DataUtilities.urlToFile(testFile);
+        assertNotNull(testFile);
+        File[] pyramidLevels = mosaicFolder.listFiles((FileFilter)FileFilterUtils.directoryFileFilter());
+        for (File pyramidLevel : pyramidLevels) {
+            cleanFiles(pyramidLevel);
+        }
+        cleanFiles(mosaicFolder);
+
+        //
+        // Get the reader
+        //
+        final ImagePyramidReader reader = new ImagePyramidReader(testFile, new Hints(
+                Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        assertNotNull(reader);
+        assertEquals(2, reader.getGridCoverageCount());
+
+        String coverageNames[] = reader.getGridCoverageNames();
+        Arrays.sort(coverageNames);
+        assertEquals("gray", coverageNames[0]);
+        assertEquals("rgb", coverageNames[1]);
+
+        //
+        // Get the coverage
+        //
+        GridCoverage2D coverage = (GridCoverage2D) reader.read(coverageNames[0], null);
+        assertNotNull(coverage);
+        RenderedImage renderedImage = coverage.getRenderedImage();
+        int colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
+        assertEquals(ColorSpace.TYPE_GRAY, colorSpaceType);
+        GridEnvelope gridEnvelope = coverage.getGridGeometry().getGridRange();
+        assertEquals(20, gridEnvelope.getSpan(0), DELTA);
+        assertEquals(20, gridEnvelope.getSpan(1), DELTA);
+
+        coverage = (GridCoverage2D) reader.read(coverageNames[1], null);
+        assertNotNull(coverage);
+        renderedImage = coverage.getRenderedImage();
+        colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
+        assertEquals(ColorSpace.TYPE_RGB, colorSpaceType);
+    }
+
+    private void cleanFiles(File mosaicFolder) {
+        for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("db"), FileFilterUtils
+                        .suffixFileFilter("sample_image"), FileFilterUtils.and(FileFilterUtils
+                        .suffixFileFilter(".properties"), FileFilterUtils
+                        .notFileFilter(FileFilterUtils.or(
+                                FileFilterUtils.nameFileFilter("indexer.properties"),
+                                FileFilterUtils.nameFileFilter("datastore.properties"))))))) {
+            configFile.delete();
+        }
+    }
 }

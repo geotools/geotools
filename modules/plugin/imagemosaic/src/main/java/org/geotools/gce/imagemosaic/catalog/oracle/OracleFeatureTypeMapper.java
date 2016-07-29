@@ -99,8 +99,10 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
     public SimpleFeatureSource getSimpleFeatureSource() {
         return simpleFeatureSource;
     }
+
     /**
      * Create a new {@link OracleFeatureTypeMapper} on top of the original featureType provided
+     * 
      * @param featureType
      * @throws CQLException
      */
@@ -121,7 +123,8 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
             String attributeName = remap(originalAttribute);
 
             // Create the definition to map the original attribute to the Oracle specific one
-            final Definition definition = new Definition(originalAttribute, ECQL.toExpression(attributeName), binding);
+            final Definition definition = new Definition(originalAttribute,
+                    ECQL.toExpression(attributeName), binding);
             definitions.add(definition);
             definitionsMapping.put(attribute.getName(), definition);
         }
@@ -129,8 +132,7 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
     }
 
     /**
-     * Remap the original featureType on top of the available definitions to create 
-     * the Oracle specific featureType
+     * Remap the original featureType on top of the available definitions to create the Oracle specific featureType
      */
     private void remapFeatureType() {
         final SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -146,7 +148,8 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
             AttributeType type = descriptor.getType();
             if (type instanceof GeometryType) {
                 coordinateReferenceSystem = ((GeometryType) type).getCoordinateReferenceSystem();
-                tb.add(definition.getExpression().toString(), definition.getBinding(), coordinateReferenceSystem);
+                tb.add(definition.getExpression().toString(), definition.getBinding(),
+                        coordinateReferenceSystem);
             } else {
                 tb.add(definition.getExpression().toString(), definition.getBinding());
             }

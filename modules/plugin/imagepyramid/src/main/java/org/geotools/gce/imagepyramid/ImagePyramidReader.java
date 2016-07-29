@@ -47,7 +47,6 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
@@ -65,16 +64,16 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * This reader is repsonsible for providing access to a pyramid of mosaics of georeferenced
+ * This reader is responsible for providing access to a pyramid of mosaics of georeferenced
  * coverages that are read directly through imageio readers, like tiff, pngs, etc...
  * 
  * <p>
  * Specifically this plugin relies on the image mosaic plugin to handle each single level of
- * resolutions avaible, hence all the magic is done inside the mosaic plugin.
+ * resolutions available, hence all the magic is done inside the mosaic plugin.
  * 
  * 
  * <p>
- * For information on how to build a mosaic, please refere to the {@link ImageMosaicReader}
+ * For information on how to build a mosaic, please refer to the {@link ImageMosaicReader}
  * documentation.
  * 
  * <p>
@@ -82,7 +81,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * The pyramid itself does no magic. All the magic is performed by the single mosaic readers that
  * are polled depending on the requeste resolution levels. Therefore the <b>first step</b> is having
- * a mosaic of images like geotiff, tiff, jpeg, or png which is going to be the base for te pyramid.
+ * a mosaic of images like geotiff, tiff, jpeg, or png which is going to be the base for the
+ * pyramid.
  * 
  * <p>
  * The <b>second step</b> is to build the next (lower resolution) levels for the pyramid. <br>
@@ -135,6 +135,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      * The directories where to find the different resolutions levels in descending order.
      */
     private String[] levelsDirs;
+
+    private String[] coverageNames;
+
+    private int count = 1;
 
     /**
      * Cache of {@link ImageMosaicReader} objects for the different levels.
@@ -266,6 +270,14 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 
             // name
             coverageName = properties.getProperty("Name");
+            if (coverageName != null) {
+                if (coverageName.contains(",")) {
+                    coverageNames = coverageName.split(",");
+                } else {
+                    coverageNames = new String[] { coverageName };
+                }
+                count = coverageNames.length;
+            }
 
             // original gridrange (estimated)
             originalGridRange = new GridEnvelope2D(new Rectangle((int) Math.round(originalEnvelope
@@ -300,7 +312,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      */
     public ImagePyramidReader(Object source) throws IOException {
         this(source, null);
-
     }
 
     /**
@@ -310,10 +321,14 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         return new ImagePyramidFormat();
     }
 
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
-     */
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+        return read(coverageName, params);
+    }
+
+    @Override
+    public GridCoverage2D read(final String coverageName, GeneralParameterValue[] params)
+            throws IOException {
 
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;
@@ -349,14 +364,14 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         //
         // Loading tiles
         //
-        return loadTiles(requestedEnvelope, dim, params, overviewPolicy);
+        return loadTiles(coverageName, requestedEnvelope, dim, params, overviewPolicy);
     }
 
     /**
      * Loading the tiles which overlap with the requested envelope.
      * 
      * 
-     * 
+     * @param coverageName
      * @param requestedEnvelope
      * @param dim
      * @param params
@@ -364,8 +379,9 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      * @return A {@link GridCoverage}, well actually a {@link GridCoverage2D}.
      * @throws IOException
      */
-    private GridCoverage2D loadTiles(GeneralEnvelope requestedEnvelope, Rectangle dim,
-            GeneralParameterValue[] params, OverviewPolicy overviewPolicy) throws IOException {
+    private GridCoverage2D loadTiles(final String coverageName, GeneralEnvelope requestedEnvelope,
+            Rectangle dim, GeneralParameterValue[] params, OverviewPolicy overviewPolicy)
+            throws IOException {
 
         //
         // Check if we have something to load by intersecting the requested
@@ -408,7 +424,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         requestedEnvelope.setCoordinateReferenceSystem(this.crs);
         // ok we got something to return
         try {
-            return loadRequestedTiles(requestedEnvelope, dim, params, overviewPolicy);
+            return loadRequestedTiles(coverageName, requestedEnvelope, dim, params, overviewPolicy);
         } catch (TransformException e) {
             throw new DataSourceException(e);
         }
@@ -419,6 +435,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      * This method loads the tiles which overlap the requested envelope using the provided values
      * for alpha and input ROI.
      * 
+     * @param coverageName
      * @param requestedEnvelope
      * @param dim
      * @param params
@@ -426,14 +443,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      * @return A {@link GridCoverage}, well actually a {@link GridCoverage2D}.
      * @throws TransformException
      * @throws IOException
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws IllegalArgumentException
-     * @throws FactoryRegistryException
      */
-    private GridCoverage2D loadRequestedTiles(GeneralEnvelope requestedEnvelope, Rectangle dim,
-            GeneralParameterValue[] params, OverviewPolicy overviewPolicy)
-            throws TransformException, IOException {
+    private GridCoverage2D loadRequestedTiles(final String coverageName,
+            GeneralEnvelope requestedEnvelope, Rectangle dim, GeneralParameterValue[] params,
+            OverviewPolicy overviewPolicy) throws TransformException, IOException {
 
         // if we get here we have something to load
 
@@ -442,7 +455,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         Integer imageChoice = 0;
         if (dim != null)
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
-
 
         // Check to have the needed reader in memory
         // light check to see if this reader had been disposed, not synch-ing for performance.
@@ -456,7 +468,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         // Abusing of the created ImageMosaicreader for getting a
         // gridcoverage2d, then rename it
         //
-        GridCoverage2D mosaicCoverage = reader.read(params);
+        GridCoverage2D mosaicCoverage = reader.read(getReaderCoverageName(coverageName), params);
         if (mosaicCoverage != null) {
             return new GridCoverage2D(coverageName, mosaicCoverage);
         } else {
@@ -471,29 +483,23 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
     @Override
     public synchronized void dispose() {
         super.dispose();
-        for (Entry<Integer, ImageMosaicReader> element : readers.entrySet())
+        for (Entry<Integer, ImageMosaicReader> element : readers.entrySet()) {
             element.getValue().dispose();
+        }
         readers.clear();
     }
 
+    @Override
+    public String[] getGridCoverageNames() {
+        return coverageNames;
+    }
+
     /**
-     * Number of coverages for this reader is 1
-     * 
      * @return the number of coverages for this reader.
      */
     @Override
     public int getGridCoverageCount() {
-        return 1;
-    }
-
-    /**
-     * Returns the highest resolution available.
-     * 
-     * TODO The instance variable comes from {@link AbstractGridCoverage2DReader}, so maybe we
-     * should move the getter there.
-     * */
-    double[] getHighestRes() {
-        return highestRes;
+        return count;
     }
 
     /**
@@ -504,12 +510,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      * @return
      */
     @Override
-    public String getMetadataValue(String coverageName, String name) {
-        String metadataValue = super.getMetadataValue(coverageName, name);
-        if (metadataValue != null) {
-            return metadataValue;
-        }
-        return getImageMosaicMetadataValue(name);
+    public String getMetadataValue(final String coverageName, final String name) {
+        return getImageMosaicMetadataValue(coverageName, name);
 
     }
 
@@ -517,39 +519,44 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      * Retrieve data value for requested metadata
      */
     public String getMetadataValue(final String name) {
-        String value = super.getMetadataValue(name);
-        if (value != null) {
-            return value;
-        }
-        return getImageMosaicMetadataValue(name);
+        return getImageMosaicMetadataValue(coverageName, name);
     }
 
-    private String getImageMosaicMetadataValue(String name) {
-        ImageMosaicReader firstLevelReader = null;
+    private ImageMosaicReader getFirstLevelReader() {
         try {
-            firstLevelReader = getImageMosaicReaderForLevel(0);
+            return getImageMosaicReaderForLevel(0);
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "Could not get reader for datasource.", e);
             }
             return null;
         }
+    }
+
+    private String getImageMosaicMetadataValue(final String coverageName, final String name) {
+        ImageMosaicReader firstLevelReader = getFirstLevelReader();
+        if (firstLevelReader == null) {
+            return null;
+        }
 
         if (name.equalsIgnoreCase(HAS_TIME_DOMAIN)) {
-            return String.valueOf(this.hasTimeDomain(firstLevelReader));
+            return String.valueOf(this.hasTimeDomain(coverageName, firstLevelReader));
         }
 
         if (TIME_DOMAIN.equalsIgnoreCase(name) || TIME_DOMAIN_MAXIMUM.equalsIgnoreCase(name)
                 || TIME_DOMAIN_MINIMUM.equalsIgnoreCase(name)) {
-            if (this.hasTimeDomain(firstLevelReader)) {
-                return this.getTimeDomain(firstLevelReader, name);
+            if (this.hasTimeDomain(coverageName, firstLevelReader)) {
+                return this.getTimeDomain(coverageName, firstLevelReader, name);
             }
         }
-        if (firstLevelReader != null) {
-            return firstLevelReader.getMetadataValue(name);
-        } else {
-            return null;
-        }
+        return firstLevelReader.getMetadataValue(getReaderCoverageName(coverageName), name);
+
+    }
+
+    @Override
+    public String[] getMetadataNames(final String coverageName) {
+        // Looks like the metadaNames are fixed on pyramid
+        return getMetadataNames();
     }
 
     public String[] getMetadataNames() {
@@ -567,34 +574,33 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
     }
 
     /**
-     * Verify if the requested Mosaic has a time domain configuration
-     * 
-     * @param reader
-     * @return True if has time domain configuration
-     */
-    private boolean hasTimeDomain(ImageMosaicReader reader) {
-        if (reader != null) {
-            String strHasTimeDomain = reader.getMetadataValue(HAS_TIME_DOMAIN);
-            return Boolean.parseBoolean(strHasTimeDomain);
-        }
-        return false;
-    }
-
-    /**
      * Retrieve time domains metadata values for the requested ImageMosaicReader
      * 
      * @param reader
      * @param name
      * @return
      */
-    private String getTimeDomain(ImageMosaicReader reader, final String name) {
-        if (hasTimeDomain(reader)) {
-            if (reader != null) {
-                String timeDomain = reader.getMetadataValue(name);
-                return timeDomain;
-            }
+    private String getTimeDomain(final String coverageName, ImageMosaicReader reader,
+            final String name) {
+        if (hasTimeDomain(coverageName, reader) && reader != null) {
+            return reader.getMetadataValue(getReaderCoverageName(coverageName), name);
         }
         return null;
+    }
+
+    /**
+     * Verify if the requested Mosaic has a time domain configuration
+     * 
+     * @param reader
+     * @return True if has time domain configuration
+     */
+    private boolean hasTimeDomain(final String coverageName, ImageMosaicReader reader) {
+        if (reader != null) {
+            String strHasTimeDomain = reader.getMetadataValue(getReaderCoverageName(coverageName),
+                    HAS_TIME_DOMAIN);
+            return Boolean.parseBoolean(strHasTimeDomain);
+        }
+        return false;
     }
 
     /**
@@ -646,7 +652,12 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 
         }
         return reader;
+    }
 
+    private String getReaderCoverageName(String coverageName) {
+        // When dealing with a single coverage, ImagePyramid exposes a coverageName
+        // whilst the underlying ImageMosaic may have a different one
+        return count > 1 ? coverageName : ImageMosaicReader.UNSPECIFIED;
     }
 
 }

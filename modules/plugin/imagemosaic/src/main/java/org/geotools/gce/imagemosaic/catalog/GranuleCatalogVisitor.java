@@ -27,7 +27,7 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
  *
  * @source $URL$
  */
-public interface GranuleCatalogVisitor{
+public interface GranuleCatalogVisitor {
     /**
      * Method that can be used to perform a visit to a {@link GranuleCatalog}.
      * 

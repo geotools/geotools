@@ -26,8 +26,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.util.Utilities;
 
 /**
- * Enum that can be use to distinguish between relative paths and absolute paths
- * when trying to load a granuleDescriptor for a mosaic.
+ * Enum that can be use to distinguish between relative paths and absolute paths when trying to load a granuleDescriptor for a mosaic.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
@@ -37,103 +36,94 @@ import org.geotools.util.Utilities;
  * @source $URL$
  */
 public enum PathType {
-	RELATIVE{
+    RELATIVE {
 
-		@Override
-		URL resolvePath(final String parentLocation,final  String location) {
-			// initial checks
-			Utilities.ensureNonNull("parentLocation", parentLocation);
-			Utilities.ensureNonNull("location", location);
-			if(LOGGER.isLoggable(Level.FINE))
-			{
-				final StringBuilder builder = new StringBuilder();
-				builder.append("Trying to resolve path:").append("\n");
-				builder.append("type:").append(this.toString()).append("\n");
-				builder.append("parentLocation:").append(parentLocation).append("\n");
-				builder.append("location:").append(location);
-				LOGGER.fine(builder.toString());
-			}
-			// create a URL for the provided location, relative to parent location
-			try {
-				URL rasterURL= DataUtilities.extendURL(new URL(parentLocation), location);
-			if(!Utils.checkURLReadable(rasterURL))
-			{		
-				if (LOGGER.isLoggable(Level.INFO))
-					LOGGER.info("Unable to read image for file "+ rasterURL);
+        @Override
+        URL resolvePath(final String parentLocation, final String location) {
+            // initial checks
+            Utilities.ensureNonNull("parentLocation", parentLocation);
+            Utilities.ensureNonNull("location", location);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                final StringBuilder builder = new StringBuilder();
+                builder.append("Trying to resolve path:").append("\n");
+                builder.append("type:").append(this.toString()).append("\n");
+                builder.append("parentLocation:").append(parentLocation).append("\n");
+                builder.append("location:").append(location);
+                LOGGER.fine(builder.toString());
+            }
+            // create a URL for the provided location, relative to parent location
+            try {
+                URL rasterURL = DataUtilities.extendURL(new URL(parentLocation), location);
+                if (!Utils.checkURLReadable(rasterURL)) {
+                    if (LOGGER.isLoggable(Level.INFO))
+                        LOGGER.info("Unable to read image for file " + rasterURL);
 
-				return null;
+                    return null;
 
-			}		
-			return rasterURL;
-			} catch (MalformedURLException e) {
-				return null;
-			}
-		}
-		
-	},
-	
-	ABSOLUTE{
+                }
+                return rasterURL;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
 
-		@Override
-		URL resolvePath(final String parentLocation,final  String location) {
+    },
 
-			Utilities.ensureNonNull("location", location);
-			if(LOGGER.isLoggable(Level.FINE))
-			{
-				final StringBuilder builder = new StringBuilder();
-				builder.append("Trying to resolve path:").append("\n");
-				builder.append("type:").append(this.toString()).append("\n");
-				if(parentLocation!=null)
-					builder.append("parentLocation:").append(parentLocation).append("\n");
-				LOGGER.fine(builder.toString());	
-			}
-			// create a file for the provided location ignoring the parent type
-			// create a URL for the provided location, relative to parent location
-			try {
-			    File rasterFile= new File(location);
-	                      if(!Utils.checkFileReadable(rasterFile)){               
-	                          URL rasterURL= new URL(location);
-	                          if(!Utils.checkURLReadable(rasterURL))
-	                          {               
-	                                  if (LOGGER.isLoggable(Level.INFO))
-	                                          LOGGER.info("Unable to read image for file "+ rasterURL);
+    ABSOLUTE {
 
-	                                  return null;
+        @Override
+        URL resolvePath(final String parentLocation, final String location) {
 
-	                          }               
-	                          return rasterURL;
-	                              
-	                      } else {
-	                          return DataUtilities.fileToURL(rasterFile);
-	                      }
-			
-			} catch (MalformedURLException e) {
-				return null;
-			}
-		}
-		
-	};
-	
-	/** Logger. */
-	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PathType.class);
+            Utilities.ensureNonNull("location", location);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                final StringBuilder builder = new StringBuilder();
+                builder.append("Trying to resolve path:").append("\n");
+                builder.append("type:").append(this.toString()).append("\n");
+                if (parentLocation != null)
+                    builder.append("parentLocation:").append(parentLocation).append("\n");
+                LOGGER.fine(builder.toString());
+            }
+            // create a file for the provided location ignoring the parent type
+            // create a URL for the provided location, relative to parent location
+            try {
+                File rasterFile = new File(location);
+                if (!Utils.checkFileReadable(rasterFile)) {
+                    URL rasterURL = new URL(location);
+                    if (!Utils.checkURLReadable(rasterURL)) {
+                        if (LOGGER.isLoggable(Level.INFO))
+                            LOGGER.info("Unable to read image for file " + rasterURL);
 
-	/**
-	 * Resolve a path for a granuleDescriptor given the parent location and location
-	 * itself.
-	 * 
-	 * <p>
-	 * the location can never be null, while the parent location could be null,
-	 * as an instance when the path is relative.
-	 * 
-	 * @param parentLocation
-	 * @param location
-	 * @return a {@link File} instance that points to a location which could be
-	 *         relative or absolute depending on the flavor of the enum where
-	 *         this method is applied. This method might return <code>null</code>
-	 *         in case something bad happens.
-	 */
-	abstract URL resolvePath(
-			final String parentLocation,
-			final String location);
-	
+                        return null;
+
+                    }
+                    return rasterURL;
+
+                } else {
+                    return DataUtilities.fileToURL(rasterFile);
+                }
+
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+
+    };
+
+    /** Logger. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(PathType.class);
+
+    /**
+     * Resolve a path for a granuleDescriptor given the parent location and location itself.
+     * 
+     * <p>
+     * the location can never be null, while the parent location could be null, as an instance when the path is relative.
+     * 
+     * @param parentLocation
+     * @param location
+     * @return a {@link File} instance that points to a location which could be relative or absolute depending on the flavor of the enum where this
+     *         method is applied. This method might return <code>null</code> in case something bad happens.
+     */
+    abstract URL resolvePath(final String parentLocation, final String location);
+
 }

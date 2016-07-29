@@ -25,6 +25,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
+
 /**
  * {@link PropertiesCollector} that is able to collect properties from a file name.
  * 

@@ -88,43 +88,51 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class CatalogManager {
 
-    private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
+    private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(
+            PrecisionModel.FLOATING);
+
     private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
-    /* Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and
-     * do not use memory mapped buffers */
-    private final static Boolean USE_MEMORY_MAPPED_BUFFERS = !System.getProperty("os.name",
-            "Windows").contains("Windows");
-
+    /*
+     * Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and do not use memory
+     * mapped buffers
+     */
+    private final static Boolean USE_MEMORY_MAPPED_BUFFERS = !System
+            .getProperty("os.name", "Windows").contains("Windows");
 
     /** Default Logger * */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogManager.class);
-    
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(CatalogManager.class);
+
     /**
      * Create a GranuleCatalog on top of the provided configuration
+     * 
      * @param runConfiguration
      * @return
      * @throws IOException
      */
-    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration) throws IOException {
+    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration)
+            throws IOException {
         return createCatalog(runConfiguration, true);
     }
 
     /**
      * Create or load a GranuleCatalog on top of the provided configuration
+     * 
      * @param runConfiguration
      * @param create if true create a new catalog, otherwise it is loaded
      * @return
      * @throws IOException
      */
-    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
+    public static GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration,
+            boolean create) throws IOException {
         //
         // create the index
         //
         // do we have a datastore.properties file?
         final File parent = new File(runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR));
         GranuleCatalog catalog;
-        
+
         // Consider checking that from the indexer if any
         final File datastoreProperties = new File(parent, "datastore.properties");
         // GranuleCatalog catalog = null;
@@ -133,7 +141,7 @@ public class CatalogManager {
             Properties properties = createGranuleCatalogProperties(datastoreProperties);
             // pass the typename from the indexer, if one is available
             String indexerTypeName = runConfiguration.getParameter(Utils.Prop.TYPENAME);
-            if(indexerTypeName != null && properties.getProperty(Utils.Prop.TYPENAME) == null) {
+            if (indexerTypeName != null && properties.getProperty(Utils.Prop.TYPENAME) == null) {
                 properties.put(Utils.Prop.TYPENAME, indexerTypeName);
             }
             catalog = createGranuleCatalogFromDatastore(parent, properties, create,
@@ -142,7 +150,8 @@ public class CatalogManager {
         } else {
 
             // we do not have a datastore properties file therefore we continue with a shapefile datastore
-            final URL file = new File(parent, runConfiguration.getParameter(Utils.Prop.INDEX_NAME) + ".shp").toURI().toURL();
+            final URL file = new File(parent,
+                    runConfiguration.getParameter(Utils.Prop.INDEX_NAME) + ".shp").toURI().toURL();
             final Properties params = new Properties();
             params.put(ShapefileDataStoreFactory.URLP.key, file);
             if (file.getProtocol().equalsIgnoreCase("file")) {
@@ -150,9 +159,12 @@ public class CatalogManager {
             }
             params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, USE_MEMORY_MAPPED_BUFFERS);
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
-            params.put(Utils.Prop.LOCATION_ATTRIBUTE, runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create, Utils.SHAPE_SPI,runConfiguration.getHints());
-            MultiLevelROIProvider roi = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+            params.put(Utils.Prop.LOCATION_ATTRIBUTE,
+                    runConfiguration.getParameter(Utils.Prop.LOCATION_ATTRIBUTE));
+            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create,
+                    Utils.SHAPE_SPI, runConfiguration.getHints());
+            MultiLevelROIProvider roi = MultiLevelROIProviderMosaicFactory
+                    .createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(roi);
         }
 
@@ -160,8 +172,7 @@ public class CatalogManager {
     }
 
     /**
-     * Tries to drop a datastore referred by the datastore connections 
-     * properties specified in the provided file.
+     * Tries to drop a datastore referred by the datastore connections properties specified in the provided file.
      * 
      * Current implementation only drop a postGIS datastore.
      * 
@@ -173,30 +184,37 @@ public class CatalogManager {
         final String SPIClass = properties.getProperty("SPI");
         try {
             // drop a datastore. Right now, only postGIS drop is supported
-            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass)
+                    .newInstance();
             Utils.dropDB(spi, properties);
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
-        } 
+        }
     }
 
-    public static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
-        Properties properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
+    public static Properties createGranuleCatalogProperties(File datastoreProperties)
+            throws IOException {
+        Properties properties = CoverageUtilities
+                .loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
         if (properties == null) {
-            throw new IOException("Unable to load properties from:" + datastoreProperties.getAbsolutePath());
+            throw new IOException(
+                    "Unable to load properties from:" + datastoreProperties.getAbsolutePath());
         }
         return properties;
     }
 
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
+    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent,
+            File datastoreProperties, boolean create, Hints hints) throws IOException {
         return createGranuleCatalogFromDatastore(parent, datastoreProperties, create, false, hints);
     }
 
     /**
      * Create a granule catalog from a datastore properties file
      */
-    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints) throws IOException {
+    public static GranuleCatalog createGranuleCatalogFromDatastore(File parent,
+            File datastoreProperties, boolean create, boolean wraps, Hints hints)
+            throws IOException {
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
         return createGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
@@ -209,7 +227,8 @@ public class CatalogManager {
         final String SPIClass = properties.getProperty("SPI");
         try {
             // create a datastore as instructed
-            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass)
+                    .newInstance();
 
             // set ParentLocation parameter since for embedded database like H2 we must change the database
             // to incorporate the path where to write the db
@@ -218,24 +237,27 @@ public class CatalogManager {
                 properties.put(Utils.Prop.WRAP_STORE, wraps);
             }
 
-            catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,hints);
-            MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+            catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,
+                    hints);
+            MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
+                    .createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(rois);
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
-        } 
+        }
         return catalog;
     }
 
     /**
      * Create a {@link SimpleFeatureType} from the specified configuration.
+     * 
      * @param configurationBean
      * @param actualCRS
      * @return
      */
-    public static SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration, String name,
-            CoordinateReferenceSystem actualCRS) {
+    public static SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration,
+            String name, CoordinateReferenceSystem actualCRS) {
         SimpleFeatureType indexSchema = null;
         SchemaType schema = null;
         String schemaAttributes = null;
@@ -279,7 +301,7 @@ public class CatalogManager {
                         }
                     }
                 }
-                
+
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -292,7 +314,8 @@ public class CatalogManager {
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
             featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-            featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
+            featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
+                    String.class);
             featureBuilder.add("the_geom", Polygon.class, actualCRS);
             featureBuilder.setDefaultGeometry("the_geom");
             String timeAttribute = runConfiguration.getTimeAttribute();
@@ -301,14 +324,13 @@ public class CatalogManager {
         }
         return indexSchema;
     }
-    
+
     /**
      * Add splitted attributes to the featureBuilder
      *
      * @param attribute
      * @param featureBuilder
-     * @param classType
-     * TODO: Remove that once reworking on the dimension stuff
+     * @param classType TODO: Remove that once reworking on the dimension stuff
      */
     private static void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder,
             Class classType) {
@@ -331,9 +353,8 @@ public class CatalogManager {
     }
 
     /**
-     * Get a {@link GranuleSource} related to a specific coverageName from an inputReader
-     * and put the related granules into a {@link GranuleStore} related to the same coverageName
-     * of the mosaicReader.
+     * Get a {@link GranuleSource} related to a specific coverageName from an inputReader and put the related granules into a {@link GranuleStore}
+     * related to the same coverageName of the mosaicReader.
      * 
      * @param coverageName the name of the coverage to be managed
      * @param fileBeingProcessed the reference input file
@@ -345,151 +366,154 @@ public class CatalogManager {
      * @param propertiesCollectors
      * @throws IOException
      */
-    static void updateCatalog(
-            final String coverageName,
-            final File fileBeingProcessed,
-            final GridCoverage2DReader inputReader,
-            final ImageMosaicReader mosaicReader,
-            final CatalogBuilderConfiguration configuration, 
-            final GeneralEnvelope envelope,
-            final DefaultTransaction transaction, 
+    static void updateCatalog(final String coverageName, final File fileBeingProcessed,
+            final GridCoverage2DReader inputReader, final ImageMosaicReader mosaicReader,
+            final CatalogBuilderConfiguration configuration, final GeneralEnvelope envelope,
+            final DefaultTransaction transaction,
             final List<PropertiesCollector> propertiesCollectors) throws IOException {
-        
+
         // Retrieving the store and the destination schema
         final GranuleStore store = (GranuleStore) mosaicReader.getGranules(coverageName, false);
         if (store == null) {
-            throw new IllegalArgumentException("No valid granule store has been found for: " + coverageName);
+            throw new IllegalArgumentException(
+                    "No valid granule store has been found for: " + coverageName);
         }
         final SimpleFeatureType indexSchema = store.getSchema();
-        final SimpleFeature feature = new ShapefileCompatibleFeature(DataUtilities.template(indexSchema));
+        final SimpleFeature feature = new ShapefileCompatibleFeature(
+                DataUtilities.template(indexSchema));
         store.setTransaction(transaction);
-        
+
         final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
         final String fileLocation = prepareLocation(configuration, fileBeingProcessed);
         final String locationAttribute = configuration.getParameter(Prop.LOCATION_ATTRIBUTE);
 
         // getting input granules
         if (inputReader instanceof StructuredGridCoverage2DReader) {
-            
+
             //
-            // Case A: input reader is a StructuredGridCoverage2DReader. We can get granules from a source 
-            // 
+            // Case A: input reader is a StructuredGridCoverage2DReader. We can get granules from a source
+            //
             // Getting granule source and its input granules
-            final GranuleSource source = ((StructuredGridCoverage2DReader) inputReader).getGranules(coverageName, true);
+            final GranuleSource source = ((StructuredGridCoverage2DReader) inputReader)
+                    .getGranules(coverageName, true);
             final SimpleFeatureCollection originCollection = source.getGranules(null);
             final DefaultProgressListener listener = new DefaultProgressListener();
-            
+
             // Getting attributes structure to be filled
             final Collection<Property> destProps = feature.getProperties();
             final Set<Name> destAttributes = new HashSet<Name>();
-            for (Property prop: destProps) {
+            for (Property prop : destProps) {
                 destAttributes.add(prop.getName());
             }
-            
+
             // Collecting granules
-            originCollection.accepts( new AbstractFeatureVisitor(){
-                public void visit( Feature feature ) {
-                    if(feature instanceof SimpleFeature)
-                    {
-                            // get the feature
-                            final SimpleFeature sourceFeature = (SimpleFeature) feature;
-                            final SimpleFeature destFeature = DataUtilities.template(indexSchema);
-                            Collection<Property> props = sourceFeature.getProperties();
-                            Name propName = null;
-                            Object propValue = null;
-                            
-                            // Assigning value to dest feature for matching attributes 
-                            for (Property prop: props) {
-                                propName = prop.getName();
-                                propValue = prop.getValue();
-                                
-                                // Matching attributes are set
-                                if (destAttributes.contains(propName)) {
-                                    destFeature.setAttribute(propName, propValue);
-                                }
+            originCollection.accepts(new AbstractFeatureVisitor() {
+                public void visit(Feature feature) {
+                    if (feature instanceof SimpleFeature) {
+                        // get the feature
+                        final SimpleFeature sourceFeature = (SimpleFeature) feature;
+                        final SimpleFeature destFeature = DataUtilities.template(indexSchema);
+                        Collection<Property> props = sourceFeature.getProperties();
+                        Name propName = null;
+                        Object propValue = null;
+
+                        // Assigning value to dest feature for matching attributes
+                        for (Property prop : props) {
+                            propName = prop.getName();
+                            propValue = prop.getValue();
+
+                            // Matching attributes are set
+                            if (destAttributes.contains(propName)) {
+                                destFeature.setAttribute(propName, propValue);
                             }
-                            
-                            // Set location
-                            destFeature.setAttribute(locationAttribute, fileLocation);
-                            
-                            // delegate remaining attributes set to properties collector 
-                            updateAttributesFromCollectors(destFeature, fileBeingProcessed, inputReader, propertiesCollectors);
-                            collection.add(destFeature);
-                            
-                            // check if something bad occurred
-                            if(listener.isCanceled()||listener.hasExceptions()){
-                                if(listener.hasExceptions())
-                                    throw new RuntimeException(listener.getExceptions().peek());
-                                else
-                                    throw new IllegalStateException("Feature visitor has been canceled");
-                            }
+                        }
+
+                        // Set location
+                        destFeature.setAttribute(locationAttribute, fileLocation);
+
+                        // delegate remaining attributes set to properties collector
+                        updateAttributesFromCollectors(destFeature, fileBeingProcessed, inputReader,
+                                propertiesCollectors);
+                        collection.add(destFeature);
+
+                        // check if something bad occurred
+                        if (listener.isCanceled() || listener.hasExceptions()) {
+                            if (listener.hasExceptions())
+                                throw new RuntimeException(listener.getExceptions().peek());
+                            else
+                                throw new IllegalStateException(
+                                        "Feature visitor has been canceled");
+                        }
                     }
-                } 
+                }
             }, listener);
         } else {
             //
-            // Case B: old style reader, proceed with classic way, using properties collectors 
-            // 
+            // Case B: old style reader, proceed with classic way, using properties collectors
+            //
             feature.setAttribute(indexSchema.getGeometryDescriptor().getLocalName(),
                     GEOM_FACTORY.toGeometry(new ReferencedEnvelope(envelope)));
             feature.setAttribute(locationAttribute, fileLocation);
-            
-            updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader, propertiesCollectors);
+
+            updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader,
+                    propertiesCollectors);
             collection.add(feature);
         }
 
-        // drop all the granules associated to the same         
-        Filter filter = Utils.FF.equal(Utils.FF.property(locationAttribute), Utils.FF.literal(fileLocation), 
-                !isCaseSensitiveFileSystem(fileBeingProcessed));
+        // drop all the granules associated to the same
+        Filter filter = Utils.FF.equal(Utils.FF.property(locationAttribute),
+                Utils.FF.literal(fileLocation), !isCaseSensitiveFileSystem(fileBeingProcessed));
         store.removeGranules(filter);
-        
+
         // Add the granules collection to the store
         store.addGranules(collection);
     }
 
     /**
-     * Checks if the file system is case sensitive or not using File.exists (the only method
-     * that also works on OSX too according to 
+     * Checks if the file system is case sensitive or not using File.exists (the only method that also works on OSX too according to
      * http://stackoverflow.com/questions/1288102/how-do-i-detect-whether-the-file-system-is-case-sensitive )
+     * 
      * @param fileBeingProcessed
      * @return
      */
     private static boolean isCaseSensitiveFileSystem(File fileBeingProcessed) {
-        File loCase = new File(fileBeingProcessed.getParentFile(), fileBeingProcessed.getName().toLowerCase());
-        File upCase = new File(fileBeingProcessed.getParentFile(), fileBeingProcessed.getName().toUpperCase());
+        File loCase = new File(fileBeingProcessed.getParentFile(),
+                fileBeingProcessed.getName().toLowerCase());
+        File upCase = new File(fileBeingProcessed.getParentFile(),
+                fileBeingProcessed.getName().toUpperCase());
         return loCase.exists() && upCase.exists();
     }
 
     /**
      * Update feature attributes through properties collector
+     * 
      * @param feature
      * @param fileBeingProcessed
      * @param inputReader
      * @param propertiesCollectors
      */
-    private static void updateAttributesFromCollectors(
-            final SimpleFeature feature,
-            final File fileBeingProcessed, 
-            final GridCoverage2DReader inputReader,
+    private static void updateAttributesFromCollectors(final SimpleFeature feature,
+            final File fileBeingProcessed, final GridCoverage2DReader inputReader,
             final List<PropertiesCollector> propertiesCollectors) {
         // collect and dump properties
         if (propertiesCollectors != null && propertiesCollectors.size() > 0)
             for (PropertiesCollector pc : propertiesCollectors) {
-                pc.collect(fileBeingProcessed).collect(inputReader)
-                        .setProperties(feature);
+                pc.collect(fileBeingProcessed).collect(inputReader).setProperties(feature);
                 pc.reset();
             }
-        
+
     }
 
     /**
      * Prepare the location on top of the configuration and file to be processed.
+     * 
      * @param runConfiguration
      * @param fileBeingProcessed
      * @return
      * @throws IOException
      */
-    private static String prepareLocation(CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed) throws IOException {
+    private static String prepareLocation(CatalogBuilderConfiguration runConfiguration,
+            final File fileBeingProcessed) throws IOException {
         // absolute
         if (Boolean.valueOf(runConfiguration.getParameter(Utils.Prop.ABSOLUTE_PATH))) {
             return fileBeingProcessed.getAbsolutePath();
@@ -498,19 +522,18 @@ public class CatalogManager {
         // relative
         String targetPath = fileBeingProcessed.getCanonicalPath();
         String basePath = runConfiguration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR);
-        String relative = getRelativePath(targetPath, basePath, File.separator); //TODO: Remove this replace after fixing the quote escaping
+        String relative = getRelativePath(targetPath, basePath, File.separator); // TODO: Remove this replace after fixing the quote escaping
         return relative;
     }
-    
+
     /**
-     * Get the relative path from one file to another, specifying the directory separator. 
-     * If one of the provided resources does not exist, it is assumed to be a file unless it ends with '/' or
-     * '\'.
+     * Get the relative path from one file to another, specifying the directory separator. If one of the provided resources does not exist, it is
+     * assumed to be a file unless it ends with '/' or '\'.
      * 
      * @param targetPath targetPath is calculated to this file
      * @param basePath basePath is calculated from this file
-     * @param pathSeparator directory separator. The platform default is not assumed so that 
-     *        we can test Unix behaviour when running on Windows (for example)
+     * @param pathSeparator directory separator. The platform default is not assumed so that we can test Unix behaviour when running on Windows (for
+     *        example)
      * @return
      */
     public static String getRelativePath(String targetPath, String basePath, String pathSeparator) {
@@ -529,7 +552,8 @@ public class CatalogManager {
             normalizedBasePath = FilenameUtils.separatorsToWindows(normalizedBasePath);
 
         } else {
-            throw new IllegalArgumentException("Unrecognised dir separator '" + pathSeparator + "'");
+            throw new IllegalArgumentException(
+                    "Unrecognised dir separator '" + pathSeparator + "'");
         }
 
         String[] base = normalizedBasePath.split(Pattern.quote(pathSeparator));
@@ -550,15 +574,15 @@ public class CatalogManager {
             // No single common path element. This most
             // likely indicates differing drive letters, like C: and D:.
             // These paths cannot be relativized.
-            throw new RuntimeException("No common path element found for '" + normalizedTargetPath 
+            throw new RuntimeException("No common path element found for '" + normalizedTargetPath
                     + "' and '" + normalizedBasePath + "'");
-        }   
+        }
 
         // The number of directories we have to backtrack depends on whether the base is a file or a dir
         // For example, the relative path from
         //
         // /foo/bar/baz/gg/ff to /foo/bar/baz
-        // 
+        //
         // ".." if ff is a file
         // "../.." if ff is a directory
         //
@@ -589,18 +613,18 @@ public class CatalogManager {
     }
 
     /**
-     * Make sure a proper type name is specified in the catalogBean, it will be used to 
-     * create the {@link GranuleCatalog}
+     * Make sure a proper type name is specified in the catalogBean, it will be used to create the {@link GranuleCatalog}
      * 
      * @param sourceURL
      * @param configuration
-     * @throws IOException 
+     * @throws IOException
      */
-    private static void checkTypeName(URL sourceURL, MosaicConfigurationBean configuration) throws IOException {
+    private static void checkTypeName(URL sourceURL, MosaicConfigurationBean configuration)
+            throws IOException {
         CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
         if (catalogBean.getTypeName() == null) {
             if (sourceURL.getPath().endsWith("shp")) {
-                // In case we didn't find a typeName and we are dealing with a shape index, 
+                // In case we didn't find a typeName and we are dealing with a shape index,
                 // we set the typeName as the shape name
                 final File file = DataUtilities.urlToFile(sourceURL);
                 catalogBean.setTypeName(FilenameUtils.getBaseName(file.getCanonicalPath()));
@@ -613,30 +637,33 @@ public class CatalogManager {
 
     /**
      * Create a {@link GranuleCatalog} on top of the provided Configuration
+     * 
      * @param sourceURL
      * @param configuration
      * @param hints
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
-    static GranuleCatalog createCatalog(final URL sourceURL, final MosaicConfigurationBean configuration, Hints hints) throws IOException {
+    static GranuleCatalog createCatalog(final URL sourceURL,
+            final MosaicConfigurationBean configuration, Hints hints) throws IOException {
         CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
-        
+
         // Check the typeName
         checkTypeName(sourceURL, configuration);
         if (hints != null && hints.containsKey(Hints.MOSAIC_LOCATION_ATTRIBUTE)) {
-            final String hintLocation = (String) hints
-                    .get(Hints.MOSAIC_LOCATION_ATTRIBUTE);
+            final String hintLocation = (String) hints.get(Hints.MOSAIC_LOCATION_ATTRIBUTE);
             if (!catalogBean.getLocationAttribute().equalsIgnoreCase(hintLocation)) {
                 throw new DataSourceException("wrong location attribute");
             }
         }
         // Create the catalog
-        GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null,hints);
+        GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean,
+                null, hints);
         File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
-        MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+        MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
+                .createFootprintProvider(parent);
         catalog.setMultiScaleROIProvider(rois);
-        
+
         return catalog;
     }
 

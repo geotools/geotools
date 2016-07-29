@@ -86,8 +86,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(GTDataStoreGranuleCatalog.class);
 
-    final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools
-            .getDefaultHints());
+    final static FilterFactory2 ff = CommonFactoryFinder
+            .getFilterFactory2(GeoTools.getDefaultHints());
 
     private DataStore tileIndexStore;
 
@@ -117,8 +117,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             this.pathType = (PathType) params.get(Utils.Prop.PATH_TYPE);
             this.locationAttribute = (String) params.get(Utils.Prop.LOCATION_ATTRIBUTE);
             final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
-            this.suggestedRasterSPI = temp != null ? (ImageReaderSpi) Class.forName(temp)
-                    .newInstance() : null;
+            this.suggestedRasterSPI = temp != null
+                    ? (ImageReaderSpi) Class.forName(temp).newInstance() : null;
             this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
                 this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
@@ -131,7 +131,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             // creating a brand new one
             Map<String, Serializable> dastastoreParams = Utils.filterDataStoreParams(params, spi);
 
-            boolean isPostgis = Utils.isPostgisStore(spi); 
+            boolean isPostgis = Utils.isPostgisStore(spi);
             // H2 workadound
             if (Utils.isH2Store(spi)) {
                 Utils.fixH2DatabaseLocation(dastastoreParams, parentLocation);
@@ -154,9 +154,11 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             }
 
             if (isPostgis && wrapstore) {
-                tileIndexStore = new PostgisDatastoreWrapper(tileIndexStore, FilenameUtils.getFullPath(parentLocation));
+                tileIndexStore = new PostgisDatastoreWrapper(tileIndexStore,
+                        FilenameUtils.getFullPath(parentLocation));
             } else if (Utils.isOracleStore(spi)) {
-                tileIndexStore = new OracleDatastoreWrapper(tileIndexStore, FilenameUtils.getFullPath(parentLocation));
+                tileIndexStore = new OracleDatastoreWrapper(tileIndexStore,
+                        FilenameUtils.getFullPath(parentLocation));
             }
 
             // is this a new store? If so we do not set any properties
@@ -198,9 +200,9 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                     }
                 }
             }
-            
+
             // if we got here and there is not typename in the list, we could not find one
-            if(this.typeNames.size() == 0) {
+            if (this.typeNames.size() == 0) {
                 throw new IllegalArgumentException("Could not find a suitable mosaic type "
                         + "(with a footprint and a location attribute named "
                         + getLocationAttributeName() + " in the store");
@@ -209,7 +211,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             if (this.typeNames.size() > 0) {
                 // pick the first valid schema found
                 for (String tn : typeNames) {
-                    if(isValidMosaicSchema(tn)) {
+                    if (isValidMosaicSchema(tn)) {
                         extractBasicProperties(tn);
                         break;
                     }
@@ -242,8 +244,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     /**
-     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the
-     * expected location property
+     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the expected location property
      */
     private boolean isValidMosaicSchema(String typeName) throws IOException {
         SimpleFeatureType schema = tileIndexStore.getSchema(typeName);
@@ -280,9 +281,10 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
      * @param schema
      */
     private void checkMosaicSchema(SimpleFeatureType schema) {
-        if(!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
+        if (!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
             throw new IllegalArgumentException("Invalid mosaic schema " + schema + ", "
-                    + "it should have a geometry and a location property of name " + locationAttribute);
+                    + "it should have a geometry and a location property of name "
+                    + locationAttribute);
         }
     }
 
@@ -300,59 +302,61 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     private void extractBasicProperties(String typeName) throws IOException {
-        
+
+        if (typeName == null) {
+            final String[] typeNames = tileIndexStore.getTypeNames();
+            if (typeNames == null || typeNames.length <= 0)
+                throw new IllegalArgumentException(
+                        "BBOXFilterExtractor::extractBasicProperties(): Problems when opening the index,"
+                                + " no typenames for the schema are defined");
+
             if (typeName == null) {
-                final String[] typeNames = tileIndexStore.getTypeNames();
-                if (typeNames == null || typeNames.length <= 0)
-                    throw new IllegalArgumentException(
-                            "BBOXFilterExtractor::extractBasicProperties(): Problems when opening the index,"
-                                    + " no typenames for the schema are defined");
-
-                if (typeName == null) {
-                    typeName = typeNames[0];
-                    addTypeName(typeName, false);
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning("BBOXFilterExtractor::extractBasicProperties(): passed typename is null, using: "
-                                + typeName);
-                }
-
-                // loading all the features into memory to build an in-memory index.
-                for (String type : typeNames) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
-                                + typeName
-                                + "\' in DataStore:getTypeNames(). Testing: \'"
-                                + type
-                                + "\'.");
-                    if (type.equalsIgnoreCase(typeName)) {
-                        if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
-                                    + typeName + "\' is equalsIgnoreCase() to \'" + type + "\'.");
-                        typeName = type;
-                        addTypeName(typeName, false);
-                        break;
-                    }
-                }
+                typeName = typeNames[0];
+                addTypeName(typeName, false);
+                if (LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.warning(
+                            "BBOXFilterExtractor::extractBasicProperties(): passed typename is null, using: "
+                                    + typeName);
             }
 
-            final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(typeName);
-            if (featureSource == null) {
-                throw new IOException(
-                        "BBOXFilterExtractor::extractBasicProperties(): unable to get a featureSource for the qualified name"
-                                + typeName);
-            }
-
-            final FeatureType schema = featureSource.getSchema();
-            if (schema != null && schema.getGeometryDescriptor()!=null) {
-                geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+            // loading all the features into memory to build an in-memory index.
+            for (String type : typeNames) {
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
-                            + geometryPropertyName + "\'.");
-
-            } else {
-                throw new IOException(
-                        "BBOXFilterExtractor::extractBasicProperties(): unable to get a schema from the featureSource");
+                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
+                            + typeName + "\' in DataStore:getTypeNames(). Testing: \'" + type
+                            + "\'.");
+                if (type.equalsIgnoreCase(typeName)) {
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine(
+                                "BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
+                                        + typeName + "\' is equalsIgnoreCase() to \'" + type
+                                        + "\'.");
+                    typeName = type;
+                    addTypeName(typeName, false);
+                    break;
+                }
             }
+        }
+
+        final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(typeName);
+        if (featureSource == null) {
+            throw new IOException(
+                    "BBOXFilterExtractor::extractBasicProperties(): unable to get a featureSource for the qualified name"
+                            + typeName);
+        }
+
+        final FeatureType schema = featureSource.getSchema();
+        if (schema != null && schema.getGeometryDescriptor() != null) {
+            geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.fine(
+                        "BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
+                                + geometryPropertyName + "\'.");
+
+        } else {
+            throw new IOException(
+                    "BBOXFilterExtractor::extractBasicProperties(): unable to get a schema from the featureSource");
+        }
 
     }
 
@@ -366,7 +370,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 if (tileIndexStore != null) {
                     tileIndexStore.dispose();
                 }
-                if(multiScaleROIProvider != null) {
+                if (multiScaleROIProvider != null) {
                     multiScaleROIProvider.dispose();
                 }
             } catch (Throwable e) {
@@ -483,15 +487,14 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                         // get the feature
                         final SimpleFeature sf = (SimpleFeature) feature;
                         MultiLevelROI footprint = getGranuleFootprint(sf);
-                        if(footprint == null || !footprint.isEmpty()) {
+                        if (footprint == null || !footprint.isEmpty()) {
                             try {
                                 final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                        suggestedRasterSPI, pathType, locationAttribute, parentLocation,
-                                        footprint,
-                                        heterogeneous, q.getHints());
-        
+                                        suggestedRasterSPI, pathType, locationAttribute,
+                                        parentLocation, footprint, heterogeneous, q.getHints());
+
                                 visitor.visit(granule, null);
-                            } catch(Exception e) {
+                            } catch (Exception e) {
                                 LOGGER.log(Level.FINE, "Skipping invalid granule", e);
                             }
                         }
@@ -501,8 +504,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                             if (listener.hasExceptions()) {
                                 throw new RuntimeException(listener.getExceptions().peek());
                             } else {
-                                throw new IllegalStateException("Feature visitor for query " + q
-                                        + " has been canceled");
+                                throw new IllegalStateException(
+                                        "Feature visitor for query " + q + " has been canceled");
                             }
                         }
                     }
@@ -566,8 +569,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         return null;
     }
 
-    public void createType(String namespace, String typeName, String typeSpec) throws IOException,
-            SchemaException {
+    public void createType(String namespace, String typeName, String typeSpec)
+            throws IOException, SchemaException {
         Utilities.ensureNonNull("typeName", typeName);
         Utilities.ensureNonNull("typeSpec", typeSpec);
         final Lock lock = rwLock.writeLock();
@@ -632,7 +635,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         }
 
     }
-    
+
     public void removeType(String typeName) throws IOException {
         Utilities.ensureNonNull("featureType", typeName);
         final Lock lock = rwLock.writeLock();
@@ -642,15 +645,15 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
 
             tileIndexStore.removeSchema(typeName);
             removeTypeName(typeName);
-            
+
         } finally {
             lock.unlock();
         }
 
     }
 
-    public void createType(String identification, String typeSpec) throws SchemaException,
-            IOException {
+    public void createType(String identification, String typeSpec)
+            throws SchemaException, IOException {
         Utilities.ensureNonNull("typeSpec", typeSpec);
         Utilities.ensureNonNull("identification", identification);
         final Lock lock = rwLock.writeLock();
@@ -658,8 +661,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             lock.lock();
             checkStore();
-            final SimpleFeatureType featureType = DataUtilities
-                    .createType(identification, typeSpec);
+            final SimpleFeatureType featureType = DataUtilities.createType(identification,
+                    typeSpec);
             checkMosaicSchema(featureType);
             tileIndexStore.createSchema(featureType);
             typeName = featureType.getTypeName();
@@ -734,8 +737,9 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
         // warn people
         if (this.tileIndexStore != null) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("This granule catalog was not properly dispose as it still points to:"
-                        + tileIndexStore.getInfo().toString());
+                LOGGER.warning(
+                        "This granule catalog was not properly dispose as it still points to:"
+                                + tileIndexStore.getInfo().toString());
             }
             // try to dispose the underlying store if it has not been disposed yet
             this.dispose();
@@ -762,8 +766,8 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                 throw new NullPointerException(
                         "The provided SimpleFeatureSource is null, it's impossible to create an index!");
             }
-            int count= featureSource.getCount(q);
-            if(count==-1){
+            int count = featureSource.getCount(q);
+            if (count == -1) {
                 return featureSource.getFeatures(q).size();
             }
             return count;

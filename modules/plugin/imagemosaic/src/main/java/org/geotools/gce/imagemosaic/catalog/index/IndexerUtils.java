@@ -38,10 +38,9 @@ public class IndexerUtils {
 
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(IndexerUtils.class.toString());
-    
+
     /**
-     * Build {@link Collectors} element by parsing the specified propertyCollectors,
-     * and put them on the specified indexer object.
+     * Build {@link Collectors} element by parsing the specified propertyCollectors, and put them on the specified indexer object.
      * 
      * @param indexer
      * @param propertyCollectors
@@ -54,7 +53,7 @@ public class IndexerUtils {
         if (propertyCollectors != null && propertyCollectors.length() > 0) {
             final String[] propColls = propertyCollectors.split(",");
             for (String pcDef : propColls) {
-                
+
                 // parse this def as NAME[CONFIG_FILE](PROPERTY;PROPERTY;....;PROPERTY)
                 final int squareLPos = pcDef.indexOf("[");
                 final int squareRPos = pcDef.indexOf("]");
@@ -80,7 +79,7 @@ public class IndexerUtils {
                     }
                     continue;
                 }
-    
+
                 if (roundRPos != roundRPosLast) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Skipping unparseable PropertyCollector definition: " + pcDef);
@@ -111,12 +110,13 @@ public class IndexerUtils {
                     }
                     continue;
                 }
-    
+
                 // name
                 final String spi = pcDef.substring(0, squareLPos);
-    
+
                 // config
-                final String config = squareLPos < squareRPos ? pcDef.substring(squareLPos + 1, squareRPos) : "";
+                final String config = squareLPos < squareRPos
+                        ? pcDef.substring(squareLPos + 1, squareRPos) : "";
                 String value = null;
                 final File configFile = new File(getParameter(Utils.Prop.ROOT_MOSAIC_DIR, indexer),
                         config + ".properties");
@@ -127,17 +127,18 @@ public class IndexerUtils {
                     }
                     continue;
                 } else {
-                    final Properties properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
+                    final Properties properties = CoverageUtilities
+                            .loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
                     if (properties.containsKey("regex")) {
                         value = properties.getProperty("regex");
                     }
                 }
-    
+
                 // property names
                 final String propertyNames[] = pcDef.substring(roundLPos + 1, roundRPos).split(",");
                 Collector collector = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
                 collector.setSpi(spi);
-                
+
                 // only 1 propertyCollector for property
                 collector.setMapped(propertyNames[0]);
                 collector.setValue(value);
@@ -147,8 +148,8 @@ public class IndexerUtils {
     }
 
     /**
-     * Return an indexer {@link Coverage} object from the specified {@link Indexer}, referring to the
-     * requested name.
+     * Return an indexer {@link Coverage} object from the specified {@link Indexer}, referring to the requested name.
+     * 
      * @param indexer the main {@link Indexer} instance
      * @param name the name of the {@link Coverage} element to be retrieved.
      * 
@@ -158,7 +159,7 @@ public class IndexerUtils {
         Coverages coverages = indexer.getCoverages();
         if (coverages != null) {
             List<Coverage> coverageList = coverages.getCoverage();
-            for (Coverage coverage: coverageList) {
+            for (Coverage coverage : coverageList) {
                 String coverageName = coverage.getName();
                 if (coverageName != null && coverageName.equalsIgnoreCase(name)) {
                     return coverage;
@@ -170,6 +171,7 @@ public class IndexerUtils {
 
     /**
      * Utility method which does special checks on specific parameters
+     * 
      * @param parameterName
      * @param parameterValue
      * @return
@@ -185,15 +187,16 @@ public class IndexerUtils {
     }
 
     /**
-     * Set the attributes of the specified domain, getting values from the value String
-     * In case the value contains a ";" separator, add a different attribute for each element.
+     * Set the attributes of the specified domain, getting values from the value String In case the value contains a ";" separator, add a different
+     * attribute for each element.
+     * 
      * @param domain
      * @param values
      */
     public static void setAttributes(DomainType domain, String values) {
         if (values.contains(";")) {
             String properties[] = values.split(";");
-            for (String prop: properties) {
+            for (String prop : properties) {
                 addAttribute(domain, prop);
             }
         } else {
@@ -221,9 +224,10 @@ public class IndexerUtils {
      * @param parameterName
      * @param parameterValue
      */
-    public static void setParam(List<Parameter> parameters, String parameterName, String parameterValue) {
+    public static void setParam(List<Parameter> parameters, String parameterName,
+            String parameterValue) {
         Parameter param = null;
-        for (Parameter parameter: parameters ){
+        for (Parameter parameter : parameters) {
             if (parameter.getName().equalsIgnoreCase(parameterName)) {
                 param = parameter;
                 break;
@@ -238,8 +242,7 @@ public class IndexerUtils {
     }
 
     /**
-     * Get the value of a property name from a properties object and set that value to a parameter
-     * with the same name
+     * Get the value of a property name from a properties object and set that value to a parameter with the same name
      * 
      * @param parameters
      * @param props
@@ -251,6 +254,7 @@ public class IndexerUtils {
 
     /**
      * Return the parameter value (as a boolean) of the specified parameter name from the provider indexer
+     * 
      * @param parameterName
      * @param indexer
      * @return
@@ -265,6 +269,7 @@ public class IndexerUtils {
 
     /**
      * Return the parameter string value of the specified parameter name from the provided parameters element
+     * 
      * @param params
      * @param parameterName
      * @return
@@ -284,6 +289,7 @@ public class IndexerUtils {
 
     /**
      * Return the parameter string value of the specified parameter name from the provided indexer
+     * 
      * @param parameterName
      * @param indexer
      * @return
@@ -294,8 +300,8 @@ public class IndexerUtils {
     }
 
     /**
-     * Return the parameter string value of the specified parameter name from the indexer
-     * defined in the specified file (if exists).
+     * Return the parameter string value of the specified parameter name from the indexer defined in the specified file (if exists).
+     * 
      * @param parameterName
      * @param indexerFile
      * @return
@@ -316,40 +322,41 @@ public class IndexerUtils {
         }
         return null;
     }
-    
-    
+
     /**
-     * Parse additional domains 
+     * Parse additional domains
+     * 
      * @param attributes
      * @param domainList
      */
     public static void parseAdditionalDomains(String attributes, List<DomainType> domainList) {
         final String[] domainsAttributes = attributes.split(",");
-        for (String domainAttributes: domainsAttributes) {
+        for (String domainAttributes : domainsAttributes) {
             DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
             String domainName = domainAttributes.trim();
             String domainAttribs = domainName;
             if (domainAttributes.contains("(") && domainAttributes.contains(")")) {
-                    domainName = domainName.substring(0, domainName.indexOf("(")).trim();
-                    domainAttribs = domainAttribs.substring(domainAttribs.indexOf("("))
-                            .replace("(", "").replace(")", "");
+                domainName = domainName.substring(0, domainName.indexOf("(")).trim();
+                domainAttribs = domainAttribs.substring(domainAttribs.indexOf("(")).replace("(", "")
+                        .replace(")", "");
             }
             domain.setName(domainName);
-            //TODO: CHECK THAT
+            // TODO: CHECK THAT
             setAttributes(domain, domainAttribs);
             domainList.add(domain);
         }
-        
+
     }
 
     /**
-     * Get the attributes from the specified domain. The boolean specifies whether we need to 
-     * add a domain prefix before returning the attributes.
+     * Get the attributes from the specified domain. The boolean specifies whether we need to add a domain prefix before returning the attributes.
+     * 
      * @param domain
      * @param domainPrefix
      * @return
      */
-    private static String getAttributesAsString(final DomainType domain, final boolean domainPrefix) {
+    private static String getAttributesAsString(final DomainType domain,
+            final boolean domainPrefix) {
         final String currentDomainName = domain.getName();
         final List<AttributeType> listAttributes = domain.getAttributes();
         if (!listAttributes.isEmpty()) {
@@ -382,7 +389,7 @@ public class IndexerUtils {
                         return refDomain;
                     }
                 }
-             }
+            }
         }
         return domain;
     }
@@ -395,42 +402,49 @@ public class IndexerUtils {
      * @param indexer
      * @return
      * 
-     * TODO: Code is going complex. We should use a visitor 
+     *         TODO: Code is going complex. We should use a visitor
      */
-    public static String getAttribute(final String coverageName, final String domainName, final Indexer indexer) {
+    public static String getAttribute(final String coverageName, final String domainName,
+            final Indexer indexer) {
         if (indexer != null) {
             final Coverages coverages = indexer.getCoverages();
             final DomainsType refDomains = indexer.getDomains();
             if (coverages != null) {
                 final List<Coverage> coverageList = coverages.getCoverage();
                 if (coverageList != null && !coverageList.isEmpty()) {
-                    for (Coverage coverage: coverageList) {
-                        
+                    for (Coverage coverage : coverageList) {
+
                         // Look for the specified coverage name
                         final String currentCoverageName = coverage.getName();
-                        if (currentCoverageName == null || currentCoverageName.equalsIgnoreCase(coverageName)) {
+                        if (currentCoverageName == null
+                                || currentCoverageName.equalsIgnoreCase(coverageName)) {
                             final DomainsType domains = coverage.getDomains();
-                            if (domains != null)  {
+                            if (domains != null) {
                                 final List<DomainType> domainList = domains.getDomain();
                                 if (domainList != null) {
-                                    
+
                                     // Look for the specified domain
                                     if (!domainName.equalsIgnoreCase(Utils.ADDITIONAL_DOMAIN)) {
                                         for (DomainType domain : domainList) {
-                                            DomainType currentDomain = getDomain(domain, refDomains);
+                                            DomainType currentDomain = getDomain(domain,
+                                                    refDomains);
                                             String currentDomainName = currentDomain.getName();
-                                            if (currentDomainName != null && currentDomainName.equalsIgnoreCase(domainName)) {
+                                            if (currentDomainName != null && currentDomainName
+                                                    .equalsIgnoreCase(domainName)) {
                                                 return getAttributesAsString(currentDomain, false);
                                             }
                                         }
                                     } else {
                                         StringBuilder additionalDomainAttributes = new StringBuilder();
                                         for (DomainType domain : domainList) {
-                                            DomainType currentDomain = getDomain(domain, refDomains);
+                                            DomainType currentDomain = getDomain(domain,
+                                                    refDomains);
                                             String domName = currentDomain.getName();
                                             if (!domName.equalsIgnoreCase(Utils.TIME_DOMAIN)
-                                                    && !domName.equalsIgnoreCase(Utils.ELEVATION_DOMAIN)) {
-                                                additionalDomainAttributes.append(getAttributesAsString(currentDomain, true));
+                                                    && !domName.equalsIgnoreCase(
+                                                            Utils.ELEVATION_DOMAIN)) {
+                                                additionalDomainAttributes.append(
+                                                        getAttributesAsString(currentDomain, true));
                                                 additionalDomainAttributes.append(",");
                                             }
                                         }
@@ -455,8 +469,8 @@ public class IndexerUtils {
     }
 
     /**
-     * Get a {@link SchemaType} element for the specified {@link Coverage}.
-     * The {@link Indexer} object will be used in case of an externally referenced schema.
+     * Get a {@link SchemaType} element for the specified {@link Coverage}. The {@link Indexer} object will be used in case of an externally
+     * referenced schema.
      * 
      * @param indexer the main {@link Indexer} instance
      * @param coverage the {@link Coverage} element with the Schema to be returned.
@@ -471,7 +485,7 @@ public class IndexerUtils {
                 if (schema != null) {
                     return schema;
                 }
-            } 
+            }
             return schema;
         }
         return null;
@@ -483,7 +497,7 @@ public class IndexerUtils {
         SchemasType schemas = indexer.getSchemas();
         if (schemas != null) {
             List<SchemaType> schemaList = schemas.getSchema();
-            for (SchemaType schema: schemaList) {
+            for (SchemaType schema : schemaList) {
                 final String schemaName = schema.getName();
                 if (schemaName != null && schemaName.equalsIgnoreCase(schemaRef)) {
                     return schema;

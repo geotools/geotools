@@ -44,8 +44,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
     private DateFormat customFormat;
 
     /**
-     * @deprecated
-     * use {@link TimestampFileNameExtractor#TimestampFileNameExtractor(PropertiesCollectorSPI, List, String, String, boolean) 
+     * @deprecated use {@link TimestampFileNameExtractor#TimestampFileNameExtractor(PropertiesCollectorSPI, List, String, String, boolean)
      */
     public TimestampFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
             String regex, String format) {
@@ -99,7 +98,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
             if (index >= dates.size())
                 return;
         }
-        
+
     }
 
 }

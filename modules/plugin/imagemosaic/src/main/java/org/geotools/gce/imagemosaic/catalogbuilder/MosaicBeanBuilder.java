@@ -34,7 +34,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MosaicBeanBuilder {
 
     private MosaicConfigurationBean bean;
-    
+
     /**
      * Default constructor
      */
@@ -73,30 +73,31 @@ public class MosaicBeanBuilder {
     private String auxiliaryFilePath;
 
     private String auxiliaryDatastorePath;
+
     /**
      * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields shouldn't be queried since they are meaningless
      * for the whole mosaic (width, height, ...)
      */
     private SampleModel sampleModel;
-    
+
     private ColorModel colorModel;
-    
+
     private byte[][] palette = null;
-    
+
     private CoordinateReferenceSystem crs = null;
 
-//    /** Imposed envelope for this mosaic. If not present we need to compute from catalogue. */
-//    private ReferencedEnvelope envelope;
+    // /** Imposed envelope for this mosaic. If not present we need to compute from catalogue. */
+    // private ReferencedEnvelope envelope;
 
     private CatalogConfigurationBean catalogConfigurationBean;
 
-//    public ReferencedEnvelope getEnvelope() {
-//        return envelope;
-//    }
-//
-//    public void setEnvelope(ReferencedEnvelope envelope) {
-//        this.envelope = envelope;
-//    }
+    // public ReferencedEnvelope getEnvelope() {
+    // return envelope;
+    // }
+    //
+    // public void setEnvelope(ReferencedEnvelope envelope) {
+    // this.envelope = envelope;
+    // }
 
     public SampleModel getSampleModel() {
         return sampleModel;
@@ -238,7 +239,7 @@ public class MosaicBeanBuilder {
                 + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
                 + ",sampleModel=" + sampleModel + "]";
     }
-    
+
     public MosaicConfigurationBean getMosaicConfigurationBean() {
         if (bean == null) {
             bean = new MosaicConfigurationBean();

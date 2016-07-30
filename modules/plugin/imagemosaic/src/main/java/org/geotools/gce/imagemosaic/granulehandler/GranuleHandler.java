@@ -28,7 +28,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public interface GranuleHandler {
 
     /**
-     * Handle the case of a grid coverage being added to the mosaic. 
+     * Handle the case of a grid coverage being added to the mosaic.
      *
      * @param source input file
      * @param inputReader input reader of the incoming granule
@@ -38,24 +38,18 @@ public interface GranuleHandler {
      * @param inputFeatureType the incoming coverage schema
      * @param mosaicConfiguration the mosaic configuration
      */
-    void handleGranule(
-            Object source,
-            GridCoverage2DReader inputReader,
-            SimpleFeature targetFeature,
-            SimpleFeatureType targetFeatureType,
-            SimpleFeature inputFeature,
-            SimpleFeatureType inputFeatureType,
-            MosaicConfigurationBean mosaicConfiguration) throws GranuleHandlingException;
+    void handleGranule(Object source, GridCoverage2DReader inputReader, SimpleFeature targetFeature,
+            SimpleFeatureType targetFeatureType, SimpleFeature inputFeature,
+            SimpleFeatureType inputFeatureType, MosaicConfigurationBean mosaicConfiguration)
+            throws GranuleHandlingException;
 
-    default void handleStructuredGranule(
-            Object source,
-            GridCoverage2DReader inputReader,
-            SimpleFeature targetFeature,
-            SimpleFeatureType targetFeatureType,
-            SimpleFeature inputFeature,
-            SimpleFeatureType inputFeatureType,
+    default void handleStructuredGranule(Object source, GridCoverage2DReader inputReader,
+            SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
+            SimpleFeature inputFeature, SimpleFeatureType inputFeatureType,
             MosaicConfigurationBean mosaicConfiguration) {
-        Object geometryAttribute = inputFeature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
-        targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute);
+        Object geometryAttribute = inputFeature
+                .getAttribute(inputFeatureType.getGeometryDescriptor().getName());
+        targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(),
+                geometryAttribute);
     }
 }

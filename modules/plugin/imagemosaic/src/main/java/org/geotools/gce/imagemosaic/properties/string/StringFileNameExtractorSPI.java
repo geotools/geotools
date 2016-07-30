@@ -21,6 +21,7 @@ import java.util.List;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
+
 /**
  * {@link PropertiesCollectorSPI} for a {@link PropertiesCollector} that is able to collect properties from a file name.
  * 
@@ -29,12 +30,12 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  *
  * @source $URL$
  */
-public class StringFileNameExtractorSPI extends
-		DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
+public class StringFileNameExtractorSPI extends DefaultPropertiesCollectorSPI
+        implements PropertiesCollectorSPI {
 
-	public StringFileNameExtractorSPI() {
-		super("StringFileNameExtractorSPI");
-	}
+    public StringFileNameExtractorSPI() {
+        super("StringFileNameExtractorSPI");
+    }
 
     @Override
     protected PropertiesCollector createInternal(PropertiesCollectorSPI spi,

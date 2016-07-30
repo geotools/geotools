@@ -25,4 +25,3 @@ import java.util.List;
 public interface GranuleAcceptorFactorySPI {
     List<GranuleAcceptor> create();
 }
-

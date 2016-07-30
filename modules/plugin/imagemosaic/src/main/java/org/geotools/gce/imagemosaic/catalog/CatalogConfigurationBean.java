@@ -41,9 +41,7 @@ public class CatalogConfigurationBean {
     private boolean heterogeneous;
 
     /**
-     * Whether the specified store should be wrapped.
-     * Only PostGis stores support this parameter.
-     * (Oracle stores are wrapped by default).  
+     * Whether the specified store should be wrapped. Only PostGis stores support this parameter. (Oracle stores are wrapped by default).
      */
     private boolean wrapStore = false;
 

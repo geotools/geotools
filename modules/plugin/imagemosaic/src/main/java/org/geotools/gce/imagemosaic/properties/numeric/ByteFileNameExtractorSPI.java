@@ -26,17 +26,17 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  *
  * @source $URL$
  */
-public final class ByteFileNameExtractorSPI extends NumericFileNameExtractorSPI implements PropertiesCollectorSPI{
+public final class ByteFileNameExtractorSPI extends NumericFileNameExtractorSPI
+        implements PropertiesCollectorSPI {
 
     public ByteFileNameExtractorSPI() {
         super("ByteFileNameExtractorSPI");
     }
 
     @Override
-    protected PropertiesCollector createInternal(
-            PropertiesCollectorSPI spi,
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi,
             List<String> propertyNames, String regex) {
         return new NumericFileNameExtractor.ByteFileNameExtractor(spi, propertyNames, regex);
     }
-    
+
 }

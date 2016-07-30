@@ -36,7 +36,8 @@ public class GranuleHandlerFactoryFinder {
         // get all GranuleHandlerFactorySPI implementations
         FactoryRegistry serviceRegistry = getServiceRegistry();
         serviceRegistry.scanForPlugins();
-        final Iterator<GranuleHandlerFactorySPI> it = serviceRegistry.getServiceProviders(GranuleHandlerFactorySPI.class, true);
+        final Iterator<GranuleHandlerFactorySPI> it = serviceRegistry
+                .getServiceProviders(GranuleHandlerFactorySPI.class, true);
         Map<String, GranuleHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
         while (it.hasNext()) {
             GranuleHandlerFactorySPI GranuleGeometryHandlerFactorySPI = it.next();
@@ -47,12 +48,12 @@ public class GranuleHandlerFactoryFinder {
     }
 
     /**
-     * Returns the service registry. The registry will be created the first time
-     * this method is invoked.
+     * Returns the service registry. The registry will be created the first time this method is invoked.
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry = new FactoryCreator(Arrays.asList(new Class<?>[] { GranuleHandlerFactorySPI.class }));
+            registry = new FactoryCreator(
+                    Arrays.asList(new Class<?>[] { GranuleHandlerFactorySPI.class }));
         }
         return registry;
     }

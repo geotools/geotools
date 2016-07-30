@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.data.complex.AbstractMappingFeatureIterator;
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.Types;
@@ -457,7 +458,15 @@ public class XPath extends XPathUtil {
                 }
             }
         }
-        if (leafAttribute == null) {
+        // Build a new leaf if either:
+        // (1) have no leaf (leafAttribute == null), or
+        // (2) maxOccurs is greater than one and existing leaf already has xlink:href, in which
+        // case, as insufficient information at this point to evaluate xlink:href expressions and
+        // remove duplicates, assume building multivalued xlink:href ClientProperty.
+        if (leafAttribute == null || (descriptor.getMaxOccurs() > 1
+                && leafAttribute.getUserData().containsKey(Attributes.class)
+                && ((Map<Object, Object>) leafAttribute.getUserData().get(Attributes.class))
+                        .containsKey(AbstractMappingFeatureIterator.XLINK_HREF_NAME))) {
             AppSchemaAttributeBuilder builder = new AppSchemaAttributeBuilder(featureFactory);
             if (crs != null) {
                 builder.setCRS(crs);

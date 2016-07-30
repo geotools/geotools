@@ -28,7 +28,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-public class OracleTransformFeatureStore extends TransformFeatureStore{
+public class OracleTransformFeatureStore extends TransformFeatureStore {
 
     DataStore datastore;
 

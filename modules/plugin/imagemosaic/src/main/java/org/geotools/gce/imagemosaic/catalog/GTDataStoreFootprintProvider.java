@@ -38,9 +38,8 @@ import org.opengis.filter.expression.PropertyName;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * A {@link FootprintGeometryProvider} matching the current feature with the geometry of one feature in a GT
- * data store. The filter must use property names like "granule/attname" to refer to the current
- * granule attributes, e.g. "granule/location"
+ * A {@link FootprintGeometryProvider} matching the current feature with the geometry of one feature in a GT data store. The filter must use property
+ * names like "granule/attname" to refer to the current granule attributes, e.g. "granule/location"
  * 
  * @author Andrea Aime - GeoSolutions
  */
@@ -102,8 +101,7 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
     }
 
     /**
-     * Replaces all references to granule/attribute with the value of said attribute in the feature
-     * provided as a parameter
+     * Replaces all references to granule/attribute with the value of said attribute in the feature provided as a parameter
      * 
      * @author Andrea Aime - GeoSolutions
      */

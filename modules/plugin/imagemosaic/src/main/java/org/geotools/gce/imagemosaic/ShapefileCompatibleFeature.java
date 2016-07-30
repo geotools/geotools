@@ -32,26 +32,26 @@ import org.opengis.geometry.BoundingBox;
 
 /**
  * This is a workaround for shapefiles having a limit on attribute names at 10 chars length.
- *  
+ * 
  * @author Andrea Aime - GeoSolutions
  */
 class ShapefileCompatibleFeature implements SimpleFeature {
-    
+
     SimpleFeature delegate;
 
     public ShapefileCompatibleFeature(SimpleFeature delegate) {
         this.delegate = delegate;
     }
-    
+
     public void setAttribute(String name, Object value) {
         name = fixPropertyName(name);
         delegate.setAttribute(name, value);
     }
 
     private String fixPropertyName(String name) {
-        if(name.length() > 10 && delegate.getFeatureType().getDescriptor(name) == null) {
+        if (name.length() > 10 && delegate.getFeatureType().getDescriptor(name) == null) {
             String reduced = name.substring(0, 10);
-            if(delegate.getFeatureType().getDescriptor(name) == null) {
+            if (delegate.getFeatureType().getDescriptor(name) == null) {
                 return reduced;
             }
         }
@@ -63,7 +63,6 @@ class ShapefileCompatibleFeature implements SimpleFeature {
         return delegate.getAttribute(name);
     }
 
-    
     public FeatureId getIdentifier() {
         return delegate.getIdentifier();
     }
@@ -183,6 +182,5 @@ class ShapefileCompatibleFeature implements SimpleFeature {
     public void setDefaultGeometry(Object geometry) {
         delegate.setDefaultGeometry(geometry);
     }
-    
-    
+
 }

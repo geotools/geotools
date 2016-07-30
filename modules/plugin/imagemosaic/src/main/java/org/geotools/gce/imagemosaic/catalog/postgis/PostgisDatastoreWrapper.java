@@ -29,9 +29,8 @@ import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Specific Postgis implementation for a {@link DataStoreWrapper}
- * By default, Postgresql identifiers can't be longer than 63 chars.
- * See <a href="http://www.postgresql.org/docs/9.3/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS">SQL Syntax identifiers</a>
+ * Specific Postgis implementation for a {@link DataStoreWrapper} By default, Postgresql identifiers can't be longer than 63 chars. See
+ * <a href="http://www.postgresql.org/docs/9.3/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS">SQL Syntax identifiers</a>
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
@@ -48,8 +47,8 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
     }
 
     /**
-     * Return a specific {@link FeatureTypeMapper} by parsing mapping properties contained within
-     * the specified {@link Properties} object
+     * Return a specific {@link FeatureTypeMapper} by parsing mapping properties contained within the specified {@link Properties} object
+     * 
      * @param featureType
      * @return
      * @throws Exception
@@ -58,13 +57,14 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
         FeatureTypeMapper mapper = super.getFeatureTypeMapper(props);
         Object srID = props.get(SRID);
         if (srID != null) {
-            ((PostgisFeatureTypeMapper) mapper).setSrID(Integer.valueOf((String)srID));
+            ((PostgisFeatureTypeMapper) mapper).setSrID(Integer.valueOf((String) srID));
         }
         return mapper;
     }
 
     @Override
-    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType) throws Exception {
+    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType)
+            throws Exception {
         return new PostgisFeatureTypeMapper(featureType);
     }
 
@@ -75,8 +75,9 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
         if (transformedSource != null) {
             return transformedSource;
         } else {
-            transformedSource = (SimpleFeatureSource) new PostgisTransformFeatureStore(store, mapper.getName(), mapper.getDefinitions(), datastore);
-            ((PostgisFeatureTypeMapper)mapper).setSimpleFeatureSource(transformedSource);
+            transformedSource = (SimpleFeatureSource) new PostgisTransformFeatureStore(store,
+                    mapper.getName(), mapper.getDefinitions(), datastore);
+            ((PostgisFeatureTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }
     }
@@ -91,14 +92,17 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
         final StringBuilder builder = new StringBuilder();
 
         // Populating schema
-        for (Definition definition: definitions) {
-            builder.append(definition.getName()).append(":").append(definition.getBinding().getName()).append(",");
+        for (Definition definition : definitions) {
+            builder.append(definition.getName()).append(":")
+                    .append(definition.getBinding().getName()).append(",");
         }
         String schema = builder.toString();
-        schema = schema.substring(0, schema.length() - 1 );
+        schema = schema.substring(0, schema.length() - 1);
         properties.setProperty(SCHEMA, schema);
-        properties.setProperty(COORDINATE_REFERENCE_SYSTEM, mapper.getCoordinateReferenceSystem().toWKT());
-        properties.setProperty(SRID, Integer.toString(((PostgisFeatureTypeMapper)mapper).getSrID()));
+        properties.setProperty(COORDINATE_REFERENCE_SYSTEM,
+                mapper.getCoordinateReferenceSystem().toWKT());
+        properties.setProperty(SRID,
+                Integer.toString(((PostgisFeatureTypeMapper) mapper).getSrID()));
         // Storing properties
         storeProperties(properties, typeName);
     }

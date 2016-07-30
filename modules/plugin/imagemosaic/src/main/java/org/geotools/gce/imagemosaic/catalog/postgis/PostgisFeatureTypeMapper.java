@@ -107,15 +107,17 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
         return simpleFeatureSource;
     }
 
-    int getSrID () {
+    int getSrID() {
         return srID;
     }
 
-    void setSrID (int srID) {
+    void setSrID(int srID) {
         this.srID = srID;
     }
+
     /**
      * Create a new {@link PostgisFeatureTypeMapper} on top of the original featureType provided
+     * 
      * @param featureType
      * @throws CQLException
      */
@@ -136,7 +138,8 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
             String attributeName = remap(originalAttribute);
 
             // Create the definition to map the original attribute to the Postgis specific one
-            final Definition definition = new Definition(originalAttribute, ECQL.toExpression(attributeName), binding);
+            final Definition definition = new Definition(originalAttribute,
+                    ECQL.toExpression(attributeName), binding);
             definitions.add(definition);
             definitionsMapping.put(attribute.getName(), definition);
         }
@@ -144,8 +147,7 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
     }
 
     /**
-     * Remap the original featureType on top of the available definitions to create 
-     * the Postgis specific featureType
+     * Remap the original featureType on top of the available definitions to create the Postgis specific featureType
      */
     private void remapFeatureType() {
         final SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -164,18 +166,20 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
                 Map<Object, Object> userData = descriptor.getUserData();
                 if (userData != null && !userData.isEmpty()) {
                     Set<Object> keys = userData.keySet();
-                    for (Object key: keys) {
+                    for (Object key : keys) {
                         Object value = userData.get(key);
                         tb.userData(key, value);
                         if (key instanceof String) {
                             String id = (String) key;
-                            if (id.equalsIgnoreCase(JDBCDataStore.JDBC_NATIVE_SRID) && value != null) {
-                                srID = (Integer) value; 
+                            if (id.equalsIgnoreCase(JDBCDataStore.JDBC_NATIVE_SRID)
+                                    && value != null) {
+                                srID = (Integer) value;
                             }
                         }
                     }
                 }
-                tb.add(definition.getExpression().toString(), definition.getBinding(), coordinateReferenceSystem);
+                tb.add(definition.getExpression().toString(), definition.getBinding(),
+                        coordinateReferenceSystem);
             } else {
                 tb.add(definition.getExpression().toString(), definition.getBinding());
             }
@@ -190,7 +194,8 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
     @Override
     public String remap(String name) {
         String mappedName = name;
-        mappedName = mappedName.length() >= MAX_LENGTH ? mappedName.substring(0, MAX_LENGTH) : mappedName;
+        mappedName = mappedName.length() >= MAX_LENGTH ? mappedName.substring(0, MAX_LENGTH)
+                : mappedName;
         return mappedName;
     }
 }

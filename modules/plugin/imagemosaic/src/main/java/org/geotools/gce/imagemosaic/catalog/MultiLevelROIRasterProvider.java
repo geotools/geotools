@@ -70,20 +70,20 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
             if (file.exists() && file.canRead()) {
                 try {
                     // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
-                    AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
-                            file, EXCLUDE_MOSAIC);
+                    AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder
+                            .findFormat(file, EXCLUDE_MOSAIC);
                     AbstractGridCoverage2DReader reader = format.getReader(file);
                     // Getting Dataset Layout
                     DatasetLayout layout = reader.getDatasetLayout();
                     // If present use it
                     if (layout != null) {
                         // Getting Total Number of masks
-                        int numExternalMasks = layout.getNumExternalMasks() > 0 ? layout
-                                .getNumExternalMasks() : 0;
-                        int numInternalMasks = layout.getNumInternalMasks() > 0 ? layout
-                                .getNumInternalMasks() : 0;
-                        int numExternalMaskOverviews = layout.getNumExternalMaskOverviews() > 0 ? layout
-                                .getNumExternalMaskOverviews() : 0;
+                        int numExternalMasks = layout.getNumExternalMasks() > 0
+                                ? layout.getNumExternalMasks() : 0;
+                        int numInternalMasks = layout.getNumInternalMasks() > 0
+                                ? layout.getNumInternalMasks() : 0;
+                        int numExternalMaskOverviews = layout.getNumExternalMaskOverviews() > 0
+                                ? layout.getNumExternalMaskOverviews() : 0;
                         int totalMasks = numExternalMasks + numInternalMasks
                                 + numExternalMaskOverviews;
                         // Check if masks are present
@@ -93,7 +93,8 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                         }
                     }
                 } catch (Exception e) {
-                    throw new IOException("Failed to load the footprint for granule " + strValue, e);
+                    throw new IOException("Failed to load the footprint for granule " + strValue,
+                            e);
                 }
             }
             return result;

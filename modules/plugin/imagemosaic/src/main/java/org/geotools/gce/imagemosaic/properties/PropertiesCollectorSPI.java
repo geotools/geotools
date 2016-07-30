@@ -26,10 +26,8 @@ import org.geotools.factory.OptionalFactory;
  * @source $URL$
  */
 public interface PropertiesCollectorSPI extends OptionalFactory {
-	
-	public PropertiesCollector create(
-			final Object o,
-			final List<String> propertyNames);
-	
-	public String getName();
+
+    public PropertiesCollector create(final Object o, final List<String> propertyNames);
+
+    public String getName();
 }

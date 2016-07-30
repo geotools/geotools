@@ -36,11 +36,11 @@ import org.opengis.filter.Filter;
  *
  */
 public class GranuleCatalogStore extends GranuleCatalogSource implements GranuleStore {
-    
+
     private Transaction transaction;
 
     private RasterManager manager;
-    
+
     public GranuleCatalogStore(RasterManager manager, GranuleCatalog catalog, final String typeName,
             final Hints hints) {
         super(catalog, typeName, hints);
@@ -61,7 +61,8 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
             try {
                 catalog.addGranule(typeName, feature, transaction);
             } catch (IOException e) {
-                throw new RuntimeException("Exception occurred while adding granules to the catalog", e);
+                throw new RuntimeException(
+                        "Exception occurred while adding granules to the catalog", e);
             }
         }
     }
@@ -70,7 +71,7 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
         if (transaction == null) {
             throw new IllegalArgumentException("No transaction available for this store");
         }
-        
+
     }
 
     /**
@@ -81,12 +82,14 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
     private void checkSchemaCompatibility(final SimpleFeature feature) {
         try {
             if (!feature.getType().equals(catalog.getType(typeName))) {
-                throw new IllegalArgumentException("The schema of the provided collection is not the same of the underlying catalog");
+                throw new IllegalArgumentException(
+                        "The schema of the provided collection is not the same of the underlying catalog");
             }
         } catch (IOException e) {
-            throw new RuntimeException("Exception occurred while getting the underlying catalog schema");
+            throw new RuntimeException(
+                    "Exception occurred while getting the underlying catalog schema");
         }
-        
+
     }
 
     @Override
@@ -108,7 +111,7 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
     @Override
     public void updateGranules(String[] attributeNames, Object[] attributeValues, Filter filter) {
         throw new UnsupportedOperationException("Operation not supported");
-        
+
     }
 
     @Override

@@ -67,8 +67,8 @@ public abstract class GranuleCatalog {
 
     public abstract void createType(SimpleFeatureType featureType) throws IOException;
 
-    public abstract void createType(String identification, String typeSpec) throws SchemaException,
-            IOException;
+    public abstract void createType(String identification, String typeSpec)
+            throws SchemaException, IOException;
 
     public abstract void dispose();
 
@@ -78,13 +78,14 @@ public abstract class GranuleCatalog {
 
     public abstract int getGranulesCount(Query q) throws IOException;
 
-    public abstract  void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor) throws IOException;
+    public abstract void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor)
+            throws IOException;
 
     public abstract QueryCapabilities getQueryCapabilities(final String typeName);
 
     public abstract SimpleFeatureType getType(final String typeName) throws IOException;
 
-    public abstract void removeType(final String typeName) throws IOException ;
+    public abstract void removeType(final String typeName) throws IOException;
 
     public abstract int removeGranules(Query query);
 
@@ -120,9 +121,8 @@ public abstract class GranuleCatalog {
     }
 
     /**
-     * Returns the footprint for the given granule. Mind, when applying insets we might have the
-     * case of the geometry being empty (negative buffer eroded it fully), in that case the granule
-     * must not be loaded
+     * Returns the footprint for the given granule. Mind, when applying insets we might have the case of the geometry being empty (negative buffer
+     * eroded it fully), in that case the granule must not be loaded
      * 
      * @param sf
      * @return

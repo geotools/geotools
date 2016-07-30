@@ -46,15 +46,15 @@ import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * Utility class to manage mosaic's footprint
+ * 
  * @author Daniele Romagnoli, GeoSolutions S.A.S.
  *
  */
 class FootprintUtils {
 
     /**
-     * A set of properties to be ignored when parsing the properties file. It is
-     * used to get only the FootprintManagement property, avoiding by this way to load
-     * and compute useless elements.
+     * A set of properties to be ignored when parsing the properties file. It is used to get only the FootprintManagement property, avoiding by this
+     * way to load and compute useless elements.
      */
     final static Set<String> IGNORE_PROPS = new HashSet<String>();
     static {
@@ -77,29 +77,27 @@ class FootprintUtils {
 
     }
 
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FootprintUtils.class);
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(FootprintUtils.class);
 
     /**
-     * Given a footprint summary file (.fpt), populate the provided
-     * footprints <ID-Geometry> pairs Map
+     * Given a footprint summary file (.fpt), populate the provided footprints <ID-Geometry> pairs Map
      * 
-     * @param footprintSummaryFile
-     *            the footprint summary file.
-     * @param footprintsIDGeometryMap
-     *            the Map to be populated
+     * @param footprintSummaryFile the footprint summary file.
+     * @param footprintsIDGeometryMap the Map to be populated
      */
-    static void initFootprintsGranuleIDGeometryMap(
-            final File footprintSummaryFile,
+    static void initFootprintsGranuleIDGeometryMap(final File footprintSummaryFile,
             final Map<String, Geometry> footprintsIDGeometryMap) {
         Utilities.ensureNonNull("footprintSummaryFile", footprintSummaryFile);
         if (!footprintSummaryFile.exists() || !footprintSummaryFile.canRead()) {
-            throw new IllegalArgumentException("Unable to access to the provided footprint file " + footprintSummaryFile.getAbsolutePath());
+            throw new IllegalArgumentException("Unable to access to the provided footprint file "
+                    + footprintSummaryFile.getAbsolutePath());
         }
         Utilities.ensureNonNull("footprintsID_GeometryMap", footprintsIDGeometryMap);
-        
+
         FileReader reader = null;
         try {
-        	reader=new FileReader(footprintSummaryFile);
+            reader = new FileReader(footprintSummaryFile);
             BufferedReader bReader = new BufferedReader(reader);
             String footprint;
 
@@ -107,7 +105,7 @@ class FootprintUtils {
             while ((footprint = bReader.readLine()) != null) {
                 String fpt[] = footprint.split("=");
                 if (fpt.length == 2) {
-                	// parse the geometry
+                    // parse the geometry
                     footprintsIDGeometryMap.put(fpt[0], geometryReader.read(fpt[1]));
                 }
             }
@@ -121,7 +119,7 @@ class FootprintUtils {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
-		} finally {
+        } finally {
             try {
                 if (reader != null) {
                     reader.close();
@@ -138,20 +136,18 @@ class FootprintUtils {
     /**
      * Look for a footprint geometry for the provided featureID.
      * 
-     * @param featureID
-     *            the ID of a feature for which the footprint should be searched
-     * @param footprintsMap
-     *            the map containing <.ID,Geometry> pairs
+     * @param featureID the ID of a feature for which the footprint should be searched
+     * @param footprintsMap the map containing <.ID,Geometry> pairs
      * @return the related {@link Geometry} if found, or null otherwise.
      */
-    static Geometry lookupFootprintGeometry(
-            final String featureID, 
+    static Geometry lookupFootprintGeometry(final String featureID,
             final Map<String, Geometry> footprintsMap) {
         Utilities.ensureNonNull("featureID", featureID);
         Utilities.ensureNonNull("footprintsMap", footprintsMap);
-        
+
         if (footprintsMap != null && !footprintsMap.isEmpty()) {
-            final String id = featureID.substring(featureID.lastIndexOf(".") + 1, featureID.length());
+            final String id = featureID.substring(featureID.lastIndexOf(".") + 1,
+                    featureID.length());
             return footprintsMap.containsKey(id) ? footprintsMap.get(id) : null;
         }
         return null;
@@ -162,19 +158,21 @@ class FootprintUtils {
      * 
      * @throws IOException
      */
-    static void initFootprintsLocationGeometryMap(
-            final ShapefileDataStore footprintStore,
+    static void initFootprintsLocationGeometryMap(final ShapefileDataStore footprintStore,
             final Map<String, Geometry> footprintsMap) throws IOException {
         Utilities.ensureNonNull("footprintStore", footprintStore);
         Utilities.ensureNonNull("footprintsMap", footprintsMap);
-        
+
         final String[] typeNames = footprintStore.getTypeNames();
         if (typeNames.length <= 0)
-            throw new IllegalArgumentException("Problems when opening the footprint, no typenames for the schema are defined");
+            throw new IllegalArgumentException(
+                    "Problems when opening the footprint, no typenames for the schema are defined");
 
         final String typeName = typeNames[0];
-        final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = footprintStore.getFeatureSource(typeName);
-        final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
+        final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = footprintStore
+                .getFeatureSource(typeName);
+        final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource
+                .getFeatures();
         if (features == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No features found in the footprint");
@@ -184,20 +182,21 @@ class FootprintUtils {
 
         FeatureIterator<SimpleFeature> it = null;
         try {
-	        // load the feature from the footprint shapefile store
-	        it = features.features();
-	        if (!it.hasNext()) {
-	            throw new IllegalArgumentException("The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
-	        }
-	
-	        // now add the footprint to the Map
-	        while (it.hasNext()) {
-	            final SimpleFeature feature = it.next();
-	            final Geometry g = (Geometry) feature.getDefaultGeometry();
-	            final String location = (String) feature.getAttribute("location");
-	            footprintsMap.put(location, g);
-	        }
-	        
+            // load the feature from the footprint shapefile store
+            it = features.features();
+            if (!it.hasNext()) {
+                throw new IllegalArgumentException(
+                        "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
+            }
+
+            // now add the footprint to the Map
+            while (it.hasNext()) {
+                final SimpleFeature feature = it.next();
+                final Geometry g = (Geometry) feature.getDefaultGeometry();
+                final String location = (String) feature.getAttribute("location");
+                footprintsMap.put(location, g);
+            }
+
         } finally {
 
             try {
@@ -215,21 +214,16 @@ class FootprintUtils {
     }
 
     /**
-     * Build a "ID=Geometry" pair for the provided feature ID, by
-     * looking for a geometry in the provided footprintsMap for the specified
-     * locationKey
+     * Build a "ID=Geometry" pair for the provided feature ID, by looking for a geometry in the provided footprintsMap for the specified locationKey
      * 
      * @param footprintGeometryMap
      * @param featureID
      * @param locationKey
-     * @param writer 
+     * @param writer
      * @return
      */
-    private static String buildIDGeometryPair(
-            final Map<String, Geometry> footprintGeometryMap,
-            final String featureID, 
-            final String locationKey, 
-            final WKTWriter writer) {
+    private static String buildIDGeometryPair(final Map<String, Geometry> footprintGeometryMap,
+            final String featureID, final String locationKey, final WKTWriter writer) {
         String idGeometryPair = "";
         Utilities.ensureNonNull("featureID", featureID);
         Utilities.ensureNonNull("writer", writer);
@@ -238,52 +232,52 @@ class FootprintUtils {
 
         if (!footprintGeometryMap.isEmpty() && footprintGeometryMap.containsKey(locationKey)) {
             final Geometry polygon = (Geometry) footprintGeometryMap.get(locationKey);
-            if (polygon != null){
+            if (polygon != null) {
                 final String s = writer.write(polygon);
                 String id = featureID;
                 id = id.substring(id.lastIndexOf(".") + 1, id.length());
-                idGeometryPair = new StringBuilder(id).append("=").append(s).append("\n").toString();
+                idGeometryPair = new StringBuilder(id).append("=").append(s).append("\n")
+                        .toString();
             }
         }
         return idGeometryPair;
     }
 
     /**
-     * Write a footprint summary file (".fpt") given an input <String,Geometry>
-     * map containing granule location and related geometry, and the index
+     * Write a footprint summary file (".fpt") given an input <String,Geometry> map containing granule location and related geometry, and the index
      * shapefile store to associate footprints to granules.
      * 
-     * @param footprintSummaryFile
-     *            the output footprint summary file
-     * @param footprintsLocationGeometryMap
-     *            the map containing <granuleLocation,footprintGeometry> pairs
+     * @param footprintSummaryFile the output footprint summary file
+     * @param footprintsLocationGeometryMap the map containing <granuleLocation,footprintGeometry> pairs
      * @throws MalformedURLException In case the url we create internally for the mosaic index is wrong (should never happen)
      */
-    static void writeFootprintSummary(
-    		final File footprintSummaryFile, 
-    		final File indexFile,
-    		final Map<String, Geometry> footprintsLocationGeometryMap) throws MalformedURLException {
+    static void writeFootprintSummary(final File footprintSummaryFile, final File indexFile,
+            final Map<String, Geometry> footprintsLocationGeometryMap)
+            throws MalformedURLException {
         Utilities.ensureNonNull("footprintSummaryFile", footprintSummaryFile);
         Utilities.ensureNonNull("indexFile", indexFile);
         Utilities.ensureNonNull("footprintsLocationGeometryMap", footprintsLocationGeometryMap);
         if (footprintsLocationGeometryMap.isEmpty())
-        	return;
+            return;
         final ShapefileDataStore store = new ShapefileDataStore(indexFile.toURI().toURL());
 
         if (footprintsLocationGeometryMap.isEmpty())
-        	return;
-        
+            return;
+
         FileWriter footprintWriter = null;
-        FeatureIterator<SimpleFeature> it=null;        
+        FeatureIterator<SimpleFeature> it = null;
         try {
             final String[] typeNames = store.getTypeNames();
             if (typeNames.length <= 0) {
-                throw new IllegalArgumentException("Problems when opening the shapefile, no typenames for the schema are defined");
+                throw new IllegalArgumentException(
+                        "Problems when opening the shapefile, no typenames for the schema are defined");
             }
             final String typeName = typeNames[0];
-            
-            final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store.getFeatureSource(typeName);
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
+
+            final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store
+                    .getFeatureSource(typeName);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource
+                    .getFeatures();
 
             if (features == null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -295,7 +289,8 @@ class FootprintUtils {
             // load the feature from the shapefile
             it = features.features();
             if (!it.hasNext())
-                throw new IllegalArgumentException("The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
+                throw new IllegalArgumentException(
+                        "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
 
             footprintWriter = new FileWriter(footprintSummaryFile);
             final BufferedWriter writer = new BufferedWriter(footprintWriter);
@@ -313,7 +308,9 @@ class FootprintUtils {
 
                         // Build a featureID=Geometry pair and write it in
                         // the Footprint summary file
-                        final String idGeometryPair = FootprintUtils.buildIDGeometryPair(footprintsLocationGeometryMap, feature.getID(), locationKey,geometryWriter);
+                        final String idGeometryPair = FootprintUtils.buildIDGeometryPair(
+                                footprintsLocationGeometryMap, feature.getID(), locationKey,
+                                geometryWriter);
                         writer.write(idGeometryPair);
                     }
                 }
@@ -327,14 +324,13 @@ class FootprintUtils {
         } finally {
             try {
                 if (it != null) {
-                   it.close();
+                    it.close();
                 }
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
             }
-            
-            
+
             try {
                 if (footprintWriter != null) {
                     footprintWriter.flush();
@@ -347,11 +343,10 @@ class FootprintUtils {
                 IOUtils.closeQuietly(footprintWriter);
             }
             footprintWriter = null;
-            
-            
-            try{
-            	store.dispose();
-            }catch (Throwable e) {
+
+            try {
+                store.dispose();
+            } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
             }
@@ -367,7 +362,7 @@ class FootprintUtils {
     static File searchFootprint(final String indexingDirectory) {
         File footprintFile = null;
         if (indexingDirectory != null && indexingDirectory.trim().length() > 0) {
-            final File file = new File(indexingDirectory,FootprintUtils.FOOTPRINT);
+            final File file = new File(indexingDirectory, FootprintUtils.FOOTPRINT);
             if (file != null && file.exists()) {
                 footprintFile = file;
             }

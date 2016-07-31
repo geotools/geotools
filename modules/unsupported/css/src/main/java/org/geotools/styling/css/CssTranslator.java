@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -630,7 +631,7 @@ public class CssTranslator {
      */
     private Map<Integer, List<CssRule>> organizeByZIndex(List<CssRule> rules) {
         TreeSet<Integer> indexes = getZIndexesForRules(rules);
-        Map<Integer, List<CssRule>> result = new HashMap<>();
+        Map<Integer, List<CssRule>> result = new TreeMap<>();
         if (indexes.size() == 1) {
             result.put(indexes.first(), rules);
         } else {

@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -58,6 +60,31 @@ public class CssParser extends BaseParser<Object> {
     static CssParser INSTANCE;
 
     static final Object MARKER = new Object();
+    
+    /**
+     * Quick key/value storage
+     */
+    static final class KeyValue {
+        
+        String key;
+        Value value;
+
+        public KeyValue(String key, Value value) {
+            this.key = key;
+            this.value = value;
+        }
+        
+    }
+    
+    static final class Prefix {
+        String prefix;
+
+        public Prefix(java.lang.String prefix) {
+            super();
+            this.prefix = prefix;
+        }
+        
+    }
 
     /**
      * Allows Parboiled to do its magic, while disallowing normal users from instantiating this
@@ -185,8 +212,12 @@ public class CssParser extends BaseParser<Object> {
 
     @SuppressSubnodes
     Rule TypenameSelector() {
-        return Sequence(Sequence(Identifier(), Optional(':', Identifier())), push(new TypeName(
+        return Sequence(QualifiedIdentifier(), push(new TypeName(
                 match())));
+    }
+    
+    Rule QualifiedIdentifier() {
+        return Sequence(Identifier(), Optional(':', Identifier()));
     }
 
     @SuppressSubnodes
@@ -245,6 +276,16 @@ public class CssParser extends BaseParser<Object> {
                 push(popAll(Value.class)) && swap()
                         && push(new Property(pop(String.class), pop(List.class))));
     }
+    
+    Rule KeyValue() {
+        return Sequence(Identifier(), push(match()),
+                OptionalWhiteSpace(),
+                Colon(),
+                OptionalWhiteSpace(), 
+                Value(),
+                swap()
+                && push(new KeyValue(pop(String.class), pop(Value.class))));
+    }
 
     @SuppressNode
     Rule Colon() {
@@ -256,7 +297,7 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule SimpleValue() {
-        return FirstOf(URLFunction(), Function(), Color(), NamedColor(), Measure(),
+        return FirstOf(URLFunction(), TransformFunction(), Function(), Color(), NamedColor(), Measure(),
                 ValueIdentifier(), MixedExpression());
     }
 
@@ -302,11 +343,25 @@ public class CssParser extends BaseParser<Object> {
                 ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), Value()), ')',
                 push(buildFunction(popAll(Value.class), (String) pop())));
     }
-
+    
     Value.Function buildFunction(List<Value> values, String name) {
         return new Value.Function(name, values);
     }
-
+    
+    Rule TransformFunction() {
+        return Sequence(QualifiedIdentifier(), push(new Prefix(match())), '(', Optional(OptionalWhiteSpace(), KeyValue()),
+                ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), KeyValue()), ')',
+                push(buildTransformFunction(popAll(KeyValue.class), pop(Prefix.class))));
+    }
+    
+    Value.TransformFunction buildTransformFunction(List<KeyValue> values, Prefix name) {
+        Map<String, Value> parameters = new LinkedHashMap<>();
+        for (KeyValue keyValue : values) {
+            parameters.put(keyValue.key, keyValue.value);
+        }
+        return new Value.TransformFunction(name.prefix, parameters);
+    }
+    
     Rule URLFunction() {
         return Sequence("url", OptionalWhiteSpace(), "(", OptionalWhiteSpace(), URL(),
                 OptionalWhiteSpace(), ")", push(new Value.Function("url", (Value) pop())));
@@ -337,7 +392,7 @@ public class CssParser extends BaseParser<Object> {
     Rule ValueIdentifier() {
         return Sequence(Identifier(), push(new Value.Literal(match())));
     }
-
+    
     Rule String() {
         return FirstOf(
                 Sequence('\'', ZeroOrMore(Sequence(TestNot(AnyOf("'\\")), ANY)),
@@ -463,6 +518,23 @@ public class CssParser extends BaseParser<Object> {
     Rule Identifier() {
         return Sequence(Optional('-'), NameStart(), ZeroOrMore(NameCharacter()));
     }
+    
+//    Rule QualifiedIdentifier() {
+//        return Sequence(Optional(Identifier(), push(new Prefix(match())), ':'), Identifier(), 
+//                new Action() {
+//                    @Override
+//                    public boolean run(Context ctx) {
+//                        String name = (java.lang.String) pop();
+//                        if(peek() instanceof Prefix) {
+//                            Prefix prefix = (Prefix) pop();
+//                            name = prefix.prefix + ":" + name;
+//                        }
+//                        
+//                        push(name);
+//                    }
+//                });
+//    }
+
 
     @SuppressNode
     Rule NameStart() {

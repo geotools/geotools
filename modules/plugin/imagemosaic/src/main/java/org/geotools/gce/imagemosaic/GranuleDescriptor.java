@@ -758,7 +758,7 @@ public class GranuleDescriptor {
             reader.setInput(inStream);
 
             // Checking for heterogeneous granules and if the mosaic is not multidimensional
-            if (request.isHeterogeneousGranules() &&  originator.getAttribute("imageindex") == null) {
+            if (request.isHeterogeneousGranules() && (originator == null || originator.getAttribute("imageindex") == null)) {
                 // create read parameters
                 readParameters = new ImageReadParam();
 

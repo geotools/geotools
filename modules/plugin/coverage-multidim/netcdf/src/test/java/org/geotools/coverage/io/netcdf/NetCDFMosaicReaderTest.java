@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.DataBuffer;
@@ -25,6 +23,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -43,9 +42,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -55,6 +51,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -63,6 +60,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
@@ -81,12 +79,17 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 import ucar.nc2.Variable;
 
 /**
@@ -200,6 +203,68 @@ public class NetCDFMosaicReaderTest extends Assert {
             if(it != null) {
                 it.close();
             }
+            reader.dispose();
+        }
+    }
+    
+    @Test
+    public void testHeterogeneous() throws IOException, InvalidParameterValueException, ParseException {
+        // prepare a "mosaic" with just one NetCDF
+        File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_poly_hetero");
+        if(mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+        
+        // The indexer
+        String indexer = "TimeAttribute=time\n" + 
+                "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+        
+        // have the reader harvest it
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        assertNotNull(reader);
+        reader.dispose();
+        
+        // now force heterogeneous interpretation
+        Properties mosaicProps = new Properties();
+        File mosaicPropsFile = new File(mosaic, "O3.properties");
+        try(FileInputStream fis = new FileInputStream(mosaicPropsFile)) {
+            mosaicProps.load(fis);
+        }
+        mosaicProps.put("Heterogeneous", "true");
+        try(FileOutputStream fos = new FileOutputStream(mosaicPropsFile)) {
+            mosaicProps.store(fos, "Now with hetero flag up");
+        }
+        
+        // load two different times, make sure we actually read two different slices
+        String t1 = "2013-03-01T00:00:00.000Z";
+        String t2 = "2013-03-01T01:00:00.000Z";
+        reader = format.getReader(mosaic);
+        try {
+            // prepare params
+            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+            useJai.setValue(false);
+            ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+            time.setValue(Arrays.asList(parseTimeStamp(t1)));
+            GeneralParameterValue[] params = new GeneralParameterValue[] { useJai, time };
+            // read first
+            GridCoverage2D coverage1 = reader.read(params);
+            time.setValue(Arrays.asList(parseTimeStamp(t2)));
+            GridCoverage2D coverage2 = reader.read(params);
+            
+            DirectPosition center = reader.getOriginalEnvelope().getMedian();
+            float[] v1 = (float[]) coverage1.evaluate(center);
+            float[] v2 = (float[]) coverage2.evaluate(center);
+            assertNotEquals(v1[0], v2[0], 0f);
+        } finally {
             reader.dispose();
         }
     }

@@ -33,6 +33,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
@@ -54,6 +55,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -157,7 +172,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     }
     /**
      * Please note we are only visiting literals involved in spatial operations.
-     * @param literal, hopefully a Geometry or Envelope
+     * @param expression, a literal expression, hopefully a Geometry or Envelope
      * @param data Incoming BoundingBox (or Envelope or CRS)
      * 
      * @return ReferencedEnvelope updated to reflect literal
@@ -397,7 +412,79 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
 	public Object visitNullFilter(Object data) {
 		return infinity();
 	}
-    
-    
-    
+
+    @Override
+    public Object visit(After after, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(AnyInteracts anyInteracts, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(Before before, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(Begins begins, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(BegunBy begunBy, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(During filter, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(EndedBy endedBy, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(Ends ends, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(Meets meets, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(MetBy metBy, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(OverlappedBy overlappedBy, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(TContains contains, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(TEquals equals, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(TOverlaps contains, Object data) {
+        return infinity();
+    }
+
+    @Override
+    public Object visit(PropertyIsNil filter, Object data) {
+        return infinity();
+    }
 }

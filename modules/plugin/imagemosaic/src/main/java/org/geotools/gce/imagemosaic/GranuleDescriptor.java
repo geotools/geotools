@@ -306,8 +306,6 @@ public class GranuleDescriptor {
 
     private GridToEnvelopeMapper geMapper;
 
-    private boolean singleDimensionalGranule;
-
     /** {@link DatasetLayout} object containing information about granule internal structure */
     private DatasetLayout layout;
 
@@ -321,7 +319,6 @@ public class GranuleDescriptor {
         this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
         this.granuleUrl = granuleUrl;
         this.roiProvider = roiProvider;
-        this.singleDimensionalGranule = true;
         this.handleArtifactsFiltering = handleArtifactsFiltering;
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
@@ -493,7 +490,6 @@ public class GranuleDescriptor {
                         "setAuxiliaryFilesPath");
                 updateReaderWithAuxiliaryPath(hints, reader, Utils.AUXILIARY_DATASTORE_PATH,
                         "setAuxiliaryDatastorePath");
-                singleDimensionalGranule = false;
                 return true;
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
@@ -762,7 +758,7 @@ public class GranuleDescriptor {
             reader.setInput(inStream);
 
             // Checking for heterogeneous granules and if the mosaic is not multidimensional
-            if (request.isHeterogeneousGranules() && singleDimensionalGranule) {
+            if (request.isHeterogeneousGranules() &&  originator.getAttribute("imageindex") == null) {
                 // create read parameters
                 readParameters = new ImageReadParam();
 

@@ -312,7 +312,7 @@ public class CatalogManager {
         if (indexSchema == null) {
             // Proceed with default Schema
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
+            featureBuilder.setName(name);
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
             featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
                     String.class);

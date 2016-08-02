@@ -1897,6 +1897,9 @@ public class StreamingRenderer implements GTRenderer {
         // render groups by uniform transformation
         for (List<LiteFeatureTypeStyle> uniform : txClassified) {
             FeatureCollection features = getFeatures(layer, schema, uniform);
+            if(features == null) {
+                continue;
+            }
 
             // finally, perform rendering
             if (isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {

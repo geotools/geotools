@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -51,6 +51,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
@@ -65,6 +66,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.geometry.BoundingBox;
+
 import com.vividsolutions.jts.geom.MultiLineString;
 
 /**
@@ -1411,6 +1413,21 @@ public abstract class AbstractIntegrationTest {
         assertTrue(fid + " not locked", isLocked(first.typeName, fid));
         Thread.sleep(150);
         assertFalse(isLocked(first.typeName, fid));
+    }
+    
+    @Test
+    public void testException() throws IOException {
+        SimpleFeatureStore rivers = (SimpleFeatureStore) data.getFeatureSource("sf_rivers");
+        SimpleFeatureCollection coll = rivers.getFeatures();
+        try{
+            coll.features();
+        } catch (Exception e) {
+            assertTrue(e.getCause() instanceof WFSException);
+            assertTrue(e.getMessage().contains("MyErrorMessage"));
+            assertTrue(e.getMessage().contains("MyExceptionCode"));
+            return;
+        }
+        assertTrue(false);
     }
 
     /**

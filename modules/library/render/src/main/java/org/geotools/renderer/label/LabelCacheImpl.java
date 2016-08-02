@@ -611,8 +611,8 @@ public final class LabelCacheImpl implements LabelCache {
 
         // pre compute some labelling params
         final Rectangle2D textBounds = painter.getFullLabelBounds();
-        // ... use at least a 2 pixel step, no matter what the label length is
-        final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;
+        // ... use at least a 8 pixel step (curved processing is quite expensive), no matter what the label length is
+        final double step = painter.getLineHeight() > 8 ? painter.getLineHeight() : 8;
         int space = labelItem.getSpaceAround();
         int haloRadius = Math.round(labelItem.getTextStyle().getHaloFill() != null ? labelItem
                 .getTextStyle().getHaloRadius() : 0);

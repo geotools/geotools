@@ -284,7 +284,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     @Override
-    protected Response internalIssueRequest(Request request) throws IOException, WFSException {
+    protected Response internalIssueRequest(Request request) throws IOException {
         Response response;
         try {
             response = super.internalIssueRequest(request);

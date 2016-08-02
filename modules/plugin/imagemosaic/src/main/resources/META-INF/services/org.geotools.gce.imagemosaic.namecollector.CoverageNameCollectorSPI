@@ -1,0 +1,3 @@
+org.geotools.gce.imagemosaic.namecollector.DefaultCoverageNameCollectorSPI
+org.geotools.gce.imagemosaic.namecollector.ColorSpaceNameCollectorSPI
+org.geotools.gce.imagemosaic.namecollector.FileNameRegexNameCollectorSPI

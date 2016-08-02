@@ -107,6 +107,8 @@ public class MosaicConfigurationBean {
 
     private CatalogConfigurationBean catalogConfigurationBean;
 
+    private String coverageNameCollectorSpi;
+
     public ReferencedEnvelope getEnvelope() {
         return envelope;
     }
@@ -228,6 +230,14 @@ public class MosaicConfigurationBean {
 
     public void setCatalogConfigurationBean(CatalogConfigurationBean catalogConfigurationBean) {
         this.catalogConfigurationBean = catalogConfigurationBean;
+    }
+
+    public String getCoverageNameCollectorSpi() {
+        return coverageNameCollectorSpi;
+    }
+
+    public void setCoverageNameCollectorSpi(String coverageNameCollectorSpi) {
+        this.coverageNameCollectorSpi = coverageNameCollectorSpi;
     }
 
     public String getAuxiliaryFilePath() {

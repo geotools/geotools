@@ -36,6 +36,7 @@ import java.util.TimeZone;
 import javax.media.jai.PlanarImage;
 
 import org.apache.commons.io.FileUtils;
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -75,6 +76,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.util.InternationalString;
 
 public class NetCDFReaderTest extends Assert {
 
@@ -120,6 +122,12 @@ public class NetCDFReaderTest extends Assert {
             assertEquals("ROOT/LEVEL1/V2",names[1]);
             GridCoverage2D grid = reader.read("ROOT/LAI", null);
             assertNotNull(grid);
+
+            //Checking the SampleDimension Description Fallback improvement
+            GridSampleDimension sampleDimension = grid.getSampleDimension(0);
+            InternationalString description = sampleDimension.getDescription();
+            assertEquals("LAI", description.toString());
+
             byte[] byteValue = grid.evaluate(new
                     DirectPosition2D(DefaultGeographicCRS.WGS84, 12, 70 ), new byte[1]);
             assertEquals(20,byteValue[0]);

@@ -803,9 +803,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         // range type
         String description = variableDS.getDescription();
         if (description == null) {
-            description = "";
+            description = variableDS.getShortName();
         }
-        final StringBuilder sb = new StringBuilder();
         final Set<SampleDimension> sampleDims = new HashSet<SampleDimension>();
 
         // Parsing the unit of measure of this variable
@@ -830,7 +829,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             desc = new SimpleInternationalString(description);
         }
         final FieldType fieldType = new DefaultFieldType(new NameImpl(getName()), desc, sampleDims);
-        sb.append(!description.isEmpty() ? description.toString() + "," : description);
         final RangeType range = new DefaultRangeType(getName(), description, fieldType);
         this.setRangeType(range);
     }

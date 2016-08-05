@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 
+import javax.sql.DataSource;
+
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geopkg.FeatureEntry;
 import org.geotools.geopkg.Entry.DataType;
@@ -72,7 +74,11 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
-        new GeoPackage(dataStore.getDataSource()).init(cx);
+        /*DataSource dataSource = dataStore.getDataSource();
+        
+        new GeoPackage(dataSource).init(cx);*/
+        //Made init static as otherwise getDataSource returns null?
+        GeoPackage.init(cx);
     }
 
     @Override

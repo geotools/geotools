@@ -58,8 +58,8 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
 
         //drop old data
         runSafe("DROP TABLE ft1");
-        runSafe("DROP TABLE ft2");
-        runSafe("DELETE FROM gpkg_geometry_columns where f_table_name in ('ft1','ft2')");
+        //runSafe("DROP TABLE ft2");
+        runSafe("DELETE FROM gpkg_geometry_columns where table_name in ('ft1','ft2')");
         runSafe("DELETE FROM gpkg_contents where table_name in ('ft1','ft2')");
         
         GeometryBuilder gb = new GeometryBuilder();
@@ -89,10 +89,10 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
             + "2,X'"+toString(gb.point(2,2))+"', 2, 2.2,'two');";
         run(sql);
 
-        sql = "INSERT INTO gpkg_geometry_columns VALUES ('ft1', 'geometry', 'POINT', 2, 4326)";
+        sql = "INSERT INTO gpkg_geometry_columns VALUES ('ft1', 'geometry', 'POINT', 4326, 0, 0)";
         run(sql);
         
-        sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srid) VALUES " +
+        sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES " +
             "('ft1', 'features', 'ft1', 4326)";
         run(sql);
     }

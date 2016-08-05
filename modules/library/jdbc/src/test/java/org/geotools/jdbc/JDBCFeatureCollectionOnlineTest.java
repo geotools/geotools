@@ -129,8 +129,8 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
                 SimpleFeature f = (SimpleFeature) i.next();
     
                 if ("three".equals(f.getAttribute(aname("stringProperty")))) {
-                    assertEquals(feature.getAttribute(aname("doubleProperty")),
-                        f.getAttribute(aname("doubleProperty")));
+                    assertEquals(((Double)feature.getAttribute(aname("doubleProperty"))).doubleValue(),
+                        ((Double)f.getAttribute(aname("doubleProperty"))).doubleValue(),1e-5);
                     assertEquals(feature.getAttribute(aname("stringProperty")),
                         f.getAttribute(aname("stringProperty")));
                     assertEquals(feature.getAttribute(aname("geometry")),

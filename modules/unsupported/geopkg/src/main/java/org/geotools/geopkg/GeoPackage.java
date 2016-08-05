@@ -97,15 +97,6 @@ public class GeoPackage {
 
     static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg");
 
-    // static {
-    // //load the sqlite jdbc driver up front
-    // try {
-    // Class.forName("org.sqlite.JDBC");
-    // } catch (ClassNotFoundException e) {
-    // throw new RuntimeException(e);
-    // }
-    // }
-
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 
     public static final String GEOMETRY_COLUMNS = "gpkg_geometry_columns";

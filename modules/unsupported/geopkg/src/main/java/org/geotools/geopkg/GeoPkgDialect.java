@@ -110,7 +110,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         encodeColumnName(null, geometryColumn, sql);
     }
-    
+     
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
         throws SQLException, IOException {
@@ -153,6 +153,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public void registerSqlTypeNameToClassMappings( Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
         mappings.put("DOUBLE", Double.class);
+        mappings.put("BOOLEAN", Boolean.class);
     }
 
     @Override
@@ -165,6 +166,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         //override some internal defaults
         mappings.put(Long.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
+        mappings.put(Boolean.class, Types.INTEGER);
     }
 
     @Override

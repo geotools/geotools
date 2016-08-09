@@ -804,8 +804,10 @@ public class GeoPackage {
     void addGeoPackageContentsEntry(Entry e) throws IOException {
         final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-        addCRS(e.getSrid());
-
+        if(e.getSrid()!=null) { 
+            addCRS(e.getSrid());
+        }
+        
         StringBuilder sb = new StringBuilder();
         StringBuilder vals = new StringBuilder();
         

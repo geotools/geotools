@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -29,7 +31,6 @@ import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis1D;
-import ucar.nc2.dataset.CoordinateSystem;
 
 /**
  * @author Simone Giannecchini GeoSolutions SAS
@@ -94,34 +95,42 @@ public abstract class CoordinateVariable<T> {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static CoordinateVariable<?> create(CoordinateAxis1D coordinateAxis) {
         Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
-        // If the axis is not numeric, we can't process any further.
-        if (!coordinateAxis.isNumeric()) {
-            throw new IllegalArgumentException(
-                    "Unable to process non numeric coordinate variable: "
-                            + coordinateAxis.toString());
-        }
 
-        // INITIALIZATION
-
-        // AxisType?
         final AxisType axisType = coordinateAxis.getAxisType();
-        switch (axisType) {
-        case GeoX:
-        case GeoY:
-        case GeoZ:
-        case Height:
-        case Lat:
-        case Lon:
-        case Pressure:
-        case Spectral:
-            return new NumericCoordinateVariable(suggestBinding(coordinateAxis), coordinateAxis);
-        case RunTime:
-        case Time:
-            return new TimeCoordinateVariable(coordinateAxis);
-        default:
-            throw new IllegalArgumentException("Unsupported axis type: " + axisType
-                    + " for coordinate variable: " + coordinateAxis.toStringDebug());
+        if (coordinateAxis.isNumeric()) {
+
+            // AxisType?
+            switch (axisType) {
+            case GeoX:
+            case GeoY:
+            case GeoZ:
+            case Height:
+            case Lat:
+            case Lon:
+            case Pressure:
+            case Spectral:
+                return new NumericCoordinateVariable(suggestBinding(coordinateAxis), coordinateAxis);
+            case RunTime:
+            case Time:
+                return new TimeCoordinateVariable(coordinateAxis);
+            default:
+                throw new IllegalArgumentException("Unsupported axis type: " + axisType
+                        + " for coordinate variable: " + coordinateAxis.toStringDebug());
+            }
         }
+        if (NetCDFUtilities.isCheckCoordinatePlugins()){
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Checking for registered coordinate plugins");
+            }
+            CoordinateHandler handler = CoordinateHandlerFinder.findHandler(coordinateAxis);
+            if (handler != null){
+                return handler.createCoordinateVariable(coordinateAxis);
+            }
+
+        }
+        // If the axis is not numeric and it isn't a parseable time, we can't process any further.
+        throw new IllegalArgumentException("Unable to process non numeric coordinate variable: "
+                        + coordinateAxis.toString());
 
     }
 

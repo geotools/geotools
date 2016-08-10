@@ -941,6 +941,10 @@ public class GeoPackage {
     }
 
     void addGeometryColumnsEntry(FeatureEntry e) throws IOException {
+        //geometryless tables should not be inserted into this table.
+        if(e.getGeometryColumn()==null || e.getGeometryColumn().isEmpty()) {
+            return;
+        }
         String sql = format(
                 "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?);", GEOMETRY_COLUMNS);
 

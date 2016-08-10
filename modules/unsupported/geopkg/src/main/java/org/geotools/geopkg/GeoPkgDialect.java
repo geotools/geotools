@@ -264,7 +264,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             for (PropertyDescriptor descr : featureType.getDescriptors()) {
                 if (descr instanceof GeometryDescriptor) {
                     GeometryDescriptor gd1 = (GeometryDescriptor) descr;
-                    if (gd1.getLocalName() != fe.getGeometryColumn()) {
+                    if (!(gd1.getLocalName()).equals(fe.getGeometryColumn())) {
                         FeatureEntry fe1 = new FeatureEntry();
                         fe1.init(fe);
                         fe1.setGeometryColumn(gd1.getLocalName());

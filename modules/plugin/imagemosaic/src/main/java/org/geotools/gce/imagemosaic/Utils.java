@@ -141,7 +141,7 @@ public class Utils {
 
     public final static Key MOSAIC_READER = new Key(ImageMosaicReader.class);
 
-    public static final String RANGE_SPLITTER_CHAR = ";";
+    public final static String RANGE_SPLITTER_CHAR = ";";
 
     public final static String INDEXER_PROPERTIES = "indexer.properties";
 
@@ -153,6 +153,7 @@ public class Utils {
 
     static final String DEFAULT = "default";
 
+    public final static String PROPERTIES_SEPARATOR = ";";
     /**
      * EHCache instance to cache histograms
      */
@@ -215,6 +216,8 @@ public class Utils {
 
         public final static String INDEX_NAME = "Name";
 
+        public final static String INPUT_COVERAGE_NAME = "InputCoverageName";
+
         public final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
 
         public final static String HETEROGENEOUS = "Heterogeneous";
@@ -268,6 +271,8 @@ public class Utils {
         public static final String GRANULE_ACCEPTORS = "GranuleAcceptors";
 
         public static final String GEOMETRY_HANDLER = "GranuleHandler";
+
+        public static final String COVERAGE_NAME_COLLECTOR_SPI = "CoverageNameCollectorSPI";
     }
 
     /**
@@ -296,7 +301,65 @@ public class Utils {
             }
             return super.visit(filter, data);
         }
+    }
 
+    /**
+     * Given a source object, allow to retrieve (when possible) the related url, 
+     * the related file or the original input source object itself.
+     */
+    public static class SourceGetter {
+        private File file;
+        private URL url;
+        private Object source;
+
+        public SourceGetter(Object inputSource) {
+            source = inputSource;
+            // if it is a URL or a String let's try to see if we can get a file to
+            // check if we have to build the index
+            if (source instanceof File) {
+                file = (File) source;
+                url = DataUtilities.fileToURL(file);
+            } else if (source instanceof URL) {
+                url = (URL) source;
+                if (url.getProtocol().equals("file")) {
+                    file = DataUtilities.urlToFile(url);
+                }
+            } else if (source instanceof String) {
+                // is it a File?
+                final String tempSource = (String) source;
+                File tempFile = new File(tempSource);
+                if (!tempFile.exists()) {
+                    // is it a URL
+                    try {
+                        url = new URL(tempSource);
+                        source = DataUtilities.urlToFile(url);
+                    } catch (MalformedURLException e) {
+                        url = null;
+                        source = null;
+                    }
+                } else {
+                    url = DataUtilities.fileToURL(tempFile);
+
+                    // so that we can do our magic here below
+                    file = tempFile;
+                }
+            }
+        }
+
+        /** Return the File (if any) of the source object */
+        public File getFile() {
+            return file;
+        }
+
+        /** Return the URL (if any) of the source object */
+        public URL getUrl() {
+            return url;
+        }
+
+        /** Return the original source object */
+        public Object getSource() {
+            return source;
+        }
     }
 
     /**
@@ -669,6 +732,16 @@ public class Utils {
         if (!ignoreSome || !ignorePropertiesSet.contains(Prop.LOCATION_ATTRIBUTE)) {
             catalogConfigurationBean.setLocationAttribute(properties
                     .getProperty(Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE).trim());
+        }
+
+        //
+        // CoverageNameCollectorSpi
+        //
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.COVERAGE_NAME_COLLECTOR_SPI)) {
+            String coverageNameCollectorSpi = properties.getProperty(Prop.COVERAGE_NAME_COLLECTOR_SPI);
+            if (coverageNameCollectorSpi != null && ((coverageNameCollectorSpi = coverageNameCollectorSpi.trim()) != null)) {
+                retValue.setCoverageNameCollectorSpi(coverageNameCollectorSpi);
+            }
         }
 
         // return value
@@ -1044,42 +1117,15 @@ public class Utils {
     }
 
     static URL checkSource(Object source, Hints hints) {
-        URL sourceURL = null;
-        File sourceFile = null;
-
+        
+        SourceGetter sourceGetter = new SourceGetter(source);
+        URL sourceURL = sourceGetter.getUrl();
+        File sourceFile = sourceGetter.getFile();
+        
         //
         // Check source
         //
-        // if it is a URL or a String let's try to see if we can get a file to
-        // check if we have to build the index
-        if (source instanceof File) {
-            sourceFile = (File) source;
-            sourceURL = DataUtilities.fileToURL(sourceFile);
-        } else if (source instanceof URL) {
-            sourceURL = (URL) source;
-            if (sourceURL.getProtocol().equals("file")) {
-                sourceFile = DataUtilities.urlToFile(sourceURL);
-            }
-        } else if (source instanceof String) {
-            // is it a File?
-            final String tempSource = (String) source;
-            File tempFile = new File(tempSource);
-            if (!tempFile.exists()) {
-                // is it a URL
-                try {
-                    sourceURL = new URL(tempSource);
-                    source = DataUtilities.urlToFile(sourceURL);
-                } catch (MalformedURLException e) {
-                    sourceURL = null;
-                    source = null;
-                }
-            } else {
-                sourceURL = DataUtilities.fileToURL(tempFile);
-
-                // so that we can do our magic here below
-                sourceFile = tempFile;
-            }
-        }
+        
         // //
         //
         // at this point we have tried to convert the thing to a File as hard as

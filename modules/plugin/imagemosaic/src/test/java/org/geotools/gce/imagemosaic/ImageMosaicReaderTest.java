@@ -17,8 +17,16 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.JAIExt;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.color.ColorSpace;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -58,7 +66,10 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.media.jai.RenderedOp;
-import javax.swing.*;
+import javax.swing.JFrame;
+
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -137,14 +148,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 /**
  * Testing {@link ImageMosaicReader}.
  * 
@@ -175,6 +178,7 @@ public class ImageMosaicReaderTest extends Assert{
 	private URL rgbURL;
 	
     private URL mixedSampleModelURL;
+    private URL coverageBandsURL;
 
 	private URL heterogeneousGranulesURL;
 
@@ -2057,6 +2061,7 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		rgbURL = TestData.url(this, "rgb");
         mixedSampleModelURL = TestData.url(this, "mixed_sample_model");
+        coverageBandsURL = TestData.url(this, "coverage_bands");
 		heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
 		timeURL = TestData.url(this, "time_geotiff");
 		timeFormatURL = TestData.url(this, "time_format_geotiff");
@@ -3890,6 +3895,57 @@ public class ImageMosaicReaderTest extends Assert{
                 new ReferencedEnvelope(7, 11, 43, 44, DefaultGeographicCRS.WGS84), reader);
 
         reader.dispose();
+    }
+
+    @Test
+    public void testCoverageOnBands() throws Exception {
+        File mosaicFolder = DataUtilities.urlToFile(coverageBandsURL);
+        for (File configFile : mosaicFolder.listFiles(
+                (FileFilter)FileFilterUtils.or( 
+                FileFilterUtils.suffixFileFilter("db"),
+                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.and(
+                        FileFilterUtils.suffixFileFilter(".properties"),
+                        FileFilterUtils.notFileFilter(
+                                FileFilterUtils.or
+                                (FileFilterUtils.nameFileFilter("indexer.properties"),
+                                        FileFilterUtils.nameFileFilter("datastore.properties")))))
+)) {
+            configFile.delete();
+        }
+        AbstractGridFormat format = TestUtils.getFormat(coverageBandsURL);
+        ImageMosaicReader reader = TestUtils.getReader(coverageBandsURL, format);
+
+        testMultiCoverages(reader);
+        reader.dispose();
+
+        // Double check. Read it again after the mosaic configuration 
+        // has been created
+        format = TestUtils.getFormat(coverageBandsURL);
+        reader = TestUtils.getReader(coverageBandsURL, format);
+        testMultiCoverages(reader);
+        reader.dispose();
+    }
+
+    private void testMultiCoverages(ImageMosaicReader reader) throws IOException {
+        String[] coverageNames = reader.getGridCoverageNames();
+        Arrays.sort(coverageNames);
+        assertNotNull(coverageNames);
+        int coverageCount = coverageNames.length; 
+        assertEquals(2, coverageCount);
+        String [] expectedNames = new String[]{"gray", "rgb"};
+        int [] expectedTypes = new int[]{ColorSpace.TYPE_GRAY, ColorSpace.TYPE_RGB};
+        for (int i=0; i<coverageCount; i++) {
+            String coverageName = coverageNames[i];
+            assertEquals(expectedNames[i], coverageName);
+            GridCoverage2D coverage = reader.read(coverageNames[i],null);
+            assertNotNull(coverage);
+            RenderedImage ri = coverage.getRenderedImage();
+            assertThat(ri.getSampleModel(), instanceOf(ComponentSampleModel.class));
+            ColorModel cm= ri.getColorModel();
+            assertThat(cm, instanceOf(ComponentColorModel.class));
+            assertEquals(expectedTypes[i], cm.getColorSpace().getType());
+        }
     }
 
     private void checkColorModel(Class<? extends ColorModel> clazz, int bands, int dataType,

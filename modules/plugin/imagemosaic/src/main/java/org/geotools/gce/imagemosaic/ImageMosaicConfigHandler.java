@@ -92,6 +92,7 @@ import org.geotools.gce.imagemosaic.granulehandler.GranuleHandler;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactoryFinder;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactorySPI;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlingException;
+import org.geotools.gce.imagemosaic.namecollector.DefaultCoverageNameCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
@@ -164,7 +165,9 @@ public class ImageMosaicConfigHandler {
 
     private List<GranuleAcceptor> granuleAcceptors = new ArrayList<>();
 
-    private GranuleHandler granuleHandler = new DefaultGranuleHandler();;
+    private GranuleHandler granuleHandler = new DefaultGranuleHandler();
+
+    private CoverageNameHandler coverageNameHandler = new CoverageNameHandler(new DefaultCoverageNameCollectorSPI());
 
     /**
      * Default constructor
@@ -238,6 +241,7 @@ public class ImageMosaicConfigHandler {
 
         initializeGranuleAcceptors(indexer);
         initializeGranuleHandler(indexer);
+        initializeCoverageNameHandler(indexer);
 
         updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile,
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
@@ -292,6 +296,18 @@ public class ImageMosaicConfigHandler {
                 if (factory != null) {
                     granuleHandler = factory.create();
                 }
+            }
+        }
+    }
+
+    private void initializeCoverageNameHandler(Indexer indexer) {
+        // we initialized at construction time with the default handler
+        // ok, do we need/want something different?
+        if (indexer != null) {
+            String coverageNameCollectorString = IndexerUtils.getParameter(Prop.COVERAGE_NAME_COLLECTOR_SPI, indexer);
+            if (coverageNameCollectorString != null && coverageNameCollectorString.length() > 0) {
+                //Override default handling machinery
+                coverageNameHandler = new CoverageNameHandler(coverageNameCollectorString);
             }
         }
     }
@@ -468,7 +484,7 @@ public class ImageMosaicConfigHandler {
         if (indexSchema == null) {
             // Proceed with default Schema
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
+            featureBuilder.setName(name);
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
             featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
                     String.class);
@@ -1192,6 +1208,10 @@ public class ImageMosaicConfigHandler {
             IndexerUtils.setParam(parameters, props, Prop.GEOMETRY_HANDLER);
         }
 
+        if (props.containsKey(Prop.COVERAGE_NAME_COLLECTOR_SPI)) {
+            IndexerUtils.setParam(parameters, props, Prop.COVERAGE_NAME_COLLECTOR_SPI);
+        }
+
         // schema
         if (props.containsKey(Prop.SCHEMA)) {
             SchemasType schemas = Utils.OBJECT_FACTORY.createSchemasType();
@@ -1380,6 +1400,10 @@ public class ImageMosaicConfigHandler {
         if (mosaicConfiguration.getAuxiliaryDatastorePath() != null) {
             properties.setProperty(Utils.Prop.AUXILIARY_DATASTORE_FILE,
                     mosaicConfiguration.getAuxiliaryDatastorePath());
+        }
+        if (mosaicConfiguration.getCoverageNameCollectorSpi() != null){
+            properties.setProperty(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI, 
+                    mosaicConfiguration.getCoverageNameCollectorSpi());
         }
 
         OutputStream outStream = null;
@@ -1613,14 +1637,15 @@ public class ImageMosaicConfigHandler {
      * structured coverages the target coverage has the same name as the input coverage.
      * 
      * @param inputCoverageReader the coverage being added to the index
-     * @param inputCoverageName the name if the input coverage
+     * @param inputCoverageName the name of the input coverage
      * @return the target coverage name for the input coverage
      */
     public String getTargetCoverageName(GridCoverage2DReader inputCoverageReader,
             String inputCoverageName) {
-        String indexName = getRunConfiguration().getParameter(Prop.INDEX_NAME);
-        return inputCoverageReader instanceof StructuredGridCoverage2DReader ? inputCoverageName
-                : indexName;
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(Prop.INDEX_NAME, getRunConfiguration().getParameter(Prop.INDEX_NAME));
+        map.put(Prop.INPUT_COVERAGE_NAME, inputCoverageName);
+        return coverageNameHandler.getTargetCoverageName(inputCoverageReader, map);
     }
 
     private boolean isHigherResolution(double[][] a, double[][] b) {

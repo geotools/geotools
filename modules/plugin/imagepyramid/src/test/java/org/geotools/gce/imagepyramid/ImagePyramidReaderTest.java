@@ -77,7 +77,7 @@ public class ImagePyramidReaderTest extends Assert {
      * File to be used for testing purposes.
      */
     private final static String TEST_FILE = "pyramid.properties";
-    private static final Double DELTA = 1E-6;
+    protected static final Double DELTA = 1E-6;
 
     // private final static String TEST_JAR_FILE = "pyramid.jar";
 
@@ -902,7 +902,7 @@ public class ImagePyramidReaderTest extends Assert {
         assertEquals(ColorSpace.TYPE_RGB, colorSpaceType);
     }
 
-    private void cleanFiles(File mosaicFolder) {
+    protected void cleanFiles(File mosaicFolder) {
         for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
                 FileFilterUtils.suffixFileFilter("db"), FileFilterUtils
                         .suffixFileFilter("sample_image"), FileFilterUtils.and(FileFilterUtils

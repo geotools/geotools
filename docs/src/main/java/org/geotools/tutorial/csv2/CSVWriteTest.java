@@ -157,10 +157,10 @@ public class CSVWriteTest {
                 + DataUtilities.fidSet(featureStore2.getFeatures()));
 
         // new feature to add!
-        // 37.5667, 122.681944, Seoul, 473, 2015
+        // 50.733992, 7.099814, Bonn, 700, 2016
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        Point seoul = gf.createPoint(new Coordinate(37.5667,129.681944));
-        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { seoul, "Seoul", 473, 2015 }, "locations.1");
+        Point bonn = gf.createPoint(new Coordinate(50.733992, 7.099814));
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { bonn, "Bonn", 700, 2016 }, "locations.1");
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
         featureStore2.addFeatures(collection);
 
@@ -260,10 +260,10 @@ public class CSVWriteTest {
         SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         
-        // 37.5667, 122.681944, Seoul, 473, 2015
+     // 50.733992, 7.099814, Bonn, 700, 2016
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        Point seoul = gf.createPoint(new Coordinate(37.5667,129.681944));
-        f = SimpleFeatureBuilder.build(type, new Object[] { seoul, "Seoul", 473, 2015 }, "locations.1");
+        Point bonn = gf.createPoint(new Coordinate(50.733992, 7.099814));
+        f= SimpleFeatureBuilder.build(type, new Object[] { bonn, "Bonn", 700, 2016 }, "locations.1");
         collection.add(f);
 
         writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);

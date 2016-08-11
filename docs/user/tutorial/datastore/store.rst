@@ -110,73 +110,73 @@ making the code easier to maintain, at the cost of some up front complexity.
 We have to play a few tickets to ensure both the CSVFeatureStore and its hidden CSVFeatureSource
 are always on the same transaction, but other than that this approach is working well.
 
-#. Create **CSVFeatureStore**:
+  #. Create **CSVFeatureStore**:
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: package org.geotools.data.csv;
-      :end-before: // header end
-      :prepend: package org.geotools.tutorial.csv;  
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: package org.geotools.tutorial.csv2;
+        :end-before: // header end
+        :prepend: package org.geotools.tutorial.csv;  
 
-#. Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
-   Notification are handled by wrappers applied to our CSVFeatureWriter.
-    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // getWriter start
-      :end-before: // getWriter end
-   
-   .. note:: 
+  #. Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
+     Notification are handled by wrappers applied to our CSVFeatureWriter.
       
-      
-      In general the "Gang of Four" decorator pattern is used to layer functionality around the
-      raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design
-      of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
-      FileInputStream).
-      
-      You can control which decorators/wrappers are applied, by as shown in the following table.
-      
-          ==================== ===============
-          Handle               Override
-          ==================== ===============
-          reprojection         canReproject()
-          filtering            canFilter()
-          max feature limiting canLimit()
-          sorting              canSort()
-          locking              canLock()
-          ==================== ===============
-      
-      As an example if your data format supported an attribute index you would be
-      in position to override canSort() to return true if an index was available
-      for sorting.
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // getWriter start
+        :end-before: // getWriter end
+     
+     .. note:: 
+        
+        
+        In general the "Gang of Four" decorator pattern is used to layer functionality around the
+        raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design
+        of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
+        FileInputStream).
+        
+        You can control which decorators/wrappers are applied, by as shown in the following table.
+        
+            ==================== ===============
+            Handle               Override
+            ==================== ===============
+            reprojection         canReproject()
+            filtering            canFilter()
+            max feature limiting canLimit()
+            sorting              canSort()
+            locking              canLock()
+            ==================== ===============
+        
+        As an example if your data format supported an attribute index you would be
+        in position to override canSort() to return true if an index was available
+        for sorting.
 
-#. Next we can set up our delegate, taking care to ensure both use the same Transaction.
-   
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // transaction start
-      :end-before: // transaction end
-      
-#. Use the delegate to implement the internal ContentDataStore methods. 
+  #. Next we can set up our delegate, taking care to ensure both use the same Transaction.
+     
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // transaction start
+        :end-before: // transaction end
+        
+  #. Use the delegate to implement the internal ContentDataStore methods. 
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // internal start
-      :end-before: // internal end
-      
-   We have to do one "fix" to allow handle visitor method to be called - add the following to
-      **CSVFeatureSource**.
-      
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
-      :language: java
-      :start-after: // visitor start
-      :end-before: // visitor end
-      
-   .. note::
-   
-      Why does this work - because Java visibility rules are insane.
-      Even though the method is marked *protected* it now has *package*
-      visibility can be called by its peer CSVFeatureStore. 
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // internal start
+        :end-before: // internal end
+        
+     We have to do one "fix" to allow handle visitor method to be called - add the following to
+        **CSVFeatureSource**.
+        
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
+        :language: java
+        :start-after: // visitor start
+        :end-before: // visitor end
+        
+     .. note::
+     
+        Why does this work - because Java visibility rules are insane.
+        Even though the method is marked *protected* it now has *package*
+        visibility can be called by its peer CSVFeatureStore. 
       
 #. Use the delegate to implement the public FeatureSource methods.
    
@@ -287,7 +287,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
-      :start-after: package org.geotools.data.csv;
+      :start-after: package org.geotools.tutorial.csv2;
       :end-before: // header end
       :prepend: package org.geotools.tutorial.csv;  
       :append: }

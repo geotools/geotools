@@ -29,7 +29,7 @@ import org.opengis.feature.type.Name;
  * Read-write access to CSV File.
  * 
  * @author Jody Garnett (Boundless)
- * @author Ian Turton (GeoTools)
+ * @author Ian Turton (Astun Technology)
  */
 public class CSVFeatureStore extends ContentFeatureStore {
     public CSVFeatureStore(ContentEntry entry, Query query) {

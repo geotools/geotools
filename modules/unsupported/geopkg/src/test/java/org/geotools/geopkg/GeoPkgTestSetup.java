@@ -100,9 +100,11 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
     void removeTable(String tableName) {
         //drop old data
         runSafe("DROP TABLE "+tableName);
+        runSafe("DROP VIEW "+tableName);
         //runSafe("DROP TABLE ft2");
         runSafe("DELETE FROM gpkg_geometry_columns where table_name ='"+tableName+"'");
         runSafe("DELETE FROM gpkg_contents where table_name ='"+tableName+"'");
+        runSafe("DELETE FROM gt_pk_metadata where table_name ='"+tableName+"'");
     }
 
     String toString(Geometry g) throws IOException {

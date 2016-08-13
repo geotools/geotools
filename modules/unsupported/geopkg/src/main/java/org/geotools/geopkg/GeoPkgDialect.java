@@ -121,8 +121,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column, 
         GeometryFactory factory, Connection cx) throws IOException, SQLException {
-        return geometry(rs.getBytes(column));
+        return geometry(rs.getBytes(column),factory);
     }
+
 
     @Override
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
@@ -140,8 +141,22 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
+
+    /**
+     * @param bytes
+     * @param factory
+     * @return
+     * @throws IOException 
+     */
+    private Geometry geometry(byte[] bytes, GeometryFactory factory) throws IOException {
+        GeoPkgGeomReader geoPkgGeomReader = new GeoPkgGeomReader(bytes);
+        geoPkgGeomReader.setFactory(factory);
+        return bytes != null ? geoPkgGeomReader.get() : null;
+       
+    }
+    
     Geometry geometry(byte[] b) throws IOException {
-        return b != null ? new GeoPkgGeomReader(b).get() : null;
+        return geometry(b, null);
     }
 
     @Override
@@ -390,5 +405,24 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     
     GeoPackage geopkg() {
         return new GeoPackage(dataStore);
+    }
+    
+    @Override
+    public boolean isLimitOffsetSupported() {
+        //TODO: figure out why aggregate functions don't work with limit offset applied ?
+        return true;
+    }
+    @Override
+    public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
+        if(limit > 0 && limit < Integer.MAX_VALUE) {
+            sql.append(" LIMIT " + limit);
+            if(offset > 0) {
+                sql.append(" OFFSET " + offset);
+            }
+        } else if(offset > 0) {
+            //see https://stackoverflow.com/questions/10491492/sqllite-with-skip-offset-only-not-limit
+            sql.append(" LIMIT -1");
+            sql.append(" OFFSET " + offset);
+        }
     }
 }

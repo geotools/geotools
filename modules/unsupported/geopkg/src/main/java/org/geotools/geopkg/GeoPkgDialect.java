@@ -128,7 +128,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
         if (g == null) {
-            ps.setNull(1, Types.BLOB);
+            ps.setNull(column, Types.BLOB);
         }
         else {
             g.setSRID(srid);

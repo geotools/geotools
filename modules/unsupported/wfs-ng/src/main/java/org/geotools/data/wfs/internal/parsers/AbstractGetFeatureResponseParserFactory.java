@@ -143,8 +143,7 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
             }
         }
         if (LOGGER.isLoggable(Level.FINER)) {
-            System.err.println("Response head:");
-            System.err.println(head);
+            LOGGER.finer("Response head:\n" + head);
         }
 
         pushbackIn.unread(buff, 0, readCount);

@@ -18,7 +18,12 @@ package org.geotools.geopkg;
 
 import java.sql.SQLException;
 
+import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
+
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -52,16 +57,25 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     @Override
     protected void createLakeTable() throws Exception {
+        
         run( "CREATE TABLE lake (fid INTEGER PRIMARY KEY, id INTEGER)");
         String sql = "INSERT INTO gpkg_geometry_columns VALUES ('lake', 'geom', 'POLYGON', 4326, 0, 0)";
         run(sql);
         //run( "SELECT AddGeometryColumn('lake','geom',4326,'POLYGON',2)");
-        sql = "INSERT INTO gpkg_geometry_columns VALUES ('lake', 'geom', 'POLYGON', 4326, 0, 0)";
+        run( "ALTER TABLE lake add geom BLOB" );
+        sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES " +
+                "('lake', 'features', 'lake', 4326)";
         run(sql);
         run( "ALTER TABLE lake add name VARCHAR" );
-        run( "INSERT INTO lake VALUES (0, 0," +
+        Polygon poly = gb.polygon(12, 6, 14, 8, 16, 6, 16, 4, 14, 4, 12, 6);
+        
+        sql = "INSERT INTO lake VALUES (0, 0,"
+                + "X'"+((GeoPkgTestSetup)delegate).toString(poly)
+                +"', 'muddy');";
+        run(sql);
+/*        run( "INSERT INTO lake VALUES (0, 0," +
             "GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy')");
+                + "'muddy')");*/
     }
 
     @Override
@@ -72,30 +86,68 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRiverTable() throws Exception {
         run( "CREATE TABLE river (fid INTEGER PRIMARY KEY, id INTEGER)");
-        run( "SELECT AddGeometryColumn('river','geom',4326,'MULTILINESTRING',2)");
+        //run( "SELECT AddGeometryColumn('river','geom',4326,'MULTILINESTRING',2)");
+        run( "ALTER TABLE river add geom BLOB" );
+        String sql = "INSERT INTO gpkg_geometry_columns VALUES ('river', 'geom', 'MULTILINESTRING', 4326, 0, 0)";
+        run(sql);
+        sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
+                + "('river', 'features', 'river', 4326)";
+        run(sql);
+        
         run( "ALTER TABLE river add river VARCHAR" );
         run( "ALTER TABLE river add flow FLOAT" );
+        MultiLineString line = gb.multiLineString(gb.lineString(5, 5, 7, 4),gb.lineString(7, 5, 9, 7, 13, 7),gb.lineString(7, 5, 9, 3, 11, 3));
         
-        run("INSERT INTO river VALUES (0, 0,"
+        sql = "INSERT INTO river VALUES (0, 0,"
+                + "X'"+((GeoPkgTestSetup)delegate).toString(line)
+                +"', 'rv1', 4.5);";
+        run(sql);
+        line = gb.multiLineString(gb.lineString(4, 6, 4, 8, 6, 10));
+        
+        sql = "INSERT INTO river VALUES (1, 1,"
+                + "X'"+((GeoPkgTestSetup)delegate).toString(line)
+                +"', 'rv2', 3.0);";
+        run(sql);
+        /*run("INSERT INTO river VALUES (0, 0,"
                 + "GeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"
                 + "'rv1', 4.5)");
         run("INSERT INTO river VALUES (1, 1,"
                 + "GeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326),"
-                + "'rv2', 3.0)");
+                + "'rv2', 3.0)");*/
     }
     
     @Override
     protected void dropRiverTable() throws Exception {
         ((GeoPkgTestSetup)delegate).removeTable("river");
     }
-    
+    GeometryBuilder gb = new GeometryBuilder();
     @Override
     protected void createRoadTable() throws Exception {
         run( "CREATE TABLE road (fid INTEGER PRIMARY KEY, id INTEGER)");
-        run( "SELECT AddGeometryColumn('road','geom',4326,'LINESTRING',2)");
+        //run( "SELECT AddGeometryColumn('road','geom',4326,'LINESTRING',2)");
+        run( "ALTER TABLE road add geom BLOB" );
+        String sql = "INSERT INTO gpkg_geometry_columns VALUES ('road', 'geom', 'LINESTRING', 4326, 0, 0)";
+        run(sql);
+        sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES " +
+                "('road', 'features', 'road', 4326)";
+            run(sql);
         run( "ALTER TABLE road add name VARCHAR" );
         
-        run("INSERT INTO road VALUES (0, 0,"
+        LineString line = gb.lineString(1, 1, 2, 2, 4, 2, 5, 1);
+        
+        sql = "INSERT INTO road VALUES (0, 0,"
+                + "X'"+((GeoPkgTestSetup)delegate).toString(line)+"', 'r1');";
+        run(sql);
+        
+        line = gb.lineString(3, 0, 3, 2, 3, 3, 3, 4);
+        sql = "INSERT INTO road VALUES (1, 1,"
+                + "X'"+((GeoPkgTestSetup)delegate).toString(line)+"', 'r2');";
+        run(sql);
+        line = gb.lineString(3, 2, 4, 2, 5, 3);
+        sql = "INSERT INTO road VALUES (2, 2,"
+                + "X'"+((GeoPkgTestSetup)delegate).toString(line)+"', 'r3');";
+        run(sql);
+/*        run("INSERT INTO road VALUES (0, 0,"
                 + "GeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326),"
                 + "'r1')");
         run("INSERT INTO road VALUES (1, 1,"
@@ -103,7 +155,7 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 + "'r2')");
         run("INSERT INTO road VALUES (2, 2,"
                 + "GeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326)," + "'r3')");
-        
+*/        
     }
     
     @Override

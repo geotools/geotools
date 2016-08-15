@@ -59,7 +59,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
-    ContentFeatureSource featureSource;
+    protected ContentFeatureSource featureSource;
 
     protected void connect() throws Exception {
         super.connect();
@@ -224,13 +224,18 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         // make sure a complaint related to the invalid filter is thrown here
+        SimpleFeatureIterator fi = null;
         try { 
-            SimpleFeatureIterator fi = featureSource.getFeatures(new Query("ft1", f)).features();
+            fi = featureSource.getFeatures(new Query("ft1", f)).features();
             fi.close();
             fail("This query should have failed, it contains an invalid filter");
         } catch(Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // fine
+        } finally {
+            //make sure the iterator is closed.
+            if(fi!=null)
+                fi.close();
         }
     }
 
@@ -307,9 +312,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             }
             assertEquals(2, count);
             //assertEquals(env, features.getBounds());
+            it.close();
+            it=null;
             assertTrue(areReferencedEnvelopesEuqal(env, features.getBounds()));
         } finally {
-            it.close();
+            if(it!=null)
+                it.close();
         }        
     }
     
@@ -331,9 +339,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             assertEquals(2, ((Number) f.getAttribute(aname("intProperty"))).intValue());
             assertFalse(it.hasNext());
             //assertEquals(fe, features.getBounds());
+            it.close();
+            it=null;
             assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
         } finally {
-            it.close();
+            if(it!=null)
+                it.close();
         }
     }
     
@@ -356,9 +367,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             assertEquals(1, ((Number) f.getAttribute(aname("intProperty"))).intValue());
             assertFalse(it.hasNext());
             //assertEquals(fe, features.getBounds());
+            it.close();
+            it=null;
             assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
         } finally {
-            it.close();
+            if(it!=null)
+                it.close();
         }
     }
     
@@ -384,9 +398,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             assertEquals(1, ((Number) f.getAttribute(aname("intProperty"))).intValue());
             assertFalse(it.hasNext());
             //assertEquals(fe, features.getBounds());
+            it.close();
+            it=null;
             assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
         } finally {
-            it.close();
+            if(it!=null)
+                it.close();
         }
     }
     
@@ -536,7 +553,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         Subtract sub = ff.subtract(ff.property(aname("doubleProperty")), ff.literal(0.1));
         PropertyIsEqualTo filter = ff.equals(ff.property(aname("intProperty")), sub);
 
-        //this test is very dependant on the specific database, some db's will round, some won't
+        //this test is very dependent on the specific database, some db's will round, some won't
         // so just assert that something is returned
         assertTrue(featureSource.getCount(new Query(null, filter)) > 0);
     }

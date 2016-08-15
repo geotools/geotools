@@ -4,11 +4,13 @@ JUnit
 As you code, you should write a unit test for each class to test the functionality and robustness of the class. This is made much easier by using JUnit.
 
 JUnit is very good at:
+
 * capturing a Jira bug report in a reproducible manner
 * allowing you to specify exactly the behaviour your want - before you start coding
 * unit testing
 
 The general idea:
+
 * If you are testing src/org/geotools/module/HelloWorld.java
 * create a file test/org/geotools/module/HelloWorldTest.java
 * any public void methods starting with test will be run by JUnit

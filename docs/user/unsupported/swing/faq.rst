@@ -35,4 +35,4 @@ in addition to converting your rasters into an efficient format (anything is bet
 
 References:
 
-* `FeatureCollection Performance </library/main/collection>`_
+* :doc:`FeatureCollection Performance </library/main/collection>`

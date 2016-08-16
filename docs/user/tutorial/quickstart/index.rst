@@ -11,6 +11,7 @@ This tutorial is available for:
    
    eclipse
    netbeans
+   intellij
    maven
 
 If you are interested in porting this tutorial to an additional IDE please `contact us <http://geotools.org/getinvolved.html>`_ on the

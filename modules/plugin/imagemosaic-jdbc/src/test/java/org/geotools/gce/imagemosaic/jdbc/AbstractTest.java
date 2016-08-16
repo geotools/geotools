@@ -562,13 +562,14 @@ public abstract class AbstractTest extends TestCase {
 	}
 
 	protected void imageMosaic(String name, String configUrl,
-			GeneralEnvelope envelope, int width, int heigth) throws IOException {
-		imageMosaic(name, configUrl, envelope, width, heigth,null, null, null);
+			GeneralEnvelope envelope, int width, int heigth,
+            boolean expectsData) throws IOException {
+		imageMosaic(name, configUrl, envelope, width, heigth,null, null, null, expectsData);
 	}
 
 	protected void imageMosaic(String name, String configUrl,
 			GeneralEnvelope envelope, int width, int heigth, Color bColor,Color transparentColor,
-			CoordinateReferenceSystem crs) throws IOException {
+			CoordinateReferenceSystem crs, boolean expectsData) throws IOException {
 		// Hints hints = new
 		// Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM,CRS.parseWKT(M34_PRJ));
 		Hints hints = null;
@@ -609,6 +610,11 @@ public abstract class AbstractTest extends TestCase {
 
 		GridCoverage2D coverage = (GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg, outTransp,bgColor });
+
+        if (expectsData)
+            assertNotNull(coverage);
+        else
+            assertNull(coverage);
 
 		if (coverage!=null) {
 		    ImageIO.write(coverage.getRenderedImage(), "tif", new File(
@@ -671,7 +677,7 @@ public abstract class AbstractTest extends TestCase {
 	private void doVienna(String name) {
 		try {
 			ENV_VIENNA.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-			imageMosaic(name, getConfigUrl(), ENV_VIENNA, 500, 500);
+			imageMosaic(name, getConfigUrl(), ENV_VIENNA, 500, 500, true);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -680,7 +686,7 @@ public abstract class AbstractTest extends TestCase {
 	private void doViennaEnv(String name) {
 		try {
 			ENV_VIENNA2.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-			imageMosaic(name, getConfigUrl(), ENV_VIENNA2, 500, 500);
+			imageMosaic(name, getConfigUrl(), ENV_VIENNA2, 500, 500, true);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -689,7 +695,7 @@ public abstract class AbstractTest extends TestCase {
 	private void doTestImage1(String name) {
 		try {
 			ENV_1.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-			imageMosaic(name, getConfigUrl(), ENV_1, 500, 250);
+			imageMosaic(name, getConfigUrl(), ENV_1, 500, 250, true);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -707,7 +713,7 @@ public abstract class AbstractTest extends TestCase {
 		try {
 			env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
 			imageMosaic(name, getConfigUrl(), env, 400, (int) (li.getEnvelope()
-					.getHeight() / scale));
+					.getHeight() / scale), true);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -724,7 +730,7 @@ public abstract class AbstractTest extends TestCase {
 
 		try {
 			env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-			imageMosaic(name, getConfigUrl(), env, 400, 400);
+			imageMosaic(name, getConfigUrl(), env, 400, 400, false);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -741,7 +747,7 @@ public abstract class AbstractTest extends TestCase {
 
 		try {
 			env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-			imageMosaic(name, getConfigUrl(), env, 400, 400,Color.green,null,null);
+			imageMosaic(name, getConfigUrl(), env, 400, 400,Color.green,null,null, true);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -920,7 +926,7 @@ public abstract class AbstractTest extends TestCase {
 	                try {
 	                        env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
 	                        imageMosaic("transparent", getConfigUrl(), env, 400, 400,
-	                                        null,Color.black, null);
+	                                        null,Color.black, null, true);
 	                } catch (Exception e) {
 	                        Assert.fail(e.getMessage());
 	                }
@@ -938,7 +944,7 @@ public abstract class AbstractTest extends TestCase {
 	                try {
 	                        env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
 	                        imageMosaic("transparent2", getConfigUrl(), env, 400, 400,
-	                                        Color.GREEN,Color.GREEN, null);
+	                                        Color.GREEN,Color.GREEN, null, true);
 	                } catch (Exception e) {
 	                        Assert.fail(e.getMessage());
 	                }

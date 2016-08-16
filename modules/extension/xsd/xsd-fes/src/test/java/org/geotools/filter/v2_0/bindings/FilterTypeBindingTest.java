@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -205,9 +205,10 @@ public class FilterTypeBindingTest extends FESTestSupport {
         
         Element e = getElementByQName(doc, FES.Intersects);
         assertNotNull(e);
+        print(e);
 
         assertNotNull(getElementByQName(e, FES.ValueReference));
-        assertNotNull(getElementByQName(e, FES.Literal));
+        assertNotNull(getElementByQName(e, GML.Point));
     }
         
     public void testEncodeBoundingBox() throws Exception {

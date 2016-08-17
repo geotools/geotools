@@ -499,7 +499,7 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
                                         suggestedRasterSPI, pathType, locationAttribute,
                                         parentLocation, footprint, heterogeneous, q.getHints());
 
-                                visitor.visit(granule, null);
+                                visitor.visit(granule, sf);
                             } catch (Exception e) {
                                 LOGGER.log(Level.FINE, "Skipping invalid granule", e);
                             }

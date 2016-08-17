@@ -16,53 +16,35 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
-import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.measure.unit.Unit;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.TileCache;
-import javax.media.jai.TileScheduler;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
-import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -74,14 +56,16 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
-import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.DomainDescriptor;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
+import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducer;
+import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducer;
+import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
@@ -99,7 +83,6 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.jaitools.imageutils.ImageLayout2;
-import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;
@@ -115,19 +98,27 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.util.Assert;
 
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a requestCoverage is called to a reader.
- * 
+ *
  * @author Simone Giannecchini, GeoSolutions
  * @author Daniele Romagnoli, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  */
 @SuppressWarnings("rawtypes")
-class RasterLayerResponse {
+public class RasterLayerResponse {
+
+    private final SubmosaicProducerFactory submosaicProducerFactory;
+
+    private SortBy[] sortBy;
 
     class MosaicOutput {
 
@@ -167,7 +158,7 @@ class RasterLayerResponse {
             implements SampleDimension {
 
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = 2227219522016820587L;
 
@@ -259,752 +250,57 @@ class RasterLayerResponse {
     }
 
     /**
-     * Represents the input raster element for a mosaic operation, source {@link RenderedImage}, {@link ROI} and alpha channel.
-     * 
-     * <p>
-     * This class is just a simple bean that holds a single element for the mosaic.
-     * 
-     * @author Simone Giannecchini, GeoSolutions SAS
-     *
-     */
-    private class MosaicElement {
-
-        private MosaicElement(PlanarImage alphaChannel, ROI roi, RenderedImage source,
-                PAMDataset pamDataset) {
-            this.alphaChannel = alphaChannel;
-            this.roi = roi;
-            this.source = source;
-            this.pamDataset = pamDataset;
-        }
-
-        PlanarImage alphaChannel;
-
-        ROI roi;
-
-        RenderedImage source;
-
-        PAMDataset pamDataset;
-
-    }
-
-    /**
-     * This class represents the inputs for a mosaic JAI operation.
-     * 
-     * <p>
-     * It contains
-     * <ol>
-     * <li>the images</li>
-     * <li>their transparencies</li>
-     * <li>the ROIs</li>
-     * <li>source thresholds</li>
-     * <li>indications on the alpha</li>
-     * </ol>
-     * 
-     * @author Simone Giannecchini, GeoSolutions SAS
-     *
-     */
-    private class MosaicInputs {
-        private MosaicInputs(boolean doInputTransparency, boolean hasAlpha,
-                List<MosaicElement> sources, double[][] sourceThreshold) {
-            this.doInputTransparency = doInputTransparency;
-            this.hasAlpha = hasAlpha;
-            this.sources = sources;
-            this.sourceThreshold = sourceThreshold;
-        }
-
-        private final boolean doInputTransparency;
-
-        private final boolean hasAlpha;
-
-        private final List<MosaicElement> sources;
-
-        private final double[][] sourceThreshold;
-
-    }
-
-    /**
-     * 
-     * This class is responsible for collecting the granules that
-     * 
-     * @author Simone Giannecchini, GeoSolutions SAS
-     *
-     */
-    private class GranuleCollector {
-
-        /**
-         * Constructor.
-         * 
-         * @param granuleFilter the {@link Filter} we are supposed to use to select granules for this {@link GranuleCollector}.
-         * @param dryRun whether we need to make
-         */
-        private GranuleCollector(Filter granuleFilter, boolean dryRun) {
-            this.granuleFilter = granuleFilter;
-            this.dryRun = dryRun;
-            inputTransparentColor = request.getInputTransparentColor();
-            doInputTransparency = inputTransparentColor != null
-                    && !footprintBehavior.handleFootprints();
-        }
-
-        /** The number of collected granules. **/
-        private int granulesNumber;
-
-        /** {@link Filter} instance used to collect granule. */
-        private final Filter granuleFilter;
-
-        /** We can request a dry run (no tasks are spawn) with this member. */
-        private final boolean dryRun;
-
-        /** The final lists for granules to be computed, splitted per dimension value. */
-        private final List<Future<GranuleLoadingResult>> granulesFutures = new ArrayList<Future<GranuleLoadingResult>>();
-
-        private double[][] sourceThreshold;
-
-        private boolean hasAlpha;
-
-        private boolean doInputTransparency;
-
-        private int[] alphaIndex = new int[1];
-
-        private Color inputTransparentColor;
-
-        /**
-         * This method is responsible for collecting all the granules accepting a certain {@link Filter}.
-         * 
-         * <p>
-         * The method return <code>true</code> when a {@link GranuleDescriptor} for which the {@link GranuleDescriptor#originator}
-         * {@link SimpleFeature} is evaluated positively by the internal filter and retain the granule, or <code>false</code> otherwise so that the
-         * caller can keep trying with a different {@link GranuleCollector}
-         * 
-         * @param granuleDescriptor the {@link GranuleDescriptor} to test with the internal {@link Filter}
-         * @return <code>true</code> in case the {@link GranuleDescriptor} is added, <code>false</code> otherwise.
-         */
-        private boolean accept(GranuleDescriptor granuleDescriptor) {
-            Utilities.ensureNonNull("granuleDescriptor", granuleDescriptor);
-
-            if (granuleFilter.evaluate(granuleDescriptor.originator)) {
-
-                Object imageIndex = granuleDescriptor.originator.getAttribute("imageindex");
-                if (imageIndex != null && imageIndex instanceof Integer) {
-                    imageChoice = ((Integer) imageIndex).intValue();
-                }
-
-                final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice,
-                        mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
-                if (!dryRun) {
-                    if (multithreadingAllowed
-                            && rasterManager.parentReader.multiThreadedLoader != null) {
-                        // MULTITHREADED EXECUTION submitting the task
-                        granulesFutures
-                                .add(rasterManager.parentReader.multiThreadedLoader.submit(loader));
-                    } else {
-                        // SINGLE THREADED Execution, we defer the execution to when we have done the loading
-                        final FutureTask<GranuleLoadingResult> task = new FutureTask<GranuleLoadingResult>(
-                                loader);
-                        granulesFutures.add(task);
-                        task.run(); // run in current thread
-                    }
-                }
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("We added the granule " + granuleDescriptor.toString());
-                }
-
-                // we added it
-                granulesNumber++;
-                return true;
-            } else {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("We filtered out the granule " + granuleDescriptor.toString());
-                }
-            }
-            return false;
-        }
-
-        /**
-         * This methods collects the granules from their eventual multithreaded processing and turn them into a {@link MosaicInputs} object.
-         * 
-         * @return a {@link MosaicInputs} ready to be mosaicked.
-         */
-        private MosaicInputs collectGranules() throws IOException {
-            // do we have anything to do?
-            if (granulesNumber <= 0) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "granules number <= 0");
-                }
-                return null;
-            }
-
-            // execute them all
-            final StringBuilder paths = new StringBuilder();
-            final List<MosaicElement> returnValues = new ArrayList<RasterLayerResponse.MosaicElement>();
-            // collect sources for the current dimension and then process them
-            for (Future<GranuleLoadingResult> future : granulesFutures) {
-
-                try {
-                    // get the resulting RenderedImage
-                    final GranuleLoadingResult result = future.get();
-                    if (result == null) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.log(Level.FINE,
-                                    "Unable to load the raster for granule with request "
-                                            + request.toString());
-                        }
-                        continue;
-                    }
-                    final RenderedImage loadedImage = result.getRaster();
-                    if (loadedImage == null) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.log(Level.FINE,
-                                    "Unable to load the raster for granuleDescriptor "
-                                            + result.granuleUrl + " with request "
-                                            + request.toString());
-                        }
-                        continue;
-                    }
-
-                    // now process it
-                    if (sourceThreshold == null) {
-                        //
-                        // We check here if the images have an alpha channel or some
-                        // other sort of transparency. In case we have transparency
-                        // I also save the index of the transparent channel.
-                        //
-                        // Specifically, I have to check if the loaded image have
-                        // transparency, because if we do a ROI and/or we have a
-                        // transparent color to set we have to remove it.
-                        //
-                        final ColorModel cm = loadedImage.getColorModel();
-                        hasAlpha = cm.hasAlpha();
-                        if (hasAlpha) {
-                            alphaIndex[0] = cm.getNumComponents() - 1;
-                        }
-
-                        //
-                        // we set the input threshold accordingly to the input
-                        // image data type. I find the default value (which is 0) very bad
-                        // for data type other than byte and ushort. With float and double
-                        // it can cut off a large par of the dynamic.
-                        //
-                        sourceThreshold = new double[][] { { CoverageUtilities
-                                .getMosaicThreshold(loadedImage.getSampleModel().getDataType()) } };
-                    }
-
-                    // moving on
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Adding to mosaic granule " + result.granuleUrl);
-                    }
-
-                    // path management
-                    File inputFile = DataUtilities.urlToFile(result.granuleUrl);
-                    String canonicalPath = inputFile.getCanonicalPath();
-                    // Remove ovr extension if present
-                    String fileCanonicalPath = canonicalPath;
-                    if (canonicalPath.endsWith(".ovr")) {
-                        fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
-                    }
-                    paths.append(canonicalPath).append(",");
-
-                    // add to the mosaic collection, with preprocessing
-                    // TODO pluggable mechanism for processing (artifacts,etc...)
-                    MosaicElement input = preProcessGranuleRaster(loadedImage, result,
-                            fileCanonicalPath);
-                    returnValues.add(input);
-
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info("Adding to mosaic failed, original request was " + request);
-                    }
-                    throw new IOException(e);
-                }
-
-                // collect paths
-                granulesPaths = paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "";
-            }
-            if (returnValues == null || returnValues.isEmpty()) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info("The MosaicElement list is null or empty");
-                }
-            }
-            return new MosaicInputs(doInputTransparency, hasAlpha, returnValues, sourceThreshold);
-        }
-
-        private MosaicElement preProcessGranuleRaster(RenderedImage granule,
-                final GranuleLoadingResult result, String canonicalPath) {
-
-            //
-            // INDEX COLOR MODEL EXPANSION
-            //
-            // Take into account the need for an expansions of the original color
-            // model.
-            //
-            // If the original color model is an index color model an expansion
-            // might be requested in case the different palettes are not all the
-            // same. In this case the mosaic operator from JAI would provide wrong
-            // results since it would take the first palette and use that one for
-            // all the other images.
-            //
-            // There is a special case to take into account here. In case the input
-            // images use an IndexColorModel it might happen that the transparent
-            // color is present in some of them while it is not present in some
-            // others. This case is the case where for sure a color expansion is
-            // needed. However we have to take into account that during the masking
-            // phase the images where the requested transparent color was present
-            // will have 4 bands, the other 3. If we want the mosaic to work we
-            // have to add an extra band to the latter type of images for providing
-            // alpha information to them.
-            //
-            //
-            if (rasterManager.expandMe && granule.getColorModel() instanceof IndexColorModel) {
-                granule = new ImageWorker(granule).forceComponentColorModel().getRenderedImage();
-            }
-
-            //
-            // TRANSPARENT COLOR MANAGEMENT
-            //
-            if (doInputTransparency) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Support for alpha on input granule " + result.granuleUrl);
-                }
-                granule = new ImageWorker(granule).makeColorTransparent(inputTransparentColor)
-                        .getRenderedImage();
-                hasAlpha = granule.getColorModel().hasAlpha();
-                if (!granule.getColorModel().hasAlpha()) {
-                    // if the resulting image has no transparency (can happen with IndexColorModel then we need to try component
-                    // color model
-                    granule = new ImageWorker(granule).forceComponentColorModel(true)
-                            .makeColorTransparent(inputTransparentColor).getRenderedImage();
-                    hasAlpha = granule.getColorModel().hasAlpha();
-                }
-                assert hasAlpha;
-
-            }
-            PlanarImage alphaChannel = null;
-            if (hasAlpha || doInputTransparency) {
-                ImageWorker w = new ImageWorker(granule);
-                if (granule.getSampleModel() instanceof MultiPixelPackedSampleModel
-                        || granule.getColorModel() instanceof IndexColorModel) {
-                    w.forceComponentColorModel();
-                    granule = w.getRenderedImage();
-                }
-                // doing this here gives the guarantee that I get the correct index for the transparency band
-                alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
-                assert alphaIndex[0] < granule.getSampleModel().getNumBands();
-
-                //
-                // ALPHA in INPUT
-                //
-                // I have to select the alpha band and provide it to the final
-                // mosaic operator. I have to force going to ComponentColorModel in
-                // case the image is indexed.
-                //
-                alphaChannel = w.retainBands(alphaIndex).getPlanarImage();
-            }
-
-            //
-            // ROI
-            //
-            // we need to add its roi in order to avoid problems with the mosaics sources overlapping
-            final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
-            Geometry mask = JTS.toGeometry(new Envelope(bounds.getMinX(), bounds.getMaxX(),
-                    bounds.getMinY(), bounds.getMaxY()));
-            ROI imageROI = new ROIGeometry(mask);
-            if (footprintBehavior.handleFootprints()) {
-
-                // get the real footprint
-                final ROI footprint = result.getFootprint();
-                if (footprint != null) {
-                    if (imageROI.contains(footprint.getBounds2D().getBounds())) {
-                        imageROI = footprint;
-                    } else {
-                        imageROI = imageROI.intersect(footprint);
-                    }
-                }
-
-                // ARTIFACTS FILTERING
-                if (defaultArtifactsFilterThreshold != Integer.MIN_VALUE
-                        && result.isDoFiltering()) {
-                    int artifactThreshold = defaultArtifactsFilterThreshold;
-                    if (artifactsFilterPTileThreshold != -1) {
-
-                        // Looking for a histogram for that granule in order to
-                        // setup dynamic threshold
-                        if (canonicalPath != null) {
-                            final String path = FilenameUtils.getFullPath(canonicalPath);
-                            final String baseName = FilenameUtils.getBaseName(canonicalPath);
-                            final String histogramPath = path + baseName + "." + "histogram";
-                            final Histogram histogram = Utils.getHistogram(histogramPath);
-                            if (histogram != null) {
-                                final double[] p = histogram
-                                        .getPTileThreshold(artifactsFilterPTileThreshold);
-                                artifactThreshold = (int) p[0];
-                            }
-                        }
-                    }
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(Level.FINE, "Filtering granules artifacts");
-                    }
-                    ImageWorker w = new ImageWorker(granule).setRenderingHints(hints)
-                            .setROI(imageROI);
-                    w.setBackground(new double[] { 0 });
-                    w.artifactsFilter(artifactThreshold, 3);
-                    granule = w.getRenderedImage();
-                    // granule = ArtifactsFilterDescriptor.create(granule, imageROI, new double[]{0}, artifactThreshold, 3, hints);
-                }
-            }
-
-            // preparing input
-            return new MosaicElement(alphaChannel, imageROI, granule, result.getPamDataset());
-        }
-    }
-
-    /**
-     * A class doing the mosaic operation on top of a List of {@link MosaicElement}s.
-     * 
-     * @author Simone Giannecchini, GeoSolutions SAS
-     *
-     */
-    private class Mosaicker {
-        private final List<MosaicElement> inputs;
-
-        private final double[][] sourceThreshold;
-
-        private final boolean doInputTransparency;
-
-        private final boolean hasAlpha;
-
-        private final MergeBehavior mergeBehavior;
-
-        private Mosaicker(MosaicInputs inputs, MergeBehavior mergeBehavior) {
-            this.inputs = new ArrayList<RasterLayerResponse.MosaicElement>(inputs.sources);
-            this.sourceThreshold = inputs.sourceThreshold;
-            this.doInputTransparency = inputs.doInputTransparency;
-            this.hasAlpha = inputs.hasAlpha;
-            this.mergeBehavior = mergeBehavior;
-        }
-
-        /**
-         * @return
-         */
-        private RenderingHints prepareHints() {
-            // build final layout and use it for cropping purposes
-            final ImageLayout layout = new ImageLayout(rasterBounds.x, rasterBounds.y,
-                    rasterBounds.width, rasterBounds.height);
-            Dimension tileDimensions = request.getTileDimensions();
-            if (tileDimensions == null) {
-                tileDimensions = (Dimension) JAI.getDefaultTileSize().clone();
-            }
-            layout.setTileGridXOffset(0).setTileGridYOffset(0);
-            layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-            final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-
-            // look for additional hints for caching and tile scheduling
-            if (hints != null && !hints.isEmpty()) {
-
-                // TileCache
-                TileCache tc = Utils.getTileCacheHint(hints);
-                if (tc != null) {
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, tc));
-                }
-
-                // BorderExtender
-                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);// default
-                BorderExtender be = Utils.getBorderExtenderHint(hints);
-                if (be != null) {
-                    localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, be));
-                }
-
-                // TileScheduler
-                TileScheduler tileScheduler = Utils.getTileSchedulerHint(hints);
-                if (tileScheduler != null) {
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, tileScheduler));
-                }
-            }
-            return localHints;
-        }
-
-        /**
-         * Once we reach this method it means that we have loaded all the images which were intersecting the requested envelope. Next step is to
-         * create the final mosaic image and cropping it to the exact requested envelope.
-         * 
-         * @return A {@link MosaicElement}}.
-         */
-        private MosaicElement createMosaic() throws IOException {
-
-            // anything to do?
-            final int size = inputs.size();
-            if (size <= 0) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "Unable to load any granuleDescriptor ");
-                }
-                return null;
-            }
-
-            // === prepare hints
-            final RenderingHints localHints = prepareHints();
-
-            //
-            // SPECIAL CASE
-            // 1 single tile, we try not do a mosaic.
-            if (size == 1 && Utils.OPTIMIZE_CROP) {
-                // prepare input
-                MosaicElement in = inputs.get(0);
-                if (in == null) {
-                    throw new NullPointerException(
-                            "The list of MosaicElements contains one element but it's null");
-                }
-                PAMDataset pamDataset = in.pamDataset;
-
-                // the roi is exactly equal to the image
-                ROI roi = in.roi;
-                if (roi != null) {
-                    Rectangle bounds = Utils.toRectangle(roi.getAsShape());
-                    if (bounds != null) {
-                        RenderedImage mosaic = in.source;
-                        Rectangle imageBounds = PlanarImage.wrapRenderedImage(mosaic).getBounds();
-                        if (imageBounds.equals(bounds)) {
-
-                            // do we need to crop? (image is bigger than requested?)
-                            if (!rasterBounds.contains(imageBounds)) {
-                                // we have to crop
-                                XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
-
-                                if (imageBounds.isEmpty()) {
-                                    // return back a constant image
-                                    return null;
-                                }
-                                // crop
-                                ImageWorker iw = new ImageWorker(mosaic);
-                                iw.setRenderingHints(localHints);
-                                iw.crop(imageBounds.x, imageBounds.y, imageBounds.width,
-                                        imageBounds.height);
-                                mosaic = iw.getRenderedImage();
-                                // Propagate NoData
-                                PlanarImage t = PlanarImage.wrapRenderedImage(mosaic);
-                                if (iw.getNoData() != null) {
-                                    t.setProperty(NoDataContainer.GC_NODATA,
-                                            new NoDataContainer(iw.getNoData()));
-                                    mosaic = t;
-                                }
-                                imageBounds = t.getBounds();
-                            }
-
-                            // and, do we need to add a BORDER around the image?
-                            if (!imageBounds.contains(rasterBounds)) {
-                                mosaic = MergeBehavior.FLAT.process(new RenderedImage[] { mosaic },
-                                        backgroundValues, sourceThreshold,
-                                        (hasAlpha || doInputTransparency)
-                                                ? new PlanarImage[] { in.alphaChannel }
-                                                : new PlanarImage[] { null },
-                                        new ROI[] { in.roi },
-                                        request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND
-                                                : MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                        localHints);
-                                roi = roi.add(new ROIGeometry(JTS
-                                        .toGeometry(new ReferencedEnvelope(rasterBounds, null))));
-                                if (footprintBehavior != FootprintBehavior.None) {
-                                    // Adding globalRoi to the output
-                                    RenderedOp rop = (RenderedOp) mosaic;
-                                    rop.setProperty("ROI", in.roi);
-                                }
-                            }
-
-                            // add to final list
-                            return new MosaicElement(in.alphaChannel, roi, mosaic, pamDataset);
-                        }
-                    }
-                }
-            }
-
-            // === do the mosaic as usual
-            // prepare sources for the mosaic operation
-            final RenderedImage[] sources = new RenderedImage[size];
-            final PlanarImage[] alphas = new PlanarImage[size];
-            ROI[] rois = new ROI[size];
-            final PAMDataset[] pams = new PAMDataset[size];
-            int realROIs = 0;
-            for (int i = 0; i < size; i++) {
-                final MosaicElement mosaicElement = inputs.get(i);
-                sources[i] = mosaicElement.source;
-                alphas[i] = mosaicElement.alphaChannel;
-                rois[i] = mosaicElement.roi;
-                pams[i] = mosaicElement.pamDataset;
-
-                // If we have an alpha, mask it by the ROI
-                if (alphas[i] != null && rois[i] != null) {
-                    // Get ROI as image, fix color space
-                    ImageWorker roi = new ImageWorker(rois[i].getAsImage());
-                    roi.forceComponentColorModel();
-                    ImageWorker alpha = new ImageWorker(alphas[i]);
-                    alpha.multiply(roi.getRenderedImage());
-
-                    alphas[i] = alpha.getPlanarImage();
-                }
-                // compose the overall ROI if needed
-                if (mosaicElement.roi != null) {
-                    realROIs++;
-                }
-            }
-            if (realROIs == 0) {
-                rois = null;
-            }
-
-            // execute mosaic
-            final RenderedImage mosaic = mergeBehavior.process(sources, backgroundValues,
-                    sourceThreshold, (hasAlpha || doInputTransparency) ? alphas : null, rois,
-                    request.isBlend() ? MosaicDescriptor.MOSAIC_TYPE_BLEND
-                            : MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                    localHints);
-
-            Object property = mosaic.getProperty("ROI");
-            ROI overallROI = (property instanceof ROI) ? (ROI) property : null;
-            final RenderedImage postProcessed = footprintBehavior.postProcessMosaic(mosaic,
-                    overallROI, localHints);
-
-            // prepare for next step
-            if (hasAlpha || doInputTransparency) {
-                return new MosaicElement(
-                        new ImageWorker(postProcessed).retainLastBand().getPlanarImage(),
-                        overallROI, postProcessed, Utils.mergePamDatasets(pams));
-            } else {
-                return new MosaicElement(null, overallROI, postProcessed,
-                        Utils.mergePamDatasets(pams));
-            }
-
-        }
-
-    }
-
-    /**
      * This class is responsible for putting together the granules for the final mosaic.
-     * 
+     *
      * @author Simone Giannecchini, GeoSolutions SAS
-     * 
      */
     private class MosaicProducer implements GranuleCatalogVisitor {
 
-        /** The number of granules actually dispatched to the internal collectors. */
+        /**
+         * The number of granules actually dispatched to the internal collectors.
+         */
         private int granulesNumber;
 
-        /** The {@link MergeBehavior} indicated into the request. */
+        /**
+         * The {@link MergeBehavior} indicated into the request.
+         */
         private MergeBehavior mergeBehavior;
 
-        /** The internal collectors for incoming granules. */
-        private List<GranuleCollector> granuleCollectors = new ArrayList<GranuleCollector>();
+        /**
+         * The internal collectors for incoming granules.
+         */
+        private List<SubmosaicProducer> granuleCollectors = new ArrayList<>();
 
         /**
          * Default {@link Constructor}
          */
-        private MosaicProducer() {
-            this(false);
+        private MosaicProducer(List<SubmosaicProducer> collectors) {
+            this(false, collectors);
         }
 
         /**
          * {@link MosaicProducer} constructor. It can be used to specify that we want to perform a dry run just to count the granules we would load
          * with the specified query.
-         * 
+         * <p>
          * <p>
          * A dry run means: no tasks are executed.
-         * 
+         *
          * @param dryRun <code>true</code> for a dry run, <code>false</code> otherwise.
+         * @param collectorsFactory
          */
-        private MosaicProducer(final boolean dryRun) {
-
-            // get merge behavior as per request
-            mergeBehavior = request.getMergeBehavior();
-
-            // prepare dimensions management if needed, that is in case we use stacking
-            if (mergeBehavior.equals(MergeBehavior.STACK)) {
-
-                // create filter to filter results
-                // === Custom Domains Management
-                final Map<String, List> requestedAdditionalDomains = request
-                        .getRequestedAdditionalDomains();
-                if (!requestedAdditionalDomains.isEmpty()) {
-                    Set<Entry<String, List>> entries = requestedAdditionalDomains.entrySet();
-
-                    // Preliminary check on additional domains specification
-                    // we can't do stack in case there are multiple values selections for more than one domain
-                    checkMultipleSelection(entries);
-
-                    // Prepare filtering
-                    Entry<String, List> multipleSelectionEntry = null;
-                    final List<Filter> filters = new ArrayList<Filter>(entries.size());
-
-                    // Loop over the additional domains
-                    for (Entry<String, List> entry : entries) {
-                        if (entry.getValue().size() > 1) {
-                            // take note of the entry containing multiple values
-                            multipleSelectionEntry = entry;
-                        } else {
-                            // create single value domain filter
-                            String domainName = entry.getKey() + DomainDescriptor.DOMAIN_SUFFIX;
-                            filters.add(rasterManager.domainsManager.createFilter(domainName,
-                                    Arrays.asList(entry.getValue())));
-                        }
-                    }
-
-                    // Anding all filters together
-                    Filter andFilter = filters.size() > 0
-                            ? FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters) : null;
-
-                    if (multipleSelectionEntry == null) {
-                        // Simpler case... no multiple selections. All filter have already been combined
-                        granuleCollectors.add(new GranuleCollector(andFilter, dryRun));
-                    } else {
-                        final String domainName = multipleSelectionEntry.getKey()
-                                + DomainDescriptor.DOMAIN_SUFFIX;
-
-                        // Need to loop over the multiple values of a custom domains
-                        final List values = multipleSelectionEntry.getValue();
-                        for (Object o : values) {
-
-                            // create a filter for this value
-                            Filter valueFilter = rasterManager.domainsManager
-                                    .createFilter(domainName, Arrays.asList(o));
-
-                            // combine that filter with the previously merged ones
-                            Filter combinedFilter = andFilter == null ? valueFilter
-                                    : FeatureUtilities.DEFAULT_FILTER_FACTORY.and(andFilter,
-                                            valueFilter);
-                            granuleCollectors.add(new GranuleCollector(combinedFilter, dryRun));
-                        }
-                    }
-                }
-            }
-
-            // we don't stack them, either because we are not asked to or because we don't need to although
-            // we were asked
-            // let's use a default marker
-            if (granuleCollectors.isEmpty()) {
-                granuleCollectors.add(new GranuleCollector(Filter.INCLUDE, dryRun));
-            }
+        private MosaicProducer(final boolean dryRun, List<SubmosaicProducer> collectors) {
+            this.granuleCollectors = collectors;
+            this.mergeBehavior = request.getMergeBehavior();
         }
 
         /**
-         * Check whether the specified custom domains contain multiple selection. That case isn't supported so we will throw an exception
-         * 
-         * @param entries
-         */
-        private void checkMultipleSelection(Set<Entry<String, List>> entries) {
-            int multipleDimensionsSelections = 0;
-            for (Entry<String, List> entry : entries) {
-                if (entry.getValue().size() > 1) {
-                    multipleDimensionsSelections++;
-                    if (multipleDimensionsSelections > 1) {
-                        throw new IllegalStateException(
-                                "Unable to handle dimensions stacking for more than 1 dimension");
-                    }
-                }
-            }
-        }
-
-        /**
-         * This method accepts incming granules and dispatch them to the correct {@link GranuleCollector} depending on the internal {@link Filter} per
-         * the dimension.
-         * 
+         * This method accepts incming granules and dispatch them to the correct {@link DefaultSubmosaicProducer} depending on the internal
+         * {@link Filter} per the dimension.
+         * <p>
          * <p>
          * If not {@link MergeBehavior#STACK}ing is required, we collect them all together with an include filter.
          */
-        public void visit(GranuleDescriptor granuleDescriptor, Object o) {
+        public void visit(GranuleDescriptor granuleDescriptor, SimpleFeature sf) {
 
             //
             // load raster data
@@ -1012,13 +308,17 @@ class RasterLayerResponse {
             // create a granuleDescriptor loader
             final Geometry bb = JTS.toGeometry((BoundingBox) mosaicBBox);
             final Geometry inclusionGeometry = granuleDescriptor.getFootprint();
+            boolean intersects = false;
+            if (inclusionGeometry != null) {
+                intersects = inclusionGeometry.intersects(bb);
+            }
             if (!footprintBehavior.handleFootprints() || inclusionGeometry == null
-                    || (footprintBehavior.handleFootprints() && inclusionGeometry.intersects(bb))) {
+                    || (footprintBehavior.handleFootprints() && intersects)) {
 
                 // find the right filter for this granule
                 boolean found = false;
-                for (GranuleCollector collector : granuleCollectors) {
-                    if (collector.accept(granuleDescriptor)) {
+                for (SubmosaicProducer submosaicProducer : granuleCollectors) {
+                    if (submosaicProducer.accept(granuleDescriptor)) {
                         granulesNumber++;
                         found = true;
                         break;
@@ -1041,14 +341,14 @@ class RasterLayerResponse {
 
         /**
          * This method is responsible for producing the final mosaic.
-         * 
+         * <p>
          * <p>
          * Depending on whether or not a {@link MergeBehavior#STACK}ing is required, we perform 1 or 2 steps.
          * <ol>
          * <li>step 1 is for merging flat on each value for the dimension</li>
          * <li>step 2 is for merging stack on the resulting mosaics</li>
          * </ol>
-         * 
+         *
          * @return
          * @throws IOException
          */
@@ -1061,18 +361,18 @@ class RasterLayerResponse {
 
             // STEP 1 collect all the mosaics from each single dimension
             LOGGER.fine("Producing the final mosaic, step 1, loop through granule collectors");
-            final List<MosaicElement> mosaicInputs = new ArrayList<RasterLayerResponse.MosaicElement>();
-            GranuleCollector first = null; // we take this apart to steal some val
-            int size = granuleCollectors.size();
-            for (GranuleCollector collector : granuleCollectors) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Using collector with filter:" + collector.granuleFilter.toString());
+            final List<MosaicElement> mosaicInputs = new ArrayList<MosaicElement>();
+            SubmosaicProducer first = null; // we take this apart to steal some val
+            int size = 0;
+            for (SubmosaicProducer collector : granuleCollectors) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.fine("Submosaic producer being called: " + collector.toString());
                 }
-                final MosaicElement preparedMosaic = new Mosaicker(collector.collectGranules(),
-                        MergeBehavior.FLAT).createMosaic();
-                if (preparedMosaic != null) {
-                    mosaicInputs.add(preparedMosaic);
+                final List<MosaicElement> preparedMosaic = collector.createMosaic();
+                size += preparedMosaic.size();
+                if (preparedMosaic.size() > 0
+                        && !preparedMosaic.stream().allMatch(p -> p == null)) {
+                    mosaicInputs.addAll(preparedMosaic);
                     if (first == null) {
                         first = collector;
                     }
@@ -1093,27 +393,43 @@ class RasterLayerResponse {
                 return null;
             }
 
-            MosaicInputs mosaickingInputs = new MosaicInputs(first.doInputTransparency,
-                    first.hasAlpha, mosaicInputs, first.sourceThreshold);
-            // normal situan
-            return new MosaicOutput(new Mosaicker(mosaickingInputs, mergeBehavior).createMosaic());
+            MosaicInputs mosaickingInputs = new MosaicInputs(first.doInputTransparency(),
+                    first.hasAlpha(), mosaicInputs, first.getSourceThreshold());
+            // normal situation
+            return new MosaicOutput(
+                    new Mosaicker(RasterLayerResponse.this, mosaickingInputs, mergeBehavior)
+                            .createMosaic());
+        }
+
+        public SubmosaicProducerFactory getGranuleCollectorsFactory() {
+            return new DefaultSubmosaicProducerFactory();
         }
     }
 
-    /** Logger. */
+    /**
+     * Logger.
+     */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(RasterLayerResponse.class);
 
-    /** The GridCoverage produced after a {@link #createResponse()} method call */
+    /**
+     * The GridCoverage produced after a {@link #createResponse()} method call
+     */
     private GridCoverage2D gridCoverage;
 
-    /** The {@link RasterLayerRequest} originating this response */
+    /**
+     * The {@link RasterLayerRequest} originating this response
+     */
     private RasterLayerRequest request;
 
-    /** The coverage factory producing a {@link GridCoverage} from an image */
+    /**
+     * The coverage factory producing a {@link GridCoverage} from an image
+     */
     private GridCoverageFactory coverageFactory;
 
-    /** The base envelope related to the input coverage */
+    /**
+     * The base envelope related to the input coverage
+     */
     private GeneralEnvelope coverageEnvelope;
 
     private RasterManager rasterManager;
@@ -1157,19 +473,19 @@ class RasterLayerResponse {
     /**
      * Construct a {@code RasterLayerResponse} given a specific {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
      * {@code GridCoverage}s and an {@code ImageReaderSpi} to be used for instantiating an Image Reader for a read operation,
-     * 
+     *
      * @param request a {@link RasterLayerRequest} originating this response.
-     * @param coverageFactory a {@code GridCoverageFactory} to produce a {@code
-     *            GridCoverage} when calling the {@link #createResponse()} method.
-     * @param readerSpi the Image Reader Service provider interface.
+     * @param rasterManager raster manager being used
+     * @param collectorsFactory
      */
-    public RasterLayerResponse(final RasterLayerRequest request,
-            final RasterManager rasterManager) {
+    public RasterLayerResponse(final RasterLayerRequest request, final RasterManager rasterManager,
+            SubmosaicProducerFactory collectorsFactory) {
         this.request = request;
         coverageEnvelope = rasterManager.spatialDomainManager.coverageEnvelope;
         this.coverageFactory = rasterManager.getCoverageFactory();
         this.rasterManager = rasterManager;
         this.hints = rasterManager.getHints();
+        this.submosaicProducerFactory = collectorsFactory;
         baseGridToWorld = rasterManager.spatialDomainManager.coverageGridToWorld2D;
         finalTransparentColor = request.getOutputTransparentColor();
         // are we doing multithreading?
@@ -1185,7 +501,7 @@ class RasterLayerResponse {
     /**
      * Compute the coverage request and produce a grid coverage which will be returned by {@link #createResponse()}. The produced grid coverage may be
      * {@code null} in case of empty request.
-     * 
+     *
      * @return the {@link GridCoverage} produced as computation of this response using the {@link #createResponse()} method.
      * @throws IOException
      * @uml.property name="gridCoverage"
@@ -1197,7 +513,6 @@ class RasterLayerResponse {
 
     /**
      * @return the {@link RasterLayerRequest} originating this response.
-     * 
      * @uml.property name="request"
      */
     public RasterLayerRequest getOriginatingCoverageRequest() {
@@ -1206,12 +521,7 @@ class RasterLayerResponse {
 
     /**
      * This method creates the GridCoverage2D from the underlying file given a specified envelope, and a requested dimension.
-     * 
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead operation or a simple direct call to the {@code read}
-     *        method of a proper {@code ImageReader}.
-     * @param overviewPolicy the overview policy which need to be adopted
-     * @return a {@code GridCoverage}
-     * 
+     *
      * @throws java.io.IOException
      */
     private void processRequest() throws IOException {
@@ -1260,8 +570,8 @@ class RasterLayerResponse {
 
     /**
      * This method loads the granules which overlap the requested {@link GeneralEnvelope} using the provided values for alpha and input ROI.
-     * 
-     * @return
+     *
+     * @return the mosaic output for the request
      * @throws DataSourceException
      */
     private MosaicOutput prepareResponse() throws DataSourceException {
@@ -1289,7 +599,8 @@ class RasterLayerResponse {
             handleSortByClause(query);
 
             // === collect granules
-            final MosaicProducer visitor = new MosaicProducer();
+            final MosaicProducer visitor = new MosaicProducer(submosaicProducerFactory
+                    .createProducers(this.getRequest(), this.getRasterManager(), this, false));
             rasterManager.getGranuleDescriptors(query, visitor);
 
             // get those granules and create the final mosaic
@@ -1323,7 +634,9 @@ class RasterLayerResponse {
                 // spawn any loading tasks, we also ensure we get only 1 feature at most
                 // to make this blazing fast
                 LOGGER.fine("We got no granules, let's do a dry run with no filters");
-                final MosaicProducer dryRunVisitor = new MosaicProducer(true);
+                List<SubmosaicProducer> collectors = submosaicProducerFactory
+                        .createProducers(this.getRequest(), this.getRasterManager(), this, true);
+                final MosaicProducer dryRunVisitor = new MosaicProducer(true, collectors);
                 final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
                 query.getFilter().accept(bboxExtractor, null);
                 query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
@@ -1351,7 +664,7 @@ class RasterLayerResponse {
 
     /**
      * This method is responsible for computing the raster bounds of the final mosaic.
-     * 
+     *
      * @throws TransformException In case transformation fails during the process.
      */
     private void initRasterBounds() throws TransformException {
@@ -1372,7 +685,7 @@ class RasterLayerResponse {
 
     /**
      * This method is responsible for initializing transformations g2w and back
-     * 
+     *
      * @throws Exception in case we don't manage to instantiate some of them.
      */
     private void initTransformations() throws Exception {
@@ -1418,7 +731,6 @@ class RasterLayerResponse {
 
     /**
      * This method is responsible for initializing the bbox for the mosaic produced by this response.
-     * 
      */
     private void initBBOX() {
         // ok we got something to return, let's load records from the index
@@ -1433,7 +745,7 @@ class RasterLayerResponse {
 
     /**
      * This method encloses the standard behavior for the selection of the proper overview level.
-     * 
+     * <p>
      * See {@link ReadParamsController}
      */
     private void chooseOverview() throws IOException, TransformException {
@@ -1464,16 +776,15 @@ class RasterLayerResponse {
         }
         assert imageChoice >= 0;
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(new StringBuilder("Loading level ").append(imageChoice)
-                    .append(" with subsampling factors ")
-                    .append(baseReadParameters.getSourceXSubsampling()).append(" ")
-                    .append(baseReadParameters.getSourceYSubsampling()).toString());
+            LOGGER.fine("Loading level " + imageChoice + " with subsampling factors "
+                    + baseReadParameters.getSourceXSubsampling() + " "
+                    + baseReadParameters.getSourceYSubsampling());
         }
     }
 
     /**
      * This method is responsible for initializing the {@link Query} object with the BBOX filter as per the incoming {@link RasterLayerRequest}.
-     * 
+     *
      * @return a {@link Query} object with the BBOX {@link Filter} in it.
      * @throws IOException in case something bad happens
      */
@@ -1505,7 +816,7 @@ class RasterLayerResponse {
 
     /**
      * This method is responsible for creating the filters needed for addtional dimensions like TIME, ELEVATION additional Domains
-     * 
+     *
      * @param query the {@link Query} to set filters for.
      */
     private void handleAdditionalFilters(Query query) {
@@ -1541,7 +852,7 @@ class RasterLayerResponse {
 
         // === Custom Domains Management
         if (hasAdditionalDomains) {
-            final List<Filter> additionalFilter = new ArrayList<Filter>();
+            final List<Filter> additionalFilter = new ArrayList<>();
             for (Entry<String, List> entry : additionalDomains.entrySet()) {
 
                 // build a filter for each dimension
@@ -1558,9 +869,8 @@ class RasterLayerResponse {
 
     /**
      * Handles the optional {@link SortBy} clause for the query to the catalog
-     * 
+     *
      * @param query the {@link Query} to set the {@link SortBy} for.
-     * 
      */
     private void handleSortByClause(final Query query) {
         Utilities.ensureNonNull("query", query);
@@ -1569,7 +879,7 @@ class RasterLayerResponse {
         if (sortByClause != null && sortByClause.length() > 0) {
             final String[] elements = sortByClause.split(",");
             if (elements != null && elements.length > 0) {
-                final List<SortBy> clauses = new ArrayList<SortBy>(elements.length);
+                final List<SortBy> clauses = new ArrayList<>(elements.length);
                 for (String element : elements) {
                     // check
                     if (element == null || element.length() <= 0) {
@@ -1604,10 +914,11 @@ class RasterLayerResponse {
                 }
 
                 // assign to query if sorting is supported!
-                final SortBy[] sb = clauses.toArray(new SortBy[] {});
+
+                this.sortBy = clauses.toArray(new SortBy[] {});
                 if (rasterManager.getGranuleCatalog()
-                        .getQueryCapabilities(rasterManager.getTypeName()).supportsSorting(sb)) {
-                    query.setSortBy(sb);
+                        .getQueryCapabilities(rasterManager.getTypeName()).supportsSorting(sortBy)) {
+                    query.setSortBy(sortBy);
                 }
             } else {
                 LOGGER.fine("No SortBy Clause");
@@ -1617,7 +928,7 @@ class RasterLayerResponse {
 
     /**
      * This method is responsible for creating a blank image as a reponse to the query as it seems we got a no data area.
-     * 
+     *
      * @return a blank {@link RenderedImage} initialized using the background values
      */
     private MosaicOutput createBlankResponse() {
@@ -1644,11 +955,11 @@ class RasterLayerResponse {
         RenderedImage finalImage;
         if (ImageUtilities.isMediaLibAvailable()) {
             // create a constant image with a proper layout
-            finalImage = ConstantDescriptor.create(Float.valueOf(rasterBounds.width),
-                    Float.valueOf(rasterBounds.height), values, renderingHints);
+            finalImage = ConstantDescriptor.create((float) rasterBounds.width,
+                    (float) rasterBounds.height, values, renderingHints);
             if (rasterBounds.x != 0 || rasterBounds.y != 0) {
                 ImageWorker w = new ImageWorker(finalImage);
-                w.translate(Float.valueOf(rasterBounds.x), Float.valueOf(rasterBounds.y),
+                w.translate((float) rasterBounds.x, (float) rasterBounds.y,
                         Interpolation.getInstance(Interpolation.INTERP_NEAREST));
                 finalImage = w.getRenderedImage();
             }
@@ -1724,7 +1035,7 @@ class RasterLayerResponse {
 
     /**
      * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
-     * 
+     *
      * @param image
      * @return
      * @throws IOException
@@ -1857,5 +1168,81 @@ class RasterLayerResponse {
             }
         }
         return null;
+    }
+
+    public RasterLayerRequest getRequest() {
+        return request;
+    }
+
+    public FootprintBehavior getFootprintBehavior() {
+        return footprintBehavior;
+    }
+
+    public ImageReadParam getBaseReadParameters() {
+        return baseReadParameters;
+    }
+
+    public MathTransform2D getFinalGridToWorldCorner() {
+        return finalGridToWorldCorner;
+    }
+
+    public MathTransform2D getFinalWorldToGridCorner() {
+        return finalWorldToGridCorner;
+    }
+
+    public ReferencedEnvelope getMosaicBBox() {
+        return mosaicBBox;
+    }
+
+    public Color getFinalTransparentColor() {
+        return finalTransparentColor;
+    }
+
+    public Rectangle getRasterBounds() {
+        return rasterBounds;
+    }
+
+    public MathTransform getBaseGridToWorld() {
+        return baseGridToWorld;
+    }
+
+    public int getImageChoice() {
+        return imageChoice;
+    }
+
+    public void setImageChoice(int imageChoice) {
+        this.imageChoice = imageChoice;
+    }
+
+    public boolean isMultithreadingAllowed() {
+        return multithreadingAllowed;
+    }
+
+    public RasterManager getRasterManager() {
+        return rasterManager;
+    }
+
+    public Hints getHints() {
+        return hints;
+    }
+
+    public void setGranulesPaths(String granulesPaths) {
+        this.granulesPaths = granulesPaths;
+    }
+
+    public int getDefaultArtifactsFilterThreshold() {
+        return defaultArtifactsFilterThreshold;
+    }
+
+    public double getArtifactsFilterPTileThreshold() {
+        return artifactsFilterPTileThreshold;
+    }
+
+    public SortBy[] getSortBy() {
+        return sortBy;
+    }
+
+    public double[] getBackgroundValues() {
+        return backgroundValues;
     }
 }

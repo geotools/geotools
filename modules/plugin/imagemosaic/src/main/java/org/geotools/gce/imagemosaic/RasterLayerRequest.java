@@ -51,7 +51,7 @@ import org.opengis.referencing.ReferenceIdentifier;
  * @author Simone Giannecchini, GeoSolutions
  */
 @SuppressWarnings("rawtypes")
-class RasterLayerRequest {
+public class RasterLayerRequest {
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(RasterLayerRequest.class);
@@ -93,7 +93,7 @@ class RasterLayerRequest {
 
     /**
      * Max number of tiles that this plugin will load.
-     * 
+     *
      * If this number is exceeded, i.e. we request an area which is too large instead of getting stuck with opening thousands of files I give you back
      * a fake coverage.
      */

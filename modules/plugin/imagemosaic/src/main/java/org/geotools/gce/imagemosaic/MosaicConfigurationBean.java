@@ -24,6 +24,7 @@ import java.util.Arrays;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -38,6 +39,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class MosaicConfigurationBean {
 
+    private Indexer indexer;
+
     /**
      * Default constructor
      */
@@ -49,12 +52,8 @@ public class MosaicConfigurationBean {
         Utilities.ensureNonNull("MosaicConfigurationBean", that);
         try {
             BeanUtils.copyProperties(this, that);
-        } catch (IllegalAccessException e) {
-            final IllegalArgumentException iae = new IllegalArgumentException(e);
-            throw iae;
-        } catch (InvocationTargetException e) {
-            final IllegalArgumentException iae = new IllegalArgumentException(e);
-            throw iae;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -264,5 +263,13 @@ public class MosaicConfigurationBean {
                 + ",sampleModel=" + sampleModel + ", envelope=" + envelope
                 + ", footprintManagement=" + footprintManagement + ", checkAuxiliaryMetadata="
                 + checkAuxiliaryMetadata + "]";
+    }
+
+    public void setIndexer(Indexer indexer) {
+        this.indexer = indexer;
+    }
+
+    public Indexer getIndexer() {
+        return indexer;
     }
 }

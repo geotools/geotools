@@ -89,8 +89,10 @@ import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
+import org.geotools.gce.imagemosaic.granulecollector.ReprojectingSubmosaicProducerFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -102,6 +104,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -142,10 +146,6 @@ public class Utils {
     public final static Key MOSAIC_READER = new Key(ImageMosaicReader.class);
 
     public final static String RANGE_SPLITTER_CHAR = ";";
-
-    public final static String INDEXER_PROPERTIES = "indexer.properties";
-
-    public final static String INDEXER_XML = "indexer.xml";
 
     private static JAXBContext CONTEXT = null;
 
@@ -273,6 +273,12 @@ public class Utils {
         public static final String GEOMETRY_HANDLER = "GranuleHandler";
 
         public static final String COVERAGE_NAME_COLLECTOR_SPI = "CoverageNameCollectorSPI";
+
+        public static final String MOSAIC_CRS = "MosaicCRS";
+
+        public static final String HETEROGENEOUS_CRS = "HeterogeneousCRS";
+
+        public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
     }
 
     /**
@@ -304,7 +310,7 @@ public class Utils {
     }
 
     /**
-     * Given a source object, allow to retrieve (when possible) the related url, 
+     * Given a source object, allow to retrieve (when possible) the related url,
      * the related file or the original input source object itself.
      */
     public static class SourceGetter {
@@ -493,18 +499,12 @@ public class Utils {
             return exception.getMessage();
     }
 
-    // static URL checkSource(Object source) throws MalformedURLException,
-    // DataSourceException {
-    // return checkSource(source, null);
-    // }
-
-    static MosaicConfigurationBean loadMosaicProperties(final URL sourceURL,
-            final String defaultLocationAttribute) {
-        return loadMosaicProperties(sourceURL, defaultLocationAttribute, null);
+    static MosaicConfigurationBean loadMosaicProperties(final URL sourceURL) {
+        return loadMosaicProperties(sourceURL, null);
     }
 
-    static MosaicConfigurationBean loadMosaicProperties(final URL sourceURL,
-            final String defaultLocationAttribute, final Set<String> ignorePropertiesSet) {
+    private static MosaicConfigurationBean loadMosaicProperties(final URL sourceURL,
+            final Set<String> ignorePropertiesSet) {
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Trying to load properties file from URL:" + sourceURL);
@@ -592,7 +592,7 @@ public class Utils {
             }
             final String levels = properties.getProperty(Prop.LEVELS).trim();
             pairs = levels.split(" ");
-            if (pairs == null || pairs.length != levelsNumber) {
+            if (pairs.length != levelsNumber) {
                 if (LOGGER.isLoggable(Level.INFO))
                     LOGGER.info(
                             "Levels number is different from the provided number of levels resoltion.");
@@ -744,8 +744,53 @@ public class Utils {
             }
         }
 
+        // target CRS
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.MOSAIC_CRS)) {
+            String crsCode = properties.getProperty(Prop.MOSAIC_CRS);
+            if (crsCode != null && !crsCode.isEmpty()) {
+                try {
+                    retValue.setCrs(decodeSrs(crsCode));
+                } catch (FactoryException e) {
+                    LOGGER.log(Level.FINE,
+                            "Unable to decode CRS of mosaic properties file. Configured CRS "
+                                    + "code was: " + crsCode,
+                            e);
+                }
+            }
+        }
+
+        // Also initialize the indexer here, since it will be needed later on.
+        File mosaicParentFolder = DataUtilities.urlToFile(sourceURL).getParentFile();
+        Indexer indexer = loadIndexer(mosaicParentFolder);
+
+        if (indexer != null) {
+            retValue.setIndexer(indexer);
+            String granuleCollectorFactorySPI = IndexerUtils.getParameter(
+                Prop.GRANULE_COLLECTOR_FACTORY, indexer);
+            if (granuleCollectorFactorySPI == null || granuleCollectorFactorySPI.length() <= 0) {
+                boolean isHeterogeneousCRS = Boolean
+                    .parseBoolean(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
+                if (isHeterogeneousCRS) {
+                    //in this case we know we need the reprojecting collector anyway, let's use it
+                    IndexerUtils.setParam(indexer, Prop.GRANULE_COLLECTOR_FACTORY,
+                        ReprojectingSubmosaicProducerFactory.class.getName());
+                }
+            }
+        }
+
         // return value
         return retValue;
+    }
+
+    private static CoordinateReferenceSystem decodeSrs(String property) throws FactoryException {
+        return CRS.decode(property);
+    }
+
+    private static Indexer loadIndexer(File parentFolder) {
+        Indexer defaultIndexer = IndexerUtils.createDefaultIndexer();
+        Indexer configuredIndexer = IndexerUtils.initializeIndexer(defaultIndexer.getParameters(),
+                parentFolder);
+        return configuredIndexer;
     }
 
     /**
@@ -1117,15 +1162,15 @@ public class Utils {
     }
 
     static URL checkSource(Object source, Hints hints) {
-        
+
         SourceGetter sourceGetter = new SourceGetter(source);
         URL sourceURL = sourceGetter.getUrl();
         File sourceFile = sourceGetter.getFile();
-        
+
         //
         // Check source
         //
-        
+
         // //
         //
         // at this point we have tried to convert the thing to a File as hard as
@@ -1171,9 +1216,8 @@ public class Utils {
                     for (File propFile : properties)
                         if (Utils.checkFileReadable(propFile)) {
                             // load it
-                            if (null != Utils.loadMosaicProperties(
-                                    DataUtilities.fileToURL(propFile),
-                                    Utils.DEFAULT_LOCATION_ATTRIBUTE)) {
+                            if (null != Utils
+                                    .loadMosaicProperties(DataUtilities.fileToURL(propFile))) {
                                 found = true;
                                 break;
                             }
@@ -1199,8 +1243,7 @@ public class Utils {
                     for (File propFile : properties) {
 
                         // load properties
-                        if (null == Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile),
-                                Utils.DEFAULT_LOCATION_ATTRIBUTE))
+                        if (null == Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile)))
                             continue;
 
                         // look for a couple shapefile, mosaic properties file
@@ -1287,7 +1330,7 @@ public class Utils {
         }
         File file = new File(locationPath);
         if (file.isDirectory()) {
-            File indexer = new File(file, INDEXER_PROPERTIES);
+            File indexer = new File(file, IndexerUtils.INDEXER_PROPERTIES);
             if (indexer.exists()) {
                 URL indexerUrl = DataUtilities.fileToURL(indexer);
                 Properties config = CoverageUtilities.loadPropertiesFromURL(indexerUrl);
@@ -1295,7 +1338,7 @@ public class Utils {
                     return (String) config.get(Utils.Prop.NAME);
                 }
             }
-            indexer = new File(file, INDEXER_XML);
+            indexer = new File(file, IndexerUtils.INDEXER_XML);
             String name = IndexerUtils.getParameter(Utils.Prop.NAME, indexer);
             if (name != null) {
                 return name;
@@ -1358,7 +1401,7 @@ public class Utils {
         }
 
         // Fallback on empty mosaic check on default indexers
-        File indexFile = new File(locationPath, INDEXER_XML);
+        File indexFile = new File(locationPath, IndexerUtils.INDEXER_XML);
         if (Utils.checkFileReadable(indexFile)) {
             String canBeEmpty = IndexerUtils.getParameter(Prop.CAN_BE_EMPTY, indexFile);
             if (canBeEmpty != null) {
@@ -1367,7 +1410,7 @@ public class Utils {
                 }
             }
         }
-        indexFile = new File(locationPath, INDEXER_PROPERTIES);
+        indexFile = new File(locationPath, IndexerUtils.INDEXER_PROPERTIES);
         if (Utils.checkFileReadable(indexFile)) {
             URL url = DataUtilities.fileToURL(indexFile);
             final Properties properties = CoverageUtilities.loadPropertiesFromURL(url);
@@ -1426,7 +1469,7 @@ public class Utils {
      * @param file
      * @return the deserialized histogram.
      */
-    static Histogram getHistogram(final String file) {
+    public static Histogram getHistogram(final String file) {
         Utilities.ensureNonNull("file", file);
         Histogram histogram = null;
 
@@ -1722,11 +1765,11 @@ public class Utils {
                 sourceFile = tempFile;
             }
         }
-        final File indexerProperties = new File(sourceFile, Utils.INDEXER_PROPERTIES);
+        final File indexerProperties = new File(sourceFile, IndexerUtils.INDEXER_PROPERTIES);
         if (Utils.checkFileReadable(indexerProperties)) {
             return true;
         }
-        final File indexerXML = new File(sourceFile, Utils.INDEXER_XML);
+        final File indexerXML = new File(sourceFile, IndexerUtils.INDEXER_XML);
         if (Utils.checkFileReadable(indexerXML)) {
             return true;
         }

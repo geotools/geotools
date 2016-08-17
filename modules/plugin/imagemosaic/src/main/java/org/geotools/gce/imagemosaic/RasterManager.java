@@ -16,8 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
@@ -73,6 +72,11 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogSource;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogStore;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
+import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
+import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
+import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
+import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -117,6 +121,8 @@ import org.opengis.referencing.operation.TransformException;
 public class RasterManager {
 
     final Hints excludeMosaicHints = new Hints(Utils.EXCLUDE_MOSAIC, true);
+
+    private SubmosaicProducerFactory submosaicProducerFactory = new DefaultSubmosaicProducerFactory();
 
     /**
      * This class is responsible for putting together all the 2D spatial information needed for a certain raster.
@@ -262,9 +268,9 @@ public class RasterManager {
      * @author Simone Giannecchini, GeoSolutions SAS
      * 
      */
-    class DomainDescriptor {
+    public class DomainDescriptor {
 
-        static final String DOMAIN_SUFFIX = "_DOMAIN";
+        public static final String DOMAIN_SUFFIX = "_DOMAIN";
 
         static final String HAS_PREFIX = "HAS_";
 
@@ -367,7 +373,7 @@ public class RasterManager {
 
         /**
          * Retrieves the values for this domain
-         * 
+         *
          * @return
          */
         private String getValues() {
@@ -379,7 +385,7 @@ public class RasterManager {
 
         /**
          * Retrieves the Range values for this domain
-         * 
+         *
          * @return
          */
         private String getRangeValues() {
@@ -407,7 +413,7 @@ public class RasterManager {
 
         /**
          * Retrieves the single values list of this domain (no ranges available)
-         * 
+         *
          * @return
          */
         private String getSingleValues() {
@@ -507,7 +513,7 @@ public class RasterManager {
      * 
      * @author Daniele Romagnoli, GeoSolutions SAS.
      */
-    class DomainManager {
+    public class DomainManager {
 
         private final Map<String, DomainDescriptor> domainsMap = new HashMap<String, DomainDescriptor>();
 
@@ -898,6 +904,8 @@ public class RasterManager {
             MosaicConfigurationBean configuration) throws IOException {
 
         Utilities.ensureNonNull("ImageMosaicReader", parentReader);
+        //may as well check this too, since it's being used without a null check
+        Utilities.ensureNonNull("MosaicConfigurationBean", configuration);
 
         this.parentReader = parentReader;
         this.expandMe = configuration.isExpandToRGB();
@@ -926,39 +934,58 @@ public class RasterManager {
         // load defaultSM and defaultCM by using the sample_image if it was provided
         loadSampleImage(configuration);
 
-        if (configuration != null) {
-            CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
-            typeName = catalogBean != null ? catalogBean.getTypeName() : null;
-            initDomains(configuration);
-            if (defaultSM == null) {
-                defaultSM = configuration.getSampleModel();
-            }
+        CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
+        typeName = catalogBean != null ? catalogBean.getTypeName() : null;
+        initDomains(configuration);
+        if (defaultSM == null) {
+            defaultSM = configuration.getSampleModel();
+        }
 
-            if (defaultCM == null) {
-                defaultCM = configuration.getColorModel();
-            }
-            if (defaultPalette == null) {
-                defaultPalette = configuration.getPalette();
-            }
+        if (defaultCM == null) {
+            defaultCM = configuration.getColorModel();
+        }
+        if (defaultPalette == null) {
+            defaultPalette = configuration.getPalette();
+        }
 
-            if (defaultSM != null && defaultCM != null && defaultImageLayout == null) {
-                defaultImageLayout = new ImageLayout().setColorModel(defaultCM)
-                        .setSampleModel(defaultSM);
-            }
+        if (defaultSM != null && defaultCM != null && defaultImageLayout == null) {
+            defaultImageLayout = new ImageLayout().setColorModel(defaultCM)
+                    .setSampleModel(defaultSM);
+        }
 
-            levels = configuration.getLevels();
-            final double[] highRes = levels[0];
-            final int numOverviews = configuration.getLevelsNum() - 1;
-            double[][] overviews = null;
-            if (numOverviews > 0) {
-                overviews = new double[numOverviews][2];
-                for (int i = 0; i < numOverviews; i++) {
-                    overviews[i][0] = levels[i + 1][0];
-                    overviews[i][1] = levels[i + 1][1];
+        levels = configuration.getLevels();
+        final double[] highRes = levels[0];
+        final int numOverviews = configuration.getLevelsNum() - 1;
+        double[][] overviews = null;
+        if (numOverviews > 0) {
+            overviews = new double[numOverviews][2];
+            for (int i = 0; i < numOverviews; i++) {
+                overviews[i][0] = levels[i + 1][0];
+                overviews[i][1] = levels[i + 1][1];
+            }
+        }
+        overviewsController = new OverviewsController(highRes, numOverviews, overviews);
+        imposedEnvelope = configuration.getEnvelope();
+
+        if (configuration.getIndexer() != null) {
+            //we have indexer configuration, we can set the submosaic producer factory based off
+            //that if it's available
+            Indexer indexer = configuration.getIndexer();
+            String submosaickerFactory = IndexerUtils
+                .getParameter(Utils.Prop.GRANULE_COLLECTOR_FACTORY, indexer);
+            if (submosaickerFactory != null) {
+                SubmosaicProducerFactory submosaicProducerFactory = SubmosaicProducerFactoryFinder
+                    .getGranuleHandlersSPI().get(submosaickerFactory);
+                if (submosaicProducerFactory != null) {
+                    this.submosaicProducerFactory = submosaicProducerFactory;
+                }
+                else {
+                    LOGGER.warning("Found SubmosaicProducerFactory config in the Image Mosaic "
+                        + "indexer, however the specified factory (" + submosaickerFactory
+                        + ") could not be found. This may mean the indexer.properties or indexer.xml"
+                        + "is misconfigured");
                 }
             }
-            overviewsController = new OverviewsController(highRes, numOverviews, overviews);
-            imposedEnvelope = configuration.getEnvelope();
         }
     }
 
@@ -1046,7 +1073,7 @@ public class RasterManager {
     /**
      * This code tries to load the sample image from which we can extract SM and CM to use when answering to requests that falls within a hole in the
      * mosaic.
-     * 
+     *
      * @param configuration
      */
     private void loadSampleImage(MosaicConfigurationBean configuration) {
@@ -1099,7 +1126,7 @@ public class RasterManager {
 
     /**
      * This method is responsible for checking the overview policy as defined by the provided {@link Hints}.
-     * 
+     *
      * @return the overview policy which can be one of {@link OverviewPolicy#IGNORE}, {@link OverviewPolicy#NEAREST}, {@link OverviewPolicy#SPEED},
      *         {@link OverviewPolicy#QUALITY}. Default is {@link OverviewPolicy#NEAREST}.
      */
@@ -1121,7 +1148,7 @@ public class RasterManager {
 
     /**
      * This method is responsible for checking the decimation policy as defined by the provided {@link Hints}.
-     * 
+     *
      * @return the decimation policy which can be one of {@link DecimationPolicy#ALLOW}, {@link DecimationPolicy#DISALLOW}. Default is
      *         {@link DecimationPolicy#ALLOW}.
      */
@@ -1151,7 +1178,8 @@ public class RasterManager {
         }
 
         // create a response for the provided request
-        final RasterLayerResponse response = new RasterLayerResponse(request, this);
+        final RasterLayerResponse response = new RasterLayerResponse(request, this,
+            this.submosaicProducerFactory);
 
         // execute the request
         final GridCoverage2D elem = response.createResponse();
@@ -1258,7 +1286,7 @@ public class RasterManager {
 
     /**
      * TODO this should not leak through
-     * 
+     *
      * @return
      */
     public GranuleCatalog getGranuleCatalog() {
@@ -1290,7 +1318,7 @@ public class RasterManager {
 
     /**
      * Remove a store for the coverage related to this {@link RasterManager}
-     * 
+     *
      * @param forceDelete
      *
      * @param indexSchema
@@ -1317,7 +1345,7 @@ public class RasterManager {
 
     /**
      * Delete granules from query.
-     * 
+     *
      * @param query
      * @param checkForReferences
      * @throws IOException
@@ -1369,7 +1397,7 @@ public class RasterManager {
 
     /**
      * Check if there is any granule referred by other coverages.
-     * 
+     *
      * @param coverageName
      * @return
      * @throws IOException
@@ -1516,7 +1544,7 @@ public class RasterManager {
 
     /**
      * Return the metadata value for the specified metadata name
-     * 
+     *
      * @param name the name of the metadata to be returned
      * @return
      */
@@ -1579,5 +1607,17 @@ public class RasterManager {
 
     public byte[][] getDefaultPalette() {
         return defaultPalette;
+    }
+
+    public DomainManager getDomainsManager() {
+        return domainsManager;
+    }
+
+    public boolean isExpandMe() {
+        return expandMe;
+    }
+
+    public ImageMosaicReader getParentReader() {
+        return parentReader;
     }
 }

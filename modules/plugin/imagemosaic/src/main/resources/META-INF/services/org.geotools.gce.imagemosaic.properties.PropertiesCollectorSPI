@@ -6,4 +6,8 @@ org.geotools.gce.imagemosaic.properties.numeric.LongFileNameExtractorSPI
 org.geotools.gce.imagemosaic.properties.numeric.FloatFileNameExtractorSPI
 org.geotools.gce.imagemosaic.properties.numeric.DoubleFileNameExtractorSPI
 org.geotools.gce.imagemosaic.properties.string.StringFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.CRSExtractorSPI
+org.geotools.gce.imagemosaic.properties.ResolutionExtractorSPI
+org.geotools.gce.imagemosaic.properties.DateExtractorSPI
+org.geotools.gce.imagemosaic.properties.FSDateExtractorSPI
 

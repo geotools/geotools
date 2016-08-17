@@ -25,7 +25,6 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
-import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
@@ -63,21 +62,7 @@ public class CatalogBuilderConfiguration {
     }
 
     private void initDefaultsParam() {
-        final Indexer defaultIndexer = Utils.OBJECT_FACTORY.createIndexer();
-        final ParametersType parameters = Utils.OBJECT_FACTORY.createParametersType();
-        final List<Parameter> parameterList = parameters.getParameter();
-        defaultIndexer.setParameters(parameters);
-        setIndexer(defaultIndexer);
-        IndexerUtils.setParam(parameterList, Prop.LOCATION_ATTRIBUTE,
-                Utils.DEFAULT_LOCATION_ATTRIBUTE);
-        IndexerUtils.setParam(parameterList, Prop.WILDCARD, Utils.DEFAULT_WILCARD);
-        IndexerUtils.setParam(parameterList, Prop.FOOTPRINT_MANAGEMENT,
-                Boolean.toString(Utils.DEFAULT_FOOTPRINT_MANAGEMENT));
-        IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH,
-                Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
-        IndexerUtils.setParam(parameterList, Prop.RECURSIVE,
-                Boolean.toString(Utils.DEFAULT_RECURSION_BEHAVIOR));
-        IndexerUtils.setParam(parameterList, Prop.INDEX_NAME, Utils.DEFAULT_INDEX_NAME);
+        this.indexer = IndexerUtils.createDefaultIndexer();
     }
 
     public CatalogBuilderConfiguration(final CatalogBuilderConfiguration that) {
@@ -85,12 +70,8 @@ public class CatalogBuilderConfiguration {
         initDefaultsParam();
         try {
             BeanUtils.copyProperties(this, that);
-        } catch (IllegalAccessException e) {
-            final IllegalArgumentException iae = new IllegalArgumentException(e);
-            throw iae;
-        } catch (InvocationTargetException e) {
-            final IllegalArgumentException iae = new IllegalArgumentException(e);
-            throw iae;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalArgumentException(e);
         }
 
     }
@@ -147,7 +128,7 @@ public class CatalogBuilderConfiguration {
 
     /**
      * Set the indexer parameter
-     * 
+     *
      * @param parameterName
      * @param parameterValue
      */

@@ -205,7 +205,6 @@ public class FilterTypeBindingTest extends FESTestSupport {
         
         Element e = getElementByQName(doc, FES.Intersects);
         assertNotNull(e);
-        print(e);
 
         assertNotNull(getElementByQName(e, FES.ValueReference));
         assertNotNull(getElementByQName(e, GML.Point));

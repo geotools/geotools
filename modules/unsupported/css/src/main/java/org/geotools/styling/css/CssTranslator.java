@@ -33,12 +33,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
@@ -81,6 +83,7 @@ import org.geotools.styling.css.util.PseudoClassRemover;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
 import org.geotools.styling.css.util.TypeNameSimplifier;
+import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
@@ -292,7 +295,8 @@ public class CssTranslator {
         final TranslationMode mode = getTranslationMode(stylesheet);
         int autoThreshold = getAutoThreshold(stylesheet);
 
-        List<CssRule> allRules = stylesheet.getRules();
+        List<CssRule> topRules = stylesheet.getRules();
+        List<CssRule> allRules = expandNested(topRules);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Starting with " + allRules.size() + "  rules in the stylesheet");
@@ -319,6 +323,12 @@ public class CssTranslator {
         }
 
         return styleBuilder.build();
+    }
+
+    private List<CssRule> expandNested(List<CssRule> topRules) {
+        RulesCombiner combiner = new RulesCombiner(new UnboundSimplifyingFilterVisitor());
+        List<CssRule> expanded = topRules.stream().flatMap(r -> r.expandNested(combiner).stream()).collect(Collectors.toList());
+        return expanded;
     }
 
     private int translateCss(final TranslationMode mode, List<CssRule> allRules, StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {

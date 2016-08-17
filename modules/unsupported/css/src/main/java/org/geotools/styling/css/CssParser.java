@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -140,29 +142,44 @@ public class CssParser extends BaseParser<Object> {
 
     Rule CssRule() {
         return Sequence(WhiteSpaceOrComment(), Selector(), OptionalWhiteSpace(),//
-                '{', WhiteSpaceOrIgnoredComment(), //
-                PropertyList(), WhiteSpaceOrIgnoredComment(), '}', new Action() {
+                '{', OptionalWhiteSpace(), //
+                RuleContents(), WhiteSpaceOrIgnoredComment(), '}', new Action() {
 
                     @Override
                     public boolean run(Context ctx) {
-                        List properties = (List) pop();
+                        List contents = (List) pop();
                         Selector selector = (Selector) pop();
+                        String comment = null;
                         if (!ctx.getValueStack().isEmpty() && peek() instanceof String) {
-                            String comment = (String) pop();
+                            comment = (String) pop();
                             comment = comment.trim();
                             // get rid of the extra comments between rules
                             while (!ctx.getValueStack().isEmpty() && peek() instanceof String) {
                                 pop();
                             }
-                            push(new CssRule(selector, properties, comment));
-                        } else {
-                            push(new CssRule(selector, properties));
                         }
+                        
+                        final Stream stream = contents.stream();
+                        Map<Boolean, List> splitContents = (Map<Boolean, List>) stream.collect(Collectors.partitioningBy(x -> x instanceof CssRule));
+                        List<Property> properties = splitContents.get(Boolean.FALSE);
+                        List<CssRule> subRules = splitContents.get(Boolean.TRUE);
+                        
+                        final CssRule rule = new CssRule(selector, properties, comment);
+                        rule.nestedRules = subRules;
+                        push(rule);
 
                         return true;
                     }
 
                 });
+    }
+    
+    Rule RuleContents() {
+        return Sequence(
+                FirstOf(CssRule(), Property()),
+                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
+                        OptionalWhiteSpace(), FirstOf(CssRule(), Property()))), Optional(';'),
+                push(popAll(Property.class, CssRule.class)));
     }
 
     Rule Selector() {
@@ -253,20 +270,12 @@ public class CssParser extends BaseParser<Object> {
                 OptionalWhiteSpace(), "]");
     }
 
-    Rule PropertyList() {
-        return Sequence(
-                Property(),
-                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
-                        WhiteSpaceOrIgnoredComment(), Property())), Optional(';'),
-                push(popAll(Property.class)));
-    }
-
     Rule WhitespaceOrIgnoredComment() {
         return ZeroOrMore(FirstOf(WhiteSpace(), IgnoredComment()));
     }
 
     Rule Property() {
-        return Sequence(Identifier(),
+        return Sequence(WhiteSpaceOrIgnoredComment(), Identifier(),
                 push(match()),
                 OptionalWhiteSpace(),
                 Colon(),
@@ -609,10 +618,10 @@ public class CssParser extends BaseParser<Object> {
         return (T) pop();
     }
 
-    <T> List<T> popAll(Class<T> clazz) {
+    <T> List<T> popAll(Class... classes) {
         ValueStack<Object> valueStack = getContext().getValueStack();
         List<T> result = new ArrayList<T>();
-        while (!valueStack.isEmpty() && clazz.isInstance(valueStack.peek())) {
+        while (!valueStack.isEmpty() && isInstance(classes, valueStack.peek())) {
             result.add((T) valueStack.pop());
         }
         if (!valueStack.isEmpty() && valueStack.peek() == MARKER) {
@@ -621,5 +630,14 @@ public class CssParser extends BaseParser<Object> {
         Collections.reverse(result);
 
         return result;
+    }
+
+    private boolean isInstance(Class[] classes, Object peek) {
+        for (int i = 0; i < classes.length; i++) {
+            if(classes[i].isInstance(peek)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

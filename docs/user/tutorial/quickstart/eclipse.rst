@@ -43,7 +43,9 @@ Imaging and Java Image IO section.
    
 #. At the time of writing the latest was JDK 8. Choose a download for your platform, for example:
    
-   jdk-8u66-windows-i586.exe
+   `jdk-8u66-windows-i586.exe`
+   
+   For Windows 32bit platforms.
    
 #. Click through the installer. You will need to accept a license agreement, choose a directory
    and so forth.
@@ -87,14 +89,15 @@ development. For this tutorial we are doing straight up Java programming using t
 download available - if you already have an Eclipse download please go ahead and use it and
 switch to the "Java Perspective".
    
-1. Visit the Eclipse download page (http://www.eclipse.org/downloads/) and download "Eclipse IDE for
+1. Visit the Eclipse download page (http://www.eclipse.org/downloads/eclipse-packages/) and download "Eclipse IDE for
    Java developers".
    
-   At the time of writing the latest release was:
+   At the time of writing the latest release was Eclipse Neon:
    
-   * eclipse-java-mars-R-win32.zip 
+   * eclipse-jee-neon-R-win32.zip
    
-2. Eclipse does not provide an installer, just a directory to unzip and run.
+2. Eclipse now provides an installer; however this tutorial targets the binary packages that 
+   you simply extract and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
 4. Unzip the downloaded eclipse-java-mars-R-win32.zip file to your C:\\java directory - the
    folder C:\\java\\eclipse will be created.

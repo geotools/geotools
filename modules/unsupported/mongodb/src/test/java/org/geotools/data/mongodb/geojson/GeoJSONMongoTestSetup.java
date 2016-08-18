@@ -89,8 +89,8 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
             .pop()
         .get());
 
-        ft1.ensureIndex(new BasicDBObject("geometry", "2dsphere"));
-        ft1.ensureIndex(new BasicDBObject("properties.listProperty.value", 1));
+        ft1.createIndex(new BasicDBObject("geometry", "2dsphere"));
+        ft1.createIndex(new BasicDBObject("properties.listProperty.value", 1));
 
         DBCollection ft2 = db.getCollection("ft2");
         ft2.drop();

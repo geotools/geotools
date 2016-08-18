@@ -69,7 +69,7 @@ public class MongoFeatureWriter implements SimpleFeatureWriter {
     
     @Override
     public void close() throws IOException {
-        collection.ensureIndex(new BasicDBObject(mapper.getGeometryPath(), "2dsphere"));
+        collection.createIndex(new BasicDBObject(mapper.getGeometryPath(), "2dsphere"));
     }
 
 }

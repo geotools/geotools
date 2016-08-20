@@ -1399,6 +1399,16 @@ public class SLDStyleFactory {
 	private Shape getShape(Mark mark, Object feature) {
 		if (mark == null)
 			return null;
+		
+		// handle the TTF references in SE 1.1
+		// TODO: generalize it to a pluggable ExternalMarkFactory when other types
+		// of indexed marks show up in the wild
+		if(mark.getExternalMark() != null) {
+			Shape shape = TTFMarkFactory.INSTANCE.getShape(mark.getExternalMark());
+			if(shape != null) {
+				return shape;
+			}
+		}
 
 		Expression name = mark.getWellKnownName();
 		// expand eventual cql expressions embedded in the name
@@ -1408,8 +1418,7 @@ public class SLDStyleFactory {
 				name = ExpressionExtractor.extractCqlExpressions(expression);
 		}
 
-		Iterator<MarkFactory> it = DynamicSymbolFactoryFinder
-				.getMarkFactories();
+		Iterator<MarkFactory> it = DynamicSymbolFactoryFinder.getMarkFactories();
 		while (it.hasNext()) {
 			MarkFactory factory = it.next();
 			try {

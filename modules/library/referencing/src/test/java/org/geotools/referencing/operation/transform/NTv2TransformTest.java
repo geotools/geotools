@@ -18,7 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.*;
 
-import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -49,7 +49,7 @@ public class NTv2TransformTest {
      */
     @Before
     public void setUp() throws Exception {
-        transform = new NTv2Transform(new URI(TEST_GRID));
+        transform = new NTv2Transform(TEST_GRID);
     }
         
     /**
@@ -83,34 +83,34 @@ public class NTv2TransformTest {
         
         // Value accessible through its identifiers
         Object value = pvg.parameter("8656").getValue();
-        assertTrue(value instanceof URI);
-        assertEquals(value.toString(), TEST_GRID);
+        assertTrue(value instanceof String);
+        assertEquals(value, TEST_GRID);
 
         value = pvg.parameter("Latitude and longitude difference file").getValue();
-        assertTrue(value instanceof URI);
-        assertEquals(value.toString(), TEST_GRID);
+        assertTrue(value instanceof String);
+        assertEquals(value, TEST_GRID);
     }
     
     /**
-     * Test method for {@link org.geotools.referencing.operation.transform.NTv2Transform#NTv2Transform(java.net.URI)}.
+     * Test method for {@link org.geotools.referencing.operation.transform.NTv2Transform#NTv2Transform(java.lang.String)}.
      */
     @Test
     public void testNTv2Transform() throws Exception {
 
         try {
-            new NTv2Transform(null);
+            new NTv2Transform((String)null);
+        } catch (NullPointerException e) {
+            assert true;
+        }
+        
+        try {
+            new NTv2Transform(INEXISTENT_GRID);
         } catch (NoSuchIdentifierException e) {
             assert true;
         }
         
         try {
-            new NTv2Transform(new URI(INEXISTENT_GRID));
-        } catch (NoSuchIdentifierException e) {
-            return;
-        }
-        
-        try {
-            new NTv2Transform(new URI(INEXISTENT_GRID));
+            new NTv2Transform(new URL(INEXISTENT_GRID));
         } catch (NoSuchIdentifierException e) {
             return;
         }            
@@ -188,7 +188,7 @@ public class NTv2TransformTest {
     
     @Test
     public void testHashCodeEquals() throws Exception {
-        NTv2Transform t2 = new NTv2Transform(new URI(TEST_GRID));
+        NTv2Transform t2 = new NTv2Transform(TEST_GRID);
         assertEquals(transform, t2);
         assertEquals(transform.hashCode(), t2.hashCode());
     }

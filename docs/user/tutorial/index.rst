@@ -9,8 +9,8 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
 .. sidebar:: Geospatial for Java
   
   If you are working through these tutorials as part of workshop please check with your
-  instructor. Many of the download materials should be available on a DVD in order to save
-  time.
+  instructor. Many of the download materials should be available on a USB stick (in order to save
+  time).
   
 .. toctree::
    :maxdepth: 1

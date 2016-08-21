@@ -20,8 +20,8 @@ Notes and Errata
 ----------------
 * If you're running under OS X you may run into an issue where the file chooser dialog
   never appears and the application hangs. This is a known issue with the native OS X
-  Swing look and feel. As a workaround you can use the cross platform look and feel you 
-  can use the following static block in your files:
+  Swing look and feel. As a workaround you can use the cross platform look and feel; either 
+  use the following static block in your files:
   
    .. code-block:: java
    
@@ -36,7 +36,7 @@ Notes and Errata
         }  
       }
   
-  Or you can run your applications with the following VM parameter `-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel`
+  or run your applications with the following VM argument `-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel`
   
 * At the time of writing the CRSLab application may fail if you try to change the projection a second
   time. There is no workaround or fix for this at the time.

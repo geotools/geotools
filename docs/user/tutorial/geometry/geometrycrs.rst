@@ -215,8 +215,7 @@ Here are a couple things to try with the above application.
   shapefile's "prj" side car file.
 
 * It is bad manners to keep the user waiting; the SwingWorker class is part of
-  Java 6. GeoTools also includes SwingWorker the **gt-swing** module for use in
-  Java 5 applications.
+  Java.
   
   Replace your ValidateGeometryAction with the following: 
   
@@ -503,9 +502,9 @@ For more Information
   This is *the* place to go to look up map projections. You can search by
   geographic area, name and type and epsg code.
 
-`Online coordinate conversion tool <http://gist.fsv.cvut.cz:8080/webref/>`_
-  Produced by Jan Jezek and powered by GeoTools.
-
+`spatialreference.org <http://spatialreference.org/>`_
+  An easy to use service listing EPSG and OGC references code showing their representation in different software products.
+ 
 `Wikibook: Coordinate Reference Systems and Positioning <http://en.wikibooks.org/wiki/Coordinate_Reference_Systems_and_Positioning>`_
   A summary page with some useful definition and links to more detailed information
 

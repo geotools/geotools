@@ -183,7 +183,7 @@ shapefile on the screen.
       :language: java
       
 #. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
- is a great project supported by the North American Cartographic Information Society.  Head to the link below and download some cultural vectors. You can use the 'Download all 50m cultural themes' at top.
+   is a great project supported by the North American Cartographic Information Society.  Head to the link below and download some cultural vectors. You can use the 'Download all 50m cultural themes' at top.
 
    * `1:50m Cultural Vectors <http://www.naturalearthdata.com/downloads/50m-cultural-vectors/>`_
 
@@ -192,93 +192,93 @@ shapefile on the screen.
 #. Run the application to open a file chooser. Choose a shapefile from the example dataset.
 
    .. image:: images/QuickstartOpen.png
-   :scale: 60
+      :scale: 60
  
 #. The application will connect to your shapefile, produce a map content, and display the shapefile.
 
    .. image:: images/QuickstartMap.png
-   :scale: 60
+      :scale: 60
  
 #. A couple of things to note about the code example:
  
    * The shapefile is not loaded into memory - instead it is read from disk each and every time it is needed
-   This approach allows you to work with data sets larger than available memory.
+     This approach allows you to work with data sets larger than available memory.
     
    * We are using a very basic display style here that just shows feature outlines. In the examples that follow we will see how to specify more sophisticated styles.
   
-  Things to Try
-  =============
+Things to Try
+=============
 
-  Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
-  stuck at any point please ask your instructor; or sign up to the geotools-users email list.
+Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
+stuck at any point please ask your instructor; or sign up to the geotools-users email list.
 
-  Here are some additional challenges for you to try:
+Here are some additional challenges for you to try:
 
-  * Try out the different sample data sets
+* Try out the different sample data sets
 
-  * You can zoom in, zoom out and show the full extents and Use the select tool to examine individual
-    countries in the sample countries.shp file
+* You can zoom in, zoom out and show the full extents and Use the select tool to examine individual
+  countries in the sample countries.shp file
 
-  * Download the largest shapefile you can find and see how quickly it can be rendered. You should
-    find that the very first time it will take a while as a spatial index is generated. After that
-    performance should be very good when zoomed in.
-    
-  * Performance: We know that one of the ways people select a spatial library is based on speed.
-    By design GeoTools does not load the above shapefile into memory (instead it streams it off
-    of disk each time it is drawn using a spatial index to only bring the content required for
-    display).
-    
-    If you would like to ask GeoTools to cache the shapefile in memory try the following code:
+* Download the largest shapefile you can find and see how quickly it can be rendered. You should
+  find that the very first time it will take a while as a spatial index is generated. After that
+  performance should be very good when zoomed in.
+
+* Performance: We know that one of the ways people select a spatial library is based on speed.
+  By design GeoTools does not load the above shapefile into memory (instead it streams it off
+  of disk each time it is drawn using a spatial index to only bring the content required for
+  display).
+
+If you would like to ask GeoTools to cache the shapefile in memory try the following code:
 
     .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartCache.java
        :language: java
        :start-after: // docs start cache
        :end-before:  // docs end cache
-    
-    This code won't compile initially because we're missing an import. IntelliJ should prompt to import
-    the missing class immediately. Press Alt-Enter (^-Enter on OS X) to bring up a dialog to import the missing class. 
-    It will pull in the following import:
-      
+
+This code won't compile initially because we're missing an import. IntelliJ should prompt to import
+the missing class immediately. Press Alt-Enter (^-Enter on OS X) to bring up a dialog to import the missing class.
+It will pull in the following import:
+
     .. code-block:: java
 
        import org.geotools.data.CachingFeatureSource;
-       
+
     .. Note::
 
        When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
        it, it's just a warning. The class is still under test but usable.
 
-  ..  The ability to grab figure out what classes to import is a key skill; we are
-      starting off here with a simple example with a single import.
-    
-  * Try and sort out what all the different "side car" files are - and what they are for. The sample
-    data set includes "shp", "dbf" and "shx". How many other side car files are there?
+..  The ability to grab figure out what classes to import is a key skill; we are
+  starting off here with a simple example with a single import.
 
-  .. This exercise asks users to locate the geotools user guide or wikipedia
-    
-  * Advanced: The use of FileDataStoreFinder allows us to work easily with files. The other way to do
-    things is with a map of connection parameters. This techniques gives us a little more control over
-    how we work with a shapefile and also allows us to connect to databases and web feature servers.
+* Try and sort out what all the different "side car" files are - and what they are for. The sample
+  data set includes "shp", "dbf" and "shx". How many other side car files are there?
 
-  .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartNotes.java
+.. This exercise asks users to locate the geotools user guide or wikipedia
+
+* Advanced: The use of FileDataStoreFinder allows us to work easily with files. The other way to do
+  things is with a map of connection parameters. This techniques gives us a little more control over
+  how we work with a shapefile and also allows us to connect to databases and web feature servers.
+
+    .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartNotes.java
      :language: java
      :start-after: // start datastore
      :end-before:  // end datastore
-       
 
-  * Important: GeoTools is an active open source project - you can quickly use maven to try out the
-    latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
-    
-    At the time of writing |branch|-SNAPSHOT is under active development.
+
+* Important: GeoTools is an active open source project - you can quickly use maven to try out the
+  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
+
+At the time of writing |branch|-SNAPSHOT is under active development.
 
     .. literalinclude:: artifacts/pom2.xml
      :language: xml
      :start-after: <url>http://maven.apache.org</url>
      :end-before: <dependencies>
 
-    You will also need to change your pom.xml file to include the following snapshot repository:
+You will also need to change your pom.xml file to include the following snapshot repository:
 
-  .. literalinclude:: artifacts/pom2.xml
+    .. literalinclude:: artifacts/pom2.xml
      :language: xml
      :start-after: </dependencies>
      :end-before: </project>

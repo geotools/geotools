@@ -75,7 +75,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     }
     
     public boolean startObjectEntry(String key) throws ParseException, IOException {
-        if ("id".equals(key)) {
+        if ("id".equals(key) && properties == null) {
             id = "";
             return true;
         }

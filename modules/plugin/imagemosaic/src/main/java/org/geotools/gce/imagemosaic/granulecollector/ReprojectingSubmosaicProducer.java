@@ -82,10 +82,10 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         this.operations = new Operations(renderingHints);
     }
 
-    private RenderingHints createRenderingHints(Hints hints, RasterLayerRequest request) {
+    private static RenderingHints createRenderingHints(Hints hints, RasterLayerRequest request) {
         RenderingHints renderHints = new RenderingHints(null);
         if (request.getInterpolation() != null) {
-            renderingHints.put(JAI.KEY_INTERPOLATION, request.getInterpolation());
+            renderHints.put(JAI.KEY_INTERPOLATION, request.getInterpolation());
         }
 
         return renderHints;

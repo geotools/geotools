@@ -17,19 +17,20 @@
 
 package org.geotools.gce.imagemosaic;
 
-import static org.geotools.gce.imagemosaic.ImageMosaicReaderTest.INTERACTIVE;
-
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
-import javax.imageio.ImageIO;
+import javax.media.jai.Interpolation;
 
 import org.apache.commons.io.FileUtils;
-import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.factory.Hints;
 import org.geotools.image.test.ImageAssert;
 import org.junit.Assert;
@@ -60,7 +61,18 @@ public class HeterogenousCRSTest {
         testMosaic("diff_crs_sorting_test", "resolution D, crs A", "diff_crs_sorting_test_results/results.tiff");
     }
 
-    private void testMosaic(String testLocation, String sortOrder, String resultLocation) throws URISyntaxException, IOException {
+    @Test
+    public void testWithInterpolation() throws IOException, URISyntaxException {
+        ParameterValue<Interpolation> interpolationParam =
+            AbstractGridFormat.INTERPOLATION.createValue();
+        interpolationParam.setValue(Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        testMosaic("diff_crs_sorting_test", "resolution D, crs A", null, interpolationParam);
+    }
+
+    private void testMosaic(String testLocation, String sortOrder, String resultLocation,
+        GeneralParameterValue... params)
+        throws URISyntaxException, IOException {
+
         URL storeUrl = org.geotools.TestData.url(this, testLocation);
 
         File testDataFolder = new File(storeUrl.toURI());
@@ -70,21 +82,28 @@ public class HeterogenousCRSTest {
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
         Assert.assertNotNull(imReader);
 
-        //Let's do a sort order to get the correct results
+        Collection<GeneralParameterValue> finalParamsCollection =
+            new ArrayList<>(Arrays.asList(params));
 
+        //Let's do a sort order to get the correct results
         ParameterValue<String> sortByParam = ImageMosaicFormat.SORT_BY.createValue();
         sortByParam.setValue(sortOrder);
 
-        GridCoverage2D gc2d = imReader
-                .read(new GeneralParameterValue[]{sortByParam});
-        RenderedImage renderImage = gc2d.getRenderedImage();
+        finalParamsCollection.add(sortByParam);
 
-        File resultsFile = org.geotools.TestData
+        GridCoverage2D gc2d = imReader
+                .read(finalParamsCollection.toArray(new GeneralParameterValue[]{}));
+
+        if (resultLocation != null) {
+            RenderedImage renderImage = gc2d.getRenderedImage();
+            File resultsFile = org.geotools.TestData
                 .file(this, resultLocation);
 
-        //number 1000 was a bit arbitrary for differences, should account for small differences in
-        //interpolation and such, but not the reprojection of the blue tiff. Correct and incorrect
-        //images will be pretty similar anyway
-        ImageAssert.assertEquals(resultsFile, renderImage, 1000);
+            //number 1000 was a bit arbitrary for differences, should account for small differences in
+            //interpolation and such, but not the reprojection of the blue tiff. Correct and incorrect
+            //images will be pretty similar anyway
+            ImageAssert.assertEquals(resultsFile, renderImage, 1000);
+        }
+
     }
 }

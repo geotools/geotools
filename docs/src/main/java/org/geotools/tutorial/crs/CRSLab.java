@@ -143,7 +143,7 @@ public class CRSLab {
 
         // And create a new Shapefile with a slight modified schema
         DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
-        Map<String, Serializable> create = new HashMap<String, Serializable>();
+        Map<String, Serializable> create = new HashMap<>();
         create.put("url", file.toURI().toURL());
         create.put("create spatial index", Boolean.TRUE);
         DataStore dataStore = factory.createNewDataStore(create);
@@ -213,7 +213,7 @@ public class CRSLab {
         // And create a new Shapefile with the results
         DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
 
-        Map<String, Serializable> create = new HashMap<String, Serializable>();
+        Map<String, Serializable> create = new HashMap<>();
         create.put("url", file.toURI().toURL());
         create.put("create spatial index", Boolean.TRUE);
         DataStore newDataStore = factory.createNewDataStore(create);

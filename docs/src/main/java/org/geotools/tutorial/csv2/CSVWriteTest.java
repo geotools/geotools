@@ -99,7 +99,7 @@ public class CSVWriteTest {
     public void featureStoreExample() throws Exception {
         System.out.println("featureStoreExample start\n");
         // featureStoreExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -117,7 +117,7 @@ public class CSVWriteTest {
     public void transactionExample() throws Exception {
         System.out.println("transactionExample start\n");
         // transactionExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -214,7 +214,7 @@ public class CSVWriteTest {
     public void removeAllExample() throws Exception {
         System.out.println("removeAllExample start\n");
         // removeAllExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -251,7 +251,7 @@ public class CSVWriteTest {
     public void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -295,13 +295,13 @@ public class CSVWriteTest {
         System.out.println("appendContent start\n");
         File directory = tmp;
         // appendContent start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         SimpleFeatureType featureType = store.getSchema("locations");
         
         File file2 = new File(directory,"duplicate.rst");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
         
         CSVDataStoreFactory factory = new CSVDataStoreFactory();

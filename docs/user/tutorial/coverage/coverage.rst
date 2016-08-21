@@ -48,9 +48,10 @@ contains our boilerplate imports, fields and getters/setters:
     :language: java
     :start-after: //docs start prelim
     :end-before: //docs end prelim
-    
-Please note that this isn't the entire code listing -- we'll finish it off as we go along -- so don't worry right now
-if your IDE complains.
+
+
+.. note:: Please note that this isn't the entire code listing -- we'll finish it off as we go along -- so don't worry right now
+          if your IDE complains.
 
 Argument Processing
 -------------------
@@ -143,6 +144,9 @@ count of 16x8, output it to a temp director and scale the tiles by two.
 `-f /Users/devon/Downloads/NE2_50M_SR_W/NE2_50M_SR_W.tif -htc 16 -vtc 8 -o /Users/devon/tmp/tiles -scale 2.0`
 
 Be sure to replace the filename and directory with your own locations.
+
+.. note:: If you're using Eclipse then these paths can be replaced by prompts. In the Run dialog choose *Variables*
+        and use the `file_prompt` and `folder_prompt` variables.
 
 .. figure:: artifacts/runargs.png
 

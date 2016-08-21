@@ -76,7 +76,7 @@ public class Csv2Shape {
         /*
          * A list to collect features as we create them.
          */
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> features = new ArrayList<>();
         
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -119,7 +119,7 @@ public class Csv2Shape {
 
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("url", newFile.toURI().toURL());
         params.put("create spatial index", Boolean.TRUE);
 

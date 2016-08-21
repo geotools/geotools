@@ -35,7 +35,7 @@ public class ExampleFinder extends FactoryFinder {
         hints = mergeSystemHints(hints);
         Iterator<FunctionFactory> serviceProviders = getServiceRegistry().getServiceProviders(
                 FunctionFactory.class, null, hints);
-        return new LazySet<FunctionFactory>(serviceProviders);
+        return new LazySet<>(serviceProviders);
     }
         
     /** Allow the classpath to be rescanned */

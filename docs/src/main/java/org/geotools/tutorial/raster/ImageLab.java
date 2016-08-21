@@ -71,12 +71,12 @@ public class ImageLab {
      * method
      */
     private void getLayersAndDisplay() throws Exception {
-        List<Parameter<?>> list = new ArrayList<Parameter<?>>();
-        list.add(new Parameter<File>("image", File.class, "Image",
-                "GeoTiff or World+Image to display as basemap",
-                new KVP( Parameter.EXT, "tif", Parameter.EXT, "jpg")));
-        list.add(new Parameter<File>("shape", File.class, "Shapefile",
-                "Shapefile contents to display", new KVP(Parameter.EXT, "shp")));
+        List<Parameter<?>> list = new ArrayList<>();
+        list.add(new Parameter<>("image", File.class, "Image",
+            "GeoTiff or World+Image to display as basemap",
+            new KVP(Parameter.EXT, "tif", Parameter.EXT, "jpg")));
+        list.add(new Parameter<>("shape", File.class, "Shapefile", "Shapefile contents to display",
+            new KVP(Parameter.EXT, "shp")));
 
         JParameterListWizard wizard = new JParameterListWizard("Image Lab",
                 "Fill in the following layers", list);

@@ -90,7 +90,7 @@ public class QueryLab extends JFrame {
         JMenu fileMenu = new JMenu("File");
         menubar.add(fileMenu);
 
-        featureTypeCBox = new JComboBox<String>();
+        featureTypeCBox = new JComboBox<>();
         menubar.add(featureTypeCBox);
 
         JMenu dataMenu = new JMenu("Data");
@@ -163,7 +163,7 @@ public class QueryLab extends JFrame {
 
     // docs start update
     private void updateUI() throws Exception {
-        ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(dataStore.getTypeNames());
+        ComboBoxModel<String> cbm = new DefaultComboBoxModel<>(dataStore.getTypeNames());
         featureTypeCBox.setModel(cbm);
 
         table.setModel(new DefaultTableModel(5, 5));

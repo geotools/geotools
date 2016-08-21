@@ -43,30 +43,27 @@ import com.vividsolutions.jts.geom.Geometry;
 public class BufferFactory extends SingleProcessFactory {
     // making parameters available as static constants to help java programmers
     /** Geometry for operation */
-    static final Parameter<Geometry> GEOM1 =
-        new Parameter<Geometry>("geom1", Geometry.class, Text.text("Geometry"), Text.text("Geometry to buffer") );
+    static final Parameter<Geometry> GEOM1 = new Parameter<>("geom1", Geometry.class, Text.text("Geometry"), Text.text("Geometry to buffer"));
     
     /** Buffer amount */
-    static final Parameter<Double> BUFFER = 
-        new Parameter<Double>("buffer", Double.class, Text.text("Buffer Amount"), Text.text("Amount to buffer the geometry by") );
+    static final Parameter<Double> BUFFER = new Parameter<>("buffer", Double.class, Text.text("Buffer Amount"), Text.text("Amount to buffer the geometry by"));
     
     /**
      * Map used for getParameterInfo; used to describe operation requirements for user
      * interface creation.
      */
-    static final Map<String,Parameter<?>> prameterInfo = new TreeMap<String,Parameter<?>>();
+    static final Map<String,Parameter<?>> prameterInfo = new TreeMap<>();
     static {
         prameterInfo.put( GEOM1.key, GEOM1 );
         prameterInfo.put( BUFFER.key, BUFFER );
     }    
     
-    static final Parameter<Geometry> RESULT = 
-        new Parameter<Geometry>("result", Geometry.class, Text.text("Result"), Text.text("Result of Geometry.getBuffer( Buffer )") );
+    static final Parameter<Geometry> RESULT = new Parameter<>("result", Geometry.class, Text.text("Result"), Text.text("Result of Geometry.getBuffer( Buffer )"));
      
     /**
      * Map used to describe operation results.
      */
-    static final Map<String,Parameter<?>> resultInfo = new TreeMap<String,Parameter<?>>();
+    static final Map<String,Parameter<?>> resultInfo = new TreeMap<>();
     static {
         resultInfo.put( RESULT.key, RESULT );
     }

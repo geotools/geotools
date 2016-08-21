@@ -230,8 +230,7 @@ public class QueryLab extends JFrame {
         double totalX = 0.0;
         double totalY = 0.0;
         long count = 0;
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
@@ -240,8 +239,6 @@ public class QueryLab extends JFrame {
                 totalY += centroid.getY();
                 count++;
             }
-        } finally {
-            iterator.close(); // IMPORTANT
         }
         double averageX = totalX / (double) count;
         double averageY = totalY / (double) count;

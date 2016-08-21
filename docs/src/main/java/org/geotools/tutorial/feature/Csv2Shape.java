@@ -86,8 +86,7 @@ public class Csv2Shape {
 
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(TYPE);
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        try {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)) ){
             /* First line of the data file is the header */
             String line = reader.readLine();
             System.out.println("Header: " + line);
@@ -111,8 +110,6 @@ public class Csv2Shape {
                     features.add(feature);
                 }
             }
-        } finally {
-            reader.close();
         }
         // docs break new shapefile
         /*

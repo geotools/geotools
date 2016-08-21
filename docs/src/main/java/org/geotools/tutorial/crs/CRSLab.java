@@ -155,10 +155,9 @@ public class CRSLab {
 
         // carefully open an iterator and writer to process the results
         Transaction transaction = new DefaultTransaction("Reproject");
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+        try ( FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                         dataStore.getFeatureWriterAppend(createdName, transaction);
-        SimpleFeatureIterator iterator = featureCollection.features();
-        try {
+              SimpleFeatureIterator iterator = featureCollection.features()){
             while (iterator.hasNext()) {
                 // copy the contents of each feature and transform the geometry
                 SimpleFeature feature = iterator.next();
@@ -178,8 +177,6 @@ public class CRSLab {
             transaction.rollback();
             JOptionPane.showMessageDialog(null, "Export to shapefile failed");
         } finally {
-            writer.close();
-            iterator.close();
             transaction.close();
         }
     }

@@ -397,7 +397,9 @@ public class JCRSChooser {
          */
         private void setOKButtonState() {
             boolean b = model.getSize() == 1 || listBox.getSelectedIndex() >= 0;
-            okButton.setEnabled(b);
+            if( okButton != null ){
+                okButton.setEnabled(b);
+            }
         }
 
         /**

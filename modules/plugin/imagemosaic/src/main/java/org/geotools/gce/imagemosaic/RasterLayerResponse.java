@@ -330,7 +330,7 @@ class RasterLayerResponse{
 		private final List<Future<GranuleLoadingResult>> tasks= new ArrayList<Future<GranuleLoadingResult>>();
 		private int   granulesNumber;
 		private List<ROI> rois = new ArrayList<ROI>();
-		private Color inputTransparentColor;
+		private Set<Color> inputTransparentColors = new HashSet<Color>();
 		private PlanarImage[] alphaChannels;
 		private RasterLayerRequest request;
         
@@ -391,8 +391,13 @@ class RasterLayerResponse{
 			// reusable parameters
 			alphaChannels = new PlanarImage[granulesNumber];
 			int granuleIndex=0;
-			inputTransparentColor = request.getInputTransparentColor();
-			doInputTransparency = inputTransparentColor != null&&!footprintManagement;
+            if (request.getInputTransparentColor() != null) {
+                inputTransparentColors.add(request.getInputTransparentColor());
+            }
+            if (request.getInputTransparentColors() != null) {
+                inputTransparentColors.addAll(request.getInputTransparentColors());
+            }
+            doInputTransparency = inputTransparentColors != null && !inputTransparentColors.isEmpty() &&!footprintManagement;
 			// execute them all
 			boolean firstGranule=true;
 			int[] alphaIndex=null;
@@ -490,7 +495,7 @@ class RasterLayerResponse{
 						alphaIn, 
 						alphaChannels, 
 						doInputTransparency,
-						inputTransparentColor);
+						inputTransparentColors);
 				
 				// we need to add its roi in order to avoid problems with the mosaic overlapping
 				Rectangle bounds = PlanarImage.wrapRenderedImage(raster).getBounds();
@@ -1120,7 +1125,7 @@ class RasterLayerResponse{
 			final int[] alphaIndex,
 			final boolean alphaIn,
 			final PlanarImage[] alphaChannels,
-			final boolean doTransparentColor, final Color transparentColor) {
+			final boolean doTransparentColor, final Set<Color> transparentColors) {
 
 		//
 		// INDEX COLOR MODEL EXPANSION
@@ -1155,7 +1160,7 @@ class RasterLayerResponse{
 		if (doTransparentColor) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on input image number "+ granuleIndex);
-			granule = ImageUtilities.maskColor(transparentColor, granule);
+			granule = ImageUtilities.maskColors(transparentColors, granule);
 			alphaIndex[0]= granule.getColorModel().getNumComponents() - 1 ;
 		}
 		//

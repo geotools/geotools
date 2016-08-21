@@ -19,6 +19,7 @@ package org.geotools.coverage.grid.io;
 import java.awt.Color;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageWriteParam;
 
@@ -31,6 +32,7 @@ import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
+import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -187,6 +189,10 @@ public abstract class AbstractGridFormat implements Format {
     /** Control the transparency of the input coverages. */
     public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
                 "InputTransparentColor", Color.class, null, null);
+    
+    /** Control the transparency of the input coverages (allows to set multiple transparent colors). */
+    public static final ParameterDescriptor<Set<Color>> INPUT_TRANSPARENT_COLORS = new DefaultParameterDescriptor<Set<Color>>(
+                "InputTransparentColors", Utilities.<Class<Set<Color>>>cast(Set.class), null, null);
     
     /** Control the background color to be used where the input was transparent */
     public static final ParameterDescriptor<Color> BACKGROUND_COLOR = new DefaultParameterDescriptor<Color>(

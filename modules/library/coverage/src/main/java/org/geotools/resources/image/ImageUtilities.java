@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -907,6 +908,28 @@ public final class ImageUtilities {
             w.forceComponentColorModel();
         }
         return w.makeColorTransparent(transparentColor).getRenderedImage();
+    }
+
+    /**
+     * Relies on the {@link ImageWorker} to mask a certain colors from an image.
+     *
+     * @param transparentColors a set of {@link Color}s to make transparent
+     * @param image the {@link RenderedImage} to work on
+     * @return a new {@link RenderedImage} where the provided {@link Color}s have turned into transparent.
+     *
+     * @throws IllegalStateException
+     */
+    public static RenderedImage maskColors(final Set<Color> transparentColors,
+            final RenderedImage image) throws IllegalStateException {
+        Utilities.ensureNonNull("image", image);
+        if(transparentColors==null || transparentColors.isEmpty()){
+            return image;
+        }
+        final ImageWorker w = new ImageWorker(image);
+        if (image.getSampleModel() instanceof MultiPixelPackedSampleModel){
+            w.forceComponentColorModel();
+        }
+        return w.makeColorsTransparent(transparentColors).getRenderedImage();
     }
 
     static public ImageReadParam cloneImageReadParam(ImageReadParam param) {

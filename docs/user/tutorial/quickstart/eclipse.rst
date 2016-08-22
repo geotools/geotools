@@ -262,16 +262,15 @@ such as GeoTools publish their work.
         :language: xml
         :start-after: </dependencies>
         :end-before: <build>
-
-   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
    
-   .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: <build>
+   .. note:: If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+   
+      .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: </dependencies>
+        :end-before: <build>
 
-7. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
-
+7. GeoTools now requires Java 8 language level features (eg. lambdas) - you need to tell Maven to use the 1.8 source level.
 
    .. literalinclude:: artifacts/pom2.xml
       :language: xml
@@ -296,11 +295,11 @@ Quickstart Application
 
 Now that your environment is setup we can put together a simple Quickstart. This example will display a shapefile on screen.
 
-#. Create the package org.geotools.tutorial.quickstart using your IDE.
+#. Create the package ``org.geotools.tutorial.quickstart`` using your IDE.
 
 #. Create the org.geotools.tutorial.quickstart.Quickstart class using your IDE.
    
-   .. image:: images/class.jpg
+   .. image:: images/class.png
       :scale: 60
    
 #. Fill in the following code:

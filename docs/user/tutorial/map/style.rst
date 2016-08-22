@@ -35,7 +35,7 @@ The example code is available
 
 Main Application
 ----------------
-1. Please create the file **StyleLab.java**
+1. Create the package **org.geotools.tutorial.style** and class **StyleLab** .
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/StyleLab.java

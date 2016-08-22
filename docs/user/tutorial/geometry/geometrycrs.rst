@@ -41,7 +41,7 @@ the geometry of the features.
         :start-after: </properties>
         :end-before: <repositories>
     
-2. Create the **CRSLab.java** file and copy and paste the following code:
+2. Create the package **org.geotools.tutorial.crs** and class **CRSLab.java** file and copy and paste the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java

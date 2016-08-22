@@ -52,7 +52,7 @@ and overlaying it with country boundaries from a shapefile.
         :start-after: </properties>
         :end-before: <repositories>
 
-2. Please create the file **ImageLab.java** and copy and paste in the following code:
+2. Please create the package **org.geotools.tutorial.raster** and class **ImageLab** and copy and paste in the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java

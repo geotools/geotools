@@ -68,7 +68,7 @@ Note that the jars mentioned above will pull in a host of other dependencies
 
 Main Application
 ----------------
-1. Please create the class **Csv2Shape.java**
+1. Please create the package **org.geotools.tutorial.feature** and class **Csv2Shape.java** .
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java

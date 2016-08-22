@@ -134,7 +134,7 @@ Maven downloads jars from public repositories on the internet where projects suc
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </build>
+        :end-before: <build>
 
    If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
    

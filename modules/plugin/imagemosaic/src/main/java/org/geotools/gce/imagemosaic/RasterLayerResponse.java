@@ -804,6 +804,9 @@ class RasterLayerResponse {
                                     // Adding globalRoi to the output
                                     RenderedOp rop = (RenderedOp) mosaic;
                                     rop.setProperty("ROI", in.roi);
+                                    
+                                    mosaic = footprintBehavior.postProcessMosaic(mosaic, in.roi,
+                                            localHints);
                                 }
                             }
 

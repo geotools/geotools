@@ -99,7 +99,7 @@ work we did reading features in CSVFeatureSource.
 Many first generation DataStore implementations practised cut and paste coding, meaning fixes would
 often get applied in one spot and not another making for a frustrating debugging experience.
 
-Instead we are going to use a **delegate** CSVFeatureStore, hidden from public
+Instead we are going to use a **delegate** CSVFeatureSource, hidden from public
 view, simply to call its methods for reading. This prevents code duplication,
 making the code easier to maintain, at the cost of some up front complexity.
 
@@ -164,28 +164,29 @@ are always on the same transaction, but other than that this approach is working
         :start-after: // internal start
         :end-before: // internal end
         
-     We have to do one "fix" to allow handle visitor method to be called - add the following to
-        **CSVFeatureSource**.
+  #. We have to do one "fix" to allow handle visitor method to be called - add the following to **CSVFeatureSource**.
         
      .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
         :language: java
         :start-after: // visitor start
         :end-before: // visitor end
-        
+     
+     .. warning:: Double check you are adding the above to CSVFeature**Source**.
+     
      .. note::
      
         Why does this work - because Java visibility rules are insane.
         Even though the method is marked *protected* it now has *package*
         visibility can be called by its peer CSVFeatureStore. 
       
-#. Use the delegate to implement the public FeatureSource methods.
+  #. Use the delegate to implement the public FeatureSource methods.
    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // public start
-      :end-before: // public end
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // public start
+        :end-before: // public end
 
-#. You can see what this looks like in context by reviewing the :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java>` from the **gt-csv** plugin.
+  #. You can see what this looks like in context by reviewing the :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java>` from the **gt-csv** plugin.
 
 CSVFeatureWriter
 ^^^^^^^^^^^^^^^^
@@ -205,15 +206,13 @@ A couple common questions:
 
 * Q: How do you make a Transaction out of our simple reader?
   
-  ContentFeatureSource uses wrappers (or delegates) to process the data on the fly.
-  
-  Example: So if a Filter is provided the wrapper will skip over features so the user only sees the content
-  they requested?
+  ContentFeatureSource uses wrappers (or delegates) to process the data on the fly as it is read off disk. Wrappers can do all kinds of work, from cutting off reading when "max feature limit" is hit, or in the case of transactions modifying the content as it is read to match any edits that have been made.
 
 * Q: How do you know what wrappers to use?
   
-  ContentFeatureSource checks to see if a wrapper is needed, and if so uses the MaxFeatureReader
-  wrapper.
+  ContentFeatureSource checks to see if a wrapper is needed.
+  
+  For example a query with a "max feature limit" is implemented using the MaxFeatureReader wrapper.
   
   .. code-block:: java
   

@@ -94,13 +94,14 @@ public class CSVFeatureStore extends ContentFeatureStore {
             throws IOException {
         return delegate.getReaderInternal(query);
     }
+    // internal end
+
     // visitor start
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return delegate.handleVisitor(query, visitor);
     }
     // visitor end
-    // internal end
     
     // public start
     //

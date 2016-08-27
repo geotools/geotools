@@ -17,93 +17,110 @@
  */
 package org.geotools.polylabel;
 
+import java.util.logging.Level;
+
 import org.geotools.geometry.jts.GeometryBuilder;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
+
+/**
+ * Based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/
+ * 
+ * Implementation of quadtree cells for "Pole of inaccessibility". 
+ * 
+ * @author Ian Turton
+ * @author Casper Børgesen
+ * 
+ */
 public class Cell implements Comparable<Cell> {
-  static final private GeometryBuilder gb = new GeometryBuilder();
-  private static final double SQRT2 = 1.4142135623730951;
-  private double x;
-  private double y;
-  private double h;
-  private double d;
-  private double max;
+    static final private GeometryBuilder gb = new GeometryBuilder();
 
-  Cell(double x, double y, double h, MultiPolygon polygon) {
+    private static final double SQRT2 = 1.4142135623730951;
 
-    this.setX(x); // cell center x
-    this.setY(y); // cell center y
-    this.setH(h); // half the cell size
-    Point p = gb.point(x, y);
-    this.setD(pointToPolygonDist(p, polygon)); // distance from cell center
-                                             // to polygon
-    this.setMax(this.getD() + this.getH() * SQRT2); // max distance to polygon within
-                                        // a cell
-  }
+    private double x;
 
-  @Override
-  public int compareTo(Cell o) {
+    private double y;
 
-    return (int) (o.getMax() - getMax());
-  }
+    private double h;
 
-  public Point getPoint() {
-	  return gb.point(x, y);
-  }
-  
-  // signed distance from point to polygon outline (negative if point is
-  // outside)
-  private double pointToPolygonDist(Point point, MultiPolygon polygon) {
-    boolean inside = polygon.contains(point);
-/*    double minDistSq = Double.POSITIVE_INFINITY;
-    double x = point.getX();
-    double y = point.getY();*/
-    double dist = DistanceOp.distance(point, polygon.getBoundary());
-    //TODO: Add logging
-    //System.out.println(""+((inside ? 1 : -1) * dist)+" from "+point+"\n"+polygon.getBoundary());
-    return (inside ? 1 : -1) * dist;
-  }
+    private double d;
 
-  public double getMax() {
-    return max;
-  }
+    private double max;
 
-  public void setMax(double max) {
-    this.max = max;
-  }
+    Cell(double x, double y, double h, MultiPolygon polygon) {
 
-  public double getD() {
-    return d;
-  }
+        this.setX(x); // cell center x
+        this.setY(y); // cell center y
+        this.setH(h); // half the cell size
+        Point p = gb.point(x, y);
 
-  public void setD(double d) {
-    this.d = d;
-  }
+        // distance from cell center to polygon
+        this.setD(pointToPolygonDist(p, polygon)); 
+        
+        // max distance to polygon within a cell
+        this.setMax(this.getD() + this.getH() * SQRT2); 
+    }
 
-  public double getH() {
-    return h;
-  }
+    @Override
+    public int compareTo(Cell o) {
 
-  public void setH(double h) {
-    this.h = h;
-  }
+        return (int) (o.getMax() - getMax());
+    }
 
-  public double getX() {
-    return x;
-  }
+    public Point getPoint() {
+        return gb.point(x, y);
+    }
 
-  public void setX(double x) {
-    this.x = x;
-  }
+    // signed distance from point to polygon outline (negative if point is
+    // outside)
+    private double pointToPolygonDist(Point point, MultiPolygon polygon) {
+        boolean inside = polygon.contains(point);
+        double dist = DistanceOp.distance(point, polygon.getBoundary());
 
-  public double getY() {
-    return y;
-  }
+        // Points outside has a negative distance and thus will be weighted down later.
+        return (inside ? 1 : -1) * dist;
+    }
 
-  public void setY(double y) {
-    this.y = y;
-  }
+    public double getMax() {
+        return max;
+    }
+
+    public void setMax(double max) {
+        this.max = max;
+    }
+
+    public double getD() {
+        return d;
+    }
+
+    public void setD(double d) {
+        this.d = d;
+    }
+
+    public double getH() {
+        return h;
+    }
+
+    public void setH(double h) {
+        this.h = h;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
 }

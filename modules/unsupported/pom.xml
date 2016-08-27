@@ -209,6 +209,7 @@
     <module>mbtiles</module>
     <module>wfs-ng</module>
     <module>ysld</module>
+    <module>polylabel</module>
   </modules>
 
 </project>

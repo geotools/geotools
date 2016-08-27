@@ -1,3 +1,4 @@
+
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +16,7 @@
  *    Lesser General Public License for more details.
  *    
  */
+
 package org.geotools.polylabel;
 
 import org.geotools.process.factory.DescribeParameter;
@@ -26,23 +28,22 @@ import org.geotools.text.Text;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Based on Vladimir Agafonkin's Algorithm 
- * https://www.mapbox.com/blog/polygon-center/
+ * Based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/
  * 
  * @author Ian Turton
  * @author Casper Børgesen
- *
  */
 
-public class PolygonLabelProcess extends StaticMethodsProcessFactory<PolygonLabelProcess>{
-	public PolygonLabelProcess() {
-		super(Text.text("PolygonLabelProcess"), "polygonlabelprocess", PolygonLabelProcess.class);
-	}
-	
-	@DescribeProcess(title = "Polygon label process", description = "Calculate the the Pole of accessibility, the most distant interior point i a polygon.")
-    @DescribeResult(description="Pole of accessibility")
-	static public Geometry PolyLabeller(@DescribeParameter(name = "polygon", description = "Input polygon") Geometry polygon, 
-			@DescribeParameter(name = "precision", description = "Tolerance") double tolerance) {
-		return PolyLabeller.getPolylabel(polygon, tolerance);
-	}
+public class PolygonLabelProcess extends StaticMethodsProcessFactory<PolygonLabelProcess> {
+    public PolygonLabelProcess() {
+        super(Text.text("PolygonLabelProcess"), "polygonlabelprocess", PolygonLabelProcess.class);
+    }
+
+    @DescribeProcess(title = "Polygon label process", description = "Calculate the Pole of accessibility, the most distant interior point in a polygon.")
+    @DescribeResult(description = "Pole of accessibility")
+    static public Geometry PolyLabeller(
+            @DescribeParameter(name = "polygon", description = "Input polygon") Geometry polygon,
+            @DescribeParameter(name = "precision", description = "Tolerance") double tolerance) {
+        return PolyLabeller.getPolylabel(polygon, tolerance);
+    }
 }

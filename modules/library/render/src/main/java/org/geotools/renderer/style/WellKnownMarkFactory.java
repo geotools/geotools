@@ -45,28 +45,30 @@ public class WellKnownMarkFactory implements MarkFactory {
             "org.geotools.rendering");
 
     /** Cross general path */
-    private static Shape cross;
+    static Shape cross;
 
     /** Star general path */
-    private static Shape star;
+    static Shape star;
 
     /** Triangle general path */
-    private static Shape triangle;
+    static Shape triangle;
 
     /** Arrow general path */
-    private static Shape arrow;
+    static Shape arrow;
 
     /** X general path */
-    private static Shape X;
+    static Shape X;
     
     /** hatch path */
     static Shape hatch;
     
     /** square */
-    private static Shape square;
+    static Shape square;
+
+    static Shape circle = new java.awt.geom.Ellipse2D.Double(-.5, -.5, 1., 1.);
 
     static {
-    	GeneralPath crossPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+        GeneralPath crossPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         crossPath.moveTo(0.5f, 0.125f);
         crossPath.lineTo(0.125f, 0.125f);
         crossPath.lineTo(0.125f, 0.5f);
@@ -177,7 +179,7 @@ public class WellKnownMarkFactory implements MarkFactory {
         if (wellKnownName.equalsIgnoreCase("circle")) {
             LOGGER.finer("returning circle");
 
-            return new java.awt.geom.Ellipse2D.Double(-.5, -.5, 1., 1.);
+            return circle;
         }
 
         if (wellKnownName.equalsIgnoreCase("triangle")) {

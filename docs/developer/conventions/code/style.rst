@@ -137,9 +137,9 @@ Here are some Eclipse settings that you can import when working on GeoTools (in 
 
 To use:
 
-#. Open up Window > Preferences and navigate to the **Java > Code Style > Formatter** page
+#. Open up **Window > Preferences** and navigate to the **Java > Code Style > Formatter** page
 #. Press the import button and select the file from your GeoTools check out (located in build/eclipse.formatter.xml)
-#. Change to the Java > Code Style > Code Templates page
+#. Change to the **Java > Code Style > Code Templates** page
 #. Import the template definition from your GeoTools check out (located in build/eclipse/codetemplates.xml)
 #. These files will have the header already to go for you; the right format options and so on.
 
@@ -150,8 +150,8 @@ NetBeans also has the sun settings built in; please modify these defaults to mat
 
 IntelliJ
 ''''''''
-The `formatter.xml` can also be imported into IntelliJ as of version 13. Under Settings -> Editor ->
-Code Style and click *Manage*. From there you can choose *Import* and select the Eclipse formatter.xml.
+The `formatter.xml` can also be imported into IntelliJ as of version 13. Under **Settings -> Editor ->
+Code Style** and click *Manage*. From there you can choose *Import* and select the Eclipse formatter.xml.
 
 Javadocs
 ^^^^^^^^

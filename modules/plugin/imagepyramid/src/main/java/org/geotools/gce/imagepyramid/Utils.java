@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagepyramid;
 
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
@@ -42,9 +41,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * Code to build a pyramid from a gdal_retile output
@@ -253,11 +250,10 @@ class Utils {
         StringBuilder sbLevels = new StringBuilder();
         for (MosaicInfo mi : mosaics) {
             sbDirNames.append(mi.getName()).append(" ");
-            double[] resolutions = mi.getResolutions()[0];
-            sbLevels.append(resolutions[0]).append(",").append(resolutions[1]).append(" ");
+            appendResolutionLevels(sbLevels, mi.getResolutions());
         }
         properties.put("LevelsDirs", sbDirNames.toString());
-        properties.put("Levels", sbLevels.toString());
+        properties.put("Levels", sbLevels.toString().trim());
         GeneralEnvelope envelope = mosaics.get(0).getEnvelope();
         properties.put("Envelope2D", envelope.getMinimum(0) + "," + envelope.getMinimum(1) + " "
                 + envelope.getMaximum(0) + "," + envelope.getMaximum(1));
@@ -292,6 +288,21 @@ class Utils {
         }
 
         return DataUtilities.fileToURL(sourceFile);
+    }
+
+    private static void appendResolutionLevels(StringBuilder sbLevels, double[][] resolutions) {
+        final int numResolutions = resolutions.length;
+        for (int i=0; i < numResolutions - 1;i++) {
+            // separate overviews with ";"
+            appendXYResolutions(sbLevels, resolutions[i]);
+            sbLevels.append(";");
+        } 
+        appendXYResolutions(sbLevels, resolutions[numResolutions - 1]);
+        sbLevels.append(" ");
+    }
+
+    private static void appendXYResolutions(StringBuilder sbLevels, double[] resolutions) {
+        sbLevels.append(resolutions[0]).append(",").append(resolutions[1]);
     }
 
     private static String checkConsistency(ImageMosaicReader reader) {

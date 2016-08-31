@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +39,7 @@ import org.geotools.parameter.ParameterGroup;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -76,14 +78,14 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
         info.put("version", "1.0");
         mInfo = info;
 
-        // reading parameters
-        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo,
-                new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D, INPUT_TRANSPARENT_COLOR,
-                        ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR, USE_JAI_IMAGEREAD,
-                        ImageMosaicFormat.BACKGROUND_VALUES, SUGGESTED_TILE_SIZE,
-                        ImageMosaicFormat.ALLOW_MULTITHREADING,
-                        ImageMosaicFormat.MAX_ALLOWED_TILES, ImageMosaicFormat.ELEVATION,
-                        ImageMosaicFormat.TIME, ImageMosaicFormat.FADING }));
+        // reading parameters. Inheriting them from the ImageMosaic
+        final ImageMosaicFormat formatForParameters = new ImageMosaicFormat();
+        final ParameterValueGroup readParams = formatForParameters.getReadParameters();
+        final DefaultParameterDescriptorGroup descriptor = (DefaultParameterDescriptorGroup) readParams.getDescriptor();
+        List<GeneralParameterDescriptor> descriptors = descriptor.descriptors();
+        GeneralParameterDescriptor[] descriptorArray = new GeneralParameterDescriptor[descriptors.size()];
+        descriptorArray = descriptors.toArray(descriptorArray);
+        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, descriptorArray));
 
         // writing parameters
         writeParameters = null;
@@ -206,20 +208,15 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
             }
 
             // overviews dir
-            int numOverviews = Integer.parseInt(properties.getProperty("LevelsNum")) - 1;
+            final String levelsNumProp = properties.getProperty("LevelsNum");
+            if (levelsNumProp == null) {
+                return false;
+            }
 
             // resolutions levels
             final String levels = properties.getProperty("Levels");
-            pairs = levels.split(" ");
-            double[][] overViewResolutions = numOverviews >= 1 ? new double[numOverviews][2] : null;
-            pair = pairs[0].split(",");
-            double[] highestRes = new double[2];
-            highestRes[0] = Double.parseDouble(pair[0]);
-            highestRes[1] = Double.parseDouble(pair[1]);
-            for (int i = 1; i < numOverviews + 1; i++) {
-                pair = pairs[i].split(",");
-                overViewResolutions[i - 1][0] = Double.parseDouble(pair[0]);
-                overViewResolutions[i - 1][1] = Double.parseDouble(pair[1]);
+            if (levels == null) {
+                return false;
             }
 
             // name

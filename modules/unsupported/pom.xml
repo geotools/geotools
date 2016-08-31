@@ -190,6 +190,17 @@
 			</modules>
 		</profile>
 		<profile>
+            <id>polylabel</id>
+            <activation>
+                <property>
+                    <name>all</name>
+                </property>
+            </activation>
+            <modules>
+                <module>polylabel</module>
+            </modules>
+        </profile>
+		<profile>
 			<id>unsupported</id>
 			<activation>
 				<property>
@@ -208,6 +219,7 @@
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
+				<module>polylabel</module>
 			</modules>
 		</profile>
 	</profiles>

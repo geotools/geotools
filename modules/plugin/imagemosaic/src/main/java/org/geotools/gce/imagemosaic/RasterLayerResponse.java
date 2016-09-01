@@ -16,18 +16,17 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.MultiPixelPackedSampleModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.io.File;
-import java.awt.image.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -38,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
@@ -59,7 +60,6 @@ import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.apache.commons.io.FilenameUtils;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -79,6 +79,7 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.DomainDescriptor;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
@@ -91,7 +92,6 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
@@ -116,6 +116,12 @@ import org.opengis.util.InternationalString;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.util.Assert;
+
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
 
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a requestCoverage is called to a reader.
@@ -389,17 +395,33 @@ class RasterLayerResponse {
                 final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice,
                         mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
                 if (!dryRun) {
-                    if (multithreadingAllowed
-                            && rasterManager.parentReader.multiThreadedLoader != null) {
+                    final boolean multiThreadedLoading = isMultithreadedLoadingEnabled(); 
+                    if (multiThreadedLoading) {
                         // MULTITHREADED EXECUTION submitting the task
-                        granulesFutures
-                                .add(rasterManager.parentReader.multiThreadedLoader.submit(loader));
+                        final ExecutorService mtLoader = rasterManager.parentReader.multiThreadedLoader;
+                        granulesFutures.add(mtLoader.submit(loader));
                     } else {
                         // SINGLE THREADED Execution, we defer the execution to when we have done the loading
                         final FutureTask<GranuleLoadingResult> task = new FutureTask<GranuleLoadingResult>(
                                 loader);
-                        granulesFutures.add(task);
                         task.run(); // run in current thread
+                        
+                        // perform excess granule removal, as it makes sense in single threaded mode to
+                        // do it while loading, to allow for an early bail out reading granules
+                        ROIExcessGranuleRemover remover = getExcessGranuleRemover();
+                        GranuleLoadingResult result;
+                        if(remover != null) {
+                            try {
+                                result = task.get();
+                                if(!remover.addGranule(result)) {
+                                    return false;
+                                }
+                            } catch (InterruptedException | ExecutionException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        granulesFutures.add(task);
+                        
                     }
                 }
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -457,6 +479,20 @@ class RasterLayerResponse {
                                             + request.toString());
                         }
                         continue;
+                    }
+                    
+                    // perform excess granule removal in case multithreaded loading is enabled
+                    if(isMultithreadedLoadingEnabled()) {
+                        ROIExcessGranuleRemover remover = RasterLayerResponse.this.getExcessGranuleRemover();
+                        if(remover != null) {
+                            if(remover.isRenderingAreaComplete()) {
+                                break;
+                            }
+                            if(!remover.addGranule(result)) {
+                                // skip this granule
+                                continue;
+                            }
+                        }
                     }
 
                     // now process it
@@ -522,7 +558,16 @@ class RasterLayerResponse {
                     LOGGER.info("The MosaicElement list is null or empty");
                 }
             }
+            
+            setGranulesPaths(granulesPaths);
+            
             return new MosaicInputs(doInputTransparency, hasAlpha, returnValues, sourceThreshold);
+        }
+        
+        private boolean isMultithreadedLoadingEnabled() {
+            final ExecutorService mtLoader = getRasterManager().getParentReader().getMultiThreadedLoader();
+            final boolean multiThreadedLoading = isMultithreadingAllowed() && mtLoader != null;
+            return multiThreadedLoading;
         }
 
         private MosaicElement preProcessGranuleRaster(RenderedImage granule,
@@ -1026,8 +1071,8 @@ class RasterLayerResponse {
                     }
                 }
 
-                // did we find a place for it?
-                if (!found) {
+                // did we find a place for it? If we are doing EGR then it's ok, otherwise not so much
+                if (!found && getExcessGranuleRemover() == null) {
                     throw new IllegalStateException("Unable to locate a filter for this granule:\n"
                             + granuleDescriptor.toString());
                 }
@@ -1038,6 +1083,12 @@ class RasterLayerResponse {
                             + granuleDescriptor.toString());
                 }
             }
+        }
+        
+        @Override
+        public boolean isVisitComplete() {
+            ROIExcessGranuleRemover remover = getExcessGranuleRemover();
+            return remover != null && remover.isRenderingAreaComplete();
         }
 
         /**
@@ -1154,6 +1205,8 @@ class RasterLayerResponse {
     private Hints hints;
 
     private String granulesPaths;
+    
+    private ROIExcessGranuleRemover excessGranuleRemover;
 
     /**
      * Construct a {@code RasterLayerResponse} given a specific {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
@@ -1282,6 +1335,9 @@ class RasterLayerResponse {
 
             // === init raster bounds
             initRasterBounds();
+            
+            // === init excess granule removal if needed
+            initExcessGranuleRemover();
 
             // === create query and basic BBOX filtering
             final Query query = initQuery();
@@ -1350,6 +1406,20 @@ class RasterLayerResponse {
 
         } catch (Exception e) {
             throw new DataSourceException("Unable to create this mosaic", e);
+        }
+    }
+
+    private void initExcessGranuleRemover() {
+        if(request.getExcessGranuleRemovalPolicy() == ExcessGranulePolicy.ROI) {
+            Dimension tileDimensions = request.getTileDimensions();
+            int tileWidth, tileHeight;
+            if(tileDimensions != null) {
+                tileWidth = (int) tileDimensions.getWidth();
+                tileHeight = (int) tileDimensions.getHeight();
+            } else {
+                tileWidth = tileHeight = ROIExcessGranuleRemover.DEFAULT_TILE_SIZE;
+            }
+            excessGranuleRemover = new ROIExcessGranuleRemover(rasterBounds, tileWidth, tileHeight, rasterManager.getConfiguration().getCrs());
         }
     }
 
@@ -1885,5 +1955,81 @@ class RasterLayerResponse {
             }
         }
         return null;
+    }
+
+    public RasterLayerRequest getRequest() {
+        return request;
+    }
+
+    public FootprintBehavior getFootprintBehavior() {
+        return footprintBehavior;
+    }
+
+    public ImageReadParam getBaseReadParameters() {
+        return baseReadParameters;
+    }
+
+    public MathTransform2D getFinalGridToWorldCorner() {
+        return finalGridToWorldCorner;
+    }
+
+    public MathTransform2D getFinalWorldToGridCorner() {
+        return finalWorldToGridCorner;
+    }
+
+    public ReferencedEnvelope getMosaicBBox() {
+        return mosaicBBox;
+    }
+
+    public Color getFinalTransparentColor() {
+        return finalTransparentColor;
+    }
+
+    public Rectangle getRasterBounds() {
+        return rasterBounds;
+    }
+
+    public MathTransform getBaseGridToWorld() {
+        return baseGridToWorld;
+    }
+
+    public int getImageChoice() {
+        return imageChoice;
+    }
+
+    public void setImageChoice(int imageChoice) {
+        this.imageChoice = imageChoice;
+    }
+
+    public boolean isMultithreadingAllowed() {
+        return multithreadingAllowed;
+    }
+
+    public RasterManager getRasterManager() {
+        return rasterManager;
+    }
+
+    public Hints getHints() {
+        return hints;
+    }
+
+    public void setGranulesPaths(String granulesPaths) {
+        this.granulesPaths = granulesPaths;
+    }
+
+    public int getDefaultArtifactsFilterThreshold() {
+        return defaultArtifactsFilterThreshold;
+    }
+
+    public double getArtifactsFilterPTileThreshold() {
+        return artifactsFilterPTileThreshold;
+    }
+
+    public double[] getBackgroundValues() {
+        return backgroundValues;
+    }
+
+    public ROIExcessGranuleRemover getExcessGranuleRemover() {
+        return excessGranuleRemover;
     }
 }

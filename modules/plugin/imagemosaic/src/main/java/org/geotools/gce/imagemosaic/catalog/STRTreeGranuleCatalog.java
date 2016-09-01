@@ -116,6 +116,9 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             if (maxGranules > 0 && granuleIndex > maxGranules) {
                 return; // Skip
             }
+            if(adaptee.isVisitComplete()) {
+                return; // Skipt
+            }
             if (o instanceof GranuleDescriptor) {
                 final GranuleDescriptor g = (GranuleDescriptor) o;
                 final SimpleFeature originator = g.getOriginator();

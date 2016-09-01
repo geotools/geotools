@@ -60,6 +60,7 @@ import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.DomainDescriptor;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducer;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducer;
@@ -324,8 +325,8 @@ public class RasterLayerResponse {
                     }
                 }
 
-                // did we find a place for it?
-                if (!found) {
+                // did we find a place for it? If we are doing EGR then it's ok, otherwise not so much
+                if (!found && getExcessGranuleRemover() == null) {
                     throw new IllegalStateException("Unable to locate a filter for this granule:\n"
                             + granuleDescriptor.toString());
                 }
@@ -336,6 +337,12 @@ public class RasterLayerResponse {
                             + granuleDescriptor.toString());
                 }
             }
+        }
+        
+        @Override
+        public boolean isVisitComplete() {
+            ROIExcessGranuleRemover remover = getExcessGranuleRemover();
+            return remover != null && remover.isRenderingAreaComplete();
         }
 
         /**
@@ -468,6 +475,8 @@ public class RasterLayerResponse {
     private Hints hints;
 
     private String granulesPaths;
+    
+    private ROIExcessGranuleRemover excessGranuleRemover;
 
     /**
      * Construct a {@code RasterLayerResponse} given a specific {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
@@ -590,6 +599,9 @@ public class RasterLayerResponse {
 
             // === init raster bounds
             initRasterBounds();
+            
+            // === init excess granule removal if needed
+            initExcessGranuleRemover();
 
             // === create query and basic BBOX filtering
             final Query query = initQuery();
@@ -661,6 +673,20 @@ public class RasterLayerResponse {
 
         } catch (Exception e) {
             throw new DataSourceException("Unable to create this mosaic", e);
+        }
+    }
+
+    private void initExcessGranuleRemover() {
+        if(request.getExcessGranuleRemovalPolicy() == ExcessGranulePolicy.ROI) {
+            Dimension tileDimensions = request.getTileDimensions();
+            int tileWidth, tileHeight;
+            if(tileDimensions != null) {
+                tileWidth = (int) tileDimensions.getWidth();
+                tileHeight = (int) tileDimensions.getHeight();
+            } else {
+                tileWidth = tileHeight = ROIExcessGranuleRemover.DEFAULT_TILE_SIZE;
+            }
+            excessGranuleRemover = new ROIExcessGranuleRemover(rasterBounds, tileWidth, tileHeight, rasterManager.getConfiguration().getCrs());
         }
     }
 
@@ -1270,5 +1296,9 @@ public class RasterLayerResponse {
 
     public double[] getBackgroundValues() {
         return backgroundValues;
+    }
+
+    public ROIExcessGranuleRemover getExcessGranuleRemover() {
+        return excessGranuleRemover;
     }
 }

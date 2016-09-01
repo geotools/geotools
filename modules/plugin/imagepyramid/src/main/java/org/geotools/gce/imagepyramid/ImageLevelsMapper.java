@@ -37,16 +37,16 @@ import org.geotools.gce.imagemosaic.ImageMosaicReader;
  * 
  * When ImageMosaic has overviews, the "Levels" property will look like this example:
  * In this case, "Levels" in the property file is like this:
- *          Levels=32,32;16,16 8,8;4,4 2,2;1,1
+ *          Levels=1,1;2,2 4,4;8,8 16,16;32,32
  *
  * White spaces separate groups of resolutions from different mosaics as before.
- *     mosaic0 has resolutions 32,32;16,16
- *     mosaic1 has resolutions 8,8;4,4
- *     mosaic2 has resolutions 2,2;1,1
+ *     mosaic0 has resolutions 1,1;2,2
+ *     mosaic1 has resolutions 4,4;8,8
+ *     mosaic2 has resolutions 16,16;32,32
  *
  * Semicolon (new char to support overviews) separates resolutions of the same mosaic.
- *     mosaic0 has native resolution = 32,32
- *     mosaic0 has 1 overview with resolution = 16,16
+ *     mosaic0 has native resolution = 1,1
+ *     mosaic0 has 1 overview with resolution = 2,2
  *
  * Comma separates x,y resolutions as before.
  */
@@ -92,14 +92,23 @@ class ImageLevelsMapper {
         // resolutions levels
         final String levels = properties.getProperty("Levels");
         String[] resolutionLevels = levels.split(" ");
+
+        // Grouping the resolution levels
         int resolutionGroupsNumber = resolutionLevels.length;
+
+        // array is organized in 3 layers of resolutions (see the main javadoc at the beginning of the class):
+        // layer 0 elements: the mosaics
+        //  \-> layer 1 elements: the different levels in the selected mosaic
+        //       \-> layer 2 elements: x,y resolutions of that level
         double [][][] resolutionsSet = new double[resolutionGroupsNumber][][];
 
         int numResolutions = 0;
         for (int i=0; i < resolutionGroupsNumber; i++) {
+            // loops along the groups
             String[] subLevels = resolutionLevels[i].split(";");
             int subLevelsLenght = subLevels.length;
             if (subLevelsLenght > 1) {
+                // report we have inner overviews if a ";" has been found
                 innerOverviews = true;
             }
             resolutionsSet[i] = new double[subLevelsLenght][];
@@ -111,17 +120,21 @@ class ImageLevelsMapper {
                 numResolutions++;
             }
         }
+        // decrease by 1 to exclude native resolution from number of overviews
         numOverviews = numResolutions - 1;
         imageChoiceToReaderLookup = new int[numResolutions];
 
-        //native resolution setting
+        //native resolution setting (first group, first level)
         highestResolution = new double[2];
         highestResolution[0] = resolutionsSet[0][0][0];
         highestResolution[1] = resolutionsSet[0][0][1];
 
+        // Map native resolution to first reader
         imageChoiceToReaderLookup[0] = 0;
-        overViewResolutions = numOverviews >= 1 ? new double[numOverviews][2] : null;
+        overViewResolutions = numOverviews > 0 ? new double[numOverviews][2] : null;
         numResolutions = 0;
+
+        // Mapping overviews
         for (int i=0; i < resolutionGroupsNumber; i++) {
             for (int k = (i!= 0 ? 0 : 1); k < resolutionsSet[i].length; k++) {
                 overViewResolutions[numResolutions][0] = resolutionsSet[i][k][0];

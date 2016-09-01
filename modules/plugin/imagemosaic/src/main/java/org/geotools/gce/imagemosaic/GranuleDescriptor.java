@@ -23,15 +23,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,8 +59,8 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
-import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
+import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
@@ -79,12 +78,10 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.jaitools.imageutils.ROIGeometry;
 import org.jaitools.media.jai.vectorbinarize.VectorBinarizeDescriptor;
 import org.jaitools.media.jai.vectorbinarize.VectorBinarizeRIF;
-import org.omg.SendingContext.RunTime;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -254,6 +251,8 @@ public class GranuleDescriptor {
         boolean doFiltering;
 
         PAMDataset pamDataset;
+        
+        GranuleDescriptor granuleDescriptor;
 
         public ROI getFootprint() {
             return footprint;
@@ -278,9 +277,13 @@ public class GranuleDescriptor {
         public boolean isDoFiltering() {
             return doFiltering;
         }
+        
+        public GranuleDescriptor getGranuleDescriptor() {
+            return granuleDescriptor;
+        }
 
         GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl,
-                final boolean doFiltering, final PAMDataset pamDataset) {
+                final boolean doFiltering, final PAMDataset pamDataset, GranuleDescriptor granuleDescriptor) {
             this.loadedImage = loadedImage;
             Object roi = loadedImage.getProperty("ROI");
             if (roi instanceof ROI) {
@@ -289,7 +292,9 @@ public class GranuleDescriptor {
             this.granuleUrl = granuleUrl;
             this.doFiltering = doFiltering;
             this.pamDataset = pamDataset;
+            this.granuleDescriptor = granuleDescriptor;
         }
+
     }
 
     private static PAMParser pamParser = PAMParser.getInstance();
@@ -1048,7 +1053,7 @@ public class GranuleDescriptor {
             if (XAffineTransform.isIdentity(finalRaster2Model,
                     CoverageUtilities.AFFINE_IDENTITY_EPS)) {
                 return new GranuleLoadingResult(raster, null, granuleURLUpdated, doFiltering,
-                        pamDataset);
+                        pamDataset, this);
             } else {
                 //
                 // In case we are asked to use certain tile dimensions we tile
@@ -1113,7 +1118,7 @@ public class GranuleDescriptor {
                     renderedImage = t;
                 }
                 return new GranuleLoadingResult(renderedImage, null, granuleURLUpdated, doFiltering,
-                        pamDataset);
+                        pamDataset, this);
             }
 
         } catch (IllegalStateException e) {

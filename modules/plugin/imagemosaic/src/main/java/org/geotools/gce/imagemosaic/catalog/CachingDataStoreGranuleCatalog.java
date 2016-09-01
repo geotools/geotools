@@ -26,6 +26,7 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -153,70 +154,56 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                 : null;
 
         // visiting the features from the underlying store
-        final DefaultProgressListener listener = new DefaultProgressListener();
-        features.accepts(new AbstractFeatureVisitor() {
-            public void visit(Feature feature) {
-                if (feature instanceof SimpleFeature) {
-                    // get the feature
-                    final SimpleFeature sf = (SimpleFeature) feature;
-                    GranuleDescriptor granule = null;
+        try(SimpleFeatureIterator fi = features.features()) {
+            while(fi.hasNext() && !visitor.isVisitComplete()) {
+                final SimpleFeature sf = fi.next();
+                
+                GranuleDescriptor granule = null;
 
-                    // caching by granule's location
-                    // synchronized (descriptorsCache) {
-                    String featureId = sf.getID();
-                    if (descriptorsCache.containsKey(featureId)) {
-                        granule = descriptorsCache.get(featureId);
+                // caching by granule's location
+                // synchronized (descriptorsCache) {
+                String featureId = sf.getID();
+                if (descriptorsCache.containsKey(featureId)) {
+                    granule = descriptorsCache.get(featureId);
+                } else {
+                    try {
+                        // create the granule descriptor
+                        MultiLevelROI footprint = getGranuleFootprint(sf);
+                        if (footprint == null || !footprint.isEmpty()) {
+                            // caching only if the footprint is either absent or present and NON-empty
+                            granule = new GranuleDescriptor(sf, adaptee.suggestedRasterSPI,
+                                    adaptee.pathType, adaptee.locationAttribute,
+                                    adaptee.parentLocation, footprint, adaptee.heterogeneous,
+                                    adaptee.hints); // retain hints since this may contain a reader or anything
+                            descriptorsCache.put(featureId, granule);
+                        }
+                    } catch (Exception e) {
+                        LOGGER.log(Level.FINE, "Skipping invalid granule", e);
+                    }
+
+                }
+
+                if (granule != null) {
+                    // check ROI inclusion
+                    final Geometry footprint = granule.getFootprint();
+                    if (intersectionGeometry == null || footprint == null
+                            || polygonOverlap(footprint, intersectionGeometry)) {
+                        visitor.visit(granule, sf);
                     } else {
-                        try {
-                            // create the granule descriptor
-                            MultiLevelROI footprint = getGranuleFootprint(sf);
-                            if (footprint == null || !footprint.isEmpty()) {
-                                // caching only if the footprint is either absent or present and NON-empty
-                                granule = new GranuleDescriptor(sf, adaptee.suggestedRasterSPI,
-                                        adaptee.pathType, adaptee.locationAttribute,
-                                        adaptee.parentLocation, footprint, adaptee.heterogeneous,
-                                        adaptee.hints); // retain hints since this may contain a reader or anything
-                                descriptorsCache.put(featureId, granule);
-                            }
-                        } catch (Exception e) {
-                            LOGGER.log(Level.FINE, "Skipping invalid granule", e);
-                        }
-
-                    }
-
-                    if (granule != null) {
-                        // check ROI inclusion
-                        final Geometry footprint = granule.getFootprint();
-                        if (intersectionGeometry == null || footprint == null
-                                || polygonOverlap(footprint, intersectionGeometry)) {
-                            visitor.visit(granule, sf);
-                        } else {
-                            if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.fine("Skipping granule " + granule
-                                        + "\n since its ROI does not intersect the requested area");
-                            }
-                        }
-                    }
-
-                    // check if something bad occurred
-                    if (listener.isCanceled() || listener.hasExceptions()) {
-                        if (listener.hasExceptions()) {
-                            throw new RuntimeException(listener.getExceptions().peek());
-                        } else {
-                            throw new IllegalStateException(
-                                    "Feature visitor for query " + q + " has been canceled");
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine("Skipping granule " + granule
+                                    + "\n since its ROI does not intersect the requested area");
                         }
                     }
                 }
             }
-
-            private boolean polygonOverlap(Geometry g1, Geometry g2) {
-                // TODO: try to use relate instead
-                Geometry intersection = g1.intersection(g2);
-                return intersection != null && intersection.getDimension() == 2;
-            }
-        }, listener);
-
+        }
+    }
+    
+    private boolean polygonOverlap(Geometry g1, Geometry g2) {
+        // TODO: try to use relate instead
+        Geometry intersection = g1.intersection(g2);
+        return intersection != null && intersection.getDimension() == 2;
     }
 
     @Override

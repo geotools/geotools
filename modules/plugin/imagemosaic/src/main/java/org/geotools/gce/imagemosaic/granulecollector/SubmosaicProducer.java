@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.MosaicElement;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Responsible for creating subsets of the whole imagemosaic. Since there are frequently parts of a mosaic that need to be handled differently, a

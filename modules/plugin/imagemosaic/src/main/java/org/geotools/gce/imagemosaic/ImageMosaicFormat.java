@@ -185,6 +185,18 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     public static final ParameterDescriptor<String> MERGE_BEHAVIOR = new DefaultParameterDescriptor<String>(
             "MergeBehavior", String.class, MergeBehavior.valuesAsStrings(),
             MergeBehavior.getDefault().toString());
+    
+    /**
+     * Controls the removal of excess granules
+     * <p>
+     * <p>
+     * This parameter controls whether the mosaic will attempt to remove excess granules, that is, granules not contributing
+     * pixels to the output, before performing the mosaicking. This is useful only if granules are overlapping, do not
+     * enable otherwise.
+     */
+    public static final ParameterDescriptor<ExcessGranulePolicy> EXCESS_GRANULE_REMOVAL = new DefaultParameterDescriptor<ExcessGranulePolicy>(
+            "ExcessGranuleRemoval", ExcessGranulePolicy.class,
+            new ExcessGranulePolicy[] { ExcessGranulePolicy.NONE, ExcessGranulePolicy.ROI }, ExcessGranulePolicy.NONE);
 
     /**
      * Creates an instance and sets the metadata.
@@ -211,7 +223,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                         OUTPUT_TRANSPARENT_COLOR, USE_JAI_IMAGEREAD, BACKGROUND_VALUES,
                         SUGGESTED_TILE_SIZE, ALLOW_MULTITHREADING, MAX_ALLOWED_TILES, TIME,
                         ELEVATION, FILTER, ACCURATE_RESOLUTION, SORT_BY, MERGE_BEHAVIOR,
-                        FOOTPRINT_BEHAVIOR, OVERVIEW_POLICY, BANDS }));
+                        FOOTPRINT_BEHAVIOR, OVERVIEW_POLICY, BANDS, EXCESS_GRANULE_REMOVAL }));
 
         // reading parameters
         writeParameters = null;

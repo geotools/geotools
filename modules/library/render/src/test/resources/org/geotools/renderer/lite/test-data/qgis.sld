@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xmlns:xlink="http://www.w3.org/1999/xlink" units="mm" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:se="http://www.opengis.net/se">
+  <NamedLayer>
+    <se:Name>qgis_styles</se:Name>
+    <UserStyle>
+      <se:FeatureTypeStyle>
+        <se:Rule>
+          <se:Name>filled_arrowhead</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>9</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>filled_arrowhead</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>arrowhead</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>1</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>arrowhead</se:WellKnownName>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>line</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>2</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>line</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>star</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>3</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>qgis://star</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>triangle</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>4</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+               <!-- origional was "triangle" -->
+                <se:WellKnownName>qgis://triangle</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>equilateral_triangle</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>5</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>equilateral_triangle</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>arrow</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>6</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>qgis://arrow</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>circle</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>7</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>qgis://circle</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        <se:Rule>
+          <se:Name>cross</se:Name>
+          <ogc:Filter>
+              <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>id</ogc:PropertyName>
+                <ogc:Literal>8</ogc:Literal>
+              </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <se:PointSymbolizer>
+            <se:Graphic>
+              <se:Mark>
+                <se:WellKnownName>qgis://cross</se:WellKnownName>
+                <se:Fill>
+                  <se:SvgParameter name="fill">#ff0000</se:SvgParameter>
+                </se:Fill>
+                <se:Stroke>
+                  <se:SvgParameter name="stroke">#000000</se:SvgParameter>
+                </se:Stroke>
+              </se:Mark>
+              <se:Size>30</se:Size>
+            </se:Graphic>
+          </se:PointSymbolizer>
+        </se:Rule> 
+        </se:FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

@@ -314,7 +314,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             //assertEquals(env, features.getBounds());
             it.close();
             it=null;
-            assertTrue(areReferencedEnvelopesEuqal(env, features.getBounds()));
+            assertTrue(areReferencedEnvelopesEqual(env, features.getBounds()));
         } finally {
             if(it!=null)
                 it.close();
@@ -341,7 +341,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             //assertEquals(fe, features.getBounds());
             it.close();
             it=null;
-            assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
+            assertTrue(areReferencedEnvelopesEqual(fe, features.getBounds()));
         } finally {
             if(it!=null)
                 it.close();
@@ -369,7 +369,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             //assertEquals(fe, features.getBounds());
             it.close();
             it=null;
-            assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
+            assertTrue(areReferencedEnvelopesEqual(fe, features.getBounds()));
         } finally {
             if(it!=null)
                 it.close();
@@ -400,7 +400,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             //assertEquals(fe, features.getBounds());
             it.close();
             it=null;
-            assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
+            assertTrue(areReferencedEnvelopesEqual(fe, features.getBounds()));
         } finally {
             if(it!=null)
                 it.close();

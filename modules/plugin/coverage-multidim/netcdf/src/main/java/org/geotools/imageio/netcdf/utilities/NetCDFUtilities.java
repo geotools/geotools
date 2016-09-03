@@ -741,12 +741,14 @@ public class NetCDFUtilities {
      */
     public static Format getAxisFormat(final AxisType type,
             final String prototype) {
-        if (!type.equals(AxisType.Time)) {
+        if (!type.equals(AxisType.Time) && !(type.equals(AxisType.RunTime))) {
             return NumberFormat.getNumberInstance(Locale.CANADA);
         }
         char dateSeparator = '-'; // The separator used in ISO format.
+        boolean twoDigitYear = false; //Year is two digits
         boolean yearLast = false; // Year is first in ISO pattern.
         boolean namedMonth = false; // Months are numbers in the ISO pattern.
+        boolean monthFirst = false; // Month first (assumes yearLast AND namedMonth true as well)
         boolean addT = false;
         boolean appendZ = false; 
         int dateLength = 0;
@@ -765,38 +767,55 @@ public class NetCDFUtilities {
             for (int i = 0; i < length; i++) {
                 final char c = prototype.charAt(i);
                 if (Character.isWhitespace(c)) {
-                    break; // Checks only the dates, ignore the hours.
+                    if (monthFirst && field == 1) {                        
+                        dateLength++; //move to next field
+                    } else {
+                        break; // Checks only the dates, ignore the hours.
+                    }
                 }
-                if (Character.isDigit(c)) {
+                else if (Character.isDigit(c)) {
                     digitCount++;
                     dateLength++;
                     continue; // Digits are legal in all cases.
                 }
-                if (field == 2 && Character.isLetter(c)) {
+                else if (Character.isLetter(c) && field <= 2) {
+                    if (field == 1) {
+                        yearLast = true;
+                        monthFirst = true;
+                    }
                     namedMonth = true;
+                    dateLength++;
                     continue; // Letters are legal for month only.
                 }
-                if (field == 1) {
+                else if (field == 1 || monthFirst && field == 2) {
                     dateSeparator = c;
                     dateLength++;
+                } else if (c == dateSeparator) {
+                    dateLength++;
+                } else if (c=='T') {
+                    addT = true;
+                } else if (c=='Z' && i==length-1) {
+                    appendZ = true;
                 }
-                if (c=='T')
-                	addT = true;
-                if (c=='Z' && i==length-1)
-                	appendZ = true;
+                
+                if ((field == 1 || yearLast && field == 3 ) && digitCount <= 2) {
+                    twoDigitYear = true;
+                }
+                
                 digitCount = 0;
                 field++;
             }
             if (digitCount >= 4) {
                 yearLast = true;
+                twoDigitYear = false;
             }
         }
         String pattern = null;
         if (yearLast) {
-            pattern = namedMonth ? "dd-MMM-yyyy" : "dd-MM-yyyy";
+            pattern = (monthFirst? "MMM dd-" : "dd-" + (namedMonth ? "MMM-" : "MM-")) + (twoDigitYear ? "yy" : "yyyy" );
         } else {
-            pattern = namedMonth ? "yyyy-MMM-dd" : "yyyy-MM-dd";
-            if (dateLength < 10) {
+            pattern = (twoDigitYear ? "yy-" : "yyyy-" ) + (namedMonth ? "MMM-" : "MM-") + "dd";   
+            if (dateLength < pattern.length()) {
                 // case of truncated date
                 pattern = pattern.substring(0, dateLength);
             }

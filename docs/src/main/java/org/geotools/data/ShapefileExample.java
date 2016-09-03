@@ -24,7 +24,7 @@ public class ShapefileExample {
 public void use() throws Exception {
     // start use
     File file = new File("example.shp");
-    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> map = new HashMap<>();
     map.put("url", file.toURI().toURL());
 
     DataStore dataStore = DataStoreFinder.getDataStore(map);

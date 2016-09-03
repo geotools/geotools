@@ -95,13 +95,13 @@ public class ImageTiler {
     }
 
     //docs end prelim
-    //docs start main
     /**
      * Argument parsing and initial setup.
      *
      * @param args Program arguments
      * @throws Exception
      */
+    //docs start main
     public static void main(String[] args) throws Exception {
 
         //GeoTools provides utility classes to parse command line arguments
@@ -131,16 +131,15 @@ public class ImageTiler {
     //docs end main
 
 
-    //docs start cropping
     /**
      * Crop the coverage to the given envelope
      * @param gridCoverage coverage to crp
      * @param envelope envelope to crop it to
      * @return the cropped coverage
      */
+    //docs start cropping
     private GridCoverage2D cropCoverage(GridCoverage2D gridCoverage, Envelope envelope) {
         CoverageProcessor processor =  CoverageProcessor.getInstance();
-
 
         //An example of manually creating the operation and parameters we want
         final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
@@ -151,7 +150,6 @@ public class ImageTiler {
     }
     //docs end cropping
 
-    //docs start make envelope
     /**
      * Create the target tile envelope.
      * @param coverageMinX minimum x of our coverage
@@ -163,6 +161,7 @@ public class ImageTiler {
      * @param verticalIndex vertical index of the tile envelope
      * @return tile envelope
      */
+    //docs start make envelope
     private Envelope getTileEnvelope(double coverageMinX, double coverageMinY,
             double geographicTileWidth, double geographicTileHeight,
             CoordinateReferenceSystem targetCRS, int horizontalIndex, int verticalIndex) {
@@ -176,24 +175,6 @@ public class ImageTiler {
                 envelopeStartX, envelopeEndX, envelopeStartY, envelopeEndY, targetCRS);
     }
     //docs end make envelope
-
-    //docs start scale
-    /**
-     * Scale the coverage based on the set tileScale
-     *
-     * As an alternative to using parameters to do the operations, we can use the
-     * Operations class to do them in a slightly more type safe way.
-     *
-     * @param coverage the coverage to scale
-     * @return the scaled coverage
-     */
-    private GridCoverage2D scaleCoverage(GridCoverage2D coverage) {
-        Operations ops = new Operations(null);
-        coverage = (GridCoverage2D) ops.scale(
-                coverage, this.getTileScale(), this.getTileScale(), 0, 0);
-        return coverage;
-    }
-    //docs end scale
 
     //docs start load coverage
     private void tile() throws IOException {
@@ -240,6 +221,7 @@ public class ImageTiler {
         for (int i = 0; i < htc; i++) {
             for (int j = 0; j < vtc; j++) {
 
+                System.out.println("Processing tile at indices i: " + i + " and j: " + j);
                 //create the envelope of the tile
                 Envelope envelope = getTileEnvelope(coverageMinX, coverageMinY, geographicTileWidth,
                         geographicTileHeight, targetCRS, i, j);
@@ -250,13 +232,30 @@ public class ImageTiler {
                     finalCoverage = scaleCoverage(finalCoverage);
                 }
 
-                //docs start output
+                //use the AbstractGridFormat's writer to write out the tile
                 File tileFile = new File(tileDirectory, i + "_" + j + "." + fileExtension);
                 format.getWriter(tileFile).write(finalCoverage, null);
-                //docs end output
             }
         }
 
     }
+    //docs end envelope
+    
+    //docs start scale
+    /**
+     * Scale the coverage based on the set tileScale
+     *
+     * As an alternative to using parameters to do the operations, we can use the
+     * Operations class to do them in a slightly more type safe way.
+     *
+     * @param coverage the coverage to scale
+     * @return the scaled coverage
+     */
+    private GridCoverage2D scaleCoverage(GridCoverage2D coverage) {
+        Operations ops = new Operations(null);
+        coverage = (GridCoverage2D) ops.scale(
+                coverage, this.getTileScale(), this.getTileScale(), 0, 0);
+        return coverage;
+    }
 }
-//docs end envelope
+//docs end scale

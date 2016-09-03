@@ -25,19 +25,6 @@ This workbook features a new "code first" approach. We have made every effort to
 examples both visual and code centered. We have included some background materials explaining
 the concepts and ideas in case you are interested.
 
-This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
-
-About Your Instructors
-
-* Jody Garnett is the lead architect for the uDig project; and on the steering committee for
-  GeoTools; GeoServer and uDig. Taking the role of geospatial consultant a bit too literally
-  Jody has presented workshops and training courses on every continent (except Antarctica).
-  Jody Garnett is an employee of LISAsoft. 
-
-* Michael Bedward is a researcher with the NSW Department of Environment and Climate Change
-  and an active contributor to the GeoTools users' list. He has a particularly wide grasp of
-  all the possible mistakes one can make using GeoTools.
-
 CSV2SHP
 =======
 
@@ -81,7 +68,7 @@ Note that the jars mentioned above will pull in a host of other dependencies
 
 Main Application
 ----------------
-1. Please create the class **Csv2Shape.java**
+1. Please create the package **org.geotools.tutorial.feature** and class **Csv2Shape.java** .
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java

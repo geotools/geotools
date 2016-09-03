@@ -129,6 +129,12 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         final String override = config.getWfsStrategy();
 
         WFSStrategy strategy = null;
+        
+        //only one 2.0.0 strategy!
+        if (Versions.v2_0_0.equals(capsVersion)) {
+            strategy = new StrictWFS_2_0_Strategy();
+        }        
+        
         // override
         if (!"auto".equals(override)) {
             if (override.equalsIgnoreCase("geoserver")) {
@@ -205,8 +211,6 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new StrictWFS_1_x_Strategy(Versions.v1_0_0);
             } else if (Versions.v1_1_0.equals(capsVersion)) {
                 strategy = new StrictWFS_1_x_Strategy(Versions.v1_1_0);
-            } else if (Versions.v2_0_0.equals(capsVersion)) {
-                strategy = new StrictWFS_2_0_Strategy();
             } else {
                 throw new IllegalArgumentException("Unsupported version: " + capsVersion);
             }
@@ -280,7 +284,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     @Override
-    protected Response internalIssueRequest(Request request) throws IOException, WFSException {
+    protected Response internalIssueRequest(Request request) throws IOException {
         Response response;
         try {
             response = super.internalIssueRequest(request);

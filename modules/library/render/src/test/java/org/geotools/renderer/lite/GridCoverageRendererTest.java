@@ -125,6 +125,8 @@ public class GridCoverageRendererTest  {
 
     private GeoTiffReader worldRoiReader;
 
+    private GeoTiffReader sampleGribReader;
+
     // @BeforeClass
     // public static void enableJaiExt() {
     // final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
@@ -166,6 +168,12 @@ public class GridCoverageRendererTest  {
         coverageFile = TestData.copy(this, "geotiff/world-roi.tiff");
         assertTrue(coverageFile.exists());
         worldRoiReader = new GeoTiffReader(coverageFile);
+
+        // sampleGrib.tif has longitudes from 302 to 308 degrees East
+        coverageFile = DataUtilities
+                .urlToFile(GridCoverageRendererTest.class.getResource("test-data/sampleGrib.tif"));
+        assertTrue(coverageFile.exists());
+        sampleGribReader = new GeoTiffReader(coverageFile);
     }
 
     @After
@@ -941,6 +949,48 @@ public class GridCoverageRendererTest  {
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/world_0_360.png");
         ImageAssert.assertEquals(reference, image, 10);
+    }
+
+    /**
+     * Test rendering of sampleGrib.tif on its native longitude bounds (302,308).
+     */
+    @Test
+    public void testSampleGrib() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(302, 308, 2, 10, crs);
+        Rectangle screenSize = new Rectangle(400,
+                (int) (mapExtent.getHeight() / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RenderedImage image = renderer.renderImage(sampleGribReader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.GRAY, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/sampleGrib.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
+    /**
+     * Test that rendering of sampleGrib.tif on longitude (304,310) results in cropping.
+     */
+    @Test
+    public void testSampleGribCropLongitude() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(304, 310, 2, 10, crs);
+        Rectangle screenSize = new Rectangle(400,
+                (int) (mapExtent.getHeight() / mapExtent.getWidth() * 400));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(
+                mapExtent.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+        RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
+        RenderedImage image = renderer.renderImage(sampleGribReader, null, rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.GRAY, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/sampleGribCropLongitude.png");
+        ImageAssert.assertEquals(reference, image, 0);
     }
 
 }

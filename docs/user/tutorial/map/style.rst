@@ -17,29 +17,12 @@ Style is all about looking good. In this lab we are going to learn the basics of
 Style
 ======
  
-Please ensure your pom.xml includes the following::
+Please ensure your pom.xml includes the following:
 
-    <properties>
-        <geotools.version>2.7-M2</geotools.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-shapefile</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-epsg-hsql</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-swing</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
-    </dependencies>
+.. literalinclude:: artifacts/pom.xml
+        :language: xml
+        :start-after: </properties>
+        :end-before: <repositories>
 
 Example
 -------
@@ -52,7 +35,7 @@ The example code is available
 
 Main Application
 ----------------
-1. Please create the file **StyleLab.java**
+1. Create the package **org.geotools.tutorial.style** and class **StyleLab** .
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/StyleLab.java

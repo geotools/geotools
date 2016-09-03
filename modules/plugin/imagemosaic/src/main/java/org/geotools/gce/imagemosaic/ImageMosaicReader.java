@@ -177,7 +177,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
      * <li>Directory</li>
      * <li>List of Files</li>
      * </ul>
-     * 
+     *
      * @author Nicola Lagomarsini, GeoSolutions S.A.S.
      *
      */
@@ -289,7 +289,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         /**
          * Harvesting of the input resource. The result will be strored inside the {@link List} object.
-         * 
+         *
          * @param defaultCoverage
          * @param source
          * @param hints
@@ -301,7 +301,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         /**
          * Returns the HarvestedResource associated to the input Object
-         * 
+         *
          * @param source
          * @return
          */
@@ -347,7 +347,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         /**
          * Check if the File Object is a DIRECTORY or not and return the associated {@link HarvestedResource}
-         * 
+         *
          * @param file
          * @return
          */
@@ -364,7 +364,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         /**
          * Method for harvesting on a directory
-         * 
+         *
          * @param defaultCoverage
          * @param result
          * @param reader
@@ -531,7 +531,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     private void initReaderFromURL(final Object source, final Hints hints) throws Exception {
         this.sourceURL = Utils.checkSource(source, hints);
 
-        // Preliminar check on source
+        // Preliminary check on source
         if (this.sourceURL == null) {
             throw new DataSourceException(
                     "This plugin accepts File, URL or String. The string may describe a File or an URL");
@@ -553,7 +553,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     parentDirectory = parentDirectory.getParentFile();
                 }
             }
-            configuration = Utils.loadMosaicProperties(sourceURL, this.locationAttributeName);
+            configuration = Utils.loadMosaicProperties(sourceURL);
             if (configuration == null) {
                 //
                 // do we have a datastore properties file? It will preempt on the shapefile
@@ -575,12 +575,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 final File datastoreProperties = new File(parent, "datastore.properties");
 
                 // Scan for MosaicConfigurationBeans from properties files
-                List<MosaicConfigurationBean> beans = new ArrayList<MosaicConfigurationBean>();
+                List<MosaicConfigurationBean> beans = new ArrayList<>();
                 for (File propFile : properties) {
                     if (Utils.checkFileReadable(propFile) && Utils
-                            .loadMosaicProperties(DataUtilities.fileToURL(propFile), "") != null) {
-                        configuration = Utils.loadMosaicProperties(
-                                DataUtilities.fileToURL(propFile), this.locationAttributeName);
+                            .loadMosaicProperties(DataUtilities.fileToURL(propFile)) != null) {
+                        configuration = Utils
+                                .loadMosaicProperties(DataUtilities.fileToURL(propFile));
                         if (configuration != null) {
                             beans.add(configuration);
                         }
@@ -785,11 +785,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Constructor.
-     * 
+     *
      * @param source The source object.
      * @throws IOException
      * @throws UnsupportedEncodingException
-     * 
+     *
      */
     public ImageMosaicReader(Object source) throws IOException {
         this(source, null);
@@ -797,7 +797,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * 
+     *
      * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
      */
     public Format getFormat() {
@@ -809,7 +809,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * 
+     *
      * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
      * @Override
      */
@@ -989,7 +989,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Populate the metadata names array for the specified coverageName
-     * 
+     *
      * @param coverageName
      * @return
      */
@@ -1065,7 +1065,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Check whether the specified parameter is supported for the specified coverage.
-     * 
+     *
      * @param coverageName
      * @param parameterName
      * @return
@@ -1103,7 +1103,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Create a RasterManager on top of this {@link MosaicConfigurationBean}
-     * 
+     *
      * @param configuration the {@link MosaicConfigurationBean} to be used to create the {@link RasterManager}
      * @param init {@code true} if the Manager should be initialized.
      * @return
@@ -1169,7 +1169,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
      * @param forceDelete
      * @param checkForReferences {@code true} true in case, when deleting, we need to check whether the file is being referred by some other coverage
      *        or not. In the latter case, we can safely delete it
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -1484,5 +1484,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
         return new DefaultFileServiceInfo(fileGroups);
 
+    }
+
+    public ExecutorService getMultiThreadedLoader() {
+        return multiThreadedLoader;
     }
 }

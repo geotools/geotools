@@ -119,6 +119,9 @@ public abstract class CoordinateVariable<T> {
             }
         }
         if (NetCDFUtilities.isCheckCoordinatePlugins()){
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Checking for registered coordinate plugins");
+            }
             CoordinateHandler handler = CoordinateHandlerFinder.findHandler(coordinateAxis);
             if (handler != null){
                 return handler.createCoordinateVariable(coordinateAxis);

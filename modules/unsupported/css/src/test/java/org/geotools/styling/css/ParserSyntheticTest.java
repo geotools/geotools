@@ -657,9 +657,6 @@ public class ParserSyntheticTest extends CssBaseTest {
         } catch (CSSParseException e) {
             List<ParseError> errors = e.getErrors();
             assertEquals(1, errors.size());
-            assertEquals(
-                    "Invalid input ':', expected NameCharacter, '(', WhiteSpace, OptionalWhiteSpace, ',', WhitespaceOrIgnoredComment, ';', WhiteSpaceOrIgnoredComment or '}' (line 3, column 8)",
-                    e.getMessage());
         }
     }
 
@@ -724,6 +721,17 @@ public class ParserSyntheticTest extends CssBaseTest {
         String css = "* { fill: blue; /**/ stroke: yellow}";
         Stylesheet ss = CssParser.parse(css);
         assertEquals(1, ss.getRules().size());
+    }
+    
+    @Test
+    public void testSimpleTransform() {
+        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        final Value.MultiValue levelsValue = new Value.MultiValue(new Value.Literal("1100"), new Value.Literal("1200"), new Value.Literal("1300"));
+        assertProperty(rule, 0, "transform", new Value.TransformFunction("ras:Contour", Collections.singletonMap("levels", levelsValue)));
+        assertProperty(rule, 1, "stroke", new Value.Literal("#000000"));
     }
 
 }

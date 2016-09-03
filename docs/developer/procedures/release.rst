@@ -143,11 +143,11 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **VERSION** 
 
-  The version being released. The same value specified for ``VERSION`` when running the ``geoserver-release`` job.
+  The version being released. The same value specified for ``VERSION`` when running the ``geotools-release`` job.
   
 **BRANCH** 
 
-  The branch being released from.  The same value specified for ``BRANCH`` when running the ``geoserver-release`` job.
+  The branch being released from.  The same value specified for ``BRANCH`` when running the ``geotools-release`` job.
 
 **GIT_USER**
 
@@ -155,7 +155,7 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **GIT_EMAIL**
 
-  The Git email to use for the release.	 
+  The Git email to use for the release.
 
 
 This job will rsync all the artifacts located at::

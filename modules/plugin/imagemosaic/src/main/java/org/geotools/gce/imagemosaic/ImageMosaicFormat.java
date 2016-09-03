@@ -88,68 +88,88 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * new DefaultParameterDescriptor( "InputImageROIThreshold", Integer.class, null, new Integer(1));--- These two can be used to control the application
  * of ROIs on the input images based on tresholding values. Basically using the threshold you can ask the mosaic plugin to load or not certain pixels
  * of the original images.</li>
- * 
+ *
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
- * @since 2.3
- *
- *
  * @source $URL$
+ * @since 2.3
  */
 @SuppressWarnings("rawtypes")
 public final class ImageMosaicFormat extends AbstractGridFormat implements Format {
 
     final static double DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD = 0.1;
 
-    /** Logger. */
+    /**
+     * Logger.
+     */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(ImageMosaicFormat.class.toString());
 
-    /** Filter tiles based on attributes from the input coverage */
+    /**
+     * Filter tiles based on attributes from the input coverage
+     */
     public static final ParameterDescriptor<Filter> FILTER = new DefaultParameterDescriptor<Filter>(
             "Filter", Filter.class, null, null);
 
-    /** Control the type of the final mosaic. */
+    /**
+     * Control the type of the final mosaic.
+     */
     public static final ParameterDescriptor<Boolean> FADING = new DefaultParameterDescriptor<Boolean>(
             "Fading", Boolean.class, new Boolean[] { Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
 
-    /** Control the transparency of the output coverage. */
+    /**
+     * Control the transparency of the output coverage.
+     */
     public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
             "OutputTransparentColor", Color.class, null, null);
 
-    /** Control the thresholding on the input coverage */
+    /**
+     * Control the thresholding on the input coverage
+     */
     public static final ParameterDescriptor<Integer> MAX_ALLOWED_TILES = new DefaultParameterDescriptor<Integer>(
             "MaxAllowedTiles", Integer.class, null, Integer.valueOf(-1));
 
-    /** Control the default artifact filter luminance thresholding on the input coverages */
+    /**
+     * Control the default artifact filter luminance thresholding on the input coverages
+     */
     public static final ParameterDescriptor<Integer> DEFAULT_ARTIFACTS_FILTER_THRESHOLD = new DefaultParameterDescriptor<Integer>(
             "DefaultArtifactsFilterThreshold", Integer.class, null, Integer.MIN_VALUE);
 
-    /** Control the artifact filter ptile thresholding */
+    /**
+     * Control the artifact filter ptile thresholding
+     */
     public static final ParameterDescriptor<Double> ARTIFACTS_FILTER_PTILE_THRESHOLD = new DefaultParameterDescriptor<Double>(
             "ArtifactsFilterPtileThreshold", Double.class, null,
             Double.valueOf(DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD));
 
-    /** Control the threading behavior for this plugin. */
+    /**
+     * Control the threading behavior for this plugin.
+     */
     public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
             "AllowMultithreading", Boolean.class, new Boolean[] { Boolean.TRUE, Boolean.FALSE },
             Boolean.FALSE);
 
-    /** Control the background values for the output coverage */
+    /**
+     * Control the background values for the output coverage
+     */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<double[]>(
             "BackgroundValues", double[].class, null, null);
 
-    /** Control the interpolation to be used in mosaicking */
+    /**
+     * Control the interpolation to be used in mosaicking
+     */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION = AbstractGridFormat.INTERPOLATION;
 
-    /** Control the requested resolution calculation. */
+    /**
+     * Control the requested resolution calculation.
+     */
     public static final ParameterDescriptor<Boolean> ACCURATE_RESOLUTION = new DefaultParameterDescriptor<Boolean>(
             "Accurate resolution computation", Boolean.class,
             new Boolean[] { Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
 
     /**
      * Optional Sorting for the granules of the mosaic.
-     * 
+     * <p>
      * <p>
      * It does work only with DBMS as indexes
      */
@@ -158,7 +178,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /**
      * Merging behavior for the various granules of the mosaic we are going to produce.
-     * 
+     * <p>
      * <p>
      * This parameter controls whether we want to merge in a single mosaic or stack all the bands into the final mosaic.
      */
@@ -206,7 +226,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     }
 
     /**
-     * 
+     *
      */
     @Override
     public GridCoverageWriter getWriter(Object destination) {
@@ -233,7 +253,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /**
      * Checks that the provided {@link ImageMosaicDescriptor} is well formed.
-     * 
+     *
      * @param source
      * @return
      */
@@ -389,17 +409,15 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
                     // do we have a valid datastore + mosaic properties pair?
                     for (File propFile : properties)
-                        if (Utils.checkFileReadable(propFile)
-                                && Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile),
-                                        "") != null) {
+                        if (Utils.checkFileReadable(propFile) && Utils
+                                .loadMosaicProperties(DataUtilities.fileToURL(propFile)) != null) {
                             propsUrl = DataUtilities.fileToURL(propFile);
                             break;
                         }
                 }
 
                 // get the properties file
-                final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl,
-                        Utils.DEFAULT_LOCATION_ATTRIBUTE);
+                final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl);
                 if (configuration == null)
                     return false;
 
@@ -484,7 +502,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /**
      * Throw an exception since this plugin is readonly.
-     * 
+     *
      * @return nothing.
      */
     @Override

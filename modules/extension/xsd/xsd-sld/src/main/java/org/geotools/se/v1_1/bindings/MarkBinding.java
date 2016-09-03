@@ -103,7 +103,7 @@ public class MarkBinding extends SLDMarkBinding {
             int markIndex = -1;
             
             if (node.hasChild("MarkIndex")) {
-                markIndex = (Integer) node.getChildValue("MarkIndex");
+                markIndex = ((Number) node.getChildValue("MarkIndex")).intValue();
             }
             
             ExternalMark emark = null;

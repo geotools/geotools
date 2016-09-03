@@ -109,7 +109,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.vividsolutions.jts.index.ItemVisitor#visitItem(java.lang.Object)
          */
         public void visitItem(Object o) {
@@ -153,9 +153,9 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     /**
      * Constructs a {@link STRTreeGranuleCatalog} out of a {@link FeatureCollection}.
-     * 
+     *
      * @param readLock
-     * 
+     *
      * @param features
      * @throws IOException
      */
@@ -201,7 +201,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
                     new GranuleCatalogVisitor() {
 
                         @Override
-                        public void visit(GranuleDescriptor granule, Object o) {
+                        public void visit(GranuleDescriptor granule, SimpleFeature o) {
                             features.add(granule);
 
                         }
@@ -243,7 +243,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.gce.imagemosaic.FeatureIndex#findFeatures(com.vividsolutions.jts.geom.Envelope)
      */
     @SuppressWarnings("unchecked")
@@ -262,7 +262,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.gce.imagemosaic.FeatureIndex#findFeatures(com.vividsolutions.jts.geom.Envelope, com.vividsolutions.jts.index.ItemVisitor)
      */
     public void getGranules(final BoundingBox envelope, final GranuleCatalogVisitor visitor)

@@ -38,7 +38,7 @@ import org.opengis.referencing.operation.MathTransform2D;
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
  */
-class GranuleLoader implements Callable<GranuleLoadingResult> {
+public class GranuleLoader implements Callable<GranuleLoadingResult> {
 
     final ReferencedEnvelope cropBBox;
 
@@ -54,7 +54,7 @@ class GranuleLoader implements Callable<GranuleLoadingResult> {
 
     RasterLayerRequest request;
 
-    GranuleLoader(final ImageReadParam readParameters, final int imageIndex,
+    public GranuleLoader(final ImageReadParam readParameters, final int imageIndex,
             final ReferencedEnvelope cropBBox, final MathTransform2D mosaicWorldToGrid,
             final GranuleDescriptor granuleDescriptor, final RasterLayerRequest request,
             final Hints hints) {

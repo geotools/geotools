@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -74,8 +74,8 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     
     public static Filter createSpatialFilter() {
         GeometryFactory gf = new GeometryFactory(); 
-        Coordinate[] coordinates = { new Coordinate(39, -107), new Coordinate(38, -107),
-                new Coordinate(38, -104), new Coordinate(39, -104), new Coordinate(39, -107) };
+        Coordinate[] coordinates = { new Coordinate(-107, 39), new Coordinate(-107, 38),
+                new Coordinate(-104, 38), new Coordinate(-104, 39), new Coordinate(-107, 39) };
         LinearRing shell = gf.createLinearRing(coordinates);
         Polygon polygon = gf.createPolygon(shell, null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -86,11 +86,5 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     public void testDataStoreHandlesAxisFlipping() {
         //disabled, not implemented for 2.0.0
     }
-    
-    @Override
-    public void testFeatureSourceGetFeaturesFilter() {
-        //TODO: bug in spatial post filters
-    }
-
 
 }

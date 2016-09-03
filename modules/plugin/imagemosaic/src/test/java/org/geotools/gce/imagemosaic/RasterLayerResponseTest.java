@@ -18,8 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -27,6 +26,7 @@ import java.net.URL;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -47,7 +47,7 @@ public class RasterLayerResponseTest {
         ImageMosaicReader reader = null;
         try {
 
-            reader = (ImageMosaicReader) new ImageMosaicFormat().getReader(testMosaic, null);
+            reader = new ImageMosaicFormat().getReader(testMosaic, null);
 
             final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
                     .createValue();
@@ -62,7 +62,8 @@ public class RasterLayerResponseTest {
             final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
             final RasterLayerRequest request = new RasterLayerRequest(
                     new GeneralParameterValue[] { gg }, manager);
-            final RasterLayerResponse response = new RasterLayerResponse(request, manager);
+            final RasterLayerResponse response = new RasterLayerResponse(request, manager,
+                    new DefaultSubmosaicProducerFactory());
             final Class<?> c = response.getClass();
 
             // Trigger the grid to world computations

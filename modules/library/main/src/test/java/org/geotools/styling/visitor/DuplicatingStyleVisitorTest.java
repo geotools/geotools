@@ -19,6 +19,8 @@ package org.geotools.styling.visitor;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 
@@ -35,6 +37,7 @@ import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ExternalMark;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -578,6 +581,22 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Mark notEq = sf.getStarMark();
         assertEqualsContract(clone, notEq, mark);
     }
+    
+    public void testExternalMark() throws URISyntaxException {
+    	OnLineResourceImpl or = new OnLineResourceImpl();
+    	or.setLinkage(new URI("ttf://wingdings"));
+    	ExternalMark externalMark = sf.externalMark(or, "ttf", 15);
+    	Mark mark = sf.createMark();
+    	mark.setExternalMark(externalMark);
+        Mark clone = visitor.copy( mark);
+        assertCopy(mark, clone);
+        assertCopy(mark.getExternalMark(), clone.getExternalMark());
+        ExternalMark emCopy = clone.getExternalMark();
+        assertEquals("ttf", emCopy.getFormat());
+        assertEquals("ttf://wingdings", emCopy.getOnlineResource().getLinkage().toASCIIString());
+        assertEquals(15, emCopy.getMarkIndex());
+    }
+
 
     public void testFill() {
         Fill fill = sf.getDefaultFill();

@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.catalog.index;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,7 +24,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import org.geotools.gce.imagemosaic.Utils;
 
 /**
  * <p>
@@ -131,11 +135,14 @@ public class Indexer {
 
     protected ParametersType parameters;
 
+    @XmlTransient
+    private File indexerFile;
+
     /**
      * Gets the value of the schemas property.
      * 
      * @return possible object is {@link SchemasType }
-     * 
+     *
      */
     public SchemasType getSchemas() {
         return schemas;
@@ -145,7 +152,7 @@ public class Indexer {
      * Sets the value of the schemas property.
      * 
      * @param value allowed object is {@link SchemasType }
-     * 
+     *
      */
     public void setSchemas(SchemasType value) {
         this.schemas = value;
@@ -155,7 +162,7 @@ public class Indexer {
      * Gets the value of the domains property.
      * 
      * @return possible object is {@link DomainsType }
-     * 
+     *
      */
     public DomainsType getDomains() {
         return domains;
@@ -165,7 +172,7 @@ public class Indexer {
      * Sets the value of the domains property.
      * 
      * @param value allowed object is {@link DomainsType }
-     * 
+     *
      */
     public void setDomains(DomainsType value) {
         this.domains = value;
@@ -175,7 +182,7 @@ public class Indexer {
      * Gets the value of the coverages property.
      * 
      * @return possible object is {@link Indexer.Coverages }
-     * 
+     *
      */
     public Indexer.Coverages getCoverages() {
         return coverages;
@@ -185,7 +192,7 @@ public class Indexer {
      * Sets the value of the coverages property.
      * 
      * @param value allowed object is {@link Indexer.Coverages }
-     * 
+     *
      */
     public void setCoverages(Indexer.Coverages value) {
         this.coverages = value;
@@ -195,7 +202,7 @@ public class Indexer {
      * Gets the value of the datastore property.
      * 
      * @return possible object is {@link Indexer.Datastore }
-     * 
+     *
      */
     public Indexer.Datastore getDatastore() {
         return datastore;
@@ -205,7 +212,7 @@ public class Indexer {
      * Sets the value of the datastore property.
      * 
      * @param value allowed object is {@link Indexer.Datastore }
-     * 
+     *
      */
     public void setDatastore(Indexer.Datastore value) {
         this.datastore = value;
@@ -215,7 +222,7 @@ public class Indexer {
      * Gets the value of the collectors property.
      * 
      * @return possible object is {@link Indexer.Collectors }
-     * 
+     *
      */
     public Indexer.Collectors getCollectors() {
         return collectors;
@@ -225,7 +232,7 @@ public class Indexer {
      * Sets the value of the collectors property.
      * 
      * @param value allowed object is {@link Indexer.Collectors }
-     * 
+     *
      */
     public void setCollectors(Indexer.Collectors value) {
         this.collectors = value;
@@ -235,7 +242,7 @@ public class Indexer {
      * Gets the value of the parameters property.
      * 
      * @return possible object is {@link ParametersType }
-     * 
+     *
      */
     public ParametersType getParameters() {
         return parameters;
@@ -245,7 +252,7 @@ public class Indexer {
      * Sets the value of the parameters property.
      * 
      * @param value allowed object is {@link ParametersType }
-     * 
+     *
      */
     public void setParameters(ParametersType value) {
         this.parameters = value;
@@ -301,7 +308,7 @@ public class Indexer {
          * 
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getCollector().add(newItem);
          * </pre>
@@ -367,7 +374,7 @@ public class Indexer {
              * Gets the value of the spi property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getSpi() {
                 return spi;
@@ -377,7 +384,7 @@ public class Indexer {
              * Sets the value of the spi property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setSpi(String value) {
                 this.spi = value;
@@ -387,7 +394,7 @@ public class Indexer {
              * Gets the value of the type property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getType() {
                 return type;
@@ -397,7 +404,7 @@ public class Indexer {
              * Sets the value of the type property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setType(String value) {
                 this.type = value;
@@ -407,7 +414,7 @@ public class Indexer {
              * Gets the value of the value property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getValue() {
                 return value;
@@ -417,7 +424,7 @@ public class Indexer {
              * Sets the value of the value property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setValue(String value) {
                 this.value = value;
@@ -427,7 +434,7 @@ public class Indexer {
              * Gets the value of the mapped property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getMapped() {
                 return mapped;
@@ -437,7 +444,7 @@ public class Indexer {
              * Sets the value of the mapped property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setMapped(String value) {
                 this.mapped = value;
@@ -447,7 +454,7 @@ public class Indexer {
              * Gets the value of the name property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getName() {
                 return name;
@@ -457,7 +464,7 @@ public class Indexer {
              * Sets the value of the name property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setName(String value) {
                 this.name = value;
@@ -520,7 +527,7 @@ public class Indexer {
          * 
          * <p>
          * For example, to add a new item, do as follows:
-         * 
+         *
          * <pre>
          * getCoverage().add(newItem);
          * </pre>
@@ -587,7 +594,7 @@ public class Indexer {
              * Gets the value of the schema property.
              * 
              * @return possible object is {@link SchemaType }
-             * 
+             *
              */
             public SchemaType getSchema() {
                 return schema;
@@ -597,7 +604,7 @@ public class Indexer {
              * Sets the value of the schema property.
              * 
              * @param value allowed object is {@link SchemaType }
-             * 
+             *
              */
             public void setSchema(SchemaType value) {
                 this.schema = value;
@@ -607,7 +614,7 @@ public class Indexer {
              * Gets the value of the origName property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getOrigName() {
                 return origName;
@@ -617,7 +624,7 @@ public class Indexer {
              * Sets the value of the origName property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setOrigName(String value) {
                 this.origName = value;
@@ -627,7 +634,7 @@ public class Indexer {
              * Gets the value of the domains property.
              * 
              * @return possible object is {@link DomainsType }
-             * 
+             *
              */
             public DomainsType getDomains() {
                 return domains;
@@ -637,7 +644,7 @@ public class Indexer {
              * Sets the value of the domains property.
              * 
              * @param value allowed object is {@link DomainsType }
-             * 
+             *
              */
             public void setDomains(DomainsType value) {
                 this.domains = value;
@@ -647,7 +654,7 @@ public class Indexer {
              * Gets the value of the name property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getName() {
                 return name;
@@ -657,7 +664,7 @@ public class Indexer {
              * Sets the value of the name property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setName(String value) {
                 this.name = value;
@@ -667,7 +674,7 @@ public class Indexer {
              * Gets the value of the nameCollector property.
              * 
              * @return possible object is {@link String }
-             * 
+             *
              */
             public String getNameCollector() {
                 return nameCollector;
@@ -677,7 +684,7 @@ public class Indexer {
              * Sets the value of the nameCollector property.
              * 
              * @param value allowed object is {@link String }
-             * 
+             *
              */
             public void setNameCollector(String value) {
                 this.nameCollector = value;
@@ -721,7 +728,7 @@ public class Indexer {
          * Gets the value of the database property.
          * 
          * @return possible object is {@link String }
-         * 
+         *
          */
         public String getDatabase() {
             return database;
@@ -731,7 +738,7 @@ public class Indexer {
          * Sets the value of the database property.
          * 
          * @param value allowed object is {@link String }
-         * 
+         *
          */
         public void setDatabase(String value) {
             this.database = value;
@@ -741,7 +748,7 @@ public class Indexer {
          * Gets the value of the parameters property.
          * 
          * @return possible object is {@link ParametersType }
-         * 
+         *
          */
         public ParametersType getParameters() {
             return parameters;
@@ -751,7 +758,7 @@ public class Indexer {
          * Sets the value of the parameters property.
          * 
          * @param value allowed object is {@link ParametersType }
-         * 
+         *
          */
         public void setParameters(ParametersType value) {
             this.parameters = value;
@@ -759,4 +766,11 @@ public class Indexer {
 
     }
 
+    public File getIndexerFile() {
+        return indexerFile;
+    }
+
+    public void setIndexerFile(File indexerFile) {
+        this.indexerFile = indexerFile;
+    }
 }

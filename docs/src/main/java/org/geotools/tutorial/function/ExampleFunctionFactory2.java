@@ -21,7 +21,7 @@ public class ExampleFunctionFactory2 implements FunctionFactory {
     private static FunctionName FIRST = new FunctionNameImpl("first","geometry");
     public synchronized List<FunctionName> getFunctionNames() {
         if( functionList == null ){
-            functionList = new ArrayList<FunctionName>();
+            functionList = new ArrayList<>();
             functionList.add( FIRST );
         }
         return Collections.unmodifiableList( functionList );

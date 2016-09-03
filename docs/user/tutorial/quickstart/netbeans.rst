@@ -52,25 +52,27 @@ Imaging and Java Image IO section – both of these libraries are used by GeoToo
    
    C:\\Program Files\\Java\\jdk1.8.0_91\\
      
-#. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
+#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
    
-   http://download.java.net/media/jai/builds/release/
-      
+   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
+   
    Both a JDK and JRE installer are available:
    
    * jai-1_1_3-lib-windows-i586-jdk.exe
    * jai-1_1_3-lib-windows-i586-jre.exe
      
-#. Optional: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
+#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
    ImageIO library:
    
-   http://download.java.net/media/jai-imageio/builds/
+  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
    
    Both a JDK and JRE installer are available:   
    
    * jai_imageio-1_1-lib-windows-i586-jdk.exe 
    * jai_imageio-1_1-lib-windows-i586-jre.exe
+   
+For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
    
 NetBeans Install
 ================

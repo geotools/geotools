@@ -189,7 +189,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                         final Geometry footprint = granule.getFootprint();
                         if (intersectionGeometry == null || footprint == null
                                 || polygonOverlap(footprint, intersectionGeometry)) {
-                            visitor.visit(granule, null);
+                            visitor.visit(granule, sf);
                         } else {
                             if (LOGGER.isLoggable(Level.FINE)) {
                                 LOGGER.fine("Skipping granule " + granule

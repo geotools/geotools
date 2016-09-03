@@ -21,7 +21,6 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,7 +43,6 @@ import java.util.regex.Pattern;
 
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
-import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -73,25 +72,25 @@ import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
-import org.geotools.gce.imagemosaic.catalog.index.DomainType;
-import org.geotools.gce.imagemosaic.catalog.index.DomainsType;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
-import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
-import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.MosaicBeanBuilder;
+import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
+import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
 import org.geotools.gce.imagemosaic.granulehandler.DefaultGranuleHandler;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandler;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactoryFinder;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactorySPI;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlingException;
+import org.geotools.gce.imagemosaic.namecollector.DefaultCoverageNameCollectorSPI;
+import org.geotools.gce.imagemosaic.properties.CRSExtractor;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
@@ -164,7 +163,9 @@ public class ImageMosaicConfigHandler {
 
     private List<GranuleAcceptor> granuleAcceptors = new ArrayList<>();
 
-    private GranuleHandler granuleHandler = new DefaultGranuleHandler();;
+    private GranuleHandler granuleHandler = new DefaultGranuleHandler();
+
+    private CoverageNameHandler coverageNameHandler = new CoverageNameHandler(new DefaultCoverageNameCollectorSPI());
 
     /**
      * Default constructor
@@ -183,38 +184,21 @@ public class ImageMosaicConfigHandler {
         if (defaultIndexer != null) {
             params = defaultIndexer.getParameters();
             rootMosaicDir = IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR);
-            IndexerUtils.getParameterAsBoolean(Prop.USE_EXISTING_SCHEMA, defaultIndexer);
         }
 
         Utilities.ensureNonNull("root location", rootMosaicDir);
 
         // look for and indexer.properties file
         parent = new File(rootMosaicDir);
-        indexerFile = new File(parent, Utils.INDEXER_XML);
-        Indexer indexer = null;
+        Indexer indexer = IndexerUtils.initializeIndexer(params, parent);
+        if (indexer != null) {
+            indexerFile = indexer.getIndexerFile();
+        }
 
         Hints hints = configuration.getHints();
         String ancillaryFile = null;
         String datastoreFile = null;
-        if (Utils.checkFileReadable(indexerFile)) {
-            try {
-                indexer = Utils.unmarshal(indexerFile);
-                if (indexer != null) {
-                    copyDefaultParams(params, indexer);
-                }
-            } catch (JAXBException e) {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
-            }
-        } else {
-            // Backward compatible with old indexing
-            indexerFile = new File(parent, Utils.INDEXER_PROPERTIES);
-            if (Utils.checkFileReadable(indexerFile)) {
-                // load it and parse it
-                final Properties props = CoverageUtilities
-                        .loadPropertiesFromURL(DataUtilities.fileToURL(indexerFile));
-                indexer = createIndexer(props, params);
-            }
-        }
+
         if (indexer != null) {
             // Overwrite default indexer only when indexer is available
             configuration.setIndexer(indexer);
@@ -238,6 +222,7 @@ public class ImageMosaicConfigHandler {
 
         initializeGranuleAcceptors(indexer);
         initializeGranuleHandler(indexer);
+        initializeCoverageNameHandler(indexer);
 
         updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile,
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
@@ -250,7 +235,7 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Initialize the list of granule collectors from the indexer.
-     * 
+     *
      * @param indexer the indexer configuration
      */
     private void initializeGranuleAcceptors(Indexer indexer) {
@@ -296,9 +281,21 @@ public class ImageMosaicConfigHandler {
         }
     }
 
+    private void initializeCoverageNameHandler(Indexer indexer) {
+        // we initialized at construction time with the default handler
+        // ok, do we need/want something different?
+        if (indexer != null) {
+            String coverageNameCollectorString = IndexerUtils.getParameter(Prop.COVERAGE_NAME_COLLECTOR_SPI, indexer);
+            if (coverageNameCollectorString != null && coverageNameCollectorString.length() > 0) {
+                //Override default handling machinery
+                coverageNameHandler = new CoverageNameHandler(coverageNameCollectorString);
+            }
+        }
+    }
+
     /**
      * Create or load a GranuleCatalog on top of the provided configuration
-     * 
+     *
      * @param runConfiguration configuration to be used
      * @param create if true create a new catalog, otherwise it is loaded
      * @return a new GranuleCatalog built from the configuration
@@ -399,6 +396,7 @@ public class ImageMosaicConfigHandler {
             MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
                     .createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(rois);
+
         } catch (Exception e) {
             final IOException ioe = new IOException();
             throw (IOException) ioe.initCause(e);
@@ -408,7 +406,7 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Create a {@link SimpleFeatureType} from the specified configuration.
-     * 
+     *
      * @param configurationBean
      * @param actualCRS CRS of the mosaic
      * @return the schema for the mosaic
@@ -468,7 +466,7 @@ public class ImageMosaicConfigHandler {
         if (indexSchema == null) {
             // Proceed with default Schema
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(runConfiguration.getParameter(Prop.INDEX_NAME));
+            featureBuilder.setName(name);
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
             featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
                     String.class);
@@ -662,7 +660,7 @@ public class ImageMosaicConfigHandler {
     /**
      * Checks if the file system is case sensitive or not using File.exists (the only method that also works on OSX too according to
      * http://stackoverflow.com/questions/1288102/how-do-i-detect-whether-the-file-system-is-case-sensitive )
-     * 
+     *
      * @param fileBeingProcessed
      * @return
      */
@@ -676,7 +674,7 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Update feature attributes through properties collector
-     * 
+     *
      * @param feature
      * @param fileBeingProcessed
      * @param inputReader
@@ -696,7 +694,7 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Prepare the location on top of the configuration and file to be processed.
-     * 
+     *
      * @param runConfiguration
      * @param fileBeingProcessed
      * @return
@@ -828,7 +826,7 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Create a {@link GranuleCatalog} on top of the provided Configuration
-     * 
+     *
      * @param sourceURL
      * @param configuration
      * @param hints
@@ -909,33 +907,6 @@ public class ImageMosaicConfigHandler {
     }
 
     /**
-     * Setup default params to the indexer.
-     * 
-     * @param params
-     * @param indexer
-     */
-    private void copyDefaultParams(ParametersType params, Indexer indexer) {
-        if (params != null) {
-            List<Parameter> defaultParamList = params.getParameter();
-            if (defaultParamList != null && !defaultParamList.isEmpty()) {
-                ParametersType parameters = indexer.getParameters();
-                if (parameters == null) {
-                    parameters = Utils.OBJECT_FACTORY.createParametersType();
-                    indexer.setParameters(parameters);
-                }
-                List<Parameter> parameterList = parameters.getParameter();
-                for (Parameter defaultParameter : defaultParamList) {
-                    final String defaultParameterName = defaultParameter.getName();
-                    if (IndexerUtils.getParameter(defaultParameterName, indexer) == null) {
-                        IndexerUtils.setParam(parameterList, defaultParameterName,
-                                defaultParameter.getValue());
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Perform proper clean up.
      * 
      * <p>
@@ -995,9 +966,16 @@ public class ImageMosaicConfigHandler {
         // load property collectors
         Indexer indexer = runConfiguration.getIndexer();
         Collectors collectors = indexer.getCollectors();
+        // check whether this indexer allows heterogeneous CRS, then we know we need the CRS collector
+        Boolean heterogeneousCRS = Boolean
+            .valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
         if (collectors == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No properties collector have been found");
+            }
+
+            if (heterogeneousCRS) {
+                this.propertiesCollectors = Collections.singletonList(new CRSExtractor());
             }
             return;
         }
@@ -1029,11 +1007,13 @@ public class ImageMosaicConfigHandler {
 
             // property names
             String collectorValue = collector.getValue();
-            final String config;
-            if (!collectorValue.startsWith(DefaultPropertiesCollectorSPI.REGEX_PREFIX)) {
-                config = DefaultPropertiesCollectorSPI.REGEX_PREFIX + collector.getValue();
-            } else {
-                config = collector.getValue();
+            String config = null;
+            if (collectorValue != null) {
+                if (!collectorValue.startsWith(DefaultPropertiesCollectorSPI.REGEX_PREFIX)) {
+                    config = DefaultPropertiesCollectorSPI.REGEX_PREFIX + collector.getValue();
+                } else {
+                    config = collector.getValue();
+                }
             }
 
             // create the PropertiesCollector
@@ -1047,6 +1027,7 @@ public class ImageMosaicConfigHandler {
                 }
             }
         }
+
         this.propertiesCollectors = pcs;
     }
 
@@ -1086,11 +1067,11 @@ public class ImageMosaicConfigHandler {
                     File originFile = null;
                     if (indexerFile.getAbsolutePath().endsWith("xml")) {
                         mosaicFile = new File(indexerFile.getAbsolutePath()
-                                .replace(Utils.INDEXER_XML, (base + ".xml")));
+                                .replace(IndexerUtils.INDEXER_XML, (base + ".xml")));
                         originFile = indexerFile;
                     } else if (indexerFile.getAbsolutePath().endsWith("properties")) {
                         mosaicFile = new File(indexerFile.getAbsolutePath()
-                                .replace(Utils.INDEXER_PROPERTIES, (base + ".properties")));
+                                .replace(IndexerUtils.INDEXER_PROPERTIES, (base + ".properties")));
                         originFile = indexerFile;
                     } else {
                         final String source = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
@@ -1098,7 +1079,7 @@ public class ImageMosaicConfigHandler {
                                 + configurations.get(keys.iterator().next()).getName()
                                 + ".properties";
                         mosaicFile = new File(indexerFile.getAbsolutePath()
-                                .replace(Utils.INDEXER_PROPERTIES, (base + ".properties")));
+                                .replace(IndexerUtils.INDEXER_PROPERTIES, (base + ".properties")));
                         originFile = new File(source);
                     }
                     if (!mosaicFile.exists()) {
@@ -1142,149 +1123,6 @@ public class ImageMosaicConfigHandler {
                 eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
             }
         }
-    }
-
-    private Indexer createIndexer(Properties props, ParametersType params) {
-        // Initializing Indexer objects
-        Indexer indexer = Utils.OBJECT_FACTORY.createIndexer();
-        indexer.setParameters(
-                params != null ? params : Utils.OBJECT_FACTORY.createParametersType());
-        Coverages coverages = Utils.OBJECT_FACTORY.createIndexerCoverages();
-        indexer.setCoverages(coverages);
-        List<Coverage> coverageList = coverages.getCoverage();
-
-        Coverage coverage = Utils.OBJECT_FACTORY.createIndexerCoveragesCoverage();
-        coverageList.add(coverage);
-
-        indexer.setParameters(params);
-        List<Parameter> parameters = params.getParameter();
-
-        // name
-        if (props.containsKey(Prop.NAME)) {
-            IndexerUtils.setParam(parameters, props, Prop.NAME);
-            coverage.setName(props.getProperty(Prop.NAME));
-        }
-
-        // type name
-        if (props.containsKey(Prop.TYPENAME)) {
-            IndexerUtils.setParam(parameters, props, Prop.TYPENAME);
-            coverage.setName(props.getProperty(Prop.TYPENAME));
-        }
-
-        // absolute
-        if (props.containsKey(Prop.ABSOLUTE_PATH))
-            IndexerUtils.setParam(parameters, props, Prop.ABSOLUTE_PATH);
-
-        // recursive
-        if (props.containsKey(Prop.RECURSIVE))
-            IndexerUtils.setParam(parameters, props, Prop.RECURSIVE);
-
-        // wildcard
-        if (props.containsKey(Prop.WILDCARD))
-            IndexerUtils.setParam(parameters, props, Prop.WILDCARD);
-
-        // granule acceptors string
-        if (props.containsKey(Prop.GRANULE_ACCEPTORS)) {
-            IndexerUtils.setParam(parameters, props, Prop.GRANULE_ACCEPTORS);
-        }
-
-        if (props.containsKey(Prop.GEOMETRY_HANDLER)) {
-            IndexerUtils.setParam(parameters, props, Prop.GEOMETRY_HANDLER);
-        }
-
-        // schema
-        if (props.containsKey(Prop.SCHEMA)) {
-            SchemasType schemas = Utils.OBJECT_FACTORY.createSchemasType();
-            SchemaType schema = Utils.OBJECT_FACTORY.createSchemaType();
-            indexer.setSchemas(schemas);
-            schemas.getSchema().add(schema);
-            schema.setAttributes(props.getProperty(Prop.SCHEMA));
-            schema.setName(IndexerUtils.getParameter(Prop.INDEX_NAME, indexer));
-        }
-
-        DomainsType domains = coverage.getDomains();
-        List<DomainType> domainList = null;
-        // time attr
-        if (props.containsKey(Prop.TIME_ATTRIBUTE)) {
-            if (domains == null) {
-                domains = Utils.OBJECT_FACTORY.createDomainsType();
-                coverage.setDomains(domains);
-                domainList = domains.getDomain();
-            }
-            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
-            domain.setName(Utils.TIME_DOMAIN.toLowerCase());
-            IndexerUtils.setAttributes(domain, props.getProperty(Prop.TIME_ATTRIBUTE));
-            domainList.add(domain);
-        }
-
-        // elevation attr
-        if (props.containsKey(Prop.ELEVATION_ATTRIBUTE)) {
-            if (domains == null) {
-                domains = Utils.OBJECT_FACTORY.createDomainsType();
-                coverage.setDomains(domains);
-                domainList = domains.getDomain();
-            }
-            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
-            domain.setName(Utils.ELEVATION_DOMAIN.toLowerCase());
-            IndexerUtils.setAttributes(domain, props.getProperty(Prop.ELEVATION_ATTRIBUTE));
-            domainList.add(domain);
-        }
-
-        // Additional domain attr
-        if (props.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {
-            if (domains == null) {
-                domains = Utils.OBJECT_FACTORY.createDomainsType();
-                coverage.setDomains(domains);
-                domainList = domains.getDomain();
-            }
-            String attributes = props.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES);
-            IndexerUtils.parseAdditionalDomains(attributes, domainList);
-        }
-
-        // imposed BBOX
-        if (props.containsKey(Prop.ENVELOPE2D))
-            IndexerUtils.setParam(parameters, props, Prop.ENVELOPE2D);
-
-        // imposed Pyramid Layout
-        if (props.containsKey(Prop.RESOLUTION_LEVELS))
-            IndexerUtils.setParam(parameters, props, Prop.RESOLUTION_LEVELS);
-
-        // collectors
-        if (props.containsKey(Prop.PROPERTY_COLLECTORS)) {
-            IndexerUtils.setPropertyCollectors(indexer,
-                    props.getProperty(Prop.PROPERTY_COLLECTORS));
-        }
-
-        if (props.containsKey(Prop.CACHING))
-            IndexerUtils.setParam(parameters, props, Prop.CACHING);
-
-        if (props.containsKey(Prop.ROOT_MOSAIC_DIR)) {
-            // Overriding root mosaic directory
-            IndexerUtils.setParam(parameters, props, Prop.ROOT_MOSAIC_DIR);
-        }
-
-        if (props.containsKey(Prop.INDEXING_DIRECTORIES)) {
-            IndexerUtils.setParam(parameters, props, Prop.INDEXING_DIRECTORIES);
-        }
-        if (props.containsKey(Prop.AUXILIARY_FILE)) {
-            IndexerUtils.setParam(parameters, props, Prop.AUXILIARY_FILE);
-        }
-        if (props.containsKey(Prop.AUXILIARY_DATASTORE_FILE)) {
-            IndexerUtils.setParam(parameters, props, Prop.AUXILIARY_DATASTORE_FILE);
-        }
-        if (props.containsKey(Prop.CAN_BE_EMPTY)) {
-            IndexerUtils.setParam(parameters, props, Prop.CAN_BE_EMPTY);
-        }
-        if (props.containsKey(Prop.WRAP_STORE)) {
-            IndexerUtils.setParam(parameters, props, Prop.WRAP_STORE);
-        }
-        if (props.containsKey(Prop.USE_EXISTING_SCHEMA)) {
-            IndexerUtils.setParam(parameters, props, Prop.USE_EXISTING_SCHEMA);
-        }
-        if (props.containsKey(Prop.CHECK_AUXILIARY_METADATA)) {
-            IndexerUtils.setParam(parameters, props, Prop.CHECK_AUXILIARY_METADATA);
-        }
-        return indexer;
     }
 
     /**
@@ -1381,6 +1219,14 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Utils.Prop.AUXILIARY_DATASTORE_FILE,
                     mosaicConfiguration.getAuxiliaryDatastorePath());
         }
+        if (mosaicConfiguration.getCoverageNameCollectorSpi() != null){
+            properties.setProperty(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI,
+                    mosaicConfiguration.getCoverageNameCollectorSpi());
+        }
+
+        if (mosaicConfiguration.getCrs() != null) {
+            properties.setProperty(Prop.MOSAIC_CRS, CRS.toSRS(mosaicConfiguration.getCrs()));
+        }
 
         OutputStream outStream = null;
         String filePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/"
@@ -1389,8 +1235,6 @@ public class ImageMosaicConfigHandler {
         try {
             outStream = new BufferedOutputStream(new FileOutputStream(filePath));
             properties.store(outStream, "-Automagically created from GeoTools-");
-        } catch (FileNotFoundException e) {
-            eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
         } catch (IOException e) {
             eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
         } finally {
@@ -1611,16 +1455,17 @@ public class ImageMosaicConfigHandler {
     /**
      * Get the name of the target coverage for a given reader. For most input coverages, the target coverage is simply the default coverage. For
      * structured coverages the target coverage has the same name as the input coverage.
-     * 
+     *
      * @param inputCoverageReader the coverage being added to the index
-     * @param inputCoverageName the name if the input coverage
+     * @param inputCoverageName the name of the input coverage
      * @return the target coverage name for the input coverage
      */
     public String getTargetCoverageName(GridCoverage2DReader inputCoverageReader,
             String inputCoverageName) {
-        String indexName = getRunConfiguration().getParameter(Prop.INDEX_NAME);
-        return inputCoverageReader instanceof StructuredGridCoverage2DReader ? inputCoverageName
-                : indexName;
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(Prop.INDEX_NAME, getRunConfiguration().getParameter(Prop.INDEX_NAME));
+        map.put(Prop.INPUT_COVERAGE_NAME, inputCoverageName);
+        return coverageNameHandler.getTargetCoverageName(inputCoverageReader, map);
     }
 
     private boolean isHigherResolution(double[][] a, double[][] b) {

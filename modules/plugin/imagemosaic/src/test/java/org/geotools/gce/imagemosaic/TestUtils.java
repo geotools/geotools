@@ -160,7 +160,7 @@ final class TestUtils extends Assert {
     static AbstractGridFormat getFormat(URL testURL, Hints hints)
             throws NoSuchAuthorityCodeException, FactoryException {
         // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL, hints);
+        final AbstractGridFormat format = GridFormatFinder.findFormat(testURL, hints);
         Assert.assertNotNull(format);
         Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
         return format;

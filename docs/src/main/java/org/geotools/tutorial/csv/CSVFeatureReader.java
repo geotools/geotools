@@ -153,5 +153,5 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         geometryFactory = null;
         next = null;
     }
-    // close start
+    // close end
 }

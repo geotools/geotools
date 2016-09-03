@@ -43,8 +43,9 @@ open feature reader
   locations.11 Denver
   locations.12 Nottingham
   locations.13 Portland
+  locations.14 Seoul
 close feature reader
-read in 13 features
+read in 14 features
 
 example3 end
 
@@ -67,12 +68,12 @@ example5 end
 
 example6 start
 
-           List Contents: [locations.1, locations.2, locations.3, locations.4, locations.5, locations.6, locations.7, locations.8, locations.9, locations.10, locations.11, locations.12, locations.13]
-    FeatureSource  count: 13
+           List Contents: [locations.1, locations.2, locations.3, locations.4, locations.5, locations.6, locations.7, locations.8, locations.9, locations.10, locations.11, locations.12, locations.13, locations.14]
+    FeatureSource  count: 14
     FeatureSource bounds: null
-FeatureCollection   size: 13
+FeatureCollection   size: 14
 FeatureCollection bounds: ReferencedEnvelope[-123.365556 : 151.211111, -33.925278 : 52.95]
-         collection size: 13
+         collection size: 14
 
 example6 end
 

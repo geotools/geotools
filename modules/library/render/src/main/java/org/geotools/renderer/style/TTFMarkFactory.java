@@ -26,6 +26,8 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -34,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 import org.geotools.renderer.style.shape.ExplicitBoundsShape;
+import org.geotools.styling.ExternalMark;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
@@ -61,6 +64,11 @@ public class TTFMarkFactory implements MarkFactory {
     private static FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(
             new AffineTransform(), false, false);
 
+    /** 
+     * The factory is completely stateless, this single instance can be safely used across multiple threads	
+     */
+	public static TTFMarkFactory INSTANCE = new TTFMarkFactory();
+
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         String markUrl = symbolUrl.evaluate(feature, String.class);
@@ -78,12 +86,6 @@ public class TTFMarkFactory implements MarkFactory {
         }
         String[] fontElements = markUrl.substring(6).split("#");
 
-        // look up the font
-        Font font = FontCache.getDefaultInsance().getFont(fontElements[0]);
-        if (font == null) {
-            throw new IllegalArgumentException("Unknown font " + fontElements[0]);
-        }
-
         // get the symbol number
         String code = fontElements[1];
         char character;
@@ -94,14 +96,29 @@ public class TTFMarkFactory implements MarkFactory {
             
             // this will handle most numeric formats like decimal, hex and octal
             character = (char) Integer.decode(code).intValue();
-            
-            // handle charmap code reporting issues 
-            if(!font.canDisplay(character))
-                character = (char) (0xF000 | character);
-            
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
                     "Invalid character specification " + fontElements[1], e);
+        }
+        
+        
+        // look up the font
+        String fontFamilyName = fontElements[0];
+		return getShape(fontFamilyName, character);
+    }
+
+	private Shape getShape(String fontFamilyName, char character) {
+		Font font = FontCache.getDefaultInstance().getFont(fontFamilyName);
+        if (font == null) {
+            throw new IllegalArgumentException("Unknown font " + fontFamilyName);
+        }
+        
+        // handle charmap code reporting issues 
+        if(!font.canDisplay(character)) {
+            char alternative = (char) (0xF000 | character);
+            if(font.canDisplay(alternative)) {
+            	character = alternative;
+            }
         }
 
         // build the shape out of the font
@@ -122,6 +139,33 @@ public class TTFMarkFactory implements MarkFactory {
         ExplicitBoundsShape shape = new ExplicitBoundsShape(tx.createTransformedShape(s));
         shape.setBounds(new Rectangle2D.Double(-0.5,0.5,1.0,1.0));
         return shape;
+	}
+    
+	/**
+	 * Returns a shape from an external mark definition
+	 * @param mark
+	 * @return
+	 */
+    public Shape getShape(ExternalMark mark) {
+    	if(!"ttf".equals(mark.getFormat())) {
+    		return null;
+    	}
+    	
+    	String link = mark.getOnlineResource().getLinkage().toString();
+        // if it does not start with the right prefix, it's not our business
+        if (!link.startsWith("ttf://"))
+            return null;
+        
+        String family;
+		try {
+			family = URLDecoder.decode(link.substring(6), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// UTF-8 not supported??
+			throw new RuntimeException(e);
+		}
+        int markIdx = mark.getMarkIndex();
+        char character = (char) markIdx;
+        return getShape(family, character);
     }
 
     public static void main(String[] args) {
@@ -132,11 +176,11 @@ public class TTFMarkFactory implements MarkFactory {
         char c = 0xF041;
         System.out.println((int) c);
 
-        Font font = new Font("Wingdings", Font.PLAIN, 60);
+        Font font = new Font("Webdings", Font.PLAIN, 60);
         for (int i = 0; i < 65536; i++)
             if (font.canDisplay(i))
                 System.out.println(((int) i) + ": " + Long.toHexString(i));
-        GlyphVector textGlyphVector = font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] { c });
+        GlyphVector textGlyphVector = font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] { , });
         Shape shape = textGlyphVector.getOutline();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.translate(150, 150);

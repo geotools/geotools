@@ -571,11 +571,13 @@ public class CssRule {
         if (nestedRules.isEmpty()) {
             return Collections.singletonList(this);
         } else {
-            Stream<CssRule> nestedRulesStream = nestedRules.stream().map(r -> {
-                CssRule combined = combiner.combineRules(Arrays.asList(this, r));
-                combined.setComment(r.getComment());
-                combined.setAncestry(null);
-                return combined;
+            Stream<CssRule> nestedRulesStream = nestedRules.stream().flatMap(r -> {
+                return r.expandNested(combiner).stream().map(sr -> { 
+                    CssRule combined = combiner.combineRules(Arrays.asList(this, sr));
+                    combined.setComment(sr.getComment());
+                    combined.setAncestry(null);
+                    return combined;
+                });
             });
             return Stream.concat(Stream.of(this), nestedRulesStream).collect(Collectors.toList());
         }

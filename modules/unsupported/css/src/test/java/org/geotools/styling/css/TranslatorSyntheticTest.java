@@ -994,7 +994,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(1, style.featureTypeStyles().get(0).rules().size());
         assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
         assertEquals(2, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
-        printStyle(style);
+        // printStyle(style);
     }
     
     @Test

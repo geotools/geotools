@@ -74,10 +74,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
-        /*DataSource dataSource = dataStore.getDataSource();
-        
-        new GeoPackage(dataSource).init(cx);*/
-        //Made init static as otherwise getDataSource returns null?
         GeoPackage.init(cx);
     }
 
@@ -128,7 +124,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
-        if (g == null) {
+        if (g == null||g.isEmpty()) {
             ps.setNull(column, Types.BLOB);
         }
         else {
@@ -409,7 +405,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     
     @Override
     public boolean isLimitOffsetSupported() {
-        //TODO: figure out why aggregate functions don't work with limit offset applied ?
+       
         return true;
     }
     @Override

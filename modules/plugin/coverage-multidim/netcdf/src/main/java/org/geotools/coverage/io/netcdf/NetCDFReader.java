@@ -17,6 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import ucar.nc2.dataset.NetcdfDataset;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -30,6 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -577,7 +579,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             if (value == null)
                 return;
             List<?> values = (List<?>) value;
-            if (values != null && !values.isEmpty()) {
+            if (!values.isEmpty()) {
                 Set<NumberRange<Double>> verticalSubset = new DoubleRangeTreeSet();
                 for (Object val : values) {
                     if (val instanceof Number) {
@@ -626,8 +628,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                 domainsSubset = new HashMap<String, Set<?>>();
                 request.setAdditionalDomainsSubset(domainsSubset);
             }
-            domainsSubset.put(paramName, values);            
-            return;
+            domainsSubset.put(paramName, values);
         }
     }
 

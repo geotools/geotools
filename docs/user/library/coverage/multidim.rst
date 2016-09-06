@@ -93,6 +93,19 @@ ancillary file similar to this one needs to be provided::
 	</Indexer>
 
 The data dimension values will be mapped to three bands called quality, pressure and temperature.
+
+Default Enhance Mode
+++++++++++++++++++++
+The default `Enhance <https://www.unidata.ucar.edu/software/thredds/v4.3/netcdf-java/v4.3/javadoc/ucar/nc2/dataset/NetcdfDataset.Enhance.html>`_ mode used
+by GeoTools is `Enhance.CoordSys`, in order to change the enhance mode use the following system properties:
+
+- org.geotools.coverage.io.netcdf.enhance.CoordSystems
+- org.geotools.coverage.io.netcdf.enhance.ScaleMissing
+- org.geotools.coverage.io.netcdf.enhance.ConvertEnums
+- org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer
+
+These can be set individually. According to the NetCDF-Java docs it is not safe to use ScaleMissing and ScaleMissingDefer
+simultaneously.
 	
 GRIB
 ++++

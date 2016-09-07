@@ -28,13 +28,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -45,12 +48,17 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.arcgrid.ArcGridReader;
+import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.gce.geotiff.GeoTiffWriteParams;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
@@ -68,14 +76,21 @@ import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ChannelSelectionImpl;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchIdentifierException;
@@ -991,6 +1006,65 @@ public class GridCoverageRendererTest  {
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/sampleGribCropLongitude.png");
         ImageAssert.assertEquals(reference, image, 0);
+    }
+    
+    /**
+     * Test to check the case where a {@link org.geotools.coverage.grid.io.AbstractGridFormat#BANDS} reading parameter is passed to a coverage reader
+     * that does not support it.Reader should ignore it, resulting coverage should not be affected.
+     */
+    @Test
+    public void testBandSelectionOnNonSupportingReader() throws Exception {
+        // Create a solid color coverage
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = bi.createGraphics();
+        graphics.setColor(Color.BLUE);
+        graphics.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+        graphics.dispose();
+
+        CoordinateReferenceSystem nativeCrs = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, nativeCrs);
+        GridCoverage2D coverage = CoverageFactoryFinder.getGridCoverageFactory(null).create("test",
+                bi, new ReferencedEnvelope(0, 90, 0, 90, nativeCrs));
+
+        assertEquals(coverage.getNumSampleDimensions(), 3);
+
+        // Write out as a geotiff
+        File coverageFile = new File("./target/blue.tiff");
+        GeoTiffWriter writer = new GeoTiffWriter(coverageFile);
+        final GeoTiffFormat format = new GeoTiffFormat();
+        final GeoTiffWriteParams wp = new GeoTiffWriteParams();
+
+        // setting compression to LZW
+        wp.setCompressionMode(GeoTiffWriteParams.MODE_EXPLICIT);
+        wp.setCompressionType("LZW");
+        wp.setCompressionQuality(0.75F);
+
+        final ParameterValueGroup params = format.getWriteParameters();
+        List<GeneralParameterValue> paramsValues = params.values();
+        writer.write(coverage,
+                params.values().toArray(new GeneralParameterValue[paramsValues.size()]));
+
+        // Get the reader, read with band selection
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
+        ParameterValue<int[]> bandSelectionParam = AbstractGridFormat.BANDS.createValue();
+        // Try to produce a coverage containing bands in reverse order, so, resulting image
+        // should be red instead of blue, and different from the original one
+        bandSelectionParam.setValue(new int[] { 3, 2, 1 });
+        GridCoverage nCoverage = reader.read(new GeneralParameterValue[] { bandSelectionParam });
+
+        StyleBuilder sb = new StyleBuilder();
+        RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+
+        // Render the image
+        GridCoverageRenderer renderer = new GridCoverageRenderer(nativeCrs, mapExtent,
+                new Rectangle(0, 0, 100, 100), null);
+
+        // Image should be same as original, i.e. no flipping of channels
+        RenderedImage image = renderer.renderImage(coverage, symbolizer, null);
+
+        ImageAssert.assertEquals(coverageFile, image, 0);
+
     }
 
 }

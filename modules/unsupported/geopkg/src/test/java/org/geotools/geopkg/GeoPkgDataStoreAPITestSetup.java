@@ -61,7 +61,6 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run( "CREATE TABLE lake (fid INTEGER PRIMARY KEY, id INTEGER)");
         String sql = "INSERT INTO gpkg_geometry_columns VALUES ('lake', 'geom', 'POLYGON', 4326, 0, 0)";
         run(sql);
-        //run( "SELECT AddGeometryColumn('lake','geom',4326,'POLYGON',2)");
         run( "ALTER TABLE lake add geom BLOB" );
         sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES " +
                 "('lake', 'features', 'lake', 4326)";
@@ -73,9 +72,6 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 + "X'"+((GeoPkgTestSetup)delegate).toString(poly)
                 +"', 'muddy');";
         run(sql);
-/*        run( "INSERT INTO lake VALUES (0, 0," +
-            "GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy')");*/
     }
 
     @Override
@@ -86,7 +82,7 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRiverTable() throws Exception {
         run( "CREATE TABLE river (fid INTEGER PRIMARY KEY, id INTEGER)");
-        //run( "SELECT AddGeometryColumn('river','geom',4326,'MULTILINESTRING',2)");
+
         run( "ALTER TABLE river add geom BLOB" );
         String sql = "INSERT INTO gpkg_geometry_columns VALUES ('river', 'geom', 'MULTILINESTRING', 4326, 0, 0)";
         run(sql);
@@ -108,12 +104,7 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 + "X'"+((GeoPkgTestSetup)delegate).toString(line)
                 +"', 'rv2', 3.0);";
         run(sql);
-        /*run("INSERT INTO river VALUES (0, 0,"
-                + "GeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"
-                + "'rv1', 4.5)");
-        run("INSERT INTO river VALUES (1, 1,"
-                + "GeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326),"
-                + "'rv2', 3.0)");*/
+     
     }
     
     @Override
@@ -124,7 +115,7 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRoadTable() throws Exception {
         run( "CREATE TABLE road (fid INTEGER PRIMARY KEY, id INTEGER)");
-        //run( "SELECT AddGeometryColumn('road','geom',4326,'LINESTRING',2)");
+        
         run( "ALTER TABLE road add geom BLOB" );
         String sql = "INSERT INTO gpkg_geometry_columns VALUES ('road', 'geom', 'LINESTRING', 4326, 0, 0)";
         run(sql);
@@ -147,15 +138,6 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         sql = "INSERT INTO road VALUES (2, 2,"
                 + "X'"+((GeoPkgTestSetup)delegate).toString(line)+"', 'r3');";
         run(sql);
-/*        run("INSERT INTO road VALUES (0, 0,"
-                + "GeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326),"
-                + "'r1')");
-        run("INSERT INTO road VALUES (1, 1,"
-                + "GeomFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',4326),"
-                + "'r2')");
-        run("INSERT INTO road VALUES (2, 2,"
-                + "GeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326)," + "'r3')");
-*/        
     }
     
     @Override

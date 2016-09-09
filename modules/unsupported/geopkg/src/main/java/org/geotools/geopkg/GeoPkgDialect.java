@@ -17,7 +17,9 @@
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
-import static org.geotools.geopkg.GeoPackage.*;
+import static org.geotools.geopkg.GeoPackage.GEOMETRY_COLUMNS;
+import static org.geotools.geopkg.GeoPackage.GEOPACKAGE_CONTENTS;
+import static org.geotools.geopkg.GeoPackage.SPATIAL_REF_SYS;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,20 +27,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 import java.util.logging.Level;
 
-import javax.sql.DataSource;
-
 import org.geotools.geometry.jts.Geometries;
-import org.geotools.geopkg.FeatureEntry;
 import org.geotools.geopkg.Entry.DataType;
-import org.geotools.geopkg.GeoPackage;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -165,6 +166,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         super.registerSqlTypeNameToClassMappings(mappings);
         mappings.put("DOUBLE", Double.class);
         mappings.put("BOOLEAN", Boolean.class);
+        mappings.put("DATE", java.sql.Date.class);
+        mappings.put("TIMESTAMP", java.sql.Timestamp.class);
+        mappings.put("TIME", java.sql.Time.class);
     }
 
     @Override
@@ -252,7 +256,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             fe.setIdentifier(featureType.getTypeName());
             fe.setDescription(featureType.getTypeName());
             fe.setTableName(featureType.getTypeName());
-            fe.setLastChange(new Date());
+            fe.setLastChange(new java.util.Date());
         }
         
         GeometryDescriptor gd = featureType.getGeometryDescriptor(); 
@@ -421,4 +425,37 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             sql.append(" OFFSET " + offset);
         }
     }
+    @Override
+    public PreparedFilterToSQL createPreparedFilterToSQL() {
+        GeoPkgFilterToSQL fts = new GeoPkgFilterToSQL(this);
+        return fts;
+    }
+
+    @Override
+    public void setValue(Object value, Class binding, PreparedStatement ps, int column,
+            Connection cx) throws SQLException {
+        // get the sql type
+        Integer sqlType = dataStore.getMapping(binding);
+
+        // handl null case
+        if (value == null) {
+            ps.setNull(column, sqlType);
+            return;
+        }
+
+        switch (sqlType) {
+        case Types.DATE:
+            ps.setString(column, ((Date)value).toString());
+            break;
+        case Types.TIME:
+            ps.setString(column, ((Time)value).toString());
+            break;
+        case Types.TIMESTAMP:
+            ps.setString(column, ((Timestamp)value).toString());
+            break;
+        default:
+            super.setValue(value, binding, ps, column, cx);
+        }
+    }
+    
 }

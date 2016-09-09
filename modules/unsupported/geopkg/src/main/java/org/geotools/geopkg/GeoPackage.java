@@ -370,8 +370,6 @@ public class GeoPackage {
 
     public static void addCRS(Connection cx, int srid, String srsName, String organization,
             int organizationCoordSysId, String definition, String description) throws IOException {
-        // try {
-        // Connection cx = connPool.getConnection();
         try {
             PreparedStatement ps = cx.prepareStatement(
                     String.format("SELECT srs_id FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
@@ -397,10 +395,6 @@ public class GeoPackage {
             } finally {
                 close(ps);
             }
-            // }
-            /*
-             * finally { close(cx); }
-             */
         } catch (SQLException e) {
             throw new IOException(e);
         }
@@ -433,14 +427,14 @@ public class GeoPackage {
 
     private CoordinateReferenceSystem getCRS(int srid) {
         try {
-            Connection cx = connPool.getConnection();
-            try {
-                PreparedStatement ps = cx.prepareStatement(String.format(
-                        "SELECT definition FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS));
-                try {
-                    ResultSet rs = prepare(ps).set(srid).log(Level.FINE)
-                            .statement().executeQuery();
-                    try {
+            
+            try (Connection cx = connPool.getConnection()){
+                
+                try (PreparedStatement ps = cx.prepareStatement(String.format(
+                        "SELECT definition FROM %s WHERE srs_id = ?", SPATIAL_REF_SYS))){
+                    
+                    try (ResultSet rs = prepare(ps).set(srid).log(Level.FINE)
+                            .statement().executeQuery()) {
                         if (rs.next()) {
                             try {
                                 return CRS.parseWKT(rs.getString("definition"));
@@ -448,15 +442,9 @@ public class GeoPackage {
                                 LOGGER.log(Level.FINE, "Error parsing CRS definitions!", e);
                             }
                         }
-                    } finally {
-                        close(rs);
-                    }
-                } finally {
-                    close(ps);
-                }
-            } finally {
-                close(cx);
-            }
+                    } 
+                } 
+            } 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -469,24 +457,40 @@ public class GeoPackage {
     public List<Entry> contents() {
         List<Entry> contents = new ArrayList<Entry>();
         try {
-            Connection cx = connPool.getConnection();
-            try {
-                Statement st = cx.createStatement();
-                try {
-                    ResultSet rs = st.executeQuery("SELECT * FROM " + GEOPACKAGE_CONTENTS);
-                    try {
+            try(Connection cx = connPool.getConnection()) {
+                
+                try(Statement st = cx.createStatement()) {
+                    
+                    try(ResultSet rs = st.executeQuery("SELECT * FROM " + GEOPACKAGE_CONTENTS)) {
                         while (rs.next()) {
-
+                            String dt = rs.getString("data_type");
+                            org.geotools.geopkg.Entry.DataType type = Entry.DataType.valueOf(dt);
+                            Entry e = null;
+                            switch (type) {
+                            case Feature:
+                                e = createFeatureEntry(rs);
+                                break;
+                            case Tile:
+                                e = createTileEntry(rs, cx);
+                                break;
+                            case Raster:
+                                e = createRasterEntry(rs);
+                                break;
+                            case FeatureWithRaster:
+                                // ? TODO: work out what this type looks like
+                                break;
+                            default:
+                                throw new IllegalStateException("unexpected type in GeoPackage");
+                            }
+                            if (e != null) {
+                                contents.add(e);
+                            }
                         }
-                    } finally {
-                        close(rs);
-                    }
-                } finally {
-                    close(st);
-                }
-            } finally {
-                close(cx);
-            }
+                    } catch (IOException e) {
+                        LOGGER.log(Level.FINER, e.getMessage(), e);
+                    } 
+                } 
+            } 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -503,33 +507,27 @@ public class GeoPackage {
      */
     public List<FeatureEntry> features() throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
+            
+            try (Connection cx = connPool.getConnection()){
                 List<FeatureEntry> entries = new ArrayList();
                 String sql = format(
                         "SELECT a.*, b.column_name, b.geometry_type_name, b.z, b.m, c.organization_coordsys_id, c.definition"
                                 + " FROM %s a, %s b, %s c" + " WHERE a.table_name = b.table_name"
                                 + " AND a.srs_id = c.srs_id" + " AND a.data_type = ?",
                         GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS, SPATIAL_REF_SYS);
-                PreparedStatement ps = cx.prepareStatement(sql);
-                try {
+                
+                try (PreparedStatement ps = cx.prepareStatement(sql)){
                     ps.setString(1, DataType.Feature.value());
-                    ResultSet rs = ps.executeQuery();
-                    try {
+                    
+                    try (ResultSet rs = ps.executeQuery()){
                         while (rs.next()) {
                             entries.add(createFeatureEntry(rs));
                         }
-                    } finally {
-                        close(rs);
-                    }
-                } finally {
-                    close(ps);
+                    } 
                 }
 
                 return entries;
-            } finally {
-                close(cx);
-            }
+            } 
         } catch (SQLException e) {
             throw new IOException(e);
         }
@@ -543,8 +541,8 @@ public class GeoPackage {
      */
     public FeatureEntry feature(String name) throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
+            
+            try (Connection cx = connPool.getConnection()){
                 String sql = format(
                         "SELECT a.*, b.column_name, b.geometry_type_name, b.m, b.z, c.organization_coordsys_id, c.definition"
                                 + " FROM %s a, %s b, %s c" + " WHERE a.table_name = b.table_name "
@@ -552,26 +550,17 @@ public class GeoPackage {
                                 + " AND a.data_type = ?",
                         GEOPACKAGE_CONTENTS, GEOMETRY_COLUMNS, SPATIAL_REF_SYS);
 
-                PreparedStatement ps = cx.prepareStatement(sql);
-                try {
+                try (PreparedStatement ps = cx.prepareStatement(sql)) {
                     ps.setString(1, name);
                     ps.setString(2, DataType.Feature.value());
 
-                    ResultSet rs = ps.executeQuery();
-
-                    try {
+                    try (ResultSet rs = ps.executeQuery()){
                         if (rs.next()) {
                             return createFeatureEntry(rs);
                         }
-                    } finally {
-                        close(rs);
-                    }
-                } finally {
-                    close(ps);
-                }
-            } finally {
-                close(cx);
-            }
+                    } 
+                } 
+            } 
         } catch (SQLException e) {
             throw new IOException(e);
         }
@@ -1800,7 +1789,7 @@ public class GeoPackage {
         try {
             SqlUtil.runScript(new GeoPackage().getClass().getResourceAsStream(filename), cx);
         } catch (IOException e) {
-
+            throw new SQLException(e);
         }
     }
 

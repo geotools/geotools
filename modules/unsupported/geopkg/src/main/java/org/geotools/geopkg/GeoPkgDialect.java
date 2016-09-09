@@ -61,6 +61,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
    
+    
+
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
     
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
@@ -458,4 +460,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
     
+    @Override
+    public void encodeColumnType(String sqlTypeName, StringBuffer sql) {
+        sql.append(sqlTypeName.toUpperCase()); //may keep cite tests happy about geom names
+    }
 }

@@ -97,7 +97,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GeoPackage {
 
     static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg");
-
+    
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 
     public static final String GEOMETRY_COLUMNS = "gpkg_geometry_columns";
@@ -162,7 +162,7 @@ public class GeoPackage {
      * Creates a new empty GeoPackage, generating a new file.
      */
     public GeoPackage() throws IOException {
-        this(File.createTempFile("geopkg", "db"));
+        this(File.createTempFile("geopkg", ".db"));
     }
 
     /**
@@ -247,9 +247,9 @@ public class GeoPackage {
      * </p>
      */
     static void init(Connection cx) throws SQLException {
-
+        
         createFunctions(cx);
-
+        
         runSQL("PRAGMA application_id = 0x47503130;", cx);
         // runSQL("SELECT InitSpatialMetaData();");
         runScript(SPATIAL_REF_SYS + ".sql", cx);
@@ -401,7 +401,7 @@ public class GeoPackage {
     }
 
     /**
-     * Adds a crs to the geopackage, registring it in the spatial_ref_sys table.
+     * Adds a crs to the geopackage, registering it in the spatial_ref_sys table.
      *  
      * @param crs The crs to add.
      * @param auth The authority code, example: epsg
@@ -478,7 +478,7 @@ public class GeoPackage {
                                 break;
                             case FeatureWithRaster:
                                 // ? TODO: work out what this type looks like
-                                break;
+                                //break;
                             default:
                                 throw new IllegalStateException("unexpected type in GeoPackage");
                             }
@@ -625,7 +625,7 @@ public class GeoPackage {
         //mark changed
         e.setLastChange(new Date());
 
-        //pass in teh feature entry to the datsatore as user data
+        //pass in the feature entry to the datsatore as user data
         schema.getUserData().put(FeatureEntry.class, e);
 
         JDBCDataStore dataStore = dataStore();

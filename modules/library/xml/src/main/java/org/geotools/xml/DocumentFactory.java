@@ -141,7 +141,7 @@ public class DocumentFactory {
     }
 
     /*
-     * convinience method to create an instance of a SAXParser if it is null.
+     * Convenience method to create an instance of a SAXParser if it is null.
      */
     private static SAXParser getParser() throws SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -149,8 +149,10 @@ public class DocumentFactory {
         spf.setValidating(false);
 
         try {
-            // spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            // spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            // The following configuration prevents XML External Entity Injection (XXE) attacks
+            // See for more information: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing
+            spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 
             SAXParser sp = spf.newSAXParser();
             return sp;

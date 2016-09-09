@@ -151,6 +151,7 @@ public class GeoPackage {
      */
     volatile JDBCDataStore dataStore;
     
+    private boolean initialised = false;
 
     protected GeoPkgGeomWriter.Configuration writerConfig = new GeoPkgGeomWriter.Configuration();
     
@@ -193,6 +194,7 @@ public class GeoPackage {
         params.put(GeoPkgDataStoreFactory.DBTYPE.key, GeoPkgDataStoreFactory.DBTYPE.sample);
 
         this.connPool = new GeoPkgDataStoreFactory(writerConfig).createDataSource(params);
+        
     }
 
     GeoPackage(DataSource dataSource) {
@@ -232,6 +234,7 @@ public class GeoPackage {
             Connection cx = connPool.getConnection();
             try {
                 init(cx);
+                initialised = true;
             } finally {
                 close(cx);
             }
@@ -263,6 +266,7 @@ public class GeoPackage {
         runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
         runScript(EXTENSIONS + ".sql", cx);
         addDefaultSpatialReferences(cx);
+        
     }
 
     static void createFunctions(Connection cx) throws SQLException {
@@ -684,7 +688,8 @@ public class GeoPackage {
         } finally {
             tx.close();
         }
-
+        /*addGeoPackageContentsEntry(e);
+        addGeometryColumnsEntry(e);*/
         entry.init(e);
     }
 
@@ -793,6 +798,9 @@ public class GeoPackage {
     void addGeoPackageContentsEntry(Entry e) throws IOException {
         final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING);
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+        if(!initialised) {
+            init();
+        }
         if(e.getSrid()!=null) { 
             addCRS(e.getSrid());
         }
@@ -1248,6 +1256,10 @@ public class GeoPackage {
     }
 
     void addRasterColumnsEntry(RasterEntry e) throws IOException {
+      
+        if (!initialised) {
+            init();
+        }
         String sql = format(
                 "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?);", RASTER_COLUMNS);
 

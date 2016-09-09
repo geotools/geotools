@@ -1150,4 +1150,19 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             file.setReadable(true);
         }
     }
+
+    /**
+     * The GeoTiffReader should be able to read from an InputStream
+     */
+    @Test
+    public void testCanReadInputStream() throws IOException {
+        File rasterfile = TestData.file(GeoTiffReaderTest.class, "geo.tiff");
+        FileInputStream is = new FileInputStream(rasterfile);
+
+        // Read coverage
+        GeoTiffReader reader = new GeoTiffReader(is);
+        GridCoverage2D gridCoverage = reader.read(null);
+
+        assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+    }
 }

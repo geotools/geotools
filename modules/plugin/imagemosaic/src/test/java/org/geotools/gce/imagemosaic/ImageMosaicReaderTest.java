@@ -115,6 +115,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -135,9 +136,11 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -345,6 +348,18 @@ public class ImageMosaicReaderTest extends Assert{
 //	@Ignore
 	public void overviews() throws Exception {
 		final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
+		ParameterValueGroup readParams = format.getReadParameters();
+		final DefaultParameterDescriptorGroup descriptor = (DefaultParameterDescriptorGroup) readParams.getDescriptor();
+		List<GeneralParameterDescriptor> descriptors = descriptor.descriptors();
+		boolean hasOverviewPolicyParam = false;
+		for (GeneralParameterDescriptor desc: descriptors) {
+		    if (AbstractGridFormat.OVERVIEW_POLICY.getName().toString().equalsIgnoreCase(
+		            desc.getName().toString())) {
+		        hasOverviewPolicyParam = true;
+		        break;
+		    }
+		}
+		assertTrue(hasOverviewPolicyParam);
 		final ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
 
 		// limit yourself to reading just a bit of it

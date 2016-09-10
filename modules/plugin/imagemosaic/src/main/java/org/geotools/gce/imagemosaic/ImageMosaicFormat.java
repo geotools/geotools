@@ -211,7 +211,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                         OUTPUT_TRANSPARENT_COLOR, USE_JAI_IMAGEREAD, BACKGROUND_VALUES,
                         SUGGESTED_TILE_SIZE, ALLOW_MULTITHREADING, MAX_ALLOWED_TILES, TIME,
                         ELEVATION, FILTER, ACCURATE_RESOLUTION, SORT_BY, MERGE_BEHAVIOR,
-                        AbstractGridFormat.FOOTPRINT_BEHAVIOR }));
+                        FOOTPRINT_BEHAVIOR, OVERVIEW_POLICY }));
 
         // reading parameters
         writeParameters = null;

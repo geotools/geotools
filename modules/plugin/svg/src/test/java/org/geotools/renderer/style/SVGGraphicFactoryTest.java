@@ -62,7 +62,7 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertNotNull(icon);
         assertEquals(20, icon.getIconHeight());
         // check caching is working
-        assertTrue(svg.glyphCache.containsKey(url));
+        assertTrue(svg.glyphCache.containsKey(url.toString()));
         
         // second call, hopefully using the cached path
         icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);

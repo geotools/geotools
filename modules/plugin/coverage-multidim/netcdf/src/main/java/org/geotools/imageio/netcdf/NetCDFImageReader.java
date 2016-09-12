@@ -21,13 +21,7 @@ import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -35,14 +29,7 @@ import java.net.URL;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,6 +43,7 @@ import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
+import org.geotools.coverage.io.netcdf.ExtendedImageParam;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
@@ -583,22 +571,25 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final String variableName=slice2DIndex.getVariableName();
         final VariableAdapter wrapper=getCoverageDescriptor(new NameImpl(variableName));
 
+        // let's see if we have some extra parameters
+        int[] bands = null;
+        if (param instanceof ExtendedImageParam) {
+            bands = ((ExtendedImageParam) param).getBands();
+        }
+
         /*
          * Fetches the parameters that are not already processed by utility
          * methods like 'getDestination' or 'computeRegions' (invoked below).
          */
         final int strideX, strideY;
-        // final int[] srcBands;
         final int[] dstBands;
         if (param != null) {
             strideX = param.getSourceXSubsampling();
             strideY = param.getSourceYSubsampling();
-            // srcBands = param.getSourceBands();
             dstBands = param.getDestinationBands();
         } else {
             strideX = 1;
             strideY = 1;
-            // srcBands = null;
             dstBands = null;
         }
     
@@ -673,8 +664,29 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
          */
         final Section section = new Section(ranges);
 
+        // computing the number of bands, according to COARDS convention ignored dimension are at the beginning
+        int numDstBands = 1;
+        String candidateDimension = wrapper.variableDS.getDimensions().get(0).getFullName();
+        MultipleBandsDimensionInfo multipleBands = ancillaryFileManager.getMultipleBandsDimensionInfo(candidateDimension);
+        if (multipleBands != null) {
+            // multiple bands are defined for the ignored dimension
+            numDstBands = multipleBands.getNumberOfBands();
+            // we need to take in account the bands parameter
+            if (bands != null) {
+                // let's do a quick check to see if the bands parameter values make sense
+                int maxSourceBand = Arrays.stream(bands).max().getAsInt();
+                if (maxSourceBand > numDstBands) {
+                    throw new IllegalArgumentException("The provided source bands parameter is invalid.");
+                }
+                // the source bands parameter seems ok
+                numDstBands = bands.length;
+            }
+        }
+
         // Setting SampleModel and ColorModel.
-        final SampleModel sampleModel = wrapper.getSampleModel().createCompatibleSampleModel(destWidth, destHeight);
+        SampleModel sampleModel = new BandedSampleModel(wrapper.getSampleModel().getDataType(), destWidth, destHeight, numDstBands);
+        /*final SampleModel sampleModel = wrapper.getSampleModel()
+                .createCompatibleSampleModel(destWidth, destHeight);*/
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
@@ -686,16 +698,29 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         boolean flipYAxis = needFlipYAxis(axis);
         // Reads the requested sub-region only.
         processImageStarted(imageIndex);
-        final int numDstBands = 1;
+
         final float toPercent = 100f / numDstBands;
         final int type = raster.getSampleModel().getDataType();
         final int xmin = destRegion.x;
         final int ymin = destRegion.y;
         final int xmax = destRegion.width + xmin;
         final int ymax = destRegion.height + ymin;
+
         for( int zi = 0; zi < numDstBands; zi++ ) {
             // final int srcBand = (srcBands == null) ? zi : srcBands[zi];
             final int dstBand = (dstBands == null) ? zi : dstBands[zi];
+            if (multipleBands != null) {
+                try {
+                    // we need to take in account the source bands parameter
+                    int sourceBand = bands == null ? zi : bands[zi];
+                    // since the value dimension has multiple bands we need to update the first range
+                    Range range = new Range(sourceBand, sourceBand, 1);
+                    // reading the dimensions values corresponding to the current band
+                    section.setRange(0, range);
+                } catch (InvalidRangeException exception) {
+                    throw netcdfFailure(exception);
+                }
+            }
             final Array array = readSection(wrapper, section);
             if (flipYAxis) {
                 final IndexIterator it = array.getIndexIterator();

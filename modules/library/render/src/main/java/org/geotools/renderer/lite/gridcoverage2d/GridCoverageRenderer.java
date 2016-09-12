@@ -784,6 +784,15 @@ public final class GridCoverageRenderer {
         // see if we have a projection handler
         CoordinateReferenceSystem sourceCRS = reader.getCoordinateReferenceSystem();
         CoordinateReferenceSystem targetCRS = destinationEnvelope.getCoordinateReferenceSystem();
+        
+        // Check if reader supports band selection, and rearrange raster channels order in
+        // symbolizer. Reader should have taken care o proper channel order, based on initial
+        // symbolizer channel definition
+        RasterSymbolizer finalSymbolizer = symbolizer;
+        if (isBandsSelectionApplicable(reader, symbolizer)){
+            readParams = applyBandsSelectionParameter(reader, readParams, symbolizer);
+            finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
+        }
 
         ProjectionHandler handler = null;
         List<GridCoverage2D> coverages;
@@ -977,16 +986,6 @@ public final class GridCoverageRenderer {
             }
         }
         
-        RasterSymbolizer finalSymbolizer = symbolizer;
-        
-        // Check if reader supports band selection, and rearrange raster channels order in
-        // symbolizer. Reader should have taken care o proper channel order, based on initial
-        // symbolizer channel definition
-        if (isBandsSelectionApplicable(reader, symbolizer)){
-            applyBandsSelectionParameter(reader, readParams, symbolizer);
-            finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
-        }
-
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
         int ii = 0;
@@ -1307,26 +1306,29 @@ public final class GridCoverageRenderer {
         }
     }
     
-    private GeneralParameterValue[] applyBandsSelectionParameter(
-            GridCoverageReader reader,
-            GeneralParameterValue[] readParams, 
-            RasterSymbolizer symbolizer
-            ){
-        int[] bandIndices = 
-                ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
-        Parameter<int[]> bandIndicesParam = null;
-        bandIndicesParam = (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
-        bandIndicesParam.setValue(bandIndices);
-        List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
-        paramList.addAll(Arrays.asList(readParams));
-        paramList.add(bandIndicesParam);
-        return paramList.toArray(new GeneralParameterValue[paramList.size()]);
-    }
+	private GeneralParameterValue[] applyBandsSelectionParameter(GridCoverageReader reader,
+			GeneralParameterValue[] readParams, RasterSymbolizer symbolizer) {
+		int[] bandIndices = ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
+		Parameter<int[]> bandIndicesParam = null;
+		bandIndicesParam = (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
+		bandIndicesParam.setValue(bandIndices);
+		List<GeneralParameterValue> paramList = new ArrayList<GeneralParameterValue>();
+		if (readParams != null) {
+			paramList.addAll(Arrays.asList(readParams));
+		}
+		paramList.add(bandIndicesParam);
+		return paramList.toArray(new GeneralParameterValue[paramList.size()]);
+	}
     
+    /**
+     * Takes into account that the band selection has been delegated down to the reader by
+     * producing a new channel selection
+     * 
+     * @param symbolizer
+     * @return
+     */
     public static RasterSymbolizer setupSymbolizerForBandsSelection(
             RasterSymbolizer symbolizer) {
-        int[] bandIndices = ChannelSelectionUpdateStyleVisitor
-                .getBandIndicesFromSelectionChannels(symbolizer);
         ChannelSelection selection = symbolizer.getChannelSelection();
         final SelectedChannelType[] channels = selection.getSelectedChannels();
         if (channels != null) {
@@ -1345,6 +1347,12 @@ public final class GridCoverageRenderer {
         return symbolizer;
     }
     
+    /**
+     * Checks if band selection is present, and can be delegated down to the reader
+     * @param reader
+     * @param symbolizer
+     * @return
+     */
     public static boolean isBandsSelectionApplicable(GridCoverageReader reader,
             RasterSymbolizer symbolizer){
         int[] bandIndices = ChannelSelectionUpdateStyleVisitor

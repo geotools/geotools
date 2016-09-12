@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1117,9 +1117,10 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
         if (object instanceof GridSampleDimension) {
             final GridSampleDimension that = (GridSampleDimension) object;
-            return Utilities.equals(this.categories, that.categories);
-            // Since everything is deduced from CategoryList, two sample dimensions
-            // should be equal if they have the same list of categories.
+            // two dimensions are equal if they have de same description (name)
+            // and same categories lists
+            return this.description.equals(that.description)
+                    && Utilities.equals(this.categories, that.categories);
         }
         return false;
     }

@@ -16,24 +16,22 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
-import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,12 +46,13 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.gce.geotiff.GeoTiffFormat;
@@ -63,12 +62,15 @@ import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
+import org.geotools.parameter.DefaultParameterDescriptorGroup;
+import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -76,32 +78,37 @@ import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.ColorMap;
+import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.coverage.grid.GridCoverageWriter;
+import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Envelope;
 
 import it.geosolutions.jaiext.JAIExt;
+import junit.framework.Assert;
 
 /**
  * @author Simone Giannecchini
@@ -1009,8 +1016,7 @@ public class GridCoverageRendererTest  {
     }
     
     /**
-     * Test to check the case where a {@link org.geotools.coverage.grid.io.AbstractGridFormat#BANDS} reading parameter is passed to a coverage reader
-     * that does not support it.Reader should ignore it, resulting coverage should not be affected.
+     * Test to check the case where band selection cannot be pushed down to the reader, but needs to be run in memory
      */
     @Test
     public void testBandSelectionOnNonSupportingReader() throws Exception {
@@ -1047,24 +1053,130 @@ public class GridCoverageRendererTest  {
         // Get the reader, read with band selection
         assertTrue(coverageFile.exists());
         GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
-        ParameterValue<int[]> bandSelectionParam = AbstractGridFormat.BANDS.createValue();
-        // Try to produce a coverage containing bands in reverse order, so, resulting image
-        // should be red instead of blue, and different from the original one
-        bandSelectionParam.setValue(new int[] { 3, 2, 1 });
-        GridCoverage nCoverage = reader.read(new GeneralParameterValue[] { bandSelectionParam });
-
-        StyleBuilder sb = new StyleBuilder();
-        RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
-
-        // Render the image
+        
+        // Render the image selecting blue
         GridCoverageRenderer renderer = new GridCoverageRenderer(nativeCrs, mapExtent,
                 new Rectangle(0, 0, 100, 100), null);
-
-        // Image should be same as original, i.e. no flipping of channels
-        RenderedImage image = renderer.renderImage(coverage, symbolizer, null);
-
-        ImageAssert.assertEquals(coverageFile, image, 0);
-
+        RenderedImage image = renderer.renderImage(reader, null, buildChannelSelectingSymbolizer(3), Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+        assertEquals(1, image.getSampleModel().getNumBands());
+        assertEquals(255, new ImageWorker(image).getMinimums()[0], 0d);
+        ImageUtilities.disposeImage(image);
+        
+        // Render again selecting red 
+        image = renderer.renderImage(reader, null, buildChannelSelectingSymbolizer(1), Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+        assertEquals(1, image.getSampleModel().getNumBands());
+        assertEquals(0, new ImageWorker(image).getMaximums()[0], 0d);
+        ImageUtilities.disposeImage(image);
     }
+    
+    @Test
+    public void testBandSelectionSupportingReader() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
+        
+        GridCoverage2DReader reader = new TestSingleBandReader(2);
+        
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
+                new Rectangle(0, 0, 100, 100), null);
+        RenderedImage image = renderer.renderImage(reader, null, buildChannelSelectingSymbolizer(3), Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+        assertEquals(1, image.getSampleModel().getNumBands());
+        assertEquals(255, new ImageWorker(image).getMinimums()[0], 0d);
+        ImageUtilities.disposeImage(image);
+        
+    }
+
+	private RasterSymbolizer buildChannelSelectingSymbolizer(int band) {
+		StyleBuilder sb = new StyleBuilder();
+        RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+        StyleFactory sf = sb.getStyleFactory();
+		symbolizer.setChannelSelection(sf.createChannelSelection(new SelectedChannelType[] {sf.createSelectedChannelType(String.valueOf(band), (ContrastEnhancement) null)}));
+		return symbolizer;
+	}
+	
+	/**
+	 * Mock reader checking the expected band was requested
+	 */
+	private static class TestSingleBandReader extends AbstractGridCoverage2DReader {
+		
+		int[] expectedBands;
+		
+		public TestSingleBandReader(int... expectedBands) {
+			this.expectedBands = expectedBands;
+			this.originalEnvelope = new GeneralEnvelope(new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84));
+			this.crs = DefaultGeographicCRS.WGS84;
+		}
+		
+		@Override
+		public Format getFormat() {
+			return new AbstractGridFormat() {
+
+				@Override
+				public GridCoverageWriter getWriter(Object destination, Hints hints) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public GridCoverageWriter getWriter(Object destination) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public AbstractGridCoverage2DReader getReader(Object source) {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public GeoToolsWriteParams getDefaultImageIOWriteParameters() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				public boolean accepts(Object source, Hints hints) {
+					throw new UnsupportedOperationException();
+				}
+				
+				@Override
+				public ParameterValueGroup getReadParameters() {
+					HashMap<String, String> info = new HashMap<String, String>();
+
+					info.put("name", "bandTester");
+					info.put("description", "desc");
+					info.put("vendor", "vendor");
+					info.put("docURL", "http://www.geotools.org");
+					info.put("version", "1.0");
+
+					List<GeneralParameterDescriptor> params = new ArrayList<GeneralParameterDescriptor>();
+					params.add(AbstractGridFormat.BANDS);
+
+					return new ParameterGroup(new DefaultParameterDescriptorGroup(info,
+							params.toArray(new GeneralParameterDescriptor[params.size()])));
+				}
+			};
+		}
+
+		@Override
+		public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
+			assertTrue(Arrays.stream(parameters).anyMatch(p -> "Bands".equals(p.getDescriptor().getName().toString()) 
+					&& Arrays.equals(expectedBands, (int[]) ((ParameterValue) p).getValue())));
+			
+			// Create a solid color single band coverage
+	        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+	        Graphics2D graphics = bi.createGraphics();
+	        graphics.setColor(Color.WHITE);
+	        graphics.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+	        graphics.dispose();
+
+	        GridCoverage2D coverage = CoverageFactoryFinder.getGridCoverageFactory(null).create("test",
+	                bi, getOriginalEnvelope());
+	        
+	        return coverage;
+		}
+
+	}
 
 }

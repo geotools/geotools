@@ -19,14 +19,9 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Symbolizer;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.opengis.filter.expression.Expression;
 
 /**
  * ChannelSelectionUpdateStyleVisitor is a {@link DuplicatingStyleVisitor} that is used 
@@ -52,37 +47,15 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor{
         this.channels = channels;
     }
     
-    @Override
-    public void visit(RasterSymbolizer raster) {
+	@Override
+	protected ChannelSelection copy(ChannelSelection channelSelection) {
+		if (channels.length != 3) {
+			return sf.createChannelSelection(new SelectedChannelType[] { channels[0] });
+		} else {
+			return sf.createChannelSelection(channels);
+		}
+	}
 
-        ChannelSelection channelSelection = createChannelSelection();
-
-        ColorMap colorMap = copy(raster.getColorMap());
-        ContrastEnhancement ce = copy(raster.getContrastEnhancement());
-        String geometryProperty = raster.getGeometryPropertyName();
-        Symbolizer outline = copy(raster.getImageOutline());
-        Expression overlap = copy(raster.getOverlap());
-        ShadedRelief shadedRelief = copy(raster.getShadedRelief());
-
-        Expression opacity = copy(raster.getOpacity());
-
-        RasterSymbolizer copy = sf.createRasterSymbolizer(geometryProperty, opacity,
-                channelSelection, overlap, colorMap, ce,
-                shadedRelief, outline);
-        if (STRICT && !copy.equals(raster)) {
-            throw new IllegalStateException("Was unable to duplicate provided raster:" + raster);
-        }
-        pages.push(copy);
-    }
-
-    private ChannelSelection createChannelSelection() {
-        if (channels.length != 3) {
-            return sf.createChannelSelection(new SelectedChannelType[]{channels[0]});
-        } else {
-            return sf.createChannelSelection(channels);
-        }
-    }
-    
     /**
      * Returns an int[] containing the indices of the coverage bands that are used for the
      * symbolizer's selection channels

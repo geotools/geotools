@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1180,6 +1180,20 @@ public class XSISimpleTypes {
 
             return null;
         }
+        
+        @Override
+        public void encode(Element element, Object value, PrintHandler output, Map hints)
+                throws IOException {
+            if (value instanceof java.sql.Date) {
+                value = Converters.convert(value, java.lang.String.class);
+            } else if (value instanceof java.util.Date) {
+                // converting java.util.Date to java.sql.Date ensures formatting
+                // as Date, as required, rather than DateTime format
+                value = new java.sql.Date(((java.util.Date) value).getTime());
+                value = Converters.convert(value, java.lang.String.class);
+            }
+            super.encode(element, value, output, hints);
+        }
 
         /**
          * @see org.geotools.xml.xsi.Type#getInstanceType()
@@ -1235,6 +1249,15 @@ public class XSISimpleTypes {
          */
         public Class getInstanceType() {
             return java.util.Date.class;
+        }
+        
+        @Override
+        public void encode(Element element, Object value, PrintHandler output, Map hints)
+                throws IOException {
+            if (value instanceof java.util.Date) {
+                value = Converters.convert(value, java.lang.String.class);
+            }
+            super.encode(element, value, output, hints);
         }
     }
 

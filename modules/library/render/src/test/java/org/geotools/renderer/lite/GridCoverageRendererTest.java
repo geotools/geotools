@@ -79,13 +79,7 @@ import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.resources.image.ImageUtilities;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -1077,9 +1071,18 @@ public class GridCoverageRendererTest  {
         
         GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
                 new Rectangle(0, 0, 100, 100), null);
-        RenderedImage image = renderer.renderImage(reader, null, buildChannelSelectingSymbolizer(3), Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+        // keeping a reference to the raster symbolizer so we can check we has not altered
+        // during the band setup the raster symbolizer channel selection needs to be rearranged
+        // but the original raster symbolizer should not be altered
+        RasterSymbolizer rasterSymbolizer = buildChannelSelectingSymbolizer(3);
+        RenderedImage image = renderer.renderImage(reader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
         assertEquals(1, image.getSampleModel().getNumBands());
         assertEquals(255, new ImageWorker(image).getMinimums()[0], 0d);
+        // test that raster symbolizer was not altered
+        RasterSymbolizer expectedRasterSymbolizer = buildChannelSelectingSymbolizer(3);
+        // during the copy method contrast enhancement NULL options are converted to an empty HashMap
+        expectedRasterSymbolizer.getContrastEnhancement().setOptions(Collections.emptyMap());
+        assertEquals(rasterSymbolizer, expectedRasterSymbolizer);
         ImageUtilities.disposeImage(image);
         
     }

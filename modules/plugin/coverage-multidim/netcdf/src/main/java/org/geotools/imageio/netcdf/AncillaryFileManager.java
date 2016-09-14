@@ -180,6 +180,7 @@ public class AncillaryFileManager implements FileSetManager{
             LOGGER.log(Level.INFO, e.getMessage(), e);
         } 
         CUT_EXTENSIONS.add("nc");
+        CUT_EXTENSIONS.add("ncml");
     }
 
     private Indexer indexer;

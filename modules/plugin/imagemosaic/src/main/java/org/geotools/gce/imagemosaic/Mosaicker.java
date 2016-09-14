@@ -239,6 +239,10 @@ public class Mosaicker {
                                 // Adding globalRoi to the output
                                 RenderedOp rop = (RenderedOp) mosaic;
                                 rop.setProperty("ROI", in.roi);
+
+
+                                mosaic = rasterLayerResponse.getFootprintBehavior().postProcessMosaic(mosaic, in.roi,
+                                    localHints);
                             }
                         }
 

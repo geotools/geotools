@@ -532,34 +532,6 @@ public class LambertAzimuthalEqualArea extends MapProjection {
         private static final long serialVersionUID = 3877793025552244132L;
 
         /**
-         * The operation parameter descriptor for the {@link #latitudeOfOrigin}
-         * parameter value. Valid values range is from -90 to 90°. Default value is 0.
-         */
-        public static final ParameterDescriptor LATITUDE_OF_CENTRE = createDescriptor(
-                new NamedIdentifier[] {
-                    new NamedIdentifier(Citations.OGC,      "latitude_of_center"),
-                    new NamedIdentifier(Citations.EPSG,     "Latitude of natural origin"),
-                    new NamedIdentifier(Citations.EPSG,     "Spherical latitude of origin"),
-                    new NamedIdentifier(Citations.ESRI,     "Latitude_Of_Origin"),
-                    new NamedIdentifier(Citations.GEOTIFF,  "ProjCenterLat")
-                },
-                0, -90, 90, NonSI.DEGREE_ANGLE);
-
-        /**
-         * The operation parameter descriptor for the {@link #centralMeridian}
-         * parameter value. Valid values range is from -180 to 180°. Default value is 0.
-         */
-        public static final ParameterDescriptor LONGITUDE_OF_CENTRE = createDescriptor(
-                new NamedIdentifier[] {
-                    new NamedIdentifier(Citations.OGC,      "longitude_of_center"),
-                    new NamedIdentifier(Citations.EPSG,     "Longitude of natural origin"),
-                    new NamedIdentifier(Citations.EPSG,     "Spherical longitude of origin"),
-                    new NamedIdentifier(Citations.ESRI,     "Central_Meridian"),
-                    new NamedIdentifier(Citations.GEOTIFF,  "ProjCenterLong")
-                },
-                0, -180, 180, NonSI.DEGREE_ANGLE);
-
-        /**
          * The parameters group.
          */
         static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {

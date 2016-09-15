@@ -1,0 +1,459 @@
+// Test script for the Azimuthal Equidistant projection
+//
+// (C) 2016, Open Source Geospatial Foundation (OSGeo)
+//
+// Run at the command line:
+//
+//     cd org/geotools/referencing/test-data/scripts
+//     java -ea org.geotools.referencing.ScriptRunner AzimuthalEquidistant.txt
+//
+// Run in Eclipse (be sure to set VM argument "-ea" to test inverse transforms):
+//
+//     org.geotools.referencing.ScriptTest.testAzimuthalEquidistant()
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by GeoTools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//     print crs - prints the source and target CRS, and the transform between them
+//     print pts - prints the source and target points, and their transformed points
+
+
+// Source longitude/latitude coordinate systems
+set _INTL_ = GEOGCS["International", DATUM["International", SPHEROID["International", 6378388, 297]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295], AXIS["Longitude", EAST], AXIS["Latitude", NORTH]]
+set _WGS84_ = GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137, 298.257223563]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295], AXIS["Longitude", EAST], AXIS["Latitude", NORTH]]
+set _SPHERE_ = GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997, 0]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295], AXIS["Longitude", EAST], AXIS["Latitude", NORTH]]
+
+// Various Azimuthal Equidistant projections on International ellipsoid
+set _INTL_NORTH_ = PROJCS["International North Azimuthal Equidistant", GEOGCS["International", DATUM["International", SPHEROID["International", 6378388, 297]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", 0], PARAMETER["latitude_of_center", 90], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _INTL_SOUTH_ = PROJCS["International South Azimuthal Equidistant", GEOGCS["International", DATUM["International", SPHEROID["International", 6378388, 297]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", 0], PARAMETER["latitude_of_center", -90], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+
+// Various Azimuthal Equidistant projections on WGS84 ellipsoid; note arbitrary choices of meridians 
+set _WGS84_NORTH_ = PROJCS["WGS84 North Polar Azimuthal Equidistant", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137, 298.257223563]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", 15], PARAMETER["latitude_of_center", 90], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _WGS84_SOUTH_ = PROJCS["WGS84 South Polar Azimuthal Equidistant", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137, 298.257223563]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", -35], PARAMETER["latitude_of_center", -90], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _WGS84_EQT_ = PROJCS["WGS84 Equatorial Azimuthal Equidistant", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137, 298.257223563]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", 105], PARAMETER["latitude_of_center", 0], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _WGS84_OBL_ = PROJCS["WGS84 Oblique Azimuthal Equidistant", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137, 298.257223563]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", -55], PARAMETER["latitude_of_center", 40], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+
+// Various Azimuthal Equidistant projections on sphere; note arbitrary choices of meridians 
+set _SPHERE_NORTH_ = PROJCS["Sphere North Polar Azimuthal Equidistant", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997, 0]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", 15], PARAMETER["latitude_of_center", 90], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _SPHERE_SOUTH_ = PROJCS["Sphere South Polar Azimuthal Equidistant", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997, 0]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", -35], PARAMETER["latitude_of_center", -90], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _SPHERE_EQT_ = PROJCS["Sphere Equatorial Azimuthal Equidistant", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997, 0]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", 105], PARAMETER["latitude_of_center", 0], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+set _SPHERE_OBL_ = PROJCS["Sphere Oblique Azimuthal Equidistant", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997, 0]], PRIMEM["Greenwich", 0], UNIT["degree", 0.017453292519943295]], PROJECTION["Azimuthal_Equidistant"], PARAMETER["longitude_of_center", -55], PARAMETER["latitude_of_center", 40], UNIT["metre", 1], AXIS["X", EAST], AXIS["Y", NORTH]]
+
+// Hand-crafted tests with International ellipsoid (1924), for comparison with Snyder, Table 31, page 198
+// Snyder gives the radius at latitude 75 degrees as 1675116.3 metres for the polar aspect
+// 1675116.3 / sqrt(2) = 1184486.1 for projected coordinates for longitudes odd multiples of 45 degrees
+// Snyder's tabulated radii are to one decimal place
+test tolerance = (0.1, 0.1)
+source crs = _INTL_ 
+target crs = _INTL_NORTH_
+source pt = (0, 90)
+target pt = (0, 0)
+source pt = (0, 75)
+target pt = (0, -1675116.3)
+source pt = (180, 75)
+target pt = (0, 1675116.3)
+source pt = (90, 75)
+target pt = (1675116.3, 0)
+source pt = (-90, 75)
+target pt = (-1675116.3, 0)
+source pt = (45, 75)
+target pt = (1184486.1, -1184486.1)
+source pt = (-45, 75)
+target pt = (-1184486.1, -1184486.1)
+source pt = (135, 75)
+target pt = (1184486.1, 1184486.1)
+source pt = (-135, 75)
+target pt = (-1184486.1, 1184486.1)
+source crs = _INTL_ 
+target crs = _INTL_SOUTH_
+source pt = (0, -90)
+target pt = (0, 0)
+source pt = (0, -75)
+target pt = (0, 1675116.3)
+source pt = (180, -75)
+target pt = (0, -1675116.3)
+source pt = (90, -75)
+target pt = (1675116.3, 0)
+source pt = (-90, -75)
+target pt = (-1675116.3, 0)
+source pt = (45, -75)
+target pt = (1184486.1, 1184486.1)
+source pt = (-45, -75)
+target pt = (-1184486.1, 1184486.1)
+source pt = (135, -75)
+target pt = (1184486.1, -1184486.1)
+source pt = (-135, -75)
+target pt = (-1184486.1, -1184486.1)
+
+// Stricter test tolerance for all other tests
+test tolerance = (1e-4, 1e-4)
+
+// Hand-crafted sanity test of origins
+source crs = _WGS84_ 
+target crs = _WGS84_NORTH_
+source pt = (15, 90)
+target pt = (0, 0)
+source crs = _WGS84_ 
+target crs = _WGS84_SOUTH_
+source pt = (-35, -90)
+target pt = (0, 0)
+source crs = _WGS84_ 
+target crs = _WGS84_EQT_
+source pt = (105, 0)
+target pt = (0, 0)
+source crs = _WGS84_ 
+target crs = _WGS84_OBL_
+source pt = (-55, 40)
+target pt = (0, 0)
+source crs = _SPHERE_ 
+target crs = _SPHERE_NORTH_
+source pt = (15, 90)
+target pt = (0, 0)
+source crs = _SPHERE_ 
+target crs = _SPHERE_SOUTH_
+source pt = (-35, -90)
+target pt = (0, 0)
+source crs = _SPHERE_ 
+target crs = _SPHERE_EQT_
+source pt = (105, 0)
+target pt = (0, 0)
+source crs = _SPHERE_ 
+target crs = _SPHERE_OBL_
+source pt = (-55, 40)
+target pt = (0, 0)
+
+// AzimuthalEquidistant reference transformations generated by cs2cs from PROJ.4 with "AzimuthalEquidistant-cs2cs.sh"
+// cs2cs version: Rel. 4.9.3, 15 August 2016
+
+// Repeat the Snyder International ellipsoid examples in higher precision to compare with cs2cs
+source crs = _INTL_
+target crs = _INTL_NORTH_
+// cs2cs -E -f %.6f +proj=longlat +ellps=intl +to +proj=aeqd +ellps=intl +lon_0=0 +lat_0=90 +no_defs
+source pt = (0, 90)
+target pt = (0.000000, 0.000000)
+source pt = (0, 75)
+target pt = (0.000000, -1675116.291290)
+source pt = (180, 75)
+target pt = (0.000000, 1675116.291290)
+source pt = (90, 75)
+target pt = (1675116.291290, -0.000000)
+source pt = (45, 75)
+target pt = (1184486.088847, -1184486.088847)
+source pt = (-45, 75)
+target pt = (-1184486.088847, -1184486.088847)
+source pt = (135, 75)
+target pt = (1184486.088847, 1184486.088847)
+source pt = (-135, 75)
+target pt = (-1184486.088847, 1184486.088847)
+source crs = _INTL_
+target crs = _INTL_SOUTH_
+// cs2cs -E -f %.6f +proj=longlat +ellps=intl +to +proj=aeqd +ellps=intl +lon_0=0 +lat_0=-90 +no_defs
+source pt = (0, -90)
+target pt = (0.000000, 0.000000)
+source pt = (0, -75)
+target pt = (0.000000, 1675116.291290)
+source pt = (180, -75)
+target pt = (0.000000, -1675116.291290)
+source pt = (90, -75)
+target pt = (1675116.291290, 0.000000)
+source pt = (45, -75)
+target pt = (1184486.088847, 1184486.088847)
+source pt = (-45, -75)
+target pt = (-1184486.088847, 1184486.088847)
+source pt = (135, -75)
+target pt = (1184486.088847, -1184486.088847)
+source pt = (-135, -75)
+target pt = (-1184486.088847, -1184486.088847)
+
+// Test the same 16 points for each of the eight WGS84 and spherical projections
+
+source crs = _WGS84_
+target crs = _WGS84_NORTH_
+// cs2cs -E -f %.6f +proj=longlat +ellps=WGS84 +to +proj=aeqd +ellps=WGS84 +lon_0=15 +lat_0=90 +no_defs
+source pt = (-146, -46)
+target pt = (-4915444.813467, 14275488.295885)
+source pt = (176, 4)
+target pt = (3112321.324877, 9038837.446531)
+source pt = (-123, 37)
+target pt = (-3951520.520683, 4388608.142875)
+source pt = (20, -69)
+target pt = (1539117.325123, -17592191.526242)
+source pt = (143, 44)
+target pt = (4041032.113400, 3157200.306452)
+source pt = (-3, 4)
+target pt = (-2954097.838427, -9091778.284533)
+source pt = (-104, 21)
+target pt = (-6716107.526074, 3722799.192233)
+source pt = (66, 6)
+target pt = (7257374.276800, -5876905.812272)
+source pt = (-101, -85)
+target pt = (-17477477.939394, 8524335.556984)
+source pt = (-8, -36)
+target pt = (-5465354.941775, -12875569.369647)
+source pt = (111, 79)
+target pt = (1221752.567449, 128411.369286)
+source pt = (80, 37)
+target pt = (5352159.629968, -2495753.023122)
+source pt = (-31, -18)
+target pt = (-8627004.578232, -8331001.481407)
+source pt = (110, 34)
+target pt = (6214565.655933, 543704.043632)
+source pt = (-139, -71)
+target pt = (-7839178.483352, 16072697.759242)
+source pt = (-171, -48)
+target pt = (1601417.170898, 15236466.607172)
+
+source crs = _WGS84_
+target crs = _WGS84_SOUTH_
+// cs2cs -E -f %.6f +proj=longlat +ellps=WGS84 +to +proj=aeqd +ellps=WGS84 +lon_0=-35 +lat_0=-90 +no_defs
+source pt = (-146, -46)
+target pt = (-4580033.358699, -1758110.085667)
+source pt = (176, 4)
+target pt = (-5379196.735908, -8952486.759098)
+source pt = (-123, 37)
+target pt = (-14089888.293078, 492029.741247)
+source pt = (20, -69)
+target pt = (1920535.240746, 1344773.252968)
+source pt = (143, 44)
+target pt = (519157.517709, -14866726.170850)
+source pt = (-3, 4)
+target pt = (5534619.895734, 8857243.324261)
+source pt = (-104, 21)
+target pt = (-11506418.525626, 4416900.244053)
+source pt = (66, 6)
+target pt = (10469481.591403, -2035061.068249)
+source pt = (-101, -85)
+target pt = (-510174.566301, 227144.351432)
+source pt = (-8, -36)
+target pt = (2731398.911159, 5360672.197766)
+source pt = (111, 79)
+target pt = (10499097.916595, -15565552.775737)
+source pt = (80, 37)
+target pt = (12777559.222333, -5958273.717903)
+source pt = (-31, -18)
+target pt = (558817.980721, 7991469.440543)
+source pt = (110, 34)
+target pt = (7895639.377158, -11276141.638443)
+source pt = (-139, -71)
+target pt = (-2058401.599406, -513217.159829)
+source pt = (-171, -48)
+target pt = (-3253458.968024, -3369055.386063)
+
+source crs = _WGS84_
+target crs = _WGS84_EQT_
+// cs2cs -E -f %.6f +proj=longlat +ellps=WGS84 +to +proj=aeqd +ellps=WGS84 +lon_0=105 +lat_0=0 +no_defs
+source pt = (-146, -46)
+target pt = (7740338.134096, -8460728.030453)
+source pt = (176, 4)
+target pt = (7887571.490223, 580551.171384)
+source pt = (-123, 37)
+target pt = (9551093.233703, 9696440.205149)
+source pt = (20, -69)
+target pt = (-3512642.698757, -9153438.675567)
+source pt = (143, 44)
+target pt = (3322956.246768, 5183101.022399)
+source pt = (-3, 4)
+target pt = (-11985130.728505, 880082.209402)
+source pt = (-104, 21)
+target pt = (12585910.411109, 10052364.140571)
+source pt = (66, 6)
+target pt = (-4324636.596538, 717825.750949)
+source pt = (-101, -85)
+target pt = (403727.858914, -10496042.595117)
+source pt = (-8, -36)
+target pt = (-9475754.105211, -7469936.290418)
+source pt = (111, 79)
+target pt = (179124.038726, 8778476.024527)
+source pt = (80, 37)
+target pt = (-2377683.801080, 4214017.913266)
+source pt = (-31, -18)
+target pt = (-13416690.458160, -6300789.256033)
+source pt = (110, 34)
+target pt = (489957.145097, 3767998.870734)
+source pt = (-139, -71)
+target pt = (3235774.289893, -10429152.444220)
+source pt = (-171, -48)
+target pt = (6392022.366006, -7111754.353050)
+
+source crs = _WGS84_
+target crs = _WGS84_OBL_
+// cs2cs -E -f %.6f +proj=longlat +ellps=WGS84 +to +proj=aeqd +ellps=WGS84 +lon_0=-55 +lat_0=40 +no_defs
+source pt = (-146, -46)
+target pt = (-10355153.570510, -8056304.570198)
+source pt = (176, 4)
+target pt = (-11089336.875118, 6579421.167868)
+source pt = (-123, 37)
+target pt = (-5444972.255519, 1977946.238546)
+source pt = (20, -69)
+target pt = (5535626.178871, -12350351.780966)
+source pt = (143, 44)
+target pt = (-2344869.035278, 10263326.594945)
+source pt = (-3, 4)
+target pt = (6020220.873315, -2594632.208171)
+source pt = (-104, 21)
+target pt = (-5007728.764888, -837348.445974)
+source pt = (66, 6)
+target pt = (10921179.821522, 5278445.375530)
+source pt = (-101, -85)
+target pt = (-1096301.029356, -13990931.805739)
+source pt = (-8, -36)
+target pt = (5761265.664964, -7796721.079112)
+source pt = (111, 79)
+target pt = (358750.426018, 6759611.624703)
+source pt = (80, 37)
+target pt = (5829910.206795, 8518779.539386)
+source pt = (-31, -18)
+target pt = (3025054.544596, -6186899.797985)
+source pt = (110, 34)
+target pt = (2583338.070204, 11378119.633051)
+source pt = (-139, -71)
+target pt = (-5561902.190642, -12781511.965103)
+source pt = (-171, -48)
+target pt = (-12655688.184981, -7974654.705237)
+
+source crs = _SPHERE_
+target crs = _SPHERE_NORTH_
+// cs2cs -E -f %.6f +proj=longlat +ellps=sphere +to +proj=aeqd +ellps=sphere +lon_0=15 +lat_0=90 +no_defs
+source pt = (-146, -46)
+target pt = (-4923405.360810, 14298607.404073)
+source pt = (176, 4)
+target pt = (3113329.860512, 9041766.446693)
+source pt = (-123, 37)
+target pt = (-3943406.363668, 4379596.458546)
+source pt = (20, -69)
+target pt = (1540912.225424, -17612707.330563)
+source pt = (143, 44)
+target pt = (4030646.807385, 3149086.416135)
+source pt = (-3, 4)
+target pt = (-2955055.102356, -9094724.439968)
+source pt = (-104, 21)
+target pt = (-6710472.758377, 3719675.789495)
+source pt = (66, 6)
+target pt = (7258830.388745, -5878084.948476)
+source pt = (-101, -85)
+target pt = (-17489725.922560, 8530309.297518)
+source pt = (-8, -36)
+target pt = (-5474359.637646, -12896783.103718)
+source pt = (111, 79)
+target pt = (1216443.108417, 127853.322654)
+source pt = (80, 37)
+target pt = (5341169.363467, -2490628.177687)
+source pt = (-31, -18)
+target pt = (-8638585.055995, -8342184.618791)
+source pt = (110, 34)
+target pt = (6203217.676173, 542711.224049)
+source pt = (-139, -71)
+target pt = (-7847884.553716, 16090547.848755)
+source pt = (-171, -48)
+target pt = (1603978.047846, 15260831.723780)
+
+source crs = _SPHERE_
+target crs = _SPHERE_SOUTH_
+// cs2cs -E -f %.6f +proj=longlat +ellps=sphere +to +proj=aeqd +ellps=sphere +lon_0=-35 +lat_0=-90 +no_defs
+source pt = (-146, -46)
+target pt = (-4567611.758996, -1753341.880283)
+source pt = (176, 4)
+target pt = (-5383341.835196, -8959385.362796)
+source pt = (-123, 37)
+target pt = (-14113146.446200, 492841.933851)
+source pt = (20, -69)
+target pt = (1912795.680280, 1339353.954387)
+source pt = (143, 44)
+target pt = (520006.449890, -14891036.407801)
+source pt = (-3, 4)
+target pt = (5538884.760940, 8864068.535311)
+source pt = (-104, 21)
+target pt = (-11522838.755648, 4423203.379806)
+source pt = (66, 6)
+target pt = (10478583.480757, -2036830.296315)
+source pt = (-101, -85)
+target pt = (-507907.861580, 226135.149469)
+source pt = (-8, -36)
+target pt = (2725996.493429, 5350069.355974)
+source pt = (111, 79)
+target pt = (10508315.997791, -15579219.143123)
+source pt = (80, 37)
+target pt = (12798651.116232, -5968109.029553)
+source pt = (-31, -18)
+target pt = (558472.487653, 7986528.659488)
+source pt = (110, 34)
+target pt = (7908566.206856, -11294603.064509)
+source pt = (-139, -71)
+target pt = (-2049946.314742, -511109.020590)
+source pt = (-171, -48)
+target pt = (-3244182.907308, -3359449.743998)
+
+source crs = _SPHERE_
+target crs = _SPHERE_EQT_
+// cs2cs -E -f %.6f +proj=longlat +ellps=sphere +to +proj=aeqd +ellps=sphere +lon_0=105 +lat_0=0 +no_defs
+source pt = (-146, -46)
+target pt = (7727933.573181, -8463619.525313)
+source pt = (176, 4)
+target pt = (7878662.295705, 582674.683434)
+source pt = (-123, 37)
+target pt = (9549137.806572, 9682892.516287)
+source pt = (20, -69)
+target pt = (-3503391.095225, -9161508.135909)
+source pt = (143, 44)
+target pt = (3315735.458824, 5200858.980372)
+source pt = (-3, 4)
+target pt = (-11971688.735612, 880223.217567)
+source pt = (-104, 21)
+target pt = (12617877.975293, 9990621.784113)
+source pt = (66, 6)
+target pt = (-4319690.573534, 721441.384663)
+source pt = (-101, -85)
+target pt = (402678.450087, -10499403.939797)
+source pt = (-8, -36)
+target pt = (-9463882.207050, -7469719.336803)
+source pt = (111, 79)
+target pt = (178584.722035, 8789364.353155)
+source pt = (80, 37)
+target pt = (-2373115.163261, 4231408.589089)
+source pt = (-31, -18)
+target pt = (-13412817.182245, -6273714.778104)
+source pt = (110, 34)
+target pt = (489067.800664, 3784953.078954)
+source pt = (-139, -71)
+target pt = (3228422.112969, -10431776.508556)
+source pt = (-171, -48)
+target pt = (6378509.466656, -7123073.380904)
+
+source crs = _SPHERE_
+target crs = _SPHERE_OBL_
+// cs2cs -E -f %.6f +proj=longlat +ellps=sphere +to +proj=aeqd +ellps=sphere +lon_0=-55 +lat_0=40 +no_defs
+source pt = (-146, -46)
+target pt = (-10347585.866596, -8093500.658297)
+source pt = (176, 4)
+target pt = (-11097844.417726, 6541591.670582)
+source pt = (-123, 37)
+target pt = (-5432592.453222, 1971419.805349)
+source pt = (20, -69)
+target pt = (5531022.857265, -12379790.130857)
+source pt = (143, 44)
+target pt = (-2341559.553068, 10237795.182028)
+source pt = (-3, 4)
+target pt = (6015786.285914, -2612193.752645)
+source pt = (-104, 21)
+target pt = (-5000525.398140, -845776.447224)
+source pt = (66, 6)
+target pt = (10923718.981832, 5245096.679495)
+source pt = (-101, -85)
+target pt = (-1095652.582905, -14016579.582995)
+source pt = (-8, -36)
+target pt = (5757933.972927, -7833175.147601)
+source pt = (111, 79)
+target pt = (357306.183931, 6741754.634373)
+source pt = (80, 37)
+target pt = (5822263.558090, 8495560.074820)
+source pt = (-31, -18)
+target pt = (3023789.825765, -6215931.232138)
+source pt = (110, 34)
+target pt = (2583106.369912, 11353540.454429)
+source pt = (-139, -71)
+target pt = (-5558025.631341, -12808852.876248)
+source pt = (-171, -48)
+target pt = (-12647535.137487, -8006767.427904)

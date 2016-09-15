@@ -26,7 +26,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.logging.Logging;
 
-public class MBTilesFile {
+public class MBTilesFile implements AutoCloseable {
 
     public static final String PRAGMA_JOURNAL_MODE_OFF = "PRAGMA journal_mode=OFF";
 

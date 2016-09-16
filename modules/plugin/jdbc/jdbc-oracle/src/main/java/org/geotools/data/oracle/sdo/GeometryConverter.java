@@ -153,7 +153,7 @@ public class GeometryConverter {
      * @see net.refractions.jspatial.Converter#toDataType(java.lang.Object)
      */
     public STRUCT toSDO(Geometry geom, int srid) throws SQLException {
-        if( geom == null) return asEmptyDataType();
+        if( geom == null || geom.isEmpty()) return asEmptyDataType();
         
         int gtype = SDO.gType( geom );
         NUMBER SDO_GTYPE = new NUMBER( gtype );

@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.catalog.index;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -784,15 +785,7 @@ public class Indexer {
         }
 
     }
-
-    public File getIndexerFile() {
-        return indexerFile;
-    }
-
-    public void setIndexerFile(File indexerFile) {
-        this.indexerFile = indexerFile;
-    }
-
+    
     /**
      * <p>Java class for anonymous complex type.
      *

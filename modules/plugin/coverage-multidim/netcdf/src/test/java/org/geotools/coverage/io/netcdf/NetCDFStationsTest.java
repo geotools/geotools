@@ -20,9 +20,13 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -46,16 +50,32 @@ import static org.hamcrest.CoreMatchers.notNullValue;
  */
 public final class NetCDFStationsTest extends Assert {
 
+    @Before
+    public void init() {
+        // make sure CRS ordering is correct
+        System.setProperty("org.geotools.referencing.forceXY", "true");
+        CRS.reset("all");
+    }
 
     @Test
     public void readMultipleBandsDimension() throws Exception {
 
         // we should have three bands and all the values should be present
-        Raster data = readCoverage(new GeneralParameterValue[]{});
-        checkRasterData(data,
+        checkRasterData(new GeneralParameterValue[]{},
                 new int[]{5, 6, 7, 8, 9, 0, 1, 2, 3, 4},
                 new int[]{105, 106, 107, 108, 109, 100, 101, 102, 103, 104},
                 new int[]{1005, 1006, 1007, 1008, 1009, 1000, 1001, 1002, 1003, 1004});
+    }
+
+
+    @Test
+    public void readMultipleBandsDimensionSelectingOnlyOneBand() throws Exception {
+
+        // we should have only band a single band
+        ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
+        selectedBands.setValue(new int[]{1});
+        checkRasterData(new GeneralParameterValue[]{selectedBands},
+                new int[]{105, 106, 107, 108, 109, 100, 101, 102, 103, 104});
     }
 
     @Test
@@ -64,23 +84,10 @@ public final class NetCDFStationsTest extends Assert {
         // we should have three bands with values indexes ordered as 2, 0, 1
         ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
         selectedBands.setValue(new int[]{2, 0, 1});
-        Raster data = readCoverage(new GeneralParameterValue[]{selectedBands});
-        checkRasterData(data,
+        checkRasterData(new GeneralParameterValue[]{selectedBands},
                 new int[]{1005, 1006, 1007, 1008, 1009, 1000, 1001, 1002, 1003, 1004},
                 new int[]{5, 6, 7, 8, 9, 0, 1, 2, 3, 4},
                 new int[]{105, 106, 107, 108, 109, 100, 101, 102, 103, 104});
-    }
-
-    @Test
-    public void readMultipleBandsDimensionWithOnlyTwoBandsSelection() throws Exception {
-
-        // we should only have two bands with values indexes ordered as 2, 0
-        ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
-        selectedBands.setValue(new int[]{2, 0});
-        Raster data = readCoverage(new GeneralParameterValue[]{selectedBands});
-        checkRasterData(data,
-                new int[]{1005, 1006, 1007, 1008, 1009, 1000, 1001, 1002, 1003, 1004},
-                new int[]{5, 6, 7, 8, 9, 0, 1, 2, 3, 4});
     }
 
     @Test
@@ -89,14 +96,23 @@ public final class NetCDFStationsTest extends Assert {
         // we should have six bands with values indexes ordered as 2, 0, 1, 1, 2, 0
         ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
         selectedBands.setValue(new int[]{2, 0, 1, 1, 2, 0});
-        Raster data = readCoverage(new GeneralParameterValue[]{selectedBands});
-        checkRasterData(data,
+        checkRasterData(new GeneralParameterValue[]{selectedBands},
                 new int[]{1005, 1006, 1007, 1008, 1009, 1000, 1001, 1002, 1003, 1004},
                 new int[]{5, 6, 7, 8, 9, 0, 1, 2, 3, 4},
                 new int[]{105, 106, 107, 108, 109, 100, 101, 102, 103, 104},
                 new int[]{105, 106, 107, 108, 109, 100, 101, 102, 103, 104},
                 new int[]{1005, 1006, 1007, 1008, 1009, 1000, 1001, 1002, 1003, 1004},
                 new int[]{5, 6, 7, 8, 9, 0, 1, 2, 3, 4});
+    }
+
+    /**
+     * Helper method that simply checks that the raster contains the expected data. The number of bands
+     * should match the number of expected banks in the provided order. This testes are run for the
+     * NetCDF reader and the ImageMosaicReader.
+     */
+    private void checkRasterData(GeneralParameterValue[] parameters, int[]... expected) throws Exception {
+        checkRasterData(readCoverageUsingNetCdfReader(parameters), expected);
+        checkRasterData(readCoverageUsingImageMosaicReader(parameters), expected);
     }
 
     /**
@@ -112,14 +128,30 @@ public final class NetCDFStationsTest extends Assert {
         // let's check if the banks values match the expected values
         for (int i = 0; i < expected.length; i++) {
             int[] bank = readBank(data.getDataBuffer(), i);
-            assertThat(Arrays.equals(bank, expected[i]), is(true));
+            checkArrayContainsArray(bank, expected[i]);
         }
     }
 
     /**
-     * Helper method that reads stationA data set. Some basic checks are also made.
+     * Checks that arrayA contains arrayB.
      */
-    private Raster readCoverage(GeneralParameterValue[] readParameters) throws Exception {
+    private void checkArrayContainsArray(int[] arrayA, int[] arrayB) {
+        for (int i = 0; i < arrayB.length; i++) {
+            boolean found = false;
+            for (int j = 0; j < arrayA.length; j++) {
+                if (arrayB[i] == arrayA[j]) {
+                    found = true;
+                }
+            }
+            assertThat(found, is(true));
+        }
+    }
+
+    /**
+     * Helper method that reads stationA data set using the NetCdf reader directly.
+     * Some basic checks are also made.
+     */
+    private Raster readCoverageUsingNetCdfReader(GeneralParameterValue[] readParameters) throws Exception {
 
         // create test directory for this test removing any existing one
         File testDirectory = new File(TestData.file(this, "."), "MultipleBandsDimensionTest");
@@ -152,6 +184,52 @@ public final class NetCDFStationsTest extends Assert {
             GridCoverage2D coverage = reader.read("stationA", readParameters);
             assertThat(coverage, notNullValue());
             return PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getData();
+
+        } finally {
+
+            // cleaning the tests directory
+            FileUtils.deleteQuietly(testDirectory);
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+
+    /**
+     * Helper method that reads stationA data set using the image mosaic reader directly.
+     * Some basic checks are also made.
+     */
+    private Raster readCoverageUsingImageMosaicReader(GeneralParameterValue[] readParameters) throws Exception {
+
+        // create test directory for this test removing any existing one
+        File testDirectory = new File(TestData.file(this, "."), "MultipleBandsDimensionTest");
+        FileUtils.deleteQuietly(testDirectory);
+        assertThat(testDirectory.mkdirs(), is(true));
+
+        // just keeping a reference to the reader so we can close it in the finally block
+        ImageMosaicReader reader = null;
+
+        try {
+
+            // move test files to the test directory
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations.nc"), testDirectory);
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations_mosaic_indexer.xml"), testDirectory);
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations_netcdf_auxiliary.xml"), testDirectory);
+            FileUtils.copyFileToDirectory(TestData.file(this, "stations_datastore.properties"), testDirectory);
+            FileUtils.moveFile(new File(testDirectory, "stations_mosaic_indexer.xml"), new File(testDirectory, "indexer.xml"));
+            FileUtils.moveFile(new File(testDirectory, "stations_netcdf_auxiliary.xml"), new File(testDirectory, "netcdf_auxiliary.xml"));
+            FileUtils.moveFile(new File(testDirectory, "stations_datastore.properties"), new File(testDirectory, "datastore.properties"));
+
+            // instantiate the image mosaic reader
+            ImageMosaicFormat format = new ImageMosaicFormat();
+            reader = format.getReader(testDirectory);
+
+            // reading stationA data set
+            GridCoverage2D coverage = reader.read("stationA", readParameters);
+            assertThat(coverage, notNullValue());
+            PlanarImage image =  PlanarImage.wrapRenderedImage(coverage.getRenderedImage());
+            return image.getData();
+
 
         } finally {
 

@@ -54,6 +54,7 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
+import org.geotools.resources.image.ExtendedImageParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;

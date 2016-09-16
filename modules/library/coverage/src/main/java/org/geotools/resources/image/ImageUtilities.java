@@ -867,7 +867,7 @@ public final class ImageUtilities {
     	// in which there is not a special ImageReadparam used.
     
     	// Create a new ImageReadParam instance.
-    	ImageReadParam newParam = new ImageReadParam();
+    	ExtendedImageParam newParam = new ExtendedImageParam();
     
     	// Set all fields which need to be set.
     
@@ -900,7 +900,12 @@ public final class ImageUtilities {
     	newParam.setSourceSubsampling(param.getSourceXSubsampling(), param
     			.getSourceYSubsampling(), param.getSubsamplingXOffset(), param
     			.getSubsamplingYOffset());
-    
+
+        // check if need to copy extra parameters
+        if (param instanceof ExtendedImageParam) {
+            newParam.setBands(((ExtendedImageParam) param).getBands());
+        }
+
     	// Replace the local variable with the new ImageReadParam.
     	return newParam;
     

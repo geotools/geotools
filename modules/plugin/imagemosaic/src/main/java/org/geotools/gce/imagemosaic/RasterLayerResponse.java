@@ -26,12 +26,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
-import java.awt.image.MultiPixelPackedSampleModel;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
 import java.io.File;
+import java.awt.image.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -63,6 +59,7 @@ import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.apache.commons.io.FilenameUtils;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -94,6 +91,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.resources.image.ExtendedImageParam;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
@@ -1133,7 +1131,7 @@ class RasterLayerResponse {
 
     private int imageChoice = 0;
 
-    private ImageReadParam baseReadParameters = new ImageReadParam();
+    private ExtendedImageParam baseReadParameters = new ExtendedImageParam();
 
     private boolean multithreadingAllowed;
 
@@ -1226,6 +1224,9 @@ class RasterLayerResponse {
             this.gridCoverage = null;
             return;
         }
+
+        // add extra parameters to image parameters reader
+        baseReadParameters.setBands(request.getBands());
 
         // assemble granules
         final MosaicOutput mosaic = prepareResponse();
@@ -1738,13 +1739,33 @@ class RasterLayerResponse {
         final RenderedImage image = mosaicOutput.image;
         final SampleModel sm = image.getSampleModel();
         final ColorModel cm = image.getColorModel();
-        final int numBands = sm.getNumBands();
+        final int numBands = request.getBands() == null ? sm.getNumBands() : request.getBands().length;
+        // quick check the possible provided bands names are equal the number of bands
+        if (rasterManager.providedBandsNames != null && rasterManager.providedBandsNames.length != numBands) {
+            // let's see if bands have been selected
+            if (request.getBands() == null) {
+                // no definitively there is something wrong
+                throw new IllegalArgumentException("The number of provided bands names is different from the number of bands.");
+            }
+        }
         final GridSampleDimension[] bands = new GridSampleDimension[numBands];
         Set<String> bandNames = new HashSet<String>();
         // setting bands names.
         for (int i = 0; i < numBands; i++) {
             ColorInterpretation colorInterpretation = null;
             String bandName = null;
+
+            // checking if bands names are provided, typical case for multiple bands dimensions
+            if (rasterManager.providedBandsNames != null) {
+                // we need to take in consideration if bands were selected
+                if (request.getBands() == null) {
+                    bandName = rasterManager.providedBandsNames[i];
+                } else {
+                    // using the selected band index to retrieve the correct provided name
+                    bandName = rasterManager.providedBandsNames[request.getBands()[i]];
+                }
+            }
+
             if (cm != null) {
                 // === color interpretation
                 colorInterpretation = TypeMap.getColorInterpretation(cm, i);
@@ -1752,13 +1773,17 @@ class RasterLayerResponse {
                     throw new IOException("Unrecognized sample dimension type");
                 }
 
-                bandName = colorInterpretation.name();
-                if (colorInterpretation == ColorInterpretation.UNDEFINED
-                        || bandNames.contains(bandName)) {// make sure we create no duplicate band names
-                    bandName = "Band" + (i + 1);
+                if (bandName == null) {
+                    bandName = colorInterpretation.name();
+                    if (colorInterpretation == ColorInterpretation.UNDEFINED
+                            || bandNames.contains(bandName)) {// make sure we create no duplicate band names
+                        bandName = "Band" + (i + 1);
+                    }
                 }
             } else { // no color model
-                bandName = "Band" + (i + 1);
+                if (bandName == null) {
+                    bandName = "Band" + (i + 1);
+                }
                 colorInterpretation = ColorInterpretation.UNDEFINED;
             }
 

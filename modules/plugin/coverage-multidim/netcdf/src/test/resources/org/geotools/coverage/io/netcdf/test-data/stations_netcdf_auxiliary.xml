@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <schema name="stationA">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes>
+            </schema>
+            <origName>stationA</origName>
+            <name>stationA</name>
+        </coverage>
+    </coverages>
+    <multipleBandsDimensions>
+        <multipleBandsDimension>
+            <name>data</name>
+            <bandsNames>value1,value2,value3</bandsNames>
+        </multipleBandsDimension>
+    </multipleBandsDimensions>
+</Indexer>

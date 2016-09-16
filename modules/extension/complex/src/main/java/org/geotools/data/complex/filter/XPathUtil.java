@@ -577,7 +577,7 @@ public class XPathUtil {
                 prefix = XMLConstants.DEFAULT_NS_PREFIX;
             } else {
                 if (!localName.equals(rootName.getLocalPart())) {
-                    LOGGER.warning("Using root's namespace " + defaultNamespace
+                    LOGGER.fine("Using root's namespace " + defaultNamespace
                             + " for step named '" + localName + "', as no prefix was stated");
                 }
                 prefix = namespaces.getPrefix(defaultNamespace);

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.geotools.data.DataUtilities;
 import org.geotools.mbtiles.MBTilesMetadata.t_format;
 import org.geotools.mbtiles.MBTilesMetadata.t_type;
 import org.geotools.referencing.CRS;
@@ -21,7 +22,7 @@ public class MBTilesFileVectorTileTest {
     
     @Before
     public void setUp() {
-        dbfile = new File(MBTilesFileVectorTileTest.class.getResource("planet.mbtiles").getFile());
+        dbfile = DataUtilities.urlToFile(MBTilesFileVectorTileTest.class.getResource("planet.mbtiles"));
     }
     
     @Test

@@ -65,12 +65,15 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
     	SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(PERSON)).getFeatures();
         assertEquals(2, fc.size());
         SimpleFeatureIterator fr = fc.features();
-        assertTrue(fr.hasNext());
-        SimpleFeature f = fr.next();
-        assertTrue(fr.hasNext());
-        f = fr.next();
-        assertFalse(fr.hasNext());
-        fr.close();
+        try {
+            assertTrue(fr.hasNext());
+            SimpleFeature f = fr.next();
+            assertTrue(fr.hasNext());
+            f = fr.next();
+            assertFalse(fr.hasNext());
+        } finally {
+            fr.close();
+        }
     }
     
     public void testGetBounds() throws Exception {

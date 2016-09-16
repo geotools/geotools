@@ -43,7 +43,8 @@ import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
-import org.geotools.coverage.io.netcdf.ExtendedImageParam;
+import org.geotools.gce.imagemosaic.RasterLayerRequest;
+import org.geotools.resources.image.ExtendedImageParam;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
@@ -96,7 +97,7 @@ import ucar.nc2.dataset.VariableDS;
  * @author Alessio Fabiani, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
-public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetManager{
+public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetManager {
 
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
@@ -112,6 +113,19 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     /** Summary set of coverage names */
     // TODO this duplicates the info that we have in the AncillaryFileManager
     final List<Name> coverages = new ArrayList<Name>();
+
+    // allow image mosaic to share the current request with this reader, currently
+    // a new reader is instantiated per request if that behavior changes this code
+    // will break
+    private RasterLayerRequest imageMosaicRequest;
+
+    public void setRasterLayerRequest(RasterLayerRequest request) {
+        imageMosaicRequest = request;
+    }
+
+    public RasterLayerRequest getImageMosaicRequest() {
+        return imageMosaicRequest;
+    }
 
     @Override
     public List<Name> getCoveragesNames() {

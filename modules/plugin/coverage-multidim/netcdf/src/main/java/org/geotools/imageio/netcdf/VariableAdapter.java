@@ -811,6 +811,13 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             numBands = rank > 2 ? variableDS.getDimension(2).getLength() : 1;
         }
 
+        // let's check if we are in the context of an image mosaic request
+        if (reader.getImageMosaicRequest() != null) {
+            // if specific bands were selected we need to adapt the number of bands
+            int[] selectedBands = reader.getImageMosaicRequest().getBands();
+            numBands = selectedBands == null ? numBands : selectedBands.length;
+        }
+
         //Adjust the rank skipping the ignoredDimensions
         rank -= ignoredDimensions.size();
 

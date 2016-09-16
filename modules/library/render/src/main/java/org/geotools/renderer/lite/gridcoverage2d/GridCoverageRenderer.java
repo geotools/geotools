@@ -80,6 +80,7 @@ import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.jaitools.imageutils.ImageLayout2;
 import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.grid.GridCoverage;
@@ -1330,17 +1331,18 @@ public final class GridCoverageRenderer {
     public static RasterSymbolizer setupSymbolizerForBandsSelection(
             RasterSymbolizer symbolizer) {
         ChannelSelection selection = symbolizer.getChannelSelection();
-        final SelectedChannelType[] channels = selection.getSelectedChannels();
-        if (channels != null) {
+        final SelectedChannelType[] originalChannels = selection.getSelectedChannels();
+        if (originalChannels != null) {
             int i = 0;
-            for (SelectedChannelType channel : channels) {
+            SelectedChannelType[] channels = new SelectedChannelType[originalChannels.length];
+            for (SelectedChannelType originalChannel : originalChannels) {
                 // Remember, channel indices start from 1
+                SelectedChannelTypeImpl channel = new SelectedChannelTypeImpl();
                 channel.setChannelName(Integer.toString(i + 1));
+                channel.setContrastEnhancement(originalChannel.getContrastEnhancement());
                 i++;
             }
-
-            ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor = new ChannelSelectionUpdateStyleVisitor(
-                    channels);
+            ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor = new ChannelSelectionUpdateStyleVisitor(channels);
             symbolizer.accept(channelsUpdateVisitor);
             return (RasterSymbolizer) channelsUpdateVisitor.getCopy();
         }

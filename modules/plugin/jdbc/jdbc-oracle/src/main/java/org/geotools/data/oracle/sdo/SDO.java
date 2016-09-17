@@ -147,6 +147,8 @@ public final class SDO {
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
+        } else if(geom==null ||geom.getCoordinate() == null || geom.isEmpty()){
+        	return 2;
         } else {
             //return 3;
             return Double.isNaN(geom.getCoordinate().z) ? 2 : 3;
@@ -464,13 +466,14 @@ public final class SDO {
 
         for (int i = 0; i < polys.getNumGeometries(); i++) {
             poly = (Polygon) polys.getGeometryN(i);
-            addElemInfo(elemInfoList, poly, offset, GTYPE);
-            if( isRectangle( poly )){
-                offset += (2 * LEN);                
-            }
-            else {
-                offset += (poly.getNumPoints() * LEN);                
-            }            
+			if (poly!=null&&!poly.isEmpty()) {
+				addElemInfo(elemInfoList, poly, offset, GTYPE);
+				if (isRectangle(poly)) {
+					offset += (2 * LEN);
+				} else {
+					offset += (poly.getNumPoints() * LEN);
+				}
+			}
         }
     }
 
@@ -1096,33 +1099,40 @@ public final class SDO {
      */
     private static void addCoordinatesInterpretation1(List list, Polygon polygon) {
         int holes = polygon.getNumInteriorRing();
-
-        addCoordinates(list,
-            counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-                polygon.getExteriorRing().getCoordinateSequence()));
-
-        for (int i = 0; i < holes; i++) {
+        if (!polygon.isEmpty()) {
             addCoordinates(list,
-                clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-                    polygon.getInteriorRingN(i).getCoordinateSequence()));
+                    counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+                            polygon.getExteriorRing().getCoordinateSequence()));
+
+            for (int i = 0; i < holes; i++) {
+                addCoordinates(list, clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+                        polygon.getInteriorRingN(i).getCoordinateSequence()));
+            }
         }
     }
 
     private static void addCoordinates(List list, MultiPoint points) {
         for (int i = 0; i < points.getNumGeometries(); i++) {
-            addCoordinates(list, (Point) points.getGeometryN(i));
+            Geometry geometryN = points.getGeometryN(i);
+            if(geometryN!=null && !geometryN.isEmpty())
+            	addCoordinates(list, (Point) geometryN);
         }
     }
 
     private static void addCoordinates(List list, MultiLineString lines) {
         for (int i = 0; i < lines.getNumGeometries(); i++) {
-            addCoordinates(list, (LineString) lines.getGeometryN(i));
+            Geometry geometryN = lines.getGeometryN(i);
+            if(geometryN!=null && !geometryN.isEmpty())
+            	addCoordinates(list, (LineString) geometryN);
         }
     }
 
     private static void addCoordinates(List list, MultiPolygon polys) {
         for (int i = 0; i < polys.getNumGeometries(); i++) {
-            addCoordinates(list, (Polygon) polys.getGeometryN(i));
+        	
+            Geometry geometryN = polys.getGeometryN(i);
+            if(geometryN!=null && !geometryN.isEmpty())
+            	addCoordinates(list, (Polygon) geometryN);
         }
     }
 
@@ -1131,7 +1141,8 @@ public final class SDO {
 
         for (int i = 0; i < geoms.getNumGeometries(); i++) {
             geom = geoms.getGeometryN(i);
-
+            if(geom==null || geom.isEmpty())
+            	continue;
             if (geom instanceof Point) {
                 addCoordinates(list, (Point) geom);
             } else if (geom instanceof LineString) {

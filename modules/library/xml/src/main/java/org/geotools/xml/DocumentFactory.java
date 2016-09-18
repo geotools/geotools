@@ -171,16 +171,16 @@ public class DocumentFactory {
         try {
             if (hints != null && hints.containsKey(DISABLE_EXTERNAL_ENTITIES)
                     && Boolean.TRUE.equals(hints.get(DISABLE_EXTERNAL_ENTITIES))) {
+                // This is an XML Schema driven parser, no DTD required (XMLSaxHandler will reject all dtd references)
+                spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
                 // The following configuration prevents XML External Entity Injection (XXE) attacks
                 // See for more information:
                 // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing
                 spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
                 spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             }
-            // This is an XML Schema driven parser, no DTD required (XMLSaxHandler will reject all dtd references)
-            spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
             SAXParser sp = spf.newSAXParser();
             return sp;
         } catch (ParserConfigurationException e) {

@@ -73,7 +73,7 @@ public class DocumentFactory {
      * @see DocumentFactory#getInstance(URI, Map, Level)
      */
     public static Object getInstance(URI desiredDocument, Map hints) throws SAXException {
-        return getInstance(desiredDocument, hints, Level.WARNING);
+        return getInstance(desiredDocument, hints, Level.WARNING, false);
     }
 
     /**
@@ -91,10 +91,34 @@ public class DocumentFactory {
      * @return Object
      * 
      * @throws SAXException
+     *
+     * @see DocumentFactory#getInstance(URI, Map, Level, boolean)
      */
     public static Object getInstance(URI desiredDocument, Map hints, Level level)
             throws SAXException {
-        SAXParser parser = getParser();
+        return getInstance(desiredDocument, hints, level, false);
+    }
+
+    /**
+     * <p>
+     * Parses the instance data provided. This method assumes that the XML document is fully
+     * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
+     * as opposed to a vid parse.
+     * </p>
+     *
+     * @param desiredDocument
+     * @param hints
+     *            May be null.
+     * @param level
+     * @param parseExternalEntities
+     *
+     * @return Object
+     *
+     * @throws SAXException
+     */
+    public static Object getInstance(URI desiredDocument, Map hints, Level level,
+            boolean parseExternalEntities) throws SAXException {
+        SAXParser parser = getParser(parseExternalEntities);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(desiredDocument, hints);
         XMLSAXHandler.setLogLevel(level);
@@ -123,9 +147,33 @@ public class DocumentFactory {
      * @return Object
      * 
      * @throws SAXException
+     *
+     * @see DocumentFactory#getInstance(InputStream, Map, Level, boolean)
      */
     public static Object getInstance(InputStream is, Map hints, Level level) throws SAXException {
-        SAXParser parser = getParser();
+        return getInstance(is, hints, level, false);
+    }
+
+    /**
+     * <p>
+     * Parses the instance data provided. This method assumes that the XML document is fully
+     * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
+     * as opposed to a vid parse.
+     * </p>
+     *
+     * @param is
+     * @param hints
+     *            May be null.
+     * @param level
+     * @param parseExternalEntities
+     *
+     * @return Object
+     *
+     * @throws SAXException
+     */
+    public static Object getInstance(InputStream is, Map hints, Level level,
+            boolean parseExternalEntities) throws SAXException {
+        SAXParser parser = getParser(parseExternalEntities);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(hints);
         XMLSAXHandler.setLogLevel(level);
@@ -141,16 +189,21 @@ public class DocumentFactory {
     }
 
     /*
-     * convinience method to create an instance of a SAXParser if it is null.
+     * Convenience method to create an instance of a SAXParser if it is null.
      */
-    private static SAXParser getParser() throws SAXException {
+    private static SAXParser getParser(boolean parseExternalEntities) throws SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         spf.setValidating(false);
 
         try {
-            // spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            // spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            if(!parseExternalEntities) {
+                // The following configuration prevents XML External Entity Injection (XXE) attacks
+                // See for more information:
+                // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing
+                spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            }
 
             SAXParser sp = spf.newSAXParser();
             return sp;

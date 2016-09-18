@@ -54,7 +54,7 @@ public class DocumentFactoryTest {
 
         private URI uri;
 
-        private Map hints;
+        private Map<String,Object> hints;
 
         @Mock
         private SAXParserFactory mockSaxParserFactory;
@@ -68,7 +68,7 @@ public class DocumentFactoryTest {
         @Before
         public void before() throws Exception {
                 uri = new URI("http://geotools.org");
-                hints = new HashMap<String, String>();
+                hints = new HashMap<String, Object>();
 
                 MockitoAnnotations.initMocks(this);
 
@@ -93,17 +93,9 @@ public class DocumentFactoryTest {
         }
 
         @Test
-        public void testGetInstanceFromURINoSpecifiedLevelOrParseExternalEntities()
-                throws Exception {
-                DocumentFactory.getInstance(uri, hints);
-
-                verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
-                verify(mockSaxParserFactory).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
-        }
-
-        @Test
         public void testGetInstanceFromURIWithSpecifiedLevelButNoParseExternalEntities()
                 throws Exception {
+                hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
                 DocumentFactory.getInstance(uri, hints, Level.WARNING);
 
                 verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
@@ -113,7 +105,8 @@ public class DocumentFactoryTest {
         @Test
         public void testGetInstanceFromURIWithSpecifiedLevelAndParseExternalEntitiesTrue()
                 throws Exception {
-                DocumentFactory.getInstance(uri, hints, Level.WARNING, true);
+                hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
+                DocumentFactory.getInstance(uri, hints, Level.WARNING);
 
                 verify(mockSaxParserFactory, never())
                         .setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
@@ -124,7 +117,8 @@ public class DocumentFactoryTest {
         @Test
         public void testGetInstanceFromURIWithSpecifiedLevelAndParseExternalEntitiesFalse()
                 throws Exception {
-                DocumentFactory.getInstance(uri, hints, Level.WARNING, false);
+                hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.FALSE);
+                DocumentFactory.getInstance(uri, hints, Level.WARNING);
 
                 verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
                 verify(mockSaxParserFactory).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
@@ -166,7 +160,8 @@ public class DocumentFactoryTest {
         @Test
         public void testGetInstanceFromInputStreamWithSpecifiedLevelAndParseExternalEntitiesTrue()
                 throws Exception {
-                DocumentFactory.getInstance(inputStream, hints, Level.WARNING, true);
+                hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
+                DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 
                 verify(mockSaxParserFactory, never())
                         .setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
@@ -177,7 +172,8 @@ public class DocumentFactoryTest {
         @Test
         public void testGetInstanceFromInputStreamWithSpecifiedLevelAndParseExternalEntitiesFalse()
                 throws Exception {
-                DocumentFactory.getInstance(inputStream, hints, Level.WARNING, false);
+                hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.FALSE);
+                DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 
                 verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
                 verify(mockSaxParserFactory).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);

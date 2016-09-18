@@ -26,22 +26,31 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.geotools.xml.handlers.DocumentHandler;
+import org.geotools.xml.schema.Schema;
 import org.xml.sax.SAXException;
 
 /**
  * This is the main entry point into the XSI parsing routines.
  * <p>
  * Example Use:
- * 
  * <pre>
  *     Object x = DocumentFactory.getInstance(new URI(&quot;MyInstanceDocumentURI&quot;);
  * </pre>
- * 
  * </p>
+ * <p>
+ * A selection of the hints available to configure parsing:
+ * </p>
+ * <ul>
+ * <li>{@link #VALIDATION_HINT} - Boolean.FALSE to disable validation</li>
+ * <li>{@link DocumentHandler#DEFAULT_NAMESPACE_HINT_KEY} - {@link Schema} for parsing and validation</li>
+ * <li>{@link XMLHandlerHints#FLOW_HANDLER_HINT}</li>
+ * <li>{@link XMLHandlerHints#NAMESPACE_MAPPING} - Map&lt;String,URL&gt; namespace mapping</li>
+ * <li>{@link XMLHandlerHints#ENTITY_RESOLVER} - control entry resolution<li>
+ * <li>{@link #DISABLE_EXTERNAL_ENTITIES} - Boolean.TRUE to disable entity resolution<li>
+ * </ul>
  * 
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
- * @author $Author:$ (last modification)
- *
  *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/main/java/org/geotools/xml
@@ -56,6 +65,13 @@ public class DocumentFactory {
      * the resulting objects is weekend by turning this param to false.
      */
     public static final String VALIDATION_HINT = "DocumentFactory_VALIDATION_HINT";
+    
+    /**
+     * When this hint is contained and set to Boolean.TRUE, external entities will be disabled. This
+     * setting is used to alivate XXE attacks, preventing both {@link #VALIDATION_HINT} and
+     * {@link XMLHandlerHints#ENTITY_RESOLVER} from being effective.
+     */
+    public static final String DISABLE_EXTERNAL_ENTITIES = "DocumentFactory_DISABLE_EXTERNAL_ENTITIES";
 
     /**
      * <p>
@@ -72,8 +88,8 @@ public class DocumentFactory {
      * 
      * @see DocumentFactory#getInstance(URI, Map, Level)
      */
-    public static Object getInstance(URI desiredDocument, Map hints) throws SAXException {
-        return getInstance(desiredDocument, hints, Level.WARNING, false);
+    public static Object getInstance(URI desiredDocument, Map<String,Object> hints) throws SAXException {
+        return getInstance(desiredDocument, hints, Level.WARNING);
     }
 
     /**
@@ -94,31 +110,10 @@ public class DocumentFactory {
      *
      * @see DocumentFactory#getInstance(URI, Map, Level, boolean)
      */
-    public static Object getInstance(URI desiredDocument, Map hints, Level level)
+    public static Object getInstance(URI desiredDocument, @SuppressWarnings("rawtypes") Map hints, Level level)
             throws SAXException {
-        return getInstance(desiredDocument, hints, level, false);
-    }
-
-    /**
-     * <p>
-     * Parses the instance data provided. This method assumes that the XML document is fully
-     * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
-     * as opposed to a vid parse.
-     * </p>
-     *
-     * @param desiredDocument
-     * @param hints
-     *            May be null.
-     * @param level
-     * @param parseExternalEntities
-     *
-     * @return Object
-     *
-     * @throws SAXException
-     */
-    public static Object getInstance(URI desiredDocument, Map hints, Level level,
-            boolean parseExternalEntities) throws SAXException {
-        SAXParser parser = getParser(parseExternalEntities);
+        @SuppressWarnings("unchecked")
+        SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(desiredDocument, hints);
         XMLSAXHandler.setLogLevel(level);
@@ -150,30 +145,8 @@ public class DocumentFactory {
      *
      * @see DocumentFactory#getInstance(InputStream, Map, Level, boolean)
      */
-    public static Object getInstance(InputStream is, Map hints, Level level) throws SAXException {
-        return getInstance(is, hints, level, false);
-    }
-
-    /**
-     * <p>
-     * Parses the instance data provided. This method assumes that the XML document is fully
-     * described using XML Schemas. Failure to be fully described as Schemas will result in errors,
-     * as opposed to a vid parse.
-     * </p>
-     *
-     * @param is
-     * @param hints
-     *            May be null.
-     * @param level
-     * @param parseExternalEntities
-     *
-     * @return Object
-     *
-     * @throws SAXException
-     */
-    public static Object getInstance(InputStream is, Map hints, Level level,
-            boolean parseExternalEntities) throws SAXException {
-        SAXParser parser = getParser(parseExternalEntities);
+    public static Object getInstance(InputStream is, Map<String,Object> hints, Level level) throws SAXException {
+        SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(hints);
         XMLSAXHandler.setLogLevel(level);
@@ -191,19 +164,22 @@ public class DocumentFactory {
     /*
      * Convenience method to create an instance of a SAXParser if it is null.
      */
-    private static SAXParser getParser(boolean parseExternalEntities) throws SAXException {
+    private static SAXParser getParser(Map<String,Object> hints) throws SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         spf.setValidating(false);
-
         try {
-            if(!parseExternalEntities) {
+            if (hints != null && hints.containsKey(DISABLE_EXTERNAL_ENTITIES)
+                    && Boolean.TRUE.equals(hints.get(DISABLE_EXTERNAL_ENTITIES))) {
                 // The following configuration prevents XML External Entity Injection (XXE) attacks
                 // See for more information:
                 // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing
                 spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
                 spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             }
+            // This is an XML Schema driven parser, no DTD required (XMLSaxHandler will reject all dtd references)
+            spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
             SAXParser sp = spf.newSAXParser();
             return sp;

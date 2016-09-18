@@ -229,7 +229,9 @@ public class SVGGraphicFactory implements ExternalGraphicFactory {
             // for the "well known" cases
             if(newValue != null) {
                 value  = newValue;
-            } else if(key.contains("width") || key.contains("opacity") || key.contains("alpha")) {
+            } else if(key.contains("width")) {
+                value = "0";
+            } else if(key.contains("opacity") || key.contains("alpha")) {
                 value = "1";
             } else {
                 value = "#000000";

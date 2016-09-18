@@ -42,10 +42,10 @@ The parameter values can be specified as URL parameters, for example::
  
 While any type of parameter can be handled, it's best to follow a naming convention, in particular:
 
-  * Any parameter representing a width will have to contain "width"
-  * Any parameter representing a opacity will have to contain either "opacity" or "alpha"
+  * Any parameter representing a width must contain "width" in its name
+  * Any parameter representing a opacity must contain either "opacity" or "alpha" in its name
   * Any other parameter should be a color
   
 This is because BATIK will log on the standard error any parsing issue, in particular, any non replaced parameter. The above conventions
-give the parameter replacement engine an opportunity to set default values for missing parameters (in particular, 1 for width and opacity,
+give the parameter replacement engine an opportunity to set default values for missing parameters (in particular, 0 for width, 1 for opacity/alpha,
 ``x000000`` for colors).

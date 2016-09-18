@@ -272,6 +272,16 @@ public class DrawTest {
     }
     
     @Test
+    public void testParametricOnlyFill() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("firestationOnlyFill.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("FireStation", renderer, TIME, bounds);
+        ImageAssert.assertEquals(new File(
+                "./src/test/resources/org/geotools/renderer/lite/test-data/firestationOnlyFill.png"),
+                image, 1000);
+    }
+    
+    @Test
     public void testParametricAllValues() throws Exception {
         StreamingRenderer renderer = setupSinglePointRenderer("firestationAllParams.sld");
 

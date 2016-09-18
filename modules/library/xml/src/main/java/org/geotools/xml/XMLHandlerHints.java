@@ -46,6 +46,9 @@ public class XMLHandlerHints implements Map<String,Object> {
     public static final String FILTER_COMPLIANCE_STRICTNESS = "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
     /** Supplied {@link EntityResolver} for Schema and/or DTD validation */
     public final static String ENTITY_RESOLVER ="org.xml.sax.EntityResolver";
+    /** Supplied {@link SaxParserFactory}  */
+    public final static String SAX_PARSER_FACTORY ="javax.xml.parsers.SAXParserFactory";
+
     /** 
      * The value so that the parser will encode all Geotools filters with no modifications.
      */

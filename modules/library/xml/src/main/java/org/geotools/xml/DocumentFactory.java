@@ -165,7 +165,12 @@ public class DocumentFactory {
      * Convenience method to create an instance of a SAXParser if it is null.
      */
     private static SAXParser getParser(Map<String,Object> hints) throws SAXException {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
+        SAXParserFactory spf = null;
+        if(hints != null && hints.containsKey(XMLHandlerHints.SAX_PARSER_FACTORY)) {
+            spf = (SAXParserFactory) hints.get(XMLHandlerHints.SAX_PARSER_FACTORY);
+        } else {
+            spf = SAXParserFactory.newInstance();
+        }
         spf.setNamespaceAware(true);
         spf.setValidating(false);
         try {

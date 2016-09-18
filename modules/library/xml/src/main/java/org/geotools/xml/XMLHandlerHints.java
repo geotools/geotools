@@ -30,7 +30,7 @@ import java.util.Set;
  *
  * @source $URL$
  */
-public class XMLHandlerHints implements Map {
+public class XMLHandlerHints implements Map<String,Object> {
 
     /** 
      * Declares the schemas to use for parsing.  
@@ -44,6 +44,8 @@ public class XMLHandlerHints implements Map {
     public static final String STREAM_HINT = "org.geotools.xml.gml.STREAM_HINT";
     /** Sets the level of compliance that the filter encoder should use */
     public static final String FILTER_COMPLIANCE_STRICTNESS = "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
+    /** Supplied {@link EntityResolver} for Schema and/or DTD validation */
+    public final static String ENTITY_RESOLVER ="org.xml.sax.EntityResolver";
     /** 
      * The value so that the parser will encode all Geotools filters with no modifications.
      */
@@ -119,7 +121,7 @@ public class XMLHandlerHints implements Map {
 	public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = new Integer(2);
 
 
-    private Map map=new HashMap();
+    private Map<String,Object> map=new HashMap<String,Object>();
     public void clear() {
         map.clear();
     }
@@ -132,7 +134,7 @@ public class XMLHandlerHints implements Map {
         return map.containsValue(value);
     }
 
-    public Set entrySet() {
+    public Set<Entry<String,Object>> entrySet() {
         return map.entrySet();
     }
 
@@ -152,16 +154,16 @@ public class XMLHandlerHints implements Map {
         return map.isEmpty();
     }
 
-    public Set keySet() {
+    public Set<String> keySet() {
         return map.keySet();
     }
 
-    public Object put( Object arg0, Object arg1 ) {
-        return map.put(arg0, arg1);
+    public Object put( String key, Object value ) {
+        return map.put(key, value);
     }
 
-    public void putAll( Map arg0 ) {
-        map.putAll(arg0);
+    public void putAll( Map<? extends String,? extends Object> other ) {
+        map.putAll(other);
     }
 
     public Object remove( Object key ) {
@@ -172,7 +174,7 @@ public class XMLHandlerHints implements Map {
         return map.size();
     }
 
-    public Collection values() {
+    public Collection<Object> values() {
         return map.values();
     }
     

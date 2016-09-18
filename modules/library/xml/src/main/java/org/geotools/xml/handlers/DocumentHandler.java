@@ -39,6 +39,7 @@ import org.xml.sax.SAXNotRecognizedException;
  * @source $URL$
  */
 public class DocumentHandler extends XMLElementHandler {
+    /** Supplied {@link Schema} for parsing and validation */
     public final static String DEFAULT_NAMESPACE_HINT_KEY = "org.geotools.xml.handlers.DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY";
     private XMLElementHandler xeh = null;
     private ElementHandlerFactory ehf;

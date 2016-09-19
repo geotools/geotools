@@ -184,8 +184,8 @@ public class DocumentFactory {
             
             // Step 1 distable DTD support - not needed for schema driven parser
             // 
-            // Note: XMLSaxHandler will reject all DTD references
-            spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            // Note: XMLSaxHandler will reject all DTD references - but we may as well avoid early
+            // spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
    
             // Step 2 optionally disable external entities

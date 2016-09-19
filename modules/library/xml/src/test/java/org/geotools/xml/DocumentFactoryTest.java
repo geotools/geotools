@@ -185,16 +185,18 @@ public class DocumentFactoryTest {
         DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
     }
 
-    void verifyDisableExternalEntities(boolean disabled) throws SAXNotRecognizedException,
+    void verifyDisableExternalEntities(boolean disabledExternalEntities) throws SAXNotRecognizedException,
             SAXNotSupportedException, ParserConfigurationException {
-        if (disabled) {
-            verify(mockSaxParserFactory).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
-            verify(mockSaxParserFactory).setFeature(LOAD_EXTERNAL_DTD, false);
+
+        // double check DTD support disabled
+        verify(mockSaxParserFactory).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
+        verify(mockSaxParserFactory).setFeature(LOAD_EXTERNAL_DTD, false);
+        
+        // check optional eternal entity disabled
+        if (disabledExternalEntities) {
             verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
             verify(mockSaxParserFactory).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
         } else {
-            verify(mockSaxParserFactory, never()).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
-            verify(mockSaxParserFactory, never()).setFeature(LOAD_EXTERNAL_DTD, false);
             verify(mockSaxParserFactory, never()).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE,
                     false);
             verify(mockSaxParserFactory, never()).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE,

@@ -48,6 +48,7 @@ import org.xml.sax.SAXException;
  * <li>{@link XMLHandlerHints#NAMESPACE_MAPPING} - Map&lt;String,URL&gt; namespace mapping</li>
  * <li>{@link XMLHandlerHints#ENTITY_RESOLVER} - control entry resolution<li>
  * <li>{@link #DISABLE_EXTERNAL_ENTITIES} - Boolean.TRUE to disable entity resolution<li>
+ * <li>{@link XMLHandlerHints#SAX_PARSER_FACTORY} - supply factory used by {@link #getParser(Map)}</li>
  * </ul>
  * 
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
@@ -173,16 +174,24 @@ public class DocumentFactory {
         }
         spf.setNamespaceAware(true);
         spf.setValidating(false);
+        
         try {
+            // Extra precaution to reduce/prevent XXE attacks
+            //
+            // For more info: https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing
+            // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet
+            
+            
+            // Step 1 distable DTD support - not needed for schema driven parser
+            // 
+            // Note: XMLSaxHandler will reject all DTD references
+            spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+   
+            // Step 2 optionally disable external entities
+            //
             if (hints != null && hints.containsKey(DISABLE_EXTERNAL_ENTITIES)
                     && Boolean.TRUE.equals(hints.get(DISABLE_EXTERNAL_ENTITIES))) {
-                // This is an XML Schema driven parser, no DTD required (XMLSaxHandler will reject all dtd references)
-                spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-                // The following configuration prevents XML External Entity Injection (XXE) attacks
-                // See for more information:
-                // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing
                 spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
                 spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             }

@@ -172,7 +172,7 @@ public class XMLSAXHandler extends DefaultHandler {
     }
     protected void init(Map hints){
         if( hints == null ){
-            hints = Collections.EMPTY_MAP;
+            hints = new HashMap<String,Object>();
         }
         this.hints = hints;
         if( hints.containsKey(XMLHandlerHints.ENTITY_RESOLVER)){

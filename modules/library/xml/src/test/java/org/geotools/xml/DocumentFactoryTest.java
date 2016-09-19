@@ -189,7 +189,7 @@ public class DocumentFactoryTest {
             SAXNotSupportedException, ParserConfigurationException {
 
         // double check DTD support disabled
-        verify(mockSaxParserFactory).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
+        // verify(mockSaxParserFactory).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
         verify(mockSaxParserFactory).setFeature(LOAD_EXTERNAL_DTD, false);
         
         // check optional eternal entity disabled

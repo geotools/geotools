@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -58,6 +59,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.xml.XMLHandlerHints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -380,6 +382,20 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
      */
     public WebMapServer( final URL serverURL, final HTTPClient httpClient ) throws IOException, ServiceException {
         super(serverURL, httpClient, null);
+    }
+    
+    /**
+     * Creates a new WebMapServer instance and attempts to retrieve the 
+     * Capabilities document specified by serverURL. 
+     * 
+     * @param serverURL a URL that points to the capabilities document of a server
+     * @param httpClient The client to be used when performing HTTP requests
+     * @param hints A map of hints. Can be used to control some aspects of the XML parsing, see {@link XMLHandlerHints} for a reference
+     * @throws IOException if there is an error communicating with the server
+     * @throws ServiceException if the server responds with an error
+     */
+    public WebMapServer( final URL serverURL, final HTTPClient httpClient, Map<String, Object> hints) throws IOException, ServiceException {
+        super(serverURL, httpClient, null, hints); 
     }
 
     /**

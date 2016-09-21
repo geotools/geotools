@@ -233,11 +233,11 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             query.setUnsupportedFilter(originalFilter);
 
             Map<String, String> viewParams = null;
-            if (query.getHints() != null) {
-                viewParams = (Map<String, String>)query.getHints()
+            if (query.getRequestHints() != null) {
+                viewParams = (Map<String, String>)query.getRequestHints()
                         .get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration)query.getHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration)query.getRequestHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)
@@ -322,11 +322,11 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             Map<String, String> viewParams = null;
             StoredQueryConfiguration config = null;
 
-            if (query.getHints() != null) {
-                viewParams = (Map<String, String>)query.getHints()
+            if (query.getRequestHints() != null) {
+                viewParams = (Map<String, String>)query.getRequestHints()
                         .get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration)query.getHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration)query.getRequestHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params = new ParameterTypeFactory(config, desc, featureTypeInfo)

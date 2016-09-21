@@ -46,12 +46,14 @@ public class DescribeLayerResponse extends Response {
     private LayerDescription[] layerDescs;
 
 
-    public DescribeLayerResponse(HTTPResponse httpResponse) throws IOException, ServiceException {
+    public DescribeLayerResponse(HTTPResponse httpResponse, Map<String, Object> hints) throws IOException, ServiceException {
         super(httpResponse);
 
         try {
-            Map hints = new HashMap();
-            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            if(hints == null) {
+                hints = new HashMap<>();
+                hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            }
 
             Object object;
             InputStream inputStream = null;

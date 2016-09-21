@@ -71,7 +71,6 @@ public class GribTest extends Assert{
 
     @Before
     public void setup() throws FileNotFoundException, IOException {
-        System.setProperty("NETCDF_FORCE_OPEN_CHECK", "true");
         final File testDir = TestData.file(this, ".").getCanonicalFile();
         cacheDir = new File(testDir, "cache");
         if (!cacheDir.exists()) {
@@ -79,11 +78,6 @@ public class GribTest extends Assert{
         }
         String cacheDirPath = cacheDir.getAbsolutePath();
         System.setProperty("GRIB_CACHE_DIR", cacheDirPath);
-    }
-
-    @After
-    public void cleanup() {
-        System.clearProperty("NETCDF_FORCE_OPEN_CHECK");
     }
 
     @Test

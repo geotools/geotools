@@ -49,6 +49,10 @@ import net.opengis.wps10.WPSCapabilitiesType;
  */
 public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesResponse
 {
+    
+    public WPSGetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+        this(httpResponse, null);
+    }
 
     public WPSGetCapabilitiesResponse(HTTPResponse httpResponse, Map<String, Object> hints) throws ServiceException, IOException
     {

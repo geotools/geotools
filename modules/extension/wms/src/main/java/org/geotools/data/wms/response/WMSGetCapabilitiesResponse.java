@@ -43,6 +43,10 @@ import org.xml.sax.SAXException;
  */
 public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 
+    public WMSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
+        this(response, null);
+    }
+    
     public WMSGetCapabilitiesResponse(HTTPResponse response, Map<String, Object> hints) throws ServiceException, IOException {
         super(response);
 

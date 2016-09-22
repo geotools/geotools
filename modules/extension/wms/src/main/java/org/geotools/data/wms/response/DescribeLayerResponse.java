@@ -45,6 +45,9 @@ public class DescribeLayerResponse extends Response {
 
     private LayerDescription[] layerDescs;
 
+    public DescribeLayerResponse(HTTPResponse httpResponse) throws IOException, ServiceException {
+        this(httpResponse, null);
+    }
 
     public DescribeLayerResponse(HTTPResponse httpResponse, Map<String, Object> hints) throws IOException, ServiceException {
         super(httpResponse);

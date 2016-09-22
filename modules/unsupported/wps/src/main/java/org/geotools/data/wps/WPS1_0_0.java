@@ -230,7 +230,7 @@ public class WPS1_0_0 extends WPSSpecification
 
         public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException
         {
-            return new WPSGetCapabilitiesResponse(httpResponse);
+            return new WPSGetCapabilitiesResponse(httpResponse, hints);
         }
     }
 

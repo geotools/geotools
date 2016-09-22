@@ -88,7 +88,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
 		}
 
 		public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
-			return new WMSGetCapabilitiesResponse(httpResponse);
+			return new WMSGetCapabilitiesResponse(httpResponse, hints);
 		}
     }
 }

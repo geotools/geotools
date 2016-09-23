@@ -407,71 +407,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         //
         // Loading tiles
         //
-        return loadTiles(coverageName, requestedEnvelope, dim, params, overviewPolicy);
-    }
-
-    /**
-     * Loading the tiles which overlap with the requested envelope.
-     * 
-     * 
-     * @param coverageName
-     * @param requestedEnvelope
-     * @param dim
-     * @param params
-     * @param overviewPolicy
-     * @return A {@link GridCoverage}, well actually a {@link GridCoverage2D}.
-     * @throws IOException
-     */
-    private GridCoverage2D loadTiles(final String coverageName, GeneralEnvelope requestedEnvelope,
-            Rectangle dim, GeneralParameterValue[] params, OverviewPolicy overviewPolicy)
-            throws IOException {
-
-        //
-        // Check if we have something to load by intersecting the requested
-        // envelope with the bounds of the data set.
-        //
-        // If the requested envelope is not in the same crs of the data set crs
-        // we have to perform a conversion towards the latter crs before
-        // intersecting anything.
-        //
-
-        if (requestedEnvelope != null) {
-            if (!CRS.equalsIgnoreMetadata(requestedEnvelope.getCoordinateReferenceSystem(),
-                    this.crs)) {
-                try {
-                    // transforming the envelope back to the data set crs
-                    if (!CRS.equalsIgnoreMetadata(requestedEnvelope.getCoordinateReferenceSystem(),
-                            crs)) {
-                        requestedEnvelope = CRS.transform(requestedEnvelope, crs);
-                        requestedEnvelope.setCoordinateReferenceSystem(this.crs);
-
-                        if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.fine(new StringBuilder("Reprojected envelope ")
-                                    .append(requestedEnvelope.toString()).append(" crs ")
-                                    .append(crs.toWKT()).toString());
-                    }
-                } catch (TransformException e) {
-                    throw new DataSourceException("Unable to create a coverage for this source", e);
-                }
-            }
-            if (!requestedEnvelope.intersects(this.originalEnvelope, false))
-                return null;
-
-            // intersect the requested area with the bounds of this layer
-            requestedEnvelope.intersect(originalEnvelope);
-
-        } else {
-            requestedEnvelope = new GeneralEnvelope(originalEnvelope);
-
-        }
-        requestedEnvelope.setCoordinateReferenceSystem(this.crs);
-        // ok we got something to return
-        try {
-            return loadRequestedTiles(coverageName, requestedEnvelope, dim, params, overviewPolicy);
-        } catch (TransformException e) {
-            throw new DataSourceException(e);
-        }
-
+        return loadRequestedTiles(coverageName, requestedEnvelope, dim, params, overviewPolicy);
     }
 
     /**
@@ -489,16 +425,21 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
      */
     private GridCoverage2D loadRequestedTiles(final String coverageName,
             GeneralEnvelope requestedEnvelope, Rectangle dim, GeneralParameterValue[] params,
-            OverviewPolicy overviewPolicy) throws TransformException, IOException {
+            OverviewPolicy overviewPolicy) throws IOException {
 
         // if we get here we have something to load
 
         // compute the requested resolution
         final ImageReadParam readP = new ImageReadParam();
         Integer imageChoice = 0;
-        if (dim != null)
-            imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
-
+        if (dim != null) {
+            try {
+                imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
+            } catch (TransformException e) {
+                throw new DataSourceException(e);
+            }
+        }
+            
         // Check to have the needed reader in memory
         // light check to see if this reader had been disposed, not synch-ing for performance.
         if (!imageLevelsMapper.hasReaders()) {
@@ -507,46 +448,17 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 
         ImageMosaicReader reader = getImageMosaicReaderForLevel(coverageName, imageChoice);
 
-        // update the readingParams
-        GeneralParameterValue[] readingParams = getReadingParams(params, overviewPolicy);
         //
         // Abusing of the created ImageMosaicreader for getting a
         // gridcoverage2d, then rename it
         //
-        GridCoverage2D mosaicCoverage = reader.read(getReaderCoverageName(coverageName), readingParams);
+        GridCoverage2D mosaicCoverage = reader.read(getReaderCoverageName(coverageName), params);
         if (mosaicCoverage != null) {
             return new GridCoverage2D(coverageName, mosaicCoverage);
         } else {
             // the mosaic can still return null in corner cases, handle that gracefully
             return null;
         }
-    }
-
-    /**
-     * Take the input reading parameters and update them if needed.
-
-     * @param params
-     * @param overviewPolicy
-     * @return
-     */
-    private GeneralParameterValue[] getReadingParams(GeneralParameterValue[] params,
-            OverviewPolicy overviewPolicy) {
-        GeneralParameterValue[] readingParams = params;
-        if (imageLevelsMapper.hasInnerOverviews() && overviewPolicy != null) {
-            // propagate the overviewPolicy to the imageMosaic reader
-            final ParameterValue<OverviewPolicy> op = AbstractGridFormat.OVERVIEW_POLICY.createValue();
-            op.setValue(overviewPolicy);
-            if (readingParams == null) {
-                readingParams = new GeneralParameterValue[]{op};
-            } else {
-                readingParams = new GeneralParameterValue[readingParams.length + 1];
-                for (int i=0; i<params.length; i++) {
-                    readingParams[i] = params[i];
-                }
-                readingParams[params.length] = op;
-            }
-        }
-        return readingParams;
     }
 
     /**

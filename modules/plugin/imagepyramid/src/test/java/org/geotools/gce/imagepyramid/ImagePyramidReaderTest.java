@@ -52,6 +52,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -71,13 +72,12 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * @source $URL$
  */
-public class ImagePyramidReaderTest extends Assert {
+public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 
     /**
      * File to be used for testing purposes.
      */
     private final static String TEST_FILE = "pyramid.properties";
-    protected static final Double DELTA = 1E-6;
 
     // private final static String TEST_JAR_FILE = "pyramid.jar";
 
@@ -514,10 +514,6 @@ public class ImagePyramidReaderTest extends Assert {
         //
         GridCoverage2D coverage = ((GridCoverage2D) reader.read(new GeneralParameterValue[] { gg }));
         assertNotNull("Null value returned instead of a coverage", coverage);
-        // assertTrue("coverage dimensions different from what we expected",
-        // coverage.getGridGeometry().getGridRange().getSpan(0) == 63
-        // && coverage.getGridGeometry().getGridRange().getSpan(
-        // 1) == 62);
         if (TestData.isInteractiveTest())
             coverage.show("testCropLevel1");
         else
@@ -580,12 +576,8 @@ public class ImagePyramidReaderTest extends Assert {
         //
         GridCoverage2D coverage = ((GridCoverage2D) reader.read(new GeneralParameterValue[] { gg }));
         assertNotNull("Null value returned instead of a coverage", coverage);
-        // assertTrue("coverage dimensions different from what we expected",
-        // coverage.getGridGeometry().getGridRange().getSpan(0) == 31
-        // && coverage.getGridGeometry().getGridRange().getSpan(
-        // 1) == 31);
         if (TestData.isInteractiveTest())
-            coverage.show("testCropLevel1");
+            coverage.show("testCropLevel2");
         else
             PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage())
                     .getTiles();
@@ -646,7 +638,7 @@ public class ImagePyramidReaderTest extends Assert {
         // && coverage.getGridGeometry().getGridRange().getSpan(
         // 1) == 15);
         if (TestData.isInteractiveTest())
-            coverage.show("testCropLevel1");
+            coverage.show("testCropLevel3");
         else
             PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage())
                     .getTiles();
@@ -900,17 +892,5 @@ public class ImagePyramidReaderTest extends Assert {
         renderedImage = coverage.getRenderedImage();
         colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
         assertEquals(ColorSpace.TYPE_RGB, colorSpaceType);
-    }
-
-    protected void cleanFiles(File mosaicFolder) {
-        for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
-                FileFilterUtils.suffixFileFilter("db"), FileFilterUtils
-                        .suffixFileFilter("sample_image"), FileFilterUtils.and(FileFilterUtils
-                        .suffixFileFilter(".properties"), FileFilterUtils
-                        .notFileFilter(FileFilterUtils.or(
-                                FileFilterUtils.nameFileFilter("indexer.properties"),
-                                FileFilterUtils.nameFileFilter("datastore.properties"))))))) {
-            configFile.delete();
-        }
     }
 }

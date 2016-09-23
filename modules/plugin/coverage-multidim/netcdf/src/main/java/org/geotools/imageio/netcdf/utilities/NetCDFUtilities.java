@@ -19,21 +19,6 @@ package org.geotools.imageio.netcdf.utilities;
 import it.geosolutions.imageio.stream.AccessibleStream;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import org.geotools.data.DataUtilities;
-import org.geotools.gce.imagemosaic.ImageMosaicFormat;
-import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
-import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
-import org.geotools.referencing.operation.projection.MapProjection;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import ucar.ma2.*;
-import ucar.nc2.*;
-import ucar.nc2.constants.AxisType;
-import ucar.nc2.dataset.CoordinateAxis1D;
-import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.NetcdfDataset.Enhance;
-import ucar.nc2.dataset.VariableDS;
-import ucar.nc2.jni.netcdf.Nc4Iosp;
 
 import java.awt.image.DataBuffer;
 import java.io.File;
@@ -43,9 +28,44 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.geotools.data.DataUtilities;
+import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
+import org.geotools.referencing.operation.projection.MapProjection;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import ucar.ma2.Array;
+import ucar.ma2.ArrayByte;
+import ucar.ma2.ArrayDouble;
+import ucar.ma2.ArrayFloat;
+import ucar.ma2.ArrayInt;
+import ucar.ma2.ArrayShort;
+import ucar.ma2.DataType;
+import ucar.nc2.Attribute;
+import ucar.nc2.Dimension;
+import ucar.nc2.Group;
+import ucar.nc2.Variable;
+import ucar.nc2.VariableIF;
+import ucar.nc2.constants.AxisType;
+import ucar.nc2.dataset.CoordinateAxis1D;
+import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDataset.Enhance;
+import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.jni.netcdf.Nc4Iosp;
 
 /**
  * Set of NetCDF utility methods.
@@ -372,9 +392,9 @@ public class NetCDFUtilities {
             }
         }
         if (!ignoredSet.isEmpty()) {
-            return ignoredSet;
+            return Collections.unmodifiableSet(ignoredSet);
         }
-        return new HashSet<>();
+        return Collections.<String>emptySet();
     }
 
     public static boolean isValidDir(File file) {
@@ -869,14 +889,7 @@ public class NetCDFUtilities {
      * Coordinate parsing machinery
      */
     public static Set<String> getIgnoredDimensions() {
-        return Collections.unmodifiableSet(IGNORED_DIMENSIONS);
-    }
-
-    /**
-     * Adds a dimension to the ignored dimensions set.
-     */
-    public static void addIgnoredDimension(String dimensionName) {
-        IGNORED_DIMENSIONS.add(dimensionName);
+        return IGNORED_DIMENSIONS;
     }
 
     /**

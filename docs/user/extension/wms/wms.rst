@@ -186,3 +186,62 @@ Other common activites:
      
      //Get formats for GetMap operation
      String[] formats = wms.getCapabilities().getRequest().getGetMap().getFormatStrings()
+
+GetFeatureInfoRequest
+^^^^^^^^^^^^^^^^^^^^^
+
+Identifying objects and getting the details of the objects in your map are often more interesting
+than looking at a pretty map.
+
+1. To make a GetFeatureInfoRequest, we first must make a GetMapRequest to be used by GFI::
+
+   GetMapRequest request = (GetMapRequest) wms.createGetMapRequest();
+
+2. Then we have to specify which layer, the dimension, bbox etc. ::
+
+   request.setFormat("image/png");
+   request.setDimensions("583","420");
+   request.setTransparent(true);
+   request.setSRS("EPSG:4326");
+   request.setBBox("-131.13151509433965,46.60532747661736,-117.61620566037737,56.34191403281659");
+   request.addLayer("myLayer"); // you find the layer names in the capabilities-document
+
+3. Then you configure the GetFeatureInfoRequest::
+
+   Set qLayers = WMSUtils.getQueryableLayer(wms.getCapabilities());
+   GetFeatureInfoRequest getfeatureinfo = (GetFeatureInfoRequest) wms.createGetFeatureInfoRequest(request);
+   getfeatureinfo.setQueryLayers(qlayers); // query all availble layer that can be queried
+   getfeatureinfo.setFeatureCount(50); // limit amount of features returned
+   getfeatureinfo.setInfoFormat("text/html");
+
+4. Issue the request and read response::
+   GetFeatureInfoResponse response = wms.issueRequest(getfeatureinfo);
+
+   InputStream stream = response.getInputStream();
+   StringBuilderWRiter writer = new StringBuilderWriter();
+   IOUtils.copy(stream,writer);
+   String getfeatureResponseString = writer.toString();
+
+   assertTrue("html",getfeatureResponseString.contains("<html") || getfeatureResponseString.contains("<HTML"));
+
+GetLegendGraphic
+^^^^^^^^^^^^^^^^
+
+1. Check that your WMS supports GetLegendGraphic and configure the request::
+   OperationType getLegendGraphic wms.getCapabilities().getRequest().getLegendGraphic();
+   if ( getLegendGraphic == null)) {
+       fail();
+   } else {
+       URL onlineResourse = getLegendGraphic.getGet();
+       GetLegendGraphicRequest getLegendGraphicRequest = wms.createGetLegendGraphicRequest();
+       getLegendGraphicRequest.setLayer("myLayer");
+       getLegendGraphicRequest.setFormat("image/png");
+       getLegendGraphicRequest.setProperty("SLD_VERSION","1.1.0");
+   }
+
+2. Issue GetLegendGraphic request and verify response::
+   URL legendGraphicsUrl = getLegendGraphicRequest.getFinalURL(); // Handy to verify in a browser
+   GetLegendGraphicResponse getLegendeGraphicResponse = wms.issueRequest(getLegendGraphicRequest);
+   BufferedImage legendImage = ImageIO.read(getLegendeGraphicResponse.getInputStream());
+   assertNotNull(legendImage);
+   assertEquals("image/png",getLegendeGraphicResponse.getContentType());

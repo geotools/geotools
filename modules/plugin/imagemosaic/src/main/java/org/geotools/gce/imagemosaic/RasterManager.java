@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -73,7 +73,6 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalogSource;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogStore;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
-import org.geotools.gce.imagemosaic.catalog.index.Indexer.MultipleBandsDimensions.MultipleBandsDimension;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
@@ -901,9 +900,6 @@ public class RasterManager {
 
     MosaicConfigurationBean configuration;
 
-    // contains the bands names for this raster
-    String[] providedBandsNames = null;
-
     public RasterManager(final ImageMosaicReader parentReader,
             MosaicConfigurationBean configuration) throws IOException {
 
@@ -975,19 +971,6 @@ public class RasterManager {
             //we have indexer configuration, we can set the submosaic producer factory based off
             //that if it's available
             Indexer indexer = configuration.getIndexer();
-            // handling multiple bands dimension if needed
-            if (indexer.getMultipleBandsDimensions() != null
-                    && indexer.getMultipleBandsDimensions().getMultipleBandsDimension() != null
-                    && !indexer.getMultipleBandsDimensions().getMultipleBandsDimension().isEmpty()) {
-                // we have at least one dimension with multiple bands
-                List<MultipleBandsDimension> multipleBandsDimensions = indexer.getMultipleBandsDimensions().getMultipleBandsDimension();
-                if (multipleBandsDimensions.size() != 1) {
-                    // currently we only support a single dimension with multiple bands
-                    throw new IllegalStateException("Only a single dimension with multiple bands is supported.");
-                }
-                // well we only need to fill the provided bands names
-                providedBandsNames = multipleBandsDimensions.get(0).getBandsNames().split("\\s*,\\s*");
-            }
             String submosaickerFactory = IndexerUtils
                 .getParameter(Utils.Prop.GRANULE_COLLECTOR_FACTORY, indexer);
             if (submosaickerFactory != null) {

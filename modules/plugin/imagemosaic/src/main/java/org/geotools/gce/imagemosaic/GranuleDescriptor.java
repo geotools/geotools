@@ -773,15 +773,6 @@ public class GranuleDescriptor {
             customizeReaderInitialization(reader, hints);
             reader.setInput(inStream);
 
-            // check if the reader wants to be aware of the current request
-            if (MethodUtils.getAccessibleMethod(reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class) != null) {
-                try {
-                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
-                } catch(Exception exception) {
-                    throw new RuntimeException("Error setting raster layer request on reader.", exception);
-                }
-            }
-
             // Checking for heterogeneous granules and if the mosaic is not multidimensional
             if (request.isHeterogeneousGranules() && (originator == null || originator.getAttribute("imageindex") == null)) {
                 // create read parameters

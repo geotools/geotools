@@ -20,6 +20,7 @@ package org.geotools.data.complex.filter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
@@ -113,8 +114,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
 
             if (currentXPath.startsWith(targetXPath)) {
                 if (nestedAttr.isConditional() && feature == null) {
-                    LOGGER.fine("Conditional nested mapping found, but no feature to evaluate "
-                            + "against was provided: nested feature type cannot be determined");
+                    logConditionalMappingFound(currentType, targetXPath);
                     // quit the search
                     return;
                 } else {
@@ -159,7 +159,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                             searchIsOver = false;
                         }
                     } else {
-                        LOGGER.fine("Nested feature type could not be determined");
+                        logNestedFeatureTypeNotFound(currentType, targetXPath);
                     }
                 }
             }
@@ -182,8 +182,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                         attrDescr.addLink(new FeatureChainLink(currentType, nestedAttr));
                         // add last step
                         if (nestedAttr.isConditional() && feature == null) {
-                            LOGGER.fine("Conditional nested mapping found, but no feature to evaluate "
-                                    + "against was provided: nested feature type cannot be determined");
+                            logConditionalMappingFound(currentType, nestedAttr.getTargetXPath());
                             // abort search
                             return;
                         } else {
@@ -195,7 +194,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                                 // search was successful, add attribute to collection
                                 attributes.add(attrDescr);
                             } else {
-                                LOGGER.fine("Nested feature type could not be determined");
+                                logNestedFeatureTypeNotFound(currentType, nestedAttr.getTargetXPath());
                             }
                         }
                     }
@@ -205,6 +204,25 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                     attributes.add(attrDescr);
                 }
             }
+        }
+    }
+
+    private void logConditionalMappingFound(FeatureTypeMapping containerType, StepList xpath) {
+        if (LOGGER.isLoggable(Level.FINE)) {
+            QName qname = getFeatureTypeQName(containerType);
+            String prefixedName = qname.getPrefix() + ":" + qname.getLocalPart();
+            LOGGER.fine("Conditional nested mapping found, but no feature to evaluate "
+                    + "against was provided: nested feature type cannot be determined for "
+                    + "container type \"" + prefixedName + "\" and target attribute \"" + xpath);
+        }
+    }
+
+    private void logNestedFeatureTypeNotFound(FeatureTypeMapping containerType, StepList xpath) {
+        if (LOGGER.isLoggable(Level.FINE)) {
+            QName qname = getFeatureTypeQName(containerType);
+            String prefixedName = qname.getPrefix() + ":" + qname.getLocalPart();
+            LOGGER.fine("Nested type could not be determined for container type \""
+                    + prefixedName + "\" and target attribute \"" + xpath);
         }
     }
 

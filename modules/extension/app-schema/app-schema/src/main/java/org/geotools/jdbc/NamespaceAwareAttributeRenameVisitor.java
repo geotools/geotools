@@ -18,6 +18,7 @@ package org.geotools.jdbc;
 
 import org.geotools.filter.NestedAttributeExpression;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
@@ -39,6 +40,13 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
         this.targetProperty = targetProperty;
     }
 
+    /**
+     * Creates a copy of the input {@link NestedAttributeExpression} with renamed attributes.
+     * 
+     * @param expression the expression to visit
+     * @param extraData if an instance of {@link FilterFactory2} is passed, it is used to build the returned expression
+     * @return a new {@link NestedAttributeExpression} expression with renamed attributes
+     */
     public Expression visit(NestedAttributeExpression expression, Object extraData) {
         if (expression == null)
             return null;
@@ -48,6 +56,14 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
         return expression;
     }
 
+    /**
+     * Creates a copy of the input {@link PropertyName} expression with renamed attributes.
+     * 
+     * @param expression the expression to visit
+     * @param extraData if an instance of {@link FilterFactory2} is passed, it is used to build the returned expression
+     * @return a new {@link PropertyName} expression with renamed attributes
+     */
+    @Override
     public Object visit(PropertyName expression, Object extraData) {
         if (expression.getPropertyName().equals(sourceProperty)) {
             return getFactory(extraData).property(targetProperty, expression.getNamespaceContext());

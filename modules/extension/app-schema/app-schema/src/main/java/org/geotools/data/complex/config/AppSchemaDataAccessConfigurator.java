@@ -133,6 +133,11 @@ public class AppSchemaDataAccessConfigurator {
         return s!=null;
     }
 
+    /**
+     * Convenience method to check whether native encoding of nested filters is enabled.
+     * 
+     * @return <code>true</code> if native encoding of nested filters is enabled, <code>false</code> otherwise
+     */
     public static boolean shouldEncodeNestedFilters() {
         String propValue = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_ENCODE_NESTED_FILTERS);
         return propValue == null || propValue.equalsIgnoreCase("true");

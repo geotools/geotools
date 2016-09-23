@@ -37,7 +37,11 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -46,10 +50,26 @@ import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 /**
  * Test the resolutionLevel-to-ImageMosaicReader mapping machinery. 
  */
-public class ImageLevelsMapperTest extends ImagePyramidReaderTest {
+public class ImageLevelsMapperTest extends Assert {
+
+    protected static final Double DELTA = 1E-6;
+
+    @Before
+    public void init() {
+        System.setProperty("org.geotools.referencing.forceXY","true");
+        CRS.reset("all");
+    }
+
+    @AfterClass
+    public static void close() {
+        System.clearProperty("org.geotools.referencing.forceXY");
+        CRS.reset("all");
+    }
 
     @Test
     public void multicoveragePyramidWithOverviews() throws IOException,
@@ -72,8 +92,7 @@ public class ImageLevelsMapperTest extends ImagePyramidReaderTest {
         //
         // Get the reader
         //
-        final ImagePyramidReader reader = new ImagePyramidReader(testFile, new Hints(
-                Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        final ImagePyramidReader reader = new ImagePyramidReader(testFile);
 
         assertNotNull(reader);
         assertEquals(2, reader.getGridCoverageCount());
@@ -99,12 +118,12 @@ public class ImageLevelsMapperTest extends ImagePyramidReaderTest {
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
                 .createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
-        GridEnvelope gridRange = reader.getOriginalGridRange();
+        GridEnvelope2D gridRange = new GridEnvelope2D(((GridEnvelope2D)reader.getOriginalGridRange()).getBounds());
         final Dimension dim = new Dimension();
         dim.setSize(gridRange.getSpan(0) / 16.0, gridRange.getSpan(1) / 16.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+        Rectangle rasterArea = ((GridEnvelope2D) gridRange);
         rasterArea.setSize(dim);
-        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
 
         coverage = (GridCoverage2D) reader.read(coverageNames[1],
@@ -117,6 +136,32 @@ public class ImageLevelsMapperTest extends ImagePyramidReaderTest {
         assertEquals(4, gridEnvelope.getSpan(0), DELTA);
         assertEquals(4, gridEnvelope.getSpan(1), DELTA);
 
+        // test on expanded Envelope (Double the size of the envelope)
+        final GeneralEnvelope doubleEnvelope = new GeneralEnvelope(new double[] {
+                envelope.getLowerCorner().getOrdinate(0),
+                envelope.getLowerCorner().getOrdinate(1) }, new double[] {
+                envelope.getLowerCorner().getOrdinate(0) + envelope.getSpan(0) * 2,
+                envelope.getLowerCorner().getOrdinate(1) + envelope.getSpan(1) * 2 });
+        doubleEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
+
+        GridEnvelope doubleRange = reader.getOriginalGridRange();
+        dim.setSize(doubleRange .getSpan(0) * 2, doubleRange .getSpan(1) * 2);
+        rasterArea = ((GridEnvelope2D) doubleRange );
+        rasterArea.setSize(dim);
+        range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(doubleRange , doubleEnvelope));
+
+        coverage = ((GridCoverage2D) reader.read(
+                coverageNames[1], new GeneralParameterValue[] { gg }));
+
+        assertNotNull(coverage);
+        renderedImage = coverage.getRenderedImage();
+
+        gridEnvelope = coverage.getGridGeometry().getGridRange();
+        assertEquals(64, gridEnvelope.getSpan(0), DELTA);
+        assertEquals(64, gridEnvelope.getSpan(1), DELTA);
+
+        // Check the levels mapping
         Properties properties = new Properties();
         File propertyFile = new File(mosaicFolder, "multipyramidwithoverviews.properties");
 
@@ -165,10 +210,22 @@ public class ImageLevelsMapperTest extends ImagePyramidReaderTest {
            }
            mapper.dispose();
        }
-   }
+    }
 
     private void match(double[] expected, double[] actual) {
         assertEquals(expected[0], actual[0], DELTA);
         assertEquals(expected[1], actual[1], DELTA);
+    }
+
+    protected void cleanFiles(File mosaicFolder) {
+        for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
+                FileFilterUtils.suffixFileFilter("db"), FileFilterUtils
+                        .suffixFileFilter("sample_image"), FileFilterUtils.and(FileFilterUtils
+                        .suffixFileFilter(".properties"), FileFilterUtils
+                        .notFileFilter(FileFilterUtils.or(
+                                FileFilterUtils.nameFileFilter("indexer.properties"),
+                                FileFilterUtils.nameFileFilter("datastore.properties"))))))) {
+            configFile.delete();
+        }
     }
 }

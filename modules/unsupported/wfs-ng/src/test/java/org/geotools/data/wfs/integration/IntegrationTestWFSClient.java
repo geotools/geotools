@@ -72,6 +72,7 @@ import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.SchemaLocationResolver;
+import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -80,12 +81,13 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
 import org.picocontainer.MutablePicoContainer;
+import org.xml.sax.EntityResolver;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class IntegrationTestWFSClient extends WFSClient {
 
-    private URL baseDirectory;
+    protected URL baseDirectory;
 
     private Map<QName, Diff> diffs = new HashMap<QName, Diff>();
 
@@ -103,7 +105,7 @@ public class IntegrationTestWFSClient extends WFSClient {
     protected Response internalIssueRequest(Request request) throws IOException {
         try {
             if (request instanceof GetCapabilitiesRequest) {
-                return mockCapabilities();
+                return mockCapabilities(request);
             }
             if (request instanceof DescribeFeatureTypeRequest) {
                 return mockDFT((DescribeFeatureTypeRequest) request);
@@ -121,13 +123,17 @@ public class IntegrationTestWFSClient extends WFSClient {
         throw new IllegalArgumentException("Unknown request : " + request);
     }
 
-    private Response mockCapabilities() throws IOException, ServiceException {
+    protected Response mockCapabilities(Request request) throws IOException, ServiceException {
         HTTPResponse httpResp = new TestHttpResponse("text/xml", "UTF-8", super.serverURL);
 
-        return new GetCapabilitiesResponse(httpResp);
+        EntityResolver resolver = null;
+        if(hints != null) {
+            resolver = (EntityResolver) hints.get(XMLHandlerHints.ENTITY_RESOLVER);
+        }
+        return new GetCapabilitiesResponse(httpResp, resolver);
     }
 
-    private Response mockDFT(DescribeFeatureTypeRequest request) throws ServiceException,
+    protected Response mockDFT(DescribeFeatureTypeRequest request) throws ServiceException,
             IOException {
 
         QName typeName = request.getTypeName();
@@ -144,7 +150,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         return ret;
     }
 
-    private Response mockGetFeature(GetFeatureRequest request) throws IOException {
+    protected Response mockGetFeature(GetFeatureRequest request) throws IOException {
 
         final QName typeName = request.getTypeName();
 
@@ -284,7 +290,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
     }
 
-    private Response mockTransaction(TransactionRequest request) throws IOException {
+    protected Response mockTransaction(TransactionRequest request) throws IOException {
 
         List<String> added = new ArrayList<String>();
         int deleted = 0, updated = 0;

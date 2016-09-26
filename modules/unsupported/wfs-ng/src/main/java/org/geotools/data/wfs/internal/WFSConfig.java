@@ -31,6 +31,7 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.WFS_STRATEGY;
 import static org.geotools.data.wfs.WFSDataStoreFactory.OUTPUTFORMAT;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER_FILTER;
+import static org.geotools.data.wfs.WFSDataStoreFactory.ENTITY_RESOLVER;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,6 +41,7 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.EntityResolver;
 
 /**
  * @see WFSStrategy#setConfig(WFSConfig)
@@ -78,7 +80,6 @@ public class WFSConfig {
     
     protected String axisOrderFilter;
     
-    
 
     public static enum PreferredHttpMethod {
         AUTO, HTTP_GET, HTTP_POST
@@ -96,6 +97,7 @@ public class WFSConfig {
         wfsStrategy = (String) WFS_STRATEGY.getDefaultValue();
         filterCompliance = (Integer) FILTER_COMPLIANCE.getDefaultValue();
         namespaceOverride = (String) NAMESPACE.getDefaultValue();
+        entityResolver = (EntityResolver) ENTITY_RESOLVER.getDefaultValue();
     }
 
     public static WFSConfig fromParams(Map<?, ?> params) throws IOException {
@@ -130,6 +132,8 @@ public class WFSConfig {
         config.axisOrderFilter = (String) AXIS_ORDER_FILTER.lookUp(params) == null ? (String) AXIS_ORDER
                 .lookUp(params) : (String) AXIS_ORDER_FILTER.lookUp(params);
 
+        config.entityResolver = ENTITY_RESOLVER.lookUp(params);
+        
         return config;
     }
 

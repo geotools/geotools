@@ -54,6 +54,7 @@ import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.xml.sax.EntityResolver;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
@@ -74,7 +75,7 @@ public class WFSDataStore extends ContentDataStore {
 
     protected Map<String, String> configuredStoredQueries =
             new ConcurrentHashMap<String, String>();
-
+    
     public WFSDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
@@ -95,7 +96,7 @@ public class WFSDataStore extends ContentDataStore {
     public WFSServiceInfo getInfo() {
         return client.getInfo();
     }
-
+    
     @Override
     protected WFSContentState createContentState(ContentEntry entry) {
         return new WFSContentState(entry);

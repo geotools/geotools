@@ -20,6 +20,7 @@ import static org.geotools.data.wfs.internal.Loggers.requestDebug;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
@@ -65,7 +67,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     public WFSClient(URL capabilitiesURL, HTTPClient httpClient, WFSConfig config,
             WFSGetCapabilities capabilities) throws IOException, ServiceException {
 
-        super(capabilitiesURL, httpClient, capabilities);
+        super(capabilitiesURL, httpClient, capabilities, Collections.singletonMap(XMLHandlerHints.ENTITY_RESOLVER, config.getEntityResolver()));
         this.config = config;
         super.specification = determineCorrectStrategy();
         ((WFSStrategy) specification).setCapabilities(super.capabilities);

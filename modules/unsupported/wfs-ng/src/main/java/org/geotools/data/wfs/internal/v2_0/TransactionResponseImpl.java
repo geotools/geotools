@@ -39,6 +39,7 @@ import org.geotools.ows.ServiceException;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.opengis.filter.identity.FeatureId;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
 public class TransactionResponseImpl extends WFSResponse implements TransactionResponse {
@@ -63,6 +64,10 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
             WFSStrategy strategy = originatingRequest.getStrategy();
             Configuration wfsConfiguration = strategy.getWfsConfiguration();
             Parser parser = new Parser(wfsConfiguration);
+            EntityResolver resolver = strategy.getConfig().getEntityResolver();
+            if(resolver != null) {
+                parser.setEntityResolver(resolver);
+            }
             InputStream input = response.getResponseStream();
             parsed = parser.parse(input);
         } catch (SAXException e) {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE totalDeleted [  
+  <!ENTITY xxe SYSTEM "file:///file/not/there" >]>
+<wfs:TransactionResponse xmlns:wfs="http://www.opengis.net/wfs" xmlns:cdf="http://www.opengis.net/cite/data" xmlns:cgf="http://www.opengis.net/cite/geometry" xmlns:cite="http://www.opengis.net/cite" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="http://www.opengis.net/ows" xmlns:sf="http://cite.opengeospatial.org/gmlsf" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://localhost:8080/geoserver/schemas/wfs/1.1.0/wfs.xsd">
+  <wfs:TransactionSummary>
+    <wfs:totalInserted>2</wfs:totalInserted>
+    <wfs:totalUpdated>0</wfs:totalUpdated>
+    <wfs:totalDeleted>&xxe;</wfs:totalDeleted>
+  </wfs:TransactionSummary>
+  <wfs:TransactionResults/>
+</wfs:TransactionResponse>

@@ -42,9 +42,11 @@ import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.KVP;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.xml.NoExternalEntityResolver;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
+import org.xml.sax.EntityResolver;
 
 /**
  * The factory responsible for creating WFSDataAccess objects based on their capabilities and the configuration file used. This file is included as a
@@ -119,7 +121,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[19];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[20];
 
     private static final int GMLComplianceLevel = 2;
 
@@ -411,6 +413,18 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         String description = "Use Gml Compatible TypeNames (replace : by _).";
         parametersInfo[18] = GML_COMPATIBLE_TYPENAMES = new WFSFactoryParam<Boolean>(name,
                 Boolean.class, title, description, false);
+    }
+    
+    /**
+     * Optional {@link EntityResolver} used to expand XML entities during parses
+     */
+    public static final WFSFactoryParam<EntityResolver> ENTITY_RESOLVER;
+    static {
+        String name = "WFSDataStoreFactory:ENTITY_RESOLVER";
+        String title = "EntityResolver";
+        String description = "Sets the entity resolver used to expand XML entities";
+        parametersInfo[19] = ENTITY_RESOLVER = new WFSFactoryParam<EntityResolver>(name,
+                EntityResolver.class, title, description, NoExternalEntityResolver.INSTANCE, Parameter.LEVEL, "program");
     }
 
 

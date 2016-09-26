@@ -43,6 +43,7 @@ import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.ows.ServiceException;
 import org.geotools.xml.Parser;
+import org.xml.sax.EntityResolver;
 
 /**
  * An abstract WFS response parser factory for GetFeature requests in GML output formats.
@@ -172,6 +173,10 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
      */
     public WFSException parseException(WFSRequest originatingRequest, InputStream inputStream) throws WFSException {
         Parser parser = new Parser(originatingRequest.getStrategy().getWfsConfiguration());
+        EntityResolver resolver = originatingRequest.getStrategy().getConfig().getEntityResolver();
+        if(resolver != null) {
+            parser.setEntityResolver(resolver);
+        }
         Object parsed;
         try  {
             parsed = parser.parse(inputStream);

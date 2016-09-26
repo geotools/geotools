@@ -45,12 +45,17 @@ import org.geotools.util.Version;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.DOMParser;
 import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
 
 public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabilitiesResponse {
 
     private WFSGetCapabilities capabilities;
-
-    public GetCapabilitiesResponse(HTTPResponse response) throws IOException, ServiceException {
+    
+//    public GetCapabilitiesResponse(HTTPResponse response) throws IOException, ServiceException {
+//        this(response, null);
+//    }
+    
+    public GetCapabilitiesResponse(HTTPResponse response, EntityResolver entityResolver) throws IOException, ServiceException {
         super(response);
         MODULE.finer("Parsing GetCapabilities response");
         try {
@@ -74,6 +79,9 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
                 builderFactory.setNamespaceAware(true);
                 builderFactory.setValidating(false);
                 DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+                if(entityResolver != null) {
+                    documentBuilder.setEntityResolver(entityResolver);
+                }
                 rawDocument = documentBuilder.parse(new ByteArrayInputStream(rawResponse));
             } catch (Exception e) {
                 throw new IOException("Error parsing capabilities document: " + e.getMessage(), e);

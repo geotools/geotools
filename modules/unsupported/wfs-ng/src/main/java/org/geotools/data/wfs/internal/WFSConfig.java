@@ -32,6 +32,7 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.OUTPUTFORMAT;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER_FILTER;
 import static org.geotools.data.wfs.WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES;
+import static org.geotools.data.wfs.WFSDataStoreFactory.ENTITY_RESOLVER;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,6 +47,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.EntityResolver;
 
 /**
  * @see WFSStrategy#setConfig(WFSConfig)
@@ -85,6 +87,8 @@ public class WFSConfig {
     protected String axisOrderFilter;
     
     protected boolean gmlCompatibleTypenames;
+    
+    protected EntityResolver entityResolver;
 
     public static enum PreferredHttpMethod {
         AUTO, HTTP_GET, HTTP_POST
@@ -106,6 +110,7 @@ public class WFSConfig {
         filterCompliance = (Integer) FILTER_COMPLIANCE.getDefaultValue();
         namespaceOverride = (String) NAMESPACE.getDefaultValue();
         gmlCompatibleTypenames = (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue();
+        entityResolver = (EntityResolver) ENTITY_RESOLVER.getDefaultValue();
     }
 
     public static WFSConfig fromParams(Map<?, ?> params) throws IOException {
@@ -142,7 +147,8 @@ public class WFSConfig {
 
         config.gmlCompatibleTypenames = GML_COMPATIBLE_TYPENAMES.lookUp(params) == null ? 
                 (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue() :  GML_COMPATIBLE_TYPENAMES.lookUp(params);
-
+        config.entityResolver = ENTITY_RESOLVER.lookUp(params);
+        
         return config;
     }
 
@@ -265,6 +271,14 @@ public class WFSConfig {
     public boolean isGmlCompatibleTypenames() {
         return gmlCompatibleTypenames;
     }
+    
+    /**
+     * Returns the entity resolved to be used for XML parses
+     * @return
+     */
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
 
     /**
      * Checks if axis flipping is needed comparing axis order requested for the DataStore with query crs.
@@ -303,4 +317,5 @@ public class WFSConfig {
         }
         return localTypeName;
     }
+
 }

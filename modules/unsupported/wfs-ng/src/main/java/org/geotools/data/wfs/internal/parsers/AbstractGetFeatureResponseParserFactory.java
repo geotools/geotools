@@ -34,6 +34,7 @@ import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.Loggers;
+import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
@@ -156,47 +157,19 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
             if (head.indexOf("FeatureCollection") > 0) {
                 parser = parser(getFeature, pushbackIn);
             } else if (head.indexOf("ExceptionReport") > 0) {
-                throw parseException(request, pushbackIn);
+                // parser = new ExceptionReportParser();
+                // TODO: return ExceptionResponse or so
+                throw new UnsupportedOperationException("implement!");
             } else {
                 throw new IllegalStateException("Unkown server response: " + head);
             }
         }
-    }
-    
-    /**
-     * @param wfs
-     *            the {@link WFSDataStore} that sent the request
-     * @param response
-     *            a response handle to a service exception report
-     * @return a {@link WFSException} containing the server returned exception report messages
-     * @see WFSResponseParser#parse(WFSProtocol, WFSResponse)
-     */
-    public WFSException parseException(WFSRequest originatingRequest, InputStream inputStream) throws WFSException {
-        Parser parser = new Parser(originatingRequest.getStrategy().getWfsConfiguration());
-        EntityResolver resolver = originatingRequest.getStrategy().getConfig().getEntityResolver();
-        if(resolver != null) {
-            parser.setEntityResolver(resolver);
-        }
-        Object parsed;
-        try  {
-            parsed = parser.parse(inputStream);
-            if (!(parsed instanceof net.opengis.ows10.ExceptionReportType || parsed instanceof net.opengis.ows11.ExceptionReportType)) {
-                throw new IOException("Unrecognized server error");
-            }
-        } catch (Exception e) {
-            return new WFSException("Exception parsing server exception report", e);
-        }
-        if(parsed instanceof net.opengis.ows10.ExceptionReportType) {
-            net.opengis.ows10.ExceptionReportType report = (net.opengis.ows10.ExceptionReportType) parsed;
-            @SuppressWarnings("unchecked")
-            List<net.opengis.ows10.ExceptionType> exceptions = report.getException();
-
+        
         try {
             return new GetFeatureResponse(request, response, parser);
         } catch (ServiceException e) {
             throw new IOException(e);
         }
-
     }
     
     @Override

@@ -80,6 +80,7 @@ public class WFSConfig {
     
     protected String axisOrderFilter;
     
+    protected EntityResolver entityResolver;
 
     public static enum PreferredHttpMethod {
         AUTO, HTTP_GET, HTTP_POST
@@ -247,8 +248,17 @@ public class WFSConfig {
      */
     public String getAxisOrderFilter() {
         return axisOrderFilter;
-    }    
-    
+    }
+
+    /**
+     * Returns the entity resolved to be used for XML parses
+     * 
+     * @return
+     */
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+
     /**
      * Checks if axis flipping is needed comparing axis order requested for the
      * DataStore with query crs.

@@ -39,7 +39,6 @@ public class XXEProtectionTest {
     public void testGetCapabilitiesProtection() throws Exception {
         // the default config has entity resolution disabled
         WFSConfig config = WFSTestData.getGmlCompatibleConfig();
-        
         String baseDirectory = "GeoServer_2.0/1.1.0_XXE_GetCapabilities";
         try {
             new IntegrationTestWFSClient(baseDirectory, config);

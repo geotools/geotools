@@ -302,6 +302,11 @@ public class WFSTestData {
             this.outputFormatOverride = outputFormatOverride;
         }   
     }
+
+    public static WFSConfig getGmlCompatibleConfig() {
+        MutableWFSConfig config = new MutableWFSConfig();
+        return config;
+    }
     
     public static class TestWFSClient extends WFSClient {
 

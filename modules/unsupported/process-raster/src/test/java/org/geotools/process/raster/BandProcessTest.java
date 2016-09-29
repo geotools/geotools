@@ -272,25 +272,19 @@ public class BandProcessTest {
         MathTransform2D tr = coverage1.getGridGeometry().getCRSToGrid2D(PixelOrientation.UPPER_LEFT);
         // ROI object inthe Raster Space
         ROI roi = new ROIGeometry(JTS.transform(geo, tr));
-        // This ROI is a Rectangle so we can get its bounds
-        Rectangle roiBounds = roi.getBounds();
-        // Crop the source image with the ROI Bounds      
-        ImageWorker w = new ImageWorker(srcImg1);
-        RenderedImage cropSrc = w.crop((float) roiBounds.x, (float) roiBounds.y,
-                (float) roiBounds.width, (float) roiBounds.height).getRenderedImage();
-        
+
         // Coverage Crop for the final coverages
         CropCoverage crop = new CropCoverage();
-        
+
         RenderedImage cropSel1 = crop.execute(selected1, geo,
                 null).getRenderedImage();
 
         RenderedImage cropSel2 = crop.execute(selected2, geo,
                 null).getRenderedImage();
-        
+
         // Ensure that the images are equals on the cropped selection (The new images contains no data outside of the selection)
-        ensureEqualImages(cropSrc, cropSel1);
-        ensureEqualImages(cropSrc, cropSel2);
+        ensureEqualImages(selected1.getRenderedImage(), cropSel1);
+        ensureEqualImages(selected2.getRenderedImage(), cropSel2);
 
         // Ensure that the images contain No Data outside of the ROI bounds
         ensureNoDataOutside(selected1, geo);

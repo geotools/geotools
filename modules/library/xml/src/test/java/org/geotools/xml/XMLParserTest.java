@@ -21,8 +21,11 @@ import java.net.URI;
 import java.util.logging.Level;
 
 import javax.naming.OperationNotSupportedException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import junit.framework.TestCase;
+import static junit.framework.TestCase.assertNotNull;
 
 import org.geotools.TestData;
 import org.geotools.xml.schema.Schema;
@@ -41,6 +44,27 @@ import org.xml.sax.SAXException;
  * @source $URL$
  */
 public class XMLParserTest extends TestCase {
+    
+     public void testNestedFeature() throws Throwable {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        spf.setValidating(false);
+
+        SAXParser parser = spf.newSAXParser();
+
+        String path = "/wfsgetfeature.xml";
+        File f = TestData.copy(this,path);
+        XMLSAXHandler xmlContentHandler = new XMLSAXHandler(null);
+        XMLSAXHandler.setLogLevel(Level.FINEST);
+        XSISAXHandler.setLogLevel(Level.FINEST);
+        XMLElementHandler.setLogLevel(Level.FINEST);
+        XSIElementHandler.setLogLevel(Level.FINEST);
+
+        parser.parse(f, xmlContentHandler);
+
+        Object doc = xmlContentHandler.getDocument();
+        assertNotNull("Document missing", doc);
+    }
     public void testMail(){
         try {            
             String path = "xml/mails.xml";

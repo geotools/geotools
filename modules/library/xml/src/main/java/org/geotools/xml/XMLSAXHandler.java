@@ -347,6 +347,7 @@ public class XMLSAXHandler extends DefaultHandler {
             }
 
             if (!((t == null) || "".equals(t))) {
+                t = t.trim();
                 String[] targ2uri = t.split("\\s+");
                 
                 if (targ2uri != null) {

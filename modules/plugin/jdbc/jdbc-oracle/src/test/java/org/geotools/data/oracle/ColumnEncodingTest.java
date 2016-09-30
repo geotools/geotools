@@ -44,7 +44,7 @@ public class ColumnEncodingTest {
         StringBuffer buffer = new StringBuffer();
         OracleDialect dialect = new OracleDialect(null);
         dialect.encodeColumnName("name with space",buffer);
-        assertEquals("NAME WITH SPACE", buffer.toString());
+        assertEquals("\"NAME WITH SPACE\"", buffer.toString());
     }
 
 }

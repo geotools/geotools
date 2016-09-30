@@ -490,6 +490,10 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         raw = raw.toUpperCase();
         if(raw.length() > 30)
             raw = raw.substring(0, 30);
+        // need to quote column names with spaces in
+        if (raw.contains(" ")) {
+            raw = "\"" + raw + "\"";
+        }
         sql.append(raw);
     }
     
@@ -498,6 +502,10 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         raw = raw.toUpperCase();
         if(raw.length() > 30)
             raw = raw.substring(0, 30);
+        // need to quote table names with spaces in
+        if (raw.contains(" ")) {
+            raw = "\"" + raw + "\"";
+        }
         sql.append(raw);
     }
     

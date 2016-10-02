@@ -16,6 +16,10 @@
  */
 package org.geotools.se.v1_1;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -553,6 +557,21 @@ public class SEExampleTest extends SETestSupport {
         
         List errors = validate("example-pointsymbolizer-geotrans.xml");
         assertEquals(0, errors.size());
+    }
+    
+    public void testParseGraphicWithFallbacks() throws Exception {
+        Graphic graphic = (Graphic) parse("example-graphic-fallback.xml");
+        final List<GraphicalSymbol> symbols = graphic.graphicalSymbols();
+        // check all the symbols are there (used to kick out external graphics when mark were present)
+        assertEquals(3, symbols.size());
+        // check the order has been preserved
+        ExternalGraphic eg1 = (ExternalGraphic) symbols.get(0);
+        assertThat(eg1.getURI(), containsString("transport/amenity=parking.svg?fill=%2300eb00"));
+        ExternalGraphic eg2 = (ExternalGraphic) symbols.get(1);
+        assertThat(eg2.getURI(), containsString("transport/amenity=parking.svg"));
+        assertThat(eg2.getURI(), not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
+        Mark mark = (Mark) symbols.get(2);
+        assertEquals("square", mark.getWellKnownName().evaluate(null, String.class)); 
     }
     
 }

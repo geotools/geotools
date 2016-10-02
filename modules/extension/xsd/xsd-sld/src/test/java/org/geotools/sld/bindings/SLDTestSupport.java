@@ -16,9 +16,9 @@
  */
 package org.geotools.sld.bindings;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
@@ -28,8 +28,8 @@ import org.geotools.xml.test.XMLTestSupport;
  *
  * @source $URL$
  */
-public class SLDTestSupport extends XMLTestSupport {
-    StyleFactory styleFactory = StyleFactoryFinder.createStyleFactory();
+public abstract class SLDTestSupport extends XMLTestSupport {
+    StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
     protected Configuration createConfiguration() {
         return new SLDConfiguration();

@@ -20,10 +20,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.Symbol;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -31,7 +30,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.AnchorPoint;
 import org.opengis.style.Displacement;
 import org.picocontainer.MutablePicoContainer;
-
 
 /**
  * Binding object for the element http://www.opengis.net/sld:Graphic.
@@ -121,23 +119,15 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        Mark[] marks = null;
-        ExternalGraphic[] graphics = null;
 
-        if (node.getChild("Mark") != null) {
-            List l = node.getChildValues("Mark");
-            marks = (Mark[]) l.toArray(new Mark[l.size()]);
-        } else {
-            List l = node.getChildValues("ExternalGraphic");
-            graphics = (ExternalGraphic[]) l.toArray(new ExternalGraphic[l.size()]);
-        }
+        List<Symbol> symbols = node.getChildValues(Symbol.class);
 
         Expression opacity = (Expression) node.getChildValue("Opacity");
         Expression size = (Expression) node.getChildValue("Size");
         Expression rotation = (Expression) node.getChildValue("Rotation");
 
         Graphic graphic = styleFactory
-                .createGraphic(graphics, marks, null, opacity, size, rotation);
+                .createGraphic(null, null, (Symbol[]) symbols.toArray(new Symbol[symbols.size()]), opacity, size, rotation);
 
         if (node.getChild("Displacement") != null) {
             graphic.setDisplacement((Displacement) node.getChildValue("Displacement"));

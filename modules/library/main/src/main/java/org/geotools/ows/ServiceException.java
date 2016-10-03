@@ -81,7 +81,9 @@ public class ServiceException extends SAXException {
 	private String code = "";
     private String locator = null;
     private ServiceException next; //So they can be chained
-
+    protected Throwable cause;
+    
+    @SuppressWarnings("unused")
     private ServiceException() {
         super("");
     	// should not be called
@@ -114,6 +116,28 @@ public class ServiceException extends SAXException {
         this.locator = locator;
     }
 
+    @Override
+    public synchronized Throwable initCause(Throwable cause) {
+        this.cause = cause;
+        
+        return super.initCause(cause);
+    }
+
+    @Override
+    public Throwable getCause() {
+        if (this.cause != null) {
+            return this.cause;
+        }
+        return super.getCause();
+    }
+
+    @Override
+    public Exception getException() {
+        if ( this.cause instanceof Exception){
+            return (Exception) cause;
+        }
+        return super.getException();
+    }
     /**
      * @return String the error code, such as 404-Not Found
      */

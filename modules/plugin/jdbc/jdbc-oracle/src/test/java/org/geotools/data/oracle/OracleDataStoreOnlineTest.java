@@ -105,7 +105,7 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     
 	public void testCreateLongVarChar() throws Exception {
 		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-		builder.setName(tname("ft3"));
+		builder.setName(tname("longvar"));
 		builder.setNamespaceURI(dataStore.getNamespaceURI());
 		builder.setCRS(DefaultGeographicCRS.WGS84);
 		builder.add(aname("geometry_one_two_three_four"), Geometry.class);

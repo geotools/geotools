@@ -19,8 +19,7 @@ package org.geotools.ows;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import jdk.internal.org.xml.sax.SAXException;
+import org.xml.sax.SAXException;
 
 /**
  * Tests service exception handling of Java 5 initCause.

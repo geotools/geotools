@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -194,7 +194,9 @@ public class UomRescaleStyleVisitorTest
         {
             UomRescaleStyleVisitor visitor = null;
             double size = 100;
+            double margin = 15;
             double expectedRescaledSize = computeExpectedRescaleSize(size, scaleMetersToPixel, uom);
+            int expectedGraphicMargin = (int) computeExpectedRescaleSize(15, scaleMetersToPixel, uom);
             
             StyleBuilder styleBuilder = new StyleBuilder();
 
@@ -203,6 +205,7 @@ public class UomRescaleStyleVisitorTest
             
             FilterFactory2 filterFactory  = new FilterFactoryImpl();
             polySymb.getStroke().setWidth(filterFactory.literal(size));
+            polySymb.getOptions().put(PolygonSymbolizer.GRAPHIC_MARGIN_KEY, "15");
 
             visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
 
@@ -212,6 +215,11 @@ public class UomRescaleStyleVisitorTest
             
             assertEquals(Math.round(expectedRescaledSize), Math.round(rescaledSize));
             assertNotSame(rescaledPolySymb, polySymb);
+
+
+            String[] splitted = rescaledPolySymb.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY).split("\\s+");
+            int rescaledGraphicMargin = Converters.convert(splitted[0], Integer.class).intValue();
+            assertEquals(expectedGraphicMargin, rescaledGraphicMargin);
         }
         catch (Exception e2)
         {

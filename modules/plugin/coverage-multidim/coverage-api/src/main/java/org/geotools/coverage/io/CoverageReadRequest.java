@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2012-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -95,6 +95,11 @@ public class CoverageReadRequest extends CoverageRequest {
      * @uml.property name="temporalSubset"
      */
     private SortedSet<DateRange> temporalSubset;
+
+    /**
+     * Defines the order and the bands that should be returned.
+     */
+    private int[] bands;
 
     private Map<String, Set<?>> additionalDomainsSubset = new HashMap<String, Set<?>>();
 
@@ -229,4 +234,11 @@ public class CoverageReadRequest extends CoverageRequest {
         return filter;
     }
 
+    public int[] getBands() {
+        return bands;
+    }
+
+    public void setBands(int[] bands) {
+        this.bands = bands;
+    }
 }

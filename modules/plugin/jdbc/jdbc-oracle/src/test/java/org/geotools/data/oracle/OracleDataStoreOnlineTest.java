@@ -45,9 +45,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
+    private OracleTestSetup oracleTestSetup;
+
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new OracleTestSetup();
+        oracleTestSetup = new OracleTestSetup();
+        return oracleTestSetup;
     }
     
     public void testCreateSchemaOSGBCrs() throws Exception {
@@ -141,8 +144,16 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 			transaction.rollback();
 		} finally {
 			transaction.close();
+			dataStore.removeSchema(tname("longvar"));
 		}
 
 	}
+
+    @Override
+    protected void tearDownInternal() throws Exception {
+        
+        super.tearDownInternal();
+        oracleTestSetup.deleteSpatialTable(tname("longvar"));
+    }
 
 }

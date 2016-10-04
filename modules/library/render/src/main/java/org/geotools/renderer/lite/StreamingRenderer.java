@@ -33,14 +33,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -1608,12 +1601,21 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         try {
-            // DJB:geos-469 if the default geometry was used in the style, we
-            // need to grab it.
+            // DJB:geos-469 if the default geometry was used in the style, we need to grab it.
+            // we substitute the default geometry attribute "" with the proper geometry attribute name (this will help us avoid
+            // situations were the geometry is not read because of the default geometry attribute "" not being taken in account)
             if (sae.getDefaultGeometryUsed()
-                    && !attributeNames.contains(schema.getGeometryDescriptor().getName().toString())
-                    && !attributeNames.contains("")) {
+                    && !attributeNames.contains(schema.getGeometryDescriptor().getName().toString())) {
                 atts.add(filterFactory.property ( schema.getGeometryDescriptor().getName() ));
+            }
+            // the geometry attribute name was added above, we need to remove the default geometry attribute "" if present
+            for (Iterator<PropertyName> it = atts.iterator(); it.hasNext();){
+                PropertyName propertyName = it.next();
+                if (propertyName.getPropertyName().equals("")) {
+                    // well the default geometry attribute name "" is present, so let's remove it
+                    it.remove();
+                    break;
+                }
             }
         } catch (Exception e) {
             // might not be a geometry column. That will cause problems down the

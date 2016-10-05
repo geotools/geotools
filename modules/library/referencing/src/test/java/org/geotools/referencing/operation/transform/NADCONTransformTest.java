@@ -18,7 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.*;
 
-import java.net.URI;
+import java.net.URL;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class NADCONTransformTest {
      */
     @Before
     public void setUp() throws Exception {
-        transform = new NADCONTransform(new URI(STPAUL_LAS), new URI(STPAUL_LOS));
+        transform = new NADCONTransform(STPAUL_LAS, STPAUL_LOS);
     }
         
     /**
@@ -83,23 +83,23 @@ public class NADCONTransformTest {
         assertEquals(pvg.values().size(), 2);
         
         Object value = pvg.parameter("Latitude difference file").getValue();
-        assertTrue(value instanceof URI);
-        assertEquals(value.toString(), STPAUL_LAS);
+        assertTrue(value instanceof String);
+        assertEquals(value, STPAUL_LAS);
         
         value = pvg.parameter("Longitude difference file").getValue();
-        assertTrue(value instanceof URI);
-        assertEquals(value.toString(), STPAUL_LOS);
+        assertTrue(value instanceof String);
+        assertEquals(value, STPAUL_LOS);
     }
     
     /**
-     * Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#NADCONTransform(java.net.URI)}.
+     * Test method for {@link org.geotools.referencing.operation.transform.NADCONTransform#NADCONTransform(java.lang.String,java.lang.String)}.
      */
     @Test
     public void testNADCONTransform() throws Exception {
 
         try {
-            new NADCONTransform(null, null);
-        } catch (NoSuchIdentifierException e) {
+            new NADCONTransform((String)null, (String)null);
+        } catch (NullPointerException e) {
             assert true;
         }
     }

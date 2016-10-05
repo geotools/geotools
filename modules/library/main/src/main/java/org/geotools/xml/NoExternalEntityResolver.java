@@ -28,10 +28,10 @@ import org.xml.sax.ext.EntityResolver2;
 
 
 /**
- * EntityResolver implementation to prevent usage of external entities.
+ * EntityResolver implementation to prevent use external entity resolution to local files.
  * 
- * When parsing an XML entity, the empty InputSource returned by this resolver provokes 
- * throwing of a java.net.MalformedURLException, which can be handled appropriately.
+ * When parsing an XML entity reference to a local file a SAXException is thrown, which can be
+ * handled appropriately.
  * 
  * @author Davide Savazzi - geo-solutions.it
  */

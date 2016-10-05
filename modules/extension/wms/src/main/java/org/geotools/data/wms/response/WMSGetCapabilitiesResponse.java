@@ -51,12 +51,9 @@ public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
         super(response);
 
         try {
-            if(hints == null) {
-                // default setup
-                hints = new HashMap<>();
-                hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-                hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
-            }
+            hints = hints == null ? new HashMap<>() : new HashMap<>(hints);
+            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
 
             Object object;
             InputStream inputStream = null;

@@ -48,7 +48,7 @@ public class ParseCapabilitesTest extends TestCase {
 	}
 
 	public void testNoSupportedFunctionExpression() throws Exception {
-		Map hints=new HashMap();
+		Map<String,Object> hints=new HashMap<>();
 		InputStream in = TestData.openStream("xml/capabilities/WFSGetCapsNoFunctionExpressions.xml");
         WFSCapabilities obj=(WFSCapabilities) DocumentFactory.getInstance(in, hints, Level.WARNING);
         FilterCapabilities filterCapabilities = obj.getFilterCapabilities();
@@ -77,7 +77,7 @@ public class ParseCapabilitesTest extends TestCase {
 	}
 	
 	public void testSomeSupportedFunctionExpression() throws Exception {
-		Map hints=new HashMap();
+		Map<String,Object> hints=new HashMap<>();
 		InputStream in = TestData.openStream("xml/capabilities/WFSGetCapsSomeFunctionExpressions.xml");
         WFSCapabilities obj=(WFSCapabilities) DocumentFactory.getInstance(in, hints, Level.WARNING);
         FilterCapabilities filterCapabilities = obj.getFilterCapabilities();
@@ -110,7 +110,7 @@ public class ParseCapabilitesTest extends TestCase {
 	}
 	
 	public void testGeoserverSupportedFunctionExpression() throws Exception {
-		Map hints=new HashMap();
+		Map<String,Object> hints=new HashMap<>();
 		InputStream in = TestData.openStream("xml/capabilities/WFSGetCapsGeoserverFunctionExpressions.xml");
         WFSCapabilities obj=(WFSCapabilities) DocumentFactory.getInstance(in, hints, Level.WARNING);
         FilterCapabilities filterCapabilities = obj.getFilterCapabilities();

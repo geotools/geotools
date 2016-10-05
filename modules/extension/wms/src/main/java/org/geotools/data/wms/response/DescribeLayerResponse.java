@@ -53,11 +53,9 @@ public class DescribeLayerResponse extends Response {
         super(httpResponse);
 
         try {
-            if(hints == null) {
-                hints = new HashMap<>();
-                hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-            }
-
+            hints = hints == null ? new HashMap<>() : new HashMap<>(hints);
+            hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
+            
             Object object;
             InputStream inputStream = null;
             try {

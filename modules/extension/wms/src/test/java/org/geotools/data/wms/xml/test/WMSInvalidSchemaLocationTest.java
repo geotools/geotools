@@ -47,7 +47,7 @@ public class WMSInvalidSchemaLocationTest extends TestCase {
 
         // disable schema validation to match the WebMapServer behavior (the caps documented
         // tested is indeed not schema valid)
-        Map hints = new HashMap();
+        Map<String,Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
         hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
         // used to blow up here due to the invalid schema reference (port -1 was chosen as a suitably

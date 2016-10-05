@@ -119,7 +119,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         if (capabilities == null) {
             this.capabilities = negotiateVersion();
             if (this.capabilities == null) {
-                throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+                throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
             }
         } else {
             this.capabilities = capabilities;
@@ -233,6 +233,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws IOException if there is an error communicating with the server, or the XML cannot be parsed
      * @throws ServiceException if the server returns a ServiceException
      */
+    @SuppressWarnings("unchecked")
     protected C negotiateVersion() throws IOException, ServiceException {
         List<String> versions = new ArrayList<String>(specs.length);
         Exception exception = null;
@@ -342,10 +343,14 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         // could not talk to this server
         if (exception != null) {
-            IOException e = new IOException(exception.getMessage());
+            IOException e = new IOException(
+                    "Could not establish version neogitation: " + exception.getMessage(),
+                    exception);
             throw e;
         }
-        return null;
+        else {
+            throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
+        }
     }
 
     /**

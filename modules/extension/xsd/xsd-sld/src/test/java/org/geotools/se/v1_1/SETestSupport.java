@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @source $URL$
  */
-public class SETestSupport extends XMLTestSupport {
+public abstract class SETestSupport extends XMLTestSupport {
 
     @Override
     protected Configuration createConfiguration() {

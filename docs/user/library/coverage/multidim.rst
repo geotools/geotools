@@ -68,6 +68,31 @@ Here is described an example::
 			}
 		}
 	}
+
+Multiple bands dimensions are supported, although some configuration needs to be provided through the ancillary file.
+Let's consider that we have a dimension called data that contains three values quality, pressure and temperature. An
+ancillary file similar to this one needs to be provided::
+
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<Indexer>
+	    <coverages>
+	        <coverage>
+	            <schema name="station">
+	                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes>
+	            </schema>
+	            <origName>station</origName>
+	            <name>station</name>
+	        </coverage>
+	    </coverages>
+	    <multipleBandsDimensions>
+			<multipleBandsDimension>
+				<name>data</name>
+				<bandsNames>quality,pressure,temperature</bandsNames>
+			</multipleBandsDimension>
+		</multipleBandsDimensions>
+	</Indexer>
+
+The data dimension values will be mapped to three bands called quality, pressure and temperature.
 	
 GRIB
 ++++

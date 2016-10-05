@@ -17,6 +17,8 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
@@ -35,6 +37,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -4281,4 +4284,17 @@ public class ImageMosaicReaderTest extends Assert{
         }
     }
 
+    @Test
+    public void testBandsSelection() throws Exception {
+        // instantiate image mosaic reader
+        AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+        ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+        // reade the coverage select bands in different order and multiple times
+        ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
+        selectedBands.setValue(new int[]{2, 0, 1, 0 ,1});
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader, new GeneralParameterValue[]{selectedBands}, null);
+        // checking that we have five bands (the bands selection operation was delegated on JAI BandsSelect operation)
+        SampleModel sampleModel = coverage.getRenderedImage().getSampleModel();
+        assertThat(sampleModel.getNumBands(), is(5));
+    }
 }

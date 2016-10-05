@@ -48,6 +48,7 @@ import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.xml.NoExternalEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
@@ -55,6 +56,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * External graphic factory accepting an Expression that can be evaluated to a URL pointing to a SVG
@@ -107,7 +110,23 @@ public class SVGGraphicFactory implements ExternalGraphicFactory {
         RenderableSVG svg = glyphCache.get(svgfile);
         if(svg == null) {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser) {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId)
+                        throws SAXException {
+                    InputSource source = super.resolveEntity(publicId, systemId);
+                    if (source == null) {
+                        try {
+                            return NoExternalEntityResolver.INSTANCE.resolveEntity(publicId,
+                                    systemId);
+                        } catch (IOException e) {
+                            throw new SAXException(e);
+                        }
+                    } else {
+                        return source;
+                    }
+                }
+            };
             Document doc = f.createDocument(svgfile);
             Map<String, String> parameters = getParametersFromUrl(svgfile);
             if(!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {

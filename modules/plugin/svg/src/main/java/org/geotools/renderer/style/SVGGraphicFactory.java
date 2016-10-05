@@ -19,12 +19,16 @@ package org.geotools.renderer.style;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints.Key;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -39,13 +43,21 @@ import org.apache.batik.bridge.UserAgentAdapter;
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.geotools.factory.Factory;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * External graphic factory accepting an Expression that can be evaluated to a URL pointing to a SVG
@@ -60,7 +72,7 @@ import org.w3c.dom.NodeList;
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/svg/src/main/java/org/geotools
  *         /renderer/style/SVGGraphicFactory.java $
  */
-public class SVGGraphicFactory implements ExternalGraphicFactory {
+public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
 
     /** Parsed SVG glyphs cache */
     static Map<URL, RenderableSVG> glyphCache = Collections.synchronizedMap(new SoftValueHashMap<URL, RenderableSVG>());
@@ -75,6 +87,56 @@ public class SVGGraphicFactory implements ExternalGraphicFactory {
 
     };
 
+    /** Hints we care about */
+    final private Map<Key, Object> implementationHints = new HashMap<>();
+    
+    private EntityResolver resolver;
+    
+    public SVGGraphicFactory(){
+        this( null );
+    }
+    
+    public SVGGraphicFactory(Map<Key, Object> hints){
+        if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
+            // use entity resolver provided (even if null)
+            this.resolver = (EntityResolver) hints.get(Hints.ENTITY_RESOLVER);
+            this.implementationHints.put( Hints.ENTITY_RESOLVER, this.resolver );
+
+            if( this.resolver == null ){ // use null instance rather than check each time
+                this.resolver = NullEntityResolver.INSTANCE;
+            }
+        }
+        else {
+            this.resolver = defaultResolver();
+        }
+    }
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.renderer.style.SVGGraphicFactory");
+    protected static EntityResolver defaultResolver() {
+        Hints hints = GeoTools.getDefaultHints();
+        if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
+            Object hint = hints.get(Hints.ENTITY_RESOLVER);
+            if( hint instanceof EntityResolver){
+                return (EntityResolver) hint;
+            }
+            if( hint instanceof String ){
+                try {
+                    Class<?> type = Class.forName((String)hint);
+                    Object value = type.newInstance();
+                    if( value instanceof EntityResolver){
+                        return (EntityResolver) value;
+                    }
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "+ e.getMessage(), e);
+                }
+            }
+        }
+        return PreventLocalEntityResolver.INSTANCE;
+    }
+
+    @Override
+    public Map<Key, ?> getImplementationHints() {
+        return implementationHints;
+    }
     public Icon getIcon(Feature feature, Expression url, String format, int size) throws Exception {
         // check we do support the declared format
         if (format == null || !formats.contains(format.toLowerCase()))
@@ -90,7 +152,21 @@ public class SVGGraphicFactory implements ExternalGraphicFactory {
         RenderableSVG svg = glyphCache.get(svgfile);
         if(svg == null) {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser) {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId)
+                        throws SAXException {
+                    InputSource source = super.resolveEntity(publicId, systemId);
+                    if (source == null) {
+                        try {
+                            return resolver.resolveEntity(publicId, systemId);
+                        } catch (IOException e) {
+                            throw new SAXException(e);
+                        }
+                    }
+                    return source;
+                }
+            };
             Document doc = f.createDocument(svgfile.toString());
             svg = new RenderableSVG(doc);
             glyphCache.put(svgfile, svg);

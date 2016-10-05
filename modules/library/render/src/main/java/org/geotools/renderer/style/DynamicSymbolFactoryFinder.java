@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
+import org.geotools.factory.Hints;
 
 /**
  * Searches for all available {@link ExternalGraphicFactory} and
@@ -82,11 +83,21 @@ public final class DynamicSymbolFactoryFinder {
      * Finds all implementations of {@link ExternalGraphicFactory} which have
      * registered using the services mechanism.
      * 
-     * @return An iterator over all discovered datastores which have registered
-     *         factories, and whose available method returns true.
+     * @return An iterator over all registered ExternalGraphicFactory
      */
     public static synchronized Iterator<ExternalGraphicFactory> getExternalGraphicFactories() {
-        return getServiceRegistry().getServiceProviders(ExternalGraphicFactory.class, null, null);
+        return getExternalGraphicFactories(null);
+    }
+    
+    /**
+     * Finds all implementations of {@link ExternalGraphicFactory} which have
+     * registered using the services mechanism.
+     * 
+     * @param  hints An optional map of hints for factory configfuration, or {@code null} if none.
+     * @return An iterator over all registered ExternalGraphicFactory
+     */
+    public static synchronized Iterator<ExternalGraphicFactory> getExternalGraphicFactories(Hints hints) {
+        return getServiceRegistry().getServiceProviders(ExternalGraphicFactory.class, null, hints);
     }
 
     /**

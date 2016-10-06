@@ -68,8 +68,6 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.sun.xml.internal.stream.Entity;
-
 /**
  * External graphic factory accepting an Expression that can be evaluated to a URL pointing to a SVG
  * file. The <code>format</code> must be <code>image/svg+xml</code>, thought for backwards
@@ -138,7 +136,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
                         return (EntityResolver) value;
                     }
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                    LOGGER.log(Level.FINER, "Unable to instanciate ENTITY_RESOLVER: "+ e.getMessage(), e);
+                    LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "+ e.getMessage(), e);
                 }
             }
         }

@@ -198,8 +198,7 @@ public final class GeoTools {
      * value to be assigned to the {@link Hints#
      * ENTITY_RESOLVER} hint.
      *
-     * This setting specifies the XML Entity resolver to be used when configuring a SAXParser,
-     * by default it NoLocalExternalEntityResolver.
+     * This setting specifies the XML Entity resolver to be used when configuring a SAXParser
      *
      * @see Hints#ENTITY_RESOLVER
      * @see #getDefaultHints

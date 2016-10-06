@@ -28,6 +28,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,10 +51,12 @@ import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.geotools.factory.Factory;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
@@ -63,6 +67,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.sun.xml.internal.stream.Entity;
 
 /**
  * External graphic factory accepting an Expression that can be evaluated to a URL pointing to a SVG
@@ -103,7 +109,6 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
     }
     
     public SVGGraphicFactory(Map<Key, Object> hints){
-        this.resolver = NullEntityResolver.INSTANCE;
         if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
             // use entity resolver provided (even if null)
             this.resolver = (EntityResolver) hints.get(Hints.ENTITY_RESOLVER);
@@ -113,7 +118,33 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
                 this.resolver = NullEntityResolver.INSTANCE;
             }
         }
+        else {
+            this.resolver = defaultResolver();
+        }
     }
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.renderer.style.SVGGraphicFactory");
+    protected static EntityResolver defaultResolver() {
+        Hints hints = GeoTools.getDefaultHints();
+        if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
+            Object hint = hints.get(Hints.ENTITY_RESOLVER);
+            if( hint instanceof EntityResolver){
+                return (EntityResolver) hint;
+            }
+            if( hint instanceof String ){
+                try {
+                    Class<?> type = Class.forName((String)hint);
+                    Object value = type.newInstance();
+                    if( value instanceof EntityResolver){
+                        return (EntityResolver) value;
+                    }
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    LOGGER.log(Level.FINER, "Unable to instanciate ENTITY_RESOLVER: "+ e.getMessage(), e);
+                }
+            }
+        }
+        return PreventLocalEntityResolver.INSTANCE;
+    }
+
     @Override
     public Map<Key, ?> getImplementationHints() {
         return implementationHints;

@@ -25,6 +25,7 @@ import javax.swing.Icon;
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.xml.NullEntityResolver;
 import org.geotools.xml.PreventLocalEntityResolver;
@@ -93,13 +94,29 @@ public class SVGGraphicFactoryTest extends TestCase {
         // now enable references to entity stored on local file 
         hints = new HashMap<>();
         hints.put(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE );
-        svg = new SVGGraphicFactory(); // disable safety protection
+        svg = new SVGGraphicFactory(hints); // disable safety protection
         
         URL url = SVGGraphicFactory.class.getResource("attack.svg");
         Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
         assertNotNull(icon);
     }
-    
+
+    public void testDefaultResolver() {
+        try {
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            assertSame(NullEntityResolver.INSTANCE, SVGGraphicFactory.defaultResolver());
+
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+            assertSame(PreventLocalEntityResolver.INSTANCE, SVGGraphicFactory.defaultResolver());
+
+            System.getProperties().put(GeoTools.ENTITY_RESOLVER,
+                    "org.geotools.renderer.style.PlaceholderEntityResolver");
+            Hints.scanSystemProperties();
+            assertTrue(SVGGraphicFactory.defaultResolver() instanceof PlaceholderEntityResolver);
+        }        finally {
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+        }
+    }
     public void testNaturalSize() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");

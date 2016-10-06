@@ -30,7 +30,7 @@ import org.geotools.data.wms.WebMapServer;
 import org.geotools.ows.ServiceException;
 import org.geotools.test.TestData;
 import org.geotools.xml.DocumentFactory;
-import org.geotools.xml.NoExternalEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
 import org.geotools.xml.XMLHandlerHints;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
@@ -66,7 +66,7 @@ public class WMSParserTest {
     @Test
     public void testWMS111EntityResolver() throws Exception {
         Map<String, Object> hints = new HashMap<>();
-        hints.put(XMLHandlerHints.ENTITY_RESOLVER, NoExternalEntityResolver.INSTANCE);
+        hints.put(XMLHandlerHints.ENTITY_RESOLVER, PreventLocalEntityResolver.INSTANCE);
 
         WebMapServer wms = new WebMapServer(new URL("http://test.org"),
                 new CapsMockClient("1.1.1Capabilities.xml"), hints);
@@ -105,7 +105,7 @@ public class WMSParserTest {
     @Test
     public void testWMS130EntityResolver() throws Exception {
         Map<String, Object> hints = new HashMap<>();
-        hints.put(XMLHandlerHints.ENTITY_RESOLVER, NoExternalEntityResolver.INSTANCE);
+        hints.put(XMLHandlerHints.ENTITY_RESOLVER, PreventLocalEntityResolver.INSTANCE);
         
         WebMapServer wms = new WebMapServer(new URL("http://test.org"),
                 new CapsMockClient("1.3.0Capabilities.xml"), hints);

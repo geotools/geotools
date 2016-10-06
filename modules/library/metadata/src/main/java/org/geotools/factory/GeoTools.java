@@ -196,6 +196,22 @@ public final class GeoTools {
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default
      * value to be assigned to the {@link Hints#
+     * ENTITY_RESOLVER} hint.
+     *
+     * This setting specifies the XML Entity resolver to be used when configuring a SAXParser,
+     * by default it NoLocalExternalEntityResolver.
+     *
+     * @see Hints#ENTITY_RESOLVER
+     * @see #getDefaultHints
+     */
+    public static final String ENTITY_RESOLVER = "org.xml.sax.EntityResolver";
+    static {
+        bind(ENTITY_RESOLVER, Hints.ENTITY_RESOLVER);
+    }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#
      * RESAMPLE_TOLERANCE} hint.
      *
      * This setting specifies the tolerance used when linearizing warp transformation into

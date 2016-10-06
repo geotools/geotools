@@ -35,14 +35,19 @@ import org.xml.sax.ext.EntityResolver2;
  * 
  * @author Davide Savazzi - geo-solutions.it
  */
-public class NoExternalEntityResolver implements EntityResolver2, Serializable {
+public class PreventLocalEntityResolver implements EntityResolver2, Serializable {
 
-    private static final long serialVersionUID = -8477717248646603150L;
-    public static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for ";
-    private static final Logger LOGGER = Logging.getLogger(NoExternalEntityResolver.class);
-    public static final NoExternalEntityResolver INSTANCE = new NoExternalEntityResolver();
+    /** serialVersionUID */
+    private static final long serialVersionUID = -5689036455423814933L;
+
+    protected static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for ";
+
+    protected static final Logger LOGGER = Logging.getLogger(PreventLocalEntityResolver.class);
+
+    /** Singleton instance of PreventLocalEntityResolver */ 
+    public static final PreventLocalEntityResolver INSTANCE = new PreventLocalEntityResolver();
     
-    protected NoExternalEntityResolver() {
+    protected PreventLocalEntityResolver() {
         // singleton
     }
     

@@ -39,6 +39,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.util.InternationalString;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -372,7 +373,20 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static final Key VERSION = new Key("org.geotools.util.Version");
+
     
+  ////////////////////////////////////////////////////////////////////////
+  ////////                                                        ////////
+  ////////              XML hints                                 ////////
+  ////////                                                        ////////
+  ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * The {@link EntityResolver} instance to use when configuring SAXParsers.
+     * 
+     * @since 15
+     */
+    public static final Key ENTITY_RESOLVER = new Key(EntityResolver.class);
       
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////

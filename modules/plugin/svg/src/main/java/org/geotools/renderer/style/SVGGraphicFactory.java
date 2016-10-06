@@ -19,6 +19,7 @@ package org.geotools.renderer.style;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints.Key;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.net.URLDecoder;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -46,9 +48,11 @@ import org.apache.batik.bridge.UserAgentAdapter;
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.geotools.factory.Factory;
+import org.geotools.factory.Hints;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
-import org.geotools.xml.NoExternalEntityResolver;
+import org.geotools.xml.NullEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
@@ -56,6 +60,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -72,7 +77,7 @@ import org.xml.sax.SAXException;
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/svg/src/main/java/org/geotools
  *         /renderer/style/SVGGraphicFactory.java $
  */
-public class SVGGraphicFactory implements ExternalGraphicFactory {
+public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
 
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("param\\((.+)\\).*");
 
@@ -88,6 +93,31 @@ public class SVGGraphicFactory implements ExternalGraphicFactory {
         formats.add("image/svg+xml");
     }
 
+    /** Hints we care about */
+    final private Map<Key, Object> implementationHints = new HashMap<>();
+    
+    private EntityResolver resolver;
+    
+    public SVGGraphicFactory(){
+        this( null );
+    }
+    
+    public SVGGraphicFactory(Map<Key, Object> hints){
+        this.resolver = NullEntityResolver.INSTANCE;
+        if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
+            // use entity resolver provided (even if null)
+            this.resolver = (EntityResolver) hints.get(Hints.ENTITY_RESOLVER);
+            this.implementationHints.put( Hints.ENTITY_RESOLVER, this.resolver );
+
+            if( this.resolver == null ){ // use null instance rather than check each time
+                this.resolver = NullEntityResolver.INSTANCE;
+            }
+        }
+    }
+    @Override
+    public Map<Key, ?> getImplementationHints() {
+        return implementationHints;
+    }
     public Icon getIcon(Feature feature, Expression url, String format, int size) throws Exception {
         // check we do support the declared format
         if (format == null || !formats.contains(format.toLowerCase()))
@@ -117,14 +147,12 @@ public class SVGGraphicFactory implements ExternalGraphicFactory {
                     InputSource source = super.resolveEntity(publicId, systemId);
                     if (source == null) {
                         try {
-                            return NoExternalEntityResolver.INSTANCE.resolveEntity(publicId,
-                                    systemId);
+                            return resolver.resolveEntity(publicId, systemId);
                         } catch (IOException e) {
                             throw new SAXException(e);
                         }
-                    } else {
-                        return source;
                     }
+                    return source;
                 }
             };
             Document doc = f.createDocument(svgfile);

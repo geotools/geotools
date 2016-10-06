@@ -40,7 +40,8 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     /** serialVersionUID */
     private static final long serialVersionUID = -5689036455423814933L;
 
-    protected static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for ";
+    /** Prefix used for SAXException message */
+    public static final String ERROR_MESSAGE_BASE = "Entity resolution disallowed for ";
 
     protected static final Logger LOGGER = Logging.getLogger(PreventLocalEntityResolver.class);
 

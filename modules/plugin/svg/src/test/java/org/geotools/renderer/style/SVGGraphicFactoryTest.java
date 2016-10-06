@@ -70,6 +70,16 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertEquals(20, icon.getIconHeight());
     }
     
+    public void testLocalURLXEE() throws Exception {
+        try {
+            URL url = SVGGraphicFactory.class.getResource("attack.svg");
+            Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
+            fail("expected entity resolution exception");
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "Entity resolution disallowed for file:///etc/passwd");
+        }
+    }
+    
     public void testNaturalSize() throws Exception {
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");
         assertNotNull(url);

@@ -24,6 +24,7 @@ import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
+import org.geotools.factory.GeoTools;
 import org.geotools.ows.ServiceException;
 import org.geotools.xml.XMLHandlerHints;
 import org.xml.sax.EntityResolver;
@@ -54,7 +55,8 @@ public class GetCapabilitiesRequest extends AbstractGetCapabilitiesRequest {
         Map<String, Object> hints = getRequestHints();
         EntityResolver resolver = null;
         if(hints != null) {
-            resolver = (EntityResolver) hints.get(XMLHandlerHints.ENTITY_RESOLVER);
+            GeoTools.getEntityResolver(
+            resolver = GeoTools.getEntityResolver(hints);
         }
         return new GetCapabilitiesResponse(response, resolver);
     }

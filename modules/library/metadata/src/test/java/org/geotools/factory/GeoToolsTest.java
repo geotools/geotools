@@ -17,7 +17,6 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
-import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +27,11 @@ import javax.media.jai.JAI;
 
 import org.apache.commons.logging.LogFactory;
 import org.geotools.util.Version;
+import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
 import org.junit.*;
 import org.opengis.filter.Filter;
-import org.opengis.geometry.coordinate.GeometryFactory;
+import org.xml.sax.EntityResolver;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -206,5 +207,35 @@ public final class GeoToolsTest {
         assertEquals("simpleName", GeoTools.fixName("simpleName"));
         assertEquals("jdbc:EPSG",  GeoTools.fixName(null, "jdbc:EPSG"));
         assertEquals("jdbc/EPSG",  GeoTools.fixName(null, "jdbc/EPSG"));
+    }
+    @Test
+    public void testDefaultResolver() {
+        try {
+            // confirm system hint works
+            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
+            assertSame(NullEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
+            
+            // test default behavor
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+            assertSame(PreventLocalEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
+
+            // test system property functions with default constructor
+            System.getProperties().put(GeoTools.ENTITY_RESOLVER,
+                    "org.geotools.factory.PlaceholderEntityResolver");
+            Hints.scanSystemProperties();
+            EntityResolver entityResolver = GeoTools.getEntityResolver(null);
+            assertTrue(entityResolver instanceof PlaceholderEntityResolver);
+
+            // test system property functions with INSTANCE field constructor
+            System.getProperties().put(GeoTools.ENTITY_RESOLVER,
+                    "org.geotools.xml.PreventLocalEntityResolver");
+            Hints.scanSystemProperties();
+            entityResolver = GeoTools.getEntityResolver(null);
+            assertTrue(entityResolver instanceof PreventLocalEntityResolver);
+        } finally {
+            System.clearProperty(GeoTools.ENTITY_RESOLVER);
+            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
+            Hints.scanSystemProperties();
+        }
     }
 }

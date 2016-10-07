@@ -18,10 +18,10 @@ package org.geotools.factory;
 
 import java.awt.RenderingHints;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +34,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.naming.Context;
@@ -42,6 +44,7 @@ import javax.naming.NamingException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
+import javax.xml.parsers.SAXParser;
 
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
@@ -51,6 +54,9 @@ import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.logging.LoggerFactory;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -307,7 +313,6 @@ public final class GeoTools {
      */
     public static String getEnvironmentInfo() {
         final String newline = String.format("%n");
-        final String indent = "    ";
         
         final StringBuilder sb = new StringBuilder();
         sb.append("GeoTools version ").append(getVersion().toString());
@@ -577,7 +582,7 @@ public final class GeoTools {
      *
      * @since 2.4
      */
-    public void setLoggerFactory(final LoggerFactory factory) {
+    public void setLoggerFactory(final LoggerFactory<?> factory) {
         Logging.GEOTOOLS.setLoggerFactory(factory);
     }
 
@@ -786,7 +791,69 @@ public final class GeoTools {
         }
         return completed;
     }
-    
+
+    /**
+     * Returns the default entity resolver, used to configure {@link SAXParser}.
+     * 
+     * @param hints An optional set of hints, or {@code null} if none, see {@link Hints#ENTITY_RESOLVER}.
+     * @return An entity resolver (never {@code null})
+     */
+    public static EntityResolver getEntityResolver(Hints hints) {
+        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
+            Object resolver = hints.get(Hints.ENTITY_RESOLVER);
+
+            if (resolver == null) { // use null instance rather than check each time
+                return NullEntityResolver.INSTANCE;
+            }
+            else if (resolver instanceof EntityResolver){
+                return (EntityResolver) resolver;
+            }
+        }
+        Hints defaults = GeoTools.getDefaultHints();
+        if (defaults.containsKey(Hints.ENTITY_RESOLVER)) {
+            Object hint = defaults.get(Hints.ENTITY_RESOLVER);
+            if (hint instanceof EntityResolver) {
+                return (EntityResolver) hint;
+            }
+            if (hint instanceof String) {
+                final Logger LOGGER = Logging.getLogger("org.geotools.GeoTools");
+                try {
+                    String className = (String) hint;
+                    Class<?> type = Class.forName(className);
+
+                    for (Field field : type.getDeclaredFields()) {
+                        int modifier = field.getModifiers();
+                        if ("INSTANCE".equals(field.getName()) && Modifier.isStatic(modifier)
+                                && Modifier.isPublic(modifier)) {
+                            try {
+                                Object value = field.get(null);
+                                if (value != null && value instanceof EntityResolver) {
+                                    return (EntityResolver) value;
+                                }
+                            } catch (Throwable t) {
+                                LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "
+                                        + className + ".INSTANCE", t);
+                                return PreventLocalEntityResolver.INSTANCE;
+                            }
+                        }
+                    }
+                    try {
+                        Object value = type.newInstance();
+                        if (value instanceof EntityResolver) {
+                            return (EntityResolver) value;
+                        }
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        LOGGER.log(Level.FINER,
+                                "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
+                    }
+                } catch (ClassNotFoundException notFound) {
+                    LOGGER.log(Level.FINER,
+                            "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(), notFound);
+                }
+            }
+        }
+        return PreventLocalEntityResolver.INSTANCE;
+    }
     /**
      * Returns the default initial context.
      *

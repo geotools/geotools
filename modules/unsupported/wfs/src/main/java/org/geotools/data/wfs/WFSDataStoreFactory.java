@@ -120,6 +120,7 @@ import org.xml.sax.SAXException;
  * @see WFSDataStore
  * @see WFSProtocol
  * @see WFSStrategy
+ * @deprecated Please use gt-wfs-ng implementation
  */
 @SuppressWarnings( { "unchecked", "nls" })
 public class WFSDataStoreFactory implements DataStoreFactorySpi {

@@ -166,18 +166,16 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @param hints Hints as per {@link {@link XMLHandlerHints}
      */
-    public XMLSAXHandler(Map hints) {
+    public XMLSAXHandler(Map<String,Object> hints) {
         init(hints);
         logger.setLevel(level);
     }
-    protected void init(Map hints){
+    protected void init(Map<String,Object> hints){
         if( hints == null ){
             hints = new HashMap<String,Object>();
         }
         this.hints = hints;
-        if( hints.containsKey(XMLHandlerHints.ENTITY_RESOLVER)){
-            setEntityResolver( (EntityResolver) hints.get(XMLHandlerHints.ENTITY_RESOLVER));;
-        }
+        setEntityResolver(XMLHandlerHints.toEntityResolver(hints));
     }
     /**
      * Implementation of endDocument.

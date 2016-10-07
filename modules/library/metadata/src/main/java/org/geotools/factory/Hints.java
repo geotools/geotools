@@ -1121,8 +1121,8 @@ public class Hints extends RenderingHints {
          * provided there is no concurrent changes in an other thread.
          */
         @SuppressWarnings("unchecked")
-        Map<RenderingHints.Key, Object> filtered = (Map) hints;
-        for (final Iterator it=hints.keySet().iterator(); it.hasNext();) {
+        Map<RenderingHints.Key, Object> filtered = (Map<RenderingHints.Key, Object>) hints;
+        for (final Iterator<?> it=hints.keySet().iterator(); it.hasNext();) {
             final Object key = it.next();
             if (!(key instanceof RenderingHints.Key)) {
                 if (filtered == hints) {

@@ -68,9 +68,7 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
             // hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
             Configuration config = new WPSConfiguration();
             Parser parser = new Parser(config);
-            if(hints != null && hints.get(XMLHandlerHints.ENTITY_RESOLVER) != null) {
-                parser.setEntityResolver((EntityResolver) hints.get(XMLHandlerHints.ENTITY_RESOLVER));
-            }
+            parser.setEntityResolver(XMLHandlerHints.toEntityResolver(hints));
 
             Object object;
             excepResponse = null;

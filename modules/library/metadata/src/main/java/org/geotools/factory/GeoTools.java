@@ -799,60 +799,74 @@ public final class GeoTools {
      * @return An entity resolver (never {@code null})
      */
     public static EntityResolver getEntityResolver(Hints hints) {
-        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
-            Object resolver = hints.get(Hints.ENTITY_RESOLVER);
-
-            if (resolver == null) { // use null instance rather than check each time
-                return NullEntityResolver.INSTANCE;
-            }
-            else if (resolver instanceof EntityResolver){
-                return (EntityResolver) resolver;
-            }
+        if (hints == null) {
+            hints = getDefaultHints();
         }
-        Hints defaults = GeoTools.getDefaultHints();
-        if (defaults.containsKey(Hints.ENTITY_RESOLVER)) {
-            Object hint = defaults.get(Hints.ENTITY_RESOLVER);
-            if (hint instanceof EntityResolver) {
+        if (hints.containsKey(Hints.ENTITY_RESOLVER)) {
+            Object hint = hints.get(Hints.ENTITY_RESOLVER);
+            if (hint == null) {
+                return NullEntityResolver.INSTANCE;
+            } else if (hint instanceof EntityResolver) {
                 return (EntityResolver) hint;
-            }
-            if (hint instanceof String) {
-                final Logger LOGGER = Logging.getLogger("org.geotools.GeoTools");
-                try {
-                    String className = (String) hint;
-                    Class<?> type = Class.forName(className);
-
-                    for (Field field : type.getDeclaredFields()) {
-                        int modifier = field.getModifiers();
-                        if ("INSTANCE".equals(field.getName()) && Modifier.isStatic(modifier)
-                                && Modifier.isPublic(modifier)) {
-                            try {
-                                Object value = field.get(null);
-                                if (value != null && value instanceof EntityResolver) {
-                                    return (EntityResolver) value;
-                                }
-                            } catch (Throwable t) {
-                                LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "
-                                        + className + ".INSTANCE", t);
-                                return PreventLocalEntityResolver.INSTANCE;
-                            }
-                        }
-                    }
-                    try {
-                        Object value = type.newInstance();
-                        if (value instanceof EntityResolver) {
-                            return (EntityResolver) value;
-                        }
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        LOGGER.log(Level.FINER,
-                                "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
-                    }
-                } catch (ClassNotFoundException notFound) {
-                    LOGGER.log(Level.FINER,
-                            "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(), notFound);
-                }
+            } else if (hint instanceof String) {
+                String className = (String) hint;
+                return instantiate(className,EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
             }
         }
         return PreventLocalEntityResolver.INSTANCE;
+    }
+
+    /**
+     * Create instance of className (or access singleton INSTANCE field). 
+     * 
+     * @param className Class name to instantiate
+     * @param type Class of object created
+     * @param defaultValue Default to be provided, may be null
+     * @return EntityResolver, defaults to {@link PreventLocalEntityResolver#INSTANCE} if unavailable.
+     */
+    static <T,D extends T> T instantiate(String className, Class<T> type, D defaultValue){
+        if( className == null){
+            return defaultValue;
+        }
+        final Logger LOGGER = Logging.getLogger("org.geotools.xml");
+        try {
+            Class<?> kind = Class.forName(className);
+            // step 1 look for instance field
+            for (Field field : kind.getDeclaredFields()) {
+                int modifier = field.getModifiers();
+                if ("INSTANCE".equals(field.getName()) && Modifier.isStatic(modifier)
+                        && Modifier.isPublic(modifier)) {
+                    try {
+                        Object value = field.get(null);
+                        if (value != null && value instanceof EntityResolver) {
+                            return type.cast(value);
+                        }
+                        else {
+                            LOGGER.log(Level.FINER, "Unable to use ENTITY_RESOLVER: "
+                                    + className + ".INSTANCE");
+                        }
+                    } catch (Throwable t) {
+                        LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "
+                                + className + ".INSTANCE", t);
+                    }
+                    return defaultValue;
+                }
+            }
+            // step 2 no argument constructor
+            try {
+                Object value = kind.newInstance();
+                if (type.isInstance(value)) {
+                    return type.cast(value);
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                LOGGER.log(Level.FINER,
+                        "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
+            }
+        } catch (ClassNotFoundException notFound) {
+            LOGGER.log(Level.FINER,
+                    "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(), notFound);
+        }
+        return defaultValue;
     }
     /**
      * Returns the default initial context.

@@ -209,9 +209,29 @@ public final class GeoToolsTest {
         assertEquals("jdbc/EPSG",  GeoTools.fixName(null, "jdbc/EPSG"));
     }
     @Test
-    public void testDefaultResolver() {
+    public void testEntityResolver() {
+        
+        // confirm instantiate works
+        EntityResolver resolver;
+        
+        resolver = GeoTools.instantiate("org.geotools.factory.PlaceholderEntityResolver",
+                EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+        assertTrue(resolver instanceof PlaceholderEntityResolver);
+
+        resolver = GeoTools.instantiate("org.geotools.xml.NullEntityResolver", EntityResolver.class,
+                PreventLocalEntityResolver.INSTANCE);
+        assertTrue(resolver instanceof NullEntityResolver);
+
+        resolver = GeoTools.instantiate("invalid.class.reference", EntityResolver.class,
+                PreventLocalEntityResolver.INSTANCE);
+        assertTrue(resolver instanceof PreventLocalEntityResolver);
+
+        resolver = GeoTools.instantiate(null, EntityResolver.class,
+                PreventLocalEntityResolver.INSTANCE);
+        assertTrue(resolver instanceof PreventLocalEntityResolver);
+        
+        // confirm system hints work
         try {
-            // confirm system hint works
             Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
             assertSame(NullEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
             
@@ -228,10 +248,10 @@ public final class GeoToolsTest {
 
             // test system property functions with INSTANCE field constructor
             System.getProperties().put(GeoTools.ENTITY_RESOLVER,
-                    "org.geotools.xml.PreventLocalEntityResolver");
+                    "org.geotools.xml.NullEntityResolver");
             Hints.scanSystemProperties();
             entityResolver = GeoTools.getEntityResolver(null);
-            assertTrue(entityResolver instanceof PreventLocalEntityResolver);
+            assertTrue(entityResolver instanceof NullEntityResolver);
         } finally {
             System.clearProperty(GeoTools.ENTITY_RESOLVER);
             Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);

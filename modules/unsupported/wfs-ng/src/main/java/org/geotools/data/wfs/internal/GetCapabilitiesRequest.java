@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs.internal;
 
+import java.beans.XMLEncoder;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -54,9 +55,8 @@ public class GetCapabilitiesRequest extends AbstractGetCapabilitiesRequest {
     public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
         Map<String, Object> hints = getRequestHints();
         EntityResolver resolver = null;
-        if(hints != null) {
-            GeoTools.getEntityResolver(
-            resolver = GeoTools.getEntityResolver(hints);
+        if (hints != null) {
+            resolver = XMLHandlerHints.toEntityResolver(hints);
         }
         return new GetCapabilitiesResponse(response, resolver);
     }

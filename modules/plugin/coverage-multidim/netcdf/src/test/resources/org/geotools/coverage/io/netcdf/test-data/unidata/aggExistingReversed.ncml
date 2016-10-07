@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+
+  <aggregation dimName="time" type="joinExisting">
+    <netcdf location="feb-reverse.nc"/>
+    <netcdf location="jan-reverse.nc"/>
+  </aggregation>
+
+</netcdf>

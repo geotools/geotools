@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geotools.feature.NameImpl;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
+import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.feature.type.Name;
@@ -100,6 +102,24 @@ public class NetCDFAggregationTest {
         assertEquals(3, reader.getVariableByName("runtime").getDimension(0).getLength());
         assertEquals("runtime", reader.getVariableByName("T").getDimension(0).getFullName());        
         
+    }
+    
+    @Test    
+    public void testJoinReversed() throws IOException {
+        NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
+        File file = TestData.file(this, "unidata/aggExisting.ncml");
+        NetCDFImageReader reader = (NetCDFImageReader) readerSpi.createReaderInstance();
+        reader.setInput(file);
+        VariableAdapter variableAdapter = reader.getCoverageDescriptor(new NameImpl("T"));
+        
+        NetCDFImageReaderSpi readerSpiReversed = new NetCDFImageReaderSpi();
+        File fileReversed = TestData.file(this, "unidata/aggExistingReversed.ncml");
+        NetCDFImageReader readerReversed = (NetCDFImageReader) readerSpiReversed.createReaderInstance();
+        readerReversed.setInput(fileReversed);        
+        VariableAdapter variableAdapterReversed = readerReversed.getCoverageDescriptor(new NameImpl("T"));
+        
+        assertEquals(variableAdapter.getTemporalDomain().getTemporalExtent(), 
+                variableAdapterReversed.getTemporalDomain().getTemporalExtent());
     }
 
 }

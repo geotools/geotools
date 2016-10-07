@@ -139,12 +139,16 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
 
     @Override
     public Date getMinimum() throws IOException {
-        return timeBuilder.buildTime(0);
+        Date left = timeBuilder.buildTime(0);
+        Date right = timeBuilder.buildTime(timeBuilder.getNumTimes() - 1);
+        return left.compareTo(right) < 0 ? left : right;
     }
 
     @Override
     public Date getMaximum() throws IOException {
-        return timeBuilder.buildTime(timeBuilder.getNumTimes() - 1);
+        Date left = timeBuilder.buildTime(0);
+        Date right = timeBuilder.buildTime(timeBuilder.getNumTimes() - 1);
+        return left.compareTo(right) < 0 ? right : left;
     }
 
     @Override

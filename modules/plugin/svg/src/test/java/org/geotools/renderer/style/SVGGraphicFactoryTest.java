@@ -101,22 +101,6 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertNotNull(icon);
     }
 
-    public void testDefaultResolver() {
-        try {
-            Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
-            assertSame(NullEntityResolver.INSTANCE, SVGGraphicFactory.defaultResolver());
-
-            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
-            assertSame(PreventLocalEntityResolver.INSTANCE, SVGGraphicFactory.defaultResolver());
-
-            System.getProperties().put(GeoTools.ENTITY_RESOLVER,
-                    "org.geotools.renderer.style.PlaceholderEntityResolver");
-            Hints.scanSystemProperties();
-            assertTrue(SVGGraphicFactory.defaultResolver() instanceof PlaceholderEntityResolver);
-        }        finally {
-            Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
-        }
-    }
     public void testNaturalSize() throws Exception {
         SVGGraphicFactory svg = new SVGGraphicFactory();
         URL url = SVGGraphicFactory.class.getResource("gradient.svg");

@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
 /**
- * NullObject implementation for {@link EntityResolver2} as an alternative to null checks.
+ * NullObject implementation for {@link EntityResolver2} (used as an alternative to null checks).
  * <p>
  * This implementation returns {@code null} to request that the parser open a regular URI connection
  * to the system identifier.

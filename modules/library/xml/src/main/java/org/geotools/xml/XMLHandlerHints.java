@@ -21,6 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
+import org.xml.sax.EntityResolver;
+
 /**
  * Hint object with known parameters for XML parsing.
  * 
@@ -45,7 +49,7 @@ public class XMLHandlerHints implements Map<String,Object> {
     /** Sets the level of compliance that the filter encoder should use */
     public static final String FILTER_COMPLIANCE_STRICTNESS = "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
     /** Supplied {@link EntityResolver} for Schema and/or DTD validation */
-    public final static String ENTITY_RESOLVER ="org.xml.sax.EntityResolver";
+    public final static String ENTITY_RESOLVER = GeoTools.ENTITY_RESOLVER;
     /** Supplied {@link SaxParserFactory}  */
     public final static String SAX_PARSER_FACTORY ="javax.xml.parsers.SAXParserFactory";
 
@@ -180,8 +184,26 @@ public class XMLHandlerHints implements Map<String,Object> {
     public Collection<Object> values() {
         return map.values();
     }
-    
-    
-    
+
+    /**
+     * Looks up {@link #ENTITY_RESOLVER} instance in provided hints, defaulting to setting provided
+     * by {@link GeoTools#getEntityResolver(org.geotools.factory.Hints)} (usually
+     * {@link PreventLocalEntityResolver} unless otherwise configured).
+     * 
+     * @param hints
+     * @return EntityResolver provided by hints, or non-null default provided by
+     *         {@link Hints#ENTITY_RESOLVER}.
+     */
+    public static EntityResolver toEntityResolver(Map<String, Object> hints) {
+        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
+            Object resolver = hints.get(Hints.ENTITY_RESOLVER);
+            if (resolver == null) { // use null instance rather than check each time
+                return NullEntityResolver.INSTANCE;
+            } else if (resolver instanceof EntityResolver) {
+                return (EntityResolver) resolver;
+            }
+        }
+        return GeoTools.getEntityResolver(null);
+    }
 
 }

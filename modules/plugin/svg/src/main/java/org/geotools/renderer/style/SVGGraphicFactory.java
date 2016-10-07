@@ -107,30 +107,8 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
             }
         }
         else {
-            this.resolver = defaultResolver();
+            this.resolver = GeoTools.getEntityResolver(null);
         }
-    }
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.renderer.style.SVGGraphicFactory");
-    protected static EntityResolver defaultResolver() {
-        Hints hints = GeoTools.getDefaultHints();
-        if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
-            Object hint = hints.get(Hints.ENTITY_RESOLVER);
-            if( hint instanceof EntityResolver){
-                return (EntityResolver) hint;
-            }
-            if( hint instanceof String ){
-                try {
-                    Class<?> type = Class.forName((String)hint);
-                    Object value = type.newInstance();
-                    if( value instanceof EntityResolver){
-                        return (EntityResolver) value;
-                    }
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                    LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "+ e.getMessage(), e);
-                }
-            }
-        }
-        return PreventLocalEntityResolver.INSTANCE;
     }
 
     @Override

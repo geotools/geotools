@@ -2,8 +2,9 @@
 
 When submitting a patch or pull request:
 
-* **Small Contribution / Single Source Code File:** For a very small change (less than one file) a committer can review and apply the change on your behalf. This is a quick workaround allowing us to correct spelling mistakes in the documentation, clarify a javadoc, or accept a very small fix.
-  We understand you may have to update several test cases to verify your change fixes its intended problem.
+* **Small Contribution / Single Source Code File:** For a small change to a single source file a project committer can review and apply the change on your behalf. This is a quick workaround allowing us to correct spelling mistakes in the documentation, clarify a javadoc, or accept a very small fix.
+
+  We understand that fixing a single souroce file may require changes to several test case files to verify the fix addresses its intended problem.
 
 * **Large Contributions / Multiple Files / New Files:** To  contribute a new file, or if your change effects several files, sign a [Code Contribution License](http://docs.geotools.org/latest/developer/procedures/contribution_license.html). It does not take long and you can send it via email.
 

@@ -36,9 +36,11 @@ import org.opengis.feature.type.Name;
  * 
  * @author Niels Charlier
  * 
- * the samples used in this test class are taken from 
+ * the samples used in this test class (.nc and .ncml files located in test-data/unidata) 
+ * are taken from 
  * http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/ncml/Aggregation.html
- * see THREDDS license
+ * (see THREDDS license)
+ * except the reversed sample files which are manipulations of the originals from the website above.
  *
  */
 public class NetCDFAggregationTest {

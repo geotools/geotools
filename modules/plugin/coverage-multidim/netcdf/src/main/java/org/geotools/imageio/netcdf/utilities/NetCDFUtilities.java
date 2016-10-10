@@ -772,13 +772,11 @@ public class NetCDFUtilities {
                     } else {
                         break; // Checks only the dates, ignore the hours.
                     }
-                }
-                else if (Character.isDigit(c)) {
+                } else if (Character.isDigit(c)) {
                     digitCount++;
                     dateLength++;
                     continue; // Digits are legal in all cases.
-                }
-                else if (Character.isLetter(c) && field <= 2) {
+                } else if (Character.isLetter(c) && field <= 2) {
                     if (field == 1) {
                         yearLast = true;
                         monthFirst = true;
@@ -786,8 +784,7 @@ public class NetCDFUtilities {
                     namedMonth = true;
                     dateLength++;
                     continue; // Letters are legal for month only.
-                }
-                else if (field == 1 || monthFirst && field == 2) {
+                } else if (field == 1 || monthFirst && field == 2) {
                     dateSeparator = c;
                     dateLength++;
                 } else if (c == dateSeparator) {

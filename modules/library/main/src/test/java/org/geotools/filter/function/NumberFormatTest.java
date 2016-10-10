@@ -24,8 +24,19 @@ public class NumberFormatTest extends TestCase {
         Literal number = ff.literal("10.56789");
         
         Function f = ff.function("numberFormat", new Expression[]{pattern, number});
-        char ds = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getDecimalSeparator();
+        char ds = DecimalFormatSymbols.getInstance(Locale.getDefault()).getDecimalSeparator();
         assertEquals("10" + ds + "57", f.evaluate(null , String.class));
+    }
+    public void testFormatFrenchDouble() {
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.FRANCE);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal("#.##");
+        Literal number = ff.literal("10.56789");
+        Function f = ff.function("numberFormat", new Expression[]{pattern, number});
+        char ds = DecimalFormatSymbols.getInstance(Locale.FRANCE).getDecimalSeparator();
+        assertEquals("10" + ds + "57", f.evaluate(null , String.class));
+        Locale.setDefault(defaultLocale);
     }
     
     public void testFormatInteger() {
@@ -34,7 +45,7 @@ public class NumberFormatTest extends TestCase {
         Literal number = ff.literal("123456");
         
         Function f = ff.function("numberFormat", new Expression[]{pattern, number});
-        char gs = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getGroupingSeparator();
+        char gs = DecimalFormatSymbols.getInstance(Locale.getDefault()).getGroupingSeparator();
         assertEquals("123" + gs + "456", f.evaluate(null , String.class));
     }
     

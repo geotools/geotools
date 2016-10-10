@@ -43,7 +43,6 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             parameter("format", String.class),
             parameter("number", Number.class));
     
-    public static DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
 
     public FilterFunction_numberFormat() {
         super(NAME);
@@ -67,12 +66,15 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function dateFormat argument #1 - expected type java.util.Date");
+                    "Filter Function problem for function dateFormat argument #1 - expected type java.util.Double");
         }
         
         if(format == null || number == null) {
             return null;
         }
+        Locale locale=Locale.getDefault();
+        
+        DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(locale);
 
         DecimalFormat numberFormat = new DecimalFormat(format, decimalFormatSymbols);
         return numberFormat.format(number);

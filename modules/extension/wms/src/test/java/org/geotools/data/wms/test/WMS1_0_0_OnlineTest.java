@@ -254,7 +254,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
         try{
             File getCaps = TestData.file(this, capFile);
             URL getCapsURL = getCaps.toURI().toURL();
-            Map hints = new HashMap();
+            Map<String,Object> hints = new HashMap<>();
             hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
             Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
             

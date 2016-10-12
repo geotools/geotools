@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -207,6 +207,10 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     public WFSConfig getConfig() {
         return config;
     }
+    
+    protected String encodePropertyName(String propertyName) {
+        return propertyName;
+    }
 
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest request) {
         requestDebug("Creating GetFeature request parameters for ", request.getTypeName());
@@ -221,6 +225,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             outputFormat = getDefaultOutputFormat(WFSOperationType.GET_FEATURE);
         }
         map.put("OUTPUTFORMAT", outputFormat);
+        map.put("RESULTTYPE", request.getResultType().name());
 
         if (request.getMaxFeatures() != null) {
             map.put("MAXFEATURES", String.valueOf(request.getMaxFeatures()));
@@ -239,7 +244,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
                     pnames.append(',');
                 }
             }
-            map.put("PROPERTYNAME", pnames.toString());
+            map.put("PROPERTYNAME", encodePropertyName(pnames.toString()));
         }
 
         final String srsName = request.getSrsName();

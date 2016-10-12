@@ -363,7 +363,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 		rasterManager.getGranuleDescriptors(query, new GranuleCatalogVisitor() {
                     
                     @Override
-                    public void visit(GranuleDescriptor granule, Object o) {
+                    public void visit(GranuleDescriptor granule, SimpleFeature o) {
                         features.add(granule);
                         
                     }
@@ -395,7 +395,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 	                rasterManager.getGranuleDescriptors(query, new GranuleCatalogVisitor() {
 	                    
 	                    @Override
-	                    public void visit(GranuleDescriptor granule, Object o) {
+	                    public void visit(GranuleDescriptor granule, SimpleFeature o) {
 	                        features.add(granule);
 	                        
 	                    }

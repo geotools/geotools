@@ -72,7 +72,7 @@ DataStore exportToShapefile(MemoryDataStore memory, String typeName, File direct
     String fileName = ft.getTypeName();
     File file = new File(directory, fileName + ".shp");
     
-    Map<String, java.io.Serializable> creationParams = new HashMap<String, java.io.Serializable>();
+    Map<String, java.io.Serializable> creationParams = new HashMap<>();
     creationParams.put("url", DataUtilities.fileToURL(file));
     
     FileDataStoreFactorySpi factory = FileDataStoreFinder.getDataStoreFactory("shp");
@@ -127,7 +127,7 @@ DataStore exportToShapefile2(MemoryDataStore memory, String typeName, File direc
     String fileName = ft.getTypeName();
     File file = new File(directory, fileName + ".shp");
     
-    Map<String, java.io.Serializable> creationParams = new HashMap<String, java.io.Serializable>();
+    Map<String, java.io.Serializable> creationParams = new HashMap<>();
     creationParams.put("url", DataUtilities.fileToURL(file));
     
     FileDataStoreFactorySpi factory = FileDataStoreFinder.getDataStoreFactory("shp");

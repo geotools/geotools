@@ -48,10 +48,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 
 /**
- *
+ * Test SimpleFeatureTypeBuilder and friends.
+ * 
  * @author  en
  * @author jgarnett
- *
  *
  * @source $URL$
  */

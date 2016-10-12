@@ -32,82 +32,79 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.operation.MathTransform2D;
 
 /**
- * Specific {@link Callable} implementation that can be used to load the result of a request on a
- * single {@link GranuleDescriptor} via {@link GranuleLoadingResult}.
+ * Specific {@link Callable} implementation that can be used to load the result of a request on a single {@link GranuleDescriptor} via
+ * {@link GranuleLoadingResult}.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
  */
-class GranuleLoader implements Callable<GranuleLoadingResult>{
+public class GranuleLoader implements Callable<GranuleLoadingResult> {
 
-	final ReferencedEnvelope cropBBox;
-	
-	final MathTransform2D mosaicWorldToGrid;
-	
-	final GranuleDescriptor granuleDescriptor;
-	
-	final ImageReadParam readParameters;
-	
-	final int imageIndex;
+    final ReferencedEnvelope cropBBox;
 
-	final Hints hints;
+    final MathTransform2D mosaicWorldToGrid;
 
-	RasterLayerRequest request;
-	    
-	GranuleLoader(
-			final ImageReadParam readParameters, 
-			final int imageIndex,
-			final ReferencedEnvelope cropBBox, 
-			final MathTransform2D mosaicWorldToGrid,
-			final GranuleDescriptor granuleDescriptor,
-			final RasterLayerRequest request,
-			final Hints hints) {
-		this.readParameters = ImageUtilities.cloneImageReadParam(readParameters);
-		this.imageIndex = imageIndex;
-		this.cropBBox = cropBBox;
-		this.mosaicWorldToGrid = mosaicWorldToGrid;
-		this.granuleDescriptor = granuleDescriptor;
-		this.request=request;
-		this.hints = new Hints(hints);
-		if (request.getTileDimensions()!= null) {
-		    final Dimension tileDimension = request.getTileDimensions();
-		    if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)){
-		        final Object layout = this.hints.get(JAI.KEY_IMAGE_LAYOUT);
-		        if (layout != null && layout instanceof ImageLayout){
-		            final ImageLayout imageLayout = (ImageLayout) layout;
-		            imageLayout.setTileHeight(tileDimension.height);
-		            imageLayout.setTileWidth(tileDimension.width);
-		        }
-		    } else {
-		        final ImageLayout layout = new ImageLayout();
-		        layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
-		        this.hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
-		    }
-		}
-	}
-	
-	public BoundingBox getCropBBox() {
-		return cropBBox;
-	}
+    final GranuleDescriptor granuleDescriptor;
 
-	public MathTransform2D getMosaicWorldToGrid() {
-		return mosaicWorldToGrid;
-	}
+    final ImageReadParam readParameters;
 
-	public GranuleDescriptor getGranule() {
-		return granuleDescriptor;
-	}
+    final int imageIndex;
 
-	public ImageReadParam getReadParameters() {
-		return readParameters;
-	}
+    final Hints hints;
 
-	public int getImageIndex() {
-		return imageIndex;
-	}
-	
-	public GranuleLoadingResult call() throws Exception {
-		return granuleDescriptor.loadRaster(readParameters, imageIndex, cropBBox, mosaicWorldToGrid, request, hints);
-	}
+    RasterLayerRequest request;
+
+    public GranuleLoader(final ImageReadParam readParameters, final int imageIndex,
+            final ReferencedEnvelope cropBBox, final MathTransform2D mosaicWorldToGrid,
+            final GranuleDescriptor granuleDescriptor, final RasterLayerRequest request,
+            final Hints hints) {
+        this.readParameters = ImageUtilities.cloneImageReadParam(readParameters);
+        this.imageIndex = imageIndex;
+        this.cropBBox = cropBBox;
+        this.mosaicWorldToGrid = mosaicWorldToGrid;
+        this.granuleDescriptor = granuleDescriptor;
+        this.request = request;
+        this.hints = new Hints(hints);
+        if (request.getTileDimensions() != null) {
+            final Dimension tileDimension = request.getTileDimensions();
+            if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+                final Object layout = this.hints.get(JAI.KEY_IMAGE_LAYOUT);
+                if (layout != null && layout instanceof ImageLayout) {
+                    final ImageLayout imageLayout = (ImageLayout) layout;
+                    imageLayout.setTileHeight(tileDimension.height);
+                    imageLayout.setTileWidth(tileDimension.width);
+                }
+            } else {
+                final ImageLayout layout = new ImageLayout();
+                layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
+                this.hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            }
+        }
+    }
+
+    public BoundingBox getCropBBox() {
+        return cropBBox;
+    }
+
+    public MathTransform2D getMosaicWorldToGrid() {
+        return mosaicWorldToGrid;
+    }
+
+    public GranuleDescriptor getGranule() {
+        return granuleDescriptor;
+    }
+
+    public ImageReadParam getReadParameters() {
+        return readParameters;
+    }
+
+    public int getImageIndex() {
+        return imageIndex;
+    }
+
+    public GranuleLoadingResult call() throws Exception {
+        return granuleDescriptor.loadRaster(readParameters, imageIndex, cropBBox, mosaicWorldToGrid,
+                request, hints);
+    }
 
 }

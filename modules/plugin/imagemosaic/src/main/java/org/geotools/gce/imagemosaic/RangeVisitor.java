@@ -65,8 +65,8 @@ class RangeVisitor implements FeatureCalc {
             final long endFirst = firstDateRange.getMaxValue().getTime();
             final long beginSecond = secondDateRange.getMinValue().getTime();
             final long endSecond = secondDateRange.getMaxValue().getTime();
-            return NumberRangeComparator
-                    .doubleCompare(beginFirst, endFirst, beginSecond, endSecond);
+            return NumberRangeComparator.doubleCompare(beginFirst, endFirst, beginSecond,
+                    endSecond);
         }
     }
 
@@ -76,7 +76,8 @@ class RangeVisitor implements FeatureCalc {
     static class NumberRangeComparator implements Comparator<Range<? extends Number>> {
 
         @Override
-        public int compare(Range<? extends Number> firstRange, Range<? extends Number> secondRange) {
+        public int compare(Range<? extends Number> firstRange,
+                Range<? extends Number> secondRange) {
             Utilities.ensureNonNull("firstRange", firstRange);
             Utilities.ensureNonNull("secondRange", secondRange);
             final Number firstRangeMin = firstRange.getMinValue();
@@ -96,13 +97,10 @@ class RangeVisitor implements FeatureCalc {
          * @param secondRangeMax the max value of the second range
          * @return
          * 
-         * TODO: Improve that logic to deal with special cases on intervals management
+         *         TODO: Improve that logic to deal with special cases on intervals management
          */
-        public static int doubleCompare(
-                final double firstRangeMin, 
-                final double firstRangeMax, 
-                final double secondRangeMin,
-                final double secondRangeMax) {
+        public static int doubleCompare(final double firstRangeMin, final double firstRangeMax,
+                final double secondRangeMin, final double secondRangeMax) {
             if (firstRangeMin == secondRangeMin && firstRangeMax == secondRangeMax) {
                 return 0;
             }
@@ -136,8 +134,7 @@ class RangeVisitor implements FeatureCalc {
     Set<Range> set = null;
 
     /**
-     * A set of string representations of the returned ranges. 
-     * Time ranges will be returned into a compact form so that intersecting ranges are merged
+     * A set of string representations of the returned ranges. Time ranges will be returned into a compact form so that intersecting ranges are merged
      * together into a bigger time range.
      */
     Set<String> minimalRanges = null;
@@ -147,10 +144,11 @@ class RangeVisitor implements FeatureCalc {
     }
 
     /**
-     * Range visitor constructor. 
+     * Range visitor constructor.
+     * 
      * @param attributeTypeName1 the name of the attribute to be related to the left side of the range
      * @param attributeTypeName2 the name of the attribute to be related to the right side of the range
-     * @param rangeType the type of range, one of {@link RangeType#NUMBER},{@link RangeType#DATE} 
+     * @param rangeType the type of range, one of {@link RangeType#NUMBER},{@link RangeType#DATE}
      */
     public RangeVisitor(String attributeTypeName1, String attributeTypeName2, RangeType rangeType) {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);

@@ -134,7 +134,7 @@ public void idSet(){
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Filter filter;
     
-    Set<FeatureId> selected = new HashSet<FeatureId>();
+    Set<FeatureId> selected = new HashSet<>();
     selected.add(ff.featureId("CITY.98734597823459687235"));
     selected.add(ff.featureId("CITY.98734592345235823474"));
     

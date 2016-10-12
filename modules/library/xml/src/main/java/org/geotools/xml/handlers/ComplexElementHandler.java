@@ -139,7 +139,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         text = (text == null) ? null : text.trim();
         
         if(hints == null){
-            hints = new HashMap();
+            hints = new HashMap<String,Object>();
             hints.put(ElementHandlerFactory.KEY,ehf);
         }else{
             if(!hints.containsKey(ElementHandlerFactory.KEY))

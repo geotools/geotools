@@ -87,6 +87,12 @@ When creating the first release candidate of a series, there are some extra step
       
 * Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
 
+* Update the jobs on ares:
+  
+  * disable the maintenance jobs, and remove them from the geotools view
+  * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration
+  * edit the previous stable branch, changing to DIST=maintenance
+
 * Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
 
 Build the Release
@@ -143,11 +149,11 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **VERSION** 
 
-  The version being released. The same value specified for ``VERSION`` when running the ``geoserver-release`` job.
+  The version being released. The same value specified for ``VERSION`` when running the ``geotools-release`` job.
   
 **BRANCH** 
 
-  The branch being released from.  The same value specified for ``BRANCH`` when running the ``geoserver-release`` job.
+  The branch being released from.  The same value specified for ``BRANCH`` when running the ``geotools-release`` job.
 
 **GIT_USER**
 
@@ -155,7 +161,7 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **GIT_EMAIL**
 
-  The Git email to use for the release.	 
+  The Git email to use for the release.
 
 
 This job will rsync all the artifacts located at::

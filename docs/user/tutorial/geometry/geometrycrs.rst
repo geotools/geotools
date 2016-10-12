@@ -27,23 +27,6 @@ amounts to is shapes drawn on the earth.
 This workbook is constructed in a code first manner, allowing you to work
 through the code example and read on if you have any questions.
 
-This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
-
-Jody Garnett
-
-   Jody Garnett is the lead architect for the uDig project; and on the steering
-   committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
-   consultant a bit too literally Jody has presented workshops and training
-   courses on every continent (except Antarctica). Jody Garnett is an employee
-   of LISAsoft.
-
-Michael Bedward
-
-   Michael Bedward is a researcher with the NSW Department of Environment and
-   Climate Change and an active contributor to the GeoTools users' list. He has
-   a particularly wide grasp of all the possible mistakes one can make using
-   GeoTools.
-
 CRS Lab Application
 ====================
 
@@ -58,7 +41,7 @@ the geometry of the features.
         :start-after: </properties>
         :end-before: <repositories>
     
-2. Create the **CRSLab.java** file and copy and paste the following code:
+2. Create the package **org.geotools.tutorial.crs** and class **CRSLab.java** file and copy and paste the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
@@ -232,8 +215,7 @@ Here are a couple things to try with the above application.
   shapefile's "prj" side car file.
 
 * It is bad manners to keep the user waiting; the SwingWorker class is part of
-  Java 6. GeoTools also includes SwingWorker the **gt-swing** module for use in
-  Java 5 applications.
+  Java.
   
   Replace your ValidateGeometryAction with the following: 
   
@@ -520,9 +502,9 @@ For more Information
   This is *the* place to go to look up map projections. You can search by
   geographic area, name and type and epsg code.
 
-`Online coordinate conversion tool <http://gist.fsv.cvut.cz:8080/webref/>`_
-  Produced by Jan Jezek and powered by GeoTools.
-
+`spatialreference.org <http://spatialreference.org/>`_
+  An easy to use service listing EPSG and OGC references code showing their representation in different software products.
+ 
 `Wikibook: Coordinate Reference Systems and Positioning <http://en.wikibooks.org/wiki/Coordinate_Reference_Systems_and_Positioning>`_
   A summary page with some useful definition and links to more detailed information
 

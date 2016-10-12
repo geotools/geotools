@@ -107,6 +107,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  * @source $URL$
+ * @deprecated Please use gt-wfs-ng implementation
  */
 public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataStore {
     public static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs.1.1.0");

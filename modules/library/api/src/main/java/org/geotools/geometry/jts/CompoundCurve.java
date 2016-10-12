@@ -374,7 +374,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
      */
 
     public boolean isRectangle() {
-        return linearized.isRectangle();
+        return linearize().isRectangle();
     }
 
     public Coordinate[] getCoordinates() {

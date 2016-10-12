@@ -388,4 +388,70 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
         }
         return build.toString();
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        result = prime * result + maxOccurs;
+        result = prime * result + ((metadata == null) ? 0 : metadata.hashCode());
+        result = prime * result + minOccurs;
+        result = prime * result + (required ? 1231 : 1237);
+        result = prime * result + ((sample == null) ? 0 : sample.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Parameter other = (Parameter) obj;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (key == null) {
+            if (other.key != null)
+                return false;
+        } else if (!key.equals(other.key))
+            return false;
+        if (maxOccurs != other.maxOccurs)
+            return false;
+        if (metadata == null) {
+            if (other.metadata != null)
+                return false;
+        } else if (!metadata.equals(other.metadata))
+            return false;
+        if (minOccurs != other.minOccurs)
+            return false;
+        if (required != other.required)
+            return false;
+        if (sample == null) {
+            if (other.sample != null)
+                return false;
+        } else if (!sample.equals(other.sample))
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (type == null) {
+            if (other.type != null)
+                return false;
+        } else if (!type.equals(other.type))
+            return false;
+        return true;
+    }
+    
+    
 }

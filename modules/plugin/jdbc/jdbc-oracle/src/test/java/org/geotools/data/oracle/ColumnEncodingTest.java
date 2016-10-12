@@ -35,5 +35,16 @@ public class ColumnEncodingTest {
         dialect.encodeColumnName("name",buffer);
         assertEquals("NAME", buffer.toString());
     }
+    
+    /**
+     * test for GEOT-5176 Oracle can't handle spaces in column names
+     */
+    @Test
+    public void testspaces() {
+        StringBuffer buffer = new StringBuffer();
+        OracleDialect dialect = new OracleDialect(null);
+        dialect.encodeColumnName("name with space",buffer);
+        assertEquals("\"NAME WITH SPACE\"", buffer.toString());
+    }
 
 }

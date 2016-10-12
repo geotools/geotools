@@ -16,6 +16,10 @@
  */
 package org.geotools.se.v1_1;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -47,6 +51,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
+import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.Rule;
 
@@ -103,6 +108,7 @@ public class SEExampleTest extends SETestSupport {
         assertEquals("star", m.getWellKnownName().evaluate(null, String.class));
         Color c = m.getFill().getColor().evaluate(null, Color.class);
         assertEquals(255, c.getRed());
+        assertNull(m.getStroke());
     }
     
     public void testParsePointSymbolizer2() throws Exception {
@@ -229,6 +235,20 @@ public class SEExampleTest extends SETestSupport {
         assertEquals(10, d.getDisplacementX().evaluate(null, Double.class), 0d);
         assertEquals(20, d.getDisplacementY().evaluate(null, Double.class), 0d);
     }
+    
+    public void testParsePointSymbolizerMarkIndex() throws Exception {
+        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer-markindex.xml");
+
+        Graphic g = sym.getGraphic();
+        assertEquals(1, g.graphicalSymbols().size());
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        assertNotNull(mark.getExternalMark());
+        ExternalMark em = mark.getExternalMark();
+        assertEquals("ttf://Webdings", em.getOnlineResource().getLinkage().toString());
+        assertEquals(64, em.getMarkIndex());
+        assertEquals("ttf", em.getFormat());
+    }
+
 
     public void testParseLineSymbolizer() throws Exception {
         /*<LineSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/metre">
@@ -537,6 +557,21 @@ public class SEExampleTest extends SETestSupport {
         
         List errors = validate("example-pointsymbolizer-geotrans.xml");
         assertEquals(0, errors.size());
+    }
+    
+    public void testParseGraphicWithFallbacks() throws Exception {
+        Graphic graphic = (Graphic) parse("example-graphic-fallback.xml");
+        final List<GraphicalSymbol> symbols = graphic.graphicalSymbols();
+        // check all the symbols are there (used to kick out external graphics when mark were present)
+        assertEquals(3, symbols.size());
+        // check the order has been preserved
+        ExternalGraphic eg1 = (ExternalGraphic) symbols.get(0);
+        assertThat(eg1.getURI(), containsString("transport/amenity=parking.svg?fill=%2300eb00"));
+        ExternalGraphic eg2 = (ExternalGraphic) symbols.get(1);
+        assertThat(eg2.getURI(), containsString("transport/amenity=parking.svg"));
+        assertThat(eg2.getURI(), not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
+        Mark mark = (Mark) symbols.get(2);
+        assertEquals("square", mark.getWellKnownName().evaluate(null, String.class)); 
     }
     
 }

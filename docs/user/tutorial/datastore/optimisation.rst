@@ -20,7 +20,7 @@ As an example a CurvedGeoemtryFactory with a specific tolerance can be passed in
    Query query = new Query( typeName );
    Hints hints = new Hints();
    hints.put( Hints.JTS_GEOMETRY_FACTORY, new CurvedGeometryFactory( 0.005 ) );
-   
+   query.setHints(hints);   
    SimpleFeatureCollection features = featureSource.getFeatures( query );
 
 To interactively discover what hints are supported clients call FeatureSource.getSupportedHints().

@@ -54,9 +54,10 @@ import com.vividsolutions.jts.geom.Point;
  * Remember when programming that you have other options then the CQL parser, you can directly make
  * a Filter using CommonFactoryFinder.getFilterFactory2().
  */
+@SuppressWarnings("serial")
 public class QueryLab extends JFrame {
     private DataStore dataStore;
-    private JComboBox featureTypeCBox;
+    private JComboBox<String> featureTypeCBox;
     private JTable table;
     private JTextField text;
 
@@ -89,7 +90,7 @@ public class QueryLab extends JFrame {
         JMenu fileMenu = new JMenu("File");
         menubar.add(fileMenu);
 
-        featureTypeCBox = new JComboBox();
+        featureTypeCBox = new JComboBox<>();
         menubar.add(featureTypeCBox);
 
         JMenu dataMenu = new JMenu("Data");
@@ -162,7 +163,7 @@ public class QueryLab extends JFrame {
 
     // docs start update
     private void updateUI() throws Exception {
-        ComboBoxModel cbm = new DefaultComboBoxModel(dataStore.getTypeNames());
+        ComboBoxModel<String> cbm = new DefaultComboBoxModel<>(dataStore.getTypeNames());
         featureTypeCBox.setModel(cbm);
 
         table.setModel(new DefaultTableModel(5, 5));
@@ -224,13 +225,12 @@ public class QueryLab extends JFrame {
         String name = schema.getGeometryDescriptor().getLocalName();
         Query query = new Query(typeName, filter, new String[] { name });
 
-        SimpleFeatureCollection features = source.getFeatures(filter);
+        SimpleFeatureCollection features = source.getFeatures(query);
 
         double totalX = 0.0;
         double totalY = 0.0;
         long count = 0;
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
@@ -239,8 +239,6 @@ public class QueryLab extends JFrame {
                 totalY += centroid.getY();
                 count++;
             }
-        } finally {
-            iterator.close(); // IMPORTANT
         }
         double averageX = totalX / (double) count;
         double averageY = totalY / (double) count;

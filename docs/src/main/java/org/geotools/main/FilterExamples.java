@@ -74,7 +74,7 @@ SimpleFeatureSource featureSource;
 SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOException {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
-    Set<FeatureId> fids = new HashSet<FeatureId>();
+    Set<FeatureId> fids = new HashSet<>();
     for (String id : selection) {
         FeatureId fid = ff.featureId(id);
         fids.add(fid);
@@ -124,7 +124,7 @@ SimpleFeatureCollection grabSelectedNameIgnoreCase(String name) throws Exception
 SimpleFeatureCollection grabSelectedNames(Set<String> selectedNames) throws Exception {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
-    List<Filter> match = new ArrayList<Filter>();
+    List<Filter> match = new ArrayList<>();
     for (String name : selectedNames) {
         Filter aMatch = ff.equals(ff.property("Name"), ff.literal(name));
         match.add(aMatch);
@@ -354,7 +354,7 @@ private static void functionList() {
     for (FunctionFactory factory : functionFactories) {
         System.out.println( factory.getClass().getName() );
         List<FunctionName> functionNames = factory.getFunctionNames();
-        ArrayList<FunctionName> sorted = new ArrayList<FunctionName> ( functionNames );
+        ArrayList<FunctionName> sorted = new ArrayList<>(functionNames);
         Collections.sort( sorted, new Comparator<FunctionName>() {
             public int compare(FunctionName o1, FunctionName o2) {
                 if( o1 == null && o2 == null ) return 0;
@@ -429,7 +429,7 @@ private static void functionListPretty() {
         System.out.println();
         
         List<FunctionName> functionNames = factory.getFunctionNames();
-        ArrayList<FunctionName> sorted = new ArrayList<FunctionName> ( functionNames );
+        ArrayList<FunctionName> sorted = new ArrayList<>(functionNames);
         Collections.sort( sorted, new Comparator<FunctionName>() {
             public int compare(FunctionName o1, FunctionName o2) {
                 if( o1 == null && o2 == null ) return 0;

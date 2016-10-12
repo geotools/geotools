@@ -56,12 +56,6 @@ You can read **dim( obj )** as "the dimension of obj". Hopefully this line up wi
 We are going to leave 3D stuff out as we are focusing on JTS.
 
 Intersection of Two Geometries
-
-Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or DE-9IM.
-
-The relationship between two geometries x and y (point line or region) as defined by their Interior, Boundary and Exterior results in a matrix based on: x INTERSECTION y.
-
-Intersection of Two Geometries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or **DE-9IM**.
@@ -157,7 +151,7 @@ The next step is to count the dimensions of the shapes in the above 9-Intersecti
 DE-9IM    Interior        Boundary        Exterior
 Interior  2               1               2
 Boundary  1               0               1
-Exterior  2               1               1
+Exterior  2               1               2
 ========= =============== =============== ===============
 
 As you can see this matrix is a summary of the relationship between the two geometries. Depending on the geometry involves; and their arrangement you will get different numbers here. The above numbers are taken by looking at what kind of shapes are displayed in the above pictures and writing down their dimension.

@@ -25,15 +25,13 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
-import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.util.Utilities;
 
 /**
- * Simple bean that conveys the information needed by the CatalogBuilder to
- * create a catalogue of granules
+ * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of granules
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
@@ -43,72 +41,54 @@ import org.geotools.util.Utilities;
  */
 public class CatalogBuilderConfiguration {
 
-	private Hints hints;
+    private Hints hints;
 
-	private String timeAttribute;
+    private String timeAttribute;
 
-	private String runtimeAttribute;
+    private String runtimeAttribute;
 
-	private Indexer indexer;
-	
-	
-	
-	/**
-	 * @deprecated parse indexer parameters instead.
-	 * @return
-	 */
-	public String getEnvelope2D() {
-	    return getParameter(Prop.ENVELOPE2D);
-	}
+    private Indexer indexer;
+
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public String getEnvelope2D() {
+        return getParameter(Prop.ENVELOPE2D);
+    }
 
     public CatalogBuilderConfiguration() {
         initDefaultsParam();
     }
 
     private void initDefaultsParam() {
-        final Indexer defaultIndexer = Utils.OBJECT_FACTORY.createIndexer();
-        final ParametersType parameters = Utils.OBJECT_FACTORY.createParametersType();
-        final List<Parameter> parameterList = parameters.getParameter();
-        defaultIndexer.setParameters(parameters);
-        setIndexer(defaultIndexer);
-        IndexerUtils.setParam(parameterList, Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE);
-        IndexerUtils.setParam(parameterList, Prop.WILDCARD, Utils.DEFAULT_WILCARD);
-        IndexerUtils.setParam(parameterList, Prop.FOOTPRINT_MANAGEMENT, Boolean.toString(Utils.DEFAULT_FOOTPRINT_MANAGEMENT));
-        IndexerUtils.setParam(parameterList, Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
-        IndexerUtils.setParam(parameterList, Prop.RECURSIVE, Boolean.toString(Utils.DEFAULT_RECURSION_BEHAVIOR));
-        IndexerUtils.setParam(parameterList, Prop.INDEX_NAME, Utils.DEFAULT_INDEX_NAME);
+        this.indexer = IndexerUtils.createDefaultIndexer();
     }
 
-	public CatalogBuilderConfiguration(final CatalogBuilderConfiguration that) {
-		Utilities.ensureNonNull("CatalogBuilderConfiguration", that);
-		initDefaultsParam();
-		try {
-			BeanUtils.copyProperties(this, that);
-		} catch (IllegalAccessException e) {
-			final IllegalArgumentException iae = new IllegalArgumentException(e);
-			throw iae;
-		} catch (InvocationTargetException e) {
-			final IllegalArgumentException iae = new IllegalArgumentException(e);
-			throw iae;
-		}
+    public CatalogBuilderConfiguration(final CatalogBuilderConfiguration that) {
+        Utilities.ensureNonNull("CatalogBuilderConfiguration", that);
+        initDefaultsParam();
+        try {
+            BeanUtils.copyProperties(this, that);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new IllegalArgumentException(e);
+        }
 
-	}
+    }
 
-	/**
-	 * @return the hints
-	 */
-	public Hints getHints() {
-		return hints;
-	}
+    /**
+     * @return the hints
+     */
+    public Hints getHints() {
+        return hints;
+    }
 
-	/**
-	 * @param hints
-	 *            the hints to set
-	 */
-	public void setHints(Hints hints) {
-		this.hints = hints;
-	}
-
+    /**
+     * @param hints the hints to set
+     */
+    public void setHints(Hints hints) {
+        this.hints = hints;
+    }
 
     /**
      * @deprecated parse indexer parameters instead.
@@ -118,13 +98,13 @@ public class CatalogBuilderConfiguration {
         return Boolean.parseBoolean(getParameter(Prop.RECURSIVE));
     }
 
-        /**
-         * @deprecated parse indexer parameters instead.
-         * @return
-         */
-	public boolean isCaching() {
-		return Boolean.parseBoolean(getParameter(Prop.CACHING));
-	}
+    /**
+     * @deprecated parse indexer parameters instead.
+     * @return
+     */
+    public boolean isCaching() {
+        return Boolean.parseBoolean(getParameter(Prop.CACHING));
+    }
 
     /**
      * Get the schema with the specified name
@@ -148,6 +128,7 @@ public class CatalogBuilderConfiguration {
 
     /**
      * Set the indexer parameter
+     *
      * @param parameterName
      * @param parameterValue
      */
@@ -197,14 +178,14 @@ public class CatalogBuilderConfiguration {
     public String getIndexName() {
         return getParameter(Prop.INDEX_NAME);
     }
-    
+
     /**
      * @deprecated parse indexer parameters instead.
      * @return
      */
     public boolean isFootprintManagement() {
         return Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT));
-}
+    }
 
     /**
      * @deprecated parse indexer parameters instead.
@@ -238,36 +219,35 @@ public class CatalogBuilderConfiguration {
         return Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH));
     }
 
-	@Override
-	public CatalogBuilderConfiguration clone()
-			throws CloneNotSupportedException {
-		return new CatalogBuilderConfiguration(this);
-	}
+    @Override
+    public CatalogBuilderConfiguration clone() throws CloneNotSupportedException {
+        return new CatalogBuilderConfiguration(this);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof CatalogBuilderConfiguration))
-			return false;
-		final CatalogBuilderConfiguration that = (CatalogBuilderConfiguration) obj;
-		if (!equalsParameter(this, that, Prop.ABSOLUTE_PATH)) 
-		    return false;
-		
-		if (!equalsParameter(this, that, Prop.CACHING)) 
-                    return false;
-		if (!equalsParameter(this, that, Prop.RECURSIVE)) 
-                    return false;
-		if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT)) 
-                    return false;
-                if (!equalsParameter(this, that, Prop.INDEX_NAME))
-                    return false;
-                if (!equalsParameter(this, that, Prop.LOCATION_ATTRIBUTE)) 
-                    return false;
-                if (!equalsParameter(this, that, Prop.ROOT_MOSAIC_DIR)) 
-                    return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof CatalogBuilderConfiguration))
+            return false;
+        final CatalogBuilderConfiguration that = (CatalogBuilderConfiguration) obj;
+        if (!equalsParameter(this, that, Prop.ABSOLUTE_PATH))
+            return false;
+
+        if (!equalsParameter(this, that, Prop.CACHING))
+            return false;
+        if (!equalsParameter(this, that, Prop.RECURSIVE))
+            return false;
+        if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT))
+            return false;
+        if (!equalsParameter(this, that, Prop.INDEX_NAME))
+            return false;
+        if (!equalsParameter(this, that, Prop.LOCATION_ATTRIBUTE))
+            return false;
+        if (!equalsParameter(this, that, Prop.ROOT_MOSAIC_DIR))
+            return false;
+        return true;
+    }
 
     private static boolean equalsParameter(CatalogBuilderConfiguration thisConfig,
             CatalogBuilderConfiguration thatConfig, String parameterName) {
@@ -280,33 +260,39 @@ public class CatalogBuilderConfiguration {
     }
 
     @Override
-	public int hashCode() {
-		int seed = 37;
-		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)), seed);
-		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.RECURSIVE)), seed);
-		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.CACHING)), seed);
-		seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)), seed);
-		seed = Utilities.hash(getParameter(Prop.LOCATION_ATTRIBUTE), seed);
-		seed = Utilities.hash(getParameter(Prop.INDEX_NAME), seed);
-		seed = Utilities.hash(getParameter(Prop.WILDCARD), seed);
-		seed = Utilities.hash(getParameter(Prop.ROOT_MOSAIC_DIR), seed);
-		return seed;
-	}
+    public int hashCode() {
+        int seed = 37;
+        seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)), seed);
+        seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.RECURSIVE)), seed);
+        seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.CACHING)), seed);
+        seed = Utilities.hash(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)), seed);
+        seed = Utilities.hash(getParameter(Prop.LOCATION_ATTRIBUTE), seed);
+        seed = Utilities.hash(getParameter(Prop.INDEX_NAME), seed);
+        seed = Utilities.hash(getParameter(Prop.WILDCARD), seed);
+        seed = Utilities.hash(getParameter(Prop.ROOT_MOSAIC_DIR), seed);
+        return seed;
+    }
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("CatalogBuilderConfiguration").append("\n");
-		builder.append("wildcardString:\t\t\t").append(getParameter(Prop.WILDCARD)).append("\n");
-		builder.append("indexName:\t\t\t").append(getParameter(Prop.INDEX_NAME)).append("\n");
-		builder.append("absolute:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH))).append("\n");
-		builder.append("caching:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.CACHING))).append("\n");
-		builder.append("recursive:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.RECURSIVE))).append("\n");
-		builder.append("footprintManagement:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT))).append("\n");
-		builder.append("locationAttribute:\t\t\t").append(getParameter(Prop.LOCATION_ATTRIBUTE)).append("\n");
-		builder.append("rootMosaicDirectory:\t\t\t").append(getParameter(Prop.ROOT_MOSAIC_DIR)).append("\n");
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("CatalogBuilderConfiguration").append("\n");
+        builder.append("wildcardString:\t\t\t").append(getParameter(Prop.WILDCARD)).append("\n");
+        builder.append("indexName:\t\t\t").append(getParameter(Prop.INDEX_NAME)).append("\n");
+        builder.append("absolute:\t\t\t")
+                .append(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH))).append("\n");
+        builder.append("caching:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.CACHING)))
+                .append("\n");
+        builder.append("recursive:\t\t\t")
+                .append(Boolean.parseBoolean(getParameter(Prop.RECURSIVE))).append("\n");
+        builder.append("footprintManagement:\t\t\t")
+                .append(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT))).append("\n");
+        builder.append("locationAttribute:\t\t\t").append(getParameter(Prop.LOCATION_ATTRIBUTE))
+                .append("\n");
+        builder.append("rootMosaicDirectory:\t\t\t").append(getParameter(Prop.ROOT_MOSAIC_DIR))
+                .append("\n");
+        return builder.toString();
+    }
 
     public void check() {
         // check parameters
@@ -314,7 +300,7 @@ public class CatalogBuilderConfiguration {
         // Check the indexing directories
         String indexingDirs = getParameter(Prop.INDEXING_DIRECTORIES);
         if (indexingDirs == null) {
-            
+
             // check whether we are on harvesting so check the Harvest directory param.
             String customDirs = getParameter(Prop.HARVEST_DIRECTORY);
             indexingDirs = customDirs;

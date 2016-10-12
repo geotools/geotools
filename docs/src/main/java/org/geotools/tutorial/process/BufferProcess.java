@@ -84,7 +84,7 @@ class BufferProcess extends AbstractProcess {
             monitor.setTask(Text.text("Encoding result"));
             monitor.progress(90.0f);
 
-            Map<String, Object> result = new HashMap<String, Object>();
+            Map<String, Object> result = new HashMap<>();
             result.put(BufferFactory.RESULT.key, resultGeom);
             monitor.complete(); // same as 100.0f
 

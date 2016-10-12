@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Polygon srsName="EPSG:7415">
+  <exterior>
+    <LinearRing>
+      <posList>94000 471000 10 94001 471000 11 94001 471001 12 94000 471001 13 94000 471000 10</posList>
+    </LinearRing>
+  </exterior>
+</Polygon>

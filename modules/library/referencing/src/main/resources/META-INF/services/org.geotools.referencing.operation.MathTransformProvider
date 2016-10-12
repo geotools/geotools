@@ -55,3 +55,4 @@ org.geotools.referencing.operation.projection.GeneralOblique$Provider
 org.geotools.referencing.operation.projection.MeteosatSG$Provider
 org.geotools.referencing.operation.projection.GeostationarySatellite$Provider
 org.geotools.referencing.operation.projection.RotatedPole$Provider
+org.geotools.referencing.operation.projection.AzimuthalEquidistant$Provider

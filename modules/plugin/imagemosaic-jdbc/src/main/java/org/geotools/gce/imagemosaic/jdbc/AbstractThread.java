@@ -20,6 +20,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.awt.image.Raster;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.jai.Interpolation;
@@ -105,11 +106,13 @@ abstract class AbstractThread extends Thread {
                 0.0f, 
                 Interpolation.getInstance(interpolation));
         RenderedOp result = w.getRenderedOperation();
-        WritableRaster scaledImageRaster = (WritableRaster) result.getData();
+        Raster scaledImageRaster = result.getData();
+        if (!(scaledImageRaster instanceof WritableRaster))
+                   scaledImageRaster = result.copyData();
 
         ColorModel colorModel = image.getColorModel();
 
-        BufferedImage scaledImage = new BufferedImage(colorModel, scaledImageRaster, image.isAlphaPremultiplied(), null);
+        BufferedImage scaledImage = new BufferedImage(colorModel, (WritableRaster) scaledImageRaster, image.isAlphaPremultiplied(), null);
         return scaledImage;
     }
 

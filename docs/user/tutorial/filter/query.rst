@@ -35,24 +35,6 @@ to both a PostGIS database and shapefiles.
 We are trying out a code first idea with these workbooks |hyphen| offering you a chance to start with
 source code and explore the ideas that went into it later if you have any questions. 
 
-This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
-
-Jody Garnett
-
-   Jody Garnett is the lead architect for the uDig project; and on the steering
-   committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
-   consultant a bit too literally Jody has presented workshops and training
-   courses on every continent (except Antarctica). Jody Garnett is an employee
-   of LISAsoft.
-
-Michael Bedward
-
-   Michael Bedward is a researcher with the NSW Department of Environment and
-   Climate Change and an active contributor to the GeoTools users' list. He has
-   a particularly wide grasp of all the possible mistakes one can make using
-   GeoTools.
-   
-
 Query Lab Application
 =====================
 
@@ -71,7 +53,7 @@ example.
       :start-after: <url>http://maven.apache.org</url>
       :end-before: <repositories>
 
-2. Create the *QueryLab* class and copy and paste the following to get going:
+2. Create the package **org.geotools.tutorial.filter** and class **QueryLab** class and copy and paste the following to get going:
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java

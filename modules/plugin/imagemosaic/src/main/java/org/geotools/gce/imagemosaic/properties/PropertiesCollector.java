@@ -27,63 +27,58 @@ import javax.imageio.ImageReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.opengis.feature.simple.SimpleFeature;
 
-
 /**
  * 
  *
  * @source $URL$
  */
-public abstract class PropertiesCollector  {
-	
-	private List<String> propertyNames;
-	
-	private PropertiesCollectorSPI spi;
-	
-	private List<String> matches= new ArrayList<String>();
-	
-	
-	public PropertiesCollector(
-			final PropertiesCollectorSPI spi,
-			final List<String> propertyNames) {
-		this.spi = spi;
-		this.propertyNames=new ArrayList<String>(propertyNames);
-	}
-	
+public abstract class PropertiesCollector {
 
-	public PropertiesCollectorSPI getSpi() {
-		return spi;
-	}
+    private List<String> propertyNames;
 
-	public PropertiesCollector collect(final File  file){
-		return this;
-	}
-	
-	public PropertiesCollector collect(final ImageReader  imageReader){
-		return this;
-	}
-	
-	public PropertiesCollector collect(final GridCoverage2DReader  gridCoverageReader){
-		return this;
-	}		
-	
-	abstract public void setProperties(final SimpleFeature feature);
-	
-	abstract public void setProperties(final Map<String,Object> map);
-	
-	public void reset(){
-		matches= new ArrayList<String>();
-	}
+    private PropertiesCollectorSPI spi;
 
-	public List<String> getPropertyNames() {
-		return Collections.unmodifiableList(propertyNames);
-	}
-	
-	protected void addMatch(String match){
-		matches.add(match);
-	}
+    private List<String> matches = new ArrayList<String>();
 
-	protected List<String> getMatches() {
-		return Collections.unmodifiableList(matches);
-	}
-	
+    public PropertiesCollector(final PropertiesCollectorSPI spi, final List<String> propertyNames) {
+        this.spi = spi;
+        this.propertyNames = new ArrayList<String>(propertyNames);
+    }
+
+    public PropertiesCollectorSPI getSpi() {
+        return spi;
+    }
+
+    public PropertiesCollector collect(final File file) {
+        return this;
+    }
+
+    public PropertiesCollector collect(final ImageReader imageReader) {
+        return this;
+    }
+
+    public PropertiesCollector collect(final GridCoverage2DReader gridCoverageReader) {
+        return this;
+    }
+
+    abstract public void setProperties(final SimpleFeature feature);
+
+    abstract public void setProperties(final Map<String, Object> map);
+
+    public void reset() {
+        matches = new ArrayList<String>();
+    }
+
+    public List<String> getPropertyNames() {
+        return Collections.unmodifiableList(propertyNames);
+    }
+
+    protected void addMatch(String match) {
+        matches.add(match);
+    }
+
+    protected List<String> getMatches() {
+        return Collections.unmodifiableList(matches);
+    }
+
 }

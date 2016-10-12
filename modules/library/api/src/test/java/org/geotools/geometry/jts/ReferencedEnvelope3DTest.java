@@ -91,6 +91,7 @@ public class ReferencedEnvelope3DTest {
             // expected
         }
     }
+    
     @Test
     public void include() throws Exception {
         ReferencedEnvelope3D australia = new ReferencedEnvelope3D( DefaultGeographicCRS.WGS84_3D );
@@ -130,6 +131,8 @@ public class ReferencedEnvelope3DTest {
         bbox.include(australia);
         
         assertEquals( australia.getCoordinateReferenceSystem(), bbox.getCoordinateReferenceSystem() );
+        assertEquals(0, bbox.getMinZ(), 0d);
+        assertEquals(10, bbox.getMaxZ(), 0d);
     }
 
     @Test

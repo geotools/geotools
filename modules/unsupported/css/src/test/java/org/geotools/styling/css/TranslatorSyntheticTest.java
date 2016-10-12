@@ -16,11 +16,18 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.text.cql2.CQLException;
@@ -46,6 +53,7 @@ import org.geotools.styling.TextSymbolizer2;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
@@ -74,12 +82,19 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(expectedValue, ps.getOptions().get(name));
     }
 
-	private Rule assertSingleRule(Style style) {
-		assertEquals("Expected single feature type style, found " + style.featureTypeStyles().size(), 1, style.featureTypeStyles().size());
-		FeatureTypeStyle fts = style.featureTypeStyles().get(0);
-		assertEquals("Expected 1 rule, found " + fts.rules().size(), 1, fts.rules().size());
-		return fts.rules().get(0);
-	}
+    private Rule assertSingleRule(Style style) {
+        FeatureTypeStyle fts = assertSingleFeatureTypeStyle(style);
+        assertEquals("Expected 1 rule, found " + fts.rules().size(), 1, fts.rules().size());
+        return fts.rules().get(0);
+    }
+
+    private FeatureTypeStyle assertSingleFeatureTypeStyle(Style style) {
+        assertEquals(
+                "Expected single feature type style, found " + style.featureTypeStyles().size(), 1,
+                style.featureTypeStyles().size());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        return fts;
+    }
 	
 	private <T extends Symbolizer> T assertSingleSymbolizer(Rule rule, Class<T> symbolizerType) {
 		assertEquals(1, rule.symbolizers().size());
@@ -899,6 +914,10 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals("#008000", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(1).symbolizers().get(0)).getStroke().getColor().toString());
         assertEquals("10", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(2).symbolizers().get(0)).getStroke().getWidth().toString());
         assertEquals("#0000ff", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(2).symbolizers().get(0)).getStroke().getColor().toString());
+        // printStyle(style);
+    }
+
+    private void printStyle(Style style) throws TransformerException {
         SLDTransformer transformer = new SLDTransformer();
         String xml = transformer.transform( style );
         System.out.println(xml);
@@ -921,9 +940,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals("#008000", ((LineSymbolizer)style.featureTypeStyles().get(1).rules().get(0).symbolizers().get(0)).getStroke().getColor().toString());
         assertEquals("10", ((LineSymbolizer)style.featureTypeStyles().get(2).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
         assertEquals("#0000ff", ((LineSymbolizer)style.featureTypeStyles().get(2).rules().get(0).symbolizers().get(0)).getStroke().getColor().toString());
-        SLDTransformer transformer = new SLDTransformer();
-        String xml = transformer.transform( style );
-        System.out.println(xml);
+        // printStyle(style);
     }
     
     @Test
@@ -965,9 +982,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("circle", mark.getWellKnownName());
         assertLiteral("#0000ff", mark.getFill().getColor());
         
-        SLDTransformer transformer = new SLDTransformer();
-        String xml = transformer.transform( style );
-        System.out.println(xml);
+        // printStyle(style);
     }
     
     @Test
@@ -979,9 +994,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(1, style.featureTypeStyles().get(0).rules().size());
         assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
         assertEquals(2, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
-        SLDTransformer transformer = new SLDTransformer();
-        String xml = transformer.transform( style );
-        System.out.println(xml);
+        // printStyle(style);
     }
     
     @Test
@@ -1000,5 +1013,69 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Mark mark = (Mark) g.graphicalSymbols().get(0);
         assertLiteral("circle", mark.getWellKnownName());
         assertLiteral("#0000ff", mark.getFill().getColor());
+    }
+    
+    @Test
+    public void testSimpleTransform() throws Exception {
+        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black}";
+        Style style = translate(css);
+        
+        // check transformation
+        FeatureTypeStyle fts = assertSingleFeatureTypeStyle(style);
+        Function tx = assertTransformation(fts);
+        assertContour123(tx);
+    }
+    
+    @Test
+    public void testTwoLevelTransform() throws Exception {
+        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black; z-index: 0}\n"
+                + "* { transform: ras:RasterAsPointCollection(); mark: symbol('square'); z-index: 1}";
+        Style style = translate(css);
+        assertEquals(2, style.featureTypeStyles().size());
+        
+        // base level, contour
+        FeatureTypeStyle fts1 = style.featureTypeStyles().get(0);
+        Function tx1 = assertTransformation(fts1);
+        assertContour123(tx1);
+        
+        // second level, raster as point collection
+        FeatureTypeStyle fts2 = style.featureTypeStyles().get(1);
+        Function tx2 = assertTransformation(fts2);
+        assertEquals("ras:RasterAsPointCollection", tx2.getName());
+        List<Expression> expressions = tx2.getParameters();
+        assertEquals(1, expressions.size());
+        assertParameterFunction(expressions.get(0), "data", 0);
+
+    }
+
+    private Function assertTransformation(FeatureTypeStyle fts) {
+        Expression ex = fts.getTransformation();
+        assertNotNull(ex);
+        assertThat(ex, instanceOf(Function.class));
+        Function tx = (Function) ex;
+        return tx;
+    }
+
+    private void assertContour123(Function tx) {
+        assertEquals("ras:Contour", tx.getName());
+        List<Expression> expressions = tx.getParameters();
+        assertEquals(2, expressions.size());
+        assertParameterFunction(expressions.get(0), "data", 0);
+        Function p2 = assertParameterFunction(expressions.get(1), "levels", 3);
+        List<Expression> p2Params = p2.getParameters();
+        assertEquals("1100", p2Params.get(1).evaluate(null));
+        assertEquals("1200", p2Params.get(2).evaluate(null));
+        assertEquals("1300", p2Params.get(3).evaluate(null));
+    }
+
+    private Function assertParameterFunction(Expression expression, String expectedKey, int expectedValueCount) {
+        assertThat(expression, instanceOf(Function.class));
+        Function f = (Function) expression;
+        assertEquals("parameter", f.getName());
+        final List<Expression> parameters = f.getParameters();
+        assertTrue("At least one parameter, the key", parameters.size() > 0);
+        assertEquals(expectedKey, parameters.get(0).evaluate(null));
+        assertEquals(expectedValueCount, parameters.size() - 1);
+        return f;
     }
 }

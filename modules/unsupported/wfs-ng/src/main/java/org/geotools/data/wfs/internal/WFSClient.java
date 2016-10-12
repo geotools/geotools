@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import static org.geotools.data.wfs.internal.Loggers.requestDebug;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
@@ -65,7 +67,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     public WFSClient(URL capabilitiesURL, HTTPClient httpClient, WFSConfig config,
             WFSGetCapabilities capabilities) throws IOException, ServiceException {
 
-        super(capabilitiesURL, httpClient, capabilities);
+        super(capabilitiesURL, httpClient, capabilities, Collections.singletonMap(XMLHandlerHints.ENTITY_RESOLVER, config.getEntityResolver()));
         this.config = config;
         super.specification = determineCorrectStrategy();
         ((WFSStrategy) specification).setCapabilities(super.capabilities);
@@ -129,6 +131,12 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         final String override = config.getWfsStrategy();
 
         WFSStrategy strategy = null;
+        
+        //only one 2.0.0 strategy!
+        if (Versions.v2_0_0.equals(capsVersion)) {
+            strategy = new StrictWFS_2_0_Strategy();
+        }        
+        
         // override
         if (!"auto".equals(override)) {
             if (override.equalsIgnoreCase("geoserver")) {
@@ -205,8 +213,6 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new StrictWFS_1_x_Strategy(Versions.v1_0_0);
             } else if (Versions.v1_1_0.equals(capsVersion)) {
                 strategy = new StrictWFS_1_x_Strategy(Versions.v1_1_0);
-            } else if (Versions.v2_0_0.equals(capsVersion)) {
-                strategy = new StrictWFS_2_0_Strategy();
             } else {
                 throw new IllegalArgumentException("Unsupported version: " + capsVersion);
             }
@@ -280,7 +286,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     @Override
-    protected Response internalIssueRequest(Request request) throws IOException, WFSException {
+    protected Response internalIssueRequest(Request request) throws IOException {
         Response response;
         try {
             response = super.internalIssueRequest(request);
@@ -375,5 +381,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     
     public URL getCapabilitiesURL() {
         return serverURL;
+    }
+    
+    public WFSConfig getConfig() {
+        return config;
     }
 }

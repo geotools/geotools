@@ -1,0 +1,14 @@
+[@scale < 3000] {
+   mark: symbol(circle);
+   :mark {
+      fill: gray;
+      size: 5;
+   };
+   [type = 'important'] {
+      mark: symbol(triangle);
+      :mark {
+        fill: red;
+        stroke: yellow;
+      }
+   }
+}

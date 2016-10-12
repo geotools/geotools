@@ -12,6 +12,9 @@ import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.geotools.TestData;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
@@ -21,6 +24,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.GridReaderLayer;
@@ -31,7 +35,9 @@ import org.geotools.styling.Style;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.coverage.grid.Format;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
@@ -99,6 +105,45 @@ public class RenderingTransformationTest {
         assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
         assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
         assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
+    }
+    
+    @Test
+    public void testTransformNullCoverage() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+
+        GridCoverage2DReader reader = new AbstractGridCoverage2DReader() {
+            
+            @Override
+            public Format getFormat() {
+                return null;
+            }
+            
+            @Override
+            public GridCoverage2D read(GeneralParameterValue[] parameters)
+                    throws IllegalArgumentException, IOException {
+                // we return null on purpose, simulating a reader queried outside of its area, or 
+                // on a dimension value it does not have
+                return null;
+            }
+        };
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridReaderLayer(reader, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+
+        ReferencedEnvelope re = new ReferencedEnvelope(-70, 70, -160, 160,
+                CRS.decode("EPSG:4326"));
+
+        BufferedImage image = RendererBaseTest.showRender("Transformation with null input", renderer,
+                TIME, re);
+        // full white, no NPE
+        double[] minimums = new ImageWorker(image).getMinimums();
+        assertEquals(255, minimums[0], 0d);
+        assertEquals(255, minimums[1], 0d);
+        assertEquals(255, minimums[2], 0d);
+        assertEquals(255, minimums[3], 0d);
     }
 
     @Test

@@ -263,7 +263,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     	return crs1.equals(crs2); 
    	}
 
-	protected boolean areReferencedEnvelopesEuqal(ReferencedEnvelope e1, ReferencedEnvelope e2) {
+	protected boolean areReferencedEnvelopesEqual(ReferencedEnvelope e1, ReferencedEnvelope e2) {
 		
 		if (e1==null && e2 ==null) return true;
 		if (e1==null || e2 == null) return false;

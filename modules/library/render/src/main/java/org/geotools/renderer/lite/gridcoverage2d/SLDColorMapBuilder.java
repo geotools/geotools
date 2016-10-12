@@ -317,7 +317,7 @@ public class SLDColorMapBuilder {
                     // entries with the same value, but different color)
                     boolean minIncluded = previousColors[previousColors.length - 1].equals(colors[0]);
                     Range sampleRange = RangeFactory.create(previousMaximum, minIncluded,
-                            colorsPerColorMapElement + previousMaximum, true);
+                            colorsPerColorMapElement + previousMaximum, false);
                     colormapElements.add(
                             LinearColorMapElement.create(label, colors, valueRange, sampleRange));
                     break;

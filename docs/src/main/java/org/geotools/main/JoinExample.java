@@ -62,13 +62,13 @@ public static void main(String[] args) throws Exception {
     if (file == null || !file.exists() || file2 == null || !file2.exists()) {
         System.exit(1);
     }
-    Map<String, Object> connect = new HashMap<String, Object>();
+    Map<String, Object> connect = new HashMap<>();
     connect.put("url", file.toURI().toURL());
     DataStore shapefile = DataStoreFinder.getDataStore(connect);
     String typeName = shapefile.getTypeNames()[0];
     SimpleFeatureSource shapes = shapefile.getFeatureSource(typeName);
     
-    Map<String, Object> connect2 = new HashMap<String, Object>();
+    Map<String, Object> connect2 = new HashMap<>();
     connect.put("url", file2.toURI().toURL());
     DataStore shapefile2 = DataStoreFinder.getDataStore(connect);
     String typeName2 = shapefile2.getTypeNames()[0];

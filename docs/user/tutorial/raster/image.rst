@@ -32,23 +32,6 @@ end up as small rectangles on the surface of the earth.
 
 This idea is so similar to our concept of pixels we end up using a lot of the same file formats to
 represent a grid coverage in our computing systems.
-
-This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
-
-Jody Garnett
-
-   Jody Garnett is the lead architect for the uDig project; and on the steering
-   committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
-   consultant a bit too literally Jody has presented workshops and training
-   courses on every continent (except Antarctica). Jody Garnett is an employee
-   of LISAsoft.
-
-Michael Bedward
-
-   Michael Bedward is a researcher with the NSW Department of Environment and
-   Climate Change and an active contributor to the GeoTools users' list. He has
-   a particularly wide grasp of all the possible mistakes one can make using
-   GeoTools.
    
 Image Lab Application
 ======================
@@ -69,7 +52,7 @@ and overlaying it with country boundaries from a shapefile.
         :start-after: </properties>
         :end-before: <repositories>
 
-2. Please create the file **ImageLab.java** and copy and paste in the following code:
+2. Please create the package **org.geotools.tutorial.raster** and class **ImageLab** and copy and paste in the following code:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java

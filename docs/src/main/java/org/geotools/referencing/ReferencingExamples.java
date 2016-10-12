@@ -94,7 +94,7 @@ void referencingFactoryContainer() {
     Object mtFactory = null;
     
     // referencingFactoryContainer start
-    Map<Key, Object> map = new HashMap<Key, Object>();
+    Map<Key, Object> map = new HashMap<>();
     
     map.put(Hints.DATUM_FACTORY, datumFactory);
     map.put(Hints.CS_FACTORY, csFactory);
@@ -275,7 +275,7 @@ void createCRSByHand2() throws Exception {
     DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(null);
     CSFactory csFactory = ReferencingFactoryFinder.getCSFactory(null);
     
-    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> map = new HashMap<>();
     map.put("name", "Clarke 1866");
     
     Ellipsoid clark1866ellipse = datumFactory.createFlattenedSphere(map, 6378206.4,
@@ -341,7 +341,7 @@ void createCRSByHand3() throws FactoryException {
     CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
     DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(null);
     CSFactory csFactory = ReferencingFactoryFinder.getCSFactory(null);
-    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> map = new HashMap<>();
     
     //
     // Create a datum used for each CRS

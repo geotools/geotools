@@ -780,4 +780,50 @@ public class YsldValidateTest {
         List<MarkedYAMLException> errors = validate(builder.toString());
         assertThat(errors, empty());
     }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testColourAsVariable() throws Exception {
+        // GEOT-5445 - Try each permutation of variables with fill-color and stroke-color.
+        // This tests the known validator issue, plus any potential unknown related issues.
+        StringBuilder builder =  new StringBuilder();
+        builder.append("define: &color '#ff9900'\n");
+        builder.append("symbolizers:\n");
+        builder.append("- polygon:\n");
+        builder.append("    fill-color: *color\n");
+        builder.append("    stroke-color: '#000000'\n");
+        
+        List<MarkedYAMLException> errors = validate(builder.toString());
+        assertThat(errors, empty());
+        
+        builder =  new StringBuilder();
+        builder.append("define: &color '#ff9900'\n");
+        builder.append("symbolizers:\n");
+        builder.append("- polygon:\n");
+        builder.append("    fill-color: *color\n");
+        builder.append("    stroke-color: '#000000'\n");
+        
+        errors = validate(builder.toString());
+        assertThat(errors, empty());
+        
+        builder =  new StringBuilder();
+        builder.append("define: &color '#000000'\n");
+        builder.append("symbolizers:\n");
+        builder.append("- polygon:\n");
+        builder.append("    fill-color: '#ff9900'\n");
+        builder.append("    stroke-color: *color\n");
+        
+        errors = validate(builder.toString());
+        assertThat(errors, empty());
+        
+        builder =  new StringBuilder();
+        builder.append("define: &color '#000000'\n");
+        builder.append("symbolizers:\n");
+        builder.append("- polygon:\n");
+        builder.append("    stroke-color: *color\n");
+        builder.append("    fill-color: '#ff9900'\n");
+        
+        errors = validate(builder.toString());
+        assertThat(errors, empty());
+    }
 }

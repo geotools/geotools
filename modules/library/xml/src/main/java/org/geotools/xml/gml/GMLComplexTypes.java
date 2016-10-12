@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -4406,12 +4406,18 @@ public class GMLComplexTypes {
             if (ats != null) {
                 for (int i = 0; i < ats.size(); i++) {
                     Element e2 = e.findChildElement(ats.get(i).getLocalName());
-                    e2.getType().encode(e2, f.getAttribute(i), ph, hints);
+                    Type type = e2.getType();
+                    Object value = f.getAttribute(i);
+                    if (!canEncodeValue(type, value)) {
+                        continue;
+                    }
+                    e2.getType().encode(e2, value, ph, hints);
                 }
             }
 
             ph.endElement(e.getNamespace(), e.getName());
         }
+
 
         private void print(SimpleFeature f, PrintHandler ph, Map hints)
             throws OperationNotSupportedException, IOException {
@@ -4431,11 +4437,23 @@ public class GMLComplexTypes {
             if (ats != null) {
                 for (int i = 0; i < ats.size(); i++) {
                     Type t = XSISimpleTypes.find(ats.get(i).getType().getBinding());
-                    t.encode(null, f.getAttribute(i), ph, hints);
+                    Object value = f.getAttribute(i);
+                    if (!canEncodeValue(t, value)) {
+                        continue;
+                    }
+                    t.encode(null, value, ph, hints);
                 }
             }
             ph.endElement(GMLSchema.NAMESPACE, "_Feature");
         }
+        
+        private boolean canEncodeValue(Type type, Object value) {
+            // intended to filter null geometries
+            // which would otherwise cause error later on
+            boolean cantPrint = (value == null && !(type instanceof SimpleType)); 
+            return !cantPrint;
+        }
+        
     }
 
     /**
@@ -6280,7 +6298,7 @@ public class GMLComplexTypes {
         public void encode(Element element, Object value, PrintHandler output,
             Map hints) throws IOException, OperationNotSupportedException {
             if ((value == null) || !(value instanceof MultiPolygon)) {
-            	throw new OperationNotSupportedException("Value is "+value == null?"null":value.getClass().getName());
+                throw new OperationNotSupportedException("Value is "+(value == null?"null":value.getClass().getName()));
             }
 
             if (element == null) {

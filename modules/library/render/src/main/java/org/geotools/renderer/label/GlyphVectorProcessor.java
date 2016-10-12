@@ -123,6 +123,7 @@ abstract class GlyphVectorProcessor {
                 startOrdinate = 0;
             cursor.moveTo(startOrdinate);
 
+            final double lineHeight = painter.getLineHeight();
             for (LineInfo.LineComponent lineComponent : lineInfo.getComponents()) {
                 GlyphVector gv = lineComponent.getGlyphVector();
                 try {
@@ -139,7 +140,7 @@ abstract class GlyphVectorProcessor {
                         AffineTransform t = new AffineTransform();
                         t.setToTranslation(c.x, c.y);
                         t.rotate(cursor.getCurrentAngle());
-                        t.translate(-p.getX() - advance, -p.getY() + painter.getLineHeight() * anchorY);
+                        t.translate(-p.getX() - advance, -p.getY() + lineHeight * anchorY);
                         transforms.add(t);
 
                         cursor.moveTo(cursor.getCurrentOrdinate() + advance + nextAdvance);

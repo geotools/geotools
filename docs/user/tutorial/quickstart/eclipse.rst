@@ -43,7 +43,9 @@ Imaging and Java Image IO section.
    
 #. At the time of writing the latest was JDK 8. Choose a download for your platform, for example:
    
-   jdk-8u66-windows-i586.exe
+   `jdk-8u66-windows-i586.exe`
+   
+   For Windows 32bit platforms.
    
 #. Click through the installer. You will need to accept a license agreement, choose a directory
    and so forth.
@@ -52,25 +54,27 @@ Imaging and Java Image IO section.
    
    C:\\Program Files\\Java\\jdk1.8.0\\
      
-#. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
+#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
    
-   http://download.java.net/media/jai/builds/release/
+   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
    
    Both a JDK and JRE installer are available:
    
    * jai-1_1_3-lib-windows-i586-jdk.exe
    * jai-1_1_3-lib-windows-i586-jre.exe
      
-#. Optional: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
+#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
    ImageIO library:
    
-   http://download.java.net/media/jai-imageio/builds/
+  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
    
    Both a JDK and JRE installer are available:   
    
    * jai_imageio-1_1-lib-windows-i586-jdk.exe 
    * jai_imageio-1_1-lib-windows-i586-jre.exe
+   
+For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
 
 Eclipse
 =======
@@ -85,14 +89,15 @@ development. For this tutorial we are doing straight up Java programming using t
 download available - if you already have an Eclipse download please go ahead and use it and
 switch to the "Java Perspective".
    
-1. Visit the Eclipse download page (http://www.eclipse.org/downloads/) and download "Eclipse IDE for
+1. Visit the Eclipse download page (http://www.eclipse.org/downloads/eclipse-packages/) and download "Eclipse IDE for
    Java developers".
    
-   At the time of writing the latest release was:
+   At the time of writing the latest release was Eclipse Neon:
    
-   * eclipse-java-mars-R-win32.zip 
+   * eclipse-jee-neon-R-win32.zip
    
-2. Eclipse does not provide an installer, just a directory to unzip and run.
+2. Eclipse now provides an installer; however this tutorial targets the binary packages that 
+   you simply extract and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
 4. Unzip the downloaded eclipse-java-mars-R-win32.zip file to your C:\\java directory - the
    folder C:\\java\\eclipse will be created.
@@ -256,17 +261,16 @@ such as GeoTools publish their work.
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </build>
-
-   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+        :end-before: <build>
    
-   .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: <build>
+   .. note:: If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+   
+      .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: </dependencies>
+        :end-before: <build>
 
-7. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
-
+7. GeoTools now requires Java 8 language level features (eg. lambdas) - you need to tell Maven to use the 1.8 source level.
 
    .. literalinclude:: artifacts/pom2.xml
       :language: xml
@@ -291,11 +295,11 @@ Quickstart Application
 
 Now that your environment is setup we can put together a simple Quickstart. This example will display a shapefile on screen.
 
-#. Create the package org.geotools.tutorial.quickstart using your IDE.
+#. Create the package ``org.geotools.tutorial.quickstart`` using your IDE.
 
 #. Create the org.geotools.tutorial.quickstart.Quickstart class using your IDE.
    
-   .. image:: images/class.jpg
+   .. image:: images/class.png
       :scale: 60
    
 #. Fill in the following code:

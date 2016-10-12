@@ -99,7 +99,7 @@ public class CSVWriteTest {
     public void featureStoreExample() throws Exception {
         System.out.println("featureStoreExample start\n");
         // featureStoreExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -117,7 +117,7 @@ public class CSVWriteTest {
     public void transactionExample() throws Exception {
         System.out.println("transactionExample start\n");
         // transactionExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -157,10 +157,10 @@ public class CSVWriteTest {
                 + DataUtilities.fidSet(featureStore2.getFeatures()));
 
         // new feature to add!
-        // 37.5667, 122.681944, Seoul, 473, 2015
+        // 50.733992, 7.099814, Bonn, 700, 2016
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        Point seoul = gf.createPoint(new Coordinate(37.5667,129.681944));
-        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { seoul, "Seoul", 473, 2015 }, "locations.1");
+        Point bonn = gf.createPoint(new Coordinate(50.733992, 7.099814));
+        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { bonn, "Bonn", 700, 2016 }, "locations.1");
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
         featureStore2.addFeatures(collection);
 
@@ -214,7 +214,7 @@ public class CSVWriteTest {
     public void removeAllExample() throws Exception {
         System.out.println("removeAllExample start\n");
         // removeAllExample start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -251,7 +251,7 @@ public class CSVWriteTest {
     public void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -260,10 +260,10 @@ public class CSVWriteTest {
         SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         
-        // 37.5667, 122.681944, Seoul, 473, 2015
+     // 50.733992, 7.099814, Bonn, 700, 2016
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        Point seoul = gf.createPoint(new Coordinate(37.5667,129.681944));
-        f = SimpleFeatureBuilder.build(type, new Object[] { seoul, "Seoul", 473, 2015 }, "locations.1");
+        Point bonn = gf.createPoint(new Coordinate(50.733992, 7.099814));
+        f= SimpleFeatureBuilder.build(type, new Object[] { bonn, "Bonn", 700, 2016 }, "locations.1");
         collection.add(f);
 
         writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
@@ -295,13 +295,13 @@ public class CSVWriteTest {
         System.out.println("appendContent start\n");
         File directory = tmp;
         // appendContent start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
         SimpleFeatureType featureType = store.getSchema("locations");
         
         File file2 = new File(directory,"duplicate.rst");
-        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
         
         CSVDataStoreFactory factory = new CSVDataStoreFactory();

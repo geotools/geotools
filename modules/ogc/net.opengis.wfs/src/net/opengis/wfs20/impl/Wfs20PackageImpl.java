@@ -5163,7 +5163,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
                 "group", null, 0, -1, OutputFormatListType.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getOutputFormatListType_Format(), theXMLTypePackage.getString(), "format",
-                null, 1, 1, OutputFormatListType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE,
+                null, 1, -1, OutputFormatListType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         initEClass(parameterExpressionTypeEClass, ParameterExpressionType.class,

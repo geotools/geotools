@@ -173,6 +173,9 @@ public class AncillaryFileManager implements FileSetManager{
 
     private static JAXBContext CONTEXT = null;
 
+    // contains information about dimensions that will produce multiple bands indexed by the dimension name
+    private final Map<String, MultipleBandsDimensionInfo> multipleBandsDimensionsInfo = new HashMap<>();
+
     static {
         try {
             CONTEXT = JAXBContext.newInstance("org.geotools.gce.imagemosaic.catalog.index");
@@ -180,6 +183,7 @@ public class AncillaryFileManager implements FileSetManager{
             LOGGER.log(Level.INFO, e.getMessage(), e);
         } 
         CUT_EXTENSIONS.add("nc");
+        CUT_EXTENSIONS.add("ncml");
     }
 
     private Indexer indexer;
@@ -537,7 +541,8 @@ public class AncillaryFileManager implements FileSetManager{
             Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
             if (unmarshaller != null) {
                 indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
-
+                // indexed information about dimensions that supports multiple bands
+                initMultipleBandsDimensionsInfo(indexer);
                 // Parsing schemas
                 final SchemasType schemas = indexer.getSchemas();
                 Map<String, String> schemaMapping = new HashMap<String, String>();
@@ -854,5 +859,34 @@ public class AncillaryFileManager implements FileSetManager{
         ParametersType indexerParams = indexer != null ? indexer.getParameters() : null;
         String param = IndexerUtils.getParam(indexerParams, parameterKey);
         return Boolean.valueOf(param);
+    }
+
+    /**
+     * Utility method that wil retrieve from the indexer file information about multiple bands
+     * dimensions and will parse that information and index it by the dimensions names.
+     */
+    private void initMultipleBandsDimensionsInfo(Indexer indexer) {
+        if (indexer.getMultipleBandsDimensions() == null ||
+                indexer.getMultipleBandsDimensions().getMultipleBandsDimension() == null) {
+            // no multiple bands dimensions in the data set
+            return;
+        }
+        for (Indexer.MultipleBandsDimensions.MultipleBandsDimension multipleBandsDimension
+                : indexer.getMultipleBandsDimensions().getMultipleBandsDimension()) {
+            // multiple bands dimensions are ignored by default
+            NetCDFUtilities.addIgnoredDimension(multipleBandsDimension.getName());
+            // index by the dimensions name the multiple bands information
+            multipleBandsDimensionsInfo.put(multipleBandsDimension.getName(),
+                    new MultipleBandsDimensionInfo(multipleBandsDimension.getBandsNames()));
+        }
+    }
+
+    /**
+     * This method will return the multiple bands information associated with the provided
+     * dimension name or NULL if the dimensions is single band.
+     */
+    MultipleBandsDimensionInfo getMultipleBandsDimensionInfo(String dimensionName) {
+        // simple lookup in the hash table, if the dimensions is single band we simply return NULL
+        return multipleBandsDimensionsInfo.get(dimensionName);
     }
 }

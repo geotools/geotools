@@ -77,3 +77,10 @@ is crossed.
 This feature can be enabled/disabled using the related method
 *setAdvancedProjectionHandlingEnabled()* in the same class.
 
+Q: Why does my SVG external graphic display as a gray square?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GeoTools uses a plugable External Graphics factory system to render an icon
+(see :doc:`/library/render/icon` for more details) 
+onto the screen. To render SVG files as icons it needs access to the
+SVGExternalGraphics factory which is included in the :doc:`/library/render/svg`.

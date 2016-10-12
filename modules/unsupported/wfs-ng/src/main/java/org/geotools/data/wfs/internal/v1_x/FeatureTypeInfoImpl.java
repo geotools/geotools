@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,8 +31,10 @@ import net.opengis.ows10.WGS84BoundingBoxType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.OutputFormatListType;
 
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.Loggers;
+import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -43,9 +45,12 @@ import org.opengis.referencing.operation.TransformException;
 public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     private final FeatureTypeType eType;
+    
+    private final WFSConfig config;
 
-    public FeatureTypeInfoImpl(FeatureTypeType eType) {
+    public FeatureTypeInfoImpl(FeatureTypeType eType, WFSConfig config) {
         this.eType = eType;
+        this.config = config;
     }
 
     @Override
@@ -77,7 +82,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     @Override
     public String getName() {
-        return eType.getName().getPrefix() + "_" + eType.getName().getLocalPart();
+        return config.localTypeName(eType.getName());
     }
 
     @Override

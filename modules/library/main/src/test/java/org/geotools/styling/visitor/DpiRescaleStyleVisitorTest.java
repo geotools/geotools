@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.TextSymbolizer;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -67,6 +68,12 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(4.0d, clone.getWidth().evaluate(null, Double.class), 0d);
         assertEquals(10.0f, clone.getDashArray()[0], 0f);
         assertEquals(20.0f, clone.getDashArray()[1], 0f);
+        
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
+        ts.accept(visitor);
+        TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
+        assertEquals("20.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
     }
     
     @Test
@@ -80,6 +87,13 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(2d, clone.getWidth().evaluate(null, Double.class), 0d);
         assertEquals(5f, clone.getDashArray()[0], 0f);
         assertEquals(10f, clone.getDashArray()[1], 0f);
+        
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
+        ts.setUnitOfMeasure(SI.METER);
+        ts.accept(visitor);
+        TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
+        assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
     }
     
     @Test
@@ -93,6 +107,13 @@ public class DpiRescaleStyleVisitorTest {
         assertEquals(2d, clone.getWidth().evaluate(null, Double.class), 0d);
         assertEquals(5f, clone.getDashArray()[0], 0f);
         assertEquals(10f, clone.getDashArray()[1], 0f);
+        
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
+        ts.setUnitOfMeasure(NonSI.FOOT);
+        ts.accept(visitor);
+        TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
+        assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
     }
     
     @Test
@@ -109,6 +130,14 @@ public class DpiRescaleStyleVisitorTest {
         // the dash array did not, it's supposed to be meters
         assertEquals(5f, clone.getDashArray()[0], 0f);
         assertEquals(10f, clone.getDashArray()[1], 0f);
+        
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10px");
+        ts.setUnitOfMeasure(SI.METER);
+        ts.accept(visitor);
+        TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
+        // this one has been rescaled
+        assertEquals("20.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
     }
     
     @Test
@@ -124,7 +153,13 @@ public class DpiRescaleStyleVisitorTest {
         // the dash array did , it's supposed to be pixels
         assertEquals(10f, clone.getDashArray()[0], 0f);
         assertEquals(20f, clone.getDashArray()[1], 0f);
+        
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10m");
+        ts.accept(visitor);
+        TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
+        // this one has not been rescaled
+        assertEquals("10.0m", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
+
     }
-
-
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -76,10 +76,12 @@ import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -631,6 +633,51 @@ public class StreamingRendererTest {
         sr.paint(graphics, paintArea, referencedEnvelope);
 
         assertTrue(errors == 0);
+    }
+
+    @Test
+    public void testStyleThatUsesGeometryDefaultAttribute() throws Exception {
+        // preparing the layer to be rendered, the provided style as a filter that will use
+        // the default geometry attribute "", this will allow us to test that using geometry
+        // default attribute "" is correctly handled
+        StyleImpl style = (StyleImpl) RendererBaseTest.loadStyle(this, "genericLines.sld");
+        File vectorDataFile = new File(TestData.getResource(this, "genericLines.properties").toURI());
+        PropertyDataStore dataStore = new PropertyDataStore(vectorDataFile.getParentFile());
+        Layer layer = new FeatureLayer(dataStore.getFeatureSource("genericLines"), style);
+        // prepare map content and instantiate a streaming reader
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(layer);
+        StreamingRenderer gRender = new StreamingRenderer();
+        gRender.setMapContent(mapContent);
+        gRender.addRenderListener(new RenderListener() {
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                features++;
+            }
+
+            @Override
+            public void errorOccurred(Exception e) {
+                errors++;
+            }
+        });
+        features = 0;
+        errors = 0;
+        // defining the paint area and performing the rendering
+        BufferedImage image = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+        Rectangle paintArea = new Rectangle(40, 40);
+        double minx = -2;
+        double maxx = 2;
+        double miny = -2;
+        double maxy = 2;
+        ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(
+                new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny),
+                CRS.decode("EPSG:4326"));
+        gRender.paint(graphics, paintArea, referencedEnvelope);
+        // checking that four features were rendered, if the default geometry attribute was not
+        // correctly handled no geometries were selected and so no features were rendered
+        Assert.assertEquals(features, 4);
+        Assert.assertEquals(errors, 0);
     }
 }
 

@@ -16,14 +16,19 @@
  */
 package org.geotools.data.wfs.internal;
 
+import java.beans.XMLEncoder;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
+import org.geotools.factory.GeoTools;
 import org.geotools.ows.ServiceException;
+import org.geotools.xml.XMLHandlerHints;
+import org.xml.sax.EntityResolver;
 
 public class GetCapabilitiesRequest extends AbstractGetCapabilitiesRequest {
 
@@ -48,7 +53,12 @@ public class GetCapabilitiesRequest extends AbstractGetCapabilitiesRequest {
 
     @Override
     public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
-        return new GetCapabilitiesResponse(response);
+        Map<String, Object> hints = getRequestHints();
+        EntityResolver resolver = null;
+        if (hints != null) {
+            resolver = XMLHandlerHints.toEntityResolver(hints);
+        }
+        return new GetCapabilitiesResponse(response, resolver);
     }
 
 }

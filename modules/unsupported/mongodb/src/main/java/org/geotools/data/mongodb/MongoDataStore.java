@@ -114,7 +114,7 @@ public class MongoDataStore extends ContentDataStore {
     final MongoClient createMongoClient(MongoClientURI mongoClientURI) {
         try {
             return new MongoClient(mongoClientURI);
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Unknown mongodb host(s)", e);
         }
     }
@@ -221,7 +221,7 @@ public class MongoDataStore extends ContentDataStore {
         incoming.getUserData().put(KEY_collection, incoming.getTypeName());
         
         // Collection needs to exist (with index) so that it's returned with createTypeNames()
-        dataStoreDB.createCollection(incoming.getTypeName(), new BasicDBObject()).ensureIndex(new BasicDBObject(geometryMapping, "2dsphere"));
+        dataStoreDB.createCollection(incoming.getTypeName(), new BasicDBObject()).createIndex(new BasicDBObject(geometryMapping, "2dsphere"));
        
         // Store FeatureType instance since it can't be inferred (no documents)
         ContentEntry entry = entry (incoming.getName());

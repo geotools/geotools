@@ -17,9 +17,10 @@
 package org.geotools.data.ows;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 
 import org.geotools.ows.ServiceException;
@@ -85,6 +86,7 @@ public interface Request {
      */
     Response createResponse(HTTPResponse response) throws ServiceException, IOException;
     
+    
     /**
      * This method indicates whether this request needs to transmit some data
      * to the server using POST. If this returns true, performPostOutput() will be called
@@ -116,4 +118,19 @@ public interface Request {
      * @param outputStream
      */
     void performPostOutput(OutputStream outputStream) throws IOException;
+    
+    /**
+     * Sets hints that might be driving how the request is performed
+     * @param hints
+     */
+    default void setRequestHints(Map<String, Object> hints) {
+        // nothing to do
+    }
+    
+    /**
+     * Returns the request hints
+     */
+    default Map<String, Object> getRequestHints() {
+        return Collections.emptyMap();
+    }
 }

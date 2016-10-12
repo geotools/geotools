@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -261,11 +261,6 @@ public class WFSTestData {
     
     protected static class MutableWFSConfig extends WFSConfig {
         
-        String axisOrder = super.getAxisOrder();
-        String axisOrderFilter = super.getAxisOrder();
-        boolean useDefaultSrs = super.isUseDefaultSrs();
-        String outputFormatOverride = super.getOutputformatOverride();
-        
         public void setAxisOrder(String axisOrder){
             this.axisOrder = axisOrder;
         }
@@ -274,33 +269,32 @@ public class WFSTestData {
             this.axisOrderFilter = axisOrderFilter;
         }
         
-        @Override
-        public String getAxisOrder() {
-            return axisOrder;
-        }
-
-        @Override
-        public String getAxisOrderFilter() {
-            return axisOrderFilter;
-        }
-
-        @Override
-        public boolean isUseDefaultSrs() {
-            return useDefaultSrs;
-        }
-
         public void setUseDefaultSrs(boolean useDefaultSrs) {
             this.useDefaultSrs = useDefaultSrs;
         }
 
-        @Override
-        public String getOutputformatOverride() {
-            return outputFormatOverride;
-        }
-
         public void setOutputformatOverride(String outputFormatOverride) {
-            this.outputFormatOverride = outputFormatOverride;
+            this.outputformatOverride = outputFormatOverride;
         }   
+        
+        public void setProtocol(Boolean protocol) {
+            if (protocol == null) {
+                this.preferredMethod = PreferredHttpMethod.AUTO;
+            } else {
+                this.preferredMethod = protocol.booleanValue() ? PreferredHttpMethod.HTTP_POST
+                        : PreferredHttpMethod.HTTP_GET;
+            }
+        }
+        
+        public void setGmlCompatibleTypeNames(boolean gmlCompatibleTypeNames) {
+            this.gmlCompatibleTypenames = gmlCompatibleTypeNames;
+        }
+    }
+    
+    public static WFSConfig getGmlCompatibleConfig() {
+        MutableWFSConfig config = new MutableWFSConfig();
+        config.setGmlCompatibleTypeNames(true);
+        return config;
     }
     
     public static class TestWFSClient extends WFSClient {
@@ -310,7 +304,7 @@ public class WFSTestData {
         private GetFeatureRequest request;
         
         public TestWFSClient(URL capabilitiesURL, HTTPClient http) throws IOException, ServiceException {
-            super(capabilitiesURL, http, new MutableWFSConfig());
+            super(capabilitiesURL, http, getGmlCompatibleConfig());
         }
 
         /**
@@ -334,6 +328,10 @@ public class WFSTestData {
 
         public void setUseDefaultSrs(boolean useDefaultSrs) {
             ((MutableWFSConfig) config).setUseDefaultSrs(useDefaultSrs);
+        }
+
+        public void setProtocol(Boolean protocol) {
+            ((MutableWFSConfig) config).setProtocol(protocol);
         }
 
         @Override

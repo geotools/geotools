@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.ByteArrayInStream;
 import com.vividsolutions.jts.io.ByteOrderDataInStream;
 import com.vividsolutions.jts.io.InStream;
@@ -41,6 +42,8 @@ public class GeoPkgGeomReader {
     protected GeometryHeader header = null;
     
     protected Geometry geometry = null;
+    
+    private GeometryFactory factory = new GeometryFactory();
     
     public GeoPkgGeomReader(InStream input) {
         this.input = input;
@@ -82,7 +85,8 @@ public class GeoPkgGeomReader {
     protected Geometry read() throws IOException { //header must be read!      
         // read the geometry
         try {
-            Geometry g = new WKBReader().read(input);
+            WKBReader wkbReader = new WKBReader(factory);
+            Geometry g = wkbReader.read(input);
             g.setSRID(header.getSrid());
             return g;
         } catch (ParseException e) {
@@ -129,14 +133,14 @@ public class GeoPkgGeomReader {
         // next byte flags
         h.setFlags(new GeometryHeaderFlags((byte)buf[3]));
 
-        // set endianness
+        // set endianess
         ByteOrderDataInStream din = new ByteOrderDataInStream(input);
         din.setOrder(h.getFlags().getEndianess());
 
         // read the srid
         h.setSrid(din.readInt());
 
-        // read the envlope
+        // read the envelope
         if (h.getFlags().getEnvelopeIndicator() != EnvelopeType.NONE) {
             double x1 = din.readDouble();
             double x2 = din.readDouble();
@@ -158,6 +162,22 @@ public class GeoPkgGeomReader {
             h.setEnvelope (new Envelope(x1, x2, y1, y2));
         }
         return h;
+    }
+
+    /**
+     * @return the factory
+     */
+    public GeometryFactory getFactory() {
+        return factory;
+    }
+
+    /**
+     * @param factory the factory to set
+     */
+    public void setFactory(GeometryFactory factory) {
+        if(factory!=null) {
+            this.factory = factory;
+        }
     }
     
 

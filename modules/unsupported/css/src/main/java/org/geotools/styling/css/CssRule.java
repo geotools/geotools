@@ -28,6 +28,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.geotools.styling.Style;
 import org.geotools.styling.css.Value.Function;
@@ -45,7 +47,7 @@ import org.geotools.util.Converters;
 public class CssRule {
 
     public static final Integer NO_Z_INDEX = null;
-
+    
     Selector selector;
 
     Map<PseudoClass, List<Property>> properties;
@@ -53,6 +55,8 @@ public class CssRule {
     String comment;
 
     List<CssRule> ancestry;
+    
+    List<CssRule> nestedRules;
 
     /**
      * Builds a CSS rule
@@ -427,6 +431,14 @@ public class CssRule {
     public void setAncestry(List<CssRule> ancestry) {
         this.ancestry = ancestry;
     }
+    
+    /**
+     * Returns the rules nested in this one
+     * @return
+     */
+    public List<CssRule> getNestedRules() {
+        return this.nestedRules;
+    }
 
     /**
      * Returns true if the style has at least one property activating a symbolizer, e.g., fill,
@@ -548,6 +560,27 @@ public class CssRule {
         }
 
         return max;
+    }
+
+    /**
+     * Turns a rule with nested subrules into a flat list of rules (this rule, plus all nested with
+     * a properly combined selector and property inheritance)
+     * @return
+     */
+    public List<CssRule> expandNested(RulesCombiner combiner) {
+        if (nestedRules.isEmpty()) {
+            return Collections.singletonList(this);
+        } else {
+            Stream<CssRule> nestedRulesStream = nestedRules.stream().flatMap(r -> {
+                return r.expandNested(combiner).stream().map(sr -> { 
+                    CssRule combined = combiner.combineRules(Arrays.asList(this, sr));
+                    combined.setComment(sr.getComment());
+                    combined.setAncestry(null);
+                    return combined;
+                });
+            });
+            return Stream.concat(Stream.of(this), nestedRulesStream).collect(Collectors.toList());
+        }
     }
 
 }

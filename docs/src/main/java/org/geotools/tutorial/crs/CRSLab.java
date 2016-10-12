@@ -143,7 +143,7 @@ public class CRSLab {
 
         // And create a new Shapefile with a slight modified schema
         DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
-        Map<String, Serializable> create = new HashMap<String, Serializable>();
+        Map<String, Serializable> create = new HashMap<>();
         create.put("url", file.toURI().toURL());
         create.put("create spatial index", Boolean.TRUE);
         DataStore dataStore = factory.createNewDataStore(create);
@@ -155,10 +155,9 @@ public class CRSLab {
 
         // carefully open an iterator and writer to process the results
         Transaction transaction = new DefaultTransaction("Reproject");
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+        try ( FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                         dataStore.getFeatureWriterAppend(createdName, transaction);
-        SimpleFeatureIterator iterator = featureCollection.features();
-        try {
+              SimpleFeatureIterator iterator = featureCollection.features()){
             while (iterator.hasNext()) {
                 // copy the contents of each feature and transform the geometry
                 SimpleFeature feature = iterator.next();
@@ -178,8 +177,6 @@ public class CRSLab {
             transaction.rollback();
             JOptionPane.showMessageDialog(null, "Export to shapefile failed");
         } finally {
-            writer.close();
-            iterator.close();
             transaction.close();
         }
     }
@@ -216,7 +213,7 @@ public class CRSLab {
         // And create a new Shapefile with the results
         DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
 
-        Map<String, Serializable> create = new HashMap<String, Serializable>();
+        Map<String, Serializable> create = new HashMap<>();
         create.put("url", file.toURI().toURL());
         create.put("create spatial index", Boolean.TRUE);
         DataStore newDataStore = factory.createNewDataStore(create);

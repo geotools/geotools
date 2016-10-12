@@ -11,7 +11,7 @@ public class JDBCExamples {
 
 void h2Example() throws IOException {
     // h2Example start
-    Map<String,Object> params = new HashMap<String,Object>();
+    Map<String,Object> params = new HashMap<>();
     params.put("dbtype", "h2");
     params.put("database", "geotools");
     
@@ -21,7 +21,7 @@ void h2Example() throws IOException {
 
 void h2AbsPathExample() throws IOException {
     // h2AbsPathExample start
-    Map<String,Object> params = new HashMap<String,Object>();
+    Map<String,Object> params = new HashMap<>();
     params.put("dbtype", "h2");
     params.put("database", "/abs/path/to/geotools");
     
@@ -31,7 +31,7 @@ void h2AbsPathExample() throws IOException {
 
 void h2TcpExample() throws IOException {
     // h2TcpExample start
-    Map<String,Object> params = new HashMap<String,Object>();
+    Map<String,Object> params = new HashMap<>();
     params.put("dbtype", "h2");
     params.put("host", "localhost");
     params.put("port", 9902);
@@ -45,7 +45,7 @@ void h2TcpExample() throws IOException {
 
 void postgisExample() throws IOException {
     // postgisExample start
-    Map<String,Object> params = new HashMap<String,Object>();
+    Map<String,Object> params = new HashMap<>();
     params.put( "dbtype", "postgis");
     params.put( "host", "localhost");
     params.put( "port", 5432);

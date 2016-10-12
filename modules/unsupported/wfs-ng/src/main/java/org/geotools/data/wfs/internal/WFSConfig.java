@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,15 +31,23 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.WFS_STRATEGY;
 import static org.geotools.data.wfs.WFSDataStoreFactory.OUTPUTFORMAT;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER_FILTER;
+import static org.geotools.data.wfs.WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES;
+import static org.geotools.data.wfs.WFSDataStoreFactory.ENTITY_RESOLVER;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.EntityResolver;
 
 /**
  * @see WFSStrategy#setConfig(WFSConfig)
@@ -78,11 +86,16 @@ public class WFSConfig {
     
     protected String axisOrderFilter;
     
+    protected boolean gmlCompatibleTypenames;
     
+    protected EntityResolver entityResolver;
 
     public static enum PreferredHttpMethod {
         AUTO, HTTP_GET, HTTP_POST
     }
+
+    private static final String NAME_SEPARATOR = ":";
+    private static final String NAME_SEPARATOR_GML_COMPATIBLE = "_";
 
     public WFSConfig() {
         preferredMethod = PreferredHttpMethod.AUTO;
@@ -96,6 +109,8 @@ public class WFSConfig {
         wfsStrategy = (String) WFS_STRATEGY.getDefaultValue();
         filterCompliance = (Integer) FILTER_COMPLIANCE.getDefaultValue();
         namespaceOverride = (String) NAMESPACE.getDefaultValue();
+        gmlCompatibleTypenames = (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue();
+        entityResolver = (EntityResolver) ENTITY_RESOLVER.getDefaultValue();
     }
 
     public static WFSConfig fromParams(Map<?, ?> params) throws IOException {
@@ -130,6 +145,10 @@ public class WFSConfig {
         config.axisOrderFilter = (String) AXIS_ORDER_FILTER.lookUp(params) == null ? (String) AXIS_ORDER
                 .lookUp(params) : (String) AXIS_ORDER_FILTER.lookUp(params);
 
+        config.gmlCompatibleTypenames = GML_COMPATIBLE_TYPENAMES.lookUp(params) == null ? 
+                (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue() :  GML_COMPATIBLE_TYPENAMES.lookUp(params);
+        config.entityResolver = ENTITY_RESOLVER.lookUp(params);
+        
         return config;
     }
 
@@ -243,22 +262,37 @@ public class WFSConfig {
      */
     public String getAxisOrderFilter() {
         return axisOrderFilter;
-    }    
+    }
+
+    /**
+     * 
+     * @return if GML compatible typenames are used
+     */
+    public boolean isGmlCompatibleTypenames() {
+        return gmlCompatibleTypenames;
+    }
     
     /**
-     * Checks if axis flipping is needed comparing axis order requested for the
-     * DataStore with query crs.
+     * Returns the entity resolved to be used for XML parses
+     * @return
+     */
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+
+    /**
+     * Checks if axis flipping is needed comparing axis order requested for the DataStore with query crs.
      * 
      * @param axisOrder
      * @param coordinateSystem
      * @return
      */
-    public static boolean invertAxisNeeded(String axisOrder,
-            CoordinateReferenceSystem crs) {
-        CRS.AxisOrder requestedAxis = CRS.getAxisOrder(crs);            
+    public static boolean invertAxisNeeded(String axisOrder, CoordinateReferenceSystem crs) {
+        CRS.AxisOrder requestedAxis = CRS.getAxisOrder(crs);
         if (requestedAxis == CRS.AxisOrder.INAPPLICABLE) {
-            boolean forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
-                    Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+            boolean forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY")
+                    || Boolean.TRUE.equals(Hints
+                            .getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
             if (forcedLonLat) {
                 requestedAxis = CRS.AxisOrder.EAST_NORTH;
             } else {
@@ -271,7 +305,17 @@ public class WFSConfig {
         } else if (WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH.equals(axisOrder)) {
             return requestedAxis.equals(CRS.AxisOrder.NORTH_EAST);
         } else {
-            return false; //compliant, don't do anything
+            return false; // compliant, don't do anything
         }
     }
+    
+    public String localTypeName(QName remoteTypeName) {
+        String localTypeName = remoteTypeName.getLocalPart();
+        if (!XMLConstants.DEFAULT_NS_PREFIX.equals(remoteTypeName.getPrefix())) {
+            localTypeName = remoteTypeName.getPrefix() + 
+                    (gmlCompatibleTypenames? NAME_SEPARATOR_GML_COMPATIBLE: NAME_SEPARATOR) + localTypeName;
+        }
+        return localTypeName;
+    }
+
 }

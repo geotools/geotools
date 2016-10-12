@@ -22,11 +22,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for schemaType complex type.
+ * <p>
+ * Java class for schemaType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="schemaType">
@@ -45,25 +46,23 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "schemaType", propOrder = {
-    "attributes"
-})
+@XmlType(name = "schemaType", propOrder = { "attributes" })
 public class SchemaType {
 
     @XmlElement(required = true)
     protected String attributes;
+
     @XmlAttribute
     protected String name;
+
     @XmlAttribute
     protected String ref;
 
     /**
      * Gets the value of the attributes property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
     public String getAttributes() {
         return attributes;
@@ -72,10 +71,8 @@ public class SchemaType {
     /**
      * Sets the value of the attributes property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is {@link String }
+     * 
      */
     public void setAttributes(String value) {
         this.attributes = value;
@@ -84,10 +81,8 @@ public class SchemaType {
     /**
      * Gets the value of the name property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
     public String getName() {
         return name;
@@ -96,10 +91,8 @@ public class SchemaType {
     /**
      * Sets the value of the name property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is {@link String }
+     * 
      */
     public void setName(String value) {
         this.name = value;
@@ -108,10 +101,8 @@ public class SchemaType {
     /**
      * Gets the value of the ref property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
     public String getRef() {
         return ref;
@@ -120,10 +111,8 @@ public class SchemaType {
     /**
      * Sets the value of the ref property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is {@link String }
+     * 
      */
     public void setRef(String value) {
         this.ref = value;

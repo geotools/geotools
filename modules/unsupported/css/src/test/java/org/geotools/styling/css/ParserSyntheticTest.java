@@ -16,8 +16,10 @@
  */
 package org.geotools.styling.css;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -35,6 +37,7 @@ import org.geotools.styling.css.selector.Id;
 import org.geotools.styling.css.selector.Or;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
+import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
 import org.junit.Test;
 import org.parboiled.errors.ParseError;
@@ -657,9 +660,6 @@ public class ParserSyntheticTest extends CssBaseTest {
         } catch (CSSParseException e) {
             List<ParseError> errors = e.getErrors();
             assertEquals(1, errors.size());
-            assertEquals(
-                    "Invalid input ':', expected NameCharacter, '(', WhiteSpace, OptionalWhiteSpace, ',', WhitespaceOrIgnoredComment, ';', WhiteSpaceOrIgnoredComment or '}' (line 3, column 8)",
-                    e.getMessage());
         }
     }
 
@@ -724,6 +724,83 @@ public class ParserSyntheticTest extends CssBaseTest {
         String css = "* { fill: blue; /**/ stroke: yellow}";
         Stylesheet ss = CssParser.parse(css);
         assertEquals(1, ss.getRules().size());
+    }
+    
+    @Test
+    public void testSimpleTransform() {
+        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        final Value.MultiValue levelsValue = new Value.MultiValue(new Value.Literal("1100"), new Value.Literal("1200"), new Value.Literal("1300"));
+        assertProperty(rule, 0, "transform", new Value.TransformFunction("ras:Contour", Collections.singletonMap("levels", levelsValue)));
+        assertProperty(rule, 1, "stroke", new Value.Literal("#000000"));
+    }
+    
+    @Test
+    public void testMarkSubrule() {
+        String css = "* { mark: symbol(circle); :mark { size: 10}}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        assertEquals(1, rule.getNestedRules().size());
+        CssRule nested = rule.getNestedRules().get(0);
+        PseudoClass selector = assertSelector(nested.getSelector(), PseudoClass.class);
+        assertEquals("mark", selector.getClassName());
+        assertProperty(nested, PseudoClass.newPseudoClass("mark"), 0, "size", new Value.Literal("10"));
+    }
+    
+    @Test
+    public void testSubruleWithNoTitle() {
+        String css = "/* @title All */ * { mark: symbol(circle); :mark { size: 10}}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        assertEquals("@title All", rule.getComment());
+        assertEquals(1, rule.getNestedRules().size());
+        CssRule nested = rule.getNestedRules().get(0);
+        assertNull(nested.getComment());
+    }
+    
+    @Test
+    public void testSubruleWithTitle() {
+        String css = "/* @title All */ * { mark: symbol(circle); /* @title special */ [a = 10] { mark: symbol(triangle)}}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        assertEquals("@title All", rule.getComment());
+        assertEquals(1, rule.getNestedRules().size());
+        CssRule nested = rule.getNestedRules().get(0);
+        assertEquals("@title special", nested.getComment());
+    }
+    
+    @Test
+    public void testFeatureTypeSubrule() {
+        String css = "* { fill: red; topp:states { stroke: yellow }}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        assertEquals(1, rule.getNestedRules().size());
+        CssRule nested = rule.getNestedRules().get(0);
+        TypeName selector = assertSelector(nested.getSelector(), TypeName.class);
+        assertEquals("topp:states", selector.name);
+        assertProperty(nested, 0, "stroke", new Value.Literal("#ffff00"));
+    }
+    
+    @Test
+    public void testMultiNestedSelectors() {
+        String css = "* { stroke: black; [a <= 10] { fill: yellow }; [a > 10] { fill: red}; stroke-opacity: 50%}";
+        Stylesheet ss = CssParser.parse(css);
+        assertEquals(1, ss.getRules().size());
+        CssRule rule = ss.getRules().get(0);
+        
+        assertEquals(2, rule.getNestedRules().size());
+        
+    }
+
+    private <T extends Selector> T assertSelector(Selector selector, Class<T> clazz) {
+        assertThat(selector, instanceOf(clazz));
+        return (T) selector;
     }
 
 }

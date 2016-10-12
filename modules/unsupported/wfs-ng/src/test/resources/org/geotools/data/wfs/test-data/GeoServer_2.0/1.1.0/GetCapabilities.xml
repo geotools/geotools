@@ -220,6 +220,32 @@
 				</ows:UpperCorner>
 			</ows:WGS84BoundingBox>
 		</FeatureType>
+        <FeatureType>
+            <Name>sf:rivers</Name>
+            <Title>rivers_Type</Title>
+            <Abstract></Abstract>
+            <ows:Keywords>
+                <ows:Keyword></ows:Keyword>
+            </ows:Keywords>
+            <DefaultSRS>urn:x-ogc:def:crs:EPSG:6.11.2:26713</DefaultSRS>
+            <OutputFormats>
+                <Format>GML2</Format>
+                <Format>GML2-GZIP</Format>
+                <Format>text/xml; subtype=gml/2.1.2</Format>
+                <Format>SHAPE-ZIP</Format>
+                <Format>json</Format>
+                <Format>text/xml; subtype=gml/3.1.1</Format>
+                <Format>gml3</Format>
+            </OutputFormats>
+            <ows:WGS84BoundingBox>
+                <ows:LowerCorner>
+                    -103.87741691493184 44.37087275281798
+                </ows:LowerCorner>
+                <ows:UpperCorner>
+                    -103.62231404880659 44.50015918338962
+                </ows:UpperCorner>
+            </ows:WGS84BoundingBox>
+        </FeatureType>
 		<FeatureType xmlns:tiger="http://www.census.gov">
 			<Name>tiger:tiger_roads</Name>
 			<Title>tiger_roads_Type</Title>

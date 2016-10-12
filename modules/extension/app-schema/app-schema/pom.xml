@@ -81,7 +81,8 @@
                 2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
+            <version>1.9.2</version>
+            <classifier>noclassprop</classifier>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>

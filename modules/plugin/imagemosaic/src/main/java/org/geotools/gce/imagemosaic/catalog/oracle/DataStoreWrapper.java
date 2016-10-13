@@ -75,9 +75,10 @@ public abstract class DataStoreWrapper implements DataStore {
 
     protected static final String COORDINATE_REFERENCE_SYSTEM = "CRS";
 
-    protected final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataStoreWrapper.class);
+    protected final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(DataStoreWrapper.class);
 
-    /** Auxiliary folder which contains properties file with mapping information */ 
+    /** Auxiliary folder which contains properties file with mapping information */
     protected File auxiliaryFolder;
 
     /** The underlying datastore */
@@ -90,7 +91,8 @@ public abstract class DataStoreWrapper implements DataStore {
     private List<String> typeNames = new ArrayList<String>();
 
     /**
-     * Base constructor 
+     * Base constructor
+     * 
      * @param datastore
      * @param auxFolderPath
      */
@@ -99,19 +101,19 @@ public abstract class DataStoreWrapper implements DataStore {
     }
 
     /**
-     * Base constructor with custom hidden folder 
+     * Base constructor with custom hidden folder
+     * 
      * @param datastore
      * @param auxFolderPath
      * @param subFolderName
      */
     public DataStoreWrapper(DataStore datastore, String auxFolderPath, String subFolderName) {
         this.datastore = datastore;
-        initMapping(auxFolderPath  + File.separatorChar + subFolderName);
+        initMapping(auxFolderPath + File.separatorChar + subFolderName);
     }
-    
+
     /**
-     * Initialize the mapping by creating proper {@link FeatureTypeMapper}s on top of the available property files
-     * which contain mapping information.
+     * Initialize the mapping by creating proper {@link FeatureTypeMapper}s on top of the available property files which contain mapping information.
      * 
      * @param auxFolderPath the path of the folder containing mapping properties files
      */
@@ -127,17 +129,21 @@ public abstract class DataStoreWrapper implements DataStore {
                 loadMappers(file);
             } else {
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning("The specified config folder for datastore wrapping can't be read or isn't a directory: " + auxFolderPath);
+                    LOGGER.warning(
+                            "The specified config folder for datastore wrapping can't be read or isn't a directory: "
+                                    + auxFolderPath);
                 }
             }
             this.auxiliaryFolder = file;
         } catch (MalformedURLException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified config folder for datastore wrapping is not valid: " + auxFolderPath);
+                LOGGER.warning("The specified config folder for datastore wrapping is not valid: "
+                        + auxFolderPath);
             }
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.SEVERE)) {
-                LOGGER.severe("Unable to initialize the wrapping mapping for this folder: " + auxFolderPath);
+                LOGGER.severe("Unable to initialize the wrapping mapping for this folder: "
+                        + auxFolderPath);
             }
         }
     }
@@ -150,11 +156,11 @@ public abstract class DataStoreWrapper implements DataStore {
      */
     private void loadMappers(final File file) throws Exception {
         // TODO we should do a lazy load initialization
-        final String [] files = file.list();
+        final String[] files = file.list();
         final String parentPath = file.getAbsolutePath();
 
         // Loop over files
-        for (String element: files) {
+        for (String element : files) {
             final Properties properties = loadProperties(parentPath + File.separatorChar + element);
             final FeatureTypeMapper mapper = getFeatureTypeMapper(properties);
             final Name name = mapper.getName();
@@ -165,6 +171,7 @@ public abstract class DataStoreWrapper implements DataStore {
 
     /**
      * Utility method which load mapping properties from a propertiesFile.
+     * 
      * @param propertiesFile
      * @return
      */
@@ -188,7 +195,7 @@ public abstract class DataStoreWrapper implements DataStore {
             if (inStream != null) {
                 IOUtils.closeQuietly(inStream);
             }
-        }            
+        }
         return properties;
     }
 
@@ -216,7 +223,7 @@ public abstract class DataStoreWrapper implements DataStore {
                     datastore.getSchema(typeName);
                     exists = true;
                 } catch (IOException ioe) {
-                    
+
                 }
                 if (exists) {
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -238,13 +245,15 @@ public abstract class DataStoreWrapper implements DataStore {
 
     /**
      * Store the properties on disk
+     * 
      * @param properties
      * @param typeName
      */
     protected void storeProperties(Properties properties, String typeName) {
         OutputStream outStream = null;
         try {
-            final String propertiesPath = auxiliaryFolder.getAbsolutePath() + File.separatorChar + typeName + ".properties";
+            final String propertiesPath = auxiliaryFolder.getAbsolutePath() + File.separatorChar
+                    + typeName + ".properties";
             outStream = new BufferedOutputStream(new FileOutputStream(new File(propertiesPath)));
             properties.store(outStream, null);
         } catch (FileNotFoundException e) {
@@ -306,7 +315,7 @@ public abstract class DataStoreWrapper implements DataStore {
     public void removeSchema(Name typeName) throws IOException {
         FeatureTypeMapper mapper = getMapper(typeName);
         if (mapper == null) {
-            throw new IOException ("No wrapper found for " + typeName);
+            throw new IOException("No wrapper found for " + typeName);
         } else {
             String mappedName = mapper.getMappedName();
             datastore.removeSchema(mappedName);
@@ -320,7 +329,8 @@ public abstract class DataStoreWrapper implements DataStore {
 
     @Override
     public String[] getTypeNames() throws IOException {
-        return typeNames != null ? (String[]) typeNames.toArray(new String[typeNames.size()]) : null;
+        return typeNames != null ? (String[]) typeNames.toArray(new String[typeNames.size()])
+                : null;
     }
 
     @Override
@@ -333,11 +343,12 @@ public abstract class DataStoreWrapper implements DataStore {
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         FeatureTypeMapper mapper = getMapper(typeName);
         if (mapper == null) {
-            throw new IOException ("No wrapper found for " + typeName);
+            throw new IOException("No wrapper found for " + typeName);
         } else {
-            SimpleFeatureStore source = (SimpleFeatureStore) datastore.getFeatureSource(mapper.getMappedName());
+            SimpleFeatureStore source = (SimpleFeatureStore) datastore
+                    .getFeatureSource(mapper.getMappedName());
             if (source == null) {
-                throw new IOException ("No feature source available for " + typeName);
+                throw new IOException("No feature source available for " + typeName);
             }
             return transformFeatureStore(source, mapper);
         }
@@ -379,6 +390,7 @@ public abstract class DataStoreWrapper implements DataStore {
 
     /**
      * Return the mapper for the specified typeName
+     * 
      * @param typeName
      * @return
      */
@@ -386,39 +398,42 @@ public abstract class DataStoreWrapper implements DataStore {
         FeatureTypeMapper mapper = null;
         Utilities.ensureNonNull("typeName", typeName);
         if (mapping.containsKey(typeName)) {
-           mapper = mapping.get(typeName);
+            mapper = mapping.get(typeName);
         }
         return mapper;
     }
 
     /**
      * Store the {@link FeatureTypeMapper} instance
+     * 
      * @param mapper
      */
     protected void storeMapper(FeatureTypeMapper mapper) {
         final Properties properties = new Properties();
-            final String typeName = mapper.getName().toString();
-            properties.setProperty(NAME, typeName);
-            properties.setProperty(MAPPEDNAME, mapper.getMappedName().toString());
-            final List<Definition> definitions = mapper.getDefinitions();
-            final StringBuilder builder = new StringBuilder();
+        final String typeName = mapper.getName().toString();
+        properties.setProperty(NAME, typeName);
+        properties.setProperty(MAPPEDNAME, mapper.getMappedName().toString());
+        final List<Definition> definitions = mapper.getDefinitions();
+        final StringBuilder builder = new StringBuilder();
 
-            // Populating schema
-            for (Definition definition: definitions) {
-                builder.append(definition.getName()).append(":").append(definition.getBinding().getName()).append(",");
-            }
-            String schema = builder.toString();
-            schema = schema.substring(0, schema.length() - 1 );
-            properties.setProperty(SCHEMA, schema);
-            properties.setProperty(COORDINATE_REFERENCE_SYSTEM, mapper.getCoordinateReferenceSystem().toWKT());
+        // Populating schema
+        for (Definition definition : definitions) {
+            builder.append(definition.getName()).append(":")
+                    .append(definition.getBinding().getName()).append(",");
+        }
+        String schema = builder.toString();
+        schema = schema.substring(0, schema.length() - 1);
+        properties.setProperty(SCHEMA, schema);
+        properties.setProperty(COORDINATE_REFERENCE_SYSTEM,
+                mapper.getCoordinateReferenceSystem().toWKT());
 
-            // Storing properties
-            storeProperties(properties, typeName);
+        // Storing properties
+        storeProperties(properties, typeName);
     }
 
     /**
-     * Return a specific {@link FeatureTypeMapper} by parsing mapping properties contained within
-     * the specified {@link Properties} object
+     * Return a specific {@link FeatureTypeMapper} by parsing mapping properties contained within the specified {@link Properties} object
+     * 
      * @param featureType
      * @return
      * @throws Exception
@@ -427,16 +442,20 @@ public abstract class DataStoreWrapper implements DataStore {
         SimpleFeatureType indexSchema;
         // Creating schema
         indexSchema = DataUtilities.createType(props.getProperty(NAME), props.getProperty(SCHEMA));
-        CoordinateReferenceSystem crs = CRS.parseWKT(props.getProperty(COORDINATE_REFERENCE_SYSTEM));
-        indexSchema = DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), crs);
+        CoordinateReferenceSystem crs = CRS
+                .parseWKT(props.getProperty(COORDINATE_REFERENCE_SYSTEM));
+        indexSchema = DataUtilities.createSubType(indexSchema,
+                DataUtilities.attributeNames(indexSchema), crs);
         return getFeatureTypeMapper(indexSchema);
     }
-    
+
     /**
      * Return a specific {@link FeatureTypeMapper} instance on top of an input featureType
+     * 
      * @param featureType
      * @return
      * @throws Exception
      */
-    protected abstract FeatureTypeMapper getFeatureTypeMapper(final SimpleFeatureType featureType) throws Exception;
+    protected abstract FeatureTypeMapper getFeatureTypeMapper(final SimpleFeatureType featureType)
+            throws Exception;
 }

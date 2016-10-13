@@ -91,6 +91,38 @@ public class MarkTest {
     }
     
     @Test
+    public void testQGIS() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "qgis.sld");
+        
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointFS, pStyle));
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(file("qgis"), image, 50);
+    }
+    
+    @Test
+    public void testQGIS2() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "qgis2.sld");
+        
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointFS, pStyle));
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(file("qgis2"), image, 50);
+    }
+    
+    @Test
     public void testAnchor() throws Exception {
         Style pStyle = RendererBaseTest.loadStyle(this, "markAnchor.sld");
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
@@ -267,5 +299,22 @@ public class MarkTest {
         ImageAssert.assertEquals(file("decorative"), image, 50);
     }
 
+    @Test
+    public void testExternalMark() throws Exception {
+        Style pStyle = RendererBaseTest.loadSEStyle(this, "externalMark.sld");
+        Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
+        
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointFS, pStyle));
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        
+        BufferedImage image = RendererBaseTest.showRender("External mark reference", renderer, TIME,
+                bounds);
+        ImageAssert.assertEquals(file("externalMark"), image, 50);
+    }
    
 }

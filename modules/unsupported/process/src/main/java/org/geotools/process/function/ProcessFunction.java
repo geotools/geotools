@@ -243,6 +243,61 @@ public class ProcessFunction implements Function {
 		return processInputs;
 	}
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((fallbackValue == null) ? 0 : fallbackValue.hashCode());
+        result = prime * result + ((functionName == null) ? 0 : functionName.hashCode());
+        result = prime * result + ((inputExpressions == null) ? 0 : inputExpressions.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+        result = prime * result + ((processName == null) ? 0 : processName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ProcessFunction other = (ProcessFunction) obj;
+        if (fallbackValue == null) {
+            if (other.fallbackValue != null)
+                return false;
+        } else if (!fallbackValue.equals(other.fallbackValue))
+            return false;
+        if (functionName == null) {
+            if (other.functionName != null)
+                return false;
+        } else if (!functionName.equals(other.functionName))
+            return false;
+        if (inputExpressions == null) {
+            if (other.inputExpressions != null)
+                return false;
+        } else if (!inputExpressions.equals(other.inputExpressions))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (parameters == null) {
+            if (other.parameters != null)
+                return false;
+        } else if (!parameters.equals(other.parameters))
+            return false;
+        if (processName == null) {
+            if (other.processName != null)
+                return false;
+        } else if (!processName.equals(other.processName))
+            return false;
+        return true;
+    }
+
     private Object getResult(Map<String, Object> results, Map<String, Object> processInputs) {
         if (results.size() == 1) {
             return results.values().iterator().next();

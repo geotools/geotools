@@ -388,4 +388,13 @@ public final class ScriptTest {
             MapProjection.SKIP_SANITY_CHECKS = false;
         }
     }
+
+    /**
+     * Run "AzimuthalEquidistant.txt".
+     */
+    @Test
+    public void testAzimuthalEquidistant() throws Exception {
+        runScript("scripts/AzimuthalEquidistant.txt");
+    }
+
 }

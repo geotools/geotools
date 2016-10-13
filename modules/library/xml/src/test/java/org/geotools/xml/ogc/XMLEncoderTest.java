@@ -122,7 +122,7 @@ public class XMLEncoderTest extends TestCase {
         //System.out.println( output );
         InputStream stream = new StringBufferInputStream( output.toString() );
                 
-        Object o = DocumentFactory.getInstance( stream, new HashMap(), Level.FINEST );
+        Object o = DocumentFactory.getInstance( stream, new HashMap<String,Object>(), Level.FINEST );
         assertNotNull( o );
         assertEquals( test, o );
         //LOGGER.fine("parsed filter is: " + test);        

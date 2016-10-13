@@ -44,6 +44,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
@@ -85,49 +86,11 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Factory object that converts SLD style into rendered styles.
  * 
- * DJB: I've made a few changes to this. The old behavior was for this class to
- * convert <LinePlacement> tags to <PointPlacement> tags. (ie. there never was a
- * LinePlacement option) This is *certainly* not the correct place to do this,
- * and it was doing a very poor job of it too, and the renderer was not
- * expecting it to be doing it!
- * 
- * I added support in TextStyle3D for this and had this class correctly set
- * Line/Point placement selection. NOTE: PointPlacement is the default if not
- * present.
- * 
  * @author aaime
  * @author dblasby
  *
- *
  * @source $URL$
  */
-
-/*
- * orginal message on the subject:
- * 
- * I was attempting to write documentation for label placement (plus fix all the
- * inconsistencies with the spec), and I noticed some problems with the
- * SLDStyleFactory and TextStyle2D.
- * 
- * It turns out the SLDStyleFactory is actually trying to do [poor] label
- * placement (see around line 570)! This also results in a loss of information
- * if you're using a <LinePlacement> element in your SLD.
- * 
- * 
- * 1. remove the placement code from SLDStyleFactory! 2. get rid of the
- * "AbsoluteLineDisplacement" stuff and replace it with something that
- * represents <PointPlacement>/<LinePlacement> elements in the TextSymbolizer.
- * 
- * The current implementation seems to try to convert a <LinePlacement> and an
- * actual line into a <PointPlacement> (and setting the AbsoluteLineDisplacement
- * flag)!! This should be done by the real labeling code.
- * 
- * This change could affect the j2d renderer as it appears to use the
- * "AbsoluteLineDisplacement" flag.
- * 
- * @source $URL$
- */
-
 public class SLDStyleFactory {
 	/** The logger for the rendering module. */
 	private static final Logger LOGGER = org.geotools.util.logging.Logging
@@ -1366,7 +1329,7 @@ public class SLDStyleFactory {
 
 		// scan the external graphic factories and see which one can be used
 		Iterator<ExternalGraphicFactory> it = DynamicSymbolFactoryFinder
-				.getExternalGraphicFactories();
+				.getExternalGraphicFactories(new Hints(renderingHints));
 		while (it.hasNext()) {
 		    ExternalGraphicFactory egf = it.next();
 			try {
@@ -1399,6 +1362,16 @@ public class SLDStyleFactory {
 	private Shape getShape(Mark mark, Object feature) {
 		if (mark == null)
 			return null;
+		
+		// handle the TTF references in SE 1.1
+		// TODO: generalize it to a pluggable ExternalMarkFactory when other types
+		// of indexed marks show up in the wild
+		if(mark.getExternalMark() != null) {
+			Shape shape = TTFMarkFactory.INSTANCE.getShape(mark.getExternalMark());
+			if(shape != null) {
+				return shape;
+			}
+		}
 
 		Expression name = mark.getWellKnownName();
 		// expand eventual cql expressions embedded in the name
@@ -1408,8 +1381,7 @@ public class SLDStyleFactory {
 				name = ExpressionExtractor.extractCqlExpressions(expression);
 		}
 
-		Iterator<MarkFactory> it = DynamicSymbolFactoryFinder
-				.getMarkFactories();
+		Iterator<MarkFactory> it = DynamicSymbolFactoryFinder.getMarkFactories();
 		while (it.hasNext()) {
 			MarkFactory factory = it.next();
 			try {

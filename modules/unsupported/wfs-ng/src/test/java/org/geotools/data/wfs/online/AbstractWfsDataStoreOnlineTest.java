@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, David Zwiers
  *
  *    This library is free software; you can redistribute it and/or
@@ -85,7 +85,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     /**
      * The DataStore under test, static so we create it only once
      */
-    protected static WFSDataStore wfs = null;
+    protected WFSDataStore wfs = null;
 
     protected final WFSTestData.TestDataType testType;
 
@@ -152,6 +152,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
 
             Map<String, Serializable> params = new HashMap<String, Serializable>();
             params.put(WFSDataStoreFactory.URL.key, SERVER_URL);
+            params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
             params.put(WFSDataStoreFactory.AXIS_ORDER.key, axisOrder);
             
             WFSDataStoreFactory dataStoreFactory = new WFSDataStoreFactory();

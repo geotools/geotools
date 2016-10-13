@@ -1974,7 +1974,7 @@ public class WFSCapabilitiesComplexTypes {
             }
 
             Service service = new Service();
-
+            boolean hasValidOrEmptyOnlineResource = false;
             for (int i = 0; i < value.length; i++) {
                 if (elements[0].getName().equals(value[i].getElement().getName())) {
                     service.setName((String) value[i].getValue());
@@ -1994,12 +1994,16 @@ public class WFSCapabilitiesComplexTypes {
                 }
 
                 if (elements[4].getName().equals(value[i].getElement().getName())) {
-                    try {
-                        service.setOnlineResource(((URI) value[i].getValue())
-                            .toURL());
-                    } catch (MalformedURLException e1) {
-                        throw new SAXException(e1);
+                    Object uri = value[i].getValue();
+                    if (!"".equals(((URI) uri).toString())) {
+                        try {
+                            service.setOnlineResource(((URI) uri)
+                                    .toURL());
+                        } catch (MalformedURLException e1) {
+                            throw new SAXException(e1);
+                        }
                     }
+                    hasValidOrEmptyOnlineResource = true;
                 }
 
                 //                if (elements[5].getName().equals(value[i].getElement().getName())) {
@@ -2012,10 +2016,10 @@ public class WFSCapabilitiesComplexTypes {
 
             // check the required elements 
             if ((service.getName() == null) || (service.getTitle() == null)
-                    || ((service.getOnlineResource()) == null)) {
+                    || !hasValidOrEmptyOnlineResource) {
                 throw new SAXException(
                     "Required Service Elements are missing, check"
-                    + " for the existence of Name, Title , or OnlineResource elements.");
+                    + " for the existence of Name, Title or OnlineResource elements.");
             }
 
             return service;

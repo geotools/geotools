@@ -2,8 +2,9 @@
 
 When submitting a patch or pull request:
 
-* **Small Contribution / Single Source Code File:** For a very small change (less than one file) a committer can review and apply the change on your behalf. This is a quick workaround allowing us to correct spelling mistakes in the documentation, clarify a javadoc, or accept a very small fix.
-  We understand you may have to update several test cases to verify your change fixes its intended problem.
+* **Small Contribution / Single Source Code File:** For a small change to a single source file a project committer can review and apply the change on your behalf. This is a quick workaround allowing us to correct spelling mistakes in the documentation, clarify a javadoc, or accept a very small fix.
+
+  We understand that fixing a single souroce file may require changes to several test case files to verify the fix addresses its intended problem.
 
 * **Large Contributions / Multiple Files / New Files:** To  contribute a new file, or if your change effects several files, sign a [Code Contribution License](http://docs.geotools.org/latest/developer/procedures/contribution_license.html). It does not take long and you can send it via email.
 
@@ -29,7 +30,7 @@ Regardless of what you want to achieve, there are some common steps to consider:
    ````
 3. Work on the fix, using commit as needed.
    * **Please remember to always include a test case, most pull requests/patches will be rejected if they don't contain one.**.
-   * Remember to update the copyright header with the year of the modification, e.g., if you are modifying a file whose copyright header states ``(C) 2002-2008, Open Source Geospatial Foundation (OSGeo)`` in January 2016 then update it to say ``(C) 2002-2016, Open Source Geospatial Foundation (OSGeo).``
+   * Remember to add copyright header with the year of creation to any new file, e.g., if you are adding a file in 2016 the copyright header should contain ``(C) 2016, Open Source Geospatial Foundation (OSGeo)``. It is also recommended to add copyright headers to any pre-existing file missing them.
    * The commit message should refer an existing ticket in Jira, if there is none, create one. The commit message should look like ``[GEOT-XYWZ] Title of the ticket``
    * Please make sure you're following the [coding conventions](http://docs.geotools.org/latest/developer/conventions/code/style.html), and otherwise avoid any reformats to the existing code, as they make it harder to review your changes.
      If you find sections not following the coding convetions and you want to amend their formatting, that's fine, please do so in a separate commit/patch from the real code changes.

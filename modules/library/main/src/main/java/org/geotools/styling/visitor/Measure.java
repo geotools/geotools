@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -142,6 +142,13 @@ class Measure {
     boolean isPixelInPixelDefault() {
         return (uom == null || uom == defaultUnit)
                 && (defaultUnit == null || defaultUnit == NonSI.PIXEL);
+    }
+
+    /**
+     * @return true, if the uom is a real world unit within a symbolizer whose default unit is pixel.
+     */
+    public boolean isRealWorldUnitInPixelDefault() {
+        return isRealWorldUnit() && (defaultUnit == null || defaultUnit == NonSI.PIXEL);
     }
 
 }

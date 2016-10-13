@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -40,6 +41,7 @@ public abstract class AbstractRequest implements Request{
     
     protected URL onlineResource;
     protected Properties properties;
+    protected Map<String, Object> hints;
 
     /**
      * Creates an AbstractRequest.
@@ -236,10 +238,20 @@ public abstract class AbstractRequest implements Request{
 		
 	}
 
-	/**
-	 * Default to not requiring POST. Implementors can override if they need to.
-	 */
-	public boolean requiresPost() {
-		return false;
-	}
+    /**
+     * Default to not requiring POST. Implementors can override if they need to.
+     */
+    public boolean requiresPost() {
+        return false;
+    }
+
+    @Override
+    public Map<String, Object> getRequestHints() {
+        return hints == null ? Collections.emptyMap() : hints;
+    }
+
+    @Override
+    public void setRequestHints(Map<String, Object> hints) {
+        this.hints = hints;
+    }
 }

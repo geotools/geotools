@@ -47,8 +47,7 @@ class DateRangeVisitor extends RangeVisitor {
     }
 
     /**
-     * Setup the minimal set of dataRanges (intersecting ranges are merged together) as 
-     * a Set of ISO8601 String intervals with period.
+     * Setup the minimal set of dataRanges (intersecting ranges are merged together) as a Set of ISO8601 String intervals with period.
      * 
      * @return
      */
@@ -74,8 +73,8 @@ class DateRangeVisitor extends RangeVisitor {
                 }
             }
         }
-        
-        if(second != null) {
+
+        if (second != null) {
             minimalRanges.add(formatRange(second));
         }
     }
@@ -95,8 +94,7 @@ class DateRangeVisitor extends RangeVisitor {
     }
 
     /**
-     * Merge 2 ranges together. In order to speed up the computations, 
-     * this method does the assumption that the 2 date ranges are already sorted
+     * Merge 2 ranges together. In order to speed up the computations, this method does the assumption that the 2 date ranges are already sorted
      * (first < second) and they intersect together.
      * 
      * @param firstDateRange

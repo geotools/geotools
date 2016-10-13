@@ -65,44 +65,44 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
     void doTestSimpleJoin(boolean exposePrimaryKeys) throws Exception {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
-        SimpleFeatureIterator ita = 
-                dataStore.getFeatureSource(tname("ft1")).getFeatures().features();
-        SimpleFeatureIterator itb = 
-            dataStore.getFeatureSource(tname("ftjoin")).getFeatures().features();
+        try (SimpleFeatureIterator ita = dataStore.getFeatureSource(tname("ft1")).getFeatures()
+                .features()) {
+            try (SimpleFeatureIterator itb = dataStore.getFeatureSource(tname("ftjoin"))
+                    .getFeatures().features()) {
 
-        FilterFactory ff = dataStore.getFilterFactory();
-        Query q = new Query(tname("ft1"));
-        q.getJoins().add(new Join(tname("ftjoin"), 
-            ff.equal(ff.property(aname("stringProperty")), ff.property(aname("name")), true)));
+                FilterFactory ff = dataStore.getFilterFactory();
+                Query q = new Query(tname("ft1"));
+                q.getJoins()
+                        .add(new Join(tname("ftjoin"),
+                                ff.equal(ff.property(aname("stringProperty")),
+                                        ff.property(aname("name")), true)));
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(q);
-        assertEquals(dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(), features.size());
+                SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1"))
+                        .getFeatures(q);
+                assertEquals(dataStore.getFeatureSource(tname("ft1")).getFeatures(q).size(),
+                        features.size());
 
-        SimpleFeatureIterator it = features.features();
-        try {
-            assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
-            
-            while(it.hasNext()) {
-                SimpleFeature f = it.next();
-                assertEquals(5 + (exposePrimaryKeys ? 1 : 0), f.getAttributeCount());
-                
-                SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ftjoin"));
-                
-                SimpleFeature a = ita.next();
-                SimpleFeature b = itb.next();
-                
-                for (int i = 0; i < a.getAttributeCount(); i++) {
-                    assertAttributeValuesEqual(a.getAttribute(i), f.getAttribute(i));
-                }
-                for (int i = 0; i < b.getAttributeCount(); i++) {
-                    assertAttributeValuesEqual(b.getAttribute(i), g.getAttribute(i));
+                try (SimpleFeatureIterator it = features.features()) {
+                    assertTrue(it.hasNext() && ita.hasNext() && itb.hasNext());
+
+                    while (it.hasNext()) {
+                        SimpleFeature f = it.next();
+                        assertEquals(5 + (exposePrimaryKeys ? 1 : 0), f.getAttributeCount());
+
+                        SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ftjoin"));
+
+                        SimpleFeature a = ita.next();
+                        SimpleFeature b = itb.next();
+
+                        for (int i = 0; i < a.getAttributeCount(); i++) {
+                            assertAttributeValuesEqual(a.getAttribute(i), f.getAttribute(i));
+                        }
+                        for (int i = 0; i < b.getAttributeCount(); i++) {
+                            assertAttributeValuesEqual(b.getAttribute(i), g.getAttribute(i));
+                        }
+                    }
                 }
             }
-        }
-        finally {
-            it.close();
-            ita.close();
-            itb.close();
         }
     }
 

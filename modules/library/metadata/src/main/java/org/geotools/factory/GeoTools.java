@@ -18,10 +18,10 @@ package org.geotools.factory;
 
 import java.awt.RenderingHints;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +34,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.naming.Context;
@@ -42,6 +44,7 @@ import javax.naming.NamingException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
+import javax.xml.parsers.SAXParser;
 
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
@@ -51,6 +54,9 @@ import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.logging.LoggerFactory;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -110,7 +116,7 @@ public final class GeoTools {
     /**
      * The current GeoTools version. The separator character must be the dot.
      */
-    private static final Version VERSION = new Version(PROPS.getProperty("version", "16-SNAPSHOT"));
+    private static final Version VERSION = new Version(PROPS.getProperty("version", "17-SNAPSHOT"));
 
     /**
      * The version control (svn) revision at which this version of geotools was built.
@@ -191,6 +197,21 @@ public final class GeoTools {
             "org.geotools.referencing.forceXY";
     static {
         bind(FORCE_LONGITUDE_FIRST_AXIS_ORDER, Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+    }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#
+     * ENTITY_RESOLVER} hint.
+     *
+     * This setting specifies the XML Entity resolver to be used when configuring a SAXParser
+     *
+     * @see Hints#ENTITY_RESOLVER
+     * @see #getDefaultHints
+     */
+    public static final String ENTITY_RESOLVER = "org.xml.sax.EntityResolver";
+    static {
+        bind(ENTITY_RESOLVER, Hints.ENTITY_RESOLVER);
     }
     
     /**
@@ -292,7 +313,6 @@ public final class GeoTools {
      */
     public static String getEnvironmentInfo() {
         final String newline = String.format("%n");
-        final String indent = "    ";
         
         final StringBuilder sb = new StringBuilder();
         sb.append("GeoTools version ").append(getVersion().toString());
@@ -562,7 +582,7 @@ public final class GeoTools {
      *
      * @since 2.4
      */
-    public void setLoggerFactory(final LoggerFactory factory) {
+    public void setLoggerFactory(final LoggerFactory<?> factory) {
         Logging.GEOTOOLS.setLoggerFactory(factory);
     }
 
@@ -771,7 +791,83 @@ public final class GeoTools {
         }
         return completed;
     }
-    
+
+    /**
+     * Returns the default entity resolver, used to configure {@link SAXParser}.
+     * 
+     * @param hints An optional set of hints, or {@code null} if none, see {@link Hints#ENTITY_RESOLVER}.
+     * @return An entity resolver (never {@code null})
+     */
+    public static EntityResolver getEntityResolver(Hints hints) {
+        if (hints == null) {
+            hints = getDefaultHints();
+        }
+        if (hints.containsKey(Hints.ENTITY_RESOLVER)) {
+            Object hint = hints.get(Hints.ENTITY_RESOLVER);
+            if (hint == null) {
+                return NullEntityResolver.INSTANCE;
+            } else if (hint instanceof EntityResolver) {
+                return (EntityResolver) hint;
+            } else if (hint instanceof String) {
+                String className = (String) hint;
+                return instantiate(className,EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+            }
+        }
+        return PreventLocalEntityResolver.INSTANCE;
+    }
+
+    /**
+     * Create instance of className (or access singleton INSTANCE field). 
+     * 
+     * @param className Class name to instantiate
+     * @param type Class of object created
+     * @param defaultValue Default to be provided, may be null
+     * @return EntityResolver, defaults to {@link PreventLocalEntityResolver#INSTANCE} if unavailable.
+     */
+    static <T,D extends T> T instantiate(String className, Class<T> type, D defaultValue){
+        if( className == null){
+            return defaultValue;
+        }
+        final Logger LOGGER = Logging.getLogger("org.geotools.xml");
+        try {
+            Class<?> kind = Class.forName(className);
+            // step 1 look for instance field
+            for (Field field : kind.getDeclaredFields()) {
+                int modifier = field.getModifiers();
+                if ("INSTANCE".equals(field.getName()) && Modifier.isStatic(modifier)
+                        && Modifier.isPublic(modifier)) {
+                    try {
+                        Object value = field.get(null);
+                        if (value != null && value instanceof EntityResolver) {
+                            return type.cast(value);
+                        }
+                        else {
+                            LOGGER.log(Level.FINER, "Unable to use ENTITY_RESOLVER: "
+                                    + className + ".INSTANCE");
+                        }
+                    } catch (Throwable t) {
+                        LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "
+                                + className + ".INSTANCE", t);
+                    }
+                    return defaultValue;
+                }
+            }
+            // step 2 no argument constructor
+            try {
+                Object value = kind.newInstance();
+                if (type.isInstance(value)) {
+                    return type.cast(value);
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                LOGGER.log(Level.FINER,
+                        "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
+            }
+        } catch (ClassNotFoundException notFound) {
+            LOGGER.log(Level.FINER,
+                    "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(), notFound);
+        }
+        return defaultValue;
+    }
     /**
      * Returns the default initial context.
      *

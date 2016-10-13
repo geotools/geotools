@@ -84,14 +84,14 @@ private void validationExample2() throws Exception {
     // to make a Map of FeatureSources.
     // the *key* is called the "typeRef" and will be used by test suites
     // to refer to look up a featureSource as needed
-    Map<String,SimpleFeatureSource> map = new HashMap<String,SimpleFeatureSource>();
+    Map<String,SimpleFeatureSource> map = new HashMap<>();
     
     // register in map so validation processor can find it
     map.put( "LAKES:lakes",  lakesFeatureSource );
     map.put( "STREAMS:streams", streamsFeatureSource );
     // optional shortlist of layers to check (these are usually the layers your
     // user modified)
-    Set<Name> check = new HashSet<Name>();
+    Set<Name> check = new HashSet<>();
     check.add( new NameImpl("LAKES:lakes"));
     
     processor.runIntegrityTests( check, map, null, results);

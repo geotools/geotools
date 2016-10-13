@@ -17,6 +17,7 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Simple interface for creating visitors to a {@link GranuleCatalog} implementation.
@@ -27,12 +28,12 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
  *
  * @source $URL$
  */
-public interface GranuleCatalogVisitor{
+public interface GranuleCatalogVisitor {
     /**
      * Method that can be used to perform a visit to a {@link GranuleCatalog}.
      * 
      * @param granule the {@link GranuleDescriptor} we are visiting
-     * @param o a sibling {@link Object} to pass along while visiting
+     * @param feature the feature the granule was created from
      */
-    public void visit(final GranuleDescriptor granule, Object o);
+    public void visit(final GranuleDescriptor granule, SimpleFeature feature);
 }

@@ -17,7 +17,9 @@
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
-import static org.geotools.geopkg.GeoPackage.*;
+import static org.geotools.geopkg.GeoPackage.GEOMETRY_COLUMNS;
+import static org.geotools.geopkg.GeoPackage.GEOPACKAGE_CONTENTS;
+import static org.geotools.geopkg.GeoPackage.SPATIAL_REF_SYS;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,18 +27,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 import java.util.logging.Level;
 
 import org.geotools.geometry.jts.Geometries;
-import org.geotools.geopkg.FeatureEntry;
 import org.geotools.geopkg.Entry.DataType;
-import org.geotools.geopkg.GeoPackage;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -58,6 +61,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
    
+    
+
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
     
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
@@ -72,7 +77,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
-        new GeoPackage(dataStore.getDataSource()).init(cx);
+        GeoPackage.init(cx);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         encodeColumnName(null, geometryColumn, sql);
     }
-    
+     
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
         throws SQLException, IOException {
@@ -115,14 +120,15 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column, 
         GeometryFactory factory, Connection cx) throws IOException, SQLException {
-        return geometry(rs.getBytes(column));
+        return geometry(rs.getBytes(column),factory);
     }
+
 
     @Override
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
-        if (g == null) {
-            ps.setNull(1, Types.BLOB);
+        if (g == null||g.isEmpty()) {
+            ps.setNull(column, Types.BLOB);
         }
         else {
             g.setSRID(srid);
@@ -134,8 +140,22 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
+
+    /**
+     * @param bytes
+     * @param factory
+     * @return
+     * @throws IOException 
+     */
+    private Geometry geometry(byte[] bytes, GeometryFactory factory) throws IOException {
+        GeoPkgGeomReader geoPkgGeomReader = new GeoPkgGeomReader(bytes);
+        geoPkgGeomReader.setFactory(factory);
+        return bytes != null ? geoPkgGeomReader.get() : null;
+       
+    }
+    
     Geometry geometry(byte[] b) throws IOException {
-        return b != null ? new GeoPkgGeomReader(b).get() : null;
+        return geometry(b, null);
     }
 
     @Override
@@ -147,6 +167,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     public void registerSqlTypeNameToClassMappings( Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
         mappings.put("DOUBLE", Double.class);
+        mappings.put("BOOLEAN", Boolean.class);
+        mappings.put("DATE", java.sql.Date.class);
+        mappings.put("TIMESTAMP", java.sql.Timestamp.class);
+        mappings.put("TIME", java.sql.Time.class);
     }
 
     @Override
@@ -159,6 +183,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         //override some internal defaults
         mappings.put(Long.class, Types.INTEGER);
         mappings.put(Double.class, Types.REAL);
+        mappings.put(Boolean.class, Types.INTEGER);
     }
 
     @Override
@@ -233,7 +258,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             fe.setIdentifier(featureType.getTypeName());
             fe.setDescription(featureType.getTypeName());
             fe.setTableName(featureType.getTypeName());
-            fe.setLastChange(new Date());
+            fe.setLastChange(new java.util.Date());
         }
         
         GeometryDescriptor gd = featureType.getGeometryDescriptor(); 
@@ -264,7 +289,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             for (PropertyDescriptor descr : featureType.getDescriptors()) {
                 if (descr instanceof GeometryDescriptor) {
                     GeometryDescriptor gd1 = (GeometryDescriptor) descr;
-                    if (gd1.getLocalName() != fe.getGeometryColumn()) {
+                    if (!(gd1.getLocalName()).equals(fe.getGeometryColumn())) {
                         FeatureEntry fe1 = new FeatureEntry();
                         fe1.init(fe);
                         fe1.setGeometryColumn(gd1.getLocalName());
@@ -353,7 +378,90 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         return super.createCRS(srid, cx);
     }
 
+    @Override
+    public boolean lookupGeneratedValuesPostInsert() {
+        return true;
+    }
+    
+    @Override
+    public Object getLastAutoGeneratedValue(String schemaName, String tableName, String columnName,
+            Connection cx) throws SQLException {
+        Statement st = cx.createStatement();
+        try {
+            ResultSet rs = st.executeQuery( "SELECT last_insert_rowid();");
+            try {
+                if (rs.next()) {
+                    return rs.getInt( 1 );
+                }
+            }
+            finally {
+                dataStore.closeSafe(rs);
+            }
+        }
+        finally {
+            dataStore.closeSafe(st);
+        }
+        
+        return null;
+    }
+    
     GeoPackage geopkg() {
         return new GeoPackage(dataStore);
+    }
+    
+    @Override
+    public boolean isLimitOffsetSupported() {
+       
+        return true;
+    }
+    @Override
+    public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
+        if(limit > 0 && limit < Integer.MAX_VALUE) {
+            sql.append(" LIMIT " + limit);
+            if(offset > 0) {
+                sql.append(" OFFSET " + offset);
+            }
+        } else if(offset > 0) {
+            //see https://stackoverflow.com/questions/10491492/sqllite-with-skip-offset-only-not-limit
+            sql.append(" LIMIT -1");
+            sql.append(" OFFSET " + offset);
+        }
+    }
+    @Override
+    public PreparedFilterToSQL createPreparedFilterToSQL() {
+        GeoPkgFilterToSQL fts = new GeoPkgFilterToSQL(this);
+        return fts;
+    }
+
+    @Override
+    public void setValue(Object value, Class binding, PreparedStatement ps, int column,
+            Connection cx) throws SQLException {
+        // get the sql type
+        Integer sqlType = dataStore.getMapping(binding);
+
+        // handl null case
+        if (value == null) {
+            ps.setNull(column, sqlType);
+            return;
+        }
+
+        switch (sqlType) {
+        case Types.DATE:
+            ps.setString(column, ((Date)value).toString());
+            break;
+        case Types.TIME:
+            ps.setString(column, ((Time)value).toString());
+            break;
+        case Types.TIMESTAMP:
+            ps.setString(column, ((Timestamp)value).toString());
+            break;
+        default:
+            super.setValue(value, binding, ps, column, cx);
+        }
+    }
+    
+    @Override
+    public void encodeColumnType(String sqlTypeName, StringBuffer sql) {
+        sql.append(sqlTypeName.toUpperCase()); //may keep cite tests happy about geom names
     }
 }

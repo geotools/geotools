@@ -153,7 +153,7 @@ public class H2Test extends AbstractTest {
 			// TARGET=CRS.decode("EPSG:31287");
 			tenv.setCoordinateReferenceSystem(TARGET);
 			imageMosaic("transparent_reprojected", getConfigUrl(), tenv, 400,
-					400, Color.BLACK,Color.BLACK, null);
+					400, Color.BLACK,Color.BLACK, null, true);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}

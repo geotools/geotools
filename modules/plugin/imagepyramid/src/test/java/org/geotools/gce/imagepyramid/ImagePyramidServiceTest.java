@@ -32,22 +32,22 @@ import org.junit.Test;
  */
 public class ImagePyramidServiceTest extends Assert {
 
+    @Test
+    public void testIsAvailable() {
+        final Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats()
+                .iterator();
+        boolean found = false;
 
-	@Test
-	public void testIsAvailable() {
-		final Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
-		boolean found = false;
+        while (list.hasNext()) {
+            final GridFormatFactorySpi fac = (GridFormatFactorySpi) list.next();
 
-		while (list.hasNext()) {
-			final GridFormatFactorySpi fac = (GridFormatFactorySpi) list.next();
+            if (fac instanceof ImagePyramidFormatFactory) {
+                found = true;
 
-			if (fac instanceof ImagePyramidFormatFactory) {
-				found = true;
+                break;
+            }
+        }
 
-				break;
-			}
-		}
-
-		assertTrue("ImageMosaicFormatFactorySpi not registered", found);
-	}
+        assertTrue("ImageMosaicFormatFactorySpi not registered", found);
+    }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2013-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -38,19 +38,6 @@ enum RescalingMode {
      * Rescales the values and maintains the units
      */
     KeepUnits {
-
-        /**
-         * Translates between units and their shortcuts (we can only get the full name from the unit
-         * object
-         */
-        final Map<Unit, String> UNIT_SYMBOLS = new HashMap<Unit, String>() {
-            {
-                put(NonSI.PIXEL, "px");
-                put(NonSI.FOOT, "ft");
-                put(SI.METER, "m");
-            }
-        };
-
         @Override
         public String rescaleToStringInternal(double scaleFactor, Measure measure) {
             double rescaled = measure.value * scaleFactor;
@@ -76,7 +63,11 @@ enum RescalingMode {
         @Override
         public String rescaleToStringInternal(double scaleFactor, Measure measure) {
             if (measure.isRealWorldUnit()) {
-                return String.valueOf(measure.value);
+                if(measure.isRealWorldUnitInPixelDefault()){                    
+                    return String.valueOf(measure.value) + UNIT_SYMBOLS.get(measure.uom);
+                }else{
+                    return String.valueOf(measure.value);
+                }
             } else {
                 return String.valueOf(measure.value * scaleFactor);
             }
@@ -150,5 +141,17 @@ enum RescalingMode {
                     Measure.ff.literal(measure.uom), scaleFactor, Measure.ff.literal(this));
         }
     }
+    
+    /**
+     * Translates between units and their shortcuts (we can only get the full name from the unit
+     * object
+     */
+    final Map<Unit, String> UNIT_SYMBOLS = new HashMap<Unit, String>() {
+        {
+            put(NonSI.PIXEL, "px");
+            put(NonSI.FOOT, "ft");
+            put(SI.METER, "m");
+        }
+    };
 
 }

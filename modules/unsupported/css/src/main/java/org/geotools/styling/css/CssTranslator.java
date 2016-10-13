@@ -27,17 +27,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
@@ -80,6 +83,7 @@ import org.geotools.styling.css.util.PseudoClassRemover;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
 import org.geotools.styling.css.util.TypeNameSimplifier;
+import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
@@ -173,6 +177,11 @@ public class CssTranslator {
      * The sort group for z-ordering
      */
     static final String SORT_BY_GROUP = "sort-by-group";
+    
+    /**
+     * The transformation
+     */
+    static final String TRANSFORM = "transform";
 
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS = new HashMap<String, String>() {
@@ -286,7 +295,8 @@ public class CssTranslator {
         final TranslationMode mode = getTranslationMode(stylesheet);
         int autoThreshold = getAutoThreshold(stylesheet);
 
-        List<CssRule> allRules = stylesheet.getRules();
+        List<CssRule> topRules = stylesheet.getRules();
+        List<CssRule> allRules = expandNested(topRules);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Starting with " + allRules.size() + "  rules in the stylesheet");
@@ -313,6 +323,12 @@ public class CssTranslator {
         }
 
         return styleBuilder.build();
+    }
+
+    private List<CssRule> expandNested(List<CssRule> topRules) {
+        RulesCombiner combiner = new RulesCombiner(new UnboundSimplifyingFilterVisitor());
+        List<CssRule> expanded = topRules.stream().flatMap(r -> r.expandNested(combiner).stream()).collect(Collectors.toList());
+        return expanded;
     }
 
     private int translateCss(final TranslationMode mode, List<CssRule> allRules, StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {
@@ -400,6 +416,7 @@ public class CssTranslator {
                 Boolean compositeBase = null;
                 String sortBy = null;
                 String sortByGroup = null;
+                Expression transform = null;
                 // setup the tool that will eliminate redundant rules (if necessary)
                 DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
                 if (mode == TranslationMode.Exclusive) {
@@ -443,6 +460,10 @@ public class CssTranslator {
                     for (CssRule derived : derivedRules) {
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
                         translatedRuleCount++;
+                        
+                        // Reminder about why this is done the way it's done. These are all rule properties
+                        // in CSS and are subject to override. In SLD they contribute to containing 
+                        // FeatureTypeStyle, so the first one found wins and controls this z-level
 
                         // check if we have global composition going, and use the value of
                         // the first rule providing the information (the one with the highest
@@ -481,6 +502,16 @@ public class CssTranslator {
                                 sortByGroup = values.get(0).toLiteral();
                             }
                         }
+                        
+                        // check if we have a transform, apply it 
+                        if(transform == null) {
+                            List<Value> values = derived
+                                    .getPropertyValues(PseudoClass.ROOT, TRANSFORM)
+                                    .get(TRANSFORM);
+                            if (values != null && !values.isEmpty()) {
+                                transform = values.get(0).toExpression();
+                            }
+                        }
 
                     }
 
@@ -495,6 +526,9 @@ public class CssTranslator {
                     }
                     if (sortByGroup != null) {
                         ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
+                    }
+                    if (transform != null) {
+                        ftsBuilder.transformation(transform);
                     }
                 }
             }
@@ -766,7 +800,7 @@ public class CssTranslator {
      */
     private Map<Integer, List<CssRule>> organizeByZIndex(List<CssRule> rules) {
         TreeSet<Integer> indexes = getZIndexesForRules(rules);
-        Map<Integer, List<CssRule>> result = new HashMap<>();
+        Map<Integer, List<CssRule>> result = new TreeMap<>();
         if (indexes.size() == 1) {
             result.put(indexes.first(), rules);
         } else {

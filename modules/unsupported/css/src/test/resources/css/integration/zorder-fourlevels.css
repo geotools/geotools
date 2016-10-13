@@ -1,0 +1,16 @@
+/* yellow road with a grey casing*/
+[type = 'secondary']{
+  stroke: #888888, #f8f8ba;
+  stroke-width: 10, 8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  z-index: 10, 11;
+}
+/* green road with a black casing*/
+[type = 'trunk' ]{
+  stroke: #000000, #94d494;
+  stroke-width: 10, 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  z-index: 20, 21; 
+}

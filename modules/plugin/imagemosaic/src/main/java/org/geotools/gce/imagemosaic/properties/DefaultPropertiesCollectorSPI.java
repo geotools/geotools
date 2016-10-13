@@ -35,24 +35,24 @@ import org.geotools.resources.coverage.CoverageUtilities;
  */
 public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
-	private final String name;
-	
-	public String getName() {
-		return name;
-	}
+    private final String name;
 
-	public DefaultPropertiesCollectorSPI(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isAvailable() {
-		return true;
-	}
+    public DefaultPropertiesCollectorSPI(String name) {
+        this.name = name;
+    }
 
-	public Map<Key, ?> getImplementationHints() {
-		return Collections.emptyMap();
-	}
-	
+    public boolean isAvailable() {
+        return true;
+    }
+
+    public Map<Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
+    }
+
     public final static String REGEX_PREFIX = "regex=";
 
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
@@ -93,6 +93,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
 
     }
 
-        abstract protected PropertiesCollector createInternal(PropertiesCollectorSPI fileNameExtractorSPI, List<String> propertyNames, String string);	
+    abstract protected PropertiesCollector createInternal(
+            PropertiesCollectorSPI fileNameExtractorSPI, List<String> propertyNames, String string);
 
 }

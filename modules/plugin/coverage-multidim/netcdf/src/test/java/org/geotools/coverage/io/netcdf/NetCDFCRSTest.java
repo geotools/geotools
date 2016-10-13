@@ -180,9 +180,9 @@ public class NetCDFCRSTest extends Assert {
             RotatedPole rotatedPole = (RotatedPole) transform;
             ParameterValueGroup values = rotatedPole.getParameterValues();
             assertEquals(-106.0, values.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).doubleValue(),
-                    0.0);
+                    DELTA);
             assertEquals(54.0, values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(),
-                    0.0);
+                    DELTA);
         } finally {
             if (reader != null) {
                 reader.dispose();

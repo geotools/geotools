@@ -39,6 +39,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.util.InternationalString;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -372,7 +373,20 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static final Key VERSION = new Key("org.geotools.util.Version");
+
     
+  ////////////////////////////////////////////////////////////////////////
+  ////////                                                        ////////
+  ////////              XML hints                                 ////////
+  ////////                                                        ////////
+  ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * The {@link EntityResolver} instance to use when configuring SAXParsers.
+     * 
+     * @since 15
+     */
+    public static final Key ENTITY_RESOLVER = new Key(EntityResolver.class);
       
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
@@ -1107,8 +1121,8 @@ public class Hints extends RenderingHints {
          * provided there is no concurrent changes in an other thread.
          */
         @SuppressWarnings("unchecked")
-        Map<RenderingHints.Key, Object> filtered = (Map) hints;
-        for (final Iterator it=hints.keySet().iterator(); it.hasNext();) {
+        Map<RenderingHints.Key, Object> filtered = (Map<RenderingHints.Key, Object>) hints;
+        for (final Iterator<?> it=hints.keySet().iterator(); it.hasNext();) {
             final Object key = it.next();
             if (!(key instanceof RenderingHints.Key)) {
                 if (filtered == hints) {

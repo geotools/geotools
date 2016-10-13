@@ -93,7 +93,7 @@ public class PropertyExamples {
     private static void example1() throws IOException {
         System.out.println("example1 start\n");
         // example1 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -107,7 +107,7 @@ public class PropertyExamples {
     private static void example2() throws IOException {
         System.out.println("example2 start\n");
         // example2 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -134,7 +134,7 @@ public class PropertyExamples {
     private static void example3() throws IOException {
         System.out.println("example3 start\n");
         // example3 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore datastore = DataStoreFinder.getDataStore(params);
 
@@ -159,13 +159,13 @@ public class PropertyExamples {
     private static void example4() throws IOException {
         System.out.println("example4 start\n");
         // example4 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        Set<FeatureId> selection = new HashSet<FeatureId>();
+        Set<FeatureId> selection = new HashSet<>();
         selection.add(ff.featureId("fid1"));
 
         Filter filter = ff.id(selection);
@@ -196,7 +196,7 @@ public class PropertyExamples {
     private static void example5() throws IOException, CQLException {
         System.out.println("example5 start\n");
         // example5 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -223,14 +223,14 @@ public class PropertyExamples {
     private static void example6() throws IOException, CQLException {
         System.out.println("example6 start\n");
         // example6 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         SimpleFeatureSource featureSource = store.getFeatureSource("example");
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         SimpleFeatureIterator features = featureCollection.features();
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try {
             while (features.hasNext()) {
                 list.add(features.next().getID());

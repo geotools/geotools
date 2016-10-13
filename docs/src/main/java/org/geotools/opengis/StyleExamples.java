@@ -50,7 +50,7 @@ private void styleFactoryExample() throws Exception {
     //
     // List of symbols is considered in order with the rendering engine choosing
     // the first one it can handle. Allowing for svg, png, mark order
-    List<GraphicalSymbol> symbols = new ArrayList<GraphicalSymbol>();
+    List<GraphicalSymbol> symbols = new ArrayList<>();
     symbols.add(sf.externalGraphic(svg, "svg", null)); // svg preferred
     symbols.add(sf.externalGraphic(png, "png", null)); // png preferred
     symbols.add(sf.mark(ff.literal("circle"), fill, stroke)); // simple circle backup plan

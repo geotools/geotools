@@ -33,10 +33,15 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.netcdf.NetCDFDriver;
+import org.geotools.coverage.io.netcdf.NetCDFReader;
+import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
+import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
 import org.geotools.data.DataSourceException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.referencing.operation.projection.RotatedPole;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Assert;
@@ -45,6 +50,11 @@ import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Projection;
 
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
@@ -61,7 +71,6 @@ public class GribTest extends Assert{
 
     @Before
     public void setup() throws FileNotFoundException, IOException {
-        System.setProperty("NETCDF_FORCE_OPEN_CHECK", "true");
         final File testDir = TestData.file(this, ".").getCanonicalFile();
         cacheDir = new File(testDir, "cache");
         if (!cacheDir.exists()) {
@@ -69,11 +78,6 @@ public class GribTest extends Assert{
         }
         String cacheDirPath = cacheDir.getAbsolutePath();
         System.setProperty("GRIB_CACHE_DIR", cacheDirPath);
-    }
-
-    @After
-    public void cleanup() {
-        System.clearProperty("NETCDF_FORCE_OPEN_CHECK");
     }
 
     @Test
@@ -315,4 +319,60 @@ public class GribTest extends Assert{
             }
         }
     }
+
+    /**
+     * Check that a GRIB2 file is interpreted as a rotated pole projection with expected parameters.
+     * 
+     * @param gribFileName name of the GRIB2 file
+     * @param expectedCentralMeridian expected central meridian of rotated pole projection
+     * @param expectedLatitudeOfOrigin expected latitude of origin of the rotated pole projection
+     */
+    private void checkRotatedPole(String gribFileName, double expectedCentralMeridian,
+            double expectedLatitudeOfOrigin) throws Exception {
+        File file = TestData.file(this, gribFileName);
+        NetCDFReader reader = null;
+        try {
+            reader = new NetCDFReader(file, null);
+            String[] coverages = reader.getGridCoverageNames();
+            CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
+            NetCDFCoordinateReferenceSystemType crsType = NetCDFCoordinateReferenceSystemType
+                    .parseCRS(crs);
+            assertSame(NetCDFCoordinateReferenceSystemType.ROTATED_POLE, crsType);
+            assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
+                    crsType.getCoordinates());
+            assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
+            assertTrue(crs instanceof ProjectedCRS);
+            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
+            Projection projection = projectedCRS.getConversionFromBase();
+            MathTransform transform = projection.getMathTransform();
+            assertTrue(transform instanceof RotatedPole);
+            RotatedPole rotatedPole = (RotatedPole) transform;
+            ParameterValueGroup values = rotatedPole.getParameterValues();
+            assertEquals(expectedCentralMeridian,
+                    values.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).doubleValue(), DELTA);
+            assertEquals(expectedLatitudeOfOrigin,
+                    values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(), DELTA);
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+
+    /**
+     * Test that an RAP native GRIB2 file with GDS template 32769 is interpreted as a {@link RotatedPole} projection with expected parameters.
+     */
+    @Test
+    public void testRapNativeRotatedPole() throws Exception {
+        checkRotatedPole("rap-native.grib2", -106, 54);
+    }
+
+    /**
+     * Test that a COSMO EU GRIB2 file with GDS template 1 is interpreted as a {@link RotatedPole} projection with expected parameters.
+     */
+    @Test
+    public void testCosmoEuRotatedPole() throws Exception {
+        checkRotatedPole("cosmo-eu.grib2", 10, 50);
+    }
+
 }

@@ -64,6 +64,8 @@ public class DrawTest {
     SimpleFeatureSource lineFS;
 
     SimpleFeatureSource pointFS;
+    
+    SimpleFeatureSource singlePointFS;
 
     SimpleFeatureSource pointRotateFS;
 
@@ -82,6 +84,7 @@ public class DrawTest {
         squareFS = ds.getFeatureSource("square");
         lineFS = ds.getFeatureSource("line");
         pointFS = ds.getFeatureSource("point");
+        singlePointFS = ds.getFeatureSource("pointSingle");
         pointRotateFS = ds.getFeatureSource("pointRotation");
         bounds = squareFS.getBounds();
         bounds.expandBy(0.2, 0.2);
@@ -256,6 +259,38 @@ public class DrawTest {
                                 "./src/test/resources/org/geotools/renderer/lite/test-data/pointHouseAnchorRotateSide.png"),
                 image, 1000);
     }
+    
+
+    @Test
+    public void testParametricNoValues() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("firestationNoParams.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("FireStation", renderer, TIME, bounds);
+        ImageAssert.assertEquals(new File(
+                "./src/test/resources/org/geotools/renderer/lite/test-data/firestationNoParams.png"),
+                image, 1000);
+    }
+    
+    @Test
+    public void testParametricOnlyFill() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("firestationOnlyFill.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("FireStation", renderer, TIME, bounds);
+        ImageAssert.assertEquals(new File(
+                "./src/test/resources/org/geotools/renderer/lite/test-data/firestationOnlyFill.png"),
+                image, 1000);
+    }
+    
+    @Test
+    public void testParametricAllValues() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("firestationAllParams.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("FireStation", renderer, TIME, bounds);
+        ImageAssert.assertEquals(new File(
+                "./src/test/resources/org/geotools/renderer/lite/test-data/firestationAllParams.png"),
+                image, 1000);
+    }
+
 
 
     private StreamingRenderer setupPointRenderer(String pointStyle) throws IOException {
@@ -273,6 +308,22 @@ public class DrawTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         return renderer;
     }
+    
+    private StreamingRenderer setupSinglePointRenderer(String pointStyle) throws IOException {
+        Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(singlePointFS, pStyle));
+        mc.getViewport().setBounds(lineFS.getBounds());
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.VECTOR_RENDERING_KEY,
+                true));
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        return renderer;
+    }
+
 
     private StreamingRenderer setupLineRenderer(String lineStyle) throws IOException {
         Style lStyle = RendererBaseTest.loadStyle(this, lineStyle);

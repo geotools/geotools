@@ -6,11 +6,11 @@ Coding conventions describe the coding styles developers should use when writing
 For example, whether you use 2, 4, or 8 space indents. Standardising on a coding style across a project improves legibility of the code, and automatic code formatters make conforming to these standards easier.
 
 Sun Coding Conventions and a little bit more
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We follow:
 
-* Sun coding convention: http://java.sun.com/docs/codeconv/
+* Sun coding convention: http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html
 * but allow for 100 characters in width
 * developers should use spaces for indentations, not tabulations.
   The tab width (4 or 8 spaces) is not the same on all editors.
@@ -113,7 +113,7 @@ dates on the copyright statement, the boilerplate itself covers project name and
   In this case we are carefully crediting the GeoServer project and distributing the code under the LGPL license because we have obtained permission to do so.
   
 Use of Formatting Tools
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Get it right the first time - seriously. You cannot expect to go in and reformat your code later in
 time - because that would make applying fixes between branches of GeoTools needless difficult.
@@ -130,25 +130,28 @@ If you must:
 Eclipse
 '''''''
 
-Here are some eclipse settings that you can import when working on geotools (checkout folder down below `build/eclipse`) work:
+Here are some Eclipse settings that you can import when working on GeoTools (in the source tree under `build/eclipse`):
 
 * `codetemplates.xml  <https://github.com/geotools/geotools/blob/master/build/eclipse/codetemplates.xml>`__
 * `formatter.xml <https://github.com/geotools/geotools/blob/master/build/eclipse/formatter.xml>`__
 
 To use:
 
-1. Open up Window > Preferences and navigate to the **Java > Code Style > Formatter** page
-
-2. Press the import button and select the file from your GeoTools check out (located in build/eclipse.formatter.xml)
-
-3. Change to the Java > Code Style > Code Templates page
-4. Import the template definition from your geotools check out (located in build/eclipse/codetemplates.xml)
-5. These files will have the header already to go for you; the right format options and so on.
+#. Open up **Window > Preferences** and navigate to the **Java > Code Style > Formatter** page
+#. Press the import button and select the file from your GeoTools check out (located in build/eclipse.formatter.xml)
+#. Change to the **Java > Code Style > Code Templates** page
+#. Import the template definition from your GeoTools check out (located in build/eclipse/codetemplates.xml)
+#. These files will have the header already to go for you; the right format options and so on.
 
 NetBeans
 ''''''''
  
 NetBeans also has the sun settings built in; please modify these defaults to match our project.
+
+IntelliJ
+''''''''
+The `formatter.xml` can also be imported into IntelliJ as of version 13. Under **Settings -> Editor ->
+Code Style** and click *Manage*. From there you can choose *Import* and select the Eclipse formatter.xml.
 
 Javadocs
 ^^^^^^^^

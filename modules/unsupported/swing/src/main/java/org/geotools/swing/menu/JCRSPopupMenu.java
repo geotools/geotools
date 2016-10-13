@@ -134,7 +134,7 @@ public class JCRSPopupMenu extends JPopupMenu {
                 }
             }
             
-            CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(null, null, initial);
+            CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(null, initial, "EPSG" );
 
             if (newCRS != null && (crs == null || !CRS.equalsIgnoreMetadata(crs, newCRS))) {
                 try {

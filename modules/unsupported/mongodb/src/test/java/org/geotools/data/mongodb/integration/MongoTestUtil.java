@@ -120,7 +120,7 @@ public class MongoTestUtil {
       }
       bdoBuilder.pop();
       coll.insert(bdoBuilder.get());
-      coll.ensureIndex(new BasicDBObject("geometry", "2dsphere"));
+      coll.createIndex(new BasicDBObject("geometry", "2dsphere"));
     }
   }
   

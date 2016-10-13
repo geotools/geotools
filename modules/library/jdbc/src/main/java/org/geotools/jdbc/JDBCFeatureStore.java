@@ -365,7 +365,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                     throw (IOException) new IOException().initCause( e );
                 }
                 ContentState state = getEntry().getState(transaction);
-                ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
+                ReferencedEnvelope bounds = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
                 if( state.hasListener() ){
                     // gather bounds before modification
                     ReferencedEnvelope before = getBounds( new Query( getSchema().getTypeName(), preFilter ) );                
@@ -426,7 +426,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                     throw (IOException) new IOException().initCause( e );
                 }
                 ContentState state = getEntry().getState(transaction);
-                ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
+                ReferencedEnvelope bounds = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
                 if( state.hasListener() ){
                     // gather bounds before modification
                     ReferencedEnvelope before = getBounds( new Query( getSchema().getTypeName(), preFilter ) );                

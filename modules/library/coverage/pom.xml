@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>16-SNAPSHOT</version>
+    <version>17-SNAPSHOT</version>
   </parent>
 
 
@@ -183,6 +183,10 @@
 		<artifactId>jt-crop</artifactId>
 	</dependency>
 	<dependency>
+		<groupId>it.geosolutions.jaiext.iterators</groupId>
+		<artifactId>jt-iterators</artifactId>
+	</dependency>
+	<dependency>
 		<groupId>it.geosolutions.jaiext.lookup</groupId>
 		<artifactId>jt-lookup</artifactId>
 	</dependency>
@@ -199,8 +203,20 @@
 		<artifactId>jt-rescale</artifactId>
 	</dependency>
 	<dependency>
+		<groupId>it.geosolutions.jaiext.scale</groupId>
+		<artifactId>jt-scale</artifactId>
+	</dependency>
+	<dependency>
 		<groupId>it.geosolutions.jaiext.stats</groupId>
 		<artifactId>jt-stats</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>it.geosolutions.jaiext.translate</groupId>
+		<artifactId>jt-translate</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>it.geosolutions.jaiext.utilities</groupId>
+		<artifactId>jt-utilities</artifactId>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.warp</groupId>

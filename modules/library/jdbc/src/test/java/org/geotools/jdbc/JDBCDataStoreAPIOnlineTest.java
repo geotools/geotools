@@ -591,7 +591,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeaturesWriterAdd() throws IOException, IllegalAttributeException {
+        
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriter(tname("road"), Transaction.AUTO_COMMIT);
+        try {
         SimpleFeature feature;
 
         while (writer.hasNext()) {
@@ -605,24 +607,29 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         writer.write();
 
         assertFalse(writer.hasNext());
-        writer.close();
+        
         assertEquals(td.roadFeatures.length + 1, count(tname("road")));
+        }finally {
+            writer.close();
+        }
     }
 
     public void testGetFeaturesWriterModify() throws IOException, IllegalAttributeException {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = writer(tname("road"));
         SimpleFeature feature;
+        try {
 
-        while (writer.hasNext()) {
-            feature = (SimpleFeature) writer.next();
+            while (writer.hasNext()) {
+                feature = (SimpleFeature) writer.next();
 
-            if (feature.getID().equals(td.roadFeatures[0].getID())) {
-                feature.setAttribute(aname("name"), "changed");
-                writer.write();
+                if (feature.getID().equals(td.roadFeatures[0].getID())) {
+                    feature.setAttribute(aname("name"), "changed");
+                    writer.write();
+                }
             }
+        }finally {
+            writer.close();
         }
-
-        writer.close();
 
         feature = (SimpleFeature) feature(tname("road"), td.roadFeatures[0].getID());
         assertNotNull(feature);
@@ -932,18 +939,18 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         ReferencedEnvelope bounds = road.getBounds(Query.ALL);
         assertTrue((bounds == null) || 
-        		areReferencedEnvelopesEuqal(bounds,td.roadBounds));
+        		areReferencedEnvelopesEqual(bounds,td.roadBounds));
 
         SimpleFeatureCollection all = road.getFeatures();
         assertEquals(3, all.size());
         //assertEquals(td.roadBounds, all.getBounds());
-        assertTrue(areReferencedEnvelopesEuqal(td.roadBounds, all.getBounds()));
+        assertTrue(areReferencedEnvelopesEqual(td.roadBounds, all.getBounds()));
 
         SimpleFeatureCollection expected = DataUtilities.collection(td.roadFeatures);
 
         assertCovers("all", expected, all);
 //        assertEquals(td.roadBounds, all.getBounds());
-        assertTrue(areReferencedEnvelopesEuqal(td.roadBounds, all.getBounds()));
+        assertTrue(areReferencedEnvelopesEqual(td.roadBounds, all.getBounds()));
 
         SimpleFeatureCollection some = road.getFeatures(td.rd12Filter);
         assertEquals(2, some.size());
@@ -952,7 +959,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         e.include(td.roadFeatures[0].getBounds());
         e.include(td.roadFeatures[1].getBounds());
 //        assertEquals(e, some.getBounds());
-        assertTrue(areReferencedEnvelopesEuqal(e, some.getBounds()));
+        assertTrue(areReferencedEnvelopesEqual(e, some.getBounds()));
 
         assertEquals(some.getSchema(), road.getSchema());
 
@@ -982,7 +989,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         ReferencedEnvelope b = half.getBounds();
         ReferencedEnvelope expectedBounds = td.roadBounds;
         //assertEquals(expectedBounds, b);
-        assertTrue(areReferencedEnvelopesEuqal(expectedBounds,b));
+        assertTrue(areReferencedEnvelopesEqual(expectedBounds,b));
     }
 
     public void testGetFeatureSourceRiver()
@@ -996,14 +1003,14 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         assertEquals(2, all.size());
         
         //assertEquals(td.riverBounds, all.getBounds());
-        assertTrue(areReferencedEnvelopesEuqal(td.riverBounds, all.getBounds()));
+        assertTrue(areReferencedEnvelopesEqual(td.riverBounds, all.getBounds()));
         
         assertTrue("rivers", covers(all.features(), td.riverFeatures));
 
         SimpleFeatureCollection expected = DataUtilities.collection(td.riverFeatures);
         assertCovers("all", expected, all);
         //assertEquals(td.riverBounds, all.getBounds());
-        assertTrue(areReferencedEnvelopesEuqal(td.riverBounds, all.getBounds()));
+        assertTrue(areReferencedEnvelopesEqual(td.riverBounds, all.getBounds()));
     }
 
     //
@@ -1065,6 +1072,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         AttributeDescriptor name = td.roadType.getDescriptor(aname("name"));
         road.modifyFeatures(new AttributeDescriptor[] { name, }, new Object[] { "changed", }, filter);
+        
     }
 
     public void testGetFeatureStoreRemoveFeatures() throws IOException {

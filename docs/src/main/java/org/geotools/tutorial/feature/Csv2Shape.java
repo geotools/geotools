@@ -21,10 +21,6 @@ import java.util.Map;
 
 import javax.swing.UIManager;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -41,6 +37,10 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.data.JFileDataStoreChooser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * This example reads data for point locations and associated attributes from a 
@@ -76,7 +76,7 @@ public class Csv2Shape {
         /*
          * A list to collect features as we create them.
          */
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        List<SimpleFeature> features = new ArrayList<>();
         
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -86,8 +86,7 @@ public class Csv2Shape {
 
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(TYPE);
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        try {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)) ){
             /* First line of the data file is the header */
             String line = reader.readLine();
             System.out.println("Header: " + line);
@@ -111,8 +110,6 @@ public class Csv2Shape {
                     features.add(feature);
                 }
             }
-        } finally {
-            reader.close();
         }
         // docs break new shapefile
         /*
@@ -122,7 +119,7 @@ public class Csv2Shape {
 
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("url", newFile.toURI().toURL());
         params.put("create spatial index", Boolean.TRUE);
 

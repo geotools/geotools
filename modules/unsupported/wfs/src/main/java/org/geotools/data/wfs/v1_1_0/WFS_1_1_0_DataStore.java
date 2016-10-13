@@ -107,6 +107,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_1_0/data/WFSDataStore.java $
+ * @deprecated Please use gt-wfs-ng implementation
  */
 @SuppressWarnings({ "nls" })
 public final class WFS_1_1_0_DataStore implements WFSDataStore {

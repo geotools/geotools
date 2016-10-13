@@ -60,7 +60,7 @@ public class MongoSchemaDBStore implements MongoSchemaStore {
             collectionName = DEFAULT_collectionName;
         }
         collection = database.getCollection(collectionName);
-        collection.ensureIndex(
+        collection.createIndex(
                 new BasicDBObject(FeatureTypeDBObject.KEY_typeName, 1),
                 new BasicDBObject("unique", true));
     }

@@ -17,10 +17,15 @@
  */
 package org.geotools.ysld.validate;
 
+import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 public abstract class ScalarValidator extends YsldValidateHandler {
-
+    @Override
+    public void alias(AliasEvent evt, YsldValidateContext context) {
+        //TODO: Validate alias
+        context.pop();
+    }
     @Override
     public void scalar(ScalarEvent evt, YsldValidateContext context) {
         String message = validate(evt.getValue(), evt, context);

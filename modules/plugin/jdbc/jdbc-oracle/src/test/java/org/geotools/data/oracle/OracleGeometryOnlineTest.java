@@ -16,14 +16,29 @@
  */
 package org.geotools.data.oracle;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.identity.FeatureId;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
@@ -48,6 +63,45 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         assertEquals(LineString.class, checkGeometryType(LinearRing.class));
     }
     
+    public void testInsertEmptyGeometry() throws Exception {
+        ContentFeatureSource source = dataStore.getFeatureSource("COLA_MARKETS_CS");
+        if (!(source instanceof SimpleFeatureStore)) {
+            fail("store not writable");
+        }
+        GeometryFactory gf = new GeometryFactory();
+        ArrayList<SimpleFeature> list = new ArrayList<>();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(source.getSchema());
+        
+        builder.add("empty point");
+        builder.add(gf.createPoint((Coordinate)null));
+        SimpleFeature f = builder.buildFeature(null);
+        list.add(f);
+        builder.add("empty line");
+        builder.add(gf.createLineString((CoordinateSequence)null));
+        f = builder.buildFeature(null);
+        list.add(f);
+        builder.add("empty polygon");
+        builder.add(gf.createPolygon(null,null));
+        f = builder.buildFeature(null);
+        list.add(f);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> collection = DataUtilities
+                .collection(list);
+        SimpleFeatureStore store = (SimpleFeatureStore) source;
+        Transaction transaction = new DefaultTransaction("create");
+        store.setTransaction(transaction);
+
+        try {
+            //GEOT-724 https://osgeo-org.atlassian.net/browse/GEOT-724 
+        	//throws exception here
+        	List<FeatureId> ids = store.addFeatures(collection);
+            
+            transaction.commit();
+        } finally {
+            transaction.close();
+        }
+        
+
+    }
     public void testComplexGeometryFallback() throws Exception {
         SimpleFeatureIterator fi = dataStore.getFeatureSource("COLA_MARKETS_CS").getFeatures().features();
         assertTrue(fi.hasNext());

@@ -19,6 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -48,6 +49,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -388,8 +390,12 @@ public class GridCoverageFactory extends AbstractFactory {
     public GridCoverage2D create(final CharSequence              name,
                                  final WritableRaster            raster,
                                  final Envelope                  envelope,
-                                 final GridSampleDimension[]     bands)
+                                       GridSampleDimension[]     bands)
     {
+        if (bands == null) 
+        {
+            bands = RenderedSampleDimension.create(name, raster, null, null, null, null, null);
+        }
         final ColorModel    model = bands[0].getColorModel(0, bands.length, raster.getDataBuffer().getDataType());
         final RenderedImage image = new BufferedImage(model, raster, false, null);
         return create(name, image, envelope, bands, null, null);
@@ -417,8 +423,12 @@ public class GridCoverageFactory extends AbstractFactory {
                                  final WritableRaster            raster,
                                  final CoordinateReferenceSystem crs,
                                  final MathTransform             gridToCRS,
-                                 final GridSampleDimension[]     bands)
+                                       GridSampleDimension[]     bands)
     {
+        if (bands == null) 
+        {
+            bands = RenderedSampleDimension.create(name, raster, null, null, null, null, null);
+        }
         final ColorModel    model = bands[0].getColorModel(0, bands.length, raster.getDataBuffer().getDataType());
         final RenderedImage image = new BufferedImage(model, raster, false, null);
         return create(name, image, crs, gridToCRS, bands, null, null);

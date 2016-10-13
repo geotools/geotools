@@ -49,6 +49,7 @@ import org.xml.sax.SAXException;
  * @source $URL$
  */
 public class ElementHandlerFactory {
+    /** Used to store ElementHandlerFactory */
     public static final String KEY = "org.geotools.xml.handlers.ElementHandlerFactory_KEY";
     private Logger logger;
     private Map targSchemas = new HashMap(); // maps prefix -->> Schema

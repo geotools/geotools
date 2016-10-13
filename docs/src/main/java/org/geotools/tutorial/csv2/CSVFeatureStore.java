@@ -29,7 +29,7 @@ import org.opengis.feature.type.Name;
  * Read-write access to CSV File.
  * 
  * @author Jody Garnett (Boundless)
- * @author Ian Turton (GeoTools)
+ * @author Ian Turton (Astun Technology)
  */
 public class CSVFeatureStore extends ContentFeatureStore {
     public CSVFeatureStore(ContentEntry entry, Query query) {
@@ -94,13 +94,14 @@ public class CSVFeatureStore extends ContentFeatureStore {
             throws IOException {
         return delegate.getReaderInternal(query);
     }
+    // internal end
+
     // visitor start
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return delegate.handleVisitor(query, visitor);
     }
     // visitor end
-    // internal end
     
     // public start
     //

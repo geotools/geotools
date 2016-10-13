@@ -181,6 +181,19 @@ public abstract class AbstractGridFormat implements Format {
      */
     public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE = new DefaultParameterDescriptor<String>(
         		SUGGESTED_TILESIZE, String.class, null, "512,512");
+    
+    /**
+     * This {@link GeneralParameterValue} can be provided to the
+     * {@link GridCoverageReader}s through the
+     * {@link GridCoverageReader#read(GeneralParameterValue[])} method to specify 
+     * the band indices of the input grid coverage that are going to be in the 
+     * resulting coverage. The order of the bands on the output coverage 
+     * is the order of the indices in the parameter. Value should be an integer 
+     * array (int[]) containing the band indices in the desired order. 
+     * Duplicate or multiple appearances of the same band index are allowed.
+     */
+    public static final DefaultParameterDescriptor<int[]> BANDS = new DefaultParameterDescriptor<int[]>(
+        		"Bands", int[].class, null, null);
 
     public static final String TILE_SIZE_SEPARATOR = ",";
 

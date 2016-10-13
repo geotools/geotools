@@ -44,13 +44,18 @@ import org.xml.sax.SAXException;
 public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 
     public WMSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
+        this(response, null);
+    }
+    
+    public WMSGetCapabilitiesResponse(HTTPResponse response, Map<String, Object> hints) throws ServiceException, IOException {
         super(response);
 
         try {
-            Map hints = new HashMap();
+            hints = hints == null ? new HashMap<>() : new HashMap<>(hints);
             hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-            hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
-
+            if( !hints.containsKey(DocumentFactory.VALIDATION_HINT)){
+                hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
+            }
             Object object;
             InputStream inputStream = null;
             try {

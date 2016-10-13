@@ -16,11 +16,23 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
+import org.apache.commons.io.FileUtils;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.imageio.netcdf.cv.ClimatologicalTimeCoordinateVariable;
+import org.geotools.imageio.netcdf.cv.ClimatologicalTimeHandlerSpi.ClimatologicalTimeHandler;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
 import org.geotools.test.TestData;
@@ -47,13 +59,14 @@ public class CoordinateVariableTest extends Assert {
     @BeforeClass
     public static void init() {
         System.setProperty("user.timezone", "GMT");
+        System.setProperty("netcdf.coordinates.enablePlugins", "true");
     }
 
     @AfterClass
     public static void close() {
         System.clearProperty("user.timezone");
     }
-    
+
     /** Simple CoordinateAxis1D wrapper to override Units */
     class CoordinateAxis1DUnitWrapper extends CoordinateAxis1D {
 
@@ -375,6 +388,54 @@ public class CoordinateVariableTest extends Assert {
 
         dataset.close();
 
+    }
+    
+    @Test
+    public void testClimatologicalTimeVariable() throws MalformedURLException, IOException {
+        // Selection of the input file
+        final File workDir = new File(TestData.file(this, "."), "climatologicalaxis");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        FileUtils.copyFile(TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
+        TestData.unzipFile(this, "climatologicalaxis/climatological.zip");
+
+        final NetcdfDataset dataset = NetcdfDataset.openDataset(TestData.url(this, "climatologicalaxis/climatological.nc")
+                .toExternalForm());
+        Dimension dim = dataset.findDimension("time");
+
+        CoordinateAxis1D coordinateAxis = (CoordinateAxis1D) dataset.findCoordinateAxis(dim.getShortName());
+        try {
+
+            CoordinateHandler handler = CoordinateHandlerFinder.findHandler(coordinateAxis);
+            assertNotNull(handler);
+            assertTrue(handler instanceof ClimatologicalTimeHandler);
+            ClimatologicalTimeHandler timeHandler = (ClimatologicalTimeHandler) handler;
+
+            CoordinateVariable<Date> coordinateVariable = timeHandler.createCoordinateVariable(coordinateAxis);
+            assertNotNull(coordinateVariable);
+            assertTrue(coordinateVariable instanceof ClimatologicalTimeCoordinateVariable);
+
+            ClimatologicalTimeCoordinateVariable timeVariable = (ClimatologicalTimeCoordinateVariable) coordinateVariable;
+            CoordinateReferenceSystem crs = timeVariable.getCoordinateReferenceSystem();
+            assertTrue(crs instanceof TemporalCRS);
+
+            assertEquals(12, timeVariable.getSize());
+            Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+            calendar.set(0, 0, 16, 0, 0, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            assertEquals(calendar.getTimeInMillis(), timeVariable.getMinimum().getTime());
+            calendar.set(Calendar.MONTH, 11);
+            assertEquals(calendar.getTimeInMillis(), timeVariable.getMaximum().getTime());
+            calendar.set(Calendar.MONTH, 2);
+            assertEquals(calendar.getTimeInMillis(), timeVariable.read(2).getTime());
+
+        } finally {
+            dataset.close();
+            FileUtils.deleteDirectory(TestData.file(this, "climatologicalaxis"));
+        }
     }
 
 }

@@ -184,7 +184,7 @@ public class WMS1_1_0 extends WMS1_0_0 {
 
         public Response createResponse(HTTPResponse httpResponse) throws ServiceException,
                 IOException {
-            return new DescribeLayerResponse(httpResponse);
+            return new DescribeLayerResponse(httpResponse, hints);
         }
     }
 	

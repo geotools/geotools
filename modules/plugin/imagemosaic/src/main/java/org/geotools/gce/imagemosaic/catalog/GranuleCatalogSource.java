@@ -33,23 +33,23 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  */
 public class GranuleCatalogSource implements GranuleSource {
-    
+
     /** The underlying {@link GranuleCatalog} */
     protected GranuleCatalog catalog;
 
     protected String typeName;
-    
+
     protected Hints hints;
-    
+
     public GranuleCatalogSource(GranuleCatalog catalog, final String typeName, final Hints hints) {
 
-        //TODO: once we allow to create different catalogs (based on different featureTypes) 
-        // we can stop filtering by name 
+        // TODO: once we allow to create different catalogs (based on different featureTypes)
+        // we can stop filtering by name
         this.catalog = catalog;
         this.typeName = typeName;
         this.hints = hints;
     }
-    
+
     @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
         final Query updatedQuery = setupBaseQuery(q);
@@ -59,13 +59,13 @@ public class GranuleCatalogSource implements GranuleSource {
     private Query setupBaseQuery(Query q) {
         if (q == null) {
             q = new Query();
-        } else  {
+        } else {
             q = new Query(q);
         }
         if (hints != null) {
             q.setHints(hints);
         }
-        if(q.getTypeName() == null) {
+        if (q.getTypeName() == null) {
             q.setTypeName(typeName);
         }
         return q;
@@ -92,7 +92,7 @@ public class GranuleCatalogSource implements GranuleSource {
     public void dispose() throws IOException {
         // TODO: check if we need to dispose it or not
         // Does nothing, the catalog should be disposed by the user
-        
+
     }
 
 }

@@ -496,7 +496,7 @@ public class FeatureTypeRegistry {
                 superType = getAttributeType(baseTypeName, baseType, crs);
             }
         } else {
-            LOGGER.warning(assignedName + " has no super type");
+            LOGGER.fine(assignedName + " has no super type");
         }
 
         if (typeDefinition instanceof XSDComplexTypeDefinition) {

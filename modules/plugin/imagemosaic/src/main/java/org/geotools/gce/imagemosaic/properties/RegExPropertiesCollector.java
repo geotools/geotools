@@ -47,8 +47,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
     }
 
     /**
-     * @deprecated 
-     * use {@link RegExPropertiesCollector#RegExPropertiesCollector(PropertiesCollectorSPI, List, String, boolean) instead
+     * @deprecated use {@link RegExPropertiesCollector#RegExPropertiesCollector(PropertiesCollectorSPI, List, String, boolean) instead
      */
     @Deprecated
     public RegExPropertiesCollector(PropertiesCollectorSPI spi, List<String> propertyNames,
@@ -96,7 +95,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
     @Override
     public void setProperties(Map<String, Object> map) {
 
-        // get all the matches and convert them 
+        // get all the matches and convert them
         List<String> matches = getMatches();
 
         // set the properties, only if we have matches!

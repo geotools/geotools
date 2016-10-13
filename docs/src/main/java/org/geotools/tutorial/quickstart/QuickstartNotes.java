@@ -19,7 +19,7 @@ class QuickstartNotes {
         // start datastore
         File file = JFileDataStoreChooser.showOpenFile("shp", null);
         
-        Map<String,Object> params = new HashMap<String,Object>();
+        Map<String,Object> params = new HashMap<>();
         params.put( "url", file.toURI().toURL() );
         params.put( "create spatial index", false );
         params.put( "memory mapped buffer", false );

@@ -19,6 +19,8 @@ package org.geotools.styling.css;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.runner.RunWith;
@@ -48,6 +50,7 @@ public class TranslationIntegrationTest extends AbstractIntegrationTest {
                 result.add(new Object[] { file.getName() + "-first", file, false });
             }
         }
+        Collections.sort(result, (a, b) -> ((String) a[0]).compareTo((String) b[0]));
 
         return result;
     }

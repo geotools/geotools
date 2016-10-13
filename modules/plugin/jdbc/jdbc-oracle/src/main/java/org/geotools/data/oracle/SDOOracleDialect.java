@@ -70,7 +70,7 @@ class SDOOracleDialect extends OracleDialect {
             int column) throws SQLException {
         // Handle the null geometry case.
         // Surprisingly, using setNull(column, Types.OTHER) does not work...
-        if (g == null) {
+        if (g == null || g.isEmpty()) {
             ps.setNull(column, Types.STRUCT, "MDSYS.SDO_GEOMETRY");
             return;
         }

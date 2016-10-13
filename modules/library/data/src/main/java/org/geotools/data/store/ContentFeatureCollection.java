@@ -215,7 +215,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             if(result != null) {
                 return result;
             } else {
-                return new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
+                return ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
             }
         } catch( IOException e ) {
             throw new RuntimeException( e );

@@ -232,7 +232,7 @@ public class WMS1_0_0 extends WMSSpecification {
         
         public Response createResponse(HTTPResponse httpResponse) throws ServiceException,
                 IOException {
-            return new WMSGetCapabilitiesResponse(httpResponse);
+            return new WMSGetCapabilitiesResponse(httpResponse, hints);
         }
     }
 

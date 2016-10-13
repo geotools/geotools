@@ -334,7 +334,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 Please note: alternatively this value could be loaded from mosaic config file,
                 we could add an optional element/attribute to specify this value.
                 */
-                Number noDataValue = getNoDataValue(imageLevelInfo.getTileTableName(), con);
+                Number noDataValue = getNoDataValue(imageLevelInfo.getTileTableName(), getConfig().getBlobAttributeNameInTileTable(), con);
                 imageLevelInfo.setNoDataValue(noDataValue);
 
                 getLevelInfos().add(imageLevelInfo);
@@ -365,12 +365,12 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     /*
      extract noDataValues for each overview from overview raster tables
      */
-    private Number getNoDataValue(String coverageTableName, Connection con) throws SQLException {
+    private Number getNoDataValue(String coverageTableName, String blobAttributeName, Connection con) throws SQLException {
         PreparedStatement s = null;
         ResultSet res = null;
 
         try {
-            String stmt = "select ST_BandNoDataValue(rast) from " + coverageTableName + " limit 1";
+            String stmt = "select ST_BandNoDataValue(" + blobAttributeName + ") from " + coverageTableName + " limit 1";
             s = con.prepareStatement(stmt);
             res = s.executeQuery();
 

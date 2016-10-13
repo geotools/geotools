@@ -85,7 +85,7 @@ Some tests (particularly of rendering technology) like to pop up images and the 
 
 To run these tests::
    
-   mvn test -P interactive
+   mvn test -P interactive.tests
 
 Stress Testing
 ^^^^^^^^^^^^^^

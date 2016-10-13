@@ -44,7 +44,7 @@ public class LikeToRegexConverter {
         // (1) If a user-defined wildcard exists, replace with Java wildcard
         // (2) If a user-defined escape exists, Java wildcard + user-escape
         // Then, test for matching pattern and return result.
-        char esc = escape.charAt(0);
+        char esc = escape.isEmpty() ? Character.MIN_VALUE : escape.charAt(0);
         if (LOGGER.isLoggable(Level.FINER)) {
             LOGGER.finer("wildcard " + wildcardMulti + " single " + wildcardSingle);
             LOGGER.finer("escape " + escape + " esc " + esc + " esc == \\ " + (esc == '\\'));
@@ -64,7 +64,7 @@ public class LikeToRegexConverter {
                 LOGGER.finer("tmp = " + tmp + " looking at " + chr);
             }
 
-            if (pattern.regionMatches(false, i, escape, 0, escape.length())) {
+            if (!escape.isEmpty() && pattern.regionMatches(false, i, escape, 0, escape.length())) {
                 // skip the escape string
                 LOGGER.finer("escape ");
                 escapedMode = true;
@@ -111,7 +111,7 @@ public class LikeToRegexConverter {
                 continue;
             }
 
-            if (isSpecial(chr)) {
+            if (isSpecial(chr) && !escape.isEmpty()) {
                 LOGGER.finer("special");
                 tmp.append(escape + chr);
                 escapedMode = false;

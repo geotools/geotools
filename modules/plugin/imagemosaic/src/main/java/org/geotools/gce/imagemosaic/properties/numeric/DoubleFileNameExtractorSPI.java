@@ -26,17 +26,17 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  *
  * @source $URL$
  */
-public final class DoubleFileNameExtractorSPI extends NumericFileNameExtractorSPI implements PropertiesCollectorSPI{
+public final class DoubleFileNameExtractorSPI extends NumericFileNameExtractorSPI
+        implements PropertiesCollectorSPI {
 
     public DoubleFileNameExtractorSPI() {
         super("DoubleFileNameExtractorSPI");
     }
 
     @Override
-    protected PropertiesCollector createInternal(
-            PropertiesCollectorSPI spi,
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi,
             List<String> propertyNames, String regex) {
         return new NumericFileNameExtractor.DoubleFileNameExtractor(spi, propertyNames, regex);
     }
-    
-} 
+
+}

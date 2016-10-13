@@ -24,11 +24,11 @@ directly on coverage objects.
 Image Tiling Application
 ========================
 
-Previous tutorials covered loading and rendering coverages; this tutorial will demonstrate
+The ImageLab tutorial covered loading and rendering coverages; this tutorial will demonstrate
 performing basic operations -- such as crop and scale -- directly on a coverage using the
 **CoverageProcessor** and friends, as well as use the **Arguments** tool to make command line
 processing a little simpler. We will be creating a simple utility application to "tile" a coverage
-(simply by subdividing the geographic envelope) and optionally scale the resulting tiles.
+(for the sake of simplicity simply subdividing the envelope) and optionally scaling the resulting tiles.
 
 Pre-requisites
 --------------
@@ -41,13 +41,17 @@ the following dependencies are available
     :start-after: <!-- docs start deps -->
     :end-before: <!-- docs end deps -->
 
-Create the file **ImageTiler.java** and copy and paste in the following code, which
+Create the file **ImageTiler.java** in the package `org.geotools.tutorial.coverage` and copy and paste in the following code, which
 contains our boilerplate imports, fields and getters/setters:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
     :start-after: //docs start prelim
     :end-before: //docs end prelim
+
+
+.. note:: Please note that this isn't the entire code listing -- we'll finish it off as we go along -- so don't worry right now
+          if your IDE complains.
 
 Argument Processing
 -------------------
@@ -88,7 +92,7 @@ to crop and scale.
 
 Creating our tile envelope
 --------------------------
-First we'll create the envelope of our tile based on our indexes and target enveloped width and height
+We'll create the envelope of our tile based on our indexes and target enveloped width and height:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
@@ -100,7 +104,8 @@ Cropping
 --------
 Now that we have the tile envelope width and height we'll iterate over our tile counts and crop
 based on our target envelope. In this example we will manually create our parameters and use the
-coverage processor to perform the "CoverageCrop" operation.
+coverage processor to perform the "CoverageCrop" operation. We'll encounter slightly simpler ways
+to perform coverage operations in the next step.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
@@ -119,20 +124,9 @@ factor in order to preserve the aspect ratio of our original coverage.
     :start-after: //docs start scale
     :end-before: //docs end scale
 
-Output
-------
-Finally we'll use the **AbstractGridFormat** instance we retrieved earlier to save our tile, plus
-finish off our class definition.
-
-.. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
-    :language: java
-    :start-after: //docs start output
-    :end-before: //docs end output
-
-
 Running the application
 =======================
-Before we can run the application we'll need sample data. The `Natural Earth 50m`_. data will do nicely.
+Before we can run the application we'll need sample data. The `Natural Earth 50m`_. data will do nicely. 
 
 .. _Natural Earth 50m: http://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-2/
 
@@ -147,6 +141,13 @@ and create a new Java Application config with the following configuration.
 Under the *Arguments* tab we'll point our application at the downloaded raster data, give it a tile
 count of 16x8, output it to a temp director and scale the tiles by two.
 
+`-f /Users/devon/Downloads/NE2_50M_SR_W/NE2_50M_SR_W.tif -htc 16 -vtc 8 -o /Users/devon/tmp/tiles -scale 2.0`
+
+Be sure to replace the filename and directory with your own locations.
+
+.. note:: If you're using Eclipse then these paths can be replaced by prompts. In the Run dialog choose *Variables*
+        and use the `file_prompt` and `folder_prompt` variables.
+
 .. figure:: artifacts/runargs.png
 
 Finally, hit *Run* to run our application. You may see some warning/info messages related to ImageIO,
@@ -157,7 +158,7 @@ application.
 
 Running With Maven
 ------------------
-If you're not using an IDE then the easiest way to our application is to use the Maven exec task
+If you're not using an IDE then the easiest way to run our application is to use the Maven exec task
 to run our application for us, as detailed in the `Maven Quickstart`_. We simply need to add the Maven Shade
 plugin to our pom.xml
 
@@ -166,13 +167,16 @@ plugin to our pom.xml
 
 .. _Maven Quickstart: http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html
 
-Extra Resources
-===============
+Things to Try
+=============
 
-* We can verify that our tiles look OK by loading them into the GeoServer
-  `ImageMosaic`_. store.
-* See the `Coverage Processor`_. documentation for more information about the operations available
-  on coverages
+* See the `Coverage Processor`_ documentation for more information about the operations available
+  on coverages. One of the operations available in the CoverageProcessor is Resample (see the `Operations`_ class), which we can use to
+  reproject our coverage very easily. Try reprojecting the coverage into EPSG:3587 (Google's Web Mercator projection).
+* We can verify that our tiles look OK by loading them into the GeoServer `ImageMosaic`_ store. Alternatively
+  we could programmatically create an `ImageMosaicReader`_ pointed at our directory files and read from it.
 
-.. _ImageMosaic: http://docs.geoserver.org/latest/en/user/tutorials/image_mosaic_plugin/imagemosaic.html
+.. _ImageMosaic: http://docs.geoserver.org/latest/en/user/data/raster/imagemosaic/index.html
+.. _ImageMosaicReader: http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicReader.html
 .. _Coverage Processor: http://docs.geotools.org/latest/javadocs/index.html?org/geotools/coverage/processing/CoverageProcessor.html
+.. _Operations: http://docs.geotools.org/latest/javadocs/org/geotools/coverage/processing/Operations.html

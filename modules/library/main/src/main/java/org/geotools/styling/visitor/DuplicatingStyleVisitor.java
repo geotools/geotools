@@ -75,6 +75,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
+import org.opengis.style.ExternalMark;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -486,6 +487,17 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return (Mark) pages.pop();
     }
     
+    private ExternalMark copy(org.geotools.styling.ExternalMark other) {
+    	if(other == null) {
+    		return null;
+    	} else if(other.getInlineContent() != null) {
+    		return sf.externalMark(other.getInlineContent());
+    	} else {
+    		return sf.externalMark(other.getOnlineResource(), other.getFormat(), other.getMarkIndex());
+    	}
+	}
+
+    
     protected ColorMapEntry copy(ColorMapEntry entry) {
         if( entry == null ) return null;
         
@@ -850,6 +862,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setFill(copy( mark.getFill() ));
         copy.setStroke(copy( mark.getStroke() ));
         copy.setWellKnownName(copy( mark.getWellKnownName() ));
+        copy.setExternalMark(copy(mark.getExternalMark()));
         
         if( STRICT && !copy.equals( mark )){
             throw new IllegalStateException("Was unable to duplicate provided Mark:"+mark );
@@ -857,7 +870,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
-    public void visit(ExternalGraphic exgr) {
+	public void visit(ExternalGraphic exgr) {
         URL uri = null;
         try {
             uri = exgr.getLocation();
@@ -1006,7 +1019,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setColor(copy(colorMapEntry.getColor()));
         copy.setLabel(colorMapEntry.getLabel());
         copy.setOpacity(copy(colorMapEntry.getOpacity()));
-        copy.setQuantity(colorMapEntry.getQuantity());
+        copy.setQuantity(copy(colorMapEntry.getQuantity()));
 
         if (STRICT && !copy.equals(colorMapEntry)) {
             throw new IllegalStateException("Was unable to duplicate provided ColorMapEntry:" + colorMapEntry);

@@ -51,7 +51,7 @@ public class CSVTest {
 
     @Test
     public void test() throws Exception {
-        List<String> cities = new ArrayList<String>();
+        List<String> cities = new ArrayList<>();
         URL url = CSVTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         try (FileReader reader = new FileReader(file)) {
@@ -73,7 +73,7 @@ public class CSVTest {
         File file = new File(url.toURI());
 
         // example1 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
 
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -91,7 +91,7 @@ public class CSVTest {
         URL url = CSVTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         // example2 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -140,7 +140,7 @@ public class CSVTest {
         URL url = CSVTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         // example3 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore datastore = DataStoreFinder.getDataStore(params);
 
@@ -172,13 +172,13 @@ public class CSVTest {
         File file = new File(url.toURI());
 
         // example4 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        Set<FeatureId> selection = new HashSet<FeatureId>();
+        Set<FeatureId> selection = new HashSet<>();
         selection.add(ff.featureId("locations.7"));
 
         Filter filter = ff.id(selection);
@@ -212,7 +212,7 @@ public class CSVTest {
         URL url = CSVTest.class.getResource("locations.csv");
         File file = new File(url.toURI());
         // example5 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
@@ -243,14 +243,14 @@ public class CSVTest {
         File file = new File(url.toURI());
 
         // example6 start
-        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         SimpleFeatureSource featureSource = store.getFeatureSource("locations");
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try (SimpleFeatureIterator features = featureCollection.features();) {
             while (features.hasNext()) {
                 list.add(features.next().getID());

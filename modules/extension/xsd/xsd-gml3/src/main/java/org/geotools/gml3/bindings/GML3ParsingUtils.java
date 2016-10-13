@@ -95,7 +95,9 @@ public class GML3ParsingUtils {
     /**
      * Returns the number of dimensions for the specified node, eventually recursing up to find the
      * parent node that has the indication of the dimensions (normally the top-most geometry element
-     * has it, not the posList). Returns 2 if no srsDimension attribute could be found.
+     * has it, not the posList). If no srsDimension can be found, check the srsName the same way
+     * and return the srsDimensions instead.
+     * Returns 2 if no srsDimension or srsName attribute could be found.
      * 
      * @param node
      * @return
@@ -106,6 +108,14 @@ public class GML3ParsingUtils {
             Node dimensions = current.getAttribute("srsDimension");
             if (dimensions != null) {
                 return ((Number) dimensions.getValue()).intValue();
+            }
+            current = current.getParent();
+        }
+        current = node;
+        while (current != null) {
+            CoordinateReferenceSystem crs = crs(current);
+            if (crs != null) {
+                return crs.getCoordinateSystem().getDimension();
             }
             current = current.getParent();
         }

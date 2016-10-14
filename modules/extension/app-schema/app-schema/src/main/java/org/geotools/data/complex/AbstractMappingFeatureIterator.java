@@ -32,6 +32,7 @@ import org.geotools.data.Query;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
@@ -213,11 +214,15 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             this.requestMaxFeatures = query.getMaxFeatures();
             this.dataMaxFeatures = query.getMaxFeatures();
         }
-                
-        if (unrolledQuery==null) {
+
+        if (unrolledQuery == null) {
             unrolledQuery = getUnrolledQuery(query);
-        }       
-        
+            if (query instanceof JoiningQuery && unrolledQuery instanceof JoiningQuery) {
+                ((JoiningQuery) unrolledQuery).setRootMapping(((JoiningQuery) query)
+                        .getRootMapping());
+            }
+        }
+
          // NC - property names
         if (query != null && query.getProperties() != null) {
             setPropertyNames(query.getProperties());

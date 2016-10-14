@@ -464,10 +464,10 @@ public class NestedAttributeMapping extends AttributeMapping {
             }
         } else {
             fTypeValue = nestedFeatureType.toString();
-        }        
+        }
         return Types.degloseName(String.valueOf(fTypeValue), namespaces);
     }
-    
+
     public boolean isConditional() {
         return this.isConditional;
     }

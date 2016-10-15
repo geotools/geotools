@@ -18,6 +18,7 @@ package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
+import ucar.nc2.dataset.NetcdfDataset;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +60,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -193,6 +196,33 @@ public class NetCDFReaderTest extends Assert {
                 }
             }
         }
+    }
+
+    @Test
+    public void testScaleAndOffset() throws IOException, FactoryException, ParseException {
+        //Capture the current enhance mode, so we can change it now and set it back later
+        Set<NetcdfDataset.Enhance> currentEnhanceMode = NetcdfDataset.getDefaultEnhanceMode();
+        Set<NetcdfDataset.Enhance> newEnhanceMode = EnumSet.of(NetcdfDataset.Enhance.CoordSystems,
+            NetcdfDataset.Enhance.ScaleMissing);
+        Boolean currentEnhanceSysProp = Boolean.getBoolean(NetCDFUtilities.ENHANCE_SCALE_MISSING);
+        if (!currentEnhanceSysProp) {
+            System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, "true");
+        }
+        NetcdfDataset.setDefaultEnhanceMode(newEnhanceMode);
+        File file = TestData.file(this, "o3_no2_so.nc");
+        final NetCDFReader reader = new NetCDFReader(file, null);
+        String coverageName = "NO2";
+        GeneralParameterValue[] values = new GeneralParameterValue[] {};
+        GridCoverage2D coverage = reader.read(coverageName, values);
+
+        float[] result = coverage
+            .evaluate((DirectPosition) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
+                new float[1]);
+
+        assertEquals(1.615991, result[0], 1e-6f);
+
+        NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
+        System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
     }
 
     @Test

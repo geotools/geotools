@@ -110,6 +110,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         // If NC4 C Library is available, then the proper MIME Types must be added to support.
         List<String> suffixesList = new ArrayList<String>();
         Collections.addAll(suffixesList, "nc", "NC");
+        Collections.addAll(suffixesList, "ncml", "NCML");
 
         List<String> formatNamesList = new ArrayList<String>();
         Collections.addAll(formatNamesList, "netcdf", "NetCDF", NetCDFUtilities.NETCDF_3);

@@ -28,6 +28,7 @@ public class ECQLExamples {
 
     private final static Logger LOGGER = Logger.getLogger(ECQLExamples.class.getName());
 
+    private final int USING_EXIT = 0;
     private final int USING_COMPARISON_PREDICATE_CQL_COMPATIBILITY = 1;
     private final int USING_EXPRESSION_LESS_THAN_OR_EQUAL_TO_PROPERTY = 2;
     private final int USING_FUNCTIONS_IN_COMPARISON_PREDICATE = 3;
@@ -57,7 +58,7 @@ public class ECQLExamples {
 
                 int option = Integer.parseInt(line);
                 switch (option) {
-                case 0:
+                case USING_EXIT:
                     System.out.println("bye!");
                     return;
                 case USING_COMPARISON_PREDICATE_CQL_COMPATIBILITY:
@@ -85,8 +86,8 @@ public class ECQLExamples {
                     betweenPredicate();
                     break;
                 case USING_BETWEEN_EXPRESSION:
-                	betweenUsingExpression();
-                	break;
+                    betweenUsingExpression();
+                    break;
                 case USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM: // TODO
                     System.out.println("not yet implemented: option " + USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM);
                     break;

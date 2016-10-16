@@ -26,8 +26,25 @@ import org.opengis.filter.temporal.During;
  */
 public class ECQLExamples {
 
-    private final static Logger LOGGER = Logger.getLogger(ECQLExamples.class
-            .getName());
+    private final int USING_COMPARISON_PREDICATE_CQL_COMPATIBILITY = 1;
+    private final int USING_EXPRESSION_LESS_THAN_OR_EQUAL_TO_PROPERTY = 2;
+    private final int USING_FUNCTIONS_IN_COMPARISON_PREDICATE = 3;
+    private final int USING_LIKE_PREDICATE_IN_STRING = 4;
+    private final int USING_LIKE_PREDICATE = 5;
+    private final int USING_ILIKE_PREDICATE = 6;
+    private final int USING_COMPARISON_USING_EXPRESSIONS = 7;
+    private final int USING_BETWEEN_PREDICATE = 8;
+    private final int USING_BETWEEN_EXPRESSION = 9;
+    private final int SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM = 10;
+    private final int USING_RELATE_PATTERN = 11;
+    private final int USING_AFTER_PREDICATE_WITH_LEFT_HAND_EXPRESSION = 12;
+    private final int USING_BEFORE_PREDICATE_WITH_LEFT_HAND_EXPRESSION = 13;
+    private final int USING_DURING_PREDICATE_WITH_LEFT_HAND_EXPRESSION = 14;
+    private final int USING_DURING_PREDICATE_WITH_LEFT_HAND_ATTRIBUTE = 15;
+    private final int USING_IN_PREDICATE = 16;
+    private final int USING_UTC_TIME_ZONE = 17;
+
+    private final static Logger LOGGER = Logger.getLogger(ECQLExamples.class.getName());
 
     public static void main(String[] args) {
 
@@ -61,67 +78,70 @@ public class ECQLExamples {
                 String line = reader.readLine();
                 int option = Integer.parseInt(line);
                 switch (option) {
-                case 0: 
+                case 0:
+                    LOGGER.error("unallowed option 0 (zero)");
                     System.out.println("bye!");
                     return;
-                case 1:
+                case USING_COMPARISON_PREDICATE_CQL_COMPATIBILITY:
                     comparisonPredicateCQLCompatibility();
                     break;
-                case 2:
+                case USING_EXPRESSION_LESS_THAN_OR_EQUAL_TO_PROPERTY:
                     expressionLessThanOrEqualToProperty();
                     break;
-                case 3: // TODO
+                case USING_FUNCTIONS_IN_COMPARISON_PREDICATE: // TODO
+                    LOGGER.error("not yet implemented: option 3")
                     break;
-                case 4:
+                case USING_LIKE_PREDICATE_IN_STRING:
                     likePredicateInString();
                     break;
-                case 5:
+                case USING_LIKE_PREDICATE:
                     likePredicate();
                     break;
-                case 6:
+                case USING_ILIKE_PREDICATE:
                     ilikePredicate();
                     break;
-                case 7:
+                case USING_COMPARISON_USING_EXPRESSIONS:
                     comparisonUsingExpressions();
                     break;
-                case 8:
+                case USING_BETWEEN_PREDICATE:
                     betweenPredicate();
                     break;
-                case 9:
+                case USING_BETWEEN_EXPRESSION:
                 	betweenUsingExpression();
                 	break;
-                case 10:
+                case SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM:
                     //TODO
+                    LOGGER.error("not yet implemented: option 10")
                     break;
-                case 11:
+                case USING_RELATE_PATTERN:
                     relatePattern();
                     break;
-                case 12:
+                case USING_AFTER_PREDICATE_WITH_LEFT_HAND_EXPRESSION:
                     afterPredicateWithLefHandtExpression();
                     break;
-                case 13:
+                case USING_BEFORE_PREDICATE_WITH_LEFT_HAND_EXPRESSION:
                     beforePredicateWithLefHandtExpression();
                     break;
-                case 14:
+                case USING_DURING_PREDICATE_WITH_LEFT_HAND_EXPRESSION:
                     duringPredicateWithLefHandtExpression();
                     break;
-                case 15:
+                case USING_DURING_PREDICATE_WITH_LEFT_HAND_ATTRIBUTE:
                 	duringPredicateWithLefHandtAttribute();
                 	break;
-                	
-                case 16:
+                case USING_IN_PREDICATE:
                 	inPredicate();
                 	break;
-                case 17: 
+                case USING_UTC_TIME_ZONE:
                 	utcTimeZone();
                 	break;
                 default:
+                    LOGGER.error("invalid option: "+option);
                     System.out.println("invalid option");
                 }
                 System.out.println("Press a key to continue.");
             }
         } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.severe(e.getMessage(), e);
         }
     }
 

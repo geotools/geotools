@@ -14,16 +14,14 @@ import org.opengis.filter.temporal.During;
 
 /**
  * This class gathers up the CQL examples shown in the sphinx documentation.
- * 
+ * <p>
  * WORK IN PROGRESS
- * 
- * 
- * @author Mauricio Pazos
  *
+ * @author Mauricio Pazos
  */
 public class CQLExamples {
 
-	private static final Logger LOGGER = Logger.getLogger(CQLExamples.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CQLExamples.class.getName());
 
     private final int USING_EXIT = 0;
     private final int USING_COMPARISON_PREDICATE = 1;
@@ -37,57 +35,57 @@ public class CQLExamples {
     private final int USING_DURING_PREDICATE = 9;
 
 
-	public static void main(String[] args){
+    public static void main(String[] args) {
 
-      printCommandDocu();
+        printCommandDocu();
 
-      try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 
-          String line = null;
-          while ((line = reader.readLine()) != null) {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
 
                 int option = Integer.parseInt(line);
                 switch (option) {
-                case USING_EXIT:
-                    System.out.println("bye!");
-                    return;
-                case USING_COMPARISON_PREDICATE:
-                	comparisonPredicate();
-                    break;
-                case USING_FUNCTIONS_IN_COMPARISON_PREDICATE: //TODO
-                    System.out.println("not yet implemented option: "+USING_FUNCTIONS_IN_COMPARISON_PREDICATE);
-                    break;
-                case USING_LIKE_PREDICATE:
-                    likePredicate();
-                    break;
-                case USING_BETWEEN_PREDICATE:
-                    betweenPredicate();
-                    break;
-                case USING_RELATE_PATTERN:
-                	relatePattern();
-                    break;
-                case USING_AFTER_PREDICATE:
-                	afterPredicate();
-                    break;
-                case USING_AFTER_PREDICATE_GMT3:
-                	afterPredicateGMT3();
-                    break;
-                case USING_BEFORE_PREDICATE:
-                	beforePredicate();
-                    break;
-                case USING_DURING_PREDICATE:
-                	duringPredicate();
-                    break;
-                default:
-                    System.out.println("invalid option: "+option);
+                    case USING_EXIT:
+                        System.out.println("bye!");
+                        return;
+                    case USING_COMPARISON_PREDICATE:
+                        comparisonPredicate();
+                        break;
+                    case USING_FUNCTIONS_IN_COMPARISON_PREDICATE: //TODO
+                        System.out.println("not yet implemented option: " + USING_FUNCTIONS_IN_COMPARISON_PREDICATE);
+                        break;
+                    case USING_LIKE_PREDICATE:
+                        likePredicate();
+                        break;
+                    case USING_BETWEEN_PREDICATE:
+                        betweenPredicate();
+                        break;
+                    case USING_RELATE_PATTERN:
+                        relatePattern();
+                        break;
+                    case USING_AFTER_PREDICATE:
+                        afterPredicate();
+                        break;
+                    case USING_AFTER_PREDICATE_GMT3:
+                        afterPredicateGMT3();
+                        break;
+                    case USING_BEFORE_PREDICATE:
+                        beforePredicate();
+                        break;
+                    case USING_DURING_PREDICATE:
+                        duringPredicate();
+                        break;
+                    default:
+                        System.out.println("invalid option: " + option);
                 }
                 System.out.println();
             }
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
         }
-		
-	}
+
+    }
 
     private static void printCommandDocu() {
         System.out.println("Select the CQL Example:");
@@ -105,95 +103,94 @@ public class CQLExamples {
         System.out.print(">");
     }
 
-    private static void beforePredicate() throws Exception{
-    	
-    	// cql_beforePredicate start
-        Before filter = (Before) CQL.toFilter("lastEarthQuake BEFORE 2006-11-30T01:30:00Z");
-    	// cql_beforePredicate end
-        Utility.prittyPrintFilter(filter);
-        
-        final SimpleFeature city = DataExamples.getInstanceOfCity();
-        Expression leftExpr = filter.getExpression1();
-        Expression rightExpr = filter.getExpression2();
-        System.out.println("left expression value: " + leftExpr.evaluate(city));
-        System.out.println("right expression value: " + rightExpr.evaluate(city));
-        
-        Boolean result = filter.evaluate(city);
-        System.out.println("Result of filter evaluation: " + result);        
-	}
+    private static void beforePredicate() throws Exception {
 
-    private static void afterPredicate() throws Exception{
-    	
-    	// cql_afterPredicate start
+        // cql_beforePredicate start
+        Before filter = (Before) CQL.toFilter("lastEarthQuake BEFORE 2006-11-30T01:30:00Z");
+        // cql_beforePredicate end
+        Utility.prittyPrintFilter(filter);
+
+        final SimpleFeature city = DataExamples.getInstanceOfCity();
+        Expression leftExpr = filter.getExpression1();
+        Expression rightExpr = filter.getExpression2();
+        System.out.println("left expression value: " + leftExpr.evaluate(city));
+        System.out.println("right expression value: " + rightExpr.evaluate(city));
+
+        Boolean result = filter.evaluate(city);
+        System.out.println("Result of filter evaluation: " + result);
+    }
+
+    private static void afterPredicate() throws Exception {
+
+        // cql_afterPredicate start
         After filter = (After) CQL.toFilter("lastEarthQuake AFTER 2006-11-30T01:30:00Z");
-    	// cql_afterPredicate end
+        // cql_afterPredicate end
         Utility.prittyPrintFilter(filter);
-        
+
         final SimpleFeature city = DataExamples.getInstanceOfCity();
         Expression leftExpr = filter.getExpression1();
         Expression rightExpr = filter.getExpression2();
         System.out.println("left expression value: " + leftExpr.evaluate(city));
         System.out.println("right expression value: " + rightExpr.evaluate(city));
-        
+
         Boolean result = filter.evaluate(city);
-        System.out.println("Result of filter evaluation: " + result);        
-	}
-	
-    private static void afterPredicateGMT3() throws Exception{
-    	
-    	// cql_afterPredicateGMT3 start
+        System.out.println("Result of filter evaluation: " + result);
+    }
+
+    private static void afterPredicateGMT3() throws Exception {
+
+        // cql_afterPredicateGMT3 start
         After filter = (After) CQL.toFilter("lastEarthQuake AFTER 2006-11-30T01:30:00+03:00");
-    	// cql_afterPredicateGMT3 end
+        // cql_afterPredicateGMT3 end
         Utility.prittyPrintFilter(filter);
-        
+
         final SimpleFeature city = DataExamples.getInstanceOfCity();
         Expression leftExpr = filter.getExpression1();
         Expression rightExpr = filter.getExpression2();
         System.out.println("left expression value: " + leftExpr.evaluate(city));
         System.out.println("right expression value: " + rightExpr.evaluate(city));
-        
+
         Boolean result = filter.evaluate(city);
-        System.out.println("Result of filter evaluation: " + result);        
-	}
-	
-    private static void duringPredicate() throws Exception{
-    	
-    	// cql_duringPredicate start
+        System.out.println("Result of filter evaluation: " + result);
+    }
+
+    private static void duringPredicate() throws Exception {
+
+        // cql_duringPredicate start
         During filter = (During) CQL.toFilter("lastEarthQuake DURING 1700-01-01T00:00:00/2011-01-01T00:00:00");
-    	// cql_duringPredicate end
+        // cql_duringPredicate end
         Utility.prittyPrintFilter(filter);
-        
+
         final SimpleFeature city = DataExamples.getInstanceOfCity();
         Expression leftExpr = filter.getExpression1();
         Expression rightExpr = filter.getExpression2();
         System.out.println("left expression value: " + leftExpr.evaluate(city));
         System.out.println("right expression value: " + rightExpr.evaluate(city));
-        
+
         Boolean result = filter.evaluate(city);
-        System.out.println("Result of filter evaluation: " + result);        
-	}
-	
+        System.out.println("Result of filter evaluation: " + result);
+    }
+
     /**
      * Example using the "contains" intersection matrix.
-     *  
+     *
      * @throws Exception
      */
-    private static void relatePattern() throws Exception{
-    	
-    	// cql relatePattern start
-        Filter filter = CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
-    	// cql relatePattern end
-		Utility.prittyPrintFilter(filter);
-		
+    private static void relatePattern() throws Exception {
+
+        // cql relatePattern start
+        Filter filter = CQL.toFilter("RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        // cql relatePattern end
+        Utility.prittyPrintFilter(filter);
+
         SimpleFeature usa = DataExamples.getInstanceOfCountry();
-		
+
         Boolean result = filter.evaluate(usa);
         System.out.println("Result of filter evaluation: " + result);
-		
-	}
 
-	
-	
+    }
+
+
     static private void comparisonPredicate() throws Exception {
         // cql comparison start
         Filter filter = CQL.toFilter("population >= 10000000");
@@ -202,13 +199,13 @@ public class CQLExamples {
         SimpleFeature city = DataExamples.getInstanceOfCity();
 
         System.out.println("City population: " + city.getProperty("population").getValue());
-        
+
         Boolean result = filter.evaluate(city);
         System.out.println("Result of filter evaluation: " + result);
-    }	
+    }
 
     private static void betweenPredicate() throws Exception {
-        
+
         // cql betweenPredicate start
         Filter filter = CQL.toFilter("population BETWEEN 10000000 and 20000000");
         // cql betweenPredicate end
@@ -217,15 +214,15 @@ public class CQLExamples {
         SimpleFeature city = DataExamples.getInstanceOfCity();
 
         System.out.println("City population: " + city.getProperty("population").getValue());
-        
+
         Boolean result = filter.evaluate(city);
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    
+
     /**
-     *  Matching a property with a text pattern (case sensitive)
-     * 
+     * Matching a property with a text pattern (case sensitive)
+     *
      * @throws Exception
      */
     static private void likePredicate() throws Exception {
@@ -241,6 +238,6 @@ public class CQLExamples {
         Boolean result = filter.evaluate(newYork);
         System.out.println("Result of filter evaluation: " + result);
     }
-    
-	
+
+
 }

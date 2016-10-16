@@ -26,6 +26,8 @@ import org.opengis.filter.temporal.During;
  */
 public class ECQLExamples {
 
+    private final static Logger LOGGER = Logger.getLogger(ECQLExamples.class.getName());
+
     private final int USING_COMPARISON_PREDICATE_CQL_COMPATIBILITY = 1;
     private final int USING_EXPRESSION_LESS_THAN_OR_EQUAL_TO_PROPERTY = 2;
     private final int USING_FUNCTIONS_IN_COMPARISON_PREDICATE = 3;
@@ -43,8 +45,6 @@ public class ECQLExamples {
     private final int USING_DURING_PREDICATE_WITH_LEFT_HAND_ATTRIBUTE = 15;
     private final int USING_IN_PREDICATE = 16;
     private final int USING_UTC_TIME_ZONE = 17;
-
-    private final static Logger LOGGER = Logger.getLogger(ECQLExamples.class.getName());
 
     public static void main(String[] args) {
 
@@ -67,7 +67,7 @@ public class ECQLExamples {
                     expressionLessThanOrEqualToProperty();
                     break;
                 case USING_FUNCTIONS_IN_COMPARISON_PREDICATE: // TODO
-                    LOGGER.error("not yet implemented: option "+USING_FUNCTIONS_IN_COMPARISON_PREDICATE)
+                    System.out.println("not yet implemented: option "+USING_FUNCTIONS_IN_COMPARISON_PREDICATE);
                     break;
                 case USING_LIKE_PREDICATE_IN_STRING:
                     likePredicateInString();
@@ -88,7 +88,7 @@ public class ECQLExamples {
                 	betweenUsingExpression();
                 	break;
                 case USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM: // TODO
-                    LOGGER.error("not yet implemented: option " + USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM)
+                    System.out.println("not yet implemented: option " + USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM);
                     break;
                 case USING_RELATE_PATTERN:
                     relatePattern();
@@ -115,6 +115,7 @@ public class ECQLExamples {
                     System.out.println("invalid option: "+option);
                 }
                 System.out.println("Press a key to continue.");
+
             }
         } catch (Exception e) {
             LOGGER.severe(e.getMessage(), e);

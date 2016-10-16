@@ -35,7 +35,7 @@ public class ECQLExamples {
     private final int USING_COMPARISON_USING_EXPRESSIONS = 7;
     private final int USING_BETWEEN_PREDICATE = 8;
     private final int USING_BETWEEN_EXPRESSION = 9;
-    private final int SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM = 10;
+    private final int USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM = 10;
     private final int USING_RELATE_PATTERN = 11;
     private final int USING_AFTER_PREDICATE_WITH_LEFT_HAND_EXPRESSION = 12;
     private final int USING_BEFORE_PREDICATE_WITH_LEFT_HAND_EXPRESSION = 13;
@@ -48,38 +48,16 @@ public class ECQLExamples {
 
     public static void main(String[] args) {
 
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    System.in));
-            for (;;) {
+        printCommandDocu();
 
-                System.out.println("Select the ECQL Example:");
-                System.out.println(" 1 - CQL Compatibility");
-                System.out.println(" 2 - Comparison with property in the right hand: 1000 <= POPULTATION");
-                System.out.println(" 3 - Using functions in comparison predicate: ..."); // TODO
-                System.out.println(" 4 - like pattern using String: 'aabbcc' LIKE '%bb%'");
-                System.out.println(" 5 - like using property name: cityName LIKE 'New%");
-                System.out.println(" 6 - Insensitive like: cityName ILIKE 'new%'");
-                System.out.println(" 7 - Comparison: (under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
-                System.out.println(" 8 - Between: population Between 10000 and 20000");
-                System.out.println(" 9 - area( shape ) BETWEEN 10000 AND 30000");
-                System.out.println("10 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)"); 
-                System.out.println("11 - Spatial Operation using geometry expressions: INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))"); // TODO 
-                System.out.println("12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
-                System.out.println("13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
-                System.out.println("14 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
-                System.out.println("15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
-                System.out.println("16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
-                System.out.println("17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
-                
-                System.out.println("0 - quite");
-                System.out.print(">");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
 
-                String line = reader.readLine();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+
                 int option = Integer.parseInt(line);
                 switch (option) {
                 case 0:
-                    LOGGER.error("unallowed option 0 (zero)");
                     System.out.println("bye!");
                     return;
                 case USING_COMPARISON_PREDICATE_CQL_COMPATIBILITY:
@@ -89,7 +67,7 @@ public class ECQLExamples {
                     expressionLessThanOrEqualToProperty();
                     break;
                 case USING_FUNCTIONS_IN_COMPARISON_PREDICATE: // TODO
-                    LOGGER.error("not yet implemented: option 3")
+                    LOGGER.error("not yet implemented: option "+USING_FUNCTIONS_IN_COMPARISON_PREDICATE)
                     break;
                 case USING_LIKE_PREDICATE_IN_STRING:
                     likePredicateInString();
@@ -109,9 +87,8 @@ public class ECQLExamples {
                 case USING_BETWEEN_EXPRESSION:
                 	betweenUsingExpression();
                 	break;
-                case SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM:
-                    //TODO
-                    LOGGER.error("not yet implemented: option 10")
+                case USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM: // TODO
+                    LOGGER.error("not yet implemented: option " + USING_SPATIAL_OPERATION_USING_THE_CONTAINS_DE9IM)
                     break;
                 case USING_RELATE_PATTERN:
                     relatePattern();
@@ -135,8 +112,7 @@ public class ECQLExamples {
                 	utcTimeZone();
                 	break;
                 default:
-                    LOGGER.error("invalid option: "+option);
-                    System.out.println("invalid option");
+                    System.out.println("invalid option: "+option);
                 }
                 System.out.println("Press a key to continue.");
             }
@@ -145,6 +121,29 @@ public class ECQLExamples {
         }
     }
 
+    private static void printCommandDocu() {
+        System.out.println("Select the ECQL Example:");
+        System.out.println(" 1 - CQL Compatibility");
+        System.out.println(" 2 - Comparison with property in the right hand: 1000 <= POPULTATION");
+        System.out.println(" 3 - Using functions in comparison predicate: ..."); // TODO
+        System.out.println(" 4 - like pattern using String: 'aabbcc' LIKE '%bb%'");
+        System.out.println(" 5 - like using property name: cityName LIKE 'New%");
+        System.out.println(" 6 - Insensitive like: cityName ILIKE 'new%'");
+        System.out.println(" 7 - Comparison: (under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
+        System.out.println(" 8 - Between: population Between 10000 and 20000");
+        System.out.println(" 9 - area( shape ) BETWEEN 10000 AND 30000");
+        System.out.println("10 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        System.out.println("11 - Spatial Operation using geometry expressions: INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))"); // TODO
+        System.out.println("12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+        System.out.println("13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+        System.out.println("14 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+        System.out.println("15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
+        System.out.println("16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
+        System.out.println("17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
+
+        System.out.println("0 - quite");
+        System.out.print(">");
+    }
 
     /**
      * Example using the "contains" intersection matrix.

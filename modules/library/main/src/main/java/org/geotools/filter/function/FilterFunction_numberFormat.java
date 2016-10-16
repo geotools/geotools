@@ -16,20 +16,24 @@
  */
 package org.geotools.filter.function;
 
-
-import static org.geotools.filter.capability.FunctionNameImpl.*;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.logging.Logging;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 
 /**
- * Formats a number into a string given a certain pattern (specified in the format accepted
- * by {@link DecimalFormat}} 
+ * Formats a number into a string given a certain pattern (specified in the format accepted by {@link DecimalFormat}}
+ * 
  * @author Andrea Aime - OpenGeo
  *
  *
@@ -38,11 +42,22 @@ import org.opengis.filter.capability.FunctionName;
  * @source $URL$
  */
 public class FilterFunction_numberFormat extends FunctionExpressionImpl {
-    
+    static final Logger LOGGER = Logging.getLogger(FilterFunction_numberFormat.class);
+
+    static HashSet<String> languages = new HashSet<>();
+
+    Locale locale = Locale.ENGLISH;
+
+    static {
+        
+        for(Locale loc:Locale.getAvailableLocales()) {
+            languages.add(loc.getLanguage());
+        }
+    }
+
     public static FunctionName NAME = new FunctionNameImpl("numberFormat", String.class,
-            parameter("format", String.class),
-            parameter("number", Number.class));
-    
+            parameter("format", String.class), parameter("number", Number.class),
+            parameter("language", String.class, 0, 1));
 
     public FilterFunction_numberFormat() {
         super(NAME);
@@ -51,35 +66,47 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
     public Object evaluate(Object feature) {
         String format;
         Double number;
-
+        String localeString = "";
         try {
             // attempt to get value and perform conversion
-            format  = getExpression(0).evaluate(feature, String.class);
+            format = getExpression(0).evaluate(feature, String.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function dateFormat argument #0 - expected type String");
+                    "Filter Function problem for function NumberFormat argument #0 - expected type String");
         }
 
         try { // attempt to get value and perform conversion
-            number = getExpression(1).evaluate(feature, Double.class); 
+            number = getExpression(1).evaluate(feature, Double.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function dateFormat argument #1 - expected type java.util.Double");
+                    "Filter Function problem for function NumberFormat argument #1 - expected type java.util.Double");
         }
-        
-        if(format == null || number == null) {
+
+        if (format == null || number == null) {
             return null;
         }
-        Locale locale=Locale.getDefault();
-        
+        try { // attempt to get value and perform conversion
+            if (params.size() > 2) {
+                Expression second = getExpression(2);
+
+                localeString = second.evaluate(feature, String.class);
+            }
+        } catch (Exception e) // probably a type error
+        {
+            throw new IllegalArgumentException(
+                    "Filter Function problem for function NumberFormat argument #2 - expected type String");
+        }
+        if (localeString != null && !localeString.isEmpty() && languages.contains(localeString)) {
+            locale = Locale.forLanguageTag(localeString);
+
+        }
+
         DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(locale);
 
         DecimalFormat numberFormat = new DecimalFormat(format, decimalFormatSymbols);
         return numberFormat.format(number);
     }
-
-    
 
 }

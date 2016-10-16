@@ -25,61 +25,61 @@ public class CQLExamples {
 
 	private static final Logger LOGGER = Logger.getLogger(CQLExamples.class.getName());
 
+    private final int USING_EXIT = 0;
+    private final int USING_COMPARISON_PREDICATE = 1;
+    private final int USING_FUNCTIONS_IN_COMPARISON_PREDICATE = 2;
+    private final int USING_LIKE_PREDICATE = 3;
+    private final int USING_BETWEEN_PREDICATE = 4;
+    private final int USING_RELATE_PATTERN = 5;
+    private final int USING_AFTER_PREDICATE = 6;
+    private final int USING_AFTER_PREDICATE_GMT3 = 7;
+    private final int USING_BEFORE_PREDICATE = 8;
+    private final int USING_DURING_PREDICATE = 9;
+
 
 	public static void main(String[] args){
-		
-		try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            for (;;) {
 
-                System.out.println("Select the CQL Example:");
-                System.out.println(" 1 - Comparison: population >= 10000000"); 
-                System.out.println(" 2 - Using functions in comparison predicate: "); // TODO
-                System.out.println(" 3 - like using property name: cityName LIKE 'New%");
-                System.out.println(" 4 - Between: population Between 10000 and 20000");
-                System.out.println(" 5 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)"); // FIXME
-                System.out.println(" 6 - Temporal After: lastEarthQuake AFTER 2006-11-30T01:30:00Z"); 
-                System.out.println(" 7 - Temporal After: lastEarthQuake AFTER 2006-11-30T01:30:00+03:00");
-                System.out.println(" 8 - Temporal Before: lastEarthQuake BEFORE 2006-11-30T01:30:00Z"); 
-                System.out.println(" 9 - Temporal During: lastEarthQuake DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z "); 
-                
-                System.out.println(" 0 - quite");
-                System.out.print(">");
+      printCommandDocu();
 
-                String line = reader.readLine();
+      try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+
+          String line = null;
+          while ((line = reader.readLine()) != null) {
+
                 int option = Integer.parseInt(line);
                 switch (option) {
-                case 0: 
+                case USING_EXIT:
                     System.out.println("bye!");
                     return;
-                case 1:
+                case USING_COMPARISON_PREDICATE:
                 	comparisonPredicate();
                     break;
-                case 2:
+                case USING_FUNCTIONS_IN_COMPARISON_PREDICATE: //TODO
+                    System.out.println("not yet implemented option: "+USING_FUNCTIONS_IN_COMPARISON_PREDICATE);
                     break;
-                case 3:
+                case USING_LIKE_PREDICATE:
                     likePredicate();
                     break;
-                case 4:
+                case USING_BETWEEN_PREDICATE:
                     betweenPredicate();
                     break;
-                case 5:
+                case USING_RELATE_PATTERN:
                 	relatePattern();
                     break;
-                case 6:
+                case USING_AFTER_PREDICATE:
                 	afterPredicate();
                     break;
-                case 7:
+                case USING_AFTER_PREDICATE_GMT3:
                 	afterPredicateGMT3();
                     break;
-                case 8:
+                case USING_BEFORE_PREDICATE:
                 	beforePredicate();
                     break;
-                case 9:
+                case USING_DURING_PREDICATE:
                 	duringPredicate();
                     break;
                 default:
-                    System.out.println("invalid option");
+                    System.out.println("invalid option: "+option);
                 }
                 System.out.println();
             }
@@ -88,7 +88,23 @@ public class CQLExamples {
         }
 		
 	}
-	
+
+    private static void printCommandDocu() {
+        System.out.println("Select the CQL Example:");
+        System.out.println(" 1 - Comparison: population >= 10000000");
+        System.out.println(" 2 - Using functions in comparison predicate: "); // TODO
+        System.out.println(" 3 - like using property name: cityName LIKE 'New%");
+        System.out.println(" 4 - Between: population Between 10000 and 20000");
+        System.out.println(" 5 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)"); // FIXME
+        System.out.println(" 6 - Temporal After: lastEarthQuake AFTER 2006-11-30T01:30:00Z");
+        System.out.println(" 7 - Temporal After: lastEarthQuake AFTER 2006-11-30T01:30:00+03:00");
+        System.out.println(" 8 - Temporal Before: lastEarthQuake BEFORE 2006-11-30T01:30:00Z");
+        System.out.println(" 9 - Temporal During: lastEarthQuake DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+
+        System.out.println(" 0 - quite");
+        System.out.print(">");
+    }
+
     private static void beforePredicate() throws Exception{
     	
     	// cql_beforePredicate start

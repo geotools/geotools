@@ -17,7 +17,8 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -27,11 +28,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.management.RuntimeErrorException;
 import javax.media.jai.Histogram;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
@@ -39,6 +43,7 @@ import javax.media.jai.ROI;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
+import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.GranuleLoader;
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.MosaicElement;
@@ -46,6 +51,7 @@ import org.geotools.gce.imagemosaic.MosaicInputs;
 import org.geotools.gce.imagemosaic.Mosaicker;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -130,6 +136,20 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     }
                     continue;
                 }
+                
+                // perform excess granule removal in case multithreaded loading is enabled
+                if(isMultithreadedLoadingEnabled()) {
+                    ROIExcessGranuleRemover remover = rasterLayerResponse.getExcessGranuleRemover();
+                    if(remover != null) {
+                        if(remover.isRenderingAreaComplete()) {
+                            break;
+                        }
+                        if(!remover.addGranule(result)) {
+                            // skip this granule
+                            continue;
+                        }
+                    }
+                }
 
                 // now process it
                 if (sourceThreshold == null) {
@@ -186,11 +206,12 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 }
                 throw new IOException(e);
             }
-
-            // collect paths
-            rasterLayerResponse.setGranulesPaths(
-                    paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "");
         }
+        
+        // collect paths
+        rasterLayerResponse.setGranulesPaths(
+                paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "");
+        
         if (returnValues == null || returnValues.isEmpty()) {
             if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.info("The MosaicElement list is null or empty");
@@ -351,17 +372,33 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 rasterLayerResponse.getFinalWorldToGridCorner(), granuleDescriptor,
                 rasterLayerResponse.getRequest(), rasterLayerResponse.getHints());
         if (!dryRun) {
-            if (rasterLayerResponse.isMultithreadingAllowed() && rasterLayerResponse
-                    .getRasterManager().getParentReader().getMultiThreadedLoader() != null) {
+            final boolean multiThreadedLoading = isMultithreadedLoadingEnabled();
+            if (multiThreadedLoading) {
                 // MULTITHREADED EXECUTION submitting the task
-                granulesFutures.add(rasterLayerResponse.getRasterManager().getParentReader()
-                        .getMultiThreadedLoader().submit(loader));
+                final ExecutorService mtLoader = rasterLayerResponse
+                        .getRasterManager().getParentReader().getMultiThreadedLoader();
+                granulesFutures.add(mtLoader.submit(loader));
             } else {
                 // SINGLE THREADED Execution, we defer the execution to when we have done the loading
                 final FutureTask<GranuleDescriptor.GranuleLoadingResult> task = new FutureTask<>(
                         loader);
-                granulesFutures.add(task);
                 task.run(); // run in current thread
+                
+                // perform excess granule removal, as it makes sense in single threaded mode to
+                // do it while loading, to allow for an early bail out reading granules
+                ROIExcessGranuleRemover remover = rasterLayerResponse.getExcessGranuleRemover();
+                GranuleLoadingResult result;
+                if(remover != null) {
+                    try {
+                        result = task.get();
+                        if(!remover.addGranule(result)) {
+                            return false;
+                        }
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                granulesFutures.add(task);
             }
         }
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -372,6 +409,14 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         granulesNumber++;
         return true;
     }
+    
+    private boolean isMultithreadedLoadingEnabled() {
+        final ExecutorService mtLoader = rasterLayerResponse
+                .getRasterManager().getParentReader().getMultiThreadedLoader();
+        final boolean multiThreadedLoading = rasterLayerResponse.isMultithreadingAllowed() && mtLoader != null;
+        return multiThreadedLoading;
+    }
+
 
     public boolean doInputTransparency() {
         return doInputTransparency;

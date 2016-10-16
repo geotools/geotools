@@ -36,4 +36,13 @@ public interface GranuleCatalogVisitor {
      * @param feature the feature the granule was created from
      */
     public void visit(final GranuleDescriptor granule, SimpleFeature feature);
+    
+    /**
+     * Returns true if the visit has been completed and there is no more
+     * need to scan though the other granules
+     * @return
+     */
+    public default boolean isVisitComplete() {
+        return false;
+    }
 }

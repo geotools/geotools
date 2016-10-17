@@ -345,7 +345,7 @@ public class ImageMosaicEgrTest {
             String... expectedImages) throws IOException {
         GridCoverage2D coverage = reader.read(readParams);
         assertSourceFileNames(coverage, expectedImages);
-        ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 0);
+        ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
     }
 
     private void assertSourceFileNames(GridCoverage2D coverage, String... expectedNamesArray) {

@@ -378,7 +378,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 header.addColumn(colName, 'N', Math.min(fieldLen, 33), 0);
             } else if (Number.class.isAssignableFrom(colType)) {
                 int l = Math.min(fieldLen, 33);
-                int d = Math.max(l - 2, 0);
+                // Number length is split to have same chars number before and after decimal point.
+                int d = (int) Math.floor(Math.max(l / 2, 0));
                 header.addColumn(colName, 'N', l, d);
                 // This check has to come before the Date one or it is never reached
                 // also, this field is only activated with the following system property:

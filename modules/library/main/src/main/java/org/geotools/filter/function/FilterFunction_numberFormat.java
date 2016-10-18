@@ -101,6 +101,8 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
         if (localeString != null && !localeString.isEmpty() && languages.contains(localeString)) {
             locale = Locale.forLanguageTag(localeString);
 
+        } else {
+            throw new IllegalArgumentException("Unknown language code '"+localeString+"' in numberFormat function");
         }
 
         DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(locale);

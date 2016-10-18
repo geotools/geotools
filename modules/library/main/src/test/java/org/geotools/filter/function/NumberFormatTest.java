@@ -123,8 +123,12 @@ public class NumberFormatTest extends TestCase {
         Literal lang = ff.literal("AnyLang");
         Function f = ff.function("numberFormat", new Expression[] { pattern, number, lang });
         char ds = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getDecimalSeparator();
+        try {
         assertEquals("10" + ds + "57", f.evaluate(null, String.class));
-        
+        fail("Accepted unknown language code");
+        }catch (IllegalArgumentException e) {
+            //this is a good thing
+        }
     }
 
 }

@@ -98,11 +98,14 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function NumberFormat argument #2 - expected type String");
         }
-        if (localeString != null && !localeString.isEmpty() && languages.contains(localeString)) {
-            locale = Locale.forLanguageTag(localeString);
+        if (languages.contains(localeString)) {
+            if (localeString != null && !localeString.isEmpty()) {
+                locale = Locale.forLanguageTag(localeString);
+            }
 
         } else {
-            throw new IllegalArgumentException("Unknown language code '"+localeString+"' in numberFormat function");
+            throw new IllegalArgumentException(
+                    "Unknown language code '" + localeString + "' in numberFormat function");
         }
 
         DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols.getInstance(locale);

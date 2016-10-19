@@ -1508,11 +1508,7 @@ public class GeoPackage {
     }
 
     static void runScript(String filename, Connection cx) throws SQLException {
-        try {
-            SqlUtil.runScript(new GeoPackage().getClass().getResourceAsStream(filename), cx);
-        } catch (IOException e) {
-            throw new SQLException(e);
-        }
+        SqlUtil.runScript(GeoPackage.class.getResourceAsStream(filename), cx);
     }
 
     void runScript(String filename, Connection cx, Map<String, String> properties)

@@ -39,6 +39,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -678,15 +679,20 @@ public class GeoPackageTest {
         }
     }
 
-    URL setUpShapefile() throws IOException {
+    URL setUpShapefile() throws Exception {
         File d = File.createTempFile("bugsites", "shp", new File("target"));
         d.delete();
         d.mkdirs();
 
         String[] exts = new String[]{"shp", "shx", "dbf", "prj"};
         for (String ext : exts) {
-            FileUtils.copyURLToFile(TestData.url("shapes/bugsites." + ext), 
+            if("prj".equals(ext)) {
+                String wkt = CRS.decode("EPSG:26713", true).toWKT();
+                FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt);
+            } else {
+                FileUtils.copyURLToFile(TestData.url("shapes/bugsites." + ext), 
                 new File(d, "bugsites." + ext));
+            }
         }
         
         return DataUtilities.fileToURL(new File(d, "bugsites.shp"));

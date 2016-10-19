@@ -225,13 +225,10 @@ public class GeoPackage {
      */
     public void init() throws IOException {
         try {
-            Connection cx = connPool.getConnection();
-            try {
+            try(Connection cx = connPool.getConnection()) {
                 init(cx);
                 initialised = true;
-            } finally {
-                close(cx);
-            }
+            } 
         } catch (SQLException e) {
             throw new IOException(e);
         }

@@ -521,44 +521,6 @@ public class GeoPackageTest {
     }
 
     @Test
-    public void testCreateRasterEntry() throws Exception {
-        GeoTiffFormat format = new GeoTiffFormat();
-        GeoTiffReader reader = format.getReader(setUpGeoTiff());
-        GridCoverage2D cov = reader.read(null);
-
-        RasterEntry entry = new RasterEntry();
-        entry.setTableName("world");
-
-        geopkg.add(entry, cov, format);
-
-        assertTableExists("world");
-        assertRasterEntry(entry);
-
-        GridCoverageReader r = geopkg.reader(entry, format);
-        GridCoverage2D c = (GridCoverage2D) r.read(null);
-        assertNotNull(c);
-    }
-
-    @Test @Ignore
-    public void testCreateRasterEntryPNG() throws Exception {
-        //TODO: re-enable this test once we can pass in teh bounds to a world image
-        WorldImageFormat format = new WorldImageFormat();
-        WorldImageReader reader = format.getReader(setUpPNG());
-        GridCoverage2D cov = reader.read(null);
-
-        RasterEntry entry = new RasterEntry();
-        entry.setTableName("Pk50095");
-
-        geopkg.add(entry, cov, format);
-        assertTableExists("Pk50095");
-        assertRasterEntry(entry);
-
-        GridCoverageReader r = geopkg.reader(entry, format);
-        GridCoverage2D c = (GridCoverage2D) r.read(null);
-        assertNotNull(c);
-    }
-
-    @Test
     public void testCreateTileEntry() throws Exception {
         TileEntry e = new TileEntry();
         e.setTableName("foo");
@@ -590,7 +552,6 @@ public class GeoPackageTest {
         final TimeZone tz = TimeZone.getTimeZone("GMT");
         final Calendar startTime = Calendar.getInstance(tz);
         testCreateFeatureEntry();
-        testCreateRasterEntry();
         testCreateTileEntry();
         final Calendar endTime = Calendar.getInstance(tz);
 
@@ -599,10 +560,6 @@ public class GeoPackageTest {
         assertEquals("bugsites", lf.get(0).getTableName());
         // make sure Date format String is fine
         assertLastChangedDateString(startTime, endTime);
-
-        List<RasterEntry> lr = geopkg.rasters();
-        assertEquals(1, lr.size());
-        assertEquals("world", lr.get(0).getTableName());
 
         List<TileEntry> lt = geopkg.tiles();
         assertEquals(1, lt.size());
@@ -667,31 +624,6 @@ public class GeoPackageTest {
             assertEquals(entry.getSrid().intValue(), rs.getInt("srs_id"));
             assertEquals(entry.isZ(), rs.getBoolean("z"));
             assertEquals(entry.isM(), rs.getBoolean("m"));
-
-            rs.close();
-            ps.close();
-        }
-        finally {
-            cx.close();
-        }
-    }
-
-    void assertRasterEntry(RasterEntry entry) throws Exception {
-        assertContentEntry(entry);
-        
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
-            PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM gpkg_data_columns WHERE table_name = ?");
-            ps.setString(1, entry.getTableName());
-
-            ResultSet rs = ps.executeQuery();
-            assertTrue(rs.next());
-
-            assertEquals(entry.getRasterColumn(), rs.getString("column_name"));
-            assertEquals(entry.getTableName(), rs.getString("table_name"));
-            assertEquals(entry.getName(), rs.getString("name"));
-            assertEquals(entry.getTitle(), rs.getString("title"));
 
             rs.close();
             ps.close();

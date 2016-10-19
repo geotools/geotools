@@ -123,4 +123,12 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
         }
         return new String(hexChars);
     }
+    
+    @Override
+    protected Properties createExampleFixture() {
+        Properties fixture = new Properties();
+        fixture.put( "driver","org.sqlite.JDBC");
+        fixture.put( "url","jdbc:sqlite:target/geotools");
+        return fixture;
+    }
 }

@@ -1126,10 +1126,13 @@ public class GeoPackage {
                 PreparedStatement st;
                 
                 //add entry to tile matrix set table
+                Envelope bounds = e.getTileMatrixSetBounds();
+                if(bounds == null) {
+                    bounds = e.getBounds();
+                }
                 st = prepare(cx, format("INSERT INTO %s VALUES (?,?,?,?,?,?)", TILE_MATRIX_SET))
-                        .set(e.getTableName()).set(e.getSrid()).set(e.getBounds().getMinX())
-                            .set(e.getBounds().getMinY()).set(e.getBounds().getMaxX()).set(e.getBounds().getMaxY())
-                            .statement();
+                        .set(e.getTableName()).set(e.getSrid()).set(bounds.getMinX())
+                            .set(bounds.getMinY()).set(bounds.getMaxX()).set(bounds.getMaxY()).statement();
                 try {
                     st.execute();
                 } finally {

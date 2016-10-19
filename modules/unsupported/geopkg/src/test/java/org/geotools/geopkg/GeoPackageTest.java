@@ -39,7 +39,6 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -70,6 +69,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -524,6 +524,36 @@ public class GeoPackageTest {
 
         try(TileReader r = geopkg.reader(e, null, null, null, null, null, null)) {
             assertTiles(tiles, r);
+        }
+    }
+    
+    @Test
+    public void testIndependentTileMatrix() throws Exception {
+        TileEntry e = new TileEntry();
+        e.setTableName("foo");
+        e.setBounds(new ReferencedEnvelope(-10, 10, -10, 10, DefaultGeographicCRS.WGS84));
+        e.setTileMatrixSetBounds(new Envelope(-180, 180, -90, 90));
+        e.getTileMatricies().add(new TileMatrix(0, 1, 1, 256, 256, 0.1, 0.1));
+        e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
+
+        geopkg.create(e);
+        
+        assertContentEntry(e);
+        
+        try (Connection cx = geopkg.getDataSource().getConnection(); 
+                PreparedStatement ps = cx.prepareStatement(
+                        "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?")) {
+            ps.setString(1, e.getTableName());
+            try(ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                assertEquals(4326, rs.getInt(2));
+                assertEquals(-180, rs.getDouble(3), 0.01);
+                assertEquals(-90, rs.getDouble(4), 0.01);
+                assertEquals(180, rs.getDouble(5), 0.01);
+                assertEquals(90, rs.getDouble(6), 0.01);
+                
+                assertFalse(rs.next());
+            }
         }
     }
 

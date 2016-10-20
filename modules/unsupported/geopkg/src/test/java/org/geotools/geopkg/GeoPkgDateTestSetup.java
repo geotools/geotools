@@ -1,7 +1,5 @@
 package org.geotools.geopkg;
 
-import java.util.TimeZone;
-
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 

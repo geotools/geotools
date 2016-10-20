@@ -55,8 +55,10 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
     @Override
     protected void setUpData() throws Exception {
         super.setUpData();
-
+        
         removeTable("ft1");
+        removeTable("ft2");
+        removeTable("ft3");
         
         GeometryBuilder gb = new GeometryBuilder();
 
@@ -98,10 +100,9 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
      * 
      */
     void removeTable(String tableName) {
-        //drop old data
-        runSafe("DROP TABLE "+tableName);
-        runSafe("DROP VIEW "+tableName);
-        //runSafe("DROP TABLE ft2");
+        // drop old data
+        runSafe("DROP TABLE IF EXISTS " + tableName);
+        runSafe("DROP VIEW  IF EXISTS " + tableName);
         runSafe("DELETE FROM gpkg_geometry_columns where table_name ='"+tableName+"'");
         runSafe("DELETE FROM gpkg_contents where table_name ='"+tableName+"'");
         runSafe("DELETE FROM gt_pk_metadata where table_name ='"+tableName+"'");

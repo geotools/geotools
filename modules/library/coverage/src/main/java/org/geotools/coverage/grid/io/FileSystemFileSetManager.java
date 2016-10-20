@@ -25,15 +25,15 @@ import java.util.logging.Logger;
 
 public class FileSystemFileSetManager implements FileSetManager{
 
-    private static Logger LOGGER = Logger.getLogger(FileSystemFileSetManager.class.toString()); 
+    private static Logger logger = Logger.getLogger(FileSystemFileSetManager.class.toString()); 
 
     private List<String> fileSet = Collections.synchronizedList(new ArrayList<String>());
 
     @Override
     public void addFile(String filePath) {
         fileSet.add(filePath);
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Adding file " + filePath + " to the fileSet");
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Adding file " + filePath + " to the fileSet");
         }
     }
 
@@ -46,8 +46,8 @@ public class FileSystemFileSetManager implements FileSetManager{
     public void removeFile(String filePath) {
         final boolean contains = fileSet.contains(filePath);
         if (contains) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Removing file " + filePath + " to the fileSet and deleting it");
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Removing file " + filePath + " to the fileSet and deleting it");
             }
             try {
                 final File file = new File(filePath);
@@ -59,8 +59,8 @@ public class FileSystemFileSetManager implements FileSetManager{
                 }
                 deleteFile(file);
             } catch (Throwable t){
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Exception occurred while deleting file: " + filePath + 
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("Exception occurred while deleting file: " + filePath + 
                             "\n" + t.getLocalizedMessage());
                 }
             }
@@ -72,8 +72,8 @@ public class FileSystemFileSetManager implements FileSetManager{
 
     private void deleteFile(File file) {
         boolean deleted = file.delete();
-        if (!deleted && LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Unable to delete file " + file.getAbsolutePath());
+        if (!deleted && logger.isLoggable(Level.FINE)) {
+            logger.fine("Unable to delete file " + file.getAbsolutePath());
         }
     }
 

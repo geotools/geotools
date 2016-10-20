@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -72,7 +72,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
             null, // Unit of measure
             true);
 
-    private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
+    private static final Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
     static {
         final Set<ParameterDescriptor> replacedDescriptors = new HashSet<ParameterDescriptor>();

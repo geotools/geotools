@@ -501,7 +501,7 @@ public class GeoTiffIIOMetadataEncoder {
 	}
 	
 	protected static TIFFTag getNoDataTag() {
-	        return GeoTiffConstants.NODATA_TAG;
+	        return GeoTiffConstants.nodataTag;
         }
 
 	private GeoKeyEntry getNonNullGeoKeyEntry(int keyID) {

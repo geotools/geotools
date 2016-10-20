@@ -118,7 +118,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /**
      * Small number used for double comparisons
      */
-    protected static double EPS = 1e-6;
+    protected static double eps = 1e-6;
 
     /**
      * This contains the number of overviews.aaa
@@ -1333,7 +1333,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         final double scaleY = originalGridRange.getSpan(1) / (1.0 * ssHeight);
         final AffineTransform tempRaster2Model = new AffineTransform((AffineTransform) raster2Model);
         AffineTransform scale = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
-        if (!XAffineTransform.isIdentity(scale, EPS)) {
+        if (!XAffineTransform.isIdentity(scale, eps)) {
             // the transformation includes the pixel is center shift, we need to
             // remove it before rescaling, and then apply it back later
             tempRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);

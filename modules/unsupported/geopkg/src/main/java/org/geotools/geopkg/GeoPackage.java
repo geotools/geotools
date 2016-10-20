@@ -241,23 +241,29 @@ public class GeoPackage {
      * </p>
      */
     static void init(Connection cx) throws SQLException {
-        
         createFunctions(cx);
-        
-        runSQL("PRAGMA application_id = 0x47503130;", cx);
-        // runSQL("SELECT InitSpatialMetaData();");
-        runScript(SPATIAL_REF_SYS + ".sql", cx);
-        runScript(GEOMETRY_COLUMNS + ".sql", cx);
-        runScript(GEOPACKAGE_CONTENTS + ".sql", cx);
-        runScript(TILE_MATRIX_SET + ".sql", cx);
-        runScript(TILE_MATRIX_METADATA + ".sql", cx);
-        runScript(RASTER_COLUMNS + ".sql", cx);
-        runScript(METADATA + ".sql", cx);
-        runScript(METADATA_REFERENCE + ".sql", cx);
-        runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
-        runScript(EXTENSIONS + ".sql", cx);
-        addDefaultSpatialReferences(cx);
-        
+        // see if we have to create the table structure 
+        boolean initialized = false;
+        try(Statement st = cx.createStatement(); ResultSet rs = st.executeQuery("PRAGMA application_id")) {
+            if(rs.next()) {
+                int applicationId = rs.getInt(1);
+                initialized = (0x47503130 == applicationId);
+            }
+        }
+        if(!initialized) {
+            runScript(SPATIAL_REF_SYS + ".sql", cx);
+            runScript(GEOMETRY_COLUMNS + ".sql", cx);
+            runScript(GEOPACKAGE_CONTENTS + ".sql", cx);
+            runScript(TILE_MATRIX_SET + ".sql", cx);
+            runScript(TILE_MATRIX_METADATA + ".sql", cx);
+            runScript(RASTER_COLUMNS + ".sql", cx);
+            runScript(METADATA + ".sql", cx);
+            runScript(METADATA_REFERENCE + ".sql", cx);
+            runScript(DATA_COLUMN_CONSTRAINTS + ".sql", cx);
+            runScript(EXTENSIONS + ".sql", cx);
+            addDefaultSpatialReferences(cx);
+            runSQL("PRAGMA application_id = 0x47503130;", cx);
+        }
     }
 
     static void createFunctions(Connection cx) throws SQLException {

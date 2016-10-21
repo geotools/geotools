@@ -40,7 +40,6 @@ import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
-import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -54,10 +53,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.gce.geotiff.GeoTiffFormat;
-import org.geotools.gce.geotiff.GeoTiffReader;
-import org.geotools.gce.image.WorldImageFormat;
-import org.geotools.gce.image.WorldImageReader;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -66,9 +61,7 @@ import org.geotools.sql.SqlUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -76,6 +69,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -436,64 +430,50 @@ public class GeoPackageTest {
         geopkg.create(entry, shp.getSchema());
         
         //write some features before and some after
-        SimpleFeatureIterator it = coll.features();
+        try(SimpleFeatureIterator it = coll.features()) {
         
-        //some features
-        Transaction tx = new DefaultTransaction();
-        SimpleFeatureWriter w = geopkg.writer(entry, true, null, tx);
-        for (int i=0; i<3; i++) {
-            SimpleFeature f = it.next(); 
-            SimpleFeature g = w.next();
-            for (PropertyDescriptor pd : coll.getSchema().getDescriptors()) {
-                String name = pd.getName().getLocalPart();
-                g.setAttribute(name, f.getAttribute(name));
+            //some features
+            try(Transaction tx = new DefaultTransaction(); SimpleFeatureWriter w = geopkg.writer(entry, true, null, tx)) {
+                for (int i = 0; i < 3; i++) {
+                    SimpleFeature f = it.next();
+                    SimpleFeature g = w.next();
+                    for (PropertyDescriptor pd : coll.getSchema().getDescriptors()) {
+                        String name = pd.getName().getLocalPart();
+                        g.setAttribute(name, f.getAttribute(name));
+                    }
+
+                    w.write();
+                }
+                tx.commit();
             }
-                                         
-            w.write();
-        }
-        tx.commit();
-        tx.close();
-        w.close();
-
-        //create spatial index
-        geopkg.createSpatialIndex(entry);
-                
-
-        //the rest of features
-        tx = new DefaultTransaction();
-        w = geopkg.writer(entry, true, null, tx);        
-        while(it.hasNext()) {
-            SimpleFeature f = it.next(); 
-            SimpleFeature g = w.next();
-            for (PropertyDescriptor pd : coll.getSchema().getDescriptors()) {
-                String name = pd.getName().getLocalPart();
-                g.setAttribute(name, f.getAttribute(name));
+    
+            //create spatial index
+            geopkg.createSpatialIndex(entry);
+                    
+    
+            //the rest of features
+            try(Transaction tx = new DefaultTransaction(); SimpleFeatureWriter w = geopkg.writer(entry, true, null, tx)) {        
+                while(it.hasNext()) {
+                    SimpleFeature f = it.next(); 
+                    SimpleFeature g = w.next();
+                    for (PropertyDescriptor pd : coll.getSchema().getDescriptors()) {
+                        String name = pd.getName().getLocalPart();
+                        g.setAttribute(name, f.getAttribute(name));
+                    }
+                                                 
+                    w.write();
+                }
+                tx.commit();
             }
-                                         
-            w.write();
         }
-        tx.commit();
-        tx.close();
-        w.close();
 
-        it.close();
         
         //test if the index was properly created
-              
-        Connection cx = geopkg.getDataSource().getConnection();
-        Statement st = cx.createStatement();
-        try {            
+        try(Connection cx = geopkg.getDataSource().getConnection();  Statement st = cx.createStatement()) {            
             ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM rtree_bugsites_the_geom");
             rs.next();
             
             assertEquals(rs.getInt(1), coll.size());
-        }
-        catch(Exception e) {
-            fail(e.getMessage());
-        }
-        finally {
-            st.close();
-            cx.close();
         }
     }
     
@@ -513,49 +493,11 @@ public class GeoPackageTest {
         assertTrue(geopkg.hasSpatialIndex(entry));
         
         Set ids = geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
-        SimpleFeatureReader sfr = geopkg.reader(entry, ff.id(ids), null);
-        
-        assertTrue(sfr.hasNext());
-        assertEquals("bugsites.1", sfr.next().getID().toString());
-        assertFalse(sfr.hasNext());       
-    }
-
-    @Test
-    public void testCreateRasterEntry() throws Exception {
-        GeoTiffFormat format = new GeoTiffFormat();
-        GeoTiffReader reader = format.getReader(setUpGeoTiff());
-        GridCoverage2D cov = reader.read(null);
-
-        RasterEntry entry = new RasterEntry();
-        entry.setTableName("world");
-
-        geopkg.add(entry, cov, format);
-
-        assertTableExists("world");
-        assertRasterEntry(entry);
-
-        GridCoverageReader r = geopkg.reader(entry, format);
-        GridCoverage2D c = (GridCoverage2D) r.read(null);
-        assertNotNull(c);
-    }
-
-    @Test @Ignore
-    public void testCreateRasterEntryPNG() throws Exception {
-        //TODO: re-enable this test once we can pass in teh bounds to a world image
-        WorldImageFormat format = new WorldImageFormat();
-        WorldImageReader reader = format.getReader(setUpPNG());
-        GridCoverage2D cov = reader.read(null);
-
-        RasterEntry entry = new RasterEntry();
-        entry.setTableName("Pk50095");
-
-        geopkg.add(entry, cov, format);
-        assertTableExists("Pk50095");
-        assertRasterEntry(entry);
-
-        GridCoverageReader r = geopkg.reader(entry, format);
-        GridCoverage2D c = (GridCoverage2D) r.read(null);
-        assertNotNull(c);
+        try(SimpleFeatureReader sfr = geopkg.reader(entry, ff.id(ids), null)) {
+            assertTrue(sfr.hasNext());
+            assertEquals("bugsites.1", sfr.next().getID().toString());
+            assertFalse(sfr.hasNext());
+        }
     }
 
     @Test
@@ -580,8 +522,39 @@ public class GeoPackageTest {
             geopkg.add(e, t);
         }
 
-        TileReader r = geopkg.reader(e, null, null, null, null, null, null);
-        assertTiles(tiles, r);
+        try(TileReader r = geopkg.reader(e, null, null, null, null, null, null)) {
+            assertTiles(tiles, r);
+        }
+    }
+    
+    @Test
+    public void testIndependentTileMatrix() throws Exception {
+        TileEntry e = new TileEntry();
+        e.setTableName("foo");
+        e.setBounds(new ReferencedEnvelope(-10, 10, -10, 10, DefaultGeographicCRS.WGS84));
+        e.setTileMatrixSetBounds(new Envelope(-180, 180, -90, 90));
+        e.getTileMatricies().add(new TileMatrix(0, 1, 1, 256, 256, 0.1, 0.1));
+        e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
+
+        geopkg.create(e);
+        
+        assertContentEntry(e);
+        
+        try (Connection cx = geopkg.getDataSource().getConnection(); 
+                PreparedStatement ps = cx.prepareStatement(
+                        "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?")) {
+            ps.setString(1, e.getTableName());
+            try(ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                assertEquals(4326, rs.getInt(2));
+                assertEquals(-180, rs.getDouble(3), 0.01);
+                assertEquals(-90, rs.getDouble(4), 0.01);
+                assertEquals(180, rs.getDouble(5), 0.01);
+                assertEquals(90, rs.getDouble(6), 0.01);
+                
+                assertFalse(rs.next());
+            }
+        }
     }
 
     @Test
@@ -590,7 +563,6 @@ public class GeoPackageTest {
         final TimeZone tz = TimeZone.getTimeZone("GMT");
         final Calendar startTime = Calendar.getInstance(tz);
         testCreateFeatureEntry();
-        testCreateRasterEntry();
         testCreateTileEntry();
         final Calendar endTime = Calendar.getInstance(tz);
 
@@ -599,10 +571,6 @@ public class GeoPackageTest {
         assertEquals("bugsites", lf.get(0).getTableName());
         // make sure Date format String is fine
         assertLastChangedDateString(startTime, endTime);
-
-        List<RasterEntry> lr = geopkg.rasters();
-        assertEquals(1, lr.size());
-        assertEquals("world", lr.get(0).getTableName());
 
         List<TileEntry> lt = geopkg.tiles();
         assertEquals(1, lt.size());
@@ -667,31 +635,6 @@ public class GeoPackageTest {
             assertEquals(entry.getSrid().intValue(), rs.getInt("srs_id"));
             assertEquals(entry.isZ(), rs.getBoolean("z"));
             assertEquals(entry.isM(), rs.getBoolean("m"));
-
-            rs.close();
-            ps.close();
-        }
-        finally {
-            cx.close();
-        }
-    }
-
-    void assertRasterEntry(RasterEntry entry) throws Exception {
-        assertContentEntry(entry);
-        
-        Connection cx = geopkg.getDataSource().getConnection();
-        try {
-            PreparedStatement ps = 
-                cx.prepareStatement("SELECT * FROM gpkg_data_columns WHERE table_name = ?");
-            ps.setString(1, entry.getTableName());
-
-            ResultSet rs = ps.executeQuery();
-            assertTrue(rs.next());
-
-            assertEquals(entry.getRasterColumn(), rs.getString("column_name"));
-            assertEquals(entry.getTableName(), rs.getString("table_name"));
-            assertEquals(entry.getName(), rs.getString("name"));
-            assertEquals(entry.getTitle(), rs.getString("title"));
 
             rs.close();
             ps.close();
@@ -766,15 +709,20 @@ public class GeoPackageTest {
         }
     }
 
-    URL setUpShapefile() throws IOException {
+    URL setUpShapefile() throws Exception {
         File d = File.createTempFile("bugsites", "shp", new File("target"));
         d.delete();
         d.mkdirs();
 
         String[] exts = new String[]{"shp", "shx", "dbf", "prj"};
         for (String ext : exts) {
-            FileUtils.copyURLToFile(TestData.url("shapes/bugsites." + ext), 
+            if("prj".equals(ext)) {
+                String wkt = CRS.decode("EPSG:26713", true).toWKT();
+                FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt);
+            } else {
+                FileUtils.copyURLToFile(TestData.url("shapes/bugsites." + ext), 
                 new File(d, "bugsites." + ext));
+            }
         }
         
         return DataUtilities.fileToURL(new File(d, "bugsites.shp"));

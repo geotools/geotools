@@ -31,8 +31,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 public class Entry {
 
     public static enum DataType {
-        Feature("features"), Raster("rasters"), Tile("tiles"), 
-        FeatureWithRaster("featuresWithRasters");
+        Feature("features"), Tile("tiles"); 
 
         String value;
         DataType(String value) {

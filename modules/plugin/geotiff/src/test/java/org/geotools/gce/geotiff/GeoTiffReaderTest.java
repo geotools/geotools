@@ -1157,14 +1157,24 @@ public class GeoTiffReaderTest extends org.junit.Assert {
      */
     @Test
     public void testCanReadInputStream() throws IOException {
+        
         File rasterfile = TestData.file(GeoTiffReaderTest.class, "geo.tiff");
-        FileInputStream is = new FileInputStream(rasterfile);
-
-        // Read coverage
-        GeoTiffReader reader = new GeoTiffReader(is);
-        GridCoverage2D gridCoverage = reader.read(null);
-
-        assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+        GeoTiffReader reader = null;
+        
+        try(FileInputStream is = new FileInputStream(rasterfile)) {
+            // Read coverage
+            reader = new GeoTiffReader(is);
+            GridCoverage2D gridCoverage = reader.read(null);
+    
+            assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+            
+            gridCoverage.dispose(true);
+        }
+        finally {
+            if(reader != null) {
+                reader.dispose();
+            }
+        }
     }
 
     /**
@@ -1173,12 +1183,21 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     @Test
     public void testCanReadImageInputStream() throws IOException {
         File rasterfile = TestData.file(GeoTiffReaderTest.class, "geo.tiff");
-        FileImageInputStream is = new FileImageInputStream(rasterfile);
-
-        // Read coverage
-        GeoTiffReader reader = new GeoTiffReader(is);
-        GridCoverage2D gridCoverage = reader.read(null);
-
-        assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+        GeoTiffReader reader = null;
+        
+        try(FileImageInputStream is = new FileImageInputStream(rasterfile)) {
+            // Read coverage
+            reader = new GeoTiffReader(is);
+            GridCoverage2D gridCoverage = reader.read(null);
+            
+            assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+            
+            gridCoverage.dispose(true);
+        }
+        finally {
+            if(reader != null) {
+                reader.dispose();
+            }
+        }
     }
 }

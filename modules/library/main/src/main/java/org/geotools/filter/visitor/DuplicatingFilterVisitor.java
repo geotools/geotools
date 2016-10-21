@@ -126,7 +126,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	 * @param extraData
 	 * @return
 	 */
-	Expression visit(Expression expression, Object extraData) {
+	protected Expression visit(Expression expression, Object extraData) {
 	    if(expression == null)
 	        return null;
 	    return (Expression) expression.accept(this, extraData);

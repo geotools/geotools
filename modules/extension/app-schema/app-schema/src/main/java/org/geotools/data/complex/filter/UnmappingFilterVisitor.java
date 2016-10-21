@@ -135,7 +135,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(UnmappingFilterVisitor.class.getPackage().getName());
 
-    private FeatureTypeMapping mappings;
+    protected FeatureTypeMapping mappings;
 
     private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -818,6 +818,14 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         StepList simplifiedSteps = XPath.steps(root, targetXPath, namespaces);
 
         List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps, false);
+        Iterator<Expression> it = matchingMappings.iterator();
+        while (it.hasNext()) {
+            if (it.next() == null) {
+                // remove spurious null values, which are returned by findMappingsFor only to notify
+                // the caller that joining for simple content should go to the post filter
+                it.remove();
+            }
+        }
 
         if (!nestedMappings.isEmpty()) {
             // means some attributes are mapped separately in feature chaining

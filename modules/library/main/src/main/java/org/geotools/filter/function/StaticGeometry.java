@@ -19,6 +19,9 @@ package org.geotools.filter.function;
 
 
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.filter.FilterFactory2;
+
 import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
 import com.vividsolutions.jts.algorithm.MinimumDiameter;
 import com.vividsolutions.jts.geom.Geometry;
@@ -43,6 +46,15 @@ import com.vividsolutions.jts.io.WKTReader;
  */
  public class StaticGeometry {
 
+    //Lazily created filter factory for updated numerical operations
+    private static FilterFactory2 ff;
+
+    private static FilterFactory2 getFilterFactory2() {
+        if (ff == null) {
+            ff = CommonFactoryFinder.getFilterFactory2();
+        }
+        return ff;
+    }
 
  	//--------------------------------------------------------------------------
  	//JTS SF SQL functions
@@ -686,69 +698,39 @@ import com.vividsolutions.jts.io.WKTReader;
          if (o1 == null || o2 == null) return false;
      	 return !(equalTo(o1,o2));
      }
-     
-     static public boolean lessThan(Object o1,Object o2)
-     {
-        if (o1 == null || o2 == null) return false;
-     	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
-    	 {
-    	 	return ((Integer)o1).intValue() < ((Integer)o2).intValue();
-    	 } 
-     	 if ( (o1 instanceof Number) && (o2 instanceof Number) )
-     	 {
-     	 	return ((Number)o1).doubleValue() < ((Number)o2).doubleValue();
-     	 }
-     	 return (o1).toString() .compareTo( (o2).toString() ) == 0;
-     }
-     
-     static public boolean greaterThan(Object o1,Object o2)
-     {
-        if (o1 == null || o2 == null) return false;
-     	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
-    	 {
-    	 	return ((Integer)o1).intValue() > ((Integer)o2).intValue();
-    	 } 
-     	 if ( (o1 instanceof Number) && (o2 instanceof Number) )
-     	 {
-     	 	return ((Number)o1).doubleValue() > ((Number)o2).doubleValue();
-     	 }
-     	 return (o1).toString() .compareTo( (o2).toString() ) == 2;
-     }
-     
-     static public boolean greaterEqualThan(Object o1,Object o2)
-     {
-        if (o1 == null || o2 == null) return false;
-     	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
-    	 {
-    	 	return ((Integer)o1).intValue() >= ((Integer)o2).intValue();
-    	 } 
-     	 if ( (o1 instanceof Number) && (o2 instanceof Number) )
-     	 {
-     	 	return ((Number)o1).doubleValue() >= ((Number)o2).doubleValue();
-     	 }
-     	 return (
-     	 		   ((o1).toString() .compareTo( (o2).toString() ) == 2) ||
-				   ((o1).toString() .compareTo( (o2).toString() ) == 1) 
-				   );
-     }
-     
-     static public boolean lessEqualThan(Object o1,Object o2)
-     {
-        if (o1 == null || o2 == null) return false;
-     	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
-    	 {
-    	 	return ((Integer)o1).intValue() <= ((Integer)o2).intValue();
-    	 } 
-     	 if ( (o1 instanceof Number) && (o2 instanceof Number) )
-     	 {
-     	 	return ((Number)o1).doubleValue() <= ((Number)o2).doubleValue();
-     	 }
-     	 return (
-     	 		   ((o1).toString() .compareTo( (o2).toString() ) == 0) ||
-				   ((o1).toString() .compareTo( (o2).toString() ) == 1) 
-				   );
-     }
-     
+    
+    /**
+     * Delegates to FilterFactory2
+     */
+    static public boolean lessThan(Object o1,Object o2)
+    {
+        return getFilterFactory2().less(ff.literal(o1), ff.literal(o2)).evaluate(null);
+    }
+
+    /**
+     * Delegates to FilterFactory2
+     */
+    static public boolean greaterThan(Object o1,Object o2)
+    {
+        return getFilterFactory2().greater(ff.literal(o1), ff.literal(o2)).evaluate(null);
+    }
+    
+    /**
+     * Delegates to FilterFactory2
+     */
+    static public boolean greaterEqualThan(Object o1,Object o2)
+    {
+        return getFilterFactory2().greaterOrEqual(ff.literal(o1), ff.literal(o2)).evaluate(null);
+    }
+
+    /**
+     * Delegates to FilterFactory2
+     */
+    static public boolean lessEqualThan(Object o1,Object o2)
+    {
+        return getFilterFactory2().lessOrEqual(ff.literal(o1), ff.literal(o2)).evaluate(null);
+    }
+          
      static public boolean isLike(String s1, String s2)
      {
         if (s1 == null || s2 == null) return false;

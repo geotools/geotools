@@ -200,13 +200,13 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     protected void checkSingleResult(FeatureCollection features, String name) {
         assertEquals(1, features.size());
-        FeatureIterator fr = features.features();
-        assertTrue(fr.hasNext());
-        SimpleFeature f = (SimpleFeature) fr.next();
-        assertNotNull(f);
-        assertEquals(name, f.getAttribute(aname("name")));
-        assertFalse(fr.hasNext());
-        fr.close();
+        try(FeatureIterator fr = features.features()) {
+            assertTrue(fr.hasNext());
+            SimpleFeature f = (SimpleFeature) fr.next();
+            assertNotNull(f);
+            assertEquals(name, f.getAttribute(aname("name")));
+            assertFalse(fr.hasNext());
+        }
     }
     
     public void testGeometryCollection() throws Exception{

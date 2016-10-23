@@ -51,46 +51,45 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeatures() throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> r = dataStore.getFeatureReader(new Query(tname(("guid"))),
-                Transaction.AUTO_COMMIT);
-        r.hasNext();
-
-        Set<UUID> uuids = new HashSet<UUID>();
-        uuids.add(uuid1);
-        uuids.add(uuid2);
-        while(r.hasNext()) {
-            SimpleFeature f = (SimpleFeature) r.next();
-            assertNotNull(uuids.remove(f.getAttribute(aname("uuidProperty"))));
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> r = dataStore.getFeatureReader(new Query(tname(("guid"))),
+                Transaction.AUTO_COMMIT)) {
+            r.hasNext();
+    
+            Set<UUID> uuids = new HashSet<UUID>();
+            uuids.add(uuid1);
+            uuids.add(uuid2);
+            while(r.hasNext()) {
+                SimpleFeature f = (SimpleFeature) r.next();
+                assertNotNull(uuids.remove(f.getAttribute(aname("uuidProperty"))));
+            }
+            assertTrue(uuids.isEmpty());
         }
-        assertTrue(uuids.isEmpty());
-
-        r.close();
     }
 
     public void testInsertFeatures() throws Exception {
-        Transaction transaction = new DefaultTransaction();
-        SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(tname("guid"));
-        featureStore.setTransaction(transaction);
-        assertEquals(featureStore.getCount(Query.ALL),2);
-
-        SimpleFeatureType type = dataStore.getSchema(tname("guid"));
-        SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { uuid3 }, "guid.3");
-
-        SimpleFeatureCollection collection = DataUtilities.collection(feature);
-        featureStore.addFeatures(collection);
-        transaction.commit();
-        assertEquals(featureStore.getCount(Query.ALL),3);
-        transaction.close();
+        try(Transaction transaction = new DefaultTransaction()) {
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(tname("guid"));
+            featureStore.setTransaction(transaction);
+            assertEquals(featureStore.getCount(Query.ALL),2);
+    
+            SimpleFeatureType type = dataStore.getSchema(tname("guid"));
+            SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] { uuid3 }, "guid.3");
+    
+            SimpleFeatureCollection collection = DataUtilities.collection(feature);
+            featureStore.addFeatures(collection);
+            transaction.commit();
+            assertEquals(featureStore.getCount(Query.ALL),3);
+        }
     }
 
     public void testModifyFeatures() throws Exception {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> w = dataStore.getFeatureWriter(tname("guid"),Transaction.AUTO_COMMIT);
-        w.hasNext();
-        SimpleFeature f = w.next();
-        f.setAttribute(aname("uuidProperty"), uuid2);
-        assertEquals(uuid2, f.getAttribute(aname("uuidProperty")));
-        w.write();
-        w.close();
+        try(FeatureWriter<SimpleFeatureType, SimpleFeature> w = dataStore.getFeatureWriter(tname("guid"),Transaction.AUTO_COMMIT)) {
+            w.hasNext();
+            SimpleFeature f = w.next();
+            f.setAttribute(aname("uuidProperty"), uuid2);
+            assertEquals(uuid2, f.getAttribute(aname("uuidProperty")));
+            w.write();
+        }
     }
 
     public void testRemoveFeatures() throws Exception {
@@ -106,15 +105,15 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
     }
 
     public void testUUIDAsPrimaryKey() throws Exception {
-        Transaction transaction = new DefaultTransaction();
-        SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(tname("uuidt"));
-        featureStore.setTransaction(transaction);
-
-        featureStore.addFeatures(createFeatureCollection());
-
-        transaction.commit();
-        assertEquals(3, featureStore.getCount(Query.ALL));
-        transaction.close();
+        try(Transaction transaction = new DefaultTransaction()) {
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(tname("uuidt"));
+            featureStore.setTransaction(transaction);
+    
+            featureStore.addFeatures(createFeatureCollection());
+    
+            transaction.commit();
+            assertEquals(3, featureStore.getCount(Query.ALL));
+        }
     }
 
     private SimpleFeatureCollection createFeatureCollection() throws Exception {

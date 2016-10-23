@@ -68,13 +68,13 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
 
         Query q = new Query(tname("geopoint"));
 
-        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        assertTrue(r.hasNext());
-        while (r.hasNext()) {
-            SimpleFeature f = (SimpleFeature) r.next();
-            assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+        try(FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            assertTrue(r.hasNext());
+            while (r.hasNext()) {
+                SimpleFeature f = (SimpleFeature) r.next();
+                assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+            }
         }
-        r.close();
     }
     
     public void testBBoxLargerThanWorld() throws Exception {
@@ -87,13 +87,13 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         // should select everything without bombing out
         Query q = new Query(tname("geopoint"));
         q.setFilter(bbox);
-        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        assertTrue(r.hasNext());
-        while (r.hasNext()) {
-            SimpleFeature f = (SimpleFeature) r.next();
-            assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+        try(FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            assertTrue(r.hasNext());
+            while (r.hasNext()) {
+                SimpleFeature f = (SimpleFeature) r.next();
+                assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+            }
         }
-        r.close();
     }
     
     public void testOutsideWorld() throws Exception {
@@ -106,9 +106,9 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         // should select everything without bombing out
         Query q = new Query(tname("geopoint"));
         q.setFilter(bbox);
-        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        assertFalse(r.hasNext());
-        r.close();
+        try(FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            assertFalse(r.hasNext());
+        }
     }
     
     public void testLargerThanHalfWorld() throws Exception {
@@ -121,13 +121,13 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         // should select everything without bombing out
         Query q = new Query(tname("geopoint"));
         q.setFilter(bbox);
-        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        assertTrue(r.hasNext());
-        while (r.hasNext()) {
-            SimpleFeature f = (SimpleFeature) r.next();
-            assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+        try(FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            assertTrue(r.hasNext());
+            while (r.hasNext()) {
+                SimpleFeature f = (SimpleFeature) r.next();
+                assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+            }
         }
-        r.close();
     }
 
     public void testUpdate() throws Exception {
@@ -135,25 +135,23 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
             return;
         }
 
-        FeatureWriter fw = dataStore.getFeatureWriter(tname("geopoint"), Transaction.AUTO_COMMIT);
-
         Point p = gf.createPoint(new Coordinate(1, 1));
-
-        assertTrue(fw.hasNext());
-        while (fw.hasNext()) {
-            SimpleFeature f = (SimpleFeature) fw.next();
-            f.setDefaultGeometry(p);
-            fw.write();
+        try(FeatureWriter fw = dataStore.getFeatureWriter(tname("geopoint"), Transaction.AUTO_COMMIT)) {
+            assertTrue(fw.hasNext());
+            while (fw.hasNext()) {
+                SimpleFeature f = (SimpleFeature) fw.next();
+                f.setDefaultGeometry(p);
+                fw.write();
+            }
         }
-        fw.close();
 
-        FeatureReader fr = dataStore.getFeatureReader(new Query(tname("geopoint")),
-                Transaction.AUTO_COMMIT);
-        while (fr.hasNext()) {
-            SimpleFeature f = (SimpleFeature) fr.next();
-            assertEquals(p, f.getDefaultGeometry());
+        try(FeatureReader fr = dataStore.getFeatureReader(new Query(tname("geopoint")),
+                Transaction.AUTO_COMMIT)) {
+            while (fr.hasNext()) {
+                SimpleFeature f = (SimpleFeature) fr.next();
+                assertEquals(p, f.getDefaultGeometry());
+            }
         }
-        fr.close();
     }
 
     public void testAppend() throws Exception {
@@ -161,27 +159,27 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
             return;
         }
 
-        FeatureWriter fw = dataStore.getFeatureWriterAppend(tname("geopoint"),
-                Transaction.AUTO_COMMIT);
-
-        assertFalse(fw.hasNext());
-        SimpleFeature f = (SimpleFeature) fw.next();
-
         Point point = gf.createPoint(new Coordinate(10, 10));
-        f.setAttribute("name", "append");
-        f.setDefaultGeometry(point);
-
-        fw.write();
-        fw.close();
+        try(FeatureWriter fw = dataStore.getFeatureWriterAppend(tname("geopoint"),
+                Transaction.AUTO_COMMIT)) {
+    
+            assertFalse(fw.hasNext());
+            SimpleFeature f = (SimpleFeature) fw.next();
+    
+            f.setAttribute("name", "append");
+            f.setDefaultGeometry(point);
+    
+            fw.write();
+        }
 
         Filter filter = ff.equals(ff.property("name"), ff.literal("append"));
         Query q = new Query(tname("geopoint"), filter);
 
-        FeatureReader fr = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        assertTrue(fr.hasNext());
-        f = (SimpleFeature) fr.next();
-        assertEquals(point, f.getDefaultGeometry());
-        fr.close();
+        try(FeatureReader fr = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            assertTrue(fr.hasNext());
+            SimpleFeature f = (SimpleFeature) fr.next();
+            assertEquals(point, f.getDefaultGeometry());
+        }
     }
 
     public void testBounds() throws Exception {
@@ -242,14 +240,14 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         // 64.15)':: geography);
 
         // adding Reykjavik
-        FeatureWriter fw = dataStore.getFeatureWriterAppend(tname("geopoint"),
-                Transaction.AUTO_COMMIT);
-        SimpleFeature f = (SimpleFeature) fw.next();
-        Point point = gf.createPoint(new Coordinate(-21.96, 64.15));
-        f.setAttribute("name", "Reykjavik");
-        f.setDefaultGeometry(point);
-        fw.write();
-        fw.close();
+        try(FeatureWriter fw = dataStore.getFeatureWriterAppend(tname("geopoint"),
+                Transaction.AUTO_COMMIT)) {
+            SimpleFeature f = (SimpleFeature) fw.next();
+            Point point = gf.createPoint(new Coordinate(-21.96, 64.15));
+            f.setAttribute("name", "Reykjavik");
+            f.setDefaultGeometry(point);
+            fw.write();
+        }
 
         // testing distance filter
         LineString line = gf.createLineString(new Coordinate[] { new Coordinate(-122.33, 47.606),
@@ -258,11 +256,11 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         FeatureCollection features = dataStore.getFeatureSource(tname("geopoint")).getFeatures(
                 filter);
         assertEquals(1, features.size());
-        FeatureIterator fi = features.features();
-        assertTrue(fi.hasNext());
-        SimpleFeature feature = (SimpleFeature) fi.next();
-        assertEquals("Reykjavik", feature.getAttribute("name"));
-        fi.close();
+        try(FeatureIterator fi = features.features()) {
+            assertTrue(fi.hasNext());
+            SimpleFeature feature = (SimpleFeature) fi.next();
+            assertEquals("Reykjavik", feature.getAttribute("name"));
+        }
     }
 
     public void testVirtualTable() throws Exception {

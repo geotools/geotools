@@ -145,30 +145,17 @@ public abstract class JDBCTestSetup {
      * @param script Input stream to the sql script to run.
      */
     protected void run(InputStream script) throws Exception {
-        //load the script
-        BufferedReader reader = new BufferedReader(new InputStreamReader(script));
+        //load the script andconnect
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(script));
+                Connection conn = getConnection();
+            Statement st = conn.createStatement()) {
+            String line = null;
 
-        //connect
-        Connection conn = getConnection();
-        
-        try {
-            Statement st = conn.createStatement();
-
-            try {
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    LOGGER.fine(line);
-                    st.execute(line);
-                }
-
-                reader.close();
-            } finally {
-                st.close();
+            while ((line = reader.readLine()) != null) {
+                LOGGER.fine(line);
+                st.execute(line);
             }
-        } finally {
-            conn.close();
-        }
+        } 
     }
     
     /**

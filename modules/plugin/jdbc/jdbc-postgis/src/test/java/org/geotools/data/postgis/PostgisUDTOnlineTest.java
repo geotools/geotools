@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -104,7 +105,7 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
 
     @Test
     public void testBigDate() throws Exception {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss G");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss G", Locale.ENGLISH);
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         SimpleFeatureType schema = dataStore.getSchema(tname("date_udt"));

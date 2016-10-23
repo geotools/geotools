@@ -2,6 +2,7 @@ package org.geotools.jdbc;
 
 import java.util.Arrays;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -38,7 +39,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname(ABC), filter);
         int count = fs.getCount(q);
         assertEquals(1, count);
-        SimpleFeature f = getFirst(fs.getFeatures(q));
+        SimpleFeature f = DataUtilities.first(fs.getFeatures(q));
         assertEquals("n_n_n", f.getAttribute(aname(NAME)));
     }
     
@@ -61,24 +62,8 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
         Query q = new Query(tname(ABC), filter);
         int count = fs.getCount(q);
         assertEquals(1, count);
-        SimpleFeature f = getFirst(fs.getFeatures(q));
+        SimpleFeature f = DataUtilities.first(fs.getFeatures(q));
         assertEquals("n_n_n", f.getAttribute(aname(NAME)));
-    }
-    
-    private SimpleFeature getFirst(SimpleFeatureCollection fc) {
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = fc.features();
-            if(fi.hasNext()) {
-                return fi.next();
-            } else {
-                return null;
-            }
-        } finally {
-            if(fi != null) {
-                fi.close();
-            }
-        }
     }
 
 

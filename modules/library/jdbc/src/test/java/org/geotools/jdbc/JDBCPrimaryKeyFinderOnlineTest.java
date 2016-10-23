@@ -73,15 +73,13 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
         assertTrue( fs.getPrimaryKey().getColumns().get(0) instanceof NonIncrementingPrimaryKeyColumn );
         assertTrue( fs.getPrimaryKey().getColumns().get(1) instanceof NonIncrementingPrimaryKeyColumn );
         
-        FeatureIterator i = fs.getFeatures().features();
-        
-        for ( int j = 1; i.hasNext(); j++ ) {
-            SimpleFeature f = (SimpleFeature) i.next();
-            
-            assertEquals( tname("assignedmultipk") + "." + j + "." + (j + 1) , f.getID() );
+        try(FeatureIterator i = fs.getFeatures().features()) {
+            for ( int j = 1; i.hasNext(); j++ ) {
+                SimpleFeature f = (SimpleFeature) i.next();
+                
+                assertEquals( tname("assignedmultipk") + "." + j + "." + (j + 1) , f.getID() );
+            }
         }
-        
-        i.close();
     }
     
     protected void addFeature( SimpleFeatureType featureType, JDBCFeatureStore features ) throws Exception {

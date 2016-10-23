@@ -51,7 +51,7 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
     
     public void testModifyExposedPk() throws IOException {
         SimpleFeatureType t = featureStore.getSchema();
-         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsEqualTo filter = ff.equal(ff.property(aname("stringProperty")), ff.literal("zero"), false);
         featureStore.modifyFeatures(new AttributeDescriptor[] { t.getDescriptor(aname("stringProperty")), 
                 t.getDescriptor(aname("id"))},
@@ -59,8 +59,7 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
 
         PropertyIsEqualTo idFilter = ff.equal(ff.property(aname("id")), ff.literal(0), false);
         SimpleFeatureCollection features = featureStore.getFeatures(idFilter);
-        SimpleFeatureIterator i = features.features();
-        try {
+        try(SimpleFeatureIterator i = features.features()) {
             assertTrue(i.hasNext());
     
             while (i.hasNext()) {
@@ -70,9 +69,6 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
                 // the pk did not
                 assertEquals(0, ((Number) feature.getAttribute(aname("id"))).intValue());
             }
-        }
-        finally {
-            i.close();
         }
     }
 

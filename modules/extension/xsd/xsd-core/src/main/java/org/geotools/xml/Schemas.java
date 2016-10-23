@@ -413,18 +413,20 @@ public class Schemas {
                 
                 if (resolvedSchema != null) {
                     synchronized (Schemas.class) {
-                        resolvedSchema.getReferencingDirectives().remove(directive);
-                        for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
-                            if(dec == null) {
-                                continue;
-                            }
-                            List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
-                            for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
-                                if (subs != null && subs.getContainer() != null && subs.getContainer().equals(schema)) {
-                                    toRemove.add(subs);
+                        synchronized(resolvedSchema.eAdapters()) {
+                            resolvedSchema.getReferencingDirectives().remove(directive);
+                            for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
+                                if(dec == null) {
+                                    continue;
                                 }
+                                List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
+                                for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
+                                    if (subs != null && subs.getContainer() != null && subs.getContainer().equals(schema)) {
+                                        toRemove.add(subs);
+                                    }
+                                }
+                                dec.getSubstitutionGroup().removeAll(toRemove);
                             }
-                            dec.getSubstitutionGroup().removeAll(toRemove);
                         }
                     }
                 }

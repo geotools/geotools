@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.visitor.Aggregate;
@@ -198,7 +198,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
     }
 
     private Query queryWithLimits(int lower, int upper) {
-        DefaultQuery query = new DefaultQuery(tname("buildings"));
+        Query query = new Query(tname("buildings"));
         query.setStartIndex(lower);
         query.setMaxFeatures(upper);
         return query;
@@ -207,7 +207,7 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
     private Query energyConsumptionGreaterThan(double value) {
         FilterFactory filterFactory = dataStore.getFilterFactory();
         Filter filter = filterFactory.greater(filterFactory.property(aname("energy_consumption")), filterFactory.literal(value));
-        return new DefaultQuery(tname("buildings"), filter);
+        return new Query(tname("buildings"), filter);
     }
 
     private List<Object[]> genericGroupByTestTest(Aggregate aggregateVisitor,

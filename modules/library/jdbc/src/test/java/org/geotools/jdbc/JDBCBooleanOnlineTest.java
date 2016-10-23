@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
 import org.opengis.feature.simple.SimpleFeature;
@@ -38,7 +38,7 @@ public abstract class JDBCBooleanOnlineTest extends JDBCTestSupport {
     }
     
     public void testGetFeatures() throws Exception {
-        FeatureReader r = dataStore.getFeatureReader( new DefaultQuery( tname("b") ), Transaction.AUTO_COMMIT );
+        FeatureReader r = dataStore.getFeatureReader( new Query( tname("b") ), Transaction.AUTO_COMMIT );
         r.hasNext();
         try {
             SimpleFeature f = (SimpleFeature) r.next();

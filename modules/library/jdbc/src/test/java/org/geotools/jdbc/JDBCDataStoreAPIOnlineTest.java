@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
@@ -176,7 +176,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("road"));
         assertTrue(fs.getSupportedHints().contains(Hints.JTS_GEOMETRY_FACTORY));
 
-        DefaultQuery q = new DefaultQuery(tname("road"));
+        Query q = new Query(tname("road"));
         GeometryFactory gf = new GeometryFactory(new LiteCoordinateSequenceFactory());
         Hints hints = new Hints(Hints.JTS_GEOMETRY_FACTORY, gf);
         q.setHints(hints);
@@ -195,7 +195,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("road"));
         assertTrue(fs.getSupportedHints().contains(Hints.JTS_COORDINATE_SEQUENCE_FACTORY));
 
-        DefaultQuery q = new DefaultQuery(tname("road"));
+        Query q = new Query(tname("road"));
         Hints hints = new Hints(Hints.JTS_COORDINATE_SEQUENCE_FACTORY,
                 new LiteCoordinateSequenceFactory());
         q.setHints(hints);
@@ -215,7 +215,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("lake")), t);
+        reader = dataStore.getFeatureReader(new Query(tname("lake")), t);
 
         assertNotNull(reader);
         try {
@@ -238,14 +238,14 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         geomTypeExpr.setParameters( (List) Collections.singletonList(factory.property(aname("geom"))));
 
         PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), filter), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), filter), t);
 
         assertNotNull(reader);
         assertFalse(reader.hasNext());
         reader.close();
 
         filter = factory.equals(geomTypeExpr, factory.literal("LineString"));
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), filter), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), filter), t);
         assertTrue(reader.hasNext());
         reader.close();
         t.close();
@@ -262,7 +262,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         PropertyIsEqualTo filter = factory.equals(geomTypeExpr, factory.literal("Polygon"));
 
-        DefaultQuery query = new DefaultQuery(tname("road"), filter);
+        Query query = new Query(tname("road"), filter);
         query.setPropertyNames((List)Collections.singletonList(aname("id")));
 
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, t);
@@ -290,7 +290,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property(aname("flow")), ff.literal(4.5));
 
-        DefaultQuery q = new DefaultQuery(tname("river"));
+        Query q = new Query(tname("river"));
         q.setPropertyNames(new String[] { aname("geom") });
         q.setFilter(f);
 
@@ -318,7 +318,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 
-        DefaultQuery q = new DefaultQuery(tname("river"));
+        Query q = new Query(tname("river"));
         q.setPropertyNames(new String[] { aname("geom") });
         q.setFilter(f);
 
@@ -338,7 +338,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
-        DefaultQuery q = new DefaultQuery(tname("river"));
+        Query q = new Query(tname("river"));
         q.setPropertyNames(new String[] { aname("geom") });
         q.setFilter(f);
 
@@ -448,21 +448,21 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureType type = dataStore.getSchema(tname("road"));
          FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertFalse(reader instanceof FilteringFeatureReader);
         assertEquals(type, reader.getFeatureType());
         assertEquals(td.roadFeatures.length, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.EXCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.EXCLUDE),
                 Transaction.AUTO_COMMIT);
         assertFalse(reader.hasNext());
         assertEquals(type, reader.getFeatureType());
         assertEquals(0, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), td.rd1Filter),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), td.rd1Filter),
                 Transaction.AUTO_COMMIT);
 
         // assertTrue(reader instanceof FilteringFeatureReader);
@@ -477,18 +477,18 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureType type = dataStore.getSchema(tname("road"));
          FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.EXCLUDE), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.EXCLUDE), t);
         assertFalse(reader.hasNext());
         assertEquals(type, reader.getFeatureType());
         assertEquals(0, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t);
         assertEquals(type, reader.getFeatureType());
         assertEquals(td.roadFeatures.length, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), td.rd1Filter), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), td.rd1Filter), t);
         assertEquals(type, reader.getFeatureType());
         assertEquals(1, count(reader));
         reader.close();
@@ -506,28 +506,28 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         writer.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.EXCLUDE), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.EXCLUDE), t);
         assertEquals(0, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t);
         assertEquals(td.roadFeatures.length - 1, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), td.rd1Filter), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), td.rd1Filter), t);
         assertEquals(0, count(reader));
         reader.close();
 
         t.rollback();
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.EXCLUDE), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.EXCLUDE), t);
         assertEquals(0, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t);
         assertEquals(td.roadFeatures.length, count(reader));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), td.rd1Filter), t);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), td.rd1Filter), t);
         assertEquals(1, count(reader));
         reader.close();
         t.close();
@@ -750,7 +750,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FINAL[i] = td.newRoad; // will need to update with Fid from database
 
         // start off with ORIGINAL
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue("Sanity check failed: before modification reader didn't match original content",
             covers(reader, ORIGINAL));
@@ -766,12 +766,12 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         }
 
         // still have ORIGINAL and t1 has REMOVE
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue("Feature deletion managed to leak out of transaction?", covers(reader, ORIGINAL));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t1);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t1);
         assertTrue(covers(reader, REMOVE));
         reader.close();
 
@@ -781,12 +781,12 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         writer1.close();
 
         // We still have ORIGIONAL and t1 has REMOVE
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGINAL));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t1);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t1);
         assertTrue(covers(reader, REMOVE));
         reader.close();
 
@@ -799,7 +799,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         // HACK: ?!? update ADD and FINAL with new FID from database
         //
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t2);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t2);
         td.newRoad = findFeature(reader, aname("name"), "r4");
         System.out.println("newRoad:" + td.newRoad);
         ADD[ADD.length - 1] = td.newRoad;
@@ -809,21 +809,21 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         writer2.close();
 
         // We still have ORIGINAL and t2 has ADD
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGINAL));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t2);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t2);
         assertMatched(ADD, reader); // broken due to FID problem
         reader.close();
 
         // Still have ORIGIONAL and t2 has ADD
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGINAL));
         reader.close();
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t2);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t2);
         assertTrue(coversLax(reader, ADD));
         reader.close();
 
@@ -835,14 +835,14 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         // We now have REMOVE, as does t1 (which has not additional diffs)
         // t2 will have FINAL
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, REMOVE));
         reader.close();
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t1);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t1);
         assertTrue(covers(reader, REMOVE));
         reader.close();
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t2);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t2);
         assertTrue(coversLax(reader, FINAL));
         reader.close();
 
@@ -852,16 +852,16 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         t2.commit();
 
         // We now have Number( remove one and add one)
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE),
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE),
                 Transaction.AUTO_COMMIT);
         assertTrue(coversLax(reader, FINAL));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t1);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t1);
         assertTrue(coversLax(reader, FINAL));
         reader.close();
 
-        reader = dataStore.getFeatureReader(new DefaultQuery(tname("road"), Filter.INCLUDE), t2);
+        reader = dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t2);
         assertTrue(coversLax(reader, FINAL));
         reader.close();
 
@@ -963,7 +963,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         assertEquals(some.getSchema(), road.getSchema());
 
-        DefaultQuery query = new DefaultQuery(tname("road"), td.rd12Filter, new String[] { aname("name") });
+        Query query = new Query(tname("road"), td.rd12Filter, new String[] { aname("name") });
 
         SimpleFeatureCollection half = road.getFeatures(query);
         assertEquals(2, half.size());
@@ -1367,7 +1367,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     FeatureReader<SimpleFeatureType, SimpleFeature> reader(String typeName) throws IOException {
-        return dataStore.getFeatureReader(new DefaultQuery(typeName, Filter.INCLUDE),
+        return dataStore.getFeatureReader(new Query(typeName, Filter.INCLUDE),
             Transaction.AUTO_COMMIT);
     }
 
@@ -1678,7 +1678,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                 }
 		double width = original.getEnvelope().getEnvelopeInternal().getWidth();
 		
-	    DefaultQuery query = new DefaultQuery();
+	    Query query = new Query();
 	    Hints hints = new Hints(Hints.GEOMETRY_GENERALIZATION,width/2);        
 	    query.setHints(hints);        
 	    

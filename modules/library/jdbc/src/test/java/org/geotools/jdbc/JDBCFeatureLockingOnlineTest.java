@@ -18,7 +18,7 @@ package org.geotools.jdbc;
 
 import java.util.Collections;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
@@ -63,7 +63,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         assertTrue( locked > 0 );
         
         //grabbing a reader should be no problem
-        DefaultQuery query = new DefaultQuery( tname("ft1") );
+        Query query = new Query( tname("ft1") );
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query,tx);
         
         int count = 0;
@@ -178,7 +178,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property(aname("invalidProperty")), ff.literal(1));
         
         try {
-            store.lockFeatures( new DefaultQuery(store.getSchema().getTypeName(), f) );
+            store.lockFeatures( new Query(store.getSchema().getTypeName(), f) );
             fail("Should have failed with an exception, the filter is not valid");
         } catch(Exception e) {
             // fine
@@ -248,7 +248,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property(aname("invalidProperty")), ff.literal(1));
         
         try {
-            store.unLockFeatures(new DefaultQuery(store.getSchema().getTypeName(), f) );
+            store.unLockFeatures(new Query(store.getSchema().getTypeName(), f) );
             fail("Should have failed with an exception, the filter is not valid");
         } catch(Exception e) {
             // fine
@@ -293,7 +293,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         
         Filter f0 = ff.equal( ff.property( aname("intProperty" ) ), ff.literal(1000), true);
-        assertEquals( 0 , store.getCount( new DefaultQuery( tname("ft1"), f0 ) ));
+        assertEquals( 0 , store.getCount( new Query( tname("ft1"), f0 ) ));
         
         FeatureLock lock = 
             FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
@@ -324,7 +324,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         store.modifyFeatures(ad, v, f1 );
         tx.commit();
        
-        assertEquals( 1 , store.getCount( new DefaultQuery( tname("ft1"), f0 ) ));
+        assertEquals( 1 , store.getCount( new Query( tname("ft1"), f0 ) ));
         tx.close();
         
     }

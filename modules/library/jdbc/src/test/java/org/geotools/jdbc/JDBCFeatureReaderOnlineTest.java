@@ -18,7 +18,7 @@ package org.geotools.jdbc;
 
 import java.util.List;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public abstract class JDBCFeatureReaderOnlineTest extends JDBCTestSupport {
 
     public void testNext() throws Exception {
-        Query query = new DefaultQuery(tname("ft1"));
+        Query query = new Query(tname("ft1"));
         FeatureReader reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
         assertTrue(reader.hasNext());

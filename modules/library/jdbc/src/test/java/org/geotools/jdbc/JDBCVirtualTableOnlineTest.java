@@ -161,17 +161,12 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
 
         assertEquals(1, fsView.getCount(Query.ALL));
         
-        FeatureIterator<SimpleFeature> it = null;
-        try {
-            it = fsView.getFeatures().features();
-            
+        try(FeatureIterator<SimpleFeature> it = fsView.getFeatures().features()) {
             assertTrue(it.hasNext());
             SimpleFeature sf = it.next();
             assertEquals("rv1", sf.getAttribute(aname("river")));
             assertEquals(9.0, ((Number) sf.getAttribute(aname("doubleFlow"))).doubleValue(), 0.1);
             assertFalse(it.hasNext());
-        } finally {
-            it.close();
         }
     }
     
@@ -200,16 +195,11 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
 
         assertEquals(1, fsView.getCount(Query.ALL));
         
-        FeatureIterator<SimpleFeature> it = null;
-        try {
-            it = fsView.getFeatures().features();
-            
+        try(FeatureIterator<SimpleFeature> it = fsView.getFeatures().features()) {
             assertTrue(it.hasNext());
             SimpleFeature sf = it.next();
             // check the primary key is build out of the fid attribute
             assertEquals("riverReducedPk.0", sf.getID());
-        } finally {
-            it.close();
         }
     }
     
@@ -255,19 +245,14 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Query q = new Query(Query.ALL);
         q.setHints(new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, Collections.singletonMap("mul", "10")));
         q.setSortBy(new SortBy[] {ff.sort(aname("mulflow"), SortOrder.ASCENDING)});
-        FeatureIterator fi = null;
-        try {
-            fi = fsView.getFeatures(q).features();
+        try(FeatureIterator fi = fsView.getFeatures(q).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = (SimpleFeature) fi.next();
             assertEquals(30.0, ((Number) f.getAttribute(aname("mulflow"))).doubleValue(), 0.1);
             assertTrue(fi.hasNext());
             f = (SimpleFeature) fi.next();
             assertEquals(45.0, ((Number) f.getAttribute(aname("mulflow"))).doubleValue(), 0.1);
-        } finally {
-            fi.close();
-        }
-        
+        } 
     }
     
     public void testMulParamInvalid() throws Exception {
@@ -320,8 +305,6 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Logger logger = Logging.getLogger("org.geotools.jdbc");
         Level oldLevel = logger.getLevel();
 
-        SimpleFeatureIterator fi = null;
-        try {
             logger.setLevel(java.util.logging.Level.SEVERE);
             logger.addHandler(handler);
             dataStore.createVirtualTable(vt);
@@ -338,15 +321,12 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
             String flow = sb.toString();
             dataStore.virtualTables.get("invalid_attribute").sql = vt.sql.replace(flow, notValid);
 
-            fi = fs.getFeatures().features();
+        try(SimpleFeatureIterator fi = fs.getFeatures().features()) {
             fail("We should not have gotten here, we were supposed to get a sql exception");
         } catch (RuntimeException e) {
             // fine, this is expected
             assertTrue(e.getCause() instanceof IOException);
         } finally {
-            if (fi != null) {
-                fi.close();
-            }
             dataStore.dropVirtualTable("invalid_attribute");
 
             // shake the vm to make it run the finalizers

@@ -299,19 +299,14 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     }
     
     void assertFeatures(SimpleFeatureSource fs2, Filter filter, String... ids) throws IOException {
-        SimpleFeatureIterator fi = null;
+        
         Set<String> idSet = new HashSet<String>(Arrays.asList(ids));
         int count = 0;
-        try {
-            fi = fs.getFeatures(filter).features();
+        try(SimpleFeatureIterator fi = fs.getFeatures(filter).features()) {
             while(fi.hasNext()) {
                 SimpleFeature sf = fi.next();
                 assertTrue("Found unexpected id " + sf.getID(), idSet.contains(sf.getID()));
                 count++;
-            }
-        } finally {
-            if(fi != null) {
-                fi.close();
             }
         }
 

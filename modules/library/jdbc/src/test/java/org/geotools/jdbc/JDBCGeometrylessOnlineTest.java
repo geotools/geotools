@@ -64,15 +64,12 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
     public void testReadFeatures() throws Exception {
     	SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(PERSON)).getFeatures();
         assertEquals(2, fc.size());
-        SimpleFeatureIterator fr = fc.features();
-        try {
+        try(SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             SimpleFeature f = fr.next();
             assertTrue(fr.hasNext());
             f = fr.next();
             assertFalse(fr.hasNext());
-        } finally {
-            fr.close();
         }
     }
     
@@ -87,13 +84,12 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
     }
     
     public void testWriteFeatures() throws Exception {
-        FeatureWriter fw = dataStore.getFeatureWriterAppend(tname(PERSON),Transaction.AUTO_COMMIT);
-        
-        SimpleFeature f = (SimpleFeature) fw.next();
-        f.setAttribute(aname("name"), "Joe");
-        f.setAttribute(aname("age"), 27 );
-        fw.write();
-        fw.close();
+        try(FeatureWriter fw = dataStore.getFeatureWriterAppend(tname(PERSON),Transaction.AUTO_COMMIT)) {
+            SimpleFeature f = (SimpleFeature) fw.next();
+            f.setAttribute(aname("name"), "Joe");
+            f.setAttribute(aname("age"), 27 );
+            fw.write();
+        }
         
         FeatureCollection fc = dataStore.getFeatureSource(tname(PERSON)).getFeatures();
         assertEquals(3, fc.size());

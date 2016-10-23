@@ -98,29 +98,22 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         // GEOT-2031
         assertNotSame(ft2, featureType);
 
-        Connection cx = dataStore.createConnection();
-        Statement st = cx.createStatement();
-        ResultSet rs = null;
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT * FROM ");
 
-        try {
-            StringBuffer sql = new StringBuffer();
-            sql.append("SELECT * FROM ");
+        if (dataStore.getDatabaseSchema() != null) {
+            dataStore.getSQLDialect().encodeSchemaName(dataStore.getDatabaseSchema(), sql);
+            sql.append(".");
+        }
 
-            if (dataStore.getDatabaseSchema() != null) {
-                dataStore.getSQLDialect().encodeSchemaName(dataStore.getDatabaseSchema(), sql);
-                sql.append(".");
-            }
-
-            dataStore.getSQLDialect().encodeTableName("ft2", sql);
-            rs = st.executeQuery(sql.toString());
+        dataStore.getSQLDialect().encodeTableName("ft2", sql);
+            
+        try(Connection cx = dataStore.createConnection();
+            Statement st = cx.createStatement();
+            ResultSet rs = st.executeQuery(sql.toString())) {
         } catch (SQLException e) {
             throw e;
-        } finally {
-            if(rs != null)
-                rs.close();
-            st.close();
-            cx.close();
-        }
+        } 
     }
     
     public void testCreateSchemaWithConstraints() throws Exception {
@@ -140,35 +133,34 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         //assertEquals(ft2, featureType);
 
         //grab a writer
-        FeatureWriter<SimpleFeatureType, SimpleFeature> w =
-                dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
-        w.hasNext();
-
-        SimpleFeature f = w.next();
-        f.setAttribute( 1, new Integer(0));
-        f.setAttribute( 2, "hello");
-        w.write();
-
-        w.hasNext();
-        f = w.next();
-        f.setAttribute( 1, null );
-        try {
+        try(FeatureWriter<SimpleFeatureType, SimpleFeature> w =
+                dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT)) {
+            w.hasNext();
+    
+            SimpleFeature f = w.next();
+            f.setAttribute( 1, new Integer(0));
+            f.setAttribute( 2, "hello");
             w.write();
-            fail( "null value for intProperty should have failed");
+    
+            w.hasNext();
+            f = w.next();
+            f.setAttribute( 1, null );
+            try {
+                w.write();
+                fail( "null value for intProperty should have failed");
+            }
+            catch( Exception e ) {
+            }
+    
+            f.setAttribute( 1, new Integer(1) );
+            f.setAttribute( 2, "hello!");
+            try {
+                w.write();
+                fail( "string greather than 5 chars should have failed");
+            }
+            catch( Exception e ) {
+            }
         }
-        catch( Exception e ) {
-        }
-
-        f.setAttribute( 1, new Integer(1) );
-        f.setAttribute( 2, "hello!");
-        try {
-            w.write();
-            fail( "string greather than 5 chars should have failed");
-        }
-        catch( Exception e ) {
-        }
-
-        w.close();
     }
 
     public void testRemoveSchema() throws Exception {
@@ -281,21 +273,21 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         SimpleFeatureType ft2 = dataStore.getSchema(tname("ft2"));
         assertNotNull(ft2);
 
-        FeatureWriter w = dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
-        w.hasNext();
-
-        //write out a feature with a geomety in teh srs, basically accomodate databases that have 
-        // to query the first feature in order to get the srs for the feature type
-        SimpleFeature f = (SimpleFeature) w.next();
-
-        Geometry g = new WKTReader().read("POINT(593493 4914730)");
-        g.setSRID(26713);
-        
-        f.setAttribute(0, g);
-        f.setAttribute( 1, new Integer(0));
-        f.setAttribute( 2, "hello");
-        w.write();
-        w.close();
+        try(FeatureWriter w = dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT)) {
+            w.hasNext();
+    
+            //write out a feature with a geomety in teh srs, basically accomodate databases that have 
+            // to query the first feature in order to get the srs for the feature type
+            SimpleFeature f = (SimpleFeature) w.next();
+    
+            Geometry g = new WKTReader().read("POINT(593493 4914730)");
+            g.setSRID(26713);
+            
+            f.setAttribute(0, g);
+            f.setAttribute( 1, new Integer(0));
+            f.setAttribute( 2, "hello");
+            w.write();
+        }
 
         //clear out the feature type cache
         dataStore.getEntry(new NameImpl(dataStore.getNamespaceURI(), tname("ft2"))).dispose();
@@ -366,73 +358,69 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         final GeometryFactory gf = dataStore.getGeometryFactory();
 
         Query query = new Query(tname("ft1"));
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
 
-         assertFeatureReader(0, 3, reader, new SimpleFeatureAssertion() {
-             public int toIndex(SimpleFeature feature) {
-                 return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
-             }
-
-             public void check(int index, SimpleFeature feature) {
-                 assertEquals(4, feature.getAttributeCount());
-                 Point p = gf.createPoint(new Coordinate(index, index));
-                 assertTrue(p.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
-
-                 Number ip = (Number) feature.getAttribute(aname("intProperty"));
-                 assertEquals(index, ip.intValue());
-             }
-         });
-
-        query.setPropertyNames(new String[] { aname("intProperty") });
-        reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-
-        for (int i = 0; i < 3; i++) {
-            assertTrue(reader.hasNext());
-
-            SimpleFeature feature = reader.next();
-            assertEquals(1, feature.getAttributeCount());
+             assertFeatureReader(0, 3, reader, new SimpleFeatureAssertion() {
+                 public int toIndex(SimpleFeature feature) {
+                     return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
+                 }
+    
+                 public void check(int index, SimpleFeature feature) {
+                     assertEquals(4, feature.getAttributeCount());
+                     Point p = gf.createPoint(new Coordinate(index, index));
+                     assertTrue(p.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
+    
+                     Number ip = (Number) feature.getAttribute(aname("intProperty"));
+                     assertEquals(index, ip.intValue());
+                 }
+             });
         }
 
-        assertFalse(reader.hasNext());
-        reader.close();
+        query.setPropertyNames(new String[] { aname("intProperty") });
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            for (int i = 0; i < 3; i++) {
+                assertTrue(reader.hasNext());
+    
+                SimpleFeature feature = reader.next();
+                assertEquals(1, feature.getAttributeCount());
+            }
+    
+            assertFalse(reader.hasNext());
+        }            
 
         FilterFactory ff = dataStore.getFilterFactory();
         Filter f = ff.equals(ff.property(aname("intProperty")), ff.literal(1));
         query.setFilter(f);
 
-        reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-
-        for (int i = 0; i < 1; i++) {
-            assertTrue(reader.hasNext());
-
-            SimpleFeature feature = reader.next();
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            for (int i = 0; i < 1; i++) {
+                assertTrue(reader.hasNext());
+    
+                SimpleFeature feature = reader.next();
+            }
+    
+            assertFalse(reader.hasNext());
         }
-
-        assertFalse(reader.hasNext());
-        reader.close();
     }
 
     public void testGetFeatureWriter() throws IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT);
-
-        while (writer.hasNext()) {
-            SimpleFeature feature = writer.next();
-            feature.setAttribute(aname("stringProperty"), "foo");
-            writer.write();
+        try(FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {
+            while (writer.hasNext()) {
+                SimpleFeature feature = writer.next();
+                feature.setAttribute(aname("stringProperty"), "foo");
+                writer.write();
+            }
         }
-
-        writer.close();
 
         Query query = new Query(tname("ft1"));
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertTrue(reader.hasNext());
-
-        while (reader.hasNext()) {
-            SimpleFeature feature = reader.next();
-            assertEquals("foo", feature.getAttribute(aname("stringProperty")));
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertTrue(reader.hasNext());
+    
+            while (reader.hasNext()) {
+                SimpleFeature feature = reader.next();
+                assertEquals("foo", feature.getAttribute(aname("stringProperty")));
+            }
         }
-
-        reader.close();
     }
 
     public void testGetFeatureWriterWithFilter() throws IOException {
@@ -444,15 +432,13 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
 
         f = ff.equals(ff.property(aname("intProperty")), ff.literal(1));
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriter(tname("ft1"), f, Transaction.AUTO_COMMIT);
-
-        while (writer.hasNext()) {
-            SimpleFeature feature = writer.next();
-            feature.setAttribute(aname("intProperty"), new Integer(100));
-            writer.write();
+        try(FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriter(tname("ft1"), f, Transaction.AUTO_COMMIT)) {
+            while (writer.hasNext()) {
+                SimpleFeature feature = writer.next();
+                feature.setAttribute(aname("intProperty"), new Integer(100));
+                writer.write();
+            }
         }
-
-        writer.close();
 
         f = ff.equals(ff.property(aname("intProperty")), ff.literal(100));
         features = dataStore.getFeatureSource(tname("ft1")).getFeatures(f);
@@ -460,15 +446,13 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeatureWriterAppend() throws IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT);
-
-        for (int i = 3; i < 6; i++) {
-            SimpleFeature feature = writer.next();
-            feature.setAttribute(aname("intProperty"), new Integer(i));
-            writer.write();
+        try(FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
+            for (int i = 3; i < 6; i++) {
+                SimpleFeature feature = writer.next();
+                feature.setAttribute(aname("intProperty"), new Integer(i));
+                writer.write();
+            }
         }
-
-        writer.close();
 
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures();
         assertEquals(6, features.size());

@@ -48,14 +48,10 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
         SimpleFeatureType type = dataStore.getSchema(tname("udt"));
             
         SimpleFeatureCollection features = dataStore.getFeatureSource(tname("udt")).getFeatures();
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = features.features();
+        try(SimpleFeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());
             assertEquals("12ab", fi.next().getAttribute(aname("ut")));
             assertFalse(fi.hasNext());
-        } finally { 
-            fi.close();
         }
         
     }
@@ -63,20 +59,20 @@ public abstract class JDBCUDTOnlineTest extends JDBCTestSupport {
     public void testWrite() throws Exception {
         int count = dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL);
         
-        FeatureWriter w = dataStore.getFeatureWriterAppend(tname("udt"), Transaction.AUTO_COMMIT);
-        w.hasNext();
-        
-        SimpleFeature f = (SimpleFeature) w.next();
-        f.setAttribute(aname("ut"), "abcd");
-        try {
+        try(FeatureWriter w = dataStore.getFeatureWriterAppend(tname("udt"), Transaction.AUTO_COMMIT)) {
+            w.hasNext();
+            
+            SimpleFeature f = (SimpleFeature) w.next();
+            f.setAttribute(aname("ut"), "abcd");
+            try {
+                w.write();
+                fail("Write should have failed with UDT constraint failure");
+            }
+            catch(Exception e) {
+            }
+            f.setAttribute(aname("ut"), "34cd");
             w.write();
-            fail("Write should have failed with UDT constraint failure");
         }
-        catch(Exception e) {
-        }
-        f.setAttribute(aname("ut"), "34cd");
-        w.write();
-        w.close();
         
         assertEquals(count+1, dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL));
     }

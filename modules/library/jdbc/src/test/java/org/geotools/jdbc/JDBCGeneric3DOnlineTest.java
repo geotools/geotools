@@ -132,25 +132,25 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     public void testReadPoint() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getPoint3d())).getFeatures();
-        SimpleFeatureIterator fr = fc.features();
-        assertTrue(fr.hasNext());
-        Point p = (Point) fr.next().getDefaultGeometry();
-        assertTrue(new Coordinate(1, 1, 1).equals(p.getCoordinate()));
-        fr.close();
+        try(SimpleFeatureIterator fr = fc.features()) {
+            assertTrue(fr.hasNext());
+            Point p = (Point) fr.next().getDefaultGeometry();
+            assertTrue(new Coordinate(1, 1, 1).equals(p.getCoordinate()));
+        }
     }
 
     public void testReadLine() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getLine3d())).getFeatures();
-        SimpleFeatureIterator fr = fc.features();
-        assertTrue(fr.hasNext());
-        LineString ls = (LineString) fr.next().getDefaultGeometry();
-        // 1 1 0, 2 2 0, 4 2 1, 5 1 1
-        assertEquals(4, ls.getCoordinates().length);
-        assertTrue(new Coordinate(1, 1, 0).equals3D(ls.getCoordinateN(0)));
-        assertTrue(new Coordinate(2, 2, 0).equals3D(ls.getCoordinateN(1)));
-        assertTrue(new Coordinate(4, 2, 1).equals3D(ls.getCoordinateN(2)));
-        assertTrue(new Coordinate(5, 1, 1).equals3D(ls.getCoordinateN(3)));
-        fr.close();
+        try(SimpleFeatureIterator fr = fc.features()) {
+            assertTrue(fr.hasNext());
+            LineString ls = (LineString) fr.next().getDefaultGeometry();
+            // 1 1 0, 2 2 0, 4 2 1, 5 1 1
+            assertEquals(4, ls.getCoordinates().length);
+            assertTrue(new Coordinate(1, 1, 0).equals3D(ls.getCoordinateN(0)));
+            assertTrue(new Coordinate(2, 2, 0).equals3D(ls.getCoordinateN(1)));
+            assertTrue(new Coordinate(4, 2, 1).equals3D(ls.getCoordinateN(2)));
+            assertTrue(new Coordinate(5, 1, 1).equals3D(ls.getCoordinateN(3)));
+        }
     }
 
     public void testWriteLine() throws Exception {
@@ -169,11 +169,11 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(newFeature));
 
         // retrieve it back
-        SimpleFeatureIterator fi = fs.getFeatures(FF.id(new HashSet<FeatureId>(fids))).features();
-        assertTrue(fi.hasNext());
-        SimpleFeature f = fi.next();
-        assertTrue(ls.equalsExact((Geometry) f.getDefaultGeometry()));
-        fi.close();
+        try(SimpleFeatureIterator fi = fs.getFeatures(FF.id(new HashSet<FeatureId>(fids))).features()) {
+            assertTrue(fi.hasNext());
+            SimpleFeature f = fi.next();
+            assertTrue(ls.equalsExact((Geometry) f.getDefaultGeometry()));
+        }
     }
 
     public void testCreateSchemaAndInsertPolyTriangle() throws Exception {
@@ -240,14 +240,14 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
                         .get(JDBCDataStore.JDBC_NATIVE_SRID));
 
         // insert the feature
-        FeatureWriter<SimpleFeatureType, SimpleFeature> fw = dataStore.getFeatureWriterAppend(
-                tname(getPoly3d()), Transaction.AUTO_COMMIT);
-        SimpleFeature f = fw.next();
-        f.setAttribute(aname(ID), 0);
-        f.setAttribute(aname(GEOM), poly);
-        f.setAttribute(aname(NAME), "3dpolygon!");
-        fw.write();
-        fw.close();
+        try(FeatureWriter<SimpleFeatureType, SimpleFeature> fw = dataStore.getFeatureWriterAppend(
+                tname(getPoly3d()), Transaction.AUTO_COMMIT)) {
+            SimpleFeature f = fw.next();
+            f.setAttribute(aname(ID), 0);
+            f.setAttribute(aname(GEOM), poly);
+            f.setAttribute(aname(NAME), "3dpolygon!");
+            fw.write();
+        }
 
         // read feature back
         
@@ -260,19 +260,19 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         Query query = new Query(tname(getPoly3d()));
         query.setHints(hints);
         
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr = dataStore.getFeatureReader(
-                query, Transaction.AUTO_COMMIT);
-        assertTrue(fr.hasNext());
-        f = fr.next();
-
-        /**
-         * Check the geometries are topologically equal.
-         * Check that the Z values are preserved
-         */
-        Geometry fgeom = (Geometry) f.getDefaultGeometry();
-        assertTrue("2D topology does not match", poly.equalsTopo(fgeom));
-        assertTrue("Z values do not match", hasMatchingZValues(poly, fgeom));
-        fr.close();
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> fr = dataStore.getFeatureReader(
+                query, Transaction.AUTO_COMMIT)) {
+            assertTrue(fr.hasNext());
+            SimpleFeature f = fr.next();
+    
+            /**
+             * Check the geometries are topologically equal.
+             * Check that the Z values are preserved
+             */
+            Geometry fgeom = (Geometry) f.getDefaultGeometry();
+            assertTrue("2D topology does not match", poly.equalsTopo(fgeom));
+            assertTrue("Z values do not match", hasMatchingZValues(poly, fgeom));
+        }
     }
 
     /**
@@ -345,18 +345,15 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
                 new Coordinate(5, 1) });
 
         // check feature reader and the schema
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr = dataStore.getFeatureReader(q,
-                Transaction.AUTO_COMMIT);
-        assertEquals(crs, fr.getFeatureType().getCoordinateReferenceSystem());
-        assertEquals(crs, fr.getFeatureType().getGeometryDescriptor()
-                .getCoordinateReferenceSystem());
-        assertTrue(fr.hasNext());
-        SimpleFeature f = fr.next();
-        assertTrue(expected.equalsExact((Geometry) f.getDefaultGeometry()));
-        fr.close();
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> fr = dataStore.getFeatureReader(q,
+                Transaction.AUTO_COMMIT)) {
+            assertEquals(crs, fr.getFeatureType().getCoordinateReferenceSystem());
+            assertEquals(crs, fr.getFeatureType().getGeometryDescriptor()
+                    .getCoordinateReferenceSystem());
+            assertTrue(fr.hasNext());
+            SimpleFeature f = fr.next();
+            assertTrue(expected.equalsExact((Geometry) f.getDefaultGeometry()));
+        }
     }
-
-
-    
 
 }

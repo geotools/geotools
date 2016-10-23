@@ -423,7 +423,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
 
         writer.close();
 
-        DefaultQuery query = new DefaultQuery(tname("ft1"));
+        Query query = new Query(tname("ft1"));
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertTrue(reader.hasNext());
 

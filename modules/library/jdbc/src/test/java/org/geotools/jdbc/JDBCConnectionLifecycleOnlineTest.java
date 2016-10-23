@@ -53,15 +53,9 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         dataStore.getConnectionLifecycleListeners().add(mockListener);
         
         // read some features, this will force unwrapping in Oracle
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = featureStore.getFeatures().features();
+        try(SimpleFeatureIterator fi = featureStore.getFeatures().features()) {
             while(fi.hasNext()) {
                 fi.next();
-            }
-        } finally {
-            if(fi != null) {
-                fi.close();
             }
         }
         assertTrue(mockListener.onBorrowCalled);
@@ -70,27 +64,27 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         assertFalse(mockListener.onRollbackCalled);
         
         // now write something within a transaction
-        Transaction t = new DefaultTransaction();
-        SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
-        DefaultFeatureCollection collection = new DefaultFeatureCollection(null,
-                featureStore.getSchema());
-        featureStore.setTransaction(t);
-        for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
-            b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
-            collection.add(b.buildFeature(null));
-        }
-        featureStore.addFeatures((SimpleFeatureCollection)collection);
-        t.commit();
-        assertTrue(mockListener.onBorrowCalled);
-        assertTrue(mockListener.onReleaseCalled);
-        assertTrue(mockListener.onCommitCalled);
-        assertFalse(mockListener.onRollbackCalled);
-        
-        // and now do a rollback
-        t.rollback();
-        assertTrue(mockListener.onRollbackCalled);
-        t.close();
+        try(Transaction t = new DefaultTransaction()) {
+            SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
+            DefaultFeatureCollection collection = new DefaultFeatureCollection(null,
+                    featureStore.getSchema());
+            featureStore.setTransaction(t);
+            for (int i = 3; i < 6; i++) {
+                b.set(aname("intProperty"), new Integer(i));
+                b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
+                collection.add(b.buildFeature(null));
+            }
+            featureStore.addFeatures((SimpleFeatureCollection)collection);
+            t.commit();
+            assertTrue(mockListener.onBorrowCalled);
+            assertTrue(mockListener.onReleaseCalled);
+            assertTrue(mockListener.onCommitCalled);
+            assertFalse(mockListener.onRollbackCalled);
+            
+            // and now do a rollback
+            t.rollback();
+            assertTrue(mockListener.onRollbackCalled);
+        }            
     }
     
     public void testConnectionReleased() throws IOException {

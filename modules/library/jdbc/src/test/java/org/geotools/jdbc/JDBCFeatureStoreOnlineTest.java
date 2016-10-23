@@ -98,16 +98,12 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             features = featureStore.getFeatures(filter);
             assertEquals(1, features.size());
 
-            SimpleFeatureIterator iterator = features.features();
-            try {
+            try(SimpleFeatureIterator iterator = features.features()) {
                 assertTrue(iterator.hasNext());
     
                 SimpleFeature feature = (SimpleFeature) iterator.next();
                 assertEquals(fid, feature.getID());
                 assertFalse(iterator.hasNext());
-            }
-            finally {
-                iterator.close();
             }
         }
     }
@@ -159,24 +155,23 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         collection.add(b.buildFeature(null));
 
         FeatureEventWatcher watcher = new FeatureEventWatcher();
-        Transaction t = new DefaultTransaction();
-        featureStore.setTransaction(t);
-        featureStore.addFeatureListener(watcher);
-        JDBCFeatureStore featureStore2 = (JDBCFeatureStore) dataStore.getFeatureSource(featureStore.getName().getLocalPart()); 
-        List<FeatureId> fids = featureStore.addFeatures((SimpleFeatureCollection)collection);
-        
-        assertEquals(1, fids.size());
-
-        // check the store with the transaction sees the new features, but the other store does not
-        assertEquals(4, featureStore.getFeatures().size());
-        assertEquals(3, featureStore2.getFeatures().size());
-        
-        // check that after the commit everybody sees 4
-        t.commit();
-        assertEquals(4, featureStore.getFeatures().size());
-        assertEquals(4, featureStore2.getFeatures().size());
-        
-        t.close();
+        try(Transaction t = new DefaultTransaction()) {
+            featureStore.setTransaction(t);
+            featureStore.addFeatureListener(watcher);
+            JDBCFeatureStore featureStore2 = (JDBCFeatureStore) dataStore.getFeatureSource(featureStore.getName().getLocalPart()); 
+            List<FeatureId> fids = featureStore.addFeatures((SimpleFeatureCollection)collection);
+            
+            assertEquals(1, fids.size());
+    
+            // check the store with the transaction sees the new features, but the other store does not
+            assertEquals(4, featureStore.getFeatures().size());
+            assertEquals(3, featureStore2.getFeatures().size());
+            
+            // check that after the commit everybody sees 4
+            t.commit();
+            assertEquals(4, featureStore.getFeatures().size());
+            assertEquals(4, featureStore2.getFeatures().size());
+        }
     }
     
     public void testExternalConnection() throws IOException, SQLException {
@@ -190,35 +185,35 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         FeatureEventWatcher watcher = new FeatureEventWatcher();
         
-        Connection conn = setup.getDataSource().getConnection();
-        conn.setAutoCommit(false);
-        Transaction t = dataStore.buildTransaction(conn);
-        featureStore.setTransaction(t);
-        featureStore.addFeatureListener(watcher);
-        JDBCFeatureStore featureStore2 = (JDBCFeatureStore) dataStore.getFeatureSource(featureStore.getName().getLocalPart()); 
-        List<FeatureId> fids = featureStore.addFeatures((SimpleFeatureCollection)collection);
+        try(Connection conn = setup.getDataSource().getConnection()) {
+            conn.setAutoCommit(false);
+            try(Transaction t = dataStore.buildTransaction(conn)) {
+                featureStore.setTransaction(t);
+                featureStore.addFeatureListener(watcher);
+                JDBCFeatureStore featureStore2 = (JDBCFeatureStore) dataStore.getFeatureSource(featureStore.getName().getLocalPart()); 
+                List<FeatureId> fids = featureStore.addFeatures((SimpleFeatureCollection)collection);
+                
+                assertEquals(1, fids.size());
         
-        assertEquals(1, fids.size());
-
-        // check the store with the transaction sees the new features, but the other store does not
-        assertEquals(4, featureStore.getFeatures().size());
-        assertEquals(3, featureStore2.getFeatures().size());
+                // check the store with the transaction sees the new features, but the other store does not
+                assertEquals(4, featureStore.getFeatures().size());
+                assertEquals(3, featureStore2.getFeatures().size());
+                
+                // check that after the commit on the transaction things have not changed, 
+                // the connection is externally managed
+                t.commit();
+                assertEquals(4, featureStore.getFeatures().size());
+                assertEquals(3, featureStore2.getFeatures().size());
         
-        // check that after the commit on the transaction things have not changed, 
-        // the connection is externally managed
-        t.commit();
-        assertEquals(4, featureStore.getFeatures().size());
-        assertEquals(3, featureStore2.getFeatures().size());
-
-        // commit directly
-        conn.commit();
-        assertEquals(4, featureStore.getFeatures().size());
-        assertEquals(4, featureStore2.getFeatures().size());
-        
-        // check that closing the transaction does not affect the connection
-        t.close();
-        assertFalse(conn.isClosed());
-        conn.close();
+                // commit directly
+                conn.commit();
+                assertEquals(4, featureStore.getFeatures().size());
+                assertEquals(4, featureStore2.getFeatures().size());
+                
+                // check that closing the transaction does not affect the connection
+                assertFalse(conn.isClosed());
+            }
+        }
     }
     
     /**
@@ -255,14 +250,14 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             collection.add(b.buildFeature(null));
         }
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = new CollectionFeatureReader((SimpleFeatureCollection)collection, collection.getSchema());
-        featureStore.setFeatures(reader);
+        try(FeatureReader<SimpleFeatureType, SimpleFeature> reader = new CollectionFeatureReader((SimpleFeatureCollection)collection, collection.getSchema())) {
+            featureStore.setFeatures(reader);
+        }
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         assertEquals(3, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try(SimpleFeatureIterator iterator = features.features()) {
             HashSet<Integer> numbers = new HashSet<Integer>();
             numbers.add(new Integer(3));
             numbers.add(new Integer(4));
@@ -273,8 +268,6 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
                 assertTrue(numbers.contains(((Number)feature.getAttribute(aname("intProperty"))).intValue()));
                 numbers.remove(feature.getAttribute(aname("intProperty")));
             }
-        } finally {
-            iterator.close();
         }
     }
 
@@ -291,17 +284,13 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         assertEquals( Filter.INCLUDE, watcher.filter );
         
         SimpleFeatureCollection features = featureStore.getFeatures();
-        SimpleFeatureIterator i = features.features();
-        try {
+        try(SimpleFeatureIterator i = features.features()) {
             assertTrue(i.hasNext());
     
             while (i.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) i.next();
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
             }
-        }
-        finally {
-            i.close();
         }
     }
     
@@ -314,17 +303,13 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             new Object[] { point }, Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
-        SimpleFeatureIterator i = features.features();
-        try {
+        try(SimpleFeatureIterator i = features.features()) {
             assertTrue(i.hasNext());
     
             while (i.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) i.next();
                 assertTrue(point.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
             }
-        }
-        finally {
-            i.close();
         }
     }
     
@@ -344,17 +329,13 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             new Object[] { point }, Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
-        SimpleFeatureIterator i = features.features();
-        try {
+        try(SimpleFeatureIterator i = features.features()) {
             assertTrue(i.hasNext());
     
             while (i.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) i.next();
                 assertTrue(point.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
             }
-        }
-        finally {
-            i.close();
         }
     }
     
@@ -363,17 +344,13 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         featureStore.modifyFeatures(t.getDescriptor(aname("stringProperty")), "foo" , Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
-        SimpleFeatureIterator i = features.features();
-        try {
+        try(SimpleFeatureIterator i = features.features()) {
             assertTrue(i.hasNext());
     
             while (i.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) i.next();
                 assertEquals("foo", feature.getAttribute(aname("stringProperty")));
             }
-        }
-        finally {
-            i.close();
         }
     }
     

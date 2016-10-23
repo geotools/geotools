@@ -76,18 +76,14 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
         assertEquals(dates.length, source.getCount(query));
 
         SimpleFeatureCollection features = source.getFeatures(query);
-        SimpleFeatureIterator it = features.features();
-        int i = 0;
-        try {
+        try(SimpleFeatureIterator it = features.features()) {
+            int i = 0;
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
                 Date expected = date(dates[i++]);
 
                 assertEquals(Converters.convert(expected, Timestamp.class), f.getAttribute(aname("dt")));
             }
-        }
-        finally {
-            it.close();
         }
     }
 

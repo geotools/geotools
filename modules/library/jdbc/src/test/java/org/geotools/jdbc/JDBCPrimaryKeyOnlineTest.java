@@ -197,15 +197,11 @@ public abstract class JDBCPrimaryKeyOnlineTest extends JDBCTestSupport {
         assertNotNull(key);
 
         Object keyValue = null;
-        FeatureReader r = fs.getReader();
-        try {
+        try(FeatureReader r = fs.getReader()) {
             assertTrue(r.hasNext());
 
             SimpleFeature f = (SimpleFeature) r.next();
             keyValue = f.getAttribute(key);
-        }
-        finally {
-            r.close();
         }
 
         assertNotNull(keyValue);
@@ -224,15 +220,11 @@ public abstract class JDBCPrimaryKeyOnlineTest extends JDBCTestSupport {
 
         fs.modifyFeatures(new String[]{aname("name"), key, aname("geom")}, new Object[]{"foo", 10, null}, filter);
 
-        try {
-            r = fs.getReader(ff.equal(ff.property(key), ff.literal(keyValue), true));
+        try(FeatureReader r = fs.getReader(ff.equal(ff.property(key), ff.literal(keyValue), true))) {
             assertTrue(r.hasNext());
 
             SimpleFeature f = (SimpleFeature) r.next();
             assertEquals("foo", f.getAttribute(aname("name")));
-        }
-        finally {
-            r.close();
         }
     }
 }

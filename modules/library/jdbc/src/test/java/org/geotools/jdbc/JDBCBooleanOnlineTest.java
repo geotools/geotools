@@ -38,17 +38,14 @@ public abstract class JDBCBooleanOnlineTest extends JDBCTestSupport {
     }
     
     public void testGetFeatures() throws Exception {
-        FeatureReader r = dataStore.getFeatureReader( new Query( tname("b") ), Transaction.AUTO_COMMIT );
-        r.hasNext();
-        try {
+        try(FeatureReader r = dataStore.getFeatureReader( new Query( tname("b") ), Transaction.AUTO_COMMIT )) {
+            r.hasNext();
             SimpleFeature f = (SimpleFeature) r.next();
             assertEquals( Boolean.FALSE, f.getAttribute( "boolProperty" ) );
             
             r.hasNext();
             f = (SimpleFeature) r.next();
             assertEquals( Boolean.TRUE, f.getAttribute( "boolProperty" ) );
-        }finally {
-            r.close();
         }
     }
 }

@@ -60,13 +60,14 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         FeatureCollection<SimpleFeatureType, SimpleFeature> fc = 
             dataStore.getFeatureSource(tname(TESTLOB)).getFeatures();
         
-        FeatureIterator<SimpleFeature> fi = fc.features();
-        assertTrue(fi.hasNext());
-        SimpleFeature f = fi.next();
-        fi.close();
-        assertTrue(Arrays.equals(new byte[] {1,2,3,4,5}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
-        assertTrue(Arrays.equals(new byte[] {6,7,8,9,10}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
-        assertEquals("small clob", f.getAttribute(aname(CLOB_FIELD)));
+        try(FeatureIterator<SimpleFeature> fi = fc.features()) {
+            assertTrue(fi.hasNext());
+            SimpleFeature f = fi.next();
+            
+            assertTrue(Arrays.equals(new byte[] {1,2,3,4,5}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
+            assertTrue(Arrays.equals(new byte[] {6,7,8,9,10}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
+            assertEquals("small clob", f.getAttribute(aname(CLOB_FIELD)));
+        }
     }
     
     public void testWrite() throws Exception {
@@ -78,13 +79,13 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(sf));
         
         Filter filter = ff.id(new HashSet<Identifier>(fids));
-        FeatureIterator<SimpleFeature> fi = fs.getFeatures(filter).features();
-        assertTrue(fi.hasNext());
-        SimpleFeature f = fi.next();
-        fi.close();
-        assertTrue(Arrays.equals(new byte[] {6,7,8}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
-        assertTrue(Arrays.equals(new byte[] {11,12,13}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
-        assertEquals("newclob", f.getAttribute(aname(CLOB_FIELD)));
+        try(FeatureIterator<SimpleFeature> fi = fs.getFeatures(filter).features()) {
+            assertTrue(fi.hasNext());
+            SimpleFeature f = fi.next();
+            assertTrue(Arrays.equals(new byte[] {6,7,8}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
+            assertTrue(Arrays.equals(new byte[] {11,12,13}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
+            assertEquals("newclob", f.getAttribute(aname(CLOB_FIELD)));
+        }
     }
     
     public void testCreateSchema() throws IOException {

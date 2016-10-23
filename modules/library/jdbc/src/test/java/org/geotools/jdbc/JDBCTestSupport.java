@@ -291,6 +291,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                                  FeatureAssertion assertion) {
         assertFeatureIterator(startIndex,numberExpected,collection.features(),assertion);
     }
+    
     protected <F extends Feature>
         void assertFeatureIterator(int startIndex,
                                  int numberExpected,

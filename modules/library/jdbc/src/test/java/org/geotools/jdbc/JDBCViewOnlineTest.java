@@ -95,11 +95,11 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     public void testReadFeatures() throws Exception {
     	SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
         assertEquals(1, fc.size());
-        SimpleFeatureIterator fr = fc.features();
-        assertTrue(fr.hasNext());
-        SimpleFeature f = fr.next();
-        assertFalse(fr.hasNext());
-        fr.close();
+        try(SimpleFeatureIterator fr = fc.features()) {
+            assertTrue(fr.hasNext());
+            SimpleFeature f = fr.next();
+            assertFalse(fr.hasNext());
+        }
     }
     
     public void testGetBounds() throws Exception {

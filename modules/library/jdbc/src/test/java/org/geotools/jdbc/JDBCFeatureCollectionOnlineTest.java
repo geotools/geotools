@@ -121,8 +121,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
 
         assertEquals(4, collection.size());
 
-        SimpleFeatureIterator i = collection.features();
-        try {
+        try(SimpleFeatureIterator i = collection.features()) {
             boolean found = false;
     
             while (i.hasNext()) {
@@ -139,9 +138,6 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
                 }
             }
             assertTrue(found);
-        }
-        finally {
-            i.close();
         }
     }
 

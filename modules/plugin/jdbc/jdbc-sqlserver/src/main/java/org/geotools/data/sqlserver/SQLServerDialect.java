@@ -180,6 +180,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
         //force varchar, if not it will default to nvarchar which won't support length restrictions
         overrides.put( Types.VARCHAR, "varchar");
+        overrides.put( Types.BLOB, "varbinary");
     }
 
     @Override

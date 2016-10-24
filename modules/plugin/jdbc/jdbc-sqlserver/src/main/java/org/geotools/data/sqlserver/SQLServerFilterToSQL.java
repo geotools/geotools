@@ -187,7 +187,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     @Override
     protected void writeLiteral(Object literal) throws IOException {
         if (literal instanceof Date) {
-            SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             out.write("'" + DATETIME_FORMAT.format(literal) + "'");
         } else {
             super.writeLiteral(literal);

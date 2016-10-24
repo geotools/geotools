@@ -28,19 +28,20 @@ public class SQLServerDateTestSetup extends JDBCDateTestSetup {
     protected void createDateTable() throws Exception {
         run( "CREATE TABLE dates (d DATE, dt DATETIME, t TIME)");
         
+        // make the test runnable on sql server installs in countries using a different date format
         run( "INSERT INTO dates VALUES (" +
             "CAST('2009-06-28' as DATE), " +
-            "CAST('2009-06-28 15:12:41' as DATETIME)," +
+            "CAST('2009-06-28T15:12:41' as DATETIME)," +
             "CAST('15:12:41' as TIME)  )");
         
         run( "INSERT INTO dates VALUES (" +
                 "CAST('2009-01-15' as DATE), " +
-                "CAST('2009-01-15 13:10:12' as DATETIME)," +
+                "CAST('2009-01-15T13:10:12' as DATETIME)," +
                 "CAST('13:10:12' as TIME)  )");
         
         run( "INSERT INTO dates VALUES (" +
                 "CAST('2009-09-29' as DATE), " +
-                "CAST('2009-09-29 17:54:23' as DATETIME)," +
+                "CAST('2009-09-29T17:54:23' as DATETIME)," +
                 "CAST('17:54:23' as TIME)  )");
     }
 

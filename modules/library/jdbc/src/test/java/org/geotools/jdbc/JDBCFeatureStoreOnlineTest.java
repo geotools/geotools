@@ -17,7 +17,6 @@
 package org.geotools.jdbc;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -25,14 +24,20 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.geotools.data.CollectionFeatureReader;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureEvent.Type;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
-import org.geotools.data.FeatureEvent.Type;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeTypeBuilder;
@@ -105,6 +110,47 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
                 assertEquals(fid, feature.getID());
                 assertFalse(iterator.hasNext());
             }
+        }
+    }
+    
+    /**
+     * Tests that returned keys are actually allowing the code to get back the same feature
+     * inserted (SQLServer code used to rely on a key generation approach that failed this test)
+     * 
+     * @throws IOException
+     * @throws InterruptedException 
+     */
+    public void testMultithreadedAddFeatures() throws IOException, InterruptedException {
+        SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
+
+        // ensure a minimum of concurrency
+        final ExecutorService executor = Executors.newFixedThreadPool(8);
+        CompletionService<Void> cs = new ExecutorCompletionService<>(executor);
+        try {
+            final int LOOPS = 32;
+            for (int i = 0; i < LOOPS; i++) {
+                final String theProperty = aname("intProperty");
+                final Integer theValue = new Integer(i + 3);
+                b.set(theProperty, theValue);
+                SimpleFeature feature = b.buildFeature(null);
+                cs.submit(() -> {
+                    List<FeatureId> ids = featureStore.addFeatures(Arrays.asList(feature));
+                    Filter filter = dataStore.getFilterFactory().id(Collections.singleton(ids.get(0)));
+                    ContentFeatureCollection features = featureStore.getFeatures(filter);
+                    assertEquals(1, features.size());
+                    SimpleFeature found = DataUtilities.first(features);
+                    assertEquals(theValue, found.getAttribute(theProperty));
+                    return null;
+                });
+            }
+            
+            // gather the results to make sure there are no exceptions
+            for (int i = 0; i < LOOPS; i++) {
+                cs.take();
+            }
+            
+        } finally {
+            executor.shutdown();
         }
     }
     

@@ -111,7 +111,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
                 this.currentSubmosaicProducer = new CRSBoundMosaicProducer(
                     rasterLayerResponse,
                     dryRun,
-                    currentCRS, granuleDescriptor);
+                    granuleDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem(), granuleDescriptor);
                 perMosaicProducers.add(currentSubmosaicProducer);
                 accepted = currentSubmosaicProducer.acceptGranule(granuleDescriptor);
             }

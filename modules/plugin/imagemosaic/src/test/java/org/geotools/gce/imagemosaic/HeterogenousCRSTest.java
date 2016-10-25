@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,9 +27,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 
 import org.apache.commons.io.FileUtils;
+import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.factory.Hints;
@@ -68,6 +71,30 @@ public class HeterogenousCRSTest {
             AbstractGridFormat.INTERPOLATION.createValue();
         interpolationParam.setValue(Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
         testMosaic("diff_crs_sorting_test", "resolution D, crs A", null, "EPSG:32610", interpolationParam);
+    }
+
+    @Test
+    public void testUpdatingMosaic() throws IOException, URISyntaxException {
+        File second = TestData.file(this, "heterogeneous_crs/zblue.tiff");
+        File indexer = TestData.file(this, "heterogeneous_crs/indexer.properties");
+        File first = TestData.file(this, "heterogeneous_crs/red.tiff");
+        File resultsImage = TestData.file(this, "red_blue_results/red_blue_update_test.tiff");
+
+        File testStoreDirectory = crsMosaicFolder.newFolder("updateTest");
+
+        FileUtils.copyFile(first, new File(testStoreDirectory, first.getName()));
+        FileUtils.copyFile(indexer, new File(testStoreDirectory, indexer.getName()));
+
+        ImageMosaicReader reader = new ImageMosaicReader(testStoreDirectory);
+        File sfdemDest = new File(testStoreDirectory, second.getName());
+        FileUtils.copyFile(second, sfdemDest);
+
+        reader.harvest(null, sfdemDest, null);
+
+        GridCoverage2D gc2d = reader.read(new GeneralParameterValue[0]);
+
+        RenderedImage renderImage = gc2d.getRenderedImage();
+        ImageAssert.assertEquals(resultsImage, renderImage, 1000);
     }
 
     private void testMosaic(String testLocation, String sortOrder, String resultLocation,

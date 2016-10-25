@@ -100,7 +100,9 @@ public class AppSchemaDataAccessConfigurator {
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(AppSchemaDataAccessConfigurator.class.getPackage().getName());
     
-    public static String PROPERTY_JOINING = "app-schema.joining"; 
+    public static String PROPERTY_JOINING = "app-schema.joining";
+
+    public static String PROPERTY_ENCODE_NESTED_FILTERS = "app-schema.encodeNestedFilters";
 
     /** DOCUMENT ME! */
     private AppSchemaDataAccessDTO config;
@@ -129,6 +131,16 @@ public class AppSchemaDataAccessConfigurator {
     public static boolean isJoiningSet() {
         String s=AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s!=null;
+    }
+
+    /**
+     * Convenience method to check whether native encoding of nested filters is enabled.
+     * 
+     * @return <code>true</code> if native encoding of nested filters is enabled, <code>false</code> otherwise
+     */
+    public static boolean shouldEncodeNestedFilters() {
+        String propValue = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_ENCODE_NESTED_FILTERS);
+        return propValue == null || propValue.equalsIgnoreCase("true");
     }
 
     /**

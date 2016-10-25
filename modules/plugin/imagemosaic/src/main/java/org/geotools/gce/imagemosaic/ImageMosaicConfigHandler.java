@@ -1292,6 +1292,7 @@ public class ImageMosaicConfigHandler {
             // Get the manager for this coverage so it can be updated
             rasterManager = getParentReader().getRasterManager(targetCoverageName);
             mosaicConfiguration = rasterManager.getConfiguration();
+            this.configurations.put(mosaicConfiguration.getName(), mosaicConfiguration);
         }
 
         // STEP 2

@@ -17,13 +17,24 @@
 
 package org.geotools.data.complex.filter;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.data.complex.NestedAttributeMapping;
+import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
+import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainLink;
+import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainedAttributeDescriptor;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.util.logging.Logging;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Divide;
@@ -35,6 +46,9 @@ import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
 
 /**
  * @author Niels Charlier (Curtin University of Technology)
@@ -42,7 +56,11 @@ import org.opengis.filter.expression.Subtract;
  * @source $URL$
  */
 public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor {
-    
+
+    private static final Logger LOGGER = Logging.getLogger(ComplexFilterSplitter.class);
+
+    private int nestedAttributes = 0;
+
     public class CapabilitiesExpressionVisitor implements ExpressionVisitor {
         
         protected boolean capable = true;
@@ -109,7 +127,6 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
     }
     
     public Object visit(Id filter, Object notUsed) {
-        
         CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
         mappings.getFeatureIdExpression().accept(visitor, null);
         
@@ -121,7 +138,116 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         
         return null;
     }
-    
+
+    @Override
+    public Object visit(Function expression, Object notUsed) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        Object data = super.visit(expression, notUsed);
+        // encoding of functions with nested attributes as  arguments is not supported
+        if (nestedAttributes > 0 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+        return data;
+    }
+
+    @Override
+    protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        super.visitBinarySpatialOperator(filter);
+        // encoding of binary spatial operators operating on nested attributes is not supported
+        if (nestedAttributes > 0 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+    }
+
+    @Override
+    protected Object visit(BinaryTemporalOperator filter, Object data) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        Object ret = super.visit(filter, data);
+        // encoding of temporal operators involving nested attributes is not supported
+        if (nestedAttributes > 0 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+        return ret;
+    }
+
+    @Override
+    protected void visitMathExpression(BinaryExpression expression) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        super.visitMathExpression(expression);
+        // encoding of math expressions involving nested attributes is not supported
+        if (nestedAttributes > 0 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+    }
+
+    @Override
+    public Object visit(BBOX filter, Object notUsed) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        if (filter.getExpression1() instanceof PropertyName) {
+            PropertyName bboxProperty = (PropertyName)filter.getExpression1();
+            if (!bboxProperty.getPropertyName().isEmpty()) {
+                Object ret = this.visit(bboxProperty, notUsed);
+                if (preStack.size() == i+1) {
+                    preStack.pop();
+                }
+                // encoding bbox on nested geometry is not supported
+                if (nestedAttributes > 0) {
+                    postStack.push(filter);
+                    return ret;
+                }
+            }
+        }
+        return super.visit(filter, notUsed);
+    }
+
+    @Override
+    protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        super.visitBinaryComparisonOperator(filter);
+        // encoding a comparison between multiple nested attributes is not supported
+        if (nestedAttributes > 1 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+    }
+
+    @Override
+    public Object visit(PropertyIsBetween filter, Object extradata) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        Object ret = super.visit(filter, extradata);
+        // encoding a comparison between multiple nested attributes is not supported
+        if (nestedAttributes > 1 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+        return ret;
+    }
+
+    @Override
+    public Object visit(PropertyIsLike filter, Object notUsed) {
+        nestedAttributes = 0;
+        int i = preStack.size();
+        Object ret = super.visit(filter, notUsed);
+        // encoding a comparison between multiple nested attributes is not supported
+        if (nestedAttributes > 1 && preStack.size() == i + 1) {
+            Object o = preStack.pop();
+            postStack.push(o);
+        }
+        return ret;
+    }
+
     public Object visit(PropertyName expression, Object notUsed) {
         
         // break into single steps
@@ -131,8 +257,60 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             postStack.push(expression);
             return null;
         }
-        
+
         List<Expression> matchingMappings = mappings.findMappingsFor(exprSteps, false);
+
+        if (AppSchemaDataAccessConfigurator.shouldEncodeNestedFilters()) {
+            // check nested mappings
+            FeatureChainedAttributeVisitor nestedAttrExtractor = new FeatureChainedAttributeVisitor(
+                    mappings);
+            nestedAttrExtractor.visit(expression, null);
+            List<FeatureChainedAttributeDescriptor> attributes = nestedAttrExtractor
+                    .getFeatureChainedAttributes();
+            // encoding of filters on multiple nested attributes is not (yet) supported
+            if (attributes.size() == 1) {
+                FeatureChainedAttributeDescriptor nestedAttrDescr = attributes.get(0);
+                if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
+                    nestedAttributes++;
+
+                    FeatureTypeMapping featureMapping = nestedAttrDescr.getFeatureTypeOwningAttribute();
+
+                    // add source expressions for target attribute
+                    List<Expression> nestedMappings = featureMapping.findMappingsFor(
+                            nestedAttrDescr.getAttributePath(), false);
+                    Iterator<Expression> it = matchingMappings.iterator();
+                    while (it.hasNext()) {
+                        if (it.next() == null) {
+                            // necessary to enable encoding of nested filters when joining simple content
+                            it.remove();
+                        }
+                    }
+                    matchingMappings.addAll(nestedMappings);
+
+                    // add source expressions for mappings used in join conditions, as they too must be encoded
+                    for (int i = nestedAttrDescr.chainSize() - 2; i > 0; i--) {
+                        FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
+                        if (mappingStep.hasNestedFeature()) {
+                            FeatureChainLink parentStep = nestedAttrDescr.getLink(i);
+
+                            NestedAttributeMapping nestedAttr = parentStep.getNestedFeatureAttribute();
+                            FeatureTypeMapping nestedFeature = null;
+                            try {
+                                nestedFeature = nestedAttr.getFeatureTypeMapping(null);
+                            } catch (IOException e) {
+                                LOGGER.warning("Exception occurred processing nested filter, encoding"
+                                        + "will be disabled: " + e.getMessage());
+                                postStack.push(expression);
+                                return null;
+                            }
+
+                            Expression nestedExpr = nestedAttr.getMapping(nestedFeature).getSourceExpression();
+                            matchingMappings.add(nestedExpr);
+                        }
+                    }
+                }
+            }
+        }
 
         if (matchingMappings.isEmpty()) {
             postStack.push(expression);

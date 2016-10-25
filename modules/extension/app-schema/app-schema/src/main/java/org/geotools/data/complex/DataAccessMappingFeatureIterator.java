@@ -333,7 +333,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             } else {
                 throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
             }
-
         }
         String version=(String)this.mapping.getTargetFeature().getType().getUserData().get("targetVersion");
         // might be because top level feature has no geometry

@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>16-SNAPSHOT</version>
+    <version>16.0</version>
   </parent>
 
 

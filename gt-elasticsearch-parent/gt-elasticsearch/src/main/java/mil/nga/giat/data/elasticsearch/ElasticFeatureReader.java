@@ -61,7 +61,7 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
     @Override
     public SimpleFeatureType getFeatureType() {
-        return state.getFeatureType();
+        return this.featureType;
     }
 
     @Override

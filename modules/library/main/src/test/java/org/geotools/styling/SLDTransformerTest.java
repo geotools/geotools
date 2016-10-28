@@ -1729,6 +1729,23 @@ public class SLDTransformerTest {
         assertXpathEvaluatesTo("10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
     }
     
+    @Test
+    public void testLineOffsetExpression() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer(Color.RED);
+        ls.setPerpendicularOffset(ff.multiply(ff.property("a"), ff.literal(2)));
+        
+        
+        SLDTransformer st = new SLDTransformer();
+        st.setIndentation(2);
+        String xml = st.transform(ls);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("a", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:PropertyName", doc);
+        assertXpathEvaluatesTo("2", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal", doc);
+    }
+    
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(symbolizer);

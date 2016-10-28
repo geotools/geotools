@@ -766,7 +766,7 @@ public class SLDTransformer extends TransformerBase {
                 encodeVendorOptions(line.getOptions());
             }
             if (line.getPerpendicularOffset() != null) {
-                element("PerpendicularOffset", line.getPerpendicularOffset() + "");
+                element("PerpendicularOffset", line.getPerpendicularOffset());
             }
             end("LineSymbolizer");
         }

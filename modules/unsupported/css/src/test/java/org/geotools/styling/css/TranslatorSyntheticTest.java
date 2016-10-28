@@ -1045,7 +1045,15 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         List<Expression> expressions = tx2.getParameters();
         assertEquals(1, expressions.size());
         assertParameterFunction(expressions.get(0), "data", 0);
-
+    }
+    
+    @Test
+    public void testPerpendicularOffsetExpression() throws Exception {
+        String css = "* { stroke: red; stroke-offset: [a * 2]; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(ECQL.toExpression("a * 2"), ls.getPerpendicularOffset());
     }
 
     private Function assertTransformation(FeatureTypeStyle fts) {

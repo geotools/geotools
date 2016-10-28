@@ -1001,4 +1001,14 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("circle", mark.getWellKnownName());
         assertLiteral("#0000ff", mark.getFill().getColor());
     }
+
+    @Test
+    public void testPerpendicularOffsetExpression() throws Exception {
+        String css = "* { stroke: red; stroke-offset: [a * 2]; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(ECQL.toExpression("a * 2"), ls.getPerpendicularOffset());
+    }
+
 }

@@ -548,6 +548,8 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * spaceAround(50) The minimum distance between two labels, in pixels
 
+* underlineText(true): When true instructs the renderer to underline labels
+
 Raster Symbolizer
 '''''''''''''''''
 

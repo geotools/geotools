@@ -17,7 +17,9 @@
 
 package org.geotools.renderer.label;
 
+import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.LineMetrics;
 import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -86,7 +88,14 @@ class LineInfo {
             return layout;
         }
 
-
+        /**
+         * Computes some metrics for this part of the line taking in account the
+         * provided rendering context. This methods will always recompute the
+         * metrics even if the same font rendering context is provided.
+         */
+        LineMetrics computeLineMetrics(FontRenderContext fontRenderContext) {
+            return gv.getFont().getLineMetrics(text, fontRenderContext);
+        }
     }
 
     // the coordinates at which the label should be drawn within the global

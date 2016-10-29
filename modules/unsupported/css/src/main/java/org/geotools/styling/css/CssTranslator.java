@@ -211,6 +211,7 @@ public class CssTranslator {
             put("-gt-label-remove-overlaps", "removeOverlaps");
             put("-gt-label-allow-overruns", "allowOverrun");
             put("-gt-label-follow-line", "followLine");
+            put("-gt-label-underline-text", "underlineText");
             put("-gt-label-max-angle-delta", "maxAngleDelta");
             put("-gt-label-auto-wrap", "autoWrap");
             put("-gt-label-force-ltr", "forceLeftToRight");

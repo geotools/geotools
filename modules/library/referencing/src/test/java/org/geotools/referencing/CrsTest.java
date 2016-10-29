@@ -365,4 +365,15 @@ public final class CrsTest {
         assertEquals(15.96, transformed.getMaximum(0), 0.01);
         assertEquals(41.61, transformed.getMaximum(1), 0.01);
     }
+
+    @Test
+    public void parseWKT() throws Exception {
+        String[] wkts = {
+                "PROJCS[\"Wagner_IV\", GEOGCS[\"WGS84\",  DATUM[\"WGS84\",  SPHEROID[\"WGS84\",  6378137.0, 298.257223563]], PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]], PROJECTION[\"Wagner_IV\"], UNIT[\"m\", 1.0], AXIS[\"Easting\", EAST], AXIS[\"Northing\", NORTH]]",
+                "PROJCS[\"Wagner_V\", GEOGCS[\"WGS84\",  DATUM[\"WGS84\",  SPHEROID[\"WGS84\",  6378137.0, 298.257223563]], PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]], PROJECTION[\"Wagner_V\"], UNIT[\"m\", 1.0], AXIS[\"Easting\", EAST], AXIS[\"Northing\", NORTH]]"
+        };
+        for(String wkt : wkts) {
+            assertNotNull(CRS.parseWKT(wkt));
+        }
+    }
 }

@@ -461,6 +461,8 @@ public class YsldEncodeCookbookTest {
         assertThat(text, yHasEntry("displacement", yTuple(numEqualTo(0), numEqualTo(5))));
 
         assertThat(text.get("fill-color"), isColor("000000"));
+
+        assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"underlineText"));
     }
 
     @Test
@@ -981,6 +983,7 @@ public class YsldEncodeCookbookTest {
         //              <CssParameter name="fill">#000000</CssParameter>
         //            </Fill>
         //            <VendorOption name="followLine">true</VendorOption>
+        //            <VendorOption name="underlineText">true</VendorOption>
         //            <VendorOption name="maxAngleDelta">90</VendorOption>
         //            <VendorOption name="maxDisplacement">400</VendorOption>
         //            <VendorOption name="repeat">150</VendorOption>
@@ -995,6 +998,7 @@ public class YsldEncodeCookbookTest {
         assertEquals("${name}", text.str("label"));
         assertThat(text.get("fill-color"), isColor("000000"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
+        assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"underlineText"));
         assertEquals(90, text.integer(Ysld.OPTION_PREFIX+"maxAngleDelta").intValue());
         assertEquals(400, text.integer(Ysld.OPTION_PREFIX+"maxDisplacement").intValue());
         assertEquals(150, text.integer(Ysld.OPTION_PREFIX+"repeat").intValue());
@@ -1388,6 +1392,7 @@ public class YsldEncodeCookbookTest {
 
         assertEquals(60, text.integer(Ysld.OPTION_PREFIX+"autoWrap").intValue());
         assertEquals(150, text.integer(Ysld.OPTION_PREFIX+"maxDisplacement").intValue());
+        assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"underlineText"));
     }
 
     @Test

@@ -33,7 +33,7 @@ Regardless of what you want to achieve, there are some common steps to consider:
    * Remember to add copyright header with the year of creation to any new file, e.g., if you are adding a file in 2016 the copyright header should contain ``(C) 2016, Open Source Geospatial Foundation (OSGeo)``. It is also recommended to add copyright headers to any pre-existing file missing them.
    * The commit message should refer an existing ticket in Jira, if there is none, create one. The commit message should look like ``[GEOT-XYWZ] Title of the ticket``
    * Please make sure you're following the [coding conventions](http://docs.geotools.org/latest/developer/conventions/code/style.html), and otherwise avoid any reformats to the existing code, as they make it harder to review your changes.
-     If you find sections not following the coding convetions and you want to amend their formatting, that's fine, please do so in a separate commit/patch from the real code changes.
+     If you find sections not following the coding convetions we prefer that you leave them alone as adjusting them masks useful updates to the code.  However, if you want to amend their formatting, please do so in a separate commit/patch from the real code changes.
 
 4. Review the work that was done, make sure the changes contain all the files you need, and no other extraneous change:
    ````

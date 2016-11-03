@@ -296,10 +296,10 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 }
 
                 RenderingExecutorEvent event = new RenderingExecutorEvent(this, info.id);
+                tasksLatch.countDown();
                 if (!result) {
                     info.listener.onRenderingFailed(event);
                 } else {
-                    tasksLatch.countDown();
                     if (tasksLatch.getCount() == 0) {
                         currentTasks.remove(info);
                         info.listener.onRenderingCompleted(event);

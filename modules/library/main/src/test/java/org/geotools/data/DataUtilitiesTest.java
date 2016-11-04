@@ -647,6 +647,16 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals("the_geom2", after.getGeometryDescriptor().getLocalName());
     }
 
+    public void testCreateSubTypeWithPropertyNotMatchingAnAttributeDescriptor() throws Exception {
+        // creating a sub type with a property that doesn't map to an attribute descriptor
+        SimpleFeatureType before = DataUtilities.createType("cities","the_geom:Point:srid=4326,name:String");
+        SimpleFeatureType after = DataUtilities.createSubType(before, new String[] { "the_geom", "name", "not_existing" });
+        // the not_existing property should have been ignored
+        assertEquals(2, after.getAttributeCount());
+        assertNotNull(after.getDescriptor("the_geom"));
+        assertNotNull(after.getDescriptor("name"));
+    }
+
     public void testSource() throws Exception {
         SimpleFeatureSource s = DataUtilities.source(roadFeatures);
         assertEquals(3, s.getCount(Query.ALL));

@@ -28,7 +28,7 @@
                             <ogc:PropertyName>name</ogc:PropertyName>
                         </Label>
                         <Font>
-                            <CssParameter name="font-family">Vera</CssParameter>
+                            <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
                             <CssParameter name="font-size">16</CssParameter>
                             <CssParameter name="font-weight">bold</CssParameter>
                         </Font>
@@ -67,7 +67,7 @@
                             <ogc:PropertyName>name</ogc:PropertyName>
                         </Label>
                         <Font>
-                            <CssParameter name="font-family">Vera</CssParameter>
+                            <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
                             <CssParameter name="font-size">20</CssParameter>
                         </Font>
                         <LabelPlacement>
@@ -104,7 +104,7 @@
                             <ogc:PropertyName>name</ogc:PropertyName>
                         </Label>
                         <Font>
-                            <CssParameter name="font-family">Vera</CssParameter>
+                            <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
                             <CssParameter name="font-style">italic</CssParameter>
                             <CssParameter name="font-size">25</CssParameter>
                         </Font>
@@ -130,7 +130,7 @@
                             <ogc:PropertyName>name</ogc:PropertyName>
                         </Label>
                         <Font>
-                            <CssParameter name="font-family">Vera</CssParameter>
+                            <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
                             <CssParameter name="font-size">30</CssParameter>
                         </Font>
                         <LabelPlacement>

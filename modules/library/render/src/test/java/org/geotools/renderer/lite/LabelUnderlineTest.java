@@ -73,6 +73,6 @@ public class LabelUnderlineTest {
         renderer.paint(graphics, new Rectangle(0, 0, image.getWidth(), image.getHeight()), bounds);
         // let's see if the result image match our expectations
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/underlineStyle.sld.png");
-        ImageAssert.assertEquals(reference, image, 1200);
+        ImageAssert.assertEquals(reference, image, 3000);
     }
 }

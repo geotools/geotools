@@ -368,16 +368,6 @@ public class OrderedAxisAuthorityFactoryTest extends TestCase {
         AbstractAuthorityFactory findable = (AbstractAuthorityFactory) factory;
         final IdentifiedObjectFinder finder = findable.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
 
-        /*
-         * We tested in DefaultFactoryTest that WGS84 is not found when searching
-         * directly in DefaultFactory. Now we perform the same search through the
-         * ordered axis authority factory.
-         */
-        finder.setFullScanAllowed(false);
-        assertNull("Should not find the CRS without a scan.",
-                   finder.find(DefaultGeographicCRS.WGS84));
-
-        finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(DefaultGeographicCRS.WGS84);
         assertNotNull("With scan allowed, should find the CRS.", find);
         assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, find));
@@ -400,10 +390,6 @@ public class OrderedAxisAuthorityFactoryTest extends TestCase {
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326", false);
         assertTrue(CRS.equalsIgnoreMetadata(search, standard));
         assertFalse("Identifiers should not be the same.", search.equals(standard));
-        finder.setFullScanAllowed(false);
-        assertNull("Should not find the CRS without a scan.", finder.find(search));
-
-        finder.setFullScanAllowed(true);
         find = finder.find(search);
         final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) find;
         assertNotNull("Should find the CRS despite the different axis order.", find);

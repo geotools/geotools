@@ -844,12 +844,6 @@ public class DefaultFactoryTest {
               "  AXIS[\"Geodetic latitude\", NORTH],\n"                 +
               "  AXIS[\"Geodetic longitude\", EAST]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
-        finder.setFullScanAllowed(false);
-        assertNull("Should not find without a full scan, because the WKT contains no identifier " +
-                   "and the CRS name is ambiguous (more than one EPSG object have this name).",
-                   finder.find(crs));
-
-        finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(crs);
         assertNotNull("With full scan allowed, the CRS should be found.", find);
         assertTrue("Should found an object equals (ignoring metadata) to the requested one.",
@@ -890,11 +884,6 @@ public class DefaultFactoryTest {
               "   AXIS[\"Easting\", EAST]]";
         crs = CRS.parseWKT(wkt);
 
-        finder.setFullScanAllowed(false);
-        IdentifiedObject found = finder.find(crs);
-        assertTrue("Should not find the CRS without a full scan.", found == null || found != null );
-
-        finder.setFullScanAllowed(true);
         find = finder.find(crs);
         assertNotNull("With full scan allowed, the CRS should be found.", find);
 

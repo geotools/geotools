@@ -210,8 +210,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             case 9103: return NonSI.MINUTE_ANGLE;
             case 9104: return NonSI.SECOND_ANGLE;
             case 9105: return NonSI.GRADE;
-            case 9107: return Units.DEGREE_MINUTE_SECOND;
-            case 9108: return Units.DEGREE_MINUTE_SECOND;
+            // DMS is a way to format information but not a real unit, decode towards DEGREE instead
+            case 9107: return NonSI.DEGREE_ANGLE;// return Units.DEGREE_MINUTE_SECOND;
+            case 9108: return NonSI.DEGREE_ANGLE; // return Units.DEGREE_MINUTE_SECOND;
             case 9109: return    SI.MICRO(SI.RADIAN);
             case 9110: return Units.SEXAGESIMAL_DMS;
 //TODO      case 9111: return NonSI.SEXAGESIMAL_DM;

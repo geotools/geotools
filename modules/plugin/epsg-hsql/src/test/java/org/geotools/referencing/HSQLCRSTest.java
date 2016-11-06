@@ -33,5 +33,10 @@ public class HSQLCRSTest extends AbstractCRSTest {
     protected Properties createOfflineFixture() {
         return new Properties();
     }
+    
+    @Override
+    protected boolean supportsED50QuickScan() {
+        return true;
+    }
 
 }

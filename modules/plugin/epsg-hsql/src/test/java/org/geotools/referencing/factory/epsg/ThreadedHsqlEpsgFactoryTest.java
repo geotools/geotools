@@ -128,13 +128,6 @@ public class ThreadedHsqlEpsgFactoryTest {
               "  AXIS[\"Geodetic longitude\", EAST]]";
         
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
-        finder.setFullScanAllowed(false);
-        
-        assertNull("Should not find without a full scan, because the WKT contains no identifier " +
-                   "and the CRS name is ambiguous (more than one EPSG object have this name).",
-                   finder.find(crs));
-
-        finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(crs);
         
         assertNotNull("With full scan allowed, the CRS should be found.", find);
@@ -174,10 +167,6 @@ public class ThreadedHsqlEpsgFactoryTest {
               "   AXIS[\"Easting\", EAST]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         
-        finder.setFullScanAllowed(false);
-        assertNull("Should not find the CRS without a full scan.", finder.find(crs));
-        
-        finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(crs);        
         assertNotNull("With full scan allowed, the CRS should be found.", find);
         

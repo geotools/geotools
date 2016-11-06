@@ -155,14 +155,13 @@ International Terrestrial Reference Frame 2005;;D_ITRF_2005
 Iraq-Kuwait Boundary Datum 1992;Iraq-Kuwait_Boundary_Datum_1992;D_Iraq_Kuwait_Boundary_1992
 IRENET95;IRENET95;D_IRENET95
 Islands Network 1993;Islands_Network_1993;D_Islands_Network_1993
-Israel;Israel;D_Israel
+Israel;Israel 1993;D_Israel
 Istituto Geografico Militaire 1995;Istituto_Geografico_Militaire_1995;D_IGM_1995
 Iwo Jima 1945;;D_Beacon_E_1945
 Jamaica 1875;Jamaica_1875;D_Jamaica_1875
 Jamaica 1969;Jamaica_1969;D_Jamaica_1969
 Jamaica 2001;;D_Jamaica_2001
 Japanese Geodetic Datum 2000;Japanese_Geodetic_Datum_2000;D_JGD_2000
-Jednotne Trigonometricke Site Katastralni;Jednotne_Trigonometricke_Site_Katastralni;D_S_JTSK
 Johnston Island 1961;;D_Johnston_Island_1961;Johnston Island 1961
 Jouik 1961;Jouik_1961;D_Jouik_1961
 K0 1949;K0_1949;D_K0_1949
@@ -235,8 +234,8 @@ MOP78;MOP78;D_MOP78
 Mount Dillon;Mount_Dillon;D_Mount_Dillon
 Moznet (ITRF94);Moznet_ITRF94;D_Moznet
 M'poraloko;M_poraloko;D_Mporaloko
-NAD Michigan;NAD_Michigan;D_North_American_Michigan
-NAD83 (High Accuracy Regional Network);NAD83_High_Accuracy_Regional_Network;D_North_American_1983_HARN
+NAD27 Michigan;NAD_Michigan;D_North_American_Michigan
+NAD83 (High Accuracy Reference Network);;NAD83_High_Accuracy_Regional_Network;D_North_American_1983_HARN
 NAD83 (National Spatial Reference System 2007);;D_NAD_1983_NSRS2007
 NAD83 Canadian Spatial Reference System;NAD83_Canadian_Spatial_Reference_System;D_North_American_1983_CSRS
 Nahrwan 1934;;D_Nahrwan_1934
@@ -391,6 +390,7 @@ ST87 Ouvea;ST87_Ouvea;D_ST87_Ouvea
 Stockholm 1938;Stockholm_1938;D_Stockholm_1938
 Stockholm 1938 (Stockholm);Stockholm_1938_Stockholm
 Sudan;Sudan;D_Sudan
+System Jednotne Trigonometricke Site Katastralni (Ferro);Trigonometricke Site Katastralni (Ferro)Jednotne Trigonometricke Site Katastralni;Jednotne_Trigonometricke_Site_Katastralni;D_S_JTSK
 SWEREF99;SWEREF99;D_SWEREF99
 Swiss Terrestrial Reference Frame 1995;Swiss_Terrestrial_Reference_Frame_1995;D_Swiss_TRF_1995
 Tahaa;Tahaa;D_Tahaa

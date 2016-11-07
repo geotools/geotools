@@ -231,7 +231,6 @@
 		<module>process</module>
 		<module>wfs</module>
 		<module>geojson</module>
-		<module>geopkg</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
 		<module>ysld</module>

@@ -58,6 +58,7 @@ DataStore plugins:
    ogr
    pregeneralized
    property
+   geopackage
 
 Unsupported plugins:
 

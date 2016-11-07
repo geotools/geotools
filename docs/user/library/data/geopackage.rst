@@ -3,7 +3,11 @@ GeoPackage Plugin
 
 Supports direct access to a GeoPackage database.
 
-eoPackage is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information.
+GeoPackage is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information.
+
+The module supports both vector data, as GeoPackage features, and raster data, as GeoPackage tiles. Access to a GeoPackage
+can be performed either low level, using the GeoPackage class, or high level, using the GeoPackage JDBC data store
+for vector data, and the GeoPackageReader for raster data.
 
 References:
 
@@ -20,9 +24,6 @@ References:
       <version>${geotools.version}</version>
     </dependency>
 
-The module supports both vector data, as GeoPackage features, and raster data, as GeoPackage tiles. Access to a GeoPackage
-can be performed either low level, using the GeoPackage class, or high level, using the GeoPackage JDBC data store
-for vector data, and the GeoPackageReader for raster data.
 
 DataStore Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

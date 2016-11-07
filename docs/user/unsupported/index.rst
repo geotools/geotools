@@ -27,7 +27,6 @@ Research and Development:
    swt/index
    wps
    sample
-   geopackage
 
 Unsupported rendering plugins:
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://geotools.org/test/importFacets" elementFormDefault="qualified" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:foo="http://www.foo.com/bar" 
+    xsi:schemaLocation="http://www.foo.com/bar http://www.foo.com/bar">
+
+    <complexType name="stringCollection">
+        <sequence>
+            <element name="s" type="string" minOccurs="1" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+</schema>

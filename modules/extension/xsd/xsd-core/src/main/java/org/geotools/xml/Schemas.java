@@ -16,16 +16,17 @@
  */
 package org.geotools.xml;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -39,6 +40,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
@@ -49,9 +51,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.URIHandler;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeGroupContent;
 import org.eclipse.xsd.XSDAttributeGroupDefinition;
@@ -70,6 +70,7 @@ import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.XSDWildcard;
 import org.eclipse.xsd.impl.XSDImportImpl;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDConstants;
@@ -90,7 +91,6 @@ import org.picocontainer.PicoVisitor;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.eclipse.xsd.XSDWildcard;
 
 /**
  * Utility class for performing various operations.
@@ -316,12 +316,25 @@ public class Schemas {
                     ".xsd"));
         xsdMainResource.setURI(uri);
 
+        // read resource before synchronize: Shorter lock duration and prevention of deadlock
+        // if remote schema is created on same JVM and synchronizes on Schemas, too.
+        Map<Object, Object> options = resourceSet.getLoadOptions();
+        Map<?, ?> response = getOrCreateResponseFrom(options);
+        InputStream inputStream = readUriResource(uri, resourceSet, response);
+                
         // schema building has effects on referenced schemas, it will alter them -> we need 
         // to synchronize this call so that only one of these operations is active at any time
         synchronized(Schemas.class) {
-            xsdMainResource.load(resourceSet.getLoadOptions());
+            try {
+                xsdMainResource.load(inputStream, options);
+            } finally {
+                inputStream.close();
+                Long timeStamp = (Long) response.get(URIConverter.RESPONSE_TIME_STAMP_PROPERTY);
+                if (timeStamp != null) {
+                    xsdMainResource.setTimeStamp(timeStamp);
+                }
+            }
             XSDSchema schema = xsdMainResource.getSchema();
-
             if (schema != null) {
                 // if schema contains no element declarations, nor type definitions,
                 // force import of external schemas (if any), since it does not happen automatically;
@@ -339,6 +352,55 @@ public class Schemas {
 
             return schema;
         }
+    }
+
+    /**
+     * Fetches the contents of the URI into a local {@link InputStream}.
+     * 
+     * @param uri
+     * @param options
+     * @param response
+     * @return A local resource
+     * @throws IOException
+     */
+    private static InputStream readUriResource(URI uri, ResourceSet resourceSet, Map<?, ?> response)
+            throws IOException {
+        Map<Object, Object> options = resourceSet.getLoadOptions();
+        URIConverter uriConverter = getUriConverter(resourceSet);
+
+        Map<Object, Object> loadMap = new HashMap<>(options);
+        loadMap.put(URIConverter.OPTION_RESPONSE, response);
+
+        InputStream inputStream = uriConverter.createInputStream(uri, loadMap);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            IOUtils.copy(inputStream, out);
+        } finally {
+            inputStream.close();
+        }
+        inputStream = new ByteArrayInputStream(out.toByteArray());
+        return inputStream;
+    }
+
+    /**
+     * Fetches the map to be used as reponse from the given options, creating a new one if not existing.
+     * 
+     * @param options
+     * @return a map to be used as response
+     */
+    private static Map<?, ?> getOrCreateResponseFrom(Map<Object, Object> options) {
+        Map<?, ?> response = (options == null) ? null
+                : (Map<?, ?>) options.get(URIConverter.OPTION_RESPONSE);
+        if (response == null) {
+            response = new HashMap<Object, Object>();
+        }
+        return response;
+    }
+    
+
+    private static URIConverter getUriConverter(ResourceSet resourceSet) {
+        URIConverter uriConverter = resourceSet.getURIConverter();
+        return uriConverter;
     }
 
     private static boolean hasNoElementsNorTypes(XSDSchema schema) {

@@ -19,24 +19,40 @@ package org.geotools.xml;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
-
-import junit.framework.TestCase;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
+import org.geotools.xml.impl.HTTPURIHandler;
 import org.geotools.xs.XS;
 
+import junit.framework.TestCase;
+
 /**
- * 
+ * Tests for {@link Schemas}.
  *
  * @source $URL$
  */
 public class SchemasTest extends TestCase {
 
     File tmp,sub;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     
     protected void setUp() throws Exception {
         super.setUp();
@@ -121,6 +137,8 @@ public class SchemasTest extends TestCase {
         tmp.delete();
 
         System.setProperty(Schemas.FORCE_SCHEMA_IMPORT, "false");
+        
+        executorService.shutdown();
     }
     
     
@@ -211,5 +229,50 @@ public class SchemasTest extends TestCase {
         }
 
         return elFound;
+    }
+    
+    /**
+     * {@link HTTPURIHandler} implementation mocks a remote GeoServer which synchronizes on {@link Schemas}
+     * class, as GeoServer does. The mock uses a timeout, to avoid the test to hang for ever in case
+     * of future implementation changes.
+     */
+    private final class MockServerBehaviour extends HTTPURIHandler {
+        @Override
+        public InputStream createInputStream(URI uri, Map<?, ?> options)
+                throws IOException {
+            try {
+                return executorService.invokeAny(Collections.singletonList(new Callable<InputStream>() {
+                    @Override
+                    public InputStream call() throws Exception {
+                        synchronized (Schemas.class) {
+                            return Schemas.class.getResourceAsStream("remoteSchemaLocation.xsd");
+                        }
+                    }
+                }),3, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                return null;
+            } catch (ExecutionException e) {
+                return null;
+            } catch (TimeoutException e) {
+                throw new RuntimeException("Timed out.", e);
+            }
+        }
+    }
+    
+    /**
+     * Test ensures no deadlock occurs when a remote schema is loaded, which resolves to the same JVM. 
+     * Deadlock used to occur in GeoServer, when schema was loaded from same GeoServer instance, because 
+     * schema consumer and schema server both synchronized on same {@link Schemas} class instance.
+     * 
+     * @throws IOException
+     */
+    public void testParseRemoteDoesNotBlock() throws IOException {
+        URIConverter converter = new ExtensibleURIConverterImpl(
+                Collections.singletonList(new MockServerBehaviour()), Collections.emptyList());
+        ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.setURIConverter(converter);
+        XSDSchema schema = Schemas.parse("http://www.foo.bar/remoteSchemaLocation.xsd",
+                resourceSet);
+        assertNotNull(schema);
     }
 }

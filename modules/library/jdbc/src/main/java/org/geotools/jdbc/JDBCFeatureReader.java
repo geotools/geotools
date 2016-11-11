@@ -524,12 +524,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             //get the primary key, ensure its not contained in the values
             key = dataStore.getPrimaryKey(featureType);
             int count = md.getColumnCount();
-            columnNames=new String[count];
+            columnNames = new String[count];
 
             exposePrimaryKeys = featureSource.getState().isExposePrimaryKeyColumns();
             for (int i = 0; i < md.getColumnCount(); i++) {
-            	String columnName =md.getColumnName(i + 1); 
-            	columnNames[i]=columnName;
+            	String columnName = md.getColumnName(i + 1); 
+            	columnNames[i] = columnName;
             	if(!exposePrimaryKeys) {
                     for ( PrimaryKeyColumn col : key.getColumns() ) {
                         if (col.getName().equals(columnName)) {
@@ -704,7 +704,14 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             return dirty[index];
         }
 
+        /** 
+         * @deprecated use {@link #isDirty(String)} instead
+         */
         public boolean isDirrty(String name) {
+        	return isDirty(name);
+        }
+        
+        public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }
 
@@ -786,7 +793,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
-        public Collection<?extends Property> getValue() {
+        public Collection<? extends Property> getValue() {
             return getProperties();
         }
 

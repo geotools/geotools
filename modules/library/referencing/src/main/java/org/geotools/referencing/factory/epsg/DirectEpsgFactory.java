@@ -3057,7 +3057,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             return Collections.emptySet();
                         }
                     }
-                    sql = "SELECT " + select + " FROM " + from + " WHERE " + where + "='" + code + '\'';
+                    sql = "SELECT " + select + " FROM " + from + " WHERE " + where + "='" + code + "' ORDER BY ABS(DEPRECATED)";
                 }
             }
             sql = adaptSQL(sql);

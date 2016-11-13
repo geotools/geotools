@@ -756,6 +756,16 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
     protected static double rollLongitude(final double x) {
         return x - (2*Math.PI) * Math.floor(x / (2*Math.PI) + 0.5);
     }
+    
+    /**
+     * Ensures that the specified longitude stay within 0 and {code}PI{code}.
+     *
+     * @param  x An angle
+     * @return The normalized angle
+     */
+    protected static double normalizeAngle(final double x) {
+        return x - (2 * Math.PI) * Math.floor(x / (2*Math.PI) + 0.5);
+    }
 
     /**
      * Wraps the specified matrix in a Geotools implementation of {@link Matrix}. If {@code matrix}

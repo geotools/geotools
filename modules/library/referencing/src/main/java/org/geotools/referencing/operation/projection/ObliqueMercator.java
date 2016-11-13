@@ -634,8 +634,9 @@ public class ObliqueMercator extends MapProjection {
             return this.twoPoint == that.twoPoint &&
                    equals(this.latitudeOfCentre   , that.latitudeOfCentre   ) &&
                    equals(this.longitudeOfCentre  , that.longitudeOfCentre  ) &&
-                   equals(this.azimuth            , that.azimuth            ) &&
-                   equals(this.rectifiedGridAngle , that.rectifiedGridAngle ) &&
+                   // normalizing angles here
+                   equals(rollLongitude(this.azimuth),  rollLongitude(that.azimuth)) &&
+                   equals(rollLongitude(this.rectifiedGridAngle) , rollLongitude(that.rectifiedGridAngle) ) &&
                    equals(this.latitudeOf1stPoint , that.latitudeOf1stPoint ) &&
                    equals(this.longitudeOf1stPoint, that.longitudeOf1stPoint) &&
                    equals(this.latitudeOf2ndPoint , that.latitudeOf2ndPoint ) &&

@@ -3017,7 +3017,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 final double min = semiMajorAxis - semiMajorAxis * tol; 
                 final double max = semiMajorAxis + semiMajorAxis * tol;
                 code   = Double.toString(semiMajorAxis);
-                sql = "SELECT ELLIPSOID_CODE FROM [Ellipsoid] JOIN [Unit of Measure] on [Ellipsoid].UOM_CODE = [Unit of Measure].UOM_CODE WHERE (SEMI_MAJOR_AXIS * FACTOR_B / FACTOR_C) between " + min + " AND " + max;
+                sql = "SELECT ELLIPSOID_CODE FROM [Ellipsoid] JOIN [Unit of Measure] on [Ellipsoid].UOM_CODE = [Unit of Measure].UOM_CODE WHERE (SEMI_MAJOR_AXIS * FACTOR_B / FACTOR_C) between " + min + " AND " + max + " ORDER BY ABS(DEPRECATED)";
             } else {
                 IdentifiedObject dependency;
                 if (object instanceof GeneralDerivedCRS) {

@@ -27,7 +27,7 @@ public class EsriLookupTest {
     @BeforeClass
     public static void setup() {
         System.setProperty("org.geotools.referencing.forceXY", "true");
-        Hints.putSystemDefault(Hints.COMPARISON_TOLERANCE, 1e-9);
+        Hints.putSystemDefault(Hints.COMPARISON_TOLERANCE, 1e-8);
         CRS.getAuthorityFactory(true);
     }
     
@@ -70,7 +70,7 @@ public class EsriLookupTest {
     public void testCodeLookup() throws FactoryException {
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         Integer actualCode = CRS.lookupEpsgCode(crs, false);
-        assertNotNull("Could not find code for " + expectedCode, actualCode);
+        assertNotNull("Could not find code for " + expectedCode + "\n" + wkt + "\n" + crs.toWKT(), actualCode);
         assertEquals(expectedCode, actualCode);
         
     }

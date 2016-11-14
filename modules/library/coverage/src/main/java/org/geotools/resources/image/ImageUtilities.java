@@ -348,8 +348,8 @@ public final class ImageUtilities {
             return null;
         }
         ImageLayout layout = initToImage ? new ImageLayout(image) : null;
-        if ((image.getNumXTiles()==1 || image.getTileWidth () <= STRIPE_SIZE) &&
-            (image.getNumYTiles()==1 || image.getTileHeight() <= STRIPE_SIZE))
+        if ((image.getNumXTiles()==1 || image.getTileWidth () < STRIPE_SIZE) &&
+            (image.getNumYTiles()==1 || image.getTileHeight() < STRIPE_SIZE))
         {
             // If the image was already tiled, reuse the same tile size.
             // Otherwise, compute default tile size.  If a default tile
@@ -368,6 +368,11 @@ public final class ImageUtilities {
                 }
                 layout = layout.setTileWidth(s);
                 layout.setTileGridXOffset(image.getMinX());
+            } else if(image.getTileWidth () <= STRIPE_SIZE) {
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                layout = layout.setTileWidth(STRIPE_SIZE);
             }
             if ((s=toTileSize(image.getHeight(), defaultSize.height)) != 0) {
                 if (layout == null) {
@@ -375,6 +380,11 @@ public final class ImageUtilities {
                 }
                 layout = layout.setTileHeight(s);
                 layout.setTileGridYOffset(image.getMinY());
+            } else if(image.getTileHeight() < STRIPE_SIZE) {
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                layout = layout.setTileHeight(STRIPE_SIZE);
             }
         }
         return layout;

@@ -3866,7 +3866,7 @@ public class ImageWorker {
                     pb.set(roi, 3);
                     pb.set(true, 5);
                     pb.set(nodata, 6);
-                    RenderedOp at = JAI.create("Affine", pb, commonHints);
+                    RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
 
                     // commonHints);
                     Rectangle targetBB = at.getBounds();
@@ -3969,7 +3969,7 @@ public class ImageWorker {
                         if(canProcessROI && hasSameNodata){
                             // force in the image layout, this way we get exactly the same
                             // as the affine we're eliminating
-                            Hints localHints = new Hints(commonHints);
+                            Hints localHints = new Hints(getRenderingHints());
                             localHints.remove(JAI.KEY_IMAGE_LAYOUT);
                             ImageLayout il = new ImageLayout();
                             il.setMinX(targetBB.x);
@@ -4141,7 +4141,7 @@ public class ImageWorker {
             if (!hasScaleX && !hasScaleY && intTranslateX && intTranslateY) {
                 // this will do an integer translate, but to get there we need to remove the image
                 // layout
-                Hints localHints = new Hints(commonHints);
+                Hints localHints = new Hints(getRenderingHints());
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
                 pb.set(1.0f, 0);
                 pb.set(1.0f, 1);
@@ -4182,7 +4182,7 @@ public class ImageWorker {
                         pb.set(background, 8);
                     }
                 }
-                image = JAI.create("Scale", pb, commonHints);
+                image = JAI.create("Scale", pb, getRenderingHints());
                 if (roi != null) {
                     PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
@@ -4201,7 +4201,7 @@ public class ImageWorker {
             pb.set(roi, 3);
             pb.set(true, 5);
             pb.set(nodata, 6);
-            image = JAI.create("Affine", pb, commonHints);
+            image = JAI.create("Affine", pb, getRenderingHints());
             if (roi != null) {
                 PropertyGenerator gen = getOperationDescriptor("Affine")
                         .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
@@ -4537,7 +4537,8 @@ public class ImageWorker {
         pb.add(xTrans);
         pb.add(yTrans);
         pb.add(interp);
-        image = JAI.create("Translate", pb, getRenderingHints());
+        // do not use getRenderingHints() with translate, as it cannot deal with layout hints
+        image = JAI.create("Translate", pb, commonHints);
         return this;
     }
     

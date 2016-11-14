@@ -505,8 +505,8 @@ public class BandProcessTest {
                 int minx = tile.getMinX();
                 int miny = tile.getMinY();
 
-                int maxx = minx + tile.getWidth();
-                int maxy = miny + tile.getHeight();
+                int maxx = Math.min(minx + tile.getWidth(), img.getMinX() + img.getWidth() - tx * img.getTileWidth());
+                int maxy = Math.min(miny + tile.getHeight(), img.getMinY() + img.getHeight() - tx * img.getTileHeight());
                 // Check each pixel outside the ROI
                 for (int x = minx; x < maxx; x++) {
                     for (int y = miny; y < maxy; y++) {

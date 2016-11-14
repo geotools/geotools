@@ -370,12 +370,9 @@ public class Schemas {
         Map<Object, Object> loadMap = new HashMap<>(options);
         loadMap.put(URIConverter.OPTION_RESPONSE, response);
 
-        InputStream inputStream = uriConverter.createInputStream(uri, loadMap);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
+        try (InputStream inputStream = uriConverter.createInputStream(uri, loadMap)) {
             IOUtils.copy(inputStream, out);
-        } finally {
-            inputStream.close();
         }
         return out.toByteArray();
     }

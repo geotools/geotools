@@ -320,15 +320,14 @@ public class Schemas {
         // if remote schema is created on same JVM and synchronizes on Schemas, too.
         Map<Object, Object> options = resourceSet.getLoadOptions();
         Map<?, ?> response = getOrCreateResponseFrom(options);
-        InputStream inputStream = readUriResource(uri, resourceSet, response);
+        byte[] resourceData = readUriResource(uri, resourceSet, response);
                 
         // schema building has effects on referenced schemas, it will alter them -> we need 
         // to synchronize this call so that only one of these operations is active at any time
-        synchronized(Schemas.class) {
-            try {
-                xsdMainResource.load(inputStream, options);
+        synchronized (Schemas.class) {
+            try (InputStream in = new ByteArrayInputStream(resourceData)) {
+                xsdMainResource.load(in, options);
             } finally {
-                inputStream.close();
                 Long timeStamp = (Long) response.get(URIConverter.RESPONSE_TIME_STAMP_PROPERTY);
                 if (timeStamp != null) {
                     xsdMainResource.setTimeStamp(timeStamp);
@@ -355,15 +354,15 @@ public class Schemas {
     }
 
     /**
-     * Fetches the contents of the URI into a local {@link InputStream}.
+     * Fetches the contents of the URI into a byte[].
      * 
      * @param uri
      * @param options
      * @param response
-     * @return A local resource
+     * @return The resource data
      * @throws IOException
      */
-    private static InputStream readUriResource(URI uri, ResourceSet resourceSet, Map<?, ?> response)
+    private static byte[] readUriResource(URI uri, ResourceSet resourceSet, Map<?, ?> response)
             throws IOException {
         Map<Object, Object> options = resourceSet.getLoadOptions();
         URIConverter uriConverter = getUriConverter(resourceSet);
@@ -378,8 +377,7 @@ public class Schemas {
         } finally {
             inputStream.close();
         }
-        inputStream = new ByteArrayInputStream(out.toByteArray());
-        return inputStream;
+        return out.toByteArray();
     }
 
     /**

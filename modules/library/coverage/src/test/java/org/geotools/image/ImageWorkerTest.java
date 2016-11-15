@@ -1251,6 +1251,29 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
+    public void testTileSizeScale() throws Exception {
+        // apply straight translation
+        AffineTransform at = AffineTransform.getScaleInstance(1000, 1000);
+        testTileSize(at);
+    }
+    
+    @Test
+    public void testTileSizeGenericAffine() throws Exception {
+        // apply straight translation
+        AffineTransform at = new AffineTransform(100, 0.5, -0.5, 100, 20, 20);
+        testTileSize(at);
+    }
+
+    private void testTileSize(AffineTransform at) {
+        BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_3BYTE_BGR);
+        ImageWorker iw = new ImageWorker(bi);
+        iw.affine(at, null, null);
+        RenderedImage t1 = iw.getRenderedImage();
+        assertEquals(64, t1.getTileWidth());
+        assertEquals(64, t1.getTileHeight());
+    }
+    
+    @Test
     public void testAffineNegative() throws Exception {
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         ImageWorker iw = new ImageWorker(bi);

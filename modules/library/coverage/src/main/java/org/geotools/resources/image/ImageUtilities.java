@@ -810,7 +810,7 @@ public final class ImageUtilities {
             }
         }
         // dispose the image itself
-        pi.dispose();
+        disposeSinglePlanarImage(pi);
         visited.add(pi);
         
         // check the image sources
@@ -1255,42 +1255,50 @@ public final class ImageUtilities {
                     }
                 }
 
-                // Looking for an ROI image and disposing it too
-                final Object roi = inputImage.getProperty("ROI");
-                if ((roi != null) && ((ROI.class.equals(roi) || (roi instanceof RenderedImage)))) {
-                    if (roi instanceof ROI) {
-                        ROI roiImage = (ROI) roi;
-                        Rectangle bounds = roiImage.getBounds();
-                        if (!(bounds.isEmpty())) {
-                            PlanarImage image = roiImage.getAsImage();
-                            if (image != null) {
-                                disposeImage(image);
-                            }
-                        }
-                    } else {
-                        disposeImage((RenderedImage) roi);
-                    }
-                }
-
-                try {
-                    if(planarImage instanceof RenderedImageAdapter) {
-                        cleanField(planarImage, "theImage");
-                    } 
-                    if(planarImage instanceof WritableRenderedImageAdapter) {
-                        cleanField(planarImage, "theWritableImage");
-                    }
-                } catch(NoSuchFieldException | IllegalAccessException e) {
-                    // fine, we tried
-                    LOGGER.log(Level.FINE, "Failed to clear rendered image adapters field to null. "
-                            + "Not a problem per se, but if the finalizer thread is not fast enough, this might result in a OOM", e);
-                }
-                
-                planarImage.dispose();
+                disposeSinglePlanarImage(planarImage);
             } else if (inputImage instanceof BufferedImage) {
                 ((BufferedImage) inputImage).flush();
                 inputImage = null;
             }
         }
+    }
+
+    /**
+     * Disposes the specified image, without recursing back in the sources
+     * @param planarImage
+     */
+    public static void disposeSinglePlanarImage(PlanarImage planarImage) {
+        // Looking for an ROI image and disposing it too
+        final Object roi = planarImage.getProperty("ROI");
+        if ((roi != null) && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
+            if (roi instanceof ROI) {
+                ROI roiImage = (ROI) roi;
+                Rectangle bounds = roiImage.getBounds();
+                if (!(bounds.isEmpty())) {
+                    PlanarImage image = roiImage.getAsImage();
+                    if (image != null) {
+                        // do not recurse, we have ROIs that have ROIs that have ROIs ....
+                        image.dispose();
+                    }
+                }
+            } else {
+                disposeImage((RenderedImage) roi);
+            }
+        }
+
+        try {
+            if(planarImage instanceof RenderedImageAdapter) {
+                cleanField(planarImage, "theImage");
+            } 
+            if(planarImage instanceof WritableRenderedImageAdapter) {
+                cleanField(planarImage, "theWritableImage");
+            }
+        } catch(NoSuchFieldException | IllegalAccessException e) {
+            // fine, we tried
+            LOGGER.log(Level.FINE, "Failed to clear rendered image adapters field to null. "
+                    + "Not a problem per se, but if the finalizer thread is not fast enough, this might result in a OOM", e);
+        }
+        planarImage.dispose();
     }
 
     /**

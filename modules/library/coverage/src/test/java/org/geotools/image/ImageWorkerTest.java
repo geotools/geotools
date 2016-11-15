@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
@@ -63,6 +64,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
@@ -1603,5 +1605,48 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ri.getData().getPixel(256, 256, pixel);
         assertEquals(255, pixel[0]);
         assertEquals(255, pixel[1]);
+    }
+    
+    @Test
+    public void testWarpROITileSize() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        worker.setROI(new ROIShape(new Rectangle(0, 0, gray.getWidth(), gray.getHeight())));
+        RenderedImage image = worker.getRenderedImage();
+        assertNotEquals(java.awt.Image.UndefinedProperty, image.getProperty("ROI"));
+
+        ImageWorker iw = new ImageWorker(image);
+        iw.warp(new WarpAffine(AffineTransform.getScaleInstance(0.5, 0.5)),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        RenderedImage warped = iw.getRenderedImage();
+        
+        assertNotEquals(java.awt.Image.UndefinedProperty, warped.getProperty("ROI"));
+        ROI warpedROI = (ROI) warped.getProperty("ROI");
+        // turned into raster, the ROI has the same tile structure as the image
+        assertEquals(ROI.class, warpedROI.getClass());
+        assertEquals(warped.getTileWidth(), warpedROI.getAsImage().getTileWidth());
+        assertEquals(warped.getTileHeight(), warpedROI.getAsImage().getTileHeight());
+    }
+    
+    @Test
+    public void testAffineROITileSize() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        ROIShape roiShape = new ROIShape(new Rectangle(0, 0, gray.getWidth(), gray.getHeight()));
+        ROI roi = new ROI(roiShape.getAsImage());
+        worker.setROI(roi);
+        RenderedImage image = worker.getRenderedImage();
+        assertNotEquals(java.awt.Image.UndefinedProperty, image.getProperty("ROI"));
+
+        ImageWorker iw = new ImageWorker(image);
+        iw.affine(AffineTransform.getScaleInstance(0.5, 0.5),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+        RenderedImage scaled = iw.getRenderedImage();
+        
+        assertNotEquals(java.awt.Image.UndefinedProperty, scaled.getProperty("ROI"));
+        ROI scaledROI = (ROI) scaled.getProperty("ROI");
+        assertEquals(ROI.class, scaledROI.getClass());
+        assertEquals(scaled.getTileWidth(), scaledROI.getAsImage().getTileWidth());
+        assertEquals(scaled.getTileHeight(), scaledROI.getAsImage().getTileHeight());
     }
 }

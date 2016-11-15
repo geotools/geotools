@@ -16,10 +16,9 @@
  */
 package org.geotools.image;
 
-import it.geosolutions.jaiext.warp.WarpDescriptor;
-
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 
@@ -29,12 +28,9 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.PropertyGenerator;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
-import javax.media.jai.Warp;
-import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.factory.Hints;
 import org.jaitools.imageutils.ImageLayout2;
@@ -42,16 +38,16 @@ import org.jaitools.imageutils.ImageLayout2;
 import com.sun.media.jai.util.PropertyGeneratorImpl;
 
 /**
- * A property generator for the Warp operation that builds the expected ROI bounds even when the source and target image bounds are not superimposed
+ * A property generator for the Affine operation that builds a ROI with a sane image layout even with large upscale factors
  * 
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
  */
-public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
+public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
     private static final long serialVersionUID = 6622489670499745306L;
 
     /** Constructor. */
-    public GTWarpPropertyGenerator() {
+    public GTAffinePropertyGenerator() {
         super(new String[] { "ROI" }, new Class[] { ROI.class }, new Class[] { RenderedOp.class });
     }
 
@@ -60,14 +56,14 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
     public synchronized static void register(boolean force) {
         if (!registered || force) {
             OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
-            registry.addPropertyGenerator("rendered", "Warp", new GTWarpPropertyGenerator());
+            registry.addPropertyGenerator("rendered", "Affine", new GTAffinePropertyGenerator());
             registered = true;
         }
     }
 
     /**
-     * Returns the specified property.
-     * 
+     * Returns the specified property in the rendered layer.
+     *
      * @param name Property name.
      * @param opNode Operation node.
      */
@@ -84,14 +80,14 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             Object property = src.getProperty("ROI");
             if (property == null || property.equals(java.awt.Image.UndefinedProperty)
                     || !(property instanceof ROI)) {
-                return java.awt.Image.UndefinedProperty;
+                // Check on the parameterBlock
+                if (pb.getObjectParameter(3) != null) {
+                    property = pb.getObjectParameter(3);
+                } else {
+                    return java.awt.Image.UndefinedProperty;
+                }
             }
-
-            // Return undefined also if source ROI is empty.
             ROI srcROI = (ROI) property;
-            if (srcROI.getBounds().isEmpty()) {
-                return java.awt.Image.UndefinedProperty;
-            }
 
             // Retrieve the Interpolation object.
             Interpolation interp = (Interpolation) pb.getObjectParameter(1);
@@ -101,8 +97,9 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             PlanarImage dst = op.getRendering();
             if (dst instanceof GeometricOpImage
                     && ((GeometricOpImage) dst).getBorderExtender() == null) {
-                srcBounds = new Rectangle(src.getMinX() + interp.getLeftPadding(), src.getMinY()
-                        + interp.getTopPadding(), src.getWidth() - interp.getWidth() + 1,
+                srcBounds = new Rectangle(src.getMinX() + interp.getLeftPadding(),
+                        src.getMinY() + interp.getTopPadding(),
+                        src.getWidth() - interp.getWidth() + 1,
                         src.getHeight() - interp.getHeight() + 1);
             } else {
                 srcBounds = new Rectangle(src.getMinX(), src.getMinY(), src.getWidth(),
@@ -114,66 +111,46 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
                 srcROI = srcROI.intersect(new ROIShape(srcBounds));
             }
 
-            // Retrieve the Warp object.
-            Warp warp = (Warp) pb.getObjectParameter(0);
+            // Retrieve the AffineTransform object.
+            AffineTransform transform = (AffineTransform) pb.getObjectParameter(0);
 
-            // Setting constant image to be warped as a ROI
+            // Create the transformed ROI.
+            ROI dstROI;
+            if(srcROI.getClass().equals(ROI.class)) {
+                // we need to build an image with the same layout of the op, or we
+                // risk of building a very large ROI with super-tiny tiles when
+                // doing up-sampling of a single pixel image (high oversample case)
+                ParameterBlock paramBlock = new ParameterBlock();
+                paramBlock.add(transform);
+                paramBlock.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                Hints localHints = new Hints(op.getRenderingHints());
+                localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                ImageLayout il = new ImageLayout();
+                Rectangle dstBounds = op.getBounds();
+                il.setMinX(dstBounds.x);
+                il.setMinY(dstBounds.y);
+                il.setWidth(dstBounds.width);
+                il.setHeight(dstBounds.height);
+                il.setTileWidth(op.getTileWidth());
+                il.setTileWidth(op.getTileHeight());
+                localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
+
+                dstROI = srcROI.performImageOp("Affine", paramBlock, 0, localHints);
+            } else {
+                // let the geometry based ROIs do their work at the vector level
+                dstROI = srcROI.transform((AffineTransform) transform);
+            }
+
+            // Retrieve the destination bounds.
             Rectangle dstBounds = op.getBounds();
 
-            // Setting layout of the constant image
-            ImageLayout2 layout = new ImageLayout2();
-            int minx = (int) srcBounds.getMinX();
-            int miny = (int) srcBounds.getMinY();
-            int w = (int) srcBounds.getWidth();
-            int h = (int) srcBounds.getHeight();
-            layout.setMinX(minx);
-            layout.setMinY(miny);
-            layout.setWidth(w);
-            layout.setHeight(h);
-            layout.setTileWidth(op.getTileWidth());
-            layout.setTileHeight(op.getTileHeight());
-            RenderingHints hints = op.getRenderingHints();
-            hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-
-            final PlanarImage constantImage = ConstantDescriptor.create(new Float(w), new Float(h),
-                    new Byte[] { (byte) 255 }, hints);
-
-            PlanarImage roiImage = null;
-
-            // Make sure to specify tileCache, tileScheduler, tileRecyclier, by cloning hints.
-            RenderingHints warpingHints = op.getRenderingHints();
-            warpingHints.remove(JAI.KEY_IMAGE_LAYOUT);
-
-            // Creating warped roi by the same way (Warp, Interpolation, source ROI) we warped the
-            // input image.
-            final ParameterBlock paramBlk = new ParameterBlock();
-            paramBlk.addSource(constantImage);
-            paramBlk.add(warp);
-            paramBlk.add(interp);
-            paramBlk.add(null);
-            paramBlk.add(srcROI);
-
-            // force in the image layout, this way we get exactly the same
-            // as the affine we're eliminating
-            Hints localHints = new Hints(op.getRenderingHints());
-            localHints.remove(JAI.KEY_IMAGE_LAYOUT);
-            ImageLayout il = new ImageLayout();
-            il.setMinX(dstBounds.x);
-            il.setMinY(dstBounds.y);
-            il.setWidth(dstBounds.width);
-            il.setHeight(dstBounds.height);
-            il.setTileWidth(op.getTileWidth());
-            il.setTileHeight(op.getTileHeight());
-            localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
-            roiImage = JAI.create("Warp", paramBlk, localHints);
-            ROI dstROI = new ROI(roiImage, 1);
-
-            // If necessary, clip the warped ROI to the destination bounds.
+            // If necessary, clip the transformed ROI to the
+            // destination bounds.
             if (!dstBounds.contains(dstROI.getBounds())) {
                 dstROI = dstROI.intersect(new ROIShape(dstBounds));
             }
 
-            // Return the warped and possibly clipped ROI.
+            // Return the transformed and possibly clipped ROI.
             return dstROI;
         }
 

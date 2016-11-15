@@ -387,6 +387,7 @@ public class ImageWorker {
             GTWarpPropertyGenerator.register(false);
         }
         LOGGER.log(Level.INFO, "Warp/affine reduction enabled: " + WARP_REDUCTION_ENABLED);
+        GTAffinePropertyGenerator.register(false);
     }
 
     /**
@@ -3870,7 +3871,7 @@ public class ImageWorker {
 
                     // commonHints);
                     Rectangle targetBB = at.getBounds();
-                    at.dispose();
+                    ImageUtilities.disposeSinglePlanarImage(at);
                     Rectangle sourceBB = (Rectangle) sourceBoundsProperty;
 
                     // warp

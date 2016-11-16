@@ -26,6 +26,7 @@ import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Font;
@@ -162,6 +163,12 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             displacementCopy = (Displacement) pages.pop();
         }
 
+        AnchorPoint anchorCopy = null;
+        if (gr.getAnchorPoint() != null) {
+            gr.getAnchorPoint().accept(this);
+            anchorCopy = (AnchorPoint) pages.pop();
+        }
+
         ExternalGraphic[] externalGraphics = gr.getExternalGraphics();
         ExternalGraphic[] externalGraphicsCopy = new ExternalGraphic[externalGraphics.length];
 
@@ -191,6 +198,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         copy = sf.createDefaultGraphic();
         copy.setDisplacement(displacementCopy);
+        copy.setAnchorPoint(anchorCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);
         copy.setOpacity((Expression) opacityCopy);

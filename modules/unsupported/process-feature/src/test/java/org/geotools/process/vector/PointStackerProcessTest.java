@@ -67,7 +67,8 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                null, // normalize
+        		null, //weightClusterPosition
+        		null, // normalize
                 null, // preserve location
                 bounds, // outputBBOX
                 1000, // outputWidth
@@ -94,7 +95,8 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                true, // normalize
+                false, //weighClusterPostion
+        		true, // normalize
                 null, // preserve location
                 bounds, // outputBBOX
                 1000, // outputWidth
@@ -121,7 +123,8 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                true, // normalize
+                false, //weightClusterPosition
+        		true, // normalize
                 PreserveLocation.Single, // preserve location
                 bounds, // outputBBOX
                 1000, // outputWidth
@@ -149,7 +152,8 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                true, // normalize
+        		false, //weightClusterPosition
+        		true, // normalize
                 PreserveLocation.Superimposed, // preserve location
                 bounds, // outputBBOX
                 1000, // outputWidth
@@ -201,7 +205,8 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                null, // normalize
+        		null, //weightClusterPosition
+        		null, // normalize
                 null, // preserve location
                 outBounds, // outputBBOX
                 1810, // outputWidth
@@ -214,6 +219,41 @@ public class PointStackerProcessTest {
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
     }
     
+    @SuppressWarnings("deprecation")
+	@Test
+    public void testWeightClusterPosition() throws NoSuchAuthorityCodeException, FactoryException, ProcessException, TransformException{
+    	
+    	ReferencedEnvelope inBounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        
+        // Dataset with some points located in appropriate area
+        // points are close enough to create a single cluster
+        Coordinate[] data = new Coordinate[] { new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777) };
+        
+        
+        SimpleFeatureCollection fc = createPoints(data, inBounds);
+        ProgressListener monitor = null;
+
+        // Google Mercator BBOX for northern Washington State (roughly)
+        CoordinateReferenceSystem webMerc = CRS.decode("EPSG:3785");
+        ReferencedEnvelope outBounds = new ReferencedEnvelope(-1.4045034049133E7, -1.2937920131607E7, 5916835.1504419, 6386464.2521607, webMerc);
+
+        PointStackerProcess psp = new PointStackerProcess();
+        SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
+        		true, //weightClusterPosition
+        		null, // normalize
+                null, // preserve location
+                outBounds, // outputBBOX
+                1810, // outputWidth
+                768, // outputHeight
+                monitor);
+        //check if we did not alter the results
+        checkSchemaCorrect(result.getSchema(), false);
+        assertEquals(1, result.size());
+        assertEquals(inBounds.getCoordinateReferenceSystem(), result.getBounds().getCoordinateReferenceSystem());
+        checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);	
+        
+        return;
+    }
     /**
      * Get the stacked point closest to the provided coordinate
      * 

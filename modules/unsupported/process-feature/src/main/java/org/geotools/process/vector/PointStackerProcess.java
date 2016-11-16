@@ -116,6 +116,7 @@ public class PointStackerProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels") Integer cellSize,
+            @DescribeParameter(name = "weightClusterPosition", description = "Weight cluster position based on points added", defaultValue="false" ) Boolean argWeightClusterPosition,
             @DescribeParameter(name = "normalize", description = "Indicates whether to add fields normalized to the range 0-1.", defaultValue="false") Boolean argNormalize,
             @DescribeParameter(name = "preserveLocation", description = "Indicates wheter to preserve the original location of points for single/superimposed points", defaultValue="Never", min=0) PreserveLocation preserveLocation,
 
@@ -143,11 +144,16 @@ public class PointStackerProcess implements VectorProcess {
             normalize = argNormalize;
         }
 
+        boolean weightClusterPosition=false;
+        if (argWeightClusterPosition!=null){
+        	weightClusterPosition=argWeightClusterPosition;
+        }
+        
         // TODO: allow output CRS to be different to data CRS 
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
 
-        Collection<StackedPoint> stackedPts = stackPoints(data, crsTransform, cellSizeSrc,
+        Collection<StackedPoint> stackedPts = stackPoints(data, crsTransform, cellSizeSrc, weightClusterPosition,
                 outputEnv.getMinX(), outputEnv.getMinY());
 
         SimpleFeatureType schema = createType(srcCRS, normalize);
@@ -229,7 +235,7 @@ public class PointStackerProcess implements VectorProcess {
      */
     private Collection<StackedPoint> stackPoints(SimpleFeatureCollection data,
             MathTransform crsTransform, 
-            double cellSize, double minX, double minY) throws TransformException {
+            double cellSize, boolean weightClusterPosition, double minX, double minY) throws TransformException {
         SimpleFeatureIterator featureIt = data.features();
 
         Map<Coordinate, StackedPoint> stackedPts = new HashMap<Coordinate, StackedPoint>();
@@ -267,7 +273,7 @@ public class PointStackerProcess implements VectorProcess {
                     stkPt = new StackedPoint(indexPt, new Coordinate(centreX, centreY));
                     stackedPts.put(stkPt.getKey(), stkPt);
                 }
-                stkPt.add(pout);
+                stkPt.add(pout,weightClusterPosition);
             }
 
         } finally {
@@ -373,8 +379,12 @@ public class PointStackerProcess implements VectorProcess {
                 return 1;
             return uniquePts.size();
         }
-
-        public void add(Coordinate pt) {
+        
+        public void add(Coordinate pt){
+        	this.add(pt,false);
+        }
+        
+        public void add(Coordinate pt, boolean weightClusterPosition) {
             count++;
             /**
              * Only create set if this is the second point seen
@@ -385,7 +395,12 @@ public class PointStackerProcess implements VectorProcess {
             }
             uniquePts.add(pt);
 
-            pickNearestLocation(pt);
+            if (weightClusterPosition){
+            	pickWeightedLocation(pt);
+            }else{
+            	pickNearestLocation(pt);
+            }
+            
             //pickCenterLocation(pt);
         }
         
@@ -401,7 +416,20 @@ public class PointStackerProcess implements VectorProcess {
                 return null;
             }
         }
-
+        
+        /**
+         * Calcultate the weighted position of the cluster based on points which it holds. 
+         * @param pt
+         */
+        private void pickWeightedLocation(Coordinate pt){
+        	if (location == null) {
+                location = pt;
+                return;
+            } 	
+        	
+        	location = average(location, pt);
+        }
+        
         /**
          * Picks the location as the point
          * which is nearest to the center of the cell.

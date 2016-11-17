@@ -27,6 +27,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
@@ -68,6 +70,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
+
 
 /**
  * Tests the crop operation.
@@ -103,11 +107,17 @@ public final class CropTest extends GridProcessingTestBase {
      */
     @Test
     public void testCrop() throws TransformException {
+        final GridCoverage2D source = coverage;
+        
+        testCrop(source);
+    }
+
+    private GridCoverage2D testCrop(final GridCoverage2D source) {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
         /*
          * Get the source coverage and build the cropped envelope.
          */
-        final GridCoverage2D source = coverage;
+        
         final Envelope oldEnvelope = source.getEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
@@ -139,7 +149,27 @@ public final class CropTest extends GridProcessingTestBase {
         assertEquals(source.getGridGeometry().getGridToCRS2D(),
                     cropped.getGridGeometry().getGridToCRS2D());
         assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
-
+        
+        // check we did not use mosaic for this simple case
+        RenderedOp op = (RenderedOp) raster;
+        assertEquals("Crop", op.getOperationName());
+        
+        // check there is no ROI set (none in input, none in output)
+        assertEquals(java.awt.Image.UndefinedProperty, raster.getProperty("ROI"));
+        
+        return cropped;
+    }
+    
+    @Test
+    public void testCropNoData() {
+        Map<String, Object> properties = new HashMap<>();
+        final Double theNoData = new Double(-123);
+        CoverageUtilities.setNoDataProperty(properties, theNoData);
+        GridCoverage2D source = new GridCoverageFactory().create(coverage.getName().toString(), coverage.getRenderedImage(), coverage.getEnvelope(), coverage.getSampleDimensions(), null, properties);
+        
+        GridCoverage2D cropped = testCrop(source);
+        NoDataContainer noData = CoverageUtilities.getNoDataProperty(cropped);
+        assertEquals(theNoData, noData.getAsSingleValue(), 0d);
     }
     
     /**

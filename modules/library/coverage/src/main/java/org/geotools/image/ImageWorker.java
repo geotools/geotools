@@ -3871,6 +3871,8 @@ public class ImageWorker {
 
                     // commonHints);
                     Rectangle targetBB = at.getBounds();
+                    int tileWidth = at.getTileWidth();
+                    int tileHeight = at.getTileHeight();
                     ImageUtilities.disposeSinglePlanarImage(at);
                     Rectangle sourceBB = (Rectangle) sourceBoundsProperty;
 
@@ -3978,8 +3980,8 @@ public class ImageWorker {
                             il.setWidth(targetBB.width);
                             il.setHeight(targetBB.height);
 
-                            il.setTileHeight(op.getTileHeight());
-                            il.setTileWidth(op.getTileWidth());
+                            il.setTileHeight(tileWidth);
+                            il.setTileWidth(tileHeight);
                             il.setTileGridXOffset(0);
                             il.setTileGridYOffset(0);
                             localHints.put(JAI.KEY_IMAGE_LAYOUT, il);

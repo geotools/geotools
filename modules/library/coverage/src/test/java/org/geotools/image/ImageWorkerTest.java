@@ -71,10 +71,13 @@ import javax.media.jai.operator.MosaicDescriptor;
 import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import org.jaitools.imageutils.ROIGeometry;
 import org.junit.AfterClass;
@@ -1327,6 +1330,28 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(0, reduced.getTileGridYOffset());
         assertEquals(ushortCoverage.getRenderedImage().getTileWidth(), reduced.getTileWidth());
         assertEquals(ushortCoverage.getRenderedImage().getTileHeight(), reduced.getTileHeight());
+    }
+    
+    @Test
+    public void testOptimizedWarpOnLargeUpscale() throws Exception {
+        BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_BYTE_INDEXED);
+        GridCoverage2D source = new GridCoverageFactory().create("Test", bi, new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+        GridCoverage2D coverage = project(source, CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,
+                "nearest", null);
+        RenderedImage ri = coverage.getRenderedImage();
+        
+        checkTileSize(ri, AffineTransform.getScaleInstance(100, 100));
+        checkTileSize(ri, new AffineTransform(100, 0, 0, 100, 10, 10));
+    }
+
+    private void checkTileSize(RenderedImage ri, AffineTransform scale) {
+        final Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        RenderedOp reduced = (RenderedOp) new ImageWorker(ri).affine(scale,
+                interpolation, new double[] { 0 })
+                .getRenderedImage();
+        // the tile size is not 4x4
+        assertEquals(64, reduced.getTileWidth());
+        assertEquals(64, reduced.getTileHeight());
     }
 
     @Test

@@ -327,7 +327,7 @@ public class QGISMarkFactory implements MarkFactory {
         starPath.lineTo(0.5f, 0.1f);
         starPath.lineTo(0.2f, -0.1f);
         starPath.lineTo(0.5f, -0.5f);
-        starPath.lineTo(0f, -0.1f);
+        starPath.lineTo(0f, -0.2f);
         starPath.lineTo(-0.5f, -0.5f); // max = 7.887
         starPath.lineTo(-0.2f, -0.1f);
         starPath.lineTo(-0.5f, 0.1f);

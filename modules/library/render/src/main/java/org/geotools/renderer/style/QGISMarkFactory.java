@@ -19,8 +19,10 @@ package org.geotools.renderer.style;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.logging.Logger;
 
 import org.geotools.renderer.style.shape.ExplicitBoundsShape;
@@ -67,6 +69,26 @@ public class QGISMarkFactory implements MarkFactory {
 
     /** pentagon */
     private static Shape pentagon;
+
+    private static Shape crossFill = crossFill();
+
+    private static Shape diagonalHalfSquare = diagonalHalfSquare();
+
+    private static Shape halfSquare = halfSquare();
+
+    private static Shape hexagon = hexagon();
+
+    private static Shape leftHalfTriangle = leftHalfTriangle();
+
+    private static Shape rightHalfTriangle = rightHalfTriangle();
+
+    private static Shape quarterCricle = quarterCircle();
+
+    private static Shape semiCircle = semiCircle();
+
+    private static Shape thirdCircle = thirdCircle();
+
+    private static Shape quarterSquare = quarterSquare();
 
     static {
 
@@ -203,6 +225,77 @@ public class QGISMarkFactory implements MarkFactory {
 
             return filled_arrowhead;
         }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "crossfill")
+                || wellKnownName.equalsIgnoreCase("crossfill")) {
+            LOGGER.finer("returning qgis filled cross");
+
+            return crossFill;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "diagonalhalfsquare")
+                || wellKnownName.equalsIgnoreCase("diagonalhalfsquare")) {
+            LOGGER.finer("returning qgis diagonal half square");
+
+            return diagonalHalfSquare;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "HalfSquare")
+                || wellKnownName.equalsIgnoreCase("HalfSquare")) {
+            LOGGER.finer("returning qgis half square");
+
+            return halfSquare;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "hexagon")
+                || wellKnownName.equalsIgnoreCase("hexagon")) {
+            LOGGER.finer("returning qgis hexagon");
+
+            return hexagon;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "lefthalftriangle")
+                || wellKnownName.equalsIgnoreCase("lefthalftriangle")) {
+            LOGGER.finer("returning qgis lefthalftriangle");
+
+            return leftHalfTriangle;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "righthalftriangle")
+                || wellKnownName.equalsIgnoreCase("righthalftriangle")) {
+            LOGGER.finer("returning qgis righthalftriangle");
+
+            return rightHalfTriangle;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "quartercircle")
+                || wellKnownName.equalsIgnoreCase("quartercircle")) {
+            LOGGER.finer("returning qgis quartercircle");
+
+            return quarterCricle;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "semicircle")
+                || wellKnownName.equalsIgnoreCase("semicircle")) {
+            LOGGER.finer("returning qgis semicircle");
+
+            return semiCircle;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "thirdcircle")
+                || wellKnownName.equalsIgnoreCase("thirdcircle")) {
+            LOGGER.finer("returning qgis thirdcircle");
+
+            return thirdCircle;
+        }
+
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "quartersquare")
+                || wellKnownName.equalsIgnoreCase("quartersquare")) {
+            LOGGER.finer("returning qgis quartersquare");
+
+            return quarterSquare;
+        }
+
         return null;
     }
 
@@ -287,4 +380,141 @@ public class QGISMarkFactory implements MarkFactory {
         return shape;
     }
 
+    private static Shape crossFill() {
+
+        GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+        path.moveTo(-.5f, -0.1f);
+        path.lineTo(-.5f, -0.1f);
+        path.lineTo(-.5f, 0.1f);
+        path.lineTo(-0.1f, 0.1f);
+        path.lineTo(-0.1f, .5f);
+        path.lineTo(0.1f, .5f);
+        path.lineTo(0.1f, 0.1f);
+        path.lineTo(.5f, 0.1f);
+        path.lineTo(.5f, -0.1f);
+        path.lineTo(0.1f, -0.1f);
+        path.lineTo(0.1f, -.5f);
+        path.lineTo(-0.1f, -.5f);
+        path.lineTo(-0.1f, -0.1f);
+        path.lineTo(-.5f, -0.1f);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape diagonalHalfSquare() {
+        // (bottom-left half)
+
+        GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+        path.moveTo(-.5f, -.5f);
+        path.lineTo(.5f, -.5f);
+        path.lineTo(-.5f, .5f);
+        path.lineTo(-.5f, -.5f);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape hexagon() {
+
+        GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+
+        path.moveTo(-0.4330f, -0.25f);
+        path.lineTo(-0.4330f, 0.25f);
+        path.lineTo(0f, .5f);
+        path.lineTo(0.4330f, 0.25f);
+        path.lineTo(0.4330f, -0.25f);
+        path.lineTo(0f, -.5f);
+        path.lineTo(-0.4330f, -0.25f);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape leftHalfTriangle() {
+        GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+
+        path.moveTo(0f, -.5f);
+        path.lineTo(0f, .5f);
+        path.lineTo(.5f, -.5f);
+        path.lineTo(0f, -.5f);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape rightHalfTriangle() {
+        GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+
+        path.moveTo(0f, -.5f);
+        path.lineTo(0f, .5f);
+        path.lineTo(-.5f, -.5f);
+        path.lineTo(0f, -.5f);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(path);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape quarterCircle() {
+        // Top-left quarter
+        Shape d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180, 90, Arc2D.PIE);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape semiCircle() {
+        // Top half
+        Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180., 180.,
+                Arc2D.PIE);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape thirdCircle() {
+        // Top-left third
+        Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 150., 120.,
+                Arc2D.PIE);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape halfSquare() {
+        // Left half
+        Shape s = new Double(-.5, -.5, .5, 1.);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(s);
+        shape.setBounds(new Rectangle2D.Double(-.5, -.5, 1., 1.));
+
+        return shape;
+    }
+
+    private static Shape quarterSquare() {
+        // Top-left quarter
+        Shape s = new Double(-.5, 0, .5, .5);
+
+        ExplicitBoundsShape shape = new ExplicitBoundsShape(s);
+        shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
+        return shape;
+    }
+     
 }

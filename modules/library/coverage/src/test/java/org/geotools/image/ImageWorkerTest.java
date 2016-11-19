@@ -1274,8 +1274,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker iw = new ImageWorker(bi);
         iw.affine(at, null, null);
         RenderedImage t1 = iw.getRenderedImage();
-        assertEquals(64, t1.getTileWidth());
-        assertEquals(64, t1.getTileHeight());
+        assertEquals(512, t1.getTileWidth());
+        assertEquals(512, t1.getTileHeight());
     }
     
     @Test
@@ -1350,8 +1350,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                 interpolation, new double[] { 0 })
                 .getRenderedImage();
         // the tile size is not 4x4
-        assertEquals(64, reduced.getTileWidth());
-        assertEquals(64, reduced.getTileHeight());
+        assertEquals(400, reduced.getTileWidth());
+        assertEquals(400, reduced.getTileHeight());
     }
 
     @Test

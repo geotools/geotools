@@ -372,7 +372,7 @@ public final class ImageUtilities {
                 if (layout == null) {
                     layout = new ImageLayout();
                 }
-                layout = layout.setTileWidth(STRIPE_SIZE);
+                layout = layout.setTileWidth(defaultSize.width);
             }
             if ((s=toTileSize(image.getHeight(), defaultSize.height)) != 0) {
                 if (layout == null) {
@@ -384,7 +384,7 @@ public final class ImageUtilities {
                 if (layout == null) {
                     layout = new ImageLayout();
                 }
-                layout = layout.setTileHeight(STRIPE_SIZE);
+                layout = layout.setTileHeight(defaultSize.height);
             }
         }
         return layout;

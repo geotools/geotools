@@ -44,13 +44,12 @@ public class DefaultResourceLocator implements ResourceLocator {
         URL url = null;
         try {
             url = new URL(uri);
-
-            //url is valid, check if it is relative
+            
             File f = DataUtilities.urlToFile(url);
             if (f != null && !f.isAbsolute()) {
                 //ok, relative url, if the file exists when we are ok
                 if (!f.exists() && sourceUrl != null) {
-                    URL relativeUrl = makeRelativeURL(f.getPath());
+                    URL relativeUrl = makeRelativeURL(f.getPath(), url.getQuery());
                     if (relativeUrl != null) {
                         URL validated = validateRelativeURL(relativeUrl);
                         if (validated != null) {
@@ -62,10 +61,9 @@ public class DefaultResourceLocator implements ResourceLocator {
         } catch (MalformedURLException mfe) {
             LOGGER.fine("Looks like " + uri + " is a relative path..");
             if (sourceUrl != null) {
-                url = makeRelativeURL(uri);
+                url = makeRelativeURL(uri,null);
             }
-            if (url == null)
-            {
+            if (url == null) {
                 url = getClass().getResource(uri);
                 if (url == null)
                         LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
@@ -84,9 +82,14 @@ public class DefaultResourceLocator implements ResourceLocator {
         return null;
     }
 
-    URL makeRelativeURL(String uri) {
+    URL makeRelativeURL(String uri, String query) {
         try {
-            return new URL(sourceUrl, uri);
+            if( query != null ){
+                return new URL(sourceUrl, uri+"?"+query);
+            }
+            else { 
+                return new URL(sourceUrl, uri);
+            }
         } catch (MalformedURLException e) {
             LOGGER.warning("can't parse " + uri + " as relative to"
                     + sourceUrl.toExternalForm());

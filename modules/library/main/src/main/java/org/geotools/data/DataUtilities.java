@@ -339,6 +339,9 @@ public class DataUtilities {
             return null; // not a File URL
         }
         String string = url.toExternalForm();
+        if( url.getQuery() != null){
+            string = string.substring(0, string.indexOf("?"));
+        }
         if (string.contains("+")) {
             // this represents an invalid URL created using either
             // file.toURL(); or

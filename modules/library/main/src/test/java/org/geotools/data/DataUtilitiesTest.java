@@ -230,13 +230,16 @@ public class DataUtilitiesTest extends DataTestCase {
             handleFile("one");
             handleFile("/one/two/and three");
             handleFile("/hello world/this++().file");
-        }
+        }       
         assertURL("one", "file:one");
         assertURL("/one", "file:///one");
         assertURL(replaceSlashes("C:\\"), "file://C:/");
         assertURL(replaceSlashes("C:\\one"), "file://C:/one");
         assertURL(replaceSlashes("C:\\one\\two"), "file://C:/one/two");
         assertURL(replaceSlashes("C:\\one\\two\\and three"), "file://C:/one/two/and three");
+
+        assertEquals( "sample",DataUtilities.urlToFile(new URL("file:sample?query")).toString());
+        assertEquals( "sample",DataUtilities.urlToFile(new URL("file:sample#ref")).toString());
 
         File file = File.createTempFile("hello", "world");
         handleFile(file.getAbsolutePath());

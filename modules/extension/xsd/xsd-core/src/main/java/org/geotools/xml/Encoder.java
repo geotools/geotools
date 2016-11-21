@@ -74,6 +74,8 @@ import org.geotools.xml.impl.GetPropertyExecutor;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
 import org.geotools.xs.XS;
+import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Property;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -195,6 +197,9 @@ public class Encoder {
      * Logger logger;
      */
     private Logger logger;
+
+    /** if true the encoder may encode complex features that map to a complex type that is not GML valid **/
+    private boolean relaxed = Boolean.parseBoolean(System.getProperty("encoder.relaxed", "true"));
 
     /**
      * The configuration used by the encoder
@@ -618,6 +623,40 @@ public class Encoder {
         }
     }
 
+    /**
+     * Helper method that checks if the complex feature we want to encode maps
+     * to a complex type that respects the GML object-property model.
+     */
+    private boolean isNonStripedNestedElement(Object next, XSDElementDeclaration element) {
+        if (!(next instanceof ComplexAttribute)) {
+            return false;
+        }
+        ComplexAttribute complex = (ComplexAttribute) next;
+        // let's see if we need to encode this
+        Collection<Property> nestedProperties = complex.getProperties();
+        if (nestedProperties == null || nestedProperties.isEmpty()) {
+            return false;
+        }
+        // let's see if all the properties have the same type, and that the type is equal to the current element type
+        if (!nestedProperties.stream().allMatch(property -> property.getType().getName().equals(complex.getType().getName()))) {
+            // different types which means we are not in the case of nested complex features
+            return false;
+        }
+        // so let's see if the nested type is a reference
+        for (XSDParticle childParticle : (List<XSDParticle>) Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+            XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
+            if (childElement.isElementDeclarationReference()) {
+                childElement = childElement.getResolvedElementDeclaration();
+                if (childElement.getType().getName().equals(complex.getType().getName().getLocalPart())) {
+                    // we are good this type respect the object-property model
+                    return false;
+                }
+            }
+        }
+        // the mapped complex type doesn't respect the object-property model
+        return true;
+    }
+
     public void encode(Object object, QName name, ContentHandler handler)
         throws IOException, SAXException {
         
@@ -741,10 +780,16 @@ public class Encoder {
                             catch (Exception e) {
                                 throw new RuntimeException( e );
                             }
-                        }
-                        else {
-                            //add the next object to be encoded to the stack
-                            encoded.push(new EncodingEntry(next, element,entry));                            
+                        } else {
+                            if (next instanceof ComplexAttribute && relaxed && isNonStripedNestedElement(next, element)) {
+                                for (Property property : ((ComplexAttribute) next).getProperties()) {
+                                    // add object sub properties, i.e. nested complex features
+                                    encoded.push(new EncodingEntry(property, element, entry));
+                                }
+                            } else {
+                                //add the next object to be encoded to the stack
+                                encoded.push(new EncodingEntry(next, element, entry));
+                            }
                         }
                     } else {
                         //iterator done, close it

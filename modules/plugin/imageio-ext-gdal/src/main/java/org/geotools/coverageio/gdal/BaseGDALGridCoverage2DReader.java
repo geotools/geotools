@@ -146,7 +146,7 @@ public abstract class BaseGDALGridCoverage2DReader extends
         final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
         if (tempCRS != null) {
             this.crs=(CoordinateReferenceSystem) tempCRS;
-            LOGGER.log(Level.WARNING,"Using default coordinate reference system ");
+            LOGGER.log(Level.FINE,"Using default coordinate reference system ");
         } else{
             
             // //

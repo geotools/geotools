@@ -745,17 +745,7 @@ public class Utils {
             }
         }
 
-        // just read the indexer file without take in account any other property
-        File mosaicParentFolder = DataUtilities.urlToFile(sourceURL).getParentFile();
-        File indexerFile = new File(mosaicParentFolder, Utils.INDEXER_XML);
-        if (Utils.checkFileReadable(indexerFile)) {
-            try {
-                retValue.setIndexer(Utils.unmarshal(indexerFile));
-            } catch (JAXBException e) {
-                LOGGER.log(Level.WARNING, e.getMessage(), e);
-            }
-        }
-
+        // return value
         return retValue;
     }
 

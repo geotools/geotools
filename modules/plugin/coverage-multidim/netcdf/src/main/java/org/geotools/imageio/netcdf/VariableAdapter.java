@@ -16,13 +16,38 @@
  */
 package org.geotools.imageio.netcdf;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BandedSampleModel;
+import java.awt.image.SampleModel;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.logging.Level;
+
+import javax.measure.unit.Unit;
+
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
-import org.geotools.coverage.io.CoverageSource.*;
+import org.geotools.coverage.io.CoverageSource.AdditionalDomain;
+import org.geotools.coverage.io.CoverageSource.DomainType;
+import org.geotools.coverage.io.CoverageSource.SpatialDomain;
+import org.geotools.coverage.io.CoverageSource.TemporalDomain;
+import org.geotools.coverage.io.CoverageSource.VerticalDomain;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.RasterLayout;
 import org.geotools.coverage.io.catalog.CoverageSlice;
@@ -71,22 +96,13 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
+
 import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.VariableDS;
-
-import javax.measure.unit.Unit;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BandedSampleModel;
-import java.awt.image.SampleModel;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
-import java.util.logging.Level;
 
 /**
  * 
@@ -484,16 +500,15 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         // get the length of the coverageDescriptorsCache in each dimension
         shape = variableDS.getShape();
         int rank = shape.length;
-        rank -= ignoredDimensions.size();
         switch (rank) {
         case 2:
             numberOfSlices = 1;
             break;
         case 3:
-            numberOfSlices = shape[0 + ignoredDimensions.size()];
+            numberOfSlices = shape[0];
             break;
         case 4:
-            numberOfSlices = 0 + shape[0 + ignoredDimensions.size()] * shape[1 + ignoredDimensions.size()];
+            numberOfSlices = 0 + shape[0] * shape[1];
             break;
         default:
             if (!ignoredDimensions.isEmpty()){
@@ -800,29 +815,13 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
         width = variableDS.getDimension(rank - NetCDFUtilities.X_DIMENSION).getLength();
         height = variableDS.getDimension(rank - NetCDFUtilities.Y_DIMENSION).getLength();
-
-        // computing the number of bands, according to COARDS convention ignored dimension are at the beginning
-        String candidateDimension = variableDS.getDimensions().get(0).getFullName();
-        MultipleBandsDimensionInfo multipleBands = reader.ancillaryFileManager.getMultipleBandsDimensionInfo(candidateDimension);
-        if (multipleBands != null) {
-            // multiple bands are defined for the ignored dimension
-            numBands = multipleBands.getNumberOfBands();
-        } else {
-            numBands = rank > 2 ? variableDS.getDimension(2).getLength() : 1;
-        }
-
-        // let's check if we are in the context of an image mosaic request
-        if (reader.getImageMosaicRequest() != null) {
-            // if specific bands were selected we need to adapt the number of bands
-            int[] selectedBands = reader.getImageMosaicRequest().getBands();
-            numBands = selectedBands == null ? numBands : selectedBands.length;
-        }
+        numBands = rank > 2 ? variableDS.getDimension(2).getLength() : 1;
 
         //Adjust the rank skipping the ignoredDimensions
         rank -= ignoredDimensions.size();
 
         final int bufferType = NetCDFUtilities.getRawDataType(variableDS);
-        sampleModel = new BandedSampleModel(bufferType, width, height, multipleBands == null ? 1 : numBands);
+        sampleModel = new BandedSampleModel(bufferType, width, height, 1);
         final Number noData = NetCDFUtilities.getNodata(variableDS);
         Category[] categories = null;
         if (noData != null) {
@@ -853,16 +852,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 }
             }
         }
-
-        if (multipleBands == null) {
-            // single band dimension, so we only need one sample dimension
-            sampleDims.add(new GridSampleDimension(description, categories, unit));
-        } else {
-            for (String bandName : multipleBands.getBandsNamesInOrder()) {
-                // multiple bands for this dimension, only the bands names is different
-                sampleDims.add(new GridSampleDimension(bandName, categories, unit));
-            }
-        }
+        sampleDims.add(new GridSampleDimension(description, categories, unit));
 
         InternationalString desc = null;
         if (description != null && !description.isEmpty()) {

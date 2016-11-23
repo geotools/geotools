@@ -618,8 +618,7 @@ public final class LabelCacheImpl implements LabelCache {
         int haloRadius = Math.round(labelItem.getTextStyle().getHaloFill() != null ? labelItem
                 .getTextStyle().getHaloRadius() : 0);
         // repetition distance, if any
-        //We extend this distance for a better placement of long labels
-        int labelDistance = (int) (labelItem.getRepeat() > 0 ? labelItem.getRepeat() + (textBounds.getWidth()*2) : 0);
+        int labelDistance = labelItem.getRepeat();
         // min distance, if any
         int minDistance = labelItem.getMinGroupDistance();
         LabelIndex groupLabels = new LabelIndex();
@@ -655,7 +654,7 @@ public final class LabelCacheImpl implements LabelCache {
             // labels
             double[] labelPositions;
             if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
-                labelPositions = new double[(int) (lineStringLength / (labelDistance*0.5))];
+                labelPositions = new double[(int) Math.round((lineStringLength / labelDistance))];
                 labelPositions[0] = lineStringLength / 2;
                 double offset = labelDistance;
                 for (int i = 1; i < labelPositions.length; i++) {

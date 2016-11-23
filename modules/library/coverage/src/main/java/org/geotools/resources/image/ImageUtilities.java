@@ -63,7 +63,6 @@ import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
 
-import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -868,7 +867,7 @@ public final class ImageUtilities {
     	// in which there is not a special ImageReadparam used.
     
     	// Create a new ImageReadParam instance.
-    	EnhancedImageReadParam newParam = new EnhancedImageReadParam();
+    	ImageReadParam newParam = new ImageReadParam();
     
     	// Set all fields which need to be set.
     
@@ -901,12 +900,7 @@ public final class ImageUtilities {
     	newParam.setSourceSubsampling(param.getSourceXSubsampling(), param
     			.getSourceYSubsampling(), param.getSubsamplingXOffset(), param
     			.getSubsamplingYOffset());
-
-        // check if need to copy extra parameters
-        if (param instanceof EnhancedImageReadParam) {
-            newParam.setBands(((EnhancedImageReadParam) param).getBands());
-        }
-
+    
     	// Replace the local variable with the new ImageReadParam.
     	return newParam;
     

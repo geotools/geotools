@@ -77,7 +77,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ExtendedImageParam;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
@@ -452,7 +452,7 @@ public class RasterLayerResponse {
 
     private int imageChoice = 0;
 
-    private ExtendedImageParam baseReadParameters = new ExtendedImageParam();
+    private EnhancedImageReadParam baseReadParameters = new EnhancedImageReadParam();
 
     private boolean multithreadingAllowed;
 

@@ -347,7 +347,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
-            return CRS.decode("EPSG:" + srid);
+            return CRS.decode("EPSG:" + srid, true);
         }
         catch (Exception e) {
             LOGGER.log(Level.FINE, "Unable to create CRS from epsg code " + srid, e);

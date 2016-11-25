@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <schema name="stationD">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes>
+            </schema>
+            <origName>stationD</origName>
+            <name>stationD</name>
+        </coverage>
+        <coverage>
+            <schema name="stationA">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes>
+            </schema>
+            <origName>stationA</origName>
+            <name>stationA</name>
+        </coverage>
+        <coverage>
+            <schema name="stationB">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes>
+            </schema>
+            <origName>stationB</origName>
+            <name>stationB</name>
+        </coverage>
+        <coverage>
+            <schema name="stationC">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date</attributes>
+            </schema>
+            <origName>stationC</origName>
+            <name>stationC</name>
+        </coverage>
+    </coverages>
+    <multipleBandsDimensions>
+		<multipleBandsDimension>
+			<name>data</name>
+			<bandsNames>value1,value2,value3</bandsNames>
+		</multipleBandsDimension>
+	</multipleBandsDimensions>
+</Indexer>

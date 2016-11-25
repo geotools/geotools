@@ -44,7 +44,7 @@ import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
-import org.geotools.resources.image.ExtendedImageParam;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
@@ -587,8 +587,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         // let's see if we have some extra parameters
         int[] bands = null;
-        if (param instanceof ExtendedImageParam) {
-            bands = ((ExtendedImageParam) param).getBands();
+        if (param instanceof EnhancedImageReadParam) {
+            bands = ((EnhancedImageReadParam) param).getBands();
         }
 
         /*

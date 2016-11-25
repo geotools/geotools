@@ -102,7 +102,7 @@ public final class RendererUtilities {
                 @Override
                 protected GridToEnvelopeMapper initialValue() {
                     final GridToEnvelopeMapper mapper = new GridToEnvelopeMapper();
-                    mapper.setGridType(PixelInCell.CELL_CORNER);
+                    mapper.setPixelAnchor(PixelInCell.CELL_CORNER);
                     return mapper;
                 }
     };

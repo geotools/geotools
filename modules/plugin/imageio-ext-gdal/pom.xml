@@ -148,6 +148,11 @@
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-gdalvrt</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-imagereadmt</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>

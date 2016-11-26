@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,14 +15,13 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geotools.coverageio.gdal.dted;
+package org.geotools.coverageio.gdal.vrt;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.image.DataBuffer;
 import java.io.File;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.logging.Level;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
@@ -48,24 +47,50 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
+ * @author Ugo Moschini, GeoSolutions
  *
- * Testing {@link DTEDReader}
- *
- *
+ *         Testing {@link VRTReader}
  *
  * @source $URL$
  */
-public final class DTEDTest extends GDALTestCase {
+public final class VRTTest extends GDALTestCase {
 
-	/**
-     * file name of a valid DTED sample data to be used for tests. 
+    /**
+     * file name of a valid VRT file to be used for tests.
      */
-    private final static String fileName = "n43.dt0";
+    private final static String fileName = "n43.dt0.vrt";
 
-    public DTEDTest() {
-		super( "DTED", new DTEDFormatFactory());
-	}
-    
+    public VRTTest() {
+        super("VRT", new VRTFormatFactory());
+    }
+
+    @Test
+    public void testService() throws NoSuchAuthorityCodeException, FactoryException {
+        if (!testingEnabled()) {
+            return;
+        }
+
+        GridFormatFinder.scanForPlugins();
+
+        Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
+        boolean found = false;
+        GridFormatFactorySpi fac = null;
+
+        while (list.hasNext()) {
+            fac = (GridFormatFactorySpi) list.next();
+
+            if (fac instanceof VRTFormatFactory) {
+                found = true;
+
+                break;
+            }
+        }
+
+        Assert.assertTrue("VRTFormatFactory not registered", found);
+        Assert.assertTrue("VRTFormatFactory not available", fac.isAvailable());
+        Assert.assertNotNull(new VRTFormatFactory().createFormat());
+    }
+
     @Test
     public void test() throws Exception {
         if (!testingEnabled()) {
@@ -81,7 +106,7 @@ public final class DTEDTest extends GDALTestCase {
 
         // get a reader
         final File file = TestData.file(this, fileName);
-        final BaseGDALGridCoverage2DReader reader = new DTEDReader(file, hints);
+        final BaseGDALGridCoverage2DReader reader = new VRTReader(file, hints);
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -90,10 +115,6 @@ public final class DTEDTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         GridCoverage2D gc = (GridCoverage2D) reader.read(null);
         forceDataLoading(gc);
-        
-        // log band names (check they are not all UNKNOWN)
-        if (LOGGER.isLoggable(Level.FINE))
-        	LOGGER.log(Level.FINE, Arrays.toString(gc.getSampleDimensions()));
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -103,55 +124,31 @@ public final class DTEDTest extends GDALTestCase {
         final double cropFactor = 2.0;
         final int oldW = gc.getRenderedImage().getWidth();
         final int oldH = gc.getRenderedImage().getHeight();
-        final Rectangle range = ((GridEnvelope2D)reader.getOriginalGridRange());
+
+        Assert.assertEquals(121, oldW);
+        Assert.assertEquals(121, oldH);
+        // check for expected data type
+        Assert.assertEquals(DataBuffer.TYPE_SHORT,
+                gc.getRenderedImage().getSampleModel().getDataType());
+
+        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
+
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0)
-                    + (oldEnvelope.getSpan(0) / cropFactor),
-                    
+                oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
+
                 oldEnvelope.getLowerCorner().getOrdinate(1)
-                    + (oldEnvelope.getSpan(1) / cropFactor)
-                },
-                new double[] {
-                    oldEnvelope.getUpperCorner().getOrdinate(0),
-                    oldEnvelope.getUpperCorner().getOrdinate(1)
-                });
+                        + (oldEnvelope.getSpan(1) / cropFactor) },
+                new double[] { oldEnvelope.getUpperCorner().getOrdinate(0),
+                        oldEnvelope.getUpperCorner().getOrdinate(1) });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
 
-        final ParameterValue gg = (ParameterValue) ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D
-            .createValue();
-        gg.setValue(new GridGeometry2D(
-                new GridEnvelope2D(
-                    new Rectangle(0, 0, (int) (range.width / 2.0 / cropFactor),
-                        (int) (range.height / 2.0 / cropFactor))), cropEnvelope));
+        final ParameterValue gg = (ParameterValue) ((AbstractGridFormat) reader
+                .getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0,
+                (int) (range.width / 2.0 / cropFactor), (int) (range.height / 2.0 / cropFactor))),
+                cropEnvelope));
         gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg });
         forceDataLoading(gc);
     }
-    
-    @Test
-	public void testService() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
-        GridFormatFinder.scanForPlugins();
-
-        Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
-        boolean found = false;
-        GridFormatFactorySpi fac = null;
-
-        while (list.hasNext()) {
-            fac = (GridFormatFactorySpi) list.next();
-
-            if (fac instanceof DTEDFormatFactory) {
-                found = true;
-
-                break;
-            }
-        }
-
-        Assert.assertTrue("DTEDFormatFactory not registered", found);
-        Assert.assertTrue("DTEDFormatFactory not available", fac.isAvailable());
-        Assert.assertNotNull(new DTEDFormatFactory().createFormat());
-    }    
 }

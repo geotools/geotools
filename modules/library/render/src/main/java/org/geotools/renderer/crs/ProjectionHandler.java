@@ -34,6 +34,7 @@ import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -90,6 +91,10 @@ public class ProjectionHandler {
 
     protected boolean queryAcrossDateline;
 
+    protected SingleCRS geometryCRS;
+
+    protected boolean noReprojection;
+
     /**
      * Initializes a projection handler 
      * 
@@ -112,6 +117,7 @@ public class ProjectionHandler {
         // time/resources than we presently have
         this.queryAcrossDateline = !CRS.equalsIgnoreMetadata(sourceCRS,
                 renderingEnvelope.getCoordinateReferenceSystem());
+        checkReprojection();
     }
     
     /**
@@ -141,7 +147,15 @@ public class ProjectionHandler {
             this.validArea = validArea;
             this.validaAreaTester = PreparedGeometryFactory.prepare(validArea);
         }
+        checkReprojection();
     }
+    
+    private void checkReprojection() throws FactoryException {
+        geometryCRS = CRS.getHorizontalCRS(sourceCRS);
+        noReprojection = geometryCRS == null
+                || CRS.equalsIgnoreMetadata(geometryCRS, renderingEnvelope.getCoordinateReferenceSystem());
+    }
+
 
     /**
      * Returns the current rendering envelope
@@ -375,7 +389,7 @@ public class ProjectionHandler {
             return false;
         
         // if not reprojection is going on, we don't need to cut
-        if (CRS.equalsIgnoreMetadata(sourceCRS, renderingEnvelope.getCoordinateReferenceSystem())) {
+        if (noReprojection) {
             return false;
         }
         
@@ -392,10 +406,7 @@ public class ProjectionHandler {
             return geometry;
         
         // if not reprojection is going on, we don't need to cut
-        CoordinateReferenceSystem geometryCRS = CRS.getHorizontalCRS(sourceCRS);
-        if (geometryCRS == null
-                || CRS.findMathTransform(geometryCRS,
-                        renderingEnvelope.getCoordinateReferenceSystem()).isIdentity()) {
+        if(noReprojection) {
             return geometry;
         }
         

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,13 +24,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,6 +54,7 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -119,7 +115,7 @@ class NetCDFResponse extends CoverageResponse{
 
     private URL datasetURL;
 
-    private ImageReadParam baseReadParameters = new ImageReadParam();
+    private EnhancedImageReadParam baseReadParameters = new EnhancedImageReadParam();
 
     private boolean oversampledRequest;
 
@@ -184,6 +180,9 @@ class NetCDFResponse extends CoverageResponse{
             }
         }
 
+        // set the destination bands based on the bands parameter
+        baseReadParameters.setBands(readRequest.getBands());
+
         Set<DateRange> temporalSubset = readRequest.getTemporalSubset();
         Set<NumberRange<Double>> verticalSubset = readRequest.getVerticalSubset();
         RangeType requestedRange = readRequest.getRangeSubset();
@@ -203,8 +202,22 @@ class NetCDFResponse extends CoverageResponse{
                     sampleDims = ft.getSampleDimensions();
             }
         }
-        final GridSampleDimension[] sampleDimensions = sampleDims
-                .toArray(new GridSampleDimension[sampleDims.size()]);
+
+        // when calculating the sample dimensions we need to take in account the bands parameter
+        GridSampleDimension[] sampleDimensions = sampleDimensions = sampleDims != null ?
+                sampleDims.toArray(new GridSampleDimension[sampleDims.size()]) : new GridSampleDimension[0];;
+        int[] bands = readRequest.getBands();
+        if (bands != null) {
+            int maxBandIndex = Arrays.stream(bands).max().getAsInt();
+            if (bands.length > 0 && (sampleDims == null || maxBandIndex > sampleDims.size())) {
+                throw new IllegalArgumentException("Invalid bands parameter provided.");
+            }
+            GridSampleDimension[] updatedSampleDimensions = new GridSampleDimension[bands.length];
+            for (int i = 0; i < bands.length; i++) {
+                updatedSampleDimensions[i] = sampleDimensions[bands[i]];
+            }
+            sampleDimensions = updatedSampleDimensions;
+        }
 
         // Forcing creation of subsets (even with a single null element)
         Set<DateRange> tempSubset = null;
@@ -364,7 +377,7 @@ class NetCDFResponse extends CoverageResponse{
     private void prepareParams() throws DataSourceException {
 
         try {
-            baseReadParameters = new ImageReadParam();
+            baseReadParameters = new EnhancedImageReadParam();
             performDecimation(baseReadParameters);
 
             // === extract bbox

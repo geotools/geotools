@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <domains>
+        <domain name="time">
+            <attributes><attribute>time</attribute></attributes>
+        </domain>
+    </domains>
+    <coverages>
+        <coverage>
+          <name>stationA</name>
+          <schema name="stationA" >
+               <attributes>the_geom:Polygon,imageindex:Integer,location:String,time:java.util.Date</attributes>
+          </schema>
+          <domains>
+            <domain ref="time" />
+          </domains>
+        </coverage>
+    </coverages>
+    <parameters>
+        <parameter name="AbsolutePath" value="true" />
+        <parameter name="AuxiliaryFile" value="netcdf_auxiliary.xml" />
+    </parameters>
+    <multipleBandsDimensions>
+        <multipleBandsDimension>
+            <name>data</name>
+            <bandsNames>value1,value2,value3</bandsNames>
+        </multipleBandsDimension>
+    </multipleBandsDimensions>
+</Indexer>

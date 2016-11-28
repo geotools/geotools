@@ -54,7 +54,7 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
-import org.geotools.resources.image.ExtendedImageParam;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -115,7 +115,7 @@ class NetCDFResponse extends CoverageResponse{
 
     private URL datasetURL;
 
-    private ExtendedImageParam baseReadParameters = new ExtendedImageParam();
+    private EnhancedImageReadParam baseReadParameters = new EnhancedImageReadParam();
 
     private boolean oversampledRequest;
 
@@ -377,7 +377,7 @@ class NetCDFResponse extends CoverageResponse{
     private void prepareParams() throws DataSourceException {
 
         try {
-            baseReadParameters = new ExtendedImageParam();
+            baseReadParameters = new EnhancedImageReadParam();
             performDecimation(baseReadParameters);
 
             // === extract bbox

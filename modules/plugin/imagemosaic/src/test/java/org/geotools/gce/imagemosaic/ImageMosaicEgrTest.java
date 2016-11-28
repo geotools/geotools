@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.RenderingHints;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -345,7 +346,9 @@ public class ImageMosaicEgrTest {
             String... expectedImages) throws IOException {
         GridCoverage2D coverage = reader.read(readParams);
         assertSourceFileNames(coverage, expectedImages);
-        ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 0);
+        final RenderedImage ri = coverage.getRenderedImage();
+        // allow 1% tolerance due to different treatment of masks across different JDKs
+        ImageAssert.assertEquals(expectedOutput, ri, ri.getWidth() * ri.getHeight() / 100);
     }
 
     private void assertSourceFileNames(GridCoverage2D coverage, String... expectedNamesArray) {

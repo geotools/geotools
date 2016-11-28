@@ -41,6 +41,7 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureSource;
@@ -48,7 +49,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -56,9 +56,7 @@ import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.oracle.OracleDatastoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
-import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -479,39 +477,24 @@ class GTDataStoreGranuleCatalog extends GranuleCatalog {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("Index Loaded");
 
-            // visiting the features from the underlying store
-            final DefaultProgressListener listener = new DefaultProgressListener();
-            features.accepts(new AbstractFeatureVisitor() {
-                public void visit(Feature feature) {
-                    if (feature instanceof SimpleFeature) {
-                        // get the feature
-                        final SimpleFeature sf = (SimpleFeature) feature;
-                        MultiLevelROI footprint = getGranuleFootprint(sf);
-                        if (footprint == null || !footprint.isEmpty()) {
-                            try {
-                                final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                        suggestedRasterSPI, pathType, locationAttribute,
-                                        parentLocation, footprint, heterogeneous, q.getHints());
+            // visiting the features from the underlying store, caring for early bail out
+            try(SimpleFeatureIterator fi = features.features()) {
+                while(fi.hasNext() && !visitor.isVisitComplete()) {
+                    final SimpleFeature sf = fi.next();
+                    MultiLevelROI footprint = getGranuleFootprint(sf);
+                    if (footprint == null || !footprint.isEmpty()) {
+                        try {
+                            final GranuleDescriptor granule = new GranuleDescriptor(sf,
+                                    suggestedRasterSPI, pathType, locationAttribute,
+                                    parentLocation, footprint, heterogeneous, q.getHints());
 
-                                visitor.visit(granule, null);
-                            } catch (Exception e) {
-                                LOGGER.log(Level.FINE, "Skipping invalid granule", e);
-                            }
-                        }
-
-                        // check if something bad occurred
-                        if (listener.isCanceled() || listener.hasExceptions()) {
-                            if (listener.hasExceptions()) {
-                                throw new RuntimeException(listener.getExceptions().peek());
-                            } else {
-                                throw new IllegalStateException(
-                                        "Feature visitor for query " + q + " has been canceled");
-                            }
+                            visitor.visit(granule, sf);
+                        } catch (Exception e) {
+                            LOGGER.log(Level.FINE, "Skipping invalid granule", e);
                         }
                     }
                 }
-            }, listener);
-
+            }
         } catch (Throwable e) {
             final IOException ioe = new IOException();
             ioe.initCause(e);

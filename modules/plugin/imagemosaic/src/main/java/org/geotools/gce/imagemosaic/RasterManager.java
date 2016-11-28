@@ -1594,4 +1594,8 @@ public class RasterManager {
         //
         return value;
     }
+
+    public ImageMosaicReader getParentReader() {
+        return parentReader;
+    }
 }

@@ -35,4 +35,13 @@ public interface GranuleCatalogVisitor {
      * @param o a sibling {@link Object} to pass along while visiting
      */
     public void visit(final GranuleDescriptor granule, Object o);
+    
+    /**
+     * Returns true if the visit has been completed and there is no more
+     * need to scan though the other granules
+     * @return
+     */
+    public default boolean isVisitComplete() {
+        return false;
+    }
 }

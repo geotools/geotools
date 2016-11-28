@@ -113,8 +113,13 @@ public class RasterLayerRequest {
     // the bands parameter define the order and which bands should be returned
     private int[] bands;
 
-    /** Sort clause on shapefile attributes. */
+    /** Sort clause on data source. */
     private String sortClause;
+
+    /*
+     * Enables/disables excess granule removal
+     */
+    private ExcessGranulePolicy excessGranuleRemovalPolicy;
 
     public List<?> getElevation() {
         return elevation;
@@ -146,6 +151,14 @@ public class RasterLayerRequest {
 
     public boolean isHeterogeneousGranules() {
         return heterogeneousGranules;
+    }
+
+    public ExcessGranulePolicy getExcessGranuleRemovalPolicy() {
+        return excessGranuleRemovalPolicy;
+    }
+
+    public void setExcessGranuleRemovalPolicy(ExcessGranulePolicy policy) {
+        this.excessGranuleRemovalPolicy = policy;
     }
 
     public void setHeterogeneousGranules(final boolean heterogeneousGranules) {
@@ -413,6 +426,13 @@ public class RasterLayerRequest {
                 if (value == null)
                     continue;
                 accurateResolution = ((Boolean) value).booleanValue();
+                return;
+            }
+            
+            if (name.equals(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL.getName())) {
+                if (value == null)
+                    continue;
+                excessGranuleRemovalPolicy = (ExcessGranulePolicy) value;
                 return;
             }
         }
@@ -721,6 +741,17 @@ public class RasterLayerRequest {
             // if the parameter is NULL no problem
             bands = (int[]) param.getValue();
         }
+
+        // see if we have to perform excess granule removal
+        if (name.equals(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL.getName())) {
+            final Object value = param.getValue();
+            if (value == null) {
+                return;
+            }
+            excessGranuleRemovalPolicy = (ExcessGranulePolicy) value;
+            return;
+        }
+
     }
 
     /**

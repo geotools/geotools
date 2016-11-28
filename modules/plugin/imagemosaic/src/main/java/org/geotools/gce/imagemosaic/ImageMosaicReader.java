@@ -1489,6 +1489,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             fileGroups.add(new FileGroup(file, null, null));
         }
         return new DefaultFileServiceInfo(fileGroups);
-
+    }
+    
+    public ExecutorService getMultiThreadedLoader() {
+        return multiThreadedLoader;
     }
 }

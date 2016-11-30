@@ -13,9 +13,10 @@
   <name>GeoTools Elasticsearch Parent Module</name>
   <modules>
     <module>gt-elasticsearch-core</module>
-    <module>gt-elasticsearch1</module>
     <module>gt-elasticsearch2</module>
+    <module>gt-elasticsearch5</module>
     <module>gt-elasticsearch</module>
+    <module>gt-elasticsearch-process</module>
   </modules>
   <build>
     <plugins>

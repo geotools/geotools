@@ -16,15 +16,11 @@
  */
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
-
-import mil.nga.giat.data.elasticsearch.ElasticDataStoreFactory;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.store.ContentFeatureSource;
@@ -32,7 +28,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class ElasticDataStoreTest extends ElasticTestSupport {
-    
+
     @Test
     public void testGetNames() throws IOException {
         Map<String,Serializable> params = createConnectionParams();
@@ -53,19 +49,19 @@ public class ElasticDataStoreTest extends ElasticTestSupport {
         String searchIndices = ((ElasticDataStore) dataStore).getSearchIndices();
         assertTrue(searchIndices.equals(indexName));
     }
-    
+
     @Test
     public void testLayerConfigClone() {
         ElasticLayerConfiguration layerConfig = new ElasticLayerConfiguration("d");
         layerConfig.setLayerName("ln");
         layerConfig.getAttributes().add(new ElasticAttribute("a1"));
-        
+
         ElasticLayerConfiguration layerConfig2 = new ElasticLayerConfiguration(layerConfig);
         assertTrue(layerConfig.getDocType().equals(layerConfig2.getDocType()));
         assertTrue(layerConfig.getLayerName().equals(layerConfig2.getLayerName()));
         assertTrue(layerConfig.getAttributes().equals(layerConfig2.getAttributes()));
     }
-    
+
     @Test
     public void testSchema() throws IOException {
         Map<String,Serializable> params = createConnectionParams();
@@ -76,7 +72,7 @@ public class ElasticDataStoreTest extends ElasticTestSupport {
         assertTrue(schema.getAttributeCount() > 0);
         assertNotNull(schema.getDescriptor("speed_is"));
     }
-    
+
     @Test
     public void testSchemaWithValidCustomName() throws Exception {
         init();

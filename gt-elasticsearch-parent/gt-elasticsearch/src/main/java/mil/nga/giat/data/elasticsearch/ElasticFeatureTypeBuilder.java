@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.ANALYZED;
-import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.DATE_FORMAT;
-import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.FULL_NAME;
-import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.GEOMETRY_TYPE;
-import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.NESTED;
+import static mil.nga.giat.data.elasticsearch.ElasticConstants.ANALYZED;
+import static mil.nga.giat.data.elasticsearch.ElasticConstants.DATE_FORMAT;
+import static mil.nga.giat.data.elasticsearch.ElasticConstants.FULL_NAME;
+import static mil.nga.giat.data.elasticsearch.ElasticConstants.GEOMETRY_TYPE;
+import static mil.nga.giat.data.elasticsearch.ElasticConstants.NESTED;
 import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -55,7 +55,7 @@ public class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
 
                     AttributeDescriptor att = null;
                     if (Geometry.class.isAssignableFrom(attribute.getType())) {
-                        Integer srid = attribute.getSrid();
+                        final Integer srid = attribute.getSrid();
                         try {
                             if (srid != null) {
                                 attributeBuilder.setCRS(CRS.decode("EPSG:" + srid));
@@ -63,7 +63,7 @@ public class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                                 attributeBuilder.setBinding(attribute.getType());
                                 att = attributeBuilder.buildDescriptor(attributeName,
                                         attributeBuilder.buildGeometryType());
-                                
+
                                 final ElasticGeometryType geometryType = attribute.getGeometryType();
                                 att.getUserData().put(GEOMETRY_TYPE, geometryType);
                                 if (attribute.isDefaultGeometry() != null

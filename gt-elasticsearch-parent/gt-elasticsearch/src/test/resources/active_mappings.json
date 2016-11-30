@@ -54,7 +54,7 @@
                 "type" : "double"
               }
             }
-	  },
+	      },
           "nested": {
             "type": "nested",
             "properties": {
@@ -71,7 +71,10 @@
                 }
               }
             }
-	  }
+	      },
+	      "long" : {
+            "type" : "long"
+          }
         }
       }
     }

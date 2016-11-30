@@ -1,3 +1,7 @@
+/**
+ * This file is hereby placed into the Public Domain. This means anyone is
+ * free to do whatever they wish with this file.
+ */
 package mil.nga.giat.data.elasticsearch;
 
 import java.io.IOException;
@@ -13,7 +17,7 @@ public class ElasticCompatLoader {
 
     protected static final Logger LOGGER = Logging.getLogger(ElasticCompatLoader.class);
 
-    private static final String DEFAULT_ES_COMPAT_VERSION = "2";
+    private static final String DEFAULT_ES_COMPAT_VERSION = "5";
 
     private static final String DEFAULT_ES_CLASS_NAME = ElasticCompat.class.getName() + DEFAULT_ES_COMPAT_VERSION;
 
@@ -23,7 +27,7 @@ public class ElasticCompatLoader {
 
     public synchronized static ElasticCompat getCompat(String classOverride) {
         if (cachedCompat != null) {
-            LOGGER.fine("Returning cached Elasticsearch compatibility layer: " + cachedCompat.getClass().getCanonicalName());
+            LOGGER.finest("Returning cached Elasticsearch compatibility layer: " + cachedCompat.getClass().getCanonicalName());
             return cachedCompat;
         }
 
@@ -32,7 +36,7 @@ public class ElasticCompatLoader {
             className = classOverride;
         } else {
             ClassLoader classLoader = ElasticCompatLoader.class.getClassLoader();
-            try (InputStream in = classLoader.getResourceAsStream("es-build.properties")) {
+            try (InputStream in = classLoader.getResourceAsStream("esgeo-build.properties")) {
                 if (in != null) {
                     try (Scanner s = new Scanner(in)) {
                         s.useDelimiter("\\A");
@@ -47,7 +51,7 @@ public class ElasticCompatLoader {
             }
             if (className == null) {
                 LOGGER.info("Runtime Elasticsearch version could not be detected.  " +
-                         "Loading compatibility layer for Elasticsearch version " + DEFAULT_ES_COMPAT_VERSION);
+                        "Loading compatibility layer for Elasticsearch version " + DEFAULT_ES_COMPAT_VERSION);
                 className = DEFAULT_ES_CLASS_NAME;
             }
         }
@@ -64,5 +68,9 @@ public class ElasticCompatLoader {
 
         return cachedCompat = compat;
     }
-}
 
+    protected static void setCompat(ElasticCompat compat) {
+        ElasticCompatLoader.cachedCompat = compat;
+    }
+
+}

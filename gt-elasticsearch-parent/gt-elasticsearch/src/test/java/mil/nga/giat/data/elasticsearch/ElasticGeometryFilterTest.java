@@ -17,8 +17,6 @@
 
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.*;
-
 import javax.measure.unit.SI;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -50,7 +48,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 public class ElasticGeometryFilterTest extends ElasticTestSupport {
-    
+
     @Test
     public void testBBOXLimitSplittedFilter() throws Exception {
         init();
@@ -59,7 +57,7 @@ public class ElasticGeometryFilterTest extends ElasticTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(11, features.size());
     }
-    
+
     @Test
     public void testPolygonLimitSplittedFilter() throws Exception {
         init();
@@ -71,7 +69,7 @@ public class ElasticGeometryFilterTest extends ElasticTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(11, features.size());
     }
-    
+
     @Test
     public void testClipToWorldFilter() throws Exception {
         init();
@@ -83,7 +81,7 @@ public class ElasticGeometryFilterTest extends ElasticTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
         assertEquals(7, features.size());
     }
-    
+
     @Test
     public void testCrossesFilter() throws Exception {
         init("not-active","geo3");
@@ -247,7 +245,7 @@ public class ElasticGeometryFilterTest extends ElasticTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(9, features.size());
     }
-    
+
     @Test
     public void testAlternateGeometry() throws Exception {
         init("active", "geo2");
@@ -264,7 +262,7 @@ public class ElasticGeometryFilterTest extends ElasticTestSupport {
         assertTrue(fsi.hasNext());
         assertEquals(fsi.next().getID(), "active.09");
     }
-    
+
     @Test
     public void testOgrStyleGeoPoint() throws Exception {
         init("not-active","geo4.coordinates");

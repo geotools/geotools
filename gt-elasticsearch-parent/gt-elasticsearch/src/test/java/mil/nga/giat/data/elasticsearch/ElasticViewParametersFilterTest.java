@@ -17,8 +17,6 @@
 
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,7 +76,6 @@ public class ElasticViewParametersFilterTest extends ElasticTestSupport {
         init("not-active");
         Map<String, String> vparams = new HashMap<String, String>();
         vparams.put("f", QueryBuilders.termQuery("security_ss", "WPA").toString());
-//        vparams.put("f", FilterBuilders.termFilter("security_ss", "WPA").toString());
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
@@ -97,11 +94,8 @@ public class ElasticViewParametersFilterTest extends ElasticTestSupport {
         init();
         Map<String, String> vparams = new HashMap<String, String>();
         vparams.put("f", QueryBuilders.boolQuery()
-        		.must(QueryBuilders.termQuery("security_ss", "WPA"))
-        		.must(QueryBuilders.termQuery("modem_b", true)).toString());
-//        vparams.put("f", FilterBuilders.andFilter(
-//                FilterBuilders.termFilter("security_ss", "WPA"),
-//                FilterBuilders.termFilter("modem_b", true)).toString());
+                .must(QueryBuilders.termQuery("security_ss", "WPA"))
+                .must(QueryBuilders.termQuery("modem_b", true)).toString());
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);
@@ -121,7 +115,6 @@ public class ElasticViewParametersFilterTest extends ElasticTestSupport {
         Map<String, String> vparams = new HashMap<String, String>();
         vparams.put("q", QueryBuilders.termQuery("security_ss", "WPA").toString());
         vparams.put("f", QueryBuilders.termQuery("modem_b", true).toString());
-//        vparams.put("f", FilterBuilders.termFilter("modem_b", true).toString());
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setHints(hints);

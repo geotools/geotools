@@ -1,17 +1,31 @@
+/**
+ * This file is hereby placed into the Public Domain. This means anyone is
+ * free to do whatever they wish with this file.
+ */
 package mil.nga.giat.data.elasticsearch;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Date;
+import java.util.Map;
+import java.util.logging.Logger;
 
-import org.apache.lucene.util.GeoHashUtils;
+import com.spatial4j.core.io.GeohashUtils;
+
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.joda.Joda;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
+import org.geotools.util.logging.Logging;
 import org.joda.time.format.DateTimeFormatter;
 
 public class ElasticCompat2 implements ElasticCompat {
+
+    private final static Logger LOGGER = Logging.getLogger(ElasticCompat2.class);
 
     @Override
     public FilterToElastic newFilterToElastic() {
@@ -25,7 +39,7 @@ public class ElasticCompat2 implements ElasticCompat {
 
     @Override
     public String encodeGeohash(double lon, double lat, int level) {
-        return GeoHashUtils.stringEncode(lon, lat, level);
+        return GeohashUtils.encodeLatLon(lat, lon, level);
     }
 
     @Override
@@ -34,14 +48,30 @@ public class ElasticCompat2 implements ElasticCompat {
     }
 
     @Override
-    public Client createClient(Settings settings, TransportAddress... addresses) {
-        return TransportClient.builder().settings(settings).build().addTransportAddresses(addresses);
+    public ElasticClient createClient(String host, int port, String clusterName) throws IOException {
+        final TransportAddress address;
+        address = new InetSocketTransportAddress(InetAddress.getByName(host), port);
+        final Settings settings = createSettings("cluster.name", clusterName);
+        final Client client = TransportClient.builder().settings(settings).build().addTransportAddresses(address);
+        LOGGER.info("Created Elasticsearch Transport client");
+        return new TransportElasticClient(client);
     }
-    
+
     @Override
     public Date parseDateTime(String datestring, String format) {
         final DateTimeFormatter dateFormatter = Joda.forPattern(format).parser();
         return dateFormatter.parseDateTime((String) datestring).toDate();
+    }
+
+    @Override
+    public boolean isAnalyzed(Map<String, Object> map) {
+        final String index = (String) map.get("index");
+        return index == null || index.equals("analyzed");
+    }
+
+    @Override
+    public void addField(SearchRequestBuilder builder, String name) {
+        builder.addField(name);
     }
 
 }

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration.GEOMETRY_TYPE;
+import static mil.nga.giat.data.elasticsearch.ElasticConstants.GEOMETRY_TYPE;
 import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 
 import org.elasticsearch.common.geo.ShapeRelation;
@@ -48,15 +48,15 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 class FilterToElasticHelper {
-    
+
     protected double lat, lon, distance;
-    
+
     protected String key;
-    
+
     protected Literal geometry;
-    
+
     protected ShapeRelation shapeRelation;
-    
+
     protected ShapeBuilder shapeBuilder;
 
     /**
@@ -84,7 +84,7 @@ class FilterToElasticHelper {
     public FilterToElasticHelper(FilterToElastic delegate) {
         this.delegate = delegate;
     }
-    
+
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped,
             Object extraData) {

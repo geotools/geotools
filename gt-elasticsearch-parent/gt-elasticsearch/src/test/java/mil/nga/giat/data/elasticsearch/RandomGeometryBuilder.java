@@ -1,3 +1,7 @@
+/**
+ * This file is hereby placed into the Public Domain. This means anyone is
+ * free to do whatever they wish with this file.
+ */
 package mil.nga.giat.data.elasticsearch;
 
 import java.io.IOException;
@@ -11,6 +15,7 @@ import java.util.Random;
 import org.geotools.geojson.geom.GeometryJSON;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -30,15 +35,15 @@ public class RandomGeometryBuilder {
     private final GeometryFactory geometryFactory;
 
     private final Random random;
-    
+
     private final GeometryJSON geometryJson;
-    
+
     private final int decimals;
-        
+
     private int numPoints;
-    
+
     private int numGeometries;
-    
+
     public RandomGeometryBuilder() {
         geometryFactory = new GeometryFactory();
         random = new Random(123456789l);
@@ -46,7 +51,7 @@ public class RandomGeometryBuilder {
         numPoints = 10;
         numGeometries = 2;
         geometryJson = new GeometryJSON(decimals);
-   }
+    }
 
     public Point createRandomPoint() {
         return geometryFactory.createPoint(createRandomCoord());
@@ -109,7 +114,7 @@ public class RandomGeometryBuilder {
         }
         return geometryFactory.createGeometryCollection(geometries);
     }
-    
+
     public Envelope createRandomEnvelope() {
         Coordinate coord1 = createRandomCoord();
         while (coord1.x > 179 || coord1.y > 89) {
@@ -131,12 +136,12 @@ public class RandomGeometryBuilder {
         final double lat = (random.nextInt(dy*factor)+miny*factor)/((double) factor);
         return new Coordinate(lon, lat);
     }
-    
+
     public Map<String,Object> toMap(Geometry geometry) throws JsonParseException, JsonMappingException, IOException {
         final String json = geometryJson.toString(geometry);
-        return new ObjectMapper().readValue(json, HashMap.class);
+        return new ObjectMapper().readValue(json, new TypeReference<Map<String, Object>>() {});
     }
-    
+
     public Map<String,Object> toMap(Envelope envelope) throws JsonParseException, JsonMappingException, IOException {
         final Map<String,Object> properties = new HashMap<>();
         final List<List<Double>> coordinates = new ArrayList<>();
@@ -162,5 +167,5 @@ public class RandomGeometryBuilder {
     public void setNumGeometries(int numGeometries) {
         this.numGeometries = numGeometries;
     }
-    
+
 }

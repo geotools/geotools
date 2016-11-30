@@ -17,8 +17,6 @@
 
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
 
 import org.geotools.data.simple.SimpleFeatureCollection;

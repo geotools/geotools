@@ -44,7 +44,7 @@ public class ElasticAttribute implements Serializable {
     private Boolean analyzed;
 
     private boolean stored;
-    
+
     private boolean nested;
 
     public ElasticAttribute(String name) {

@@ -15,4 +15,5 @@ public class FilterToElasticException extends RuntimeException {
     public FilterToElasticException(String msg, Throwable exp) {
         super(msg, exp);
     }
+
 }

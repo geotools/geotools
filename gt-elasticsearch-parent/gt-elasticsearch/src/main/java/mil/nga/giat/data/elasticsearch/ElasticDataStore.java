@@ -4,42 +4,24 @@
  */
 package mil.nga.giat.data.elasticsearch;
 
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-import org.elasticsearch.action.admin.cluster.state.ClusterStateRequest;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.Requests;
-import org.elasticsearch.cluster.ClusterState;
-import org.elasticsearch.cluster.metadata.IndexMetaData;
-import org.elasticsearch.cluster.metadata.MappingMetaData;
-import org.elasticsearch.common.collect.ImmutableOpenMap;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.node.Node;
-import org.geotools.data.FeatureReader;
+import org.elasticsearch.common.joda.Joda;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
-import org.joda.time.format.DateTimeFormat;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -67,122 +49,66 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
  */
 public class ElasticDataStore extends ContentDataStore {
 
-    private final static Logger LOGGER = Logging.getLogger(ElasticDataStoreFactory.class);
+    private final static Logger LOGGER = Logging.getLogger(ElasticDataStore.class);
+
+    private static ElasticCompat compat = ElasticCompatLoader.getCompat(null);
+
+    private static ElasticClient client;
+
+    private final ElasticClient managedClient;
 
     private final String indexName;
 
     private final String searchIndices;
-   
-    private final Node node;
-
-    private final Client client;
-    
-    private final boolean isLocal;
 
     private final List<Name> baseTypeNames;
-    
+
     private final Map<Name, String> docTypes;
 
     private Map<String, ElasticLayerConfiguration> layerConfigurations;
-    
-    private Long scrollSize;
-    
-    private boolean scrollEnabled;
-    
-    private Integer scrollTime;    
-    
-    public ElasticDataStore(String searchHost, Integer hostPort, 
-            String indexName, String searchIndices, String clusterName,
-            boolean localNode, boolean storeData, String dataPath, 
-            Long scrollSize, Integer scrollTime, boolean scrollEnabled) {
 
-        LOGGER.fine("initializing data store " + searchHost + ":" + hostPort + "/" + indexName);
+    private boolean sourceFilteringEnabled;
+
+    private Integer defaultMaxFeatures;
+
+    private Long scrollSize;
+
+    private boolean scrollEnabled;
+
+    private Integer scrollTime;
+
+    private Long gridSize;
+
+    private Double gridThreshold;
+
+    public ElasticDataStore(String searchHost, Integer hostPort, 
+            String indexName, String searchIndices, String clusterName) throws IOException {
+
+        LOGGER.fine("Initializing data store " + searchHost + ":" + hostPort + "/" + indexName);
 
         this.indexName = indexName;
-        
+
         if (searchIndices != null) {
             this.searchIndices = searchIndices;
         } else {
             this.searchIndices = indexName;
         }
-        
-        this.scrollEnabled = scrollEnabled;
-        this.scrollSize = scrollSize;
-        this.scrollTime = scrollTime;
 
-        final ElasticCompat compat = ElasticCompatLoader.getCompat(null);
-        
-        if (dataPath != null) {
-            Settings settings = compat.createSettings("path.home", dataPath, "http.enabled", false);
-            node = nodeBuilder()
-                    .settings(settings)
-                    .local(true)
-                    .clusterName(clusterName)
-                    .node();
-            client = node.client();
-            isLocal = true;
-        } else if (localNode) {
-            Path path = null;
-            try {
-                path = Files.createTempDirectory("gt_es");
-            } catch (IOException e) {
-                throw new RuntimeException("unable to create temp director for path.home", e);
-            }
-            Settings settings = compat.createSettings("path.home", path);
-            node = nodeBuilder()
-                    .settings(settings)
-                    .data(storeData)
-                    .clusterName(clusterName)
-                    .node();
-            client = node.client();
-            isLocal = false;
+        if (client == null) {
+            managedClient = compat.createClient(searchHost, hostPort, clusterName);
         } else {
-            final TransportAddress address;
-            address = new InetSocketTransportAddress(getInetAddress(searchHost), hostPort);
-            Settings settings = compat.createSettings("cluster.name", clusterName);
-            client = compat.createClient(settings, address);
-            node = null;
-            isLocal = false;
+            managedClient = null;
         }
-        LOGGER.fine("client connection established");
 
-        final ClusterStateRequest clusterStateRequest;
-        clusterStateRequest = Requests.clusterStateRequest()
-                .local(isLocal)
-                .indices(indexName);
-
-        LOGGER.fine("querying cluster state");
-        final ClusterState state;
-        state = client.admin()
-                .cluster()
-                .state(clusterStateRequest)
-                .actionGet().getState();
-
-        IndexMetaData metadata = state.metaData().index(indexName);
-        if (metadata != null) {
-            final ImmutableOpenMap<String, MappingMetaData> mappings;
-            mappings = state.metaData().index(indexName).getMappings();
-            final Iterator<String> elasticTypes = mappings.keysIt();
-            final Vector<Name> names = new Vector<Name>();
-            while (elasticTypes.hasNext()) {
-                names.add(new NameImpl(elasticTypes.next()));
-            }
-            baseTypeNames = names;
+        final List<String> types = getClient().getTypes(indexName);
+        if (!types.isEmpty()) {
+            baseTypeNames = types.stream().map(name -> new NameImpl(name)).collect(Collectors.toList());
         } else {
             baseTypeNames = new ArrayList<>();
         }
-        
+
         layerConfigurations = new ConcurrentHashMap<>();
         docTypes = new HashMap<>();
-    }
-
-    private InetAddress getInetAddress(String searchHost) {
-        try {
-            return InetAddress.getByName(searchHost);
-        } catch (UnknownHostException e) {
-//            LOGGER.severe(e.getLocalizedMessage());
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -202,25 +128,19 @@ public class ElasticDataStore extends ContentDataStore {
     public ContentFeatureSource getFeatureSource(Name name, Transaction tx)
             throws IOException {
 
-        ElasticLayerConfiguration layerConfig = layerConfigurations.get(name.getLocalPart());
+        final ElasticLayerConfiguration layerConfig = layerConfigurations.get(name.getLocalPart());
         if (layerConfig != null) {
             docTypes.put(name, layerConfig.getDocType());
         }
-        ContentFeatureSource featureSource = super.getFeatureSource(name, tx);
+        final ContentFeatureSource featureSource = super.getFeatureSource(name, tx);
         featureSource.getEntry().getState(Transaction.AUTO_COMMIT).flush();
-        
-        return featureSource;
-    }
 
-    @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, 
-            Transaction tx) throws IOException {
-        return super.getFeatureReader(query, tx);
+        return featureSource;
     }
 
     public List<ElasticAttribute> getElasticAttributes(Name layerName) throws IOException {
         final String localPart = layerName.getLocalPart();
-        ElasticLayerConfiguration layerConfig = layerConfigurations.get(localPart);
+        final ElasticLayerConfiguration layerConfig = layerConfigurations.get(localPart);
         final List<ElasticAttribute> elasticAttributes;
         if (layerConfig == null || layerConfig.getAttributes().isEmpty()) {
             final String docType;
@@ -230,38 +150,15 @@ public class ElasticDataStore extends ContentDataStore {
                 docType = localPart;
             }
 
-            final ClusterStateRequest clusterStateRequest;
-            clusterStateRequest = Requests.clusterStateRequest()
-                    .routingTable(true)
-                    .nodes(true)
-                    .local(isLocal)
-                    .indices(indexName);
-
-            final ClusterState state;
-            state = client.admin().cluster()
-                    .state(clusterStateRequest).actionGet().getState();
-            final MappingMetaData metadata;
-            metadata = state.metaData().index(indexName)
-                    .mapping(docType);
-
+            final Map<String,Object> mapping = getClient().getMapping(indexName, docType);
             elasticAttributes = new ArrayList<ElasticAttribute>();
-            if (metadata != null) {
-                final byte[] mappingSource = metadata.source().uncompressed();
-                final XContentParser parser;
-                parser = XContentFactory.xContent(mappingSource)
-                        .createParser(mappingSource);
-
-                Map<String, Object> mapping = parser.map();
-                if (mapping.size() == 1 && mapping.containsKey(docType)) {
-                    // the type name is the root value, reduce it
-                    mapping = (Map<String, Object>) mapping.get(docType);
-                }
-
+            if (mapping != null) {
                 add(elasticAttributes, "_id", "string", mapping, false);
                 add(elasticAttributes, "_index", "string", mapping, false);
                 add(elasticAttributes, "_type", "string", mapping, false);
                 add(elasticAttributes, "_score", "float", mapping, false);
                 add(elasticAttributes, "_relative_score", "float", mapping, false);
+                add(elasticAttributes, "_aggregation", "binary", mapping, false);
 
                 walk(elasticAttributes, mapping, "", false, false);
 
@@ -295,13 +192,16 @@ public class ElasticDataStore extends ContentDataStore {
         }
         return elasticAttributes;
     }
-    
+
     @Override
     public void dispose() {
-        LOGGER.fine("disposing");
-        this.client.close();
-        if (this.node != null) {
-            this.node.close();
+        if (managedClient != null) {
+            LOGGER.fine("Closing client");
+            try {
+                managedClient.close();
+            } catch (IOException e) {
+                LOGGER.warning("Error closing client: " + e);
+            }
         }
         super.dispose();
     }
@@ -314,8 +214,24 @@ public class ElasticDataStore extends ContentDataStore {
         return searchIndices;
     }
 
-    public Client getClient() {
-        return client;
+    public ElasticClient getClient() {
+        return client != null ? client : managedClient;
+    }
+
+    public boolean isSourceFilteringEnabled() {
+        return sourceFilteringEnabled;
+    }
+
+    public void setSourceFilteringEnabled(boolean sourceFilteringEnabled) {
+        this.sourceFilteringEnabled = sourceFilteringEnabled;
+    }
+
+    public Integer getDefaultMaxFeatures() {
+        return defaultMaxFeatures;
+    }
+
+    public void setDefaultMaxFeatures(Integer defaultMaxFeatures) {
+        this.defaultMaxFeatures = defaultMaxFeatures;
     }
 
     public Long getScrollSize() {
@@ -342,6 +258,22 @@ public class ElasticDataStore extends ContentDataStore {
         this.scrollTime = scrollTime;
     }
 
+    public Long getGridSize() {
+        return gridSize;
+    }
+
+    public void setGridSize(Long gridSize) {
+        this.gridSize = gridSize;
+    }
+
+    public Double getGridThreshold() {
+        return gridThreshold;
+    }
+
+    public void setGridThreshold(Double gridThreshold) {
+        this.gridThreshold = gridThreshold;
+    }
+
     public Map<String, ElasticLayerConfiguration> getLayerConfigurations() {
         return layerConfigurations;
     }
@@ -350,7 +282,7 @@ public class ElasticDataStore extends ContentDataStore {
         final String layerName = layerConfig.getLayerName();
         this.layerConfigurations.put(layerName, layerConfig);
     }
-    
+
     public Map<Name, String> getDocTypes() {
         return docTypes;
     }
@@ -367,6 +299,7 @@ public class ElasticDataStore extends ContentDataStore {
 
     private void walk(List<ElasticAttribute> elasticAttributes, Map<String,Object> map, 
             String propertyKey, boolean startType, boolean nested) {
+
         for (final Map.Entry<String, Object> entry : map.entrySet()) {
             final String key = entry.getKey();
             final Object value = entry.getValue();
@@ -414,10 +347,10 @@ public class ElasticDataStore extends ContentDataStore {
                 elasticAttribute.setGeometryType(ElasticGeometryType.GEO_SHAPE);
                 break;
             case "string":
+            case "keyword":
+            case "text":
                 binding = String.class;
-                final String index = (String) map.get("index");
-                final boolean analyzed = index == null || index.equals("analyzed");
-                elasticAttribute.setAnalyzed(analyzed);
+                elasticAttribute.setAnalyzed(compat.isAnalyzed(map));
                 break;
             case "integer":
                 binding = Integer.class;
@@ -450,6 +383,9 @@ public class ElasticDataStore extends ContentDataStore {
                 elasticAttribute.setDateFormat(format);
                 binding = Date.class;
                 break;
+            case "binary":
+                binding = byte[].class;
+                break;
             default:
                 binding = null;
                 break;
@@ -469,37 +405,8 @@ public class ElasticDataStore extends ContentDataStore {
         }
     }
 
-    @Override
-    public void dispose() {
-        this.client.close();
-        if (this.node != null) {
-            this.node.close();
-        }
-        super.dispose();
-        LOGGER.fine("disposed");
-    }
-
-    public String getIndexName() {
-        return indexName;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    /**
-     * Gets the attributes configuration for the types in this datastore
-     */
-    public Map<String, ElasticLayerConfiguration> getElasticConfigurations() {
-        return elasticConfigurations;
-    }
-
-    /**
-     * Add the type configuration to this datastore
-     */
-    public void setElasticConfigurations(ElasticLayerConfiguration configuration) {
-        entries.remove(new NameImpl(namespaceURI, configuration.getLayerName()));
-        this.elasticConfigurations.put(configuration.getLayerName(), configuration);
+    public static void setClient(ElasticClient client) {
+        ElasticDataStore.client = client;
     }
 
 }

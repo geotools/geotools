@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package mil.nga.giat.data.elasticsearch;
 
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -33,8 +49,7 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
             Object extraData) {
 
         super.visitDistanceSpatialOperator(filter, property, geometry, swapped, extraData);
-        
-//        delegate.filterBuilder = FilterBuilders.geoDistanceFilter(key)
+
         getDelegate().filterBuilder = QueryBuilders.geoDistanceQuery(key)
                 .lat(lat)
                 .lon(lon)
@@ -43,7 +58,6 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
         if ((filter instanceof DWithin && swapped)
                 || (filter instanceof Beyond && !swapped)) {
             getDelegate().filterBuilder = QueryBuilders.boolQuery().mustNot(getDelegate().filterBuilder);
-            // delegate.filterBuilder = FilterBuilders.notFilter(delegate.filterBuilder);
         }
     }
 
@@ -52,21 +66,18 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
             PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
         super.visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
-        
+
         // if geography case, sanitize geometry first
         if(isCurrentGeography()) {
             if(isWorld(this.geometry)) {
                 // nothing to filter in this case
                 getDelegate().filterBuilder = QueryBuilders.matchAllQuery();
-                // delegate.filterBuilder = FilterBuilders.matchAllFilter();
                 return;
             } else if(isEmpty(this.geometry)) {
                 if(!(filter instanceof Disjoint)) {
                     getDelegate().filterBuilder = QueryBuilders.boolQuery().mustNot(QueryBuilders.matchAllQuery());
-                    // delegate.filterBuilder = FilterBuilders.notFilter(FilterBuilders.matchAllFilter());
                 } else {
                     getDelegate().filterBuilder = QueryBuilders.matchAllQuery();
-                    // delegate.filterBuilder = FilterBuilders.matchAllFilter();
                 }
                 return;
             }
@@ -83,10 +94,8 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
 
         if (shapeRelation != null) {
             getDelegate().filterBuilder = QueryBuilders.geoShapeQuery(key, shapeBuilder, shapeRelation);
-            // delegate.filterBuilder = FilterBuilders.geoShapeFilter(key, shapeBuilder, shapeRelation);
         } else {
             getDelegate().filterBuilder = QueryBuilders.matchAllQuery();
-            // delegate.filterBuilder = FilterBuilders.matchAllFilter();
         }
     }
 
@@ -95,7 +104,7 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
             boolean swapped, Object extraData) {
 
         super.visitGeoPointBinarySpatialOperator(filter, e1, e2, swapped, extraData);
-        
+
         final Geometry geometry = delegate.currentGeometry;
 
         if (geometry instanceof Polygon &&
@@ -105,8 +114,6 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
             final Polygon polygon = (Polygon) geometry;
             final GeoPolygonQueryBuilder geoPolygonFilter;
             geoPolygonFilter = QueryBuilders.geoPolygonQuery(key);
-            // final GeoPolygonFilterBuilder geoPolygonFilter;
-            // geoPolygonFilter = FilterBuilders.geoPolygonFilter(key);
             for (final Coordinate coordinate : polygon.getCoordinates()) {
                 geoPolygonFilter.addPoint(coordinate.y, coordinate.x);
             }
@@ -117,7 +124,6 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
             final double minX = envelope.getMinX();
             final double maxY = envelope.getMaxY();
             final double maxX = envelope.getMaxX();
-            // delegate.filterBuilder = FilterBuilders.geoBoundingBoxFilter(key)
             ((FilterToElastic2) delegate).filterBuilder = QueryBuilders.geoBoundingBoxQuery(key)
                     .topLeft(maxY, minX)
                     .bottomRight(minY, maxX);
@@ -126,10 +132,9 @@ class FilterToElasticHelper2 extends FilterToElasticHelper {
                     + " is unsupported for geo_point types");
             delegate.fullySupported = false;
             getDelegate().filterBuilder = QueryBuilders.matchAllQuery();
-            // delegate.filterBuilder = FilterBuilders.matchAllFilter();
         }
     }
-    
+
     private FilterToElastic2 getDelegate() {
         return (FilterToElastic2) delegate;
     }

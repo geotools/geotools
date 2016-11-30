@@ -16,13 +16,8 @@
  */
 package mil.nga.giat.data.elasticsearch;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,15 +26,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import mil.nga.giat.data.elasticsearch.ElasticDataStore;
-import mil.nga.giat.data.elasticsearch.ElasticDataStoreFactory;
-
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.node.Node;
-
-import static org.elasticsearch.node.NodeBuilder.*;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -56,6 +42,10 @@ public class ElasticDataStoreFinderTest extends ElasticTestSupport {
 
     @Test
     public void testFactoryDefaults() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
+        dataStore = (ElasticDataStore) factory.createDataStore(params);
+
         ElasticDataStoreFactory fac = new ElasticDataStoreFactory();
         assertTrue(fac.getDisplayName().equals(ElasticDataStoreFactory.DISPLAY_NAME));
         assertTrue(fac.getDescription().equals(ElasticDataStoreFactory.DESCRIPTION));
@@ -63,15 +53,9 @@ public class ElasticDataStoreFinderTest extends ElasticTestSupport {
         assertTrue(fac.getImplementationHints()==null);
         assertTrue(fac.createNewDataStore(null)==null);
     }
-    
+
     @Test
     public void testFactoryWithTransportClient() throws IOException {
-        // setup client for testing http connection params
-        Path baseDir = Paths.get("target/elasticsearch");
-        String dataPath = Files.createTempDirectory(baseDir, null).toAbsolutePath().toString();
-        Settings build = ElasticCompatLoader.getCompat(null).createSettings("path.home", dataPath);
-        Node node = nodeBuilder().settings(build).node();
-
         assertTrue(new ElasticDataStoreFactory().isAvailable());
         scanForPlugins();
 
@@ -96,25 +80,18 @@ public class ElasticDataStoreFinderTest extends ElasticTestSupport {
 
         assertNotNull(source);
         assertTrue(source instanceof ElasticDataStore);
-        node.close();
     }
 
     @Test
-    public void testFactoryWithNodeClient() throws IOException {
-        // setup client for testing http connection params
-        Path baseDir = Paths.get("target/elasticsearch");
-        String dataPath = Files.createTempDirectory(baseDir, null).toAbsolutePath().toString();
-        Settings build = ElasticCompatLoader.getCompat(null).createSettings("path.home", dataPath);
-        Node node = nodeBuilder().settings(build).node();
-
+    public void testFactoryWithSearchIndices() throws IOException {
         assertTrue(new ElasticDataStoreFactory().isAvailable());
         scanForPlugins();
 
-        Map<String,Serializable> map = createConnectionParams();
-//        Map<String,Serializable> map =  new HashMap<>();
-//        map.put(ElasticDataStoreFactory.HOSTNAME.key, "localhost");
-//        map.put(ElasticDataStoreFactory.HOSTPORT.key, "9300");
-//        map.put(ElasticDataStoreFactory.INDEX_NAME.key, "sample");
+        Map<String,Serializable> map = new HashMap<>();
+        map.put(ElasticDataStoreFactory.HOSTNAME.key, "localhost");
+        map.put(ElasticDataStoreFactory.HOSTPORT.key, String.valueOf(9300));
+        map.put(ElasticDataStoreFactory.INDEX_NAME.key, "sample");
+        map.put(ElasticDataStoreFactory.SEARCH_INDICES.key, "sample1,sample2");
 
         Iterator<DataStoreFactorySpi> ps = getAvailableDataSources();
         ElasticDataStoreFactory fac;
@@ -141,7 +118,8 @@ public class ElasticDataStoreFinderTest extends ElasticTestSupport {
         scanForPlugins();
 
         Map<String,Serializable> map = new HashMap<>();
-        map.put(ElasticDataStoreFactory.DATA_PATH.key, dataPath);
+        map.put(ElasticDataStoreFactory.HOSTNAME.key, "localhost");
+        map.put(ElasticDataStoreFactory.HOSTPORT.key, String.valueOf(9300));
         map.put(ElasticDataStoreFactory.SEARCH_INDICES.key, "sample1,sample2");
 
         Iterator<DataStoreFactorySpi> ps = getAvailableDataSources();

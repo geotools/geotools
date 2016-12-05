@@ -12,6 +12,7 @@
   -gt-label-remove-overlaps: false;
   -gt-label-allow-overruns: true;
   -gt-label-follow-line: false;
+  -gt-label-underline-text: true;
   -gt-label-max-angle-delta: 22.5;
   -gt-label-auto-wrap: 0;
   -gt-label-force-ltr: true;

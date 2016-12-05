@@ -1,0 +1,6 @@
+* {
+  stroke: red;
+  label: [name];
+  font-fill: black;
+  -gt-label-underline-text: true;
+}

@@ -47,6 +47,7 @@
             <Fill>
               <CssParameter name="fill">#000000</CssParameter>
             </Fill>
+            <VendorOption name="underlineText">true</VendorOption>
           </TextSymbolizer>
         </Rule>
       </FeatureTypeStyle>

@@ -188,6 +188,16 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      * tangent
      */
     public static boolean DEFAULT_FOLLOW_LINE = false;
+
+    /**
+     * When TRUE labels text will be underline, the underline wil have the same color of the text.
+     */
+    String UNDERLINE_TEXT_KEY = "underlineText";
+
+    /**
+     * If labels text should be underline or not.
+     */
+    boolean DEFAULT_UNDERLINE_TEXT = false;
     
     /**
      * When drawing curved labels, max allowed angle between two subsequent characters. Higher

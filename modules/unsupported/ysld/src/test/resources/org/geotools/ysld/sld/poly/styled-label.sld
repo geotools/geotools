@@ -43,6 +43,7 @@
             </Fill>
             <VendorOption name="autoWrap">60</VendorOption>
             <VendorOption name="maxDisplacement">150</VendorOption>
+            <VendorOption name="underlineText">true</VendorOption>
           </TextSymbolizer>
         </Rule>
       </FeatureTypeStyle>

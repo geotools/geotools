@@ -17,6 +17,7 @@
 package org.geotools.geopkg.mosaic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -64,6 +65,10 @@ public class GeoPackageReaderTest {
         assertEquals(0, gc.getEnvelope().getMaximum(1),0.01);
         assertEquals(1024, img.getWidth());
         assertEquals(512, img.getHeight());
+        
+        //test CRS is consistent now
+        assertTrue(CRS.equalsIgnoreMetadata(gc.getCoordinateReferenceSystem(), gc.getEnvelope().getCoordinateReferenceSystem()));
+        
         //ImageIO.write(img, "png", DataUtilities.urlToFile(getClass().getResource("world_lakes.png")));
         ImageAssert.assertEquals(DataUtilities.urlToFile(getClass().getResource("world_lakes.png")), img, 250);
     }

@@ -346,7 +346,7 @@ public class GeoPackage {
      */
     public void addCRS(int srid) throws IOException {
         try {
-            addCRS(CRS.decode("EPSG:" + srid), "epsg", srid);
+            addCRS(CRS.decode("EPSG:" + srid, true), "epsg", srid);
         } catch (Exception e) {
             throw new IOException(e);
         }

@@ -227,7 +227,7 @@ public class GeoPackageTest {
         entry.setTableName("points");
         entry.setDataType(Entry.DataType.Feature);
         entry.setIdentifier("points");
-        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:2000")));
+        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:2000", true)));
         entry.setSrid(2000);
 
         geopkg.addGeoPackageContentsEntry(entry);
@@ -264,7 +264,7 @@ public class GeoPackageTest {
         entry.setTableName("points");
         entry.setDataType(Entry.DataType.Feature);
         entry.setIdentifier("points");
-        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326")));
+        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326", true)));
         entry.setSrid(4326);
 
         geopkg.addGeoPackageContentsEntry(entry);
@@ -279,7 +279,7 @@ public class GeoPackageTest {
         entry.setTableName("points");
         entry.setDataType(Entry.DataType.Feature);
         entry.setIdentifier("points");
-        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326")));
+        entry.setBounds(new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326", true)));
         entry.setSrid(4326);
         entry.setGeometryColumn("geom");
         entry.setGeometryType(Geometries.POINT);

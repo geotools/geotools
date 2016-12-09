@@ -86,7 +86,7 @@ public class GeoPkgDataStoreAPITest {
         ftb.add("timestamp", Timestamp.class);
         ftb.add("byte_array", byte[].class);
 
-        ftb.add("geometry", Point.class, CRS.decode("EPSG:4326"));
+        ftb.add("geometry", Point.class, CRS.decode("EPSG:4326", true));
 
         SimpleFeatureType newFT = ftb.buildFeatureType();
         dataStore.createSchema(newFT);

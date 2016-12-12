@@ -155,7 +155,6 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
-import jdk.nashorn.internal.objects.ArrayBufferView;
 
 /**
  * A streaming implementation of the GTRenderer interface.

@@ -655,7 +655,7 @@ public final class LabelCacheImpl implements LabelCache {
             // labels
             double[] labelPositions;
             if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
-                labelPositions = new double[(int) (lineStringLength / (labelDistance*0.5))];
+                labelPositions = new double[(int) (lineStringLength / labelDistance)];
                 labelPositions[0] = lineStringLength / 2;
                 double offset = labelDistance;
                 for (int i = 1; i < labelPositions.length; i++) {

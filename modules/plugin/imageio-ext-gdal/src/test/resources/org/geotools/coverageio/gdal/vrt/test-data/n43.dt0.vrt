@@ -1,0 +1,42 @@
+<VRTDataset rasterXSize="121" rasterYSize="121">
+  <SRS>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]</SRS>
+  <GeoTransform> -8.0004166666666663e+01,  8.3333333333333332e-03,  0.0000000000000000e+00,  4.4004166666666670e+01,  0.0000000000000000e+00, -8.3333333333333332e-03</GeoTransform>
+  <Metadata>
+    <MDI key="AREA_OR_POINT">Point</MDI>
+    <MDI key="DTED_CompilationDate">9609</MDI>
+    <MDI key="DTED_DataEdition">01</MDI>
+    <MDI key="DTED_DigitizingSystem">AS11+C    </MDI>
+    <MDI key="DTED_HorizontalAccuracy">0200</MDI>
+    <MDI key="DTED_HorizontalDatum">WGS84</MDI>
+    <MDI key="DTED_MaintenanceDate">9609</MDI>
+    <MDI key="DTED_MaintenanceDescription">0000</MDI>
+    <MDI key="DTED_MatchMergeDate">0000</MDI>
+    <MDI key="DTED_MatchMergeVersion">A</MDI>
+    <MDI key="DTED_NimaDesignator">DTED0</MDI>
+    <MDI key="DTED_OriginLatitude">0430000N</MDI>
+    <MDI key="DTED_OriginLongitude">0800000W</MDI>
+    <MDI key="DTED_PartialCellIndicator">00</MDI>
+    <MDI key="DTED_Producer">US090078</MDI>
+    <MDI key="DTED_RelHorizontalAccuracy">0200</MDI>
+    <MDI key="DTED_RelVerticalAccuracy">0200</MDI>
+    <MDI key="DTED_SecurityCode_DSI">U</MDI>
+    <MDI key="DTED_SecurityCode_UHL">U  </MDI>
+    <MDI key="DTED_UniqueRef_DSI">F18 062        </MDI>
+    <MDI key="DTED_UniqueRef_UHL"></MDI>
+    <MDI key="DTED_VerticalAccuracy_ACC">0200</MDI>
+    <MDI key="DTED_VerticalAccuracy_UHL">0200</MDI>
+    <MDI key="DTED_VerticalDatum">MSL</MDI>
+  </Metadata>
+  <VRTRasterBand dataType="Int16" band="1">
+    <Metadata />
+    <NoDataValue>-3.27670000000000E+04</NoDataValue>
+    <UnitType>m</UnitType>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">n43.dt0</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="121" RasterYSize="121" DataType="Int16" BlockXSize="1" BlockYSize="121" />
+      <SrcRect xOff="0" yOff="0" xSize="121" ySize="121" />
+      <DstRect xOff="0" yOff="0" xSize="121" ySize="121" />
+    </SimpleSource>
+  </VRTRasterBand>
+</VRTDataset>

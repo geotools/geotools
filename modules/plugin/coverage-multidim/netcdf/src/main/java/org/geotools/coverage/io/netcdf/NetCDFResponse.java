@@ -19,7 +19,6 @@ package org.geotools.coverage.io.netcdf;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -28,6 +27,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -77,6 +77,9 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
+import ucar.nc2.Attribute;
+import ucar.nc2.Variable;
+
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a
  * requestCoverage is called to a reader.
@@ -479,17 +482,46 @@ class NetCDFResponse extends CoverageResponse{
      */
     private GridCoverage2D prepareCoverage(RenderedImage image, GridSampleDimension[] sampleDimensions, double[] noData) throws IOException {
 
-        Map<String, Object> properties = null;
+        Map<String, Object> properties = new HashMap<>();
         if (noData != null && noData.length > 0) {
-            properties = new HashMap<String, Object>();
             CoverageUtilities.setNoDataProperty(properties, noData[0]);
         }
+
+        Variable var = request.source.reader.getVariableByName(request.name);
+        addVariableAttributes(var, properties);
+
         return COVERAGE_FACTORY.create(request.name, image, new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
                         .getBounds()), PixelInCell.CELL_CORNER, finalGridToWorldCorner,
                         this.targetBBox.getCoordinateReferenceSystem(), hints), sampleDimensions, null,
                 properties);
     }
-    
+
+    /**
+     * Add netCDF attributes on a variable into the coverage properties so they can be written into
+     * netCDF output
+     * @param var the netCDF variable
+     * @param properties the GridCoverage properties map
+     */
+    private void addVariableAttributes( Variable var, Map properties ){
+        List<Attribute> attributes = var.getAttributes().stream()
+            .filter( attr -> NetCDFUtilities.CF_IGNORED_VARIABLE_NAMES.get( attr.getFullName() ) == null )
+            .collect( Collectors.toList() );
+
+        //must preserve the order of attributes for writing, otherwise this could be thrown into a
+        //map with the prior stream operation
+        Map<String, Object> attrValues = new LinkedHashMap<>();
+        for (Attribute attr : attributes) {
+            if (attr.isArray()) {
+                attrValues.put(attr.getFullName(), attr.getValues());
+            } else {
+                attrValues.put(attr.getFullName(), attr.getValue(0));
+            }
+        }
+
+        if (attrValues.size() > 0) {
+            properties.put(NetCDFUtilities.NETCDF_VARIABLE_ATTRIBUTES, attrValues);
+        }
+    }
 
     /**
      * Load a specified a raster as a portion of the granule describe by this {@link DefaultGranuleDescriptor}.

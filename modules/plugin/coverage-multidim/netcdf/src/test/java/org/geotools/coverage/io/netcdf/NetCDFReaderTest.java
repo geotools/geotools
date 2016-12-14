@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -328,6 +329,139 @@ public class NetCDFReaderTest extends Assert {
                 GeneralParameterValue[] values = new GeneralParameterValue[] { gg, time, elevation };
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
+                if (TestData.isInteractiveTest()) {
+                    coverage.show();
+                } else {
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+                }
+            }
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void NetCDFTestReadVariableAttributes() throws FactoryException, IOException, ParseException {
+        File mosaic = new File( TestData.file( this, "." ), "sresa1b_ncar_ccsm3-example" );
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+
+        File file = TestData.file(this, "sresa1b_ncar_ccsm3-example.nc");
+        FileUtils.copyFileToDirectory(file, mosaic);
+        file = new File(mosaic, "sresa1b_ncar_ccsm3-example.nc");
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM,
+            CRS.decode("EPSG:4326", true));
+        // Get format
+        final AbstractGridFormat format = GridFormatFinder.findFormat( file.toURI().toURL(), hints );
+        final NetCDFReader reader = (NetCDFReader) format.getReader( file.toURI().toURL(), hints );
+
+        Map<String, String[]> coverageNameToExpectedAttrs = new HashMap<>();
+        coverageNameToExpectedAttrs.put( "pr", new String[] {
+            "comment:Created using NCL code CCSM_atmm_2cf.ncl on\n machine eagle163s",
+            "cell_methods:time: mean (interval: 1 month)",
+            "history:(PRECC+PRECL)*r[h2o]",
+            "original_units:m-1 s-1",
+            "original_name:PRECC, PRECL",
+            "long_name:precipitation_flux",
+            "cell_method:time: mean"
+        });
+
+        coverageNameToExpectedAttrs.put( "tas", new String[] {
+            "comment:Created using NCL code CCSM_atmm_2cf.ncl on\n machine eagle163s",
+            "cell_methods:time: mean (interval: 1 month)",
+            "history:Added height coordinate",
+            "coordinates:height",
+            "original_units:K",
+            "original_name:TREFHT",
+            "long_name:air_temperature",
+            "cell_method:time: mean"
+        });
+
+        assertNotNull(format);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertArrayEquals( new String[] { "area", "msk_rgn", "pr", "tas", "ua" }, names );
+            names = new String[] { "pr", "tas" };
+
+            for (String coverageName : names) {
+                final String[] metadataNames = reader.getMetadataNames(coverageName);
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length, 12);
+
+                // Parsing metadata values
+                assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
+                final String timeMetadata = reader.getMetadataValue(coverageName, "TIME_DOMAIN");
+                assertEquals("1999-01-14T12:00:00.000Z/1999-01-14T12:00:00.000Z", timeMetadata);
+                assertNotNull(timeMetadata);
+                assertEquals("1999-01-14T12:00:00.000Z",reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("1999-01-14T12:00:00.000Z",reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+
+                assertEquals("false",reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(coverageName);
+                assertNotNull(descriptors);
+                assertEquals(1, descriptors.size());
+
+                DimensionDescriptor descriptor = descriptors.get(0);
+                assertEquals("TIME", descriptor.getName());
+                assertEquals("time", descriptor.getStartAttribute());
+                assertNull(descriptor.getEndAttribute());
+                assertEquals(CoverageUtilities.UCUM.TIME_UNITS.getName(), descriptor.getUnits());
+                assertEquals(CoverageUtilities.UCUM.TIME_UNITS.getSymbol(),descriptor.getUnitSymbol());
+
+                // subsetting the envelope
+                final ParameterValue<GridGeometry2D> gg =AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
+                final GeneralEnvelope reducedEnvelope = new GeneralEnvelope(
+                    new double[] { originalEnvelope.getLowerCorner().getOrdinate(0),
+                                   originalEnvelope.getLowerCorner().getOrdinate(1) },
+                    new double[] { originalEnvelope.getMedian().getOrdinate(0),
+                                   originalEnvelope.getMedian().getOrdinate(1) });
+                reducedEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem(coverageName));
+
+                // Selecting bigger gridRange for a zoomed result
+                final Dimension dim = new Dimension();
+                GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
+                dim.setSize(gridRange.getSpan(0) * 4.0, gridRange.getSpan(1) * 2.0);
+                final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+                rasterArea.setSize(dim);
+                final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+                gg.setValue(new GridGeometry2D(range, reducedEnvelope));
+
+                final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+                final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
+                final Date timeD = formatD.parse("1999-01-14T12:00:00.000Z");
+                time.setValue(new ArrayList() {{
+                    add(timeD);
+                }});
+
+                GeneralParameterValue[] values = new GeneralParameterValue[] { gg, time };
+                GridCoverage2D coverage = reader.read(coverageName, values);
+                assertNotNull(coverage);
+                Map<String, Object> coverageProperties = coverage.getProperties();
+                assertNotNull(coverageProperties);
+                Map<String, Object> additionalVarProperties = (Map<String, Object>)
+                    coverageProperties.get(NetCDFUtilities.NETCDF_VARIABLE_ATTRIBUTES);
+                assertNotNull(additionalVarProperties);
+                for (String expectedVarAttr : coverageNameToExpectedAttrs.get(coverageName)) {
+                    int firstColonIndex = expectedVarAttr.indexOf(':');
+                    if (firstColonIndex < 1)
+                        throw new RuntimeException("All expected attributes should have key:value separated by a colon");
+                    String key = expectedVarAttr.substring(0, firstColonIndex);
+                    String expectedValue = expectedVarAttr.substring(firstColonIndex + 1);
+                    Object actualValue = additionalVarProperties.get(key);
+                    assertEquals(expectedValue, actualValue);
+                }
                 if (TestData.isInteractiveTest()) {
                     coverage.show();
                 } else {

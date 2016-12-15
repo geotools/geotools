@@ -502,10 +502,10 @@ class NetCDFResponse extends CoverageResponse{
      * @param var the netCDF variable
      * @param properties the GridCoverage properties map
      */
-    private void addVariableAttributes( Variable var, Map properties ){
+    private void addVariableAttributes(Variable var, Map properties) {
         List<Attribute> attributes = var.getAttributes().stream()
-            .filter( attr -> NetCDFUtilities.CF_IGNORED_VARIABLE_NAMES.get( attr.getFullName() ) == null )
-            .collect( Collectors.toList() );
+            .filter(attr -> NetCDFUtilities.CF_IGNORED_VARIABLE_NAMES.get(attr.getFullName()) == null)
+            .collect(Collectors.toList());
 
         //must preserve the order of attributes for writing, otherwise this could be thrown into a
         //map with the prior stream operation

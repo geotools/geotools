@@ -259,12 +259,13 @@ public class NetCDFUtilities {
      * represented in the existing GridCoverage model.  For example, grid coverage unit of measure names are carried
      * on the GridSampleDimension class
      */
-    public static Map<String,Boolean> CF_IGNORED_VARIABLE_NAMES = new HashMap<>();
-    static{
-        CF_IGNORED_VARIABLE_NAMES.put( UNITS, true );
-        CF_IGNORED_VARIABLE_NAMES.put( FILL_VALUE, true );
-        CF_IGNORED_VARIABLE_NAMES.put( MISSING_VALUE, true );
-        CF_IGNORED_VARIABLE_NAMES.put( STANDARD_NAME, true );
+    public static Map<String, Boolean> CF_IGNORED_VARIABLE_NAMES = new HashMap<>();
+
+    static {
+        CF_IGNORED_VARIABLE_NAMES.put(UNITS, true);
+        CF_IGNORED_VARIABLE_NAMES.put(FILL_VALUE, true);
+        CF_IGNORED_VARIABLE_NAMES.put(MISSING_VALUE, true);
+        CF_IGNORED_VARIABLE_NAMES.put(STANDARD_NAME, true);
     }
 
     public static boolean ENHANCE_SCALE_OFFSET = false;

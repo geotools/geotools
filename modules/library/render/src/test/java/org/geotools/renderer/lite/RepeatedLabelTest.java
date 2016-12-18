@@ -54,8 +54,13 @@ public class RepeatedLabelTest extends TestCase {
     public void testRepeatedLabel() throws Exception {
         testRepeatedLabels("repeatedLabelsLine");
     }
+    
     public void testRepeatedLabelAlongLine() throws Exception {
         testRepeatedLabels("repeatedLabelsAlongLine");
+    }
+    
+    public void testRepeatedLabelAlongLineSmall() throws Exception {
+        testRepeatedLabels("repeatedLabelsAlongLineSmall");
     }
 
     public void testRepeatedLabels(String styleName) throws Exception {

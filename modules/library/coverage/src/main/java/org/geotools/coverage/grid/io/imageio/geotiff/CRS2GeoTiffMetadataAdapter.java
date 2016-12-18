@@ -36,6 +36,7 @@ import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.operation.projection.AlbersEqualArea;
+import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.LambertConformal;
 import org.geotools.referencing.operation.projection.MapProjection;
@@ -61,7 +62,6 @@ import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.cs.EllipsoidalCS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.datum.PrimeMeridian;
@@ -714,7 +714,27 @@ public final class CRS2GeoTiffMetadataAdapter {
                                     parameters.parameter("false_northing").doubleValue());
                     return;
                 }
-		
+
+        ///////////////////////////////////////////
+        //
+        // Azimuthal Equidistant
+        //
+        ///////////////////////////////////////////
+        if (projTransf instanceof AzimuthalEquidistant.Abstract
+                && name.equalsIgnoreCase("Azimuthal_Equidistant")) {
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjCoordTransGeoKey,
+                    GeoTiffCoordinateTransformationsCodes.CT_AzimuthalEquidistant);
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjCenterLongGeoKey,
+                    parameters.parameter("longitude_of_center").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjCenterLatGeoKey,
+                    parameters.parameter("latitude_of_center").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey,
+                    parameters.parameter("false_easting").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey,
+                    parameters.parameter("false_northing").doubleValue());
+            return;
+        }
+
 	        // /////////////////////////////////////////////////////////////////////
                 //
                 // Van der Grinten

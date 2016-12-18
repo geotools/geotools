@@ -1591,7 +1591,22 @@ public final class GeoTiffMetadata2CRSAdapter {
                                 return parameters;
                         }
 
-			/**
+            /**
+             * 
+             * Azimuthal Equidistant
+             * 
+             */
+            if (name.equalsIgnoreCase("Azimuthal_Equidistant")
+                    || code == GeoTiffCoordinateTransformationsCodes.CT_AzimuthalEquidistant) {
+                parameters = mtFactory.getDefaultParameters("Azimuthal_Equidistant");
+                parameters.parameter("longitude_of_center").setValue(getOriginLong(metadata));
+                parameters.parameter("latitude_of_center").setValue(getOriginLat(metadata));
+                parameters.parameter("false_easting").setValue(getFalseEasting(metadata));
+                parameters.parameter("false_northing").setValue(getFalseNorthing(metadata));
+                return parameters;
+            }
+
+                        /**
 			 * 
 			 * New Zealand Map Grid
 			 * 

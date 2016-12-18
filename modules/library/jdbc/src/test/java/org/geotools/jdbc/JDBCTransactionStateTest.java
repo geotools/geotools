@@ -50,7 +50,7 @@ public class JDBCTransactionStateTest {
 
     private Handler mockLogHandler = mock(Handler.class);
 
-    private JDBCDataStore dataStore = new JDBCDataStore();
+    private JDBCDataStore dataStore;
 
     private int warningsCount;
 
@@ -58,8 +58,7 @@ public class JDBCTransactionStateTest {
      * Setup a log handler counting {@link LogRecord} having {@link Level#WARNING}.
      */
     @Before
-    public void setupLogHandler() {
-        dataStore.getLogger().addHandler(mockLogHandler);
+    public void setUp() {
         // when(mockLogHandler.publish(any(LogRecord.class)));
         doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
@@ -71,11 +70,14 @@ public class JDBCTransactionStateTest {
                 return null;
             }
         }).when(mockLogHandler).publish(any(LogRecord.class));
+        dataStore = new JDBCDataStore();
+        dataStore.getLogger().addHandler(mockLogHandler);
     }
 
     @After
-    public void tearDownLogHandler() {
+    public void tearDown() {
         dataStore.getLogger().removeHandler(mockLogHandler);
+        dataStore.dispose();
     }
 
     /**

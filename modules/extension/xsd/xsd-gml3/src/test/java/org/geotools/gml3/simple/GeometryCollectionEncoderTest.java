@@ -39,12 +39,12 @@ public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
             xpath.getMatchingNodes("//gml:LineString", doc).getLength());
         assertEquals(2, xpath.getMatchingNodes("//gml:Point", doc).getLength());
         assertEquals(1,
-            xpath.getMatchingNodes("//gml:GeometryCollection", doc).getLength());
+            xpath.getMatchingNodes("//gml:MultiGeometry", doc).getLength());
         assertEquals("180 200 160 180",
             xpath.evaluate(
-                "//gml:GeometryCollection/gml:LineString/gml:posList", doc));
+                "//gml:MultiGeometry/gml:geometryMember/gml:LineString/gml:posList", doc));
         assertEquals("19 19",
             xpath.evaluate(
-                "//gml:GeometryCollection/gml:Point/gml:pos", doc));
+                "//gml:MultiGeometry/gml:geometryMember/gml:Point/gml:pos", doc));
     }
 }

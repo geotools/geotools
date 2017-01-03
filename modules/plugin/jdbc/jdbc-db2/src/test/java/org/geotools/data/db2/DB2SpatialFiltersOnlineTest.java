@@ -61,7 +61,7 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 	      	        
 	        int SRID = 4326;
 	        GeometryFactory gf = new GeometryFactory(precisionModel, SRID);
-	        Coordinate[] points = { new Coordinate(30, 40), new Coordinate(50, 60) };
+	        Coordinate[] points = { new Coordinate(1, 1), new Coordinate(50, 60) };
 	        LineString[] geometries = new LineString[2];
 	        geometries [0] = gf.createLineString(points);
 	        Coordinate[] points2 = { new Coordinate(40, 30), new Coordinate(70, 40) };
@@ -81,7 +81,8 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 	        DWithin dwithinGeomCo  = ((FilterFactory2) ff).dwithin(p, collect, 5, "meter");
 	        Query dq = new Query(tname("road"), dwithinGeomCo);
 	        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
-	        assertEquals(0, features.size());
+			int numFeatures = features.size();
+	        assertEquals(2, numFeatures);
       }
 	
     public void testBboxFilter() throws Exception {

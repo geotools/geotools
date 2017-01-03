@@ -23,6 +23,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
@@ -129,6 +130,29 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     // Class to convert geometry value into a Well-known Text string
     private static WKTWriter wktWriter = new WKTWriter();
+
+    /**
+     * Conversion factor from common units to meter
+     */
+    private static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>() {
+        {
+            put("kilometers", 1000.0);
+            put("kilometer", 1000.0);
+			put("meters", 1.0);
+			put("meter", 1.0);
+            put("mm", 0.001);
+            put("millimeter", 0.001);
+            put("mi", 1609.344);
+            put("statute miles", 1609.344);
+			put("miles", 1609.344);
+			put("mile", 1609.344);
+			put("nautical miles", 1852.0);
+            put("NM", 1852d);
+            put("feet", 0.3048);
+            put("ft", 0.3048);
+            put("in", 0.0254);
+        }
+    };	
 
     boolean functionEncodingEnabled = false;
 
@@ -276,27 +300,41 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         }
     }
 
+	private boolean isValidUnit(String unit) {
+		if (UNITS_MAP.get(unit) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	private String toMeters(double distance, String unit) {
+		Double conversion = UNITS_MAP.get(unit);
+		if (conversion != null) {
+			return String.valueOf(distance * conversion);
+		}
+		// in case unknown unit use as-is
+		return String.valueOf(distance);
+	}
+	
     Object visitDistanceSpatialOperator(DistanceBufferOperator filter, PropertyName property,
             Literal geometry, boolean swapped, Object extraData) {
         try {
-            if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
+			String comparisonOperator = ") < ";
+			if ((filter instanceof DWithin && swapped) 
+				|| (filter instanceof Beyond && !swapped)) {
+			  comparisonOperator = ") > ";
+            }
                 out.write("db2gse.ST_Distance(");
                 property.accept(this, extraData);
                 out.write(",");
                 geometry.accept(this, extraData);
-                out.write(") < ");
-                out.write(Double.toString(filter.getDistance()));
-                addSelectivity();
+            String distanceUnits = filter.getDistanceUnits();
+            if (isValidUnit(distanceUnits)) {
+            	out.write(",'METER'");
             }
-            if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
-                out.write("db2gse.ST_Distance(");
-                property.accept(this, extraData);
-                out.write(",");
-                geometry.accept(this, extraData);
-                out.write(") > ");
-                out.write(Double.toString(filter.getDistance()));
-                addSelectivity();
-            }
+            out.write(comparisonOperator);
+            out.write(toMeters(filter.getDistance(), filter.getDistanceUnits()));
+            addSelectivity();
             return extraData;
         } catch (IOException ex) {
             throw new RuntimeException(ex);

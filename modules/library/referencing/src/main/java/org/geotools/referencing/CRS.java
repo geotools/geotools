@@ -196,12 +196,12 @@ public final class CRS {
     /**
      * A factory for default (non-lenient) operations.
      */
-    private static CoordinateOperationFactory strictFactory;
+    private static volatile CoordinateOperationFactory strictFactory;
 
     /**
      * A factory for default lenient operations.
      */
-    private static CoordinateOperationFactory lenientFactory;
+    private static volatile CoordinateOperationFactory lenientFactory;
 
     /**
      * Registers a listener automatically invoked when the system-wide configuration changed.
@@ -302,18 +302,23 @@ public final class CRS {
      *
      * @since 2.4
      */
-    public static synchronized CoordinateOperationFactory getCoordinateOperationFactory(final boolean lenient) {
+    public static CoordinateOperationFactory getCoordinateOperationFactory(final boolean lenient) {
         CoordinateOperationFactory factory = (lenient) ? lenientFactory : strictFactory;
         if (factory == null) {
-            final Hints hints = GeoTools.getDefaultHints();
-            if (lenient) {
-                hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
-            }
-            factory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
-            if (lenient) {
-                lenientFactory = factory;
-            } else {
-                strictFactory = factory;
+            synchronized(CRS.class) {
+                factory = (lenient) ? lenientFactory : strictFactory;
+                if(factory == null) {
+                    final Hints hints = GeoTools.getDefaultHints();
+                    if (lenient) {
+                        hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
+                    }
+                    factory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
+                    if (lenient) {
+                        lenientFactory = factory;
+                    } else {
+                        strictFactory = factory;
+                    }
+                }
             }
         }
         return factory;

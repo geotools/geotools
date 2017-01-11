@@ -15,8 +15,8 @@ import org.geotools.xml.Node;
  * Binding object for the type http://www.geotools.org/po:PurchaseOrderType.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *    <pre>
+ *     <code>
  *  &lt;xsd:complexType name="PurchaseOrderType"&gt;
  *      &lt;xsd:sequence&gt;
  *          &lt;xsd:element name="shipTo" type="USAddress"/&gt;
@@ -26,20 +26,20 @@ import org.geotools.xml.Node;
  *      &lt;/xsd:sequence&gt;
  *      &lt;xsd:attribute name="orderDate" type="xsd:date"/&gt;
  *  &lt;/xsd:complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ *        
+ *      </code>
+ *     </pre>
  * </p>
  *
  * @generated
  */
 public class PurchaseOrderTypeBinding extends AbstractComplexBinding {
 
-	ObjectFactory factory;		
-	public PurchaseOrderTypeBinding( ObjectFactory factory ) {
-		super();
-		this.factory = factory;
-	}
+    ObjectFactory factory;        
+    public PurchaseOrderTypeBinding( ObjectFactory factory ) {
+        super();
+        this.factory = factory;
+    }
 
     /**
      * @generated

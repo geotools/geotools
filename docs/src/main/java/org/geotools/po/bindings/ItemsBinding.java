@@ -13,8 +13,8 @@ import org.geotools.xml.Node;
  * Binding object for the type http://www.geotools.org/po:Items.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *    <pre>
+ *     <code>
  *  &lt;xsd:complexType name="Items"&gt;
  *      &lt;xsd:sequence&gt;
  *          &lt;xsd:element maxOccurs="unbounded" minOccurs="0" name="item"&gt;
@@ -37,20 +37,20 @@ import org.geotools.xml.Node;
  *          &lt;/xsd:element&gt;
  *      &lt;/xsd:sequence&gt;
  *  &lt;/xsd:complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ *        
+ *      </code>
+ *     </pre>
  * </p>
  *
  * @generated
  */
 public class ItemsBinding extends AbstractComplexBinding {
 
-	ObjectFactory factory;		
-	public ItemsBinding( ObjectFactory factory ) {
-		super();
-		this.factory = factory;
-	}
+    ObjectFactory factory;        
+    public ItemsBinding( ObjectFactory factory ) {
+        super();
+        this.factory = factory;
+    }
 
     /**
      * @generated

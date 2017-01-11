@@ -33,8 +33,10 @@ public class POConfiguration extends Configuration {
         container.registerComponentImplementation(PO.SKU,SKUBinding.class);
         container.registerComponentImplementation(PO.USAddress,USAddressBinding.class);
         container.registerComponentImplementation(PO.Items_item,Items_itemBinding.class);
-
-
+        
+        //Elements
+        container.registerComponentImplementation(PO.comment,CommentBinding.class);
+        container.registerComponentImplementation(PO.purchaseOrder,PurchaseOrderBinding.class);
     
     }
 } 

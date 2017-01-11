@@ -3,6 +3,7 @@ package org.geotools.po.bindings;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.po.Items;
 import org.geotools.po.ObjectFactory;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -51,34 +52,33 @@ public class ItemsBinding extends AbstractComplexBinding {
 		this.factory = factory;
 	}
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return PO.Items;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /**
+     * @generated
+     */
+    public QName getTarget() {
+        return PO.Items;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Class getType() {
+        return Items.class;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        Items items = factory.createItems();
+        items.getItem().addAll(node.getChildValues("item"));
+        return items;
+    }
 
 }

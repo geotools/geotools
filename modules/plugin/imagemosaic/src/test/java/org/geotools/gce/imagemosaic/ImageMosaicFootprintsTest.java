@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Transparency;
+import java.awt.geom.Point2D;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -411,7 +412,7 @@ public class ImageMosaicFootprintsTest {
         // check the footprints have been applied by pocking the output image
         pixel = new byte[4];
         // Close to San Marino, black if we have the insets
-        coverage.evaluate(tr.transform(new DirectPosition2D(coverage.getRenderedImage().getMinX(),coverage.getRenderedImage().getMinY()),null), pixel);
+        coverage.evaluate(new DirectPosition2D(coverage.getEnvelope().getMinimum(0) + 1e-3, coverage.getEnvelope().getMinimum(1) + 1e-3), pixel);
 
         assertEquals(0, pixel[0]);
         assertEquals(0, pixel[1]);
@@ -467,7 +468,7 @@ public class ImageMosaicFootprintsTest {
         jaiImageRead.setValue(false); 
         params[1] = jaiImageRead;
         
-        // GridGeometry, small aread at the upper right corner
+        // GridGeometry, small read at the upper right corner
         final GridEnvelope2D ge2D= new GridEnvelope2D(
                 reader.getOriginalGridRange().getHigh(0)-3, 
                 reader.getOriginalGridRange().getLow(1), 
@@ -486,8 +487,7 @@ public class ImageMosaicFootprintsTest {
         // check the footprints have been applied by pocking the output image
         pixel = new byte[4];
         // Close to San Marino, black if we have the insets
-        coverage.evaluate(tr.transform(new DirectPosition2D(coverage.getRenderedImage().getMinX(),coverage.getRenderedImage().getMinY()),null), pixel);
-//        RenderedImageBrowser.showChain(coverage.getRenderedImage());
+        coverage.evaluate(new DirectPosition2D(coverage.getEnvelope().getMinimum(0)  + 1e-3 ,coverage.getEnvelope().getMinimum(1) + 1e-3), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);

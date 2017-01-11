@@ -19,16 +19,11 @@ package org.geotools.gce.imagemosaic;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -71,9 +66,6 @@ import java.util.logging.Logger;
 import javax.media.jai.RenderedOp;
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -106,6 +98,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -153,6 +146,14 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.JAIExt;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -1939,10 +1940,25 @@ public class ImageMosaicReaderTest extends Assert{
 		outTransp.setValue(Color.black);
 
 
-		// test the coverage
-		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, outTransp },title);
-
+        final double[] baseResolutions = reader.getResolutionLevels()[0];
+        // test the coverage
+        final double tolerance = Math.max(baseResolutions[0], baseResolutions[1]) * 10;
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader,
+                new GeneralParameterValue[] { gg, outTransp }, title);
+        // the envelope is the requested one
+        assertEnvelope(coverage.getEnvelope(), cropEnvelope, tolerance);
+        // the raster space ordinates are not far away from the origin
+        RenderedImage ri = coverage.getRenderedImage();
+        assertEquals(0, ri.getMinX(), 10);
+        assertEquals(0, ri.getMinY(), 10);
 	}
+	
+    void assertEnvelope(Envelope expected, Envelope actual, double tolerance) {
+        assertEquals(expected.getMinimum(0), actual.getMinimum(0), tolerance);
+        assertEquals(expected.getMaximum(0), actual.getMaximum(0), tolerance);
+        assertEquals(expected.getMinimum(1), actual.getMinimum(1), tolerance);
+        assertEquals(expected.getMaximum(1), actual.getMaximum(1), tolerance);
+    }
 	
     @Test
     //@Ignore
@@ -1968,10 +1984,8 @@ public class ImageMosaicReaderTest extends Assert{
         assertTrue(coverage.getEnvelope2D().intersects((Rectangle2D) env));
         
         // and that the color is the expected one given the background values provided
-        RenderedImage ri = coverage.getRenderedImage();
         int[] pixel = new int[4];
-        Raster tile = ri.getTile(ri.getMinTileX(), ri.getMinTileY());
-        tile.getPixel(411, 87, pixel);
+        coverage.evaluate(new Point2D.Double(497987,3197819), pixel);
         assertEquals(255, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -2000,14 +2014,12 @@ public class ImageMosaicReaderTest extends Assert{
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
         assertNotNull(coverage);
-        assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
+        final Envelope2D envelope2d = coverage.getEnvelope2D();
+        assertTrue(envelope2d.contains((Rectangle2D) env));
         
         // and that the color is the expected one given the background values provided
-        RenderedImage ri = coverage.getRenderedImage();
         int[] pixel = new int[4];
-        Raster tile = ri.getTile(ri.getMinTileX() + ri.getNumXTiles()  - 1, 
-                ri.getMinTileY() + ri.getNumYTiles() - 1);
-        tile.getPixel(410, 120, pixel);
+        coverage.evaluate(new Point2D.Double(430000, 2700000), pixel);
         assertEquals(255, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -2035,16 +2047,15 @@ public class ImageMosaicReaderTest extends Assert{
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, transparent});
         assertNotNull(coverage);
+        new GeoTiffWriter(new File("/tmp/test.tiff")).write(coverage, null);
         assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
 
-        RenderedImage ri = coverage.getRenderedImage();
         int[] pixel = new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE,
                 Integer.MAX_VALUE };
-        ri.getData().getPixel(220, 15, pixel);
+        coverage.evaluate(new Point2D.Double(20,  45), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
-
         // We only have input RGB granules.
         // The mosaic should have been added the alpha component.
         // Moreover it should have been set to fully transparent (0)

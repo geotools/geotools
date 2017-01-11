@@ -15,8 +15,8 @@ import org.geotools.xml.Node;
  * Binding object for the type http://www.geotools.org/po:Items_item.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *    <pre>
+ *     <code>
  *  &lt;xsd:complexType name="Items_item"&gt;
  *      &lt;xsd:sequence&gt;
  *          &lt;xsd:element name="productName" type="xsd:string"/&gt;
@@ -33,20 +33,20 @@ import org.geotools.xml.Node;
  *      &lt;/xsd:sequence&gt;
  *      &lt;xsd:attribute name="partNum" type="SKU" use="required"/&gt;
  *  &lt;/xsd:complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ *        
+ *      </code>
+ *     </pre>
  * </p>
  *
  * @generated
  */
 public class Items_itemBinding extends AbstractComplexBinding {
 
-	ObjectFactory factory;		
-	public Items_itemBinding( ObjectFactory factory ) {
-		super();
-		this.factory = factory;
-	}
+    ObjectFactory factory;        
+    public Items_itemBinding( ObjectFactory factory ) {
+        super();
+        this.factory = factory;
+    }
 
     /**
      * @generated

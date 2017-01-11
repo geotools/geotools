@@ -15,8 +15,8 @@ import org.geotools.xml.Node;
  * Binding object for the type http://www.geotools.org/po:USAddress.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *    <pre>
+ *     <code>
  *  &lt;xsd:complexType name="USAddress"&gt;
  *      &lt;xsd:sequence&gt;
  *          &lt;xsd:element name="name" type="xsd:string"/&gt;
@@ -27,20 +27,20 @@ import org.geotools.xml.Node;
  *      &lt;/xsd:sequence&gt;
  *      &lt;xsd:attribute fixed="US" name="country" type="xsd:NMTOKEN"/&gt;
  *  &lt;/xsd:complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ *        
+ *      </code>
+ *     </pre>
  * </p>
  *
  * @generated
  */
 public class USAddressBinding extends AbstractComplexBinding {
 
-	ObjectFactory factory;		
-	public USAddressBinding( ObjectFactory factory ) {
-		super();
-		this.factory = factory;
-	}
+    ObjectFactory factory;        
+    public USAddressBinding( ObjectFactory factory ) {
+        super();
+        this.factory = factory;
+    }
 
     /**
      * @generated

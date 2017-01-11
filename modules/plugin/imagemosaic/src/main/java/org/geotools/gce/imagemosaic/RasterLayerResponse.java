@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -720,6 +721,7 @@ public class RasterLayerResponse {
         // compute final world to grid
         // base grid to world for the center of pixels
         final AffineTransform g2w;
+        final SpatialRequestHelper spatialRequestHelper = request.spatialRequestHelper;
         if (!request.isHeterogeneousGranules()) {
             final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels
                     .get(0);
@@ -727,16 +729,28 @@ public class RasterLayerResponse {
                     .get(imageChoice);
             final double resX = baseLevel.resolutionX;
             final double resY = baseLevel.resolutionY;
-            final double[] requestRes = request.spatialRequestHelper.getComputedResolution();
-
-            g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+            final double[] requestRes = spatialRequestHelper.getComputedResolution();
+            
+            BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
+            GeneralEnvelope requestedRasterArea = CRS.transform(baseGridToWorld.inverse(), computedBBox);
+            double minxRaster = Math.round(requestedRasterArea.getMinimum(0));
+            double minyRaster = Math.round(requestedRasterArea.getMinimum(1));
+            
+            // rebase the grid to world location to a position close to the requested one to
+            // avoid JAI playing with very large raster coordinates
+            // This can be done because the final computation generates the coordinates of the
+            // output coverage based on the output raster bounds and this very transform
+            final AffineTransform at = (AffineTransform) baseGridToWorld;
+            Point2D src = new Point2D.Double(minxRaster, minyRaster);
+            Point2D dst = new Point2D.Double();
+            at.transform(src, dst);
+            g2w = new AffineTransform(at.getScaleX(), at.getShearX(), at.getShearY(), at.getScaleY(), dst.getX(), dst.getY());
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             if ((requestRes[0] < resX || requestRes[1] < resY)) {
                 // Using the best available resolution
                 oversampledRequest = true;
             } else {
-
                 // SG going back to working on a per level basis to do the composition
                 // g2w = new AffineTransform(request.getRequestedGridToWorld());
                 g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,
@@ -746,9 +760,7 @@ public class RasterLayerResponse {
                                 baseReadParameters.getSourceYSubsampling()));
             }
         } else {
-            g2w = new AffineTransform(request.spatialRequestHelper.isNeedsReprojection()
-                    ? request.spatialRequestHelper.getComputedGridToWorld()
-                    : request.spatialRequestHelper.getComputedGridToWorld());
+            g2w = new AffineTransform(spatialRequestHelper.getComputedGridToWorld());
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
         }
         // move it to the corner

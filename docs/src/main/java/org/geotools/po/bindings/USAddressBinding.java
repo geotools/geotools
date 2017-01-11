@@ -1,9 +1,12 @@
 package org.geotools.po.bindings;
 
 
+import java.math.BigDecimal;
+
 import javax.xml.namespace.QName;
 
 import org.geotools.po.ObjectFactory;
+import org.geotools.po.USAddress;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -39,34 +42,43 @@ public class USAddressBinding extends AbstractComplexBinding {
 		this.factory = factory;
 	}
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return PO.USAddress;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /**
+     * @generated
+     */
+    public QName getTarget() {
+        return PO.USAddress;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Class getType() {
+        return USAddress.class;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+       USAddress address = factory.createUSAddress();
+
+       //elements
+       address.setName((String) node.getChildValue("name"));
+       address.setStreet((String) node.getChildValue("street"));
+       address.setCity((String) node.getChildValue("city"));
+       address.setState((String) node.getChildValue("state"));
+       address.setZip((BigDecimal) node.getChildValue("zip"));
+
+       //attribute
+       address.setCountry((String) node.getAttributeValue("country"));
+
+       return address;
+    }
 
 }

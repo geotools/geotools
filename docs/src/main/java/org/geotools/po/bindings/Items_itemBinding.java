@@ -1,8 +1,11 @@
 package org.geotools.po.bindings;
 
 
+import java.math.BigDecimal;
+
 import javax.xml.namespace.QName;
 
+import org.geotools.po.Items;
 import org.geotools.po.ObjectFactory;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -45,34 +48,42 @@ public class Items_itemBinding extends AbstractComplexBinding {
 		this.factory = factory;
 	}
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return PO.Items_item;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /**
+     * @generated
+     */
+    public QName getTarget() {
+        return PO.Items_item;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Class getType() {
+        return Items.Item.class;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        Items.Item item = factory.createItemsItem();
+            
+        //elements
+        item.setProductName((String) node.getChildValue("productName"));
+        item.setQuantity((Integer) node.getChildValue("quntity"));
+        item.setUSPrice((BigDecimal) node.getChildValue("USPrice"));
+        item.setComment((String) node.getChildValue("comment"));
+
+        //attribute
+        item.setPartNum((String) node.getAttributeValue("partNum"));
+
+        return item;
+    }
 
 }

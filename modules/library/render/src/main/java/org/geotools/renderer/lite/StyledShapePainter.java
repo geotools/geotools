@@ -73,7 +73,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @source $URL$
  */
-public final class StyledShapePainter {
+public class StyledShapePainter {
     public final static Key TEXTURE_ANCHOR_HINT_KEY = new TextureAnchorKey();
     private final static AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
 
@@ -767,7 +767,7 @@ public final class StyledShapePainter {
      * @throws TransformException
      * @throws FactoryException
      */
-    private void paintGraphicFill(Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) 
+    protected void paintGraphicFill(Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) 
     {
         // retrieves the bounds of the provided shape
         Rectangle2D boundsShape = shape.getBounds2D();

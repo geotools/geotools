@@ -272,7 +272,7 @@ public class StreamingRenderer implements GTRenderer {
     protected LabelCache labelCache = new LabelCacheImpl();
 
     /** The painter class we use to depict shapes onto the screen */
-    private StyledShapePainter painter = new StyledShapePainter(labelCache);
+    protected StyledShapePainter painter = new StyledShapePainter(labelCache);
     private BlockingQueue<RenderingRequest> requests;
 
     private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();

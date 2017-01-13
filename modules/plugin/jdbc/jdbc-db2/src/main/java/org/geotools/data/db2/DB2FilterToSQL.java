@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import org.geotools.filter.FilterCapabilities;
@@ -334,7 +333,10 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             }
             out.write(comparisonOperator);
             out.write(toMeters(filter.getDistance(), filter.getDistanceUnits()));
-            addSelectivity();
+            if (!isValidUnit(distanceUnits)) {
+            	addSelectivity(); // Selectivity clause can not be used with distance units
+            }            
+            
             return extraData;
         } catch (IOException ex) {
             throw new RuntimeException(ex);

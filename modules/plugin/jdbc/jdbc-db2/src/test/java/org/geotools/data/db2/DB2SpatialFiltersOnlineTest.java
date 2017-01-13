@@ -30,6 +30,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.DWithin;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -83,6 +84,12 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 	        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
 			int numFeatures = features.size();
 	        assertEquals(2, numFeatures);
+	        
+	        Beyond beyondGeomCo  = ((FilterFactory2) ff).beyond(p, collect, 5, "meter");
+	        dq = new Query(tname("road"), beyondGeomCo);
+	        features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
+			numFeatures = features.size();
+	        assertEquals(1, numFeatures);
       }
 	
     public void testBboxFilter() throws Exception {

@@ -15,6 +15,7 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.wms.v1_3;
+import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
@@ -35,8 +36,7 @@ public class WMSConfiguration extends Configuration {
      */     
     public WMSConfiguration() {
        super(WMS.getInstance());
-       
-       //TODO: add dependencies here
+       addDependency(new XLINKConfiguration());
     }
     
     /**

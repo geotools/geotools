@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -137,21 +137,21 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         {
             put("kilometers", 1000.0);
             put("kilometer", 1000.0);
-			put("meters", 1.0);
-			put("meter", 1.0);
+            put("meters", 1.0);
+            put("meter", 1.0);
             put("mm", 0.001);
             put("millimeter", 0.001);
             put("mi", 1609.344);
             put("statute miles", 1609.344);
-			put("miles", 1609.344);
-			put("mile", 1609.344);
-			put("nautical miles", 1852.0);
+            put("miles", 1609.344);
+            put("mile", 1609.344);
+            put("nautical miles", 1852.0);
             put("NM", 1852d);
             put("feet", 0.3048);
             put("ft", 0.3048);
             put("in", 0.0254);
         }
-    };	
+    };  
 
     boolean functionEncodingEnabled = false;
 
@@ -299,29 +299,29 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         }
     }
 
-	private boolean isValidUnit(String unit) {
-		if (UNITS_MAP.get(unit) != null) {
-			return true;
-		}
-		return false;
-	}
+    private boolean isValidUnit(String unit) {
+        if (UNITS_MAP.get(unit) != null) {
+            return true;
+        }
+        return false;
+    }
 
-	private String toMeters(double distance, String unit) {
-		Double conversion = UNITS_MAP.get(unit);
-		if (conversion != null) {
-			return String.valueOf(distance * conversion);
-		}
-		// in case unknown unit use as-is
-		return String.valueOf(distance);
-	}
-	
+    private String toMeters(double distance, String unit) {
+        Double conversion = UNITS_MAP.get(unit);
+        if (conversion != null) {
+            return String.valueOf(distance * conversion);
+        }
+        // in case unknown unit use as-is
+        return String.valueOf(distance);
+    }
+    
     Object visitDistanceSpatialOperator(DistanceBufferOperator filter, PropertyName property,
             Literal geometry, boolean swapped, Object extraData) {
         try {
-			String comparisonOperator = ") < ";
-			if ((filter instanceof DWithin && swapped) 
-				|| (filter instanceof Beyond && !swapped)) {
-			  comparisonOperator = ") > ";
+            String comparisonOperator = ") < ";
+            if ((filter instanceof DWithin && swapped) 
+                || (filter instanceof Beyond && !swapped)) {
+              comparisonOperator = ") > ";
             }
                 out.write("db2gse.ST_Distance(");
                 property.accept(this, extraData);
@@ -329,12 +329,12 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
                 geometry.accept(this, extraData);
             String distanceUnits = filter.getDistanceUnits();
             if (isValidUnit(distanceUnits)) {
-            	out.write(",'METER'");
+                out.write(",'METER'");
             }
             out.write(comparisonOperator);
             out.write(toMeters(filter.getDistance(), filter.getDistanceUnits()));
             if (!isValidUnit(distanceUnits)) {
-            	addSelectivity(); // Selectivity clause can not be used with distance units
+                addSelectivity(); // Selectivity clause can not be used with distance units
             }            
             
             return extraData;

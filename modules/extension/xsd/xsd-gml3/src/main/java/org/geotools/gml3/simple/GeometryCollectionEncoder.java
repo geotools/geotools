@@ -30,36 +30,37 @@ import org.xml.sax.helpers.AttributesImpl;
  * 
  * @author 
  */
-public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
+class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
 
-    static final QualifiedName GEOMETRY_COLLECTION = new QualifiedName(
-        GML.NAMESPACE, "GeometryCollection", "gml");
+    static final QualifiedName MULTI_GEOMETRY = new QualifiedName(
+        GML.NAMESPACE, "MultiGeometry", "gml");
 
-    QualifiedName element;
-    static Encoder encoder;
+    static final QualifiedName GEOMETRY_MEMBER = new QualifiedName(
+        GML.NAMESPACE, "geometryMember", "gml");
 
-    public GeometryCollectionEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
-        this(encoder, GEOMETRY_COLLECTION.derive(gmlPrefix, gmlUri));
-    }
+    QualifiedName multiGeometry;
 
-    public GeometryCollectionEncoder(Encoder encoder, QualifiedName name) {
+    QualifiedName geometryMember;
+
+    GenericGeometryEncoder gge;
+
+    protected GeometryCollectionEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
-        GeometryCollectionEncoder.encoder = encoder;
+        gge = new GenericGeometryEncoder(encoder, gmlPrefix, gmlUri);
+        multiGeometry = MULTI_GEOMETRY.derive(gmlPrefix, gmlUri);
+        geometryMember = GEOMETRY_MEMBER.derive(gmlPrefix, gmlUri);
     }
+
     @Override
-    public void encode(GeometryCollection geometry, AttributesImpl atts,
-        GMLWriter handler) throws Exception {
-        handler.startElement(GEOMETRY_COLLECTION, atts);
-        if (geometry.getNumGeometries() < 1) {
-            throw new Exception("More than 1 geometry required!");
-        } else {
-            GenericGeometryEncoder gec = new GenericGeometryEncoder(
-                GeometryCollectionEncoder.encoder);
-            for (int i = 0; i < geometry.getNumGeometries(); i++) {
-                gec.encode(geometry.getGeometryN(i), atts, handler);
-            }
+    public void encode(GeometryCollection geometry, AttributesImpl atts, GMLWriter handler)
+            throws Exception {
+        handler.startElement(multiGeometry, atts);
+        for (int i = 0; i < geometry.getNumGeometries(); i++) {
+            handler.startElement(geometryMember, null);
+            gge.encode(geometry.getGeometryN(i), atts, handler);
+            handler.endElement(geometryMember);
         }
-        handler.endElement(GEOMETRY_COLLECTION);
+        handler.endElement(multiGeometry);
     }
 
 }

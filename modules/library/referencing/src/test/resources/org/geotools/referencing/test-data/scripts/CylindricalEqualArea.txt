@@ -1,0 +1,123 @@
+// Test script for Cylindrical Equal Area projections
+
+
+//WGS84 Ellipsoid
+set _WGS84_  = GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563 ] ], PRIMEM["Greenwich",0.0], UNIT["degree",0.01745329251994328 ]]
+
+//1924 Authalic Sphere
+set _AuthalicSphere_ = GEOGCS["Unspecified datum based upon the International 1924 Authalic Sphere",DATUM["Not_specified_based_on_International_1924_Authalic_Sphere",SPHEROID["International 1924 Authalic Sphere",6371228,0, AUTHORITY["EPSG","7057"]],AUTHORITY["EPSG","6053"]], PRIMEM["Greenwich",0, AUTHORITY["EPSG","8901"]], UNIT["degree",0.01745329251994328, AUTHORITY["EPSG","9122"]], AUTHORITY["EPSG","4053"]]
+
+
+//NSIDC EASE-Grid Global (EPSG:3410)
+set _NSIDCGlobal_ = PROJCS["NSIDC EASE-Grid Global",_AuthalicSphere_,UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Cylindrical_Equal_Area"],PARAMETER["standard_parallel_1",30],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],AUTHORITY["EPSG","3410"],AXIS["X",EAST],AXIS["Y",NORTH]]
+
+
+//World Behrmann (ESRI:54017)
+set _Behrmann_ = PROJCS["World_Behrmann",_WGS84_,PROJECTION["Behrmann"], PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",0],UNIT["Meter",1],AUTHORITY["EPSG","54017"]]
+
+
+// -------------------------------------------------------------------------- //
+// WGS84 to Behrmann (ESRI:54017)
+// cs2cs -v +datum=WGS84 +proj=lonlat +to +proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs
+// -------------------------------------------------------------------------- //
+
+source crs = _WGS84_
+target crs = _Behrmann_
+
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (10, 10)
+target pt = (964862.80, 1269436.74)
+
+source pt = (-50, -50)
+target pt = (-4824314.01, -5614050.10)
+
+// precision change with for higher lon values
+test tolerance = (0.01, 0.01)
+
+source pt = (130, 0)
+target pt = (12543216.43, 0.00)
+
+source pt = (130, 60)
+target pt = (12543216.43, 6351420.00)
+
+
+// -------------------------------------------------------------------------- //
+// Behrmann (ESRI:54017) to WGS84
+// cs2cs -v +proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +to +datum=WGS84 +proj=lonlat
+// -------------------------------------------------------------------------- //
+source crs = _Behrmann_
+target crs = _WGS84_
+
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (964862.80, 1269436.74)
+target pt = (10, 10)
+
+source pt = (-4824314.01, -5614050.10)
+target pt = (-50, -50)
+
+source pt = (12543216.43, 0.00)
+target pt = (130, 0)
+
+source pt = (12543216.43, 6351420.00)
+target pt = (130, 60)
+
+
+
+// -------------------------------------------------------------------------- //
+// WGS84 to NSIDC EASE-Grid Global (EPSG:3410)
+// cs2cs -v +datum=WGS84 +proj=lonlat +to +proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +a=6371228 +b=6371228 +units=m +no_defs
+// -------------------------------------------------------------------------- //
+
+source crs = _WGS84_
+target crs = _NSIDCGlobal_
+
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (10, 10)
+target pt = (963010.77, 1277505.40)
+
+source pt = (-50, -50)
+target pt = (-4815053.87, -5635682.03)
+
+// precision change with for higher lon values
+test tolerance = (0.01, 0.01)
+
+source pt = (130, 0)
+target pt = (12519140.07, 0.00)
+
+source pt = (130, 60)
+target pt = (12519140.07, 6371228.00)
+
+
+// -------------------------------------------------------------------------- //
+// NSIDC EASE-Grid Global (EPSG:3410) to WGS84
+// cs2cs +proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +a=6371228 +b=6371228 +units=m +no_defs +to -v +datum=WGS84 +proj=lonlat
+// -------------------------------------------------------------------------- //
+
+source crs = _NSIDCGlobal_
+target crs = _WGS84_
+
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (12519140.07, 6371228.00)
+target pt = (130, 60)
+
+source pt = (12519140.07, 0.00)
+target pt = (130, 0)
+
+source pt = (-4815053.87, -5635682.03)
+target pt = (-50, -50)

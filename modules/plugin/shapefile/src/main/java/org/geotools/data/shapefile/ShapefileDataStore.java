@@ -376,6 +376,16 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 header.addColumn(colName, 'N', Math.min(fieldLen, 19), 0);
             } else if (colType == BigInteger.class) {
                 header.addColumn(colName, 'N', Math.min(fieldLen, 33), 0);
+            } else if (colType == Float.class) {
+                int l = Math.min(fieldLen, 24);
+                // GDAL format default is 15 decimal places of precision
+                // http://www.gdal.org/drv_shapefile.html
+                int d = Math.min(Math.max(l - 2, 0), 15);
+                header.addColumn(colName, 'N', l, d);
+            } else if (colType == Double.class) {
+                int l = Math.min(fieldLen, 33);
+                int d = Math.min(Math.max(l - 2, 0), 15);
+                header.addColumn(colName, 'N', l, d);
             } else if (Number.class.isAssignableFrom(colType)) {
                 int l = Math.min(fieldLen, 33);
                 int d = Math.max(l - 2, 0);

@@ -1059,6 +1059,43 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
 
     @Test
+    public void testWriteReadStandardNumbers() throws Exception {
+        // create feature type
+        SimpleFeatureType type = DataUtilities.createType("junk",
+                "a:Point,b:java.lang.Float,c:java.lang.Double");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        Double aFloat = 123456.78901234567890123456789;
+        Double aDouble = 1234567890.123456789;
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
+        build.add(aFloat);
+        build.add(aDouble);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        try {
+            SimpleFeature f = reader.next();
+
+            assertEquals("Float", aFloat, (Double) f.getAttribute("b"), 0.0001);
+            assertEquals("Double", aDouble, f.getAttribute("c"));
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+
+    @Test
     public void testWriteReadBigNumbers() throws Exception {
         // create feature type
         SimpleFeatureType type = DataUtilities.createType("junk",
@@ -1181,8 +1218,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testGeometriesWriting() throws Exception {
 
-//        String[] wktResources = new String[] { "point", "multipoint", "line",
-//                "multiline", "polygon", "multipolygon" };
         String[] wktResources = new String[] { "line",
                 "multiline", "polygon", "multipolygon" };
 
@@ -1588,7 +1623,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * ids match the {@code <typeName>.<number>} structure but the {@code <typeName>} part does not
      * match the actual typeName, shoud ensure the invalid fids are ignored
      * 
-     * @throws FileException
+     * @throws Exception
      */
     @Test
     public void testWipesOutInvalidFidsFromFilters() throws Exception {

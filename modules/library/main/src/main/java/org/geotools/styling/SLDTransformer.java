@@ -83,6 +83,8 @@ public class SLDTransformer extends TransformerBase {
      * Additional namespace mappings to emit in the start element of the generated. Each entry has a URI key and an associated prefix string value.
      */
     final private Map uri2prefix;
+    
+    
 
     /**
      * Construct a new instance of <code>SLDTransformer</code> with the default namespace mappings usually found in a simple Styled Layer Descriptor
@@ -135,8 +137,10 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
         }
+        ((SLDTranslator)result).setExportDefaultValues(isExportDefaultValues());
         return result;
     }
+
 
     /**
      * Currently does nothing.
@@ -170,7 +174,9 @@ public class SLDTransformer extends TransformerBase {
          * Handles any Filters used in our data structure.
          */
         FilterTransformer.FilterTranslator filterTranslator;
-
+        
+        private boolean exportDefaultValues = false;
+        
         /**
          * Translates into the default of prefix "sld" for "http://www.opengis.net/sld".
          * 
@@ -179,7 +185,6 @@ public class SLDTransformer extends TransformerBase {
         public SLDTranslator(ContentHandler handler) {
             this(handler, "sld", "http://www.opengis.net/sld");
         }
-
         /**
          * Translates
          * 
@@ -204,6 +209,9 @@ public class SLDTransformer extends TransformerBase {
         }
 
         boolean isDefault(Expression expr, Object defaultValue) {
+            if (isExportDefaultValues()) {
+                return false;
+            }
             if (defaultValue == null)
                 return isNull(expr);
 
@@ -222,6 +230,26 @@ public class SLDTransformer extends TransformerBase {
             }
             return false;
         }
+
+        /**
+         * @param exportDefaultValues
+         */
+        public void setExportDefaultValues(boolean exportDefaultValues) {
+          this.exportDefaultValues = exportDefaultValues; 
+            
+        }
+
+        /**
+         * @return the exportDefaultValues
+         */
+        public boolean isExportDefaultValues() {
+            return exportDefaultValues;
+        }
+
+
+
+
+       
 
         /**
          * Utility method used to quickly package up the provided expression.
@@ -279,7 +307,7 @@ public class SLDTransformer extends TransformerBase {
             if (expr instanceof Literal) {
                 if (defaultValue != null) {
                     Object value = expr.evaluate(null, defaultValue.getClass());
-                    if (value != null && !value.equals(defaultValue)) {
+                    if (value != null && (!value.equals(defaultValue)||isExportDefaultValues())) {
                         element(element, value.toString(), atts);
                     }
                 } else {
@@ -832,7 +860,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Mark mark) {
             start("Mark");
             if (mark.getWellKnownName() != null
-                    && !"square".equals(mark.getWellKnownName().evaluate(null))) {
+                    && (!"square".equals(mark.getWellKnownName().evaluate(null))||isExportDefaultValues())) {
                 encodeValue("WellKnownName", null, mark.getWellKnownName(), null);
             }
 
@@ -1235,15 +1263,16 @@ public class SLDTransformer extends TransformerBase {
             if (expression == null) {
                 return; // protect ourselves from things like a null Stroke Color
             }
-
-            // skip encoding if we are using the default value
-            if (expression instanceof Literal && defaultValue != null) {
-                Object value = expression.evaluate(null, defaultValue.getClass());
-                if (value != null && value.equals(defaultValue)) {
-                    return;
+            
+            if (!isExportDefaultValues()) {
+                // skip encoding if we are using the default value
+                if (expression instanceof Literal && defaultValue != null) {
+                    Object value = expression.evaluate(null, defaultValue.getClass());
+                    if (value != null && value.equals(defaultValue)) {
+                        return;
+                    }
                 }
             }
-
             if (atts == null) {
                 atts = NULL_ATTS;
             }

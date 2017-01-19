@@ -30,7 +30,7 @@ x      Ask                           Ask to be included in the next release
 Visibility / Module Status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GeoTools Module Matrix defines a couple quick QA tests allowing you to rate your module according to the number of gold stars it has earned.
+The GeoTools Gold Star Quality Assurance Check defines a couple quick QA tests allowing you to rate your module according to the number of gold stars it has earned.
 
 1. The first step is to rate your module:
    
@@ -38,10 +38,10 @@ The GeoTools Module Matrix defines a couple quick QA tests allowing you to rate 
 
 2. GeoTools 2.5 and onward expects four stars for a supported module.
 
-3. Create a Module Matrix page:
+3. Create a README.md file:
    
    * show project status
-   * list jira issues (from as many projects as possible)
+   * show IP status
    
 4. The goal here is to make your module status visible to end users.
    
@@ -54,10 +54,9 @@ Intellectual Property Check
 1. Your module must have a file presenting the providence review of the contents of your module
    including the copyright and licenses which apply to your module.
 
-2. The file must be named and located as 'src/site/apt/review.apt'
+2. The file must be named and located as 'REVIEW.md'
    
-   The file must be in the "Almost Plain Text" format and should follow the standard layout of
-   the file in the unsupported/example module.
+   The file should follow the standard layout of the file in the unsupported/example module.
 
 3. This file describes any contents which do not follow the copyright and license of the
    project as a whole.
@@ -73,6 +72,9 @@ Intellectual Property Check
 
 4. Fixing some of these issues in the past has required "stubbing" some of the jar dependencies
    with dummy code of the same signature from a third party JAR which we cannot distribute.
+
+5. If your module includes code from third-party sources, include a `NOTICE.txt` file 
+   listing these sources and the associated licenses.
 
 Follow the Developers Guide
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -125,7 +127,6 @@ The one most likely to cause grief is the JUnit testing requirement.
 
 2. The test coverage expectation for the GeoTools library is 40%.
        
-   * Test Coverage measured and published to Module Matrix page
    * Coverage of 40% measured by a hudson control profile.
      You can supply a test fixture so the nightly builds can run against your database.
    * Plugins can extend provided "conformance test" if available to quickly reach 40%.
@@ -162,10 +163,9 @@ User Documentation
    
    * Please make something (anything!) available in GeoTools User Guide
    
-2. Link to the documentation page from your module matrix page.
-3. It is recommended that you make a single example showing how to use your module
+2. It is recommended that you make a single example showing how to use your module
    or plugin (you can use a a code example if you must).
-4. You may wish to refer to the writing guidelines for the user guide
+3. You may wish to refer to the writing guidelines for the user guide
    
    * :doc:`/docs/index`
 

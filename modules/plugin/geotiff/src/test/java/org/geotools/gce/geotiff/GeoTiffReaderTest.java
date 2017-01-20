@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import javax.imageio.stream.FileImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
@@ -1148,6 +1149,55 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             throw e.getCause();
         } finally {
             file.setReadable(true);
+        }
+    }
+
+    /**
+     * The GeoTiffReader should be able to read from an InputStream
+     */
+    @Test
+    public void testCanReadInputStream() throws IOException {
+        
+        File rasterfile = TestData.file(GeoTiffReaderTest.class, "geo.tiff");
+        GeoTiffReader reader = null;
+        
+        try(FileInputStream is = new FileInputStream(rasterfile)) {
+            // Read coverage
+            reader = new GeoTiffReader(is);
+            GridCoverage2D gridCoverage = reader.read(null);
+    
+            assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+            
+            gridCoverage.dispose(true);
+        }
+        finally {
+            if(reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+
+    /**
+     * The GeoTiffReader should be able to read from an ImageInputStream
+     */
+    @Test
+    public void testCanReadImageInputStream() throws IOException {
+        File rasterfile = TestData.file(GeoTiffReaderTest.class, "geo.tiff");
+        GeoTiffReader reader = null;
+        
+        try(FileImageInputStream is = new FileImageInputStream(rasterfile)) {
+            // Read coverage
+            reader = new GeoTiffReader(is);
+            GridCoverage2D gridCoverage = reader.read(null);
+            
+            assertTrue(gridCoverage != null && gridCoverage.getNumSampleDimensions() == 1);
+            
+            gridCoverage.dispose(true);
+        }
+        finally {
+            if(reader != null) {
+                reader.dispose();
+            }
         }
     }
 }

@@ -43,6 +43,7 @@ Module maintainers have the three most critical responsibilities in GeoTools:
    
    * The Jira issue tracker should be up to date
    * Your module should have a couple of pages of User Guide
+   * Your module should have an up-to-date README.md file
 
 If these requirements are not met for a release, or if the module maintainer cannot be found, the module will revert to unsupported status.
 

@@ -125,7 +125,7 @@ popd > /dev/null
 # build the release
 if [ -z $SKIP_BUILD ]; then
   echo "building release"
-  export MAVEN_OPTS="-Xmx512m -XX:MaxPermSoze=128m"
+  export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=128m"
   mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi

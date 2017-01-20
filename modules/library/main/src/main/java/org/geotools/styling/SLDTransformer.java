@@ -83,9 +83,7 @@ public class SLDTransformer extends TransformerBase {
      * Additional namespace mappings to emit in the start element of the generated. Each entry has a URI key and an associated prefix string value.
      */
     final private Map uri2prefix;
-    
-    
-
+   
     /**
      * Construct a new instance of <code>SLDTransformer</code> with the default namespace mappings usually found in a simple Styled Layer Descriptor
      * element.

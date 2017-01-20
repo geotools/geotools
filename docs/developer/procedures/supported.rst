@@ -30,7 +30,7 @@ x      Ask                           Ask to be included in the next release
 Visibility / Module Status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GeoTools Gold Star Quality Assurance Check defines a couple quick QA tests allowing you to rate your module according to the number of gold stars it has earned.
+The GeoTools Gold Star Quality Assurance Check defines a couple of quick QA tests allowing you to rate your module according to the number of gold stars it has earned.
 
 1. The first step is to rate your module:
    
@@ -127,7 +127,7 @@ The one most likely to cause grief is the JUnit testing requirement.
 
 2. The test coverage expectation for the GeoTools library is 40%.
        
-   * Coverage of 40% measured by a hudson control profile.
+   * Coverage of 40% measured by a Jenkins control profile.
      You can supply a test fixture so the nightly builds can run against your database.
    * Plugins can extend provided "conformance test" if available to quickly reach 40%.
 
@@ -139,7 +139,11 @@ How to measure test coverage:
 1. Test coverage measured with cobertura or clover.
 2. Run the following for your plugin::
      
-     run mvn site
+     mvn clean cobertura:cobertura
+
+3. The result is available for each module:
+
+     target/site/cobertura/index.html
 
 How to use a conformance test:
 

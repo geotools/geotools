@@ -103,6 +103,7 @@
          <property><name>all</name></property>
        </activation>
        <modules>
+         <module>process</module>
          <module>process-geometry</module>
          <module>process-raster</module>
          <module>process-feature</module>
@@ -220,6 +221,9 @@
     <module>swing</module>
     <module>swt</module>
     <module>process</module>
+    <module>process-geometry</module>
+    <module>process-raster</module>
+    <module>process-feature</module>
     <module>wfs</module>
     <module>geojson</module>
     <module>geopkg</module>

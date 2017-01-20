@@ -26,6 +26,7 @@ Research and Development:
    swing/index
    swt/index
    wps
+   ysld
    sample
 
 Unsupported rendering plugins:

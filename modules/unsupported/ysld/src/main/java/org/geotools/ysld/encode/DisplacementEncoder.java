@@ -27,7 +27,8 @@ public class DisplacementEncoder extends YsldEncodeHandler<Displacement> {
 
     @Override
     protected void encode(Displacement displace) {
-        if (nullIf(displace.getDisplacementX(), 0) == null && nullIf(displace.getDisplacementY(),0) == null) {
+        if (nullIf(displace.getDisplacementX(), 0) == null
+                && nullIf(displace.getDisplacementY(), 0) == null) {
             return;
         }
         put("displacement", displace.getDisplacementX(), displace.getDisplacementY());

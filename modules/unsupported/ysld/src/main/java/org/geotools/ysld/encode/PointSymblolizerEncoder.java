@@ -26,7 +26,7 @@ public class PointSymblolizerEncoder extends SymbolizerEncoder<PointSymbolizer> 
 
     @Override
     protected void encode(PointSymbolizer sym) {
-        inline(new GraphicEncoder((((PointSymbolizer)sym).getGraphic())));
+        inline(new GraphicEncoder((((PointSymbolizer) sym).getGraphic())));
         super.encode(sym);
     }
 }

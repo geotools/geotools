@@ -40,17 +40,13 @@ public class SymbolizersParser extends YsldParseHandler {
 
             if (sym.has("point")) {
                 context.push(sym, "point", new PointParser(rule, factory));
-            }
-            else if (sym.has("line")) {
+            } else if (sym.has("line")) {
                 context.push(sym, "line", new LineParser(rule, factory));
-            }
-            else if (sym.has("polygon")) {
+            } else if (sym.has("polygon")) {
                 context.push(sym, "polygon", new PolygonParser(rule, factory));
-            }
-            else if (sym.has("text")) {
+            } else if (sym.has("text")) {
                 context.push(sym, "text", new TextParser(rule, factory));
-            }
-            else if (sym.has("raster")) {
+            } else if (sym.has("raster")) {
                 context.push(sym, "raster", new RasterParser(rule, factory));
             }
         }

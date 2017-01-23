@@ -17,7 +17,6 @@
  */
 package org.geotools.ysld.parse;
 
-
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
@@ -56,11 +55,10 @@ public abstract class MarkParser extends YsldParseHandler {
             }
         });
 
-        //TODO: external mark?
-        /*if ("url".equals(val)) {
-        }
-        if ("inline".equals(val)) {
-        }*/
+        // TODO: external mark?
+        /*
+         * if ("url".equals(val)) { } if ("inline".equals(val)) { }
+         */
     }
 
     protected abstract void mark(Mark mark);

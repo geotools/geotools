@@ -26,7 +26,7 @@ import org.geotools.ysld.Ysld.YsldInput;
 import org.junit.Test;
 
 public class YsldTest {
-    
+
     @Test
     public void readerTest() throws IOException {
         InputStream inputStream = YsldTest.class.getResourceAsStream("point.yml");
@@ -36,9 +36,9 @@ public class YsldTest {
             inputStream.read();
             fail("inputStream should be closed");
         } catch (IOException e) {
-            //expect IOException reading from a closed reader
+            // expect IOException reading from a closed reader
         }
-        
+
     }
 
 }

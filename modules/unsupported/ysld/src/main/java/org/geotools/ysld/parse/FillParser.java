@@ -17,7 +17,6 @@
  */
 package org.geotools.ysld.parse;
 
-
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.ysld.YamlMap;
@@ -48,7 +47,7 @@ public abstract class FillParser extends YsldParseHandler {
     }
 
     Fill fill() {
-        if (fill == null ) {
+        if (fill == null) {
             fill(fill = factory.style.createFill(null));
         }
         return fill;

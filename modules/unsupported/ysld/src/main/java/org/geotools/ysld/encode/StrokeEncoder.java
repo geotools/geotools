@@ -53,7 +53,7 @@ public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
         for (int i = 0; i < arr.length; i++) {
             sb.append(arr[i]).append(" ");
         }
-        sb.setLength(sb.length()-1);
+        sb.setLength(sb.length() - 1);
         return sb.toString();
     }
 }

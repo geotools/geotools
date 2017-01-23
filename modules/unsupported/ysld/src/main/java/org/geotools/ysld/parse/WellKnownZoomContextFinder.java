@@ -33,17 +33,17 @@ import javax.annotation.Nullable;
  *
  */
 public class WellKnownZoomContextFinder implements ZoomContextFinder {
-    
+
     static private WellKnownZoomContextFinder INSTANCE = new WellKnownZoomContextFinder();
-    
-    public static WellKnownZoomContextFinder getInstance(){
+
+    public static WellKnownZoomContextFinder getInstance() {
         return INSTANCE;
     }
-    
+
     private WellKnownZoomContextFinder() {
         contexts = new HashMap<>();
         canonicalNames = new TreeSet<>();
-        
+
         // Google Spherical Mercator at 96 DPI
         ZoomContext googleMercatorExtended = new RatioZoomContext(559_082_263.9508929, 2);
         contexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
@@ -56,7 +56,7 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("OSGEO:41001".toUpperCase(), googleMercatorExtended);
         contexts.put("DEFAULT".toUpperCase(), googleMercatorExtended);
         canonicalNames.add("EPSG:3857");
-        
+
         // WGS84 Plate Carrée starting with one 256x256 tile at 96 DPI
         // Do NOT use the name EPSG:4326 as GWC defines a gridset named that. with different levels.
         ZoomContext plateCarree = new RatioZoomContext(559_082_263.9508929, 2);
@@ -66,7 +66,7 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("CRS84".toUpperCase(), plateCarree);
         contexts.put("GoogleCRS84Quad".toUpperCase(), plateCarree); // The Name used by GWC
         canonicalNames.add("WGS84");
-        
+
         // Note the above two contexts have identical zoom levels but are conceptually distinct due
         // to the difference in CRS.
         
@@ -105,10 +105,11 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("NiceScales".toUpperCase(), niceScales);
         canonicalNames.add("NiceScales");
     }
-    
+
     final Set<String> canonicalNames;
+
     final Map<String, ZoomContext> contexts;
-    
+
     @Override
     public @Nullable ZoomContext get(String name) {
         return contexts.get(name.toUpperCase());
@@ -123,5 +124,5 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
     public Set<String> getCanonicalNames() {
         return Collections.unmodifiableSet(canonicalNames);
     }
-    
+
 }

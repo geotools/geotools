@@ -33,6 +33,7 @@ import java.io.Writer;
 public class YsldEncoder {
 
     Writer out;
+
     UomMapper uomMapper;
 
     public YsldEncoder(Writer out, UomMapper uomMapper) {

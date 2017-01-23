@@ -35,13 +35,12 @@ public class ScaleValidator extends RangeValidator<Double> {
     }
 
     @Override
-    protected void validateParsed(Double parsed, ScalarEvent evt,
-            YsldValidateContext context) {
-        if(parsed.compareTo(0d)<0) {
+    protected void validateParsed(Double parsed, ScalarEvent evt, YsldValidateContext context) {
+        if (parsed.compareTo(0d) < 0) {
             context.error("scale denominator must be non-negative", evt.getStartMark());
-        } else if(parsed.isNaN()) {
+        } else if (parsed.isNaN()) {
             context.error("scale denominator is not a number", evt.getStartMark());
         }
     }
-    
+
 }

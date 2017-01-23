@@ -49,17 +49,15 @@ public class ProcessUtil {
     public static FunctionFactory loadProcessFunctionFactory() {
         Class<?> functionFactoryClass = null;
         try {
-            functionFactoryClass =
-                    Class.forName("org.geotools.process.function.ProcessFunctionFactory");
-        }
-        catch(ClassNotFoundException e) {
+            functionFactoryClass = Class
+                    .forName("org.geotools.process.function.ProcessFunctionFactory");
+        } catch (ClassNotFoundException e) {
             return null;
         }
 
         try {
             return (FunctionFactory) functionFactoryClass.newInstance();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             LOG.log(Level.WARNING, "Error creating process function factory", e);
         }
 
@@ -67,42 +65,45 @@ public class ProcessUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<String,Parameter<?>> loadProcessInfo(Name name) {
+    public static Map<String, Parameter<?>> loadProcessInfo(Name name) {
         Class<?> processorsClass = null;
         try {
             processorsClass = Class.forName("org.geotools.process.Processors");
             Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
-            return (Map<String,Parameter<?>>) getParameterInfo.invoke(null, name);
-        }
-        catch(Exception e) {
+            return (Map<String, Parameter<?>>) getParameterInfo.invoke(null, name);
+        } catch (Exception e) {
             throw new RuntimeException("Error looking up process info", e);
         }
     }
-    
+
     public static boolean isProcess(Expression expr) {
         Class<?> processClass = null;
         try {
             processClass = Class.forName("org.geotools.process.function.ProcessFunction");
             return processClass.isAssignableFrom(expr.getClass());
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Error looking up process info", e);
         }
 
     }
 
-    private static boolean hasWMSParam(Map<String,Parameter<?>> processInfo, String name, Class<?> type) {
+    private static boolean hasWMSParam(Map<String, Parameter<?>> processInfo, String name,
+            Class<?> type) {
         Parameter<?> param = processInfo.get(name);
-        if(param==null) return false;
-        if(!param.getName().equals(name)) return false;
-        if(!param.isRequired()) return false;
-        if(!type.isAssignableFrom(param.getType())) return false;
+        if (param == null)
+            return false;
+        if (!param.getName().equals(name))
+            return false;
+        if (!param.isRequired())
+            return false;
+        if (!type.isAssignableFrom(param.getType()))
+            return false;
         return true;
     }
 
-    public static boolean hasWMSParams(Map<String,Parameter<?>> processInfo) {
+    public static boolean hasWMSParams(Map<String, Parameter<?>> processInfo) {
         return hasWMSParam(processInfo, "outputBBOX", ReferencedEnvelope.class)
-            && hasWMSParam(processInfo, "outputWidth", Integer.class)
-            && hasWMSParam(processInfo, "outputHeight", Integer.class);
+                && hasWMSParam(processInfo, "outputWidth", Integer.class)
+                && hasWMSParam(processInfo, "outputHeight", Integer.class);
     }
 }

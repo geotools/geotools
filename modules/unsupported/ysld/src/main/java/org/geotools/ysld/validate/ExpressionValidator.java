@@ -31,14 +31,14 @@ import org.yaml.snakeyaml.events.ScalarEvent;
  * 
  */
 public class ExpressionValidator extends ScalarValidator {
-    
+
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {
             Util.expression(value, context.factory);
             return null;
         } catch (IllegalArgumentException e) {
-            if(e.getCause() instanceof CQLException) {
+            if (e.getCause() instanceof CQLException) {
                 return ((CQLException) e.getCause()).getSyntaxError();
             } else {
                 return e.getMessage();

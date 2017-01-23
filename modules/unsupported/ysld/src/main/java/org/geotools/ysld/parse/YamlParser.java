@@ -47,17 +47,19 @@ public class YamlParser {
     }
 
     public <T extends YamlParseHandler> T parse(T root) throws IOException {
-        return parse(root, Collections.<String,Object>emptyMap());
+        return parse(root, Collections.<String, Object> emptyMap());
     }
 
-    public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints) throws IOException {
+    public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints)
+            throws IOException {
         Object parsed = new Yaml().load(yaml);
 
         YamlParseContext context = new YamlParseContext();
         context.mergeDocHints(hints);
         context.push(YamlObject.create(parsed), root);
 
-        while(context.next());
+        while (context.next())
+            ;
 
         return root;
     }

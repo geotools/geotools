@@ -49,11 +49,11 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
                 sym.setFill(fill);
             }
         });
-        context.push("graphic", new GraphicParser(factory){
+        context.push("graphic", new GraphicParser(factory) {
             @Override
             protected void graphic(Graphic g) {
-                if( sym instanceof TextSymbolizer2 ){
-                    ((TextSymbolizer2)sym).setGraphic(g);
+                if (sym instanceof TextSymbolizer2) {
+                    ((TextSymbolizer2) sym).setGraphic(g);
                 }
             }
         });
@@ -67,8 +67,8 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             super(TextParser.this.factory);
 
             FilterFactory ff = factory.filter;
-            font = factory.style.createFont(
-                ff.literal("serif"), ff.literal("normal"), ff.literal("normal"), ff.literal(10));
+            font = factory.style.createFont(ff.literal("serif"), ff.literal("normal"),
+                    ff.literal("normal"), ff.literal(10));
         }
 
         @Override
@@ -95,6 +95,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
     class HaloParser extends YsldParseHandler {
 
         Halo halo;
+
         HaloParser() {
             super(TextParser.this.factory);
             halo = this.factory.style.createHalo(null, null);
@@ -124,6 +125,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         String type;
 
         PointPlacement point;
+
         LinePlacement line;
 
         protected PlacementParser() {
@@ -137,8 +139,7 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             YamlMap map = obj.map();
             if (map.has("placement")) {
                 sym.setLabelPlacement("line".equals(map.str("placement")) ? line : point);
-            }
-            else {
+            } else {
                 sym.setLabelPlacement(point);
             }
 
@@ -155,9 +156,10 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
                 point.setRotation(Util.expression(map.str("rotation"), factory));
             }
             // anchor point is manditory for SLD encoding
-            if( point.getAnchorPoint() == null ){
-            	AnchorPoint defaultAnchor = factory.style.getDefaultPointPlacement().getAnchorPoint();            	
-            	point.setAnchorPoint( defaultAnchor );
+            if (point.getAnchorPoint() == null) {
+                AnchorPoint defaultAnchor = factory.style.getDefaultPointPlacement()
+                        .getAnchorPoint();
+                point.setAnchorPoint(defaultAnchor);
             }
         }
     }

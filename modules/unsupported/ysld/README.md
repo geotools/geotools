@@ -10,4 +10,4 @@ The YSLD module is stable.
 
 ## IP Review
 
-No IP Review has been completed
+Review complete - see [REVIEW.md](REVIEW.md).

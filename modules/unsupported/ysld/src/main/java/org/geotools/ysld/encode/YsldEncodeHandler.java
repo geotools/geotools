@@ -36,7 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
-    Deque<Map<String,Object>> stack = new ArrayDeque<Map<String, Object>>();
+    Deque<Map<String, Object>> stack = new ArrayDeque<Map<String, Object>>();
 
     public YsldEncodeHandler() {
         reset();
@@ -50,7 +50,8 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     @SuppressWarnings("unchecked")
     YsldEncodeHandler(T obj) {
-        this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator<T>) Collections.emptyIterator();
+        this.it = obj != null ? Collections.singleton(obj).iterator()
+                : (Iterator<T>) Collections.emptyIterator();
     }
 
     @Override
@@ -73,13 +74,14 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     YsldEncodeHandler<T> reset() {
-        stack.clear();;
+        stack.clear();
+        ;
         stack.push(newMap());
         return this;
     }
 
     YsldEncodeHandler<T> push(String key) {
-        Map<String,Object> map = newMap();
+        Map<String, Object> map = newMap();
         stack.peek().put(key, map);
         stack.push(map);
         return this;
@@ -97,9 +99,10 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return this;
     }
-    
+
     /**
      * Should be used to encode values parsed with Util.name
+     * 
      * @param key
      * @param expr
      * @return
@@ -110,7 +113,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return this;
     }
-    
+
     YsldEncodeHandler<T> put(String key, Expression expr) {
         if (expr != null && expr != Expression.NIL) {
             put(key, toObjOrNull(expr, false));
@@ -153,28 +156,29 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return this;
     }
 
-    YsldEncodeHandler<T> inline(Map<String,Object> values) {
+    YsldEncodeHandler<T> inline(Map<String, Object> values) {
         stack.peek().putAll(values);
         return this;
     }
-    
+
     Object toColorOrNull(Expression expr) {
         Object obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
             String str = Util.stripQuotes(obj.toString());
-            obj=makeColorIfPossible(str);
+            obj = makeColorIfPossible(str);
         }
         return obj;
     }
-    
+
     Object toObjOrNull(Expression expr) {
         return toObjOrNull(expr, false);
     }
-    
-    static final Pattern COLOR_PATTERN =  Pattern.compile("^#?([a-fA-F0-9]{6})$");
+
+    static final Pattern COLOR_PATTERN = Pattern.compile("^#?([a-fA-F0-9]{6})$");
+
     Object makeColorIfPossible(String str) {
         Matcher m = COLOR_PATTERN.matcher(str);
-        if(m.matches()) {
+        if (m.matches()) {
             // If it matches the regexp, then we know it should parse
             int i = Integer.parseInt(m.group(1), 16);
             return new Color(i);
@@ -182,43 +186,43 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
             return str;
         }
     }
-    
+
     static final Pattern EMBEDED_EXPRESSION_TO_ESCAPE = Pattern.compile("[$}\\\\]");
+
     String escapeForEmbededCQL(String s) {
         return EMBEDED_EXPRESSION_TO_ESCAPE.matcher(s).replaceAll("\\\\$0");
     }
-    
+
     Object toObjOrNull(Expression expr, boolean isname) {
-        if(isNull(expr)) return null;
-        
+        if (isNull(expr))
+            return null;
+
         List<Expression> subExpressions = Util.splitConcatenates(expr);
         StringBuilder builder = new StringBuilder();
-        for(Expression subExpr: subExpressions) {
-            if(isNull(subExpr)) {
+        for (Expression subExpr : subExpressions) {
+            if (isNull(subExpr)) {
                 // Do nothing
-            } else if(subExpr instanceof Literal) {
+            } else if (subExpr instanceof Literal) {
                 builder.append(escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
             } else {
                 builder.append("${").append(escapeForEmbededCQL(ECQL.toCQL(subExpr))).append("}");
             }
         }
-        
+
         Object result = Util.makeNumberIfPossible(builder.toString());
-        
+
         return result;
     }
-    
+
     Object toObjOrNull(String text) {
         String str = text == null ? null : Util.stripQuotes(text);
         if (str != null) {
             try {
                 return Long.parseLong(str);
-            }
-            catch(NumberFormatException e1) {
+            } catch (NumberFormatException e1) {
                 try {
                     return Double.parseDouble(str);
-                }
-                catch(NumberFormatException e2) {
+                } catch (NumberFormatException e2) {
                     if ("true".equalsIgnoreCase(str) || "false".equalsIgnoreCase(str)) {
                         return Boolean.parseBoolean(str);
                     }
@@ -227,7 +231,6 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         }
         return text;
     }
-    
 
     Expression nullIf(Expression expr, double value) {
         return nullIf(expr, value, Double.class);
@@ -247,15 +250,15 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return expr;
     }
 
-    Map<String,Object> get() {
+    Map<String, Object> get() {
         return stack.peek();
     }
 
-    Map<String,Object> root() {
+    Map<String, Object> root() {
         return stack.getLast();
     }
 
-    Map<String,Object> newMap() {
+    Map<String, Object> newMap() {
         return new LinkedHashMap<String, Object>();
     }
 
@@ -265,10 +268,10 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     protected void vendorOptions(Map<String, String> options) {
         if (!options.isEmpty()) {
-            for (Map.Entry<String,String> kv : options.entrySet()) {
+            for (Map.Entry<String, String> kv : options.entrySet()) {
                 String option = Ysld.OPTION_PREFIX + kv.getKey();
                 String text = kv.getValue();
-    
+
                 put(option, toObjOrNull(text));
             }
         }

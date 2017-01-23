@@ -47,7 +47,8 @@ public class YsldValidateContext {
     }
 
     public YsldValidateContext error(String problem, Mark mark) {
-        return error(new MarkedYAMLException(null, null, problem, mark){});
+        return error(new MarkedYAMLException(null, null, problem, mark) {
+        });
     }
 
     public YsldValidateContext error(MarkedYAMLException e) {
@@ -68,7 +69,7 @@ public class YsldValidateContext {
     }
 
     public ZoomContext getZCtxt() {
-        if(zCtxt==null) {
+        if (zCtxt == null) {
             return Util.getNamedZoomContext("DEFAULT", zCtxtFinders);
         } else {
             return zCtxt;

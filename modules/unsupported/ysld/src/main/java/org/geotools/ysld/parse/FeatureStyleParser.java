@@ -48,7 +48,7 @@ public class FeatureStyleParser extends YsldParseHandler {
             if (fs.has("abstract")) {
                 featureStyle.getDescription().setAbstract(fs.str("abstract"));
             }
-            
+
             featureStyle.getOptions().putAll(Util.vendorOptions(fs));
 
             context.push(fs, "transform", new TransformHandler(featureStyle, factory));

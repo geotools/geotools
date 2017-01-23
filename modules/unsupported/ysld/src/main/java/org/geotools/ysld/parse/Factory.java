@@ -24,7 +24,9 @@ import org.opengis.filter.FilterFactory;
 
 public class Factory {
     StyleFactory style;
+
     StyleBuilder styleBuilder;
+
     FilterFactory filter;
 
     public Factory() {

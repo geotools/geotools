@@ -28,15 +28,15 @@ import java.util.Map;
 
 public class SymbolizerHandler extends SldTransformHandler {
 
-    Map<String,String> options = new LinkedHashMap<String, String>();
+    Map<String, String> options = new LinkedHashMap<String, String>();
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Geometry".equals(name)) {
             context.scalar("geometry").push(new ExpressionHandler());
-        }
-        else if ("VendorOption".equals(name)) {
+        } else if ("VendorOption".equals(name)) {
             String option = xml.getAttributeValue(null, "name");
             options.put(option, xml.getElementText());
         }

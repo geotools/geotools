@@ -28,9 +28,10 @@ import java.util.Map;
  * Wrapper requires {@link List} as sequence order is required.
  */
 public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlObject<Object>> {
-    
+
     /**
      * Quick inline sequence creation.
+     * 
      * @param values
      * @return sequence of provided values.
      */
@@ -40,6 +41,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Internal cast to List used by constructor.
+     * 
      * @param obj
      * @return List
      * @throws IllegalArgumentException List required
@@ -48,17 +50,17 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
     static List<Object> cast(Object obj) {
         if (obj instanceof List) {
             return (List<Object>) obj;
-        }
-        else if (obj.getClass().isArray()){
-            return Arrays.asList( (Object[]) obj );
+        } else if (obj.getClass().isArray()) {
+            return Arrays.asList((Object[]) obj);
         }
         throw new IllegalArgumentException(obj + " is not a list");
     }
 
     /**
      * Yaml mapping.
+     * 
      * @param obj Wrapped {@link List}
-     * @throws IllegalArgumentException {@link List} is required  
+     * @throws IllegalArgumentException {@link List} is required
      */
 
     public YamlSeq(Object obj) {
@@ -67,6 +69,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * String access
+     * 
      * @param i index
      * @return String access, converting as needed
      */
@@ -76,6 +79,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Integer access
+     * 
      * @param i index
      * @return Integer access, converting as needed
      */
@@ -85,6 +89,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Double access
+     * 
      * @param i index
      * @return Double access, converting as needed
      */
@@ -94,6 +99,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Boolean access
+     * 
      * @param i index
      * @return Boolean access, converting as needed
      */
@@ -103,26 +109,29 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Value access
+     * 
      * @param i index
      * @return Value access
      */
     public Object get(int i) {
         return raw.get(i);
     }
-    
+
     /**
      * Yaml wrapper access
      * <p>
      * Wrappers are provided for Map and List
+     * 
      * @param i index
      * @return Access as Yaml wrapper
      */
     public YamlObject<?> obj(int i) {
         return YamlObject.create(raw.get(i));
     }
-    
+
     /**
      * Map access
+     * 
      * @param i index
      * @return Map access, provided as {@link YamlMap} wrapper
      */
@@ -131,7 +140,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
         if (obj == null) {
             return null;
         }
-        if( obj instanceof YamlMap){
+        if (obj instanceof YamlMap) {
             return (YamlMap) obj;
         }
         return new YamlMap(obj);
@@ -139,6 +148,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * YamlSeq access
+     * 
      * @param i index
      * @return Sequence access, provided as {@link YamlSeq} wrapper
      */
@@ -147,7 +157,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
         if (obj == null) {
             return null;
         }
-        if( obj instanceof YamlSeq){
+        if (obj instanceof YamlSeq) {
             return (YamlSeq) obj;
         }
         return new YamlSeq(obj);
@@ -157,7 +167,8 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
      * Iterator access, requires all contents be wrapped as {@link YamlObject}.
      * <p>
      * To traverse a list of atomic values use {@link #raw()} iterator().
-     * @return {@link YamlObject} iterator access 
+     * 
+     * @return {@link YamlObject} iterator access
      */
     @Override
     public Iterator<YamlObject<Object>> iterator() {

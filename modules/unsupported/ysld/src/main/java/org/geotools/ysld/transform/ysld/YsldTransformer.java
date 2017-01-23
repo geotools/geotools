@@ -28,6 +28,7 @@ import java.io.Reader;
 public class YsldTransformer extends YamlParser {
 
     ContentHandler xml;
+
     public YsldTransformer(InputStream yaml, ContentHandler xml) throws IOException {
         super(yaml);
         this.xml = xml;
@@ -39,7 +40,7 @@ public class YsldTransformer extends YamlParser {
     }
 
     public void transform() throws IOException, SAXException {
-        //doParse();
+        // doParse();
     }
 
 }

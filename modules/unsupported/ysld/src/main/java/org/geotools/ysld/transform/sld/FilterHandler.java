@@ -32,27 +32,31 @@ import java.io.IOException;
 
 public class FilterHandler extends SldTransformHandler {
     ParserHandler delegate;
+
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         try {
             if (delegate == null && "Filter".equals(xml.getLocalName())) {
                 delegate = new ParserHandler(config(context));
                 delegate.startDocument();
             }
             if (delegate != null) {
-                delegate.startElement(xml.getNamespaceURI(), xml.getLocalName(), qname(xml.getName()), attributes(xml));
+                delegate.startElement(xml.getNamespaceURI(), xml.getLocalName(),
+                        qname(xml.getName()), attributes(xml));
             }
-        }
-        catch(SAXException e) {
+        } catch (SAXException e) {
             throw new XMLStreamException(e);
         }
     }
 
     @Override
-    public void characters(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void characters(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         if (delegate != null) {
             try {
-                delegate.characters(xml.getTextCharacters(), xml.getTextStart(), xml.getTextLength());
+                delegate.characters(xml.getTextCharacters(), xml.getTextStart(),
+                        xml.getTextLength());
             } catch (SAXException e) {
                 throw new XMLStreamException(e);
             }
@@ -60,10 +64,12 @@ public class FilterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         if (delegate != null) {
             try {
-                delegate.endElement(xml.getNamespaceURI(), xml.getLocalName(), qname(xml.getName()));
+                delegate.endElement(xml.getNamespaceURI(), xml.getLocalName(),
+                        qname(xml.getName()));
             } catch (SAXException e) {
                 throw new XMLStreamException(e);
             }
@@ -78,14 +84,15 @@ public class FilterHandler extends SldTransformHandler {
 
     String qname(QName name) {
         return name.getPrefix() != null && !"".equals(name.getPrefix())
-            ? name.getPrefix() + ":" + name.getLocalPart() : name.getLocalPart();
+                ? name.getPrefix() + ":" + name.getLocalPart() : name.getLocalPart();
     }
 
     Attributes attributes(XMLStreamReader xml) {
         AttributesImpl atts = new AttributesImpl();
         for (int i = 0; i < xml.getAttributeCount(); i++) {
             atts.addAttribute(xml.getAttributeNamespace(i), xml.getAttributeLocalName(i),
-                qname(xml.getAttributeName(i)), xml.getAttributeType(i), xml.getAttributeValue(i));
+                    qname(xml.getAttributeName(i)), xml.getAttributeType(i),
+                    xml.getAttributeValue(i));
         }
         return atts;
     }
@@ -93,8 +100,7 @@ public class FilterHandler extends SldTransformHandler {
     Configuration config(SldTransformContext context) {
         if (context.version().equals(SldTransformContext.V_110)) {
             return new org.geotools.filter.v1_1.OGCConfiguration();
-        }
-        else {
+        } else {
             return new org.geotools.filter.v1_0.OGCConfiguration();
         }
     }

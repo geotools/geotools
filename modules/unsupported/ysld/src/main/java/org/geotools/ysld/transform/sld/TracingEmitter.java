@@ -30,6 +30,7 @@ public class TracingEmitter implements Emitable {
     Emitable delegate;
 
     List<Pair> events = new ArrayList();
+
     int stack = 0;
 
     public TracingEmitter(Emitable delegate) {
@@ -40,29 +41,21 @@ public class TracingEmitter implements Emitable {
     public void emit(Event event) throws IOException {
         if (event instanceof StreamStartEvent) {
             events.add(new Pair(event, stack++));
-        }
-        else if (event instanceof StreamEndEvent) {
+        } else if (event instanceof StreamEndEvent) {
             events.add(new Pair(event, --stack));
-        }
-        else if (event instanceof DocumentStartEvent) {
+        } else if (event instanceof DocumentStartEvent) {
             events.add(new Pair(event, stack++));
-        }
-        else if (event instanceof DocumentEndEvent) {
+        } else if (event instanceof DocumentEndEvent) {
             events.add(new Pair(event, --stack));
-        }
-        else if (event instanceof ScalarEvent) {
+        } else if (event instanceof ScalarEvent) {
             events.add(new Pair(event, stack));
-        }
-        else if (event instanceof MappingStartEvent) {
+        } else if (event instanceof MappingStartEvent) {
             events.add(new Pair(event, stack++));
-        }
-        else if (event instanceof MappingEndEvent) {
+        } else if (event instanceof MappingEndEvent) {
             events.add(new Pair(event, --stack));
-        }
-        else if (event instanceof SequenceStartEvent) {
+        } else if (event instanceof SequenceStartEvent) {
             events.add(new Pair(event, stack++));
-        }
-        else if (event instanceof SequenceEndEvent) {
+        } else if (event instanceof SequenceEndEvent) {
             events.add(new Pair(event, --stack));
         }
 
@@ -80,6 +73,7 @@ public class TracingEmitter implements Emitable {
 
     static class Pair {
         Event event;
+
         int stack;
 
         Pair(Event event, int stack) {

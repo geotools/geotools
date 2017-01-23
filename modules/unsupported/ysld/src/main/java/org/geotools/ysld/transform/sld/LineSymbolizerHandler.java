@@ -24,24 +24,23 @@ import java.io.IOException;
 public class LineSymbolizerHandler extends SymbolizerHandler {
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("LineSymbolizer".equals(name)) {
             context.mapping().scalar("line").mapping();
-        }
-        else if ("Stroke".equals(name)) {
+        } else if ("Stroke".equals(name)) {
             context.push(new StrokeHandler());
-        }
-        else if ("PerpindicularOffset".equals(name)) {
+        } else if ("PerpindicularOffset".equals(name)) {
             context.scalar("offset").push(new ExpressionHandler());
-        }
-        else {
+        } else {
             super.element(xml, context);
         }
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("LineSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().endMapping().pop();

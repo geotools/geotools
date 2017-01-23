@@ -35,9 +35,9 @@ import java.util.EmptyStackException;
 import java.util.List;
 
 public class YsldValidator {
-    
+
     List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
-    
+
     public List<MarkedYAMLException> validate(Reader input) throws IOException {
         YsldValidateContext context = new YsldValidateContext();
         context.zCtxtFinders = this.zCtxtFinders;
@@ -51,27 +51,23 @@ public class YsldValidator {
 
                 if (evt instanceof MappingStartEvent) {
                     h.mapping((MappingStartEvent) evt, context);
-                }
-                else if (evt instanceof MappingEndEvent) {
+                } else if (evt instanceof MappingEndEvent) {
                     h.endMapping((MappingEndEvent) evt, context);
-                }
-                else if (evt instanceof SequenceStartEvent) {
+                } else if (evt instanceof SequenceStartEvent) {
                     h.sequence((SequenceStartEvent) evt, context);
-                }
-                else if (evt instanceof SequenceEndEvent) {
+                } else if (evt instanceof SequenceEndEvent) {
                     h.endSequence((SequenceEndEvent) evt, context);
-                }
-                else if (evt instanceof ScalarEvent) {
+                } else if (evt instanceof ScalarEvent) {
                     h.scalar((ScalarEvent) evt, context);
-                }
-                else if (evt instanceof AliasEvent) {
+                } else if (evt instanceof AliasEvent) {
                     h.alias((AliasEvent) evt, context);
                 }
-            };
+            }
+            ;
         } catch (MarkedYAMLException e) {
             context.error(e);
         } catch (EmptyStackException e) {
-            //The ECQLParser uses java.util.Stack for parsing. If we get an exception from here, 
+            // The ECQLParser uses java.util.Stack for parsing. If we get an exception from here,
             // we can narrow the cause down to CQL.
             throw new RuntimeException("Error parsing CQL expression", e);
         } catch (Exception e) {
@@ -81,7 +77,8 @@ public class YsldValidator {
     }
 
     public void setZCtxtFinders(List<ZoomContextFinder> zCtxtFinders) {
-        if(zCtxtFinders==null) throw new NullPointerException("zCtxtFinders can not be null");
+        if (zCtxtFinders == null)
+            throw new NullPointerException("zCtxtFinders can not be null");
         this.zCtxtFinders = zCtxtFinders;
     }
 }

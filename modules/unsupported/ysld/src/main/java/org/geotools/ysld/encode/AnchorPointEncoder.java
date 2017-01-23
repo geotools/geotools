@@ -27,7 +27,8 @@ public class AnchorPointEncoder extends YsldEncodeHandler<AnchorPoint> {
 
     @Override
     protected void encode(AnchorPoint anchor) {
-        if (nullIf(anchor.getAnchorPointX(), 0) == null && nullIf(anchor.getAnchorPointY(),0.5) == null) {
+        if (nullIf(anchor.getAnchorPointX(), 0) == null
+                && nullIf(anchor.getAnchorPointY(), 0.5) == null) {
             return;
         }
         put("anchor", anchor.getAnchorPointX(), anchor.getAnchorPointY());

@@ -23,7 +23,8 @@ import java.io.IOException;
 
 public class PointSymbolizerHandler extends SymbolizerHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PointSymbolizer".equals(name)) {
             context.mapping().scalar("point").push(new GraphicHandler());
@@ -33,7 +34,8 @@ public class PointSymbolizerHandler extends SymbolizerHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PointSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().pop();

@@ -37,8 +37,7 @@ public class ColorValidator extends ScalarValidator {
                 }
             }
             return null;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
     }

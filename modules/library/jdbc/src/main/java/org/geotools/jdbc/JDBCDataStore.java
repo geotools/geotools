@@ -306,7 +306,21 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected List<ConnectionLifecycleListener> connectionLifecycleListeners = new CopyOnWriteArrayList<ConnectionLifecycleListener>();
 
+    protected JDBCCallbackFactory callbackFactory;
+
     private volatile NamePatternEscaping namePatternEscaping;
+
+    public JDBCDataStore() {
+        super();
+    }
+
+    public void setCallbackFactory(JDBCCallbackFactory factory) {
+        this.callbackFactory = factory;
+    }
+
+    public JDBCCallbackFactory getCallbackFactory() {
+        return callbackFactory;
+    }
 
     public JDBCFeatureSource getAbsoluteFeatureSource(String typeName) throws IOException {
         ContentFeatureSource featureSource = getFeatureSource(typeName);

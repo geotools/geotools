@@ -36,5 +36,8 @@ public abstract class ScalarValidator extends YsldValidateHandler {
         context.pop();
     }
 
+    /**
+     * @return Null if the value successfully validates, otherwise a String containing the validation error message.
+     */
     protected abstract String validate(String value, ScalarEvent evt, YsldValidateContext context);
 }

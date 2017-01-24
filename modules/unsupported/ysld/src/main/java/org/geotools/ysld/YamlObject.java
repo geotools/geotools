@@ -41,7 +41,7 @@ public class YamlObject<T> {
      * Other data (Literals, Expressions) are considered atomic and do not provide a YamlObject representation.
      * 
      * @param raw
-     * @return Yaml object wrapper
+     * @return Yaml object wrapper, or null if the provided raw object is null.
      */
     @SuppressWarnings("unchecked")
     public static <W> YamlObject<W> create(W raw) {

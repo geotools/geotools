@@ -110,6 +110,7 @@ public class Util {
      * The <tt>safe</tt> parameter when set to true will cause null to be returned when the string can not be parsed as a ECQL expression. When false
      * it will result in an exception thrown back.
      * </p>
+     * @return The parsed expression, or null if the string value was empty.
      */
     public static Expression expression(String value, boolean safe, Factory factory) {
         if (value.isEmpty()) {
@@ -291,6 +292,10 @@ public class Util {
         return s;
     }
 
+    /**
+     * 
+     * @return A number parsed from the provided string, or the string itself if parsing failed. Also returns null if the string was null.
+     */
     public static Object makeNumberIfPossible(String str) {
         if (str == null)
             return null;
@@ -313,6 +318,10 @@ public class Util {
         return String.format("#%06X", c.getRGB() & 0x00_FF_FF_FF);
     }
 
+    /**
+     * 
+     * @return The string with quotes (') stripped from the beginning and end, or null if the string was null.
+     */
     public static String stripQuotes(String str) {
         if (str == null) {
             return str;

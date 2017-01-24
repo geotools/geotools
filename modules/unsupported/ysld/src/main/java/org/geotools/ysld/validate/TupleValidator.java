@@ -20,11 +20,7 @@ package org.geotools.ysld.validate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.ysld.parse.Util;
-import org.geotools.ysld.parse.ZoomContext;
 import org.yaml.snakeyaml.events.AliasEvent;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 import org.yaml.snakeyaml.events.SequenceStartEvent;
@@ -105,9 +101,14 @@ public class TupleValidator extends StatefulValidator {
 
     @Override
     void reset() {
-        assert state == State.NEW || state == State.DONE;
-        state = State.NEW;
-        valuesValidated = 0;
+        if (state == State.NEW || state == State.DONE) {
+            state = State.NEW;
+            valuesValidated = 0; 
+        } else {
+            throw new IllegalStateException(
+                    "TupleValidator.reset() called in invalid state: " + state.toString());
+        }
+
     }
 
     @Override

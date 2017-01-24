@@ -45,6 +45,9 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
             this.isMin = isMin;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {

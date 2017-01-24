@@ -24,6 +24,10 @@ import org.opengis.filter.Filter;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 public class FilterValidator extends ScalarValidator {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {

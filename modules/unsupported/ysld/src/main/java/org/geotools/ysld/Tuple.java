@@ -22,12 +22,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.geotools.util.logging.Logging;
 import org.geotools.ysld.parse.Util;
 
 public class Tuple {
+    static Logger LOG = Logging.getLogger(Tuple.class);
     static final Map<Integer, Pattern> PATTERNS = new HashMap<Integer, Pattern>();
 
     public static Tuple of(Object... values) {
@@ -65,7 +68,8 @@ public class Tuple {
 
     @Deprecated
     public Tuple parse(String str) throws IllegalArgumentException {
-        // TODO Log a warning that this is deprecated
+        LOG.warning("The tuple syntax "+str+
+                " is deprecated. Please update your style to use '[' and ']' instead of '(' and ')' for tuples");
         Matcher m = pattern.matcher(str);
         if (!m.matches()) {
             throw new IllegalArgumentException();

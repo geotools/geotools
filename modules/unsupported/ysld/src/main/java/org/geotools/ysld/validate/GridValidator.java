@@ -34,6 +34,9 @@ public class GridValidator extends YsldValidateHandler {
 
     class ZoomContextNameValidator extends ScalarValidator {
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {

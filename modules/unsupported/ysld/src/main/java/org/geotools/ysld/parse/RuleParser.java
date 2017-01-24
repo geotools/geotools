@@ -76,8 +76,14 @@ public class RuleParser extends YsldParseHandler {
             context.push(r, "symbolizers", new SymbolizersParser(rule, factory));
         }
     }
-
-    private @Nullable ScaleRange parseScale(YamlMap r) {
+    
+    /**
+     * 
+     * @param r
+     * @return The parsed scale, or null if the {@link YamlMap} has no "scale" key.
+     */
+    @Nullable
+    private ScaleRange parseScale(YamlMap r) {
         if (r.has("scale")) {
             Object value = r.get("scale");
             Tuple t = null;

@@ -46,12 +46,17 @@ public class ProcessUtil {
         return new NameImpl(split[0], split[1]);
     }
 
+    /**
+     * 
+     * @return The loaded {@link FunctionFactory}, or null if it could not be loaded.
+     */
     public static FunctionFactory loadProcessFunctionFactory() {
         Class<?> functionFactoryClass = null;
         try {
             functionFactoryClass = Class
                     .forName("org.geotools.process.function.ProcessFunctionFactory");
         } catch (ClassNotFoundException e) {
+            LOG.log(Level.WARNING, "Error creating process function factory", e);
             return null;
         }
 

@@ -17,7 +17,6 @@
  */
 package org.geotools.ysld.validate;
 
-import org.geotools.ysld.validate.PermissiveValidator.State;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
@@ -103,8 +102,13 @@ public class SequenceValidator extends StatefulValidator {
 
     @Override
     void reset() {
-        assert state == State.NEW || state == State.DONE;
-        state = State.NEW;
+        if (state == State.NEW || state == State.DONE) {
+            state = State.NEW;
+        } else {
+            throw new IllegalStateException(
+                    "SequenceValidator.reset() called in invalid state: " + state.toString());
+        }
+        
     }
 
     @Override

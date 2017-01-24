@@ -54,11 +54,6 @@ public abstract class MarkParser extends YsldParseHandler {
                 mark.setFill(fill);
             }
         });
-
-        // TODO: external mark?
-        /*
-         * if ("url".equals(val)) { } if ("inline".equals(val)) { }
-         */
     }
 
     protected abstract void mark(Mark mark);

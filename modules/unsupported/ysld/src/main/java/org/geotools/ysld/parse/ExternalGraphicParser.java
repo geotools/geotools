@@ -50,7 +50,6 @@ public abstract class ExternalGraphicParser extends YsldParseHandler {
                         .locateResource(value));
             } catch (IllegalArgumentException e) {
                 external.setURI("file:" + value);
-                // external.setLocation(DataUtilities.fileToURL(new File(value)));
             }
         }
         external.setFormat(map.str("format"));

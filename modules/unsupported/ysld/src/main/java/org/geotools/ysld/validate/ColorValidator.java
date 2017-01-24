@@ -26,6 +26,9 @@ import java.awt.*;
 
 public class ColorValidator extends ScalarValidator {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {

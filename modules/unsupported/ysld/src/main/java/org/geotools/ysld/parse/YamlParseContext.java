@@ -27,6 +27,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+/**
+ * Holds the context of a call to {@link YamlParser#parse(YamlParseHandler, Map)} during its descent into the {@link YamlObject} being parsed.
+ * 
+ */
 public class YamlParseContext {
     /*
      * Handlers may handle a YAML object as a whole, or they may handle some specific subset of properties for one. The former delegates the the
@@ -40,7 +44,7 @@ public class YamlParseContext {
 
     Entry curr;
 
-    Map<String, Object> docHints = new HashMap<>();;
+    Map<String, Object> docHints = new HashMap<>();
 
     public YamlParseContext() {
         stack = new ArrayDeque<Entry>();
@@ -104,6 +108,13 @@ public class YamlParseContext {
         return this;
     }
 
+    /**
+     * 
+     * Pop a {@link YamlParseHandler} from the handler stack and execute its {@link YamlParseHandler#handle(YamlObject, YamlParseContext)} method on
+     * the {@link YamlObject} with which it was pushed.
+     * 
+     * @return True if more handlers remain on handler stack; false if the handler stack is empty.
+     */
     public boolean next() {
         curr = stack.pop();
         curr.handler.handle(curr.obj, this);
@@ -122,6 +133,11 @@ public class YamlParseContext {
         docHints.putAll(hints);
     }
 
+    /**
+     * Container object for a {@link YamlParseHandler} and the {@link YamlObject} it should handle. Instances of this class are added to the stack in
+     * the {@link YamlParseContext} by a {@link YamlParseHandler} as it descends into the {@link YamlObject} it is parsing.
+     *
+     */
     static class Entry {
         YamlObject obj;
 

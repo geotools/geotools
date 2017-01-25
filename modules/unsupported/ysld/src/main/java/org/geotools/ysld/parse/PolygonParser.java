@@ -21,6 +21,10 @@ import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Handles parsing a Ysld "polygon" symbolizer property into a {@link Symbolizer} object.
+ *
+ */
 public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
 
     public PolygonParser(Rule rule, Factory factory) {

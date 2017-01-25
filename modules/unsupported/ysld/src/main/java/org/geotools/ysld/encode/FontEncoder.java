@@ -19,6 +19,9 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Font;
 
+/**
+ * Encodes an {@link Font} as YSLD.
+ */
 public class FontEncoder extends YsldEncodeHandler<Font> {
     FontEncoder(Font font) {
         super(font);

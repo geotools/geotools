@@ -35,6 +35,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Encodes a single style object as YSLD
+ *
+ * @param <T> Class of the style object
+ */
 public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     Deque<Map<String, Object>> stack = new ArrayDeque<Map<String, Object>>();
 
@@ -170,6 +175,11 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         return obj;
     }
 
+    /**
+     * See {@link #toObjOrNull(Expression, boolean)}
+     * @param expr
+     * @return
+     */
     Object toObjOrNull(Expression expr) {
         return toObjOrNull(expr, false);
     }
@@ -189,10 +199,27 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     static final Pattern EMBEDED_EXPRESSION_TO_ESCAPE = Pattern.compile("[$}\\\\]");
 
+    /**
+     * Escapes the characters '$', '}', and '\' by prepending '\'.
+     */
     String escapeForEmbededCQL(String s) {
         return EMBEDED_EXPRESSION_TO_ESCAPE.matcher(s).replaceAll("\\\\$0");
     }
 
+    /**
+     * Takes an {@link Expression} and encodes it as YSLD. Literals are encoded as Strings.
+     * Concatenation expressions are removed, as they are implicit in the YSLD syntax.
+     * Other non-literal expressions are wrapped in ${}.
+     *
+     * If the resulting string can be converted to the number, returns an appropriate {@link Number} object.
+     * Otherwise returns a {@link String}.
+     * Returns null if the passed expressison was null
+     *
+     *
+     * @param expr Expression to encode
+     * @param isname
+     * @return {@link String} or {@link Number} representation of expr, or null if expr is null.
+     */
     Object toObjOrNull(Expression expr, boolean isname) {
         if (isNull(expr))
             return null;

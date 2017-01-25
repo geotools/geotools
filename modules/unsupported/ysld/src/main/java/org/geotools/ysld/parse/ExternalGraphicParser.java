@@ -28,6 +28,10 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Handles parsing a Ysld "external" property into a {@link ExternalGraphic} object.
+ *
+ */
 public abstract class ExternalGraphicParser extends YsldParseHandler {
 
     ExternalGraphic external;

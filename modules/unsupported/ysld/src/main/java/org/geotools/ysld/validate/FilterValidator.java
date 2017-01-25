@@ -23,6 +23,9 @@ import org.geotools.ysld.parse.Util;
 import org.opengis.filter.Filter;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
+/**
+ * Validator for Filters
+ */
 public class FilterValidator extends ScalarValidator {
 
     /**

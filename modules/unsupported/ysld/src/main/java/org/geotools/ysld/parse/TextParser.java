@@ -22,6 +22,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * Handles parsing a Ysld "text" symbolizer property into a {@link Symbolizer} object.
+ *
+ */
 public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
     public TextParser(Rule rule, Factory factory) {

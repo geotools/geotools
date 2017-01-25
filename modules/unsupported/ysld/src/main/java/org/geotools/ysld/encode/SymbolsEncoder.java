@@ -23,6 +23,9 @@ import org.geotools.styling.Mark;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.GraphicalSymbol;
 
+/**
+ * Encodes a {@link GraphicalSymbol} as YSLD.
+ */
 public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
 
     public SymbolsEncoder(Graphic g) {

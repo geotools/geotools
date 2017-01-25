@@ -22,6 +22,10 @@ import org.geotools.styling.Graphic;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Handles parsing Ysld "fill-*" properties ("fill-color", "fill-opacity", "fill-graphic") into a {@link Fill} object.
+ *
+ */
 public abstract class FillParser extends YsldParseHandler {
     Fill fill;
 

@@ -29,6 +29,9 @@ import javax.measure.unit.Unit;
 
 import org.geotools.styling.UomOgcMapping;
 
+/**
+ * Maps YSLD uom names and aliases defined by {@link UomOgcMapping} to {@link Unit}s.
+ */
 public class UomMapper {
     final private Map<Unit<Length>, String> toId = new HashMap<>();
 

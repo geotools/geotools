@@ -21,6 +21,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for symbolizers, delegating to {@link PointSymblolizerHandler},
+ * {@link PolygonSymbolizerHandler}, {@link LineSymbolizerHandler}, {@link TextSymbolizerHandler},
+ * or {@link RasterSymbolizerHandler} as appropriate.
+ */
 public class SymbolizersHandler extends SldTransformHandler {
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context)

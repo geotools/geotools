@@ -32,7 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parses a Yaml/Ysld stream into GeoTools style objects.
+ * Parses a Yaml/Ysld stream into GeoTools style objects by returning a {@link StyledLayerDescriptor} from the {@link #parse()} method.
+ * 
  */
 public class YsldParser extends YamlParser {
 
@@ -74,7 +75,16 @@ public class YsldParser extends YamlParser {
         this.uomMapper = uomMapper;
     }
 
+    /**
+     * Parse the yaml provided to this instance into a {@link StyledLayerDescriptor} and return the result.
+     * 
+     * @throws IOException
+     */
     public StyledLayerDescriptor parse() throws IOException {
+
+        // Hand off to the base class to parse the yaml, and provide a Ysld parser handler that will transform the resulting
+        // YamlObject into GeoTools-style objects.
+
         Map<String, Object> hints = new HashMap();
         hints.put("resourceLocator", locator);
         hints.put(UomMapper.KEY, uomMapper);

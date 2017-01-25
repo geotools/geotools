@@ -24,6 +24,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
+/**
+ * Handles the parsing of a Ysld "color-map" property to a {@link ColorMap} object.
+ *
+ */
 public abstract class ColorMapParser extends YsldParseHandler {
 
     ColorMap colorMap;

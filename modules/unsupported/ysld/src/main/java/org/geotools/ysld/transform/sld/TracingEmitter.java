@@ -25,6 +25,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Wrapper for a yaml {@link Emitable} which logs {@link Event}s.
+ */
 public class TracingEmitter implements Emitable {
 
     Emitable delegate;
@@ -62,6 +65,10 @@ public class TracingEmitter implements Emitable {
         delegate.emit(event);
     }
 
+    /**
+     * Writes logged events to out
+     * @param out
+     */
     public void dump(PrintStream out) {
         for (Pair p : events) {
             for (int i = 0; i < p.stack; i++) {

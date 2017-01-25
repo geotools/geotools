@@ -23,6 +23,12 @@ import java.util.List;
 
 import org.yaml.snakeyaml.events.ScalarEvent;
 
+/**
+ * Validators for tuples that represent a range of values
+ * This Validator is stateful, do not re-use it.
+ *
+ * @param <T> Content type of the tuple.
+ */
 public abstract class RangeValidator<T extends Comparable<T>> extends TupleValidator {
     T min = null;
 

@@ -22,6 +22,10 @@ import org.geotools.styling.Stroke;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Handles parsing Ysld "stroke-*" (e.g., "stroke-color", "stroke-width", ... ) properties into a {@link Stroke} object.
+ * 
+ */
 public abstract class StrokeParser extends YsldParseHandler {
     Stroke stroke;
 

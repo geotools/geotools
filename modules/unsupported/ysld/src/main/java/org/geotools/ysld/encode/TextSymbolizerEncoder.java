@@ -24,6 +24,9 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 
+/**
+ * Encodes a {@link TextSymbolizer} as YSLD.
+ */
 public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
 
     TextSymbolizerEncoder(TextSymbolizer text) {

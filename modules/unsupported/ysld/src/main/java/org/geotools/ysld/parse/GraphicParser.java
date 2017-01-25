@@ -22,6 +22,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
+/**
+ * Handles parsing Ysld "graphic" properties (e.g., "graphic", "stroke-graphic", "fill-graphic") into a {@link Graphic} object.
+ * 
+ */
 public class GraphicParser extends YsldParseHandler {
 
     Graphic g;

@@ -18,9 +18,15 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.util.logging.Logging;
+import org.geotools.ysld.YamlObject;
 
 import java.util.logging.Logger;
 
+/**
+ * Extends {@link YamlParseHandler} to handle parsing YSLD into GeoTools-style objects. The {@link RootParser} subclass is the "entrypoint" for
+ * parsing a {@link YamlObject} into GeoTools-style objects.
+ * 
+ */
 public abstract class YsldParseHandler extends YamlParseHandler {
 
     protected static Logger LOG = Logging.getLogger(YsldParser.class);

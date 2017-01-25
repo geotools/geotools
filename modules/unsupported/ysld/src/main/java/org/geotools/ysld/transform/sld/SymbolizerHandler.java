@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Handles xml parse events for {@link org.geotools.styling.Symbolizer} elements.
+ */
 public class SymbolizerHandler extends SldTransformHandler {
 
     Map<String, String> options = new LinkedHashMap<String, String>();

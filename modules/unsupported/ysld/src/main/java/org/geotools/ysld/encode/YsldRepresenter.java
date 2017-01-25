@@ -30,6 +30,10 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
+/**
+ * Represent YSLD JavaBeans
+ * Extends the yaml {@link Representer} for YSLD-specific representations for Color, UOM (unit of measure) and Tuple.
+ */
 public class YsldRepresenter extends Representer {
     UomMapper uomMapper;
 

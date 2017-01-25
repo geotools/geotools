@@ -28,6 +28,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
+/**
+ * Handles parsing a Ysld "rules" property into {@link Rule} objects for a {@link FeatureTypeStyle}.
+ *
+ */
 public class RuleParser extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;

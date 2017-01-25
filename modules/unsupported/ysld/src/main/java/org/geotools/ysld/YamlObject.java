@@ -28,6 +28,10 @@ import java.util.NoSuchElementException;
 
 /**
  * Base class for Yaml object wrappers.
+ *
+ * Yaml is represented as atomic types (literals, expressions) and YamlObjects (for wrapping lists and maps).
+ * The factory method {@link #create(Object)} will sort out the details.
+ * These YamlObjects are used to stage data when parsing a Yaml document.
  */
 public class YamlObject<T> {
 
@@ -164,10 +168,9 @@ public class YamlObject<T> {
     }
 
     /**
-     * See {@link lookup}. Ensures that the result is wrapped as a YamlObject if it is a map, list, or array.
+     * See {@link #lookup}. Ensures that the result is wrapped as a YamlObject if it is a map, list, or array.
      * 
      * @param path
-     * @return
      */
     public Object lookupY(String path) {
         return yamlize(lookup(path));

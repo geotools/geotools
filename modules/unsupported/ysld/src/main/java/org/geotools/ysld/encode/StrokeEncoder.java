@@ -19,6 +19,9 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Stroke;
 
+/**
+ * Encodes a {@link Stroke} as YSLD.
+ */
 public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
 
     StrokeEncoder(Stroke stroke) {

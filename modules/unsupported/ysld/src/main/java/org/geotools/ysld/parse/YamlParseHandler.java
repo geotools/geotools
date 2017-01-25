@@ -23,9 +23,15 @@ import org.yaml.snakeyaml.events.*;
 import java.util.Deque;
 
 /**
- * Handles a parsed Yaml object.
+ * Abstract base class for Yaml parse handlers. See the {@link RootParser} subclass for the "entrypoint" for parsing a {@link YamlObject} into
+ * GeoTools-style objects.
+ * 
  */
 public abstract class YamlParseHandler {
 
+    /**
+     * Handle parsing the provided {@link YamlObject} in the given {@link YamlParseContext}.
+     * 
+     */
     public abstract void handle(YamlObject<?> obj, YamlParseContext context);
 }

@@ -25,6 +25,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handles xml parse events for CssParameter and SvgParameter.
+ * These get converted to YSLD elements like stroke-width or stroke-color.
+ */
 public class ParameterHandler extends SldTransformHandler {
 
     Map<String, String> rename;

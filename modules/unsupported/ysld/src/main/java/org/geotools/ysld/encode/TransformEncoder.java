@@ -31,6 +31,9 @@ import org.geotools.ysld.ProcessUtil;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
+/**
+ * Encodes a Rendering Transform, represented by an {@link Expression} as YSLD.
+ */
 public class TransformEncoder extends YsldEncodeHandler<Expression> {
     boolean chained;
 

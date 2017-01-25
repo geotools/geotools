@@ -30,6 +30,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for filter expressions.
+ */
 public class FilterHandler extends SldTransformHandler {
     ParserHandler delegate;
 

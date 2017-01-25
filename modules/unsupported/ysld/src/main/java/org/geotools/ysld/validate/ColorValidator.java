@@ -24,6 +24,9 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 
 import java.awt.*;
 
+/**
+ * Validator for Colors
+ */
 public class ColorValidator extends ScalarValidator {
 
     /**

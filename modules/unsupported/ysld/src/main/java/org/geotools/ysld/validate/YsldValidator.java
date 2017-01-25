@@ -34,10 +34,19 @@ import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.List;
 
+/**
+ * Validates a YSLD style
+ */
 public class YsldValidator {
 
     List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
 
+    /**
+     * Validate the passed style
+     * @param input Reader for the style
+     * @return List of {@link MarkedYAMLException} representing any errors, or an empty list if the style is valid
+     * @throws IOException
+     */
     public List<MarkedYAMLException> validate(Reader input) throws IOException {
         YsldValidateContext context = new YsldValidateContext();
         context.zCtxtFinders = this.zCtxtFinders;

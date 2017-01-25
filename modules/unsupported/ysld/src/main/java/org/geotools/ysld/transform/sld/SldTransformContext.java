@@ -29,6 +29,12 @@ import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * Context for {@link SldTransformer}
+ *
+ * Handles the Yaml Stack during transformation and applies  {@link SldTransformHandler}s.
+ * Tracks SLD version.
+ */
 class SldTransformContext {
 
     public static final Version V_100 = new Version("1.0.0");

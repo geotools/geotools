@@ -21,6 +21,9 @@ import java.util.Map;
 
 import org.geotools.styling.Symbolizer;
 
+/**
+ * Encodes a {@link Symbolizer} as YSLD.
+ */
 public abstract class SymbolizerEncoder<S extends Symbolizer> extends YsldEncodeHandler<S> {
 
     SymbolizerEncoder(S sym) {

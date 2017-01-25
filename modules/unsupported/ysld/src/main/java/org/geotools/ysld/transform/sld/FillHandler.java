@@ -21,6 +21,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for the {@link org.geotools.styling.Fill} element.
+ */
 public class FillHandler extends SldTransformHandler {
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context)

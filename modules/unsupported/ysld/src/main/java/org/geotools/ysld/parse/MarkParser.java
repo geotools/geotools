@@ -21,6 +21,10 @@ import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Handles parsing a Ysld "mark" property into a {@link Mark} object.
+ * 
+ */
 public abstract class MarkParser extends YsldParseHandler {
 
     Mark mark;

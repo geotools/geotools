@@ -23,6 +23,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
+/**
+ * Handles parsing a Ysld "feature-styles" property into a {@link FeatureTypeStyle} object.
+ * 
+ */
 public class FeatureStyleParser extends YsldParseHandler {
 
     Style style;

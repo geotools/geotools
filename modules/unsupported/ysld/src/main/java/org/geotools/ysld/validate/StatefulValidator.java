@@ -17,6 +17,10 @@
  */
 package org.geotools.ysld.validate;
 
+/**
+ * Abstract stateful validator.
+ * Instances of validators extending this should not be reused.
+ */
 public abstract class StatefulValidator extends YsldValidateHandler {
 
     public StatefulValidator() {

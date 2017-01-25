@@ -22,6 +22,9 @@ import org.geotools.ysld.parse.ZoomContext;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
+/**
+ * Validator for gridset definitions
+ */
 public class GridValidator extends YsldValidateHandler {
 
     @Override

@@ -21,6 +21,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for {@link org.geotools.styling.FeatureTypeStyle} elements.
+ */
 public class FeatureStylesHandler extends SldTransformHandler {
     @Override
     public void element(XMLStreamReader xml, SldTransformContext context)

@@ -23,6 +23,9 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Top-level validator that checks the expression type and delegates to the appropriate validator
+ */
 public class RootValidator extends YsldValidateHandler {
 
     // Colour Expressions

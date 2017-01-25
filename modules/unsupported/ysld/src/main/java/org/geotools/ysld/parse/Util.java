@@ -87,6 +87,17 @@ public class Util {
         }
     }
 
+    /**
+     * Simplifies an {@link Expression} which may contain multiple {@link ConcatenateFunction} into a single top-level
+     * {@link ConcatenateFunction} with a flat list of parameters.
+     *
+     * If the passed {@link Expression} performs no concatenation, it is returned as-is.
+     * If the passed {@link Expression} represents an empty value, a {@link Literal} expression with value null is returned.
+     *
+     * @param expr
+     * @param factory Function factory
+     * @return Simplified expression
+     */
     public static Expression unwrapConcatenates(Expression expr, Factory factory) {
         List<Expression> list = splitConcatenates(expr);
         if (list.isEmpty()) {
@@ -98,6 +109,15 @@ public class Util {
         }
     }
 
+    /**
+     * Splits an {@link Expression} into a list of expressions by removing {@link ConcatenateFunction} and
+     * {@link FilterFunction_strConcat} Functions, and listing the children of those functions.
+     * This is applied recursively, so nested Expressions are also handled.
+     * Null-valued or empty {@link Literal} Expressions are removed.
+     *
+     * @param expr
+     * @return List of expressions, containing no concatenate functions
+     */
     public static List<Expression> splitConcatenates(Expression expr) {
         List<Expression> list = new ArrayList<>();
         collectExpressions(list, expr);
@@ -261,6 +281,13 @@ public class Util {
         throw new NullPointerException();
     }
 
+    /**
+     * Finds an applicable {@link ZoomContext} based on a name
+     * @param name Name of the ZoomContext.
+     * @param zCtxtFinders List of finders for the {@link ZoomContext}
+     * @throws IllegalArgumentException If name is "EPSG:4326", "EPSG:3857", or "EPSG:900913" (These names cause ambiguities).
+     * @return {@link ZoomContext} matching the name.
+     */
     public static @Nullable ZoomContext getNamedZoomContext(String name,
             List<ZoomContextFinder> zCtxtFinders) {
         if (name.equalsIgnoreCase("EPSG:4326")) {
@@ -284,6 +311,13 @@ public class Util {
 
     static final Pattern EMBEDED_FILTER = Pattern.compile("^\\s*\\$\\{(.*?)\\}\\s*$");
 
+    /**
+     * Removes up to one set of ${ } expression brackets from a YSLD string.
+     * Escape sequences for the characters $}\ within the brackets are unescaped.
+     *
+     * @param s
+     * @return s with brackets and escape sequences removed.
+     */
     public static String removeExpressionBrackets(String s) {
         Matcher m1 = EMBEDED_FILTER.matcher(s);
         if (m1.matches()) {
@@ -314,6 +348,12 @@ public class Util {
         return str;
     }
 
+    /**
+     * Serializes a Java {@link Color} to a String representation of the format "#RRGGBB"
+     *
+     * @param c Color
+     * @return String representation of c
+     */
     public static String serializeColor(Color c) {
         return String.format("#%06X", c.getRGB() & 0x00_FF_FF_FF);
     }

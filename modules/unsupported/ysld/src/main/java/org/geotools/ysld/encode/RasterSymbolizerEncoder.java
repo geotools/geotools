@@ -31,6 +31,9 @@ import org.opengis.style.ContrastMethod;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * Encodes a {@link RasterSymbolizer} as YSLD.
+ */
 public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer> {
     public RasterSymbolizerEncoder(RasterSymbolizer sym) {
         super(sym);

@@ -21,6 +21,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for top-level elements such as Name, and UserStyle.
+ * Delegates to {@link FeatureStylesHandler} where applicable.
+ */
 public class RootHandler extends SldTransformHandler {
     @Override
     public void document(XMLStreamReader xml, SldTransformContext context)

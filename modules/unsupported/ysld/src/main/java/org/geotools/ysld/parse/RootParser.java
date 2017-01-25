@@ -25,6 +25,11 @@ import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * {@link YsldParseHandler} for the root of a {@link YamlObject}. This is the "entrypoint" {@link YsldParseHandler} for parsing Ysld into
+ * GeoTools-style objects. The resulting sld is accessible via the {{@link #sld()} method.
+ * 
+ */
 public class RootParser extends YsldParseHandler {
 
     StyledLayerDescriptor sld;

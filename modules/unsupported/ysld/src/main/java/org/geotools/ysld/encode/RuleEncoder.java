@@ -23,6 +23,9 @@ import org.geotools.styling.Rule;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.Filter;
 
+/**
+ * Encodes a {@link Rule} as YSLD. Delegates to {@link SymbolizersEncoder}.
+ */
 public class RuleEncoder extends YsldEncodeHandler<Rule> {
 
     public RuleEncoder(FeatureTypeStyle featureStyle) {

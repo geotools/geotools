@@ -19,6 +19,9 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.AnchorPoint;
 
+/**
+ * Encodes an {@link AnchorPoint} as YSLD.
+ */
 public class AnchorPointEncoder extends YsldEncodeHandler<AnchorPoint> {
 
     AnchorPointEncoder(AnchorPoint anchor) {

@@ -21,6 +21,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for {@link org.geotools.styling.LineSymbolizer} elements.
+ */
 public class LineSymbolizerHandler extends SymbolizerHandler {
 
     @Override

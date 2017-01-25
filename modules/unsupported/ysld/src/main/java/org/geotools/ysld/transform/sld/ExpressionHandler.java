@@ -21,6 +21,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for {@link org.opengis.filter.expression.Expression} elements
+ * (literals, rendering transforms, and functions).
+ */
 public class ExpressionHandler extends SldTransformHandler {
 
     StringBuilder scalar;

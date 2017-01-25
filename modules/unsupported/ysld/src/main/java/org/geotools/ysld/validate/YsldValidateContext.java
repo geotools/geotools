@@ -30,6 +30,11 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+/**
+ * Validation context for {@link YsldValidator}
+ *
+ * Manages the validation stack, applies handlers, and tracks errors.
+ */
 public class YsldValidateContext {
 
     Deque<YsldValidateHandler> handlers = new ArrayDeque<>();

@@ -23,6 +23,10 @@ import org.geotools.styling.StyledLayerDescriptor;
 
 import java.util.Collections;
 
+/**
+ * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and title, and delegates to
+ * {@link FeatureStyleEncoder} for the content.
+ */
 public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
 
     RootEncoder(StyledLayerDescriptor sld) {

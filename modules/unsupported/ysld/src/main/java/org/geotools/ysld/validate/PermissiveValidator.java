@@ -28,6 +28,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
 /**
  * Validator which accepts a YAML subtree and then removes itself from the stack.
  *
+ * This Validator is stateful, do not re-use it.
  */
 public class PermissiveValidator extends StatefulValidator {
 

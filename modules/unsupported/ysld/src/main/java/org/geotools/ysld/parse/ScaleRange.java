@@ -19,6 +19,10 @@ package org.geotools.ysld.parse;
 
 import org.geotools.styling.Rule;
 
+/**
+ * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be applied to a given {@link Rule}.
+ *
+ */
 public class ScaleRange {
     final double minDenom;
 

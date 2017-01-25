@@ -36,6 +36,10 @@ import java.util.Map;
 
 import static org.geotools.ysld.ProcessUtil.*;
 
+/**
+ * Handles parsing a Ysld "transform" property into a transformation {@link Function} object.
+ *
+ */
 public class TransformHandler extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;

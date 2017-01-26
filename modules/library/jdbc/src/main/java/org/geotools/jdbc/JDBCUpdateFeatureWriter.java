@@ -50,6 +50,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader implements
             JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
         
         super(sql, cx, featureSource, featureSource.getSchema(), hints);
+        md = rs.getMetaData();
         last = new ResultSetFeature( rs, cx );
     }
     
@@ -57,6 +58,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader implements
             JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
         
         super(ps, cx, featureSource, featureSource.getSchema(), hints);
+        md = rs.getMetaData();
         last = new ResultSetFeature( rs, ps.getConnection());
     }
 

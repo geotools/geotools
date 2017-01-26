@@ -124,6 +124,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     protected Statement st;
     protected ResultSet rs;
     protected Connection cx;
+    protected ResultSetMetaData md;
     protected Exception tracer;
     protected String[] columnNames;
     
@@ -250,6 +251,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.builder = other.builder;
         this.st = other.st;
         this.rs = other.rs;
+        this.md = other.md;
     }
 
     public void setNext(Boolean next) {
@@ -464,7 +466,8 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     }
     
      /**
-     * Feature wrapper around a result set.
+     * Feature wrapper around a result set. (used only by the writing subclasses, make sure the
+     * metadata field is initialized before using it)
      */
     protected class ResultSetFeature implements SimpleFeature {
         /**
@@ -517,9 +520,6 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         ResultSetFeature(ResultSet rs, Connection cx) throws SQLException, IOException {
             this.rs = rs;
             this.cx = cx;
-            
-            //get the result set metadata
-            ResultSetMetaData md = rs.getMetaData();
 
             //get the primary key, ensure its not contained in the values
             key = dataStore.getPrimaryKey(featureType);

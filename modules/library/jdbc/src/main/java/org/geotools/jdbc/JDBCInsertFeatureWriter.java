@@ -48,12 +48,14 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     public JDBCInsertFeatureWriter(String sql, Connection cx,
             JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
         super(sql, cx, featureSource, featureSource.getSchema(), hints);
+        md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
 
     public JDBCInsertFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Hints hints)
         throws SQLException, IOException {
         super( ps, cx, featureSource, featureSource.getSchema(), hints );
+        md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
     

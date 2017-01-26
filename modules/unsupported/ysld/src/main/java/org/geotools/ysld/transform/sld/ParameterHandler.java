@@ -25,9 +25,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handles xml parse events for CssParameter and SvgParameter.
+ * These get converted to YSLD elements like stroke-width or stroke-color.
+ */
 public class ParameterHandler extends SldTransformHandler {
 
-    Map<String,String> rename;
+    Map<String, String> rename;
+
     List<String> strip;
 
     public ParameterHandler rename(String from, String to) {
@@ -47,12 +52,13 @@ public class ParameterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             String parameter = xml.getAttributeValue(null, "name");
             if (rename != null) {
-                for (Map.Entry<String,String> e : rename.entrySet()) {
+                for (Map.Entry<String, String> e : rename.entrySet()) {
                     if (e.getKey().equals(parameter)) {
                         parameter = e.getValue();
                         break;
@@ -61,8 +67,8 @@ public class ParameterHandler extends SldTransformHandler {
             }
             if (strip != null) {
                 for (String prefix : strip) {
-                    if (parameter.startsWith(prefix+"-")) {
-                        parameter = parameter.substring(prefix.length()+1);
+                    if (parameter.startsWith(prefix + "-")) {
+                        parameter = parameter.substring(prefix.length() + 1);
                         break;
                     }
                 }
@@ -72,7 +78,8 @@ public class ParameterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             context.pop();

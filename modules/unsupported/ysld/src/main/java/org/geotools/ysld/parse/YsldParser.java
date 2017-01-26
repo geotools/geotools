@@ -32,12 +32,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parses a Yaml/Ysld stream into GeoTools style objects.
+ * Parses a Yaml/Ysld stream into GeoTools style objects by returning a {@link StyledLayerDescriptor} from the {@link #parse()} method.
+ * 
  */
 public class YsldParser extends YamlParser {
-    
+
     List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
+
     UomMapper uomMapper = new UomMapper();
+
     ResourceLocator locator = new ResourceLocator() {
 
         @Override
@@ -45,12 +48,13 @@ public class YsldParser extends YamlParser {
             try {
                 return new URL(uri);
             } catch (MalformedURLException e) {
-                throw new IllegalArgumentException(String.format("'%s' is not a valid URI", uri),e);
+                throw new IllegalArgumentException(String.format("'%s' is not a valid URI", uri),
+                        e);
             }
         }
-        
+
     };
-    
+
     public YsldParser(InputStream ysld) throws IOException {
         super(ysld);
     }
@@ -58,24 +62,32 @@ public class YsldParser extends YamlParser {
     public YsldParser(Reader reader) throws IOException {
         super(reader);
     }
-    
+
     public void setZoomContextFinders(List<ZoomContextFinder> zCtxtFinders) {
         this.zCtxtFinders = zCtxtFinders;
     }
+
     public void setResourceLocator(ResourceLocator locator) {
         this.locator = locator;
     }
-    
+
     public void setUomMapper(UomMapper uomMapper) {
         this.uomMapper = uomMapper;
     }
 
+    /**
+     * Parse the yaml provided to this instance into a {@link StyledLayerDescriptor} and return the result.
+     * 
+     * @throws IOException
+     */
     public StyledLayerDescriptor parse() throws IOException {
+
+        // Hand off to the base class to parse the yaml, and provide a Ysld parser handler that will transform the resulting
+        // YamlObject into GeoTools-style objects.
+
         Map<String, Object> hints = new HashMap();
         hints.put("resourceLocator", locator);
         hints.put(UomMapper.KEY, uomMapper);
-        return super.parse(
-                new RootParser(zCtxtFinders),
-                hints).sld();
+        return super.parse(new RootParser(zCtxtFinders), hints).sld();
     }
 }

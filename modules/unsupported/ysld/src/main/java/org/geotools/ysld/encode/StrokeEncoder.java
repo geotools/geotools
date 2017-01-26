@@ -19,6 +19,9 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Stroke;
 
+/**
+ * Encodes a {@link Stroke} as YSLD.
+ */
 public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
 
     StrokeEncoder(Stroke stroke) {
@@ -53,7 +56,7 @@ public class StrokeEncoder extends YsldEncodeHandler<Stroke> {
         for (int i = 0; i < arr.length; i++) {
             sb.append(arr[i]).append(" ");
         }
-        sb.setLength(sb.length()-1);
+        sb.setLength(sb.length() - 1);
         return sb.toString();
     }
 }

@@ -17,7 +17,6 @@
  */
 package org.geotools.ysld.validate;
 
-import org.geotools.ysld.validate.PermissiveValidator.State;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
@@ -32,17 +31,15 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
  *
  */
 public class SequenceValidator extends StatefulValidator {
-    
+
     enum State {
-        NEW,
-        STARTED,
-        DONE
+        NEW, STARTED, DONE
     }
-    
+
     State state = State.NEW;
-    
+
     YsldValidateHandler subValidator;
-    
+
     public SequenceValidator(YsldValidateHandler subValidator) {
         super();
         this.subValidator = subValidator;
@@ -50,11 +47,11 @@ public class SequenceValidator extends StatefulValidator {
 
     @Override
     public void sequence(SequenceStartEvent evt, YsldValidateContext context) {
-        if(state == State.NEW) {
+        if (state == State.NEW) {
             state = State.STARTED;
-        } else if(state == State.STARTED) {
+        } else if (state == State.STARTED) {
             YsldValidateHandler sub = getSubValidator();
-            if(sub instanceof TupleValidator) {
+            if (sub instanceof TupleValidator) {
                 ((TupleValidator) sub).reset();
             } else if (sub instanceof SequenceValidator) {
                 ((SequenceValidator) sub).reset();
@@ -65,10 +62,10 @@ public class SequenceValidator extends StatefulValidator {
             context.error("Unexpected Start of Sequence", evt.getStartMark());
         }
     }
-    
+
     @Override
     public void endSequence(SequenceEndEvent evt, YsldValidateContext context) {
-        if(state != State.STARTED) {
+        if (state != State.STARTED) {
             context.error("Unexpected End of Sequence", evt.getStartMark());
         }
         state = State.DONE;
@@ -78,14 +75,14 @@ public class SequenceValidator extends StatefulValidator {
     protected YsldValidateHandler getSubValidator() {
         return subValidator;
     }
-    
+
     @Override
-    public void scalar(ScalarEvent evt, YsldValidateContext context){
+    public void scalar(ScalarEvent evt, YsldValidateContext context) {
         String val = evt.getValue();
-        switch(state) {
+        switch (state) {
         case STARTED:
             YsldValidateHandler sub = getSubValidator();
-            if(sub instanceof TupleValidator) {
+            if (sub instanceof TupleValidator) {
                 ((TupleValidator) sub).reset();
             } else if (sub instanceof SequenceValidator) {
                 ((SequenceValidator) sub).reset();
@@ -105,12 +102,18 @@ public class SequenceValidator extends StatefulValidator {
 
     @Override
     void reset() {
-        assert state==State.NEW || state==State.DONE;
-        state = State.NEW;
+        if (state == State.NEW || state == State.DONE) {
+            state = State.NEW;
+        } else {
+            throw new IllegalStateException(
+                    "SequenceValidator.reset() called in invalid state: " + state.toString());
+        }
+        
     }
+
     @Override
     public void alias(AliasEvent evt, YsldValidateContext context) {
-        switch(state) {
+        switch (state) {
         case NEW:
             state = State.DONE;
             context.pop();
@@ -118,7 +121,8 @@ public class SequenceValidator extends StatefulValidator {
         case STARTED:
             break;
         default:
-            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
+            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()),
+                    evt.getStartMark());
             break;
         }
     }

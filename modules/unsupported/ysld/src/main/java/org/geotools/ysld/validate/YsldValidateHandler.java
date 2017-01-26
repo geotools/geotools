@@ -43,7 +43,6 @@ public class YsldValidateHandler {
 
     public void endSequence(SequenceEndEvent evt, YsldValidateContext context) {
     }
-    
 
     public void alias(AliasEvent evt, YsldValidateContext context) {
     }

@@ -20,11 +20,7 @@ package org.geotools.ysld.validate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.ysld.parse.Util;
-import org.geotools.ysld.parse.ZoomContext;
 import org.yaml.snakeyaml.events.AliasEvent;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.MappingStartEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 import org.yaml.snakeyaml.events.SequenceStartEvent;
@@ -37,20 +33,18 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
  * @author Kevin Smith, Boundless
  *
  */
-public class TupleValidator extends StatefulValidator{
-    
+public class TupleValidator extends StatefulValidator {
+
     enum State {
-        NEW,
-        STARTED,
-        DONE
+        NEW, STARTED, DONE
     }
-    
+
     State state = State.NEW;
-    
+
     int valuesValidated = 0;
-    
+
     List<ScalarValidator> subValidators;
-    
+
     public TupleValidator(List<? extends ScalarValidator> subValidators) {
         super();
         this.subValidators = new ArrayList<>(subValidators);
@@ -58,19 +52,20 @@ public class TupleValidator extends StatefulValidator{
 
     @Override
     public void sequence(SequenceStartEvent evt, YsldValidateContext context) {
-        if(state == State.NEW) {
+        if (state == State.NEW) {
             state = State.STARTED;
         } else {
             context.error("Unexpected Start of Sequence", evt.getStartMark());
         }
     }
-    
+
     @Override
     public void endSequence(SequenceEndEvent evt, YsldValidateContext context) {
-        if(state != State.STARTED) {
+        if (state != State.STARTED) {
             context.error("Unexpected End of Sequence", evt.getStartMark());
-        } else if(valuesValidated!=getSubValidators().size()) {
-            context.error(String.format("Expected tuple of size %d but was %d", getSubValidators().size(), valuesValidated), evt.getStartMark());
+        } else if (valuesValidated != getSubValidators().size()) {
+            context.error(String.format("Expected tuple of size %d but was %d",
+                    getSubValidators().size(), valuesValidated), evt.getStartMark());
         }
         state = State.DONE;
         context.pop();
@@ -79,15 +74,15 @@ public class TupleValidator extends StatefulValidator{
     protected List<ScalarValidator> getSubValidators() {
         return subValidators;
     }
-    
+
     @Override
-    public void scalar(ScalarEvent evt, YsldValidateContext context){
+    public void scalar(ScalarEvent evt, YsldValidateContext context) {
         String val = evt.getValue();
-        switch(state) {
+        switch (state) {
         case STARTED:
-            try{
+            try {
                 context.push(getSubValidators().get(valuesValidated));
-                
+
                 context.peek().scalar(evt, context);
             } catch (IndexOutOfBoundsException ex) {
                 // Do nothing, this will be detected when valuesValidated is too large.
@@ -106,14 +101,19 @@ public class TupleValidator extends StatefulValidator{
 
     @Override
     void reset() {
-        assert state==State.NEW || state==State.DONE;
-        state = State.NEW;
-        valuesValidated = 0;
+        if (state == State.NEW || state == State.DONE) {
+            state = State.NEW;
+            valuesValidated = 0; 
+        } else {
+            throw new IllegalStateException(
+                    "TupleValidator.reset() called in invalid state: " + state.toString());
+        }
+
     }
 
     @Override
     public void alias(AliasEvent evt, YsldValidateContext context) {
-        switch(state) {
+        switch (state) {
         case NEW:
             // Can't validate this so just move on.
             state = State.DONE;
@@ -124,10 +124,10 @@ public class TupleValidator extends StatefulValidator{
             valuesValidated++;
             break;
         default:
-            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()), evt.getStartMark());
+            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()),
+                    evt.getStartMark());
             break;
         }
     }
-    
-    
+
 }

@@ -30,6 +30,7 @@ import static javax.xml.stream.XMLStreamConstants.*;
 public class SldTransformer {
 
     XMLStreamReader xml;
+
     SldTransformContext context;
 
     public SldTransformer(XMLStreamReader xml, Writer yaml) {
@@ -46,41 +47,41 @@ public class SldTransformer {
 
         boolean root = true;
         Integer next = xml.hasNext() ? xml.next() : null;
-        while(next != null) {
+        while (next != null) {
             context.reset();
 
             SldTransformHandler h = context.handlers.peek();
-            switch(next) {
-                case PROCESSING_INSTRUCTION:
-                case COMMENT:
-                case SPACE:
-                    break;
-                case START_DOCUMENT:
-                    //h.document(xml, context);
-                    break;
-                case START_ELEMENT:
-                    if (root) {
-                        // root element, fill in some context
-                        String ver = xml.getAttributeValue(null, "version");
-                        if (ver != null) {
-                            context.version(ver);
-                        }
+            switch (next) {
+            case PROCESSING_INSTRUCTION:
+            case COMMENT:
+            case SPACE:
+                break;
+            case START_DOCUMENT:
+                // h.document(xml, context);
+                break;
+            case START_ELEMENT:
+                if (root) {
+                    // root element, fill in some context
+                    String ver = xml.getAttributeValue(null, "version");
+                    if (ver != null) {
+                        context.version(ver);
                     }
-                    root = false;
-                    h.element(xml, context);
-                    break;
-                case ATTRIBUTE:
-                    h.attribute(xml, context);
-                    break;
-                case CHARACTERS:
-                    h.characters(xml, context);
-                    break;
-                case END_ELEMENT:
-                    h.endElement(xml, context);
-                    break;
-                case END_DOCUMENT:
-                    //h.endDocument(xml, context);
-                    break;
+                }
+                root = false;
+                h.element(xml, context);
+                break;
+            case ATTRIBUTE:
+                h.attribute(xml, context);
+                break;
+            case CHARACTERS:
+                h.characters(xml, context);
+                break;
+            case END_ELEMENT:
+                h.endElement(xml, context);
+                break;
+            case END_DOCUMENT:
+                // h.endDocument(xml, context);
+                break;
             }
 
             if (context.moveToNext) {

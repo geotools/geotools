@@ -17,13 +17,15 @@
  */
 package org.geotools.ysld.encode;
 
-
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.util.logging.Logging;
 
 import java.util.logging.Logger;
 
+/**
+ * Encodes a {@link FeatureTypeStyle} as YSLD. Delegates to {@link TransformEncoder} and {@link RuleEncoder}.
+ */
 public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
 
     static Logger LOG = Logging.getLogger(FeatureStyleEncoder.class);
@@ -38,7 +40,7 @@ public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
         put("title", featureStyle.getTitle());
         put("abstract", featureStyle.getAbstract());
         if (featureStyle.getTransformation() != null) {
-            push("transform").inline(new TransformEncoder(                        featureStyle.getTransformation()));
+            push("transform").inline(new TransformEncoder(featureStyle.getTransformation()));
             pop();
         }
         put("rules", new RuleEncoder(featureStyle));

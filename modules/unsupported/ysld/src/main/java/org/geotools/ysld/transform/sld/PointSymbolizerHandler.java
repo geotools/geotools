@@ -20,10 +20,13 @@ package org.geotools.ysld.transform.sld;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
-
+/**
+ * Handles xml parse events for {@link org.geotools.styling.PointSymbolizer} elements.
+ */
 public class PointSymbolizerHandler extends SymbolizerHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PointSymbolizer".equals(name)) {
             context.mapping().scalar("point").push(new GraphicHandler());
@@ -33,7 +36,8 @@ public class PointSymbolizerHandler extends SymbolizerHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PointSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().pop();

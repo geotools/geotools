@@ -22,8 +22,11 @@ import org.geotools.ysld.parse.ZoomContext;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
+/**
+ * Validator for gridset definitions
+ */
 public class GridValidator extends YsldValidateHandler {
-    
+
     @Override
     public void scalar(ScalarEvent evt, YsldValidateContext context) {
         String key = evt.getValue();
@@ -31,18 +34,20 @@ public class GridValidator extends YsldValidateHandler {
             context.push(new ZoomContextNameValidator());
         }
     }
-    
-    
+
     class ZoomContextNameValidator extends ScalarValidator {
-        
+
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        protected String validate(String value, ScalarEvent evt,
-                YsldValidateContext context) {
+        protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {
-                
-                ZoomContext namedZoomContext = Util.getNamedZoomContext(value, context.zCtxtFinders);
-                if(namedZoomContext!=null) {
-                    context.zCtxt =  namedZoomContext;
+
+                ZoomContext namedZoomContext = Util.getNamedZoomContext(value,
+                        context.zCtxtFinders);
+                if (namedZoomContext != null) {
+                    context.zCtxt = namedZoomContext;
                     return null;
                 }
                 return String.format("Unknown Grid: %s", value);
@@ -50,13 +55,12 @@ public class GridValidator extends YsldValidateHandler {
                 return ex.getMessage();
             }
         }
-        
+
     }
-    
+
     @Override
     public void endMapping(MappingEndEvent evt, YsldValidateContext context) {
         context.pop();
     }
-    
-    
+
 }

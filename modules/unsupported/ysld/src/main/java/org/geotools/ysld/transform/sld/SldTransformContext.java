@@ -29,9 +29,16 @@ import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * Context for {@link SldTransformer}
+ *
+ * Handles the Yaml Stack during transformation and applies  {@link SldTransformHandler}s.
+ * Tracks SLD version.
+ */
 class SldTransformContext {
 
     public static final Version V_100 = new Version("1.0.0");
+
     public static final Version V_110 = new Version("1.1.0");
 
     static final Version DEFAULT_VERSION = new Version("1.0.0");
@@ -39,9 +46,13 @@ class SldTransformContext {
     Version version = DEFAULT_VERSION;
 
     Writer output;
+
     Emitable yaml;
+
     boolean moveToNext;
+
     Deque<SldTransformHandler> handlers;
+
     SldTransformHandler last;
 
     public SldTransformContext(Writer output) {
@@ -113,7 +124,8 @@ class SldTransformContext {
     }
 
     public SldTransformContext scalar(String value) throws IOException {
-        yaml.emit(new ScalarEvent(null, null, new ImplicitTuple(true, false), value, null, null, null));
+        yaml.emit(new ScalarEvent(null, null, new ImplicitTuple(true, false), value, null, null,
+                null));
         return this;
     }
 

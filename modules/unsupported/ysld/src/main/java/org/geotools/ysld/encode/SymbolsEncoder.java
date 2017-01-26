@@ -23,6 +23,9 @@ import org.geotools.styling.Mark;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.GraphicalSymbol;
 
+/**
+ * Encodes a {@link GraphicalSymbol} as YSLD.
+ */
 public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
 
     public SymbolsEncoder(Graphic g) {
@@ -34,8 +37,7 @@ public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
         if (symbol instanceof Mark) {
             push("mark");
             encode((Mark) symbol);
-        }
-        else if (symbol instanceof ExternalGraphic) {
+        } else if (symbol instanceof ExternalGraphic) {
             push("external");
             encode((ExternalGraphic) symbol);
         }
@@ -45,10 +47,10 @@ public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
         putName("shape", mark.getWellKnownName());
         inline(new StrokeEncoder(mark.getStroke()));
         inline(new FillEncoder(mark.getFill()));
-        //encode("stroke", new StrokeEncoder(mark.getStroke()));
-        //encode("fill", mark.getFill());
-        //url:
-        //inline:
+        // encode("stroke", new StrokeEncoder(mark.getStroke()));
+        // encode("fill", mark.getFill());
+        // url:
+        // inline:
         return this;
     }
 

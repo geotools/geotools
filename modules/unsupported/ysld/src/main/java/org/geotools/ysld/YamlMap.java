@@ -30,11 +30,11 @@ import java.util.NoSuchElementException;
 /**
  * Wrapper around a parsed Yaml mapping.
  */
-public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<String> {
-    
-    
+public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable<String> {
+
     /**
      * Quick inline map creation.
+     * 
      * @param pairs Key value pairs
      * @return Map of provided key value pairs.
      */
@@ -45,28 +45,31 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Internal cast to map used by constructor.
+     * 
      * @param obj
      * @return Map
      * @throws IllegalArgumentException
      */
-    static Map<String,Object> cast(Object obj) {
+    static Map<String, Object> cast(Object obj) {
         if (!(obj instanceof Map)) {
             throw new IllegalArgumentException(obj + " is not a map");
         }
-        return (Map<String,Object>) obj;
+        return (Map<String, Object>) obj;
     }
-    
+
     /**
      * Yaml mapping.
+     * 
      * @param obj Wrapped {@link Map}
-     * @throws IllegalArgumentException {@link Map} is required  
+     * @throws IllegalArgumentException {@link Map} is required
      */
     public YamlMap(Object obj) {
         super(cast(obj));
     }
-    
+
     /**
      * String access.
+     * 
      * @param key
      * @return String access, converting if necessary.
      */
@@ -76,6 +79,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * String access.
+     * 
      * @param key
      * @param def default if value not provided
      * @return String access, converting if necessary.
@@ -86,6 +90,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Integer access.
+     * 
      * @param key
      * @return Integer access, converting if necessary.
      */
@@ -95,6 +100,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Integer access.
+     * 
      * @param key
      * @param def default if value not provided
      * @return Integer access, converting if necessary.
@@ -105,6 +111,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Double access.
+     * 
      * @param key
      * @return Integer access, converting if necessary.
      */
@@ -114,6 +121,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Double access.
+     * 
      * @param key
      * @param def default if value not provided
      * @return Integer access, converting if necessary.
@@ -121,18 +129,20 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
     public Double doubOr(String key, Double def) {
         return get(key, Double.class, def);
     }
-    
+
     /**
      * Boolean access.
+     * 
      * @param key
      * @return Boolean access, converting if necessary.
      */
     public Boolean bool(String key) {
         return boolOr(key, null);
     }
-    
+
     /**
      * Boolean access.
+     * 
      * @param key
      * @param def default if value not provided
      * @return Boolean access, converting if necessary.
@@ -143,6 +153,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Check if mapping available for key
+     * 
      * @param key
      * @return true if mapping available for key
      */
@@ -152,6 +163,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Value access
+     * 
      * @param key
      * @return Value access
      */
@@ -163,6 +175,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
      * Access value as a Yaml wrapper.
      * <p>
      * Wrappers are provided for Map and List
+     * 
      * @param key
      * @return Access as Yaml wrapper
      */
@@ -181,7 +194,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
         if (obj == null) {
             return null;
         }
-        if( obj instanceof YamlMap){
+        if (obj instanceof YamlMap) {
             return (YamlMap) obj;
         }
         return new YamlMap(obj);
@@ -198,7 +211,7 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
         if (obj == null) {
             return null;
         }
-        if( obj instanceof YamlSeq){
+        if (obj instanceof YamlSeq) {
             return (YamlSeq) obj;
         }
         return new YamlSeq(obj);
@@ -206,20 +219,21 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Access key by index, order provided by {@link #iterator()}.
+     * 
      * @param i index
      * @return key access by index
      */
     public String key(int i) {
         int index = 0;
-        for( Iterator<String> iterator = iterator(); iterator.hasNext(); index++){
+        for (Iterator<String> iterator = iterator(); iterator.hasNext(); index++) {
             String key = iterator.next();
-            if( index == i ){
+            if (index == i) {
                 return key;
-            }            
+            }
         }
-        throw new IndexOutOfBoundsException( "Index: "+i+", Size: "+this.raw.size());
+        throw new IndexOutOfBoundsException("Index: " + i + ", Size: " + this.raw.size());
     }
-    
+
     /**
      * Iterate over keys.
      */
@@ -230,12 +244,13 @@ public class YamlMap extends YamlObject<Map<String,Object>> implements Iterable<
 
     /**
      * Typed access
+     * 
      * @param key
      * @param def default if value not provided
      * @return Typed access, converting if necessary.
      */
     <T> T get(String key, Class<T> clazz, T def) {
-        if(!raw.containsKey(key)){
+        if (!raw.containsKey(key)) {
             return def;
         }
         Object obj = raw.get(key);

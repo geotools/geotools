@@ -32,7 +32,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Base Yaml parsing class.
+ * Base Yaml parsing class, responsible for parsing the yaml input into a {@link YamlObject}} and then delegating to
+ * a {@link YamlParseHandler}. See {@link #parse(YamlParseHandler, Map))}.
+ * 
  */
 public class YamlParser {
 
@@ -47,17 +49,27 @@ public class YamlParser {
     }
 
     public <T extends YamlParseHandler> T parse(T root) throws IOException {
-        return parse(root, Collections.<String,Object>emptyMap());
+        return parse(root, Collections.<String, Object> emptyMap());
     }
 
-    public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints) throws IOException {
+    /**
+     * Parse the yaml provided to this instance using the provided {@link YamlParseHandler}.
+     * 
+     * @param root The {@link YamlParseHandler} that handles the root of the parsed {@link YamlObject}.
+     * @param hints
+     * @return The root {@link YamlParseHandler}, once it has finished handling the parsed {@link YamlObject}..
+     * @throws IOException
+     */
+    public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints)
+            throws IOException {
         Object parsed = new Yaml().load(yaml);
 
         YamlParseContext context = new YamlParseContext();
         context.mergeDocHints(hints);
         context.push(YamlObject.create(parsed), root);
 
-        while(context.next());
+        while (context.next())
+            ;
 
         return root;
     }

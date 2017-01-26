@@ -24,8 +24,14 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 
 import java.awt.*;
 
+/**
+ * Validator for Colors
+ */
 public class ColorValidator extends ScalarValidator {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {
@@ -37,8 +43,7 @@ public class ColorValidator extends ScalarValidator {
                 }
             }
             return null;
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
     }

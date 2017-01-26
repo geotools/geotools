@@ -32,10 +32,10 @@ public class YsldTests {
      * @return The input stream for the SLD file.
      */
     public static InputStream sld(String dir, String file) {
-        return YsldTests.class.getResourceAsStream("sld/"+dir+"/"+file);
+        return YsldTests.class.getResourceAsStream("sld/" + dir + "/" + file);
     }
-    
+
     public static InputStream ysld(String dir, String file) {
-        return YsldTests.class.getResourceAsStream(""+dir+"/"+file);
+        return YsldTests.class.getResourceAsStream("" + dir + "/" + file);
     }
 }

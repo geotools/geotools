@@ -21,20 +21,24 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for the {@link org.geotools.styling.Fill} element.
+ */
 public class FillHandler extends SldTransformHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             context.push(new ParameterHandler().rename("fill", "fill-color"));
-        }
-        else if ("GraphicFill".equals(name)) {
+        } else if ("GraphicFill".equals(name)) {
             context.scalar("fill-graphic").push(new GraphicHandler());
         }
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Fill".equals(name)) {
             context.pop();

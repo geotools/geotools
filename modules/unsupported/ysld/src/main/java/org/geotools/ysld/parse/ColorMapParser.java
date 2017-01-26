@@ -17,7 +17,6 @@
  */
 package org.geotools.ysld.parse;
 
-
 import org.geotools.ysld.Tuple;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
@@ -25,6 +24,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
+/**
+ * Handles the parsing of a Ysld "color-map" property to a {@link ColorMap} object.
+ *
+ */
 public abstract class ColorMapParser extends YsldParseHandler {
 
     ColorMap colorMap;
@@ -43,14 +46,11 @@ public abstract class ColorMapParser extends YsldParseHandler {
             String value = map.str("type");
             if ("ramp".equals(value)) {
                 colorMap.setType(ColorMap.TYPE_RAMP);
-            }
-            else if ("intervals".equals(value)) {
+            } else if ("intervals".equals(value)) {
                 colorMap.setType(ColorMap.TYPE_INTERVALS);
-            }
-            else if ("values".equals(value)) {
+            } else if ("values".equals(value)) {
                 colorMap.setType(ColorMap.TYPE_VALUES);
-            }
-            else {
+            } else {
                 LOG.warning("Unknown color map type: " + value);
             }
         }
@@ -73,10 +73,10 @@ public abstract class ColorMapParser extends YsldParseHandler {
                 Tuple q = null;
                 try {
                     q = Tuple.of(4).parse(o);
-                }
-                catch(IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException(String.format(
-                            "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]", o.toString()), e);
+                            "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]",
+                            o.toString()), e);
                 }
 
                 ColorMapEntry e = factory.style.createColorMapEntry();
@@ -86,7 +86,7 @@ public abstract class ColorMapParser extends YsldParseHandler {
                 if (q.at(1) != null) {
                     e.setOpacity(Util.expression(q.strAt(1), factory));
                 }
-                if (q.at(2)!= null) {
+                if (q.at(2) != null) {
                     e.setQuantity(Util.expression(q.strAt(2), factory));
                 }
                 if (q.at(3) != null) {

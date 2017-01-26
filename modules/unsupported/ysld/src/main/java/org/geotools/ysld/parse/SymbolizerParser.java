@@ -23,6 +23,11 @@ import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Base class for handling the parsing of Ysld "symbolizer" properties into {@link Symbolizer} objects. 
+ * 
+ * @param <T> The type of {@link Symbolizer} being parsed.
+ */
 public class SymbolizerParser<T extends Symbolizer> extends YsldParseHandler {
 
     protected T sym;

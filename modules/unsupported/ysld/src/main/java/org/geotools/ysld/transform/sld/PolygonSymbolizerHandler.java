@@ -21,27 +21,29 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 
+/**
+ * Handles xml parse events for {@link org.geotools.styling.PolygonSymbolizer} elements.
+ */
 public class PolygonSymbolizerHandler extends SymbolizerHandler {
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PolygonSymbolizer".equals(name)) {
             context.mapping().scalar("polygon").mapping();
-        }
-        else if ("Fill".equals(name)) {
+        } else if ("Fill".equals(name)) {
             context.push(new FillHandler());
-        }
-        else if ("Stroke".equals(name)) {
+        } else if ("Stroke".equals(name)) {
             context.push(new StrokeHandler());
-        }
-        else {
+        } else {
             super.element(xml, context);
         }
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context)
+            throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PolygonSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().endMapping().pop();

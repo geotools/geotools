@@ -22,9 +22,15 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * Container class for instances of {@link StyleFactory}, {@link StyleBuilder}, and {@link FilterFactory}
+ * used when parsing
+ */
 public class Factory {
     StyleFactory style;
+
     StyleBuilder styleBuilder;
+
     FilterFactory filter;
 
     public Factory() {

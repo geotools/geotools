@@ -28,9 +28,13 @@ import java.util.NoSuchElementException;
 
 /**
  * Base class for Yaml object wrappers.
+ *
+ * Yaml is represented as atomic types (literals, expressions) and YamlObjects (for wrapping lists and maps).
+ * The factory method {@link #create(Object)} will sort out the details.
+ * These YamlObjects are used to stage data when parsing a Yaml document.
  */
 public class YamlObject<T> {
-    
+
     /**
      * Convert raw object to Yaml wrapper.
      * <p>
@@ -38,11 +42,10 @@ public class YamlObject<T> {
      * <li>Map wrapped as {@link YamlMap}</li>
      * <li>List wrapped as {@link YamlSeq}</li>
      * </ul>
-     * Other data (Literals, Expressions) are considered atomic
-     * and do not provide a YamlObject representation.
+     * Other data (Literals, Expressions) are considered atomic and do not provide a YamlObject representation.
      * 
      * @param raw
-     * @return Yaml object wrapper
+     * @return Yaml object wrapper, or null if the provided raw object is null.
      */
     @SuppressWarnings("unchecked")
     public static <W> YamlObject<W> create(W raw) {
@@ -100,12 +103,12 @@ public class YamlObject<T> {
         if (o instanceof List) {
             o = new YamlSeq(o);
         }
-        if (o.getClass().isArray()){
+        if (o.getClass().isArray()) {
             o = new YamlSeq(o);
         }
         return o;
     }
-    
+
     /**
      * Raw value access via path.
      * <p>
@@ -118,63 +121,61 @@ public class YamlObject<T> {
      * @param path
      * @return raw value, or null if not available
      */
-    public Object lookup(String path ){
+    public Object lookup(String path) {
         Object here = this;
-        for( String key : path.split("/") ){
+        for (String key : path.split("/")) {
             // Step 1: cast to wrapper if required for further navigation
             here = yamlize(here);
-            
+
             // Step 2: navigate into data structure
             int index;
             try {
                 index = Integer.parseInt(key);
-            }
-            catch( NumberFormatException nan){
+            } catch (NumberFormatException nan) {
                 index = -1;
-            }                
-            if( here instanceof YamlMap ){
+            }
+            if (here instanceof YamlMap) {
                 YamlMap map = (YamlMap) here;
-                if( index != -1 ){
+                if (index != -1) {
                     String tempKey = map.key(index);
                     here = map.get(tempKey);
-                }
-                else if( map.has(key)){
+                } else if (map.has(key)) {
                     here = map.get(key);
+                } else {
+                    throw new NoSuchElementException("Key: " + key + ", Keys: " + map.raw.keySet());
                 }
-                else {
-                    throw new NoSuchElementException( "Key: "+key+", Keys: "+map.raw.keySet());
-                }
-            }
-            else if( here instanceof YamlSeq){
+            } else if (here instanceof YamlSeq) {
                 YamlSeq list = (YamlSeq) here;
-                if( index != -1 ){
+                if (index != -1) {
                     here = list.get(index);
+                } else {
+                    throw new IndexOutOfBoundsException(
+                            "Index: " + key + ", Size: " + list.raw.size());
                 }
-                else {
-                    throw new IndexOutOfBoundsException( "Index: "+key+", Size: "+list.raw.size());
-                }
-            }
-            else {
-                throw new NoSuchElementException("Key: "+key+", For:"+here.getClass().getSimpleName());
+            } else {
+                throw new NoSuchElementException(
+                        "Key: " + key + ", For:" + here.getClass().getSimpleName());
             }
         }
         return here;
     }
+
     /**
      * Returns the raw object.
      */
     public T raw() {
         return raw;
     }
-    
+
     /**
-     * See {@link lookup}. Ensures that the result is wrapped as a YamlObject if it is a map, list, or array.
+     * See {@link #lookup}. Ensures that the result is wrapped as a YamlObject if it is a map, list, or array.
+     * 
      * @param path
-     * @return
      */
-    public Object lookupY(String path ){
+    public Object lookupY(String path) {
         return yamlize(lookup(path));
     }
+
     /**
      * Converts an object to the specified class.
      */
@@ -188,10 +189,9 @@ public class YamlObject<T> {
 
         try {
             return clazz.cast(obj);
-        }
-        catch(ClassCastException e) {
-            throw new IllegalStateException(String.format(
-                    "Unable to retrieve %s as %s", obj, clazz.getSimpleName()), e);
+        } catch (ClassCastException e) {
+            throw new IllegalStateException(
+                    String.format("Unable to retrieve %s as %s", obj, clazz.getSimpleName()), e);
         }
     }
 

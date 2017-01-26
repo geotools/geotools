@@ -30,9 +30,13 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
+/**
+ * Represent YSLD JavaBeans
+ * Extends the yaml {@link Representer} for YSLD-specific representations for Color, UOM (unit of measure) and Tuple.
+ */
 public class YsldRepresenter extends Representer {
     UomMapper uomMapper;
-    
+
     public YsldRepresenter(UomMapper uomMapper) {
         super();
         this.multiRepresenters.put(Color.class, new RepresentColor());
@@ -40,21 +44,20 @@ public class YsldRepresenter extends Representer {
         this.multiRepresenters.put(Tuple.class, new RepresentTuple());
         this.uomMapper = uomMapper;
     }
-    
-    
+
     class RepresentColor implements Represent {
-        
+
         @Override
         public Node representData(Object data) {
             Color c = (Color) data;
             String value = Util.serializeColor(c);
             return representScalar(Tag.STR, value);
         }
-        
+
     }
-    
+
     class RepresentUom implements Represent {
-        
+
         @Override
         public Node representData(Object data) {
             @SuppressWarnings("unchecked")
@@ -62,16 +65,16 @@ public class YsldRepresenter extends Representer {
             String value = uomMapper.getIdentifier(unit);
             return representScalar(Tag.STR, value);
         }
-        
+
     }
-    
+
     class RepresentTuple implements Represent {
-    
-    @Override
-    public Node representData(Object data) {
-        Tuple t = (Tuple) data;
-        return representSequence(Tag.SEQ, t.toList(), true);
+
+        @Override
+        public Node representData(Object data) {
+            Tuple t = (Tuple) data;
+            return representSequence(Tag.SEQ, t.toList(), true);
+        }
+
     }
-    
-}
 }

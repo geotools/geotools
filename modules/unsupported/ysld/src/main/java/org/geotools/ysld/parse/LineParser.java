@@ -20,9 +20,14 @@ package org.geotools.ysld.parse;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.Symbolizer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Handles parsing a Ysld "line" symbolizer property into a {@link Symbolizer} object.
+ *
+ */
 public class LineParser extends SymbolizerParser<LineSymbolizer> {
 
     protected LineParser(Rule rule, Factory factory) {

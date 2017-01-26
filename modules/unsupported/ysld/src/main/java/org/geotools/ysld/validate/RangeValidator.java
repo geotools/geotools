@@ -23,38 +23,48 @@ import java.util.List;
 
 import org.yaml.snakeyaml.events.ScalarEvent;
 
+/**
+ * Validators for tuples that represent a range of values
+ * This Validator is stateful, do not re-use it.
+ *
+ * @param <T> Content type of the tuple.
+ */
 public abstract class RangeValidator<T extends Comparable<T>> extends TupleValidator {
     T min = null;
-    
+
     public RangeValidator() {
         super(Collections.<ScalarValidator> emptyList());
     }
-    
+
     @Override
     protected List<ScalarValidator> getSubValidators() {
-        return Arrays.asList((ScalarValidator)new ValueValidator(true), new ValueValidator(false));
+        return Arrays.asList((ScalarValidator) new ValueValidator(true), new ValueValidator(false));
     }
 
     class ValueValidator extends ScalarValidator {
         ValueValidator previous;
+
         boolean isMin;
-        
+
         public ValueValidator(boolean isMin) {
             super();
             this.isMin = isMin;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        protected String validate(String value, ScalarEvent evt,
-                YsldValidateContext context) {
+        protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {
-                if(value!=null && !value.isEmpty() && !(isMin?"min":"max").equalsIgnoreCase(value)){
+                if (value != null && !value.isEmpty()
+                        && !(isMin ? "min" : "max").equalsIgnoreCase(value)) {
                     T parsed = parse(value);
                     validateParsed(parsed, evt, context);
-                    if(isMin) {
+                    if (isMin) {
                         min = parsed;
                     } else {
-                        if(min!=null && parsed!=null && min.compareTo(parsed)>0){
+                        if (min != null && parsed != null && min.compareTo(parsed) > 0) {
                             return "Minimum is greater than maximum";
                         }
                     }
@@ -63,20 +73,20 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
             } catch (IllegalArgumentException ex) {
                 return ex.getMessage();
             }
-            
+
         }
-    
+
     }
-    
+
     abstract T parse(String s) throws IllegalArgumentException;
-    
+
     protected void validateParsed(T parsed, ScalarEvent evt, YsldValidateContext context) {
         // Do Nothing
     }
-    
+
     @Override
     void reset() {
         super.reset();
-        min=null;
+        min = null;
     }
 }

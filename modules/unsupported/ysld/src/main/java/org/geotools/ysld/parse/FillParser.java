@@ -17,12 +17,15 @@
  */
 package org.geotools.ysld.parse;
 
-
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
+/**
+ * Handles parsing Ysld "fill-*" properties ("fill-color", "fill-opacity", "fill-graphic") into a {@link Fill} object.
+ *
+ */
 public abstract class FillParser extends YsldParseHandler {
     Fill fill;
 
@@ -48,7 +51,7 @@ public abstract class FillParser extends YsldParseHandler {
     }
 
     Fill fill() {
-        if (fill == null ) {
+        if (fill == null) {
             fill(fill = factory.style.createFill(null));
         }
         return fill;

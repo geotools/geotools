@@ -25,6 +25,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.style.ContrastMethod;
 
+/**
+ * Handles the parsing of a Ysld "raster" symbolizer property into a {@link Symbolizer} object.
+ *
+ */
 public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
 
     public RasterParser(Rule rule, Factory factory) {
@@ -60,11 +64,11 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             contrast = factory.style.createContrastEnhancement();
             set();
         }
-        
+
         protected void set() {
             sym.setContrastEnhancement(contrast);
         }
-        
+
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             YamlMap map = obj.map();
@@ -73,8 +77,7 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
                 ContrastMethod method = ContrastMethod.valueOf(mode);
                 if (method != null) {
                     contrast.setMethod(method);
-                }
-                else {
+                } else {
                     LOG.warning("Unknown contrast method: " + mode);
                 }
             }
@@ -84,35 +87,37 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             }
         }
     }
-    
+
     class ChannelsHandler extends YsldParseHandler {
-        
+
         ChannelSelection selection;
-        
+
         protected ChannelsHandler() {
             super(RasterParser.this.factory);
             this.selection = sym.getChannelSelection();
         }
-        
+
         void parse(Band band, SelectedChannelType sel, YamlMap map, YamlParseContext context) {
-            if(map.get(band.key) instanceof Map) {
+            if (map.get(band.key) instanceof Map) {
                 context.push(band.key, new SelectedChannelHandler(sel));
             } else {
                 sel.setChannelName(map.str(band.key));
             }
         }
-        
+
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
-            
+
             YamlMap map = obj.map();
             if (map.has(Band.GRAY.key)) {
-                if(map.has(Band.RED.key) || map.has(Band.GREEN.key) || map.has(Band.BLUE.key)) throw new IllegalArgumentException("grey and RGB can not be combined");
+                if (map.has(Band.RED.key) || map.has(Band.GREEN.key) || map.has(Band.BLUE.key))
+                    throw new IllegalArgumentException("grey and RGB can not be combined");
                 SelectedChannelType gray = factory.style.selectedChannelType(null, null);
                 selection.setGrayChannel(gray);
                 parse(Band.GRAY, gray, map, context);
             } else {
-                if(!(map.has(Band.RED.key) && map.has(Band.GREEN.key) && map.has(Band.BLUE.key))) throw new IllegalArgumentException("all of red green and blue must be preset");
+                if (!(map.has(Band.RED.key) && map.has(Band.GREEN.key) && map.has(Band.BLUE.key)))
+                    throw new IllegalArgumentException("all of red green and blue must be preset");
                 SelectedChannelType red = factory.style.selectedChannelType(null, null);
                 SelectedChannelType green = factory.style.selectedChannelType(null, null);
                 SelectedChannelType blue = factory.style.selectedChannelType(null, null);
@@ -122,28 +127,28 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
                 parse(Band.BLUE, blue, map, context);
             }
         }
-        
+
     }
-    
+
     class SelectedChannelHandler extends YsldParseHandler {
         SelectedChannelType sel;
-        
+
         public SelectedChannelHandler(SelectedChannelType sel) {
             super(RasterParser.this.factory);
             this.sel = sel;
         }
-        
+
         @Override
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             String name = obj.map().str("name");
             sel.setChannelName(name);
-            context.push("contrast-enhancement", new ContrastEnhancementHandler(){
-    
+            context.push("contrast-enhancement", new ContrastEnhancementHandler() {
+
                 @Override
                 protected void set() {
                     sel.setContrastEnhancement(this.contrast);
                 }
-                
+
             });
         }
     }

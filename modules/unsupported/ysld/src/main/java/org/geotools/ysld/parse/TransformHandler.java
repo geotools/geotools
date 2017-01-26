@@ -36,12 +36,18 @@ import java.util.Map;
 
 import static org.geotools.ysld.ProcessUtil.*;
 
+/**
+ * Handles parsing a Ysld "transform" property into a transformation {@link Function} object.
+ *
+ */
 public class TransformHandler extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;
+
     int processes = 0;
+
     FunctionFactory functionFactory = loadProcessFunctionFactory();
-    
+
     protected TransformHandler(FeatureTypeStyle featureStyle, Factory factory) {
         super(factory);
         this.featureStyle = featureStyle;
@@ -51,7 +57,8 @@ public class TransformHandler extends YsldParseHandler {
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         // lookup process function factory, if null means process modules not on classpath
         if (functionFactory == null) {
-            LOG.warning("Unable to load process factory, ignoring transform, ensure process modules installed");
+            LOG.warning(
+                    "Unable to load process factory, ignoring transform, ensure process modules installed");
             return;
         }
 
@@ -60,13 +67,14 @@ public class TransformHandler extends YsldParseHandler {
         Function function = process(map);
         featureStyle.setTransformation(function);
     }
+
     Expression envVar(String name) {
         return factory.filter.function("env", factory.filter.literal(name));
     }
-    
+
     private Function process(YamlMap map) {
         processes++; // Found a new process in the chain.
-        
+
         String name = map.str("name");
         if (name == null) {
             throw new IllegalArgumentException("transform must specify a name");
@@ -77,25 +85,28 @@ public class TransformHandler extends YsldParseHandler {
         Name qName = processName(name);
 
         // load process parameter info
-        Map<String,Parameter<?>> processInfo = loadProcessInfo(qName);
+        Map<String, Parameter<?>> processInfo = loadProcessInfo(qName);
         if (processInfo == null) {
             throw new IllegalArgumentException("No such process: " + name);
         }
-        
+
         boolean wmsParams = ProcessUtil.hasWMSParams(processInfo);
 
         FilterFactory filterFactory = factory.filter;
 
         // turn properties into inputs for ProcessFunction
         List<Expression> processArgs = new ArrayList<>();
-        
+
         Expression outputBBOX = null;
         Expression outputWidth = null;
         Expression outputHeight = null;
-        if(wmsParams) {
-            outputBBOX =paramExpression("outputBBOX", Collections.singletonList(envVar("wms_bbox")));
-            outputWidth = paramExpression("outputWidth", Collections.singletonList(envVar("wms_width")));
-            outputHeight = paramExpression("outputHeight", Collections.singletonList(envVar("wms_height")));
+        if (wmsParams) {
+            outputBBOX = paramExpression("outputBBOX",
+                    Collections.singletonList(envVar("wms_bbox")));
+            outputWidth = paramExpression("outputWidth",
+                    Collections.singletonList(envVar("wms_width")));
+            outputHeight = paramExpression("outputHeight",
+                    Collections.singletonList(envVar("wms_height")));
         }
 
         YamlMap params = map.map("params");
@@ -109,7 +120,7 @@ public class TransformHandler extends YsldParseHandler {
                 Parameter<?> p = processInfo.get(key);
                 if (p != null) {
                     if (val instanceof String) {
-                        Expression expr = Util.expression((String)val, true, factory);
+                        Expression expr = Util.expression((String) val, true, factory);
                         if (expr != null) {
                             valueArgs.add(expr);
                         }
@@ -118,15 +129,14 @@ public class TransformHandler extends YsldParseHandler {
                     if (valueArgs.isEmpty()) {
                         convertAndAdd(val, p, valueArgs);
                     }
-                }
-                else {
+                } else {
                     LOG.warning(String.format("unknown transform parameter: %s", key));
                 }
 
                 if (valueArgs.isEmpty()) {
                     valueArgs.add(factory.filter.literal(val));
                 }
-                switch(key) {
+                switch (key) {
                 case "outputBBOX":
                     outputBBOX = paramExpression(key, valueArgs);
                     break;
@@ -142,19 +152,19 @@ public class TransformHandler extends YsldParseHandler {
             }
         }
         // If this process is the only one, and no input parameter was specified, use data by default
-        if( input == null && processes == 1 ) {
+        if (input == null && processes == 1) {
             input = "data";
         }
-        if( input != null) {
+        if (input != null) {
             processArgs.add(paramExpression(input, Collections.<Expression> emptyList()));
         }
-        if(outputBBOX!=null) {
+        if (outputBBOX != null) {
             processArgs.add(outputBBOX);
         }
-        if(outputWidth!=null) {
+        if (outputWidth != null) {
             processArgs.add(outputWidth);
         }
-        if(outputHeight!=null) {
+        if (outputHeight != null) {
             processArgs.add(outputHeight);
         }
         Function function = functionFactory.function(processName(name), processArgs, null);
@@ -162,27 +172,27 @@ public class TransformHandler extends YsldParseHandler {
     }
 
     private Function paramExpression(String name, List<Expression> valueArgs) {
-        List<Expression> paramArgs = new ArrayList<Expression>(valueArgs.size()+1);
+        List<Expression> paramArgs = new ArrayList<Expression>(valueArgs.size() + 1);
         paramArgs.add(factory.filter.literal(name));
         paramArgs.addAll(valueArgs);
-        return factory.filter.function("parameter", paramArgs.toArray(new Expression[paramArgs.size()]));
+        return factory.filter.function("parameter",
+                paramArgs.toArray(new Expression[paramArgs.size()]));
     }
 
     void convertAndAdd(Object val, Parameter<?> p, List<Expression> valueArgs) {
         // handle collection case
         if (p.getMaxOccurs() > 1 && val instanceof Collection) {
-            for (Object o : (Collection<?>)val) {
+            for (Object o : (Collection<?>) val) {
                 // just add directly
                 valueArgs.add(factory.filter.literal(o));
             }
         } else if (val instanceof Map) {
-            YamlMap map = YamlMap.<Map<?,?>>create((Map<?,?>)val).map();
+            YamlMap map = YamlMap.<Map<?, ?>> create((Map<?, ?>) val).map();
             valueArgs.add(process(map));
         } else {
             // just add directly
             valueArgs.add(factory.filter.literal(val));
         }
     }
-
 
 }

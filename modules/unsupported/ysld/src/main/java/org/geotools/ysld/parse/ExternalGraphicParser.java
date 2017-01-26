@@ -28,13 +28,17 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Handles parsing a Ysld "external" property into a {@link ExternalGraphic} object.
+ *
+ */
 public abstract class ExternalGraphicParser extends YsldParseHandler {
 
     ExternalGraphic external;
 
     public ExternalGraphicParser(Factory factory) {
         super(factory);
-        external = factory.style.createExternalGraphic((String)null, null);
+        external = factory.style.createExternalGraphic((String) null, null);
     }
 
     protected abstract void externalGraphic(ExternalGraphic externalGraphic);
@@ -46,10 +50,10 @@ public abstract class ExternalGraphicParser extends YsldParseHandler {
         if (map.has("url")) {
             String value = map.str("url");
             try {
-                external.setLocation(((ResourceLocator)context.getDocHint("resourceLocator")).locateResource(value));
+                external.setLocation(((ResourceLocator) context.getDocHint("resourceLocator"))
+                        .locateResource(value));
             } catch (IllegalArgumentException e) {
-                external.setURI("file:"+value);
-                //external.setLocation(DataUtilities.fileToURL(new File(value)));
+                external.setURI("file:" + value);
             }
         }
         external.setFormat(map.str("format"));

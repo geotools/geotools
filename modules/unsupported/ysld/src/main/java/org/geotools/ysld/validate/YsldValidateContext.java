@@ -30,6 +30,11 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+/**
+ * Validation context for {@link YsldValidator}
+ *
+ * Manages the validation stack, applies handlers, and tracks errors.
+ */
 public class YsldValidateContext {
 
     Deque<YsldValidateHandler> handlers = new ArrayDeque<>();
@@ -47,7 +52,8 @@ public class YsldValidateContext {
     }
 
     public YsldValidateContext error(String problem, Mark mark) {
-        return error(new MarkedYAMLException(null, null, problem, mark){});
+        return error(new MarkedYAMLException(null, null, problem, mark) {
+        });
     }
 
     public YsldValidateContext error(MarkedYAMLException e) {
@@ -68,7 +74,7 @@ public class YsldValidateContext {
     }
 
     public ZoomContext getZCtxt() {
-        if(zCtxt==null) {
+        if (zCtxt == null) {
             return Util.getNamedZoomContext("DEFAULT", zCtxtFinders);
         } else {
             return zCtxt;

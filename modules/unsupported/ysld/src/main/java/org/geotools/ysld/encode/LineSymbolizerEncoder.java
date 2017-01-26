@@ -19,6 +19,9 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.LineSymbolizer;
 
+/**
+ * Encodes a {@link LineSymbolizer} as YSLD.
+ */
 public class LineSymbolizerEncoder extends SymbolizerEncoder<LineSymbolizer> {
     public LineSymbolizerEncoder(LineSymbolizer sym) {
         super(sym);

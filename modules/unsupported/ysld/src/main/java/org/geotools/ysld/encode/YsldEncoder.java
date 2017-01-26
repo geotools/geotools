@@ -33,13 +33,24 @@ import java.io.Writer;
 public class YsldEncoder {
 
     Writer out;
+
     UomMapper uomMapper;
 
+    /**
+     * Create a YSLD Encoder.
+     * @param out Writer which the encoded YSLD output will be written to.
+     * @param uomMapper An instance of {@link UomMapper}, used to map UOM.
+     */
     public YsldEncoder(Writer out, UomMapper uomMapper) {
         this.out = out;
         this.uomMapper = uomMapper;
     }
 
+    /**
+     * Encode the passed {@link StyledLayerDescriptor} as YSLD.
+     * @param sld
+     * @throws IOException
+     */
     public void encode(StyledLayerDescriptor sld) throws IOException {
         DumperOptions dumpOpts = new DumperOptions();
         dumpOpts.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

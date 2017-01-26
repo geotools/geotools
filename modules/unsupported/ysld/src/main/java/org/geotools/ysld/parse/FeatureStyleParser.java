@@ -23,6 +23,10 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
+/**
+ * Handles parsing a Ysld "feature-styles" property into a {@link FeatureTypeStyle} object.
+ * 
+ */
 public class FeatureStyleParser extends YsldParseHandler {
 
     Style style;
@@ -48,7 +52,7 @@ public class FeatureStyleParser extends YsldParseHandler {
             if (fs.has("abstract")) {
                 featureStyle.getDescription().setAbstract(fs.str("abstract"));
             }
-            
+
             featureStyle.getOptions().putAll(Util.vendorOptions(fs));
 
             context.push(fs, "transform", new TransformHandler(featureStyle, factory));

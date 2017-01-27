@@ -58,10 +58,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public abstract class TransformerBase {
     private int indentation = -1;
-    /**
-     * don't suppress the export of default values
-     */
-    private boolean exportDefaultValues = false;
     private boolean xmlDecl = false;
     private boolean nsDecl = true;
     private Charset charset = Charset.forName("UTF-8");
@@ -101,7 +97,7 @@ public abstract class TransformerBase {
         } else {
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
         }
-        
+
 	transformer.setOutputProperty(OutputKeys.ENCODING, charset.name());
 
         return transformer;
@@ -1030,18 +1026,5 @@ public abstract class TransformerBase {
             translator.encode(object);
             handler.endDocument();
         }
-    }
-    /**
-     * @return the exportDefaultValues
-     */
-    public boolean isExportDefaultValues() {
-        return exportDefaultValues;
-    }
-
-    /**
-     * @param exportDefaultValues the exportDefaultValues to set
-     */
-    public void setExportDefaultValues(boolean exportDefaultValues) {
-        this.exportDefaultValues = exportDefaultValues;
     }
 }

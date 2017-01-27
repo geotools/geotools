@@ -84,7 +84,10 @@ public class SLDTransformer extends TransformerBase {
      */
     final private Map uri2prefix;
     
-    
+    /**
+     * don't suppress the export of default values
+     */
+    private boolean exportDefaultValues = false;
 
     /**
      * Construct a new instance of <code>SLDTransformer</code> with the default namespace mappings usually found in a simple Styled Layer Descriptor
@@ -120,6 +123,20 @@ public class SLDTransformer extends TransformerBase {
         }
     }
 
+    /**
+     * @return the exportDefaultValues
+     */
+    public boolean isExportDefaultValues() {
+        return exportDefaultValues;
+    }
+
+    /**
+     * @param exportDefaultValues the exportDefaultValues to set
+     */
+    public void setExportDefaultValues(boolean exportDefaultValues) {
+        this.exportDefaultValues = exportDefaultValues;
+    }
+    
     public Translator createTranslator(ContentHandler handler) {
         Translator result = new SLDTranslator(handler);
         // add pre-configured namespace mappings

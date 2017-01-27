@@ -97,10 +97,7 @@ public abstract class TransformerBase {
         } else {
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> ddef413cd289279882eda720ede0c3e4c882263e
 	transformer.setOutputProperty(OutputKeys.ENCODING, charset.name());
 
         return transformer;

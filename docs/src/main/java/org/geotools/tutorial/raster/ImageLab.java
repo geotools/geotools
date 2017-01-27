@@ -31,6 +31,8 @@ import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Parameter;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
@@ -102,8 +104,14 @@ public class ImageLab {
      *            the Shapefile
      */
     private void displayLayers(File rasterFile, File shpFile) throws Exception {
-        AbstractGridFormat format = GridFormatFinder.findFormat( rasterFile );        
-        reader = format.getReader(rasterFile);
+        AbstractGridFormat format = GridFormatFinder.findFormat( rasterFile ); 
+        //this is a bit hacky but does make more geotiffs work
+        Hints hints = new Hints();
+        if (format instanceof GeoTiffFormat) {
+            hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+        }
+        reader = format.getReader(rasterFile, hints);
+        
 
         // Initially display the raster in greyscale using the
         // data from the first image band

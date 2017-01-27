@@ -639,10 +639,11 @@ public final class RendererUtilities {
             GeometryFactory gf = new GeometryFactory();
             LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(env.getMinX(), env.getMinY()), 
                     new Coordinate(env.getMaxX(), env.getMaxY())});
-            int qMinX = (int) (Math.signum(env.getMinX()) * Math.ceil(Math.abs(env.getMinX() / 180.0)));
-            int qMaxX = (int) (Math.signum(env.getMaxX()) * Math.ceil(Math.abs(env.getMaxX() / 180.0)));
-            int qMinY = (int) (Math.signum(env.getMinY()) * Math.ceil(Math.abs((env.getMinY() + 90) / 180.0)));
-            int qMaxY = (int) (Math.signum(env.getMaxY()) * Math.ceil(Math.abs((env.getMaxY() + 90) / 180.0)));
+            int qMinX=-1;
+            int qMaxX=1;
+            int qMinY=-1;
+            int qMaxY=1;
+           
             for (int i = qMinX; i < qMaxX; i++) {
                 for (int j = qMinY; j < qMaxY; j++) {
                     double minX = i * 180.0;

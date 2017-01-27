@@ -245,4 +245,40 @@ public class RenderUtilitiesTest extends TestCase {
         double expected = groundDistance / pixelDistance;
         assertEquals(expected, scale, expected * 0.05); // no projection deformation here!
     }
+    
+    /**
+     * Test from GEOT-5336,
+     * RenderUtilities was miss calculating the quadrants for large maps
+     * 
+     * 
+     */
+    public void testHemisphereCrossing() throws Exception {
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        
+        //First cross equator and prime meridian
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(-72.0, 132.0, -4.0, 70.0), wgs84);
+        double scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertTrue(scale > 1.0d);
+        
+        //Then prime meridian in North
+        re = new ReferencedEnvelope(new Envelope(-72.0, 132.0, 4.0, 70.0), wgs84);
+        scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertTrue(scale > 1.0d);
+        
+        //Then prime meridian in South
+        re = new ReferencedEnvelope(new Envelope(-72.0, 132.0, -4.0, -70.0), wgs84);
+        scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertTrue(scale > 1.0d);
+        
+        //Then equator in West
+        re = new ReferencedEnvelope(new Envelope(-72.0, -132.0, -90.0, 90.0), wgs84);
+        scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertTrue(scale > 1.0d);
+        
+        //Then Equator in East
+        re = new ReferencedEnvelope(new Envelope(72.0, 132.0, -90.0, 90.0), wgs84);
+        scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertTrue(scale > 1.0d);
+        
+    }
 }

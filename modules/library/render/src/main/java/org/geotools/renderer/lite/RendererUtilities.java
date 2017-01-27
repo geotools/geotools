@@ -643,7 +643,12 @@ public final class RendererUtilities {
             int qMaxX=1;
             int qMinY=-1;
             int qMaxY=1;
-           
+            //we must consider at least a pair of quadrants in each direction other wise lines which don't cross both the equator and prime meridian are
+            //measured as 0 length. But for some cases we need to consider still more hemispheres.
+            qMinX = Math.min(qMinX, (int) (Math.signum(env.getMinX()) * Math.ceil(Math.abs(env.getMinX() / 180.0))));
+            qMaxX = Math.max(qMaxX, (int) (Math.signum(env.getMaxX()) * Math.ceil(Math.abs(env.getMaxX() / 180.0))));
+            qMinY = Math.min(qMinY, (int) (Math.signum(env.getMinY()) * Math.ceil(Math.abs((env.getMinY() + 90) / 180.0))));
+            qMaxY = Math.max(qMaxY, (int) (Math.signum(env.getMaxY()) * Math.ceil(Math.abs((env.getMaxY() + 90) / 180.0))));
             for (int i = qMinX; i < qMaxX; i++) {
                 for (int j = qMinY; j < qMaxY; j++) {
                     double minX = i * 180.0;

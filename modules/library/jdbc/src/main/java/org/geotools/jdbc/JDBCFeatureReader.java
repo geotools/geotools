@@ -145,7 +145,6 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         ((BasicSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
         try {
             rs = st.executeQuery(sql);
-            md = rs.getMetaData();
         } catch (Exception e1) {
             LOGGER.log(Level.SEVERE, "Failed to execute statement " + sql);
             // make sure to mark as closed, otherwise we are going to log that it was not
@@ -170,7 +169,6 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         ((PreparedStatementSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
         try {
             rs = st.executeQuery();
-            md = rs.getMetaData();
         } catch (Exception e1) {
             // make sure to mark as closed, otherwise we are going to log that it was not
             try {
@@ -189,7 +187,6 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.cx = cx;
         this.st = rs.getStatement();
         this.rs = rs;
-        md = rs.getMetaData();
         this.offset = offset;
     }
     protected void init( JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) {

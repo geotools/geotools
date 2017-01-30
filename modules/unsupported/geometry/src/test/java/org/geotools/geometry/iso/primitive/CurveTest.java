@@ -32,17 +32,22 @@ import org.geotools.geometry.iso.coordinate.LineSegmentImpl;
 import org.geotools.geometry.iso.coordinate.LineStringImpl;
 import org.geotools.geometry.iso.coordinate.PositionImpl;
 import org.geotools.geometry.iso.io.CollectionFactoryMemoryImpl;
+import org.geotools.geometry.iso.io.GeometryToString;
 import org.geotools.geometry.iso.primitive.CurveImpl;
 import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.geometry.iso.util.elem2D.Geo2DFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.complex.Complex;
 import org.opengis.geometry.complex.CompositeCurve;
+import org.opengis.geometry.coordinate.LineString;
+import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
+import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -65,6 +70,7 @@ public class CurveTest extends TestCase {
 		GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
 		
 		this._testCurve(builder);
+		
 		
 	}
 	
@@ -297,5 +303,16 @@ public class CurveTest extends TestCase {
 
 		
 	}
+	
+	@Test 
+	public void testOpenClosed(){
+            GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
+	    double[] pts = {1.0, 1.0, 0.0, 2.0, 2.0, 0.0, 4.0, 2.0, 1.0, 5.0, 1.0, 1.0 };
+	    PointArray parr = builder.createPointArray(pts);
+	    Curve c=builder.createCurve(parr);
+	    GeometryToString w=new GeometryToString();
+	    assertTrue(w.getString(c).contains("Curve(1.0 1.0, 0.0 2.0, 2.0 0.0, 4.0 2.0, 1.0 5.0, 1.0 1.0)"));
+	}
+	
 
 }

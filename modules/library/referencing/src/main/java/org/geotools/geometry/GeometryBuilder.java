@@ -259,12 +259,13 @@ public class GeometryBuilder {
     public Curve createCurve(PointArray points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
         if (points == null)
             throw new NullPointerException("Points are required to create a curve");
-
+        if (points.size()==1)
+            throw new NullPointerException("At least two points are required to create a curve");
         // A curve will be created
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
         List/*<LineSegment>*/ segmentList = new ArrayList/*<LineSegment>*/();
-        for( int i=0; i<points.size();i++){
+        for( int i=0; i<points.size()-1;i++){
             int start = i;
             int end = (i+1)%points.size();
             DirectPosition point1 = points.getDirectPosition( start, null );

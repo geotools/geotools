@@ -53,6 +53,7 @@
     <module>wms</module>
     <module>xsd</module>
     <module>transform</module>
+    <module>ysld</module>
   </modules>
 </project>
 

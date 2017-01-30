@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -40,6 +40,9 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultResourceInfo;
@@ -50,6 +53,7 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
@@ -61,6 +65,8 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Base class for GridCoverage data access
@@ -79,13 +85,12 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
     /** registering ImageReadMT JAI operation (for multithread ImageRead) */
     static {
-    	try {
-    		ImageReadDescriptorMT.register(JAI.getDefaultInstance());
-    	}
-    	catch (Throwable e) {
-    		if(LOGGER.isLoggable(Level.FINE))
-    			LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-		}
+        try {
+            ImageReadDescriptorMT.register(JAI.getDefaultInstance());
+        } catch (Throwable e) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+        }
     }
 
     /**
@@ -98,14 +103,17 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     /** Caches an {@code ImageReaderSpi}. */
     private final ImageReaderSpi readerSPI;
 
+    /** The {@link MultiLevelROIProvider} used to provide masks*/
+    private MultiLevelROIProvider roiProvider;
+
+    /** This reader is made of a single file so the MultiLevelROI is unique */
+    protected MultiLevelROI multiLevelRoi;
+
     /**
      * Implement this method to setup the coverage properties (Envelope, CRS,
      * GridRange) using the provided {@code ImageReader}
      */
     protected abstract void setCoverageProperties(ImageReader reader) throws IOException;
-
-
-
 
     // ////////////////////////////////////////////////////////////////////////
     //  
@@ -116,16 +124,12 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     /** Source given as input to the reader */
     private File inputFile = null;
 
-    /** Coverage name */
-    private String coverageName = "geotools_coverage";
-
-
     /** Absolute path to the parent dir for this coverage. */
     private String parentPath;
 
-	private ServiceInfo serviceInfo;
+        private ServiceInfo serviceInfo;
 
-	private ResourceInfo resourceInfo;
+        private ResourceInfo resourceInfo;
 
     /**
      * Creates a new instance of a {@link BaseGridCoverage2DReader}. I assume
@@ -142,13 +146,11 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      *                an instance of a proper {@code ImageReaderSpi}.
      * @throws DataSourceException
      */
-    protected BaseGridCoverage2DReader(
-    		final Object input, 
-    		final Hints hints,
-            final String worldFileExtension,
-            final ImageReaderSpi formatSpecificSpi) throws DataSourceException {
-        super(input,hints);
-    	ImageReader reader=null;;
+    protected BaseGridCoverage2DReader(final Object input, final Hints hints,
+            final String worldFileExtension, final ImageReaderSpi formatSpecificSpi)
+            throws DataSourceException {
+        super(input, hints);
+        ImageReader reader = null;
         try {
            
             readerSPI = formatSpecificSpi;
@@ -160,8 +162,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             //
             // //
             checkSource(input);
-            
-
 
             // //
             //
@@ -171,7 +171,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             reader = readerSPI.createReaderInstance();
             reader.setInput(inputFile);
             setCoverageProperties(reader);
-            
+            setRoiProvider();
 
             // //
             //
@@ -222,6 +222,19 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
             }
         }
+    }
+
+    private void setRoiProvider() throws IOException {
+        Geometry granuleGeometry = JTS.toGeometry(new ReferencedEnvelope(originalEnvelope));
+        roiProvider = MultiLevelROIProviderFactory.createFootprintProvider(inputFile, granuleGeometry);
+        if (roiProvider != null) {
+            multiLevelRoi = roiProvider.getMultiScaleROI(null);
+        }
+    }
+
+    @Override
+    protected MultiLevelROIProvider getMultiLevelROIProvider (String coverageName) {
+        return roiProvider;
     }
 
     /** Package scope highest resolution serviceInfo accessor */
@@ -368,13 +381,14 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
         // Setup a new coverage request
         final RasterLayerRequest request = new RasterLayerRequest(params,this);
-        
 
         // compute the request.
         final RasterLayerResponse response = requestCoverage(request);
-        if(response!=null)
-        	return (GridCoverage2D) response.getGridCoverage();
-        return null;
+        GridCoverage2D gridCoverage = null;
+        if (response != null) {
+            gridCoverage = (GridCoverage2D) response.getGridCoverage();
+        }
+        return gridCoverage;
     }
 
     /**
@@ -444,7 +458,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
                         LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                     }
                 }
-            }            
+            }
         }
     }
 
@@ -510,22 +524,22 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
-			}
+            }
         }
         // if we got here we did not find a suitable transform
         raster2Model=null;
     }
 
     /**
-     * Information about this source. Subclasses should provide additional
-     * format specific information.
+     * Information about this source. Subclasses should provide additional format specific information.
      * 
      * @return ServiceInfo describing getSource().
      */
     public synchronized ServiceInfo getInfo() {
-    	if (serviceInfo!=null)
-    		return new DefaultServiceInfo(this.serviceInfo);
-    	
+        if (serviceInfo != null) {
+            return new DefaultServiceInfo(this.serviceInfo);
+        }
+
         DefaultServiceInfo localInfo = new DefaultServiceInfo();
         serviceInfo=localInfo;
         localInfo.setDescription(source.toString());
@@ -561,12 +575,13 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      */
     public synchronized ResourceInfo getInfo(String subname) {
 
-        if (this.resourceInfo!=null)
-    		return new DefaultResourceInfo(this.resourceInfo);
-    	
+        if (this.resourceInfo != null) {
+            return new DefaultResourceInfo(this.resourceInfo);
+        }
+
         DefaultResourceInfo localInfo = new DefaultResourceInfo();
-	resourceInfo=localInfo;    	
-	localInfo.setName(subname);
+        resourceInfo = localInfo;
+        localInfo.setName(subname);
         localInfo.setBounds(new ReferencedEnvelope(this.getOriginalEnvelope()));
         localInfo.setCRS(this.getCrs());
         localInfo.setTitle(subname);
@@ -621,6 +636,10 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      */
     public boolean hasMoreGridCoverages() {
         return false;
+    }
+
+    protected MultiLevelROI getMultiLevelRoi() {
+        return multiLevelRoi;
     }
 
 }

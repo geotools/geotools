@@ -18,6 +18,7 @@
 
 package org.geotools.data.db2;
 import java.io.*;
+
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ByteOrderValues;
 import com.vividsolutions.jts.io.OutStream;
@@ -44,6 +45,26 @@ import com.vividsolutions.jts.util.Assert;
 
 public class DB2WKBWriter {
     
+    /**
+     * @author christian
+     * 
+     * Filter class to check if the coordinate dimension is 2 or 3
+     *
+     */
+    static class DimensionCoordFilter implements CoordinateFilter {
+        int dimension=2;
+
+        public void filter(Coordinate coord) {
+            if (dimension==3) // no further testing needed
+                return;
+            if (!(Double.isNaN(coord.z))) 
+                    dimension=3;
+        }
+        
+        int getDimension() {
+            return dimension;
+        }
+    } 
     
     
     /**
@@ -51,16 +72,12 @@ public class DB2WKBWriter {
      * @param Geometry g
      * @return if there is one z value != NaN, then 3 else 2
      */
-    public static final int guessCoorinateDims(Geometry g) {
-        int dims = 2;
-        final Coordinate[] cs = g.getCoordinates();
-        for (int t = cs.length - 1; t >= 0; t--) {
-            if (!(Double.isNaN(cs[t].z))) {
-                dims = 3;
-                break;
-            }
-        }
-        return dims;
+    public static final int guessCoordinateDimension(Geometry g) {
+        
+        DimensionCoordFilter filter = new DimensionCoordFilter();
+        g.apply(filter);
+        return filter.getDimension();
+            
     }
 
     
@@ -86,6 +103,7 @@ public class DB2WKBWriter {
     }
 
     private int outputDimension = 2;
+
     private int byteOrder;
     private ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
     private OutStream byteArrayOutStream = new OutputStreamOutStream(byteArrayOS);
@@ -93,39 +111,28 @@ public class DB2WKBWriter {
     private byte[] buf = new byte[8];
     private boolean hasOGCWkbZTyps;
 
-    /**
-     * Creates a writer that writes {@link Geometry}s with
-     * output dimension = 2 and BIG_ENDIAN byte order
-     */
-    public DB2WKBWriter(boolean hasOGCWkbZTyps ) {
-      this(2, ByteOrderValues.BIG_ENDIAN, hasOGCWkbZTyps);
-    }
 
     /**
-     * Creates a writer that writes {@link Geometry}s with
-     * the given dimension (2 or 3) for output coordinates
-     * and {@link BIG_ENDIAN} byte order.
+     * Creates a writer that writes {@link Geometry} 
+     * using {@link BIG_ENDIAN} byte order.
      * If the input geometry has a small coordinate dimension,
      * coordinates will be padded with {@link NULL_ORDINATE}.
      *
-     * @param outputDimension the coordinate dimension to output (2 or 3)
      */
-    public DB2WKBWriter(int outputDimension, boolean hasOGCWkbZTyps) {
-      this(outputDimension, ByteOrderValues.BIG_ENDIAN,hasOGCWkbZTyps);
+    public DB2WKBWriter( boolean hasOGCWkbZTyps) {
+      this( ByteOrderValues.BIG_ENDIAN,hasOGCWkbZTyps);
     }
 
     /**
-     * Creates a writer that writes {@link Geometry}s with
-     * the given dimension (2 or 3) for output coordinates
-     * and byte order
+     * Creates a writer that writes {@link Geometry}s  
+     * in the given byte order
      * If the input geometry has a small coordinate dimension,
      * coordinates will be padded with {@link NULL_ORDINATE}.
      *
-     * @param outputDimension the coordinate dimension to output (2 or 3)
      * @param byteOrder the byte ordering to use
      */
-    public DB2WKBWriter(int outputDimension, int byteOrder, boolean hasOGCWkbZTyps) {
-      this.outputDimension = outputDimension;
+    public DB2WKBWriter(int byteOrder, boolean hasOGCWkbZTyps) {
+      
       this.byteOrder = byteOrder;
       this.hasOGCWkbZTyps=hasOGCWkbZTyps;
 
@@ -160,6 +167,8 @@ public class DB2WKBWriter {
      */
     public void write(Geometry geom, OutStream os) throws IOException
     {
+       outputDimension=guessCoordinateDimension(geom); 
+        
       if (geom instanceof Point)
         writePoint((Point) geom, os);
       // LinearRings will be written as LineStrings
@@ -295,5 +304,8 @@ public class DB2WKBWriter {
       }
     }
 
+    public int getOutputDimension() {
+        return outputDimension;
+    }
 
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *   (C) 2009 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *   (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
  *   (C) 2001, Vivid Solutions
  *   
  *    This library is free software; you can redistribute it and/or
@@ -774,7 +774,8 @@ public class WKTReader2 extends WKTReader {
         String nextWord = COMMA;
         while( nextWord.equals( COMMA )){
             nextWord = getNextWord();
-            if( nextWord.equals(L_PAREN) ){
+            if( nextWord.equals(L_PAREN) || nextWord.equals(EMPTY) ){
+                tokenizer.pushBack();
                 Polygon polygon = readPolygonText();
                 polygons.add(polygon);
             } else if (nextWord.equalsIgnoreCase("CURVEPOLYGON")) {

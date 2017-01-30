@@ -15,7 +15,7 @@ When you implement this you can either:
 
 * Handle it correctly (returning an object of the target class
 * Return null (if you could not handle it correctly)
-* Throw an exeption (if you could not handle it correctly)
+* Throw an exception (if you could not handle it correctly)
 
 Converter for Enum
 ^^^^^^^^^^^^^^^^^^

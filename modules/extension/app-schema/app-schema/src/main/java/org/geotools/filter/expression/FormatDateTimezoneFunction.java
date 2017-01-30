@@ -34,14 +34,18 @@ import org.opengis.filter.expression.Literal;
  * 
  * <p>
  * 
- * Arguments:
+ * Parameters:
  * <ol>
  * <li>pattern: formatting pattern supported by {@link SimpleDateFormat}, for example "yyyy-MM-dd".
  * <li>date: the {@link Date} for the time to be formatted or its string representation, for example "1948-01-01T00:00:00Z". A
- * {@link RuntimeException} with be thrown if the date is invalid.
+ * {@link RuntimeException} with be thrown if the date is malformed (and not null).
  * <li>timezone: the name of a time zone supported by {@link TimeZone}, for example "UTC" or "Canada/Mountain". Note that unrecognised timezones will
  * silently be converted to UTC.
  * </ol>
+ * 
+ * <p>
+ * 
+ * This function returns null if any parameter is null.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
@@ -77,15 +81,20 @@ public class FormatDateTimezoneFunction implements Function {
             throw new RuntimeException(getName() + ": wrong number of parameters ("
                     + parameters.size() + " not 3)");
         }
-        // can this ever fail?
+        // return null if any parameter is null
+        for (Expression p : parameters) {
+            if (p.evaluate(object) == null) {
+                return null;
+            }
+        }
         String pattern = parameters.get(0).evaluate(object, String.class);
-        // seems to only ever return null of failure
         Date date = parameters.get(1).evaluate(object, Date.class);
         if (date == null) {
+            // malformed date that was not null
             throw new RuntimeException(getName() + ": could not parse date: "
                     + (String) parameters.get(1).evaluate(object, String.class));
         }
-        // fails silently for unrecognised time zone
+        // if timezone is not understood it is silently set to UTC
         TimeZone timezone = TimeZone.getTimeZone(parameters.get(2).evaluate(object, String.class));
         // broken patterns corrupt output but do not cause exceptions
         DateFormat dateFormat = new SimpleDateFormat(pattern);

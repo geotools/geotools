@@ -24,11 +24,11 @@ The following tools are required to build GeoTools:
   
   * http://maven.apache.org/download.html  
 
-* Java 2 Software Developers Kit (Java 7)
+* Java Development Kit 8 (JDK 8)
   
-  * http://www.oracle.com/technetwork/java/javase/overview/index.html
+  * http://www.oracle.com/technetwork/java/javase/downloads/
 
-The following optional downloads facilitate increased functionality or performance:
+The following optional downloads provide increased functionality or performance:
 
 * Java Advanced Imaging (Optional)
   
@@ -39,7 +39,7 @@ The following optional downloads facilitate increased functionality or performan
 
 * Java ImageIO (Optional)
   
-  Java Image I/O Tools 1.1 is a java extensions providing drivers for reading and writing
+  Java Image I/O Tools 1.1 is a Java extension providing drivers for reading and writing
   image files.
   
   * http://download.java.net/media/jai-imageio/builds/release/1.1/
@@ -52,7 +52,7 @@ The following optional downloads facilitate increased functionality or performan
 
 * Oracle (Optional):
     
-  * ojdbc14.jar
+  * Obtain an ojdbc jar from Oracle or your Oracle installation
 
 * DB2 (Optional)
 

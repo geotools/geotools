@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",                              
+"features": [
+{ "type": "Feature", "properties": { "LAT": 46.066667, "LON": 11.116667, "CITY": "Trento", "NUMBER": 140, "YEAR": 2002 }, "bbox": [ 11.117, 46.067, 11.117, 46.067 ], "geometry": { "type": "Point", "coordinates": [ 11.117, 46.067 ] } },
+{ "type": "Feature", "properties": { "LAT": 44.9441, "LON": -93.0852, "CITY": "St Paul", "NUMBER": 125, "YEAR": 2003 }, "bbox": [ -93.085, 44.944, -93.085, 44.944 ], "geometry": { "type": "Point", "coordinates": [ -93.085, 44.944 ] } },
+{ "type": "Feature", "properties": { "LAT": 13.752222, "LON": 100.493889, "CITY": "Bangkok", "NUMBER": 150, "YEAR": 2004 }, "bbox": [ 100.494, 13.752, 100.494, 13.752 ], "geometry": { "type": "Point", "coordinates": [ 100.494, 13.752 ] } },
+{ "type": "Feature", "properties": { "LAT": 45.420833, "LON": -75.69, "CITY": "Ottawa", "NUMBER": 200, "YEAR": 2004 }, "bbox": [ -75.69, 45.421, -75.69, 45.421 ], "geometry": { "type": "Point", "coordinates": [ -75.69, 45.421 ] } },
+{ "type": "Feature", "properties": { "LAT": 44.9801, "LON": -93.251867, "CITY": "Minneapolis", "NUMBER": 350, "YEAR": 2005 }, "bbox": [ -93.252, 44.98, -93.252, 44.98 ], "geometry": { "type": "Point", "coordinates": [ -93.252, 44.98 ] } },
+{ "type": "Feature", "properties": { "LAT": 46.519833, "LON": 6.6335, "CITY": "Lausanne", "NUMBER": 560, "YEAR": 2006 }, "bbox": [ 6.633, 46.52, 6.633, 46.52 ], "geometry": { "type": "Point", "coordinates": [ 6.633, 46.52 ] } },
+{ "type": "Feature", "properties": { "LAT": 48.428611, "LON": -123.365556, "CITY": "Victoria", "NUMBER": 721, "YEAR": 2007 }, "bbox": [ -123.366, 48.429, -123.366, 48.429 ], "geometry": { "type": "Point", "coordinates": [ -123.366, 48.429 ] } },
+{ "type": "Feature", "properties": { "LAT": -33.925278, "LON": 18.423889, "CITY": "Cape Town", "NUMBER": 550, "YEAR": 2008 }, "bbox": [ 18.424, -33.925, 18.424, -33.925 ], "geometry": { "type": "Point", "coordinates": [ 18.424, -33.925 ] } },
+{ "type": "Feature", "properties": { "LAT": -33.859972, "LON": 151.21111, "CITY": "Sydney", "NUMBER": 436, "YEAR": 2009 }, "bbox": [ 151.211, -33.86, 151.211, -33.86 ], "geometry": { "type": "Point", "coordinates": [ 151.211, -33.86 ] } }
+]
+}

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,6 +50,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class WebMapServerOnlineTest extends ServerTestCase {
     URL serverURL;
+    URL serverWithSpacedLayerNamesURL;
     URL brokenURL;
     private URL featureURL;
 
@@ -65,6 +66,8 @@ public class WebMapServerOnlineTest extends ServerTestCase {
                 "http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?VERSION=1.1.0&REQUEST=GetCapabilities");
         
         brokenURL = new URL("http://afjklda.com");
+        
+        serverWithSpacedLayerNamesURL = new URL("http://tigerweb.geo.census.gov/arcgis/services/TIGERweb/tigerWMS_ACS2015/MapServer/WMSServer");
     }
 
     /*
@@ -136,6 +139,47 @@ public class WebMapServerOnlineTest extends ServerTestCase {
 
         BufferedImage image = ImageIO.read(response.getInputStream());
         assertEquals(image.getHeight(), 400);
+    }
+    
+    public void testIssueGetMapRequestWithSpacedLayerNames() throws Exception {
+        WebMapServer wms = new WebMapServer(serverWithSpacedLayerNamesURL);
+
+        WMSCapabilities capabilities = wms.getCapabilities();
+
+        GetMapRequest request = wms.createGetMapRequest();
+
+        Layer[] layers = WMSUtils.getNamedLayers(capabilities);
+        Iterator<?> iter = Arrays.asList(layers).iterator();
+        boolean atLeastOneLayerNameContainsSpaces = false;
+        while (iter.hasNext()) {
+
+            Layer layer = (Layer) iter.next();      
+            if(layer.getName().contains(" "))
+            {
+                atLeastOneLayerNameContainsSpaces = true;
+                request.addLayer(layer);
+            }
+        }
+
+        // for the test to make sense at least one layer name must contain spaces
+        assertTrue(atLeastOneLayerNameContainsSpaces);
+
+        Set<?> srss = WMSUtils.getSRSs(capabilities);
+        request.setSRS((String) srss.iterator().next());
+        request.setDimensions("400", "300");
+        String format = "image/gif";
+        List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
+        if (!formats.contains("image/gif")) {
+            format = (String) formats.get(0);
+        } 
+        request.setFormat(format);
+
+        request.setBBox("-93.239328320802,44.8440037593985,-92.976671679198,45.0409962406015");
+
+        GetMapResponse response = (GetMapResponse) wms.issueRequest(request);
+
+        BufferedImage image = ImageIO.read(response.getInputStream());
+        assertNotNull(image);
     }
 
     public void testIssueGetFeatureInfoRequest() throws Exception {

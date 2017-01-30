@@ -72,7 +72,9 @@ Tip:
 Configuring the heap size
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Maven build may requires a fair amount of memory. For example some JUnit tests are known to fail on Maven 2 with the default heap size. If you need the maximal heap size increased, and may be configured as below (on Windows command line)::
+The Maven build may requires a fair amount of memory. For example javadoc generation requires a large heap size. If you need the maximal heap size increased check the root :file:`pom.xml` for settings.
+
+To change the heap size of the maven command itself::
    
    set MAVEN_OPTS=-Xmx384M
 

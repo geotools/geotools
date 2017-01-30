@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,26 @@
  */
 package org.geotools.data.property;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
@@ -40,6 +50,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
@@ -55,6 +66,14 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+
 import junit.framework.TestCase;
 
 /**
@@ -68,7 +87,7 @@ import junit.framework.TestCase;
 public class PropertyDataStoreTest extends TestCase {
     private PropertyDataStore store;
     static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
-    
+
     /**
      * Constructor for SimpleDataStoreTest.
      * @param arg0
@@ -454,6 +473,41 @@ public class PropertyDataStoreTest extends TestCase {
         },null);
     }
 
+    public void testGeometryFactoryHint() throws Exception {
+        final GeometryFactory gf = new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING),
+                1234);
+        SimpleFeatureSource road = store.getFeatureSource("road");
+        FeatureId fid1 = ff.featureId("fid1");
+        Filter select = ff.id(Collections.singleton(fid1));
+        Query q = new Query(road.getSchema().getTypeName(), select);
+        q.getHints().put(Hints.JTS_GEOMETRY_FACTORY, gf);
+        SimpleFeatureCollection featureCollection = road.getFeatures(q);
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                Geometry g = (Geometry) feature.getDefaultGeometry();
+                assertEquals(1234, g.getSRID());
+            }
+        }, null);
+    }
+
+    public void testCoordinateSequenceHint() throws Exception {
+        CoordinateSequenceFactory csFactory = new PackedCoordinateSequenceFactory();
+        SimpleFeatureSource road = store.getFeatureSource("road");
+        FeatureId fid1 = ff.featureId("fid1");
+        Filter select = ff.id(Collections.singleton(fid1));
+        Query q = new Query(road.getSchema().getTypeName(), select);
+        q.getHints().put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, csFactory);
+        SimpleFeatureCollection featureCollection = road.getFeatures(q);
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                Point p = (Point) feature.getDefaultGeometry();
+                assertThat(p.getCoordinateSequence(), instanceOf(PackedCoordinateSequence.class));
+            }
+        }, null);
+    }
+
     /**
      * In response to <a
      * href="http://jira.codehaus.org/browse/GEOT-3540">GEOT-3540
@@ -614,7 +668,7 @@ public class PropertyDataStoreTest extends TestCase {
     public void testSortOnUnrequestedProperties() throws Exception {
         ContentFeatureSource fs = store.getFeatureSource("road");
         Query q = new Query("road");
-        q.setPropertyNames(new String[] { "name" });
+        q.setPropertyNames(new String[]{"name"});
         q.setSortBy(new SortBy[] { ff.sort("id", SortOrder.DESCENDING) });
 
         ContentFeatureCollection fc = fs.getFeatures(q);
@@ -629,5 +683,27 @@ public class PropertyDataStoreTest extends TestCase {
                 i++;
             }
         }
+    }
+
+    public void testRemoveSchema() throws Exception {
+        File dir = Files.createTempDirectory("layers").toFile();
+        File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.properties")).toFile();
+        File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.properties")).toFile();
+        File file3 = Files.createFile(Paths.get(dir.getAbsolutePath(), "polygon.properties")).toFile();
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("directory", dir);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        // File 1
+        assertTrue(file1.exists());
+        store.removeSchema("points");
+        assertFalse(file1.exists());
+        // File 2
+        assertTrue(file2.exists());
+        store.removeSchema("lines.properties");
+        assertFalse(file2.exists());
+        // File 3
+        assertTrue(file3.exists());
+        store.removeSchema(new NameImpl("polygon"));
+        assertFalse(file3.exists());
     }
 }

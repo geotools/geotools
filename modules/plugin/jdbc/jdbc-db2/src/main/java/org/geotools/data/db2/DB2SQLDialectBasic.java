@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -68,6 +68,8 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     	DB2FilterToSQL filter = new DB2FilterToSQL((Writer) null);
     	filter.setFunctionEncodingEnabled(isFunctionEncodingEnabled());
     	filter.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
+    	if (delegate.isUseSelectivity())
+    	    filter.setSelectivityClause(DB2SQLDialect.SELECTIVITY_CLAUSE);
         return filter;
     }
 
@@ -186,6 +188,11 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     }
 
     @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
+    @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();
     }
@@ -234,6 +241,19 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType,
             Connection cx) throws SQLException, IOException {
         return delegate.getOptimizedBounds(schema, featureType, cx);
+    }
+
+    public boolean isUseSelectivity() {
+        return delegate.isUseSelectivity();
+    }
+
+    public void setUseSelectivity(boolean useSelectivity) {
+        delegate.setUseSelectivity(useSelectivity);
+    }
+
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return delegate.supportsSchemaForIndex();
     }
 
 }

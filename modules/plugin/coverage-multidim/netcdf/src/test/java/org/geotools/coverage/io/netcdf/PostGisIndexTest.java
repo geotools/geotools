@@ -22,23 +22,31 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCRSAuthorityFactory;
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -46,11 +54,14 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.Slice2DIndex;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
+import org.geotools.util.DateRange;
+import org.geotools.util.NumberRange;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.Property;
@@ -86,7 +97,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
 
     private final static String UTM_DIR = "utmDir";
 
-    @Ignore
+    @Test
     public void testPostGisIndexWrapping() throws Exception {
         final String auxName = "O3NO2wrapped.xml";
         File file = TestData.file(this, GOME_FILE);
@@ -100,7 +111,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
         File destAuxFile = new File(dir, auxName);
         FileUtils.copyFile(file, destFile);
         FileUtils.copyFile(auxFile, destAuxFile);
-        createDatastoreProperties(dir, null);
+        File datastoreFile = createDatastoreProperties(dir, null);
 
         final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
         assertTrue(unidataImageReaderSpi.canDecodeInput(file));
@@ -134,6 +145,68 @@ public final class PostGisIndexTest extends OnlineTestCase {
                 final List<CoverageSlice> granules = cs.getGranules(new Query(typeName));
                 checkGranules(granules);
             }
+
+            // Testing with GeoTools reader
+            Hints hints = new Hints(Utils.AUXILIARY_FILES_PATH, destAuxFile.getCanonicalPath());
+            hints.add(new Hints(Utils.AUXILIARY_DATASTORE_PATH, datastoreFile.getCanonicalPath()));
+            NetCDFReader gtReader = new NetCDFReader(destFile, hints);
+            String coverageName = gtReader.getGridCoverageNames()[1];
+            CloseableIterator<FileGroup> files = null;
+            try {
+                final String[] metadataNames = gtReader.getMetadataNames(coverageName);
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length, 12);
+
+                ResourceInfo info = gtReader.getInfo(coverageName);
+                assertTrue(info instanceof FileResourceInfo);
+                FileResourceInfo fileInfo = (FileResourceInfo) info;
+                files = fileInfo.getFiles(null);
+
+                int fileGroups = 0;
+                FileGroup fg = null;
+                while (files.hasNext()) {
+                    fg = files.next();
+                    fileGroups++;
+
+                }
+                assertEquals(1, fileGroups);
+                File mainFile = fg.getMainFile();
+                assertEquals("O3-NO2", FilenameUtils.getBaseName(mainFile.getAbsolutePath()));
+                Map<String, Object> metadata = fg.getMetadata();
+                assertNotNull(metadata);
+                assertFalse(metadata.isEmpty());
+                Set<String> keys = metadata.keySet();
+
+                // envelope, time, elevation = 3 elements
+                assertEquals(3, keys.size());
+
+                // Check time
+                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                Date start = sdf.parse("2012-04-01T00:00:00.000Z");
+                Date end = sdf.parse("2012-04-01T01:00:00.000Z");
+                DateRange timeRange = new DateRange(start, end);
+                assertEquals(timeRange, metadata.get(Utils.TIME_DOMAIN));
+
+                // Check elevation
+                NumberRange<Double> elevationRange = NumberRange.create(10.0, 450.0);
+                assertEquals(elevationRange, metadata.get(Utils.ELEVATION_DOMAIN));
+
+            } catch (Throwable t) {
+                throw new RuntimeException(t);
+            } finally {
+                if (files != null) {
+                    files.close();
+                }
+                if (reader != null) {
+                    try {
+                        reader.dispose();
+                    } catch (Throwable t) {
+                        // Does nothing
+                    }
+                }
+            }
+
         } finally {
             if (reader != null) {
                 try {
@@ -145,12 +218,14 @@ public final class PostGisIndexTest extends OnlineTestCase {
         }
     }
 
-    private void createDatastoreProperties(File dir, Map<String, String> override) throws IOException {
+    private File createDatastoreProperties(File dir, Map<String, String> override) throws IOException {
         FileWriter out = null;
+        File outFile = null;
         try {
 
             // Preparing custom multidim datastore properties
-            out = new FileWriter(new File(dir, "mddatastore.properties"));
+            outFile = new File(dir, "mddatastore.properties");
+            out = new FileWriter(outFile);
             final Properties props = createExampleFixture();
             if (override != null && !override.isEmpty()) {
                 Set<String> mapKeys = override.keySet();
@@ -172,6 +247,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
                 IOUtils.closeQuietly(out);
             }
         }
+        return outFile;
     }
 
     @Test

@@ -9,10 +9,6 @@
     <version>2.0.0-1</version>
     <name>Sampling Specimen 2.0 application schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/samplingSpecimen-2.0/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/samplingSpecimen-2.0/</url>
-    </scm>
 
     <developers>
         <developer>

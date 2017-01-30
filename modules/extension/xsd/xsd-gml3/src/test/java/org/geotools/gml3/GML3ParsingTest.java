@@ -1,5 +1,8 @@
 package org.geotools.gml3;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -13,9 +16,18 @@ import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.TestCase;
 
+import org.geotools.geometry.jts.CompoundCurvedGeometry;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.gml3.v3_2.GMLParsingTest;
+import org.geotools.xml.Parser;
 import org.geotools.xml.StreamingParser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
+
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * 
@@ -75,5 +87,17 @@ public class GML3ParsingTest extends TestCase {
         }
         
         assertEquals( 49, nfeatures );
+    }
+    
+    public void testParse3D() throws Exception {
+        Parser p = new Parser(new GMLConfiguration());
+        Object g = p.parse(GML3ParsingTest.class.getResourceAsStream("polygon3d.xml"));
+        assertThat(g, instanceOf(Polygon.class));
+
+        Polygon polygon = (Polygon) g;
+        assertEquals(3, CoordinateSequences.coordinateDimension(polygon));
+        Geometry expected = new WKTReader().read(
+                "POLYGON((94000 471000 10, 94001 471000 11, 94001 471001 12, 94000 471001 13, 94000 471000 10))");
+        assertTrue(CoordinateSequences.equalsND(expected, polygon));
     }
 }

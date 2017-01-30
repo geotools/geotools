@@ -506,7 +506,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
                     throw new NoninvertibleTransformException(Errors.format(
                               ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
                 }
-                inverse = new ProjectiveTransform(matrix);
+                inverse = createInverse(matrix);
                 inverse.inverse = this;
             }
         }
@@ -517,7 +517,7 @@ public class ProjectiveTransform extends AbstractMathTransform implements Linear
      * Creates an inverse transform using the specified matrix.
      * To be overridden by {@link GeocentricTranslation}.
      */
-    MathTransform createInverse(final Matrix matrix) {
+    ProjectiveTransform createInverse(final Matrix matrix) {
         return new ProjectiveTransform(matrix);
     }
 

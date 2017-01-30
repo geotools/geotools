@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -291,5 +291,20 @@ public class TemporalConverterFactoryTest extends TestCase {
 
         assertEquals(TimeZone.getDefault().getID(), converter.convert(TimeZone.getDefault(), String.class));
         assertNull(converter.convert(null,String.class));
+    }
+
+    public void testLongtoDate() throws Exception {
+        Converter converter = factory.createConverter(Long.class, Date.class, null);
+        assertNotNull(converter);
+
+        assertNull(converter.convert(null, Date.class));
+
+        // Thu, 21 May 2015 00:00:00 GMT
+        Long esriFieldTypeDateVal = 1432166400000L;
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        c.setTimeInMillis(esriFieldTypeDateVal);
+        Date expected = c.getTime();
+        Date actual = converter.convert(esriFieldTypeDateVal, Date.class);
+        assertEquals(expected, actual);
     }
 }

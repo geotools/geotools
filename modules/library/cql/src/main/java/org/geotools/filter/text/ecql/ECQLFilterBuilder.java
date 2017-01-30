@@ -137,7 +137,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         } else {
             assert false : "Number instnce is expected";
         }
-        Literal signedNumber = getFilterFactory().literal(strNumber);
+        Literal signedNumber = getFilterFactory().literal(number);
 
         return signedNumber;
     }

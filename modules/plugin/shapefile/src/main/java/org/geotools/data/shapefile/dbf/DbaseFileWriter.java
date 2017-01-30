@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
 
 /**
- * A DbaseFileReader is used to read a dbase III format file. The general use of
+ * A DbaseFileWriter is used to write a dbase III format file. The general use of
  * this class is: <CODE><PRE>
  * DbaseFileHeader header = ...
  * WritableFileChannel out = new FileOutputStream(&quot;thefile.dbf&quot;).getChannel();
@@ -535,6 +535,10 @@ public class DbaseFileWriter {
 
 	public void setReportFieldSizeErrors(boolean reportFieldSizeErrors) {
 		this.reportFieldSizeErrors = reportFieldSizeErrors;
+	}
+
+	public DbaseFileHeader getHeader() {
+	    return this.header;
 	}
 
 	

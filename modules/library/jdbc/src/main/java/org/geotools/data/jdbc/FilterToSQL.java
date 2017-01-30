@@ -311,7 +311,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         this.encode(expression);
         return out.getBuffer().toString();
     }
-    
+
     /**
      * Sets the featuretype the encoder is encoding sql for.
      * <p>
@@ -1694,7 +1694,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Current field encoder
      */
     protected FieldEncoder fieldEncoder = DefaultFieldEncoder.DEFAULT_FIELD_ENCODER;
-    
+
     /**
      * Set custom field encoder
      * 

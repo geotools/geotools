@@ -124,7 +124,8 @@ public class ProjectionBuilder {
      * @param ellipsoid
      */
     public static void updateEllipsoidParams(ParameterValueGroup parameters, Ellipsoid ellipsoid) {
-
+        Utilities.ensureNonNull("ellipsoid", ellipsoid);
+        Utilities.ensureNonNull("parameters", parameters);
         double semiMajor = ellipsoid.getSemiMajorAxis();
         double inverseFlattening = ellipsoid.getInverseFlattening();
 
@@ -236,24 +237,24 @@ public class ProjectionBuilder {
      * @return
      */
     public static Ellipsoid createEllipsoid(String name, Map<String, Number> ellipsoidParams) {
-        Number semiMajor = null;
+        Number semiMajor = NetCDFUtilities.DEFAULT_EARTH_RADIUS;
         Number semiMinor = null;
         Number inverseFlattening = Double.NEGATIVE_INFINITY;
-        if (ellipsoidParams.containsKey(NetCDFUtilities.SEMI_MAJOR)) {
-            semiMajor = ellipsoidParams.get(NetCDFUtilities.SEMI_MAJOR);
-        }
-        if (ellipsoidParams.containsKey(NetCDFUtilities.SEMI_MINOR)) {
-            semiMinor = ellipsoidParams.get(NetCDFUtilities.SEMI_MINOR);
-        }
-        if (ellipsoidParams.containsKey(NetCDFUtilities.INVERSE_FLATTENING)) {
-            inverseFlattening = ellipsoidParams.get(NetCDFUtilities.INVERSE_FLATTENING);
+        if (ellipsoidParams != null && !ellipsoidParams.isEmpty()) {
+            if (ellipsoidParams.containsKey(NetCDFUtilities.SEMI_MAJOR)) {
+                semiMajor = ellipsoidParams.get(NetCDFUtilities.SEMI_MAJOR);
+            }
+            if (ellipsoidParams.containsKey(NetCDFUtilities.SEMI_MINOR)) {
+                semiMinor = ellipsoidParams.get(NetCDFUtilities.SEMI_MINOR);
+            }
+            if (ellipsoidParams.containsKey(NetCDFUtilities.INVERSE_FLATTENING)) {
+                inverseFlattening = ellipsoidParams.get(NetCDFUtilities.INVERSE_FLATTENING);
+            }
         }
         if (semiMinor != null) {
-            return DefaultEllipsoid.createEllipsoid(name, semiMajor.doubleValue(),
-                    semiMinor.doubleValue(), SI.METER);
+            return DefaultEllipsoid.createEllipsoid(name, semiMajor.doubleValue(), semiMinor.doubleValue(), SI.METER);
         } else {
-            return DefaultEllipsoid.createFlattenedSphere(name, semiMajor.doubleValue(),
-                    inverseFlattening.doubleValue(), SI.METER);
+            return DefaultEllipsoid.createFlattenedSphere(name, semiMajor.doubleValue(), inverseFlattening.doubleValue(), SI.METER);
         }
     }
 

@@ -195,6 +195,10 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         public SumResult(SumStrategy newSum) {
             sum = newSum;
         }
+        public SumResult(Object value) {
+            sum = createStrategy(value.getClass());
+            sum.add(value);
+        }
 
         public Object getValue() {
             return sum.getResult();

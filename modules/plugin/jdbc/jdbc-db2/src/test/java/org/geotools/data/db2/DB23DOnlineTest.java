@@ -37,5 +37,9 @@ public class DB23DOnlineTest extends JDBC3DOnlineTest {
         return new DB23DTestSetup();
     }
 
+    @Override
+    public void testSchema() throws Exception {
+        // do nothing, not applicable
+    }
     
 }

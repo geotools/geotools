@@ -102,7 +102,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
          * ElementEncodeExecutor was written to support encoding of, for example, CodeType from a
          * String. However, CodeType is most fully represented by a ComplexAttribute (it can have a
          * codeSpace attribute). The instanceof check retains the old behaviour so
-         * ElementEncodeExecutor can still automagically convert simple features into XML. The
+         * ElementEncodeExecutor can still automatically convert simple features into XML. The
          * instanceof is necessary because ElementEncodeExecutor will otherwise use
          * Converters.convert to turn any ComplexAttribute bound to a String into a String. Because
          * every Java object has a toString method, this will always "succeed", and garbage will be

@@ -138,7 +138,7 @@ Two major applications (GeoServer and uDig) both use the idea of a Catalog to st
 of all the data they are working with (both DataStores and GridCoverages) and then "connect"
 to the data only when needed.
 
-You may have thousands of entries in your catalog (all the gis data on your computer?) and only
+You may have thousands of entries in your catalog (all the GIS data on your computer?) and only
 be using 10 of them for your current map. This is the "lazy access" for which catalog was
 created.
 
@@ -166,4 +166,4 @@ References:
 
 * http://geoserver.org/display/GEOS/Configuration+Proposal
 * http://help.eclipse.org/helios/topic/org.eclipse.platform.doc.isv/resInt_filesystem.htm
-* http://udig.refractions.net/confluence/display/DEV/2+Catalog
+* http://udig.github.io/docs/dev/catalog.html

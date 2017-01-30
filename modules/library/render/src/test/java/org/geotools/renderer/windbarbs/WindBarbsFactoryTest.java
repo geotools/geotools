@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -95,14 +95,9 @@ public class WindBarbsFactoryTest extends Assert {
 
     @Test
     public void testInvalidAndRare() {
-        // MAX 100 KNOTS
-        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(110)[kts]");
-        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
-        assertNull(shp);
-
         // INF and -INF are rejected
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(Infinity)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(-Infinity)[kts]");
         shp = (Shape) wbf.getShape(null, this.exp, this.feature);
@@ -130,7 +125,7 @@ public class WindBarbsFactoryTest extends Assert {
     public void otherInvalidTests() {
 
         // wrong name
-        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "pippo(110)[kts]");
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "dummy(110)[kts]");
         Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
         assertNull(shp);
 
@@ -221,24 +216,6 @@ public class WindBarbsFactoryTest extends Assert {
         shpS = WindBarbsFactory.SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shpS); // flip and check
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(), wkt);
 
-        // 100 KNOTS --> square
-        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX
-                + "default(100)[kts]?vectorLength=30");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
-        assertNotNull(shp);
-        assertTrue(shp instanceof Path2D);
-        wkt = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
-        assertEquals(wkt, "MULTILINESTRING ((0 -0, 0 30), (0 30, 10 30, 10 20, 0 20, 0 30))");
-
-        // SOUTH make sure the same shp is flipped on y axis
-        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX
-                + "default(100)[kts]?hemisphere=s&vectorLength=30");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
-        assertNotNull(shpS);
-        assertTrue(shpS instanceof Path2D);
-        shpS = WindBarbsFactory.SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shpS); // flip and check
-        assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(), wkt);
-
         // 15 KNOTS --> square
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX
                 + "default(15)[kts]?vectorLength=30");
@@ -274,6 +251,25 @@ public class WindBarbsFactoryTest extends Assert {
         assertTrue(shp instanceof Path2D);
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)),
                 "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 35, 0 30, 0 40))");
+
+        // 100 KNOTS --> 2 pennants
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX
+                + "default(100)[kts]?vectorLength=30");
+        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shp);
+        assertTrue(shp instanceof Path2D);
+        wkt = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
+        assertEquals(wkt, "MULTILINESTRING ((0 -0, 0 30), (0 30, 20 27, 0 24, 0 30), (0 24, 20 21, 0 18, 0 24))");
+
+        // SOUTH make sure the same shp is flipped on y axis
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX
+                + "default(100)[kts]?hemisphere=s&vectorLength=30");
+        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shpS);
+        assertTrue(shpS instanceof Path2D);
+        shpS = WindBarbsFactory.SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shpS); // flip and check
+        assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(), wkt);
+
 
     }
 
@@ -336,23 +332,7 @@ public class WindBarbsFactoryTest extends Assert {
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(),
                 shpString);
 
-        // 100 KNOTS --> square
-        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(100)[kts]");
-        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
-        assertNotNull(shp);
-        assertTrue(shp instanceof Path2D);
-        shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
-        assertEquals(shpString, "MULTILINESTRING ((0 -0, 0 40), (0 40, 10 40, 10 30, 0 30, 0 40))");
-        // SOUTH make sure the same shp is flipped on y axis
-        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(100)[kts]?hemisphere=s");
-        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
-        assertNotNull(shpS);
-        assertTrue(shpS instanceof Path2D);
-        shpS = WindBarbsFactory.SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shpS); // flip and check
-        assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(),
-                shpString);
-
-        // 15 KNOTS --> square
+        // 15 KNOTS --> 1 short barb + 1 long barb
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(15)[kts]");
         shp = (Shape) wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
@@ -360,7 +340,7 @@ public class WindBarbsFactoryTest extends Assert {
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString(),
                 "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 42.5), (0 35, 10 36.25))");
 
-        // 20 KNOTS --> square
+        // 20 KNOTS --> 2 long barbs
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(20)[kts]");
         shp = (Shape) wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
@@ -368,7 +348,7 @@ public class WindBarbsFactoryTest extends Assert {
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString(),
                 "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 42.5), (0 35, 20 37.5))");
 
-        // 25 KNOTS --> square
+        // 25 KNOTS --> 1 short barb + 2 long barbs
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(25)[kts]");
         shp = (Shape) wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
@@ -376,7 +356,7 @@ public class WindBarbsFactoryTest extends Assert {
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString(),
                 "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 42.5), (0 35, 20 37.5), (0 30, 10 31.25))");
 
-        // 50 KNOTS --> pennat
+        // 50 KNOTS --> pennant
         this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(50)[kts]");
         shp = (Shape) wbf.getShape(null, this.exp, this.feature);
         assertNotNull(shp);
@@ -384,14 +364,60 @@ public class WindBarbsFactoryTest extends Assert {
         assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString(),
                 "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 37, 0 34, 0 40))");
 
+        // 100 KNOTS --> 2 pennants
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(100)[kts]?vectorLength=30");
+        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shp);
+        assertTrue(shp instanceof Path2D);
+        shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
+        assertEquals(shpString, "MULTILINESTRING ((0 -0, 0 30), (0 30, 20 27, 0 24, 0 30), (0 24, 20 21, 0 18, 0 24))");
+        // SOUTH make sure the same shp is flipped on y axis
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(100)[kts]?vectorLength=30&hemisphere=s");
+        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shpS);
+        assertTrue(shpS instanceof Path2D);
+        shpS = WindBarbsFactory.SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shpS); // flip and check
+        assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(),
+                shpString);
+
+        // 175 KNOTS --> 1 short barb + 2 long barbs + 3 pennants 
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(175)[kts]");
+        shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shp);
+        assertTrue(shp instanceof Path2D);
+        shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
+        assertEquals(shpString, "MULTILINESTRING ((0 -0, 0 40), (0 40, 20 37, 0 34, 0 40), (0 34, 20 31, 0 28, 0 34), (0 28, 20 25, 0 22, 0 28), (0 17, 20 19.5), (0 12, 20 14.5), (0 7, 10 8.25))");
+        // SOUTH make sure the same shp is flipped on y axis
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(175)[kts]?hemisphere=s");
+        shpS = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shpS);
+        assertTrue(shpS instanceof Path2D);
+        shpS = WindBarbsFactory.SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shpS); // flip and check
+        assertEquals(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shpS)).toString(),
+                shpString);
+    }
+
+    @Test
+    public void testUncachedBarb() {
+        // 500 KNOTS --> Not in cache being greater than max speed. Make sure I'm getting that anyway 
+        this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX + "default(500)[kts]?vectorLength=80");
+        Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
+        assertNotNull(shp);
+        assertTrue(shp instanceof Path2D);
+        String shpString = WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString();
+        assertEquals(shpString, "MULTILINESTRING ((0 -0, 0 80), (0 80, 20 77, 0 74, 0 80), "
+                + "(0 74, 20 71, 0 68, 0 74), (0 68, 20 65, 0 62, 0 68), (0 62, 20 59, 0 56, 0 62), "
+                + "(0 56, 20 53, 0 50, 0 56), (0 50, 20 47, 0 44, 0 50), (0 44, 20 41, 0 38, 0 44), "
+                + "(0 38, 20 35, 0 32, 0 38), (0 32, 20 29, 0 26, 0 32), (0 26, 20 23, 0 20, 0 26))");
     }
 
     @Ignore
+    @Test
     public void testWellKnownTextLineString() {
         WindBarbsFactory wbf = new WindBarbsFactory();
         try {
             this.exp = ff.literal(WindBarbsFactory.WINDBARBS_PREFIX
-                    + "default(15)[kts]?vectorLength=30");
+                    + "default(100)[kts]?vectorLength=30");
             Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
             System.out.println(WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp))
                     .toString());

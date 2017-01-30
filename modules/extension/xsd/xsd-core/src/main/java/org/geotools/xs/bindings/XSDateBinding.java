@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import javax.xml.namespace.QName;
+
+import org.geotools.factory.Hints;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
@@ -108,7 +110,13 @@ public class XSDateBinding implements SimpleBinding {
 
     public String encode(Object object, String value) throws Exception {
         final Date date = (Date) object;
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
+        Calendar calendar;
+        if(Boolean.TRUE.equals(hint)){
+            calendar = Calendar.getInstance();
+        }else{
+            calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        }
         calendar.clear();
         calendar.setTimeInMillis(date.getTime());
 

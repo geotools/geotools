@@ -17,6 +17,7 @@
 package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
+import it.geosolutions.jaiext.JAIExt;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -31,6 +32,7 @@ import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -75,6 +77,8 @@ public class AffineProcessTest {
 
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException {
+        JAIExt.initJAIEXT(true, true);
+
         // Selection of the File to use
         File tiff = TestData.file(AffineProcessTest.class, "sample.tif");
         // Reading of the file with the GeoTiff reader
@@ -101,6 +105,11 @@ public class AffineProcessTest {
         m11 = 2d;
         m02 = 10d;
         m12 = 20d;
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        JAIExt.initJAIEXT(false, true);
     }
 
     @Test

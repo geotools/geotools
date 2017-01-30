@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,8 @@
  */
 package org.geotools.imageio.netcdf;
 
-import it.geosolutions.imageio.stream.AccessibleStream;
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
-import it.geosolutions.imageio.stream.input.URIImageInputStream;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -34,7 +31,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
@@ -46,6 +42,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.logging.Logging;
 
+import it.geosolutions.imageio.stream.AccessibleStream;
+import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
+import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.NetcdfDataset.Enhance;
@@ -61,6 +60,12 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         File.class, URL.class, URI.class};
 
     public static final String VENDOR_NAME = "GeoTools";
+
+    /**
+     * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have WMO headers prepended by a telecommunications
+     * gateway. NetCDF-Java Grib{1,2}RecordScanner look for the header in this many bytes.
+     */
+    private static final int GRIB_SEARCH_BYTES = 16000;
 
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(NetCDFImageReaderSpi.class);
@@ -100,26 +105,12 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
     static final String[] extraImageMetadataFormatClassNames = { null };
 
-    private static final String FORCE_OPEN_CHECK = "NETCDF_FORCE_OPEN_CHECK";
-
-    /** 
-     * There are some grib files which are mal-formed. 
-     * As an instance they contain some trailing bytes 
-     * before the magic number.
-     * 
-     * We may want to try to check if the NetCDF readers 
-     * may access them anyway. NOTE that this behaviour
-     * will be applied to any input dataset.
-     */
-    private static boolean forceOpenCheck;
-
     static {
-        NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
-
         // If Grib Library is available, then the GRIB extension must be added to support.
         // If NC4 C Library is available, then the proper MIME Types must be added to support.
         List<String> suffixesList = new ArrayList<String>();
         Collections.addAll(suffixesList, "nc", "NC");
+        Collections.addAll(suffixesList, "ncml", "NCML");
 
         List<String> formatNamesList = new ArrayList<String>();
         Collections.addAll(formatNamesList, "netcdf", "NetCDF", NetCDFUtilities.NETCDF_3);
@@ -129,7 +120,7 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
                 "image/x-nc");
 
         if (NetCDFUtilities.isGribAvailable()) {
-            Collections.addAll(suffixesList, "grib", "grb", "grb2");
+            Collections.addAll(suffixesList, "grib", "grib2", "grb", "grb2");
             Collections.addAll(formatNamesList, "grib", "grib2", "GRIB", "GRIB2");
             Collections.addAll(mimeTypesList, "application/octet-stream");
         }
@@ -141,7 +132,6 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         suffixes = suffixesList.toArray(new String[suffixesList.size()]);
         formatNames = formatNamesList.toArray(new String[formatNamesList.size()]);
         MIMETypes = mimeTypesList.toArray(new String[mimeTypesList.size()]);
-        forceOpenCheck = Boolean.getBoolean(FORCE_OPEN_CHECK);
     }
 
     
@@ -184,7 +174,6 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("Found a valid FileImageInputStream");
         }
-
         if (source instanceof File) {
             input = (File) source;
         }
@@ -200,62 +189,66 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
             }
         }
         if (input != null) {
-            NetcdfFile file = null;
-            FileImageInputStream fis = null;
             try {
-
                 // Checking Magic Number
-                fis = new FileImageInputStream(input);
-                byte[] b = new byte[4];
-                fis.mark();
-                fis.readFully(b);
-                fis.reset();
-                boolean cdfCheck = (b[0] == (byte)0x43 && b[1] == (byte)0x44 && b[2] == (byte)0x46);
-                boolean hdf5Check = (b[0] == (byte)0x89 && b[1] == (byte)0x48 && b[2] == (byte)0x44);
-                boolean gribCheck = (b[0] == (byte)0x47 && b[1] == (byte)0x52 && b[2] == (byte)0x49 && b[3] == (byte)0x42);
-
+                byte[] b = new byte[GRIB_SEARCH_BYTES];
+                int count = 0;
+                try (FileInputStream fis = new FileInputStream(input)) {
+                    count = fis.read(b);
+                }
+                if (count < 3) {
+                    return false;
+                }
+                // CDF signature at start of file
+                boolean cdfCheck = (b[0] == (byte) 0x43 && b[1] == (byte) 0x44
+                        && b[2] == (byte) 0x46);
+                // HDF signature at start of file
+                boolean hdf5Check = (b[0] == (byte) 0x89 && b[1] == (byte) 0x48
+                        && b[2] == (byte) 0x44);
+                boolean gribCheck = false;
+                // Search for GRIB signature in first count bytes (up to GRIB_SEARCH_BYTES)
+                for (int i = 0; i < count - 3; i++) {
+                    if (b[i] == (byte) 0x47 && b[i + 1] == (byte) 0x52 && b[i + 2] == (byte) 0x49
+                            && b[i + 3] == (byte) 0x42) {
+                        gribCheck = true;
+                        break;
+                    }
+                }
                 // Check if the GRIB library is available
                 gribCheck &= NetCDFUtilities.isGribAvailable();
-                
                 boolean isNetCDF = true;
                 if (!cdfCheck && !hdf5Check && !gribCheck) {
                     if (!isNcML(input)) {
                         isNetCDF = false;
                     }
                 }
-                if (!isNetCDF && !forceOpenCheck) {
+                if (!isNetCDF) {
                     return false;
                 }
-                file = NetcdfDataset.acquireDataset(DataUtilities.fileToURL(input).toString(), null);
-                if (file != null) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("File successfully opened");
-                    canDecode = true;
+                try (NetcdfFile file = NetcdfDataset
+                        .acquireDataset(DataUtilities.fileToURL(input).toString(), null)) {
+                    if (file != null) {
+                        if (LOGGER.isLoggable(Level.FINE))
+                            LOGGER.fine("File successfully opened");
+                        canDecode = true;
+                    }
                 }
             } catch (IOException ioe) {
                 canDecode = false;
-            } finally {
-                if (fis != null) {
-                    try {
-                        fis.close();
-                    } catch (Throwable t) {
-
-                    }
-                }
-
-                if (file != null)
-                    file.close();
             }
-
         }
         return canDecode;
     }
 
-    private boolean isNcML(File input) throws IOException {
-        final StreamSource streamSource = new StreamSource(input);
+    private boolean isNcML(File file) throws IOException {
+        FileInputStream input = null;
+        StreamSource streamSource = null;
         XMLStreamReader reader = null;
         try {
-            reader = XMLInputFactory.newInstance().createXMLStreamReader(streamSource);
+            input  = new FileInputStream(file);
+            streamSource = new StreamSource(input);
+            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            reader = inputFactory.createXMLStreamReader(streamSource);
             reader.nextTag();
             if ("netcdf".equals(reader.getName().getLocalPart())) {
                 return true;
@@ -265,6 +258,9 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
         } catch (FactoryConfigurationError e) {
 
         } finally {
+            if (input != null) {
+                input.close();
+            }
             if (reader != null) {
                 if (streamSource.getInputStream() != null) {
                     streamSource.getInputStream().close();

@@ -149,19 +149,14 @@ public class SelectionLab {
          * we can just create our tool as an anonymous sub-class
          * of CursorTool.
          */
-        btn.addActionListener(new ActionListener() {
+        btn.addActionListener(e -> mapFrame.getMapPane().setCursorTool(
+                new CursorTool() {
 
-            public void actionPerformed(ActionEvent e) {
-                mapFrame.getMapPane().setCursorTool(
-                        new CursorTool() {
-
-                            @Override
-                            public void onMouseClicked(MapMouseEvent ev) {
-                                selectFeatures(ev);
-                            }
-                        });
-            }
-        });
+                    @Override
+                    public void onMouseClicked(MapMouseEvent ev) {
+                        selectFeatures(ev);
+                    }
+                }));
 
         /**
          * Finally, we display the map frame. When it is closed
@@ -177,7 +172,7 @@ public class SelectionLab {
      * This method is called by our feature selection tool when
      * the user has clicked on the map.
      *
-     * @param pos map (world) coordinates of the mouse cursor
+     * @param ev the mouse event being handled
      */
     void selectFeatures(MapMouseEvent ev) {
 
@@ -213,9 +208,8 @@ public class SelectionLab {
             SimpleFeatureCollection selectedFeatures =
                     featureSource.getFeatures(filter);
 
-            SimpleFeatureIterator iter = selectedFeatures.features();
-            Set<FeatureId> IDs = new HashSet<FeatureId>();
-            try {
+            Set<FeatureId> IDs = new HashSet<>();
+            try (SimpleFeatureIterator iter = selectedFeatures.features()) {
                 while (iter.hasNext()) {
                     SimpleFeature feature = iter.next();
                     IDs.add(feature.getIdentifier());
@@ -223,8 +217,6 @@ public class SelectionLab {
                     System.out.println("   " + feature.getIdentifier());
                 }
 
-            } finally {
-                iter.close();
             }
 
             if (IDs.isEmpty()) {
@@ -235,7 +227,6 @@ public class SelectionLab {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            return;
         }
     }
 // docs end select features

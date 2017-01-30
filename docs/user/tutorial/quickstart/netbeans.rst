@@ -45,32 +45,34 @@ Imaging and Java Image IO section – both of these libraries are used by GeoToo
    
 #. At the time of writing the latest JDK was:
    
-   jdk-7u1-windows-i586.exe
+   jdk-8u91-windows-i586.exe
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:     
    
-   C:\\Program Files\\Java\\jdk1.7.0\\
+   C:\\Program Files\\Java\\jdk1.8.0_91\\
      
-#. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
+#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
    
-   http://download.java.net/media/jai/builds/release/
-      
+   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
+   
    Both a JDK and JRE installer are available:
    
    * jai-1_1_3-lib-windows-i586-jdk.exe
    * jai-1_1_3-lib-windows-i586-jre.exe
      
-#. Optional: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
+#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
    ImageIO library:
    
-   http://download.java.net/media/jai-imageio/builds/
+  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
    
    Both a JDK and JRE installer are available:   
    
    * jai_imageio-1_1-lib-windows-i586-jdk.exe 
    * jai_imageio-1_1-lib-windows-i586-jre.exe
+   
+For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
    
 NetBeans Install
 ================
@@ -206,22 +208,29 @@ such as GeoTools publish their work.
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </project>
+        :end-before: <build>
 
    If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
    
    .. literalinclude:: artifacts/pom2.xml
      :language: xml
      :start-after: </dependencies>
-     :end-before: </project>
+     :end-before: <build>
+
+5. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
+
+   .. literalinclude:: artifacts/pom2.xml
+      :language: xml
+      :start-after: </repositories>
+      :end-before: </project>
     
-5. You can now right click on Libraries in the Projects window, then Download missing Dependencies
+6. You can now right click on Libraries in the Projects window, then Download missing Dependencies
    from the pop-up menu. When downloading it will check the repositories we have listed
    above.
 
-6. We will continue to add dependencies on different parts of the GeoTools library as we work through these exercises; this fine grain control and the ability to download exactly what is needed is one of the advantages of using Maven.
+7. We will continue to add dependencies on different parts of the GeoTools library as we work through these exercises; this fine grain control and the ability to download exactly what is needed is one of the advantages of using Maven.
 
-7. Here is what the completed :file:`pom.xml` looks like:
+8. Here is what the completed :file:`pom.xml` looks like:
 
    .. literalinclude:: artifacts/pom.xml
         :language: xml

@@ -67,11 +67,8 @@ public abstract class JDBCEmptyOnlineTest extends JDBCTestSupport {
         assertTrue( features.getBounds().isNull() );
         assertEquals( 0, features.size() );
         
-        FeatureIterator i = features.features();
-        try {
+        try(FeatureIterator i = features.features()) {
             assertFalse(i.hasNext());
-        } finally {
-            i.close();
         }        
     }
 

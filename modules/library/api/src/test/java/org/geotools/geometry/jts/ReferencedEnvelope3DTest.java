@@ -85,12 +85,13 @@ public class ReferencedEnvelope3DTest {
         newZealand.include( 33, 180, 5);
         try {
             australia.intersection(newZealand);
-            fail( "Expected a missmatch of CoordianteReferenceSystem");
+            fail( "Expected a mismatch of CoordinateReferenceSystem");
         }
         catch (MismatchedReferenceSystemException t){
             // expected
         }
     }
+    
     @Test
     public void include() throws Exception {
         ReferencedEnvelope3D australia = new ReferencedEnvelope3D( DefaultGeographicCRS.WGS84_3D );
@@ -103,14 +104,14 @@ public class ReferencedEnvelope3DTest {
         
         try {
             australia.expandToInclude( newZealand);
-            fail( "Expected a missmatch of CoordianteReferenceSystem");
+            fail( "Expected a mismatch of CoordinateReferenceSystem");
         }
         catch (MismatchedReferenceSystemException t){
             // expected
         }
         try {
             australia.include( newZealand);
-            fail( "Expected a missmatch of CoordianteReferenceSystem");
+            fail( "Expected a mismatch of CoordinateReferenceSystem");
         }
         catch (MismatchedReferenceSystemException t){
             // expected
@@ -130,6 +131,8 @@ public class ReferencedEnvelope3DTest {
         bbox.include(australia);
         
         assertEquals( australia.getCoordinateReferenceSystem(), bbox.getCoordinateReferenceSystem() );
+        assertEquals(0, bbox.getMinZ(), 0d);
+        assertEquals(10, bbox.getMaxZ(), 0d);
     }
 
     @Test
@@ -154,5 +157,13 @@ public class ReferencedEnvelope3DTest {
         
         ReferencedEnvelope worldBounds2D = bounds.transform( DefaultGeographicCRS.WGS84, true );
         assertEquals( DefaultGeographicCRS.WGS84, worldBounds2D.getCoordinateReferenceSystem() );
+    }
+    
+    @Test
+    public void testDistanceWhenMinZOfThisIsGreaterThanMaxZOfOther() {
+        CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_3D;
+        ReferencedEnvelope3D a = new ReferencedEnvelope3D( 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, crs );
+        ReferencedEnvelope3D b = new ReferencedEnvelope3D( 0.0, 1.0, 0.0, 1.0, 0.0, 0.5, crs );
+        assertEquals(Math.sqrt(1*1+1*1+1.5*1.5), a.distance(b), 0.00001);
     }
 }

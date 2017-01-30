@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -648,7 +648,8 @@ public final class GeoTiffMetadata2CRSAdapter {
 		//
 		// NAME of the user defined projected coordinate reference system.
 		//
-		String projectedCrsName = metadata.getGeoKey(GeoTiffPCSCodes.PCSCitationGeoKey);
+                String pcsCitationGeoKey = metadata.getGeoKey(GeoTiffPCSCodes.PCSCitationGeoKey);
+		String projectedCrsName = pcsCitationGeoKey;
 		if (projectedCrsName == null){
 		    projectedCrsName = "unnamed".intern();
 		} else {
@@ -676,6 +677,12 @@ public final class GeoTiffMetadata2CRSAdapter {
 		final ParameterValueGroup parameters;
 		final MathTransform transform;
 		if (projUserDefined) {
+            String citationName = metadata.getGeoKey(GeoTiffGCSCodes.GTCitationGeoKey);
+            if ((projectedCrsName == null || "unnamed".equalsIgnoreCase(projectedCrsName))
+                    && citationName != null) {
+                // Fallback on GTCitation
+                projectedCrsName = citationName;
+            }
 			// A user defined projection is made up by
 			// <ol>
 			// <li>PCSCitationGeoKey (NAME)
@@ -684,9 +691,10 @@ public final class GeoTiffMetadata2CRSAdapter {
 			// </ol>
 			// NAME of this projection coordinate transformation
 			// getting user defined parameters
-			projectionName = metadata.getGeoKey(GeoTiffPCSCodes.PCSCitationGeoKey);
+			projectionName = pcsCitationGeoKey;
 			if (projectionName == null){
-			    projectionName = "unnamed";
+			  //Fall back on citation
+			    projectionName = citationName != null? citationName : "unnamed";
 			}
 
 			// //
@@ -793,7 +801,7 @@ public final class GeoTiffMetadata2CRSAdapter {
     private void refineParameters(final GeographicCRS baseCRS, final ParameterValueGroup parameters)
             throws InvalidParameterValueException, ParameterNotFoundException {
             // set the remaining parameters.
-            final GeodeticDatum tempDatum = ((GeodeticDatum) baseCRS.getDatum());
+            final GeodeticDatum tempDatum = baseCRS.getDatum();
             final DefaultEllipsoid tempEll = (DefaultEllipsoid) tempDatum.getEllipsoid();
             double inverseFlattening = tempEll.getInverseFlattening();
             double semiMajorAxis = tempEll.getSemiMajorAxis();
@@ -1583,7 +1591,22 @@ public final class GeoTiffMetadata2CRSAdapter {
                                 return parameters;
                         }
 
-			/**
+            /**
+             * 
+             * Azimuthal Equidistant
+             * 
+             */
+            if (name.equalsIgnoreCase("Azimuthal_Equidistant")
+                    || code == GeoTiffCoordinateTransformationsCodes.CT_AzimuthalEquidistant) {
+                parameters = mtFactory.getDefaultParameters("Azimuthal_Equidistant");
+                parameters.parameter("longitude_of_center").setValue(getOriginLong(metadata));
+                parameters.parameter("latitude_of_center").setValue(getOriginLat(metadata));
+                parameters.parameter("false_easting").setValue(getFalseEasting(metadata));
+                parameters.parameter("false_northing").setValue(getFalseNorthing(metadata));
+                return parameters;
+            }
+
+                        /**
 			 * 
 			 * New Zealand Map Grid
 			 * 
@@ -1625,6 +1648,21 @@ public final class GeoTiffMetadata2CRSAdapter {
 				return parameters;
 			}
 
+			
+            /**
+             * 
+             * Sinusoidal
+             * 
+             */
+            if (name.equalsIgnoreCase("Sinusoidal")
+                    || code == GeoTiffCoordinateTransformationsCodes.CT_Sinusoidal) {
+                parameters = mtFactory.getDefaultParameters("Sinusoidal");
+                parameters.parameter("central_meridian").setValue(getOriginLong(metadata));
+                parameters.parameter("false_easting").setValue(getFalseEasting(metadata));
+                parameters.parameter("false_northing").setValue(getFalseNorthing(metadata));
+
+                return parameters;
+            }	
 		} catch (NoSuchIdentifierException e) {
 			throw new GeoTiffException(metadata, e.getLocalizedMessage(), e);
 		}

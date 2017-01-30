@@ -87,13 +87,13 @@ Use apt-get and easy install.
      
       apt-get install Python
   
-   You may need to use sudo (if for example you are on unbuntu)
+   You may need to use sudo (if for example you are on ubuntu)
       
 2. Use easy_install to graph sphinx (using sudo if required)::
      
      easy_install sphinx
   
-  Optionally you can install a specifc version::
+  Optionally you can install a specific version::
   
      easy_install sphinx==1.0.7
  

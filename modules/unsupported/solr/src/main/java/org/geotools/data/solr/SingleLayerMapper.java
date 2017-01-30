@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  */
 package org.geotools.data.solr;
 
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -35,7 +35,7 @@ public class SingleLayerMapper implements SolrLayerMapper {
     static final Logger LOGGER = Logging.getLogger(SingleLayerMapper.class);
 
     @Override
-    public List<String> createTypeNames(HttpSolrServer solr) throws Exception {
+    public List<String> createTypeNames(HttpSolrClient solr) throws Exception {
         // try to parse the url and return the name of the core
         try {
             URL url = new URL(solr.getBaseURL());

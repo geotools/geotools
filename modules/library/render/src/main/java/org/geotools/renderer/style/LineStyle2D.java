@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,6 @@ package org.geotools.renderer.style;
 import java.awt.Composite;
 import java.awt.Paint;
 import java.awt.Stroke;
-import java.awt.image.BufferedImage;
 
 import org.geotools.resources.Classes;
 
@@ -37,7 +36,10 @@ import org.geotools.resources.Classes;
 public class LineStyle2D extends Style2D {
     protected Paint contour;
     protected Stroke stroke;
+
     protected Composite contourComposite;
+    
+    protected double perpendicularOffset;
 
     /** Holds value of property graphicStroke. */
     private Style2D graphicStroke;
@@ -118,11 +120,29 @@ public class LineStyle2D extends Style2D {
         this.graphicStroke = graphicStroke;
     }
     
+    /**
+     * Returns the perpendicular offset value for this style
+     */
+    public double getPerpendicularOffset() {
+        return perpendicularOffset;
+    }
+
+    /**
+     * Sets the perpendicular offset value for this style
+     * @param perpendicularOffset The offset, positive on the left side of the line
+     */
+    public void setPerpendicularOffset(double perpendicularOffset) {
+        this.perpendicularOffset = perpendicularOffset;
+    }
 
     /**
      * Returns a string representation of this style.
      */
+    @Override
     public String toString() {
-        return Classes.getShortClassName(this) + '[' + contour + ']';
+        return "LineStyle2D [contour=" + contour + ", stroke=" + stroke + ", contourComposite="
+                + contourComposite + ", perpendicularOffset=" + perpendicularOffset
+                + ", graphicStroke=" + graphicStroke + "]";
     }
+    
 }

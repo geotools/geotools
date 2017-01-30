@@ -61,6 +61,9 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected Specification[] specs;
     protected Specification specification;
     
+    /** Hints, now used for the XML parsing **/
+    protected Map<String, Object> hints;
+    
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
     
     /**
@@ -91,9 +94,15 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     public AbstractOpenWebService(C capabilties, URL serverURL) throws ServiceException, IOException {
         this(serverURL, new SimpleHttpClient(), capabilties);
     }
-
+    
     public AbstractOpenWebService(final URL serverURL, final HTTPClient httpClient,
             final C capabilities) throws ServiceException, IOException {
+        this(serverURL, httpClient, capabilities, null);
+    }
+
+
+    public AbstractOpenWebService(final URL serverURL, final HTTPClient httpClient,
+            final C capabilities, Map<String, Object> hints) throws ServiceException, IOException {
         if (serverURL == null) {
             throw new NullPointerException("serverURL");
         }
@@ -103,13 +112,14 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         this.serverURL = serverURL;
         this.httpClient = httpClient;
+        this.hints = hints;
 
         setupSpecifications();
 
         if (capabilities == null) {
             this.capabilities = negotiateVersion();
             if (this.capabilities == null) {
-                throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+                throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
             }
         } else {
             this.capabilities = capabilities;
@@ -223,6 +233,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws IOException if there is an error communicating with the server, or the XML cannot be parsed
      * @throws ServiceException if the server returns a ServiceException
      */
+    @SuppressWarnings("unchecked")
     protected C negotiateVersion() throws IOException, ServiceException {
         List<String> versions = new ArrayList<String>(specs.length);
         Exception exception = null;
@@ -253,6 +264,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             String clientVersion = tempSpecification.getVersion();
 
             GetCapabilitiesRequest request = tempSpecification.createGetCapabilitiesRequest(serverURL);
+            request.setRequestHints(hints);
 
             //Grab document
             C tempCapabilities;
@@ -331,10 +343,14 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         // could not talk to this server
         if (exception != null) {
-            IOException e = new IOException(exception.getMessage());
+            IOException e = new IOException(
+                    "Could not establish version neogitation: " + exception.getMessage(),
+                    exception);
             throw e;
         }
-        return null;
+        else {
+            throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
+        }
     }
 
     /**
@@ -447,4 +463,20 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     public void setLoggingLevel(Level newLevel) {
         LOGGER.setLevel(newLevel);
     }
+    
+    /**
+     * Returns the hints affecting the service operations
+     */
+    public Map<String, Object> getHints() {
+        return hints;
+    }
+
+    /**
+     * Sets the hints affecting the service operations
+     * @param hints
+     */
+    public void setHints(Map<String, Object> hints) {
+        this.hints = hints;
+    }
+
 }

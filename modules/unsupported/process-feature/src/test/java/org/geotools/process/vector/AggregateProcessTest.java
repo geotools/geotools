@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2016, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2001-2007 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,10 +17,12 @@
  */
 package org.geotools.process.vector;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -63,4 +65,16 @@ public class AggregateProcessTest {
         assertTrue( result.sum > 0 );
     }
 
+    @Test
+    public void testSumWithGroupBy() throws Exception {
+        SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
+        Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
+        Results result = AggregateProcess.process( source.getFeatures(), "cat", functions, Collections.singletonList("str1"), true, null);
+        // we expect a group by result
+        assertNotNull(result.getGroupByResult());
+        // the group by result should not be empty
+        assertTrue(result.getGroupByResult().size() > 0);
+        // the size of each line result should be 2 (one group by attribute and one aggregation function)
+        assertTrue(result.getGroupByResult().get(0).length == 2);
+    }
 }

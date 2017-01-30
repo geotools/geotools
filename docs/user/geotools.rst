@@ -30,7 +30,7 @@ Core Features
   * compose and display maps with complex styling
   * vendor extensions for fine control of text labels and color blending
 
-* Powerful *schema asisted* parsing technology using XML Schema to bind to GML content
+* Powerful *schema assisted* parsing technology using XML Schema to bind to GML content
   
   The parsing / encoding technology is provided with bindings for many OGC standards
   including GML, Filter, KML, SLD, and SE.
@@ -41,12 +41,12 @@ Core Features
  
 * GeoTools Extensions
 
-  Provide additional capabilities built using the spatial facilites of the core library.
+  Provide additional capabilities built using the spatial facilities of the core library.
 
   .. image:: /images/extension.png
   
   Extensions provide graph and networking support (for finding the shortest path), validation,
-  a web map server client, bindings for xml parsing and encoding and color brewer!
+  a web map server client, bindings for XML parsing and encoding and color brewer!
 
 * GeoTools Unsupported
   
@@ -63,7 +63,7 @@ Supported Formats
 * raster formats and data access
   
   arcsde, arcgrid, geotiff, grassraster, gtopo30, image (JPEG, TIFF, GIF, PNG), imageio-ext-gdal, 
-  imagemoasaic, imagepyramid, JP2K, matlab
+  imagemosaic, imagepyramid, JP2K, matlab
   
 * Database "jdbc-ng" support
   

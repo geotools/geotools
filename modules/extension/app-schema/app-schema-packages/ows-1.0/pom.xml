@@ -9,10 +9,6 @@
     <version>1.0.0-2</version>
     <name>OGC Web Service (OWS) 1.0 schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/ows-1.0/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/ows-1.0/</url>
-    </scm>
 
     <developers>
         <developer>

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -146,7 +146,12 @@ public class H2DialectBasic extends BasicSQLDialect {
             Connection cx) throws SQLException {
         return delegate.getNextSequenceValue(schemaName, sequenceName, cx);
     }
-    
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();
@@ -250,4 +255,16 @@ public class H2DialectBasic extends BasicSQLDialect {
     public FilterToSQL createFilterToSQL() {
         return new H2FilterToSQL();
     }
+    
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return delegate.supportsSchemaForIndex();
+    }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        delegate.registerSqlTypeToSqlTypeNameOverrides(overrides);
+    }
+
 }

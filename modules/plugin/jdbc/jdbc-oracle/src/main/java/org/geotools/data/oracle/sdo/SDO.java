@@ -147,6 +147,8 @@ public final class SDO {
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
+        } else if(geom==null ||geom.getCoordinate() == null || geom.isEmpty()){
+        	return 2;
         } else {
             //return 3;
             return Double.isNaN(geom.getCoordinate().z) ? 2 : 3;
@@ -464,13 +466,14 @@ public final class SDO {
 
         for (int i = 0; i < polys.getNumGeometries(); i++) {
             poly = (Polygon) polys.getGeometryN(i);
-            addElemInfo(elemInfoList, poly, offset, GTYPE);
-            if( isRectangle( poly )){
-                offset += (2 * LEN);                
-            }
-            else {
-                offset += (poly.getNumPoints() * LEN);                
-            }            
+			if (poly!=null&&!poly.isEmpty()) {
+				addElemInfo(elemInfoList, poly, offset, GTYPE);
+				if (isRectangle(poly)) {
+					offset += (2 * LEN);
+				} else {
+					offset += (poly.getNumPoints() * LEN);
+				}
+			}
         }
     }
 
@@ -943,7 +946,7 @@ public final class SDO {
      * Adds a double array to list.
      * 
      * <p>
-     * The double array will contain all the ordinates in the Coordiante
+     * The double array will contain all the ordinates in the Coordinate
      * sequence.
      * </p>
      *
@@ -1096,33 +1099,40 @@ public final class SDO {
      */
     private static void addCoordinatesInterpretation1(List list, Polygon polygon) {
         int holes = polygon.getNumInteriorRing();
-
-        addCoordinates(list,
-            counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-                polygon.getExteriorRing().getCoordinateSequence()));
-
-        for (int i = 0; i < holes; i++) {
+        if (!polygon.isEmpty()) {
             addCoordinates(list,
-                clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
-                    polygon.getInteriorRingN(i).getCoordinateSequence()));
+                    counterClockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+                            polygon.getExteriorRing().getCoordinateSequence()));
+
+            for (int i = 0; i < holes; i++) {
+                addCoordinates(list, clockWise(polygon.getFactory().getCoordinateSequenceFactory(),
+                        polygon.getInteriorRingN(i).getCoordinateSequence()));
+            }
         }
     }
 
     private static void addCoordinates(List list, MultiPoint points) {
         for (int i = 0; i < points.getNumGeometries(); i++) {
-            addCoordinates(list, (Point) points.getGeometryN(i));
+            Geometry geometryN = points.getGeometryN(i);
+            if(geometryN!=null && !geometryN.isEmpty())
+            	addCoordinates(list, (Point) geometryN);
         }
     }
 
     private static void addCoordinates(List list, MultiLineString lines) {
         for (int i = 0; i < lines.getNumGeometries(); i++) {
-            addCoordinates(list, (LineString) lines.getGeometryN(i));
+            Geometry geometryN = lines.getGeometryN(i);
+            if(geometryN!=null && !geometryN.isEmpty())
+            	addCoordinates(list, (LineString) geometryN);
         }
     }
 
     private static void addCoordinates(List list, MultiPolygon polys) {
         for (int i = 0; i < polys.getNumGeometries(); i++) {
-            addCoordinates(list, (Polygon) polys.getGeometryN(i));
+        	
+            Geometry geometryN = polys.getGeometryN(i);
+            if(geometryN!=null && !geometryN.isEmpty())
+            	addCoordinates(list, (Polygon) geometryN);
         }
     }
 
@@ -1131,7 +1141,8 @@ public final class SDO {
 
         for (int i = 0; i < geoms.getNumGeometries(); i++) {
             geom = geoms.getGeometryN(i);
-
+            if(geom==null || geom.isEmpty())
+            	continue;
             if (geom instanceof Point) {
                 addCoordinates(list, (Point) geom);
             } else if (geom instanceof LineString) {
@@ -1217,7 +1228,7 @@ public final class SDO {
      * Ordinate access.
      * 
      * <p>
-     * CoordianteAccess is required for additional ordinates.
+     * CoordinateAccess is required for additional ordinates.
      * </p>
      * 
      * <p>
@@ -1531,10 +1542,10 @@ public final class SDO {
      * Ensure Ring of Coordinates are in a counter clockwise order.
      * 
      * <p>
-     * If the Coordiante need to be reversed a copy will be returned.
+     * If the Coordinate need to be reversed a copy will be returned.
      * </p>
      *
-     * @param factory Factory to used to reverse CoordianteSequence
+     * @param factory Factory to used to reverse CoordinateSequence
      * @param ring Ring of Coordinates
      *
      * @return coords in a CCW order
@@ -1552,10 +1563,10 @@ public final class SDO {
      * Ensure Ring of Coordinates are in a clockwise order.
      * 
      * <p>
-     * If the Coordiante need to be reversed a copy will be returned.
+     * If the Coordinate need to be reversed a copy will be returned.
      * </p>
      *
-     * @param factory Factory used to reverse CoordianteSequence
+     * @param factory Factory used to reverse CoordinateSequence
      * @param ring Ring of Coordinates
      *
      * @return coords in a CW order
@@ -1569,7 +1580,7 @@ public final class SDO {
     }
 
     /**
-     * Reverse the clockwise orientation of the ring of Coordiantes.
+     * Reverse the clockwise orientation of the ring of Coordinates.
      *
      * @param ring Ring of Coordinates
      *
@@ -1761,7 +1772,7 @@ public final class SDO {
      * @param start starting offset
      * @param end upper bound of sublist 
      *
-     * @return CoordianteSequence
+     * @return CoordinateSequence
      */
     private static CoordinateSequence subList(
         CoordinateSequenceFactory factory, CoordinateSequence coords,
@@ -1818,7 +1829,7 @@ public final class SDO {
      * Example:
      * </p>
      * <pre><code>
-     * new MultiPoint( toArray( list, Coordiante.class ) );
+     * new MultiPoint( toArray( list, Coordinate.class ) );
      * </code></pre>
      *
      * @param list
@@ -1950,7 +1961,7 @@ public final class SDO {
         throw new IllegalArgumentException( msg );
     }
     /** Returns the "length" of the ordinate array used for the
-     * CoordianteSequence, GTYPE is used to determine the dimension.
+     * CoordinateSequence, GTYPE is used to determine the dimension.
      * <p>
      * This is most often used to check the STARTING_OFFSET value to ensure
      * that is falls within allowable bounds.
@@ -2000,25 +2011,25 @@ public final class SDO {
     }
 
     /**
-     * Coordiantes from <code>(x,y,x2,y2,...)</code> ordinates.
+     * Coordinates from <code>(x,y,x2,y2,...)</code> ordinates.
      *
      * @param ordinates DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
     public static Coordinate[] asCoordinates(double[] ordinates) {
-        return asCoordiantes(ordinates, 2);
+        return asCoordinates(ordinates, 2);
     }
 
     /**
-     * Coordiantes from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates.
+     * Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates.
      *
      * @param ordinates DOCUMENT ME!
      * @param d DOCUMENT ME!
      *
      * @return DOCUMENT ME!
      */
-    public static Coordinate[] asCoordiantes(double[] ordinates, int d) {
+    public static Coordinate[] asCoordinates(double[] ordinates, int d) {
         int length = ordinates.length / d;
         Coordinate[] coords = new Coordinate[length];
 
@@ -2092,7 +2103,7 @@ public final class SDO {
         if ((ordinates.length % LEN) != 0) {
             // bugfix 20121231-BK: LEN is D instead of D + L
             throw new IllegalArgumentException("Dimension D:" + D 
-                + " denote Coordiantes " + "of " + LEN
+                + " denote Coordinates " + "of " + LEN
                 + " ordinates. This cannot be resolved with"
                 + "an ordinate array of length " + ordinates.length);
         }
@@ -2134,7 +2145,7 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      * 
      * <p>
-     * To produce two dimension Coordiantes pass in <code>null</code> for z
+     * To produce two dimension Coordinates pass in <code>null</code> for z
      * </p>
      *
      * @param f DOCUMENT ME!
@@ -2170,7 +2181,7 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      * 
      * <p>
-     * To produce two dimension Coordiantes pass in <code>null</code> for z
+     * To produce two dimension Coordinates pass in <code>null</code> for z
      * </p>
      *
      * @param f DOCUMENT ME!
@@ -2207,7 +2218,7 @@ public final class SDO {
      * Construct CoordinateSequence with LRS measures.
      *
      * <p>
-     * To produce three dimension Coordiantes pass in <code>null</code> for z
+     * To produce three dimension Coordinates pass in <code>null</code> for z
      * </p>
      *
      * @param f {@link CoordinateSequenceFactory}
@@ -2245,10 +2256,10 @@ public final class SDO {
 
     /**
      * @deprecated bugfix 20121231-BK: Oracle supports only one LRS measure information! use {@link SDO#coordiantes(CoordinateSequenceFactory, OrdinateList, OrdinateList, OrdinateList, OrdinateList) coordiantes() with just a OrdinateList of measures}!
-     * Construct SpatialCoordiantes, with LRS measure information.
+     * Construct SpatialCoordinates, with LRS measure information.
      * 
      * <p>
-     * To produce two dimension Coordiantes pass in <code>null</code> for z
+     * To produce two dimension Coordinates pass in <code>null</code> for z
      * </p>
      *
      * @param f DOCUMENT ME!
@@ -2289,10 +2300,10 @@ public final class SDO {
 
     /**
      * @deprecated bugfix 20121231-BK: Oracle supports only one LRS measure information! use {@link SDO#coordiantes(CoordinateSequenceFactory, OrdinateList, OrdinateList, OrdinateList, OrdinateList) coordiantes() with just a OrdinateList of measures}!
-     * Construct SpatialCoordiantes, with LRS measure information.
+     * Construct SpatialCoordinates, with LRS measure information.
      * 
      * <p>
-     * To produce two dimension Coordiantes pass in <code>null</code> for z
+     * To produce two dimension Coordinates pass in <code>null</code> for z
      * </p>
      *
      * @param f DOCUMENT ME!
@@ -2398,7 +2409,7 @@ public final class SDO {
      * Consturct geometry with SDO encoded information over a CoordinateList.
      * 
      * <p>
-     * Helpful when dealing construction Geometries with your own Coordiante
+     * Helpful when dealing construction Geometries with your own Coordinate
      * Types. The dimensionality specified in GTYPE will be used to interpret
      * the offsets in elemInfo.
      * </p>

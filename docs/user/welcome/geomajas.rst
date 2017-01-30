@@ -11,7 +11,7 @@ Welcome Geomajas Developers
    Spring, and Google Web Toolkit for a fast efficeint all-Java solution!
 
 Geomajas is a Java based client-server GIS framework for the web, that leverages the GeoTools
-library on the backend. Altough Geomajas has it's own Object model, many functionalities rely
+library on the backend. Although Geomajas has it's own Object model, many functionalities rely
 quite heavily on the GeoTools library. 
 
 Geomajas is very Spring oriented which results in a lot of Spring services that use GeoTools under

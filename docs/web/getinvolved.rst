@@ -17,7 +17,7 @@ Participation
 
   The `developer list <https://lists.sourceforge.net/lists/listinfo/geotools-devel>`_
   is meant for discussions that pertaining to the actual
-  development of the geotools library. If you have a patch you would like to 
+  development of the GeoTools library. If you have a patch you would like to 
   contribute, or an issue with a plug-in you are working on, discuss it on this 
   list. This is list is also open to anyone who would like to take part in the
   more day to day development discussion.

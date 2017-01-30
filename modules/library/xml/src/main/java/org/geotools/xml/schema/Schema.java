@@ -81,7 +81,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public AttributeGroups
      * defined by this Schema. The definition of 'public AttributeGroups'
-     * should be interpreted as the set of AttributeGroups availiable when
+     * should be interpreted as the set of AttributeGroups available when
      * creating an instance document, extending the schema, or importing the
      * schema.
      * </p>
@@ -96,7 +96,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public Attributes defined
      * by this Schema. The definition of 'public Attributes' should be
-     * interpreted as the set of Attributes availiable when creating an
+     * interpreted as the set of Attributes available when creating an
      * instance document, extending the schema, or importing the schema.
      * </p>
      *
@@ -122,7 +122,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public ComplexTypes defined
      * by this Schema. The definition of 'public ComplexTypes' should be
-     * interpreted as the set of ComplexTypes availiable when creating an
+     * interpreted as the set of ComplexTypes available when creating an
      * instance document, extending the schema, or importing the schema.
      * </p>
      *
@@ -135,7 +135,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public Elements defined by
      * this Schema. The definition of 'public Elements' should be interpreted
-     * as the set of Elements availiable when creating an instance document,
+     * as the set of Elements available when creating an instance document,
      * extending the schema, or importing the schema.
      * </p>
      *
@@ -161,7 +161,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public Groups defined by
      * this Schema. The definition of 'public Groups' should be interpreted as
-     * the set of Groups availiable when creating an instance document,
+     * the set of Groups available when creating an instance document,
      * extending the schema, or importing the schema.
      * </p>
      *
@@ -182,7 +182,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public Imports defined by
      * this Schema. The definition of 'public Imports' should be interpreted
-     * as the set of Imports availiable when creating an instance document,
+     * as the set of Imports available when creating an instance document,
      * extending the schema, or importing the schema.
      * </p>
      *
@@ -203,7 +203,7 @@ public interface Schema extends Factory {
      * <p>
      * This method is intended to provide a list of public SimpleTypes defined
      * by this Schema. The definition of 'public SimpleTypes' should be
-     * interpreted as the set of SimpleTypes availiable when creating an
+     * interpreted as the set of SimpleTypes available when creating an
      * instance document, extending the schema, or importing the schema.
      * </p>
      *

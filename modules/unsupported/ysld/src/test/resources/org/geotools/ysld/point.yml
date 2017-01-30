@@ -1,0 +1,11 @@
+name: 'Simple Point'
+feature-styles:
+  - rules:
+      - symbolizers:
+         - point:
+             symbols:
+               - mark:
+                   name: 'square'
+                   size: 6
+                   fill:
+                     color: '#FF0000'

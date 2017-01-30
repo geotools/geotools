@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.util.InternationalString;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -372,7 +373,20 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static final Key VERSION = new Key("org.geotools.util.Version");
+
     
+  ////////////////////////////////////////////////////////////////////////
+  ////////                                                        ////////
+  ////////              XML hints                                 ////////
+  ////////                                                        ////////
+  ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * The {@link EntityResolver} instance to use when configuring SAXParsers.
+     * 
+     * @since 15
+     */
+    public static final Key ENTITY_RESOLVER = new Key(EntityResolver.class);
       
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
@@ -780,6 +794,12 @@ public class Hints extends RenderingHints {
     /**
      * Resample tolerance (defaults to 0.333)
      * 
+     * <p>
+     * To set on the command line:
+     * <blockquote><pre>
+     * -D{@value GeoTools#RESAMPLE_TOLERANCE}=<var>0.333</var>
+     * </pre></blockquote>
+     * 
      * @since 2.7
      */
     public static final Key RESAMPLE_TOLERANCE = new Key(Double.class);
@@ -951,6 +971,23 @@ public class Hints extends RenderingHints {
      * @since 2.6
      */
     public static final DoubleKey COMPARISON_TOLERANCE = new DoubleKey(0.0);
+    
+    
+    /**
+     * Controls date field handling. If true, all {@link java.sql.Date} fields are treated as local dates being
+     * unrelated to time zones. Otherwise they are treated as time zone related. Local dates are serialized to
+     * string using the local time zone (JVM default time zone). Time zone related dates are serialized to string
+     * using GMT. Default is false, Date treated as time zone related.
+     * 
+     * <p>
+     * To set on the command line:
+     * <blockquote><pre>
+     * -D{@value GeoTools#LOCAL_DATE_TIME_HANDLING}=<var>true</var>
+     * </pre></blockquote>
+     * 
+     * @since 15.0
+     */
+    public static final Key LOCAL_DATE_TIME_HANDLING = new Key(Boolean.class);
 
     /**
      * Constructs an initially empty set of hints.
@@ -1084,8 +1121,8 @@ public class Hints extends RenderingHints {
          * provided there is no concurrent changes in an other thread.
          */
         @SuppressWarnings("unchecked")
-        Map<RenderingHints.Key, Object> filtered = (Map) hints;
-        for (final Iterator it=hints.keySet().iterator(); it.hasNext();) {
+        Map<RenderingHints.Key, Object> filtered = (Map<RenderingHints.Key, Object>) hints;
+        for (final Iterator<?> it=hints.keySet().iterator(); it.hasNext();) {
             final Object key = it.next();
             if (!(key instanceof RenderingHints.Key)) {
                 if (filtered == hints) {

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathNotExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
 import static org.junit.Assert.assertEquals;
@@ -932,9 +933,10 @@ public class SLDTransformerTest {
     @Test
     public void testMinimumLineSymbolizer() throws Exception {
         StyleBuilder sb = new StyleBuilder();
+        
         LineSymbolizer ls = sb.createLineSymbolizer();
         String xml = transformer.transform(ls);
-        // System.out.println(xml);
+        //System.out.println(xml);
         Document doc = buildTestDocument(xml);
 
         // check LineSymbolizer has the stroke element inside, but stroke does not have children
@@ -954,6 +956,8 @@ public class SLDTransformerTest {
         assertXpathEvaluatesTo("2", "count(/sld:LineSymbolizer/sld:Stroke/*)", doc);
         assertXpathEvaluatesTo("#FFFF00", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
         assertXpathEvaluatesTo("3", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']", doc);
+        
+        
     }
    
     @Test
@@ -1133,7 +1137,7 @@ public class SLDTransformerTest {
 
         // Transform and reimport and compare
     	String xml = transformer.transform(sb.createStyle(ts2));
-
+    	
     	SLDParser sldParser = new SLDParser(sf);
     	sldParser.setInput(new StringReader(xml));
     	Style importedStyle = sldParser.readXML()[0];
@@ -1426,6 +1430,128 @@ public class SLDTransformerTest {
         validateWellKnownNameWithExpressionStyle(transformedStyleXml);
     }
 
+    /**
+     * Test the transformation of a stroke-dasharray element that contains expressions.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testStrokeDasharrayWithExpressions() throws Exception {
+
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "					 <LineSymbolizer>"
+                + "                     <Stroke>"
+                + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
+                + "                         <CssParameter name=\"stroke-dasharray\">"
+                + "                             <PropertyName>stroke1</PropertyName>"
+                + "                             1.0"
+                + "                             <PropertyName>stroke2</PropertyName>"
+                + "                             <![CDATA[2.0]]>"
+                + "                         </CssParameter>"
+                + "                     </Stroke>"
+                + "                 </LineSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        styleTransform.setIndentation(2);
+        StringWriter writerWriter = new StringWriter();
+        styleTransform.transform(parseStyles(originalStyleXml), writerWriter);
+        String transformedStyleXml = writerWriter.toString();
+
+        Style style = parseStyles(transformedStyleXml)[0];
+
+        assertNotNull("style is null", style);
+        assertNotNull("feature type styles are null", style.featureTypeStyles());
+        assertTrue("more or less that one feature type style is available", style.featureTypeStyles().size() == 1);
+        assertNotNull("rules are null", style.featureTypeStyles().get(0).rules());
+        assertTrue("more or less that one rule is available", style.featureTypeStyles().get(0).rules().size() == 1);
+
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        assertNotNull("rule is null", rule);
+
+        List<? extends Symbolizer> symbolizers = rule.symbolizers();
+        assertNotNull("symbolizers are null", symbolizers);
+        assertTrue("more or less that one symbolizer is available", symbolizers.size() == 1);
+
+        LineSymbolizer lineSymbolizer = (LineSymbolizer) symbolizers.get(0);
+        assertNotNull("line symbolizer is null", lineSymbolizer);
+
+        Stroke stroke = lineSymbolizer.getStroke();
+        assertNotNull("stroke is null", stroke);
+        assertNotNull("stroke dasharray is null", stroke.dashArray());
+
+        List<Expression> expressions = stroke.dashArray();
+        assertTrue("more or less expressions available", expressions.size() == 4);
+        assertTrue("not expected expression", expressions.get(0).equals(ff.property("stroke1")));
+        assertTrue("not expected expression", expressions.get(1).equals(ff.literal(1.0)));
+        assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
+        assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
+    }
+
+    /**
+     * Test the transformation of a stroke-dasharray element that contains only literal expressions.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testStrokeDasharrayWithOnlyLiteralExpressions() throws Exception {
+
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "                 <LineSymbolizer>"
+                + "                     <Stroke>"
+                + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
+                + "                         <CssParameter name=\"stroke-dasharray\">"
+                + "                             10.0 5.0 20.0 15.0"
+                + "                         </CssParameter>"
+                + "                     </Stroke>"
+                + "                 </LineSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        styleTransform.setIndentation(2);
+        StringWriter writerWriter = new StringWriter();
+        styleTransform.transform(parseStyles(originalStyleXml), writerWriter);
+        String transformedStyleXml = writerWriter.toString();
+
+        assertTrue(transformedStyleXml.contains("<sld:CssParameter name=\"stroke-dasharray\">10.0 5.0 20.0 15.0</sld:CssParameter>"));
+    }
+
+    private Style[] parseStyles(String styleXml) {
+        StringReader stringReader = new StringReader(styleXml);
+        SLDParser sldParser = new SLDParser(sf, stringReader);
+        return sldParser.readXML();
+    }
+
     @Test
     public void testAnchorPointInGraphic() throws Exception {
         StyleBuilder sb = new StyleBuilder();
@@ -1457,7 +1583,7 @@ public class SLDTransformerTest {
 
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(style);
-        System.out.println(xml);
+        //System.out.println(xml);
         Document doc = buildTestDocument(xml);
 
         assertXpathEvaluatesTo("1", "count(//sld:FeatureTypeStyle/sld:VendorOption)", doc);
@@ -1541,7 +1667,7 @@ public class SLDTransformerTest {
         ce.setMethod(hist);
         xml = st.transform(ce);
         String skeleton = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Histogram/></sld:ContrastEnhancement>";
-        System.out.println(xml);
+        //System.out.println(xml);
         Diff myDiff = new Diff(skeleton, xml);
         
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
@@ -1565,6 +1691,135 @@ public class SLDTransformerTest {
         myDiff = new Diff(skeleton, xml);
         
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+    }
+    
+    @Test
+    public void testMultipleFontsUniform() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Font f1 = sb.createFont("Arial", 10);
+        Font f2 = sb.createFont("Comic Sans MS", 10);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, new Font[] {f1,  f2}, "label");
+        
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(ts);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font)", doc);
+        assertXpathEvaluatesTo("2", "count(//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"])", doc);
+        assertXpathEvaluatesTo("Arial", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][1]", doc);
+        assertXpathEvaluatesTo("Comic Sans MS", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][2]", doc);
+        assertXpathEvaluatesTo("10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
+    }
+    
+    @Test
+    public void testMultipleFontsNotUniform() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        Font f1 = sb.createFont("Arial", 10);
+        Font f2 = sb.createFont("Comic Sans MS", 12);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, new Font[] {f1,  f2}, "label");
+        
+        SLDTransformer st = new SLDTransformer();     
+        String xml = st.transform(ts);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo("2", "count(//sld:TextSymbolizer/sld:Font)", doc);
+        // <sld:CssParameter name="font-family">Comic Sans MS</sld:CssParameter>
+        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"])", doc);
+        assertXpathEvaluatesTo("Arial", "//sld:TextSymbolizer/sld:Font[1]/sld:CssParameter[@name=\"font-family\"][1]", doc);
+        assertXpathEvaluatesTo("1", "count(//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"])", doc);
+        assertXpathEvaluatesTo("Comic Sans MS", "//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"]", doc);
+        assertXpathEvaluatesTo("10.0", "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", doc);
+    }
+    
+    @Test
+    public void testLineOffsetExpression() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer(Color.RED);
+        ls.setPerpendicularOffset(ff.multiply(ff.property("a"), ff.literal(2)));
+        
+        
+        SLDTransformer st = new SLDTransformer();
+        st.setIndentation(2);
+        String xml = st.transform(ls);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("a", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:PropertyName", doc);
+        assertXpathEvaluatesTo("2", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal", doc);
+    }
+    
+    /**
+     * See https://osgeo-org.atlassian.net/browse/GEOT-5613
+     * @throws Exception
+     */
+    @Test 
+    public void testDefaults() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer(Color.BLACK);
+        
+        SLDTransformer st = new SLDTransformer();
+        st.setExportDefaultValues(true);
+        st.setIndentation(2);
+        String xml = st.transform(ls);
+        
+        Document doc = buildTestDocument(xml);
+
+        assertXpathExists("//sld:LineSymbolizer/sld:Stroke", doc);
+        assertXpathEvaluatesTo("#000000", "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        
+        st.setExportDefaultValues(false);
+        xml = st.transform(ls);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+
+        assertXpathNotExists("//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        
+        st.setExportDefaultValues(true);
+        
+        PolygonSymbolizer ps = sb.createPolygonSymbolizer(Color.GRAY, Color.black,1.0);
+        
+        xml = st.transform(ps);
+        
+        doc = buildTestDocument(xml);
+
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Stroke", doc);
+        assertXpathEvaluatesTo("#000000", "//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Fill", doc);
+        assertXpathEvaluatesTo("#808080", "//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        
+        st.setExportDefaultValues(false);
+        xml = st.transform(ps);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Stroke", doc);
+        assertXpathNotExists("//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Fill", doc);
+        assertXpathNotExists("//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        
+        st.setExportDefaultValues(true);
+        PointSymbolizer pos = sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
+        
+        xml = st.transform(pos);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
+        assertXpathEvaluatesTo("#000000", "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
+        assertXpathEvaluatesTo("#808080", "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        assertXpathExists("//sld:WellKnownName", doc);
+        
+        st.setExportDefaultValues(false);
+        xml = st.transform(pos);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
+        assertXpathNotExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
+        assertXpathNotExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        assertXpathNotExists("//sld:WellKnownName", doc);
+        
     }
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();

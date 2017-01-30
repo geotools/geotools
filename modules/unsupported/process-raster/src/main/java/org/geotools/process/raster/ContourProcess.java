@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2016, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008-2011 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -49,12 +49,10 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
-
 
 /**
  * A process to extract contours based on values in a specified band of the 
@@ -239,6 +237,9 @@ public class ContourProcess implements RasterProcess {
                 mt2D.getTranslateY());
         for (LineString line : prop) {
 
+            if (!line.isValid()) {
+                continue;
+            }
             // get value
             Double value = (Double) line.getUserData();
             line.setUserData(null);

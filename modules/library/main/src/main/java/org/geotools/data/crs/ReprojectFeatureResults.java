@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
@@ -29,6 +30,7 @@ import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
@@ -208,5 +210,18 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
      */
     public FeatureCollection<SimpleFeatureType, SimpleFeature> getOrigin() {
         return results;
+    }
+    
+    public void accepts(org.opengis.feature.FeatureVisitor visitor,
+            org.opengis.util.ProgressListener progress) throws IOException {
+        if (canDelegate(visitor)) {
+            results.accepts(visitor, progress);
+        } else {
+            super.accepts(visitor, progress);
+        }
+    }
+    
+    protected boolean canDelegate(FeatureVisitor visitor) {
+        return ReprojectingFeatureCollection.isGeometryless(visitor, schema);
     }
 }

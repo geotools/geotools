@@ -256,14 +256,20 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         }
 
         try {
-            SeShape extent = new SeShape(this.sdeLayer.getCoordRef());
-            extent.generateRectangle(seExtent);
-
-            Geometry layerEnv = gb.construct(extent, new GeometryFactory());
-            geom = geom.intersection(layerEnv); // does the work
-
             // Now make an SeShape
             SeShape filterShape;
+
+            if(seExtent.isEmpty() == true)
+            {
+                // The extent of the sdeLayer is uninitialised so create an extent.
+                // If seExtent.isEmpty() == true, when passed to SeShape.generateRectangle()
+                // an exception occurs.
+                filterShape = new SeShape(this.sdeLayer.getCoordRef());
+            }
+            else
+            {
+                SeShape extent = new SeShape(this.sdeLayer.getCoordRef());
+                extent.generateRectangle(seExtent);
 
             // this is a bit hacky, but I don't yet know this code well enough
             // to do it right. Basically if the geometry collection is
@@ -280,6 +286,7 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
             } else {
                 gb = ArcSDEGeometryBuilder.builderFor(geom.getClass());
                 filterShape = gb.constructShape(geom, this.sdeLayer.getCoordRef());
+            }
             }
             // Add the filter to our list
             SeShapeFilter shapeFilter = new SeShapeFilter(getLayerName(),

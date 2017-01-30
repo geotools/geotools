@@ -18,17 +18,15 @@ package org.geotools.data.memory;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -76,7 +74,7 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
     public void testGetBoundsFilter() throws Exception {
         // the Bounds of the queried features should be equal to the bounding 
         // box of the road2 feature, because of the road2 FID filter  
-        Query query = new DefaultQuery("road", rd2Filter);
+        Query query = new Query("road", rd2Filter);
         assertEquals(roadFeatures[1].getBounds(), 
                 data.getFeatureSource("road").getFeatures(query).getBounds());
     }

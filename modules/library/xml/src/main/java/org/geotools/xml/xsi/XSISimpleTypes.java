@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1169,7 +1169,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.sql.Date parsed = Converters.convert(svalue, java.sql.Date.class);
                 if (null == parsed) {
@@ -1179,6 +1179,20 @@ public class XSISimpleTypes {
             }
 
             return null;
+        }
+        
+        @Override
+        public void encode(Element element, Object value, PrintHandler output, Map hints)
+                throws IOException {
+            if (value instanceof java.sql.Date) {
+                value = Converters.convert(value, java.lang.String.class);
+            } else if (value instanceof java.util.Date) {
+                // converting java.util.Date to java.sql.Date ensures formatting
+                // as Date, as required, rather than DateTime format
+                value = new java.sql.Date(((java.util.Date) value).getTime());
+                value = Converters.convert(value, java.lang.String.class);
+            }
+            super.encode(element, value, output, hints);
         }
 
         /**
@@ -1218,7 +1232,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 Timestamp parsed = Converters.convert(svalue, java.sql.Timestamp.class);
                 if (null == parsed) {
@@ -1235,6 +1249,15 @@ public class XSISimpleTypes {
          */
         public Class getInstanceType() {
             return java.util.Date.class;
+        }
+        
+        @Override
+        public void encode(Element element, Object value, PrintHandler output, Map hints)
+                throws IOException {
+            if (value instanceof java.util.Date) {
+                value = Converters.convert(value, java.lang.String.class);
+            }
+            super.encode(element, value, output, hints);
         }
     }
 
@@ -1267,7 +1290,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 int year;
                 int month;
                 int day;
@@ -1648,7 +1671,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) throws SAXException {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.sql.Time parsed = Converters.convert(svalue, java.sql.Time.class);
                 if (null == parsed) {

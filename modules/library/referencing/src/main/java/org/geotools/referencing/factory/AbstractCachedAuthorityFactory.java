@@ -106,7 +106,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * CoordinateReferenceSystems (by code); it will also store all the component parts
      * (each under its own code), along with MathTransformations between two
      * CoordinateReferenceSystems. So even if you are only planning on working with
-     * 50 CoordianteReferenceSystems please keep in mind that you will need larger
+     * 50 CoordinateReferenceSystems please keep in mind that you will need larger
      * cache size in order to prevent a bottleneck.
      */
 	protected ObjectCache cache;
@@ -114,7 +114,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
 	/**
      * The findCache is used to store search results; often match a "raw"
      * CoordinateReferenceSystem created from WKT (as the key) with a
-     * "real" CoordianteReferenceSystem as defined by this authority.
+     * "real" CoordinateReferenceSystem as defined by this authority.
      */
     ObjectCache findCache;
 

@@ -4,7 +4,7 @@ Vector grids
 The GeoTools vector grid classes make it easy to create vector grids (also known as lattices)
 consisting of either polygon or line elements, each of which is represented as a SimpleFeature.
 Simple grids can be generated easily using either the Grids or Lines utility classes, while lower
-level classes are availble for when more control over grid layout and attributes is required.
+level classes are available for when more control over grid layout and attributes is required.
 
 Note: Grids are currently constructed in memory with the whole grid being built at one time. 
 

@@ -1,5 +1,6 @@
 :Author: Jody Garnett
 :Author: Micheal Bedward
+:Author: Ian Turton
 :Thanks: geotools-user list
 :Version: |release|
 :License: Create Commons with attribution
@@ -36,40 +37,44 @@ We are going to be making use of Java, so if you don't have a Java Development K
 the time to do so. Even if you have Java installed already check out the optional Java Advanced
 Imaging and Java Image IO section.
    
-#. Download the latest Java Developer Kit (JDK) from the the java.sun.com website:
+#. Download the latest Java Development Kit (JDK) from the Oracle website:
 
-   http://java.sun.com/javase/downloads/index.jsp
+   http://www.oracle.com/technetwork/java/javase/downloads/
    
-#. At the time of writing the latest JDK was:
+#. At the time of writing the latest was JDK 8. Choose a download for your platform, for example:
    
-   jdk-7u1-windows-i586.exe
+   `jdk-8u66-windows-i586.exe`
+   
+   For Windows 32bit platforms.
    
 #. Click through the installer. You will need to accept a license agreement, choose a directory
    and so forth.
    
    By default this will install to:     
    
-   C:\\Program Files\\Java\\jdk1.7.0\\
+   C:\\Program Files\\Java\\jdk1.8.0\\
      
-#. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
+#. **Optional**: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
    
-   http://download.java.net/media/jai/builds/release/
+   http://www.oracle.com/technetwork/java/javase/tech/jai-142803.html
    
    Both a JDK and JRE installer are available:
    
    * jai-1_1_3-lib-windows-i586-jdk.exe
    * jai-1_1_3-lib-windows-i586-jre.exe
      
-#. Optional: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
+#. **Optional**: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
    ImageIO library:
    
-   http://download.java.net/media/jai-imageio/builds/
+  https://docs.oracle.com/javase/6/docs/technotes/guides/imageio/index.html
    
    Both a JDK and JRE installer are available:   
    
    * jai_imageio-1_1-lib-windows-i586-jdk.exe 
    * jai_imageio-1_1-lib-windows-i586-jre.exe
+   
+For more details of how to install these packages see `this page <http://docs.geoserver.org/latest/en/user/production/java.html#install-native-jai-and-imageio-extensions>`_
 
 Eclipse
 =======
@@ -84,16 +89,17 @@ development. For this tutorial we are doing straight up Java programming using t
 download available - if you already have an Eclipse download please go ahead and use it and
 switch to the "Java Perspective".
    
-1. Visit the Eclipse download page (http://www.eclipse.org/downloads/) and download "Eclipse IDE for
+1. Visit the Eclipse download page (http://www.eclipse.org/downloads/eclipse-packages/) and download "Eclipse IDE for
    Java developers".
    
-   At the time of writing the latest release was:
+   At the time of writing the latest release was Eclipse Neon:
    
-   * eclipse-java-indigo-SR1-win32.zip 
+   * eclipse-jee-neon-R-win32.zip
    
-2. Eclipse does not provide an installer, just a directory to unzip and run.
+2. Eclipse now provides an installer; however this tutorial targets the binary packages that 
+   you simply extract and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
-4. Unzip the downloaded eclipse-java-indigo-win32.zip file to your C:\\java directory - the
+4. Unzip the downloaded eclipse-java-mars-R-win32.zip file to your C:\\java directory - the
    folder C:\\java\\eclipse will be created.
 5. Navigate to C:\\java\\eclipse and right-click on the eclipse.exe file and select
    Send To -> Desktop (create shortcut).
@@ -114,8 +120,8 @@ switch to the "Java Perspective".
 
 .. _eclipse-m2eclipse:
 
-M2Eclipse
----------
+M2E
+-----
   
 Maven is a build system for Java which is very good at managing dependencies. The GeoTools library
 is plugin based and you get to pick and choose what features you need for your application. While
@@ -123,9 +129,9 @@ this is useful when determining just what is needed for delivery - it can be a p
 hand so we encourage the use of a tool such as maven.
 
 In previous years we used the command line (gasp!) when working with maven. This year we are going
-to be using the M2Eclipse plugin from Sonyatype.
+to be using the M2E plugin from Sonyatype.
 
-The M2Eclipse plugin is included by default in Eclipse 3.7.
+The M2E plugin is included by default since Eclipse 3.7.
 
 Quickstart
 ==========
@@ -144,7 +150,7 @@ code is, how you want it packaged, and what libraries it makes use of. Based on 
 can figure out most things: how to compile your code, creating javadocs, or even downloading the
 library jars for you.
 
-To use M2Eclipse plugin to create a create a new maven project:
+To use M2E plugin to create a create a new maven project:
 
 #. File > New > Other from the menu bar
 
@@ -244,7 +250,7 @@ such as GeoTools publish their work.
 5. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note we
    are making use of the geotools.version defined above.
    
-.. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: <repositories>
@@ -255,16 +261,23 @@ such as GeoTools publish their work.
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </project>
-
-   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+        :end-before: <build>
    
-   .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: </project>
+   .. note:: If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
+   
+      .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: </dependencies>
+        :end-before: <build>
 
-7. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
+7. GeoTools now requires Java 8 language level features (eg. lambdas) - you need to tell Maven to use the 1.8 source level.
+
+   .. literalinclude:: artifacts/pom2.xml
+      :language: xml
+      :start-after: </repositories>
+      :end-before: </project>
+
+8. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
 
    You may find cutting and pasting to be easier than typing, you can choose Source --> Format to
    fix indentation
@@ -282,11 +295,11 @@ Quickstart Application
 
 Now that your environment is setup we can put together a simple Quickstart. This example will display a shapefile on screen.
 
-#. Create the package org.geotools.tutorial.quickstart using your IDE.
+#. Create the package ``org.geotools.tutorial.quickstart`` using your IDE.
 
 #. Create the org.geotools.tutorial.quickstart.Quickstart class using your IDE.
    
-   .. image:: images/class.jpg
+   .. image:: images/class.png
       :scale: 60
    
 #. Fill in the following code:
@@ -432,7 +445,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 
    Add the following system variables:
    
-   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.7.0_67`
+   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.8.0_66`
    * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
    
    And add the following to your PATH:
@@ -497,7 +510,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 17. Navigate to the pom.xml file and double click to open it up.
 18. We are going to start by defining the version number of GeoTools we wish to use. This workbook
     was written for |release| although you may wish to try a newer version, or make use of a
-    nightly build by using 8-SNAPSHOT.
+    nightly build by using 15-SNAPSHOT.
     
 .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -546,6 +559,10 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 Download GeoTools
 -----------------
 
+.. sidebar:: Caution
+
+    This procedure is tricky and can often lead to problems with missing jars or too many jars. GeoTools is really too large and complex to consider building without the use of maven. Please reconsider before proceeding with this process.
+
 We can also download the GeoTools project bundle from source forge and set up our project to use
 them. Please follow these steps carefully as not all the GeoTools jars can be used at the same
 time.
@@ -568,7 +585,7 @@ time.
 
    However only one copy can be used at a time so we will need to remove the following jars from the Library Manager:
 
-   * gt-epsg-h2
+   * gt-epsg-hsql
    * gt-epsg-oracle
    * gt-epsg-postgresql
    * gt-epsg-wkt
@@ -579,9 +596,7 @@ time.
 
    * gt-arcsde
    * gt-arcsde-common
-   * gt-db2
    * gt-jdbc-db2
-   * gt-oracle-spatial
    * gt-jdbc-oracle
 
 9. Next we update our java build path to include the remaining jars. Choose Project > Properties from 

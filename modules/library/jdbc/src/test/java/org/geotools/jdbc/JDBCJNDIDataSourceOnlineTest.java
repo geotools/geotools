@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
     
     public void testJNDIDataSource() throws Exception {
 
-        ((JDBCJNDITestSetup)setup).setupJNDIEnvironment();
+        ((JDBCJNDITestSetup)setup).setupJNDIEnvironment(getDataStoreFactory());
         
         HashMap params = new HashMap();
 
@@ -52,12 +52,10 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
         params.put(JDBCJNDIDataStoreFactory.JNDI_REFNAME.key, "ds");
 
         JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
-        Connection con = dataStore.getDataSource().getConnection();
-        assertTrue(con != null);
-        assertFalse(con.isClosed());
-
-        dataStore.closeSafe(con);
-
+        try(Connection con = dataStore.getDataSource().getConnection()) {
+            assertTrue(con != null);
+            assertFalse(con.isClosed());
+        }
     }
     
     /**
@@ -72,6 +70,7 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
         List<String> baseJndiParams = getBaseJNDIParams();
         List<String> jndiParams = getParamKeys(getJNDIStoreFactory());
         assertTrue(jndiParams.contains(JDBCDataStoreFactory.FETCHSIZE.key));
+        assertTrue(jndiParams.contains(JDBCDataStoreFactory.BATCH_INSERT_SIZE.key));
         jndiParams.removeAll(baseJndiParams);
         assertEquals(standardParams, jndiParams);
     }

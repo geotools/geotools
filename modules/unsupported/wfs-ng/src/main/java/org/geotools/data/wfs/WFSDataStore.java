@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import net.opengis.wfs20.ListStoredQueriesResponseType;
@@ -53,6 +53,7 @@ import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.xml.sax.EntityResolver;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
@@ -73,7 +74,7 @@ public class WFSDataStore extends ContentDataStore {
 
     protected Map<String, String> configuredStoredQueries =
             new ConcurrentHashMap<String, String>();
-
+    
     public WFSDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
@@ -94,7 +95,7 @@ public class WFSDataStore extends ContentDataStore {
     public WFSServiceInfo getInfo() {
         return client.getInfo();
     }
-
+    
     @Override
     protected WFSContentState createContentState(ContentEntry entry) {
         return new WFSContentState(entry);
@@ -110,10 +111,7 @@ public class WFSDataStore extends ContentDataStore {
         Set<QName> remoteTypeNames = client.getRemoteTypeNames();
         List<Name> names = new ArrayList<Name>(remoteTypeNames.size());
         for (QName remoteTypeName : remoteTypeNames) {
-            String localTypeName = remoteTypeName.getLocalPart();
-            if (!XMLConstants.DEFAULT_NS_PREFIX.equals(remoteTypeName.getPrefix())) {
-                localTypeName = remoteTypeName.getPrefix() + "_" + localTypeName;
-            }
+            String localTypeName = client.getConfig().localTypeName(remoteTypeName);
             Name typeName = new NameImpl(namespaceURI==null? remoteTypeName.getNamespaceURI() : namespaceURI, localTypeName);
             
             names.add(typeName);
@@ -316,6 +314,10 @@ public class WFSDataStore extends ContentDataStore {
         Name name = new NameImpl(namespaceURI, localName);
         this.names.remove(name);
         configuredStoredQueries.remove(localName);
+    }
+    
+    public URL getCapabilitiesURL() {
+       return client.getCapabilitiesURL();
     }
 
 }

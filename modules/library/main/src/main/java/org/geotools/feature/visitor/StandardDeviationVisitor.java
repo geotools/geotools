@@ -46,7 +46,20 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVisitor {
-	private Expression expr;
+    public static class Result extends AbstractCalcResult {
+        final Double deviation;
+        public Result(){
+            this.deviation = null;
+        }
+        public Result(double deviation){
+            this.deviation = deviation;
+        }
+        public Object getValue() {
+            return deviation;
+        }
+    }
+
+    private Expression expr;
 
     boolean visited = false;
     int countNull = 0;
@@ -86,17 +99,12 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
         return Arrays.asList(expr);
     }
 
-	public CalcResult getResult() {
-		if(count == 0) {
-    		return CalcResult.NULL_RESULT;
-    	}
-		return new AbstractCalcResult() {
-			public Object getValue() {
-                if (count == 0) return null;
-				return new Double(Math.sqrt(m2 / count));
-			}
-		};
-	}
+    public CalcResult getResult() {
+        if (count == 0) {
+            return CalcResult.NULL_RESULT;
+        }
+        return new Result(Math.sqrt(m2 / count));
+    }
 
 	public void visit(SimpleFeature feature) {
         visit((org.opengis.feature.Feature)feature);

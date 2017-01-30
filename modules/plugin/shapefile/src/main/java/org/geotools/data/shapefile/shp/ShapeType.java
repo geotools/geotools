@@ -54,7 +54,7 @@ public final class ShapeType {
     public static final ShapeType MULTIPOINT = new ShapeType(8, "MultiPoint");
     /** Represents a MultiPointZ shape (id = 18). */
     public static final ShapeType MULTIPOINTZ = new ShapeType(18, "MultiPointZ");
-    /** Represents a MultiPointZ shape (id = 28). */
+    /** Represents a MultiPointM shape (id = 28). */
     public static final ShapeType MULTIPOINTM = new ShapeType(28, "MultiPointM");
 
     /** Represents an Undefined shape (id = -1). */

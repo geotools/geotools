@@ -37,8 +37,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.geotools.map.MapContent;
 import org.geotools.swing.action.InfoAction;
 import org.geotools.swing.action.NoToolAction;
@@ -47,6 +45,9 @@ import org.geotools.swing.action.ResetAction;
 import org.geotools.swing.action.ZoomInAction;
 import org.geotools.swing.action.ZoomOutAction;
 import org.geotools.swing.control.JMapStatusBar;
+import org.geotools.swing.tool.ScrollWheelTool;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * A Swing frame containing a map display pane and (optionally) a toolbar,
@@ -120,7 +121,12 @@ public class JMapFrame extends JFrame {
         /**
          * The zoom display cursor tools.
          */
-        ZOOM;
+        ZOOM, 
+        /**
+         * The map should zoom with the mouse wheel.
+         * No button shown for this.
+         */    
+        SCROLLWHEEL;
     }
 
     private boolean showToolBar;
@@ -351,7 +357,9 @@ public class JMapFrame extends JFrame {
 
             JButton btn;
             ButtonGroup cursorToolGrp = new ButtonGroup();
-            
+            if(toolSet.contains(Tool.SCROLLWHEEL)) {
+               mapPane.addMouseListener(new ScrollWheelTool(mapPane));
+            }
             if (toolSet.contains(Tool.POINTER)) {
                 btn = new JButton(new NoToolAction(mapPane));
                 btn.setName(TOOLBAR_POINTER_BUTTON_NAME);

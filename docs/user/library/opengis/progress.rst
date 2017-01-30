@@ -47,7 +47,7 @@ Additional adapters for SWT project are available in the uDig project.
 Using ProgressListener to Cancel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ProgressListener is a general user interface callback object; as such it allows the a user to cancel a long running operations.::
+The ProgressListener is a general user interface callback object; as such it allows the a user to cancel a long running operation.::
   
   final ProgressListener progress= new ProgressWindow( null );
   Thread worker = new Thread( new Runnable(){

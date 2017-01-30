@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,6 +42,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.impl.ParserHandler;
+import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
 import org.geotools.xs.XS;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -132,6 +133,14 @@ public class Parser {
      */
     ParserHandler getParserHandler() {
         return handler;
+    }
+    
+    /**
+     * Allows the caller to customize the Pico context used for parsing
+     * @param contextCustomizer
+     */
+    public void setContextCustomizer(ContextCustomizer contextCustomizer) {
+        handler.setContextCustomizer(contextCustomizer);
     }
     
     /**

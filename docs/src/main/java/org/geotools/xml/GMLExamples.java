@@ -60,7 +60,7 @@ private void saxExample2() throws Exception {
     InputSource input = null;
     // saxExample2 start
     class InlineHandler extends XMLFilterImpl implements GMLHandlerFeature {
-    List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+    List<SimpleFeature> features = new ArrayList<>();
     
     public void feature(SimpleFeature feature) {
         features.add(feature);
@@ -86,7 +86,7 @@ private void transformExample() throws Exception {
     TYPE.getUserData().put("prefix", "ex"); 
 		
     WKTReader2 wkt = new WKTReader2();
-    List<SimpleFeature> collection = new LinkedList<SimpleFeature>();
+    List<SimpleFeature> collection = new LinkedList<>();
     collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"), "name1" }, null));
     collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"), "name2" }, null));
 

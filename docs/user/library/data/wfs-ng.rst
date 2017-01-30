@@ -67,7 +67,7 @@ The following connection parameters are defined for WFS.
 +--------------------------------------------+------------------------------------------------------------------+
 | "WFSDataStoreFactory:FILTER_COMPLIANCE"    | Optional used override how GetFeature operations encodes filters |
 |                                            |                                                                  |
-|                                            | * 0 (low compliance) full range of geotools filters represetned  |
+|                                            | * 0 (low compliance) full range of geotools filters represented  |
 |                                            | * 1 (medium compliance) Id filters mixed with bbox only          |
 |                                            | * 2 (strict compliance) Id filters cannot be combined at all     |
 |                                            |                                                                  |

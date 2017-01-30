@@ -135,6 +135,7 @@ public class NetCDFCRSUtilities {
     private static final Map<AxisType, String> OPPOSITES = new HashMap<AxisType, String>(16);
     static {
         add(AxisType.Time, "future", "past");
+        add(AxisType.RunTime, "future", "past");
         add(AxisType.GeoX, "east", "west");
         add(AxisType.GeoY, "north", "south");
         add(AxisType.GeoZ, "up", "down");
@@ -338,7 +339,7 @@ public class NetCDFCRSUtilities {
 
                 Date epoch = null;
                 String t_originDate = null;
-                if (AxisType.Time.equals(type)) {
+                if (AxisType.Time.equals(type) || AxisType.RunTime.equals(type)) {
                     String origin = null;
                     final String[] unitsParts = units.split("(?i)\\s+since\\s+");
                     if (unitsParts.length == 2) {

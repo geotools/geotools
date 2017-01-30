@@ -26,8 +26,8 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  *
  * @source $URL$
  */
-public final class IntegerFileNameExtractorSPI extends NumericFileNameExtractorSPI implements
-        PropertiesCollectorSPI {
+public final class IntegerFileNameExtractorSPI extends NumericFileNameExtractorSPI
+        implements PropertiesCollectorSPI {
 
     public IntegerFileNameExtractorSPI() {
         super("IntegerFileNameExtractorSPI");

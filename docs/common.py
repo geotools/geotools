@@ -51,14 +51,14 @@ exclude_patterns = ['**/.svn']
 
 # General information about the project.
 project = u'GeoTools'
-copyright = u'2015, GeoTools'
+copyright = u'2016, GeoTools'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = '14-SNAPSHOT'
+release = '17-SNAPSHOT'
 
 # The short X.Y version.
 version = release

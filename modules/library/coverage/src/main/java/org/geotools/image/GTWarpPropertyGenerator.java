@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -60,8 +60,6 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
     public synchronized static void register(boolean force) {
         if (!registered || force) {
             OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
-            PropertyGenerator[] stdGenerators = new WarpDescriptor()
-                    .getPropertyGenerators("rendered");
             registry.addPropertyGenerator("rendered", "Warp", new GTWarpPropertyGenerator());
             registered = true;
         }
@@ -82,7 +80,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             ParameterBlock pb = op.getParameterBlock();
 
             // Retrieve the rendered source image and its ROI.
-            RenderedImage src = (RenderedImage) pb.getRenderedSource(0);
+            RenderedImage src = pb.getRenderedSource(0);
             Object property = src.getProperty("ROI");
             if (property == null || property.equals(java.awt.Image.UndefinedProperty)
                     || !(property instanceof ROI)) {
@@ -132,6 +130,8 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             layout.setMinY(miny);
             layout.setWidth(w);
             layout.setHeight(h);
+            layout.setTileWidth(op.getTileWidth());
+            layout.setTileHeight(op.getTileHeight());
             RenderingHints hints = op.getRenderingHints();
             hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
@@ -162,6 +162,8 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             il.setMinY(dstBounds.y);
             il.setWidth(dstBounds.width);
             il.setHeight(dstBounds.height);
+            il.setTileWidth(op.getTileWidth());
+            il.setTileHeight(op.getTileHeight());
             localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
             roiImage = JAI.create("Warp", paramBlk, localHints);
             ROI dstROI = new ROI(roiImage, 1);

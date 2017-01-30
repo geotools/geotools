@@ -7,7 +7,7 @@ References:
 
 Related
 
-* http://www.foss4g2007.org/workshops/W-04/ PostGIS workshop if you need an intro to setting up PostGIS
+* http://www.foss4g2007.org/workshops/W-04/ PostGIS workshop if you need an introduction to setting up PostGIS
 
 **Maven**
 
@@ -55,7 +55,7 @@ Advanced
 | "loose bbox"         | Flag controlling loose bbox comparisons,       |
 |                      | default is true                                |
 +----------------------+------------------------------------------------+
-| "preparedStatements" | Flag controlling wether prepared statements    |
+| "preparedStatements" | Flag controlling whether prepared statements   |
 |                      | are used, default is false                     |
 +----------------------+------------------------------------------------+
 
@@ -67,8 +67,8 @@ Example use::
 Configuration Flags
 ^^^^^^^^^^^^^^^^^^^
 
-By default, an optimization on spatial queries is applied, to avoid a bug with PostGIS query planner with big geometries and small bboxes.
+An optimization on spatial queries can be applied, to avoid a bug with PostGIS query planner with big geometries and small bboxes, setting a system property.
 
-This optimization can be disabled using a system-wide default from the command line::
+This optimization can be enabled using a system-wide default from the command line::
   
-  java -Dorg.geotools.data.postgis.largeGeometriesOptimize=false
+  java -Dorg.geotools.data.postgis.largeGeometriesOptimize=true

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,18 +16,19 @@
  */
 package org.geotools.jdbc;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.naming.spi.InitialContextFactory;
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.factory.GeoTools;
+import org.mockito.Mockito;
 
 /**
  * 
@@ -36,85 +37,63 @@ import org.geotools.factory.GeoTools;
  */
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
-    static final String IC_FACTORY_PROPERTY = "java.naming.factory.initial";
-
-    static final String JNDI_ROOT = "org.osjava.sj.root";
-
-    static final String JNDI_DELIM = "org.osjava.jndi.delimiter";
+    private BasicDataSource dataSource;
 
     public JDBCJNDITestSetup(JDBCTestSetup delegate) {
         super(delegate);
     }
 
-    protected void setupJNDIEnvironment() throws IOException {
+    protected void setupJNDIEnvironment(JDBCDataStoreFactory jdbcDataStoreFactory) throws IOException {
         
-        File jndi = new File( "target/jndi");
-        jndi.mkdirs();
-        
-        OutputStreamWriter out = new OutputStreamWriter( new FileOutputStream( new File( jndi, "ds.properties")) );
-        
-        //can't use Properties.store because it escapes colons, which throws
-        // of the jdbc urls
-        for ( Map.Entry e : fixture.entrySet() ) {
-            out.write(e.getKey().toString()+"="+e.getValue().toString()+"\n");
-        }
-        if (!fixture.containsKey("password") && fixture.containsKey("passwd")) {
-            out.write("password=" + fixture.get("passwd")+"\n");
-        }
-        out.write( "type=javax.sql.DataSource\n");
-        out.flush();
-        out.close();
-        
+        Map params = new HashMap(fixture);
+        params.put("passwd", params.get("password"));
+        dataSource = jdbcDataStoreFactory.createDataSource(params);
+        MockInitialDirContextFactory.setDataSource(dataSource);
 
-        if (System.getProperty(IC_FACTORY_PROPERTY) == null) {
-            System.setProperty(IC_FACTORY_PROPERTY, "org.osjava.sj.SimpleContextFactory");
-        }
-
-        if (System.getProperty(JNDI_ROOT) == null) {
-            System.setProperty(JNDI_ROOT, jndi.getAbsolutePath());
-        }
-        
-        if (System.getProperty(JNDI_DELIM) == null)
-            System.setProperty(JNDI_DELIM, "/");
-        
-        LOGGER.fine( IC_FACTORY_PROPERTY + " = " + System.getProperty(IC_FACTORY_PROPERTY) );
-        LOGGER.fine( JNDI_ROOT + " = " + System.getProperty(JNDI_ROOT) );
-        LOGGER.fine( JNDI_DELIM + " = " + System.getProperty(JNDI_DELIM) );
-    }
-
-    @Override
-    protected DataSource createDataSource() throws IOException {
-        setupJNDIEnvironment();
-        
-        DataSource ds = null;
+        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
         try {
-            //JD: we need to "reset" the naming context because if there is a 
-            // context that already exists (this mostly happens due to the epsg
-            // hsql database), then it will not have been affected by our special
-            // jndi environment variables
-            GeoTools.init( new InitialContext() );
-            Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
-            ds = (DataSource) ctx.lookup("ds");
-        } 
-        catch (NamingException e) {
-            e.printStackTrace();
+            GeoTools.clearInitialContext();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
-        
-        return ds;
     }
+    
+    @Override
+    public DataSource getDataSource() throws IOException {
+        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
+        return super.getDataSource();
+    }
+
     
     @Override
     public void tearDown() throws Exception {
         try {
+            if(dataSource  != null) {
+                dataSource.close();
+            }
             super.tearDown();
         } finally {
-            Context ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
-            ctx.close();
-
-            System.clearProperty(IC_FACTORY_PROPERTY);
-            System.clearProperty(JNDI_DELIM);
-            System.clearProperty(JNDI_ROOT);
+            System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
+            GeoTools.clearInitialContext();
         }
     }
+    
+    public static class MockInitialDirContextFactory implements InitialContextFactory {
+        
+        private Context mockContext = null;
+        private static BasicDataSource dataSource;
+        
+        public static void setDataSource(BasicDataSource dataSource) {
+            MockInitialDirContextFactory.dataSource = dataSource;
+        }
+     
+        public Context getInitialContext(Hashtable environment)
+                throws NamingException {
+            mockContext = (Context) Mockito.mock(Context.class);
+            Mockito.when(mockContext.lookup("ds")).thenReturn(dataSource);
+            return mockContext;
+        }
+    }
+    
 
 }

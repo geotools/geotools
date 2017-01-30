@@ -127,7 +127,7 @@ Examples
         Filter filter = ECQL.toFilter(
                 "DWITHIN(buffer(the_geom,5), POINT(1 2), 10, kilometers)");
 
-  The followning example shows how to make a filter using the RELATE geooperation. In this case, the DE-9IM pattern corresponds to the **contains** spatial relation, It will be true if the first geometry contains the second.
+  The following example shows how to make a filter using the RELATE geooperation. In this case, the DE-9IM pattern corresponds to the **contains** spatial relation, It will be true if the first geometry contains the second.
 
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
      :language: java

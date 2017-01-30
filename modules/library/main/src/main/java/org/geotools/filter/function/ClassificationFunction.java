@@ -204,7 +204,7 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     protected double round(double value, int decimalPlaces) {
     	double divisor = Math.pow(10, decimalPlaces);
     	double newVal = value * divisor;
-    	newVal =  (new Long(Math.round(newVal)).intValue())/divisor; 
+        newVal = Math.round(newVal) / divisor;
     	return newVal;
     }
     

@@ -1,0 +1,69 @@
+// Test points for the Meteosat Second Generation imagery projection
+//
+// (C) 2015, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with the reference software 
+// "MSG_navigation" v1.02 provided by EUMETSAT on their "Support Software & Tools" web page: 
+// http://www.eumetsat.int/website/home/Data/DataDelivery/SupportSoftwareandTools/index.html
+// 
+// Example (for non-HRV image coordinates):
+// ./MSG_navigation_v1.02 1116 3062 0  
+// 
+//
+// Maciej Filocha (ICM) - June 2015
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    java -cp target/classes:target/test-classes:_CLASS_PATH_ -ea org.geotools.referencing.ScriptRunner src/test/resources/org/geotools/referencing/test-data/scripts/MeteosatSG.txt
+//
+// the _CLASS_PATH_ can be generated with
+//
+//    mvn dependency:build-classpath
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563 ] ], PRIMEM["Greenwich",0.0], UNIT["degree",0.01745329251994328 ]]
+ 
+set _MSG_ = PROJCS["MSG", GEOGCS["WGS 84", DATUM["World Geodetic System 1984", SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], AUTHORITY["EPSG","6326"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AUTHORITY["EPSG","4326"]], PROJECTION["MeteosatSG"], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+
+test tolerance = (0.01, 0.01)
+
+source crs = _WGS84_
+target crs = _MSG_
+//print crs
+
+// col, row
+// lon, lat
+
+source pt = (0,0)
+target pt = (1856, 1856)
+//print pts
+
+source pt = (4.0244517481909288,44.701975477556189)
+target pt = (1755, 3264)
+
+source pt = (27.328919391984773, 37.102357255774159)
+target pt = (1116, 3062)
+
+source pt = (24.259015685448439, 3.9842388501098558)
+target pt = (1000, 2000)
+
+source pt = (80.5547692415917, -0.0946262451338)
+target pt = (45, 1853)
+
+// Point outside validity area
+//source pt = (124.259015685448439, 3.9842388501098558)
+//target pt = ( 2140.50, 3062.5)
+

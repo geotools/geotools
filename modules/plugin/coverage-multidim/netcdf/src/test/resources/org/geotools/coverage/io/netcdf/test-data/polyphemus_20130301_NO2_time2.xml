@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <name>NO2</name>
+        </coverage>
+    </coverages>
+    <parameters>
+        <parameter name="uniqueTimeAttribute" value="true" />
+    </parameters>
+</Indexer>

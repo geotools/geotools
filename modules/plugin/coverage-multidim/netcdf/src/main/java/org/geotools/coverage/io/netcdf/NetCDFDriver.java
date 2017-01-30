@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -128,6 +128,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
         }
         ImageInputStream inputStream = null;
         Object source = null;
+        URIImageInputStream uriInStream = null;
         try {
 
             //
@@ -157,7 +158,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
             } else {
                 if (url.getProtocol().toLowerCase().startsWith("http")
                         || url.getProtocol().equalsIgnoreCase("dods")) {
-                    URIImageInputStream uriInStream = new URIImageInputStreamImpl(url.toURI());
+                    uriInStream = new URIImageInputStreamImpl(url.toURI());
                     source = uriInStream;
                     if (!SPI.canDecodeInput(source)) {
                         if (LOGGER.isLoggable(Level.FINE))
@@ -205,6 +206,14 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
             if (source != null && (source instanceof InputStream)) {
                 try {
                     ((InputStream) source).close();
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                }
+            }
+            if (uriInStream != null) {
+                try {
+                    uriInStream.close();
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);

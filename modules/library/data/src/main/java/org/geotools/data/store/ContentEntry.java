@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,14 +28,14 @@ import org.opengis.feature.type.Name;
 
 
 /**
- * An entry for a type or feature source provided by a datastore.
+ * An entry for a type or feature source provided by a DataStore.
  * <p>
- * This class is only of concern to subclasses, client code should never see
- * this class.
+ * This class is only of concern to subclasses, client code should never see this class.
  * </p>
  * <p>
- * An entry maintains state on a per-transaction basis. The {@link #getState(Transaction)}
- * method is used to get at this state.
+ * Each entry maintains state on a per-transaction basis. The {@link #getState(Transaction)} method is
+ * used to get at this state.
+ * 
  * <pre>
  *   <code>
  *   ContentEntry entry = ...;
@@ -54,11 +54,9 @@ import org.opengis.feature.type.Name;
  * @author Jody Garnett, Refractions Research Inc.
  * @author Justin Deoliveira, The Open Planning Project
  *
- *
- *
  * @source $URL$
  */
-public final class ContentEntry {
+public class ContentEntry {
     /**
      * Qualified name of the entry.
      */
@@ -70,14 +68,14 @@ public final class ContentEntry {
     Map<Transaction,ContentState> state;
 
     /**
-     * backpointer to datastore
+     * Backpointer to DataStore.
      */
     ContentDataStore dataStore;
 
     /**
      * Creates the entry.
      * 
-     * @param dataStore The datastore of the entry.
+     * @param dataStore The DataStore of the entry.
      * @param typeName The name of the entry.
      */
     public ContentEntry(ContentDataStore dataStore, Name typeName) {
@@ -168,7 +166,7 @@ public final class ContentEntry {
      * Disposes the entry by disposing all maintained state.
      */
     public void dispose() {
-        //kill all state
+        // clear all states
         for (ContentState s : state.values() ) {
             s.close();
         }
@@ -185,6 +183,6 @@ public final class ContentEntry {
     }
     
     public String toString() {
-        return getTypeName();
+        return "ContentEntry "+ getTypeName();
     }
 }

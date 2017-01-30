@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -117,6 +117,7 @@ public class WFSDataStoreFactoryTest {
             throw new IllegalArgumentException(capabilitiesFile + " not found");
         }
         params.put(WFSDataStoreFactory.URL.key, capabilitiesUrl);
+        params.put(WFSDataStoreFactory.GML_COMPLIANCE_LEVEL.key, "0");
 
         DataStore dataStore = DataStoreFinder.getDataStore(params);
         assertNotNull(dataStore);

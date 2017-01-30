@@ -51,7 +51,7 @@ Examples:
         MapContent content = mapFrame.getMapContent();
         MapViewport viewport = content.getMapViewport();
         ReferencedEnvelope maxBounds = null;
-        CoordinateReferenceSystem mapCRS = viewport.getCoordianteReferenceSystem();
+        CoordinateReferenceSystem mapCRS = viewport.getCoordinateReferenceSystem();
         
         for (Layer layer : content.layers()) {
             ReferencedEnvelope dataBounds = layer.getBounds();
@@ -78,7 +78,7 @@ By default, MapViewport does not make any correction for this (this behaviour ac
 WMS specification which states that a map server should honour the bounds provided by the user
 regardless of any distortion which results).
 
-In many cases, it is preferable to have MapViewport automagically correct for differing aspect
+In many cases, it is preferable to have MapViewport automatically correct for differing aspect
 ratios, thereby avoiding distortion in the map display. You can request this behaviour as follows::
 
     MapViewport vp = myMapContent.getViewport();
@@ -156,7 +156,7 @@ can be determined without reading all of the raster into memory:
   entire file.
 
 The performance of GridReaderLayer is dependent on how you have tuned your Java Advanced Imaging
-"TileCache" and on the amount of work you have put into prepairing your data for display.
+"TileCache" and on the amount of work you have put into preparing your data for display.
 
 This class has been extended by gt-wms for the rendering of WMS information.
 
@@ -205,7 +205,7 @@ kind of content is in use).
   shallow wrapper around a layer holding the specific content (FeatureLayer, GridReaderLayer,
   etc...).
   
-  In the event clinet code is expecting a MapLayer; this wrapper is recreated as needed and
+  In the event client code is expecting a MapLayer; this wrapper is recreated as needed and
   returned from getLayer( int ) method.
   
   In a similar fashion the various methods for managing the area of interest delegate to

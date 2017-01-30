@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -61,5 +61,14 @@ public class CapabilitiesTest extends TestCase {
         assertTrue( capabilities2.getContents().getScalarCapabilities().hasLogicalOperators() );
         assertFalse( capabilities.getContents().getScalarCapabilities().hasLogicalOperators() );
         
+    }
+    
+    public void testCapablities_PropertyIsLessThanOrEqualTo(){
+        Capabilities capabilities = new Capabilities();
+        capabilities.addAll(Capabilities.SIMPLE_COMPARISONS);
+        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Filter filter = ff.lessOrEqual(ff.property("x"), ff.literal( 2 ) );
+        assertTrue("supports", capabilities.supports( filter ) );
     }
 }

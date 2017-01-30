@@ -141,8 +141,8 @@
             <exclude>**/XPathPropertyAcessorTest.java</exclude>
             <exclude>**/impl/jxpath/*.java</exclude>
           </testExcludes>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>

@@ -1,0 +1,22 @@
+/* @title Levels */
+* {
+  transform: ras:Contour(levels: 1100 1200 1300 1400 1500 1600 1700);
+  stroke: gray;
+  z-index: 0;
+}
+
+/* @title Values */
+[@scale < 3000] {
+  transform: ras:RasterAsPointCollection();
+  mark: symbol('circle');
+  :mark {
+    size: 2;
+    fill: red;
+  };
+  label: [GRAY_INDEX];
+  label-anchor: 0 0.5;
+  label-offset: 5 0;
+  font-family: Arial;
+  font-fill: black;
+  z-index: 1;
+}

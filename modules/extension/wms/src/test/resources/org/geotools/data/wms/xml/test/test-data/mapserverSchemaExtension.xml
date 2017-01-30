@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+<WMS_Capabilities version="1.3.0"  xmlns="http://www.opengis.net/wms"   xmlns:sld="http://www.opengis.net/sld"   
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xmlns:ms="http://mapserver.gis.umn.edu/mapserver"   
+   xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd  
+                       http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/sld_capabilities.xsd  
+                       http://mapserver.gis.umn.edu/mapserver http://localhost:-1/cgi-bin/mapserv_wfs?service=WMS&amp;version=1.3.0&amp;request=GetSchemaExtension">
+<!-- MapServer version 7.0.0 OUTPUT=PNG OUTPUT=JPEG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=GEOS INPUT=JPEG INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>WMS</Name>
+<!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
+  <Title></Title>
+  <Abstract>abstract</Abstract>
+  <KeywordList>
+      <Keyword>keywork list</Keyword>
+  </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://acme.com"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Wile E. Coyote</ContactPerson>
+      <ContactOrganization>ACME Inc.</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>director</ContactPosition>
+    <ContactAddress>
+<!-- WARNING: Mandatory metadata '..._addresstype' was missing in this context. -->
+        <Address>foo</Address>
+        <City>foo</City>
+        <StateOrProvince>foo</StateOrProvince>
+        <PostCode>foo</PostCode>
+        <Country>foo</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+00</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+00</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>foo</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>free</Fees>
+  <AccessConstraints>none</AccessConstraints>
+  <MaxWidth>5000</MaxWidth>
+  <MaxHeight>5000</MaxHeight>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>application/x-pdf</Format>
+      <Format>image/svg+xml</Format>
+      <Format>image/tiff</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <sld:DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Post>
+        </HTTP>
+      </DCPType>
+    </sld:DescribeLayer>
+    <sld:GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=8bit</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Post>
+        </HTTP>
+      </DCPType>
+    </sld:GetLegendGraphic>
+    <ms:GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?"/></Post>
+        </HTTP>
+      </DCPType>
+    </ms:GetStyles>
+  </Request>
+  <Exception>
+    <Format>XML</Format>
+    <Format>INIMAGE</Format>
+    <Format>BLANK</Format>
+  </Exception>
+  <sld:UserDefinedSymbolization SupportSLD="1" UserLayer="0" UserStyle="1" RemoteWFS="0" InlineFeature="0" RemoteWCS="0"/>
+  <Layer>
+<!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
+    <Title></Title>
+    <Abstract>abstract</Abstract>
+    <KeywordList>
+        <Keyword>keywork list</Keyword>
+    </KeywordList>
+    <CRS>EPSG:4326</CRS>
+    <EX_GeographicBoundingBox>
+        <westBoundLongitude>-180</westBoundLongitude>
+        <eastBoundLongitude>180</eastBoundLongitude>
+        <southBoundLatitude>-90</southBoundLatitude>
+        <northBoundLatitude>90</northBoundLatitude>
+    </EX_GeographicBoundingBox>
+    <BoundingBox CRS="EPSG:4326"
+                minx="-90" miny="-180" maxx="90" maxy="180" />
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>states</Name>
+<!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
+        <Title>states</Title>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>-124.731</westBoundLongitude>
+            <eastBoundLongitude>-66.9698</eastBoundLongitude>
+            <southBoundLatitude>24.956</southBoundLatitude>
+            <northBoundLatitude>49.3717</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4326"
+                    minx="24.956" miny="-124.731" maxx="49.3717" maxy="-66.9698" />
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL width="71" height="20">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:-1/cgi-bin/mapserv_wfs?version=1.3.0&amp;service=WMS&amp;request=GetLegendGraphic&amp;sld_version=1.1.0&amp;layer=states&amp;format=image/png&amp;STYLE=default"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMS_Capabilities>

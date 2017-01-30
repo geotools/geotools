@@ -36,7 +36,7 @@ Git Preflight Configuration
 
 #. Configure git with your user name::
 
-     git config user.name "Jane Doe
+     git config user.name "Jane Doe"
      
    And email address::
    

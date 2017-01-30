@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -250,6 +250,5 @@ public interface FeatureSource<T extends FeatureType, F extends Feature>{
      * @return a set of {@code RenderingHints#Key} objects; may be empty but never {@code null}
      */
     public Set<RenderingHints.Key> getSupportedHints();
-    
-    // FeatureReader getFeatureReader( Query query ); // ask justin for proposal
+
 }

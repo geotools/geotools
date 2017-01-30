@@ -191,7 +191,7 @@ Example file map.xml::
      &connect;
   </config>
 
-The DOCTYPE includes two XML entity references to the connct.xml.inc and mapping.xml.inc. The XML parser includes these fragments at parsing time.
+The DOCTYPE includes two XML entity references to the connect.xml.inc and mapping.xml.inc. The XML parser includes these fragments at parsing time.
 
 Elements:
 
@@ -216,4 +216,4 @@ verify
 
 **Configuration Summary**
 
-A map configuration consists of 3 parts, connect configuration, mapping configuration and map configuration. As a result, you have great flexibilty and can reuse parts of the configuration for many maps.
+A map configuration consists of 3 parts, connect configuration, mapping configuration and map configuration. As a result, you have great flexibility and can reuse parts of the configuration for many maps.

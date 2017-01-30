@@ -156,6 +156,7 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
                 String ns = "http://www.geotools.org";
                 String local = "myElement";
                 String qualified = "gt:myElement";
+                output.startPrefixMapping("gt", ns);
                 output.startElement(ns, local, qualified, new org.xml.sax.helpers.AttributesImpl());
                 String txt = "hello world";
                 output.characters(txt.toCharArray(), 0, txt.length());

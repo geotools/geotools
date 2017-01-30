@@ -1,5 +1,6 @@
 org.geotools.filter.AreaFunction
 org.geotools.filter.LengthFunction
+org.geotools.filter.function.AttributeCountFunction
 org.geotools.filter.function.CategorizeFunction
 org.geotools.filter.function.ClassifyFunction
 org.geotools.filter.function.EqualIntervalFunction
@@ -170,6 +171,7 @@ org.geotools.filter.function.math.FilterFunction_toRadians
 org.geotools.filter.function.math.ModuloFunction
 org.geotools.filter.function.math.PiFunction
 org.geotools.filter.function.string.ConcatenateFunction
+org.geotools.filter.function.string.URLEncodeFunction
 org.geotools.filter.function.JenksNaturalBreaksFunction
 org.geotools.filter.function.FilterFunction_list
 org.geotools.styling.visitor.RescaleToPixelsFunction

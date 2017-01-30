@@ -73,25 +73,25 @@ public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
         WKTReader reader = new WKTReader();
         Geometry emptyGeometry = reader.read(type.toUpperCase() + " EMPTY");
 
-        Transaction tx = new DefaultTransaction();
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore.getFeatureWriterAppend(
-                tname("empty"), tx);
-        SimpleFeature feature = writer.next();
-        feature.setAttribute(aname("id"), new Integer(100));
-        feature.setAttribute(aname("geom_" + type.toLowerCase()), emptyGeometry);
-        feature.setAttribute(aname("name"), new String("empty " + type));
-        writer.write();
-        writer.close();
-        tx.commit();
-        tx.close();
+        try (Transaction tx = new DefaultTransaction();
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore
+                        .getFeatureWriterAppend(tname("empty"), tx)) {
+            SimpleFeature feature = writer.next();
+            feature.setAttribute(aname("id"), new Integer(100));
+            feature.setAttribute(aname("geom_" + type.toLowerCase()), emptyGeometry);
+            feature.setAttribute(aname("name"), new String("empty " + type));
+            writer.write();
+            writer.close();
+            tx.commit();
+        }
 
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname("empty")).getFeatures();
         assertEquals(1, fc.size());
-        SimpleFeatureIterator fi = fc.features();
-        SimpleFeature nf = fi.next();
-        fi.close();
-        Geometry geometry = (Geometry) nf.getDefaultGeometry();
-        // either null or empty, we don't really care
-        assertTrue(geometry == null || geometry.isEmpty());
+        try(SimpleFeatureIterator fi = fc.features()) {
+            SimpleFeature nf = fi.next();
+            Geometry geometry = (Geometry) nf.getDefaultGeometry();
+            // either null or empty, we don't really care
+            assertTrue(geometry == null || geometry.isEmpty());
+        }
     }
 }

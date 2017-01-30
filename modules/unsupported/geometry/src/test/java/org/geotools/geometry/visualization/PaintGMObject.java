@@ -256,7 +256,7 @@ public class PaintGMObject {
     
     /**
      * Inner Class Coords
-     * Storing two arrays. One for X-Coordinates, the other for Y-Coordiantes
+     * Storing two arrays. One for X-Coordinates, the other for Y-Coordinates
      */
     public class Coords {
         private int x[];

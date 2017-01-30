@@ -12,7 +12,7 @@ Reference:
 Distance
 ^^^^^^^^
 
-There is a helper method allowing you to calcualte the real-world distance between two points:
+There is a helper method allowing you to calculate the real-world distance between two points:
   
 .. literalinclude:: /../src/main/java/org/geotools/jts/JTSExamples.java
    :language: java

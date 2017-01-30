@@ -116,7 +116,7 @@ public class DoublePointArray extends AbstractList<Position> implements PointArr
         return position;        
     }
     public void setPosition( int index, DirectPosition position ) throws IndexOutOfBoundsException, UnsupportedOperationException {
-        // note: tempting to use System arraycopy on position.getCoordiantes() but that would make an tempoaray extra array
+        // note: tempting to use System arraycopy on position.getCoordinates() but that would make an temporary extra array
         int D = getDimension();
         for( int i=0; i<D;i++){
             array[ start + index*D + i ] = position.getOrdinate( i );

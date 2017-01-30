@@ -58,6 +58,15 @@ target pt = (14471533.80,     0.00)
 source pt = (130, 60)
 target pt = (7254000.20,  6654072.82)
 
+source pt = (360, 90)
+target pt = (0,  10001965.729)
+
+source pt = (360, 89.99999999999995)
+target pt = (0,  10001965.729)
+
+source pt = (0, 89.9999999999995)
+target pt = (0,  10001965.729)
+
 // -----------
 source crs = _sinusoidal_
 target crs = _WGS84_
@@ -72,5 +81,4 @@ target pt = (130, 60)
 
 source pt = (14471533.80,     0.00)
 target pt = (130, 0)
-
 

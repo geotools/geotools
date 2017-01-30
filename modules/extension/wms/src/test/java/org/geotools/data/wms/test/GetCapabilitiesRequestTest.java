@@ -35,6 +35,7 @@ import org.geotools.ows.ServiceException;
  * @source $URL$
  */
 public class GetCapabilitiesRequestTest extends ServerTestCase {
+    
     public void testGetCapabilitiesRequest() throws Exception {
         URL testURL = new URL(
                 "http://office.refractions.net:4001/cgi-bin/mapserv?map=/opt/dra2/orthophotos/tiles.map&");
@@ -48,7 +49,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
         assertEquals(urlWithoutQuery,
             "http://office.refractions.net:4001/cgi-bin/mapserv");
 
-        HashMap map = new HashMap();
+        HashMap<String,String> map = new HashMap<>();
         map.put("VERSION", "1.1.1");
         map.put("MAP", "/opt/dra2/orthophotos/tiles.map");
         map.put("REQUEST", "GetCapabilities");
@@ -63,7 +64,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
             assertEquals((String) map.get(param[0]), param[1]);
         }
     }
-
+    
     protected class Request extends AbstractGetCapabilitiesRequest {
         /**
          * DOCUMENT ME!
@@ -88,7 +89,7 @@ public class GetCapabilitiesRequestTest extends ServerTestCase {
 		}
 
 		public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
-			return new WMSGetCapabilitiesResponse(httpResponse);
+			return new WMSGetCapabilitiesResponse(httpResponse, hints);
 		}
     }
 }

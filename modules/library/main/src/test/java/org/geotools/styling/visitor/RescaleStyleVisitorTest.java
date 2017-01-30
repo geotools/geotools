@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,9 +25,11 @@ import javax.measure.unit.SI;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PolygonSymbolizer;
@@ -171,7 +173,11 @@ public class RescaleStyleVisitorTest {
         // a graphic stroke
         Stroke stroke = sb.createStroke();
         stroke.setColor(null);
-        stroke.setGraphicStroke(sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(1)), null));
+        Graphic graphic = sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(1)), null);
+        double expectedAnchorPointX = 0.25;
+        double expectedAnchorPointY = 0.75;
+        graphic.setAnchorPoint(sb.createAnchorPoint(expectedAnchorPointX, expectedAnchorPointY));
+        stroke.setGraphicStroke(graphic);
         
         // a graphic fill
         Fill fill = sb.createFill();
@@ -189,7 +195,11 @@ public class RescaleStyleVisitorTest {
         rm = (Mark) rps.getFill().getGraphicFill().graphicalSymbols().get(0);
         assertEquals(4.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
 
-        
+        AnchorPoint actualAnchorPoint = rps.getStroke().getGraphicStroke().getAnchorPoint();
+        assertNotNull(actualAnchorPoint);
+        assertEquals(expectedAnchorPointX, actualAnchorPoint.getAnchorPointX().evaluate(null, Double.class), 0d);
+        assertEquals(expectedAnchorPointY, actualAnchorPoint.getAnchorPointY().evaluate(null, Double.class), 0d);
+
         // a line symbolizer that uses a graphic stroke
         LineSymbolizer ls = sb.createLineSymbolizer(stroke);
         
@@ -231,6 +241,17 @@ public class RescaleStyleVisitorTest {
         LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
         
         assertEquals("4", clone.getStroke().getWidth().evaluate(null, String.class));
+    }
+    
+    @Test
+    public void testRescalePerpendicularOffset() throws Exception {
+        Stroke stroke = sb.createStroke(Color.RED, 2, new float[] {5, 10});
+        LineSymbolizer ls = sb.createLineSymbolizer(stroke);
+        ls.setPerpendicularOffset(ff.literal(2));
+        ls.accept(visitor);
+        LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
+        
+        assertEquals("4", clone.getPerpendicularOffset().evaluate(null, String.class));
     }
     
     

@@ -49,11 +49,11 @@ An incomplete migration to the GeoTools 2.4.x feature model was performed during
 
 This incomplete migration has resulted in the following issues:
 
-* The VPF codebase assumes the above are interchangable, resulting in class cast exceptions on occasion.
+* The VPF codebase assumes the above are interchangeable, resulting in class cast exceptions on occasion.
 * The GeoTools codebase has only been tested with the default implementation of FeatureType and AttributeDescriptor. T
-  This results in a brittle experience when integrating the VPF Format with library compoents such as reprojection
+  This results in a brittle experience when integrating the VPF Format with library components such as reprojection
   and rendering.
-* The feature model uses both AttributeDescriptor and GeometryDescriptor to describe published attributes. The implemntation
+* The feature model uses both AttributeDescriptor and GeometryDescriptor to describe published attributes. The implementation
   of VPFColumn cannot publish a GeometryDescriptor and is prevented from advertising spatial data to clients.
 
 DataStore implementations
@@ -65,13 +65,13 @@ META-INF/services advertises VPFDataStoreFactory for use in DataStoreFactory Fin
   
   VPFLibrary correctly lists the available feature types in initial testing.
   
-  Code predates CoordianteReferenceSystem being manditory
+  Code predates CoordinateReferenceSystem being mandatory
   (VPFLibrary.getCoordinateReferenceSystem() assume WGS84 and VPFFile does not implement).
   
 * VPFFileFactory `----->` VPFFileStore
 
   VPFFileFactory is a singleton, acting as a container for a single copy of VPFFile. This design predates GeoTools 2, which
-  expects applications to manage individual DataStore (in a catalog or registery). For this approach to work factories
+  expects applications to manage individual DataStore (in a catalog or registry). For this approach to work factories
   are expected to stateless and responsible for creating an independent DataStore instance on request.
   
   With this assumption in mind DataStoreFactories are instantiated once, and managed by DataStoreFinder.
@@ -112,5 +112,5 @@ files may be available:
 * nsi, Entity Node Spatial Index
 * tsi, Text Spatial Index
 
-The codebase has SpatialIndexHeader and SpatialIndexInputStream indicating that some support is infact available.
+The codebase has SpatialIndexHeader and SpatialIndexInputStream indicating that some support is in fact available.
 

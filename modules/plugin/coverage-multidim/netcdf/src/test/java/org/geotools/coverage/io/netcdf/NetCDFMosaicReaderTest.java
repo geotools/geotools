@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.DataBuffer;
@@ -25,6 +23,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -43,9 +42,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -55,6 +51,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -63,7 +60,10 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.imageio.netcdf.NetCDFImageReader;
+import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
@@ -75,14 +75,22 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
+import ucar.nc2.Variable;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -196,6 +204,148 @@ public class NetCDFMosaicReaderTest extends Assert {
                 it.close();
             }
             reader.dispose();
+        }
+    }
+    
+    @Test
+    public void testHeterogeneous() throws IOException, InvalidParameterValueException, ParseException {
+        // prepare a "mosaic" with just one NetCDF
+        File nc1 = TestData.file(this,"polyphemus_20130301_test.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_poly_hetero");
+        if(mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+        
+        // The indexer
+        String indexer = "TimeAttribute=time\n" + 
+                "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        
+        // the datastore.properties file is also mandatory...
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+        
+        // have the reader harvest it
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        assertNotNull(reader);
+        reader.dispose();
+        
+        // now force heterogeneous interpretation
+        Properties mosaicProps = new Properties();
+        File mosaicPropsFile = new File(mosaic, "O3.properties");
+        try(FileInputStream fis = new FileInputStream(mosaicPropsFile)) {
+            mosaicProps.load(fis);
+        }
+        mosaicProps.put("Heterogeneous", "true");
+        try(FileOutputStream fos = new FileOutputStream(mosaicPropsFile)) {
+            mosaicProps.store(fos, "Now with hetero flag up");
+        }
+        
+        // load two different times, make sure we actually read two different slices
+        String t1 = "2013-03-01T00:00:00.000Z";
+        String t2 = "2013-03-01T01:00:00.000Z";
+        reader = format.getReader(mosaic);
+        try {
+            // prepare params
+            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+            useJai.setValue(false);
+            ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+            time.setValue(Arrays.asList(parseTimeStamp(t1)));
+            GeneralParameterValue[] params = new GeneralParameterValue[] { useJai, time };
+            // read first
+            GridCoverage2D coverage1 = reader.read(params);
+            time.setValue(Arrays.asList(parseTimeStamp(t2)));
+            GridCoverage2D coverage2 = reader.read(params);
+            
+            DirectPosition center = reader.getOriginalEnvelope().getMedian();
+            float[] v1 = (float[]) coverage1.evaluate(center);
+            float[] v2 = (float[]) coverage2.evaluate(center);
+            assertNotEquals(v1[0], v2[0], 0f);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testCustomTimeAttribute() throws IOException {
+        File nc1 = TestData.file(this,"polyphemus_20130301_NO2_time2.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_time2");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        // The indexer
+        String indexer = "TimeAttribute=time\n" + 
+                        "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"; 
+        final String auxiliaryFilePath = mosaic.getAbsolutePath() + File.separatorChar + ".polyphemus_20130301_NO2_time2";
+        final File auxiliaryFileDir = new File(auxiliaryFilePath);
+        assertTrue(auxiliaryFileDir.mkdirs());
+
+        File nc1Aux = TestData.file(this,"polyphemus_20130301_NO2_time2.xml");
+        FileUtils.copyFileToDirectory(nc1Aux, auxiliaryFileDir);
+
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic);
+        NetCDFImageReader imageReader = null;
+        SimpleFeatureIterator it = null;
+        assertNotNull(reader);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            assertEquals(1, names.length);
+            assertEquals("NO2", names[0]);
+
+            // check we have the two granules we expect
+            GranuleSource source = reader.getGranules("NO2", true);
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            Query q = new Query(Query.ALL);
+            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            SimpleFeatureCollection granules = source.getGranules(q);
+            assertEquals(2, granules.size());
+            it = granules.features();
+            assertTrue(it.hasNext());
+            SimpleFeature f = it.next();
+            assertEquals("polyphemus_20130301_NO2_time2.nc", f.getAttribute("location"));
+            SimpleFeatureType featureType = f.getType();
+
+            // check the underlying data has a time2 dimension 
+            imageReader = (NetCDFImageReader) new NetCDFImageReaderSpi().createReaderInstance();
+            imageReader.setInput(nc1);
+            Variable var = imageReader.getVariableByName("NO2");
+            String dimensions = var.getDimensionsString();
+            assertTrue(dimensions.contains("time2"));
+
+            // check I'm getting a "time" attribute instead of "time2" due to the
+            // uniqueTimeAttribute remap
+            assertNotNull(featureType.getDescriptor("time"));
+
+        } finally {
+            if (it != null) {
+                it.close();
+            }
+
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Exception e) {
+                    // Ignore exception on dispose
+                }
+            }
+            if (imageReader != null) {
+                try {
+                    imageReader.dispose();
+                } catch (Exception e) {
+                    // Ignore exception on dispose
+                }
+            }
         }
     }
 

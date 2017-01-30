@@ -21,16 +21,24 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
+import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.map.MapViewport;
+import org.geotools.map.event.MapLayerListener;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.util.logging.Logging;
 
 /**
  * Data structure holding a MapContent that has its own compositing base
@@ -38,6 +46,8 @@ import org.geotools.styling.StyleFactory;
  * @author Andrea Aime - GeoSolutions
  */
 class CompositingGroup {
+
+    private static final Logger LOGGER = Logging.getLogger(CompositingGroup.class);
 
     private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
@@ -49,6 +59,12 @@ class CompositingGroup {
         for (Layer layer : mc.layers()) {
             Style style = layer.getStyle();
             if (layer instanceof DirectLayer) {
+                layers.add(new WrappingDirectLayer((DirectLayer) layer));
+            } else if (layer instanceof ZGroupLayer) {
+                ZGroupLayer zLayer = (ZGroupLayer) layer;
+                if(zLayer.isCompositingBase()) {
+                    addToCompositingMapContents(graphics, screenSize, result, layers);
+                } 
                 layers.add(layer);
             } else {
                 List<Style> styles = splitOnCompositingBase(style);
@@ -84,6 +100,11 @@ class CompositingGroup {
     private static void addToCompositingMapContents(Graphics2D graphics, Rectangle screenSize,
             List<CompositingGroup> compositingContents, List<Layer> layers) {
         Composite composite = getComposite(layers);
+        addToCompositingMapContents(graphics, screenSize, compositingContents, layers, composite);
+    }
+
+    private static void addToCompositingMapContents(Graphics2D graphics, Rectangle screenSize,
+            List<CompositingGroup> compositingContents, List<Layer> layers, Composite composite) {
         Graphics2D cmcGraphic;
         if (compositingContents.size() == 0 && !hasAlphaCompositing(layers)) {
             cmcGraphic = graphics;
@@ -99,7 +120,11 @@ class CompositingGroup {
     }
 
     private static Composite getComposite(List<Layer> layers) {
-        Style styles = layers.get(0).getStyle();
+        Layer layer = layers.get(0);
+        if(layer instanceof ZGroupLayer) {
+            return ((ZGroupLayer) layer).getComposite();
+        }
+        Style styles = layer.getStyle();
         List<FeatureTypeStyle> featureTypeStyles = styles.featureTypeStyles();
         if (featureTypeStyles.size() > 0) {
             FeatureTypeStyle firstFts = featureTypeStyles.get(0);
@@ -113,7 +138,7 @@ class CompositingGroup {
     /**
      * Returns true if alpha compositing is used anywhere in the style
      * 
-     * @param current
+     * @param currentFeature
      * @return
      */
     private static boolean hasAlphaCompositing(List<Layer> layers) {
@@ -153,7 +178,7 @@ class CompositingGroup {
         }
     }
 
-    private static boolean isCompositingBase(FeatureTypeStyle fts) {
+    static boolean isCompositingBase(FeatureTypeStyle fts) {
         return "true".equalsIgnoreCase(fts.getOptions().get(FeatureTypeStyle.COMPOSITE_BASE));
     }
 
@@ -180,6 +205,99 @@ class CompositingGroup {
 
     public Composite getComposite() {
         return composite;
+    }
+    
+    /**
+     * Wraps direct layer so that dispose does not get called when wrapping
+     * inside a compositing group
+     * @author Andrea Aime
+     */
+    static class WrappingDirectLayer extends DirectLayer {
+        DirectLayer delegate;
+
+        public WrappingDirectLayer(DirectLayer delegate) {
+            super();
+            this.delegate = delegate;
+            //this prevents the annoying message about not calling predispose
+            //as we have no listeners it has no effect
+            super.preDispose();
+        }
+
+        public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
+            delegate.draw(graphics, map, viewport);
+        }
+
+        public void preDispose() {
+          //do nothing so as not to kill off the layer
+          //before the label cache is completed
+          
+        }
+
+        public void setTitle(String title) {
+            delegate.setTitle(title);
+        }
+
+        public boolean isSelected() {
+            return delegate.isSelected();
+        }
+
+        public ReferencedEnvelope getBounds() {
+            return delegate.getBounds();
+        }
+
+        public void addMapLayerListener(MapLayerListener listener) {
+            delegate.addMapLayerListener(listener);
+        }
+
+        public boolean equals(Object arg0) {
+            return delegate.equals(arg0);
+        }
+
+        public String getTitle() {
+            return delegate.getTitle();
+        }
+
+        public boolean isVisible() {
+            return delegate.isVisible();
+        }
+
+        public void setVisible(boolean visible) {
+            delegate.setVisible(visible);
+        }
+
+        public void setSelected(boolean selected) {
+            delegate.setSelected(selected);
+        }
+
+        public Map<String, Object> getUserData() {
+            return delegate.getUserData();
+        }
+
+        public void removeMapLayerListener(MapLayerListener listener) {
+            delegate.removeMapLayerListener(listener);
+        }
+
+        public Style getStyle() {
+            return delegate.getStyle();
+        }
+
+        public FeatureSource<?, ?> getFeatureSource() {
+            return delegate.getFeatureSource();
+        }
+
+        public Query getQuery() {
+            return delegate.getQuery();
+        }
+
+        public int hashCode() {
+            return delegate.hashCode();
+        }
+
+        public String toString() {
+            return delegate.toString();
+        }
+        
+        
     }
 
 }

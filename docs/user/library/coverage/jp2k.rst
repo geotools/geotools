@@ -4,7 +4,7 @@ JP2K Plugin
 The JP2K plug-in allows GeoTools to make use of the JP2K format provided via the available JP2K
 image readers in the JAI ImageIO project plus an optional ImageIO plugin based on the Kakadu
 library which is activated only when the Kakadu SDK is in the path (the Kakakdu SDK is not
-Open Source but t comes with a variety of licenses).
+Open Source but it comes with a variety of licenses).
 
 Notice that:
 
@@ -22,12 +22,12 @@ Notice that:
 Use of Kakadu
 ^^^^^^^^^^^^^
 
-Much better performances in accessing JP2K data with respect to standard JAI ImageIO and GDAL supported SDKs are obtained by directly using the Kakadu libraries in this plugin. Please, noticet that the Image I/O-Ext project contains also a plug-in built on top GDAL which in turn uses Kakadu as well, however this new plugin does not need GDAL but only the Kakadu binaries.
+Much better performances in accessing JP2K data with respect to standard JAI ImageIO and GDAL supported SDKs are obtained by directly using the Kakadu libraries in this plugin. Please, note that the Image I/O-Ext project contains also a plug-in built on top of GDAL which in turn uses Kakadu as well, however this new plugin does not need GDAL but only the Kakadu binaries.
 
 In order to know how to build your Kakadu native libs needed to enable support for it, please, check the imageio-ext setup guide. If your Java Runtime Environment includes the Kakadu native libraries, you will be able to support the JP2K format by means of this plugin, otherwise the JP2K format data access capabilities will be provided by the SUN's ImageIO JP2K plugin. The plugin, when Kakadu is in the path, is able to parse georeferencing information by supporting the following mechanisms:
 
 1. World File + PRJ File (they take precedence over the other mechanism and therefore they can be used to override missing or improper georeferencing).
-2. Degenerated GeoTIFF Box (seems that the wording GeoJP2 cannot be used for licensing problems, but that is essentially how everybody calls this box)
+2. Degenerate GeoTIFF Box (seems that the wording GeoJP2 cannot be used for licensing problems, but that is essentially how everybody calls this box)
 3. MSIG WorldFile Box (if presents), contained within propers UUID boxes.
 
 Notes:
@@ -44,11 +44,11 @@ Notes:
 
 Standard JP2K readers
 
-In case you will use the SUN's ImageIO JP2K plugins (as an instance, in case you don't have a copy of the Kakadu software), we have not yet implemented full support to the georeferencing information contained within the JP2K metadata. For this reason, you need to add a PRJ and a WorldFile (J2W file or WLD file) beside your JP2K dataset, in case you'd want to be able to serve it as a geospatial dataset.
+In case you will use the SUN's ImageIO JP2K plugins (as an instance, in case you don't have a copy of the Kakadu software), we have not yet implemented full support to the georeferencing information contained within the JP2K metadata. For this reason, you need to add a PRJ and a WorldFile (J2W file or WLD file) beside your JP2K dataset, in case you want to be able to serve it as a geospatial dataset.
 
 Format parameters
 
-A set of parameters allows to customize the way the coverage will be accesed:
+A set of parameters allows to customize the way the coverage will be accessed:
 
 InputTransparentColor
    Set the transparent color for the image

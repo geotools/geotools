@@ -6,10 +6,6 @@
 	<artifactId>geosciml-3.2</artifactId>
 	<version>3.2.0-1</version>
 	<name>Geoscience Markup Language (GeoSciML) 3.0 application schema</name>
-	<scm>
-		<connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/geosciml-3.2/</connection>
-		<url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/geosciml-3.2/</url>
-	</scm>
 	<developers>
 		<developer>
 			<name>Rini Angreani</name>

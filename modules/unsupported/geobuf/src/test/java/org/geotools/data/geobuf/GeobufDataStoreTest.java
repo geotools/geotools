@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -715,4 +715,16 @@ public class GeobufDataStoreTest {
         }
         store.dispose();
     }
+
+    @Test
+    public void removeSchema() throws Exception {
+        File file = temporaryFolder.newFile("points.pbf");
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("file", file);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        assertTrue(file.exists());
+        store.removeSchema("points");
+        assertFalse(file.exists());
+    }
+
 }

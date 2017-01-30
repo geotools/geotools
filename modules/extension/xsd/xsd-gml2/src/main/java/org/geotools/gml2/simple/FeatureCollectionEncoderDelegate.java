@@ -31,6 +31,7 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
@@ -55,6 +56,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiLineString;
 
 /**
  * Base class for feature collection optimized GML encoder delegates
@@ -190,7 +192,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
             AttributesImpl atts = buildSrsAttributes(
                     ((GeometryDescriptor) attribute.descriptor).getCoordinateReferenceSystem(),
                     dimension);
-            GeometryEncoder geometryEncoder = getGeometryEncoder(value);
+            GeometryEncoder geometryEncoder = getGeometryEncoder(value, attribute);
             geometryEncoder.encode(g, atts, output);
         } else if (value instanceof Envelope) {
             ReferencedEnvelope e = (ReferencedEnvelope) value;
@@ -208,8 +210,15 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         output.endElement(attribute.name);
     }
 
-    private GeometryEncoder getGeometryEncoder(Object value) {
+    private GeometryEncoder getGeometryEncoder(Object value, AttributeContext attribute) {
         Class<? extends Object> clazz = value.getClass();
+        if(MultiLineString.class.equals(clazz)) {
+            // we have a wrinkle with curve support, were we supposed to encode the
+            // multi line string as a curve or not?
+            if(attribute.binding.getTarget().getLocalPart().startsWith("MultiCurve")) {
+                clazz = MultiCurve.class;
+            }
+        }
         GeometryEncoder encoder = geometryEncoders.get(clazz);
         while (encoder == null && clazz.getSuperclass() != null) {
             clazz = clazz.getSuperclass();

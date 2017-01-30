@@ -1,8 +1,8 @@
 XSD-Core
 --------
 
-These extensions are used by the gt-xml module to handle basic xml schema types
-and xlink.
+These extensions are used by the gt-xml module to handle basic XML schema types
+and XLink.
 
 References:
 

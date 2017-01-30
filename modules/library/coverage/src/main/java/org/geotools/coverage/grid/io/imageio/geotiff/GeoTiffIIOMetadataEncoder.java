@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -352,7 +352,8 @@ public class GeoTiffIIOMetadataEncoder {
                 replaceAsciiParam(newValue.toString(), currentEntry.getValueOffset(), currentEntry.getValueOffset()+currentLength);
             } else {
                 // now add to the geoascii metatag
-                addGeoAsciiParamsRef(keyID, value.length());
+                // +1 is required in advance since we need to add the pipe which will be encoded.
+                addGeoAsciiParamsRef(keyID, value.length() + 1);
                 
                 // +1 for the '|' character to be appended
                 appendAsciiParam(value);
@@ -768,7 +769,7 @@ public class GeoTiffIIOMetadataEncoder {
 			Iterator<String> keys = tiffTagsMetadata.keySet().iterator();
 			while (keys.hasNext()){
 				String key = keys.next();
-				String setIdPair[] = key.split(":");
+				String[] setIdPair = key.split(":");
 				String set = TagSet.BASELINE.toString();
 				if (setIdPair.length > 1){
 					set = setIdPair[0].toUpperCase();

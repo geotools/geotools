@@ -31,14 +31,14 @@ The following connection parameters are available:
 +-------------------------+----------------------------------------------------+
 | "create spatial index"  | Optional: Use Boolean.TRUE to create an index      |
 +-------------------------+----------------------------------------------------+
-| "charset"               | Optional: Chartset used to decode strings in the   |
+| "charset"               | Optional: Charset used to decode strings in the    |
 |                         | DBF file                                           |
 +-------------------------+----------------------------------------------------+
 | "timezone"              | Optional: Timezone used to parse dates in the      |
 |                         | DBF file                                           |
 +-------------------------+----------------------------------------------------+
-| "memory mapped buffer"  | Optional: memory map the files (unadvisable for    |
-|                         | large files under windows, defaults to false)      |
+| "memory mapped buffer"  | Optional: memory map the files (not recommended    |
+|                         | for large files under windows, defaults to false)  |
 +------------------------------------------------------------------------------+
 | "cache memory maps"     | Optional: when memory mapping, cache and reuse     |
 |                         | memory maps (defaults to true)                     |
@@ -134,7 +134,29 @@ Limitations:
   has a restriction to help you check this, and warnings will be produced if
   your content ends up trimmed).
 * Only supports a single GeometryAttribute
-* Shapefile does not support plain Geometry (ie mixed LineString, Point and Polygon all in the same file).
+* Shapefile does not support plain Geometry (i.e. mixed LineString, Point and Polygon all in the same file).
+* The shapefile maximum size is limited to 2GB (its sidecar DBF file often to 2GB, some system being able
+  to read 4GB or more)
+
+Dumping almost anything into a shapefile
+''''''''''''''''''''''''''''''''''''''''
+
+In case the feature collection to be turned into a shapefile is not fitting the shapefile format
+limitations it's still possible to create shapefiles out of it, at ease, leaving all the
+structural bridging work to the ``ShapefileDumper`` class.
+
+In particular, given one or more feature collections, the dumper will:
+
+* Reduce attribute names to the DBF accepted length, making sure there are not conflicts (counters being added at the end of the attribute name to handle this).
+* Fan out multiple geometry type into parallel shapefiles, named after the original feature type, plus the geometry type as a suffix.
+* Fan out multiple shapefiles in case the maximum size is reached.
+
+Example usage:
+
+.. literalinclude:: /../src/main/java/org/geotools/data/ShapefileExample.java
+   :language: java
+   :start-after: // start dumper
+   :end-before: // end dumper
 
 Force Projection
 ''''''''''''''''
@@ -144,21 +166,21 @@ If you run the above code, and then load the result in a GIS application like Ar
 You can "force" the projection using the following code::
   
   CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
-  shape.forceCoordianteReferneceSystem( crs );
+  shape.forceSchemaCRS( crs );
 
 This is only a problem if you did not specify the CoordinateReferenceSystem as part of your FeatureType's GeometryAttribute, or if a prj file has not been provided.
 
 Character Sets
 ''''''''''''''
 
-If you are working with Acerbic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Chartset or if you provide a String it will be converted to a Charset.
+If you are working with Arabic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Charset or if you provide a String it will be converted to a Charset.
 
 Thanks to the University of Soul for providing and testing this functionality.
 
 Timezone
 ''''''''
 
-The store will build dates using the default timezone. If you need to work against metereological data the timezone has normally to be forced to "UTC" instead.
+The store will build dates using the default timezone. If you need to work against meteorological data the timezone has normally to be forced to "UTC" instead.
 
 
 Reading PRJ

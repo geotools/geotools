@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -83,9 +83,14 @@ public final class StyledShapePainter {
      * Whether icon centers should be matched to a pixel center, or not
      */
     public static boolean ROUND_ICON_COORDS = Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.roundIconCoords", "true"));
+    
+    /**
+     * Whether to apply the new vector hatch fill optimization, or not (on by default, this is just a safeguard)
+     */
+    public static boolean OPTIMIZE_VECTOR_HATCH_FILLS = Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.optimizeVectorHatchFills", "true"));
 
     /**
-     * the label cache, used to populate the label cache with reserved areas for labelling 
+     * the label cache, used to populate the label cache with reserved areas for labeling 
      * obstacles
      */
     LabelCache labelCache;
@@ -94,14 +99,8 @@ public final class StyledShapePainter {
         // nothing do do, just needs to exist
     }
 
-    /**
-     * 
-     * @deprecated Use the no arguments constructor instead
-     */
-    @Deprecated
     public StyledShapePainter(LabelCache cache) {
         this.labelCache = cache;
-        // nothing do do
     }
 
     public void paint(final Graphics2D graphics, final LiteShape2 shape,
@@ -235,7 +234,7 @@ public final class StyledShapePainter {
             }
             // if the style is a polygon one, process it even if the polyline is
             // not closed (by SLD specification)
-            if (style instanceof PolygonStyle2D) {
+            if (style instanceof PolygonStyle2D && !optimizeOutFill((PolygonStyle2D) style, shape)) {
                 PolygonStyle2D ps2d = (PolygonStyle2D) style;
 
                 if (ps2d.getFill() != null) {
@@ -275,48 +274,93 @@ public final class StyledShapePainter {
 
             if (style instanceof LineStyle2D) {
                 LineStyle2D ls2d = (LineStyle2D) style;
+                paintLineStyle(graphics, shape, ls2d, isLabelObstacle, 0.5f);
+            }
+        }
+    }
 
-                if (ls2d.getStroke() != null) {
-                    // see if a graphic stroke is to be used, the drawing method
-                    // is completely
-                    // different in this case
-                    if (ls2d.getGraphicStroke() != null) {
-                        drawWithGraphicsStroke(graphics, dashShape(shape, ls2d.getStroke()), ls2d.getGraphicStroke(), isLabelObstacle);
-                    } else {
-                        Paint paint = ls2d.getContour();
+    /**
+     * Checks if the fill can simply be omitted because it's not going to be visible
+     * anyways. It takes a style that has a solid outline and a width or height that's
+     * less than the stroke width
+     * @param style
+     * @param shape
+     * @return
+     */
+    private boolean optimizeOutFill(PolygonStyle2D style, LiteShape2 shape) {
+        // if we have a graphic stroke the outline might not be solid, so, not covering
+        if(style.getGraphicStroke() != null) {
+            return false;
+        }
+        
+        final Stroke stroke = style.getStroke();
+        if(stroke == null || !(stroke instanceof BasicStroke)) {
+            return false;
+        } 
+        // we need a solid composite to optimize out
+        Composite composite = style.getContourComposite();
+        if(!(composite instanceof AlphaComposite)) {
+            return false;
+        }
+        AlphaComposite ac = (AlphaComposite) composite;
+        if(ac.getAlpha() < 1) {
+            return false;
+        }
+        
+        // if dashed, it's not covering
+        BasicStroke basic = (BasicStroke) stroke;
+        if(basic.getDashArray() != null) {
+            return false;
+        }
+        
+        float lineWidth = basic.getLineWidth();
+        Rectangle2D bounds = shape.getBounds2D();
+        return bounds.getWidth() < lineWidth || bounds.getHeight() < lineWidth;
+    }
 
-                        if (paint instanceof TexturePaint) {
-                            TexturePaint tp = (TexturePaint) paint;
-                            BufferedImage image = tp.getImage();
-                            Rectangle2D rect = tp.getAnchorRect();
-                            AffineTransform at = graphics.getTransform();
-                            double width = rect.getWidth() * at.getScaleX();
-                            double height = rect.getHeight() * at.getScaleY();
-                            Rectangle2D scaledRect = new Rectangle2D.Double(0,
-                                    0, width, height);
-                            paint = new TexturePaint(image, scaledRect);
-                        }
+    void paintLineStyle(final Graphics2D graphics, final LiteShape2 shape,
+            final LineStyle2D ls2d, boolean isLabelObstacle, float strokeWidthAdjustment) {
+        
 
-                        // debugShape(shape);
-                        Stroke stroke = ls2d.getStroke();
-                        if (graphics
-                                .getRenderingHint(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON) {
-                            if (stroke instanceof BasicStroke) {
-                                BasicStroke bs = (BasicStroke) stroke;
-                                stroke = new BasicStroke(
-                                        bs.getLineWidth() + 0.5f, bs
-                                                .getEndCap(), bs.getLineJoin(),
-                                        bs.getMiterLimit(), bs.getDashArray(),
-                                        bs.getDashPhase());
-                            }
-                        }
+        if (ls2d.getStroke() != null) {
+            // see if a graphic stroke is to be used, the drawing method
+            // is completely
+            // different in this case
+            if (ls2d.getGraphicStroke() != null) {
+                drawWithGraphicsStroke(graphics, dashShape(shape, ls2d.getStroke()), ls2d.getGraphicStroke(), isLabelObstacle);
+            } else {
+                Paint paint = ls2d.getContour();
 
-                        graphics.setPaint(paint);
-                        graphics.setStroke(stroke);
-                        graphics.setComposite(ls2d.getContourComposite());
-                        graphics.draw(shape);
+                if (paint instanceof TexturePaint) {
+                    TexturePaint tp = (TexturePaint) paint;
+                    BufferedImage image = tp.getImage();
+                    Rectangle2D rect = tp.getAnchorRect();
+                    AffineTransform at = graphics.getTransform();
+                    double width = rect.getWidth() * at.getScaleX();
+                    double height = rect.getHeight() * at.getScaleY();
+                    Rectangle2D scaledRect = new Rectangle2D.Double(0,
+                            0, width, height);
+                    paint = new TexturePaint(image, scaledRect);
+                }
+
+                // debugShape(shape);
+                Stroke stroke = ls2d.getStroke();
+                if (graphics
+                        .getRenderingHint(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON) {
+                    if (stroke instanceof BasicStroke && strokeWidthAdjustment > 0) {
+                        BasicStroke bs = (BasicStroke) stroke;
+                        stroke = new BasicStroke(
+                                bs.getLineWidth() + strokeWidthAdjustment, bs
+                                        .getEndCap(), bs.getLineJoin(),
+                                bs.getMiterLimit(), bs.getDashArray(),
+                                bs.getDashPhase());
                     }
                 }
+
+                graphics.setPaint(paint);
+                graphics.setStroke(stroke);
+                graphics.setComposite(ls2d.getContourComposite());
+                graphics.draw(shape);
             }
         }
     }
@@ -732,13 +776,39 @@ public final class StyledShapePainter {
         Rectangle2D stippleSize = null;
         if (graphicFill instanceof MarkStyle2D)
         {
-            Rectangle2D boundsFill = ((MarkStyle2D)graphicFill).getShape().getBounds2D();
-            double size = ((MarkStyle2D)graphicFill).getSize();
-            double aspect = (boundsFill.getHeight() > 0 && boundsFill.getWidth() > 0) ? boundsFill.getWidth()/boundsFill.getHeight() : 1.0;
-            stippleSize = new Rectangle2D.Double(0, 0, size*aspect, size);
+            final MarkStyle2D ms2d = (MarkStyle2D) graphicFill;
+            final Shape markShape = ms2d.getShape();
+            double size = ms2d.getSize();
+            Rectangle2D boundsFill = markShape.getBounds2D();
+            double aspect = (boundsFill.getHeight() > 0 && boundsFill.getWidth() > 0) ? boundsFill.getWidth() / boundsFill.getHeight() : 1.0;
+            stippleSize = new Rectangle2D.Double(0, 0, size * aspect, size);
+            
+            double scaleFactor = size;
+            if(boundsFill.getHeight() > 0) {
+                scaleFactor = size / boundsFill.getHeight();
+            }
+            if(OPTIMIZE_VECTOR_HATCH_FILLS) {
+                final Shape rescaledStipple = AffineTransform.getScaleInstance(scaleFactor, scaleFactor).createTransformedShape(markShape);
+                ParallelLinesFiller filler = ParallelLinesFiller.fromStipple(rescaledStipple);
+                if(filler != null) {
+                    Graphics2D clippedGraphics = (Graphics2D)graphics.create();
+                    // adds the provided shape to the Graphics current clip region
+                    clippedGraphics.clip(shape);
+                    LineStyle2D lineStyle = new LineStyle2D();
+                    lineStyle.setStroke(ms2d.getStroke());
+                    lineStyle.setContour(ms2d.getContour());
+                    lineStyle.setContourComposite(ms2d.getContourComposite());
+                    lineStyle.setGraphicStroke(ms2d.getGraphicStroke());
+                    filler.fillRectangle(shape.getBounds2D(), this, clippedGraphics, lineStyle);
+                    return;
+                }
+            }
         } else if(graphicFill instanceof IconStyle2D) {
             Icon icon = ((IconStyle2D)graphicFill).getIcon();
             stippleSize = new Rectangle2D.Double(0, 0, icon.getIconWidth(), icon.getIconHeight());
+        } else if(graphicFill instanceof GraphicStyle2D) {
+            BufferedImage image = ((GraphicStyle2D) graphicFill).getImage();
+            stippleSize = new Rectangle2D.Double(0, 0, image.getWidth(), image.getHeight());
         } else {
             // if graphic fill does not provide bounds information, it is considered
             // to be unsupported for stipple painting
@@ -775,56 +845,40 @@ public final class StyledShapePainter {
             toY -= (int) Math.floor((boundsShape.getMaxY() - boundsClip.getMaxY()) / stippleSize.getHeight());
         }
         
+        // builds the JTS geometry for the translated stipple
+        GeometryFactory geomFactory = new GeometryFactory();
+        Coordinate stippleCoord = new Coordinate(stippleSize.getCenterX(), stippleSize.getCenterY());
+        Geometry stipplePoint = geomFactory.createPoint(stippleCoord);
+        
+        // builds a LiteShape2 object from the JTS geometry
+        AffineTransform2D identityTransf = new AffineTransform2D(new AffineTransform());
+        Decimator nullDecimator = new Decimator(-1, -1);
+        
         // paints graphic fill as a stipple
-        for (int i = fromX; i < toX; i++)
+        for (int i = fromX; i <= toX; i++)
         {
-            for (int j = fromY; j < toY; j++)
+            for (int j = fromY; j <= toY; j++)
             {
                 // computes this stipple's shift in the X and Y directions
                 double translateX = boundsShape.getMinX() + i * stippleSize.getWidth();
                 double translateY = boundsShape.getMinY() + j * stippleSize.getHeight();
                 
-                // only does anything if current stipple intersects the clip region
-                if (!clipShape.intersects(translateX, translateY, stippleSize.getWidth(), stippleSize.getHeight()))
-                    continue;
-                
-                // creates a LiteShape2 for the stipple and paints it 
-                LiteShape2 stippleShape = createStippleShape(stippleSize, translateX, translateY);
+                // translate the stipple point 
+                stippleCoord.x = stippleSize.getCenterX() + translateX;
+                stippleCoord.y = stippleSize.getCenterY() + translateY;
+                stipplePoint.geometryChanged();
+                LiteShape2 stippleShape;
+                try {
+                    stippleShape = new LiteShape2(stipplePoint, identityTransf, nullDecimator, false);
+                } catch(Exception e) {
+                    throw new RuntimeException("Unxpected exception building lite shape", e);
+                }
                 paint(g, stippleShape, graphicFill, scale);
             }
         }
     }
 
-    /**
-     * Creates a stipple shape given a stipple size and a shift in the x and y directions.
-     * The returned shape should be appropriate for painting a stipple using a GraphicFill.
-     * 
-     * @param stippleSize a Rectangle whose width and height indicate the size of the stipple.
-     * @param translateX a translation value in the X dimension.
-     * @param translateY a translation value in the Y dimension.
-     * @return a LiteShape2 appropriate for painting a stipple using a GraphicFill.
-     * @throws TransformException
-     * @throws FactoryException
-     */
-    private LiteShape2 createStippleShape(Rectangle2D stippleSize, double translateX, double translateY)
-    {
-        // builds the JTS geometry for the translated stipple
-        GeometryFactory geomFactory = new GeometryFactory();
-        Coordinate coord = new Coordinate(stippleSize.getCenterX() + translateX, stippleSize.getCenterY() + translateY);
-        Geometry geom = geomFactory.createPoint(coord);
-        
-        // builds a LiteShape2 object from the JTS geometry
-        AffineTransform2D identityTransf = new AffineTransform2D(new AffineTransform());
-        Decimator nullDecimator = new Decimator(-1, -1);
-        LiteShape2 stippleShape;
-        try {
-            stippleShape = new LiteShape2(geom, identityTransf, nullDecimator, false);
-        } catch(Exception e) {
-            throw new RuntimeException("Unxpected exception building lite shape", e);
-        }
-        
-        return stippleShape;
-    }
+    
 
     public static class TextureAnchorKey extends Key {
         protected TextureAnchorKey() {

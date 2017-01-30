@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -194,4 +194,34 @@ public class XsDateTimeFormatTest {
         assertEquals(sec, 0);
         assertEquals(millis, 0);
     }
+    
+    @Test
+    public void testExtendedFractionalSeconds() throws ParseException {
+        XsDateTimeFormat format = new XsDateTimeFormat();
+        // parse a timestamp with extended decimals
+        String time = "2014-10-13T05:34:02.1109963Z";
+        Object parseObject = format.parseObject(time, true);
+        assertTrue(parseObject instanceof Calendar);
+
+        // Get the date
+        Calendar cal = (Calendar) parseObject;
+        // Ensure the parsing is correct
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int hours = cal.get(Calendar.HOUR);
+        int mins = cal.get(Calendar.MINUTE);
+        int sec = cal.get(Calendar.SECOND);
+        int millis = cal.get(Calendar.MILLISECOND);
+
+        // check
+        assertEquals(year, 2014);
+        assertEquals(month, 9);
+        assertEquals(day, 13);
+        assertEquals(hours, 5);
+        assertEquals(mins, 34);
+        assertEquals(sec, 02);
+        assertEquals(millis, 111);
+    }
+   
 }

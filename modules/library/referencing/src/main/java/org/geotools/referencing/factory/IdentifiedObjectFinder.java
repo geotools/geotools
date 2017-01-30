@@ -21,6 +21,7 @@ package org.geotools.referencing.factory;
 
 // J2SE dependencies
 import java.util.Set;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -178,10 +179,16 @@ public class IdentifiedObjectFinder {
         if (candidate != null) {
             return candidate;
         }
+        
+        candidate = createFromCodes(object, true);
+        if (candidate != null) {
+            return candidate;
+        }
+        
         /*
          * Here we exhausted the quick paths. Bail out if the user does not want a full scan.
          */
-        return fullScan ? createFromCodes(object) : null;
+        return fullScan ? createFromCodes(object, false) : null;
     }
 
     /**
@@ -336,8 +343,8 @@ public class IdentifiedObjectFinder {
      * @see #createFromIdentifiers
      * @see #createFromNames
      */
-    final IdentifiedObject createFromCodes(final IdentifiedObject object) throws FactoryException {
-        final Set/*<String>*/ codes = getCodeCandidates(object);
+    final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific) throws FactoryException {
+        final Set/*<String>*/ codes = specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
         for (final Iterator it=codes.iterator(); it.hasNext();) {
             final String code = (String) it.next();
             IdentifiedObject candidate;
@@ -360,6 +367,10 @@ public class IdentifiedObjectFinder {
             }
         }
         return null;
+    }
+    
+    protected Set getSpecificCodeCandidates(final IdentifiedObject object) throws FactoryException {
+        return Collections.emptySet();
     }
 
     /**
@@ -486,6 +497,11 @@ public class IdentifiedObjectFinder {
         @Override
         protected Set/*<String>*/ getCodeCandidates(final IdentifiedObject object) throws FactoryException {
             return finder.getCodeCandidates(object);
+        }
+        
+        @Override
+        protected Set getSpecificCodeCandidates(IdentifiedObject object) throws FactoryException {
+            return finder.getSpecificCodeCandidates(object);
         }
 
         /**

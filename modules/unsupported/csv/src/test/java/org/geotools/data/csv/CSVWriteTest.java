@@ -1,7 +1,7 @@
 /* GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
- * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2010-2015, Open Source Geospatial Foundation (OSGeo)
  *
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
@@ -36,11 +36,11 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.test.TestData;
+import org.geotools.util.Utilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -307,9 +307,28 @@ public class CSVWriteTest {
         String contents2 = new String(baos2.toByteArray(), StandardCharsets.UTF_8);
 
         // Making sure whitespace doesn't cause problems
-        contents1 = contents1.replace(" ", "").trim();
-        contents2 = contents2.replace(" ", "").trim();
+        // and adjust for potential windows line endings.
+        assertEqualsIgnoreWhitespace("Contents of both files should be the same", contents1,contents2);
+    }
+    
+    public static void assertEqualsIgnoreWhitespace(String message, String expected, String actual) {
+        expected = removeWhitespace(expected);
+        actual = removeWhitespace(actual);
+        assertEquals(message, expected, actual);
+    }
 
-        assertEquals("Contents of both files should be the same", contents1, contents2);
+    private static String removeWhitespace(String actual) {
+        if( actual == null ) return "";
+        StringBuffer crush = new StringBuffer(actual);
+        int ch = 0;
+        while( ch < crush.length() ){
+            char chracter = crush.charAt(ch);
+            if( Character.isWhitespace(chracter)){
+                crush.deleteCharAt(ch);
+                continue;
+            }
+            ch++;
+        }
+        return crush.toString();
     }
 }

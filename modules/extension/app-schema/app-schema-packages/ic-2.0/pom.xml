@@ -9,10 +9,6 @@
     <version>2.0.0-3</version>
     <name>Intelligence Community Information Security Marking (IC ISM) 2.0 schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/ic-2.0/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/ic-2.0/</url>
-    </scm>
 
     <developers>
         <developer>

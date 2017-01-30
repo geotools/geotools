@@ -22,7 +22,7 @@ Create Filter
 Using CQL
 '''''''''
 
-Most code examples in this wiki will assume you are using the "Common Query Language", this parser is provided by the **gt-cql** jar.::
+Most code examples in this guide will assume you are using the "Common Query Language", this parser is provided by the **gt-cql** jar.::
   
   Filter filter = CQL.toFilter("attName >= 5");
 
@@ -86,7 +86,7 @@ users have used filters with Java Beans, Maps and Collections and featureTypes.
 Writing XML
 '''''''''''
 
-We have a traditional "Transformer" for quickly writing out an xml fragment for a filter::
+We have a traditional "Transformer" for quickly writing out an XML fragment for a filter::
   
   FilterTransformer transform = new FilterTransformer();
   transform.setIndentation(2);
@@ -443,7 +443,7 @@ DefaultFilterVisitor does absolutely nothing; and is thus a great place to start
   
   The isFullySupportedFilterVisitor is very complete:
   
-  * ensure that your Id filters make sense (ie if you are using FeatureIds for Features; or ObjectId is for objects)
+  * ensure that your Id filters make sense (i.e. if you are using FeatureIds for Features; or ObjectId is for objects)
   * For a logical filter (like NOT, AND and OR) it will check each child filter
   * For a function it will that the function is defined, and that all the arguments are supported
 
@@ -598,7 +598,7 @@ There is a small utility class **Filters** that packages up some common Filter o
 Capabilities
 ^^^^^^^^^^^^
 
-You can also use the FilterFactory to fill in a filter capabiliies data structure describing
+You can also use the FilterFactory to fill in a filter capabilities data structure describing
 the abilities of a web or database service.
 
 However we also have a **Capabilities** user class which is helpful both in acting as a "builder"

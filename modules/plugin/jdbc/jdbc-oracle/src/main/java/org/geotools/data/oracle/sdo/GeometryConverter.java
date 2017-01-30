@@ -153,7 +153,7 @@ public class GeometryConverter {
      * @see net.refractions.jspatial.Converter#toDataType(java.lang.Object)
      */
     public STRUCT toSDO(Geometry geom, int srid) throws SQLException {
-        if( geom == null) return asEmptyDataType();
+        if( geom == null || geom.isEmpty()) return asEmptyDataType();
         
         int gtype = SDO.gType( geom );
         NUMBER SDO_GTYPE = new NUMBER( gtype );
@@ -280,7 +280,7 @@ public class GeometryConverter {
      * </pre></code>
      * 
      * @param list     CoordinateList to be represented
-     * @param measures Per Coordiante Measures, <code>null</code> if not required
+     * @param measures Per Coordinate Measures, <code>null</code> if not required
      * @param D        Dimension of Coordinates (limited to 2d, 3d)         
      */
     protected final ARRAY toORDINATE( CoordinateList list,

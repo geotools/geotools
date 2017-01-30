@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>17-SNAPSHOT</version>
   </parent>
 
 
@@ -29,12 +29,6 @@
   <name>Referencing services</name>
   
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/referencing/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/library/referencing/</url>
-  </scm>
 
   <description>
     Contains implementations of Coordinate Reference Systems (CRS),
@@ -194,6 +188,11 @@
       <artifactId>jgridshift</artifactId>
       <version>1.0</version>
     </dependency>
+   <dependency>
+     <groupId>net.sf.geographiclib</groupId>
+     <artifactId>GeographicLib-Java</artifactId>
+     <version>1.44</version>
+   </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -208,6 +207,12 @@
       <artifactId>jai_codec</artifactId>
       <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>net.sourceforge.javacsv</groupId>
+    	<artifactId>javacsv</artifactId>
+    	<version>2.0</version>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
   

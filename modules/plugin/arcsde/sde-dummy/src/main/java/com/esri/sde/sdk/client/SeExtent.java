@@ -23,4 +23,5 @@ public class SeExtent extends SeServerObj {
     public void setMaxY(double d){}
     public void setMinZ(double d){}
     public void setMaxZ(double d){}
+    public boolean isEmpty() {return true;}
 }

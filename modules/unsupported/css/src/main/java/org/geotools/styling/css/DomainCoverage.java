@@ -377,7 +377,7 @@ class DomainCoverage {
             }
         }
         if (!merged) {
-            scaleDependentFilters.add(new SLDSelector(new NumberRange<>(range), filter));
+            scaleDependentFilters.add(new SLDSelector(new NumberRange<Double>(range), filter));
         }
     }
 

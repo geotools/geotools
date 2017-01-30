@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.util.Iterator;
  *
  *
  * @source $URL$
+ * @deprecated use {@link org.geotools.data.CloseableIterator}
  */
 public interface CloseableIterator<E> extends Iterator<E> {
 

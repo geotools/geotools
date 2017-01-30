@@ -24,7 +24,7 @@ package org.geotools.data.oracle.sdo;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 
 /**
- * Extends CoordianteSequenceFactory with meta data information.
+ * Extends CoordinateSequenceFactory with meta data information.
  * <p>
  * This allows us to determine the dimensions of a Geometry.
  * </p>

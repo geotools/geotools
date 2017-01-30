@@ -41,19 +41,19 @@ Our initial implementation will result in a read-only datastore for accessing CS
       :start-after: // header start
       :end-before: // header end
 
-#. Add the reader
-
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
-      :language: java
-      :start-after: // reader start
-      :end-before: // reader end
-
 #. We are going to be working with a single CSV file
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
       :language: java
       :start-after: // constructor start
       :end-before: // constructor end
+
+#. Add the reader
+
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStore.java
+      :language: java
+      :start-after: // reader start
+      :end-before: // reader end
 
 
 #. Listing TypeNames
@@ -228,7 +228,7 @@ information and the ability to create new physical storage.
 
 1. Implementing DataStoreFactorySPI:
    
-   * The "no argument" consturctor is required as it will be used by the
+   * The "no argument" constructor is required as it will be used by the
      Factory Service Provider (SPI) plug-in system.
    * getImplementationHints() is used to report on any "Hints" used for configuration
      by our factory. As an example our Factory could allow people to specify a specific
@@ -242,7 +242,7 @@ information and the ability to create new physical storage.
 
 2. We have a couple of methods to describe the DataStore.
 
-   This *isAvaialble* method is interesting in that it can become a performance bottleneck if not implemented efficiently. DataStoreFactorySPI factories *all* called when a user attempts to connect, only the factories marked as *available* are shortlisted for further interaction.
+   This *isAvailable* method is interesting in that it can become a performance bottleneck if not implemented efficiently. DataStoreFactorySPI factories are *all* called when a user attempts to connect, only the factories marked as *available* are shortlisted for further interaction.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVDataStoreFactory.java
       :language: java
@@ -251,7 +251,7 @@ information and the ability to create new physical storage.
 
 3. The user is expected to supply a Map of connection parameters when creating a datastore.
    
-   The allowable connection parameters are described using *Param[]*. Each *Param* describes a *key* used to store the value in the map, and the expected java type for the value. Additional fields indicate if the value is required and if a default value is available.
+   The allowable connection parameters are described using *Param[]*. Each *Param* describes a *key* used to store the value in the map, and the expected Java type for the value. Additional fields indicate if the value is required and if a default value is available.
    
    This array of parameters form an API contract used to drive the creation of user interfaces.
    

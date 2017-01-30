@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2012 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.renderer.crs;
 
 import static org.junit.Assert.*;
@@ -24,6 +40,7 @@ import com.vividsolutions.jts.geom.CoordinateFilter;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -775,4 +792,78 @@ public class ProjectionHandlerTest {
                 EPS);
     }
 
+    @Test
+    public void testWorldMeridian() throws Exception {
+        ReferencedEnvelope requestWgs84 = new ReferencedEnvelope(-180, 180, -85, 85, WGS84);
+        ReferencedEnvelope requestWebMercator = requestWgs84.transform(OSM, true);
+
+        // a geometry close to the dateline 
+        Geometry g = new WKTReader().read("LINESTRING(0 -90, 0 90)");
+        Geometry expected = new WKTReader().read("LINESTRING(0 -85, 0 85)");
+
+        // make sure the geometry is not wrapped, but it is preserved
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(requestWebMercator, WGS84, true);
+        assertTrue(handler.requiresProcessing(g));
+        Geometry preProcessed = handler.preProcess(g);
+        // should have cut at 85 degrees, the web mercator breaks at the poles
+        assertEquals(expected, preProcessed);
+        // post process (provide identity transform to force wrap heuristic)
+        Geometry postProcessed = handler.postProcess(CRS.findMathTransform(WGS84, WGS84), expected);
+        // check the geometry is in the same area as the rendering envelope
+        assertEquals(expected, postProcessed);
+    }
+
+    @Test
+    public void testWrapPDCMercator() throws Exception {
+        CoordinateReferenceSystem pdc = CRS.decode("EPSG:3832", true);
+        ReferencedEnvelope world = new ReferencedEnvelope(-20000000, 20000000, -20000000, 20000000,
+                pdc);
+        Geometry g = new WKTReader().read(
+                "MULTIPOLYGON(((-73 60, -73 83, -11 83, -11 60, -73 60)),((-10 60, -10 61, -11 61, -11 60, -10 60)))");
+        Geometry original = (Geometry) g.clone();
+        //
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, WGS84, true);
+        assertTrue(handler.requiresProcessing(g));
+        Geometry preProcessed = handler.preProcess(g);
+        // no cutting expected
+        assertEquals(original, preProcessed);
+        // post process (provide identity transform to force wrap heuristic)
+        MathTransform mt = CRS.findMathTransform(WGS84, pdc, true);
+        Geometry transformed = JTS.transform(g, mt);
+        final Geometry postProcessed = handler.postProcess(mt, transformed);
+        // make sure we got the geometry unwrapped and replicated
+        assertEquals(3, postProcessed.getNumGeometries());
+        postProcessed.apply(new GeometryComponentFilter() {
+            
+            @Override
+            public void filter(Geometry geom) {
+                if(geom != postProcessed && geom.getEnvelopeInternal().getWidth() > 40000000) {
+                    fail("The geometry did not get rewrapped properly");
+                }
+                
+            }
+        });
+    }
+    
+    @Test
+    public void testReprojectBackwardsTo900913() throws Exception {
+        // use a WKT in order to miss the EPSG database support
+        String wkt = "PROJCS[\"WGS84 / Google Mercator\", GEOGCS[\"WGS 84\", DATUM[\"World Geodetic System 1984\", "
+                + "SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], AUTHORITY[\"EPSG\",\"6326\"]], "
+                + "PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], UNIT[\"degree\", 0.017453292519943295], AUTHORITY[\"EPSG\",\"4326\"]], "
+                + "PROJECTION[\"Mercator (1SP)\", AUTHORITY[\"EPSG\",\"9804\"]], PARAMETER[\"semi_major\", 6378137.0], PARAMETER[\"semi_minor\", 6378137.0], "
+                + "PARAMETER[\"latitude_of_origin\", 0.0], PARAMETER[\"central_meridian\", 0.0], PARAMETER[\"scale_factor\", 1.0], "
+                + "PARAMETER[\"false_easting\", 0.0], PARAMETER[\"false_northing\", 0.0], UNIT[\"m\", 1.0],  AUTHORITY[\"EPSG\",\"900913\"]]";
+       CoordinateReferenceSystem epsg900913 = CRS.parseWKT(wkt);
+       
+       // assume we are rendering in WGS84
+       ReferencedEnvelope renderingArea = new ReferencedEnvelope(-180, 0, 0, 90, DefaultGeographicCRS.WGS84);
+       ProjectionHandler ph = ProjectionHandlerFinder.getHandler(renderingArea, epsg900913, true);
+       List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+       assertEquals(1, queryEnvelopes.size());
+       
+       // the expected query envelope
+       ReferencedEnvelope expected = new ReferencedEnvelope(-180, 0, 0, 85, DefaultGeographicCRS.WGS84).transform(epsg900913, true);
+       assertEquals(expected, queryEnvelopes.get(0));
+    }
 }

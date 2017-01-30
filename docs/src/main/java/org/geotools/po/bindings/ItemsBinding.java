@@ -1,8 +1,18 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This file is hereby placed into the Public Domain. This means anyone is
+ *    free to do whatever they wish with this file. Use it well and enjoy!
+ */
 package org.geotools.po.bindings;
 
 
 import javax.xml.namespace.QName;
 
+import org.geotools.po.Items;
 import org.geotools.po.ObjectFactory;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -12,8 +22,8 @@ import org.geotools.xml.Node;
  * Binding object for the type http://www.geotools.org/po:Items.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *    <pre>
+ *     <code>
  *  &lt;xsd:complexType name="Items"&gt;
  *      &lt;xsd:sequence&gt;
  *          &lt;xsd:element maxOccurs="unbounded" minOccurs="0" name="item"&gt;
@@ -36,49 +46,48 @@ import org.geotools.xml.Node;
  *          &lt;/xsd:element&gt;
  *      &lt;/xsd:sequence&gt;
  *  &lt;/xsd:complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
+ *        
+ *      </code>
+ *     </pre>
  * </p>
  *
  * @generated
  */
 public class ItemsBinding extends AbstractComplexBinding {
 
-	ObjectFactory factory;		
-	public ItemsBinding( ObjectFactory factory ) {
-		super();
-		this.factory = factory;
-	}
+    ObjectFactory factory;        
+    public ItemsBinding( ObjectFactory factory ) {
+        super();
+        this.factory = factory;
+    }
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return PO.Items;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /**
+     * @generated
+     */
+    public QName getTarget() {
+        return PO.Items;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Class getType() {
+        return Items.class;
+    }
+    
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *    
+     * @generated modifiable
+     */    
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        Items items = factory.createItems();
+        items.getItem().addAll(node.getChildValues("item"));
+        return items;
+    }
 
 }

@@ -150,7 +150,7 @@ More complex symbols like Wind Barbs can be created with the **windbarbs://** pr
 
 	 <WellKnownName>windbarbs://default(15)[kts]</WellKnownName>
 		
-Where *15* indicates the wind intensity and *[kts]* indicates its unit of meausure.
+Where *15* indicates the wind intensity and *[kts]* indicates its unit of measure.
 
 And it produces:
 

@@ -32,8 +32,8 @@ Q: Can I just try CQL out?
 If you're developing with GeoTools, you can easily try out the CQL parser by depending on the **gt-cql**
 jar and running the **CQL** class as a normal Java application.
 
-It will present a prompt on the console (standard input) from where you can input cql strings and
-will get back the corresponding Filter in xml encoding.::
+It will present a prompt on the console (standard input) from where you can input CQL strings and
+will get back the corresponding Filter in XML encoding.::
     
     Expression Tester ("quit" to finish)
     >attr > 10
@@ -51,7 +51,7 @@ will get back the corresponding Filter in xml encoding.::
 Q: What does ECQL offer?
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ECQL class offers an extension of the basic CQL language, it is backward compatable so
+The ECQL class offers an extension of the basic CQL language, it is backward compatible so
 the following still works:
 
 .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java

@@ -1,9 +1,27 @@
+/*
+ * GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+ *
+ * (C) 2016, Open Source Geospatial Foundation (OSGeo)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ */
 package org.geotools.gce.imagemosaic;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +40,7 @@ import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.util.Utilities;
 
 /**
@@ -41,7 +60,10 @@ import org.geotools.util.Utilities;
 abstract class ImageMosaicWalker implements Runnable {
 
     /** Default Logger * */
-    final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
+    final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(ImageMosaicWalker.class);
+
+    private List<GranuleAcceptor> granuleAcceptors;
 
     private DefaultTransaction transaction;
 
@@ -66,7 +88,7 @@ abstract class ImageMosaicWalker implements Runnable {
 
     /**
      * index of the file being processed
-     */    
+     */
     private int fileIndex = 0;
 
     /** Number of files to process. */
@@ -76,16 +98,16 @@ abstract class ImageMosaicWalker implements Runnable {
 
     /**
      * @param updateFeatures if true update catalog with loaded granules
-     * @param imageMosaicConfigHandler TODO
+     * @param imageMosaicConfigHandler configuration handler being used
+     * @param granuleAcceptors list of acceptors to deterrmine granule inclusion
      */
     public ImageMosaicWalker(ImageMosaicConfigHandler configHandler,
             ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);
         Utilities.ensureNonNull("event handler", eventHandler);
-        
         this.configHandler = configHandler;
         this.eventHandler = eventHandler;
-
+        this.granuleAcceptors = configHandler.getGranuleAcceptors();
     }
 
     public boolean getStop() {
@@ -123,12 +145,10 @@ abstract class ImageMosaicWalker implements Runnable {
             validFileName = FilenameUtils.normalize(validFileName);
             extension = FilenameUtils.getExtension(validFileName);
         } catch (IOException e) {
-            eventHandler.fireFileEvent(
-                    Level.FINER,
-                    fileBeingProcessed,
-                    false,
-                    "Exception occurred while processing file " + fileBeingProcessed + ": "
-                            + e.getMessage(), ((fileIndex * 100.0) / numFiles));
+            eventHandler.fireFileEvent(Level.FINER,
+                    fileBeingProcessed, false, "Exception occurred while processing file "
+                            + fileBeingProcessed + ": " + e.getMessage(),
+                    ((fileIndex * 100.0) / numFiles));
             eventHandler.fireException(e);
             return;
         }
@@ -154,8 +174,9 @@ abstract class ImageMosaicWalker implements Runnable {
             }
             if ((format instanceof UnknownFormat) || format == null) {
                 if (!logExcludes.contains(extension)) {
-                    eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false, "Skipped file "
-                            + fileBeingProcessed + ": File format is not supported.",
+                    eventHandler.fireFileEvent(Level.INFO, fileBeingProcessed, false,
+                            "Skipped file " + fileBeingProcessed
+                                    + ": File format is not supported.",
                             ((fileIndex * 99.0) / numFiles));
                 }
                 return;
@@ -167,35 +188,35 @@ abstract class ImageMosaicWalker implements Runnable {
                     configurationHints);
 
             // Setting of the ReaderSPI to use
-            if(configHandler.getCachedReaderSPI() == null){
+            if (configHandler.getCachedReaderSPI() == null) {
                 // Get the URL associated to the file
-                URL granuleUrl = DataUtilities
-                        .fileToURL(fileBeingProcessed);
+                URL granuleUrl = DataUtilities.fileToURL(fileBeingProcessed);
                 // Get the ImageInputStreamSPI associated to the URL
                 ImageInputStreamSpi inStreamSpi = Utils.getInputStreamSPIFromURL(granuleUrl);
                 // Ensure that the ImageInputStreamSPI is available
-                if(inStreamSpi==null){
+                if (inStreamSpi == null) {
                     throw new IllegalArgumentException("no inputStreamSPI available!");
                 }
-                ImageInputStream inStream=null;
-                try{
+                ImageInputStream inStream = null;
+                try {
                     // Get the ImageInputStream from the SPI
-                    inStream = inStreamSpi
-                            .createInputStreamInstance(granuleUrl, ImageIO.getUseCache(),
-                                    ImageIO.getCacheDirectory());
+                    inStream = inStreamSpi.createInputStreamInstance(granuleUrl,
+                            ImageIO.getUseCache(), ImageIO.getCacheDirectory());
                     // Throws an Exception if the ImageInputStream is not present
-                    if(inStream == null){
-                        if(LOGGER.isLoggable(Level.WARNING)){
-                            LOGGER.log(Level.WARNING,Utils.getFileInfo(fileBeingProcessed));
+                    if (inStream == null) {
+                        if (LOGGER.isLoggable(Level.WARNING)) {
+                            LOGGER.log(Level.WARNING, Utils.getFileInfo(fileBeingProcessed));
                         }
-                        throw new IllegalArgumentException("Unable to get an input stream for the provided file "+granuleUrl.toString());
+                        throw new IllegalArgumentException(
+                                "Unable to get an input stream for the provided file "
+                                        + granuleUrl.toString());
                     }
                     // Selection of the ImageReaderSpi from the Stream
                     ImageReaderSpi spi = Utils.getReaderSpiFromStream(null, inStream);
                     // Setting of the ImageReaderSpi to the ImageMosaicConfigHandler in order to set it inside the indexer properties
                     configHandler.setCachedReaderSPI(spi);
-                }finally{
-                    if(inStream!=null){
+                } finally {
+                    if (inStream != null) {
                         inStream.close();
                     }
                 }
@@ -206,13 +227,29 @@ abstract class ImageMosaicWalker implements Runnable {
             String[] coverageNames = coverageReader.getGridCoverageNames();
 
             for (String cvName : coverageNames) {
+                boolean shouldAccept = true;
+                for (GranuleAcceptor acceptor : this.configHandler.getGranuleAcceptors()) {
+                    if (!acceptor.accepts(coverageReader, cvName, fileBeingProcessed,
+                            configHandler)) {
+                        shouldAccept = false;
+                        eventHandler.fireFileEvent(Level.FINE, fileBeingProcessed, true,
+                                "Granule acceptor  " + acceptor.getClass().getName()
+                                        + " rejected the granule being processed"
+                                        + fileBeingProcessed,
+                                ((fileIndex + 1) * 99.0) / numFiles);
+                        break;
+                    }
+                }
 
-                configHandler.updateConfiguration(coverageReader, cvName, fileBeingProcessed,
-                        fileIndex, numFiles, transaction);
+                if (shouldAccept) {
+                    configHandler.updateConfiguration(coverageReader, cvName, fileBeingProcessed,
+                            fileIndex, numFiles, transaction);
+                }
 
                 // fire event
-                eventHandler.fireFileEvent(Level.FINE, fileBeingProcessed, true, "Done with file "
-                        + fileBeingProcessed, (((fileIndex + 1) * 99.0) / numFiles));
+                eventHandler.fireFileEvent(Level.FINE, fileBeingProcessed, true,
+                        "Done with file " + fileBeingProcessed,
+                        (((fileIndex + 1) * 99.0) / numFiles));
 
             }
         } catch (Exception e) {
@@ -239,33 +276,34 @@ abstract class ImageMosaicWalker implements Runnable {
         }
 
     }
-    
+
     /**
      * Create a transaction for being used in this walker
      */
-    public void startTransaction(){
-        if(transaction!=null){
+    public void startTransaction() {
+        if (transaction != null) {
             throw new IllegalStateException("Transaction already open!");
         }
-        this.transaction = new DefaultTransaction("MosaicCreationTransaction"+ System.nanoTime());
+        this.transaction = new DefaultTransaction("MosaicCreationTransaction" + System.nanoTime());
     }
-    
-    public void rollbackTransaction() throws IOException{
+
+    public void rollbackTransaction() throws IOException {
         transaction.rollback();
     }
-    
-    public void commitTransaction() throws IOException{
+
+    public void commitTransaction() throws IOException {
         transaction.commit();
     }
-    
-    public void closeTransaction(){
+
+    public void closeTransaction() {
         transaction.close();
     }
 
     protected boolean checkStop() {
         if (getStop()) {
-            eventHandler.fireEvent(Level.INFO, "Stopping requested at file  " + fileIndex
-                    + " of " + numFiles + " files", ((fileIndex * 100.0) / numFiles));
+            eventHandler.fireEvent(Level.INFO,
+                    "Stopping requested at file  " + fileIndex + " of " + numFiles + " files",
+                    ((fileIndex * 100.0) / numFiles));
             return false;
         }
         return true;
@@ -300,14 +338,14 @@ abstract class ImageMosaicWalker implements Runnable {
     }
 
     /**
-     * Warn this walker that we skip the provided path 
+     * Warn this walker that we skip the provided path
+     * 
      * @param path the path to the file to skip
      * 
      */
     public void skipFile(String path) {
-        LOGGER.log(Level.INFO,"Unable to use path: "+path+" - skipping it.");
+        LOGGER.log(Level.INFO, "Unable to use path: " + path + " - skipping it.");
         fileIndex++;
-        
-    }
 
+    }
 }

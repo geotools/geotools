@@ -148,7 +148,10 @@ public class Slice2DIndex {
          * @return the {@link Slice2DIndex} for the picked image.
          * @throws IOException
          */
-        public Slice2DIndex getSlice2DIndex( int imageIndex ) throws IOException {
+        public synchronized Slice2DIndex getSlice2DIndex( int imageIndex ) throws IOException {
+            // Synchronized these access due to the RAF usage.
+            // concurrent seeks and reads on the same RAF may
+            // may result into unexpected results
             long addressPosition = ADDRESS_POSITION + imageIndex * ADDRESS_SIZE;
 
             raf.seek(addressPosition);

@@ -49,8 +49,10 @@ import org.opengis.filter.expression.Literal;
  * @source $URL$
  * @version $Id$
  */
-class JFontChooser extends JDialog {
+public class JFontChooser extends JDialog {
 
+    /** serialVersionUID */
+    private static final long serialVersionUID = -1543116265293436599L;
     private static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -66,10 +68,10 @@ class JFontChooser extends JDialog {
             "The quick brown fox jumped over the lazy dog";
     private static final int sampleTextLines = 4;
     
-    private JComboBox familyCBox;
-    private JComboBox styleCBox;
-    private JComboBox weightCBox;
-    private JComboBox sizeCBox;
+    private JComboBox<String> familyCBox;
+    private JComboBox<String> styleCBox;
+    private JComboBox<String> weightCBox;
+    private JComboBox<Integer> sizeCBox;
     private JTextArea textArea;
 
     private int familyIndex;
@@ -93,7 +95,7 @@ class JFontChooser extends JDialog {
      *
      * @return a new Font object or {@code null} if the user cancelled the dialog
      */
-    static Font showDialog(Component owner, String title, Font labelFont) {
+    public static Font showDialog(Component owner, String title, Font labelFont) {
         JFontChooser chooser = null;
         Font font = null;
 
@@ -183,7 +185,7 @@ class JFontChooser extends JDialog {
         JLabel label = new JLabel("Family");
         panel.add(label);
 
-        familyCBox = new JComboBox(families);
+        familyCBox = new JComboBox<String>(families);
         familyCBox.setSelectedIndex(familyIndex);
         familyCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -196,7 +198,7 @@ class JFontChooser extends JDialog {
         label = new JLabel("Style");
         panel.add(label);
 
-        styleCBox = new JComboBox(styles);
+        styleCBox = new JComboBox<String>(styles);
         styleCBox.setSelectedIndex(styleIndex);
         styleCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -209,7 +211,7 @@ class JFontChooser extends JDialog {
         label = new JLabel("Weight");
         panel.add(label);
 
-        weightCBox = new JComboBox(weights);
+        weightCBox = new JComboBox<String>(weights);
         weightCBox.setSelectedIndex(weightIndex);
         weightCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -222,7 +224,7 @@ class JFontChooser extends JDialog {
         label = new JLabel("Size");
         panel.add(label);
 
-        sizeCBox = new JComboBox(sizes);
+        sizeCBox = new JComboBox<Integer>(sizes);
         sizeCBox.setSelectedIndex(sizeIndex);
         sizeCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -294,7 +296,7 @@ class JFontChooser extends JDialog {
 
         String weightName = ((Literal) selectedFont.getWeight()).getValue().toString();
         for (int index = 0; index < weights.length; index++) {
-            if (weights[index].equalsIgnoreCase(styleName)) {
+            if (weights[index].equalsIgnoreCase(weightName)) {
                 weightIndex = index;
                 break;
             }
@@ -313,7 +315,7 @@ class JFontChooser extends JDialog {
 
     private void showSample() {
         StringBuilder sb = new StringBuilder(families[familyIndex]);
-        java.awt.Font f;
+        
         if (weightIndex == 0) {
             if (styleIndex == 0) {
                 sb.append("-PLAIN-");

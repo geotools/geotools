@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -114,7 +114,7 @@ public class ColorReduction extends PointOpImage {
 		final int w = sourceRaster.getWidth();
 		final int h = sourceRaster.getHeight();
 		final int numBands = sourceRaster.getSampleModel().getNumBands();
-		final int rgba[] = new int[numBands];
+		final int[] rgba = new int[numBands];
 		final boolean sourceHasAlpha = sourceColorModel.hasAlpha();
 		final int alphaBand = sourceHasAlpha ? numBands - 1 : -1;
 		final int minx = sourceRaster.getMinX();

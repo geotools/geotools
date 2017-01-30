@@ -88,12 +88,12 @@ Metadata WKT
 
 WKT is actually "Well Known Text" and don't worry nobody knows this the first time.
 
-Not all meatadata beans have a WKT representation, the ones used in defining a CoordianteReferenceSystem are generally well behaved.::
+Not all meatadata beans have a WKT representation, the ones used in defining a CoordinateReferenceSystem are generally well behaved.::
   
   CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
   System.out.println( crs.toWKT() );
 
-Scary I know, CorodinateReferenceSystems are actually metadata - in this case the define the meaning of all those coordinates we shunt around a GIS system.
+Scary I know, CoordinateReferenceSystems are actually metadata - in this case the define the meaning of all those coordinates we shunt around a GIS system.
 
 Metadata ISO19115
 ^^^^^^^^^^^^^^^^^

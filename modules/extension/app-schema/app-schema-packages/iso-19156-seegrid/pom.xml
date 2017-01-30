@@ -9,10 +9,6 @@
     <version>2.0.0-1</version>
     <name>ISO 19156 Observations and Measurements 2.0 application schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/iso-19156-seegrid/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/iso-19156-seegrid/</url>
-    </scm>
 
     <developers>
         <developer>

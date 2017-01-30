@@ -1,0 +1,11 @@
+@mode "Simple";
+@autoThreshold "100";
+@styleTitle "basemap_osm_roads";
+@styleDescription "Style for FeatureType osm_roads";
+
+[type='residential'] [@scale <= 12500] [@scale > 4250] {
+    font-family: 'Comic Sans MS' 'Droid Sans Fallback' 'Arial';
+    label: [name];
+    stroke: #ccc5be;
+    stroke-width: 10;
+}

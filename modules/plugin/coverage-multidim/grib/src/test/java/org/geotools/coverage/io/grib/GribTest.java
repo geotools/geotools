@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,14 +29,19 @@ import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
+import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
+import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
 import org.geotools.data.DataSourceException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.referencing.operation.projection.RotatedPole;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Assert;
@@ -45,6 +50,11 @@ import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Projection;
 
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
@@ -57,14 +67,17 @@ public class GribTest extends Assert{
 
     private final static Double DELTA = 1E-9;
 
-    @Before
-    public void setupForceCheck() {
-        System.setProperty("NETCDF_FORCE_OPEN_CHECK", "true");
-    }
+    protected File cacheDir;
 
-    @After
-    public void cleanup() {
-        System.clearProperty("NETCDF_FORCE_OPEN_CHECK");
+    @Before
+    public void setup() throws FileNotFoundException, IOException {
+        final File testDir = TestData.file(this, ".").getCanonicalFile();
+        cacheDir = new File(testDir, "cache");
+        if (!cacheDir.exists()) {
+            cacheDir.mkdir();
+        }
+        String cacheDirPath = cacheDir.getAbsolutePath();
+        System.setProperty("GRIB_CACHE_DIR", cacheDirPath);
     }
 
     @Test
@@ -187,7 +200,7 @@ public class GribTest extends Assert{
         // Selection of the input file
         final File file = TestData.file(this, "sampleGrib.grb2");
         // Testing the 2 points
-        testGribFile(file, new Point2D.Double(-56, 8), new Point2D.Double(-56, 4));
+        testGribFile(file, new Point2D.Double(304, 8), new Point2D.Double(304, 4));
     }
 
     /**
@@ -206,16 +219,22 @@ public class GribTest extends Assert{
         // Get format
         final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
                 inputFile.toURI().toURL(), null);
-        final NetCDFReader reader = new NetCDFReader(inputFile, null);
-        Assert.assertNotNull(format);
-        Assert.assertNotNull(reader);
+
+        assertTrue(format.accepts(inputFile));
+
+        AbstractGridCoverage2DReader reader = null;
+        assertNotNull(format);
         try {
+
+            reader = format.getReader(inputFile, null);
+            assertNotNull(reader);
+
             // Selection of all the Coverage names
             String[] names = reader.getGridCoverageNames();
-            Assert.assertNotNull(names);
+            assertNotNull(names);
             // Selections of one Coverage
             GridCoverage2D grid = reader.read(names[0], null);
-            Assert.assertNotNull(grid);
+            assertNotNull(grid);
             // Selection of one coordinate from the Coverage and check if the
             // value is not a NaN
             float[] result = new float[1];
@@ -227,6 +246,7 @@ public class GribTest extends Assert{
             grid.evaluate(nodataPoint, result_2);
             Assert.assertTrue(Float.isNaN(result_2[0]));
         } finally {
+            // Dispose
             if (reader != null) {
                 try {
                     reader.dispose();
@@ -251,13 +271,17 @@ public class GribTest extends Assert{
         // Get format
         final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
                 inputFile.toURI().toURL(), null);
-        final NetCDFReader reader = new NetCDFReader(inputFile, null);
-        Assert.assertNotNull(format);
-        Assert.assertNotNull(reader);
+        assertTrue(format.accepts(inputFile));
+        AbstractGridCoverage2DReader reader = null;
+        assertNotNull(format);
         try {
+
+            reader = format.getReader(inputFile, null);
+            assertNotNull(reader);
+
             // Selection of all the Coverage names
             String[] names = reader.getGridCoverageNames();
-            Assert.assertNotNull(names);
+            assertNotNull(names);
 
             // Name of the first coverage
             String coverageName = names[0];
@@ -285,6 +309,7 @@ public class GribTest extends Assert{
             // Check if the result is not null
             assertNotNull(grid);
         } finally {
+            // Dispose
             if (reader != null) {
                 try {
                     reader.dispose();
@@ -294,4 +319,60 @@ public class GribTest extends Assert{
             }
         }
     }
+
+    /**
+     * Check that a GRIB2 file is interpreted as a rotated pole projection with expected parameters.
+     * 
+     * @param gribFileName name of the GRIB2 file
+     * @param expectedCentralMeridian expected central meridian of rotated pole projection
+     * @param expectedLatitudeOfOrigin expected latitude of origin of the rotated pole projection
+     */
+    private void checkRotatedPole(String gribFileName, double expectedCentralMeridian,
+            double expectedLatitudeOfOrigin) throws Exception {
+        File file = TestData.file(this, gribFileName);
+        NetCDFReader reader = null;
+        try {
+            reader = new NetCDFReader(file, null);
+            String[] coverages = reader.getGridCoverageNames();
+            CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
+            NetCDFCoordinateReferenceSystemType crsType = NetCDFCoordinateReferenceSystemType
+                    .parseCRS(crs);
+            assertSame(NetCDFCoordinateReferenceSystemType.ROTATED_POLE, crsType);
+            assertSame(NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.RLATLON_COORDS,
+                    crsType.getCoordinates());
+            assertSame(NetCDFProjection.ROTATED_POLE, crsType.getNetCDFProjection());
+            assertTrue(crs instanceof ProjectedCRS);
+            ProjectedCRS projectedCRS = ((ProjectedCRS) crs);
+            Projection projection = projectedCRS.getConversionFromBase();
+            MathTransform transform = projection.getMathTransform();
+            assertTrue(transform instanceof RotatedPole);
+            RotatedPole rotatedPole = (RotatedPole) transform;
+            ParameterValueGroup values = rotatedPole.getParameterValues();
+            assertEquals(expectedCentralMeridian,
+                    values.parameter(NetCDFUtilities.CENTRAL_MERIDIAN).doubleValue(), DELTA);
+            assertEquals(expectedLatitudeOfOrigin,
+                    values.parameter(NetCDFUtilities.LATITUDE_OF_ORIGIN).doubleValue(), DELTA);
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+
+    /**
+     * Test that an RAP native GRIB2 file with GDS template 32769 is interpreted as a {@link RotatedPole} projection with expected parameters.
+     */
+    @Test
+    public void testRapNativeRotatedPole() throws Exception {
+        checkRotatedPole("rap-native.grib2", -106, 54);
+    }
+
+    /**
+     * Test that a COSMO EU GRIB2 file with GDS template 1 is interpreted as a {@link RotatedPole} projection with expected parameters.
+     */
+    @Test
+    public void testCosmoEuRotatedPole() throws Exception {
+        checkRotatedPole("cosmo-eu.grib2", 10, 50);
+    }
+
 }

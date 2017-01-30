@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,14 @@ import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml2.GML;
 import org.geotools.xml.XMLUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -117,8 +119,14 @@ public class GMLWriter {
             boolean forceDecimal, String gmlPrefix) {
         this.handler = delegate;
         this.namespaces = namespaces;
-        this.coordinates = COORDINATES.derive(gmlPrefix);
-        this.posList = POS_LIST.derive(gmlPrefix);
+
+        String gmlUri = namespaces.getURI(gmlPrefix);
+        if (gmlUri == null) {
+            gmlUri = GML.NAMESPACE;
+        }
+
+        this.coordinates = COORDINATES.derive(gmlPrefix, gmlUri);
+        this.posList = POS_LIST.derive(gmlPrefix, gmlUri);
 
         this.coordFormatter.setMaximumFractionDigits(numDecimals);
         this.coordFormatter.setGroupingUsed(false);
@@ -184,8 +192,15 @@ public class GMLWriter {
         if (qualifiedName == null) {
             qualifiedName = qualify(qn.getNamespaceURI(), qn.getLocalPart(), null);
         }
+        if (atts == null) {
+            atts =new AttributesImpl();
+        }
         if (qualifiedName != null) {
-            handler.startElement(null, null, qualifiedName, atts);
+            String localName = null;
+            if (qualifiedName.contains(":")) {
+                localName = qualifiedName.split(":")[1];
+            }
+            handler.startElement(qn.getNamespaceURI(), localName, qualifiedName, atts);
         } else {
             handler.startElement(qn.getNamespaceURI(), qn.getLocalPart(), null, atts);
         }
@@ -273,17 +288,21 @@ public class GMLWriter {
      * @param y
      * @throws SAXException
      */
-    public void position(double x, double y) throws SAXException {
-        position(x, y, sb);
+    public void position(double x, double y, double z) throws SAXException {
+        position(x, y, z, sb);
         characters(sb);
     }
 
-    void position(double x, double y, StringBuffer sb) {
+    void position(double x, double y, double z, StringBuffer sb) {
         sb.setLength(0);
         appendDecimal(x);
         if (!Double.isNaN(y)) {
             sb.append(" ");
             appendDecimal(y);
+        }
+        if (!Double.isNaN(z)) {
+            sb.append(" ");
+            appendDecimal(z);
         }
     }
 
@@ -294,9 +313,14 @@ public class GMLWriter {
     void coordinates(CoordinateSequence coordinates, char cs, char ts, StringBuffer sb) {
         sb.setLength(0);
         int n = coordinates.size();
+        int dim = CoordinateSequences.coordinateDimension(coordinates);
         for (int i = 0; i < n; i++) {
             appendDecimal(coordinates.getX(i)).append(cs);
             appendDecimal(coordinates.getY(i));
+            if(dim == 3) {
+                sb.append(cs);
+                appendDecimal(coordinates.getOrdinate(i, 2));
+            }
             sb.append(ts);
         }
         sb.setLength(sb.length() - 1);

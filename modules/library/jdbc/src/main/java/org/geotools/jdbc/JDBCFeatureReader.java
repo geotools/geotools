@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -145,11 +145,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         try {
             rs = st.executeQuery(sql);
         } catch (Exception e1) {
+            LOGGER.log(Level.SEVERE, "Failed to execute statement " + sql);
             // make sure to mark as closed, otherwise we are going to log that it was not
             try {
                 close();
             } catch (IOException e2) {
-
+                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
             }
             throw new SQLException(e1);
         }
@@ -165,7 +166,17 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.st = st;
         
         ((PreparedStatementSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
-        rs = st.executeQuery();
+        try {
+            rs = st.executeQuery();
+        } catch (Exception e1) {
+            // make sure to mark as closed, otherwise we are going to log that it was not
+            try {
+                close();
+            } catch (IOException e2) {
+                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
+            }
+            throw new SQLException(e1);
+        }
     }
     
     public JDBCFeatureReader(ResultSet rs, Connection cx, int offset, JDBCFeatureSource featureSource, 
@@ -426,7 +437,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      * and connection. Use only if the above are shared with another object that will
      * take care of closing them.
      */
-    protected void cleanup() {
+    protected void cleanup() throws IOException {
         //throw away state
         rs = null;
         st = null;
@@ -513,12 +524,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             //get the primary key, ensure its not contained in the values
             key = dataStore.getPrimaryKey(featureType);
             int count = md.getColumnCount();
-            columnNames=new String[count];
+            columnNames = new String[count];
 
             exposePrimaryKeys = featureSource.getState().isExposePrimaryKeyColumns();
             for (int i = 0; i < md.getColumnCount(); i++) {
-            	String columnName =md.getColumnName(i + 1); 
-            	columnNames[i]=columnName;
+            	String columnName = md.getColumnName(i + 1); 
+            	columnNames[i] = columnName;
             	if(!exposePrimaryKeys) {
                     for ( PrimaryKeyColumn col : key.getColumns() ) {
                         if (col.getName().equals(columnName)) {
@@ -658,7 +669,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         }
         
         public void setAttribute(String name, Object value) {
-            dataStore.getLogger().fine("Setting " + name + " to " + value);
+            if (dataStore.getLogger().isLoggable(Level.FINE)) {
+                dataStore.getLogger().fine("Setting " + name + " to " + value);
+            }
 
             int i = index.get(name);
             setAttribute(i, value);
@@ -670,7 +683,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
 
         public void setAttribute(int index, Object value)
             throws IndexOutOfBoundsException {
-            dataStore.getLogger().fine("Setting " + index + " to " + value);
+            if (dataStore.getLogger().isLoggable(Level.FINE)) {
+                dataStore.getLogger().fine("Setting " + index + " to " + value);
+            }
             values[index] = value;
             dirty[index] = true;
         }
@@ -689,7 +704,14 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             return dirty[index];
         }
 
+        /** 
+         * @deprecated use {@link #isDirty(String)} instead
+         */
         public boolean isDirrty(String name) {
+        	return isDirty(name);
+        }
+        
+        public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }
 
@@ -729,9 +751,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             Object obj = getDefaultGeometry();
             if( obj instanceof Geometry ){
                 Geometry geometry = (Geometry) obj;
-                return new ReferencedEnvelope( geometry.getEnvelopeInternal(), featureType.getCoordinateReferenceSystem() );
+                return ReferencedEnvelope.create( geometry.getEnvelopeInternal(), featureType.getCoordinateReferenceSystem() );
             }
-            return new ReferencedEnvelope( featureType.getCoordinateReferenceSystem() );
+            return ReferencedEnvelope.create( featureType.getCoordinateReferenceSystem() );
         }
 
         public GeometryAttribute getDefaultGeometryProperty() {
@@ -771,7 +793,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
-        public Collection<?extends Property> getValue() {
+        public Collection<? extends Property> getValue() {
             return getProperties();
         }
 

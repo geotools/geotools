@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,6 +42,10 @@ import org.opengis.filter.expression.Expression;
  */
 public class WindBarbsFactory implements MarkFactory {
 
+    static final int MAX_SPEED = 300;
+
+    private static final int NUMBER_OF_ITEMS_IN_CACHE = MAX_SPEED / 5;
+
     /** WINDBARB_DEFINITION */
     private static final String WINDBARB_DEFINITION = "windbarbs://.*\\(.{1,}\\)\\[.{1,5}\\]\\??.*";
 
@@ -66,14 +70,7 @@ public class WindBarbsFactory implements MarkFactory {
     private static final SoftValueHashMap<WindBarbDefinition, Map<Integer, Shape>> CACHE;
     static {
         CACHE = new SoftValueHashMap<WindBarb.WindBarbDefinition, Map<Integer, Shape>>(1);// make room for the default definition
-        final Map<Integer, Shape> defaultBarbsDefinition = new HashMap<Integer, Shape>();
-        CACHE.put(WindBarb.DEFAULT_WINDBARB_DEFINITION, defaultBarbsDefinition);
-        for (int i = 0; i <= 20; i++) { // we don't go over 100 knots (a square)
-            defaultBarbsDefinition.put(i, new WindBarb(i * 5).build()); // pass over the knots definition
-        }
-
-        // no module x----- symbol
-        defaultBarbsDefinition.put(-1, new WindBarb(-1).build());
+        CACHE.put(WindBarb.DEFAULT_WINDBARB_DEFINITION, createWindBarbs(WindBarb.DEFAULT_WINDBARB_DEFINITION));
     }
 
     /**
@@ -256,6 +253,17 @@ public class WindBarbsFactory implements MarkFactory {
 
     }
 
+    private static Map<Integer, Shape> createWindBarbs(WindBarbDefinition definition) {
+        final Map<Integer, Shape> windBarbsMapping = new HashMap<Integer, Shape>();
+        for (int i = 0; i <= NUMBER_OF_ITEMS_IN_CACHE; i++) { 
+            windBarbsMapping.put(i, new WindBarb(definition, i * 5).build()); // pass over the knots definition
+        }
+
+        // no module x----- symbol
+        windBarbsMapping.put(-1, new WindBarb(definition, -1).build());
+        return windBarbsMapping;
+    }
+
     /**
      * @param windBarbName
      * @param speed
@@ -311,19 +319,18 @@ public class WindBarbsFactory implements MarkFactory {
             synchronized (CACHE) {
                 windbarbs = CACHE.get(definition);
                 if (windbarbs == null) {
-                    windbarbs = new HashMap<Integer, Shape>();
+                    windbarbs = createWindBarbs(definition);
                     CACHE.put(definition, windbarbs);
-                    for (int i = 0; i <= 20; i++) { // we don't go over 100 knots (a square)
-                        windbarbs.put(i, new WindBarb(definition, i * 5).build()); // pass over the knots definition
-                    }
-
-                    // no module x----- symbol
-                    windbarbs.put(-1, new WindBarb(definition, -1).build());
                 }
             }
 
             // get shape from cached definitions.
-            final Shape shp = windbarbs.get(index);
+            Shape shp = windbarbs.get(index);
+            if (shp == null) {
+                // No definition available. build it on the fly without caching it 
+                // (supposing it's a rare barb since we are caching up to MAX_SPEED)
+                shp = new WindBarb(definition, (int) knots).build();
+            }
             if (params == null || params.isEmpty()) {
                 return shp;
             }

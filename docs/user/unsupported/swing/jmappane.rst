@@ -159,28 +159,11 @@ You will find ready to go actions that also change the map state::
 
 * Mouse Wheel
   
-  From email - Perhaps the easiest way of doing it, without sub-classing JMapPane, is
-  something like this::
-    
-    // somewhere in your code...
-    double clickToZoom = 0.1;  // 1 wheel click is 10% zoom
-    
-    // wheel event handler
-    public void handleMouseWheelEvent(MouseWheelEvent ev) {
-       int clicks = ev.getWheelRotation();
-       // -ve means wheel moved up, +ve means down
-       int sign = (clicks < 0 ? -1 : 1);
+MapFrame now registers a ScrollWheelTool in initComponents if the toolset contains Tool.SCROLLWHEEL:: 
 
-       Envelope env = mapPane.getDisplayArea();
-       double width = env.getWidth();
-       double delta = width * clickToZoom * sign;
+   if(toolSet.contains(Tool.SCROLLWHEEL)) {
+      mapPane.addMouseListener(new ScrollWheelTool(mapPane));
+   } 
 
-       env.expandBy(delta);
-       mapPane.setDisplayArea(env);
-       mapPane.repaint();
-    }
-  
-  I imagine we can set up a "tool" to respect mousewheel events; perhaps you would like to submit a patch?
-
-
+This is on by default and allows users to zoom in and out using their mouse wheel as expected.
 

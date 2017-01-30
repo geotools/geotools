@@ -16,7 +16,8 @@
  */
 package org.geotools.data.store;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
@@ -49,8 +52,9 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 public class ContentFeatureSourceEventsTest extends AbstractContentTest {
 
+    private DefaultTransaction defaultTransaction;
+    private DefaultTransaction anotherTransaction;
 
-    
     private static class Listener implements FeatureListener {
         String name;
 
@@ -68,7 +72,19 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
             return events.get(i);
         }
     }
+
+    @Before
+    public void setUp() {
+    	defaultTransaction = new DefaultTransaction();
+    	anotherTransaction = new DefaultTransaction();
+	}
     
+    @After
+    public void tearDown() {
+    	defaultTransaction.close();
+    	anotherTransaction.close();
+    }
+
     @Test
     public void testFeatureEventsAutoCommit() throws Exception {
         DataStore store = new MockContentDataStore();
@@ -140,8 +156,8 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         DataStore store = new MockContentDataStore();
         SimpleFeatureStore store1 = (SimpleFeatureStore) store.getFeatureSource(TYPENAME);
         SimpleFeatureStore store2 = (SimpleFeatureStore) store.getFeatureSource(TYPENAME);
-        store1.setTransaction(new DefaultTransaction());
-        store2.setTransaction(new DefaultTransaction());
+        store1.setTransaction(defaultTransaction);
+        store2.setTransaction(anotherTransaction);
         
         Listener listener1 = new Listener("one");
         Listener listener2 = new Listener("two");
@@ -244,7 +260,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         DataStore store = new MockContentDataStore();
         SimpleFeatureStore store1 = (SimpleFeatureStore) store.getFeatureSource(TYPENAME);
         SimpleFeatureStore store2 = (SimpleFeatureStore) store.getFeatureSource(TYPENAME);
-        store1.setTransaction(new DefaultTransaction());
+        store1.setTransaction(defaultTransaction);
         
         Listener listener1 = new Listener("one");
         Listener listener2 = new Listener("two");

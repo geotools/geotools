@@ -190,7 +190,7 @@ Using a TypeFactory::
   SimpleTypeFactory featureTypeFactory =   CommonFactoryFinder.getSimpleTypeFeatureFactory( null );
   
   URI namespace = new URI("http://localhost/Flag/");
-  CoordianteReferenceSystem crs = CRS.decode("EPSG:4326");
+  CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
   
   Name locationName = new NameImpl( namespace, "Location" );
   InternationalString locationDescription = new SimpleInternationalString("Location of the base of this Flag, in WSG84");

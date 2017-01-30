@@ -29,7 +29,7 @@ What license does GeoTools use?
 
 LGPL. So you can take the code and run away with it. We do ask that you funnel fixes back in our direction.
 
-Because of the GPL restriction on the JUMP code base we cannot offer you wrappers (or really very much help at all). If you would kindly consider a GPL+Claspath license (the same one that Java uses) we would be able to implement the JUMP Feature and FeatureSchema interfaces and we could get along without all this fuss.
+Because of the GPL restriction on the JUMP code base we cannot offer you wrappers (or really very much help at all). If you would kindly consider a GPL+Classpath license (the same one that Java uses) we would be able to implement the JUMP Feature and FeatureSchema interfaces and we could get along without all this fuss.
 
 Can I just use the referencing stuff for reprojection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -38,6 +38,6 @@ Yes. The Referencing module is available "standalone" (without all of the rest o
 
 For more information please see the Referencing section of this user guide. Remember if you want to support EPSG codes you will need a plugin like epsg-hsql.
 
-It is recommended that you store the CoordianteReferenceSystem in your Geometry user data.
+It is recommended that you store the CoordinateReferenceSystem in your Geometry user data.
 
-Be warned that the referencing module does not depend on JTS (it is pure math), there is a utility class (called JTS) which works an an example of how to transform JTS Geometry classe.
+Be warned that the referencing module does not depend on JTS (it is pure math), there is a utility class (called JTS) which works as an example of how to transform JTS Geometry class.

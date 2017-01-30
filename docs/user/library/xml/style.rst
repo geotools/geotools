@@ -126,7 +126,7 @@ Encoder
 
 The same SLDConfiguration can be used for encoding::
   
-  Configuration = new SLDConfiguration();
+  Configuration configuration = new SLDConfiguration();
   Encoder encoder = new org.geotools.xml.Encoder( configuration );
   encoder.encode( sld, org.geotools.sld.bindings.SLD.STYLEDLAYERDESCRIPTOR, outputStream );
 

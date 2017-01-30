@@ -19,11 +19,11 @@ Using Maven
 Project Files
 ^^^^^^^^^^^^^
 
-The key part of maven is the use of project files (ie pom.xml). You will find a pom.xml file in all active modules. The project file tells you the name of the module, who maintains it, who develops it, what version it has reached and what it depends on.
-
-Note: that as all the modules have some things in common, the module project files actually extend one which can be found in the GeoTools root directory.
+The key part of maven is the use of a "project object model" file (ie pom.xml). You will find a pom.xml file in all active modules. The project file tells you the name of the module, who maintains it, who develops it, and what it depends on.
 
 The most important part of the project file is the dependencies section as maven uses this to determine what order to build the modules in and what support jars to download when needed (if we move over to maven exclusively we will no longer need the extbin folder).
+
+All the modules have some things in common, the module pom.xml files extend a pom.xml file which can be found in the GeoTools root directory. This root pom.xml file defines things, such as license and build settings which are common to the geotools library. The root pom.xml has a dependencyManagement section that lists the version numbers in one location (so we can be sure that each module is being built with dependencies that can work together).
 
 Use of Notepad
 ^^^^^^^^^^^^^^

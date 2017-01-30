@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,8 @@
 package org.geotools.styling;
 
 import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
 
 import org.geotools.filter.ConstantExpression;
 import org.opengis.feature.simple.SimpleFeature;
@@ -115,6 +117,10 @@ public interface Stroke extends org.opengis.style.Stroke {
                 return null;
             }
 
+            public List<Expression> dashArray() {
+                return null;
+            }
+
             public Expression getDashOffset() {
                 return ConstantExpression.ZERO;
             }
@@ -166,6 +172,10 @@ public interface Stroke extends org.opengis.style.Stroke {
 
             public float[] getDashArray() {
                 return new float[] {  };
+            }
+
+            public List<Expression> dashArray() {
+                return Collections.EMPTY_LIST;
             }
 
             public Expression getDashOffset() {
@@ -246,17 +256,18 @@ public interface Stroke extends org.opengis.style.Stroke {
     void setLineCap(Expression lineCap);
 
     /**
-     * This parameter encodes the dash pattern as a seqeuence of floats.<br>
-     * The first number gives the length in pixels of the dash to draw, the
-     * second gives the amount of space to leave, and this pattern repeats.<br>
-     * If an odd number of values is given, then the pattern is expanded by
-     * repeating it twice to give an even number of values.
-     *
-     * For example, "2 1 3 2" would produce:<br>
-     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
-     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
+     * Shortcut to retrieve dash array in the case where all expressions
+     * are literal numbers. Return the default value if one of the expressions
+     * is not a literal.
      */
+    @Deprecated
     float[] getDashArray();
+
+    /**
+     * Shortcut to define dash array using literal numbers.
+     */
+    @Deprecated
+    void setDashArray(float[] dashArray);
 
     /**
      * This parameter encodes the dash pattern as a seqeuence of floats.<br>
@@ -269,7 +280,20 @@ public interface Stroke extends org.opengis.style.Stroke {
      * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
      * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
      */
-    void setDashArray(float[] dashArray);
+    List<Expression> dashArray();
+
+    /**
+     * This parameter encodes the dash pattern as a list of expressions.<br>
+     * The first expression gives the length in pixels of the dash to draw, the
+     * second gives the amount of space to leave, and this pattern repeats.<br>
+     * If an odd number of values is given, then the pattern is expanded by
+     * repeating it twice to give an even number of values.
+     *
+     * For example, "2 1 3 2" would produce:<br>
+     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
+     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
+     */
+    void setDashArray(List<Expression> dashArray);
 
     /**
      * A dash array need not start from the beginning.  This method allows for
@@ -358,6 +382,10 @@ abstract class ConstantStroke implements Stroke {
     }
 
     public void setDashArray(float[] dashArray) {
+        cannotModifyConstant();
+    }
+
+    public void setDashArray(List<Expression> dashArray) {
         cannotModifyConstant();
     }
 

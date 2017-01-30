@@ -9,6 +9,7 @@ import java.util.List;
 import javax.measure.unit.SI;
 
 import org.geotools.filter.function.RecodeFunction;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
@@ -87,6 +88,27 @@ public class CookbookLineTest extends AbstractStyleTest {
         assertEquals(3, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(Color.BLUE, ls.getStroke().getColor().evaluate(null, Color.class));
         assertTrue(Arrays.equals(new float[] { 5, 2 }, ls.getStroke().getDashArray()));
+    }
+    
+    @Test
+    public void testOffset() {
+        FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
+        RuleBuilder rule = fts.rule();
+        rule.line().stroke().colorHex("#000000");
+        LineSymbolizerBuilder line = rule.line();
+        line.stroke().colorHex("#FF0000").dashArray(5, 2);
+        line.perpendicularOffset(5);
+        FeatureTypeStyle style = fts.build();
+
+        // round up the basic elements and check its simple
+        StyleCollector collector = new StyleCollector();
+        style.accept(collector);
+        assertEquals(1, collector.rules.size());
+        assertEquals(2, collector.symbolizers.size());
+
+        // check the perpendicular offset
+        LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(1);
+        assertEquals(5, ls.getPerpendicularOffset().evaluate(null, Double.class), 0d);
     }
 
     @Test

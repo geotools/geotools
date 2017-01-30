@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -67,21 +67,45 @@ public abstract class SolrSpatialStrategy {
     }
 
     public static class BBoxStrategy extends SolrSpatialStrategy {
-
         @Override
         public String encode(Geometry geometry) {
             Envelope env = geometry.getEnvelopeInternal();
-            return String.format(Locale.ENGLISH, "%f %f %f %f", env.getMinX(), env.getMinY(),
-                    env.getMaxX(), env.getMaxY());
+
+            // JD: as of Solr 5 there is a new syntax for bbox. 
+            // TODO: add a version check to the datastore used to enable which format to use 
+            //return String.format(Locale.ENGLISH, "%f %f %f %f", env.getMinX(), env.getMinY(), 
+            //    env.getMaxX(), env.getMaxY());
+            return String.format(Locale.ENGLISH, "ENVELOPE(%f,%f,%f,%f)", env.getMinX(),
+                    env.getMaxX(), env.getMaxY(), env.getMinY());
         }
 
         @Override
         public Geometry decode(String str) throws ParseException {
+            if(str.toUpperCase().startsWith("ENVELOPE")) {
+                return decodeCql(str);
+            }
+            else {
+                return decodeBbox(str);
+            }
+        }
+
+        private Geometry decodeCql(String str) throws ParseException {
+            String[] bbox = str.split(",");
+            if (bbox.length != 4) {
+                throw new ParseException("Illegal bounding box: " + str);
+            }
+            bbox[0] = bbox[0].substring(bbox[0].indexOf("(")+1, bbox[0].length());
+            bbox[3] = bbox[3].substring(0, bbox[3].indexOf(")"));
+            Envelope env = new Envelope(parseDouble(bbox[0]), parseDouble(bbox[1]),
+                parseDouble(bbox[2]), parseDouble(bbox[3]));
+            return JTS.toGeometry(env);
+        }
+
+        private Geometry decodeBbox(String str) throws ParseException {
             String[] bbox = str.split("\\s+");
             if (bbox.length != 4) {
                 throw new ParseException("Illegal bounding box: " + str);
             }
-
             Envelope env = new Envelope(parseDouble(bbox[0]), parseDouble(bbox[2]),
                 parseDouble(bbox[1]), parseDouble(bbox[3]));
             return JTS.toGeometry(env);

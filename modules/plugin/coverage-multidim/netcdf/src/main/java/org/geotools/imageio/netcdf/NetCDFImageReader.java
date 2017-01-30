@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,13 +21,7 @@ import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -35,14 +29,7 @@ import java.net.URL;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,6 +43,8 @@ import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
+import org.geotools.gce.imagemosaic.RasterLayerRequest;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
@@ -108,7 +97,7 @@ import ucar.nc2.dataset.VariableDS;
  * @author Alessio Fabiani, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
-public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetManager{
+public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetManager {
 
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
@@ -124,6 +113,19 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     /** Summary set of coverage names */
     // TODO this duplicates the info that we have in the AncillaryFileManager
     final List<Name> coverages = new ArrayList<Name>();
+
+    // allow image mosaic to share the current request with this reader, currently
+    // a new reader is instantiated per request if that behavior changes this code
+    // will break
+    private RasterLayerRequest imageMosaicRequest;
+
+    public void setRasterLayerRequest(RasterLayerRequest request) {
+        imageMosaicRequest = request;
+    }
+
+    public RasterLayerRequest getImageMosaicRequest() {
+        return imageMosaicRequest;
+    }
 
     @Override
     public List<Name> getCoveragesNames() {
@@ -141,9 +143,16 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      */
     private NetcdfDataset dataset;
 
+    /** The underlying NetCDF georeferencing manager instance */
     NetCDFGeoreferenceManager georeferencing;
 
     private CheckType checkType = CheckType.UNSET;
+
+    /** 
+     * States whether any underlying time dimension should be indexed by "time" (instead of time1, time2, ...)
+     * stored as a field of the reader to avoid multiple searches of the indexer 
+     */
+    boolean uniqueTimeAttribute = false;
 
     /** Internal Cache for CoverageSourceDescriptor.**/
     private final SoftValueHashMap<String, VariableAdapter> coverageSourceDescriptorsCache= new SoftValueHashMap<String, VariableAdapter>();
@@ -293,7 +302,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         }
 
                         // is it acceptable?
-                        if (!NetCDFUtilities.isVariableAccepted(variable, checkType)) {
+                        if (!NetCDFUtilities.isVariableAccepted(variable, checkType, dataset)) {
                             continue;
                         }
 
@@ -301,13 +310,15 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         // Add the accepted variable to the list of coverages name
                         final Name coverageName = getCoverageName(varName);
                         final CoordinateSystem cs = NetCDFCRSUtilities.getCoordinateSystem(variable);
-
                         final SimpleFeatureType indexSchema = getIndexSchema(coverageName, cs, isShared);
                         // get variable adapter which maps to a coverage in the end
                         final VariableAdapter vaAdapter = getCoverageDescriptor(coverageName);
 
                         if (indexSchema == null) {
                             throw new IllegalStateException("Unable to created index schema for coverage:"+coverageName);
+                        }
+                        if (LOGGER.isLoggable(Level.FINEST)) {
+                            LOGGER.finest("Collecting slices for: " + coverageName);
                         }
 
                         final int variableImageStartIndex = numImages;
@@ -442,6 +453,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 // get the coordinate variables
                 georeferencing = new NetCDFGeoreferenceManager(dataset);
                 final File slicesIndexFile = ancillaryFileManager.getSlicesIndexFile();
+                uniqueTimeAttribute = ancillaryFileManager.getParameterAsBoolean(NetCDFUtilities.UNIQUE_TIME_ATTRIBUTE);
 
                 if (slicesIndexFile != null) {
                     // === use sidecar index
@@ -573,22 +585,25 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final String variableName=slice2DIndex.getVariableName();
         final VariableAdapter wrapper=getCoverageDescriptor(new NameImpl(variableName));
 
+        // let's see if we have some extra parameters
+        int[] bands = null;
+        if (param instanceof EnhancedImageReadParam) {
+            bands = ((EnhancedImageReadParam) param).getBands();
+        }
+
         /*
          * Fetches the parameters that are not already processed by utility
          * methods like 'getDestination' or 'computeRegions' (invoked below).
          */
         final int strideX, strideY;
-        // final int[] srcBands;
         final int[] dstBands;
         if (param != null) {
             strideX = param.getSourceXSubsampling();
             strideY = param.getSourceYSubsampling();
-            // srcBands = param.getSourceBands();
             dstBands = param.getDestinationBands();
         } else {
             strideX = 1;
             strideY = 1;
-            // srcBands = null;
             dstBands = null;
         }
     
@@ -614,30 +629,38 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
         int destWidth = destRegion.x + destRegion.width;
         int destHeight = destRegion.y + destRegion.height;
-    
+
         /*
          * build the ranges that need to be read from each 
          * dimension based on the source region
          */
         final List<Range> ranges = new LinkedList<Range>();
         try {
+
+            // Eventual ignored dimensions are at the beginning (lower index)
+            // (Based on COARDS convention)
+            if (!wrapper.ignoredDimensions.isEmpty()){
+                for (int i=0; i <wrapper.ignoredDimensions.size(); i++) {
+                    // Setting up range to specify ignored dimension
+                    ranges.add(new Range(0, 0, 1));
+                }
+            }
+
             // add the ranges the COARDS way: T, Z, Y, X
             // T
             int first = slice2DIndex.getTIndex();
-            int length = 1;
-            int stride = 1;
             if (first != -1){
-                ranges.add(new Range(first, first + length - 1, stride));
+                ranges.add(new Range(first, first, 1));
             }
             // Z
             first = slice2DIndex.getZIndex();
             if (first != -1){
-                ranges.add(new Range(first, first + length - 1, stride));
+                ranges.add(new Range(first, first, 1));
             }
             // Y
             first = srcRegion.y;
-            length = srcRegion.height;
-            stride = strideY;
+            int length = srcRegion.height;
+            int stride = strideY;
             ranges.add(new Range(first, first + length - 1, stride));
             // X
             first = srcRegion.x;
@@ -647,18 +670,37 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         } catch (InvalidRangeException e) {
             throw netcdfFailure(e);
         }
-    
+
         /*
          * create the section of multidimensional array indices
          * that defines the exact data that need to be read 
          * for this image index and parameters 
          */
         final Section section = new Section(ranges);
-    
-        /*
-         * Setting SampleModel and ColorModel.
-         */
-        final SampleModel sampleModel = wrapper.getSampleModel().createCompatibleSampleModel(destWidth, destHeight);
+
+        // computing the number of bands, according to COARDS convention ignored dimension are at the beginning
+        int numDstBands = 1;
+        String candidateDimension = wrapper.variableDS.getDimensions().get(0).getFullName();
+        MultipleBandsDimensionInfo multipleBands = ancillaryFileManager.getMultipleBandsDimensionInfo(candidateDimension);
+        if (multipleBands != null) {
+            // multiple bands are defined for the ignored dimension
+            numDstBands = multipleBands.getNumberOfBands();
+            // we need to take in account the bands parameter
+            if (bands != null) {
+                // let's do a quick check to see if the bands parameter values make sense
+                int maxSourceBand = Arrays.stream(bands).max().getAsInt();
+                if (maxSourceBand > numDstBands) {
+                    throw new IllegalArgumentException("The provided source bands parameter is invalid.");
+                }
+                // the source bands parameter seems ok
+                numDstBands = bands.length;
+            }
+        }
+
+        // Setting SampleModel and ColorModel.
+        SampleModel sampleModel = new BandedSampleModel(wrapper.getSampleModel().getDataType(), destWidth, destHeight, numDstBands);
+        /*final SampleModel sampleModel = wrapper.getSampleModel()
+                .createCompatibleSampleModel(destWidth, destHeight);*/
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));
@@ -667,36 +709,33 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         CoordinateSystem cs = wrapper.variableDS.getCoordinateSystems().get(0);
         CoordinateAxis axis = georeferencing.isLonLat() ? cs.getLatAxis() : cs.getYaxis();
-        boolean flipYAxis = false;
-        try {
-            Array yAxisStart = axis.read(new Section().appendRange(2));
-            float y1 = yAxisStart.getFloat(0);
-            float y2 = yAxisStart.getFloat(1);
-            if (y2 > y1) {
-                flipYAxis=true;
-            }
-        } catch (InvalidRangeException e) {
-            throw new RuntimeException(e);
-        }
+        boolean flipYAxis = needFlipYAxis(axis);
         // Reads the requested sub-region only.
         processImageStarted(imageIndex);
-        final int numDstBands = 1;
+
         final float toPercent = 100f / numDstBands;
         final int type = raster.getSampleModel().getDataType();
         final int xmin = destRegion.x;
         final int ymin = destRegion.y;
         final int xmax = destRegion.width + xmin;
         final int ymax = destRegion.height + ymin;
+
         for( int zi = 0; zi < numDstBands; zi++ ) {
             // final int srcBand = (srcBands == null) ? zi : srcBands[zi];
             final int dstBand = (dstBands == null) ? zi : dstBands[zi];
-            final Array array;
-            try {
-                // TODO leak through
-                array = wrapper.variableDS.read(section);
-            } catch (InvalidRangeException e) {
-                throw netcdfFailure(e);
+            if (multipleBands != null) {
+                try {
+                    // we need to take in account the source bands parameter
+                    int sourceBand = bands == null ? zi : bands[zi];
+                    // since the value dimension has multiple bands we need to update the first range
+                    Range range = new Range(sourceBand, sourceBand, 1);
+                    // reading the dimensions values corresponding to the current band
+                    section.setRange(0, range);
+                } catch (InvalidRangeException exception) {
+                    throw netcdfFailure(exception);
+                }
             }
+            final Array array = readSection(wrapper, section);
             if (flipYAxis) {
                 final IndexIterator it = array.getIndexIterator();
                 for (int y = ymax; --y >= ymin; ) {
@@ -785,6 +824,42 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return image;
     }
 
+    private synchronized Array readSection(VariableAdapter wrapper, Section section) throws IIOException, IOException {
+        try {
+            //Due to underlying NetCDF file system access (RAF based) 
+            // and internal caching we do this call within a 
+            // synchronized block
+            return wrapper.variableDS.read(section);
+        } catch (InvalidRangeException e) {
+            throw netcdfFailure(e);
+        }
+        
+    }
+
+    /**
+     * Check whether the Y axis need to be flipped.
+     * Note that the method is synchronized since it access 
+     * the underlying Variable
+     *  
+     * @param axis
+     * @return
+     * @throws IOException
+     */
+    private synchronized boolean needFlipYAxis(CoordinateAxis axis) throws IOException {
+        boolean flipYAxis = false; 
+        try {
+            Array yAxisStart = axis.read(new Section().appendRange(2));
+            float y1 = yAxisStart.getFloat(0);
+            float y2 = yAxisStart.getFloat(1);
+            if (y2 > y1) {
+                flipYAxis = true;
+            }
+        } catch (InvalidRangeException e) {
+            throw new RuntimeException(e);
+        }
+        return flipYAxis;
+    }
+
     private Hashtable<String, Object> getNoDataProperties(VariableAdapter wrapper) {
         RangeType range = wrapper.getRangeType();
         if (range != null) {
@@ -843,13 +918,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         final CoverageSlicesCatalog catalog = getCatalog();
         if (typeName != null && catalog != null) {
             // Check if already existing
-            String[] typeNames = catalog.getTypeNames();
-            if (typeNames != null) {
-                for (String tn : typeNames) {
-                    if (tn.equalsIgnoreCase(typeName)) {
-                        return;
-                    }
-                }
+            if (catalog.hasTypeName(typeName)) {
+                return;
             }
             catalog.createType(indexSchema);
         }
@@ -905,22 +975,43 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         String schemaAttributes = isShared ? CoverageSlice.Attributes.BASE_SCHEMA_LOCATION : CoverageSlice.Attributes.BASE_SCHEMA;
 
         // check other dimensions
+        String timeAttribute = "";
+        String elevationAttribute = "";
+        String otherAttributes = "";
         for (CoordinateAxis axis:cs.getCoordinateAxes()) {
             // get from coordinate vars
-            final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axis.getFullName()); 
+            String axisName = axis.getFullName();
+            if (NetCDFUtilities.getIgnoredDimensions().contains(axisName)) {
+                continue;
+            }
+            final CoordinateVariable<?> cv = georeferencing.getCoordinateVariable(axisName); 
             if (cv == null) { 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Unable to find a coordinate variable for " + axis.getFullName());
+                    LOGGER.fine("Unable to find a coordinate variable for " + axisName);
                 }
                 continue;
             }
-            final String name = cv.getName();
+            String name = cv.getName();
+            String typeName = cv.getType().getName();
             switch(cv.getAxisType()){
             case GeoX: case GeoY: case Lat: case Lon:
                 continue;
+            case Time:
+                name = uniqueTimeAttribute ? NetCDFUtilities.TIME : name;
+                timeAttribute+= ("," + name + ":" + typeName);
+                break;
+            case Height:
+            case Pressure:
+            case RadialElevation:
+            case RadialDistance:
+            case GeoZ:
+                elevationAttribute+= ("," + name + ":" + typeName);
+                break;
+            default:
+                otherAttributes+=("," + name + ":" + typeName);
             }
-            schemaAttributes+=("," + name + ":" + cv.getType().getName());
         }
+        schemaAttributes+=timeAttribute + elevationAttribute + otherAttributes;
         return schemaAttributes;
     }
 

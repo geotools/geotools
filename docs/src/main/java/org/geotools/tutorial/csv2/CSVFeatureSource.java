@@ -130,6 +130,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
+        // WARNING: Please note this method is in CSVFeatureSource!
     }
-    // visitor start
+    // visitor end
 }

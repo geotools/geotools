@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,18 +14,17 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,12 +34,12 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Literal;
 
 /**
- * Provides a lookup table of named variables allowing externally defined
+ * Provides local to thread and global thread-independent lookup tables of named variables allowing externally defined
  * values to be access within a SLD document.
  * <p>
  * Example: in the application, prior to rendering...
  * <pre><code>
- * EnvFunction.setValue("foo", 42);
+ * EnvFunction.setGlobalValue("foo", 42);
  * </code></pre>
  * Then, in the SLD document we can refer to this variable using
  * the "env" function
@@ -88,8 +87,34 @@ import org.opengis.filter.expression.Literal;
  * ff.function("env", ff.literal("foo"), ff.literal(0));
  * </code></pre>
  *
+ * if the value for a key is null its possible to check it with <b>isNull</b>:
+ * <pre><code>
+ * EnvFunction.setGlobalValue("foo", null);
+ * boolean isNull = ff.isNull(ff.function("env", ff.literal("foo"))).evaluate(null);
+ * ...
+ * </code></pre>
+ * 
+ * and within SLD:
+ * <pre>
+ *     &lt;Filter>
+ *       &lt;PropertyIsNull>
+ *         &lt;Function name="env">
+ *           &lt;literal>foo&lt;/literal>
+ *         &lt;/Function>
+ *       &lt;/PropertyIsNull>
+ *     &lt;/Filter>
+ * </pre>
+ * 
+ * To verify if a key is available use <b>isNil</b>:
+ * <pre><code>
+ * // foo-not-set has never been set ..
+ * boolean isNil = ff.isNil(ff.function("env", ff.literal("foo-not-set")), null).evaluate(null);
+ * ...
+ * </code></pre>
+ * 
  * @author Andrea Aime
  * @author Michael Bedward
+ * @author Frank Gasdorf
  * @since 2.6
  *
  *
@@ -124,7 +149,7 @@ public class EnvFunction extends FunctionExpressionImpl {
     /**
      * A global lookup table
      */
-    private static ConcurrentMap<String, Object> globalLookup = new ConcurrentHashMap<String, Object>();
+    private static Map<String, Object> globalLookup = Collections.synchronizedMap(new HashMap<String, Object>());
 
     //public static FunctionName NAME = new FunctionNameImpl("env","variable");
     public static FunctionName NAME = new FunctionNameImpl("env",
@@ -200,14 +225,36 @@ public class EnvFunction extends FunctionExpressionImpl {
     }
 
     /**
+     * Remove a named value from the local (to this thread) lookup table.
+     * @param name the name to remove from local lookup table 
+     */
+    public static void removeLocalValue(String name) {
+        if (name != null) {
+            localLookup.getTable().remove(name.toUpperCase());
+        }
+    }
+
+    /**
      * Add a named value to the global (accessible from any thread) lookup table.
      * If the name is already present in the table it will be assigned the new value.
-     *
+     * to remove values from global lookup table please use {@link #removeGlobalValue(String)}
+     * 
      * @param name the name
-     * @param value the value
+     * @param value the value, <b>null</b> is an allowed value
+     * 
      */
     public static void setGlobalValue(String name, Object value) {
         globalLookup.put(name.toUpperCase(), value);
+    }
+
+    /**
+     * Remove a named value from the global (accessible from any thread) lookup table.
+     * @param name the name to remove from global 
+     */
+    public static void removeGlobalValue(String name) {
+        if (name != null) {
+            globalLookup.remove(name.toUpperCase());
+        }
     }
 
     /**

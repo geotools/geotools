@@ -160,9 +160,8 @@ public class StyleConverter extends JFrame {
 	}
 
 	private File importStyleWizard(String prompt, String ext, String format) {
-		List<Parameter<?>> list = new ArrayList<Parameter<?>>();
-		list.add(new Parameter<File>("import", File.class, ext, format,
-				new KVP(Parameter.EXT, "sld")));
+		List<Parameter<?>> list = new ArrayList<>();
+		list.add(new Parameter<>("import", File.class, ext, format, new KVP(Parameter.EXT, "sld")));
 
 		JParameterListWizard wizard = new JParameterListWizard("Import Style",
 				prompt, list);

@@ -9,10 +9,6 @@
     <version>3.2.1-1</version>
     <name>Geography Markup Language (GML) 3.2 schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/gml-3.2/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/gml-3.2/</url>
-    </scm>
 
     <developers>
         <developer>

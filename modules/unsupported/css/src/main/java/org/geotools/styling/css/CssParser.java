@@ -20,7 +20,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -58,6 +62,31 @@ public class CssParser extends BaseParser<Object> {
     static CssParser INSTANCE;
 
     static final Object MARKER = new Object();
+    
+    /**
+     * Quick key/value storage
+     */
+    static final class KeyValue {
+        
+        String key;
+        Value value;
+
+        public KeyValue(String key, Value value) {
+            this.key = key;
+            this.value = value;
+        }
+        
+    }
+    
+    static final class Prefix {
+        String prefix;
+
+        public Prefix(java.lang.String prefix) {
+            super();
+            this.prefix = prefix;
+        }
+        
+    }
 
     /**
      * Allows Parboiled to do its magic, while disallowing normal users from instantiating this
@@ -113,29 +142,44 @@ public class CssParser extends BaseParser<Object> {
 
     Rule CssRule() {
         return Sequence(WhiteSpaceOrComment(), Selector(), OptionalWhiteSpace(),//
-                '{', WhiteSpaceOrIgnoredComment(), //
-                PropertyList(), WhiteSpaceOrIgnoredComment(), '}', new Action() {
+                '{', OptionalWhiteSpace(), //
+                RuleContents(), WhiteSpaceOrIgnoredComment(), '}', new Action() {
 
                     @Override
                     public boolean run(Context ctx) {
-                        List properties = (List) pop();
+                        List contents = (List) pop();
                         Selector selector = (Selector) pop();
+                        String comment = null;
                         if (!ctx.getValueStack().isEmpty() && peek() instanceof String) {
-                            String comment = (String) pop();
+                            comment = (String) pop();
                             comment = comment.trim();
                             // get rid of the extra comments between rules
                             while (!ctx.getValueStack().isEmpty() && peek() instanceof String) {
                                 pop();
                             }
-                            push(new CssRule(selector, properties, comment));
-                        } else {
-                            push(new CssRule(selector, properties));
                         }
+                        
+                        final Stream stream = contents.stream();
+                        Map<Boolean, List> splitContents = (Map<Boolean, List>) stream.collect(Collectors.partitioningBy(x -> x instanceof CssRule));
+                        List<Property> properties = splitContents.get(Boolean.FALSE);
+                        List<CssRule> subRules = splitContents.get(Boolean.TRUE);
+                        
+                        final CssRule rule = new CssRule(selector, properties, comment);
+                        rule.nestedRules = subRules;
+                        push(rule);
 
                         return true;
                     }
 
                 });
+    }
+    
+    Rule RuleContents() {
+        return Sequence(
+                FirstOf(CssRule(), Property()),
+                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
+                        OptionalWhiteSpace(), FirstOf(CssRule(), Property()))), Optional(';'),
+                push(popAll(Property.class, CssRule.class)));
     }
 
     Rule Selector() {
@@ -185,8 +229,12 @@ public class CssParser extends BaseParser<Object> {
 
     @SuppressSubnodes
     Rule TypenameSelector() {
-        return Sequence(Sequence(Identifier(), Optional(':', Identifier())), push(new TypeName(
+        return Sequence(QualifiedIdentifier(), push(new TypeName(
                 match())));
+    }
+    
+    Rule QualifiedIdentifier() {
+        return Sequence(Identifier(), Optional(':', Identifier()));
     }
 
     @SuppressSubnodes
@@ -222,20 +270,12 @@ public class CssParser extends BaseParser<Object> {
                 OptionalWhiteSpace(), "]");
     }
 
-    Rule PropertyList() {
-        return Sequence(
-                Property(),
-                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
-                        WhiteSpaceOrIgnoredComment(), Property())), Optional(';'),
-                push(popAll(Property.class)));
-    }
-
     Rule WhitespaceOrIgnoredComment() {
         return ZeroOrMore(FirstOf(WhiteSpace(), IgnoredComment()));
     }
 
     Rule Property() {
-        return Sequence(Identifier(),
+        return Sequence(WhiteSpaceOrIgnoredComment(), Identifier(),
                 push(match()),
                 OptionalWhiteSpace(),
                 Colon(),
@@ -244,6 +284,16 @@ public class CssParser extends BaseParser<Object> {
                         ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
                 push(popAll(Value.class)) && swap()
                         && push(new Property(pop(String.class), pop(List.class))));
+    }
+    
+    Rule KeyValue() {
+        return Sequence(Identifier(), push(match()),
+                OptionalWhiteSpace(),
+                Colon(),
+                OptionalWhiteSpace(), 
+                Value(),
+                swap()
+                && push(new KeyValue(pop(String.class), pop(Value.class))));
     }
 
     @SuppressNode
@@ -256,7 +306,7 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule SimpleValue() {
-        return FirstOf(URLFunction(), Function(), Color(), NamedColor(), Measure(),
+        return FirstOf(URLFunction(), TransformFunction(), Function(), Color(), NamedColor(), Measure(),
                 ValueIdentifier(), MixedExpression());
     }
 
@@ -302,11 +352,25 @@ public class CssParser extends BaseParser<Object> {
                 ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), Value()), ')',
                 push(buildFunction(popAll(Value.class), (String) pop())));
     }
-
+    
     Value.Function buildFunction(List<Value> values, String name) {
         return new Value.Function(name, values);
     }
-
+    
+    Rule TransformFunction() {
+        return Sequence(QualifiedIdentifier(), push(new Prefix(match())), '(', Optional(OptionalWhiteSpace(), KeyValue()),
+                ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), KeyValue()), ')',
+                push(buildTransformFunction(popAll(KeyValue.class), pop(Prefix.class))));
+    }
+    
+    Value.TransformFunction buildTransformFunction(List<KeyValue> values, Prefix name) {
+        Map<String, Value> parameters = new LinkedHashMap<>();
+        for (KeyValue keyValue : values) {
+            parameters.put(keyValue.key, keyValue.value);
+        }
+        return new Value.TransformFunction(name.prefix, parameters);
+    }
+    
     Rule URLFunction() {
         return Sequence("url", OptionalWhiteSpace(), "(", OptionalWhiteSpace(), URL(),
                 OptionalWhiteSpace(), ")", push(new Value.Function("url", (Value) pop())));
@@ -337,7 +401,7 @@ public class CssParser extends BaseParser<Object> {
     Rule ValueIdentifier() {
         return Sequence(Identifier(), push(new Value.Literal(match())));
     }
-
+    
     Rule String() {
         return FirstOf(
                 Sequence('\'', ZeroOrMore(Sequence(TestNot(AnyOf("'\\")), ANY)),
@@ -463,6 +527,23 @@ public class CssParser extends BaseParser<Object> {
     Rule Identifier() {
         return Sequence(Optional('-'), NameStart(), ZeroOrMore(NameCharacter()));
     }
+    
+//    Rule QualifiedIdentifier() {
+//        return Sequence(Optional(Identifier(), push(new Prefix(match())), ':'), Identifier(), 
+//                new Action() {
+//                    @Override
+//                    public boolean run(Context ctx) {
+//                        String name = (java.lang.String) pop();
+//                        if(peek() instanceof Prefix) {
+//                            Prefix prefix = (Prefix) pop();
+//                            name = prefix.prefix + ":" + name;
+//                        }
+//                        
+//                        push(name);
+//                    }
+//                });
+//    }
+
 
     @SuppressNode
     Rule NameStart() {
@@ -537,10 +618,10 @@ public class CssParser extends BaseParser<Object> {
         return (T) pop();
     }
 
-    <T> List<T> popAll(Class<T> clazz) {
+    <T> List<T> popAll(Class... classes) {
         ValueStack<Object> valueStack = getContext().getValueStack();
         List<T> result = new ArrayList<T>();
-        while (!valueStack.isEmpty() && clazz.isInstance(valueStack.peek())) {
+        while (!valueStack.isEmpty() && isInstance(classes, valueStack.peek())) {
             result.add((T) valueStack.pop());
         }
         if (!valueStack.isEmpty() && valueStack.peek() == MARKER) {
@@ -549,5 +630,14 @@ public class CssParser extends BaseParser<Object> {
         Collections.reverse(result);
 
         return result;
+    }
+
+    private boolean isInstance(Class[] classes, Object peek) {
+        for (int i = 0; i < classes.length; i++) {
+            if(classes[i].isInstance(peek)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

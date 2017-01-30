@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,19 @@
  */
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -37,6 +45,7 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
@@ -44,6 +53,7 @@ import org.geotools.styling.TextSymbolizer2;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Displacement;
@@ -72,12 +82,19 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(expectedValue, ps.getOptions().get(name));
     }
 
-	private Rule assertSingleRule(Style style) {
-		assertEquals("Expected single feature type style, found " + style.featureTypeStyles().size(), 1, style.featureTypeStyles().size());
-		FeatureTypeStyle fts = style.featureTypeStyles().get(0);
-		assertEquals("Expected 1 rule, found " + fts.rules().size(), 1, fts.rules().size());
-		return fts.rules().get(0);
-	}
+    private Rule assertSingleRule(Style style) {
+        FeatureTypeStyle fts = assertSingleFeatureTypeStyle(style);
+        assertEquals("Expected 1 rule, found " + fts.rules().size(), 1, fts.rules().size());
+        return fts.rules().get(0);
+    }
+
+    private FeatureTypeStyle assertSingleFeatureTypeStyle(Style style) {
+        assertEquals(
+                "Expected single feature type style, found " + style.featureTypeStyles().size(), 1,
+                style.featureTypeStyles().size());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        return fts;
+    }
 	
 	private <T extends Symbolizer> T assertSingleSymbolizer(Rule rule, Class<T> symbolizerType) {
 		assertEquals(1, rule.symbolizers().size());
@@ -722,11 +739,351 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         // but in the feature type style
         org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
                 .featureTypeStyles().get(0);
-        assertEquals("cat A, name D", fts.getOptions().get("sortBy"));
+        assertEquals("cat A, name D",
+                fts.getOptions().get(org.geotools.styling.FeatureTypeStyle.SORT_BY));
+    }
+
+    @Test
+    public void testSortByGroup() throws Exception {
+        String css = "* { stroke: red; sort-by: \"cat A, name D\"; sort-by-group: \"theGroup\"}";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(0, ls.getOptions().size());
+        // but in the feature type style
+        org.geotools.styling.FeatureTypeStyle fts = (org.geotools.styling.FeatureTypeStyle) style
+                .featureTypeStyles().get(0);
+        assertEquals("cat A, name D",
+                fts.getOptions().get((org.geotools.styling.FeatureTypeStyle.SORT_BY)));
+        assertEquals("theGroup",
+                fts.getOptions().get(org.geotools.styling.FeatureTypeStyle.SORT_BY_GROUP));
+    }
+
+    @Test
+    public void testMultipleFonts() throws Exception {
+        String css = "* { label: \"static\"; font-family: \"Serif\" \"Sans\"; font-size: 10 15; }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        List<Font> fonts = ts.fonts();
+        assertEquals(2, fonts.size());
+        Font f1 = fonts.get(0);
+        assertEquals("Serif", f1.getFamily().get(0).evaluate(null));
+        assertEquals("10", f1.getSize().evaluate(null));
+        Font f2 = fonts.get(1);
+        assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
+        assertEquals("15", f2.getSize().evaluate(null));
+    }
+    
+    @Test
+    public void testMultipleFontsDefaltSize() throws Exception {
+        String css = "* { label: \"static\"; font-family: \"Serif\" \"Sans\"}";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        List<Font> fonts = ts.fonts();
+        assertEquals(2, fonts.size());
+        Font f1 = fonts.get(0);
+        assertEquals("Serif", f1.getFamily().get(0).evaluate(null));
+        assertEquals(10, f1.getSize().evaluate(null));
+        Font f2 = fonts.get(1);
+        assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
+        assertEquals(10, f2.getSize().evaluate(null));
+    }
+
+    @Test
+    public void testMultipleFontsSingleSize() throws Exception {
+        String css = "* { label: \"static\"; font-family: \"Serif\" \"Sans\"; font-size: 10 }";
+        Style style = translate(css);
+        // should not be in the symbolizer this time
+        Rule rule = assertSingleRule(style);
+        assertEquals(Filter.INCLUDE, rule.getFilter());
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        List<Font> fonts = ts.fonts();
+        assertEquals(2, fonts.size());
+        Font f1 = fonts.get(0);
+        assertEquals("Serif", f1.getFamily().get(0).evaluate(null));
+        assertEquals("10", f1.getSize().evaluate(null));
+        Font f2 = fonts.get(1);
+        assertEquals("Sans", f2.getFamily().get(0).evaluate(null));
+        assertEquals("10", f2.getSize().evaluate(null));
+    }
+    
+    @Test
+    public void perpendicularOffset() throws Exception {
+        String css = "* { stroke: black, yellow; stroke-offset: 0, 5;} ";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(2, rule.symbolizers().size());
+        LineSymbolizer ls1 = (LineSymbolizer) rule.symbolizers().get(0);
+        assertNull(ls1.getPerpendicularOffset());
+        LineSymbolizer ls2 = (LineSymbolizer) rule.symbolizers().get(1);
+        assertNotNull(ls2.getPerpendicularOffset());
+        assertEquals(5, ls2.getPerpendicularOffset().evaluate(null, Double.class), 0);
     }
 
 
     
+    @Test
+    public void styleTitle() throws Exception {
+        String css = "@styleTitle \"test title\";\n" 
+                + "* { mark: symbol('circle'); }";
+        Style style = translate(css);
+        assertEquals("test title", style.getDescription().getTitle().toString());
+    }
     
+    @Test
+    public void styleAbstract() throws Exception {
+        String css = "@styleAbstract \"style description\";\n" 
+                + "* { mark: symbol('circle'); }";
+        Style style = translate(css);
+        assertEquals("style description", style.getDescription().getAbstract().toString());
+    }
+    
+    @Test
+    public void testModeFlat() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { fill: green; } " +
+                "[value2=2] { stroke: red; }";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().size());
+        assertEquals(2, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        
+        assertEquals("#008000", ((PolygonSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getFill().getColor().toString());
+        assertEquals(1, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
+        assertNull(((PolygonSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke());
+        
+        assertEquals(1, style.featureTypeStyles().get(0).rules().get(1).symbolizers().size());
+        assertEquals("#ff0000", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(1).symbolizers().get(0)).getStroke().getColor().toString());
+    }
+    
+    @Test
+    public void testModeFlat_include() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "* { fill: blue; } " +
+                "[value1=1] { fill: green; } " +
+                "[value2=2] { stroke: red; }";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().size());
+        assertEquals(3, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("include"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(2).getFilter()); 
+    }
+    
+    @Test
+    public void testModeFlat_pseudoRules() throws Exception {
+        String css = "@mode \"Flat\"; " + "* { fill: symbol('circle');} :fill { stroke: black;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PolygonSymbolizer ps = assertSingleSymbolizer(rule, PolygonSymbolizer.class);
+        Fill fill = ps.getFill();
+        Graphic gf = fill.getGraphicFill();
+        assertEquals(1, gf.graphicalSymbols().size());
+        Mark mark = (Mark) gf.graphicalSymbols().get(0);
+        assertLiteral("circle", mark.getWellKnownName());
+        assertNull(mark.getFill());
+        assertLiteral("#000000", mark.getStroke().getColor());
+        assertNull(gf.getSize());
+        assertLiteral("1.0", gf.getOpacity());
+        assertLiteral("0", gf.getRotation());
+    }
+    
+    @Test
+    public void testModeFlat1() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { stroke: green; stroke-width:2px;}"
+                + "[value2=2] { stroke: green; stroke-width:2px;}"
+                + "[value1=1] { stroke: blue; stroke-width:10px;}";
+        Style style = translate(css);
+        assertEquals(3, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(2).getFilter());
+        assertEquals("2", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("#008000", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke().getColor().toString());
+        assertEquals("2", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(1).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("#008000", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(1).symbolizers().get(0)).getStroke().getColor().toString());
+        assertEquals("10", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(2).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("#0000ff", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(2).symbolizers().get(0)).getStroke().getColor().toString());
+        // printStyle(style);
+    }
 
+    private void printStyle(Style style) throws TransformerException {
+        SLDTransformer transformer = new SLDTransformer();
+        String xml = transformer.transform( style );
+        System.out.println(xml);
+    }
+    
+    @Test
+    public void testModeFlat1_1() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { stroke: green; stroke-width:2px;z-index:1;}"
+                + "[value2=2] { stroke: green; stroke-width:2px;z-index:2;}"
+                + "[value1=1] { stroke: blue; stroke-width:10px;z-index:3;}";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(1).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(2).rules().get(0).getFilter());
+        assertEquals("2", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("#008000", ((LineSymbolizer)style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0)).getStroke().getColor().toString());
+        assertEquals("2", ((LineSymbolizer)style.featureTypeStyles().get(1).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("#008000", ((LineSymbolizer)style.featureTypeStyles().get(1).rules().get(0).symbolizers().get(0)).getStroke().getColor().toString());
+        assertEquals("10", ((LineSymbolizer)style.featureTypeStyles().get(2).rules().get(0).symbolizers().get(0)).getStroke().getWidth().toString());
+        assertEquals("#0000ff", ((LineSymbolizer)style.featureTypeStyles().get(2).rules().get(0).symbolizers().get(0)).getStroke().getColor().toString());
+        // printStyle(style);
+    }
+    
+    @Test
+    public void testModeFlat2_mark() throws Exception {
+        String css = "@mode \"Flat\"; " +
+                "[value1=1] { mark: symbol(circle); } [value1=1] :mark { fill: green; } [value1=1] [value2=2] :mark { fill: blue; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        assertLiteral("circle", mark.getWellKnownName());
+        assertLiteral("#008000", mark.getFill().getColor());
+    }
+    
+    @Test
+    public void testModeFlat3_mark() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "* { fill: blue; } " +
+                "[value1=1] { fill: green; } " +
+                "[value2=2] { stroke: red; } " +
+                "[value3=3] { mark: symbol(circle); mark-size: 10; mark-rotation: 45; mark-geometry: [centroid(the_geom)];} [value3=3] :mark { fill: blue; }";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().size());
+        assertEquals(4, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("include"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(1).getFilter());
+        assertEquals(ECQL.toFilter("value2=2"), style.featureTypeStyles().get(0).rules().get(2).getFilter());
+        assertEquals(ECQL.toFilter("value3=3"), style.featureTypeStyles().get(0).rules().get(3).getFilter());
+        
+        PointSymbolizer ps = assertSingleSymbolizer(style.featureTypeStyles().get(0).rules().get(3), PointSymbolizer.class);
+        assertExpression("centroid(the_geom)", ps.getGeometry());
+        Graphic g = ps.getGraphic();
+        assertLiteral("10", g.getSize());
+        assertLiteral("45", g.getRotation());
+        assertNotNull(g);
+        assertEquals(1, g.graphicalSymbols().size());
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        assertLiteral("circle", mark.getWellKnownName());
+        assertLiteral("#0000ff", mark.getFill().getColor());
+        
+        // printStyle(style);
+    }
+    
+    @Test
+    public void testModeFlat4_multiValued() throws CQLException, TransformerException {
+        String css = "@mode \"Flat\"; " + 
+                "[value1=1] { fill: green, red; }";
+        Style style = translate(css);
+        assertEquals(1, style.featureTypeStyles().size());
+        assertEquals(1, style.featureTypeStyles().get(0).rules().size());
+        assertEquals(ECQL.toFilter("value1=1"), style.featureTypeStyles().get(0).rules().get(0).getFilter());
+        assertEquals(2, style.featureTypeStyles().get(0).rules().get(0).symbolizers().size());
+        // printStyle(style);
+    }
+    
+    @Test
+    public void testModeFlat5_mark() throws Exception {
+        String css = "@mode \"Flat\"; " +
+                "* { mark: symbol(circle); mark-size: 10; mark-rotation: 45; mark-geometry: [centroid(the_geom)];} :mark { fill: blue; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        assertExpression("centroid(the_geom)", ps.getGeometry());
+        Graphic g = ps.getGraphic();
+        assertLiteral("10", g.getSize());
+        assertLiteral("45", g.getRotation());
+        assertNotNull(g);
+        assertEquals(1, g.graphicalSymbols().size());
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        assertLiteral("circle", mark.getWellKnownName());
+        assertLiteral("#0000ff", mark.getFill().getColor());
+    }
+    
+    @Test
+    public void testSimpleTransform() throws Exception {
+        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black}";
+        Style style = translate(css);
+        
+        // check transformation
+        FeatureTypeStyle fts = assertSingleFeatureTypeStyle(style);
+        Function tx = assertTransformation(fts);
+        assertContour123(tx);
+    }
+    
+    @Test
+    public void testTwoLevelTransform() throws Exception {
+        String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black; z-index: 0}\n"
+                + "* { transform: ras:RasterAsPointCollection(); mark: symbol('square'); z-index: 1}";
+        Style style = translate(css);
+        assertEquals(2, style.featureTypeStyles().size());
+        
+        // base level, contour
+        FeatureTypeStyle fts1 = style.featureTypeStyles().get(0);
+        Function tx1 = assertTransformation(fts1);
+        assertContour123(tx1);
+        
+        // second level, raster as point collection
+        FeatureTypeStyle fts2 = style.featureTypeStyles().get(1);
+        Function tx2 = assertTransformation(fts2);
+        assertEquals("ras:RasterAsPointCollection", tx2.getName());
+        List<Expression> expressions = tx2.getParameters();
+        assertEquals(1, expressions.size());
+        assertParameterFunction(expressions.get(0), "data", 0);
+    }
+    
+    @Test
+    public void testPerpendicularOffsetExpression() throws Exception {
+        String css = "* { stroke: red; stroke-offset: [a * 2]; }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        assertEquals(ECQL.toExpression("a * 2"), ls.getPerpendicularOffset());
+    }
+
+    private Function assertTransformation(FeatureTypeStyle fts) {
+        Expression ex = fts.getTransformation();
+        assertNotNull(ex);
+        assertThat(ex, instanceOf(Function.class));
+        Function tx = (Function) ex;
+        return tx;
+    }
+
+    private void assertContour123(Function tx) {
+        assertEquals("ras:Contour", tx.getName());
+        List<Expression> expressions = tx.getParameters();
+        assertEquals(2, expressions.size());
+        assertParameterFunction(expressions.get(0), "data", 0);
+        Function p2 = assertParameterFunction(expressions.get(1), "levels", 3);
+        List<Expression> p2Params = p2.getParameters();
+        assertEquals("1100", p2Params.get(1).evaluate(null));
+        assertEquals("1200", p2Params.get(2).evaluate(null));
+        assertEquals("1300", p2Params.get(3).evaluate(null));
+    }
+
+    private Function assertParameterFunction(Expression expression, String expectedKey, int expectedValueCount) {
+        assertThat(expression, instanceOf(Function.class));
+        Function f = (Function) expression;
+        assertEquals("parameter", f.getName());
+        final List<Expression> parameters = f.getParameters();
+        assertTrue("At least one parameter, the key", parameters.size() > 0);
+        assertEquals(expectedKey, parameters.get(0).evaluate(null));
+        assertEquals(expectedValueCount, parameters.size() - 1);
+        return f;
+    }
 }

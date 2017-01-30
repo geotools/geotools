@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.gce.imagemosaic;
 
 import java.io.File;
@@ -53,12 +69,19 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
 
             // start looking into catalog
             final GranuleCatalog catalog = configHandler.getCatalog();
-            String locationAttrName = configHandler.getRunConfiguration().getParameter(
-                    Prop.LOCATION_ATTRIBUTE);
-            String requestedTypeName = configHandler.getRunConfiguration().getParameter(
-                    Prop.TYPENAME);
+            String locationAttrName = configHandler.getRunConfiguration()
+                    .getParameter(Prop.LOCATION_ATTRIBUTE);
+            String requestedTypeName = configHandler.getRunConfiguration()
+                    .getParameter(Prop.TYPENAME);
+            String location = configHandler.getRunConfiguration()
+                    .getParameter(Prop.LOCATION_ATTRIBUTE);
             for (String typeName : catalog.getTypeNames()) {
                 if (requestedTypeName != null && !requestedTypeName.equals(typeName)) {
+                    continue;
+                }
+
+                if (!Utils.isValidMosaicSchema(catalog.getType(typeName), location)) {
+                    LOGGER.log(Level.FINE, "Skipping invalid mosaic index table " + typeName);
                     continue;
                 }
 
@@ -98,8 +121,8 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
                     File file = null;
                     if (locationAttrObj instanceof String) {
                         final String path = (String) locationAttrObj;
-                        if (Boolean.getBoolean(configHandler.getRunConfiguration().getParameter(
-                                Prop.ABSOLUTE_PATH))) {
+                        if (Boolean.getBoolean(configHandler.getRunConfiguration()
+                                .getParameter(Prop.ABSOLUTE_PATH))) {
                             // absolute files
                             file = new File(path);
                             // check this is _really_ absolute
@@ -109,8 +132,8 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
                         }
                         if (file == null) {
                             // relative files
-                            file = new File(configHandler.getRunConfiguration().getParameter(
-                                    Prop.ROOT_MOSAIC_DIR), path);
+                            file = new File(configHandler.getRunConfiguration()
+                                    .getParameter(Prop.ROOT_MOSAIC_DIR), path);
                             // check this is _really_ relative
                             if (!(file.exists() && file.canRead() && file.isFile())) {
                                 // let's try for absolute, despite what the config says

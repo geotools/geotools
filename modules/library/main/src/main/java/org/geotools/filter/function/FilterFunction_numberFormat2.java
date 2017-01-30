@@ -70,7 +70,7 @@ public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function dateFormat argument #1 - expected type java.util.Date");
+                    "Filter Function problem for function dateFormat argument #1 - expected type java.util.Double");
         }
         
         if(format == null || number == null) {

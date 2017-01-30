@@ -11,7 +11,7 @@ References:
 KML Parsing
 ^^^^^^^^^^^
 
-KML is handled in a little bit of an unusal fashion as it defines
+KML is handled in a little bit of an unusual fashion as it defines
 a data structure of nested features, and includes Style information.
 
 Here is a fragment from the

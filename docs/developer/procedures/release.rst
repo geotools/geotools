@@ -47,25 +47,11 @@ Since we don't make any release from master, ensure you select the right CITE te
 Release in JIRA
 ---------------
 
-Run the `geotools-release-jira <http://ares.boundlessgeo.com/jenkins/job/geotools-release-jira/>`_ job in Jenkins. The job takes the following parameters:
+1. Navigate to the `GeoTools project page <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=released-unreleased>`_ in JIRA.
 
-**VERSION**
+2. Click ``Manage Versions``. Create a new version for the next version to be released after the current release (For example, if you are releasing GeoTools 15.1, create version 15.2).
 
-  The version to release, same as in the previous section. This version must match a version in JIRA.
-
-**NEXT_VERSION**
-
-  The next version in the series. All unresolved issues currently fils against ``VERSION`` will be transitioned to this version.
-
-**JIRA_USER** 
-
-  A JIRA user name that has release privileges. This user  will be used to perform the release in JIRA, via the SOAP api.
-
-**JIRA_PASSWD**
-
-  The password for the ``JIRA_USER``.
-     
-This job will perform the tasks in JIRA to release ``VERSION``. Navigate to `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ and verify that the version has actually been released.
+3. Return to the project page, and click on the version you are releasing. Click the ``Release`` button, and enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 2.
 
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
@@ -100,6 +86,12 @@ When creating the first release candidate of a series, there are some extra step
       git push geotools master
       
 * Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
+
+* Update the jobs on ares:
+  
+  * disable the maintenance jobs, and remove them from the geotools view
+  * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration
+  * edit the previous stable branch, changing to DIST=maintenance
 
 * Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
 
@@ -146,7 +138,7 @@ any random user out there can do the same.
 A simple way to do so is:
 
 *  Unpack the sources
-*  Temporarily move the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo
+*  Temporarily move the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 *  Do a full build using ``mvn install -Dall -T1C``
 *  On a successfull build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
  
@@ -157,11 +149,11 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **VERSION** 
 
-  The version being released. The same value specified for ``VERSION`` when running the ``geoserver-release`` job.
+  The version being released. The same value specified for ``VERSION`` when running the ``geotools-release`` job.
   
 **BRANCH** 
 
-  The branch being released from.  The same value specified for ``BRANCH`` when running the ``geoserver-release`` job.
+  The branch being released from.  The same value specified for ``BRANCH`` when running the ``geotools-release`` job.
 
 **GIT_USER**
 
@@ -169,14 +161,14 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 **GIT_EMAIL**
 
-  The Git email to use for the release.	 
+  The Git email to use for the release.
 
 
 This job will rsync all the artifacts located at::
 
      http://ares.boundlessgeo.com/geotools/release/<RELEASE>
 
-to the SourceForge FRS server.
+to the SourceForge FRS server, and also deploy the artifacts to the public geotools maven repository.
 
 #. Navigate to `Sourceforge <http://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
 #. If this is the latest stable release, make its ``-bin.zip`` the default download for all platforms (use the "i" button).
@@ -228,33 +220,3 @@ Cut and paste from the blog post to the following:
    
    * To: news_item@osgeo.org
    * Subject: GeoTools 8.0-RC1 Released
-
-Tell More of the World!
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Well that was not very much of the world was it? Lets do freshmeat, sf.net, geotools.org and freegis.
-
-#. Do it in the Morning
-   
-   Please don't announce releases on a Friday or weekend. And try to make it in the mornings as
-   well. If it's late then just finish it up the next day. This will ensure that a lot more
-   people will see the announcements.
-  
-   http://freshmeat.net/projects/geotools/
-
-#. Add release: http://freshmeat.net/projects/geotools/
-   
-   * Branch: GT2
-   * Version: 2.6-M4
-   * Changes: Grab the notes from the above release anouncement
-   * You can also update the screen snapshot to reflect a current GeoTools application.
-     GeoServer and UDIG have been highlighted in the past. If you are making the release
-     to support a project this is your big chance!
-
-#. http://freegis.org/
-   
-   Email Jan-Oliver Wagner
-   
-   * To: jan@intevation.de
-   * Subject: GeoTools update for FreeGIS site
-

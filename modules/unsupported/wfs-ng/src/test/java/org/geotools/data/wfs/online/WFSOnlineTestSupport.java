@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, David Zwiers
  *
  *    This library is free software; you can redistribute it and/or
@@ -65,6 +65,8 @@ public class WFSOnlineTestSupport {
 
         Map<String, Serializable> m = new HashMap<String, Serializable>();
         m.put(WFSDataStoreFactory.URL.key, server);
+        m.put(WFSDataStoreFactory.PROTOCOL.key, false);
+        m.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
         m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(10000)); // not debug
         m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(1000000)); // for debug
 

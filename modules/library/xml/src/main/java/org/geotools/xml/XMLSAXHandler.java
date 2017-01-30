@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.handlers.ElementHandlerFactory;
 import org.geotools.xml.handlers.IgnoreHandler;
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -56,10 +58,13 @@ import org.xml.sax.helpers.DefaultHandler;
  * periodically check it to see if it should stop parsing. See the FlowHandler
  * interface.
  * </p>
+ * 
+ * <p>
+ * This is an XML Schema driven parser and {@link #resolveEntity(String, String)} will
+ * ignore all dtd references. If an {@link EntityResolver} is provided it will be used.
+ * </p>
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
- * @author $Author:$ (last modification)
- *
  *
  * @source $URL$
  * @version $Id$
@@ -82,40 +87,41 @@ public class XMLSAXHandler extends DefaultHandler {
      */
     private StringBuffer characters = new StringBuffer();
     
+
+    /** entity resolver */
+    EntityResolver entityResolver;
+    
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
+    
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+    
     /**
+     * Delegate to {@link #entityResolver} if available.
+     * <p>
+     * <p>
+     * Note this is an XMLSchema based parser, all attempts to resolved DTDs are rejected.
+     * </p>
      * 
-     * TODO summary sentence for resolveEntity ...
-     * 
-     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
-     * @param pubId
-     * @param sysId
-     * @return InputSource
-     * @throws SAXException
+     * @param publicId The public identifier, or null if none is available.
+     * @param systemId The system identifier provided in the XML document.
+     * @return The new input source, or null to require the default behavior.
+     * @exception java.io.IOException If there is an error setting up the new input source.
+     * @exception org.xml.sax.SAXException Any SAX exception, possibly wrapping another exception.
      */
-    public InputSource resolveEntity( String pubId, String sysId ) throws SAXException {
+    public InputSource resolveEntity( String publicId, String systemId ) throws SAXException, IOException {
         // avoid dtd files
-		if(sysId != null && sysId.endsWith("dtd")){
-		    return new InputSource(new StringReader(""));
-		}
-		try{
-            if (false) {
-                /*
-                 * HACK: This dead code exists only in order to make J2SE 1.4 compiler happy.
-                 * This hack is needed because there is a slight API change between J2SE 1.4
-                 * and 1.5: the 'resolveEntity()' method didn't declared IOException in its
-                 * throw clause in J2SE 1.4. Compare the two following links:
-                 *
-                 * http://java.sun.com/j2se/1.5/docs/api/org/xml/sax/helpers/DefaultHandler.html#resolveEntity(java.lang.String,%20java.lang.String)
-                 * http://java.sun.com/j2se/1.4/docs/api/org/xml/sax/helpers/DefaultHandler.html#resolveEntity(java.lang.String,%20java.lang.String)
-                 */
-                throw new IOException();
-            }
-            return super.resolveEntity(pubId,sysId);
-		}catch(IOException e){
-			SAXException se = new SAXException(e.getLocalizedMessage());
-			se.initCause(e);
-			throw se;
-		}
+        if (systemId != null && systemId.endsWith("dtd")) {
+            return new InputSource(new StringReader(""));
+        }
+        if (entityResolver != null) {
+            return entityResolver.resolveEntity(publicId, systemId);
+        } else {
+            return super.resolveEntity(publicId, systemId);
+        }
     }
     // hints
     private Map hints;
@@ -147,7 +153,7 @@ public class XMLSAXHandler extends DefaultHandler {
      */
     public XMLSAXHandler(URI intendedDocument, Map hints) {
         instanceDocument = intendedDocument;
-        this.hints = hints;
+        init(hints);
         logger.setLevel(level);
     }
 
@@ -158,13 +164,19 @@ public class XMLSAXHandler extends DefaultHandler {
      * be provided, as this will allow the parser to resolve relative uri's.
      * </p>
      *
-     * @param hints DOCUMENT ME!
+     * @param hints Hints as per {@link {@link XMLHandlerHints}
      */
-    public XMLSAXHandler(Map hints) {
-        this.hints = hints;
+    public XMLSAXHandler(Map<String,Object> hints) {
+        init(hints);
         logger.setLevel(level);
     }
-
+    protected void init(Map<String,Object> hints){
+        if( hints == null ){
+            hints = new HashMap<String,Object>();
+        }
+        this.hints = hints;
+        setEntityResolver(XMLHandlerHints.toEntityResolver(hints));
+    }
     /**
      * Implementation of endDocument.
      *
@@ -335,6 +347,7 @@ public class XMLSAXHandler extends DefaultHandler {
             }
 
             if (!((t == null) || "".equals(t))) {
+                t = t.trim();
                 String[] targ2uri = t.split("\\s+");
                 
                 if (targ2uri != null) {

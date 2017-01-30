@@ -69,6 +69,25 @@ For more information check the java docs for:
 * DB2NGJNDIDataStoreFactory
 * DB2NGDataStoreFactory
 
+Advanced Geotools Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-------------------+------------------------------------------+
+| Parameter         | Description                              |
++===================+==========================================+
+| "loose bbox"      | Flag controlling loose bbox comparisons, |
+|                   | default is true                          |
++-------------------+------------------------------------------+
+| "use selectivity" | Flag to raise the priority of spatial    |
+|                   | indices for the db2 optimizer,           |
+|                   | default is false                         |
++-------------------+------------------------------------------+
+
+Example use::
+  
+  params.put(DB2NGDataStoreFactory.LOOSEBBOX, true );
+  params.put(DB2BNGDataStoreFactory.USE_SELECTIVITY, true );
+
 Registering spatial columns
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

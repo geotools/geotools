@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,8 @@
 package org.geotools.util;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertFalse;
 
 import org.junit.Test;
 import org.opengis.util.InternationalString;
@@ -44,6 +46,23 @@ public class SubProgressListenerTest {
         assertEquals(100F, sub.getProgress());
     }
 
+
+    @Test
+    public void testSubProgressStartFirstListener() {
+        SimpleProgressListener parent = new SimpleProgressListener();
+        SubProgressListener sub = new SubProgressListener(parent, 0, 50);
+        sub.started();
+        assertTrue(parent.getStarted());
+    }
+
+    @Test
+    public void testSubProgressStartSubsequentListener() {
+        SimpleProgressListener parent = new SimpleProgressListener();
+        SubProgressListener sub = new SubProgressListener(parent, 50, 50);
+        sub.started();
+        assertFalse(parent.getStarted());
+    }
+
     @Test
     public void testSubProgressBounds() {
         SimpleProgressListener parent = new SimpleProgressListener();
@@ -67,6 +86,11 @@ public class SubProgressListenerTest {
     private static class SimpleProgressListener implements ProgressListener {
 
         private float progress;
+        private boolean startedCalled;
+
+        public SimpleProgressListener() {
+            this.startedCalled = false;
+        }
 
         public void progress(float percent) {
             this.progress = percent;
@@ -79,7 +103,12 @@ public class SubProgressListenerTest {
         public void complete() {
         }
 
+        public boolean getStarted() {
+            return this.startedCalled;
+        }
+
         public void started() {
+            this.startedCalled = true;
         }
 
         public void dispose() {

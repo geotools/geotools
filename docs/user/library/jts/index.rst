@@ -29,7 +29,7 @@ The GeoTools provides some help for working with JTS:
       <dependency>
         <groupId>com.vividsolutions</groupId>
         <artifactId>jts</artifactId>
-        <version>1.12</version>
+        <version>1.13</version>
       </dependency>
 
 **Contents**

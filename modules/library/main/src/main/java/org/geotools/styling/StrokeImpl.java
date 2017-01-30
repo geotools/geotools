@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,18 @@
  */
 package org.geotools.styling;
 
-import java.util.Arrays;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -41,7 +43,7 @@ import org.opengis.util.Cloneable;
 public class StrokeImpl implements Stroke, Cloneable {
     private FilterFactory filterFactory;
     private Expression color;
-    private float[] dashArray;
+    private List<Expression> dashArray;
     private Expression dashOffset;
     private GraphicImpl fillGraphic;
     private GraphicImpl strokeGraphic;
@@ -120,55 +122,71 @@ public class StrokeImpl implements Stroke, Cloneable {
     }
 
     /**
-     * This parameter encodes the dash pattern as a series of floats.<br>
-     * The first number gives the length in pixels of the dash to draw, the
-     * second gives the amount of space to leave, and this pattern repeats.<br>
-     * If an odd number of values is given, then the pattern is expanded by
-     * repeating it twice to give an even number of values. The default is to
-     * draw an unbroken line.<br>
-     * For example, "2 1 3 2" would produce:<br>
-     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;
-     * ---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
-     *
-     * @return The dash pattern as an array of float values in the form
-     *         "dashlength gaplength ..."
+     * Shortcut to retrieve dash array in the case where all expressions
+     * are literal numbers. Return the default value if one of the expressions
+     * is not a literal.
      */
     public float[] getDashArray() {
-        float[] ret = null;
-
-        if (dashArray != null) {
-            ret = new float[dashArray.length];
-            System.arraycopy(dashArray, 0, ret, 0, dashArray.length);
-        } else {
-        	final float[] defaultDashArray = Stroke.DEFAULT.getDashArray();
-        	if(defaultDashArray == null)
-        	    return null;
-        	
-        	ret = new float[defaultDashArray.length];
-        	System.arraycopy(defaultDashArray, 0, ret, 0, defaultDashArray.length);
+        if (dashArray == null) {
+            return Stroke.DEFAULT.getDashArray();
         }
-
-        return ret;
+        float[] values = new float[dashArray.size()];
+        int index = 0;
+        for (Expression expression : dashArray) {
+            if (expression instanceof Literal) {
+                Literal literal = (Literal) expression;
+                values[index] = literal.evaluate(null, Float.class);
+            } else {
+                throw new RuntimeException("Dash array is not literal: '" + expression + "'.");
+            }
+            index++;
+        }
+        return values;
     }
 
     /**
-     * This parameter encodes the dash pattern as a series of floats.<br>
-     * The first number gives the length in pixels of the dash to draw, the
+     * Shortcut to define dash array using literal numbers.
+     */
+    public void setDashArray(float[] literalDashArray) {
+        if (literalDashArray != null) {
+            dashArray = new ArrayList<>(literalDashArray.length);
+            for (float value : literalDashArray) {
+                dashArray.add(filterFactory.literal(value));
+            }
+        }
+    }
+
+    /**
+     * This parameter encodes the dash pattern as a list of expressions.<br>
+     * The first expression gives the length in pixels of the dash to draw, the
      * second gives the amount of space to leave, and this pattern repeats.<br>
      * If an odd number of values is given, then the pattern is expanded by
-     * repeating it twice to give an even number of values. The default is to
-     * draw an unbroken line.<br>
-     * 
+     * repeating it twice to give an even number of values.
+     * <p/>
      * For example, "2 1 3 2" would produce:<br>
-     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
-     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;
-     * ---&nbsp;&nbsp;--</code>
-     *
-     * @param dashPattern The dash pattern as an array of float values in the
-     *        form "dashlength gaplength ..."
+     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
+     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
      */
-    public void setDashArray(float[] dashPattern) {
-        dashArray = dashPattern;
+    public List<Expression> dashArray() {
+        if (dashArray == null) {
+            return Stroke.DEFAULT.dashArray();
+        }
+        return dashArray;
+    }
+
+    /**
+     * This parameter encodes the dash pattern as a list of expressions.<br>
+     * The first expression gives the length in pixels of the dash to draw, the
+     * second gives the amount of space to leave, and this pattern repeats.<br>
+     * If an odd number of values is given, then the pattern is expanded by
+     * repeating it twice to give an even number of values.
+     * <p/>
+     * For example, "2 1 3 2" would produce:<br>
+     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
+     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
+     */
+    public void setDashArray(List<Expression> dashArray) {
+        this.dashArray = dashArray;
     }
 
     /**
@@ -418,9 +436,7 @@ public class StrokeImpl implements Stroke, Cloneable {
             StrokeImpl clone = (StrokeImpl) super.clone();
 
             if (dashArray != null) {
-                clone.dashArray = new float[dashArray.length];
-                System.arraycopy(dashArray, 0, clone.dashArray, 0,
-                    dashArray.length);
+                clone.setDashArray((new ArrayList<Expression>(dashArray)));
             }
 
             if (fillGraphic != null && fillGraphic instanceof Cloneable) {
@@ -476,7 +492,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         }
 
         if (dashArray != null) {
-            result = (PRIME * result) + hashCodeDashArray(dashArray);
+            result = (PRIME * result) + dashArray.hashCode();
         }
 
         return result;
@@ -553,7 +569,7 @@ public class StrokeImpl implements Stroke, Cloneable {
             return false;
         }
 
-        if (!Arrays.equals(getDashArray(), other.getDashArray())) {
+        if (!Utilities.equals(dashArray(), other.dashArray())) {
             return false;
         }
 
@@ -570,12 +586,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         else {
             StrokeImpl copy = new StrokeImpl();
             copy.setColor( stroke.getColor());
-            if( stroke.getDashArray() != null ){
-                float dashArray[] = stroke.getDashArray();
-                float ret[] = new float[ dashArray.length ];
-                System.arraycopy(dashArray, 0, ret, 0, dashArray.length );                
-                copy.setDashArray( ret );
-            }
+            copy.setDashArray(stroke.getDashArray());
             copy.setDashOffset(stroke.getDashOffset());
             copy.setGraphicFill( GraphicImpl.cast(stroke.getGraphicFill()));
             copy.setGraphicStroke( GraphicImpl.cast(stroke.getGraphicStroke()));

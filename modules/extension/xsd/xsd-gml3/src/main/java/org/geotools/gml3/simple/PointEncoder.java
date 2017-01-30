@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -40,10 +41,10 @@ class PointEncoder extends GeometryEncoder<Point> {
 
     QualifiedName pos;
 
-    protected PointEncoder(Encoder encoder, String gmlPrefix) {
+    protected PointEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
-        point = POINT.derive(gmlPrefix);
-        pos = POS.derive(gmlPrefix);
+        point = POINT.derive(gmlPrefix, gmlUri);
+        pos = POS.derive(gmlPrefix, gmlUri);
     }
 
     @Override
@@ -52,7 +53,8 @@ class PointEncoder extends GeometryEncoder<Point> {
         handler.startElement(point, atts);
         handler.startElement(pos, null);
         
-        handler.position(geometry.getCoordinate().x, geometry.getCoordinate().y);
+        Coordinate coordinate = geometry.getCoordinate();
+        handler.position(coordinate.x, coordinate.y, coordinate.z);
         
         handler.endElement(pos);
         handler.endElement(point);

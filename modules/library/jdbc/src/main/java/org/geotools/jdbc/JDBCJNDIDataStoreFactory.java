@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -157,6 +157,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(SCHEMA.key, SCHEMA);
         parameters.put(NAMESPACE.key, NAMESPACE);
         parameters.put(FETCHSIZE.key, FETCHSIZE);
+        parameters.put(BATCH_INSERT_SIZE.key, BATCH_INSERT_SIZE);
         parameters.put(EXPOSE_PK.key, EXPOSE_PK);
         parameters.put(PK_METADATA_TABLE.key, PK_METADATA_TABLE);
         parameters.put(SQL_ON_BORROW.key, SQL_ON_BORROW);

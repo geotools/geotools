@@ -27,6 +27,16 @@ public class NumberFormatTest extends TestCase {
         char ds = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getDecimalSeparator();
         assertEquals("10" + ds + "57", f.evaluate(null , String.class));
     }
+    public void testFormatFrenchDouble() {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal("#.##");
+        Literal number = ff.literal("10.56789");
+        Literal lang = ff.literal("fr");
+        Function f = ff.function("numberFormat", new Expression[]{pattern, number, lang});
+        char ds = DecimalFormatSymbols.getInstance(Locale.FRANCE).getDecimalSeparator();
+        assertEquals("10" + ds + "57", f.evaluate(null , String.class));
+       
+    }
     
     public void testFormatInteger() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -93,6 +103,32 @@ public class NumberFormatTest extends TestCase {
         
         Function f = ff.function("numberFormat2", new Expression[]{pattern, number, minus, ds, gs});
         assertEquals(null, f.evaluate(null, String.class));
+    }
+    
+    public void testNumberFactoryLocaleParam() {
+        Locale[] locales = { Locale.CANADA, Locale.CANADA_FRENCH, Locale.GERMAN, Locale.KOREAN,
+                Locale.CHINESE, Locale.JAPANESE, Locale.ENGLISH, Locale.TRADITIONAL_CHINESE,
+                Locale.SIMPLIFIED_CHINESE };
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        Literal pattern = ff.literal("##.##");
+        Literal number = ff.literal("10.56789");
+        for (Locale locale : locales) {
+            Literal lang = ff.literal(locale.getLanguage());
+            Function f = ff.function("numberFormat", new Expression[] { pattern, number, lang });
+            char ds = DecimalFormatSymbols.getInstance(locale).getDecimalSeparator();
+            assertEquals("10" + ds + "57", f.evaluate(null, String.class));
+        }
+        
+        Literal lang = ff.literal("AnyLang");
+        Function f = ff.function("numberFormat", new Expression[] { pattern, number, lang });
+        char ds = DecimalFormatSymbols.getInstance(Locale.ENGLISH).getDecimalSeparator();
+        try {
+        assertEquals("10" + ds + "57", f.evaluate(null, String.class));
+        fail("Accepted unknown language code");
+        }catch (IllegalArgumentException e) {
+            //this is a good thing
+        }
     }
 
 }

@@ -79,6 +79,7 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         parameters.put(MAXCONN.key, MAXCONN);
         parameters.put(MINCONN.key, MINCONN);
         parameters.put(FETCHSIZE.key, FETCHSIZE);
+        parameters.put(BATCH_INSERT_SIZE.key, BATCH_INSERT_SIZE);
         parameters.put(MAXWAIT.key, MAXWAIT);
         if (getValidationQuery() != null)
             parameters.put(VALIDATECONN.key, VALIDATECONN);

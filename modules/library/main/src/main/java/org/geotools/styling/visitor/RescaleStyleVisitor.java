@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@ package org.geotools.styling.visitor;
 
 import static org.geotools.styling.TextSymbolizer.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Font;
@@ -117,6 +119,20 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
+     * Rescale a list of expressions, can handle null.
+     */
+    protected List<Expression> rescale( List<Expression> expressions ) {
+        if(expressions == null || expressions.isEmpty()) {
+            return expressions;
+        }
+        List<Expression> rescaled = new ArrayList<>(expressions.size());
+        for(Expression expression: expressions) {
+            rescaled.add(rescale(expression));
+        }
+        return rescaled;
+    }
+
+    /**
      * Increase stroke width.
      * <p>
      * Based on feedback we may need to change the dash array as well.
@@ -125,7 +141,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     public void visit(org.geotools.styling.Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor( copy(stroke.getColor()));
-        copy.setDashArray( rescale(stroke.getDashArray()));
+        copy.setDashArray( rescale(stroke.dashArray()));
         copy.setDashOffset( rescale(stroke.getDashOffset()));
         copy.setGraphicFill( copy(stroke.getGraphicFill()));
         copy.setGraphicStroke( copy( stroke.getGraphicStroke()));
@@ -134,24 +150,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         copy.setOpacity( copy(stroke.getOpacity()));
         copy.setWidth( rescale(stroke.getWidth()));
         pages.push(copy);
-    }   
-    
-    float[] rescale(float[] original) {
-        if(original == null) {
-            return null;
-        }
-        
-        // rescale the dash array if possible
-        float[] rescaled = new float[original.length];
-        float scaleFactor = 1;
-        if( scale instanceof Literal){
-            scaleFactor = scale.evaluate(null, Float.class);
-        }
-        for (int i = 0; i < rescaled.length; i++) {
-            rescaled[i] = scaleFactor * original[i];
-        }
-        
-        return rescaled;
     }
 
     /** Make graphics (such as used with PointSymbolizer) bigger */
@@ -163,6 +161,12 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         if (gr.getDisplacement() != null) {
             gr.getDisplacement().accept(this);
             displacementCopy = (Displacement) pages.pop();
+        }
+
+        AnchorPoint anchorCopy = null;
+        if (gr.getAnchorPoint() != null) {
+            gr.getAnchorPoint().accept(this);
+            anchorCopy = (AnchorPoint) pages.pop();
         }
 
         ExternalGraphic[] externalGraphics = gr.getExternalGraphics();
@@ -194,6 +198,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         copy = sf.createDefaultGraphic();
         copy.setDisplacement(displacementCopy);
+        copy.setAnchorPoint(anchorCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);
         copy.setOpacity((Expression) opacityCopy);
@@ -285,6 +290,8 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
+            LineSymbolizer copy = (LineSymbolizer) pages.peek();
+            copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset()));
         } finally {
             this.defaultUnit = null;
         }        

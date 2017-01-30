@@ -107,6 +107,7 @@ public class PropertyExamples {
         }
     }
     
+    @SuppressWarnings("unused")
     private static void featureStoreExample() throws Exception {
         System.out.println("featureStoreExample start\n");
         // featureStoreExample start
@@ -239,6 +240,7 @@ public class PropertyExamples {
         System.out.println("\nremoveAllExample end\n");
     }
     
+    @SuppressWarnings("unused")
     private void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start

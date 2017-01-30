@@ -225,7 +225,9 @@ public final class FactoriesTest {
                 out.println(classification);
                 final boolean skip =
                         classification.equalsIgnoreCase("Transverse Mercator (South Orientated)") ||
-                        classification.equalsIgnoreCase("Equidistant_Cylindrical");
+                        classification.equalsIgnoreCase("Equidistant_Cylindrical")||
+                        classification.equalsIgnoreCase("Behrmann") || 
+                        classification.equalsIgnoreCase("Lambert Cylindrical Equal Area (Spherical)");
                 if (!skip) {
                     assertEquals(classification, ((MapProjection) mt).getParameterDescriptors().getName().getCode());
                 }

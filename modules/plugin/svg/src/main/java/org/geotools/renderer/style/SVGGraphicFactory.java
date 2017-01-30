@@ -19,15 +19,26 @@ package org.geotools.renderer.style;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints.Key;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 
@@ -39,13 +50,23 @@ import org.apache.batik.bridge.UserAgentAdapter;
 import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.geotools.factory.Factory;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
+import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * External graphic factory accepting an Expression that can be evaluated to a URL pointing to a SVG
@@ -60,43 +81,217 @@ import org.w3c.dom.NodeList;
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/svg/src/main/java/org/geotools
  *         /renderer/style/SVGGraphicFactory.java $
  */
-public class SVGGraphicFactory implements ExternalGraphicFactory {
+public class SVGGraphicFactory implements Factory, ExternalGraphicFactory {
+
+    private static final Pattern PARAMETER_PATTERN = Pattern.compile("param\\((.+)\\).*");
 
     /** Parsed SVG glyphs cache */
-    static Map<URL, RenderableSVG> glyphCache = Collections.synchronizedMap(new SoftValueHashMap<URL, RenderableSVG>());
+    static Map<String, RenderableSVG> glyphCache = Collections.synchronizedMap(new SoftValueHashMap<String, RenderableSVG>());
 
     /** The possible mime types for SVG */
-    static final Set<String> formats = new HashSet<String>() {
-        {
-            add("image/svg");
-            add("image/svg-xml");
-            add("image/svg+xml");
+    static final Set<String> formats = new HashSet<String>();
+    
+    static {
+        formats.add("image/svg");
+        formats.add("image/svg-xml");
+        formats.add("image/svg+xml");
+    }
+
+    /** Hints we care about */
+    final private Map<Key, Object> implementationHints = new HashMap<>();
+    
+    private EntityResolver resolver;
+    
+    public SVGGraphicFactory(){
+        this( null );
+    }
+    
+    public SVGGraphicFactory(Map<Key, Object> hints){
+        if( hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)){
+            // use entity resolver provided (even if null)
+            this.resolver = (EntityResolver) hints.get(Hints.ENTITY_RESOLVER);
+            this.implementationHints.put( Hints.ENTITY_RESOLVER, this.resolver );
+
+            if( this.resolver == null ){ // use null instance rather than check each time
+                this.resolver = NullEntityResolver.INSTANCE;
+            }
         }
+        else {
+            this.resolver = GeoTools.getEntityResolver(null);
+        }
+    }
 
-    };
-
+    @Override
+    public Map<Key, ?> getImplementationHints() {
+        return implementationHints;
+    }
     public Icon getIcon(Feature feature, Expression url, String format, int size) throws Exception {
         // check we do support the declared format
         if (format == null || !formats.contains(format.toLowerCase()))
             return null;
 
         // grab the url
-        URL svgfile = url.evaluate(feature, URL.class);
-        if (svgfile == null)
+        String svgfile = url.evaluate(feature, String.class);
+        if (svgfile == null) {
             throw new IllegalArgumentException(
                     "The specified expression could not be turned into an URL");
+        } else {
+            // just for validation parse the URL
+            if(Converters.convert(svgfile, URL.class) == null) {
+                throw new IllegalArgumentException(
+                        "Invalid URL: " + svgfile);
+            }
+        }
 
         // turn the svg into a document and cache results
         RenderableSVG svg = glyphCache.get(svgfile);
         if(svg == null) {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
-            Document doc = f.createDocument(svgfile.toString());
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser) {
+                @Override
+                public InputSource resolveEntity(String publicId, String systemId)
+                        throws SAXException {
+                    InputSource source = super.resolveEntity(publicId, systemId);
+                    if (source == null) {
+                        try {
+                            return resolver.resolveEntity(publicId, systemId);
+                        } catch (IOException e) {
+                            throw new SAXException(e);
+                        }
+                    }
+                    return source;
+                }
+            };
+            Document doc = f.createDocument(svgfile);
+            Map<String, String> parameters = getParametersFromUrl(svgfile);
+            if(!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {
+                replaceParameters(doc.getDocumentElement(), parameters);
+            }
             svg = new RenderableSVG(doc);
             glyphCache.put(svgfile, svg);
         }
 
         return new SVGIcon(svg, size);
+    }
+
+    /**
+     * Splits the query string in 
+     * @param url
+     * @return
+     */
+    Map<String, String> getParametersFromUrl(String url) {
+        // url.getQuery won't work on file addresses
+        int idx = url.indexOf("?");
+        if(idx == -1 || idx == url.length() - 1) {
+            return Collections.emptyMap();
+        }
+        String query = url.substring(idx + 1);
+        return Arrays.stream(query.split("&")).map(this::splitQueryParameter).filter(e -> e.getValue() != null)
+                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (v1, v2) -> v2));
+    }
+
+    SimpleImmutableEntry<String, String> splitQueryParameter(String parameter) {
+        final int idx = parameter.indexOf("=");
+        final String key = idx > 0 ? parameter.substring(0, idx) : parameter;
+        
+        try {
+            String value = null;
+            if(idx > 0 && parameter.length() > idx + 1) {
+                final String encodedValue = parameter.substring(idx + 1);
+                value =  URLDecoder.decode(encodedValue, "UTF-8");
+            }
+            return new SimpleImmutableEntry<>(key, value);
+        } catch (UnsupportedEncodingException e) {
+            // UTF-8 not supported??
+            throw new RuntimeException(e);
+        }
+        
+    }
+    
+    private boolean hasParameters(Element root) {
+        // check if any attribute is parametric
+        NamedNodeMap attributes = root.getAttributes();
+        for(int i = 0; i < attributes.getLength(); i++) {
+            Node attribute = attributes.item(i);
+            final String nv = attribute.getNodeValue();
+            if(nv != null && nv.contains("param(")) {
+                return true;
+            }
+        }
+        
+        // recurse
+        if(root.hasChildNodes()) {
+            NodeList childNodes = root.getChildNodes();
+            for(int i = 0; i < childNodes.getLength(); i++) {
+                Node n = childNodes.item(i);
+                if (n != null && n instanceof Element) {
+                    if(hasParameters((Element) n)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
+    
+    private void replaceParameters(Element root, Map<String, String> parameters) {
+        if(root.hasChildNodes()) {
+            NodeList childNodes = root.getChildNodes();
+            for(int i = 0; i < childNodes.getLength(); i++) {
+                Node n = childNodes.item(i);
+                if (n != null && n instanceof Element) {
+                    replaceParameters((Element) n, parameters);
+                }
+            }
+            
+        }
+        
+        NamedNodeMap attributes = root.getAttributes();
+        for(int i = 0; i < attributes.getLength(); i++) {
+            Node attribute = attributes.item(i);
+            if("style".equalsIgnoreCase(attribute.getNodeName())) {
+                String[] keyValues = attribute.getNodeValue().split("\\s*;\\s*");
+                StringBuilder newAttribute = new StringBuilder();
+                for (String keyValue : keyValues) {
+                    String[] kv = keyValue.split("\\s*:\\s*");
+                    if(kv.length < 2) {
+                        continue;
+                    }
+                    String key = kv[0];
+                    String value = replaceValue(kv[1], parameters);
+                    newAttribute.append(key).append(":").append(value).append(";");
+                }
+                attribute.setNodeValue(newAttribute.toString());
+            } else {
+                String value = replaceValue(attribute.getNodeValue(), parameters);
+                attribute.setNodeValue(value);
+            }
+        }
+        
+    }
+
+    private String replaceValue(String value, Map<String, String> parameters) {
+        Matcher m = PARAMETER_PATTERN.matcher(value);
+        String newValue;
+        if(m.matches()) {
+            final String key = m.group(1);
+            newValue = parameters.get(key);
+            
+            // Batik unfortunately writes to log.err when it finds property it does not
+            // recognize, that's pretty bad, so we try to fit in some valid value
+            // for the "well known" cases
+            if(newValue != null) {
+                value  = newValue;
+            } else if(key.contains("width")) {
+                value = "0";
+            } else if(key.contains("opacity") || key.contains("alpha")) {
+                value = "1";
+            } else {
+                value = "#000000";
+            }
+        }
+        return value;
     }
 
     private static class SVGIcon implements Icon {

@@ -6,7 +6,7 @@ A configuration is an object that is used to configure the parser or the encoder
 * Load bindings into the parser / encoder
 * Create the binding context
 * Locate schema while parsing an instance document
-* Declare depenendencies on other configurations / schemas
+* Declare dependencies on other configurations / schemas
 
 More specifically a configuration is an instance of **org.geotools.xml.Configuration**.
 

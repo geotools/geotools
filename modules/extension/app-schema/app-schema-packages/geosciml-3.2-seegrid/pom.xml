@@ -5,10 +5,6 @@
 	<artifactId>geosciml-3.2-seegrid</artifactId>
 	<version>3.2.0-1</version>
 	<name>Geoscience Markup Language (GeoSciML) 3.0 application schema</name>
-	<scm>
-		<connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/geosciml-3.2-seegrid/</connection>
-		<url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/geosciml-3.2-seegrid/</url>
-	</scm>
 	<developers>
 		<developer>
 			<name>Rini Angreani</name>

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,9 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
+import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
+import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -75,14 +78,6 @@ class RasterLayerRequest {
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.coverageio");
-
-    enum ReadType {
-        DIRECT_READ, JAI_IMAGEREAD, UNSPECIFIED;
-
-        public static ReadType getDefault() {
-            return DIRECT_READ;
-        }
-    };
 
     private ReadType readType = ReadType.UNSPECIFIED;
 
@@ -150,6 +145,9 @@ class RasterLayerRequest {
     /** The source */
     private Rectangle coverageRequestedRasterArea;
 
+    /** Footprint behavior */
+    private FootprintBehavior footprintBehavior = FootprintBehavior.None;
+
     /**
      * If set to {@code true} a transformation is requested to obtain the
      * desired data. This usually happens when the requested envelope will be
@@ -181,6 +179,9 @@ class RasterLayerRequest {
 	private double[] approximateWGS84RequestedResolution;
 
 	private double[] requestedResolution;
+
+    /** The associated ROI provider if any */
+    private MultiLevelROI multiLevelRoi;
 
     /**
      * Build a new {@code CoverageRequest} given a set of input parameters.
@@ -286,6 +287,20 @@ class RasterLayerRequest {
 
         // //
         //
+        // FootprintBehavior parameter
+        //
+        // //
+        if (name.equals(AbstractGridFormat.FOOTPRINT_BEHAVIOR.getName())) {
+            Object value = param.getValue();
+            if (value == null) {
+                return;
+            }
+            footprintBehavior = FootprintBehavior.valueOf((String) value);
+            return;
+        }
+
+        // //
+        //
         // Suggested tile size parameter. It must be specified with
         // the syntax: "TileWidth,TileHeight" (without quotes where TileWidth
         // and TileHeight are integer values)
@@ -362,7 +377,7 @@ class RasterLayerRequest {
             // Set the read parameters
             //
             // //
-            if(requestedBBox != null && !requestedBBox.isEmpty())//&&requestedBBoxInSourceCRS2D!=null&&requestedRasterArea!=null)
+            if(requestedBBox != null && !requestedBBox.isEmpty())
             {
 
             	//set subsampling
@@ -431,8 +446,12 @@ class RasterLayerRequest {
         // Last chance is to use the default read type.
         //
         // //
-        readType = ReadType.getDefault();
+        readType = getDefaultReadType();
         return readType == ReadType.JAI_IMAGEREAD;
+    }
+
+    private static ReadType getDefaultReadType() {
+        return ReadType.DIRECT_READ;
     }
 
     /**
@@ -621,14 +640,10 @@ class RasterLayerRequest {
                 XRectangle2D.intersect(coverageRequestedRasterArea, coverageRasterArea, coverageRequestedRasterArea);
 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    StringBuffer sb = new StringBuffer(
-                            "Adjusted Requested Envelope = ").append(
-                            		requestedBBox.toString()).append("\n")
-                            .append("Requested raster dimension = ").append(
-                                    requestedRasterArea.toString()).append("\n")
-                            .append("Corresponding raster source region = ")
-                            .append(coverageRequestedRasterArea.toString());
-                    LOGGER.log(Level.FINE, sb.toString());
+                    String message = "Adjusted Requested Envelope = " + requestedBBox.toString() 
+                            + "\nRequested raster dimension = " + requestedRasterArea.toString()
+                            + "\nCorresponding raster source region = " + coverageRequestedRasterArea.toString();
+                    LOGGER.log(Level.FINE, message);
                 }
                 return;
             }
@@ -863,11 +878,12 @@ class RasterLayerRequest {
         input = reader.getInputFile();
         this.coverageEnvelope = reader.getOriginalEnvelope().clone();
         this.coverageRasterArea = ((GridEnvelope2D)reader.getOriginalGridRange());
-        this.coverageCRS = reader.getCrs();
+        this.coverageCRS = reader.getCoordinateReferenceSystem();
         this.coverageName = reader.getCoverageName();
         this.coverageGridToWorld2D = (MathTransform2D) reader.getRaster2Model();
         this.coverageFullResolution = reader.getHighestRes();
         this.hints = reader.getHints().clone();
+        this.multiLevelRoi = reader.getMultiLevelRoi();
         if (layout != null) {
             this.hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
         }
@@ -954,6 +970,30 @@ class RasterLayerRequest {
     }
 
     public boolean isAdjustGridToWorldSet() {
-		return adjustGridToWorldSet;
-	}
+        return adjustGridToWorldSet;
+    }
+
+    public MultiLevelROI getMultiLevelRoi() {
+        return multiLevelRoi;
+    }
+
+    public ReferencedEnvelope getCoverageBBOX() {
+        return coverageBBox;
+    }
+
+    public BoundingBox getRequestedBBox() {
+        return requestedBBox;
+    }
+
+    public ReadType getReadType() {
+        return readType;
+    }
+
+    public FootprintBehavior getFootprintBehavior() {
+        return footprintBehavior;
+    }
+
+    public void setReadType(ReadType readType) {
+        this.readType = readType;
+    }
 }

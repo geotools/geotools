@@ -32,21 +32,21 @@ Java Install
 
 We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is the time to do so. 
 
-#. Download the latest Java 7 JDK (Java SE Development Kit):
+#. Download the latest Java 8 JDK:
 
-   * Oracle JDK: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-   * OpenJDK: http://openjdk.java.net
+   * Oracle JDK: http://www.oracle.com/technetwork/java/javase/downloads/
+   * OpenJDK: http://openjdk.java.net/
    
-#. At the time of writing the latest Java 7 release was:
+#. At the time of writing the latest Java 8 release was:
    
-   * jdk-7u67-windows-i586.exe
+   * jdk-8u66-windows-i586.exe
    
-   GeoTools is not yet tested with Java 8, we are limited by build infrastructure and volunteers.
+   GeoTools is not yet tested with Java 9, we are limited by build infrastructure and volunteers.
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:
    
-   :file:`C:\\Program Files (x86)\\Java\jdk1.7.0_67`
+   :file:`C:\\Program Files (x86)\\Java\jdk1.8.0_66`
      
 .. Note::
 
@@ -90,7 +90,7 @@ Installing Maven
    
    Add the following system variables:
    
-   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.7.0_67`
+   * JAVA_HOME = :file:`C:\\Program Files (x86)\\Java\\jdk1.8.0_66`
    * M2_HOME = :file:`C:\\java\\apache-maven-3.2.3`
    
    And add the following to your PATH:
@@ -111,8 +111,8 @@ Installing Maven
       C:\java>mvn -version
       Apache Maven 3.2.3 (33f8c3e1027c3ddde99d3cdebad2656a31e8fdf4; 2014-08-11T13:58:10-07:00)
       Maven home: C:\java\apache-maven-3.2.3
-      Java version: 1.7.0_67, vendor: Oracle Corporation
-      Java home: C:\Program Files (x86)\Java\jdk1.7.0_67\jre
+      Java version: 1.8.0_66, vendor: Oracle Corporation
+      Java home: C:\Program Files (x86)\Java\jdk1.8.0_66\jre
       Default locale: en_US, platform encoding: Cp1252
       OS name: "windows 7", version: "6.1", arch: "x86", family: "windows"
 
@@ -188,19 +188,26 @@ Creating a new project
         :start-after: </properties>
         :end-before: <repositories>
 
-#. Finally, we tell maven which repositories to download jars from:
+#. We tell maven which repositories to download jars from:
    
    .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
-        :end-before: </project>
+        :end-before: <build>
 
    If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
    
    .. literalinclude:: artifacts/pom2.xml
      :language: xml
      :start-after: </dependencies>
-     :end-before: </project>
+     :end-before: <build>
+
+#. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
+
+   .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: </repositories>
+        :end-before: <project>
      
 #. Return to the command line and get maven to download the required jars for your project with this
    command::

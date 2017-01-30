@@ -105,7 +105,7 @@ The development team has migrated to the use of GitHub wiki (in April of 2015) t
 
 Developers can edit the wiki directly using the Edit button provided. 
 
-If you do not have commit access and would like to submit a change proposal please email geotools-devel and a commmitter can post on your behalf.
+If you do not have commit access and would like to submit a change proposal please email geotools-devel and a committer can post on your behalf.
 
 Websites
 --------
@@ -123,14 +123,13 @@ https://github.com/geotools/geotools/wiki     Wiki for developer collaboration  
 
 GeoTools has entries on a number of other public websites:
 
-* http://www.ohloh.net/p/geotools
-* http://freshmeat.net/projects/geotools/
+* https://www.openhub.net/p/geotools
+* http://freecode.com/projects/geotools/ (no longer being updated)
 * http://live.osgeo.org/en/overview/geotools_overview.html
 * http://www.osgeo.org/geotools
 * http://gis.stackexchange.com/questions/tagged/geotools
-* http://www.slashgeo.org/category/Tags/GeoTools
 
-We have a archived a number of facilities we no longer use:
+We have archived a number of facilities we no longer use:
 
 * http://old.geotools.org/
 * http://docs.codehaus.org/display/GEOTDOC/Home

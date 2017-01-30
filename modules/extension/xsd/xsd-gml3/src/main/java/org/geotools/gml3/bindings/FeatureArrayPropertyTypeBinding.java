@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,8 +21,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
@@ -88,7 +86,8 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
         }
         
         List features = node.getChildValues(SimpleFeature.class);
-        fc = new DefaultFeatureCollection();
+        fc = new DelayedSchemaFeatureCollection(); 
+        
         ((Collection)fc).addAll(features);
         return fc;
     }

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<gml:FeatureCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.risicokaart.nl/schemas/isor http://servicespub.risicokaart.nl/rk_services_pub/services/WFS-risicokaart?SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;OUTPUTFORMAT=XMLSCHEMA&amp;TYPENAME=isor:kwetsbaarobject_ziekenhuis" xmlns:gml="http://www.opengis.net/gml">
+  <gml:boundedBy>
+    <gml:null>unknown</gml:null>
+  </gml:boundedBy>
+</gml:FeatureCollection>

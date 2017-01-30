@@ -9,10 +9,6 @@
     <version>1.1.0-3</version>
     <name>Earth Resource 1.1 application schema</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/earthresourceml-1.1/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema-packages/earthresourceml-1.1/</url>
-    </scm>
 
     <developers>
         <developer>

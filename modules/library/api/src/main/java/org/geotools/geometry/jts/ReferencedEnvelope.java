@@ -527,13 +527,14 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * Check if this bounding box intersects the provided bounds.
      */    
     @Override
-    public Envelope intersection(Envelope env) {
+    public ReferencedEnvelope intersection(Envelope env) {
         if( env instanceof BoundingBox ){
             BoundingBox bbox = (BoundingBox) env;
             ensureCompatibleReferenceSystem( bbox );
         }
-        return super.intersection(env);
-    }    
+        return new ReferencedEnvelope(super.intersection(env), this.getCoordinateReferenceSystem());
+    }  
+    
     /**
      * Include the provided bounding box, expanding as necessary.
      *
@@ -546,7 +547,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         else {
             ensureCompatibleReferenceSystem(bbox);
         }
-        super.expandToInclude(getJTSEnvelope(bbox));        
+        expandToInclude(ReferencedEnvelope.reference(bbox));
     }
     /**
      * Expand to include the provided DirectPosition
@@ -854,7 +855,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         if (env == null) {
             return null;
         }
-        if (crs.getCoordinateSystem().getDimension() >= 3) {
+        if (crs != null && crs.getCoordinateSystem().getDimension() >= 3) {
             if(env.isNull()) {
                 return new ReferencedEnvelope3D(crs);
             } else {

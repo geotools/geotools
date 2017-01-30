@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,19 +18,14 @@ package org.geotools.coverageio.gdal.ehdr;
 
 import it.geosolutions.imageio.plugins.ehdr.EsriHdrImageReaderSpi;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
-import org.geotools.parameter.DefaultParameterDescriptorGroup;
-import org.geotools.parameter.ParameterGroup;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.parameter.GeneralParameterDescriptor;
 
 /**
  * An implementation of {@link Format} for the Esri Hdr format.
@@ -63,27 +58,13 @@ public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
         setInfo();
     }
 
+    private static InfoWrapper INFO = new InfoWrapper("EHdr Coverage Format", "EHdr");
+
     /**
      * Sets the metadata information.
      */
     protected void setInfo() {
-        final HashMap<String, String> info = new HashMap<String, String>();
-        info.put("name", "EHdr");
-        info.put("description", "EHdr Coverage Format");
-        info.put("vendor", "Geotools");
-        info.put("docURL", ""); // TODO: set something
-        info.put("version", "1.0");
-        mInfo = Collections.unmodifiableMap(info);
-
-        // writing parameters
-        writeParameters = null;
-
-        // reading parameters
-        readParameters = new ParameterGroup(
-                new DefaultParameterDescriptorGroup(mInfo,
-                        new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D,
-                                USE_JAI_IMAGEREAD, USE_MULTITHREADING,
-                                SUGGESTED_TILE_SIZE }));
+        setInfo(INFO);
     }
 
     /**

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -74,6 +74,8 @@ import org.geotools.xml.impl.GetPropertyExecutor;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
 import org.geotools.xs.XS;
+import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Property;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -195,6 +197,9 @@ public class Encoder {
      * Logger logger;
      */
     private Logger logger;
+
+    /** if true the encoder may encode complex features that map to a complex type that is not GML valid **/
+    private boolean relaxed = Boolean.parseBoolean(System.getProperty("encoder.relaxed", "true"));
 
     /**
      * The configuration used by the encoder
@@ -600,7 +605,7 @@ public class Encoder {
             throw new IOException(e);
         }
         xmls.getTransformer().setOutputProperties(outputProps);
-        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+        xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
         
         //TODO
@@ -616,6 +621,40 @@ public class Encoder {
             }
             throw (IOException) new IOException().initCause(e); 
         }
+    }
+
+    /**
+     * Helper method that checks if the complex feature we want to encode maps
+     * to a complex type that respects the GML object-property model.
+     */
+    private boolean isNonStripedNestedElement(Object next, XSDElementDeclaration element) {
+        if (!(next instanceof ComplexAttribute)) {
+            return false;
+        }
+        ComplexAttribute complex = (ComplexAttribute) next;
+        // let's see if we need to encode this
+        Collection<Property> nestedProperties = complex.getProperties();
+        if (nestedProperties == null || nestedProperties.isEmpty()) {
+            return false;
+        }
+        // let's see if all the properties have the same type, and that the type is equal to the current element type
+        if (!nestedProperties.stream().allMatch(property -> property.getType().getName().equals(complex.getType().getName()))) {
+            // different types which means we are not in the case of nested complex features
+            return false;
+        }
+        // so let's see if the nested type is a reference
+        for (XSDParticle childParticle : (List<XSDParticle>) Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+            XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
+            if (childElement.isElementDeclarationReference()) {
+                childElement = childElement.getResolvedElementDeclaration();
+                if (childElement.getType().getName().equals(complex.getType().getName().getLocalPart())) {
+                    // we are good this type respect the object-property model
+                    return false;
+                }
+            }
+        }
+        // the mapped complex type doesn't respect the object-property model
+        return true;
     }
 
     public void encode(Object object, QName name, ContentHandler handler)
@@ -657,6 +696,10 @@ public class Encoder {
                     continue;
                 }
 
+                // skip ones already registered
+                if (namespaces.getPrefix(ns) != null) {
+                    continue;
+                }
                 serializer.startPrefixMapping(pre != null ? pre : "", ns);
                 serializer.endPrefixMapping(pre != null ? pre : "");
 
@@ -737,10 +780,16 @@ public class Encoder {
                             catch (Exception e) {
                                 throw new RuntimeException( e );
                             }
-                        }
-                        else {
-                            //add the next object to be encoded to the stack
-                            encoded.push(new EncodingEntry(next, element,entry));                            
+                        } else {
+                            if (next instanceof ComplexAttribute && relaxed && isNonStripedNestedElement(next, element)) {
+                                for (Property property : ((ComplexAttribute) next).getProperties()) {
+                                    // add object sub properties, i.e. nested complex features
+                                    encoded.push(new EncodingEntry(property, element, entry));
+                                }
+                            } else {
+                                //add the next object to be encoded to the stack
+                                encoded.push(new EncodingEntry(next, element, entry));
+                            }
                         }
                     } else {
                         //iterator done, close it
@@ -1355,7 +1404,19 @@ O:
         }
 
         public String getLocalName(int index) {
-            return atts.item(index).getLocalName();
+            String local = atts.item(index).getLocalName();
+            if (nullOrEmpty(local)) {
+                // check the qname
+                String qName = getQName(index);
+                if (!nullOrEmpty(qName)) {
+                    int dot = qName.indexOf(':');
+                    if (dot > -1) {
+                        local = qName.split(":")[1];
+                    }
+                }
+            }
+
+            return emptyIfNull(local);
         }
 
         public String getQName(int index) {
@@ -1378,7 +1439,12 @@ O:
         }
 
         public String getURI(int index) {
-            return atts.item(index).getNamespaceURI();
+            String ns = atts.item(index).getNamespaceURI();
+            if (ns == null) {
+                ns = XMLUtils.qName(getQName(index), namespaces).getNamespaceURI();
+            }
+
+            return emptyIfNull(ns);
         }
 
         public String getValue(int index) {
@@ -1439,6 +1505,14 @@ O:
 
         public String getValue(String uri, String localName) {
             return getValue(getIndex(uri, localName));
+        }
+
+        boolean nullOrEmpty(String val) {
+            return val == null || "".equals(val);
+        }
+
+        String emptyIfNull(String val) {
+            return val != null ? val : "";
         }
     }
 

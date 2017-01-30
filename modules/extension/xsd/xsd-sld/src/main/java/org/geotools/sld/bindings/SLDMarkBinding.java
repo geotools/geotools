@@ -122,13 +122,8 @@ public class SLDMarkBinding extends AbstractComplexBinding {
             mark.setWellKnownName(filterFactory.literal(wkName));
         }
 
-        if (stroke != null) {
-            mark.setStroke(stroke);
-        }
-
-        if (fill != null) {
-            mark.setFill(fill);
-        }
+        mark.setStroke(stroke);
+        mark.setFill(fill);
 
         return mark;
     }

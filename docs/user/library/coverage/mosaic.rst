@@ -38,7 +38,7 @@ An example data set looks something like::
 * PRJ file
   
   The usual projection file associated with a shapefile, using the WKT format for a
-  CoordianteReferenceSystem.
+  CoordinateReferenceSystem.
   
 * Properties File
   

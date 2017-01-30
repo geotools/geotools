@@ -16,8 +16,15 @@
  */
 package org.geotools.data.oracle;
 
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
+import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.PrimaryKeyColumn;
+import org.geotools.jdbc.SequencedPrimaryKeyColumn;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 
@@ -35,5 +42,18 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
     @Override
     public void testGetFeatureWriterConcurrency() throws Exception {
         // skip, does not work with Oracle
+    }
+
+    public void testSequenceDetection() throws IOException {
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("road"));
+        assertNotNull(featureSource);
+        assertTrue(featureSource instanceof JDBCFeatureStore);
+        JDBCFeatureStore jdbc = (JDBCFeatureStore) featureSource;
+        List<PrimaryKeyColumn> pks = jdbc.getPrimaryKey().getColumns();
+        assertEquals(1, pks.size());
+        PrimaryKeyColumn pk = pks.get(0);
+        assertTrue(pk instanceof SequencedPrimaryKeyColumn);
+        SequencedPrimaryKeyColumn seqPk = (SequencedPrimaryKeyColumn) pk;
+        assertEquals("ROAD_FID_SEQ", seqPk.getSequenceName());
     }
 }

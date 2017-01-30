@@ -206,9 +206,14 @@ public class Config {
         result.minYAttribute = readNameString(masterTableElem, "minYAttribute");
         result.resXAttribute = readNameString(masterTableElem, "resXAttribute");
         result.resYAttribute = readNameString(masterTableElem, "resYAttribute");
-        result.tileTableNameAtribute = readNameString(masterTableElem, "tileTableNameAtribute");
-        result.spatialTableNameAtribute = readNameString(masterTableElem,
-                "spatialTableNameAtribute");
+        
+        result.tileTableNameAtribute = readNameString(masterTableElem, "tileTableNameAtribute"); // typo
+        if (result.tileTableNameAtribute==null) 
+            result.tileTableNameAtribute = readNameString(masterTableElem, "tileTableNameAttribute"); //  correct name
+                
+        result.spatialTableNameAtribute = readNameString(masterTableElem,"spatialTableNameAtribute"); // typo
+        if (result.spatialTableNameAtribute == null)
+            result.spatialTableNameAtribute= readNameString(masterTableElem,"spatialTableNameAttribute"); // correct name
 
         Element tileTableElem = (Element) dom.getElementsByTagName("tileTable").item(0);
         if (tileTableElem!=null) {

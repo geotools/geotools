@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.Query;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
@@ -28,8 +29,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -59,7 +58,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
-    ContentFeatureSource featureSource;
+    protected ContentFeatureSource featureSource;
 
     protected void connect() throws Exception {
         super.connect();
@@ -138,15 +137,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
         assertEquals(1, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try(SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
     
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
             assertEquals( new Double(1.1), feature.getAttribute( aname("doubleProperty")) );
-        } finally {
-            iterator.close();
         }
     }
     
@@ -155,9 +151,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         // make sure a complaint related to the invalid filter is thrown here
-        try { 
-            SimpleFeatureIterator fi = featureSource.getFeatures(f).features();
-            fi.close();
+        try(SimpleFeatureIterator fi = featureSource.getFeatures(f).features()) {
             fail("This query should have failed, it contains an invalid filter");
         } catch(Exception e) {
             e.printStackTrace();
@@ -174,15 +168,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
         assertEquals(1, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try(SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
     
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
             assertEquals( new Double(1.1), feature.getAttribute( aname("doubleProperty")) );
-        } finally {
-            iterator.close();
         }
     }
     
@@ -205,8 +196,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(1, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        try(SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
     
             SimpleFeature feature = (SimpleFeature) iterator.next();
@@ -214,8 +204,6 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     
             assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
             assertNotNull( feature.getAttribute(aname("intProperty")));
-        } finally {
-            iterator.close();
         }
     }
     
@@ -224,12 +212,10 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         // make sure a complaint related to the invalid filter is thrown here
-        try { 
-            SimpleFeatureIterator fi = featureSource.getFeatures(new Query("ft1", f)).features();
-            fi.close();
+        try(SimpleFeatureIterator fi = featureSource.getFeatures(new Query("ft1", f)).features()) {
             fail("This query should have failed, it contains an invalid filter");
         } catch(Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // fine
         }
     }
@@ -243,9 +229,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(3, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
         SimpleFeature f;
-        try {
+        try(SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
     
             f = (SimpleFeature) iterator.next();
@@ -258,17 +243,13 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             assertTrue(iterator.hasNext());
             f = (SimpleFeature) iterator.next();
             assertEquals("zero", f.getAttribute(aname("stringProperty")));
-        }
-        finally {
-            iterator.close();
         }
 
         sort = ff.sort(aname("stringProperty"), SortOrder.DESCENDING);
         query.setSortBy(new SortBy[] { sort });
         features = featureSource.getFeatures(query);
 
-        iterator = features.features();
-        try {
+        try(SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
     
             f = (SimpleFeature) iterator.next();
@@ -281,9 +262,6 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             assertTrue(iterator.hasNext());
             f = (SimpleFeature) iterator.next();
             assertEquals("one", f.getAttribute(aname("stringProperty")));
-        }
-        finally {
-            iterator.close();
         }
     }
     
@@ -296,8 +274,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(2, features.size());
         
         // check actual iteration
-        SimpleFeatureIterator it = features.features();
-        try {
+        try(SimpleFeatureIterator it = features.features()) {
             int count = 0;
             ReferencedEnvelope env = new ReferencedEnvelope(features.getSchema().getCoordinateReferenceSystem());
             while(it.hasNext()) {
@@ -306,11 +283,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                 count++;
             }
             assertEquals(2, count);
-            //assertEquals(env, features.getBounds());
-            assertTrue(areReferencedEnvelopesEuqal(env, features.getBounds()));
-        } finally {
-            it.close();
-        }        
+            assertTrue(areReferencedEnvelopesEqual(env, features.getBounds()));
+        }       
     }
     
     public void testGetFeaturesWithOffset() throws Exception {
@@ -323,17 +297,14 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, features.size());
         
         // check actual iteration
-        SimpleFeatureIterator it = features.features();
-        try {
+        try(SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             SimpleFeature f = it.next();
             ReferencedEnvelope fe = ReferencedEnvelope.reference(f.getBounds());
             assertEquals(2, ((Number) f.getAttribute(aname("intProperty"))).intValue());
             assertFalse(it.hasNext());
             //assertEquals(fe, features.getBounds());
-            assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
-        } finally {
-            it.close();
+            assertTrue(areReferencedEnvelopesEqual(fe, features.getBounds()));
         }
     }
     
@@ -348,17 +319,39 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1, features.size());
         
         // check actual iteration
-        SimpleFeatureIterator it = features.features();
-        try {
+        try(SimpleFeatureIterator it = features.features()) {
             assertTrue(it.hasNext());
             SimpleFeature f = it.next();
             ReferencedEnvelope fe = ReferencedEnvelope.reference(f.getBounds());
             assertEquals(1, ((Number) f.getAttribute(aname("intProperty"))).intValue());
             assertFalse(it.hasNext());
             //assertEquals(fe, features.getBounds());
-            assertTrue(areReferencedEnvelopesEuqal(fe, features.getBounds()));
-        } finally {
-            it.close();
+            assertTrue(areReferencedEnvelopesEqual(fe, features.getBounds()));
+        }
+    }
+    
+    public void testGetFeaturesWithOffsetLimitAndPostFilter() throws Exception {
+        Query q = new Query(featureSource.getSchema().getTypeName());
+        // no sorting, let's see if the database can use native one
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equal(ff.literal("one"), ff.function("strToLowerCase", ff.property(aname("stringProperty"))), true);
+        q.setFilter(filter);
+        q.setStartIndex(0);
+        q.setMaxFeatures(1);
+        SimpleFeatureCollection features = featureSource.getFeatures(q);
+        
+        // check size
+        assertEquals(1, features.size());
+        
+        // check actual iteration
+        try(SimpleFeatureIterator it = features.features()) {
+            assertTrue(it.hasNext());
+            SimpleFeature f = it.next();
+            ReferencedEnvelope fe = ReferencedEnvelope.reference(f.getBounds());
+            assertEquals(1, ((Number) f.getAttribute(aname("intProperty"))).intValue());
+            assertFalse(it.hasNext());
+            //assertEquals(fe, features.getBounds());
+            assertTrue(areReferencedEnvelopesEqual(fe, features.getBounds()));
         }
     }
     
@@ -369,12 +362,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     public void testRendererBehaviour() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setHints(new Hints(new Hints(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory())));
-        FeatureCollection fc = featureSource.getFeatures(query);
-        FeatureIterator fi = fc.features();
-        while(fi.hasNext()) {
-            fi.next();
+        SimpleFeatureCollection fc = featureSource.getFeatures(query);
+        try(SimpleFeatureIterator fi = fc.features()) {
+            while(fi.hasNext()) {
+                fi.next();
+            }
         }
-        fi.close();
     }
     
     public void testQueryCapabilitiesSort() throws Exception {
@@ -399,57 +392,48 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     public void testNaturalSortingAsc() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
-        SimpleFeatureIterator features = featureSource.getFeatures(q).features();
-        String prevId = null;
-        while(features.hasNext()) {
-            String currId = features.next().getID();
-            if(prevId != null)
-                assertTrue(prevId.compareTo(currId) <= 0);
-            prevId = currId;
+        try(SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
+            String prevId = null;
+            while(features.hasNext()) {
+                String currId = features.next().getID();
+                if(prevId != null)
+                    assertTrue(prevId.compareTo(currId) <= 0);
+                prevId = currId;
+            }
         }
-        features.close();
     }
     
     public void testNaturalSortingdesc() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
         q.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
-        SimpleFeatureIterator features = featureSource.getFeatures(q).features();
-        String prevId = null;
-        while(features.hasNext()) {
-            String currId = features.next().getID();
-            if(prevId != null)
-                assertTrue(prevId.compareTo(currId) >= 0);
-            prevId = currId;
+        try(SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
+            String prevId = null;
+            while(features.hasNext()) {
+                String currId = features.next().getID();
+                if(prevId != null)
+                    assertTrue(prevId.compareTo(currId) >= 0);
+                prevId = currId;
+            }
         }
-        features.close();
     }
     
     public void testFeatureIteratorNextContract() throws Exception {
-        SimpleFeatureIterator features = featureSource.getFeatures().features();
-        
-        try {
+        try(SimpleFeatureIterator features = featureSource.getFeatures().features()) {
             // 1) non empty iterator, calling next() should just return the feature
             SimpleFeature f = features.next();
             assertNotNull(f);
-        } finally {        
-            features.close();
         }
     }
     
     public void testFeatureIteratorEmptyContract() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("not_there"));
-        SimpleFeatureIterator features = featureSource.getFeatures(filter).features();
-        
-        
-        try {
+        try(SimpleFeatureIterator features = featureSource.getFeatures(filter).features()) {
             // 1) non empty iterator, calling next() should just return the feature
             SimpleFeature f = features.next();
             assertNotNull(f);
         } catch(NoSuchElementException e) {
             // ok
-        } finally {        
-            features.close();
         }
     }
     
@@ -491,13 +475,13 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         // check we're respecting the geometry factory hint
         GeometryFactory gf1 = new GeometryFactory();
         query.setHints(new Hints(Hints.JTS_GEOMETRY_FACTORY, gf1));
-        SimpleFeature f1 = getFirstFeature(featureSource.getFeatures(query));
+        SimpleFeature f1 = DataUtilities.first(featureSource.getFeatures(query));
         assertSame(gf1, ((Geometry) f1.getDefaultGeometry()).getFactory());
         
         // check we're respecting the geometry factory when changing it
         GeometryFactory gf2 = new GeometryFactory();
         query.setHints(new Hints(Hints.JTS_GEOMETRY_FACTORY, gf2));
-        SimpleFeature f2 = getFirstFeature(featureSource.getFeatures(query));
+        SimpleFeature f2 = DataUtilities.first(featureSource.getFeatures(query));
         assertSame(gf2, ((Geometry) f2.getDefaultGeometry()).getFactory());
 
     }
@@ -508,27 +492,11 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         Subtract sub = ff.subtract(ff.property(aname("doubleProperty")), ff.literal(0.1));
         PropertyIsEqualTo filter = ff.equals(ff.property(aname("intProperty")), sub);
 
-        //this test is very dependant on the specific database, some db's will round, some won't
+        //this test is very dependent on the specific database, some db's will round, some won't
         // so just assert that something is returned
         assertTrue(featureSource.getCount(new Query(null, filter)) > 0);
     }
 
-    SimpleFeature getFirstFeature(SimpleFeatureCollection fc) {
-        SimpleFeatureIterator fi = null;
-        try {
-            fi = fc.features();
-            if(!fi.hasNext()) {
-                return null;
-            } else {
-                return fi.next();
-            }
-        } finally {
-            if(fi != null) {
-                fi.close();
-            }
-        }
-    }
-    
     public void testAcceptsVisitor() throws Exception {
     	class TotalVisitor implements FeatureVisitor {
     		int total=0;
@@ -546,8 +514,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
     	// test on a transaction
     	JDBCFeatureStore ft1 = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
-    	Transaction transaction = new DefaultTransaction();
-    	try {
+    	try(Transaction transaction = new DefaultTransaction()) {
     		ft1.setTransaction( transaction );
     		Connection connection = ft1.getDataStore().getConnection( ft1.getState() );
     		assertFalse( "connection established", connection.isClosed() );
@@ -555,11 +522,6 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     		ft1.accepts( Query.ALL,  visitor, null );
     		
     		assertFalse( "connection maintained", connection.isClosed() );
-    	}
-    	finally {
-    		if( transaction != null ){
-    			transaction.close();
-    		}
     	}
      }
 }

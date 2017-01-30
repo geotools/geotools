@@ -1,14 +1,33 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.process.function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.net.URL;
+import java.util.List;
 
 import org.geotools.TestData;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.process.feature.BufferFeatureCollectionFactory;
 import org.junit.Test;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -25,7 +44,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  */
 public class ProcessFunctionTest {
 
-    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testBuffer() throws Exception {
@@ -55,5 +74,12 @@ public class ProcessFunctionTest {
         // is it actually a buffer?
         assertEquals(MultiPolygon.class, gd.getType().getBinding());
     }
-    
+
+
+    @Test
+    public void testUnavailable() throws Exception {
+        ProcessFunctionFactory factory = new ProcessFunctionFactory();
+        List<FunctionName> list = factory.getFunctionNames();
+        assertFalse("available", list.contains(new NameImpl("test", "unavailable")));
+    }
 }

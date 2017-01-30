@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,16 +19,12 @@ package org.geotools.filter.text.commons;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
@@ -244,6 +240,7 @@ public class ExpressionToText implements ExpressionVisitor {
                 new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         reservedWords.addAll(Arrays.asList("NOT", "AND", "OR", "LIKE", "IS", 
                 "NULL", "EXISTS", "DOES-NOT-EXIST", "DURING", "AFTER", "BEFORE",
+                "ID", // deprecated but accepted by the parser
                 "IN", "INCLUDE", "EXCLUDE", "TRUE", "FALSE", "EQUALS", 
                 "DISJOINT", "INTERSECTS", "TOUCHES", "CROSSES", "WITHIN", 
                 "CONTAINS", "OVERLAPS", "RELATE", "DWITHIN", "BEYOND", "POINT", 

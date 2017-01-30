@@ -110,6 +110,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                 setup.tearDown();    
             } 
             catch(Exception e) {
+                e.printStackTrace();
                 System.out.println("Error occurred tearing down the test setup");
             }
         }
@@ -151,10 +152,16 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     protected abstract JDBCTestSetup createTestSetup();
 
     protected HashMap createDataStoreFactoryParams() throws Exception{
-	HashMap params = new HashMap();
+        HashMap params = new HashMap();
         params.put( JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test" );
         params.put( JDBCDataStoreFactory.SCHEMA.key, "geotools" );
         params.put( JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource() );
+
+        // Enable batch insert in the tests. Some tests will revert that back to the default because
+        // their code is not closing the writer correctly and would fail. They are left as is to
+        // check that production code behaving like that would be saved by the fact that the default
+        // value is 1.
+        params.put( JDBCDataStoreFactory.BATCH_INSERT_SIZE.key, 100);
         return params;
     }
 
@@ -256,7 +263,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     	return crs1.equals(crs2); 
    	}
 
-	protected boolean areReferencedEnvelopesEuqal(ReferencedEnvelope e1, ReferencedEnvelope e2) {
+	protected boolean areReferencedEnvelopesEqual(ReferencedEnvelope e1, ReferencedEnvelope e2) {
 		
 		if (e1==null && e2 ==null) return true;
 		if (e1==null || e2 == null) return false;
@@ -284,6 +291,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                                  FeatureAssertion assertion) {
         assertFeatureIterator(startIndex,numberExpected,collection.features(),assertion);
     }
+    
     protected <F extends Feature>
         void assertFeatureIterator(int startIndex,
                                  int numberExpected,

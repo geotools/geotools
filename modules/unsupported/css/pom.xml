@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>17-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -58,6 +58,11 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
       <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -73,7 +78,13 @@
     <dependency>
       <groupId>org.parboiled</groupId>
       <artifactId>parboiled-java</artifactId>
-      <version>1.1.6</version>
+      <version>1.1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-sld</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>xmlunit</groupId>
@@ -81,9 +92,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.geotools.xsd</groupId>
-      <artifactId>gt-xsd-sld</artifactId>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process-raster</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process-feature</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

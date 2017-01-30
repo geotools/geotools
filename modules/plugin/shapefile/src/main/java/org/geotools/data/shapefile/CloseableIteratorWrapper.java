@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@ package org.geotools.data.shapefile;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.geotools.data.shapefile.index.CloseableIterator;
+import org.geotools.data.CloseableIterator;
 
 /**
  * Wraps a plain iterator into a closeable one.

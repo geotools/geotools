@@ -17,4 +17,4 @@ Extensions build additional functionality on top of the core services of the Geo
    xsd/index
    transform/transform
 
-Extensions build on top of the core concepts provided by the GeoTools library. This allows the project to take on more general topics then a just being a simple geospatial library.
+Extensions build on top of the core concepts provided by the GeoTools library. This allows the project to take on more general topics than just being a simple geospatial library.

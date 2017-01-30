@@ -46,7 +46,7 @@ public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
                 new HashMap<String, String>());
         return parser;
     }
-
+    
     /**
      * This is to be run as a normal java application in order to reproduce a
      * GetFeature request to the nsdi server and thus being able to

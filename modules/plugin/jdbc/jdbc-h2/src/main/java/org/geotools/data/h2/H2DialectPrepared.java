@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,6 @@ package org.geotools.data.h2;
 
 import geodb.GeoDB;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -37,8 +36,6 @@ import org.opengis.feature.type.GeometryDescriptor;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.OutputStreamOutStream;
-import com.vividsolutions.jts.io.WKBWriter;
 
 /**
  * H2 database dialect based on prepared statements.
@@ -149,7 +146,12 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
             Connection cx) throws SQLException {
         return delegate.getNextSequenceValue(schemaName, sequenceName, cx);
     }
-    
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();
@@ -210,5 +212,16 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
     @Override
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
         delegate.applyLimitOffset(sql, limit, offset);
+    }
+    
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return delegate.supportsSchemaForIndex();
+    }
+
+    @Override
+    public void registerSqlTypeToSqlTypeNameOverrides(
+            Map<Integer, String> overrides) {
+        delegate.registerSqlTypeToSqlTypeNameOverrides(overrides);
     }
 }

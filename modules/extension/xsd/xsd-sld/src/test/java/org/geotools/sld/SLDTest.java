@@ -74,4 +74,11 @@ public class SLDTest extends TestCase {
         // if a validato error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("gcontours.sld"));
     }
+    
+    public void testValidatePerpendicularOffset() throws Exception {
+        Parser parser = new Parser(new SLDConfiguration());
+
+        // if a validato error occurs it will blow up with an exception
+        parser.validate(getClass().getResourceAsStream("linePerpendicularOffset.sld"));
+    }
 }

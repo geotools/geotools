@@ -30,5 +30,5 @@ public class PostGIS3DOnlineTest extends JDBC3DOnlineTest {
     protected JDBC3DTestSetup createTestSetup() {
         return new PostGIS3DTestSetup(new PostGISTestSetup());
     }
-    
+
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,6 @@
 package org.geotools.referencing;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +24,11 @@ import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.measure.unit.SI;
@@ -35,11 +39,14 @@ import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.operation.TransformException;
+
+import com.csvreader.CsvReader;
 
 
 /**
@@ -63,7 +70,7 @@ public final class GeodeticCalculatorTest {
         calculator.setDestinationGeographicPoint(13, 20);  assertEquals("East",   90, calculator.getAzimuth(), EPS);
         calculator.setDestinationGeographicPoint(12, 21);  assertEquals("North",   0, calculator.getAzimuth(), EPS);
         calculator.setDestinationGeographicPoint(11, 20);  assertEquals("West",  -90, calculator.getAzimuth(), EPS);
-        calculator.setDestinationGeographicPoint(12, 19);  assertEquals("South", 180, calculator.getAzimuth(), EPS);
+        calculator.setDestinationGeographicPoint(12, 19);  assertEquals("South",-180, calculator.getAzimuth(), EPS);
     }
 
     /**
@@ -179,11 +186,11 @@ public final class GeodeticCalculatorTest {
             calculator.setDestinationGeographicPoint(x, 0);
             final double distance = calculator.getOrthodromicDistance() / 1000; // In kilometers
             /*
-             * Checks that the increment is constant. It is not for x>179 unless
-             * GeodeticCalculator switch to DefaultEllipsoid algorithm, which is
-             * what we want to ensure with this test.
+             * Checks that the increment is constant and then tapers off.
              */
-            assertFalse(Math.abs(Math.abs(distance - last) - 13.914935) > 2E-6);
+            assertTrue(x == 0 ? (distance == 0) :
+                       (x < 179.5 ? (Math.abs(distance - last - 13.914936) < 2E-6)
+                        : (distance - last < 13)));
             last = distance;
         }
     }
@@ -236,4 +243,33 @@ public final class GeodeticCalculatorTest {
         }
     }
     
+    @Test
+    public void testVincentyFails() throws FileNotFoundException, IOException {
+        //check pairs of points known to fail with the Vincenty method
+        //taken from Wikipedia Talk page.
+        //https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
+        InputStream in = TestData.openStream( this, "vincenty.csv" );
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+       CsvReader creader = new CsvReader(reader);
+       creader.setComment('#');
+       creader.setUseComments(true);
+       while(creader.readRecord()) {
+           
+           double lat1 = Double.parseDouble(creader.get(0));
+           double lon1 = Double.parseDouble(creader.get(1));
+           double lat2 = Double.parseDouble(creader.get(2));
+           double lon2 = Double.parseDouble(creader.get(3));
+           
+           GeodeticCalculator calculator = new GeodeticCalculator();
+           calculator.setStartingGeographicPoint(lon1,lat1);
+           calculator.setDestinationGeographicPoint(lon2,lat2);
+           double dist = calculator.getOrthodromicDistance();
+           //really we are just proving it works as previous code failed 
+           //to converge for these points.
+           //but this way there is no chance of optimising the call away.
+           assertTrue("Bad distance calculation",dist>0.0d);
+           
+           
+       }
+    }
 }

@@ -68,8 +68,8 @@ order to draw something on screen.
 Q: What about Raster Advanced Projection Handling?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Advanced Proejction Handling is a feature provided by the GridCoverageRenderer class
-for handling Raster reprojection. It is expecially useful when trying to
+Advanced Projection Handling is a feature provided by the GridCoverageRenderer class
+for handling Raster reprojection. It is especially useful when trying to
 read a GridCoverage with a BoundingBox crossing the DateLine: the final image 
 is not cut on the DateLine but it is replicated as many times as the DateLine
 is crossed.
@@ -77,3 +77,10 @@ is crossed.
 This feature can be enabled/disabled using the related method
 *setAdvancedProjectionHandlingEnabled()* in the same class.
 
+Q: Why does my SVG external graphic display as a gray square?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GeoTools uses a plugable External Graphics factory system to render an icon
+(see :doc:`/library/render/icon` for more details) 
+onto the screen. To render SVG files as icons it needs access to the
+SVGExternalGraphics factory which is included in the :doc:`/library/render/svg`.

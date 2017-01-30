@@ -94,8 +94,12 @@ public class XPathUtil {
                 return false;
             }
             for (int i = 0; i < other.size(); i++) {
-                if (!this.get(i).equalsIgnoreIndex(other.get(i))) {
-                    return false;
+                Step thisStep = this.get(i);
+                Step otherStep = other.get(i);
+                if (thisStep.isIndexed && otherStep.isIndexed) {
+                    return thisStep.equals(otherStep);
+                } else {
+                    return thisStep.equalsIgnoreIndex(otherStep);
                 }
             }
             return true;
@@ -577,7 +581,7 @@ public class XPathUtil {
                 prefix = XMLConstants.DEFAULT_NS_PREFIX;
             } else {
                 if (!localName.equals(rootName.getLocalPart())) {
-                    LOGGER.warning("Using root's namespace " + defaultNamespace
+                    LOGGER.fine("Using root's namespace " + defaultNamespace
                             + " for step named '" + localName + "', as no prefix was stated");
                 }
                 prefix = namespaces.getPrefix(defaultNamespace);

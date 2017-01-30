@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -80,14 +80,17 @@ public class DB2SQLDialect extends SQLDialect  {
 	private static String MULTIPOLY_STR ="\"DB2GSE\".\"ST_MULTIPOLYGON\"";
 	private static String GEOMETRY_STR ="\"DB2GSE\".\"ST_GEOMETRY\"";
 	private static String GEOMETRYCOLL_STR ="\"DB2GSE\".\"ST_GEOMCOLLECTION\"";
-
+	
+	static String SELECTIVITY_CLAUSE="SELECTIVITY 0.000001 ";
 	
 	
 	private static String DEFAULT_SRS_NAME = "DEFAULT_SRS";
 	private static Integer DEFAULT_SRS_ID=0;
 
 	private boolean looseBBOXEnabled;
+	private boolean useSelectivity;
 	
+
 
     private static String SELECT_SRSID_WITH_SCHEMA = 
     	"select SRS_ID from DB2GSE.ST_GEOMETRY_COLUMNS where TABLE_SCHEMA = ? and "+
@@ -572,12 +575,8 @@ public class DB2SQLDialect extends SQLDialect  {
     public Object getNextSequenceValue(String schemaName, String sequenceName,
             Connection cx) throws SQLException {
     	
-    	StringBuffer sql = new StringBuffer("SELECT next value for ");
-    	if (schemaName!=null) {
-    		encodeSchemaName(schemaName, sql);
-    		sql.append(".");
-    	}	
-    	encodeTableName(sequenceName, sql);
+    	StringBuilder sql = new StringBuilder("SELECT ");
+        sql.append(encodeNextSequenceValue(schemaName, sequenceName));
     	sql.append( " from sysibm.sysdummy1");
         Statement st = cx.createStatement();
         try {
@@ -596,7 +595,18 @@ public class DB2SQLDialect extends SQLDialect  {
         
     }
 
-	@Override
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        StringBuffer sql = new StringBuffer("next value for ");
+        if (schemaName != null) {
+            encodeSchemaName(schemaName, sql);
+            sql.append(".");
+        }
+        encodeTableName(sequenceName, sql);
+        return sql.toString();
+    }
+
+    @Override
 	public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
 		
 	    return true;
@@ -836,5 +846,19 @@ public class DB2SQLDialect extends SQLDialect  {
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
+    
+    public boolean isUseSelectivity() {
+        return useSelectivity;
+    }
+
+    public void setUseSelectivity(boolean useSelectivity) {
+        this.useSelectivity = useSelectivity;
+    }
+    
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return true;
+    }
+
 
 }

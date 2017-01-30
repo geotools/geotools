@@ -76,7 +76,7 @@ public class CSVDataStore extends ContentDataStore {
     // createSchema start
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-        List<String> header = new ArrayList<String>();
+        List<String> header = new ArrayList<>();
         GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();
         if (geometryDescrptor != null
                 && CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84,

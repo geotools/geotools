@@ -1,5 +1,6 @@
 /*
- * Copyright 2004  The Apache Software Foundation
+ * (C) 2011-2016 Open Source Geospatial Foundation (OSGeo)
+ * (C) 2004 The Apache Software Foundation
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +37,17 @@ import java.util.TimeZone;
 public class XsDateTimeFormat extends Format {
     final boolean parseDate;
     final boolean parseTime;
+    /** True: Print time zone even on dates without time component */
+    private final boolean printTzInfo;
 
     XsDateTimeFormat(boolean pParseDate, boolean pParseTime) {
+        this(pParseDate, pParseTime, true);
+    }
+    
+    XsDateTimeFormat(boolean pParseDate, boolean pParseTime, boolean pPrintTzInfo) {
         parseDate = pParseDate;
         parseTime = pParseTime;
+        printTzInfo = pPrintTzInfo;
     }
 
     /** Creates a new instance.
@@ -261,8 +269,13 @@ public class XsDateTimeFormat extends Format {
                             return null;
                         }
                     }
-                    for (int i = digits.length();  i < 3;  i++) {
-                        millis *= 10;
+                    if(digits.length() < 3) {
+                        for (int i = digits.length();  i < 3;  i++) {
+                            millis *= 10;
+                        }
+                    } else if(digits.length() > 3) {
+                        int power = digits.length() - 3;
+                        millis = (int) Math.round(millis / Math.pow(10, power));
                     }
 	            } else {
 	                millis = 0;
@@ -375,12 +388,13 @@ public class XsDateTimeFormat extends Format {
 	        }
         }
         
-        // there's no meaning for timezone if not parting time
-        // http://en.wikipedia.org/wiki/ISO_8601. Still we need to leave the timezone be encoded to
+        // there's no meaning for time zone if not parting time
+        // http://en.wikipedia.org/wiki/ISO_8601. Still we need to leave the time zone be encoded to
         // please WFS 1.1 CITE tests, which assert for a yyyy-MM-DD'Z' format
-        // if(!parseTime){
-        // return pBuffer;
-        // }
+        // however users may decide to suppress time zone information 
+        if(!parseTime && !printTzInfo){
+            return pBuffer;
+        }
         TimeZone tz = cal.getTimeZone();
         // JDK 1.4: int offset = tz.getOffset(cal.getTimeInMillis());
         int offset = cal.get(Calendar.ZONE_OFFSET);

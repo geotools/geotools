@@ -52,7 +52,7 @@ Q: How to get FeatureCollection to work with a 'for each' loop?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Feature collection is a wrapper around a live data stream; as such we need to be sure to *close*
-the iterator after we are through with it:
+the iterator after we are finished with it:
 
 .. literalinclude:: /../src/main/java/org/geotools/main/MainExamples.java
    :language: java

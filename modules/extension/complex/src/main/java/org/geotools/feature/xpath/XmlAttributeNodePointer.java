@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,14 @@
 package org.geotools.feature.xpath;
 
 import java.util.Map;
+
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.identity.Identifier;
 import org.xml.sax.Attributes;
 
 /**
@@ -94,15 +96,16 @@ public class XmlAttributeNodePointer extends NodePointer {
         
         //FIXME - better id checking
         if (name.getLocalPart().equals("id")) {
-            return feature.getIdentifier().getID();
-        }
-        else {
-            Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
-            if (map != null) {
-                return map.get(name);
-            } else {
-                return null;
+            Identifier id = feature.getIdentifier();
+            if (id != null) {
+                return id.getID();
             }
+        }
+        Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
+        if (map != null) {
+            return map.get(name);
+        } else {
+            return null;
         }
     }
 

@@ -19,8 +19,13 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -201,6 +206,30 @@ public class MultiScriptTest extends TestCase {
         renderer.setMapContent(mc);
 
         return RendererBaseTest.showRender(title, renderer, TIME, bounds);
+    }
+    
+    public void testFollowLineWithLocalTransform() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
+        MapContent mc = new MapContent();
+        mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+        mc.addLayer(new FeatureLayer(lines, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        renderer.setMapContent(mc);
+
+        int SIZE = 300;
+        final BufferedImage image = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, SIZE, SIZE);
+        g.setTransform(new AffineTransform(1.1, Math.sin(Math.toRadians(15)), -Math.sin(Math.toRadians(15)), 1.1, 15, 20));
+        renderer.paint(g, new Rectangle(SIZE, SIZE), bounds);
+        renderer.getMapContent().dispose();
+
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptTransformedLine.png";
+        ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
+
     }
 
 }

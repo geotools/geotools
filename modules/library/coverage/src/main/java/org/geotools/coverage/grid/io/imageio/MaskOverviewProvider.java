@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.grid.io.imageio;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -40,6 +38,8 @@ import javax.media.jai.ROI;
 import org.geotools.data.DataUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
 
 /**
  * Helper class used for handling Internal/External overviews and masks for a File
@@ -299,14 +299,22 @@ public class MaskOverviewProvider {
     /**
      * Returns a new {@link MaskInfo} instance containing all the parameters to set for accessing the desired image index
      */
-    public MaskInfo getMaskInfo(int imageIndex, Rectangle sourceRegion) {
+    public MaskInfo getMaskInfo(int imageIndex, Rectangle imageBounds,
+            ImageReadParam originalParams) {
         MaskInfo info = null;
         if (numInternalMasks + numExternalMasks > 0) {
             // Create a new MaskInfo instance
             info = new MaskInfo();
             // Parameter definiton
             ImageReadParam readParam = new ImageReadParam();
-            readParam.setSourceSubsampling(1, 1, 0, 0);
+            readParam.setSourceSubsampling(originalParams.getSourceXSubsampling(),
+                    originalParams.getSourceYSubsampling(), originalParams.getSubsamplingXOffset(),
+                    originalParams.getSubsamplingYOffset());
+
+            Rectangle sourceRegion = imageBounds;
+            if (originalParams.getSourceRegion() != null) {
+                sourceRegion = originalParams.getSourceRegion();
+            }
             readParam.setSourceRegion(sourceRegion);
             info.readParameters = readParam;
             // Checks on the overviews

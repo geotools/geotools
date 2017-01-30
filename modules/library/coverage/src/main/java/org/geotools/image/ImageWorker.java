@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,25 +15,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.image;
-
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.affine.AffineDescriptor;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
-import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
-import it.geosolutions.jaiext.colorindexer.ColorIndexer;
-import it.geosolutions.jaiext.lookup.LookupTable;
-import it.geosolutions.jaiext.lookup.LookupTableFactory;
-import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.range.RangeFactory;
-import it.geosolutions.jaiext.scale.ScaleDescriptor;
-import it.geosolutions.jaiext.stats.HistogramWrapper;
-import it.geosolutions.jaiext.stats.Statistics;
-import it.geosolutions.jaiext.stats.Statistics.StatsType;
-import it.geosolutions.jaiext.warp.WarpDescriptor;
 
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -65,6 +46,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,6 +71,8 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.LookupTableJAI;
+import javax.media.jai.OperationDescriptor;
+import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.PlanarImage;
@@ -123,6 +107,8 @@ import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
 import org.jaitools.imageutils.ImageLayout2;
+import org.jaitools.imageutils.ROIGeometry;
+import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
@@ -132,6 +118,22 @@ import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.jai.util.ImageUtil;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
+import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
+import it.geosolutions.jaiext.classifier.ColorMapTransform;
+import it.geosolutions.jaiext.colorconvert.IHSColorSpaceJAIExt;
+import it.geosolutions.jaiext.colorindexer.ColorIndexer;
+import it.geosolutions.jaiext.lookup.LookupTable;
+import it.geosolutions.jaiext.lookup.LookupTableFactory;
+import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.range.RangeFactory;
+import it.geosolutions.jaiext.stats.HistogramWrapper;
+import it.geosolutions.jaiext.stats.Statistics;
+import it.geosolutions.jaiext.stats.Statistics.StatsType;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain #ImageWorker(RenderedImage) creation time}. Sucessive
@@ -151,9 +153,21 @@ import com.sun.media.jai.util.ImageUtil;
  * @author Martin Desruisseaux
  */
 public class ImageWorker {
+    private static final double[] ROI_BACKGROUND = new double[] {0};
+
+    private static final double[][] ROI_THRESHOLDS = new double[][] {{1.0}};
+
     private static final String OPERATION_CONST_OP_NAME = "operationConst";
 
     private static final String ALGEBRIC_OP_NAME = "algebric";
+
+    public final static String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
+
+    public final static boolean JAIEXT_ENABLED;
+
+    public static boolean isJaiExtEnabled() {
+        return JAIEXT_ENABLED;
+    }
 
     /**
      * The logger to use for this class.
@@ -165,7 +179,8 @@ public class ImageWorker {
 
     /** Registration of the JAI-EXT operations */
     static {
-        JAIExt.initJAIEXT();
+        JAIEXT_ENABLED = Boolean.getBoolean(JAIEXT_ENABLED_KEY);
+        JAIExt.initJAIEXT(JAIEXT_ENABLED);
     }
 
     /** JDK_JPEG_IMAGE_WRITER_SPI */
@@ -328,6 +343,19 @@ public class ImageWorker {
         CS_PYCC = cs;
     }
 
+    protected static OperationDescriptor getOperationDescriptor(final String name)
+            throws OperationNotFoundException
+    {
+        final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+        OperationDescriptor operation = (OperationDescriptor) registry.getDescriptor(RenderedRegistryMode.MODE_NAME, name);
+        if (operation != null) {
+            return operation;
+        }
+
+        throw new OperationNotFoundException(Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+    }
+
+    
     /**
      * If {@link Boolean#FALSE FALSE}, image operators are not allowed to produce tiled images. The default is {@link Boolean#TRUE TRUE}. The
      * {@code FALSE} value is sometime useful for exporting images to some formats that doesn't support tiling (e.g. GIF).
@@ -359,6 +387,7 @@ public class ImageWorker {
             GTWarpPropertyGenerator.register(false);
         }
         LOGGER.log(Level.INFO, "Warp/affine reduction enabled: " + WARP_REDUCTION_ENABLED);
+        GTAffinePropertyGenerator.register(false);
     }
 
     /**
@@ -653,11 +682,14 @@ public class ImageWorker {
     public final ImageWorker setROI(final ROI roi) {
         this.roi = roi;
         // If ROI == null remove it also from the image properties
+        PlanarImage pl = getPlanarImage();
         if (roi == null) {
-            PlanarImage pl = getPlanarImage();
             pl.removeProperty("ROI");
-            image = pl;
+        } else {
+            pl.setProperty("ROI", roi);
         }
+        image = pl;
+
         invalidateStatistics();
         return this;
     }
@@ -688,7 +720,7 @@ public class ImageWorker {
     }
 
     /**
-     * Set the image background value, if input NoData are present, the first value will e used as NoData.
+     * Set the image background value
      * 
      * @param background The image background.
      * @return This ImageWorker
@@ -1319,8 +1351,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 5); // destination No Data value
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create((byte) background[0], (byte) background[0]));
                 }
             }
 
@@ -1386,8 +1416,6 @@ public class ImageWorker {
                 if (background != null && background.length > 0) {
                     int dest = (int) background[0];
                     pb.set(dest, 4);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(dest, dest));
                 }
             }
 
@@ -1410,8 +1438,6 @@ public class ImageWorker {
                 if (background != null && background.length > 0) {
                     int dest = (int) background[0];
                     pb.set(dest, 4);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(dest, dest));
                 }
             }
 
@@ -1537,8 +1563,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
                 }
             }
 
@@ -1685,7 +1709,7 @@ public class ImageWorker {
 
             switch (datatype) {
             case DataBuffer.TYPE_BYTE: {
-                final byte data[][] = new byte[numDestinationBands][icm.getMapSize()];
+                final byte[][] data = new byte[numDestinationBands][256];
                 icm.getReds(data[0]);
                 if (numDestinationBands >= 2)
                     // remember to optimize for grayscale images
@@ -1698,6 +1722,33 @@ public class ImageWorker {
                 if (numDestinationBands == 4) {
                     icm.getAlphas(data[3]);
                 }
+                if(icm.getMapSize() < 256) {
+                    Color bgColor = getBackgroundColor();
+                    if(bgColor == null) {
+                        bgColor = Color.BLACK;
+                    }
+                    byte r = (byte) (bgColor.getRed() & 0xFF);
+                    byte g = (byte) (bgColor.getRed() & 0xFF);
+                    byte b  = (byte) (bgColor.getBlue() & 0xFF);
+                    byte a = (byte) (bgColor.getAlpha() & 0xFF);
+                    for (int i = icm.getMapSize(); i < 256; i++) {
+                        data[0][i] = r;
+                        if (numDestinationBands >= 2) {
+                            // remember to optimize for grayscale images
+                            if (!gray) {
+                                data[1][i] = g;
+                            } else {
+                                data[1][i] = a;
+                            }
+                        }
+                        if (numDestinationBands >= 3) {
+                            data[2][i] = b;
+                        }
+                        if (numDestinationBands == 4) {
+                            data[3][i] = a;
+                        }
+                    }
+                }
                 lut = LookupTableFactory.create(data, datatype);
 
             }
@@ -1705,7 +1756,7 @@ public class ImageWorker {
 
             case DataBuffer.TYPE_USHORT: {
                 final int mapSize = icm.getMapSize();
-                final short data[][] = new short[numDestinationBands][mapSize];
+                final short[][] data = new short[numDestinationBands][mapSize];
                 for (int i = 0; i < mapSize; i++) {
                     data[0][i] = (short) icm.getRed(i);
                     if (numDestinationBands >= 2)
@@ -1770,8 +1821,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
                 }
             }
 
@@ -1875,7 +1924,7 @@ public class ImageWorker {
             forceComponentColorModel();
 
             // Create a ColorModel to convert the image to IHS.
-            final IHSColorSpaceJAIExt ihs = IHSColorSpaceJAIExt.getInstance();
+            final ColorSpace ihs = isJaiExtEnabled() ? IHSColorSpaceJAIExt.getInstance() : IHSColorSpace.getInstance();;
             final int numBits = image.getColorModel().getComponentSize(0);
             final ColorModel ihsColorModel = new ComponentColorModel(ihs, new int[] { numBits,
                     numBits, numBits }, false, false, Transparency.OPAQUE, image.getSampleModel()
@@ -1914,16 +1963,6 @@ public class ImageWorker {
                     throw new IllegalArgumentException("Wrong DestinationNoData value defined");
                 }
                 pb.set(background, 3);
-                ColorSpace in = image.getColorModel().getColorSpace();
-                ColorSpace out = cm.getColorSpace();
-                float[] output = new float[background.length];
-                for (int i = 0; i < background.length; i++) {
-                    output[i] = (float) background[i];
-                }
-                float[] toXYZ = in.toCIEXYZ(output);
-                float[] fromXYZ = out.fromCIEXYZ(toXYZ);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(fromXYZ[0], fromXYZ[0]));
             }
         }
 
@@ -1956,28 +1995,19 @@ public class ImageWorker {
 
         // adding to the image
         final int length = writeband - numBands;
+        pb.addSource(sourceImage);
         for (int i = 0; i < length; i++) {
-            pb.removeParameters();
-            pb.removeSources();
-
-            pb.addSource(sourceImage);
             pb.addSource(firstBand);
-            pb.set(new Range[] { nodata }, 0);
-            if (isNoDataNeeded()) {
-                if (background != null && background.length > 0) {
-                    // Elaborating the final NoData value
-                    pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
-                }
-            }
-            pb.set(roi, 3);
-            sourceImage = JAI.create("bandmerge", pb);
-
-            pb.removeParameters();
-            pb.removeSources();
         }
-
+        pb.set(new Range[] { nodata }, 0);
+        if (isNoDataNeeded()) {
+            if (background != null && background.length > 0) {
+                // Elaborating the final NoData value
+                pb.set(background[0], 1);
+            }
+        }
+        pb.set(roi, 3);
+        sourceImage = JAI.create("bandmerge", pb);
         image = sourceImage;
         invalidateStatistics();
 
@@ -2023,9 +2053,7 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 double dest = background[0];
                 pb.set(dest, 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
-            }
+           }
         }
         pb.set(roi, 3);
         pb.set(addAlpha, 4);
@@ -2076,8 +2104,6 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 double dest = background[0];
                 pb.set(dest, 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
             }
         }
         pb.set(transformationList, 3);
@@ -2171,8 +2197,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 3);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -2398,8 +2422,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -2494,7 +2516,7 @@ public class ImageWorker {
 
         // Prepare the new ColorModel.
         // Get the old map and update it as needed.
-        final byte rgb[][] = new byte[4][mapSize];
+        final byte[][] rgb = new byte[4][mapSize];
         cm.getReds(rgb[0]);
         cm.getGreens(rgb[1]);
         cm.getBlues(rgb[2]);
@@ -2632,8 +2654,6 @@ public class ImageWorker {
         if(isNoDataNeeded()){
             if (background != null && background.length > 0) {
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -2675,8 +2695,6 @@ public class ImageWorker {
             if (background != null && background.length > 0) {
                 double dest = background[0];
                 pb.set(dest, 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
             }
         }
         pb.set(roi, 3);
@@ -2705,8 +2723,6 @@ public class ImageWorker {
                 if (background != null && background.length > 0) {
                     double dest = background[0];
                     pb.set(dest, 3);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(dest, dest));
                 }
             }
             image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
@@ -2930,6 +2946,29 @@ public class ImageWorker {
     }
 
     /**
+     * Takes two rendered or renderable source images, and myltiply form each pixel the related value of the second image, each one from each source
+     * image of the corresponding position and band. See JAI {@link MultiplyDescriptor} for details.
+     * 
+     * @param renderedImage the {@link RenderedImage} to be multiplied to this {@link ImageWorker}.
+     * @return this {@link ImageWorker}.
+     * 
+     * @see MultiplyDescriptor
+     */
+    public final ImageWorker multiply(RenderedImage renderedImage) {
+        ParameterBlock pb = new ParameterBlock();
+        pb.setSource(image, 0);
+        pb.setSource(renderedImage, 1);
+        if (JAIExt.isJAIExtOperation(ALGEBRIC_OP_NAME)) {
+            prepareAlgebricOperation(Operator.MULTIPLY, pb, roi, nodata, true);
+            image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        } else {
+            image = JAI.create("Multiply", pb, getRenderingHints());
+        }
+        invalidateStatistics();
+        return this;
+    }
+
+    /**
      * Takes one rendered or renderable image and an array of integer constants, and performs a bit-wise logical "xor" between every pixel in the same
      * band of the source and the constant from the corresponding array entry. See JAI {@link XorConstDescriptor} for details.
      * 
@@ -3007,13 +3046,6 @@ public class ImageWorker {
         pb.set(threshold, 2);
         pb.set(filterSize, 3);
         pb.set(nodata, 4);
-        if (isNoDataNeeded()) {
-            if (background != null && background.length > 0) {
-                double dest = background[0];
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(dest, dest));
-            }
-        }
         invalidateStatistics();
         return this;
     }
@@ -3185,8 +3217,6 @@ public class ImageWorker {
             if (isNoDataNeeded()) {
                 if (background != null && background.length > 0) {
                     pb.set(background[0], 1);
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(background[0], background[0]));
                 }
             }
 
@@ -3222,8 +3252,6 @@ public class ImageWorker {
                     if (background != null && background.length > 0) {
                         double dest = background[0];
                         pb.set(dest, 1);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(dest, dest));
                     }
                 }
                 pb.set(roi, 3);
@@ -3245,8 +3273,6 @@ public class ImageWorker {
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         pb.set(background[0], 1);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(background[0], background[0]));
                     }
                 }
 
@@ -3781,8 +3807,7 @@ public class ImageWorker {
         }
 
         // apply defaults to allow for comparisong
-        ParameterListDescriptor pld = new AffineDescriptor()
-                .getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
+        ParameterListDescriptor pld = getOperationDescriptor("affine").getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
         if (interpolation == null) {
             interpolation = (Interpolation) pld.getParamDefaultValue("interpolation");
         }
@@ -3842,14 +3867,13 @@ public class ImageWorker {
                     pb.set(roi, 3);
                     pb.set(true, 5);
                     pb.set(nodata, 6);
-                    if(isNoDataNeeded() && bgValues != null && bgValues.length > 0){
-                        setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                    }
-                    RenderedOp at = JAI.create("Affine", pb, commonHints);
+                    RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
 
                     // commonHints);
                     Rectangle targetBB = at.getBounds();
-                    at.dispose();
+                    int tileWidth = at.getTileWidth();
+                    int tileHeight = at.getTileHeight();
+                    ImageUtilities.disposeSinglePlanarImage(at);
                     Rectangle sourceBB = (Rectangle) sourceBoundsProperty;
 
                     // warp
@@ -3878,11 +3902,7 @@ public class ImageWorker {
                         // Boolean indicating if NoData are the same as for the source operation or are not present
                         Range oldNoData = (Range) (op.getParameterBlock().getNumParameters() > 3 ? op
                                 .getParameterBlock().getObjectParameter(4) : null);
-                        double[] oldBkg = (double[]) (op.getParameterBlock().getObjectParameter(2) != null ? op
-                                .getParameterBlock().getObjectParameter(2) : null);
-                        boolean hasSameNodata = oldNoData == null
-                                || (oldBkg != null && nodata != null && oldBkg.length > 0 && oldBkg[0] == nodata
-                                        .getMin().doubleValue());
+                        boolean hasSameNodata = (oldNoData == null && nodata == null) || (oldNoData != null && nodata != null && oldNoData.equals(nodata));
                         if (((property == null) || property.equals(java.awt.Image.UndefinedProperty)
                                 || !(property instanceof ROI))) {
                             paramBlk.add(warp).add(interpolation).add(bgValues);
@@ -3915,10 +3935,6 @@ public class ImageWorker {
                                 setROI(newROI);
                                 paramBlk.set(newROI, 3);
                             }
-                            if (((isNoDataNeeded() || newROI != null || oldNoData != null) && bgValues != null && bgValues.length > 0)
-                                    && hasSameNodata) {
-                                setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                            }
                         } else {
                             // Intersect ROIs
                             ROI newROI = null;
@@ -3950,17 +3966,13 @@ public class ImageWorker {
                             if (oldNoData != null) {
                                 paramBlk.set(oldNoData, 4);
                             }
-                            if (((isNoDataNeeded() || newROI != null || oldNoData != null) && bgValues != null && bgValues.length > 0)
-                                    && hasSameNodata) {
-                                setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                            }
                         }
 
                         // Checks if ROI can be processed
                         if(canProcessROI && hasSameNodata){
                             // force in the image layout, this way we get exactly the same
                             // as the affine we're eliminating
-                            Hints localHints = new Hints(commonHints);
+                            Hints localHints = new Hints(getRenderingHints());
                             localHints.remove(JAI.KEY_IMAGE_LAYOUT);
                             ImageLayout il = new ImageLayout();
                             il.setMinX(targetBB.x);
@@ -3968,8 +3980,8 @@ public class ImageWorker {
                             il.setWidth(targetBB.width);
                             il.setHeight(targetBB.height);
 
-                            il.setTileHeight(op.getTileHeight());
-                            il.setTileWidth(op.getTileWidth());
+                            il.setTileHeight(tileWidth);
+                            il.setTileWidth(tileHeight);
                             il.setTileGridXOffset(0);
                             il.setTileGridYOffset(0);
                             localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
@@ -3978,9 +3990,8 @@ public class ImageWorker {
                             result.setProperty("MathTransform", chained);
                             image = result;
                             // getting the new ROI property
-                            PropertyGenerator gen = new WarpDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                            Object prop = gen.getProperty("roi", image);
-                            if(prop != null && prop instanceof ROI){
+                            Object prop = result.getProperty("roi");
+                            if (prop != null && prop instanceof ROI){
                                 setROI((ROI) prop);
                             } else {
                                 setROI(null);
@@ -4063,11 +4074,13 @@ public class ImageWorker {
                 boolean similarROI = true;
                 boolean hasSameNodata =true;
                 // Minor checks on ROI and NoData
-                if(paramBlock.getNumParameters() > 5){
-                    nodata = (Range) paramBlock.getObjectParameter(7);
-                    r = (ROI)paramBlock.getObjectParameter(5);
-                    double[] sBgValues = (double[]) paramBlock.getObjectParameter(8);
-                    if(r != null){
+                final int numParameters = paramBlock.getNumParameters();
+                if (numParameters > 5){
+                    r = (ROI) paramBlock.getObjectParameter(5);
+                    nodata = numParameters > 7 ? (Range) paramBlock.getObjectParameter(7) : null;
+                    // The background may haven't been set
+                    double[] sBgValues = numParameters > 8 ? (double[]) paramBlock.getObjectParameter(8) : null;
+                    if (r != null) {
                         try {
                             AffineTransform sTx = AffineTransform.getScaleInstance(xScale, yScale);
                             sTx.concatenate(AffineTransform.getTranslateInstance(xTrans, yTrans));
@@ -4131,7 +4144,7 @@ public class ImageWorker {
             if (!hasScaleX && !hasScaleY && intTranslateX && intTranslateY) {
                 // this will do an integer translate, but to get there we need to remove the image
                 // layout
-                Hints localHints = new Hints(commonHints);
+                Hints localHints = new Hints(getRenderingHints());
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
                 pb.set(1.0f, 0);
                 pb.set(1.0f, 1);
@@ -4143,14 +4156,12 @@ public class ImageWorker {
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         pb.set(background, 8);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(background[0], background[0]));
                     }
                 }
                 image = JAI.create("Scale", pb, localHints);
                 // getting the new ROI property
                 if (roi != null) {
-                    PropertyGenerator gen = new ScaleDescriptor()
+                    PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                     Object prop = gen.getProperty("roi", image);
                     if (prop != null && prop instanceof ROI) {
@@ -4172,13 +4183,11 @@ public class ImageWorker {
                 if (isNoDataNeeded()) {
                     if (background != null && background.length > 0) {
                         pb.set(background, 8);
-                        // We must set the new NoData value
-                        setNoData(RangeFactory.create(background[0], background[0]));
                     }
                 }
-                image = JAI.create("Scale", pb, commonHints);
+                image = JAI.create("Scale", pb, getRenderingHints());
                 if (roi != null) {
-                    PropertyGenerator gen = new ScaleDescriptor()
+                    PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                     Object prop = gen.getProperty("roi", image);
                     if (prop != null && prop instanceof ROI) {
@@ -4195,15 +4204,9 @@ public class ImageWorker {
             pb.set(roi, 3);
             pb.set(true, 5);
             pb.set(nodata, 6);
-            if (isNoDataNeeded()) {
-                if (bgValues != null && bgValues.length > 0) {
-                    // We must set the new NoData value
-                    setNoData(RangeFactory.create(bgValues[0], bgValues[0]));
-                }
-            }
-            image = JAI.create("Affine", pb, commonHints);
+            image = JAI.create("Affine", pb, getRenderingHints());
             if (roi != null) {
-                PropertyGenerator gen = new AffineDescriptor()
+                PropertyGenerator gen = getOperationDescriptor("Affine")
                         .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
                 Object prop = gen.getProperty("roi", image);
                 if (prop != null && prop instanceof ROI) {
@@ -4268,8 +4271,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background, 6);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         
@@ -4294,8 +4295,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.add((float)background[0]);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create((float)background[0], (float)background[0]));
             }
         }
         
@@ -4304,8 +4303,59 @@ public class ImageWorker {
         return this;
     }
     
+    /**
+     * Returns the background colors as a value, if at all possible (3 or 4 values in the right range)
+     * @return
+     */
+    private Color getBackgroundColor() {
+        if(background == null || background.length < 3 || background.length > 4) {
+            return null;
+        } 
+        
+        for (int i = 0; i < background.length; i++) {
+            double component = background[i];
+            if(component < 0 || component > 255) {
+                return null;
+            }
+        }
+        
+        if(background.length == 3) {
+            return new Color((int) background[0], (int) background[1], (int) background[2]);
+        } else if(background.length == 4) {
+            return new Color((int) background[0], (int) background[1], (int) background[2], (int) background[3]); 
+        } else {
+            return null;
+        }
+    }
+    
     public ImageWorker mosaic(RenderedImage[] images, MosaicType type, PlanarImage[] alphas, ROI[] rois, double[][] thresholds,
             Range[] nodata) {
+        // check if we might be applying a background value that's not in palettes, still assuming
+        // the input images have uniform palettes
+        double[] background = this.background;
+        if(images != null && images.length > 0) {
+            ColorModel cmref = images[0].getColorModel();
+            Color backgroundColor = getBackgroundColor();
+            if(cmref instanceof IndexColorModel && (cmref.getTransparency() != IndexColorModel.OPAQUE || images[0].getProperty("ROI") instanceof ROI) && backgroundColor != null) {
+                IndexColorModel icm = (IndexColorModel) cmref;
+                int index = ColorUtilities.getColorIndex(icm, backgroundColor, -1);
+                Color color;
+                if(icm.hasAlpha()) {
+                    color = new Color(icm.getRed(index), icm.getGreen(index), icm.getBlue(index));
+                } else {
+                    color = new Color(icm.getRed(index), icm.getGreen(index), icm.getBlue(index), icm.getAlpha(index));
+                }
+                if(color.equals(backgroundColor)) {
+                    background = new double[] {index};
+                } else {
+                    // we have to expand to RGB to apply that value
+                    for (int i = 0; i < images.length; i++) {
+                        images[i] = new ImageWorker(images[i]).forceComponentColorModel().getRenderedImage();
+                    }
+                }
+            }
+        }
+
         // ParameterBlock creation
         ParameterBlock pb = new ParameterBlock();
         int srcNum = 0;
@@ -4356,41 +4406,90 @@ public class ImageWorker {
         pb.add(thresholds);
         pb.add(background);
         pb.add(nodataNew);
-        Range nod = null;
-        if (background != null && background.length > 0) {
-            // We must set the new NoData value
-            nod = (RangeFactory.create(background[0], background[0]));
-        }
-        // Setting the final ROI as union of the older ROIs
-        if(roisNew != null){
-            int numROI = roisNew.length;
-            ROI roi2 = roisNew[0];
-            ROI finalROI = roi2 != null  ? new ROI(roi2.getAsImage()) : null;//roisNew[0];
-            for(int i = 1; i < numROI; i++){
-                ROI added = roisNew[i];
-                if(added != null){
-                    if(finalROI != null){
-                        finalROI.add(added);
-                    }else{
-                        finalROI = new ROI(added.getAsImage());
-                    }
-                }
-            }
-            if(numROI != srcNum){
-                for(int i = numROI; i < srcNum; i++){
-                    RenderedImage img = (RenderedImage) pb.getSource(i);
-                    ROI r = new ROIShape(new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
-                    finalROI.add(r);
-                }
-            }
-            setROI(finalROI);
-        }
         image = JAI.create("Mosaic", pb, getRenderingHints());
-        if(nodata != null || (!noInternalNoData && nodataNew != null)){
-            setNoData(nod);
+        // Setting the final ROI as union of the older ROIs, assuming
+        // we did not apply a background color, in that case, there is no more ROI to
+        // care for
+        if(background == null) {
+            if(roisNew != null ) {
+                ROI finalROI = mosaicROIs(pb.getSources(), roisNew);
+                setROI(finalROI);
+            }
+        } else {
+            setROI(null);
         }
         
         return this;
+    }
+
+    private ROI mosaicROIs(Vector sources, ROI... roiArray) {
+        if(roiArray == null) {
+            return null;
+        }
+        
+        // collect all ROIs
+        List<ROI> rois = new ArrayList<>(Arrays.asList(roiArray));
+        int numSources = sources.size();
+        if(roiArray.length < numSources){
+            for(int i = roiArray.length; i < numSources; i++){
+                RenderedImage img = (RenderedImage) sources.get(i);
+                ROI r = new ROIShape(new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
+                rois.add(r);
+            }
+        }
+        
+        // bail out for the simple case without creating new objects
+        if(rois.size() == 1) {
+            return rois.get(0);
+        }
+        
+        // prepare the vector union, take aside a ROIGeometry if possible
+        // as it can add both ROIShape and ROIGeometry
+        List<ROI> rasterROIs = new ArrayList<>();
+        List<ROI> vectorROIs = new ArrayList<>();
+        ROI vectorReference = null;
+        for (ROI roi : rois) {
+            if(roi instanceof ROIShape || roi instanceof ROIGeometry) {
+                if(vectorReference == null && roi instanceof ROIGeometry) {
+                    vectorReference = (ROIGeometry) roi;
+                } else {
+                    vectorROIs.add(roi);
+                }
+            } else {
+                rasterROIs.add(roi);
+            }
+        }
+        if(vectorReference == null && vectorROIs.size() > 0) {
+            vectorReference = vectorROIs.remove(0);
+        }
+        // accumulate the vector ROIs, if any
+        for (ROI roi : vectorROIs) {
+            vectorReference = vectorReference.add(roi);
+        }
+        
+        // optimization in case we end up with just one ROI, no need to mosaic
+        if(rasterROIs.size() == 0) {
+            return vectorReference;
+        } else if(rasterROIs.size() == 1 && vectorReference == null) {
+            return rasterROIs.get(0);
+        }
+        
+        // ok, rasterize the vector one if any and mosaic
+        ParameterBlock pb = new ParameterBlock();
+        if(vectorReference != null) {
+            pb.addSource(vectorReference.getAsImage());
+        }
+        for (ROI rasterROI : rasterROIs) {
+            pb.addSource(rasterROI.getAsImage());
+        }
+        pb.add(javax.media.jai.operator.MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+        pb.add(null); // alphas
+        pb.add(null); // ROI (null to avoid double bit -> byte expansion of the ROI data
+        pb.add(ROI_THRESHOLDS);
+        pb.add(ROI_BACKGROUND);
+        pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
+        RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
+        return new ROI(roiMosaic);
     }
     
     private Range[] handleMosaicThresholds(double[][] thresholds, int srcNum) {
@@ -4429,8 +4528,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.add(background);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         image = JAI.create("Border", pb, getRenderingHints());
@@ -4443,7 +4540,8 @@ public class ImageWorker {
         pb.add(xTrans);
         pb.add(yTrans);
         pb.add(interp);
-        image = JAI.create("Translate", pb, getRenderingHints());
+        // do not use getRenderingHints() with translate, as it cannot deal with layout hints
+        image = JAI.create("Translate", pb, commonHints);
         return this;
     }
     
@@ -4460,14 +4558,13 @@ public class ImageWorker {
         pb.set(background, 2);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
+//                // We must set the new NoData value
+//                setNoData(RangeFactory.create(background[0], background[0]));
+//                invalidateStatistics();
             }
         }
         image = JAI.create("Warp", pb, getRenderingHints());
-        // getting the new ROI property
-        PropertyGenerator gen = new WarpDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-        Object prop = gen.getProperty("roi", image);
+        Object prop = image.getProperty("roi");
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);
         }  else {
@@ -4495,13 +4592,11 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background, 8);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         image = JAI.create("Scale", pb, getRenderingHints());
         // getting the new ROI property
-        PropertyGenerator gen = new ScaleDescriptor().getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+        PropertyGenerator gen = getOperationDescriptor("Scale").getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
         Object prop = gen.getProperty("roi", image);
         if(prop != null && prop instanceof ROI){
             setROI((ROI) prop);
@@ -4528,8 +4623,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 1);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -4549,8 +4642,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background, 3);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
         image = JAI.create("ColorIndexer", pb, getRenderingHints());
@@ -4614,8 +4705,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 5); // destination No Data value
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 
@@ -4636,8 +4725,6 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 3);
-                // We must set the new NoData value
-                setNoData(RangeFactory.create(background[0], background[0]));
             }
         }
 

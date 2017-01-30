@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,11 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,9 +47,13 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Query;
 import org.geotools.data.collection.CollectionFeatureSource;
+import org.geotools.data.property.PropertyDataStore;
+import org.geotools.data.property.PropertyFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -63,11 +70,18 @@ import org.geotools.map.MapContext;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.lite.StreamingRenderer.RenderCoverageReaderRequest;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.styling.DescriptionImpl;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleImpl;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.Symbolizer;
+import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -103,7 +117,7 @@ public class StreamingRendererTest {
     private GeometryFactory gf = new GeometryFactory();
     protected int errors;
     protected int features;
-    
+
     @Before
     public void setUp() throws Exception {
 
@@ -383,8 +397,9 @@ public class StreamingRendererTest {
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reWgs);
         
         // all the lines should have been painted, the coverage reports as painted too 
-        // since the reporting happens in the main thread that does not error
-        assertEquals(4, features);
+        // since the reporting happens in the main thread that does not error, but with
+        // the new queue draining on some systems it might not
+        assertTrue(features == 4 || features == 3);
         assertEquals(1, errors);
         assertTrue(exceptions.get(0).getCause() instanceof OutOfMemoryError);
     }
@@ -511,7 +526,160 @@ public class StreamingRendererTest {
         
         graphics.dispose();
     }
+
+    /**
+     * Test that we don't have the geometry added twice by StreamingRenderer#findStyleAttributes when geofence is
+     * filtering a layer.
+     * @throws Exception
+     */
+    @Test
+    public void testFindLineStyleAttributeWithAddedFilter() throws Exception {
+        final List<Filter> filters = new ArrayList<Filter>();
+
+        SimpleFeatureSource testSource = new CollectionFeatureSource(createLineCollection()) {
+            @Override
+            public SimpleFeatureCollection getFeatures(Query query) {
+                filters.add(query.getFilter());
+                return super.getFeatures(query);
+            }
+        };
+
+        Style style = createPointStyle();
+        MapContent mc = new MapContent();
+        FeatureLayer layer = new FeatureLayer(testSource, style);
+        mc.addLayer(layer);
+
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84);
+
+        //simulate geofence adding a bbox
+        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "WGS84");
+        StyleFactoryImpl sf = new StyleFactoryImpl();
+        Rule bboxRule = sf.createRule(new Symbolizer[0], new DescriptionImpl(), new Graphic[0], "bbox", bbox, false,
+                1e12, 0);
+        style.featureTypeStyles().get(0).rules().add(bboxRule);
+
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        try {
+            sr.paint(graphics, new Rectangle(5, 5, 7, 7), envelope);
+        } finally {
+            graphics.dispose();
+        }
+
+        //must have only one bbox, not two
+        assertEquals(1, filters.size());
+        assertEquals(FastBBOX.class, filters.get(0).getClass());
+    }
     
+    /*
+     * https://osgeo-org.atlassian.net/browse/GEOT-5287
+     */
+    @Test
+    public void testEmptyGeometryRendering() throws Exception {
+
+        MapContent mc = new MapContent();
+
+        /*
+         * We simulate reading empty geometries with this properties and mocking the capability to
+         * filter, so that no filter layer is installed over our data and the empty geometry reaches
+         * rendering code. These geometries are in EPSG:32717 because the 0,0 coordinate is in the
+         * pole.
+         */
+        File dir = new File(TestData.getResource(this, "empty-geom-rendering.properties").toURI());
+        PropertyDataStore dataStore = new PropertyDataStore(dir.getParentFile()) {
+            @Override
+            protected ContentFeatureSource createFeatureSource(ContentEntry entry)
+                    throws IOException {
+                return new PropertyFeatureSource(entry, Query.ALL) {
+                    @Override
+                    protected boolean canFilter() {
+                        return true;
+                    }
+                };
+            }
+        };
+        /*
+         * Set up the rendering of previous empty geometry
+         */
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createPolygonSymbolizer());
+        Layer layer = new FeatureLayer(dataStore.getFeatureSource("empty-geom-rendering"), style);
+        mc.addLayer(layer);
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+        BufferedImage img = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = img.createGraphics();
+        Rectangle paintArea = new Rectangle(40, 40);
+        // An EPSG:8357 extent on the EPSG:32717 area of application. 
+        double minx = -8929252.1;
+        double maxx = -8708634.6;
+        double miny = -491855.7;
+        double maxy = -271204.3;
+        ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(
+                new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny),
+                CRS.decode("EPSG:3857"));
+        sr.addRenderListener(new RenderListener() {
+            public void featureRenderer(SimpleFeature feature) {
+            }
+
+            public void errorOccurred(Exception e) {
+                errors++;
+            }
+        });
+        errors = 0;
+
+        sr.paint(graphics, paintArea, referencedEnvelope);
+
+        assertTrue(errors == 0);
+    }
+
+    @Test
+    public void testStyleThatUsesGeometryDefaultAttribute() throws Exception {
+        // preparing the layer to be rendered, the provided style as a filter that will use
+        // the default geometry attribute "", this will allow us to test that using geometry
+        // default attribute "" is correctly handled
+        StyleImpl style = (StyleImpl) RendererBaseTest.loadStyle(this, "genericLines.sld");
+        File vectorDataFile = new File(TestData.getResource(this, "genericLines.properties").toURI());
+        PropertyDataStore dataStore = new PropertyDataStore(vectorDataFile.getParentFile());
+        Layer layer = new FeatureLayer(dataStore.getFeatureSource("genericLines"), style);
+        // prepare map content and instantiate a streaming reader
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(layer);
+        StreamingRenderer gRender = new StreamingRenderer();
+        gRender.setMapContent(mapContent);
+        gRender.addRenderListener(new RenderListener() {
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                features++;
+            }
+
+            @Override
+            public void errorOccurred(Exception e) {
+                errors++;
+            }
+        });
+        features = 0;
+        errors = 0;
+        // defining the paint area and performing the rendering
+        BufferedImage image = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+        Rectangle paintArea = new Rectangle(40, 40);
+        double minx = -2;
+        double maxx = 2;
+        double miny = -2;
+        double maxy = 2;
+        ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(
+                new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny),
+                CRS.decode("EPSG:4326"));
+        gRender.paint(graphics, paintArea, referencedEnvelope);
+        // checking that four features were rendered, if the default geometry attribute was not
+        // correctly handled no geometries were selected and so no features were rendered
+        Assert.assertEquals(features, 4);
+        Assert.assertEquals(errors, 0);
+    }
 }
 
 

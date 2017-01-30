@@ -155,7 +155,7 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * This is where we try and go from our rather lame CRSEnvelope data structure to an actual
-     * RefernecedEnvelope with a real CoordianteReferenceSystem.
+     * ReferencedEnvelope with a real CoordinateReferenceSystem.
      */
     private Map<CoordinateReferenceSystem, Envelope> envelopeCache = Collections
             .synchronizedMap(new WeakHashMap<CoordinateReferenceSystem, Envelope>());
@@ -798,7 +798,7 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Look up an envelope for the provided CoordianteReferenceSystem.
+     * Look up an envelope for the provided CoordinateReferenceSystem.
      * <p>
      * Please note that the lookup is performed based on the SRS Name of the provided
      * CRS which is assumed to be one of its identifiers.

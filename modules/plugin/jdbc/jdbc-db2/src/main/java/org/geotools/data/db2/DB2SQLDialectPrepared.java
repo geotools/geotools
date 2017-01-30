@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -71,6 +71,8 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
            DB2FilterToSQL filter = new DB2FilterToSQL(this);
            filter.setFunctionEncodingEnabled(isFunctionEncodingEnabled());
            filter.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
+           if (delegate.isUseSelectivity())
+               filter.setSelectivityClause(DB2SQLDialect.SELECTIVITY_CLAUSE);
            return filter;
     }
 	
@@ -208,7 +210,12 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     	
         
     }
-    
+
+    @Override
+    public String encodeNextSequenceValue(String schemaName, String sequenceName) {
+        return delegate.encodeNextSequenceValue(schemaName, sequenceName);
+    }
+
     @Override
     public boolean lookupGeneratedValuesPostInsert() {
         return delegate.lookupGeneratedValuesPostInsert();
@@ -221,8 +228,8 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void prepareGeometryValue(Geometry geom, int dimension, int srid, Class binding, StringBuffer sql) {
-	    DB2Util.prepareGeometryValue(geom, srid, binding, sql);
+    public void prepareGeometryValue(Class<? extends Geometry> gClass, int dimension, int srid, Class binding, StringBuffer sql) {
+	    DB2Util.prepareGeometryValue(gClass, srid, binding, sql);
     }
 
     public boolean isLimitOffsetSupported() {
@@ -266,5 +273,18 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
         return delegate.getOptimizedBounds(schema, featureType, cx);
     }
 
+    public boolean isUseSelectivity() {
+        return delegate.isUseSelectivity();
+    }
+
+    public void setUseSelectivity(boolean useSelectivity) {
+        delegate.setUseSelectivity(useSelectivity);
+    }
+
+
+    @Override
+    protected boolean supportsSchemaForIndex() {
+        return delegate.supportsSchemaForIndex();
+    }
 
 }

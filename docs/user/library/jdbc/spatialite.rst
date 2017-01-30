@@ -36,7 +36,7 @@ Connection Parameters
 Parameter      Description
 ============== ============================================
 "dbtype"       Must be the string "spatialite"
-"database"     The databse to connect to
+"database"     The database to connect to
 "user"         User name (optional)
 ============== ============================================
 
@@ -145,7 +145,7 @@ It also maybe required to set the ``LD_LIBRARY_PATH`` environment variable as we
 Mac
 ===
 
-Same as for Linux expect that ``LD_LIBRARY_PATH`` is replaced with ``DYLD_LIBRARY_PATH``.
+Same as for Linux except that ``LD_LIBRARY_PATH`` is replaced with ``DYLD_LIBRARY_PATH``.
 
 
   

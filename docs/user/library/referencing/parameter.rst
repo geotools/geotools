@@ -90,13 +90,13 @@ You can also have groups of parameters (that may repeat if needed as indicated b
 
   final DefaultParameterDescriptorGroup REFERENCES = new DefaultParameterDescriptorGroup(
       Citations.GEOTOOLS,
-      "Referneces",
+      "References",
       new DefaultParameterDescriptor[]{PREFIX,NAMESPACE}
   );
 
 You can have groups within groups, and so on.
 
-You can use a Map to quickly create a citation, incase a constant does not suite you::
+You can use a Map to quickly create a citation, in case a constant does not suit you::
   
   Map metadata = new HashMap();
   metadata.put( "authority", System.getProperties().get("user.name"));

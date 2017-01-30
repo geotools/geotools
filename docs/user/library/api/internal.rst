@@ -7,7 +7,7 @@ mosty consists of interfaces) there is not a lot of interesting design elements 
 Style
 ^^^^^
 
-The gt-api interfaces for Style are a straight extension of the gt-opengis interfaes. This does
+The gt-api interfaces for Style are a straight extension of the gt-opengis interfaces. This does
 come with a drawback; we need to ask you to be careful of thread safety.
 
 Filter

@@ -72,7 +72,7 @@ single result).
    
    Create the file:
    
-   * META_INF/services/org.geotools.process.ProcessFactory
+   * META-INF/services/org.geotools.process.ProcessFactory
 
 7. Fill in the following contents (one implementation class per line)::
    

@@ -115,4 +115,31 @@ public class FormatDateTimezoneFunctionTest {
         }
     }
 
+    /**
+     * Test that a null pattern causes null to be returned.
+     */
+    @Test
+    public void nullPattern() {
+        Assert.assertNull(ff.function(FormatDateTimezoneFunction.NAME.getFunctionName(),
+                ff.literal(null), ff.literal(TIME), ff.literal("UTC")).evaluate(null));
+    }
+
+    /**
+     * Test that a null date causes null to be returned.
+     */
+    @Test
+    public void nullDate() {
+        Assert.assertNull(ff.function(FormatDateTimezoneFunction.NAME.getFunctionName(),
+                ff.literal(PATTERN), ff.literal(null), ff.literal("UTC")).evaluate(null));
+    }
+
+    /**
+     * Test that a null timezone causes null to be returned.
+     */
+    @Test
+    public void nullTimezone() {
+        Assert.assertNull(ff.function(FormatDateTimezoneFunction.NAME.getFunctionName(),
+                ff.literal(PATTERN), ff.literal(TIME), ff.literal(null)).evaluate(null));
+    }
+
 }

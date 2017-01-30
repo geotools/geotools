@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
@@ -43,7 +44,6 @@ import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.TreeException;
 import org.geotools.data.shapefile.shp.IndexFile;
@@ -59,7 +59,6 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.GeometryFilterImpl;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
@@ -71,7 +70,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
@@ -89,7 +87,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -246,13 +243,17 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 header.read(buffer, true);
 
                 SimpleFeatureType schema = getSchema();
-                ReferencedEnvelope bounds = new ReferencedEnvelope(
-                        schema.getCoordinateReferenceSystem());
-                bounds.include(header.minX(), header.minY());
-                bounds.include(header.minX(), header.minY());
-
-                Envelope env = new Envelope(header.minX(), header.maxX(), header.minY(),
+                
+                Envelope env;
+                
+                // If it is a shapefile without any data (file length equals 50), return an empty
+                // envelope as expected
+                if(header.getFileLength() == 50) {
+                    env = new Envelope();
+                } else {
+                    env = new Envelope(header.minX(), header.maxX(), header.minY(),
                         header.maxY());
+                }
 
                 CoordinateReferenceSystem crs = null;
                 if (schema != null) {
@@ -320,11 +321,11 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         Envelope bbox = new ReferencedEnvelope();
         if (q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+            if(bbox == null) {
+                bbox = new ReferencedEnvelope();
+            }
         }
 
-        boolean usingBoundingBox = false;
-        boolean usingFidIndex = false;
-        
         // see if we can use indexing to speedup the data access
         Filter filter = q != null ? q.getFilter() : null;
         IndexManager indexManager = getDataStore().indexManager;
@@ -334,14 +335,12 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
-                usingFidIndex = true;
             }
-        } else if (getDataStore().isIndexed() && !bbox.isNull()
+        } else if (getDataStore().isIndexed() && !bbox.isNull() 
                 && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
             try {
                 if(indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {
                     goodRecs = indexManager.querySpatialIndex(bbox);
-                    usingBoundingBox = true;
                 }
             } catch (TreeException e) {
                 throw new IOException("Error querying index: " + e.getMessage());
@@ -353,22 +352,6 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                     + ", skipping read");
             goodRecs.close();
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
-        }
-        
-        // uses the optional Recno field to quickly lookup the shp offset and the record number.
-        if (!usingBoundingBox && !usingFidIndex && getDataStore().isOdbcFilteringEnabled()) {
-            try {
-                goodRecs = RecnoIndexManager.queryRecnoIndex(getDataStore(), filter, q.getMaxFeatures(), goodRecs);
-                
-                // do we have anything to read at all? If not don't bother opening all the files
-                if (goodRecs!=null && !goodRecs.hasNext()) {                    
-                    LOGGER.log(Level.FINE, "Empty results for " + resultSchema.getName().getLocalPart() + ", skipping read");
-                    goodRecs.close();
-                    return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
-                }
-            } catch (Exception error) {
-                LOGGER.log(Level.WARNING, "Error querying renco field. msg='" + error.getMessage() + "'.");
-            }
         }
         
         // get the .fix file reader, if we have a .fix file

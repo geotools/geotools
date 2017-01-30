@@ -64,7 +64,6 @@ public class FeatureTypeDBObjectTest {
         StringBuilder jsonBuffer = new StringBuilder();
         JSON.serialize(dbo, jsonBuffer);
         String json = jsonBuffer.toString();
-        System.out.println(MongoTestUtil.prettyPrint(json));
         Object o = JSON.parse(json);
         assertThat(o, is(instanceOf(DBObject.class)));
         dbo = (DBObject)o;

@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
+import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.TileCache;
 
 import org.geotools.coverage.AbstractCoverage;
@@ -46,6 +47,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Interpolator2D;
 import org.geotools.factory.FactoryRegistry;
 import org.geotools.factory.Hints;
+import org.geotools.image.ImageWorker;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -80,6 +82,7 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  */
 public class CoverageProcessor {
+
     /**
      * The logger for coverage processing operations.
      */
@@ -177,9 +180,10 @@ public class CoverageProcessor {
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
         }
-        JAIExt.initJAIEXT();
+        boolean isJaiExtEnabled = ImageWorker.isJaiExtEnabled();
+        LOGGER.config("JAI-Ext operations are " + (isJaiExtEnabled ? "enabled" : "disabled")); 
     }
-    
+
 	/**
 	 * The set of operations for this coverage processor. Keys are operation's name.
 	 * Values are operations and should not contains duplicated values. Note that while
@@ -683,5 +687,19 @@ public class CoverageProcessor {
             exception.printStackTrace(arguments.out);
         }
         arguments.out.flush();
+    }
+
+    public static Object getParameter(ParameterBlockJAI parameters, String paramName) {
+        Object param = null;
+        if (parameters != null) {
+            try {
+                param = parameters.getObjectParameter(paramName);
+            } catch (IllegalArgumentException e) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Required parameter is unavailable: " + paramName + ". Returning null ");
+                }
+            }
+        }
+        return param;
     }
 }

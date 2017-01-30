@@ -20,17 +20,22 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
+import org.geotools.data.complex.config.Types;
 import org.geotools.factory.Hints;
 import org.geotools.util.InterpolationProperties;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -50,6 +55,8 @@ public class DataAccessRegistry implements Repository {
 
     private static final long serialVersionUID = -373404928035022963L;
     
+    private static final Logger LOGGER = Logging.getLogger(DataAccessRegistry.class);
+
     /**
      * Singleton instance
      */
@@ -141,8 +148,110 @@ public class DataAccessRegistry implements Repository {
      */
     public synchronized void unregisterAccess(DataAccess<FeatureType, Feature> dataAccess) {
         registry.remove(dataAccess);
+
+        if (dataAccess instanceof AppSchemaDataAccess) {
+            AppSchemaDataAccess asda = (AppSchemaDataAccess) dataAccess;
+            // NOTE: this code assumes hidden data accesses are never removed directly by the user,
+            // only by the automatic disposal algorithm, so no need to run it again
+            if (!asda.hidden) {
+                try {
+                    disposeHiddenDataAccessInstances();
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE,
+                            "Exception occurred disposing unused data access instances", e);
+                }
+            }
+        }
     }
-    
+
+    // utility method to clear up hidden app-schema data accesses (i.e. configured via a separate mapping file, specified in the <includedTypes>
+    // directive of some top-level app-schema data access) that are no longer needed (i.e. they are not referenced by any top-level data access).
+    private void disposeHiddenDataAccessInstances() throws IOException {
+        // step 1: collect all hidden data access instances that are still referenced by some other data access
+        boolean canSafelyRemove = true;
+        Set<DataAccess<?, ?>> stillReferencedHiddenDataAccesses = new HashSet<DataAccess<?, ?>>();
+        for (DataAccess<FeatureType, Feature> da : registry) {
+            if (da instanceof AppSchemaDataAccess) {
+                AppSchemaDataAccess asda = (AppSchemaDataAccess) da;
+                if (!asda.hidden) {
+                    // reach out to all referenced (directly or indirectly) DataAccesses
+                    Set<DataAccess<?, ?>> reachedDataAccesses = new HashSet<DataAccess<?, ?>>();
+                    canSafelyRemove = canSafelyRemove
+                            && reachOutToReferencedDataAccesses(asda,
+                                    stillReferencedHiddenDataAccesses, reachedDataAccesses);
+
+                    if (!canSafelyRemove) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // step 2: remove hidden data access instances that are no more referenced;
+        // this step is performed only if no polymorphic nested mapping was found
+        if (canSafelyRemove) {
+            List<DataAccess<FeatureType, Feature>> copyRegistry = new ArrayList<DataAccess<FeatureType, Feature>>(
+                    registry);
+            for (DataAccess<FeatureType, Feature> da : copyRegistry) {
+                if (da instanceof AppSchemaDataAccess) {
+                    AppSchemaDataAccess asda = (AppSchemaDataAccess) da;
+                    if (asda.hidden && !stillReferencedHiddenDataAccesses.contains(asda)) {
+                        asda.dispose();
+                    }
+                }
+            }
+        }
+    }
+
+    // recursive method to navigate the dependency graph, following feature chaining links
+    private boolean reachOutToReferencedDataAccesses(AppSchemaDataAccess asda,
+            Set<DataAccess<?, ?>> stillReferencedDataAccessInstances,
+            Set<DataAccess<?, ?>> reachedDataAccessInstances) throws IOException {
+        reachedDataAccessInstances.add(asda);
+        for (Name typeName : asda.getNames()) {
+            FeatureTypeMapping ftm = asda.getMappingByNameOrElement(typeName);
+            List<NestedAttributeMapping> nestedMappings = ftm.getNestedMappings();
+            if (nestedMappings != null) {
+                for (NestedAttributeMapping nestedAttr : nestedMappings) {
+                    // TODO: can't figure out how to support polymorphic mappings without
+                    // evaluating the expression for every single feature, so, if a polymorphic
+                    // mapping is found, return false to notify the caller that automatic
+                    // disposal cannot be done safely
+                    if (!nestedAttr.isConditional()) {
+                        String nestedTypeNameAsString = nestedAttr.nestedFeatureType.toString();
+                        Name nestedTypeName = Types.degloseName(nestedTypeNameAsString,
+                                nestedAttr.getNamespaces());
+                        try {
+                            DataAccess<FeatureType, Feature> refDA = getDataAccess(nestedTypeName);
+                            if (refDA instanceof AppSchemaDataAccess) {
+                                AppSchemaDataAccess refASDA = (AppSchemaDataAccess) refDA;
+                                if (refASDA.hidden) {
+                                    stillReferencedDataAccessInstances.add(refASDA);
+                                }
+                                if (!reachedDataAccessInstances.contains(refASDA)) {
+                                    // recursive call
+                                    if (!reachOutToReferencedDataAccesses(refASDA,
+                                            stillReferencedDataAccessInstances,
+                                            reachedDataAccessInstances)) {
+                                        return false;
+                                    }
+                                }
+                            }
+                        } catch (DataSourceException dse) {
+                            LOGGER.log(Level.FINER, "Referenced data access not found: "
+                                    + "probably it has been removed already, moving on...", dse);
+                        }
+                    } else {
+                        LOGGER.finer("Polymorphic mapping found, disabling automatic disposal of hidden data accesses");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Dispose and unregister all data accesses in the registry. This is may be needed to prevent unit tests
      * from conflicting with data accesses with the same type name registered for other tests.

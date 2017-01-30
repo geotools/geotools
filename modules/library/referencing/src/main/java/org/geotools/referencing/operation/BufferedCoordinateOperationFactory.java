@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -120,7 +120,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * no-argument constructor, since this constructor is typically invoked while
      * {@link ReferencingFactoryFinder} is still iterating over the registered implementations.
      */
-    private CoordinateOperationFactory factory;
+    private volatile CoordinateOperationFactory factory;
 
     /**
      * The pool of cached transformations. This map can not be static, because the values may
@@ -210,9 +210,12 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * factory when not available in the cache.
      */
     private final CoordinateOperationFactory getBackingFactory() {
-        assert Thread.holdsLock(hints); // Same lock than the one used by getImplementationHints().
         if (factory == null) {
-            factory = getBackingFactory(null);
+            synchronized(this) {
+                if(factory == null) {
+                    factory = getBackingFactory(null);
+                }
+            }
         }
         return factory;
     }
@@ -250,12 +253,10 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
         ensureNonNull("targetCRS", targetCRS);
         final CRSPair key = new CRSPair(sourceCRS, targetCRS);
         CoordinateOperation op;
-        synchronized (hints) { // This lock is indirectly required by getBackingFactory().
-            op = pool.get(key);
-            if (op == null) {
-                op = getBackingFactory().createOperation(sourceCRS, targetCRS);
-                pool.put(key, op);
-            }
+        op = pool.get(key);
+        if (op == null) {
+            op = getBackingFactory().createOperation(sourceCRS, targetCRS);
+            pool.put(key, op);
         }
         return op;
     }
@@ -273,8 +274,6 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
                                                final OperationMethod method)
             throws OperationNotFoundException, FactoryException
     {
-        synchronized (hints) { // This lock is indirectly required by getBackingFactory().
-            return getBackingFactory().createOperation(sourceCRS, targetCRS, method);
-        }
+        return getBackingFactory().createOperation(sourceCRS, targetCRS, method);
     }
 }

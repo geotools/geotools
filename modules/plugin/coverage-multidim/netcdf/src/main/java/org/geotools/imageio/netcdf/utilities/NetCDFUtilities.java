@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,21 @@ package org.geotools.imageio.netcdf.utilities;
 import it.geosolutions.imageio.stream.AccessibleStream;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import org.geotools.data.DataUtilities;
+import org.geotools.gce.imagemosaic.ImageMosaicFormat;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
+import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
+import org.geotools.referencing.operation.projection.MapProjection;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import ucar.ma2.*;
+import ucar.nc2.*;
+import ucar.nc2.constants.AxisType;
+import ucar.nc2.dataset.CoordinateAxis1D;
+import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDataset.Enhance;
+import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.jni.netcdf.Nc4Iosp;
 
 import java.awt.image.DataBuffer;
 import java.io.File;
@@ -28,41 +43,9 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.geotools.data.DataUtilities;
-import org.geotools.gce.imagemosaic.ImageMosaicFormat;
-import org.geotools.referencing.operation.projection.MapProjection;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import ucar.ma2.Array;
-import ucar.ma2.ArrayByte;
-import ucar.ma2.ArrayDouble;
-import ucar.ma2.ArrayFloat;
-import ucar.ma2.ArrayInt;
-import ucar.ma2.ArrayShort;
-import ucar.ma2.DataType;
-import ucar.nc2.Attribute;
-import ucar.nc2.Dimension;
-import ucar.nc2.Group;
-import ucar.nc2.Variable;
-import ucar.nc2.VariableIF;
-import ucar.nc2.constants.AxisType;
-import ucar.nc2.dataset.CoordinateAxis1D;
-import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.NetcdfDataset.Enhance;
-import ucar.nc2.dataset.VariableDS;
-import ucar.nc2.jni.netcdf.Nc4Iosp;
 
 /**
  * Set of NetCDF utility methods.
@@ -72,6 +55,10 @@ import ucar.nc2.jni.netcdf.Nc4Iosp;
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 public class NetCDFUtilities {
+
+    public static final boolean CHECK_COORDINATE_PLUGINS; 
+
+    public static final String CHECK_COORDINATE_PLUGINS_KEY = "netcdf.coordinates.enablePlugins";
 
     public static final String NETCDF4_MIMETYPE = "application/x-netcdf4";
 
@@ -116,6 +103,7 @@ public class NetCDFUtilities {
 
     public static final String UNKNOWN = "unknown";
 
+    public static final double DEFAULT_EARTH_RADIUS = 6371229.0d; 
 
     private NetCDFUtilities() {
 
@@ -127,6 +115,9 @@ public class NetCDFUtilities {
     /** Set containing all the definition of the UNSUPPORTED DIMENSIONS to set as vertical ones*/
     private static final Set<String> UNSUPPORTED_DIMENSIONS;
 
+    /** Set containing all the dimensions to be ignored */
+    private static final Set<String> IGNORED_DIMENSIONS;
+    
     /** Boolean indicating if GRIB library is available*/
     private static boolean IS_GRIB_AVAILABLE;
 
@@ -171,6 +162,14 @@ public class NetCDFUtilities {
 
     public final static String LON = "lon";
 
+    public final static String GRID_LATITUDE = "grid_latitude";
+
+    public final static String RLAT = "rlat";
+
+    public final static String GRID_LONGITUDE = "grid_longitude";
+
+    public final static String RLON = "rlon";
+
     public final static String DEPTH = "depth";
 
     public final static String ZETA = "z";
@@ -207,6 +206,8 @@ public class NetCDFUtilities {
 
     public final static String LAT_UNITS = "degrees_north";
 
+    public final static String RLATLON_UNITS = "degrees";
+
     public final static String NO_COORDS = "NoCoords";
 
     public final static String TIME_ORIGIN = "seconds since 1970-01-01 00:00:00 UTC";
@@ -231,12 +232,53 @@ public class NetCDFUtilities {
 
     public final static String COORDINATE_TRANSFORM_TYPE = "_CoordinateTransformType";
 
+    public final static String COORDINATES = "coordinates";
+
     // They are recognized from GDAL
     public final static String SPATIAL_REF = "spatial_ref";
 
     public final static String GEO_TRANSFORM = "GeoTransform";
 
+    public final static String UNIQUE_TIME_ATTRIBUTE = "uniqueTimeAttribute";
+
     final static Set<String> EXCLUDED_ATTRIBUTES = new HashSet<String>();
+
+    public static final String ENHANCE_COORD_SYSTEMS = "org.geotools.coverage.io.netcdf.enhance.CoordSystems";
+
+    public static final String ENHANCE_SCALE_MISSING = "org.geotools.coverage.io.netcdf.enhance.ScaleMissing";
+
+    public static final String ENHANCE_CONVERT_ENUMS = "org.geotools.coverage.io.netcdf.enhance.ConvertEnums";
+
+    public static final String ENHANCE_SCALE_MISSING_DEFER = "org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer";
+
+    public static boolean ENHANCE_SCALE_OFFSET = false;
+
+    static {
+        //TODO remove this block when enhance mode can be set some other way, possibly via read params
+
+        //Default used to be to just enhance coord systems
+        EnumSet<NetcdfDataset.Enhance> defaultEnhanceMode = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
+
+        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
+            && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
+            defaultEnhanceMode.remove(NetcdfDataset.Enhance.CoordSystems);
+        }
+
+        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
+            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissing);
+            ENHANCE_SCALE_OFFSET = true;
+        }
+
+        if (Boolean.getBoolean(ENHANCE_CONVERT_ENUMS)) {
+            defaultEnhanceMode.add(NetcdfDataset.Enhance.ConvertEnums);
+        }
+
+        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING_DEFER)) {
+            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissingDefer);
+        }
+
+        NetcdfDataset.setDefaultEnhanceMode(defaultEnhanceMode);
+    }
 
     /**
      * Global attribute for coordinate coverageDescriptorsCache.
@@ -287,6 +329,16 @@ public class NetCDFUtilities {
             + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
+        String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
+        CHECK_COORDINATE_PLUGINS = Boolean.getBoolean(CHECK_COORDINATE_PLUGINS_KEY);
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Value of Check Coordinate Plugins:" + property);
+            LOGGER.info("Should check for coordinate handler plugins:" 
+                + CHECK_COORDINATE_PLUGINS);
+        }
+
+        IGNORED_DIMENSIONS = initializeIgnoreSet();
+
         // Setting the LINUX Epoch as start time
         final GregorianCalendar calendar = new GregorianCalendar(1970, 00, 01, 00, 00, 00);
         UTC = TimeZone.getTimeZone("UTC");
@@ -298,9 +350,9 @@ public class NetCDFUtilities {
         EXCLUDED_ATTRIBUTES.add(DESCRIPTION);
         EXCLUDED_ATTRIBUTES.add(STANDARD_NAME);
 
-        NetcdfDataset.setDefaultEnhanceMode(EnumSet.of(Enhance.CoordSystems));
-        UNSUPPORTED_DIMENSIONS = new HashSet<String>();
-        UNSUPPORTED_DIMENSIONS.add("OSEQD");
+        HashSet<String> unsupportedSet = new HashSet<String>();
+        unsupportedSet.add("OSEQD");
+        UNSUPPORTED_DIMENSIONS = Collections.unmodifiableSet(unsupportedSet);
 
         VALID_TYPES.add(DataType.BOOLEAN);
         VALID_TYPES.add(DataType.BYTE);
@@ -344,6 +396,23 @@ public class NetCDFUtilities {
         return bandName.equalsIgnoreCase(LON) || bandName.equalsIgnoreCase(LAT);
     }
 
+    private static Set<String> initializeIgnoreSet() {
+        Set<CoordinateHandlerSpi> handlers = CoordinateHandlerFinder.getAvailableHandlers();
+        Iterator<CoordinateHandlerSpi> iterator = handlers.iterator();
+        Set<String> ignoredSet = new HashSet<String>();
+        while (iterator.hasNext()) {
+            CoordinateHandlerSpi handler = iterator.next();
+            Set<String> ignored = handler.getIgnoreSet();
+            if (ignored != null && !ignored.isEmpty()) {
+                ignoredSet.addAll(ignored);
+            }
+        }
+        if (!ignoredSet.isEmpty()) {
+            return ignoredSet;
+        }
+        return new HashSet<>();
+    }
+
     public static boolean isValidDir(File file) {
         String dir = file.getAbsolutePath();
         if (!file.exists()) {
@@ -369,6 +438,11 @@ public class NetCDFUtilities {
         return true;
     }
 
+    /**
+     * Get Z Dimension Lenght for standard CF variables
+     * @param var
+     * @return
+     */
     public static int getZDimensionLength(Variable var) {
         final int rank = var.getRank();
         if (rank > 2) {
@@ -376,6 +450,10 @@ public class NetCDFUtilities {
         }
         // TODO: Should I avoid use this method in case of 2D Variables?
         return 0;
+    }
+
+    public static int getDimensionLength(Variable var, final int dimensionIndex) {
+        return var.getDimension(dimensionIndex).getLength();
     }
 
     /**
@@ -391,7 +469,12 @@ public class NetCDFUtilities {
      */
     public static int getRawDataType(final VariableIF variable) {
         VariableDS ds = (VariableDS) variable;
-        final DataType type = ds.getOriginalDataType();
+        final DataType type;
+        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
+            type = ds.getDataType();
+        } else {
+            type = ds.getOriginalDataType();
+        }
         return transcodeNetCDFDataType(type,variable.isUnsigned());
     }
 
@@ -429,6 +512,14 @@ public class NetCDFUtilities {
      * if the specified variable is accepted.
      */
     public static boolean isVariableAccepted( final Variable var, final CheckType checkType ) {
+        return isVariableAccepted(var, checkType, null);
+    }
+    
+    /**
+     * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful for our purposes. The method returns {@code true}
+     * if the specified variable is accepted.
+     */
+    public static boolean isVariableAccepted( final Variable var, final CheckType checkType, final NetcdfDataset dataset ) {
         if (var instanceof CoordinateAxis1D) {
             return false;
         } else if (checkType == CheckType.NOSCALARS) {
@@ -458,9 +549,13 @@ public class NetCDFUtilities {
                 if (group == null) {
                     return false;
                 }
+                if (IGNORED_DIMENSIONS.contains(dimName)) {
+                    continue;
+                }
                 Variable dimVariable = group.findVariable(dimName);
-                if (dimVariable == null) {
-                    return false;
+                if (dimVariable == null && dataset != null) {
+                    //fallback on coordinates attribute for auxiliary coordinates.
+                    dimVariable = getAuxiliaryCoordinate(dataset, group, var, dimName);
                 }
                 if (dimVariable instanceof CoordinateAxis1D) {
                     CoordinateAxis1D axis = (CoordinateAxis1D) dimVariable;
@@ -493,6 +588,25 @@ public class NetCDFUtilities {
         } else {
             return isVariableAccepted(var.getFullName(), checkType);
         }
+    }
+
+    private static Variable getAuxiliaryCoordinate(NetcdfDataset dataset, Group group,
+            Variable var, String dimName) {
+        Variable coordinateVariable = null;
+        Attribute attribute = var.findAttribute(NetCDFUtilities.COORDINATES);
+        if (attribute != null) {
+            String coordinates = attribute.getStringValue();
+            String [] coords = coordinates.split(" ");
+            for (String coord: coords) {
+                Variable coordVar = dataset.findVariable(group, coord);
+                List<Dimension> varDimensions = coordVar.getDimensions();
+                if (varDimensions != null && varDimensions.size() == 1 && varDimensions.get(0).getFullName().equalsIgnoreCase(dimName)) {
+                    coordinateVariable = coordVar;
+                    break;
+                }
+            }
+        }
+        return coordinateVariable;
     }
 
     /**
@@ -648,12 +762,14 @@ public class NetCDFUtilities {
      */
     public static Format getAxisFormat(final AxisType type,
             final String prototype) {
-        if (!type.equals(AxisType.Time)) {
+        if (!type.equals(AxisType.Time) && !(type.equals(AxisType.RunTime))) {
             return NumberFormat.getNumberInstance(Locale.CANADA);
         }
         char dateSeparator = '-'; // The separator used in ISO format.
+        boolean twoDigitYear = false; //Year is two digits
         boolean yearLast = false; // Year is first in ISO pattern.
         boolean namedMonth = false; // Months are numbers in the ISO pattern.
+        boolean monthFirst = false; // Month first (assumes yearLast AND namedMonth true as well)
         boolean addT = false;
         boolean appendZ = false; 
         int dateLength = 0;
@@ -672,38 +788,52 @@ public class NetCDFUtilities {
             for (int i = 0; i < length; i++) {
                 final char c = prototype.charAt(i);
                 if (Character.isWhitespace(c)) {
-                    break; // Checks only the dates, ignore the hours.
-                }
-                if (Character.isDigit(c)) {
+                    if (monthFirst && field == 1) {                        
+                        dateLength++; //move to next field
+                    } else {
+                        break; // Checks only the dates, ignore the hours.
+                    }
+                } else if (Character.isDigit(c)) {
                     digitCount++;
                     dateLength++;
                     continue; // Digits are legal in all cases.
-                }
-                if (field == 2 && Character.isLetter(c)) {
+                } else if (Character.isLetter(c) && field <= 2) {
+                    if (field == 1) {
+                        yearLast = true;
+                        monthFirst = true;
+                    }
                     namedMonth = true;
+                    dateLength++;
                     continue; // Letters are legal for month only.
-                }
-                if (field == 1) {
+                } else if (field == 1 || monthFirst && field == 2) {
                     dateSeparator = c;
                     dateLength++;
+                } else if (c == dateSeparator) {
+                    dateLength++;
+                } else if (c=='T') {
+                    addT = true;
+                } else if (c=='Z' && i==length-1) {
+                    appendZ = true;
                 }
-                if (c=='T')
-                	addT = true;
-                if (c=='Z' && i==length-1)
-                	appendZ = true;
+                
+                if ((field == 1 || yearLast && field == 3 ) && digitCount <= 2) {
+                    twoDigitYear = true;
+                }
+                
                 digitCount = 0;
                 field++;
             }
             if (digitCount >= 4) {
                 yearLast = true;
+                twoDigitYear = false;
             }
         }
         String pattern = null;
         if (yearLast) {
-            pattern = namedMonth ? "dd-MMM-yyyy" : "dd-MM-yyyy";
+            pattern = (monthFirst? "MMM dd-" : "dd-" + (namedMonth ? "MMM-" : "MM-")) + (twoDigitYear ? "yy" : "yyyy" );
         } else {
-            pattern = namedMonth ? "yyyy-MMM-dd" : "yyyy-MM-dd";
-            if (dateLength < 10) {
+            pattern = (twoDigitYear ? "yy-" : "yyyy-" ) + (namedMonth ? "MMM-" : "MM-") + "dd";   
+            if (dateLength < pattern.length()) {
                 // case of truncated date
                 pattern = pattern.substring(0, dateLength);
             }
@@ -757,7 +887,7 @@ public class NetCDFUtilities {
         // get the schema
         try {
             indexSchema = DataUtilities.createType(schemaName, schemaDef);
-            indexSchema = DataUtilities.createSubType(indexSchema,DataUtilities.attributeNames(indexSchema), crs);
+            indexSchema = DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), crs);
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -780,11 +910,30 @@ public class NetCDFUtilities {
         return IS_NC4_LIBRARY_AVAILABLE;
     }
 
+    public static boolean isCheckCoordinatePlugins() {
+        return CHECK_COORDINATE_PLUGINS;
+    }
+
     /**
      * @return An unmodifiable Set of Unsupported Dimension names
      */
     public static Set<String> getUnsupportedDimensions() {
-        return Collections.unmodifiableSet(UNSUPPORTED_DIMENSIONS);
+        return UNSUPPORTED_DIMENSIONS;
+    }
+
+    /** 
+     * @return an unmodifiable Set of the Dimensions to be ignored by the 
+     * Coordinate parsing machinery
+     */
+    public static Set<String> getIgnoredDimensions() {
+        return Collections.unmodifiableSet(IGNORED_DIMENSIONS);
+    }
+
+    /**
+     * Adds a dimension to the ignored dimensions set.
+     */
+    public static void addIgnoredDimension(String dimensionName) {
+        IGNORED_DIMENSIONS.add(dimensionName);
     }
 
     /**

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.geotools.org/appschema/test"
+    xmlns:ast="http://www.geotools.org/appschema/test"
+    elementFormDefault="qualified">
+
+    <complexType name="UnrestrictedType">
+        <complexContent>
+            <extension base="anyType">
+                <attribute name="attr1" type="string" />
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="unrestrictedEl" type="ast:UnrestrictedType" />
+
+    <complexType name="RestrictedType">
+        <complexContent>
+            <restriction base="anyType">
+                <sequence>
+                    <element name="counter" type="int" />
+                </sequence>
+                <attribute name="attr1" type="string" />
+            </restriction>
+        </complexContent>
+    </complexType>
+    <element name="restrictedEl" type="ast:RestrictedType" />
+
+</schema>

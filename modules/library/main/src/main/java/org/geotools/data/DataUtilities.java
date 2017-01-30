@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -116,6 +116,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -338,6 +339,9 @@ public class DataUtilities {
             return null; // not a File URL
         }
         String string = url.toExternalForm();
+        if( url.getQuery() != null){
+            string = string.substring(0, string.indexOf("?"));
+        }
         if (string.contains("+")) {
             // this represents an invalid URL created using either
             // file.toURL(); or
@@ -1735,15 +1739,11 @@ public class DataUtilities {
     /**
      * Create a derived FeatureType
      * 
-     * <p>
-     * </p>
+     * @param featureType Original feature type to derive from.
+     * @param properties If null, every property of the featureType in input will be used
+     * @param override Intended CoordinateReferenceSystem, if null original will be used
      * 
-     * @param featureType
-     * @param properties
-     *            - if null, every property of the feature type in input will be used
-     * @param override
-     * 
-     * 
+     * @return derived FeatureType
      * @throws SchemaException
      */
     public static SimpleFeatureType createSubType(SimpleFeatureType featureType,
@@ -1761,7 +1761,17 @@ public class DataUtilities {
                 namespaceURI);
 
     }
-
+    /**
+     * Create a derived FeatureType
+     * 
+     * @param featureType Original feature type to derive from.
+     * @param properties If null, every property of the featureType in input will be used
+     * @param override Intended CoordinateReferenceSystem, if null original will be used
+     * @param typeName Type name override
+     * @param namespace Namespace override
+     * @return derived FeatureType
+     * @throws SchemaException
+     */
     public static SimpleFeatureType createSubType(SimpleFeatureType featureType,
             String[] properties, CoordinateReferenceSystem override, String typeName, URI namespace)
             throws SchemaException {
@@ -1859,7 +1869,13 @@ public class DataUtilities {
         tb.setName(featureType.getName());
         tb.setCRS(null); // not interested in warnings from this simple method
         for (int i = 0; i < properties.length; i++) {
-            tb.add(featureType.getDescriptor(properties[i]));
+            // let's get the attribute descriptor corresponding to the current property
+            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(properties[i]);
+            if (attributeDescriptor != null) {
+                // if the property doesn't map to an attribute descriptor we ignore it
+                // an attribute descriptor may be omitted for security proposes for example
+                tb.add(attributeDescriptor);
+            }
         }
         setDefaultGeometry(tb, properties, featureType);
         return tb.buildFeatureType();
@@ -2388,17 +2404,22 @@ public class DataUtilities {
                 }
             };
         } else {
-            final PropertyName PROPERTY = sortBy.getPropertyName();
+            final PropertyName propertyName = sortBy.getPropertyName();
+            final SortOrder sortOrder = sortBy.getSortOrder();
             return new Comparator<SimpleFeature>() {
                 @SuppressWarnings("unchecked")
                 public int compare(SimpleFeature f1, SimpleFeature f2) {
-                    Object value1 = PROPERTY.evaluate(f1, Comparable.class);
-                    Object value2 = PROPERTY.evaluate(f2, Comparable.class);
+                    Object value1 = propertyName.evaluate(f1, Comparable.class);
+                    Object value2 = propertyName.evaluate(f2, Comparable.class);
                     if (value1 == null || value2 == null) {
                         return 0; // cannot perform comparison
                     }
                     if (value1 instanceof Comparable && value1.getClass().isInstance(value2)) {
-                        return ((Comparable<Object>) value1).compareTo(value2);
+                        if (sortOrder == SortOrder.ASCENDING) {
+                            return ((Comparable<Object>) value1).compareTo(value2);
+                        } else {
+                            return ((Comparable<Object>) value2).compareTo(value1);
+                        }
                     } else {
                         return 0; // cannot perform comparison
                     }

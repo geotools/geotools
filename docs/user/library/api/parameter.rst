@@ -26,7 +26,7 @@ The following public fields are available:
 
 * Parameter.key : String
   
-  Programatic machine readable key or name used to store the value. Suitable for use in a java.util.Map of connection parameters.
+  Programmatic machine readable key or name used to store the value. Suitable for use in a java.util.Map of connection parameters.
 * Parameter.type : Class<T>
   
   Formal restriction on the type of the Java Object allowed as a value. May be used in conjunction with minOccurs and maxOccurs
@@ -68,7 +68,7 @@ The following public fields are available:
       Integer length = parameter.metadata.get( Parameter.LENGTH );
       field.setLength( length == null ? 40 : length );
   
-  * CRS - when the parameter type is spatial (such as a Geometry or Feature) this records the expected CoordianteReferenceSystem
+  * CRS - when the parameter type is spatial (such as a Geometry or Feature) this records the expected CoordinateReferenceSystem
   * ELEMENT - used to indicate the element type for a List
   * MIN - min value for any comparable such as a Number, Date or String. Assumed to be the same Class as parameter.type.
   * MAX - max value for any comparable such as a Number, Date or String. Assumed to be the same Class as parameter.type.
@@ -88,7 +88,7 @@ The **Param** subclass only offers a few additional ideas:
   
   Used to safely look up a value in a map of connection parameters::
     
-    // Server is required; so if iis not available an IOException is thrown
+    // Server is required; so if is not available an IOException is thrown
     String server = (String) SERVER.lookup( connectionParameters );
 
     // May be null as PORT is optional

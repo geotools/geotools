@@ -43,9 +43,9 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xmlpull.mxp1.MXParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -86,14 +86,11 @@ public abstract class XmlFeatureParser<FT extends FeatureType, F extends Feature
 		this.featureName = featureDescriptorName.getLocalPart();
 		this.targetType = targetType;
 
-		XmlPullParserFactory factory;
 		try {
-			factory = XmlPullParserFactory.newInstance();
-			factory.setNamespaceAware(true);
-			factory.setValidating(false);
+                        parser = new MXParser();
+                        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
 
 			// parse root element
-			parser = factory.newPullParser();
 			parser.setInput(inputStream, "UTF-8");
 			parser.nextTag();
 			parser.require(START_TAG, WFS.NAMESPACE,

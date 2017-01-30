@@ -15,8 +15,6 @@ SQL Server 2000 from any Java application, application server, or Java-enabled a
 
 Make sure to unpack the sqljdbc4.jar file, as that's the one providing support for the Java
 version in this series.
-If you are using Java 5 you should downgrade to GeoTools 2.7.x, while Java 7 is, at the time
-of writing, not officially supported   
 
 Maven
 -----

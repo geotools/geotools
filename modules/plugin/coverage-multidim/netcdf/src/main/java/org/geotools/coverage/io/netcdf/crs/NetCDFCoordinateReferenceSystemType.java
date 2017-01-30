@@ -29,6 +29,7 @@ import org.geotools.referencing.operation.projection.Mercator1SP;
 import org.geotools.referencing.operation.projection.Mercator2SP;
 import org.geotools.referencing.operation.projection.Orthographic;
 import org.geotools.referencing.operation.projection.PolarStereographic;
+import org.geotools.referencing.operation.projection.RotatedPole;
 import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.util.logging.Logging;
@@ -132,10 +133,20 @@ public enum NetCDFCoordinateReferenceSystemType {
         public NetCDFProjection getNetCDFProjection() {
             return NetCDFProjection.STEREOGRAPHIC;
         }
+    }, 
+    ROTATED_POLE {
+        @Override
+        public NetCDFCoordinate[] getCoordinates() {
+            return NetCDFCoordinate.RLATLON_COORDS;
+        }
+        @Override
+        public NetCDFProjection getNetCDFProjection() {
+            return NetCDFProjection.ROTATED_POLE;
+        }
     }; 
 
     /* TODO: THESE CRSs still need to be added
-     * AZIMUTHAL_EQUIDISTANT, LAMBERT_CYLINDRICAL_EQUAL_AREA, ROTATED_POLE
+     * AZIMUTHAL_EQUIDISTANT, LAMBERT_CYLINDRICAL_EQUAL_AREA
      */
 
     /**
@@ -173,6 +184,8 @@ public enum NetCDFCoordinateReferenceSystemType {
                 crsType = MERCATOR_2SP;
             } else if (transform instanceof AlbersEqualArea) {
                 crsType = ALBERS_EQUAL_AREA;
+            } else if (transform instanceof RotatedPole) {
+                crsType = ROTATED_POLE;
             }
         } else {
             // Fallback on SPATIAL_REF to deal with projection which
@@ -226,6 +239,14 @@ public enum NetCDFCoordinateReferenceSystemType {
                 NetCDFUtilities.LON, NetCDFUtilities.LONGITUDE, NetCDFUtilities.LONGITUDE,
                 NetCDFUtilities.LON, NetCDFUtilities.LON_UNITS);
 
+        private final static NetCDFCoordinate RLAT_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.RLAT, NetCDFUtilities.GRID_LATITUDE, NetCDFUtilities.GRID_LATITUDE,
+                NetCDFUtilities.RLAT, NetCDFUtilities.RLATLON_UNITS);
+
+        private final static NetCDFCoordinate RLON_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.RLON, NetCDFUtilities.GRID_LONGITUDE, NetCDFUtilities.GRID_LONGITUDE,
+                NetCDFUtilities.RLON, NetCDFUtilities.RLATLON_UNITS);
+
         private final static NetCDFCoordinate X_COORDINATE = new NetCDFCoordinate(
                 NetCDFUtilities.X, NetCDFUtilities.X_COORD_PROJ, NetCDFUtilities.X_PROJ_COORD,
                 NetCDFUtilities.X, NetCDFUtilities.M);
@@ -236,6 +257,9 @@ public enum NetCDFCoordinateReferenceSystemType {
 
         public final static NetCDFCoordinate[] LATLON_COORDS = new NetCDFCoordinate[] {
                 LAT_COORDINATE, LON_COORDINATE };
+
+        public final static NetCDFCoordinate[] RLATLON_COORDS = new NetCDFCoordinate[] {
+                RLAT_COORDINATE, RLON_COORDINATE };
 
         public final static NetCDFCoordinate[] YX_COORDS = new NetCDFCoordinate[] { Y_COORDINATE,
                 X_COORDINATE };

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.operation.projection.AlbersEqualArea;
+import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.LambertConformal;
 import org.geotools.referencing.operation.projection.MapProjection;
@@ -44,6 +45,7 @@ import org.geotools.referencing.operation.projection.ObliqueMercator;
 import org.geotools.referencing.operation.projection.ObliqueStereographic;
 import org.geotools.referencing.operation.projection.Orthographic;
 import org.geotools.referencing.operation.projection.PolarStereographic;
+import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.projection.WorldVanDerGrintenI;
@@ -60,7 +62,6 @@ import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.cs.EllipsoidalCS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.datum.PrimeMeridian;
@@ -264,9 +265,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 
 		// user defined projection
 		// key 3074
-		final String conversionName = conversion.getName().getCode();
 		metadata.addGeoShortParam(GeoTiffPCSCodes.ProjectionGeoKey, GeoTiffConstants.GTUserDefinedGeoKey);
-		metadata.addGeoAscii(GeoTiffPCSCodes.PCSCitationGeoKey, conversionName);
 
 		final OperationMethod method = conversion.getMethod();
 		// looking for the parameters
@@ -715,7 +714,27 @@ public final class CRS2GeoTiffMetadataAdapter {
                                     parameters.parameter("false_northing").doubleValue());
                     return;
                 }
-		
+
+        ///////////////////////////////////////////
+        //
+        // Azimuthal Equidistant
+        //
+        ///////////////////////////////////////////
+        if (projTransf instanceof AzimuthalEquidistant.Abstract
+                && name.equalsIgnoreCase("Azimuthal_Equidistant")) {
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjCoordTransGeoKey,
+                    GeoTiffCoordinateTransformationsCodes.CT_AzimuthalEquidistant);
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjCenterLongGeoKey,
+                    parameters.parameter("longitude_of_center").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjCenterLatGeoKey,
+                    parameters.parameter("latitude_of_center").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey,
+                    parameters.parameter("false_easting").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey,
+                    parameters.parameter("false_northing").doubleValue());
+            return;
+        }
+
 	        // /////////////////////////////////////////////////////////////////////
                 //
                 // Van der Grinten
@@ -734,7 +753,27 @@ public final class CRS2GeoTiffMetadataAdapter {
                     metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey,parameters.parameter("false_northing").doubleValue());
                     return;
                 }
-		
+
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Sinusoidal
+        //
+        // /////////////////////////////////////////////////////////////////////
+        if (projTransf instanceof Sinusoidal && name.toLowerCase().contains("sinusoidal")) {
+
+            // key 3075
+            metadata.addGeoShortParam(GeoTiffPCSCodes.ProjCoordTransGeoKey,
+                    GeoTiffCoordinateTransformationsCodes.CT_Sinusoidal);
+
+            // params
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjCenterLongGeoKey,
+                    parameters.parameter("central_meridian").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseEastingGeoKey, parameters
+                    .parameter("false_easting").doubleValue());
+            metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjFalseNorthingGeoKey, parameters
+                    .parameter("false_northing").doubleValue());
+            return;
+        }
                 // we did not support this one
                 throw new IllegalArgumentException("Unable to map projection"+projTransf.getName());
 	}
@@ -776,7 +815,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 		parseDatum(datum, metadata);
 
 		// angular unit
-		final Unit<?> angularUnit = ((EllipsoidalCS) geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
+		final Unit<?> angularUnit = (geographicCRS.getCoordinateSystem()).getAxis(0).getUnit();
 		parseUnit(angularUnit, 0, metadata);
 
 		// prime meridian

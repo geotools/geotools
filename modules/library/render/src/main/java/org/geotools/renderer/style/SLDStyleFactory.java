@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -44,6 +44,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
@@ -85,49 +86,11 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Factory object that converts SLD style into rendered styles.
  * 
- * DJB: I've made a few changes to this. The old behavior was for this class to
- * convert <LinePlacement> tags to <PointPlacement> tags. (ie. there never was a
- * LinePlacement option) This is *certainly* not the correct place to do this,
- * and it was doing a very poor job of it too, and the renderer was not
- * expecting it to be doing it!
- * 
- * I added support in TextStyle3D for this and had this class correctly set
- * Line/Point placement selection. NOTE: PointPlacement is the default if not
- * present.
- * 
  * @author aaime
  * @author dblasby
  *
- *
  * @source $URL$
  */
-
-/*
- * orginal message on the subject:
- * 
- * I was attempting to write documentation for label placement (plus fix all the
- * inconsistencies with the spec), and I noticed some problems with the
- * SLDStyleFactory and TextStyle2D.
- * 
- * It turns out the SLDStyleFactory is actually trying to do [poor] label
- * placement (see around line 570)! This also results in a loss of information
- * if you're using a <LinePlacement> element in your SLD.
- * 
- * 
- * 1. remove the placement code from SLDStyleFactory! 2. get rid of the
- * "AbsoluteLineDisplacement" stuff and replace it with something that
- * represents <PointPlacement>/<LinePlacement> elements in the TextSymbolizer.
- * 
- * The current implementation seems to try to convert a <LinePlacement> and an
- * actual line into a <PointPlacement> (and setting the AbsoluteLineDisplacement
- * flag)!! This should be done by the real labeling code.
- * 
- * This change could affect the j2d renderer as it appears to use the
- * "AbsoluteLineDisplacement" flag.
- * 
- * @source $URL$
- */
-
 public class SLDStyleFactory {
 	/** The logger for the rendering module. */
 	private static final Logger LOGGER = org.geotools.util.logging.Logging
@@ -305,6 +268,26 @@ public class SLDStyleFactory {
 		return requests;
 	}
 
+    /**
+     * <p>
+     * Creates a rendered style
+     * </p>
+     * 
+     * <p>
+     * Makes use of a symbolizer cache based on identity to avoid recomputing over and over the same
+     * style object and to reduce memory usage. The same Style2D object will be returned by
+     * subsequent calls using the same feature independent symbolizer with the same scaleRange.
+     * </p>
+     * 
+     * @param drawMe The feature
+     * @param symbolizer The SLD symbolizer
+     * 
+     * @return A rendered style equivalent to the symbolizer
+     */
+    public Style2D createStyle(Object drawMe, Symbolizer symbolizer) {
+        return createStyle(drawMe, symbolizer, null);
+    }
+
 	/**
 	 * <p>
 	 * Creates a rendered style
@@ -477,8 +460,10 @@ public class SLDStyleFactory {
 				// enabled
 				Style2D style2DFill = createPointStyle(feature, symbolizer, fill
 						.getGraphicFill(), scaleRange, false);
-				style.setGraphicFill(style2DFill);
-				return;
+				if(!(style2DFill instanceof GraphicStyle2D)) {
+    				style.setGraphicFill(style2DFill);
+    				return;
+				}
 			}
 		}
 		// otherwise, sets regular fill using Java raster-based Paint objects
@@ -524,6 +509,8 @@ public class SLDStyleFactory {
 				feature, scaleRange));
 		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));
         style.setContourComposite(composite);
+        
+        style.setPerpendicularOffset(evalToDouble(symbolizer.getPerpendicularOffset(), feature, 0d));
 
 		return style;
 	}
@@ -658,9 +645,7 @@ public class SLDStyleFactory {
 					    // when the icon is an image better use the graphic style, we have
 					    // better rendering code for it
 					    GraphicStyle2D g2d = getGraphicStyle(eg, feature, size, 1);
-	                    if (g2d == null) {
-	                        continue;
-	                    } else {
+	                    if (g2d != null) {
 	                        g2d.setRotation(rotation);
 	                        retval = g2d;
 	                        break;
@@ -969,9 +954,11 @@ public class SLDStyleFactory {
     }
 
 	void setScaleRange(Style style, Range scaleRange) {
-		double min = ((Number) scaleRange.getMinValue()).doubleValue();
-		double max = ((Number) scaleRange.getMaxValue()).doubleValue();
-		style.setMinMaxScale(min, max);
+        if (scaleRange != null) {
+            double min = ((Number) scaleRange.getMinValue()).doubleValue();
+            double max = ((Number) scaleRange.getMaxValue()).doubleValue();
+            style.setMinMaxScale(min, max);
+        }
 	}
 
 	// Builds an image version of the graphics with the proper size, no further
@@ -1017,7 +1004,15 @@ public class SLDStyleFactory {
 		}
 
 		// get the other properties needed for the stroke
-		float[] dashes = stroke.getDashArray();
+        float[] dashes = null;
+        if(stroke.dashArray() != null) {
+            dashes = new float[stroke.dashArray().size()];
+            int index = 0;
+            for (Expression expression : stroke.dashArray()) {
+                dashes[index] = expression.evaluate(feature, Float.class);
+                index++;
+            }
+        }
 		float width = evalToFloat(stroke.getWidth(), feature, 1);
 		float dashOffset = evalToFloat(stroke.getDashOffset(), feature, 0);
 
@@ -1334,7 +1329,7 @@ public class SLDStyleFactory {
 
 		// scan the external graphic factories and see which one can be used
 		Iterator<ExternalGraphicFactory> it = DynamicSymbolFactoryFinder
-				.getExternalGraphicFactories();
+				.getExternalGraphicFactories(new Hints(renderingHints));
 		while (it.hasNext()) {
 		    ExternalGraphicFactory egf = it.next();
 			try {
@@ -1367,6 +1362,16 @@ public class SLDStyleFactory {
 	private Shape getShape(Mark mark, Object feature) {
 		if (mark == null)
 			return null;
+		
+		// handle the TTF references in SE 1.1
+		// TODO: generalize it to a pluggable ExternalMarkFactory when other types
+		// of indexed marks show up in the wild
+		if(mark.getExternalMark() != null) {
+			Shape shape = TTFMarkFactory.INSTANCE.getShape(mark.getExternalMark());
+			if(shape != null) {
+				return shape;
+			}
+		}
 
 		Expression name = mark.getWellKnownName();
 		// expand eventual cql expressions embedded in the name
@@ -1376,8 +1381,7 @@ public class SLDStyleFactory {
 				name = ExpressionExtractor.extractCqlExpressions(expression);
 		}
 
-		Iterator<MarkFactory> it = DynamicSymbolFactoryFinder
-				.getMarkFactories();
+		Iterator<MarkFactory> it = DynamicSymbolFactoryFinder.getMarkFactories();
 		while (it.hasNext()) {
 			MarkFactory factory = it.next();
 			try {
@@ -1577,8 +1581,8 @@ public class SLDStyleFactory {
                 if ("D".equalsIgnoreCase(direction) || "DESC".equalsIgnoreCase(direction)) {
                     order = SortOrder.DESCENDING;
                 } else if(!"A".equalsIgnoreCase(direction) || "ASC".equalsIgnoreCase(direction)) {
-                    throw new IllegalArgumentException("Unknown sort order '" + order 
-                            + "' in: '" + attributeSpec + "'");
+                    throw new IllegalArgumentException(
+                            "Unknown sort order '" + direction + "' in: '" + attributeSpec + "'");
                 }
             }
             SortBy sort = ff.sort(attribute, order);
@@ -1610,22 +1614,27 @@ public class SLDStyleFactory {
 	}
 
 	/**
-	 * Simple key used to cache Style2D objects based on the originating
-	 * symbolizer and scale range. Will compare symbolizers by identity,
-	 * avoiding a possibly very long comparison
-	 * 
-	 * @author aaime
-	 */
+     * Simple key used to cache Style2D objects based on the originating symbolizer and scale range.
+     * Will compare symbolizers by identity, avoiding a possibly expensive comparison among their
+     * contents
+     * 
+     * @author aaime
+     */
 	static class SymbolizerKey {
 		private Symbolizer symbolizer;
 		private double minScale;
 		private double maxScale;
 
-		public SymbolizerKey(Symbolizer symbolizer, Range scaleRange) {
-			this.symbolizer = symbolizer;
-			minScale = ((Number) scaleRange.getMinValue()).doubleValue();
-			maxScale = ((Number) scaleRange.getMaxValue()).doubleValue();
-		}
+        public SymbolizerKey(Symbolizer symbolizer, Range scaleRange) {
+            this.symbolizer = symbolizer;
+            if (scaleRange == null) {
+                minScale = 0;
+                maxScale = Double.POSITIVE_INFINITY;
+            } else {
+                minScale = ((Number) scaleRange.getMinValue()).doubleValue();
+                maxScale = ((Number) scaleRange.getMaxValue()).doubleValue();
+            }
+        }
 
 		/**
 		 * @see java.lang.Object#equals(java.lang.Object)

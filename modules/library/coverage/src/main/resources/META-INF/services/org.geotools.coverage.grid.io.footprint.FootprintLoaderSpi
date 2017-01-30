@@ -1,0 +1,2 @@
+org.geotools.coverage.grid.io.footprint.WKBLoaderSPI
+org.geotools.coverage.grid.io.footprint.WKTLoaderSPI

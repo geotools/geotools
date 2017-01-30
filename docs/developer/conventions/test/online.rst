@@ -106,7 +106,7 @@ In windows you cannot create a ".geotools" folder!
     C:\Documents and Settings\Fred\.geotools>cd postgis
     C:\Documents and Settings\Fred\.geotools\postgis>notepad typical.properties
 
-4. And use the as a guide: http://svn.geotools.org/geotools/trunk/gt/build/fixtures/
+4. And use the as a guide: https://github.com/geotools/geotools/tree/master/build/fixtures
    
    Examples:
    

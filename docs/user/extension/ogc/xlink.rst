@@ -1,6 +1,6 @@
 org.w3.xlink
 ------------
 
-Additional generated objects for xlink.
+Additional generated objects for XLink.
 
-No documentation has been suplied.
+No documentation has been supplied.

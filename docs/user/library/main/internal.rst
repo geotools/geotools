@@ -4,7 +4,7 @@ Internals
 The gt-main class holds a number of internal and abstract classes useful to those implementing support for additional DataStore formats.
 These classes should be moved to gt-data when time permits.
 
-he gt-main module provides many well known classes covered in the public documentation:
+The gt-main module provides many well known classes covered in the public documentation:
 
 * DataAccessFinder
 * DataStoreFinder
@@ -175,7 +175,7 @@ from the shp and dbf files.
 Wrappers
 ''''''''
 
-Wrappers used by DataUtilities to morph to SimpelFeatureSource, SimpleFeatureCollection etc...
+Wrappers used by DataUtilities to morph to SimpleFeatureSource, SimpleFeatureCollection etc...
 
 * SimpleFeatureCollectionBridge
 * SimpleFeatureLockingBridge

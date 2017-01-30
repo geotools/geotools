@@ -53,7 +53,7 @@ Code Coverage vs Regression Testing
 
 1. Code Coverage reports are available via::
    
-     mvn -o clean cobertura:cobertura
+     mvn clean cobertura:cobertura
 
 2. The result is available for each module:
 

@@ -154,7 +154,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
      * Creates an inverse transform using the specified matrix.
      */
     @Override
-    MathTransform createInverse(final Matrix matrix) {
+    GeocentricTranslation createInverse(final Matrix matrix) {
         return new GeocentricTranslation(matrix, descriptor);
     }
 

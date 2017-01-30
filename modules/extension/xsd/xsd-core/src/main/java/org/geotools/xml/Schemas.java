@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,17 @@
  */
 package org.geotools.xml;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -39,6 +40,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
@@ -49,9 +51,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.URIHandler;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeGroupContent;
 import org.eclipse.xsd.XSDAttributeGroupDefinition;
@@ -70,6 +70,9 @@ import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.XSDWildcard;
+import org.eclipse.xsd.impl.XSDImportImpl;
+import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -88,7 +91,6 @@ import org.picocontainer.PicoVisitor;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.eclipse.xsd.XSDWildcard;
 
 /**
  * Utility class for performing various operations.
@@ -103,6 +105,13 @@ import org.eclipse.xsd.XSDWildcard;
 public class Schemas {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Schemas.class.getPackage()
                                                                                                   .getName());
+
+    /*
+     * Name of the system property forcing the import of external schemas in any case,
+     * whereas the default behavior is to force the import only if the importing schema
+     * has no element nor type on its own.
+     */
+    static final String FORCE_SCHEMA_IMPORT = "org.geotools.xml.forceSchemaImport";
 
     static {
         //need to register custom factory to load schema resources
@@ -307,11 +316,104 @@ public class Schemas {
                     ".xsd"));
         xsdMainResource.setURI(uri);
 
+        // read resource before synchronize: Shorter lock duration and prevention of deadlock
+        // if remote schema is created on same JVM and synchronizes on Schemas, too.
+        Map<Object, Object> options = resourceSet.getLoadOptions();
+        Map<?, ?> response = getOrCreateResponseFrom(options);
+        byte[] resourceData = readUriResource(uri, resourceSet, response);
+                
         // schema building has effects on referenced schemas, it will alter them -> we need 
         // to synchronize this call so that only one of these operations is active at any time
-        synchronized(Schemas.class) {
-            xsdMainResource.load(resourceSet.getLoadOptions());
-            return xsdMainResource.getSchema();
+        synchronized (Schemas.class) {
+            try (InputStream in = new ByteArrayInputStream(resourceData)) {
+                xsdMainResource.load(in, options);
+            } finally {
+                Long timeStamp = (Long) response.get(URIConverter.RESPONSE_TIME_STAMP_PROPERTY);
+                if (timeStamp != null) {
+                    xsdMainResource.setTimeStamp(timeStamp);
+                }
+            }
+            XSDSchema schema = xsdMainResource.getSchema();
+            if (schema != null) {
+                // if schema contains no element declarations, nor type definitions,
+                // force import of external schemas (if any), since it does not happen automatically;
+                // import can be forced no matter what is in the importing schema by setting
+                // the system property "org.geotools.xml.forceSchemaImport" to "true".
+                String forceSchemaImport = System.getProperty(FORCE_SCHEMA_IMPORT);
+                boolean alwaysForce = false;
+                if (forceSchemaImport != null) {
+                    alwaysForce = forceSchemaImport.equalsIgnoreCase("true");
+                }
+                if (alwaysForce || hasNoElementsNorTypes(schema)) {
+                    forceImport((XSDSchemaImpl) schema);
+                }
+            }
+
+            return schema;
+        }
+    }
+
+    /**
+     * Fetches the contents of the URI into a byte[].
+     * 
+     * @param uri
+     * @param options
+     * @param response
+     * @return The resource data
+     * @throws IOException
+     */
+    private static byte[] readUriResource(URI uri, ResourceSet resourceSet, Map<?, ?> response)
+            throws IOException {
+        Map<Object, Object> options = resourceSet.getLoadOptions();
+        URIConverter uriConverter = getUriConverter(resourceSet);
+
+        Map<Object, Object> loadMap = new HashMap<>(options);
+        loadMap.put(URIConverter.OPTION_RESPONSE, response);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (InputStream inputStream = uriConverter.createInputStream(uri, loadMap)) {
+            IOUtils.copy(inputStream, out);
+        }
+        return out.toByteArray();
+    }
+
+    /**
+     * Fetches the map to be used as reponse from the given options, creating a new one if not existing.
+     * 
+     * @param options
+     * @return a map to be used as response
+     */
+    private static Map<?, ?> getOrCreateResponseFrom(Map<Object, Object> options) {
+        Map<?, ?> response = (options == null) ? null
+                : (Map<?, ?>) options.get(URIConverter.OPTION_RESPONSE);
+        if (response == null) {
+            response = new HashMap<Object, Object>();
+        }
+        return response;
+    }
+    
+
+    private static URIConverter getUriConverter(ResourceSet resourceSet) {
+        URIConverter uriConverter = resourceSet.getURIConverter();
+        return uriConverter;
+    }
+
+    private static boolean hasNoElementsNorTypes(XSDSchema schema) {
+        if (schema == null) {
+            return false;
+        }
+
+        return schema.getElementDeclarations().isEmpty() && schema.getTypeDefinitions().isEmpty();
+    }
+
+    private static void forceImport(XSDSchemaImpl schema) {
+        if (schema != null) {
+            for (XSDSchemaContent content: schema.getContents()) {
+                if (content instanceof XSDImportImpl) {
+                    XSDImportImpl importDirective = (XSDImportImpl)content;
+                    schema.resolveSchema(importDirective.getNamespace());
+                }
+            }
         }
     }
 
@@ -368,18 +470,20 @@ public class Schemas {
                 
                 if (resolvedSchema != null) {
                     synchronized (Schemas.class) {
-                        resolvedSchema.getReferencingDirectives().remove(directive);
-                        for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
-                            if(dec == null) {
-                                continue;
-                            }
-                            List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
-                            for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
-                                if (subs != null && subs.getContainer() != null && subs.getContainer().equals(schema)) {
-                                    toRemove.add(subs);
+                        synchronized(resolvedSchema.eAdapters()) {
+                            resolvedSchema.getReferencingDirectives().remove(directive);
+                            for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
+                                if(dec == null) {
+                                    continue;
                                 }
+                                List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
+                                for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
+                                    if (subs != null && subs.getContainer() != null && subs.getContainer().equals(schema)) {
+                                        toRemove.add(subs);
+                                    }
+                                }
+                                dec.getSubstitutionGroup().removeAll(toRemove);
                             }
-                            dec.getSubstitutionGroup().removeAll(toRemove);
                         }
                     }
                 }

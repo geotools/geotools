@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,17 +17,15 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FilteringFeatureWriter;
 import org.geotools.data.InProcessLockingManager;
-import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -94,7 +92,8 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
     protected final int WRITER_UPDATE = ContentDataStore.WRITER_UPDATE;
     /** Flag writer for commit (AUTO_COMMIT with no events) */
     protected final int WRITER_COMMIT = ContentDataStore.WRITER_COMMIT;
-    
+    public static final String ORIGINAL_FEATURE_KEY = "_original_";
+
     /**
      * Creates the content feature store.
      * 
@@ -228,8 +227,8 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         throws IOException {
         
         // gather up id's
-    	List<FeatureId> ids = new LinkedList<FeatureId>();
-        
+    	List<FeatureId> ids = new ArrayList<FeatureId>(collection.size());
+
     	FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         try {
             for ( Iterator f = collection.iterator(); f.hasNext(); ) {
@@ -245,28 +244,25 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
     
     /**
      * Adds a collection of features to the store.
-     * <p>
-     * This method calls through to {@link #addFeatures(Collection)}.
-     * </p>
      * @param featureCollection
      */
     public List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection)
         throws IOException {
         // gather up id's
-        List<FeatureId> ids = new LinkedList<FeatureId>();
-        
+        List<FeatureId> ids = new ArrayList<FeatureId>();
+
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         FeatureIterator<SimpleFeature> f = featureCollection.features();
         try {
             while (f.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) f.next();
+                SimpleFeature feature = f.next();
                 FeatureId id = addFeature(feature, writer);
                 ids.add( id );
             }
         } finally {
             writer.close();
             f.close();
-        }        
+        }
         return ids;
     }
 
@@ -283,37 +279,40 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         return writer;
     }
 
-    FeatureId addFeature(SimpleFeature feature, FeatureWriter<SimpleFeatureType, SimpleFeature> writer) throws IOException {
+    FeatureId addFeature(final SimpleFeature feature, FeatureWriter<SimpleFeatureType,
+            SimpleFeature> writer) throws IOException {
         // grab next feature and populate it
         // JD: worth a note on how we do this... we take a "pull" approach 
         // because the raw schema we are inserting into may not match the 
         // schema of the features we are inserting
-        SimpleFeature toWrite = writer.next();
+        final SimpleFeature toWrite = writer.next();
         for ( int i = 0; i < toWrite.getType().getAttributeCount(); i++ ) {
             String name = toWrite.getType().getDescriptor(i).getLocalName();
             toWrite.setAttribute( name, feature.getAttribute(name));
         }
         
         // copy over the user data
-        if(feature.getUserData().size() > 0) {
-            toWrite.getUserData().putAll(feature.getUserData());
-        }
-        
+        toWrite.getUserData().putAll(feature.getUserData());
+
         // pass through the fid if the user asked so
         boolean useExisting = Boolean.TRUE.equals(feature.getUserData().get(Hints.USE_PROVIDED_FID));
         if(getQueryCapabilities().isUseProvidedFIDSupported() && useExisting) {
             ((FeatureIdImpl) toWrite.getIdentifier()).setID(feature.getID());
         }
-        
+
+        // Need to save a link to the original feature in order to be able to set the ID once it
+        // is actuall saved (see JDBCInsertFeatureWriter)
+        toWrite.getUserData().put(ORIGINAL_FEATURE_KEY, feature);
+
         //perform the write
         writer.write();
-        
-        // copy any metadata from the feature that was actually written
+
+        // copy any metadata from the feature that was actually written (not always effective, see
+        // JDBCInsertFeatureWriter)
         feature.getUserData().putAll( toWrite.getUserData() );
-        
-        // add the id to the set of inserted
-        FeatureId id = toWrite.getIdentifier();
-        return id;
+        feature.getUserData().remove(ORIGINAL_FEATURE_KEY);
+
+        return toWrite.getIdentifier();
     }
 
     /**

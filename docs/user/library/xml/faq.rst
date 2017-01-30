@@ -28,7 +28,7 @@ use GeoTools in.
 |            |     |     |        | SLD     | configure for specific data  |
 +------------+-----+-----+--------+---------+------------------------------+
 | JABX       | sax | dom | XML    | n/a     | Fast but not suitable for    |
-|            |     |     |        |         | dynamic data, precomplied    |
+|            |     |     |        |         | dynamic data, precompiled    |
 +------------+-----+-----+--------+---------+------------------------------+
 | Pull       | sax | dom |        | n/a     | Should combine the ease of   |
 |            |     |     |        |         | DOM with the streaming       |
@@ -152,7 +152,7 @@ reading and writing.
 Q: GTXML?
 ^^^^^^^^^
 
-GeoTools XML (GTXML) is the forth generation schema assisted parser, using the
+GeoTools XML (GTXML) is the fourth generation schema assisted parser, using the
 XML Schema data structure (rather then hard coding) to figure out what binding to
 call. The XSD is used to hold our representation of the schema at runtime.
 

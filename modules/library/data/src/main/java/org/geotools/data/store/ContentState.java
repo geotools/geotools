@@ -38,7 +38,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
 /**
- * The state of an entry in a datastore, maintained on a per-transaction basis. For information
+ * The state of an entry in a DataStore, maintained on a per-transaction basis. For information
  * maintained on a typeName basis see {@link ContentEntry}.
  *
  * <h3>Data Cache Synchronization Required</h2>
@@ -180,7 +180,7 @@ public class ContentState {
 
         featureType = state.featureType;
         count = state.count;
-        bounds = state.bounds == null ? null : new ReferencedEnvelope( state.bounds );
+        bounds = state.bounds == null ? null : ReferencedEnvelope.reference(state.bounds);
         batchFeatureEvent = null;
    }
 
@@ -309,7 +309,7 @@ public class ContentState {
             return; // nobody is listenting
 
         Filter filter = idFilter(feature);
-        ReferencedEnvelope bounds = new ReferencedEnvelope(feature.getBounds());
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
         if( bounds != null ){
             bounds.expandToInclude(before);
         }
@@ -329,7 +329,7 @@ public class ContentState {
             return;
 
         Filter filter = idFilter(feature);
-        ReferencedEnvelope bounds = new ReferencedEnvelope(feature.getBounds());
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
 
         FeatureEvent event = new FeatureEvent(source, Type.ADDED, bounds, filter);
 
@@ -341,7 +341,7 @@ public class ContentState {
             return;
 
         Filter filter = idFilter(feature);
-        ReferencedEnvelope bounds = new ReferencedEnvelope(feature.getBounds());
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(feature.getBounds());
 
         FeatureEvent event = new FeatureEvent(source, Type.REMOVED, bounds, filter);
 
@@ -455,7 +455,7 @@ public class ContentState {
     /**
      * Copies the state.
      * <p>
-     * Subclasses shold override this method. Any mutable state objects should be cloned.
+     * Subclasses should override this method. Any mutable state objects should be cloned.
      * </p>
      * 
      * @return A copy of the state.

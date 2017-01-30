@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -320,8 +321,8 @@ public final class Decimator {
                 spanx = -1;
                 spany = -1;
             }
-            LiteCoordinateSequence seq = LiteCoordinateSequenceFactory.lite(ls
-                    .getCoordinateSequence());
+            CoordinateSequence originalSequence = ls.getCoordinateSequence();
+            LiteCoordinateSequence seq = LiteCoordinateSequenceFactory.lite(originalSequence);
             boolean loop = ls instanceof LinearRing;
             if (!loop && seq.size() > 1) {
                 double x0 = seq.getOrdinate(0, 0);
@@ -331,6 +332,13 @@ public final class Decimator {
                 loop = Math.abs(x0 - x1) < EPS && Math.abs(y0 - y1) < EPS;
             }
             decimateTransformGeneralize(seq, transform, loop, spanx, spany);
+            if(seq != originalSequence) {
+                if(loop) {
+                    ls = ls.getFactory().createLinearRing(seq);
+                } else {
+                    ls = ls.getFactory().createLineString(seq);
+                }
+            }
             return ls;
         } else {
             return geometry;
@@ -455,8 +463,10 @@ public final class Decimator {
 		// decimates before XFORM
 		int ncoords = seq.size();
 		double coords[] = null;
-		if(transform != null) {
-		    coords = seq.getOrdinateArray(transform.getSourceDimensions());
+		int sourceDimensions = 2;
+        if(transform != null) {
+            sourceDimensions = transform.getSourceDimensions();
+		    coords = seq.getOrdinateArray(sourceDimensions);
 		} else {
 		    coords = seq.getXYArray();
 		}
@@ -467,7 +477,16 @@ public final class Decimator {
 				// double[] newCoordsXformed2 = new double[2];
 			    if(transform != null) {
 			        transform.transform(coords, 0, coords, 0, 1);
-			        seq.setArray(coords, 2);
+			        if(sourceDimensions > 2) {
+			            double[] flatCoords = new double[seq.size() * 2];
+			            for (int i = 0; i < seq.size(); i ++) {
+                            flatCoords[i * 2] = coords[i * sourceDimensions];
+                            flatCoords[i * 2 + 1] = coords[i * sourceDimensions + 1];
+                        }
+			            seq.setArray(flatCoords, 2);
+			        } else {
+			            seq.setArray(coords, 2);
+			        }
 			    }
 				return;
 			} else

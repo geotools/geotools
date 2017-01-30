@@ -9,7 +9,7 @@ There are several occasions where you will need to take a LineString and close i
 
 **Copy Coordinates**
   
-You will see a lot of code that ops to just copy coordinate sequence and duplicate the initial point.::
+You will see a lot of code that opts to just copy coordinate sequence and duplicate the initial point.::
 
   LinearRing ring = null;
   if( lineString.isClosed() )

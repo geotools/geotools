@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -168,8 +168,6 @@ class WindBarb {
 
     int shortBarbs;
 
-    int squares;
-
     static int DEFAULT_BARB_LENGTH = 20;
 
     static int DEFAULT_BASE_PENNANT_LENGTH = 5;
@@ -206,19 +204,16 @@ class WindBarb {
             if (knots < 0) {
                 throw new IllegalArgumentException("Illegal wind speeds(kn): " + knots);
             }
-            if (knots > 100) {
-                throw new IllegalArgumentException("Illegal wind speeds(kn): " + knots
-                        + ", max allowed value is 100");
+            if (knots > WindBarbsFactory.MAX_SPEED) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("speed is exceeding MaxSpeed = " + WindBarbsFactory.MAX_SPEED + "."
+                            + "\nThe related WindBarb isn't in the cache") ;
+                }
             }
         }
-        squares = knots / 100;
-        if (squares > 1) {
-            throw new IllegalArgumentException(
-                    "We can't render wind speeds that require more than 1 square!");
-        }
-        pennants = (knots - (squares * 100)) / 50;
-        longBarbs = (knots - (squares * 100) - (pennants * 50)) / 10;
-        shortBarbs = (knots - (squares * 100) - (pennants * 50) - (longBarbs * 10)) / 5;
+        pennants = knots / 50;
+        longBarbs = (knots - (pennants * 50)) / 10;
+        shortBarbs = (knots -(pennants * 50) - (longBarbs * 10)) / 5;
     }
 
     /**
@@ -257,11 +252,6 @@ class WindBarb {
             // draw wind barb line
             path.moveTo(0, 0);
             path.lineTo(0, positionOnPath);
-        }
-        // pennants management
-        if (squares > 0) {
-            positionOnPath = drawSquare(path, positionOnPath);
-            positionOnPath += windBarbDefinition.elementsSpacing; // add spacing
         }
 
         // pennants management
@@ -318,32 +308,6 @@ class WindBarb {
         final Shape createTransformedShape = path.createTransformedShape(AffineTransform
                 .getScaleInstance(1, -1));
         return createTransformedShape;
-    }
-
-    /**
-     * @param path
-     * @param positionOnPath
-     * @return
-     */
-    private int drawSquare(Path2D path, int positionOnPath) {
-        if (squares <= 0) {
-            return positionOnPath;
-        }
-
-        for (int elements = 0; elements < squares; elements++) {
-            // move forward one pennant at a time
-
-            // draw pennant
-            path.moveTo(0, positionOnPath);
-            path.lineTo(windBarbDefinition.longBarbLength / 2.0d, positionOnPath); // first edge
-            positionOnPath += windBarbDefinition.longBarbLength / 2.0d;
-            path.lineTo(windBarbDefinition.longBarbLength / 2.0d, positionOnPath); // second edge
-            path.lineTo(0, positionOnPath);
-            path.closePath();
-
-            // squares are drawn one after the other
-        }
-        return positionOnPath;
     }
 
     /**

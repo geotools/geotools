@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,6 +99,24 @@ public class GeobufDirectoryDataStoreTest {
         SimpleFeatureCollection collection = DataUtilities.collection(new SimpleFeature[]{feature1,feature2});
         featureStore.addFeatures(collection);
         assertEquals(2, featureStore.getCount(Query.ALL));
+    }
+
+    @Test
+    public void removeSchema() throws Exception {
+        File dir = temporaryFolder.newFolder("layers");
+        File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.pbf")).toFile();
+        File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.pbf")).toFile();
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("file", dir);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        // File 1
+        assertTrue(file1.exists());
+        store.removeSchema("points");
+        assertFalse(file1.exists());
+        // File 2
+        assertTrue(file2.exists());
+        store.removeSchema("lines.pbf");
+        assertFalse(file2.exists());
     }
 
 }

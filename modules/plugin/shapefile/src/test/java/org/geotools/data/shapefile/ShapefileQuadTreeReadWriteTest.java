@@ -57,7 +57,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
     final String[] files = { "shapes/statepop.shp", "shapes/polygontest.shp",
-            "shapes/pointtest.shp", "shapes/holeTouchEdge.shp", "shapes/stream.shp" };
+            "shapes/pointtest.shp", "shapes/holeTouchEdge.shp", "shapes/streams.shp" };
 
     boolean readStarted = false;
 

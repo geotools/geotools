@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
 package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.gml3.GML;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -25,7 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class CurveEncoderTest extends GeometryEncoderTestSupport {
 
     public void testEncodeCircle() throws Exception {
-        CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml");
+        CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2()
                 .read("CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)");
         Document doc = encode(encoder, geometry);
@@ -40,7 +41,7 @@ public class CurveEncoderTest extends GeometryEncoderTestSupport {
     }
 
     public void testEncodeCompound() throws Exception {
-        CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml");
+        CurveEncoder encoder = new CurveEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2()
                 .read("COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
         Document doc = encode(encoder, geometry);

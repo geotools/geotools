@@ -18,6 +18,7 @@
 package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
+import it.geosolutions.jaiext.JAIExt;
 
 import java.awt.Rectangle;
 import java.awt.geom.NoninvertibleTransformException;
@@ -81,6 +82,8 @@ public class BandProcessTest {
     @BeforeClass
     public static void setup() throws FileNotFoundException, IOException,
             NoninvertibleTransformException {
+        JAIExt.initJAIEXT(true, true);
+
         // Disable medialib
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
         // Disable bandmerge and mosaic native operation
@@ -117,6 +120,7 @@ public class BandProcessTest {
         // Enable bandmerge and mosaic native operation
         Registry.setNativeAccelerationAllowed("BandMerge", true);
         Registry.setNativeAccelerationAllowed("Mosaic", true);
+        JAIExt.initJAIEXT(false, true);
     }
 
     // Ensure that the merging and selecting two equal images returns the same images
@@ -268,25 +272,19 @@ public class BandProcessTest {
         MathTransform2D tr = coverage1.getGridGeometry().getCRSToGrid2D(PixelOrientation.UPPER_LEFT);
         // ROI object inthe Raster Space
         ROI roi = new ROIGeometry(JTS.transform(geo, tr));
-        // This ROI is a Rectangle so we can get its bounds
-        Rectangle roiBounds = roi.getBounds();
-        // Crop the source image with the ROI Bounds      
-        ImageWorker w = new ImageWorker(srcImg1);
-        RenderedImage cropSrc = w.crop((float) roiBounds.x, (float) roiBounds.y,
-                (float) roiBounds.width, (float) roiBounds.height).getRenderedImage();
-        
+
         // Coverage Crop for the final coverages
         CropCoverage crop = new CropCoverage();
-        
+
         RenderedImage cropSel1 = crop.execute(selected1, geo,
                 null).getRenderedImage();
 
         RenderedImage cropSel2 = crop.execute(selected2, geo,
                 null).getRenderedImage();
-        
+
         // Ensure that the images are equals on the cropped selection (The new images contains no data outside of the selection)
-        ensureEqualImages(cropSrc, cropSel1);
-        ensureEqualImages(cropSrc, cropSel2);
+        ensureEqualImages(selected1.getRenderedImage(), cropSel1);
+        ensureEqualImages(selected2.getRenderedImage(), cropSel2);
 
         // Ensure that the images contain No Data outside of the ROI bounds
         ensureNoDataOutside(selected1, geo);
@@ -507,8 +505,8 @@ public class BandProcessTest {
                 int minx = tile.getMinX();
                 int miny = tile.getMinY();
 
-                int maxx = minx + tile.getWidth();
-                int maxy = miny + tile.getHeight();
+                int maxx = Math.min(minx + tile.getWidth(), img.getMinX() + img.getWidth() - tx * img.getTileWidth());
+                int maxy = Math.min(miny + tile.getHeight(), img.getMinY() + img.getHeight() - tx * img.getTileHeight());
                 // Check each pixel outside the ROI
                 for (int x = minx; x < maxx; x++) {
                     for (int y = miny; y < maxy; y++) {

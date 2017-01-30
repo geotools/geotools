@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 
 import org.geotools.coverage.GridSampleDimension;
@@ -530,10 +531,13 @@ public class BandMerge extends OperationJAI {
         final MathTransform toCRS = parameters.gridToCRS;
         final RenderedImage data = createRenderedImage(parameters.parameters, hints);
         final Map properties = getProperties(data, crs, name, toCRS, sources, parameters);
+        // The gridToCRS refers to the corner. Make sure to create a GridGeometry accordingly
+        GridGeometry2D gridGeometry2D = new GridGeometry2D(
+                new GridEnvelope2D(PlanarImage.wrapRenderedImage(data).getBounds()),
+                PixelInCell.CELL_CORNER, toCRS, crs, parameters.hints);
         return getFactory(parameters.hints).create(name, // The grid coverage name
                 data, // The underlying data
-                crs, // The coordinate system (may not be 2D).
-                toCRS, // The grid transform (may not be 2D).
+                gridGeometry2D,
                 sampleDims, // The sample dimensions
                 sources, // The source grid coverages.
                 properties); // Properties
@@ -566,7 +570,7 @@ public class BandMerge extends OperationJAI {
         Map properties = new HashMap();
 
         for (GridCoverage2D cov : sources) {
-            if (cov != null) {
+            if (cov != null && cov.getProperties() != null) {
                 properties.putAll(cov.getProperties());
             }
         }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,10 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
+        return createDataStore(params, false);
+    }
+
+    public DataAccess<FeatureType, Feature> createDataStore(Map params, boolean hidden) throws IOException {
         Set<FeatureTypeMapping> mappings;
         AppSchemaDataAccess dataStore;
 
@@ -75,7 +80,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         
         // load related types that are mapped separately, and not visible on their own
         // this is when the related types are not feature types, so they don't appear
-        // on getCapabilities, and getFeature also shouldn't return anything etc. 
+        // on getCapabilities, and getFeature also shouldn't return anything etc.
         List<String> includes = config.getIncludes();
         for (Iterator<String> it = includes.iterator(); it.hasNext();) {
             String parentLocation;
@@ -90,12 +95,12 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
             URL relatedConfigURL = DataUtilities.fileToURL(includedConfig);
             params.put("url", relatedConfigURL);
             // this will register the related data access, to enable feature chaining
-            createDataStore(params);
+            createDataStore(params, true);
         }
 
         mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
 
-        dataStore = new AppSchemaDataAccess(mappings);
+        dataStore = new AppSchemaDataAccess(mappings, hidden);
 
         return dataStore;
     }

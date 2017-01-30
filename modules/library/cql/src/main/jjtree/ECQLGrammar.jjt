@@ -579,16 +579,8 @@ void GeoRoutineArgumentList() #void:
 void BBoxArgumentList() #void:
 {}
 {
-		<LP> Expression() <COMMA> BBoxArgListTail() 
+		<LP> Expression() <COMMA> BoundingBox() 
 }
-
-void BBoxArgListTail() #void:
-{}
-{
-		BoundingBox()
-	| 	(Function() | GeometryLiteral()) <RP>
-	
-} 
 
 void BoundingBox() #void:
 {}

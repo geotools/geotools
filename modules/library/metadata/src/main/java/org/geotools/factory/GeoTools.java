@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,8 +17,13 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +33,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-
+import java.util.jar.Manifest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.naming.Context;
@@ -37,6 +44,7 @@ import javax.naming.NamingException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
+import javax.xml.parsers.SAXParser;
 
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
@@ -46,6 +54,9 @@ import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.logging.LoggerFactory;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.NullEntityResolver;
+import org.geotools.xml.PreventLocalEntityResolver;
+import org.xml.sax.EntityResolver;
 
 
 /**
@@ -105,7 +116,7 @@ public final class GeoTools {
     /**
      * The current GeoTools version. The separator character must be the dot.
      */
-    private static final Version VERSION = new Version(PROPS.getProperty("version", "14-SNAPSHOT"));
+    private static final Version VERSION = new Version(PROPS.getProperty("version", "17-SNAPSHOT"));
 
     /**
      * The version control (svn) revision at which this version of geotools was built.
@@ -191,6 +202,21 @@ public final class GeoTools {
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default
      * value to be assigned to the {@link Hints#
+     * ENTITY_RESOLVER} hint.
+     *
+     * This setting specifies the XML Entity resolver to be used when configuring a SAXParser
+     *
+     * @see Hints#ENTITY_RESOLVER
+     * @see #getDefaultHints
+     */
+    public static final String ENTITY_RESOLVER = "org.xml.sax.EntityResolver";
+    static {
+        bind(ENTITY_RESOLVER, Hints.ENTITY_RESOLVER);
+    }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#
      * RESAMPLE_TOLERANCE} hint.
      *
      * This setting specifies the tolerance used when linearizing warp transformation into
@@ -203,6 +229,21 @@ public final class GeoTools {
             "org.geotools.referencing.resampleTolerance";
     static {
         bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE);
+    }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#LOCAL_DATE_TIME_HANDLING} hint.
+     *
+     * This setting specifies if dates shall be treated as local dates ignoring time zones.
+     *
+     * @see Hints#LOCAL_DATE_TIME_HANDLING
+     * @see #getDefaultHints
+     * @since 15.0
+     */
+    public static final String LOCAL_DATE_TIME_HANDLING = "org.geotools.localDateTimeHandling";
+    static {
+        bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING);
     }
 
     /**
@@ -272,7 +313,6 @@ public final class GeoTools {
      */
     public static String getEnvironmentInfo() {
         final String newline = String.format("%n");
-        final String indent = "    ";
         
         final StringBuilder sb = new StringBuilder();
         sb.append("GeoTools version ").append(getVersion().toString());
@@ -333,15 +373,6 @@ public final class GeoTools {
     }
     
     /**
-     * Reports back the version of GeoTools being used.
-     *
-     * @return The current GeoTools version.
-     */
-    public static Version getVersion(){
-         return VERSION;
-    }
-    
-    /**
      * Reports back the vcs revision at which the version of GeoTools was built. 
      * 
      * @return The svn revision.
@@ -361,6 +392,14 @@ public final class GeoTools {
 
     /**
      * Returns the raw properties object containing all properties about this GeoTools build.
+     * <p>
+     * Example from the 14.3 release:
+     * <ul>
+     * <li>version=14.3</li>
+     * <li>build.revision=2298d56000bef6f526b521a480316ea544c74571</li>
+     * <li>build.branch=rel_14.3</li>
+     * <li>build.timestamp=21-Mar-2016 21:30</li>
+     * </ul>
      */
     public static Properties getBuildProperties() {
         Properties props = new Properties();
@@ -368,6 +407,165 @@ public final class GeoTools {
         return props;
     }
 
+    /**
+     * Reports back the version of GeoTools being used.
+     *
+     * @return The current GeoTools version.
+     */
+    public static Version getVersion(){
+         return VERSION;
+    }
+
+    /**
+     * Lookup version for provided class.
+     * <p>
+     * Version number is determined by either:
+     * <ul>
+     * <li>Use of jar naming convention, matching jars such as jts-1.13.jar</li>
+     * <li>Use of MANIFEST.MF (to check Implementation-Version, Project-Version)</li>
+     * <li>
+     * <li>To assist  
+     * @param type
+     * @return Version (or null if unavailable)
+     */
+    public static Version getVersion(Class<?> type) {
+        final URL classLocation = classLocation(type);
+        String path = classLocation.toString();
+
+        // try and extract from maven jar naming convention
+        if (classLocation.getProtocol().equalsIgnoreCase("jar")) {
+            String jarVersion = jarVersion(path);
+            if( jarVersion != null ){
+                return new Version(jarVersion);
+            }
+            // try manifest
+            try {
+                URL manifestLocation = manifestLocation( path );
+                Manifest manifest = new Manifest();
+                try (InputStream content = manifestLocation.openStream()) {
+                    manifest.read(content);
+                }
+                for (String attribute : new String[] { "Implementation-Version", "Project-Version",
+                        "Specification-Version" }) {
+                    String value = manifest.getMainAttributes().getValue(attribute);
+                    if (value != null) {
+                        return new Version(value);
+                    }
+                }
+            } catch (IOException e) {
+                // unavailable
+            }
+        }
+        String name = type.getName();
+        if (name.startsWith("org.geotools") || name.startsWith("org.opengis")) {
+            return GeoTools.getVersion();
+        }
+        return null;
+    }
+    
+    /**
+     * Class location.
+     * 
+     * @param type
+     * @return class location
+     */
+    static URL classLocation( Class<?> type ){
+        return type.getResource(type.getSimpleName() + ".class");
+    }
+    
+    /**
+     * Determine jar version from static analysis of classLocation path.
+     * @param classLocation
+     * @return jar version, or null if unknown
+     */
+    static String jarVersion( String classLocation){
+        if (classLocation.startsWith("jar:") || classLocation.contains(".jar!")){
+            String location = classLocation.substring(0, classLocation.lastIndexOf("!") + 1);
+            int dash = location.lastIndexOf("-");
+            int dot = location.lastIndexOf(".jar");
+    
+            if (dash != -1 && dot != -1) {
+                return location.substring(dash + 1, dot);
+            }
+        }
+        // handle custom protocols such as jboss "vfs:" or OSGi "resource"
+        if( classLocation.contains(".jar/")){
+            String location = classLocation.substring(0, classLocation.indexOf(".jar/") + 4);
+            int dash = location.lastIndexOf("-");
+            int dot = location.lastIndexOf(".jar");
+    
+            if (dash != -1 && dot != -1) {
+                return location.substring(dash + 1, dot);
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Generate URL of MANIFEST.MF file for provided class location.
+     * 
+     * @param classLocation
+     * @return MANIFEST.MF location, or null if unknown
+     */
+    static URL manifestLocation(String classLocation) {
+        URL url;
+        if (classLocation.startsWith("jar:")) {
+            try {
+                url = new URL(classLocation.substring(0, classLocation.lastIndexOf("!") + 1)
+                        + "/META-INF/MANIFEST.MF");
+                return url;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        // handle custom protocols such as jboss "vfs:" or OSGi "resource"
+        if (classLocation.contains(".jar/")) {
+            String location = classLocation.substring(0, classLocation.indexOf(".jar/") + 4);
+            try {
+                url = new URL(location + "/META-INF/MANIFEST.MF");
+                return url;
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+    /**
+     * Lookup the MANIFEST.MF for the provided class.
+     * <p>
+     * This can be used to quickly verify packaging information.
+     * @param type
+     * @return MANIFEST.MF contents, please note contents may be empty when running from IDE
+     */
+    public static Manifest getManifest(Class<?> type) {
+        final URL classLocation = classLocation(type);
+        Manifest manifest = new Manifest();
+
+        URL manifestLocation = manifestLocation( classLocation.toString() );
+        if( manifestLocation != null ){
+            try {
+                try (InputStream content = manifestLocation.openStream()) {
+                    manifest.read(content);
+                }
+            } catch (IOException ignore) {
+            }
+        }
+        if (manifest.getMainAttributes().isEmpty()) {
+            // must be running in IDE
+            String name = type.getName();
+            if (name.startsWith("org.geotools") || name.startsWith("org.opengis")
+                    || name.startsWith("net.opengis")) {
+                String generated = "Manifest-Version: 1.0\n" + "Project-Version: " + getVersion()
+                        + "\n";
+
+                try {
+                    manifest.read(new ByteArrayInputStream(generated.getBytes()));
+                } catch (IOException e) {
+                }
+            }
+        }
+        return manifest;
+    }
     /**
      * Sets the global {@linkplain LoggerFactory logger factory}.
      *
@@ -384,7 +582,7 @@ public final class GeoTools {
      *
      * @since 2.4
      */
-    public void setLoggerFactory(final LoggerFactory factory) {
+    public void setLoggerFactory(final LoggerFactory<?> factory) {
         Logging.GEOTOOLS.setLoggerFactory(factory);
     }
 
@@ -593,7 +791,83 @@ public final class GeoTools {
         }
         return completed;
     }
-    
+
+    /**
+     * Returns the default entity resolver, used to configure {@link SAXParser}.
+     * 
+     * @param hints An optional set of hints, or {@code null} if none, see {@link Hints#ENTITY_RESOLVER}.
+     * @return An entity resolver (never {@code null})
+     */
+    public static EntityResolver getEntityResolver(Hints hints) {
+        if (hints == null) {
+            hints = getDefaultHints();
+        }
+        if (hints.containsKey(Hints.ENTITY_RESOLVER)) {
+            Object hint = hints.get(Hints.ENTITY_RESOLVER);
+            if (hint == null) {
+                return NullEntityResolver.INSTANCE;
+            } else if (hint instanceof EntityResolver) {
+                return (EntityResolver) hint;
+            } else if (hint instanceof String) {
+                String className = (String) hint;
+                return instantiate(className,EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+            }
+        }
+        return PreventLocalEntityResolver.INSTANCE;
+    }
+
+    /**
+     * Create instance of className (or access singleton INSTANCE field). 
+     * 
+     * @param className Class name to instantiate
+     * @param type Class of object created
+     * @param defaultValue Default to be provided, may be null
+     * @return EntityResolver, defaults to {@link PreventLocalEntityResolver#INSTANCE} if unavailable.
+     */
+    static <T,D extends T> T instantiate(String className, Class<T> type, D defaultValue){
+        if( className == null){
+            return defaultValue;
+        }
+        final Logger LOGGER = Logging.getLogger("org.geotools.xml");
+        try {
+            Class<?> kind = Class.forName(className);
+            // step 1 look for instance field
+            for (Field field : kind.getDeclaredFields()) {
+                int modifier = field.getModifiers();
+                if ("INSTANCE".equals(field.getName()) && Modifier.isStatic(modifier)
+                        && Modifier.isPublic(modifier)) {
+                    try {
+                        Object value = field.get(null);
+                        if (value != null && value instanceof EntityResolver) {
+                            return type.cast(value);
+                        }
+                        else {
+                            LOGGER.log(Level.FINER, "Unable to use ENTITY_RESOLVER: "
+                                    + className + ".INSTANCE");
+                        }
+                    } catch (Throwable t) {
+                        LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: "
+                                + className + ".INSTANCE", t);
+                    }
+                    return defaultValue;
+                }
+            }
+            // step 2 no argument constructor
+            try {
+                Object value = kind.newInstance();
+                if (type.isInstance(value)) {
+                    return type.cast(value);
+                }
+            } catch (InstantiationException | IllegalAccessException e) {
+                LOGGER.log(Level.FINER,
+                        "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
+            }
+        } catch (ClassNotFoundException notFound) {
+            LOGGER.log(Level.FINER,
+                    "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(), notFound);
+        }
+        return defaultValue;
+    }
     /**
      * Returns the default initial context.
      *
@@ -612,6 +886,19 @@ public final class GeoTools {
             context = new InitialContext();
         }
         return context;
+    }
+    
+    /**
+     * Clears the initial context (closes it if not null)
+     * @throws NamingException
+     * 
+     * @since 15.0
+     */
+    public static synchronized void clearInitialContext() throws NamingException {
+        if(context != null) {
+            context.close();
+        }
+        context = null;
     }
 
     /**

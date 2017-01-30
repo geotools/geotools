@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -35,8 +35,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import net.opengis.wfs.FeatureTypeType;
+import net.opengis.wfs.GetFeatureType;
+
 import org.apache.commons.io.IOUtils;
+import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.xs.bindings.XSDoubleBinding;
@@ -225,4 +229,11 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
             return Integer.signum(vals1.length - vals2.length);
         }
     }
+    
+    @Override
+    protected String encodePropertyName(String propertyName) {
+        return "(" + propertyName + ")";
+    }
+    
+    
 }

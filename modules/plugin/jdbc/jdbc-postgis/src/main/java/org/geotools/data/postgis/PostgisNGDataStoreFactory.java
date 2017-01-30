@@ -157,7 +157,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         dialect.setSimplifyEnabled(simplify == null || simplify);
         
         // encode BBOX filter with wrapping ST_Envelope (GEOT-5167)
-        Boolean encodeBBOXAsEnvelope = true;
+        Boolean encodeBBOXAsEnvelope = false;
         String largeGeometriesOptimized = System.getProperty("org.geotools.data.postgis.largeGeometriesOptimize");
         if(largeGeometriesOptimized != null) {
             encodeBBOXAsEnvelope = largeGeometriesOptimized.toLowerCase().equals("true");

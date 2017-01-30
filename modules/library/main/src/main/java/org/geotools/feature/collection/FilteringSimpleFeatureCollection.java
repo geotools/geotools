@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,11 +31,13 @@ import org.geotools.data.store.FilteringFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.util.ProgressListener;
 
 /**
  * Decorates a feature collection with one that filters content.
@@ -77,6 +79,18 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 	    Filter subFilter = ff.and( this.filter, filter );
 	    
 	    return new FilteringSimpleFeatureCollection( delegate, subFilter );
+	}
+	
+	@Override
+	public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
+	    // the delegate might have an optimized way to handle filters and still apply a 
+	    // visitor (e.g., ContentFeatureCollection), but avoid self-looping
+	    final SimpleFeatureCollection sc = delegate.subCollection(filter);
+	    if(sc instanceof FilteringSimpleFeatureCollection) {
+	        super.accepts(visitor, progress);
+	    } else {
+	        sc.accepts(visitor, progress);
+	    }
 	}
 
 	public SimpleFeatureCollection sort(SortBy order) {

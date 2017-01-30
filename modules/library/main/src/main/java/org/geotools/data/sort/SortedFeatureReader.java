@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -48,6 +48,16 @@ public class SortedFeatureReader implements SimpleFeatureReader {
      */
     public static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
         return MergeSortDumper.canSort(schema, sortBy);
+    }
+
+    /**
+     * Gets the max amount amount of features to keep in memory from the query and system hints
+     * 
+     * @param query
+     * @return
+     */
+    public static int getMaxFeaturesInMemory(Query q) {
+        return MergeSortDumper.getMaxFeatures(q);
     }
 
     /**

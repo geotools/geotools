@@ -1,7 +1,7 @@
 Point Set Theory and the DE-9IM Matrix
 --------------------------------------
 
-This page covers some of what the JTS Topology is made up of, and how you can use this information to increase the performance of your queries. optimise a bit.
+This page covers some of what the JTS Topology is made up of, and how you can use this information to increase the performance of your queries.
 
 This page has as little math as possible, quickly moving on to a normal String which we can do regular expression on. This page gives you enough information to optimise your own spatial relationship tests.
 
@@ -54,12 +54,6 @@ empty set dim( empty set ) is -1  "F", -1 is an empty value
 You can read **dim( obj )** as "the dimension of obj". Hopefully this line up with your idea of two dimensional flat shapes, and one dimensional lines.
 
 We are going to leave 3D stuff out as we are focusing on JTS.
-
-Intersection of Two Geometries
-
-Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or DE-9IM.
-
-The relationship between two geometries x and y (point line or region) as defined by their Interior, Boundary and Exterior results in a matrix based on: x INTERSECTION y.
 
 Intersection of Two Geometries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -157,7 +151,7 @@ The next step is to count the dimensions of the shapes in the above 9-Intersecti
 DE-9IM    Interior        Boundary        Exterior
 Interior  2               1               2
 Boundary  1               0               1
-Exterior  2               1               1
+Exterior  2               1               2
 ========= =============== =============== ===============
 
 As you can see this matrix is a summary of the relationship between the two geometries. Depending on the geometry involves; and their arrangement you will get different numbers here. The above numbers are taken by looking at what kind of shapes are displayed in the above pictures and writing down their dimension.
@@ -247,7 +241,7 @@ Within          TF*F*****         false       x is not within y
 Overlaps        T*T***T**         true        x overlaps y
 =============== ================= =========== =========================
 
-The only one that is not really intuitive here is "touches", yes x and y touch in the english sense of the word; but since x and y overlap they are not considered to be only touching. The relationship touches only works when the contact between geometries is limited to the border.
+The only one that is not really intuitive here is "touches", yes x and y touch in the English sense of the word; but since x and y overlap they are not considered to be only touching. The relationship touches only works when the contact between geometries is limited to the border.
 
 Optimisation
 ^^^^^^^^^^^^

@@ -13,7 +13,7 @@ will have a full functional CSVDataStore supporting both read and write operatio
    
    CSVDataStore Read-Write
    
-The DataStore API provides three categories of public methods involved in making content writable.
+The DataStore API provides three categories of public methods involved in making content writeable.
 
 * DataStore.createSchema( featureType ) - sets up a new entry for content of the provided type
 * DataStore.getFeatureWriter( typeName ) - a low-level iterator that allows writing
@@ -21,7 +21,7 @@ The DataStore API provides three categories of public methods involved in making
 
 The infrastructure to support this functionality is quite extensive. A few highlights from the above diagram:
 
-* ContentState.listerners - event notification for changed content
+* ContentState.listeners - event notification for changed content
 * ContentState.tx  - transaction object used by clients to stash session callbacks
 * ContentState.transactionState: provides transaction independence between threads working on the same content.
 
@@ -72,7 +72,7 @@ functionality.
    
 2. And revise our implementation of **createFeatureSource( ContentEntry )**.
    
-   While we will still return a **FeatureSource**, we have the option of returning a the subclass
+   While we will still return a **FeatureSource**, we have the option of returning the subclass
    **FeatureStore** for read-write files. 
    
    The **FeatureStore** interface provides additional methods allowing the modification of content.
@@ -96,12 +96,12 @@ CSVFFeatureStore has an interesting design constraint:
 So what is the trouble? Java only allows single inheritance - forcing us to account for all the
 work we did reading features in CSVFeatureSource.
 
-Many first generation DataStore implementations practiced cut and paste coding, meaning fixes would
+Many first generation DataStore implementations practised cut and paste coding, meaning fixes would
 often get applied in one spot and not another making for a frustrating debugging experience.
 
-Instead we are going to use a **delegate** CSVFeatureStore, hidden from public view, simply to
-call its methods for reading. This prevents code duplication, makinng the code easier to maintain,
-at the coast of some up front complexity.
+Instead we are going to use a **delegate** CSVFeatureSource, hidden from public
+view, simply to call its methods for reading. This prevents code duplication,
+making the code easier to maintain, at the cost of some up front complexity.
 
 .. figure:: images/CSVFeatureStore.png
    
@@ -110,81 +110,83 @@ at the coast of some up front complexity.
 We have to play a few tickets to ensure both the CSVFeatureStore and its hidden CSVFeatureSource
 are always on the same transaction, but other than that this approach is working well.
 
-#. Create **CSVFeatureStore**:
+  #. Create **CSVFeatureStore**:
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: package org.geotools.data.csv;
-      :end-before: // header end
-      :prepend: package org.geotools.tutorial.csv;  
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: package org.geotools.tutorial.csv2;
+        :end-before: // header end
+        :prepend: package org.geotools.tutorial.csv;  
 
-#. Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
-   Notification are handled by wrappers applied to our CSVFeatureWriter.
-    
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // getWriter start
-      :end-before: // getWriter end
+  #. Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
+     Notification are handled by wrappers applied to our CSVFeatureWriter.
+      
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // getWriter start
+        :end-before: // getWriter end
+     
+     .. note:: 
+        
+        
+        In general the "Gang of Four" decorator pattern is used to layer functionality around the
+        raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design
+        of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
+        FileInputStream).
+        
+        You can control which decorators/wrappers are applied, by as shown in the following table.
+        
+            ==================== ===============
+            Handle               Override
+            ==================== ===============
+            reprojection         canReproject()
+            filtering            canFilter()
+            max feature limiting canLimit()
+            sorting              canSort()
+            locking              canLock()
+            ==================== ===============
+        
+        As an example if your data format supported an attribute index you would be
+        in position to override canSort() to return true if an index was available
+        for sorting.
+
+  #. Next we can set up our delegate, taking care to ensure both use the same Transaction.
+     
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // transaction start
+        :end-before: // transaction end
+        
+  #. Use the delegate to implement the internal ContentDataStore methods. 
+
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // internal start
+        :end-before: // internal end
+        
+  #. We have to do one "fix" to allow handle visitor method to be called - add the following to **CSVFeatureSource**.
+        
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureSource.java
+        :language: java
+        :start-after: // visitor start
+        :end-before: // visitor end
+     
+     .. warning:: Double check you are adding the above to CSVFeature**Source**.
+     
+     .. note::
+     
+        Why does this work - because Java visibility rules are insane.
+        Even though the method is marked *protected* it now has *package*
+        visibility can be called by its peer CSVFeatureStore. 
+      
+  #. Use the delegate to implement the public FeatureSource methods.
    
-   .. note:: 
-      
-      
-      In general the "Gang of Four" decorator pattern is used to layer functionality around the
-      raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design
-      of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
-      FileInputStream).
-      
-      You can control what decorators/wrappers are applied, by as shown in the following table.
-      
-          ==================== ===============
-          Handle               Override
-          ==================== ===============
-          reprojection         canReproject()
-          filtering            canFilter()
-          max feature limiting canLimit()
-          sorting              canSort()
-          locking              canLock()
-          ==================== ===============
-      
-      As an example if your data format supported an attribute index you would be
-      in position to override canSort() to return true if an index was available
-      for sorting.
+     .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
+        :language: java
+        :start-after: // public start
+        :end-before: // public end
 
-#. Next we can set up our delegate, taking care to ensure both use the same Transaction.
-   
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // transaction start
-      :end-before: // transaction end
-      
-#. Use the delegate to implement the internal ContentDataStore methods. 
-
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // internal start
-      :end-before: // internal end
-      
-   We have to do one "fix" to allow handle visitor method to be called - add the following to
-      **CSVFeatureSource**.
-      
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // visitor start
-      :end-before: // visitor end
-      
-   .. note::
-   
-      Why does this work - because Java visibility rules are insane.
-      Even though the method is marked *protected* it now has *package*
-      visibility can be called by its peer CSVFeatureStore. 
-      
-#. Use the delegate to implement the public FeatureSource methods.
-   
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
-      :language: java
-      :start-after: // public start
-
-#. You can see what this looks like in context by reviewing the :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java>` from the **gt-csv** plugin.
+  #. You can see what this looks like in context by reviewing the :download:`CSVFeatureStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java>` from the **gt-csv** plugin.
 
 CSVFeatureWriter
 ^^^^^^^^^^^^^^^^
@@ -204,15 +206,13 @@ A couple common questions:
 
 * Q: How do you make a Transaction out of our simple reader?
   
-  ContentFeatureSource uses wrappers (or delegates) to process the data on the fly.
-  
-  Example: So if a Filter is provided the wrapper will skip over features so the user only sees the content
-  they requested?
+  ContentFeatureSource uses wrappers (or delegates) to process the data on the fly as it is read off disk. Wrappers can do all kinds of work, from cutting off reading when "max feature limit" is hit, or in the case of transactions modifying the content as it is read to match any edits that have been made.
 
 * Q: How do you know what wrappers to use?
   
-  ContentFeatureSource checks to see if a wrapper is needed, and if so uses the MaxFetureReader
-  wrapper.
+  ContentFeatureSource checks to see if a wrapper is needed.
+  
+  For example a query with a "max feature limit" is implemented using the MaxFeatureReader wrapper.
   
   .. code-block:: java
   
@@ -234,7 +234,7 @@ A couple common questions:
   
 * Q: How does that work with transactions?
   
-  ContentState managed a DiffTransactionState used to capture each modification. Each change is
+  ContentState manages a DiffTransactionState used to capture each modification. Each change is
   recorded by FeatureId (a feature recorded for each add or modification, or null recorded
   for a delete).
   
@@ -243,10 +243,10 @@ A couple common questions:
      Transaction and DiffTransactionState
      
   As CSVFeatureReader is used to access the file contents, a wrapper checks the Diff
-  and dynamically modifies the content to match any outstnding edits. When it reaches the end of
+  and dynamically modifies the content to match any outstanding edits. When it reaches the end of
   your file, it keeps going listing any features that were added.
 
-* Q: That is fine for transaction independence, what if two FeatueSources are using the
+* Q: That is fine for transaction independence, what if two FeatureSources are using the
   same Transaction?
   
   Those two FeatureSources would be configured with the same ContentState, and thus have the same
@@ -278,7 +278,7 @@ A couple common questions:
   This makes the ContentState recorded for Transaction.AUTO_COMMIT special in that it represents
   the point of truth on the files current status. The bounds recorded for Transaction.AUTO_COMMIT
   are the bounds of the file. The number of features recorded for Transaction.AUTO_COMMIT are the
-  the number of features recorded in the file.
+  number of features recorded in the file.
 
 Now that we have some idea of what is riding on top, lets implement our CSVFeatureWriter:
 
@@ -286,7 +286,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java
-      :start-after: package org.geotools.data.csv;
+      :start-after: package org.geotools.tutorial.csv2;
       :end-before: // header end
       :prepend: package org.geotools.tutorial.csv;  
       :append: }
@@ -297,7 +297,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    * Creating a CsvWriter for output
    * Quickly making a copy of the file if we are just interested in appending
    * Starting the file off with a copy of the headers
-   * Creating a delegate to read the origional file
+   * Creating a delegate to read the original file
    
    Putting all that together:
    
@@ -342,7 +342,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    .. note::
    
       There are a large number of utility classes to perform common functions, take a look around
-      before building somehting yourself.
+      before building something yourself.
       
       * DataUtilities: Mix of methods helping developers use DataStore, with a few methods to help
         implementors perform common tasks. Acts as Facade for a wide range of services
@@ -365,7 +365,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    .. note::
       
       Previous implementations would make a copy of the feature to return. When write was called
-      copy would be compared to the origional to see if any change had been made. Why? So that an
+      copy would be compared to the original to see if any change had been made. Why? So that an
       appropriate event notification could be sent out.
       
       This is another case where a wrapper has been created, and applied by ContentFeatureStore.

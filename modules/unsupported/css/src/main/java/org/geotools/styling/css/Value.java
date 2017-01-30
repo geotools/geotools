@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.css;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +25,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.NameImpl;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * A value for a CSS property. Values can be several things, including from literals, expressions,
@@ -342,6 +351,167 @@ abstract class Value {
             } else if (!parameters.equals(other.parameters))
                 return false;
             return true;
+        }
+
+    }
+    
+    /**
+     * A function, with a name and named parameters
+     * 
+     * @author Andrea Aime - GeoSolutions
+     *
+     */
+    static class TransformFunction extends Value {
+        static final String URL = "url";
+
+        static final String SYMBOL = "symbol";
+
+        public String name;
+
+        public Map<String, Value> parameters;
+
+        /**
+         * Builds a function
+         * @param name
+         * @param parameters
+         */
+        public TransformFunction(String name, Map<String, Value> parameters) {
+            super();
+            this.parameters = parameters;
+            this.name = name;
+            if ((URL.equals(name) || SYMBOL.equals(name)) && parameters.size() != 1) {
+                throw new IllegalArgumentException("Function " + name
+                        + " takes a single argument, not " + parameters.size());
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "TransformFunction [name=" + name + ", parameters=" + parameters + "]";
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((name == null) ? 0 : name.hashCode());
+            result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TransformFunction other = (TransformFunction) obj;
+            if (name == null) {
+                if (other.name != null)
+                    return false;
+            } else if (!name.equals(other.name))
+                return false;
+            if (parameters == null) {
+                if (other.parameters != null)
+                    return false;
+            } else if (!parameters.equals(other.parameters))
+                return false;
+            return true;
+        }
+        
+        @Override
+        public org.opengis.filter.expression.Expression toExpression() {
+            Map<String, Parameter<?>> paramInfo = loadProcessInfo(processName(name));
+            if(paramInfo == null) {
+                throw new RuntimeException("Could not locate rendering transformation named " + name);
+            }
+            List<org.opengis.filter.expression.Expression> arguments = new ArrayList<>();
+            
+            // See if we have to add the implicit parameter layer
+            String inputLayerParameter = getInputLayerParameter(paramInfo);
+            if(inputLayerParameter != null && !parameters.containsKey(inputLayerParameter)) {
+                arguments.add(toParamFunction(inputLayerParameter, null));
+            }
+            
+            // Transform all the parameters we have
+            for (Map.Entry<String, Value> p : parameters.entrySet()) {
+                String key = p.getKey();
+                Value v = p.getValue();
+                org.opengis.filter.expression.Expression ex = toParamFunction(key, v);
+                arguments.add(ex);
+            }
+            
+            org.opengis.filter.expression.Expression[] argsArray = toExpressionArray(arguments);
+            return FF.function(name, argsArray);
+        }
+        
+        private String getInputLayerParameter(Map<String, Parameter<?>> paramInfo) {
+            for (Map.Entry<String, Parameter<?>> entry : paramInfo.entrySet()) {
+                if(entry.getValue() != null) {
+                    final Class<?> type = entry.getValue().getType();
+                    if(GridCoverage2D.class.isAssignableFrom(type) || FeatureCollection.class.isAssignableFrom(type) || GridCoverage2DReader.class.isAssignableFrom(type)) {
+                        return entry.getKey();
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        private org.opengis.filter.expression.Expression toParamFunction(String key, Value v) {
+            List<org.opengis.filter.expression.Expression> paramArgs = new ArrayList<>();
+            // the param name
+            paramArgs.add(FF.literal(key));
+            if(v instanceof MultiValue) {
+                MultiValue mv = (MultiValue) v;
+                for (Value cv : mv.values) {
+                    final org.opengis.filter.expression.Expression ex = cv.toExpression();
+                    paramArgs.add(ex);
+                }
+            } else if(v != null) {
+                final org.opengis.filter.expression.Expression ex = v.toExpression();
+                paramArgs.add(ex);
+            }
+            org.opengis.filter.expression.Expression[] paramArgsArray = toExpressionArray(
+                    paramArgs);
+            org.opengis.filter.expression.Function function = FF.function("parameter", paramArgsArray);
+            return function;
+        }
+
+        private org.opengis.filter.expression.Expression[] toExpressionArray(
+                List<org.opengis.filter.expression.Expression> arguments) {
+            org.opengis.filter.expression.Expression[] argsArray = (org.opengis.filter.expression.Expression[]) 
+                    arguments.toArray(new org.opengis.filter.expression.Expression[arguments.size()]);
+            return argsArray;
+        }
+
+        public static Name processName(String name) {
+            String[] split = name.split(":");
+            if (split.length == 1) {
+                return new NameImpl(split[0]);
+            }
+
+            return new NameImpl(split[0], split[1]);
+        }
+        
+        @SuppressWarnings("unchecked")
+        public static Map<String,Parameter<?>> loadProcessInfo(Name name) {
+            Class<?> processorsClass = null;
+            try {
+                processorsClass = Class.forName("org.geotools.process.Processors", false, Value.class.getClassLoader());
+                Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
+                return (Map<String,Parameter<?>>) getParameterInfo.invoke(null, name);
+            }
+            catch(Exception e) {
+                throw new RuntimeException("Error looking up process info", e);
+            }
+        }
+
+        private boolean isRenderingTransformation(FunctionName fn) {
+            // TODO Auto-generated method stub
+            return false;
         }
 
     }

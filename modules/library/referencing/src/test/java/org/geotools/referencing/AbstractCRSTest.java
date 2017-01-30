@@ -146,13 +146,24 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, false));
 
         crs = getED50("ED50 with unknown name");
-        assertNull("Should not find the CRS without a scan.",
-                   CRS.lookupIdentifier(crs, false));
-        assertEquals(null, CRS.lookupEpsgCode(crs, false));
+        if(supportsED50QuickScan()) {
+            assertEquals("With scan allowed, should find the CRS.", "EPSG:4230",
+                    CRS.lookupIdentifier(crs, false));
+       assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, false));
+        } else {
+            assertNull("Should not find the CRS without a scan.",
+                       CRS.lookupIdentifier(crs, false));
+            assertEquals(null, CRS.lookupEpsgCode(crs, false));
+        }
+
 
         assertEquals("With scan allowed, should find the CRS.", "EPSG:4230",
                      CRS.lookupIdentifier(crs, true));
         assertEquals(Integer.valueOf(4230), CRS.lookupEpsgCode(crs, true));
+    }
+
+    protected boolean supportsED50QuickScan() {
+        return false;
     }
 
     /**

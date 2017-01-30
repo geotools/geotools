@@ -16,10 +16,7 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.jaiext.affine.AffineDescriptor;
 import it.geosolutions.jaiext.range.Range;
-import it.geosolutions.jaiext.scale.ScaleDescriptor;
-import it.geosolutions.jaiext.translate.TranslateDescriptor;
 
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -33,9 +30,11 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PropertyGenerator;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
+import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.factory.GeoTools;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -56,7 +55,6 @@ import org.opengis.util.InternationalString;
  */
 public class Affine extends BaseScaleOperationJAI {
 
-    private static final String AFFINE = "Affine";
     /** serialVersionUID */
     private static final long serialVersionUID = 1699623079343108288L;
 
@@ -96,8 +94,9 @@ public class Affine extends BaseScaleOperationJAI {
         //
         ////
         ROI roi = null;
-        if (parameters.getObjectParameter("roi") != null){
-            roi = (ROI) parameters.getObjectParameter("roi");
+        Object param = CoverageProcessor.getParameter(parameters, ROI);
+        if (param != null){
+            roi = (ROI) param;
         }
         
         ////
@@ -106,8 +105,9 @@ public class Affine extends BaseScaleOperationJAI {
         //
         ////
         Range nodata = null;
-        if (parameters.getObjectParameter("nodata") != null){
-            nodata = (Range) parameters.getObjectParameter("nodata");
+        param = CoverageProcessor.getParameter(parameters, "nodata");
+        if (param != null){
+            nodata = (Range) param;
         }
         
         
@@ -152,15 +152,12 @@ public class Affine extends BaseScaleOperationJAI {
         PropertyGenerator propertyGenerator = null;
         if(data instanceof RenderedOp){
             String operationName = ((RenderedOp)data).getOperationName();
-            if(operationName.equalsIgnoreCase(AFFINE)){
-                propertyGenerator = new AffineDescriptor().getPropertyGenerators()[0];
-            } else if(operationName.equalsIgnoreCase("Scale")){
-                propertyGenerator = new ScaleDescriptor().getPropertyGenerators()[0];
-            } else if(operationName.equalsIgnoreCase("Translate")){
-                propertyGenerator = new TranslateDescriptor().getPropertyGenerators()[0];
+            if(operationName.equalsIgnoreCase(AFFINE) || operationName.equalsIgnoreCase(SCALE)
+                    || operationName.equalsIgnoreCase(TRANSLATE)){
+                propertyGenerator = getOperationDescriptor(operationName).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
             }
             if(propertyGenerator != null){
-                Object roiProp = propertyGenerator.getProperty("roi", data);
+                Object roiProp = propertyGenerator.getProperty(ROI, data);
                 if (roiProp != null && roiProp instanceof ROI) {
                     CoverageUtilities.setROIProperty(properties, (ROI) roiProp);
                 }
@@ -169,5 +166,4 @@ public class Affine extends BaseScaleOperationJAI {
 
         return properties;
     }
-
 }

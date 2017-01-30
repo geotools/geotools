@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011-2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.geotools.filter.FilterCapabilities;
@@ -80,6 +80,7 @@ import org.opengis.filter.temporal.EndedBy;
 import org.opengis.filter.temporal.Ends;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.geometry.BoundingBox;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -128,6 +129,29 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     // Class to convert geometry value into a Well-known Text string
     private static WKTWriter wktWriter = new WKTWriter();
+
+    /**
+     * Conversion factor from common units to meter
+     */
+    private static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>() {
+        {
+            put("kilometers", 1000.0);
+            put("kilometer", 1000.0);
+            put("meters", 1.0);
+            put("meter", 1.0);
+            put("mm", 0.001);
+            put("millimeter", 0.001);
+            put("mi", 1609.344);
+            put("statute miles", 1609.344);
+            put("miles", 1609.344);
+            put("mile", 1609.344);
+            put("nautical miles", 1852.0);
+            put("NM", 1852d);
+            put("feet", 0.3048);
+            put("ft", 0.3048);
+            put("in", 0.0254);
+        }
+    };  
 
     boolean functionEncodingEnabled = false;
 
@@ -275,25 +299,44 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         }
     }
 
+    private boolean isValidUnit(String unit) {
+        if (UNITS_MAP.get(unit) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    private String toMeters(double distance, String unit) {
+        Double conversion = UNITS_MAP.get(unit);
+        if (conversion != null) {
+            return String.valueOf(distance * conversion);
+        }
+        // in case unknown unit use as-is
+        return String.valueOf(distance);
+    }
+    
     Object visitDistanceSpatialOperator(DistanceBufferOperator filter, PropertyName property,
             Literal geometry, boolean swapped, Object extraData) {
         try {
-            if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
+            String comparisonOperator = ") < ";
+            if ((filter instanceof DWithin && swapped) 
+                || (filter instanceof Beyond && !swapped)) {
+              comparisonOperator = ") > ";
+            }
                 out.write("db2gse.ST_Distance(");
                 property.accept(this, extraData);
                 out.write(",");
                 geometry.accept(this, extraData);
-                out.write(") < ");
-                out.write(Double.toString(filter.getDistance()));
+            String distanceUnits = filter.getDistanceUnits();
+            if (isValidUnit(distanceUnits)) {
+                out.write(",'METER'");
             }
-            if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
-                out.write("db2gse.ST_Distance(");
-                property.accept(this, extraData);
-                out.write(",");
-                geometry.accept(this, extraData);
-                out.write(") > ");
-                out.write(Double.toString(filter.getDistance()));
-            }
+            out.write(comparisonOperator);
+            out.write(toMeters(filter.getDistance(), filter.getDistanceUnits()));
+            if (!isValidUnit(distanceUnits)) {
+                addSelectivity(); // Selectivity clause can not be used with distance units
+            }            
+            
             return extraData;
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -308,16 +351,24 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
             Expression e2, boolean swapped, Object extraData) {
+        
+        String checkValue="1";
 
         try {
             // currentSRID=getSRID();
             LOGGER.finer("Generating GeometryFilter WHERE clause for " + filter);
             if (filter instanceof Equals) {
                 out.write("db2gse.ST_Equals");
-            } else if (filter instanceof Disjoint) {
-                out.write("db2gse.ST_Disjoint");
-            } else if (filter instanceof Intersects || filter instanceof BBOX) {
+            } else if (filter instanceof Disjoint && this.selectivityClause == null) {
+                out.write("db2gse.ST_Disjoint");                
+            } else if (filter instanceof Disjoint && this.selectivityClause != null) {
                 out.write("db2gse.ST_Intersects");
+                checkValue="0";
+            } else if (filter instanceof Intersects || filter instanceof BBOX) {
+                if (isLooseBBOXEnabled())
+                    out.write("db2gse.EnvelopesIntersect");
+                else 
+                    out.write("db2gse.ST_Intersects");
             } else if (filter instanceof Crosses) {
                 out.write("db2gse.ST_Crosses");
             } else if (filter instanceof Within) {
@@ -343,7 +394,9 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             out.write(", ");
             e2.accept(this, extraData);
 
-            out.write(") = 1 ");
+            out.write(") = ");
+            out.write(checkValue);
+            out.write(" ");
             addSelectivity(); // add selectivity clause if needed
 
             LOGGER.fine(this.out.toString());
@@ -625,31 +678,5 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-    
-    public Object visit(BBOX filter, Object extraData) throws RuntimeException {
-        if (isLooseBBOXEnabled()==false)
-            return super.visit(filter,extraData);
-        
-                        
-        
-        double minx = filter.getMinX();
-        double maxx = filter.getMaxX();
-        double miny = filter.getMinY();
-        double maxy = filter.getMaxY();
-        String propertyName = filter.getPropertyName();
-        Integer srid =getSRID(propertyName);
-                
-        try {
-            out.write("db2gse.EnvelopesIntersect(");
-            out.write(escapeName(propertyName));
-            out.write(","+minx + ", " + miny + ", "
-                    + maxx + ", " + maxy + ", " + srid);
-            out.write(") =1 ");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return extraData;        
-    }
-
+    }    
 }

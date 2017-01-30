@@ -85,9 +85,9 @@ Here is the example:
    :start-after: // createCRSByHand2 start
    :end-before: // createCRSByHand2 end
 
-Finally, here is no-holds-barred creation of a CoordianteReferenceSystem with all the usual helper classes
+Finally, here is no-holds-barred creation of a CoordinateReferenceSystem with all the usual helper classes
 stripped away.  It does not use any of the static objects available in GeoTools. The following example
-creates a CoordianteReferenceSystem to represent WGS84.
+creates a CoordinateReferenceSystem to represent WGS84.
 
 .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
    :language: java

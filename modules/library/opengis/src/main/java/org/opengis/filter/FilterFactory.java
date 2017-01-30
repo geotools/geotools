@@ -280,7 +280,7 @@ public interface FilterFactory {
      * @param miny Minimum "y" value (for a literal BoundingBox)
      * @param maxx Maximum "x" value (for a literal BoundingBox)
      * @param maxy Maximum "y" value (for a literal BoundingBox)
-     * @param srs Indicating the CoordianteReferenceSystem to use for a literal BoundingBox
+     * @param srs Indicating the CoordinateReferenceSystem to use for a literal BoundingBox
      */
     BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs);
  
@@ -299,7 +299,7 @@ public interface FilterFactory {
      * @param miny Minimum "y" value (for a literal BoundingBox)
      * @param maxx Maximum "x" value (for a literal BoundingBox)
      * @param maxy Maximum "y" value (for a literal BoundingBox)
-     * @param srs Indicating the CoordianteReferenceSystem to use for a literal BoundingBox
+     * @param srs Indicating the CoordinateReferenceSystem to use for a literal BoundingBox
      */
     BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction);  
     

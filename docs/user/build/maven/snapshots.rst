@@ -13,16 +13,15 @@ people to "update with -U".
 
 To respond to one of these emails include "-u" in your next build.
 
-1. Update::
+1. Update (for example from upstream)::
      
-     svn up
+      git pull --rebase upstream master
      
 2. build using the -U option::
       
-      mvn clean install -U -Dmaven.test.skip=true
+      mvn clean install -U -DskipTests
 
-The above example skipped the tests (which is common when you are trying for a quick update),
-please note by definition that "-U" is not compatible with the "-o" offline mode.
+The above example skipped running the tests (which is common when you are trying for a quick update), please note by definition that "-U" is not compatible with the "-o" offline mode.
 
 Publish GeoTools SNAPSHOT
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -31,11 +30,11 @@ If you are working on GeoServer or uDig or another project that depends on the l
 GeoTools release you will need to know how to deploy a SNAPSHOT (so members of your developer
 community do not get compile errors).
 
-Usually do this after a commit:
+The build server ares is watching the repository, and will build and deploy a snapshot. If you really cannot wait:
 
 1. Update to make sure you are not missing out on anyones work::
      
-     svn up
+      git pull --rebase upstream master
      
 2. Build with tests to make sure your commit is not fatal::
      
@@ -43,12 +42,16 @@ Usually do this after a commit:
      
 3. Commit - remember to include any Jira numbers in your log message::
       
-      svn commit -m "Change to fix shapefile charset handling, see GEOT-1437"
+     mvn commit -m "Change to fix shapefile charset handling, see GEOT-1437"
+     
+4. Push the commits back to upstream::
+     
+     mvn push upstream master
       
 4. Ensure your ~/.m2/settings.xml has your webdav credentials.
    
-   * osgeo - this is the same as your svn credentials
-   * opengo - you need to ask on the developer email list
+   * osgeo - this is the same as your osgeo credentials
+   * boundlessgeo - ask on the developer email list
    
    The settings.xml should list both::
    
@@ -62,7 +65,7 @@ Usually do this after a commit:
              <password>PASSWORD</password>
            </server> 
            <server>
-             <id>opengeo</id>
+             <id>boundlessgeo</id>
              <username>USERID</username>
              <password>PASSWOD</password>
            </server>
@@ -74,5 +77,3 @@ Usually do this after a commit:
       mvn deploy -Dmaven.test.skip=true
 
 6. Let your community know via email! (The email can ask them to build iwth -U).
-
-Note a nightly build machine will also generate SNAPSHOTS each day.

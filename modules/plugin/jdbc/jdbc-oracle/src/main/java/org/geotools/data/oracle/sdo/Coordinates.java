@@ -31,12 +31,12 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 
 /**
- * HelperClass for dealing with JTS14 CoordianteSequences.
+ * HelperClass for dealing with JTS14 CoordinateSequences.
  * 
  * <p>
  * JTS14 does not supply suffiecnt API to allow the modification of
  * CoordinateSequence in a lossless manner. To make full use of this class
- * your CoordianteSequence will need to support the additional methods
+ * your CoordinateSequence will need to support the additional methods
  * outlined in CoordinateAccess.
  * </p>
  *
@@ -49,14 +49,14 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class Coordinates {
     private Coordinates() {
-        // utility class do not inaniate
+        // utility class do not instantiate
     }
 
     /**
      * Sublist opperation for CoordinateSequence.
      * 
      * <p>
-     * Opperates in the same manner as corrasponding java util List method.
+     * Opperates in the same manner as corresponding java util List method.
      * </p>
      *
      * @param factory factory used to manage sequence

@@ -129,7 +129,7 @@ public class PropertyAttributeReader implements AttributeReader {
     /**
      * Number of attributes to expect based on header information.
      * 
-     * @return number of attribtues
+     * @return number of attributes
      */
     public int getAttributeCount() {
         return type.getAttributeCount();
@@ -226,7 +226,7 @@ public class PropertyAttributeReader implements AttributeReader {
             ArrayIndexOutOfBoundsException {
         if (line == null) {
             throw new IOException(
-                    "No content available - did you remeber to call next?");
+                    "No content available - did you remember to call next?");
         }
 
         AttributeDescriptor attType = type.getDescriptor(index);

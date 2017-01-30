@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -54,13 +54,15 @@ public class QualifiedName extends QName {
      * @return
      */
     public QualifiedName derive(String prefix) {
-        if (prefix.equals(this.prefix)) {
+        return derive(prefix, getNamespaceURI());
+    }
+
+    public QualifiedName derive(String prefix, String uri) {
+        if (prefix.equals(this.prefix) && uri.equals(getNamespaceURI())) {
             return this;
         } else {
-            return new QualifiedName(getNamespaceURI(), getLocalPart(), prefix);
-            
+            return new QualifiedName(uri, getLocalPart(), prefix);
         }
-        
     }
 
     /**

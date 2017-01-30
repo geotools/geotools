@@ -8,12 +8,12 @@ Within GeoTools, the coverage module exists below the main module (where Feature
 
 This is in opposition to the ISO Coverage model (where Coverage extends Feature) provided by ISO 19123 specification.
 
-GeoTools 'Coverage' objects emerged from an earlier specification published by the OpenGeospatial Consortium (OGC) called "Grid Coverage Services Implementation" (OGC 01-004).
+GeoTools 'Coverage' objects emerged from an earlier specification published by the Open Geospatial Consortium (OGC) called "Grid Coverage Services Implementation" (OGC 01-004).
 
 Q: How is raster data supported?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The design of the coverage modules follows closely the design of image handling in Java. Java provides three major subsystems in their Java media API's which are used and extended in GeoTools.
+The design of the coverage modules follows closely the design of image handling in Java. Java provides three major subsystems in their Java media APIs which are used and extended in GeoTools.
 
 Image I/O system
   To access files with image content. This provides code to access many

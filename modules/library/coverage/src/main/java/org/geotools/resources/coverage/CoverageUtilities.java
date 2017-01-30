@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,21 +16,26 @@
  */
 package org.geotools.resources.coverage;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.range.Range;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import javax.imageio.ImageReadParam;
 import javax.media.jai.PropertySource;
 import javax.media.jai.ROI;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -55,6 +60,9 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
+
+import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.range.Range;
 
 
 /**
@@ -103,6 +111,9 @@ public final class CoverageUtilities {
     				.getPixelTranslation(PixelInCell.CELL_CORNER),
     				-PixelTranslation
     						.getPixelTranslation(PixelInCell.CELL_CORNER));
+
+
+    public static final double AFFINE_IDENTITY_EPS = 1E-6;
 
     /**
      * Do not allows instantiation of this class.
@@ -519,7 +530,7 @@ public final class CoverageUtilities {
 		case DataBuffer.TYPE_INT:
 			return Integer.valueOf(Integer.MIN_VALUE);
 		case DataBuffer.TYPE_SHORT:
-			return Short.valueOf((short)Short.MIN_VALUE);
+			return Short.valueOf(Short.MIN_VALUE);
 		case DataBuffer.TYPE_DOUBLE:
 			return Double.valueOf(Double.NaN);
 		case DataBuffer.TYPE_FLOAT:
@@ -564,5 +575,39 @@ public final class CoverageUtilities {
 
         public final static UCUMUnit ELEVATION_UNITS = new UCUMUnit("meter", "m");
 
+    }
+
+    /** 
+     * Extract Properties from a specified URL 
+     */
+    public static Properties loadPropertiesFromURL(URL propsURL) {
+        Utilities.ensureNonNull("propsURL", propsURL);
+        final Properties properties = new Properties();
+        InputStream stream = null;
+        InputStream openStream = null;
+        try {
+            openStream = propsURL.openStream();
+            stream = new BufferedInputStream(openStream);
+            properties.load(stream);
+        } catch (FileNotFoundException e) {
+            if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
+                FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return null;
+        } catch (IOException e) {
+            if (FeatureUtilities.LOGGER.isLoggable(Level.SEVERE))
+                FeatureUtilities.LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return null;
+        } finally {
+
+            if (stream != null) {
+                IOUtils.closeQuietly(stream);
+            }
+
+            if (openStream != null) {
+                IOUtils.closeQuietly(openStream);
+            }
+
+        }
+        return properties;
     }
 }

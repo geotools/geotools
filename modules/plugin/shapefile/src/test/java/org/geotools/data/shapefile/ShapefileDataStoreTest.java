@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -465,26 +465,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
 
     @Test
-    public void testQueryNonGeomAttributes() throws Exception {
-        File shpFile = copyShapefiles(STATE_POP);
-        URL url = shpFile.toURI().toURL();
-        ShapefileDataStore ds = new ShapefileDataStore(url);
-        SimpleFeatureSource fs = ds.getFeatureSource();
-                
-        // GEOS-6842/GEOT-4991: 
-        // Build an alphanumeric query to use optionally an ODBC provider to execute fast Dbase filters.
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        Filter filter = ff.equals(ff.property("STATE_ABBR"), ff.literal("AL"));
-        Query q = new Query();
-        q.setFilter(filter);
-        
-        // grab the features
-        SimpleFeatureCollection fc = fs.getFeatures(q);
-        assertTrue(fc.size() > 0);
-        ds.dispose();
-    }
-    
-    @Test
     public void testFidFilter() throws Exception {
         File shpFile = copyShapefiles(STATE_POP);
         URL url = shpFile.toURI().toURL();
@@ -538,6 +518,27 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertEquals(failureMsg, expectedFids.size(), actualFids.size());
         assertEquals(failureMsg, expectedFids, actualFids);
         ds.dispose();
+    }
+    
+    @Test
+    public void testGeometryFilter() throws Exception {
+        File shpFile = copyShapefiles(STREAM);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        SimpleFeatureSource featureSource = ds.getFeatureSource();
+        SimpleFeatureCollection features;// = featureSource.getFeatures();
+        
+
+        
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(-99.0,38.0);
+        Point p = geometryFactory.createPoint(coordinate);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        final Filter testFilter = ff.intersects(ff.literal(p), ff.property("the_geom"));
+        //System.out.println(testFilter);
+        features = featureSource.getFeatures(testFilter);
+        assertNotNull(features);
+        
     }
     
     private ArrayList performQueryComparison(
@@ -1058,6 +1059,43 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     }
 
     @Test
+    public void testWriteReadStandardNumbers() throws Exception {
+        // create feature type
+        SimpleFeatureType type = DataUtilities.createType("junk",
+                "a:Point,b:java.lang.Float,c:java.lang.Double");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        Double aFloat = 123456.78901234567890123456789;
+        Double aDouble = 1234567890.123456789;
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
+        build.add(aFloat);
+        build.add(aDouble);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+
+        // read them back
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader();
+        try {
+            SimpleFeature f = reader.next();
+
+            assertEquals("Float", aFloat, (Double) f.getAttribute("b"), 0.0001);
+            assertEquals("Double", aDouble, f.getAttribute("c"));
+        } finally {
+            reader.close();
+        }
+        s.dispose();
+    }
+
+    @Test
     public void testWriteReadBigNumbers() throws Exception {
         // create feature type
         SimpleFeatureType type = DataUtilities.createType("junk",
@@ -1180,8 +1218,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testGeometriesWriting() throws Exception {
 
-//        String[] wktResources = new String[] { "point", "multipoint", "line",
-//                "multiline", "polygon", "multipolygon" };
         String[] wktResources = new String[] { "line",
                 "multiline", "polygon", "multipolygon" };
 
@@ -1587,7 +1623,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      * ids match the {@code <typeName>.<number>} structure but the {@code <typeName>} part does not
      * match the actual typeName, shoud ensure the invalid fids are ignored
      * 
-     * @throws FileException
+     * @throws Exception
      */
     @Test
     public void testWipesOutInvalidFidsFromFilters() throws Exception {
@@ -1810,6 +1846,21 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 'a', 'b', 'c', 'd', 'e', 'f' };
         char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
         return new String(array);
+    }
+    
+    /**
+     * A test method testing the correct bounds of shapefiles without any data, but having
+     * [0:0,0:0] in their header. The bounds must pass the isEmpty() and isNull() tests. 
+     *
+     * @throws IOException, if the shapefile can not be read
+     * @author Hendrik Peilke (IBYKUS AG)
+     */
+    @Test
+    public void testBoundsEmpty() throws IOException {
+        File file = TestData.file(TestCaseSupport.class, "empty-shapefile/empty-shapefile.shp");
+        ShapefileDataStore dataStore = new ShapefileDataStore(file.toURI().toURL());
+        ReferencedEnvelope bounds = dataStore.getFeatureSource().getBounds();
+        assertTrue("bounds of a shapefile without any data must be empty",bounds.isEmpty() && bounds.isNull());
     }
     
 }

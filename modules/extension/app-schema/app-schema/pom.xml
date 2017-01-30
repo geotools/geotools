@@ -7,17 +7,13 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema</artifactId>
-        <version>14-SNAPSHOT</version>
+        <version>17-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-app-schema</artifactId>
     <name>Application Schema DataAccess</name>
 
-    <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema</url>
-    </scm>
 
     <description>DataAccess to create complex feature types defined in a GML application schema.</description>
 
@@ -46,16 +42,17 @@
     </developers>
 
     <dependencies>      
-	<dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-complex</artifactId>
             <version>${project.version}</version>
         </dependency> 
-	<dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-complex</artifactId>
             <version>${project.version}</version>
-	    <classifier>tests</classifier>
+            <classifier>tests</classifier>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>commons-digester</groupId>
@@ -73,24 +70,24 @@
             </exclusions>
         </dependency>
         <dependency>
-    <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections 
-        2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
+            <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections 
+                2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.1</version>
+            <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
         </dependency>
         <dependency>
             <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections 
                 2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
+            <version>1.9.2</version>
+            <classifier>noclassprop</classifier>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
-		
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-data</artifactId>
@@ -124,12 +121,12 @@
         <dependency>
             <groupId>xpp3</groupId>
             <artifactId>xpp3_min</artifactId>
-        </dependency>	
-	<dependency>
-	  <groupId>org.geotools.ogc</groupId>
-	  <artifactId>net.opengis.wfs</artifactId>
-	  <version>${project.version}</version>
-	</dependency>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.ogc</groupId>
+            <artifactId>net.opengis.wfs</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <!-- for FilenameUtils -->
             <groupId>commons-io</groupId>
@@ -190,8 +187,8 @@
             <artifactId>geosciml-3.0-seegrid</artifactId>
             <version>3.0.0-1</version>
             <scope>test</scope>
-	    </dependency>
-	    <dependency>
+        </dependency>
+        <dependency>
             <groupId>org.geotools.schemas</groupId>
             <artifactId>geosciml-3.2</artifactId>
             <version>3.2.0-1</version>

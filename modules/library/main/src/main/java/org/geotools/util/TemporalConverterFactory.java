@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeFactory;
@@ -54,6 +53,7 @@ import org.opengis.temporal.Instant;
  * <li>{@link java.util.Date} to {@link java.sql.Time}
  * <li>{@link java.util.Calendar} to {@link java.sql.Time}
  * <li>{@link java.sql.Timestamp} to {@link java.util.Calendar}
+ * </ul>
  * </p>
  * <p>
  * The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be 
@@ -134,7 +134,14 @@ public class TemporalConverterFactory implements ConverterFactory {
                     }
                 };
             }
-            
+
+            if (Long.class.equals(target)) {
+                return new Converter() {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        return (T) Long.valueOf(((Date)source).getTime());
+                    }
+                };
+            }
         }
 
         // this should handle java.util.Calendar to
@@ -219,7 +226,19 @@ public class TemporalConverterFactory implements ConverterFactory {
                 };
             }
         }
-        
+
+        if (Long.class.isAssignableFrom(source) && java.util.Date.class.isAssignableFrom(target)) {
+            return new Converter() {
+                @Override
+                public Object convert(Object source, Class target) throws Exception {
+                    if (source != null) {
+                        return new java.util.Date((Long) source);
+                    } else {
+                        return null;
+                    }
+                }
+            };
+        }
         return null;
     }
     

@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geotools.data.Query;
+import org.geotools.data.complex.FeatureTypeMapping;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.sort.SortBy;
 
@@ -79,6 +80,8 @@ public class JoiningQuery extends Query {
     
     protected List<String> ids; 
     
+    FeatureTypeMapping rootMapping;
+
     public JoiningQuery(JoiningQuery query) {
         super(query);
         setQueryJoins(query.getQueryJoins());
@@ -135,4 +138,11 @@ public class JoiningQuery extends Query {
         this.isDenormalised = isDenormalised;
     }
 
+    public FeatureTypeMapping getRootMapping() {
+        return rootMapping;
+    }
+
+    public void setRootMapping(FeatureTypeMapping rootMapping) {
+        this.rootMapping = rootMapping;
+    }
 }

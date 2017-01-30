@@ -67,7 +67,7 @@ public class AggregateGeometryBuilderTest extends TestCase {
 		assertTrue(position.equals(point.getCentroid()));
 		
 		// change CRS and test
-		builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84_3D);
+		builder.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84_3D);
 		PrimitiveFactory primitiveFactory3D = builder.getPrimitiveFactory();
 		Point point3D = primitiveFactory3D.createPoint(new double[] { 48.44, -123.37, 1.0 });
 		
@@ -75,7 +75,7 @@ public class AggregateGeometryBuilderTest extends TestCase {
 		assertFalse(point.equals(point3D));
 		
 		// back to 2D
-		builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84);
+		builder.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 		PositionFactory pf = builder.getPositionFactory();
 		PrimitiveFactoryImpl primf = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 		AggregateFactory agf = builder.getAggregateFactory();

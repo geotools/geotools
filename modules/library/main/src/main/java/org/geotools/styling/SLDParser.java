@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -1063,8 +1063,8 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
                 parseVendorOption(symbol.getOptions(), child);
             } else if (childName.equalsIgnoreCase(PerpendicularOffsetString)) {
-                final String offsetValue = getFirstChildValue(child);
-                symbol.setPerpendicularOffset((ff.literal(Double.parseDouble(offsetValue))));
+                final Expression offsetValue = parseCssParameter(child);
+                symbol.setPerpendicularOffset(offsetValue);
             }
         }
 
@@ -1986,29 +1986,7 @@ public class SLDParser {
                     stroke.setLineJoin(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("dasharray")
                         || res.equalsIgnoreCase("stroke-dasharray")) {
-                    String dashString = null;
-                    if (child.getChildNodes().getLength() == 1
-                            && child.getFirstChild().getNodeType() == Node.TEXT_NODE) {
-                        dashString = getFirstChildValue(child);
-                    } else {
-                        Expression definition = parseCssParameter(child);
-                        if (definition instanceof Literal) {
-                            dashString = ((Literal) definition).getValue().toString();
-                        } else {
-                            LOGGER.warning("Only literal stroke-dasharray supported at this time:"
-                                    + definition);
-                        }
-                    }
-                    if (dashString != null) {
-                        StringTokenizer stok = new StringTokenizer(dashString.trim(), " ");
-                        float[] dashes = new float[stok.countTokens()];
-                        for (int l = 0; l < dashes.length; l++) {
-                            dashes[l] = Float.parseFloat(stok.nextToken());
-                        }
-                        stroke.setDashArray(dashes);
-                    } else {
-                        LOGGER.fine("Unable to parse stroke-dasharray");
-                    }
+                    stroke.setDashArray(parseDashArray(child));
                 } else if (res.equalsIgnoreCase("dashoffset")
                         || res.equalsIgnoreCase("stroke-dashoffset")) {
                     stroke.setDashOffset(parseCssParameter(child));
@@ -2017,6 +1995,56 @@ public class SLDParser {
         }
 
         return stroke;
+    }
+
+    private List<Expression> parseDashArray(Node root) {
+        NodeList children = root.getChildNodes();
+        List<Expression> expressions = new ArrayList<>();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node child = children.item(i);
+            if (child == null) continue;
+            switch (child.getNodeType()) {
+                case Node.TEXT_NODE:
+                    handleDashArrayText(child.getNodeValue(), expressions);
+                    break;
+                case Node.ELEMENT_NODE:
+                    handleDashArrayNode(child, expressions);
+                    break;
+                case Node.CDATA_SECTION_NODE:
+                    handleDashArrayText(child.getNodeValue(), expressions);
+                    break;
+            }
+        }
+        return expressions;
+    }
+
+    private void handleDashArrayText(String text, List<Expression> expressions) {
+        if (text == null || text.isEmpty()) {
+            return;
+        }
+        for (String textPart : text.split("\\s+")) {
+            if(!textPart.isEmpty()) {
+                expressions.add(ff.literal(Float.valueOf(textPart)));
+            }
+        }
+    }
+
+    private void handleDashArrayNode(Node child, List<Expression> expressions) {
+        Expression expression = ExpressionDOMParser.parseExpression(child);
+        if (expression instanceof Literal) {
+            handleDashArrayLiteral((Literal) expression, expressions);
+        } else {
+            expressions.add(expression);
+        }
+    }
+
+    private void handleDashArrayLiteral(Literal literal, List<Expression> expressions) {
+        Object value = literal.getValue();
+        if (value instanceof String) {
+            handleDashArrayText((String) value, expressions);
+        } else {
+            expressions.add(literal);
+        }
     }
 
     /** Internal parse method - made protected for unit testing */
@@ -2293,6 +2321,7 @@ public class SLDParser {
         }
 
         Font font = factory.getDefaultFont();
+        boolean firstFontFamily = true;
         NodeList list = findElements(((Element) root), "CssParameter");
         int length = list.getLength();
         for (int i = 0; i < length; i++) {
@@ -2309,7 +2338,13 @@ public class SLDParser {
                 String res = map.item(k).getNodeValue();
 
                 if (res.equalsIgnoreCase("font-family")) {
-                    font.setFontFamily(parseCssParameter(child));
+                    if(firstFontFamily) {
+                        // wipe out the default font
+                        font.getFamily().clear();
+                        firstFontFamily = false;
+                    }
+                    // use add instead of set as we might have multiple fonts here
+                    font.getFamily().add(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-style")) {
                     font.setFontStyle(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-size")) {

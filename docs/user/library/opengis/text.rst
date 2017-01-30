@@ -85,7 +85,7 @@ Here is an example::
 With this in mind String is considered:
 
 * Machine readable (the values are not translated!)
-* Freeform (ie does not belong to a set vocabulary of defined values)
+* Freeform (i.e. does not belong to a set vocabulary of defined values)
 
 InternationalString
 ^^^^^^^^^^^^^^^^^^^

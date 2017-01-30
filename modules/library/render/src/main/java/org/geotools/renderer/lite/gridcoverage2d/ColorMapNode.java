@@ -16,13 +16,8 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import it.geosolutions.jaiext.classifier.ColorMapTransform;
-import it.geosolutions.jaiext.classifier.LinearColorMap;
-import it.geosolutions.jaiext.classifier.LinearColorMapElement;
-import it.geosolutions.jaiext.piecewise.Domain1D;
-import it.geosolutions.jaiext.range.NoDataContainer;
-
 import java.awt.Color;
+import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
@@ -47,6 +42,12 @@ import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;
+
+import it.geosolutions.jaiext.classifier.ColorMapTransform;
+import it.geosolutions.jaiext.classifier.LinearColorMap;
+import it.geosolutions.jaiext.classifier.LinearColorMapElement;
+import it.geosolutions.jaiext.piecewise.Domain1D;
+import it.geosolutions.jaiext.range.NoDataContainer;
 
 /**
  * This           {@link CoverageProcessingNode}           is responsible for visiting the supplied          {@link ColorMapTransform}           and applying it to the source           {@link GridCoverage2D}          . <p> <strong>What we support and how do we implement it</strong> <p> A ColorMapTransform is created in order to map categories to colors on a single band coverage (or on the visible band of multiband coverage). <p> In this implementation we allow users to use either 256 or 65536 colors via the creation of a paletted image with s suitable palette derived from the single           {@link ColorMapEntry}           that make up the           {@link ColorMapTransform}          .
@@ -136,9 +137,15 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 			final GridCoverage2D sourceCoverage = (GridCoverage2D) source.getOutput();
 			GridCoverageRendererUtilities.ensureSourceNotNull(sourceCoverage, "ColorMapNode");
 			final int numSD = sourceCoverage.getNumSampleDimensions();
-			if (numSD>1)
-				throw new IllegalArgumentException(
-						Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1,Integer.valueOf(numSD)));
+            if (numSD > 1) {
+                // check it, is it gray + alpha?
+                ColorModel cm = sourceCoverage.getRenderedImage().getColorModel();
+                if (!cm.hasAlpha() && cm.getNumColorComponents() != 2) {
+                    // let's check, it might
+                    throw new IllegalArgumentException(
+                            Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
+                }
+            }
 			// /////////////////////////////////////////////////////////////////////
 			//
 			// Check the sample dimension we are going to use for NoData
@@ -149,7 +156,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 			// have a valid NoDataValue that we can use.
 			//
 			// /////////////////////////////////////////////////////////////////////
-			final GridSampleDimension candidateSD = (GridSampleDimension) sourceCoverage.getSampleDimension(0);
+			final GridSampleDimension candidateSD = sourceCoverage.getSampleDimension(0);
 			double[] candidateNoDataValues = preparaNoDataValues(candidateSD);
 
 			// /////////////////////////////////////////////////////////////////////
@@ -278,6 +285,9 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 	        GridCoverageRendererUtilities.ensureSourceNotNull(sourceImage, this.getName().toString());
 	        //prepare the colorMapTransform operation
 	        ImageWorker w = new ImageWorker(sourceImage);
+            if (w.getNumBands() == 2) {
+                w.retainBands(1);
+            }
 	        w.setROI(CoverageUtilities.getROIProperty(sourceCoverage));
 	        NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(sourceCoverage);
                 w.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);

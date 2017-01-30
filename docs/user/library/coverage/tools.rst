@@ -1,4 +1,4 @@
 Coverage Tools
 --------------
 
-Unsupported coveage tools; no documetnation has been provided.
+Unsupported coverage tools; no documentation has been provided.

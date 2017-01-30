@@ -11,16 +11,16 @@ Welcome GeoServer Developers
    data from any major spatial data source using open standards (WFS, WCS, WMS).
 
 The GeoServer community is the leading example of the power of GeoTools and a source of much of
-the research and development work benifiting the library as a whole. This is aided by a long
+the research and development work benefiting the library as a whole. This is aided by a long
 standing tradition of pushing as much reusable code as possible out into the GeoTools library.
 
 Catalog for DataStore Management
 --------------------------------
 
 The GeoServer project is wired together using Spring; giving you an easy way to access the
-**Catalog** responsible for managaing DataStores.
+**Catalog** responsible for managing DataStores.
 
-DataStores represent physical connections to external servers (often with their own conneciton
+DataStores represent physical connections to external servers (often with their own connection
 pool and resources to be cleaned up after). As such it is important that you always use a
 Catalog to allow GeoServer to know when you are obtaining resources, and clean up the mess
 if your code happens to crash.

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,10 +21,12 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -43,14 +45,11 @@ import org.opengis.geometry.BoundingBox;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * This class simply builds an SRTREE spatial index in memory for fast indexed
- * geometric queries.
+ * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.
  * 
  * <p>
- * Since the {@link ImageMosaicReader} heavily uses spatial queries to find out
- * which are the involved tiles during mosaic creation, it is better to do some
- * caching and keep the index in memory as much as possible, hence we came up
- * with this index.
+ * Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the involved tiles during mosaic creation, it is better to
+ * do some caching and keep the index in memory as much as possible, hence we came up with this index.
  * 
  * @author Simone Giannecchini, S.A.S.
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
@@ -65,10 +64,9 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
             .getLogger(CachingDataStoreGranuleCatalog.class);
 
     private final GTDataStoreGranuleCatalog adaptee;
-    
-    private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache= new SoftValueHashMap<String, GranuleDescriptor>();
-    
-   
+
+    private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache = new SoftValueHashMap<String, GranuleDescriptor>();
+
     /**
      * 
      * @param adaptee
@@ -76,45 +74,45 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
      */
     public CachingDataStoreGranuleCatalog(GTDataStoreGranuleCatalog adaptee) {
         super(null);
-        this.adaptee=adaptee;
+        this.adaptee = adaptee;
     }
 
     @Override
     public void addGranules(String typeName, Collection<SimpleFeature> granules,
             Transaction transaction) throws IOException {
-        adaptee.addGranules(typeName, granules, transaction);        
+        adaptee.addGranules(typeName, granules, transaction);
     }
 
     @Override
     public void computeAggregateFunction(Query q, FeatureCalc function) throws IOException {
         adaptee.computeAggregateFunction(q, function);
-        
+
     }
 
     @Override
-    public void createType(String namespace, String typeName, String typeSpec) throws IOException,
-            SchemaException {
+    public void createType(String namespace, String typeName, String typeSpec)
+            throws IOException, SchemaException {
         adaptee.createType(namespace, typeName, typeSpec);
-        
+
     }
 
     @Override
     public void createType(SimpleFeatureType featureType) throws IOException {
         adaptee.createType(featureType);
-        
+
     }
 
     @Override
-    public void createType(String identification, String typeSpec) throws SchemaException,
-            IOException {
+    public void createType(String identification, String typeSpec)
+            throws SchemaException, IOException {
         adaptee.createType(identification, typeSpec);
-        
+
     }
 
     @Override
     public void dispose() {
         adaptee.dispose();
-        if(multiScaleROIProvider != null) {
+        if (multiScaleROIProvider != null) {
             multiScaleROIProvider.dispose();
             multiScaleROIProvider = null;
         }
@@ -136,86 +134,76 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void getGranuleDescriptors(final Query q, final GranuleCatalogVisitor visitor) throws IOException {
+    public void getGranuleDescriptors(final Query q, final GranuleCatalogVisitor visitor)
+            throws IOException {
 
         final SimpleFeatureCollection features = adaptee.getGranules(q);
-        if (features == null){
+        if (features == null) {
             throw new NullPointerException(
                     "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
         }
-        if (LOGGER.isLoggable(Level.FINE)){
+        if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Index Loaded");
         }
 
         // ROI
         final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
         q.getFilter().accept(bboxExtractor, null);
-        ReferencedEnvelope requestedBBox=bboxExtractor.getBBox();
-        final Geometry intersectionGeometry=requestedBBox!=null?JTS.toGeometry(requestedBBox):null;
+        ReferencedEnvelope requestedBBox = bboxExtractor.getBBox();
+        final Geometry intersectionGeometry = requestedBBox != null ? JTS.toGeometry(requestedBBox)
+                : null;
 
         // visiting the features from the underlying store
-        final DefaultProgressListener listener = new DefaultProgressListener();
-        features.accepts(new AbstractFeatureVisitor() {
-            public void visit(Feature feature) {
-                if (feature instanceof SimpleFeature) {
-                    // get the feature
-                    final SimpleFeature sf = (SimpleFeature) feature;
-                    GranuleDescriptor granule = null;
+        try(SimpleFeatureIterator fi = features.features()) {
+            while(fi.hasNext() && !visitor.isVisitComplete()) {
+                final SimpleFeature sf = fi.next();
+                
+                GranuleDescriptor granule = null;
 
-                    // caching by granule's location
-//                    synchronized (descriptorsCache) {
-                        String featureId = sf.getID();
-                        if(descriptorsCache.containsKey(featureId)){
-                            granule = descriptorsCache.get(featureId);
-                        } else{
-                            // create the granule descriptor
-                            MultiLevelROI footprint = getGranuleFootprint(sf);
-                            if(footprint == null || !footprint.isEmpty()) {
-                                // caching only if the footprint is eithery absent or present and NON-empty
-                                granule = new GranuleDescriptor(
-                                                sf,
-                                                adaptee.suggestedRasterSPI,
-                                                adaptee.pathType,
-                                                adaptee.locationAttribute,
-                                                adaptee.parentLocation,
-                                                footprint,
-                                                adaptee.heterogeneous, 
-                                                adaptee.hints); // retain hints since this may contain a reader or anything
-                                descriptorsCache.put(featureId, granule);
-                            }
+                // caching by granule's location
+                // synchronized (descriptorsCache) {
+                String featureId = sf.getID();
+                if (descriptorsCache.containsKey(featureId)) {
+                    granule = descriptorsCache.get(featureId);
+                } else {
+                    try {
+                        // create the granule descriptor
+                        MultiLevelROI footprint = getGranuleFootprint(sf);
+                        if (footprint == null || !footprint.isEmpty()) {
+                            // caching only if the footprint is either absent or present and NON-empty
+                            granule = new GranuleDescriptor(sf, adaptee.suggestedRasterSPI,
+                                    adaptee.pathType, adaptee.locationAttribute,
+                                    adaptee.parentLocation, footprint, adaptee.heterogeneous,
+                                    adaptee.hints); // retain hints since this may contain a reader or anything
+                            descriptorsCache.put(featureId, granule);
                         }
-                        
-                        if(granule != null) {
-                            // check ROI inclusion
-                            final Geometry footprint = granule.getFootprint();
-                            if(intersectionGeometry==null||footprint==null||polygonOverlap(footprint, intersectionGeometry)){
-                                visitor.visit(granule, null);
-                            }else{
-                                if(LOGGER.isLoggable(Level.FINE)){
-                                    LOGGER.fine("Skipping granule "+granule+"\n since its ROI does not intersect the requested area");
-                                }
-                            }
+                    } catch (Exception e) {
+                        LOGGER.log(Level.FINE, "Skipping invalid granule", e);
+                    }
+
+                }
+
+                if (granule != null) {
+                    // check ROI inclusion
+                    final Geometry footprint = granule.getFootprint();
+                    if (intersectionGeometry == null || footprint == null
+                            || polygonOverlap(footprint, intersectionGeometry)) {
+                        visitor.visit(granule, sf);
+                    } else {
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine("Skipping granule " + granule
+                                    + "\n since its ROI does not intersect the requested area");
                         }
-    
-                        // check if something bad occurred
-                        if (listener.isCanceled() || listener.hasExceptions()) {
-                            if (listener.hasExceptions()) {
-                                throw new RuntimeException(listener.getExceptions().peek());
-                            } else {
-                                throw new IllegalStateException("Feature visitor for query " + q
-                                        + " has been canceled");
-                            }
-                        }
+                    }
                 }
             }
-
-            private boolean polygonOverlap(Geometry g1, Geometry g2) {
-                // TODO: try to use relate instead
-                Geometry intersection = g1.intersection(g2);
-                return intersection != null && intersection.getDimension() == 2;
-            }
-        }, listener);
-        
+        }
+    }
+    
+    private boolean polygonOverlap(Geometry g1, Geometry g2) {
+        // TODO: try to use relate instead
+        Geometry intersection = g1.intersection(g2);
+        return intersection != null && intersection.getDimension() == 2;
     }
 
     @Override
@@ -230,13 +218,13 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
 
     @Override
     public int removeGranules(Query query) {
-        final int val= adaptee.removeGranules(query);
-        // clear cache if needed 
+        final int val = adaptee.removeGranules(query);
+        // clear cache if needed
         // TODO this can be optimized further filtering out elements using the Query's Filter
-        if(val>=1){
+        if (val >= 1) {
             descriptorsCache.clear();
         }
-        
+
         return val;
     }
 
@@ -256,5 +244,10 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     public void removeType(String typeName) throws IOException {
         adaptee.removeType(typeName);
     }
-}
 
+    @Override
+    public void drop() throws IOException {
+        adaptee.drop();
+
+    }
+}

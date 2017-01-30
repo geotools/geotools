@@ -102,20 +102,20 @@ private void wkt() {
 private void exampleRange() {
     // exampleRange start
     // simple range of one value
-    Range<Double> zero = new Range<Double>(Double.class, 0.0);
+    Range<Double> zero = new Range<>(Double.class, 0.0);
     
     System.out.println(zero); // [0.0, 0.0]
     
     // range include two values
-    Range<Double> from1to5 = new Range<Double>(Double.class, 1.0, 5.0);
+    Range<Double> from1to5 = new Range<>(Double.class, 1.0, 5.0);
     System.out.println(from1to5); // [1.0, 5.0]
     
     // range from one value up to a limit
-    Range<Double> from1upto10 = new Range<Double>(Double.class, 1.0, true, 10.0, false);
+    Range<Double> from1upto10 = new Range<>(Double.class, 1.0, true, 10.0, false);
     System.out.println(from1upto10); // [1.0, 10.0)
     
     // range between two values
-    Range<Double> between6and8 = new Range<Double>(Double.class, 6.0, false, 8.0, false);
+    Range<Double> between6and8 = new Range<>(Double.class, 6.0, false, 8.0, false);
     System.out.println(between6and8); // (6.0, 8.0)
     
     // range details
@@ -139,7 +139,7 @@ private void exampleRange() {
 
 private void exampleRangeComparable() {
     // exampleRangeComparable start
-    Range<Date> today = new Range<Date>(Date.class, new Date());
+    Range<Date> today = new Range<>(Date.class, new Date());
     // exampleRangeComparable end
 }
 
@@ -176,7 +176,7 @@ private void examleText() throws Exception {
     greeting = Text.text("greeting", "message.properties");
     
     // the next method is good for quickly doing things as a developer
-    Map<String,String> translations = new HashMap<String,String>();
+    Map<String,String> translations = new HashMap<>();
     translations.put("greeting", "Hello World");
     translations.put( "greeting_it", "ciao mondo");
     

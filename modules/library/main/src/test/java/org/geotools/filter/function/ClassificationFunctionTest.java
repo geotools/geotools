@@ -50,4 +50,9 @@ public class ClassificationFunctionTest extends FunctionTestSupport {
         assertEquals(1.1, classifier.round(1.12, 1), 0);
         assertEquals(0.35, classifier.round(0.34523, 2), 0);
     }
+
+    public void testRoundOverflow() throws Exception {
+        EqualIntervalFunction eif = (EqualIntervalFunction) ff.function("EqualInterval", Expression.NIL);
+        assertEquals(1477946338495.3d, eif.round(1477946338495.25d, 1));
+    }
 }

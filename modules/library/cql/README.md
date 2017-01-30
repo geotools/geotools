@@ -96,5 +96,5 @@ the module behavior.
 
 To know more about CQL module implementation, see the following links:
 
--   [CQL Parser Design](CQL-Parser-Design.md)
--   [ECQL Parser Design](ECQL-Parser-Design.md)
+* [CQL Parser Design](CQL.md)
+* [ECQL Parser Design](ECQL.md)

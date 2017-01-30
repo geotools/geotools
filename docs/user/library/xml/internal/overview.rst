@@ -8,7 +8,7 @@ Parsing the process of transforming xml elements and attributes in an instance d
 
 .. image:: /images/xml/parserOverview.png
 
-During parsing an xml schema is used to assist in the transformation. The parser uses the schema to determine which types of objects various elements and attributes should be transformed into.
+During parsing an XML schema is used to assist in the transformation. The parser uses the schema to determine which types of objects various elements and attributes should be transformed into.
 
 1. Schema Resolution
    
@@ -140,3 +140,5 @@ During encoding an xml schema is used to determine how various objects should be
    * All the contents of the "PurchaseOrderType" have been completed, the "purchaseOrder" element is closed. Being the root element of the document there is no containing type and the encoding process is stopped.
      
      .. image:: /images/xml/encoderExecution9.png
+
+There are some situations where the encoder will try to encode complex features against a complex type that is not completely valid. This happens for example when mapping nested entities against a complex type that doesn't respect GML object-property model. The Java configuration property ``encoder.relaxed`` can be set to ``false`` to disable this behavior.  

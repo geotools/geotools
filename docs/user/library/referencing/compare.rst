@@ -20,7 +20,7 @@ A ReferenceIdentifier is often composed of two parts:
 
 Here is what that looks like::
   
-  CoordinateReferenceSystem crs1 = shapefile.getSchema().getDefaultGeometry().getCoordianteRefernceSystem();
+  CoordinateReferenceSystem crs1 = shapefile.getSchema().getDefaultGeometry().getCoordinateReferenceSystem();
   CoordinateReferenceSystem crs2 = CRS.decode("EPSG:4326");
   
   if( crs1.getName().equals( crs2.getName() ){
@@ -39,8 +39,8 @@ Compare Equals
 
 Equals comparison is used to check when a CoordinateReferenceSystem, and all its component parts such as Datum, are exactly equal.::
   
-  CoordinateReferenceSystem crs1 = shapefile.getSchema().getDefaultGeometry().getCoordianteRefernceSystem();
-  CoordianteReferenceSystem crs2 = CRS.decode("EPSG:4326");
+  CoordinateReferenceSystem crs1 = shapefile.getSchema().getDefaultGeometry().getCoordinateReferenceSystem();
+  CoordinateReferenceSystem crs2 = CRS.decode("EPSG:4326");
   
   if( crs1.equals( crs2 ){
      // The CoordinateReferenceSystem objects are exactly the same data structure

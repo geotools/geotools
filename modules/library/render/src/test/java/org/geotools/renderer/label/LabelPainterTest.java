@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2016 , Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -83,5 +83,16 @@ public class LabelPainterTest {
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
         assertEquals(3, painter.getLineCount());
+    }
+    
+    @Test
+    public void testOnlyNewlines() {
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
+        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape,
+                "\n\n", symbolizer);
+        labelItem.setAutoWrap(100);
+        painter.setLabel(labelItem);
+        // emtpy label
+        assertEquals(0, painter.getLineCount());
     }
 }

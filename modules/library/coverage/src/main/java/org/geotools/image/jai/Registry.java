@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -34,6 +34,7 @@ import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
+import org.geotools.image.ImageWorker;
 import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.logging.Logging;
@@ -123,7 +124,9 @@ public final class Registry {
                     }
                 }
             }
-            JAIExt.setJAIAcceleration(operation, allowed);
+            if (ImageWorker.isJaiExtEnabled()) {
+                JAIExt.setJAIAcceleration(operation, allowed);
+            }
             if (currentState!=null && currentState.booleanValue()!=allowed) {
                 RIFRegistry.unsetPreference(registry, operation, product,
                                             allowed ? javaFactory : nativeFactory,

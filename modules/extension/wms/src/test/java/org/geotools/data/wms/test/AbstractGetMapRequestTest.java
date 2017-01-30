@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,8 +46,8 @@ public class AbstractGetMapRequestTest extends TestCase {
 		URL finalURL = request.getFinalURL();
         //System.out.println(finalURL);
 		String processedURL = finalURL.toExternalForm();
-		assertTrue(processedURL.indexOf("LAYERS=Layer2,Provincial+Boundary") != -1);
-		assertTrue(processedURL.indexOf("STYLES=,Two+words") != -1);
+		assertTrue(processedURL.indexOf("LAYERS=Layer2,Provincial%20Boundary") != -1);
+		assertTrue(processedURL.indexOf("STYLES=,Two%20words") != -1);
         assertTrue(processedURL.indexOf("SERVICE=WMS") != -1);
 	}
 	

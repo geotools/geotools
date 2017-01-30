@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2012 - 2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.transform;
 
 import static org.junit.Assert.*;
@@ -63,6 +79,20 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         SimpleFeatureSource transformed = transformWithSelection();
         Set<Key> hints = transformed.getSupportedHints();
         assertTrue(hints.contains(Hints.FEATURE_DETACHED));
+    }
+
+    @Test
+    public void testFidTransformation() throws Exception {
+        SimpleFeatureSource transformedSource = transformWithSelection();
+        SimpleFeatureIterator transformedIt = transformedSource.getFeatures().features();
+        SimpleFeatureIterator originalIt = STATES.getFeatures().features();
+        while (transformedIt.hasNext()) {
+            SimpleFeature original = originalIt.next();
+            String originalName = original.getName().getLocalPart();
+            String originalId = original.getID().substring(originalName.length() + 1);
+            SimpleFeature transformed = transformedIt.next();
+            assertEquals("states_mini." + originalId, transformed.getID());
+        }
     }
 
     @Test

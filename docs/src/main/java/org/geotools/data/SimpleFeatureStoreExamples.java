@@ -37,7 +37,7 @@ private void addFeaturesExample() throws Exception {
     SimpleFeatureBuilder build = new SimpleFeatureBuilder(featureType);
     GeometryBuilder geom = new GeometryBuilder();
     
-    List<SimpleFeature> list = new ArrayList<SimpleFeature>();
+    List<SimpleFeature> list = new ArrayList<>();
     list.add( build.buildFeature("fid1", new Object[]{ geom.point(1,1), "hello" } ) );
     list.add( build.buildFeature("fid2", new Object[]{ geom.point(2,3), "martin" } ) );
     SimpleFeatureCollection collection = new ListFeatureCollection(featureType, list);
@@ -66,7 +66,7 @@ private void addFeatureIdExample(SimpleFeatureCollection collection ) throws Exc
         transaction.commit();
         System.out.println( added ); // prints out the final feature ids
         
-        Set<FeatureId> selection = new HashSet<FeatureId>( added );
+        Set<FeatureId> selection = new HashSet<>(added);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter selected = ff.id( selection ); // filter selecting all the features just added
     }
@@ -134,7 +134,7 @@ private void removeExample2() throws Exception {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     Filter filter = ff.id(Collections.singleton(ff.featureId("fred")));
     try {
-        final Set<FeatureId> removed = new HashSet<FeatureId>();
+        final Set<FeatureId> removed = new HashSet<>();
         SimpleFeatureCollection collection = store.getFeatures( new Query( typeName, filter, Query.NO_NAMES ));
         collection.accepts( new FeatureVisitor(){
             public void visit(Feature feature) {

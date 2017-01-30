@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>17-SNAPSHOT</version>
   </parent>
 
 
@@ -28,12 +28,6 @@
   <packaging>jar</packaging>
   <name>imagemosaic datasource module</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/</url>
-  </scm>
 
   <description>
     Datasource created to read a mosaic of georeferenced images or geotiff, jp2k, ...
@@ -89,6 +83,11 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-jdbc</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -171,6 +170,7 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
+      <classifier>noclassprop</classifier>
     </dependency>
     <dependency>
       <groupId>org.jaitools</groupId>

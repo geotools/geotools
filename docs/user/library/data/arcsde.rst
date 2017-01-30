@@ -6,7 +6,7 @@ The ArcSDE plugin allows the GeoTools developer to work with the `ArcSDE <http:/
 Supported Features:
 
 * `Connection Pooling`: Allows to configure a DataStore to hold a number of connections to ArcSDE in order to improve performance under concurrency
-* `Transactions`: Support for native ArcSDE transactions is embedded into the GeoTools ArcSDE DataStore. Transaction support is available for any registered ArcSDE featureclass with a proper "unique identifier", either `SDE_MANAGED` or `USER_MANAGED`. Featureclasses with no `row id` are available read-only, as GeoTools needs a steady way of assigning Featrure Identifiers.
+* `Transactions`: Support for native ArcSDE transactions is embedded into the GeoTools ArcSDE DataStore. Transaction support is available for any registered ArcSDE featureclass with a proper "unique identifier", either `SDE_MANAGED` or `USER_MANAGED`. Featureclasses with no `row id` are available read-only, as GeoTools needs a steady way of assigning Feature Identifiers.
 * `Direct Connect`: Allows clients to directly connect to an SDE GEODB 9.2+ without a need of an SDE server instance           
 * `Versioning`:  An ArcSDEDataStore instance may connect to a specific ArcSDE database `version <http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#/What_is_a_version/009300001612000000/>`_
 * `Geometry-less` Feature Types: "Non spatial" registered ArcSDE tables can be accessed as GeoTools FeatureTypes

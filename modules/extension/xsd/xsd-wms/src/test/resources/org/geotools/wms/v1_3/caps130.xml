@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WMS_Capabilities xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" updateSequence="22" version="1.3.0">
+  <Service>
+    <Name>WMS</Name>
+    <Title />
+    <Abstract />
+    <KeywordList />
+    <OnlineResource xlink:href="http://localhost/geoserver/" xlink:type="simple" />
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Andrea Aime</ContactPerson>
+        <ContactOrganization />
+      </ContactPersonPrimary>
+      <ContactPosition />
+      <ContactAddress>
+        <AddressType />
+        <Address />
+        <City />
+        <StateOrProvince />
+        <PostCode />
+        <Country />
+      </ContactAddress>
+      <ContactVoiceTelephone />
+      <ContactFacsimileTelephone />
+      <ContactElectronicMailAddress>andrea@geoserver.org</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>none</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:href="http://localhost/geoserver/ows?SERVICE=WMS&amp;"
+                xlink:type="simple" />
+            </Get>
+            <Post>
+              <OnlineResource xlink:href="http://localhost/geoserver/ows?SERVICE=WMS&amp;"
+                xlink:type="simple" />
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>application/atom+xml</Format>
+        <Format>application/json;type=utfgrid</Format>
+        <Format>application/pdf</Format>
+        <Format>application/rss+xml</Format>
+        <Format>image/geotiff</Format>
+        <Format>image/geotiff8</Format>
+        <Format>image/gif</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>image/tiff8</Format>
+        <Format>image/vnd.jpeg-png</Format>
+        <Format>text/html; subtype=openlayers</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:href="http://localhost/geoserver/ows?SERVICE=WMS&amp;"
+                xlink:type="simple" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/xml</Format>
+        <Format>application/vnd.ogc.gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/html</Format>
+        <Format>application/json</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xlink:href="http://localhost/geoserver/ows?SERVICE=WMS&amp;"
+                xlink:type="simple" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+      <Format>INIMAGE</Format>
+      <Format>BLANK</Format>
+      <Format>JSON</Format>
+    </Exception>
+    <Layer>
+      <Title />
+      <Abstract />
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:404000</CRS>
+      <CRS>CRS:84</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>-180.0</westBoundLongitude>
+        <eastBoundLongitude>180.0</eastBoundLongitude>
+        <southBoundLatitude>-90.0</southBoundLatitude>
+        <northBoundLatitude>90.0</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="CRS:84" maxx="180.0" maxy="90.0" minx="-180.0" miny="-90.0" />
+      <MinScaleDenominator>8.0E7</MinScaleDenominator>
+      <MaxScaleDenominator>1.0E9</MaxScaleDenominator>
+      <Layer queryable="1">
+        <Name>testLayerGroup1</Name>
+        <Title>testLayerGroup1</Title>
+        <Abstract>Layer-Group type layer: testLayerGroup1</Abstract>
+        <CRS>EPSG:4326</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-180.0</westBoundLongitude>
+          <eastBoundLongitude>180.0</eastBoundLongitude>
+          <southBoundLatitude>-90.0</southBoundLatitude>
+          <northBoundLatitude>90.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4326" maxx="90.0" maxy="180.0" minx="-90.0" miny="-180.0" />
+        <Layer opaque="0" queryable="1">
+          <Name>sf:Regionated</Name>
+          <Title>Regionated</Title>
+          <Abstract>abstract about Regionated</Abstract>
+          <KeywordList>
+            <Keyword>Regionated</Keyword>
+          </KeywordList>
+          <CRS>EPSG:4326</CRS>
+          <CRS>CRS:84</CRS>
+          <EX_GeographicBoundingBox>
+            <westBoundLongitude>-180.0</westBoundLongitude>
+            <eastBoundLongitude>180.0</eastBoundLongitude>
+            <southBoundLatitude>-90.0</southBoundLatitude>
+            <northBoundLatitude>90.0</northBoundLatitude>
+          </EX_GeographicBoundingBox>
+          <BoundingBox CRS="CRS:84" maxx="180.0" maxy="90.0" minx="-180.0" miny="-90.0" />
+          <BoundingBox CRS="EPSG:4326" maxx="90.0" maxy="180.0" minx="-90.0" miny="-180.0" />
+          <Style>
+            <Name>Regionated</Name>
+            <Title>GeoServer SLD Cook Book: Zoom-based point</Title>
+            <LegendURL height="60" width="73">
+              <Format>image/png</Format>
+              <OnlineResource
+                xlink:href="http://localhost/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=sf%3ARegionated"
+                xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+            </LegendURL>
+          </Style>
+          <MinScaleDenominator>8.0E7</MinScaleDenominator>
+          <MaxScaleDenominator>6.4E8</MaxScaleDenominator>
+        </Layer>
+        <Layer opaque="0" queryable="1">
+          <Name>sf:Accident3</Name>
+          <Title>Accident3</Title>
+          <Abstract>abstract about Accident3</Abstract>
+          <KeywordList>
+            <Keyword>Accident3</Keyword>
+          </KeywordList>
+          <CRS>EPSG:4326</CRS>
+          <CRS>CRS:84</CRS>
+          <EX_GeographicBoundingBox>
+            <westBoundLongitude>-180.0</westBoundLongitude>
+            <eastBoundLongitude>180.0</eastBoundLongitude>
+            <southBoundLatitude>-90.0</southBoundLatitude>
+            <northBoundLatitude>90.0</northBoundLatitude>
+          </EX_GeographicBoundingBox>
+          <BoundingBox CRS="CRS:84" maxx="180.0" maxy="90.0" minx="-180.0" miny="-90.0" />
+          <BoundingBox CRS="EPSG:4326" maxx="90.0" maxy="180.0" minx="-90.0" miny="-180.0" />
+          <Style>
+            <Name>Accident3</Name>
+            <Title>GeoServer SLD Cook Book: Zoom-based point</Title>
+            <LegendURL height="40" width="60">
+              <Format>image/png</Format>
+              <OnlineResource
+                xlink:href="http://localhost/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=sf%3AAccident3"
+                xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+            </LegendURL>
+          </Style>
+          <MinScaleDenominator>3.2E8</MinScaleDenominator>
+        </Layer>
+      </Layer>
+      <Layer queryable="1">
+        <Name>testLayerGroup3</Name>
+        <Title>testLayerGroup3</Title>
+        <Abstract>Layer-Group type layer: testLayerGroup3</Abstract>
+        <CRS>EPSG:4326</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-180.0</westBoundLongitude>
+          <eastBoundLongitude>180.0</eastBoundLongitude>
+          <southBoundLatitude>-90.0</southBoundLatitude>
+          <northBoundLatitude>90.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="EPSG:4326" maxx="90.0" maxy="180.0" minx="-90.0" miny="-180.0" />
+      </Layer>
+      <Layer opaque="0" queryable="1">
+        <Name>sf:Accident</Name>
+        <Title>Accident</Title>
+        <Abstract>abstract about Accident</Abstract>
+        <KeywordList>
+          <Keyword>Accident</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-180.0</westBoundLongitude>
+          <eastBoundLongitude>180.0</eastBoundLongitude>
+          <southBoundLatitude>-90.0</southBoundLatitude>
+          <northBoundLatitude>90.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" maxx="180.0" maxy="90.0" minx="-180.0" miny="-90.0" />
+        <BoundingBox CRS="EPSG:4326" maxx="90.0" maxy="180.0" minx="-90.0" miny="-180.0" />
+        <Style>
+          <Name>Accident</Name>
+          <Title>GeoServer SLD Cook Book: Zoom-based point</Title>
+          <LegendURL height="40" width="60">
+            <Format>image/png</Format>
+            <OnlineResource
+              xlink:href="http://localhost/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=sf%3AAccident"
+              xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer opaque="0" queryable="1">
+        <Name>sf:Accident2</Name>
+        <Title>Accident2</Title>
+        <Abstract>abstract about Accident2</Abstract>
+        <KeywordList>
+          <Keyword>Accident2</Keyword>
+        </KeywordList>
+        <CRS>EPSG:4326</CRS>
+        <CRS>CRS:84</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>-180.0</westBoundLongitude>
+          <eastBoundLongitude>180.0</eastBoundLongitude>
+          <southBoundLatitude>-90.0</southBoundLatitude>
+          <northBoundLatitude>90.0</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <BoundingBox CRS="CRS:84" maxx="180.0" maxy="90.0" minx="-180.0" miny="-90.0" />
+        <BoundingBox CRS="EPSG:4326" maxx="90.0" maxy="180.0" minx="-90.0" miny="-180.0" />
+        <Style>
+          <Name>Accident2</Name>
+          <Title>GeoServer SLD Cook Book: Zoom-based point</Title>
+          <LegendURL height="40" width="60">
+            <Format>image/png</Format>
+            <OnlineResource
+              xlink:href="http://localhost/geoserver/ows?service=WMS&amp;request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=sf%3AAccident2"
+              xlink:type="simple" xmlns:xlink="http://www.w3.org/1999/xlink" />
+          </LegendURL>
+        </Style>
+        <MaxScaleDenominator>6.4E8</MaxScaleDenominator>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>

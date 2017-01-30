@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import org.eclipse.emf.common.util.ECollections;
+import org.geotools.data.wfs.internal.WFSConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -42,7 +43,7 @@ public class FeatureTypeInfoImplTest {
     public void setup() {
         // mock featureType
         fttMock = Mockito.mock(FeatureTypeType.class);
-        featureType = new FeatureTypeInfoImpl(fttMock);
+        featureType = new FeatureTypeInfoImpl(fttMock, new WFSConfig());
     }
 
     // One parameter, no view params, no mappings => no parameters

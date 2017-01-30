@@ -187,6 +187,6 @@ This is not wise (as the implementation may change over time) but here is how it
     DataStore dataStore = factory.createDataStore( map );
   
   This hack is a little bit harder to avoid - since you do want to use
-  the factory directly in some cases (ie when creating a brand new file
+  the factory directly in some cases (e.g. when creating a brand new file
   on disk). If possible ask the DataStoreFactoryFinder for all available
   factories (so you can make use of what is available at runtime).

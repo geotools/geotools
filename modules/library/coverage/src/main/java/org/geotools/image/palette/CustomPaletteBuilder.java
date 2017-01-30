@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -155,7 +155,7 @@ public final class CustomPaletteBuilder {
 		//
 		// //
 		final int numBands = src.getSampleModel().getNumBands();
-		final int rgba[] = new int[numBands];
+		final int[] rgba = new int[numBands];
 		final boolean sourceHasAlpha = (numBands % 2 == 0);
 		final int alphaBand = sourceHasAlpha ? numBands - 1 : -1;
 		final int minx_ = src.getMinX();
@@ -411,7 +411,7 @@ public final class CustomPaletteBuilder {
 		//
 		// //
 		final int numBands = src.getSampleModel().getNumBands();
-		final int rgba[] = new int[numBands];
+		final int[] rgba = new int[numBands];
 		final boolean discriminantTransparency = transparency != Transparency.OPAQUE;
 		final int transpBand = numBands - 1;
 		final int minx_ = src.getMinX();

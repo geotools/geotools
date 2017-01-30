@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.referencing;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -279,6 +280,24 @@ public final class ScriptTest {
     }    
 
     /**
+     * Run "MeteosatSG.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testMeteosatSG() throws Exception {
+        runScript("scripts/MeteosatSG.txt");
+    }
+
+    /**
+     *      * Run "RotatedPole.txt"
+     *           * @throws Exception
+     *                */
+    @Test
+    public void testRotatedPole() throws Exception {
+        runScript("scripts/RotatedPole.txt");
+    }
+
+    /**
      * Run "WorldVanDerGrintenI.txt"
      *
      * @throws Exception If a test failed.
@@ -305,7 +324,17 @@ public final class ScriptTest {
     public void testGnomonic() throws Exception {
         runScript("scripts/Gnomonic.txt");
     }
-    
+
+    /**
+     * Run "GEOS.txt"
+     *
+     * @throws Exception If a test failed.
+     */
+    @Test
+    public void testGEOS() throws Exception {
+        runScript("scripts/GEOS.txt");
+    }
+
     /**
      * Run "WagnerIV.txt". Disabled as the projection is not really
      * working as expected, but don't have time to investigate.
@@ -343,4 +372,29 @@ public final class ScriptTest {
     public void testNADCON() throws Exception {
         runScript("scripts/NADCON.txt");
     }
+    
+    /**
+     * Run "Cassini.txt"
+     * @throws Exception 
+     */
+    @Test
+    public void testCassini() throws Exception {
+        try {
+            // the Cassini math is not so accurate it seems... but it's
+            // matchin proj, so good enough for the moment
+            MapProjection.SKIP_SANITY_CHECKS = true;
+            runScript("scripts/Cassini.txt");
+        } finally {
+            MapProjection.SKIP_SANITY_CHECKS = false;
+        }
+    }
+
+    /**
+     * Run "AzimuthalEquidistant.txt".
+     */
+    @Test
+    public void testAzimuthalEquidistant() throws Exception {
+        runScript("scripts/AzimuthalEquidistant.txt");
+    }
+
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -56,6 +56,8 @@ import org.opengis.style.GraphicalSymbol;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Try out our SLD parser and see how well it does.
@@ -185,7 +187,8 @@ public class SLDStyleTest extends TestCase {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
         
-        validateDashArrayStyle(sld);
+        Stroke stroke = validateDashArrayStyle(sld);
+        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray()));
     }
     
     public void testDashArray2() throws Exception {
@@ -194,10 +197,26 @@ public class SLDStyleTest extends TestCase {
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
         
-        validateDashArrayStyle(sld);
+        Stroke stroke = validateDashArrayStyle(sld);
+        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray()));
     }
 
-    private void validateDashArrayStyle(StyledLayerDescriptor sld) {
+    public void testDashArray3() throws Exception {
+        // using expressions in the dasharray
+        java.net.URL surl = TestData.getResource(this, "dasharray3.sld");
+        SLDParser stylereader = new SLDParser(sf, surl);
+        StyledLayerDescriptor sld = stylereader.parseSLD();
+
+        List<Expression> expressions =validateDashArrayStyle(sld).dashArray();
+
+        assertTrue("more or less expressions available", expressions.size() == 4);
+        assertTrue("not expected expression", expressions.get(0).equals(ff.property("stroke1")));
+        assertTrue("not expected expression", expressions.get(1).equals(ff.literal(1.0)));
+        assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
+        assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
+    }
+
+    private Stroke validateDashArrayStyle(StyledLayerDescriptor sld) {
         assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
         List<FeatureTypeStyle> fts = style.featureTypeStyles();
@@ -207,8 +226,14 @@ public class SLDStyleTest extends TestCase {
         List<Symbolizer> symbolizers = rules.get(0).symbolizers();
         assertEquals(1, symbolizers.size());
         
-        LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
-        assertTrue(Arrays.equals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, ls.getStroke().getDashArray()));
+        LineSymbolizer ls =  (LineSymbolizer) symbolizers.get(0);
+        assertNotNull("line symbolizer is null", ls);
+
+        Stroke stroke = ls.getStroke();
+        assertNotNull("stroke is null", stroke);
+        assertNotNull("stroke dasharray is null", stroke.dashArray());
+
+        return stroke;
     }
 
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {
@@ -821,6 +846,29 @@ public class SLDStyleTest extends TestCase {
         Map<String, String> options = fts.getOptions();
         assertEquals(1, options.size());
         assertEquals(FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST, options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+    }
+    
+    public void testMultipleFonts() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "multifont.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        List<FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
+        assertEquals(1, featureTypeStyles.size());
+        List<Rule> rules = featureTypeStyles.get(0).rules();
+        assertEquals(1, rules.size());
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        assertEquals(1, symbolizers.size());
+        TextSymbolizer ts = (TextSymbolizer) symbolizers.get(0);
+        assertEquals(1, ts.fonts().size());
+        List<Expression> families = ts.fonts().get(0).getFamily();
+        assertEquals(3, families.size());
+        assertEquals("Comic Sans MS", families.get(0).evaluate(null, String.class));
+        assertEquals("Droid Sans Fallback", families.get(1).evaluate(null, String.class));
+        assertEquals("Arial", families.get(2).evaluate(null, String.class));
     }
 
     public void testParseBase64EncodedContent() throws Exception {

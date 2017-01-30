@@ -223,6 +223,8 @@ public class CurvedGeometryTest {
         CompoundCurve curve = new CompoundCurve(Arrays.asList(cs, ls), GEOMETRY_FACTORY,
                 Double.MAX_VALUE);
 
+        assertFalse("Check that this should not be a rectangle.", curve.isRectangle());
+
         // envelope check
         Envelope env = curve.getEnvelopeInternal();
         assertEnvelopeEquals(new Envelope(-10, 10, 0, 20), env);

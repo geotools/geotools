@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -2596,7 +2596,7 @@ public class WMSComplexTypes {
 
 			Set crs = new TreeSet();
 			HashMap boundingBoxes = new HashMap();
-			HashMap dimensions = new HashMap();
+			Map<String, Dimension> dimensions = new HashMap<>();
 			HashMap extents = new HashMap();
 			List styles = new ArrayList();
 			List metadataURLS = new ArrayList();
@@ -2646,8 +2646,11 @@ public class WMSComplexTypes {
 					 extents.put(ext.getName(), ext);
 					 // NOTE: dim might be null here, because at this point a sublayer without 
 					 // dimension tags may not yet have inherited parent dimensions.
-					 //Dimension dim = layer.getDimension(ext.getName());
-					 //dim.setExtent(ext);
+					 // but if we have a dimension, we use it
+					 Dimension dim = dimensions.get(ext.getName());
+					 if(dim != null) {
+					     dim.setExtent(ext);
+					 }
 				 }
 				 if (sameName(elems[9], value[i])) {
 				     layer.setAttribution((Attribution) value[i].getValue());
@@ -3324,7 +3327,9 @@ public class WMSComplexTypes {
 			
 			String extractedValue = "";
 			for (ElementValue elementValue : value) {
-				extractedValue += elementValue.getValue();
+			    if(elementValue.getValue() != null) {
+			        extractedValue += elementValue.getValue();
+			    }
 			}
 			
 			return new Extent(name, defaultValue, multipleValues, nearestValue, extractedValue);

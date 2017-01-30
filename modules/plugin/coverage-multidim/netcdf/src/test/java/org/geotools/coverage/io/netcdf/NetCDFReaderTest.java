@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
+import ucar.nc2.dataset.NetcdfDataset;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -26,15 +28,21 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
 import javax.media.jai.PlanarImage;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -43,18 +51,27 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.data.CloseableIterator;
+import org.geotools.data.FileGroupProvider.FileGroup;
+import org.geotools.data.FileResourceInfo;
+import org.geotools.data.ResourceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.DateRange;
+import org.geotools.util.NumberRange;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -72,8 +89,20 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.util.InternationalString;
 
 public class NetCDFReaderTest extends Assert {
+
+    @Before
+    public void setup() {
+        JAIExt.initJAIEXT(true, true);
+        System.setProperty("netcdf.coordinates.enablePlugins", "true");
+    }
+
+    @After
+    public void cleanup() {
+        JAIExt.initJAIEXT(false, true);
+    }
 
     private static final double DELTA = 1E-6;
 
@@ -107,6 +136,12 @@ public class NetCDFReaderTest extends Assert {
             assertEquals("ROOT/LEVEL1/V2",names[1]);
             GridCoverage2D grid = reader.read("ROOT/LAI", null);
             assertNotNull(grid);
+
+            //Checking the SampleDimension Description Fallback improvement
+            GridSampleDimension sampleDimension = grid.getSampleDimension(0);
+            InternationalString description = sampleDimension.getDescription();
+            assertEquals("LAI", description.toString());
+
             byte[] byteValue = grid.evaluate(new
                     DirectPosition2D(DefaultGeographicCRS.WGS84, 12, 70 ), new byte[1]);
             assertEquals(20,byteValue[0]);
@@ -142,6 +177,7 @@ public class NetCDFReaderTest extends Assert {
             assertEquals(2,names.length);
 
             GridCoverage2D grid = reader.read("O3", null);
+            assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
             float[] value = grid.evaluate((DirectPosition) new
                     DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45 ), new float[1]);
@@ -160,6 +196,33 @@ public class NetCDFReaderTest extends Assert {
                 }
             }
         }
+    }
+
+    @Test
+    public void testScaleAndOffset() throws IOException, FactoryException, ParseException {
+        //Capture the current enhance mode, so we can change it now and set it back later
+        Set<NetcdfDataset.Enhance> currentEnhanceMode = NetcdfDataset.getDefaultEnhanceMode();
+        Set<NetcdfDataset.Enhance> newEnhanceMode = EnumSet.of(NetcdfDataset.Enhance.CoordSystems,
+            NetcdfDataset.Enhance.ScaleMissing);
+        Boolean currentEnhanceSysProp = Boolean.getBoolean(NetCDFUtilities.ENHANCE_SCALE_MISSING);
+        if (!currentEnhanceSysProp) {
+            System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, "true");
+        }
+        NetcdfDataset.setDefaultEnhanceMode(newEnhanceMode);
+        File file = TestData.file(this, "o3_no2_so.nc");
+        final NetCDFReader reader = new NetCDFReader(file, null);
+        String coverageName = "NO2";
+        GeneralParameterValue[] values = new GeneralParameterValue[] {};
+        GridCoverage2D coverage = reader.read(coverageName, values);
+
+        float[] result = coverage
+            .evaluate((DirectPosition) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
+                new float[1]);
+
+        assertEquals(1.615991, result[0], 1e-6f);
+
+        NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
+        System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
     }
 
     @Test
@@ -755,6 +818,87 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
+    public void testFileInfo() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        File nc2 = new File(TestData.file(this,"."), "nc2");
+        if (nc2.exists()) {
+            FileUtils.deleteDirectory(nc2);
+        }
+        assertTrue(nc2.mkdirs());
+
+        File file = TestData.file(this, "O3-NO2.nc");
+        FileUtils.copyFileToDirectory(file, nc2);
+        file = new File(nc2, "O3-NO2.nc");
+        final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(),hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
+
+        assertNotNull(format);
+        CloseableIterator<FileGroup> files = null;
+        try {
+            String[] names = reader.getGridCoverageNames();
+            names = new String[] { names[1] };
+
+            for (String coverageName : names) {
+
+                final String[] metadataNames = reader.getMetadataNames(coverageName);
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length, 12);
+
+                ResourceInfo info = reader.getInfo(coverageName);
+                assertTrue (info instanceof FileResourceInfo);
+                FileResourceInfo fileInfo = (FileResourceInfo) info;
+                files = fileInfo.getFiles(null);
+
+                int fileGroups = 0;
+                FileGroup fg = null;
+                while (files.hasNext()) {
+                    fg = files.next();
+                    fileGroups++;
+
+                }
+                assertEquals(1, fileGroups);
+                File mainFile = fg.getMainFile();
+                assertEquals("O3-NO2", FilenameUtils.getBaseName(mainFile.getAbsolutePath()));
+                Map<String, Object> metadata = fg.getMetadata();
+                assertNotNull(metadata);
+                assertFalse(metadata.isEmpty());
+                Set<String> keys = metadata.keySet();
+
+                // envelope, time, elevation = 3 elements
+                assertEquals(3, keys.size());
+
+                // Check time
+                final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                Date start = sdf.parse("2012-04-01T00:00:00.000Z");
+                Date end = sdf.parse("2012-04-01T01:00:00.000Z");
+                DateRange timeRange = new DateRange(start, end);
+                assertEquals(timeRange, metadata.get(Utils.TIME_DOMAIN));
+
+                // Check elevation
+                NumberRange<Double> elevationRange = NumberRange.create(10.0, 450.0);
+                assertEquals(elevationRange , metadata.get(Utils.ELEVATION_DOMAIN));
+                
+            }
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (files != null) {
+                files.close();
+            }
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    
+    @Test
     public void NetCDFProjectedEnvelopeTest() throws NoSuchAuthorityCodeException,
             FactoryException, IOException, ParseException {
         File mosaic = new File(TestData.file(this, "."), "NetCDFProjection");
@@ -842,6 +986,103 @@ public class NetCDFReaderTest extends Assert {
             Double d =  ((NoDataContainer)noData).getAsSingleValue();
             assertEquals(d, -999d, DELTA);
 
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void NetCDFTestOnClimatologicalTime() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+        final File workDir = new File(TestData.file(this, "."), "climatological");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        FileUtils.copyFile(TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
+        TestData.unzipFile(this, "climatological/climatological.zip");
+
+        File file = new File(workDir, "climatological.nc");
+
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(file.toURI().toURL(), null);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), null);
+
+        assertNotNull(format);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            names = new String[] { names[1] };
+
+            for (String coverageName : names) {
+
+                final String[] metadataNames = reader.getMetadataNames(coverageName);
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length, 12);
+
+                // Parsing metadata values
+                assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
+                final String timeMetadata = reader.getMetadataValue(coverageName, "TIME_DOMAIN");
+                assertNotNull(timeMetadata);
+                assertEquals("0001-01-16T00:00:00.000Z/0001-01-16T00:00:00.000Z,0001-02-16T00:00:00.000Z/0001-02-16T00:00:00.000Z,0001-03-16T00:00:00.000Z/0001-03-16T00:00:00.000Z,0001-04-16T00:00:00.000Z/0001-04-16T00:00:00.000Z,0001-05-16T00:00:00.000Z/0001-05-16T00:00:00.000Z,0001-06-16T00:00:00.000Z/0001-06-16T00:00:00.000Z,0001-07-16T00:00:00.000Z/0001-07-16T00:00:00.000Z,0001-08-16T00:00:00.000Z/0001-08-16T00:00:00.000Z,0001-09-16T00:00:00.000Z/0001-09-16T00:00:00.000Z,0001-10-16T00:00:00.000Z/0001-10-16T00:00:00.000Z,0001-11-16T00:00:00.000Z/0001-11-16T00:00:00.000Z,0001-12-16T00:00:00.000Z/0001-12-16T00:00:00.000Z",
+                        timeMetadata);
+                assertEquals(12, timeMetadata.split(",").length);
+                assertEquals("0001-01-16T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+                assertEquals("0001-12-16T00:00:00.000Z", reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
+
+                assertEquals("true", reader.getMetadataValue(coverageName, "HAS_ELEVATION_DOMAIN"));
+                final String elevationMetadata = reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN");
+                assertNotNull(elevationMetadata);
+                assertEquals("0.0/0.0,10.0/10.0,20.0/20.0,30.0/30.0,50.0/50.0,75.0/75.0", elevationMetadata);
+                assertEquals(6, elevationMetadata.split(",").length);
+                assertEquals("0.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
+                assertEquals("75.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
+
+                List<DimensionDescriptor> descriptors = ((StructuredGridCoverage2DReader)reader).getDimensionDescriptors(coverageName);
+                assertNotNull(descriptors);
+                assertEquals(2, descriptors.size());
+
+                DimensionDescriptor descriptor = descriptors.get(0);
+                assertEquals("TIME", descriptor.getName());
+                assertEquals("time", descriptor.getStartAttribute());
+
+                descriptor = descriptors.get(1);
+                assertEquals("ELEVATION", descriptor.getName());
+                assertEquals("depth", descriptor.getStartAttribute());
+
+                final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+                Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+                calendar.set(0, 0, 16, 0, 0, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                time.setValue(new ArrayList() {
+                    {
+                        add(calendar.getTime());
+                    }
+                });
+
+                final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+                elevation.setValue(new ArrayList() {
+                    {
+                        add(50d); // Elevation
+                    }
+                });
+
+                GeneralParameterValue[] values = new GeneralParameterValue[] {time, elevation };
+                GridCoverage2D coverage = reader.read(coverageName, values);
+                assertNotNull(coverage);
+                if (TestData.isInteractiveTest()) {
+                    coverage.show();
+                } else {
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+                }
+            }
         } catch (Throwable t) {
             throw new RuntimeException(t);
         } finally {

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2013, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.resources.coverage.CoverageUtilities;
 
 /**
  * 
@@ -35,24 +35,24 @@ import org.geotools.gce.imagemosaic.Utils;
  */
 public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
-	private final String name;
-	
-	public String getName() {
-		return name;
-	}
+    private final String name;
 
-	public DefaultPropertiesCollectorSPI(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isAvailable() {
-		return true;
-	}
+    public DefaultPropertiesCollectorSPI(String name) {
+        this.name = name;
+    }
 
-	public Map<Key, ?> getImplementationHints() {
-		return Collections.emptyMap();
-	}
-	
+    public boolean isAvailable() {
+        return true;
+    }
+
+    public Map<Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
+    }
+
     public final static String REGEX_PREFIX = "regex=";
 
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
@@ -80,7 +80,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
 
         // it is a url
         if (source != null) {
-            final Properties properties = Utils.loadPropertiesFromURL(source);
+            final Properties properties = CoverageUtilities.loadPropertiesFromURL(source);
             if (properties.containsKey("regex")) {
                 property = properties.getProperty("regex");
             }
@@ -93,6 +93,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
 
     }
 
-        abstract protected PropertiesCollector createInternal(PropertiesCollectorSPI fileNameExtractorSPI, List<String> propertyNames, String string);	
+    abstract protected PropertiesCollector createInternal(
+            PropertiesCollectorSPI fileNameExtractorSPI, List<String> propertyNames, String string);
 
 }

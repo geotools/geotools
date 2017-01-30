@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -89,7 +89,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         SumVisitor v = new MySumVisitor(p);
         
         Filter f = ff.less( ff.property( aname("doubleProperty") ), ff.literal(2) );
-        Query q = new DefaultQuery( tname("ft1"), f);
+        Query q = new Query( tname("ft1"), f);
         dataStore.getFeatureSource( tname("ft1")).accepts( q, v, null);
         assertFalse(visited);
         assertEquals( 1.1, v.getResult().toDouble(), 0.01 );
@@ -104,7 +104,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         
         SumVisitor v = new MySumVisitor(p);
         
-        DefaultQuery q = new DefaultQuery( tname("ft1"));
+        Query q = new Query( tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
         
@@ -148,7 +148,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         MaxVisitor v = new MyMaxVisitor(p);
         
         Filter f = ff.less( ff.property( aname("doubleProperty") ), ff.literal(2) );
-        Query q = new DefaultQuery( tname("ft1"), f);
+        Query q = new Query( tname("ft1"), f);
         dataStore.getFeatureSource( tname("ft1")).accepts( q, v, null);
         assertFalse(visited);
         assertEquals( 1.1, v.getResult().toDouble(), 0.01 );
@@ -163,7 +163,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         
         MaxVisitor v = new MyMaxVisitor(p);
         
-        DefaultQuery q = new DefaultQuery( tname("ft1"));
+        Query q = new Query( tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
         dataStore.getFeatureSource( tname("ft1")).accepts( q, v, null);
@@ -206,7 +206,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         MinVisitor v = new MyMinVisitor(p);
         
         Filter f = ff.greater( ff.property( aname("doubleProperty") ), ff.literal(1) );
-        Query q = new DefaultQuery( tname("ft1"), f);
+        Query q = new Query( tname("ft1"), f);
         dataStore.getFeatureSource( tname("ft1")).accepts( q, v, null);
         assertFalse(visited);
         assertEquals( 1.1, v.getResult().toDouble(), 0.01 );
@@ -221,7 +221,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         
         MinVisitor v = new MyMinVisitor(p);
         
-        DefaultQuery q = new DefaultQuery( tname("ft1"));
+        Query q = new Query( tname("ft1"));
         q.setStartIndex(0);
         q.setMaxFeatures(2);
         dataStore.getFeatureSource( tname("ft1")).accepts( q, v, null);

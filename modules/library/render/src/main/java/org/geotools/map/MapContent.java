@@ -137,6 +137,7 @@ public class MapContent {
             if (layer != null) {
                 // Layer.dispose will inform listeners of the impending
                 // disposal, then remove listeners from this layer
+                layer.preDispose();
                 layer.dispose();
             }
         }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -111,13 +111,15 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     
     boolean indexCreationEnabled = true;
 
-    boolean odbcFilteringEnabled = true;
-
     boolean fidIndexed = true;
 
     IndexManager indexManager;
 
     ShapefileSetManager shpManager;
+    
+    long maxShpSize = ShapefileFeatureWriter.DEFAULT_MAX_SHAPE_SIZE;
+    
+    long maxDbfSize = ShapefileFeatureWriter.DEFAULT_MAX_DBF_SIZE;
 
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
@@ -196,6 +198,39 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public void setIndexed(boolean indexed) {
         this.indexed = indexed;
     }
+    
+    /**
+     * The current max shapefile size
+     * @return
+     */
+    long getMaxShpSize() {
+        return maxShpSize;
+    }
+
+    /**
+     * Allows to set the maximum shapefile size (the natural limit of 2GB is used by default)
+     * @param maxShapeSize
+     */
+    void setMaxShpSize(long maxShapeSize) {
+        this.maxShpSize = maxShapeSize;
+    }
+
+    /**
+     * The current max dbf file size
+     * @return
+     */
+    long getMaxDbfSize() {
+        return maxDbfSize;
+    }
+
+    /**
+     * Allows to set the maximum DBF size (the natural limit of 4GB is used by default)
+     * @param maxShpSize
+     */
+    void setMaxDbfSize(long maxDbfSize) {
+        this.maxDbfSize = maxDbfSize;
+    }
+
 
     public SimpleFeatureType getSchema() throws IOException {
         return getSchema(getTypeName());
@@ -285,7 +320,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 prjWriter.close();
             }
         } else {
-            LOGGER.warning("PRJ file not generated for null CoordinateReferenceSystem");
+            LOGGER.fine("PRJ file not generated for null CoordinateReferenceSystem");
         }
         StorageFile
                 .replaceOriginals(shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);
@@ -341,6 +376,16 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
                 header.addColumn(colName, 'N', Math.min(fieldLen, 19), 0);
             } else if (colType == BigInteger.class) {
                 header.addColumn(colName, 'N', Math.min(fieldLen, 33), 0);
+            } else if (colType == Float.class) {
+                int l = Math.min(fieldLen, 24);
+                // GDAL format default is 15 decimal places of precision
+                // http://www.gdal.org/drv_shapefile.html
+                int d = Math.min(Math.max(l - 2, 0), 15);
+                header.addColumn(colName, 'N', l, d);
+            } else if (colType == Double.class) {
+                int l = Math.min(fieldLen, 33);
+                int d = Math.min(Math.max(l - 2, 0), 15);
+                header.addColumn(colName, 'N', l, d);
             } else if (Number.class.isAssignableFrom(colType)) {
                 int l = Math.min(fieldLen, 33);
                 int d = Math.max(l - 2, 0);
@@ -444,7 +489,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public String toString() {
         return "ShapefileDataStore [file=" + shpFiles.get(SHP) + ", charset=" + charset + ", timeZone=" + timeZone
                 + ", memoryMapped=" + memoryMapped + ", bufferCachingEnabled="
-                + bufferCachingEnabled + ", indexed=" + indexed + ", fidIndexed=" + fidIndexed + ", odbcFilteringEnabled=" + odbcFilteringEnabled
+                + bufferCachingEnabled + ", indexed=" + indexed + ", fidIndexed=" + fidIndexed
                 + "]";
     }
 
@@ -483,17 +528,6 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         this.indexCreationEnabled = indexCreationEnabled;
     }
     
-    public boolean isOdbcFilteringEnabled() {
-        return odbcFilteringEnabled;
-    }
-
-    /**
-     * If true (default) the store uses an available JDBC provider to execute the Dbase filters
-     */
-    public void setOdbcFilteringEnabled(boolean odbcFilteringEnabled) {
-        this.odbcFilteringEnabled = odbcFilteringEnabled;        
-    }
-
     @Override
     public void removeSchema(String typeName) throws IOException {
         removeSchema(new NameImpl(null, typeName));

@@ -15,7 +15,7 @@ There are two implementations of the OGR plugin.  The first uses OGR's standard 
 
 Your installation of GDAL/OGR needs to be compiled with Java support to use this module.
 
-The other OGR plugin uses Bridj to create Java bindings to OGR.  This verion does not require
+The other OGR plugin uses Bridj to create Java bindings to OGR.  This version does not require
 GDAL/OGR to be compiled with Java support.
 
 **Maven**::
@@ -36,7 +36,7 @@ If you are using Bridj::
 
 or if you are using JNI::
 
-    OGRDataStoreFactor factory = new JniOGRDataStoreFactory();
+    OGRDataStoreFactory factory = new JniOGRDataStoreFactory();
 
 You can list available drivers::
 

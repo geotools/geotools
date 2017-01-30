@@ -17,6 +17,7 @@
 package org.geotools.filter.text.ecql;
 
 import static java.util.Calendar.FEBRUARY;
+import static org.junit.Assert.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -28,8 +29,11 @@ import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
 import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
@@ -197,6 +201,31 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13+08:00");
         testPropertyIsEqualDate(f,date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
+    
+    /**
+     * Checks that both positive and negative numbers are parsed to numbers, not strings
+     * @throws Exception
+     */
+    @Test
+    public void testPositiveNegativeConsistent() throws Exception {
+        BinaryComparisonOperator f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "foo > -1");
+        assertEquals(new Long(-1), f.getExpression2().evaluate(null));
+        f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "foo > 1");
+        assertEquals(new Long(1), f.getExpression2().evaluate(null));
+        
+        f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "-1 > foo");
+        assertEquals(new Long(-1), f.getExpression1().evaluate(null));
+        f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "1 > foo");
+        assertEquals(new Long(1), f.getExpression1().evaluate(null));
+        
+        PropertyIsBetween between = (PropertyIsBetween) CompilerUtil.parseFilter(this.language, "foo between -1 and 1");
+        assertEquals(new Long(-1), between.getLowerBoundary().evaluate(null));
+        assertEquals(new Long(1), between.getUpperBoundary().evaluate(null));
+        
+        between = (PropertyIsBetween) CompilerUtil.parseFilter(this.language, "-1 between foo and bar");
+        assertEquals(new Long(-1), between.getExpression().evaluate(null));
+    }
+
 
     private Date date(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second, 
         int milliscond, TimeZone tz) {

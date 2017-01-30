@@ -25,7 +25,7 @@ The following example is taken from test cases:
 * :download:`streams.sld </../../modules/plugin/charts/src/test/resources/org/geotools/renderer/chart/test-data/pieCharts.sld>`
 * :download:`cities.properties </../../modules/plugin/charts/src/test/resources/org/geotools/renderer/chart/test-data/cities.properties>`
 
-Here is the example sld:
+Here is the example SLD:
 
 .. literalinclude:: /../../modules/plugin/charts/src/test/resources/org/geotools/renderer/chart/test-data/pieCharts.sld
      :language: xml

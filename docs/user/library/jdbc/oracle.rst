@@ -9,7 +9,7 @@ Supports direct access to an Oracle database.
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-jdbc</artifactId>
+      <artifactId>gt-jdbc-oracle</artifactId>
       <version>${geotools.version}</version>
     </dependency>
 

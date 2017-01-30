@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -41,6 +41,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -71,15 +72,16 @@ public class GML32FeatureCollectionEncoderDelegate extends
         protected QualifiedName member;
 
         String gmlPrefix;
-
+        String gmlUri;
         GML32EncodingUtils encodingUtils;
 
         int numDecimals;
 
         public GML32Delegate(Encoder encoder) {
-            this.gmlPrefix = encoder.getNamespaces()
-                    .getPrefix(org.geotools.gml3.v3_2.GML.NAMESPACE);
-            this.member = MEMBER.derive(gmlPrefix);
+            this.gmlUri =org.geotools.gml3.v3_2.GML.NAMESPACE;
+            this.gmlPrefix = encoder.getNamespaces().getPrefix(gmlUri);
+            
+            this.member = MEMBER.derive(gmlPrefix, gmlUri);
             this.srsSyntax = (SrsSyntax) encoder.getContext().getComponentInstanceOfType(
                     SrsSyntax.class);
             this.encodingUtils = new GML32EncodingUtils();
@@ -107,7 +109,7 @@ public class GML32FeatureCollectionEncoderDelegate extends
         }
 
         public EnvelopeEncoder createEnvelopeEncoder(Encoder e) {
-            return new EnvelopeEncoder(e, gmlPrefix);
+            return new EnvelopeEncoder(e, gmlPrefix, gmlUri);
         }
 
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
@@ -144,17 +146,18 @@ public class GML32FeatureCollectionEncoderDelegate extends
 
         @Override
         public void registerGeometryEncoders(Map<Class, GeometryEncoder> encoders, Encoder encoder) {
-            encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix));
-            encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix));
-            encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix));
-            encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix));
-            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix));
-            encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix));
-            encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix));
-            encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix));
-            encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix));
-            encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix));
-            encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix));
+            encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true));
+            encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(GeometryCollection.class, new GeometryCollectionEncoder(encoder, gmlPrefix, gmlUri));
         }
 
         @Override

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  */
 class PolygonExtractor {
+
+    /**
+     * The extractor is thread safe, use this constant to avoid creating it over and over
+     */
+    public static final PolygonExtractor INSTANCE = new PolygonExtractor();
 
     /**
      * Returns all polygons found in the

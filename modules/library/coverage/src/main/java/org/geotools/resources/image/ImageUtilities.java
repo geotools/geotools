@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2001-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,7 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.WritableRenderedImage;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -43,6 +44,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -56,8 +59,11 @@ import javax.media.jai.JAI;
 import javax.media.jai.OpImage;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.WritableRenderedImageAdapter;
 
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -66,6 +72,7 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 
@@ -95,6 +102,8 @@ public final class ImageUtilities {
     public static final double[][] RGB_TO_GRAY_MATRIX = { { 0.114, 0.587, 0.299, 0 } };
 
     public static final double[][] RGBA_TO_GRAY_MATRIX = { { 0.114, 0.587, 0.299, 0, 0 } };
+    
+    static final Logger LOGGER = Logging.getLogger(ImageUtilities.class);
 
     /**
      * {@code true} if JAI media lib is available.
@@ -127,12 +136,12 @@ public final class ImageUtilities {
 	                mediaLib=AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
 	                     public Boolean run() {
 	                    	 try {
-	                    		//get the method
-	                    		final Class<?> params[] = {};
-								Method method= mImage.getDeclaredMethod("isAvailable", params);
+	                                //get the method
+	                                final Class<?>[] params = {};
+	                                Method method= mImage.getDeclaredMethod("isAvailable", params);
 
 								//invoke
-	                    		final Object paramsObj[] = {};
+	                                final Object[] paramsObj = {};
 
 	        		        	final Object o=mImage.newInstance();
 		                        return (Boolean) method.invoke(o, paramsObj);
@@ -340,8 +349,8 @@ public final class ImageUtilities {
             return null;
         }
         ImageLayout layout = initToImage ? new ImageLayout(image) : null;
-        if ((image.getNumXTiles()==1 || image.getTileWidth () <= STRIPE_SIZE) &&
-            (image.getNumYTiles()==1 || image.getTileHeight() <= STRIPE_SIZE))
+        if ((image.getNumXTiles()==1 || image.getTileWidth () < STRIPE_SIZE) &&
+            (image.getNumYTiles()==1 || image.getTileHeight() < STRIPE_SIZE))
         {
             // If the image was already tiled, reuse the same tile size.
             // Otherwise, compute default tile size.  If a default tile
@@ -360,6 +369,11 @@ public final class ImageUtilities {
                 }
                 layout = layout.setTileWidth(s);
                 layout.setTileGridXOffset(image.getMinX());
+            } else if(image.getTileWidth () <= STRIPE_SIZE) {
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                layout = layout.setTileWidth(defaultSize.width);
             }
             if ((s=toTileSize(image.getHeight(), defaultSize.height)) != 0) {
                 if (layout == null) {
@@ -367,6 +381,11 @@ public final class ImageUtilities {
                 }
                 layout = layout.setTileHeight(s);
                 layout.setTileGridYOffset(image.getMinY());
+            } else if(image.getTileHeight() < STRIPE_SIZE) {
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                layout = layout.setTileHeight(defaultSize.height);
             }
         }
         return layout;
@@ -517,13 +536,13 @@ public final class ImageUtilities {
         if (n != 0) {
             // If layout is not set, OpImage uses the layout of the *first*
             // source image according OpImage constructor javadoc.
-            RenderedImage source = (RenderedImage) sources.get(0);
+            RenderedImage source = sources.get(0);
             int minXL = result.getMinX  (source);
             int minYL = result.getMinY  (source);
             int maxXL = result.getWidth (source) + minXL;
             int maxYL = result.getHeight(source) + minYL;
             for (int i=0; i<n; i++) {
-                source = (RenderedImage) sources.get(i);
+                source = sources.get(i);
                 final int minX = source.getMinX  ();
                 final int minY = source.getMinY  ();
                 final int maxX = source.getWidth () + minX;
@@ -545,7 +564,7 @@ public final class ImageUtilities {
             }
             // If the bounds changed, adjust the tile size.
             if (result != layout) {
-                source = (RenderedImage) sources.get(0);
+                source = sources.get(0);
                 if (result.isValid(ImageLayout.TILE_WIDTH_MASK)) {
                     final int oldSize = result.getTileWidth(source);
                     final int newSize = toTileSize(result.getWidth(source), oldSize);
@@ -792,7 +811,7 @@ public final class ImageUtilities {
             }
         }
         // dispose the image itself
-        pi.dispose();
+        disposeSinglePlanarImage(pi);
         visited.add(pi);
         
         // check the image sources
@@ -815,8 +834,11 @@ public final class ImageUtilities {
                     ImageInputStream iis = (ImageInputStream) param;
                     try {
                         iis.close();
-                    } catch(IOException e) {
+                    } catch(Throwable e) {
                         // fine, we tried
+                    	if(LOGGER.isLoggable(Level.FINE)){
+                    		LOGGER.log(Level.FINE, e.getLocalizedMessage());
+                    	}
                     }
                 }
             }
@@ -856,7 +878,7 @@ public final class ImageUtilities {
     	// in which there is not a special ImageReadparam used.
     
     	// Create a new ImageReadParam instance.
-    	ImageReadParam newParam = new ImageReadParam();
+    	EnhancedImageReadParam newParam = new EnhancedImageReadParam();
     
     	// Set all fields which need to be set.
     
@@ -889,7 +911,12 @@ public final class ImageUtilities {
     	newParam.setSourceSubsampling(param.getSourceXSubsampling(), param
     			.getSourceYSubsampling(), param.getSubsamplingXOffset(), param
     			.getSubsamplingYOffset());
-    
+
+        // check if need to copy extra parameters
+        if (param instanceof EnhancedImageReadParam) {
+            newParam.setBands(((EnhancedImageReadParam) param).getBands());
+        }
+
     	// Replace the local variable with the new ImageReadParam.
     	return newParam;
     
@@ -909,18 +936,18 @@ public final class ImageUtilities {
             Rational scaleXRational = Rational.approximate(scaleX,RATIONAL_TOLERANCE);
             Rational scaleYRational = Rational.approximate(scaleY,RATIONAL_TOLERANCE);
     
-            long scaleXRationalNum = (long) scaleXRational.num;
-            long scaleXRationalDenom = (long) scaleXRational.denom;
-            long scaleYRationalNum = (long) scaleYRational.num;
-            long scaleYRationalDenom = (long) scaleYRational.denom;
+            long scaleXRationalNum = scaleXRational.num;
+            long scaleXRationalDenom = scaleXRational.denom;
+            long scaleYRationalNum = scaleYRational.num;
+            long scaleYRationalDenom = scaleYRational.denom;
     
             Rational transXRational = Rational.approximate(transX,RATIONAL_TOLERANCE);
             Rational transYRational = Rational.approximate(transY,RATIONAL_TOLERANCE);
     
-            long transXRationalNum = (long) transXRational.num;
-            long transXRationalDenom = (long) transXRational.denom;
-            long transYRationalNum = (long) transYRational.num;
-            long transYRationalDenom = (long) transYRational.denom;
+            long transXRationalNum = transXRational.num;
+            long transXRationalDenom = transXRational.denom;
+            long transYRationalNum = transYRational.num;
+            long transYRationalDenom = transYRational.denom;
     
             int x0 = source.getMinX();
             int y0 = source.getMinY();
@@ -1197,7 +1224,6 @@ public final class ImageUtilities {
                         Object source = null;
                         try {
                             source = planarImage.getSourceObject(k);
-
                         } catch (ArrayIndexOutOfBoundsException e) {
                             // Ignore
                         }
@@ -1230,38 +1256,64 @@ public final class ImageUtilities {
                     }
                 }
 
-                // Looking for an ROI image and disposing it too
-                final Object roi = inputImage.getProperty("ROI");
-                if ((roi != null) && ((roi instanceof ROI) || (roi instanceof RenderedImage))) {
-                    if (roi instanceof ROI) {
-                        ROI roiImage = (ROI) roi;
-                        Rectangle bounds = roiImage.getBounds();
-                        if (!(bounds.isEmpty())) {
-                            PlanarImage image = roiImage.getAsImage();
-                            if (image != null) {
-                                image.dispose();
-                                image = null;
-                                roiImage = null;
-                            }
-                        }
-                    } else {
-                        PlanarImage roiImage = PlanarImage.wrapRenderedImage((RenderedImage) roi);
-                        roiImage.dispose();
-                        roiImage = null;
-                    }
-                }
-
-                if (inputImage instanceof PlanarImage) {
-                    ((PlanarImage) inputImage).dispose();
-                } else if (inputImage instanceof BufferedImage) {
-                    ((BufferedImage) inputImage).flush();
-                    inputImage = null;
-                }
+                disposeSinglePlanarImage(planarImage);
             } else if (inputImage instanceof BufferedImage) {
                 ((BufferedImage) inputImage).flush();
                 inputImage = null;
             }
         }
+    }
+
+    /**
+     * Disposes the specified image, without recursing back in the sources
+     * @param planarImage
+     */
+    public static void disposeSinglePlanarImage(PlanarImage planarImage) {
+        // Looking for an ROI image and disposing it too
+        final Object roi = planarImage.getProperty("ROI");
+        if ((roi != null) && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
+            if (roi instanceof ROI) {
+                ROI roiImage = (ROI) roi;
+                Rectangle bounds = roiImage.getBounds();
+                if (!(bounds.isEmpty())) {
+                    PlanarImage image = roiImage.getAsImage();
+                    if (image != null) {
+                        // do not recurse, we have ROIs that have ROIs that have ROIs ....
+                        image.dispose();
+                    }
+                }
+            } else {
+                disposeImage((RenderedImage) roi);
+            }
+        }
+
+        try {
+            if(planarImage instanceof RenderedImageAdapter) {
+                cleanField(planarImage, "theImage");
+            } 
+            if(planarImage instanceof WritableRenderedImageAdapter) {
+                cleanField(planarImage, "theWritableImage");
+            }
+        } catch(NoSuchFieldException | IllegalAccessException e) {
+            // fine, we tried
+            LOGGER.log(Level.FINE, "Failed to clear rendered image adapters field to null. "
+                    + "Not a problem per se, but if the finalizer thread is not fast enough, this might result in a OOM", e);
+        }
+        planarImage.dispose();
+    }
+
+    /**
+     * Helper that cleans up a field
+     * @param theObject
+     * @param fieldName
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    private static void cleanField(Object theObject, String fieldName)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field f = theObject.getClass().getDeclaredField(fieldName); 
+        f.setAccessible(true);
+        f.set(theObject, null);
     }
     /**
      * Transform a data type into a representative {@link String}.

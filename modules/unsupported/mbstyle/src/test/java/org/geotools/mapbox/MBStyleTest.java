@@ -19,8 +19,6 @@ package org.geotools.mapbox;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.time.FastDateFormat;
-
 /**
  */
 public class MBStyleTest extends TestCase {

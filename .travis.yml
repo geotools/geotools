@@ -5,8 +5,6 @@ cache:
 language: java
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' ~/.m2/settings.xml
-  - sudo apt-get -qq update
-  - sudo apt-get install -y python-sphinx
 script:
   - mvn -B -fae -Dall clean install
 notifications:

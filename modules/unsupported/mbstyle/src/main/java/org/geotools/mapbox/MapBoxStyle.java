@@ -16,9 +16,12 @@
  */
 package org.geotools.mapbox;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 
 import org.geotools.styling.StyledLayerDescriptor;
+import org.json.simple.parser.ParseException;
 
 /**
  * MapBox Style facade offering utility methods for quickly working with JSON and converting to
@@ -28,7 +31,23 @@ import org.geotools.styling.StyledLayerDescriptor;
  */
 public class MapBoxStyle {
 
-    StyledLayerDescriptor parse(Reader reader) {
+    /**
+     * Read in the provided JSON as a {@link StyledLayerDescriptor}.
+     * 
+     * @param reader
+     * @return geneated style
+     */
+    StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
+        return null;
+    }
+
+    /**
+     * Read in the provided JSON as a {@link StyledLayerDescriptor}.
+     * 
+     * @param stream
+     * @return geneated style
+     */
+    StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
         return null;
     }
 }

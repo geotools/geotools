@@ -16,7 +16,11 @@
  */
 package org.geotools.mapbox;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.json.simple.JSONObject;
+
 /**
  * MapBox Style implemented as wrapper around parsed JSON file.
  * <p>
@@ -31,7 +35,6 @@ import org.json.simple.JSONObject;
  * 
  * @author Jody Garnett (Boundless)
  */
-
 public class MBStyle {
     JSONObject json;
 
@@ -42,5 +45,26 @@ public class MBStyle {
      */
     public MBStyle(JSONObject json) {
         this.json = json;
+    }
+
+    /**
+     * Access layers matching provided source.
+     * 
+     * @param source
+     * @return list of layers matching provided source
+     */
+    public List<MBStyle> layers(String source) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * Access layers matching provided source and selector.
+     * 
+     * @param source
+     * @param selector
+     * @return list of layers matching provided source
+     */
+    public List<MBStyle> layers(String source, String selector) {
+        return Collections.emptyList();
     }
 }

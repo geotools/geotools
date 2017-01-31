@@ -70,8 +70,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-render</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -16,6 +16,28 @@
  */
 package org.geotools.mapbox;
 
+/**
+ * MapBox Style implemented as wrapper around parsed JSON file.
+ * <p>
+ * This class is responsible for presenting the wrapped JSON in an easy to use / navigate form for
+ * Java developers. Access methods should return Java Objects, rather than generic maps. Additional
+ * access methods to perform common queries are expected and encouraged.
+ * </p>
+ * <p>
+ * This class works closely with {@link MBLayer} hierarchy used to represent the fill, line, symbol,
+ * raster, circle layers. Additional support will be required to work with sprties and glyphs.
+ * </p>
+ * 
+ * @author Jody Garnett (Boundless)
+ */
 public class MBStyle {
-  
+
+    /**
+     * MBStyle wrapper on the provided json
+     * 
+     * @param json Map Box Style as parsed JSON
+     */
+    public MBStyle(String json) {
+        // TODO: Update with Simple JSON (rather than String).
+    }
 }

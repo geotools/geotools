@@ -16,6 +16,7 @@
  */
 package org.geotools.mapbox;
 
+import org.json.simple.JSONObject;
 /**
  * MapBox Style implemented as wrapper around parsed JSON file.
  * <p>
@@ -30,14 +31,16 @@ package org.geotools.mapbox;
  * 
  * @author Jody Garnett (Boundless)
  */
+
 public class MBStyle {
+    JSONObject json;
 
     /**
      * MBStyle wrapper on the provided json
-     * 
+     *
      * @param json Map Box Style as parsed JSON
      */
-    public MBStyle(String json) {
-        // TODO: Update with Simple JSON (rather than String).
+    public MBStyle(JSONObject json) {
+        this.json = json;
     }
 }

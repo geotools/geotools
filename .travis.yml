@@ -11,3 +11,7 @@ notifications:
 env: GDAL_LIBRARY_NAME=disabled_see_geot-4733
 jdk: 
   - oraclejdk8
+addons:
+  apt:
+    packages:
+      - python-sphinx

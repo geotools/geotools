@@ -37,7 +37,7 @@ public class MapBoxStyle {
      * @param reader
      * @return geneated style
      */
-    StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
+    static StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
         return null;
     }
 
@@ -47,7 +47,7 @@ public class MapBoxStyle {
      * @param stream
      * @return geneated style
      */
-    StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
+    static StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
         return null;
     }
 }

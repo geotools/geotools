@@ -13,10 +13,15 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
+ *    
  */
 package org.geotools.mapbox;
 
+import org.json.simple.JSONObject;
+
 public abstract class MBLayer {
+
+    private JSONObject json;
 
     private String id;
 
@@ -24,7 +29,34 @@ public abstract class MBLayer {
 
     private String sourceLayer;
 
-    private Boolean visibility;
+    private Boolean visibility = true;
+
+    public MBLayer(JSONObject json) {        
+        super();
+        this.json = json;
+
+        this.id = (String) json.get("id");
+
+        if (json.containsKey("source")) {
+            this.source = (String) json.get("source");
+        }
+
+        if (json.containsKey("source-layer")) {
+            this.sourceLayer = (String) json.get("source-layer");
+        }
+
+        if (json.containsKey("visibility")) {
+            this.visibility = (Boolean) json.get("visibility");
+        }
+    }
+
+    public JSONObject getJson() {
+        return json;
+    }
+
+    public void setJson(JSONObject json) {
+        this.json = json;
+    }
 
     public String getId() {
         return id;

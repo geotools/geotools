@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mapbox;
+package org.geotools.mbstyle;
 
 import java.awt.Point;
 
@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-public abstract class MBFillLayer extends MBLayer {
+public class MBFillLayer extends MBLayer {
 
     private static String type = "fill";
 

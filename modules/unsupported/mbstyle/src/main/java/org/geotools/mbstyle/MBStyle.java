@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.mapbox;
+package org.geotools.mbstyle;
 
 import java.util.Collections;
 import java.util.List;

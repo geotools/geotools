@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mapbox;
+package org.geotools.mbstyle;
 
 import org.json.simple.JSONObject;
 

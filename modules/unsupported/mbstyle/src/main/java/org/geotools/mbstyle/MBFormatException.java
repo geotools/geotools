@@ -1,4 +1,4 @@
-package org.geotools.mapbox;
+package org.geotools.mbstyle;
 
 /**
  * Thrown if the MapBox JSON used by {@link MBStyle} does not conform to the MapBox specification

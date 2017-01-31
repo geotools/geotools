@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *
- *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *
+ * 
+ *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
+ *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -14,14 +14,8 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.mapbox;
-
-
-import junit.framework.TestCase;
-
 /**
+ * Support for MapBox Style geneartion of GeoTools
+ * {@link org.geotools.styling.StyledLayerDescriptor}.
  */
-public class MBStyleTest extends TestCase {
-
-
-}
+package org.geotools.mbstyle;

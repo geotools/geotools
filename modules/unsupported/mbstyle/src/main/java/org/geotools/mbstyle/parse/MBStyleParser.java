@@ -1,15 +1,15 @@
-package org.geotools.mapbox.parse;
-
-import org.geotools.mapbox.MBFormatException;
-import org.geotools.mapbox.MBStyle;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+package org.geotools.mbstyle.parse;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import org.geotools.mbstyle.MBFormatException;
+import org.geotools.mbstyle.MBStyle;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Given JSON input (as a {@link String} or {@link Reader}, parses and returns a {@link MBStyle}
@@ -21,7 +21,7 @@ public class MBStyleParser {
     JSONParser parser;
 
     public MBStyleParser() {
-        JSONParser parser = new JSONParser();
+        parser = new JSONParser();
     }
 
     public MBStyle parse(String json) throws ParseException, MBFormatException {

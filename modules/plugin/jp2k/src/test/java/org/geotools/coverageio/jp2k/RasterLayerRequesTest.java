@@ -25,15 +25,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverageio.jp2k.JP2KFormat;
-import org.geotools.coverageio.jp2k.JP2KReader;
-import org.geotools.coverageio.jp2k.RasterLayerRequest;
-import org.geotools.coverageio.jp2k.RasterManager;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions
@@ -48,20 +47,13 @@ import org.opengis.parameter.ParameterValue;
 public final class RasterLayerRequesTest extends BaseJP2K {
 	
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequesTest.class);
-    /**
-     * Creates a new instance of GranuleTest
-     *
-     * @param name
-     */
-    public RasterLayerRequesTest() {
-    }
 
     @Test
     public void testRequest() throws Exception {
     	if (!testingEnabled()) {
             return;
         }
-   	 	File file = null;
+   	 	File file;
         try{
             file = TestData.file(this, "sample.jp2");
         }catch (FileNotFoundException fnfe){

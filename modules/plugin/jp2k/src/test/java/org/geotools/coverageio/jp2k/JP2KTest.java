@@ -57,14 +57,6 @@ import org.opengis.referencing.operation.MathTransform;
 public final class JP2KTest extends BaseJP2K {
 	
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KTest.class);
-	
-    /**
-     * Creates a new instance of JP2KTest
-     *
-     * @param name
-     */
-    public JP2KTest() {
-    }
 
     @Test
     public void testTiledImageReadMT() throws Exception {

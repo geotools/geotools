@@ -17,8 +17,11 @@
 package org.geotools.coverageio.jp2k;
 
 import java.awt.Rectangle;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -61,9 +65,6 @@ import org.opengis.referencing.operation.TransformException;
 class RasterManager {
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
-	
-	final SoftValueHashMap<String, Granule> granulesCache= new SoftValueHashMap<String, Granule>();
-	
 	
 	/**
 	 * Simple support class for sorting overview resolutions
@@ -310,7 +311,6 @@ class RasterManager {
 	 *
 	 */
 	class SpatialDomainManager{
-
 		public SpatialDomainManager() throws TransformException, FactoryException {
 			setBaseParameters();
 			prepareCoverageSpatialElements();
@@ -397,6 +397,7 @@ class RasterManager {
 	 */
 	private String coverageIdentifier;
 
+	private Granule granule;
 	
 	private double[] highestRes;
 	/** The hints to be used to produce this coverage */
@@ -420,8 +421,8 @@ class RasterManager {
 	SpatialDomainManager spatialDomainManager;
 
 	public RasterManager(final JP2KReader reader) throws DataSourceException {
-		
-	        Utilities.ensureNonNull("JP2KReader", reader);
+		Utilities.ensureNonNull("JP2KReader", reader);
+
 		this.parent=reader;
 		this.expandMe=parent.expandMe;
         inputURL = reader.sourceURL;
@@ -444,14 +445,25 @@ class RasterManager {
         decimationController= new DecimationController();
         try {
 			spatialDomainManager= new SpatialDomainManager();
-		} catch (TransformException e) {
-			throw new DataSourceException(e);
-		} catch (FactoryException e) {
+		} catch (TransformException|FactoryException e) {
 			throw new DataSourceException(e);
 		}
+
         extractOverviewPolicy();
-        
-		
+
+		File granuleFile;
+		try {
+			if (inputURL.getProtocol().equalsIgnoreCase("file"))
+				granuleFile = new File(URLDecoder.decode(inputURL.getFile(),
+						"UTF-8"));
+			else
+				throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new IllegalArgumentException(e);
+		}
+
+		granule = new Granule(new ReferencedEnvelope(coverageEnvelope), granuleFile, reader);
 	}
 
 	/**
@@ -481,7 +493,6 @@ class RasterManager {
 	
 	public Collection<GridCoverage2D> read(final GeneralParameterValue[] params) throws IOException
 	{
-
 		// create a request
 		final RasterLayerRequest request= new RasterLayerRequest(params,this);
 		if(request.isEmpty()){
@@ -498,23 +509,22 @@ class RasterManager {
 		if(elem!=null)
 			return Collections.singletonList(elem);
 		return Collections.emptyList();
-		
-		
 	}
 	
-	public void dispose() {
-		
-	}
+	public void dispose() {	}
 
 	public URL getInputURL() {
 		return inputURL;
+	}
+
+	public Granule getGranule() {
+		return granule;
 	}
 
 	public String getCoverageIdentifier() {
 		return coverageIdentifier;
 	}
 
-	
 	public Hints getHints() {
 		return hints;
 	}

@@ -25,18 +25,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,8 +72,7 @@ class RasterLayerResponse{
 	 * @author Simone Giannecchini, GeoSolutions SAS
 	 *
 	 */
-	class GranuleLoader implements Callable<RenderedImage>{
-
+	class GranuleLoader {
 		final ReferencedEnvelope cropBBox;
 		
 		final MathTransform2D worldToGrid;
@@ -104,8 +92,6 @@ class RasterLayerResponse{
 				final MathTransform2D worldToGrid,
 				final Granule granule,
 				final Dimension tilesDimension) {
-			super();
-			
 			this.readParameters = ImageUtilities.cloneImageReadParam(readParameters);
 			this.imageIndex = imageIndex;
 			this.cropBBox = cropBBox;
@@ -138,7 +124,7 @@ class RasterLayerResponse{
 			return imageIndex;
 		}
 		
-		public RenderedImage call() throws Exception {
+		public RenderedImage loadGranule() throws IOException {
 			
 			return granule.loadRaster(readParameters, imageIndex, cropBBox, worldToGrid, request,tilesDimension);
 		}
@@ -146,138 +132,55 @@ class RasterLayerResponse{
 	}
 	
 	class GranuleWorker {
-
+		private int granulesNumber;
 		
-		/**
-		 * Default {@link Constructor}
-		 */
-		public GranuleWorker() {
+		public void produce(){
+			Granule granule = rasterManager.getGranule();
 
-		}
-
-		private final List<Future<RenderedImage>> tasks= new ArrayList<Future<RenderedImage>>();
-		private int   granulesNumber;
-		private boolean doInputTransparency;
-		private Color inputTransparentColor;
-
-		public void init(final ReferencedEnvelope aoi) {
-
-			// Get location and envelope of the image to load.
-			final ReferencedEnvelope granuleBBox = aoi;
-			
-
-			// Load a granule from disk as requested.
-			if (LOGGER.isLoggable(Level.FINE))
-				LOGGER.fine("About to read image number " + granulesNumber);
-
-			// If the granule is not there, dump a message and continue
-			final File rasterFile = new File(location);
-			if (LOGGER.isLoggable(Level.FINE))
-				LOGGER.fine("File found "+ location);
-			
-			// granule cache
-			Granule granule=null;
-			synchronized (rasterManager.granulesCache) {
-				if(rasterManager.granulesCache.containsKey(rasterFile.toURI().toString()))
-				{
-					granule=rasterManager.granulesCache.get(rasterFile.toURI().toString());
-				}
-				else
-				{
-					granule=new Granule(granuleBBox,rasterFile);
-					rasterManager.granulesCache.put(rasterFile.toURI().toString(),granule);
-				}
-			}
-			
 			//
 			// load raster data
 			//
 			//create a granule loader
 			final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice, bbox, finalWorldToGridCorner,granule,request.getTileDimensions());
-			tasks.add(new FutureTask<RenderedImage>(loader));
-			
-			granulesNumber++;
-		}
-		
-		
-		public void produce(){
-			
-			// reusable parameters
-			int granuleIndex=0;
-			inputTransparentColor = request.getInputTransparentColor();
-			doInputTransparency = inputTransparentColor != null;
-			// execute them all
-			boolean firstGranule=true;
-			
-			for (Future<RenderedImage> future :tasks) {
-				final RenderedImage loadedImage;
-				try {
-						//run the loading in this thread
-					final FutureTask<RenderedImage> task=(FutureTask<RenderedImage>) future;
-					task.run();
-					loadedImage=future.get();
-					if(loadedImage==null)
-					{
-						if(LOGGER.isLoggable(Level.FINE))
-							LOGGER.log(Level.FINE,"Unable to load the raster for granule " +granuleIndex+ " with request "+request.toString());
-						continue;
-					}
-					if(firstGranule){
-						//
-						// We check here if the images have an alpha channel or some
-						// other sort of transparency. In case we have transparency
-						// I also save the index of the transparent channel.
-						//
-						final ColorModel cm = loadedImage.getColorModel();
-						alphaIn = cm.hasAlpha();
-						firstGranule=false;
-										
-					}					
-					
-				} catch (InterruptedException e) {
-					if(LOGGER.isLoggable(Level.SEVERE))
-						LOGGER.log(Level.SEVERE,"Unable to load the raster for granule " +granuleIndex,e);
-					continue;
-				} catch (ExecutionException e) {
-					if(LOGGER.isLoggable(Level.SEVERE))
-						LOGGER.log(Level.SEVERE,"Unable to load the raster for granule " +granuleIndex,e);
-					continue;
+
+			Color inputTransparentColor = request.getInputTransparentColor();
+			boolean doInputTransparency = inputTransparentColor != null;
+
+			final RenderedImage loadedImage;
+			try {
+				loadedImage=loader.loadGranule();
+				if(loadedImage==null)
+				{
+					if(LOGGER.isLoggable(Level.FINE))
+						LOGGER.log(Level.FINE,"Unable to load the raster with request "+request.toString());
+					return;
 				}
 
-				catch (ImagingException e) {
-					if (LOGGER.isLoggable(Level.FINE))
-						LOGGER.fine("Loading image number " + granuleIndex+ " failed, original request was "+request);
-					continue;
-				}
-				catch (javax.media.jai.util.ImagingException e) {
-					if (LOGGER.isLoggable(Level.FINE))
-						LOGGER.fine("Loading image number " + granuleIndex+ " failed, original request was "+request);
-					continue;
-				}
-
-				if (LOGGER.isLoggable(Level.FINE))
-					LOGGER.fine("Loading image number " + granuleIndex);
-				
-				final RenderedImage raster = processGranuleRaster(
-						loadedImage,
-						granuleIndex, 
-						alphaIn, 
-						doInputTransparency,
-						inputTransparentColor);
-				
-				theImage = raster;
-				
-				//increment index 
-				granuleIndex++;
-			}
-
-			granulesNumber=granuleIndex;
-			if(granulesNumber==0)
-			{
-				if(LOGGER.isLoggable(Level.FINE))
-					LOGGER.log(Level.FINE,"Unable to load any data ");
+				//
+				// We check here if the images have an alpha channel or some
+				// other sort of transparency. In case we have transparency
+				// I also save the index of the transparent channel.
+				//
+				final ColorModel cm = loadedImage.getColorModel();
+				alphaIn = cm.hasAlpha();
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE,"Unable to load the raster" ,e);
 				return;
 			}
+			catch (ImagingException|javax.media.jai.util.ImagingException  e) {
+				LOGGER.log(Level.FINE,"Loading image  failed, original request was " + request, e);
+				return;
+			}
+
+			final RenderedImage raster = processGranuleRaster(
+					loadedImage,
+					doInputTransparency,
+					inputTransparentColor);
+
+			theImage = raster;
+
+			//increment index
+			granulesNumber = 1;
 		}
 	}
 
@@ -285,7 +188,7 @@ class RasterLayerResponse{
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
 	
 	/**
-	 * The GridCoverage produced after a {@link #compute()} method call
+	 * The GridCoverage produced after a {@link #processRequest()} method call
 	 */
 	private GridCoverage2D gridCoverage;
 
@@ -297,8 +200,6 @@ class RasterLayerResponse{
 
 	/** The base envelope related to the input coverage */
 	private GeneralEnvelope coverageEnvelope;
-
-	private URL inputURL;
 
 	private boolean frozen = false;
 
@@ -322,8 +223,6 @@ class RasterLayerResponse{
 
 	private boolean alphaIn=false;
 
-	private String location;
-
 	private MathTransform baseGridToWorld;
 
 	/**
@@ -340,23 +239,8 @@ class RasterLayerResponse{
 	 * @param readerSpi
 	 *            the Image Reader Service provider interface.
 	 */
-	public RasterLayerResponse(final RasterLayerRequest request,
-			final RasterManager rasterManager) {
+	public RasterLayerResponse(final RasterLayerRequest request, final RasterManager rasterManager) {
 		this.request = request;
-		inputURL = rasterManager.getInputURL();
-		File tempFile = null;
-		try {
-			if (inputURL.getProtocol().equalsIgnoreCase("file"))
-                    tempFile = new File(URLDecoder.decode(inputURL.getFile(),
-                            "UTF-8"));
-			else
-				throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
-		}
-		catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException(e);
-		}
-		
-		location = tempFile.getAbsolutePath();
 		coverageEnvelope = rasterManager.getCoverageEnvelope();
 		this.coverageFactory = rasterManager.getCoverageFactory();
 		this.rasterManager = rasterManager;
@@ -370,7 +254,7 @@ class RasterLayerResponse{
 	 * {@code null} in case of empty request.
 	 * 
 	 * @return the {@link GridCoverage} produced as computation of this response
-	 *         using the {@link #compute()} method.
+	 *         using the {@link #processRequest()}  method.
 	 * @throws IOException
 	 * @uml.property name="gridCoverage"
 	 */
@@ -402,8 +286,7 @@ class RasterLayerResponse{
 	 * 
 	 * @throws java.io.IOException
 	 */
-	private  synchronized void processRequest() throws IOException {
-
+	private synchronized void processRequest() throws IOException {
 		if (request.isEmpty())
 			throw new IOException("Empty request " + request.toString());
 
@@ -420,7 +303,6 @@ class RasterLayerResponse{
 		
 		//freeze
 		frozen = true;
-		
 	}
 
 	/**
@@ -429,9 +311,7 @@ class RasterLayerResponse{
 	 * ROI.
 	 */
 	private RenderedImage assembleGranules() throws DataSourceException {
-
 		try {
-			
 			// select the relevant overview, notice that at this time we have
 			// relaxed a bit the requirement to have the same exact resolution
 			// for all the overviews, but still we do not allow for reading the
@@ -447,12 +327,12 @@ class RasterLayerResponse{
 			else
 				imageChoice = 0;
 			assert imageChoice>=0;
-			if (LOGGER.isLoggable(Level.FINE))
+			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(new StringBuffer("Loading level ").append(
 						imageChoice).append(" with subsampling factors ")
 						.append(baseReadParameters.getSourceXSubsampling()).append(" ")
-						.append(baseReadParameters.getSourceYSubsampling()).toString());			
-			
+						.append(baseReadParameters.getSourceYSubsampling()).toString());
+			}
 			
 			final BoundingBox cropBBOX = request.getCropBBox();
 			if (cropBBOX != null)
@@ -481,9 +361,7 @@ class RasterLayerResponse{
 			finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute raster bounds
 			rasterBounds=new GeneralGridEnvelope(CRS.transform(finalWorldToGridCorner, bbox),PixelInCell.CELL_CORNER,false).toRectangle();
 			
-			// create Init the granuleWorker
 			final GranuleWorker worker = new GranuleWorker();
-			worker.init(new ReferencedEnvelope(coverageEnvelope));
 			worker.produce();
 			
 			//
@@ -510,17 +388,13 @@ class RasterLayerResponse{
 								this.rasterManager.getHints());
 			}
 
-		} catch (IOException e) {
+		} catch (IOException|TransformException e) {
 			throw new DataSourceException("Unable to create this image", e);
-		} catch (TransformException e) {
-			throw new DataSourceException("Unable to create this image", e);
-		} 
+		}
 	}
 
 	private RenderedImage processGranuleRaster(
-		RenderedImage granule, 
-		final int granuleIndex, 
-		final boolean alphaIn,
+		RenderedImage granule,
 		final boolean doTransparentColor, final Color transparentColor) {
 
 		//
@@ -552,16 +426,14 @@ class RasterLayerResponse{
 		// TRANSPARENT COLOR MANAGEMENT
 		//
 		if (doTransparentColor) {
-			if (LOGGER.isLoggable(Level.FINE))
-				LOGGER.fine("Support for alpha on input image number "+ granuleIndex);
+			LOGGER.fine("Support for alpha on input");
 			granule = ImageUtilities.maskColor(transparentColor, granule);
 		}
 		return granule;
 
 	}
 
-	private GridCoverage2D prepareCoverage(
-			RenderedImage image) throws IOException {
+	private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
 		// creating bands
         final SampleModel sm=image.getSampleModel();
         final ColorModel cm=image.getColorModel();
@@ -575,8 +447,7 @@ class RasterLayerResponse{
 			bands[i] = new GridSampleDimension(colorInterpretation.name());
 		}
 
-        return coverageFactory.create(rasterManager.getCoverageIdentifier(), image,new GeneralEnvelope(bbox), bands, null, null);		
-
+        return coverageFactory.create(rasterManager.getCoverageIdentifier(), image,new GeneralEnvelope(bbox), bands, null, null);
 	}
 
 	/**
@@ -645,8 +516,7 @@ class RasterLayerResponse{
 	private RenderedImage postProcessRaster(RenderedImage image) {
 		// alpha on the final image
 		if (transparentColor != null) {
-			if (LOGGER.isLoggable(Level.FINE))
-				LOGGER.fine("Support for alpha on final image");
+			LOGGER.fine("Support for alpha on final image");
 			final ImageWorker w = new ImageWorker(image);
 			if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
 				w.forceComponentColorModel();

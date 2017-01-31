@@ -118,16 +118,20 @@ class Utils {
 		// get a reader
 //		inStream.mark();
 		try {
+
 			if (inStream instanceof FileImageInputStreamExt){
+
 				final File file = ((FileImageInputStreamExt)inStream).getFile();
-				if (FILEFILTER.accept(file))
-					return JP2KFormatFactory.getCachedSpi().createReaderInstance();
+				if (FILEFILTER.accept(file)) {
+					ImageReader reader = JP2KFormatFactory.getCachedSpi().createReaderInstance();
+					reader.setInput(inStream);
+					return reader;
+				}
 			}
 			return null;
 			
 		} catch (IOException e) {
-			if (LOGGER.isLoggable(Level.WARNING))
-					LOGGER.warning(e.getLocalizedMessage());
+			LOGGER.warning(e.getLocalizedMessage());
 			return null;
 		}
 	}
@@ -135,16 +139,13 @@ class Utils {
 	/**
 	 * Retrieves an {@link ImageInputStream} for the provided input {@link File}
 	 * .
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 * @throws IOException
 	 */
 	static ImageInputStream getInputStream(final File file) throws IOException {
-		final ImageInputStream inStream = ImageIO.createImageInputStream(file);
-		if (inStream == null)
-			return null;
-		return inStream;
+		return ImageIO.createImageInputStream(file);
 	}
 
 

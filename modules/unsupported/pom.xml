@@ -168,17 +168,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>ysld</id>
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-			<modules>
-				<module>ysld</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geojsonstore</id>
 			<activation>
 				<property>
@@ -237,7 +226,6 @@
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-		<module>ysld</module>
 		<module>polylabel</module>
 	</modules>
 

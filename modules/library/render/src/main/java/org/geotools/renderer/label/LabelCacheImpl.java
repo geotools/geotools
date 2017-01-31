@@ -701,15 +701,8 @@ public final class LabelCacheImpl implements LabelCache {
                         // curved label, but we might end up drawing a straight
                         // one as an optimization
                         maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate);
-                        if (maxAngleChange < MIN_CURVED_DELTA) {
-                            // if label will be painted as straight, use the
-                            // straight bounds
-                            setupLineTransform(painter, cursor, centroid, tx, true);
-                        } else {
-                            // otherwise use curved bounds, more expensive to
-                            // compute
-                            curved = true;
-                        }
+                        setupLineTransform(painter, cursor, centroid, tx, true);
+                        curved = maxAngleChange >= MIN_CURVED_DELTA;
                     } else {
                         setupLineTransform(painter, cursor, centroid, tx, false);
                     }
@@ -738,10 +731,13 @@ public final class LabelCacheImpl implements LabelCache {
                             // overrun
                             if ((startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength())) {
                                 if (maxAngleChange < maxAngleDelta) {
+                                    // a max distance related to both the font size, but also having a visual limit
+                                    // of a couple of millimeters assuming 90dpi
+                                    double maxDistance = Math.min(painter.getLineHeight() / 2, 7);
                                     // if straight segment connecting the start and end ordinate is really close, paint as a straight label
                                     if (maxAngleChange == 0
                                             || cursor.getMaxDistanceFromStraightLine(startOrdinate,
-                                            endOrdinate) < painter.getLineHeight() / 2) {
+                                            endOrdinate) < maxDistance) {
                                         painter.paintStraightLabel(tx);
                                     } else {
                                         painter.paintCurvedLabel(cursor);

@@ -21,15 +21,15 @@ import org.json.simple.JSONObject;
 
 public abstract class MBLayer {
 
-    private JSONObject json;
+    protected JSONObject json;
 
-    private String id;
+    protected String id;
 
-    private String source;
+    protected String source;
 
-    private String sourceLayer;
+    protected String sourceLayer;
 
-    private Boolean visibility = true;
+    protected Boolean visibility = true;
 
     public MBLayer(JSONObject json) {        
         super();

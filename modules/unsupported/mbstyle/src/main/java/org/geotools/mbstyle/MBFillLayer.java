@@ -142,7 +142,7 @@ public class MBFillLayer extends MBLayer {
      * 4, 8, ..., 512).
      */
     public Expression getFillPattern() {
-        return MBObjectParser.color(paintJson, "fill-pattern", null);
+        return MBObjectParser.string(paintJson, "fill-pattern", null);
     }
 
     /**

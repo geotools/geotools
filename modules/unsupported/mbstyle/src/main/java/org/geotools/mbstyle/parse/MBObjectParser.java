@@ -121,6 +121,18 @@ public class MBObjectParser {
             throw new IllegalArgumentException("json contents invalid, \""+tag+"\" value limited to Number or JSONObject but was "+obj.getClass().getSimpleName());
         }
     }
+        
+    /**
+     * Convert json to Expression string, or a function.
+     *  
+     * @param json json representation
+     * @param fallback default value if json is null
+     * @return Expression based on provided json, or literal if json was null.
+     * @throws MBFormatException 
+     */
+    public static Expression string(JSONObject json, String tag) throws MBFormatException {
+        return string(json, tag, null);
+    }
     
     /**
      * Convert json to Expression string, or a function.
@@ -132,7 +144,7 @@ public class MBObjectParser {
      */
     public static Expression string(JSONObject json, String tag, String fallback) throws MBFormatException {
         if( json.get(tag) == null ){
-            return ff.literal(fallback);
+            return fallback == null ? null : ff.literal(fallback);
         }
         Object obj = json.get(tag);
         

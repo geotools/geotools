@@ -20,6 +20,7 @@ package org.geotools.mbstyle;
 import java.awt.Point;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory;
@@ -75,14 +76,11 @@ public class MBFillLayer extends MBLayer {
      * the stroke is used.
      * 
      * Defaults to 1.
+     * @throws MBFormatException 
      * 
      */
-    public Number getFillOpacity() {
-        if (paintJson.get("fill-opacity") != null) {
-            return (Number) paintJson.get("fill-opacity");
-        } else {
-            return 1;
-        }
+    public Expression getFillOpacity() throws MBFormatException {
+        return MBObjectParser.percentage( paintJson, "fill-opacity", 1 );
     }
 
     /**

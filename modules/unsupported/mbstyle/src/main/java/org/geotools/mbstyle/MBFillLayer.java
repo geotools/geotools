@@ -27,6 +27,8 @@ import org.opengis.filter.expression.Expression;
 
 public class MBFillLayer extends MBLayer {
 
+    private JSONObject paintJson;
+
     private static String type = "fill";
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -46,6 +48,12 @@ public class MBFillLayer extends MBLayer {
     public MBFillLayer(JSONObject json) {
         super(json);
 
+        if (json.get("paint") != null) {
+            paintJson = (JSONObject) json.get("paint");
+        } else {
+            paintJson = new JSONObject();
+        }
+
     }
 
     /**
@@ -55,8 +63,8 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public Boolean getFillAntialias() {
-        if (json.get("fill-antialias") != null) {
-            return (Boolean) json.get("fill-antialias");
+        if (paintJson.get("fill-antialias") != null) {
+            return (Boolean) paintJson.get("fill-antialias");
         } else {
             return true;
         }
@@ -70,8 +78,8 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public Number getFillOpacity() {
-        if (json.get("fill-opacity") != null) {
-            return (Number) json.get("fill-opacity");
+        if (paintJson.get("fill-opacity") != null) {
+            return (Number) paintJson.get("fill-opacity");
         } else {
             return 1;
         }
@@ -86,8 +94,8 @@ public class MBFillLayer extends MBLayer {
      * Defaults to #000000. Disabled by fill-pattern.
      */
     public Expression getFillColor() {
-        if (json.get("fill-color") != null) {
-            String color = (String) json.get("fill-color");
+        if (paintJson.get("fill-color") != null) {
+            String color = (String) paintJson.get("fill-color");
             return ff.literal(color);
         } else {
             return ff.literal("#000000");
@@ -100,8 +108,8 @@ public class MBFillLayer extends MBLayer {
      * Matches the value of fill-color if unspecified. Disabled by fill-pattern.
      */
     public Expression getFillOutlineColor() {
-        if (json.get("fill-outline-color") != null) {
-            String color = (String) json.get("fill-outline-color");
+        if (paintJson.get("fill-outline-color") != null) {
+            String color = (String) paintJson.get("fill-outline-color");
             return ff.literal(color);
         } else {
             return getFillColor();
@@ -112,8 +120,8 @@ public class MBFillLayer extends MBLayer {
      * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively. Units in pixels. Defaults to 0, 0.
      */
     public Point getFillTranslate() {
-        if (json.get("fill-translate") != null) {
-            JSONArray array = (JSONArray) json.get("fill-translate");
+        if (paintJson.get("fill-translate") != null) {
+            JSONArray array = (JSONArray) paintJson.get("fill-translate");
             Number x = (Number) array.get(0);
             Number y = (Number) array.get(1);
             return new Point(x.intValue(), y.intValue());
@@ -133,7 +141,7 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public FillTranslateAnchor getFillTranslateAnchor() {
-        Object value = json.get("fill-translate-anchor");
+        Object value = paintJson.get("fill-translate-anchor");
         if (value != null && "viewport".equalsIgnoreCase((String) value)) {
             return FillTranslateAnchor.VIEWPORT;
         } else {
@@ -146,8 +154,8 @@ public class MBFillLayer extends MBLayer {
      * 4, 8, ..., 512).
      */
     public String getFillPattern() {
-        if (json.get("fill-pattern") != null) {
-            return (String) json.get("fill-pattern");
+        if (paintJson.get("fill-pattern") != null) {
+            return (String) paintJson.get("fill-pattern");
         } else {
             return null;
         }

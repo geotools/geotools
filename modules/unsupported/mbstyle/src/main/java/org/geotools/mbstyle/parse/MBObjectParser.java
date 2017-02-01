@@ -95,7 +95,7 @@ public class MBObjectParser {
      * @throws MBFormatException 
      */
     public static Expression percentage(JSONObject json, String tag, Number fallback) throws MBFormatException {
-        if( json == null ){
+        if( json.get(tag) == null ){
             return ff.literal(fallback);
         }
         Object obj = json.get(tag);
@@ -121,6 +121,7 @@ public class MBObjectParser {
             throw new IllegalArgumentException("json contents invalid, \""+tag+"\" value limited to Number or JSONObject but was "+obj.getClass().getSimpleName());
         }
     }
+    
     /**
      * Convert json to Expression string, or a function.
      *  
@@ -130,7 +131,7 @@ public class MBObjectParser {
      * @throws MBFormatException 
      */
     public static Expression string(JSONObject json, String tag, String fallback) throws MBFormatException {
-        if( json == null ){
+        if( json.get(tag) == null ){
             return ff.literal(fallback);
         }
         Object obj = json.get(tag);
@@ -155,6 +156,80 @@ public class MBObjectParser {
         }
         else {
             throw new IllegalArgumentException("json contents invalid, \""+tag+"\" value limited to String, Number, Boolean or JSONObject but was "+obj.getClass().getSimpleName());
+        }
+    }
+
+    /**
+     * Convert json to Expression color, or a function.
+     * 
+     * @param json json representation
+     * @param fallback default value (string representation of color) if json is null
+     * @return Expression based on provided json, or literal if json was null.
+     * @throws MBFormatException
+     */
+    public static Expression color(JSONObject json, String tag, String fallback)
+            throws MBFormatException {
+        if (json.get(tag) == null) {
+            return ff.literal(fallback);
+        }
+
+        Object obj = json.get(tag);
+
+        if (obj instanceof String) {
+            String str = (String) obj;
+            return ff.literal(str);
+        } else if (obj instanceof Number) {
+            throw new UnsupportedOperationException(
+                    "\"" + tag + "\": color from Number not supported");
+        } else if (obj instanceof Boolean) {
+            throw new UnsupportedOperationException(
+                    "\"" + tag + "\": color from Boolean not supported");
+        } else if (obj instanceof JSONObject) {
+            throw new UnsupportedOperationException(
+                    "\"" + tag + "\": color from Function not yet supported");
+        } else if (obj instanceof JSONArray) {
+            throw new MBFormatException("\"" + tag + "\": color from JSONArray not supported");
+        } else {
+            throw new IllegalArgumentException("json contents invalid, \"" + tag
+                    + "\" value limited to String or JSONObject but was "
+                    + obj.getClass().getSimpleName());
+        }
+    }
+    
+    /**
+     * Convert json to Expression boolean, or a function.
+     * 
+     * @param json json representation
+     * @param fallback default value if json is null
+     * @return Expression based on provided json, or literal if json was null.
+     * @throws MBFormatException
+     */
+    public static Expression bool(JSONObject json, String tag, boolean fallback)
+            throws MBFormatException {
+        if (json.get(tag) == null) {
+            return ff.literal(fallback);
+        }
+
+        Object obj = json.get(tag);
+
+        if (obj instanceof String) {
+            String str = (String) obj;
+            return ff.literal(str);
+        } else if (obj instanceof Number) {
+            throw new UnsupportedOperationException(
+                    "\"" + tag + "\": boolean from Number not supported");
+        } else if (obj instanceof Boolean) {
+            Boolean b = (Boolean) obj;
+            return ff.literal(b);
+        } else if (obj instanceof JSONObject) {
+            throw new UnsupportedOperationException(
+                    "\"" + tag + "\": boolean from Function not yet supported");
+        } else if (obj instanceof JSONArray) {
+            throw new MBFormatException("\"" + tag + "\": boolean from JSONArray not supported");
+        } else {
+            throw new IllegalArgumentException("json contents invalid, \"" + tag
+                    + "\" value limited to String, Boolean or JSONObject but was "
+                    + obj.getClass().getSimpleName());
         }
     }
 }

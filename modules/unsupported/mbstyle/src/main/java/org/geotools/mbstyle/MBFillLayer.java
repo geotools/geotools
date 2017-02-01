@@ -63,12 +63,8 @@ public class MBFillLayer extends MBLayer {
      * Defaults to true.
      * 
      */
-    public Boolean getFillAntialias() {
-        if (paintJson.get("fill-antialias") != null) {
-            return (Boolean) paintJson.get("fill-antialias");
-        } else {
-            return true;
-        }
+    public Expression getFillAntialias() {        
+        return MBObjectParser.bool(paintJson, "fill-antialias", true);
     }
 
     /**
@@ -91,13 +87,8 @@ public class MBFillLayer extends MBLayer {
      * 
      * Defaults to #000000. Disabled by fill-pattern.
      */
-    public Expression getFillColor() {
-        if (paintJson.get("fill-color") != null) {
-            String color = (String) paintJson.get("fill-color");
-            return ff.literal(color);
-        } else {
-            return ff.literal("#000000");
-        }
+    public Expression getFillColor() {      
+        return MBObjectParser.color(paintJson, "fill-color", "#000000");
     }
 
     /**
@@ -107,8 +98,7 @@ public class MBFillLayer extends MBLayer {
      */
     public Expression getFillOutlineColor() {
         if (paintJson.get("fill-outline-color") != null) {
-            String color = (String) paintJson.get("fill-outline-color");
-            return ff.literal(color);
+            return MBObjectParser.color(paintJson, "fill-outline-color", "#000000");
         } else {
             return getFillColor();
         }
@@ -151,12 +141,8 @@ public class MBFillLayer extends MBLayer {
      * (Optional) Name of image in a sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2,
      * 4, 8, ..., 512).
      */
-    public String getFillPattern() {
-        if (paintJson.get("fill-pattern") != null) {
-            return (String) paintJson.get("fill-pattern");
-        } else {
-            return null;
-        }
+    public Expression getFillPattern() {
+        return MBObjectParser.color(paintJson, "fill-pattern", null);
     }
 
     /**

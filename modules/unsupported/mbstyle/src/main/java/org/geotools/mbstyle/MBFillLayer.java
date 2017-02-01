@@ -25,6 +25,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.Displacement;
+import org.opengis.style.StyleFactory;
 
 public class MBFillLayer extends MBLayer {
 
@@ -33,6 +35,7 @@ public class MBFillLayer extends MBLayer {
     private static String type = "fill";
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory();
 
     /**
      * Controls the translation reference point.
@@ -150,6 +153,31 @@ public class MBFillLayer extends MBLayer {
      */
     public String getType() {
         return type;
+    }
+    
+    /**
+     * Processes the filter-translate into a Displacement.
+     * <p>
+     * This should handle both literals and function stops:</p>
+     * <pre>
+     * filter-translate: [0,0]
+     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
+     * filter-translate: [ 0, { property: "building-height", "type":"exponential","stops": [[0,0],[30, 5]] }
+     * </pre>
+     * @return
+     */
+    public Displacement toDisplacement() {
+        Object defn  = paintJson.get("filter-translate");
+        if( defn == null ){
+            return null;
+        }
+        else if (defn instanceof JSONArray){
+            JSONArray array = (JSONArray) defn;
+            return sf.displacement(
+                    MBObjectParser.number( array, 0, 0 ),
+                    MBObjectParser.number( array, 1, 0 ));
+        }
+        return null;
     }
 
 }

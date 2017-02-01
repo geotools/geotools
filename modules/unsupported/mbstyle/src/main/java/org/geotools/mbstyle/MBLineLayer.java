@@ -26,7 +26,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
 public abstract class MBLineLayer extends MBLayer {
-
     private JSONObject paintJson;
 
     private static String type = "line";

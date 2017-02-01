@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class MBStyle {
      */
     public List<MBLayer> layers(String source) throws MBFormatException {
         Object layers = json.get("layers");
-        List<MBLayer> layersList = Collections.emptyList();
+        List<MBLayer> layersList = new ArrayList<>();
         if (layers != null) {
             for (Object obj : MBObjectParser.parseJSONArray(
                     layers,

@@ -1,6 +1,6 @@
 {
     "version": 8,
-    "name": "Empty",
+    "name": "fillStyleTest",
     "metadata": {
         "mapbox:autocomposite": true,
         "mapbox:type": "template"
@@ -13,8 +13,8 @@
     "bearing": 0,
     "pitch": 0,
     "sources": {
-        "composite": {
-            "url": "mapbox://mapbox.mapbox-streets-v7",
+        "geoserver-states": {
+            "url": "http://localhost:8080/geoserver/topp/states/wms",
             "type": "vector"
         }
     },
@@ -24,13 +24,13 @@
         {
             "id": "water",
             "type": "fill",
-            "source": "composite",
-            "source-layer": "water",
+            "source": "geoserver-states",
+            "source-layer": "states",
             "layout": {
                 "visibility": "visible"
             },
             "paint": {
-                "fill-color": "#ffff00",
+                "fill-color": "#e100ff",
                 "fill-opacity": 0.84,
                 "fill-translate": [
                     10,

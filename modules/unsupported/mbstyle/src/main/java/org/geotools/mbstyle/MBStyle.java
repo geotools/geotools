@@ -19,6 +19,7 @@ package org.geotools.mbstyle;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
@@ -53,8 +54,18 @@ public class MBStyle {
      * @param source
      * @return list of layers matching provided source
      */
-    public List<MBStyle> layers(String source) {
-        return Collections.emptyList();
+    public List<MBLayer> layers(String source) throws MBFormatException {
+        Object layers = json.get("layers");
+        List<MBLayer> layersList = Collections.emptyList();
+        if (layers != null) {
+            for (Object obj : MBObjectParser.parseJSONArray(
+                    layers,
+                    "Invalid MapBox Style JSON - \"layers\" must be a JSON Array: " + layers.toString())) {
+                layersList.add(MBObjectParser.parseLayer(obj));
+            }
+        }
+        return layersList;
+
     }
 
     /**
@@ -64,7 +75,7 @@ public class MBStyle {
      * @param selector
      * @return list of layers matching provided source
      */
-    public List<MBStyle> layers(String source, String selector) {
+    public List<MBLayer> layers(String source, String selector) {
         return Collections.emptyList();
     }
 }

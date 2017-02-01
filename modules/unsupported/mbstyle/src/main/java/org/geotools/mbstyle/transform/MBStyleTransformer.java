@@ -102,7 +102,7 @@ public class MBStyleTransformer {
         }
         else {
             // Use of builder is easier for code examples; but fills in SLD defaults
-            Fill fill = builder.createFill(layer.getFillColor());
+            Fill fill = builder.createFill(layer.getFillColor(), layer.getFillOpacity());
             Stroke stroke = builder.createStroke(layer.getFillOutlineColor(), ff.literal(1));
             symbolizer = builder.createPolygonSymbolizer(stroke, fill);
     

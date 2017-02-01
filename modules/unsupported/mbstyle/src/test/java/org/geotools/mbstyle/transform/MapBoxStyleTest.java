@@ -21,14 +21,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBFillLayer;
-import org.json.simple.JSONArray;
+import org.geotools.mbstyle.MBLayer;
+import org.geotools.mbstyle.MBStyle;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.PolygonSymbolizer;
 import org.opengis.style.Rule;
@@ -38,21 +42,28 @@ import org.opengis.style.Symbolizer;
  * Test parsing and transforming a Mapbox fill layer from json.
  */
 public class MapBoxStyleTest {
+
+    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
+    JSONParser jsonParser = new JSONParser();
+
     @Test
     public void testFill() throws IOException, ParseException {
-        assertTrue("hello world", true);
 
+        // Read file to JSONObject
         InputStream is = this.getClass().getResourceAsStream("fillStyleTest.json");
-        String s = IOUtils.toString(is, "utf-8");
+        String fileContents = IOUtils.toString(is, "utf-8");
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
 
-        JSONParser j = new JSONParser();
-        JSONObject o = (JSONObject) j.parse(s);
-        JSONArray array = (JSONArray) o.get("layers");
-        assertEquals(1, array.size());
+        // Parse to MBStyle
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("geoserver-states");
 
-        JSONObject fillLayer = (JSONObject) array.get(0);
+        assertEquals(1, layers.size());
 
-        MBFillLayer mbFill = new MBFillLayer(fillLayer);
+        // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
+        assertTrue(layers.get(0) instanceof MBFillLayer);
+        MBFillLayer mbFill = (MBFillLayer) layers.get(0);
         FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
 
         assertEquals(1, fts.rules().size());
@@ -63,9 +74,8 @@ public class MapBoxStyleTest {
                 PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
                 assertTrue("#e100ff"
                         .equalsIgnoreCase((String) psym.getFill().getColor().evaluate(null)));
-
-                System.out.println("Fill Color: " + psym.getFill().getColor());
-                System.out.println("Opacity: " + psym.getFill().getOpacity());
+                assertEquals(Double.valueOf(.84),
+                        psym.getFill().getOpacity().evaluate(null, Double.class));
             }
         }
 

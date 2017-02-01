@@ -16,14 +16,14 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.mbstyle.MBFillLayer;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -34,9 +34,6 @@ import org.opengis.style.PolygonSymbolizer;
 import org.opengis.style.Rule;
 import org.opengis.style.Symbolizer;
 
-
-
-
 /**
  * Test parsing and transforming a Mapbox fill layer from json.
  */
@@ -44,34 +41,34 @@ public class MapBoxStyleTest {
     @Test
     public void testFill() throws IOException, ParseException {
         assertTrue("hello world", true);
-        
-        InputStream is = this.getClass().getResourceAsStream("fillStyleTest.json");       
+
+        InputStream is = this.getClass().getResourceAsStream("fillStyleTest.json");
         String s = IOUtils.toString(is, "utf-8");
-        
+
         JSONParser j = new JSONParser();
         JSONObject o = (JSONObject) j.parse(s);
-        JSONArray array = (JSONArray) o.get("layers");        
+        JSONArray array = (JSONArray) o.get("layers");
         assertEquals(1, array.size());
-        
+
         JSONObject fillLayer = (JSONObject) array.get(0);
 
         MBFillLayer mbFill = new MBFillLayer(fillLayer);
         FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
-        
-        
+
         assertEquals(1, fts.rules().size());
         for (Rule r : fts.rules()) {
             assertEquals(1, r.symbolizers().size());
             for (Symbolizer symbolizer : r.symbolizers()) {
                 assertTrue(PolygonSymbolizer.class.isAssignableFrom(symbolizer.getClass()));
                 PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
-                assertTrue("#ffff00".equalsIgnoreCase((String) psym.getFill().getColor().evaluate(null)));
-                
+                assertTrue("#e100ff"
+                        .equalsIgnoreCase((String) psym.getFill().getColor().evaluate(null)));
+
                 System.out.println("Fill Color: " + psym.getFill().getColor());
-                System.out.println("Opacity: " + psym.getFill().getOpacity());                
+                System.out.println("Opacity: " + psym.getFill().getOpacity());
             }
         }
-        
+
     }
 
 }

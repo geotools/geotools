@@ -19,6 +19,7 @@ package org.geotools.mbstyle.transform;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBFillLayer;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
@@ -27,7 +28,6 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.style.FeatureTypeStyle;
 
 /**
  * Responsible for traverse {@link MBStyle} and generating {@link StyledLayerDescriptor}.

@@ -26,13 +26,10 @@ import javax.measure.unit.NonSI;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.RasterMBLayer;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -40,8 +37,6 @@ import org.geotools.styling.UserLayer;
 import org.geotools.text.Text;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.style.ContrastMethod;
-import org.opengis.style.Rule;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
@@ -115,7 +110,9 @@ public class MBStyleTransformer {
                  ff.literal(0));
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
         symbolizers.add(symbolizer);
-        List<Rule> rules = new ArrayList<>();
+        
+        // List of opengis rules here (needed for constructor)
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
         Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.MAX_VALUE,symbolizers, Filter.INCLUDE);
         rules.add(rule);
         return sf.featureTypeStyle(

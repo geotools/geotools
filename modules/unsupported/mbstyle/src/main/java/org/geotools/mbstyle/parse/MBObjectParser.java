@@ -27,6 +27,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 
 /**
  * Helper class used to perform JSON traverse {@link JSONObject} and perform Expression and Filter
@@ -77,6 +78,16 @@ public class MBObjectParser {
     //
     // These methds throw a validation error if tag is not available
     //
+
+    /** Shared FilterFactory */
+    public FilterFactory2 getFilterFactory() {
+        return this.ff;
+    }
+
+    /** Shared StyleFactory */
+    public StyleFactory2 getStyleFactory() {
+        return sf;
+    }
 
     /** Safely look up paint in provided layer json.
      * <p>
@@ -337,8 +348,11 @@ public class MBObjectParser {
         if( obj instanceof JSONObject){
             return (JSONObject) obj;
         }
+        else if( obj == null ){
+            throw new MBFormatException("Not a JSONObject: null");
+        }
         else {
-            throw new MBFormatException("Not a JSONObject: " + toStringOrNull(obj));
+            throw new MBFormatException("Not a JSONObject: " + obj.toString());
         }
     }
 
@@ -355,8 +369,11 @@ public class MBObjectParser {
         if( obj instanceof JSONArray){
             return (JSONArray) obj;
         }
+        else if( obj == null ){
+            throw new MBFormatException("Not a JSONArray: null");
+        }
         else {
-            throw new MBFormatException("Not a JSONArray: " + toStringOrNull(obj));
+            throw new MBFormatException("Not a JSONArray: " + obj.toString() );
         }
     }
 
@@ -369,8 +386,40 @@ public class MBObjectParser {
         }
     }
 
-    public String toStringOrNull(Object obj) {
-        return obj == null ? "null" : obj.toString();
+    @SuppressWarnings("unchecked")
+    public <T> T[] array(Class<T> type, JSONObject json, String tag, T[] fallback) {
+        if( json.containsKey(tag)){
+            Object obj = json.get(tag);
+            if( obj instanceof JSONArray){
+                JSONArray array = (JSONArray) obj;
+                return (T[]) Array.newInstance(type, array.size());
+            }
+            else {
+                throw new MBFormatException("\"" + tag + "\" required as JSONArray of "
+                        + type.getSimpleName() + ": Unexpected " + obj.getClass().getSimpleName());
+            }
+        }
+        return fallback;
+    }
+
+    /** Convert to doublep[] */
+    public double[] array(JSONObject json, String tag, double[] fallback) {
+        if (json.containsKey(tag)) {
+            Object obj = json.get(tag);
+            if (obj instanceof JSONArray) {
+                JSONArray array = (JSONArray) obj;
+                double result[] = new double[array.size()];
+                for (int i = 0; i < array.size(); i++) {
+                    result[i] = ((Number) array.get(i)).doubleValue();
+                }
+                return result;
+            } else {
+                throw new MBFormatException(
+                        "\"" + tag + "\" required as JSONArray of Number: Unexpected "
+                                + obj.getClass().getSimpleName());
+            }
+        }
+        return fallback;
     }
 
     /**
@@ -629,48 +678,5 @@ public class MBObjectParser {
                     + obj.getClass().getSimpleName());
         }
     }
-
-    /** Shared FilterFactory */
-    public FilterFactory2 getFilterFactory() {
-        return this.ff;
-    }
-    /** Shared StyleFactory */
-    public StyleFactory2 getStyleFactory() {
-        return sf;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T[] array(Class<T> type, JSONObject json, String tag, T[] fallback) {
-        if( json.containsKey(tag)){
-            Object obj = json.get(tag);
-            if( obj instanceof JSONArray){
-                JSONArray array = (JSONArray) obj;
-                return (T[]) Array.newInstance(type, array.size());
-            }
-            else {
-                throw new MBFormatException("\"" + tag + "\" required as JSONArray of "
-                        + type.getSimpleName() + ": Unexpected " + obj.getClass().getSimpleName());
-            }
-        }
-        return fallback;
-    }
-    /** Convert to doublep[] */
-    public double[] array(JSONObject json, String tag, double[] fallback) {
-        if (json.containsKey(tag)) {
-            Object obj = json.get(tag);
-            if (obj instanceof JSONArray) {
-                JSONArray array = (JSONArray) obj;
-                double result[] = new double[array.size()];
-                for (int i = 0; i < array.size(); i++) {
-                    result[i] = ((Number) array.get(i)).doubleValue();
-                }
-                return result;
-            } else {
-                throw new MBFormatException(
-                        "\"" + tag + "\" required as JSONArray of Number: Unexpected "
-                                + obj.getClass().getSimpleName());
-            }
-        }
-        return fallback;
-    }
+    
 }

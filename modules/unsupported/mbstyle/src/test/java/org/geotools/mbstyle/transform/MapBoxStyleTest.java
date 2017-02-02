@@ -28,18 +28,15 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.RasterMBLayer;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.SLD;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.FeatureTypeStyle;
-import org.opengis.style.PolygonSymbolizer;
-import org.opengis.style.Rule;
-import org.opengis.style.Symbolizer;
 
 /**
  * Test parsing and transforming a Mapbox fill layer from json.
@@ -71,21 +68,14 @@ public class MapBoxStyleTest {
         assertTrue(layers.get(0) instanceof FillMBLayer);
         FillMBLayer mbFill = (FillMBLayer) layers.get(0);
         FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
-
-        assertEquals(1, fts.rules().size());
-        for (Rule r : fts.rules()) {
-            assertEquals(1, r.symbolizers().size());
-            for (Symbolizer symbolizer : r.symbolizers()) {
-                assertTrue(symbolizer instanceof PolygonSymbolizer);
-                PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
-                Expression expr =  psym.getFill().getColor();
-                assertNotNull("fillColor set", expr);
-                assertEquals( Color.decode("#E100FF"), expr.evaluate(null,Color.class) );
-                assertEquals(Double.valueOf(.84),
-                        psym.getFill().getOpacity().evaluate(null, Double.class));
-            }
-        }
-
+        
+        PolygonSymbolizer psym = SLD.polySymbolizer(fts);
+        
+        Expression expr =  psym.getFill().getColor();
+        assertNotNull("fillColor set", expr);
+        assertEquals( Color.decode("#E100FF"), expr.evaluate(null,Color.class) );
+        assertEquals(Double.valueOf(.84),
+                psym.getFill().getOpacity().evaluate(null, Double.class));
     }
 
     /**

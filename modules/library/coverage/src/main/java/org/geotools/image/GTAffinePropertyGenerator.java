@@ -33,7 +33,6 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
 
 import org.geotools.factory.Hints;
-import org.jaitools.imageutils.ImageLayout2;
 
 import com.sun.media.jai.util.PropertyGeneratorImpl;
 

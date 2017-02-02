@@ -38,7 +38,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.ClassChanger;
 import org.geotools.util.Utilities;
-import org.jaitools.imageutils.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import org.jaitools.media.jai.rangelookup.RangeLookupTable;
 import org.jaitools.numeric.Range;
 import org.opengis.coverage.SampleDimensionType;

@@ -27,7 +27,7 @@ import javax.media.jai.ROIShape;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.util.SoftValueHashMap;
-import org.jaitools.imageutils.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 
 import com.vividsolutions.jts.awt.ShapeReader;
 import com.vividsolutions.jts.geom.Geometry;

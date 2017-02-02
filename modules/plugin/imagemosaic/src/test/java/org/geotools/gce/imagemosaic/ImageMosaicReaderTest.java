@@ -2030,38 +2030,41 @@ public class ImageMosaicReaderTest extends Assert{
     public void testRequestInAreaWithNoGranulesBecomesTransparent() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(rgbURL);
         final ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+        try {
+            assertNotNull(reader);
 
-        assertNotNull(reader);
+            // ask to extract an area that is inside the coverage bbox, but it doesn't cover any granule.
+            // the output should be transparent
+            final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
+            GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
+            ggp.setValue(gg);
 
-        // ask to extract an area that is inside the coverage bbox, but it doesn't cover any granule.
-        // the output should be transparent
-        final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
-        ggp.setValue(gg);
+            // Setting transparency
+            final ParameterValue<Color> transparent =  ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+            transparent.setValue(new Color(0, 0, 0));
 
-        // Setting transparency
-        final ParameterValue<Color> transparent =  ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
-        transparent.setValue(new Color(0, 0, 0));
+            // read and check we actually got a coverage in the requested area
+            GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, transparent});
+            assertNotNull(coverage);
+            assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
 
-        // read and check we actually got a coverage in the requested area
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, transparent});
-        assertNotNull(coverage);
-        new GeoTiffWriter(new File("/tmp/test.tiff")).write(coverage, null);
-        assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
-
-        int[] pixel = new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE,
-                Integer.MAX_VALUE };
-        coverage.evaluate(new Point2D.Double(20,  45), pixel);
-        assertEquals(0, pixel[0]);
-        assertEquals(0, pixel[1]);
-        assertEquals(0, pixel[2]);
-        // We only have input RGB granules.
-        // The mosaic should have been added the alpha component.
-        // Moreover it should have been set to fully transparent (0)
-        // since no granules are available in the requested area.
-        assertEquals(0, pixel[3]);
+            int[] pixel = new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE,
+                    Integer.MAX_VALUE };
+            coverage.evaluate(new Point2D.Double(20,  45), pixel);
+            assertEquals(0, pixel[0]);
+            assertEquals(0, pixel[1]);
+            assertEquals(0, pixel[2]);
+            // We only have input RGB granules.
+            // The mosaic should have been added the alpha component.
+            // Moreover it should have been set to fully transparent (0)
+            // since no granules are available in the requested area.
+            assertEquals(0, pixel[3]);
+        } finally {
+        reader.dispose();
+        }
     }
+        
 
 	/**
 	 * @param args

@@ -1,5 +1,7 @@
 package org.geotools.mbstyle.parse;
 
+import java.awt.Color;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBFillLayer;
 import org.geotools.mbstyle.MBFormatException;
@@ -242,6 +244,34 @@ public class MBObjectParser {
         return number("\"" + tag + "\"", obj, fallback);
     }
 
+    //
+    // STRING
+    //
+    private static Expression string(String context, Object obj, String fallback) {
+        if (obj == null) {
+            return fallback == null ? null : ff.literal(fallback);
+        }
+        else if (obj instanceof String) {
+            String str = (String) obj;
+            return ff.literal(str);
+        } else if (obj instanceof Number) {
+            Number number = (Number) obj;
+            return ff.literal(number.toString());
+        } else if (obj instanceof Boolean) {
+            Boolean bool = (Boolean) obj;
+            return ff.literal(bool.toString());
+        } else if (obj instanceof JSONObject) {
+            throw new UnsupportedOperationException(
+                    context + " string from Function not yet supported");
+        } else if (obj instanceof JSONArray) {
+            throw new MBFormatException(context + " string from JSONArray not supported");
+        } else {
+            throw new IllegalArgumentException("json contents invalid, " + context
+                    + " value limited to String, Number, Boolean or JSONObject but was "
+                    + obj.getClass().getSimpleName());
+        }
+    }
+
     /**
      * Convert json to Expression string, or a function.
      * 
@@ -253,29 +283,11 @@ public class MBObjectParser {
     public static Expression string(JSONObject json, String tag, String fallback)
             throws MBFormatException {
         if (json == null) {
-            return ff.literal(fallback);
+            return fallback == null ? null : ff.literal(fallback);
         }
-        Object obj = json.get(tag);
+        return string( "\""+tag+"\"", json.get(tag), fallback );
 
-        if (obj instanceof String) {
-            String str = (String) obj;
-            return ff.literal(str);
-        } else if (obj instanceof Number) {
-            Number number = (Number) obj;
-            return ff.literal(number.toString());
-        } else if (obj instanceof Boolean) {
-            Boolean bool = (Boolean) obj;
-            return ff.literal(bool.toString());
-        } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException(
-                    "\"" + tag + "\" string from Function not yet supported");
-        } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"" + tag + "\" string from JSONArray not supported");
-        } else {
-            throw new IllegalArgumentException("json contents invalid, \"" + tag
-                    + "\" value limited to String, Number, Boolean or JSONObject but was "
-                    + obj.getClass().getSimpleName());
-        }
+
     }
 
     /**
@@ -286,32 +298,33 @@ public class MBObjectParser {
      * @return Expression based on provided json, or literal if json was null.
      * @throws MBFormatException
      */
-    public static Expression color(JSONObject json, String tag, String fallback)
+    public static Expression color(JSONObject json, String tag, Color fallback)
             throws MBFormatException {
         if (json.get(tag) == null) {
-            return ff.literal(fallback);
+            return fallback == null ? null : ff.literal(fallback);
         }
-
         Object obj = json.get(tag);
+        return color( "\""+tag+"\"", obj, fallback );
+    }
 
-        if (obj instanceof String) {
+    private static Expression color(String context, Object obj, Color fallback) {
+        if (obj == null) {
+            return fallback == null ? null : ff.literal(fallback);
+        } else if (obj instanceof String) {
             String str = (String) obj;
             return ff.literal(str);
         } else if (obj instanceof Number) {
-            throw new UnsupportedOperationException(
-                    "\"" + tag + "\": color from Number not supported");
+            throw new MBFormatException(context + " color from Number not supported");
         } else if (obj instanceof Boolean) {
-            throw new UnsupportedOperationException(
-                    "\"" + tag + "\": color from Boolean not supported");
+            throw new MBFormatException(context + "  color from Boolean not supported");
         } else if (obj instanceof JSONObject) {
             throw new UnsupportedOperationException(
-                    "\"" + tag + "\": color from Function not yet supported");
+                    context + " color from Function not yet supported");
         } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"" + tag + "\": color from JSONArray not supported");
+            throw new MBFormatException(context + " color from JSONArray not supported");
         } else {
-            throw new IllegalArgumentException("json contents invalid, \"" + tag
-                    + "\" value limited to String or JSONObject but was "
-                    + obj.getClass().getSimpleName());
+            throw new IllegalArgumentException("json contents invalid, " + context
+                    + " limited to String or JSONObject but was " + obj.getClass().getSimpleName());
         }
     }
     

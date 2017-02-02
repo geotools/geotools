@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import java.awt.Color;
 import java.awt.Point;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -91,7 +92,7 @@ public class MBFillLayer extends MBLayer {
      * Defaults to #000000. Disabled by fill-pattern.
      */
     public Expression getFillColor() {      
-        return MBObjectParser.color(paintJson, "fill-color", "#000000");
+        return MBObjectParser.color(paintJson, "fill-color", Color.BLACK);
     }
 
     /**
@@ -101,7 +102,7 @@ public class MBFillLayer extends MBLayer {
      */
     public Expression getFillOutlineColor() {
         if (paintJson.get("fill-outline-color") != null) {
-            return MBObjectParser.color(paintJson, "fill-outline-color", "#000000");
+            return MBObjectParser.color(paintJson, "fill-outline-color", Color.BLACK );
         } else {
             return getFillColor();
         }

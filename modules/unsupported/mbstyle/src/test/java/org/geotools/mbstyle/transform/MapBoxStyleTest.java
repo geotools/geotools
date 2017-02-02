@@ -16,9 +16,9 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -33,6 +33,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.PolygonSymbolizer;
 import org.opengis.style.Rule;
@@ -70,10 +71,11 @@ public class MapBoxStyleTest {
         for (Rule r : fts.rules()) {
             assertEquals(1, r.symbolizers().size());
             for (Symbolizer symbolizer : r.symbolizers()) {
-                assertTrue(PolygonSymbolizer.class.isAssignableFrom(symbolizer.getClass()));
+                assertTrue(symbolizer instanceof PolygonSymbolizer);
                 PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
-                assertTrue("#e100ff"
-                        .equalsIgnoreCase((String) psym.getFill().getColor().evaluate(null)));
+                Expression expr =  psym.getFill().getColor();
+                assertNotNull("fillColor set", expr);
+                assertEquals( Color.decode("#E100FF"), expr.evaluate(null,Color.class) );
                 assertEquals(Double.valueOf(.84),
                         psym.getFill().getOpacity().evaluate(null, Double.class));
             }

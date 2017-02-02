@@ -16,10 +16,15 @@
  */
 package org.geotools.mbstyle.transform;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.measure.unit.NonSI;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBFillLayer;
 import org.geotools.mbstyle.MBStyle;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
@@ -27,7 +32,13 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
+import org.geotools.text.Text;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.style.FeatureTypeStyle;
+import org.opengis.style.Rule;
+import org.opengis.style.SemanticType;
+import org.opengis.style.Symbolizer;
 
 /**
  * Responsible for traverse {@link MBStyle} and generating {@link StyledLayerDescriptor}.
@@ -70,43 +81,50 @@ public class MBStyleTransformer {
      */
     FeatureTypeStyle transform(MBFillLayer layer) {
         PolygonSymbolizer symbolizer;
+        // use of factory is more verbose, but we supply every value (no defaults)
+        
+        // stroke from fill outline color and opacity
+        Stroke stroke = sf.stroke(
+                layer.getFillOutlineColor(),
+                ff.literal(1),
+                ff.literal(1),
+                ff.literal("miter"),
+                ff.literal("butt"),
+                null,
+                null);
 
-        if (false){
-            // use of factory is more verbose, but we supply every value (no defaults)
-            Stroke stroke = sf.stroke(
-                    layer.getFillOutlineColor(),
-                    layer.getFillOpacity(),
-                    ff.literal(1),
-                    ff.literal("miter"),
-                    ff.literal("butt"),
-                    null,
-                    null);
-            // Fill fill = sf.fill(fill, color, opacity);
-//            Fill fill = builder.createFill(layer.getFillColor());
-//            symbolizer = sf.polygonSymbolizer(
-//                     layer.getId(),
-//                     ff.property("."),
-//                     "generated for "+layer.getSourceLayer(),
-//                     null /* pixel */,
-//                     stroke,
-//                     fill,
-//                     null,
-//                     0.0);
-//            return sf.featureTypeStyle(
-//                    layer.getId(),
-//                    null, // no description
-//                    null,
-//                    Collections.emptyList(),
-//                    );
-            return null;
+        // from fill pattern or fill color
+        Fill fill; 
+        if( layer.getFillPattern() != null ){
+            fill = sf.fill(null,null, layer.getFillOpacity());
         }
         else {
-            // Use of builder is easier for code examples; but fills in SLD defaults
-            Fill fill = builder.createFill(layer.getFillColor(), layer.getFillOpacity());
-            Stroke stroke = builder.createStroke(layer.getFillOutlineColor(), ff.literal(1));
-            symbolizer = builder.createPolygonSymbolizer(stroke, fill);
-    
-            return builder.createFeatureTypeStyle(symbolizer);
+            fill = sf.fill(null,  layer.getFillColor(),  layer.getFillOpacity());
         }
+        // String name, Expression geometry,
+        symbolizer = sf.polygonSymbolizer(
+                 layer.getId(),
+                 ff.property("."),
+                 sf.description(Text.text("fill"),null),
+                 NonSI.PIXEL,
+                 stroke,
+                 fill,
+                 layer.toDisplacement(),
+                 ff.literal(0));
+        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        symbolizers.add(symbolizer);
+        List<Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.MAX_VALUE,symbolizers, Filter.INCLUDE);
+        rules.add(rule);
+        return sf.featureTypeStyle(
+                layer.getId(),
+                sf.description(
+                        Text.text("MBStil "+layer.getId()),
+                        Text.text("Generated for "+layer.getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons 
+                rules
+                );
     }
 }

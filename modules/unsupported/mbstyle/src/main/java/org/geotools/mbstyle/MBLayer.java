@@ -80,7 +80,10 @@ public abstract class MBLayer {
             case "fill": return new FillMBLayer(layer);
             case "raster": return new RasterMBLayer(layer);
             default:
-                throw new MBFormatException("Could not create layer \""+type+"\"");
+                throw new MBFormatException(("\"type\" " + type
+                        + " is not a valid layer type. Must be one of: "
+                        + "background, fill, line, symbol, raster, circle, fill-extrusion"));
+
             }
         }
         // technically we may be able to do this via a ref

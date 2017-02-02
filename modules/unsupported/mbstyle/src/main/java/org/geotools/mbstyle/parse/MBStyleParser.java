@@ -52,7 +52,7 @@ public class MBStyleParser {
      * @throws MBFormatException If MapBox Style is obviously not well formed
      */
     public MBStyle parse(String json) throws ParseException, MBFormatException {
-        return parse.parseRoot(jsonParser.parse(json));
+        return MBStyle.create(jsonParser.parse(json));
     }
 
     /**
@@ -69,7 +69,7 @@ public class MBStyleParser {
      */
     public MBStyle parse(Reader json) throws ParseException, IOException, MBFormatException {
         try {
-            return parse.parseRoot(jsonParser.parse(json));
+            return MBStyle.create(jsonParser.parse(json));
         }
         finally {
             json.close();
@@ -91,7 +91,7 @@ public class MBStyleParser {
     public MBStyle parse(InputStream json) throws ParseException, IOException, MBFormatException {
         try (Reader reader = new InputStreamReader(json)){ // auto close
             Object obj = jsonParser.parse( reader );
-            return parse.parseRoot( obj );
+            return MBStyle.create( obj );
         }
     }
 }

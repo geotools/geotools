@@ -59,6 +59,23 @@ public class MBStyle {
     public MBStyle(JSONObject json) {
         this.json = json;
     }
+    /**
+     * Parse MBStyle for the provided json. 
+     * @param json Required to be a JSONObject
+     * @return MBStyle wrapping the provided json
+     * 
+     * @throws MBFormatException
+     */
+    public static MBStyle create(Object json) throws MBFormatException {
+        if (json instanceof JSONObject) {
+            return new MBStyle((JSONObject) json);
+        } else if (json == null) {
+            throw new MBFormatException("JSONObject required: null");
+        } else {
+            throw new MBFormatException("Root must be a JSON Object: " + json.toString());
+        }
+    }
+    
 
     public List<MBLayer> layers(){
         JSONArray layers = parse.getJSONArray(json, "layers");

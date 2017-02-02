@@ -17,57 +17,100 @@
  */
 package org.geotools.mbstyle;
 
+import java.awt.Color;
 import java.awt.Point;
 
-import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.RecodeFunction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.Stroke;
 
-public abstract class MBLineLayer extends MBLayer {
-    private JSONObject paintJson;
+/**
+ * MBLayer wrapper for "line" layers.
+ * <p>
+ * Example of line JSON:
+ * 
+ * <pre>
+ *      {   "type": "line",
+ *          "source": "http://localhost:8080/geoserver/ne/roads",
+ *          "source-layer": "road"
+ *          "id": "roads",
+ *          "paint": {
+ *              "line-color": "#6655ae",
+ *              "line-width": 2,
+ *              "line-opacity": 1
+ *          },
+ *      },
+ * </pre>
+ * 
+ * @author Reggie Beckwith (Boundless)
+ *
+ */
+public class LineMBLayer extends MBLayer {
+    private JSONObject layout;
+    private JSONObject paint;
 
-    private static String type = "line";
+    private static String TYPE = "line";
 
-    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-
-    public MBLineLayer(JSONObject json) {
+    
+    public LineMBLayer(JSONObject json) {
         super(json);
-
-        if (json.get("paint") != null) {
-            paintJson = (JSONObject) json.get("paint");
-        } else {
-            paintJson = new JSONObject();
-        }
-
+        paint = super.getPaint();
+        layout = super.getLayout();
     }
 
     /**
-     * 
-     * (Optional) The display of line endings.
-     * 
-     * Butt - A cap with a squared-off end which is drawn to the exact endpoint of the line.
-     * 
-     * Round - A cap with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the line's width and centered on the
-     * endpoint of the line.
-     * 
-     * Square - A cap with a squared-off end which is drawn beyond the endpoint of the line at a distance of one-half of the line's width.
-     *
+     * The display of line endings.
      */
     public enum LineCap {
-        BUTT, ROUND, SQUARE
+        /** A cap with a squared-off end which is drawn to the exact endpoint of the line. */
+        BUTT,
+        /**
+         * A cap with a rounded end which is drawn beyond the endpoint of the line at a
+         * radius of one-half of the line's width and centered on the endpoint of the line.
+         */
+        ROUND,
+        /**
+         * A cap with a squared-off end which is drawn beyond the endpoint of the line at a
+         * distance of one-half of the line's width.
+         * 
+         */
+        SQUARE
     }
-
+    /**
+     * Display of line endings.
+     * <p>
+     * Supports piecewise constant functions.</p>
+     * 
+     * @return One of butt, round, square, optional defaults to butt.
+     */
     public LineCap getLineCap() {
-        Object value = paintJson.get("line-cap");
-        if (value != null && "round".equalsIgnoreCase((String) value)) {
+        // TODO: fuction case 
+        
+        String lineCap = parse.get(layout, "line-cap", "butt");
+        
+        switch (lineCap.toLowerCase()) {
+        case "round":
             return LineCap.ROUND;
-        } else if (value != null && "square".equalsIgnoreCase((String) value)) {
+        case "square":
             return LineCap.SQUARE;
-        } else {
-            return LineCap.BUTT;
+        case "butt":
+            return LineCap.BUTT; // default
+        default:
+            throw new MBFormatException(
+                    "Provided line-cap \"" + lineCap + "\" invalid - expected round, square, butt");
         }
+    }
+    /**
+     * Maps {@link #getLineCap()} to {@link Stroke#getLineCap()} values of "butt", "round", and "square" Literals.
+     * <p>
+     * Since piecewise constant functions is supported a {@link RecodeFunction} may be generated.
+     * @return Expression for {@link Stroke#getLineCap()} use.
+     */
+    public Expression lineCap(){
+        // TODO: convert getLineCap to an Expression (function or literal)
+        return ff.literal( getLineCap().toString().toLowerCase());
     }
 
     /**
@@ -85,7 +128,7 @@ public abstract class MBLineLayer extends MBLayer {
     }
 
     public LineJoin getLineJoin() {
-        Object value = paintJson.get("line-join");
+        Object value = paint.get("line-join");
         if (value != null && "round".equalsIgnoreCase((String) value)) {
             return LineJoin.ROUND;
         } else if (value != null && "bevel".equalsIgnoreCase((String) value)) {
@@ -103,8 +146,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineMiterLimit() {
-        if (paintJson.get("line-miter_limit") != null) {
-            return (Number) paintJson.get("line-miter-limit");
+        if (paint.get("line-miter_limit") != null) {
+            return (Number) paint.get("line-miter-limit");
         } else {
             return 2;
         }
@@ -117,8 +160,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineRoundLimit() {
-        if (paintJson.get("line-round_limit") != null) {
-            return (Number) paintJson.get("line-round-limit");
+        if (paint.get("line-round_limit") != null) {
+            return (Number) paint.get("line-round-limit");
         } else {
             return 1.05;
         }
@@ -131,8 +174,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineOpacity() {
-        if (paintJson.get("line-opacity") != null) {
-            return (Number) paintJson.get("line-opacity");
+        if (paint.get("line-opacity") != null) {
+            return (Number) paint.get("line-opacity");
         } else {
             return 1;
         }
@@ -141,15 +184,15 @@ public abstract class MBLineLayer extends MBLayer {
     /**
      * (Optional) The color with which the line will be drawn.
      * 
-     * Defaults to #000000. Disabled by line-pattern.
+     * Defaults to {@link Color#BLACK}, disabled by line-pattern.
+     * 
+     * @return color to draw the line, optional defaults to black.
      */
     public Expression getLineColor() {
-        if (paintJson.get("line-color") != null) {
-            String color = (String) paintJson.get("line-color");
-            return ff.literal(color);
-        } else {
-            return ff.literal("#000000");
+        if( paint.containsKey("line-pattern")){
+            return null; // disabled
         }
+        return parse.color(paint,"line-color", Color.BLACK);
     }
 
     /**
@@ -159,8 +202,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Point getLineTranslate() {
-        if (paintJson.get("line-translate") != null) {
-            JSONArray array = (JSONArray) paintJson.get("line-translate");
+        if (paint.get("line-translate") != null) {
+            JSONArray array = (JSONArray) paint.get("line-translate");
             Number x = (Number) array.get(0);
             Number y = (Number) array.get(1);
             return new Point(x.intValue(), y.intValue());
@@ -192,7 +235,7 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public LineTranslateAnchor getLineTranslateAnchor() {
-        Object value = paintJson.get("line-translate-anchor");
+        Object value = paint.get("line-translate-anchor");
         if (value != null && "viewport".equalsIgnoreCase((String) value)) {
             return LineTranslateAnchor.VIEWPORT;
         } else {
@@ -207,8 +250,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineWidth() {
-        if (paintJson.get("line-width") != null) {
-            return (Number) paintJson.get("line-width");
+        if (paint.get("line-width") != null) {
+            return (Number) paint.get("line-width");
         } else {
             return 1;
         }
@@ -221,8 +264,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineGapWidth() {
-        if (paintJson.get("line-gap-width") != null) {
-            return (Number) paintJson.get("line-gap-width");
+        if (paint.get("line-gap-width") != null) {
+            return (Number) paint.get("line-gap-width");
         } else {
             return 0;
         }
@@ -236,8 +279,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineOffset() {
-        if (paintJson.get("line-offset") != null) {
-            return (Number) paintJson.get("line-offset");
+        if (paint.get("line-offset") != null) {
+            return (Number) paint.get("line-offset");
         } else {
             return 0;
         }
@@ -250,8 +293,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineBlur() {
-        if (paintJson.get("line-blur") != null) {
-            return (Number) paintJson.get("line-blur");
+        if (paint.get("line-blur") != null) {
+            return (Number) paint.get("line-blur");
         } else {
             return 0;
         }
@@ -265,8 +308,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public Number getLineDasharray() {
-        if (paintJson.get("line-dasharray") != null) {
-            return (Number) paintJson.get("line-dasharray");
+        if (paint.get("line-dasharray") != null) {
+            return (Number) paint.get("line-dasharray");
         } else {
             return 0;
         }
@@ -280,8 +323,8 @@ public abstract class MBLineLayer extends MBLayer {
      * 
      */
     public String getLinePattern() {
-        if (paintJson.get("line-pattern") != null) {
-            return (String) paintJson.get("line-pattern");
+        if (paint.get("line-pattern") != null) {
+            return (String) paint.get("line-pattern");
         } else {
             return null;
         }
@@ -291,7 +334,7 @@ public abstract class MBLineLayer extends MBLayer {
      * {@inheritDoc}
      */
     public String getType() {
-        return type;
+        return TYPE;
     }
 
 }

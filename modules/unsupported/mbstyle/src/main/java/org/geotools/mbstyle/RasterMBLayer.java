@@ -17,17 +17,16 @@
  */
 package org.geotools.mbstyle;
 
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
-public class MBRasterLayer extends MBLayer {
+public class RasterMBLayer extends MBLayer {
 
     private JSONObject paintJson;
 
     private static String type = "raster";
 
-    public MBRasterLayer(JSONObject json) {
+    public RasterMBLayer(JSONObject json) {
         super(json);
 
         if (json.get("paint") != null) {
@@ -44,7 +43,7 @@ public class MBRasterLayer extends MBLayer {
      * 
      */
     public Expression getOpacity() {
-        return MBObjectParser.percentage(paintJson, "raster-opacity", 1);
+        return parse.percentage(paintJson, "raster-opacity", 1);
     }
 
     /**
@@ -53,7 +52,7 @@ public class MBRasterLayer extends MBLayer {
      * Number. Units in degrees. Defaults to 0.
      */
     public Expression getHueRotate() {
-        return MBObjectParser.number(paintJson, "raster-hue-rotate", 0);
+        return parse.number(paintJson, "raster-hue-rotate", 0);
     }
 
     /**
@@ -62,7 +61,7 @@ public class MBRasterLayer extends MBLayer {
      * Number. Defaults to 0.
      */
     public Expression getBrightnessMin() {
-        return MBObjectParser.number(paintJson, "raster-brightness-min", 0);
+        return parse.number(paintJson, "raster-brightness-min", 0);
     }
 
     /**
@@ -71,7 +70,7 @@ public class MBRasterLayer extends MBLayer {
      * Number. Defaults to 1.
      */
     public Expression getBrightnessMax() {
-        return MBObjectParser.number(paintJson, "raster-brightness-max", 1);
+        return parse.number(paintJson, "raster-brightness-max", 1);
     }
 
     /**
@@ -80,7 +79,7 @@ public class MBRasterLayer extends MBLayer {
      * Number. Defaults to 0.
      */
     public Expression getSaturation() {
-        return MBObjectParser.number(paintJson, "raster-saturation", 0);
+        return parse.number(paintJson, "raster-saturation", 0);
     }
 
     /**
@@ -89,7 +88,7 @@ public class MBRasterLayer extends MBLayer {
      * Number. Defaults to 0.
      */
     public Expression getContrast() {
-        return MBObjectParser.number(paintJson, "raster-contrast", 0);
+        return parse.number(paintJson, "raster-contrast", 0);
     }
 
     /**
@@ -98,7 +97,7 @@ public class MBRasterLayer extends MBLayer {
      * Number. Units in milliseconds. Defaults to 300.
      */
     public Expression getFadeDuration() {
-        return MBObjectParser.number(paintJson, "raster-fade-duration", 300);
+        return parse.number(paintJson, "raster-fade-duration", 300);
     }
 
     /**

@@ -20,23 +20,16 @@ package org.geotools.mbstyle;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
-import org.opengis.style.StyleFactory;
 
-public class MBFillLayer extends MBLayer {
+public class FillMBLayer extends MBLayer {
 
-    private JSONObject paintJson;
+    private JSONObject paint;
 
     private static String type = "fill";
-
-    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory();
 
     /**
      * Controls the translation reference point.
@@ -50,13 +43,13 @@ public class MBFillLayer extends MBLayer {
         MAP, VIEWPORT
     }
 
-    public MBFillLayer(JSONObject json) {
+    public FillMBLayer(JSONObject json) {
         super(json);
 
         if (json.get("paint") != null) {
-            paintJson = (JSONObject) json.get("paint");
+            paint = (JSONObject) json.get("paint");
         } else {
-            paintJson = new JSONObject();
+            paint = new JSONObject();
         }
 
     }
@@ -68,7 +61,7 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public Expression getFillAntialias() {        
-        return MBObjectParser.bool(paintJson, "fill-antialias", true);
+        return parse.bool(paint, "fill-antialias", true);
     }
 
     /**
@@ -80,7 +73,7 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public Expression getFillOpacity() throws MBFormatException {
-        return MBObjectParser.percentage( paintJson, "fill-opacity", 1 );
+        return parse.percentage( paint, "fill-opacity", 1 );
     }
 
     /**
@@ -92,7 +85,7 @@ public class MBFillLayer extends MBLayer {
      * Defaults to #000000. Disabled by fill-pattern.
      */
     public Expression getFillColor() {      
-        return MBObjectParser.color(paintJson, "fill-color", Color.BLACK);
+        return parse.color(paint, "fill-color", Color.BLACK);
     }
 
     /**
@@ -101,8 +94,8 @@ public class MBFillLayer extends MBLayer {
      * Matches the value of fill-color if unspecified. Disabled by fill-pattern.
      */
     public Expression getFillOutlineColor() {
-        if (paintJson.get("fill-outline-color") != null) {
-            return MBObjectParser.color(paintJson, "fill-outline-color", Color.BLACK );
+        if (paint.get("fill-outline-color") != null) {
+            return parse.color(paint, "fill-outline-color", Color.BLACK );
         } else {
             return getFillColor();
         }
@@ -112,8 +105,8 @@ public class MBFillLayer extends MBLayer {
      * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively. Units in pixels. Defaults to 0, 0.
      */
     public Point getFillTranslate() {
-        if (paintJson.get("fill-translate") != null) {
-            JSONArray array = (JSONArray) paintJson.get("fill-translate");
+        if (paint.get("fill-translate") != null) {
+            JSONArray array = (JSONArray) paint.get("fill-translate");
             Number x = (Number) array.get(0);
             Number y = (Number) array.get(1);
             return new Point(x.intValue(), y.intValue());
@@ -133,7 +126,7 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public FillTranslateAnchor getFillTranslateAnchor() {
-        Object value = paintJson.get("fill-translate-anchor");
+        Object value = paint.get("fill-translate-anchor");
         if (value != null && "viewport".equalsIgnoreCase((String) value)) {
             return FillTranslateAnchor.VIEWPORT;
         } else {
@@ -146,7 +139,7 @@ public class MBFillLayer extends MBLayer {
      * 4, 8, ..., 512).
      */
     public Expression getFillPattern() {
-        return MBObjectParser.string(paintJson, "fill-pattern", null);
+        return parse.string(paint, "fill-pattern", null);
     }
 
     /**
@@ -168,15 +161,15 @@ public class MBFillLayer extends MBLayer {
      * @return
      */
     public Displacement toDisplacement() {
-        Object defn  = paintJson.get("filter-translate");
+        Object defn  = paint.get("filter-translate");
         if( defn == null ){
             return null;
         }
         else if (defn instanceof JSONArray){
             JSONArray array = (JSONArray) defn;
             return sf.displacement(
-                    MBObjectParser.number( array, 0, 0 ),
-                    MBObjectParser.number( array, 1, 0 ));
+                    parse.number( array, 0, 0 ),
+                    parse.number( array, 1, 0 ));
         }
         return null;
     }

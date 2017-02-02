@@ -23,12 +23,11 @@ import java.util.List;
 import javax.measure.unit.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.mbstyle.MBFillLayer;
+import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
@@ -51,12 +50,9 @@ public class MBStyleTransformer {
 
     private StyleFactory sf;
 
-    private StyleBuilder builder;
-
     public MBStyleTransformer() {
         ff = CommonFactoryFinder.getFilterFactory2();
         sf = CommonFactoryFinder.getStyleFactory();
-        builder = new StyleBuilder(sf, ff);
     }
 
     /**
@@ -79,7 +75,7 @@ public class MBStyleTransformer {
      * @param layer Describing polygon fill styling
      * @return FeatureTypeStyle 
      */
-    FeatureTypeStyle transform(MBFillLayer layer) {
+    FeatureTypeStyle transform(FillMBLayer layer) {
         PolygonSymbolizer symbolizer;
         // use of factory is more verbose, but we supply every value (no defaults)
         

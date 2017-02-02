@@ -91,15 +91,15 @@ public class MBStyleTransformer {
     }
 
     public FeatureTypeStyle transform(MBLayer layer) {
-        if( layer instanceof FillMBLayer){
-            return transform( (FillMBLayer) layer );
+        if (layer instanceof FillMBLayer) {
+            return transform((FillMBLayer) layer);
+        } else if (layer instanceof RasterMBLayer) {
+            return transform((RasterMBLayer) layer);
         }
-//        else if( layer instanceof RasterMBLayer){
-//            return transform( (RasterMBLayer) layer );
-//        }
-        return null;
+
+        throw new MBFormatException(layer.getType() + " not yet supported.");
     }
-    
+
     /**
      * Transform MBFillLayer to GeoTools FeatureTypeStyle.
      * <p>

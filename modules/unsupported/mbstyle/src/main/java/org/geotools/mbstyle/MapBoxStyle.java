@@ -42,7 +42,7 @@ public class MapBoxStyle {
      * @param reader
      * @return geneated style
      */
-    static StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
+    public static StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
         MBStyleParser parser = new MBStyleParser();
         MBStyle style = parser.parse(reader);
 
@@ -58,7 +58,7 @@ public class MapBoxStyle {
      * @param stream
      * @return geneated style
      */
-    static StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
+    public static StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
         MBStyleParser parser = new MBStyleParser();
         MBStyle style = parser.parse(stream);
 
@@ -75,7 +75,7 @@ public class MapBoxStyle {
      * @throws IOException
      * @throws ParseException
      */
-    static List<Exception> validate(Reader reader) {
+    public static List<Exception> validate(Reader reader) {
         List<Exception> problems = new ArrayList<Exception>();
         MBStyleParser parser = new MBStyleParser();
         MBStyle style;

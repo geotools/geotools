@@ -21,13 +21,11 @@ import java.lang.reflect.Array;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBFormatException;
-import org.geotools.mbstyle.MBStyle;
 import org.geotools.styling.StyleFactory2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 
 /**
  * Helper class used to perform JSON traverse {@link JSONObject} and perform Expression and Filter

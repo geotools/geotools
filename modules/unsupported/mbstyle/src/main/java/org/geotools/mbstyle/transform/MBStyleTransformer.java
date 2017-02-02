@@ -17,7 +17,6 @@
 package org.geotools.mbstyle.transform;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +27,7 @@ import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
@@ -89,6 +89,9 @@ public class MBStyleTransformer {
         if( layer instanceof FillMBLayer){
             return transform( (FillMBLayer) layer );
         }
+//        else if( layer instanceof RasterMBLayer){
+//            return transform( (RasterMBLayer) layer );
+//        }
         return null;
     }
     

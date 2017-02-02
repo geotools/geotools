@@ -19,7 +19,6 @@ package org.geotools.mbstyle;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.lang.reflect.Array;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

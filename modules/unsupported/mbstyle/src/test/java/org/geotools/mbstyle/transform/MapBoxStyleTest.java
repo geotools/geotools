@@ -16,7 +16,9 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -28,9 +30,13 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
+import org.geotools.styling.Symbolizer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -81,7 +87,6 @@ public class MapBoxStyleTest {
     /**
      * Test parsing a Mapbox raster layer
      */
-    @Test
     public void testRaster() throws IOException, ParseException {
         // Read file to JSONObject
         InputStream is = this.getClass().getResourceAsStream("rasterStyleTest.json");

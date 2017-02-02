@@ -27,27 +27,71 @@ import org.geotools.mbstyle.MBStyle;
 
 
 /**
- * Given JSON input (as a {@link String} or {@link Reader}, parses and returns a {@link MBStyle}
- *
- * @author tbarsballe
+ * Given JSON input (as a {@link String} or {@link Reader}, parses and returns a {@link MBStyle}.
+ * 
+ * @author Torbien Barsballe (Boundless)
  */
 public class MBStyleParser {
 
-    JSONParser parser;
-
+    JSONParser jsonParser;
+    MBObjectParser parse = new MBObjectParser();
+    
     public MBStyleParser() {
-        parser = new JSONParser();
+        jsonParser = new JSONParser();
     }
 
+    /**
+     * Parse the provided json into MBStyle. 
+     * <p>
+     * Please be aware that {@link MBStyle}.is a thin wrapper around the provided
+     * json and will lazily parse map box style contents as required.
+     * 
+     * @param json String
+     * @return MBStyle
+     * @throws ParseException If JSON is not well formed
+     * @throws MBFormatException If MapBox Style is obviously not well formed
+     */
     public MBStyle parse(String json) throws ParseException, MBFormatException {
-        return MBObjectParser.parseRoot(parser.parse(json));
+        return MBStyle.create(jsonParser.parse(json));
     }
 
+    /**
+     * Parse the provided json into MBStyle. 
+     * <p>
+     * Please be aware that {@link MBStyle}.is a thin wrapper around the provided
+     * json and will lazily parse map box style contents as required.
+     * 
+     * @param json Reader
+     * @return MBStyle
+     * @throws ParseException If JSON is not well formed
+     * @throws IOException If json reader cannot be read
+     * @throws MBFormatException If MapBox Style is obviously not well formed
+     */
     public MBStyle parse(Reader json) throws ParseException, IOException, MBFormatException {
-        return MBObjectParser.parseRoot(parser.parse(json));
+        try {
+            return MBStyle.create(jsonParser.parse(json));
+        }
+        finally {
+            json.close();
+        }
     }
 
+    /**
+     * Parse the provided json into MBStyle. 
+     * <p>
+     * Please be aware that {@link MBStyle}.is a thin wrapper around the provided
+     * json and will lazily parse map box style contents as required.
+     * 
+     * @param json InputStream
+     * @return MBStyle
+     * @throws ParseException If JSON is not well formed
+     * @throws IOException If json input stream cannot be read
+     * @throws MBFormatException If MapBox Style is obviously not well formed
+     */
     public MBStyle parse(InputStream json) throws ParseException, IOException, MBFormatException {
-        return MBObjectParser.parseRoot(parser.parse(new InputStreamReader(json)));
+        try (Reader reader = new InputStreamReader(json)){ // auto close
+            Object obj = jsonParser.parse( reader );
+            return MBStyle.create( obj );
+        }
     }
 }

@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.mbstyle.MBFillLayer;
+import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.json.simple.JSONObject;
@@ -63,8 +63,8 @@ public class MapBoxStyleTest {
         assertEquals(1, layers.size());
 
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
-        assertTrue(layers.get(0) instanceof MBFillLayer);
-        MBFillLayer mbFill = (MBFillLayer) layers.get(0);
+        assertTrue(layers.get(0) instanceof FillMBLayer);
+        FillMBLayer mbFill = (FillMBLayer) layers.get(0);
         FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
 
         assertEquals(1, fts.rules().size());

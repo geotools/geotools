@@ -17,6 +17,7 @@
 package org.geotools.mbstyle.transform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,8 +26,13 @@ import javax.measure.unit.NonSI;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.RasterMBLayer;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -34,7 +40,7 @@ import org.geotools.styling.UserLayer;
 import org.geotools.text.Text;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.style.FeatureTypeStyle;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.Rule;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;

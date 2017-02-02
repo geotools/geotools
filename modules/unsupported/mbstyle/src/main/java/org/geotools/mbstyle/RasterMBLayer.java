@@ -39,7 +39,7 @@ public class RasterMBLayer extends MBLayer {
     /**
      * (Optional) The opacity (Number) at which the image will be drawn.
      * 
-     * Defaults to 1.
+     * Defaults to 1. Range: [0, 1]
      * 
      */
     public Expression getOpacity() {
@@ -58,7 +58,7 @@ public class RasterMBLayer extends MBLayer {
     /**
      * (Optional) Increase or reduce the brightness of the image. The value is the minimum brightness.
      * 
-     * Number. Defaults to 0.
+     * Number. Defaults to 0. Range: [0, 1]
      */
     public Expression getBrightnessMin() {
         return parse.number(paintJson, "raster-brightness-min", 0);
@@ -67,7 +67,7 @@ public class RasterMBLayer extends MBLayer {
     /**
      * (Optional) Increase or reduce the brightness of the image. The value is the maximum brightness.
      * 
-     * Number. Defaults to 1.
+     * Number. Defaults to 1. Range: [0, 1]
      */
     public Expression getBrightnessMax() {
         return parse.number(paintJson, "raster-brightness-max", 1);
@@ -76,7 +76,7 @@ public class RasterMBLayer extends MBLayer {
     /**
      * (Optional) Increase or reduce the saturation of the image.
      * 
-     * Number. Defaults to 0.
+     * Number. Defaults to 0. Range: [-1, 1]
      */
     public Expression getSaturation() {
         return parse.number(paintJson, "raster-saturation", 0);
@@ -85,7 +85,7 @@ public class RasterMBLayer extends MBLayer {
     /**
      * (Optional) Increase or reduce the contrast of the image.
      * 
-     * Number. Defaults to 0.
+     * Number. Defaults to 0. Range: [-1, 1]
      */
     public Expression getContrast() {
         return parse.number(paintJson, "raster-contrast", 0);

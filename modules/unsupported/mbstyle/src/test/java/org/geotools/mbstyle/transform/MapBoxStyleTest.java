@@ -28,6 +28,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.RasterMBLayer;
+import org.geotools.styling.RasterSymbolizer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -48,6 +50,9 @@ public class MapBoxStyleTest {
 
     JSONParser jsonParser = new JSONParser();
 
+    /**
+     * Test parsing a Mapbox fill layer
+     */
     @Test
     public void testFill() throws IOException, ParseException {
 
@@ -81,6 +86,37 @@ public class MapBoxStyleTest {
             }
         }
 
+    }
+
+    /**
+     * Test parsing a Mapbox raster layer
+     */
+    @Test
+    public void testRaster() throws IOException, ParseException {
+        // Read file to JSONObject
+        InputStream is = this.getClass().getResourceAsStream("rasterStyleTest.json");
+        String fileContents = IOUtils.toString(is, "utf-8");
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+
+        // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
+
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("geoserver-raster");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof RasterMBLayer);
+        RasterMBLayer mbFill = (RasterMBLayer) layers.get(0);
+
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
+
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof RasterSymbolizer);
+        RasterSymbolizer rsym = (RasterSymbolizer) symbolizer;
+
+        assertEquals(Double.valueOf(.59), rsym.getOpacity().evaluate(null, Double.class));
     }
 
 }

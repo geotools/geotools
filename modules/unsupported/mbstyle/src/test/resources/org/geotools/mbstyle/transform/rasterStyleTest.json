@@ -25,7 +25,8 @@
         {
             "id": "ugly",
             "type": "raster",
-            "source": "mapbox://mapbox.satellite",
+            "source": "geoserver-raster",
+            "source-layer": "layer",
             "layout": {
                 "visibility": "visible"
             },

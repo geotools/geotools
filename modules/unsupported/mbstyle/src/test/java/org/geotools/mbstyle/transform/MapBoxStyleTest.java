@@ -87,6 +87,7 @@ public class MapBoxStyleTest {
     /**
      * Test parsing a Mapbox raster layer
      */
+    @Test
     public void testRaster() throws IOException, ParseException {
         // Read file to JSONObject
         InputStream is = this.getClass().getResourceAsStream("rasterStyleTest.json");

@@ -17,6 +17,7 @@
 package org.geotools.mbstyle.transform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,9 +29,12 @@ import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -40,6 +44,7 @@ import org.geotools.styling.UserLayer;
 import org.geotools.text.Text;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.style.ContrastMethod;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
@@ -155,4 +160,41 @@ public class MBStyleTransformer {
                 rules
                 );
     }
+
+    /**
+     * Transform {@link RasterMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * <li>Assumes 3-band RGB</li>
+     * </ul>
+     * 
+     * @param layer Describing raster fill styling
+     * @return FeatureTypeStyle
+     */
+    FeatureTypeStyle transform(RasterMBLayer layer) {
+        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
+        ChannelSelection sel = sf.channelSelection(sf.createSelectedChannelType("1", ce),
+                sf.createSelectedChannelType("2", ce), sf.createSelectedChannelType("3", ce));
+
+        // Use of builder is easier for code examples; but fills in SLD defaults
+        // Currently only applies the opacity.
+        RasterSymbolizer symbolizer = sf.rasterSymbolizer(layer.getId(), null,
+                sf.description(Text.text("raster"), null), NonSI.PIXEL, layer.getOpacity(), sel,
+                null, null, ce, null, null);
+
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.MAX_VALUE,
+                Arrays.asList(symbolizer), Filter.INCLUDE);
+        rules.add(rule);
+        return sf.featureTypeStyle(layer.getId(),
+                sf.description(Text.text("MBStyle " + layer.getId()),
+                               Text.text("Generated for " + layer.getSourceLayer())),
+                null, 
+                Collections.emptySet(), 
+                Collections.singleton(SemanticType.RASTER), 
+                rules);
+    }
+
 }

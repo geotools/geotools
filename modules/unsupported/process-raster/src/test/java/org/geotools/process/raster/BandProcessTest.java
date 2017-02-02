@@ -42,7 +42,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.image.jai.Registry;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
-import org.jaitools.imageutils.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

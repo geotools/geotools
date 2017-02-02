@@ -37,7 +37,7 @@ import javax.media.jai.Warp;
 import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.factory.Hints;
-import org.jaitools.imageutils.ImageLayout2;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 import com.sun.media.jai.util.PropertyGeneratorImpl;
 

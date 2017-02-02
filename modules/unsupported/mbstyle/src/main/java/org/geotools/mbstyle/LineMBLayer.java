@@ -146,7 +146,7 @@ public class LineMBLayer extends MBLayer {
      * 
      */
     public Number getLineMiterLimit() {
-        if (paint.get("line-miter_limit") != null) {
+        if (paint.get("line-miter-limit") != null) {
             return (Number) paint.get("line-miter-limit");
         } else {
             return 2;
@@ -160,7 +160,7 @@ public class LineMBLayer extends MBLayer {
      * 
      */
     public Number getLineRoundLimit() {
-        if (paint.get("line-round_limit") != null) {
+        if (paint.get("line-round-limit") != null) {
             return (Number) paint.get("line-round-limit");
         } else {
             return 1.05;
@@ -174,11 +174,39 @@ public class LineMBLayer extends MBLayer {
      * 
      */
     public Number getLineOpacity() {
-        if (paint.get("line-opacity") != null) {
-            return (Number) paint.get("line-opacity");
+        if( paint.containsKey("line-opacity")){
+            Object lineOpacity = paint.get("line-opacity");
+            if( lineOpacity == null ){
+                return 1;
+            }
+            else if (lineOpacity instanceof JSONObject){
+                throw new UnsupportedOperationException("Functions not supported yet");
+            }
+            else if (lineOpacity instanceof Number){
+                return (Number) lineOpacity;
+            }
+            else if(lineOpacity instanceof String){
+                return Double.parseDouble((String)lineOpacity);
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "json contents invalid, line-opacity value limited to Number, String, or JSONObject (function)"
+                        + lineOpacity.getClass().getSimpleName());
+            }
         } else {
             return 1;
         }
+    }
+    
+    /**
+     * The opacity at which the line will be drawn.
+     * 
+     * Defaults to 1.
+     * @return opacity for line (literal or function), defaults to 1.
+     * 
+     */
+    public Expression lineOpacity(){
+        return parse.number(paint, "line-opacity", 1 );
     }
 
     /**

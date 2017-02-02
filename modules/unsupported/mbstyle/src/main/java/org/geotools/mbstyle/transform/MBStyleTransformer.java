@@ -81,7 +81,7 @@ public class MBStyleTransformer {
         
         // stroke from fill outline color and opacity
         Stroke stroke = sf.stroke(
-                layer.getFillOutlineColor(),
+                layer.fillOutlineColor(),
                 ff.literal(1),
                 ff.literal(1),
                 ff.literal("miter"),
@@ -92,10 +92,10 @@ public class MBStyleTransformer {
         // from fill pattern or fill color
         Fill fill; 
         if( layer.getFillPattern() != null ){
-            fill = sf.fill(null,null, layer.getFillOpacity());
+            fill = sf.fill(null,null, layer.fillOpacity());
         }
         else {
-            fill = sf.fill(null,  layer.getFillColor(),  layer.getFillOpacity());
+            fill = sf.fill(null,  layer.fillColor(),  layer.fillOpacity());
         }
         // String name, Expression geometry,
         symbolizer = sf.polygonSymbolizer(

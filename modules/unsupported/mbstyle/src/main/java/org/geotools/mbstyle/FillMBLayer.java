@@ -19,6 +19,7 @@ package org.geotools.mbstyle;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.lang.reflect.Array;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -28,6 +29,8 @@ import org.opengis.style.Displacement;
 public class FillMBLayer extends MBLayer {
 
     private JSONObject paint;
+
+    private JSONObject layout;
 
     private static String type = "fill";
 
@@ -46,12 +49,8 @@ public class FillMBLayer extends MBLayer {
     public FillMBLayer(JSONObject json) {
         super(json);
 
-        if (json.get("paint") != null) {
-            paint = (JSONObject) json.get("paint");
-        } else {
-            paint = new JSONObject();
-        }
-
+        paint = paint();
+        layout = layout();
     }
 
     /**
@@ -60,7 +59,7 @@ public class FillMBLayer extends MBLayer {
      * Defaults to true.
      * 
      */
-    public Expression getFillAntialias() {        
+    public Expression getFillAntialias() {
         return parse.bool(paint, "fill-antialias", true);
     }
 
@@ -72,7 +71,17 @@ public class FillMBLayer extends MBLayer {
      * @throws MBFormatException 
      * 
      */
-    public Expression getFillOpacity() throws MBFormatException {
+    public Number getFillOpacity() throws MBFormatException {
+        return parse.optional(Double.class, paint, "fill-opacity", 1.0 );
+    }
+    
+    /**
+     * Access fill-opacity.
+     * 
+     * @return Access fill-opacity as literal or function expression, defaults to 1.
+     * @throws MBFormatException
+     */
+    public Expression fillOpacity() throws MBFormatException {
         return parse.percentage( paint, "fill-opacity", 1 );
     }
 
@@ -84,7 +93,12 @@ public class FillMBLayer extends MBLayer {
      * 
      * Defaults to #000000. Disabled by fill-pattern.
      */
-    public Expression getFillColor() {      
+    public Color getFillColor(){
+        return parse.optional(Color.class, paint, "fill-color", Color.BLACK );
+    }
+    
+    /** Access fill-color as literal or function expression, defaults to black. */
+    public Expression fillColor() {      
         return parse.color(paint, "fill-color", Color.BLACK);
     }
 
@@ -93,18 +107,32 @@ public class FillMBLayer extends MBLayer {
      * 
      * Matches the value of fill-color if unspecified. Disabled by fill-pattern.
      */
-    public Expression getFillOutlineColor() {
+    public Color getFillOutlineColor(){
         if (paint.get("fill-outline-color") != null) {
-            return parse.color(paint, "fill-outline-color", Color.BLACK );
+            return parse.optional(Color.class, paint, "fill-outline-color", Color.BLACK);
         } else {
             return getFillColor();
         }
     }
 
+    /** Access fill-outline-color as literal or function expression, defaults to black. */
+    public Expression fillOutlineColor() {
+        if (paint.get("fill-outline-color") != null) {
+            return parse.color(paint, "fill-outline-color", Color.BLACK);
+        } else {
+            return fillColor();
+        }
+    }
+
     /**
-     * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively. Units in pixels. Defaults to 0, 0.
+     * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up,
+     * respectively. Units in pixels. Defaults to 0, 0.
      */
-    public Point getFillTranslate() {
+    public double[] getFillTranslate(){
+        return parse.array( paint, "fill-translate", new double[]{ 0.0, 0.0 } ); 
+    }
+     
+    public Point fillTranslate() {
         if (paint.get("fill-translate") != null) {
             JSONArray array = (JSONArray) paint.get("fill-translate");
             Number x = (Number) array.get(0);

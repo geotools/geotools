@@ -27,8 +27,15 @@ import org.json.simple.JSONObject;
  * MapBox Style implemented as wrapper around parsed JSON file.
  * <p>
  * This class is responsible for presenting the wrapped JSON in an easy to use / navigate form for
- * Java developers. Access methods should return Java Objects, rather than generic maps. Additional
- * access methods to perform common queries are expected and encouraged.
+ * Java developers:
+ * </p>
+ * <ul>
+ * <li>get methods: access the json directly</li>
+ * <li>query methods: provide logic / transforms to GeoTools classes as required.</li>
+ * </ul>
+ * <p>
+ * Access methods should return Java Objects, rather than generic maps. Additional access methods to
+ * perform common queries are expected and encouraged.
  * </p>
  * <p>
  * This class works closely with {@link MBLayer} hierarchy used to represent the fill, line, symbol,

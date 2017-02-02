@@ -28,8 +28,13 @@ import org.opengis.filter.FilterFactory2;
  * MBLayer wrapper (around one of the MBStyle layers).
  * <p>
  * All methods act as accessors on provided JSON layer, no other state is maintained. This allows
- * modifications to be made ceanly with out chance of side-effect.
- * </p>
+ * modifications to be made cleanly with out chance of side-effect.
+ * 
+ * <ul>
+ * <li>get methods: access the json directly</li>
+ * <li>query methods: provide logic / transforms to GeoTools classes as required.</li>
+ * </ul>
+ * 
  * <p>
  * In the normal course of events MBLayer is constructed as a flighweight object by MBStyle to
  * provide easy access to its layers list.
@@ -79,6 +84,12 @@ public abstract class MBLayer {
             case "line": return new LineMBLayer(layer);
             case "fill": return new FillMBLayer(layer);
             case "raster": return new RasterMBLayer(layer);
+            
+            case "symbol":
+            case "circle":
+            case "fill-extrusion":
+                throw new UnsupportedOperationException("MBLayer type "+type+" not yet implemented");
+                
             default:
                 throw new MBFormatException(("\"type\" " + type
                         + " is not a valid layer type. Must be one of: "
@@ -217,10 +228,19 @@ public abstract class MBLayer {
      * two layers will share GPU memory and other resources associated with the layer.
      * </p>
      * 
-     * @return Layout properties for the layer, optional value may be empty.
+     * @return Layout properties defined for layer, optional value may be empty.
      */
     public JSONObject getLayout(){
         return parse.layout(json);
+    }
+    
+    /**
+     * Query for layout information (making use of {@link #getRef()} if available).
+     * 
+     * @return Layout properties to use for this layer.
+     */
+    public JSONObject layout(){
+        return getLayout(); // TODO: Lookup ref
     }
     
     /**
@@ -235,6 +255,14 @@ public abstract class MBLayer {
      */
     public JSONObject getPaint(){
         return parse.paint(json);
+    }
+    /**
+     * Query for paint information (making use of {@link #getRef()} if available).
+     * 
+     * @return Paint properties to use for this layer.
+     */
+    public JSONObject paint(){
+        return getPaint(); // TODO: Lookup ref
     }
 
     /**

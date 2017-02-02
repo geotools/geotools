@@ -17,6 +17,7 @@
 package org.geotools.mbstyle.parse;
 
 import java.awt.Color;
+import java.lang.reflect.Array;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBFormatException;
@@ -636,5 +637,40 @@ public class MBObjectParser {
     /** Shared StyleFactory */
     public StyleFactory2 getStyleFactory() {
         return sf;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T[] array(Class<T> type, JSONObject json, String tag, T[] fallback) {
+        if( json.containsKey(tag)){
+            Object obj = json.get(tag);
+            if( obj instanceof JSONArray){
+                JSONArray array = (JSONArray) obj;
+                return (T[]) Array.newInstance(type, array.size());
+            }
+            else {
+                throw new MBFormatException("\"" + tag + "\" required as JSONArray of "
+                        + type.getSimpleName() + ": Unexpected " + obj.getClass().getSimpleName());
+            }
+        }
+        return fallback;
+    }
+    /** Convert to doublep[] */
+    public double[] array(JSONObject json, String tag, double[] fallback) {
+        if (json.containsKey(tag)) {
+            Object obj = json.get(tag);
+            if (obj instanceof JSONArray) {
+                JSONArray array = (JSONArray) obj;
+                double result[] = new double[array.size()];
+                for (int i = 0; i < array.size(); i++) {
+                    result[i] = ((Number) array.get(i)).doubleValue();
+                }
+                return result;
+            } else {
+                throw new MBFormatException(
+                        "\"" + tag + "\" required as JSONArray of Number: Unexpected "
+                                + obj.getClass().getSimpleName());
+            }
+        }
+        return fallback;
     }
 }

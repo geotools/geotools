@@ -145,4 +145,11 @@ public class MBStyle {
         }
         return layersList;
     }
+    /** 
+     * A human-readable name for the style
+     * @return human-readable name, optional string.
+     */
+    public String getName() {
+        return parse.get(json,"name");
+    }
 }

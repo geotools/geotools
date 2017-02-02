@@ -25,12 +25,15 @@ import javax.measure.unit.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
+import org.geotools.mbstyle.MBFormatException;
+import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
@@ -62,10 +65,33 @@ public class MBStyleTransformer {
      * @param layer MBStyle
      * @return user layer
      */
-    UserLayer tranform(MBStyle style) {
-        return null;
+    public StyledLayerDescriptor tranform(MBStyle mbStyle) {
+        List<MBLayer> layers = mbStyle.layers();
+        if (layers.isEmpty()) {
+            throw new MBFormatException("layers empty");
+        }
+
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        Style style = sf.createStyle();
+        for (MBLayer layer : layers) {
+            FeatureTypeStyle featureTypeStyle = transform(layer);
+            style.featureTypeStyles().add(featureTypeStyle);
+        }
+        UserLayer userLayer = sf.createUserLayer();
+        userLayer.userStyles().add(style);
+        
+        sld.layers().add(userLayer);
+        sld.setName(mbStyle.getName());
+        return sld;
     }
 
+    public FeatureTypeStyle transform(MBLayer layer) {
+        if( layer instanceof FillMBLayer){
+            return transform( (FillMBLayer) layer );
+        }
+        return null;
+    }
+    
     /**
      * Transform MBFillLayer to GeoTools FeatureTypeStyle.
      * <p>
@@ -76,7 +102,7 @@ public class MBStyleTransformer {
      * @param layer Describing polygon fill styling
      * @return FeatureTypeStyle 
      */
-    FeatureTypeStyle transform(FillMBLayer layer) {
+    public FeatureTypeStyle transform(FillMBLayer layer) {
         PolygonSymbolizer symbolizer;
         // use of factory is more verbose, but we supply every value (no defaults)
         

@@ -29,18 +29,7 @@ import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -135,7 +124,8 @@ public class MBStyleTransformer {
         // String name, Expression geometry,
         symbolizer = sf.polygonSymbolizer(
                  layer.getId(),
-                 ff.property("."),
+                 //TODO: Is there a better way to do this? Is there a select first geometry syntax?
+                 ff.property((String)null),
                  sf.description(Text.text("fill"),null),
                  NonSI.PIXEL,
                  stroke,
@@ -147,12 +137,14 @@ public class MBStyleTransformer {
         
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.MAX_VALUE,symbolizers, Filter.INCLUDE);
+        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.POSITIVE_INFINITY,symbolizers, Filter.INCLUDE);
+        //TODO: How do other style transformers set a null legend?
+        rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);
         return sf.featureTypeStyle(
                 layer.getId(),
                 sf.description(
-                        Text.text("MBStil "+layer.getId()),
+                        Text.text("MBStyle "+layer.getId()),
                         Text.text("Generated for "+layer.getSourceLayer())),
                 null, // (unused)
                 Collections.emptySet(),

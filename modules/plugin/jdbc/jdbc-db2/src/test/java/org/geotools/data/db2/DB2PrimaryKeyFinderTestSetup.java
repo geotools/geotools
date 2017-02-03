@@ -36,7 +36,7 @@ public class DB2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup 
     @Override
     protected void createMetadataTable() throws Exception {
         Connection con = getDataSource().getConnection();
-        con.prepareStatement("CREATE TABLE \""+DB2TestUtil.SCHEMA.toUpperCase()+ "\".gt_pk_metadata ( " + "table_schema VARCHAR(32) not null, "
+        con.prepareStatement("CREATE TABLE \""+DB2TestUtil.SCHEMA+ "\".gt_pk_metadata ( " + "table_schema VARCHAR(32) not null, "
                 + "table_name VARCHAR(32) NOT NULL, " + "pk_column VARCHAR(32) NOT NULL, "
                 + "pk_column_idx INTEGER, " + "pk_policy VARCHAR(32), " + "pk_sequence VARCHAR(64)," 
                 + "primary key (table_schema, table_name, pk_column)" 
@@ -49,7 +49,7 @@ public class DB2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup 
         Connection con = getDataSource().getConnection();
         try {                
                 //DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "gt_pk_metadata_table", con);
-                DB2TestUtil.dropTable(DB2TestUtil.SCHEMA.toUpperCase(), "gt_pk_metadata".toUpperCase(), con);
+                DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "gt_pk_metadata".toUpperCase(), con);
         } catch (SQLException e) {              
         }        
         con.close();
@@ -73,7 +73,7 @@ public class DB2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup 
         con.prepareStatement( "INSERT INTO \""+DB2TestUtil.SCHEMA+ "\".\"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES (" + 
              "next value for "+getSquenceNameQuoted()+",'three',NULL)").execute();
 
-        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA.toUpperCase()+ "\".gt_pk_metadata VALUES"
+        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA+ "\".gt_pk_metadata VALUES"
                 + "('"+ DB2TestUtil.SCHEMA+ "', 'seqtable', 'key', 0, 'sequence', '"+ getSquenceName()+"')").execute();
         con.close();
     }
@@ -123,7 +123,7 @@ public class DB2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup 
     protected void createAssignedSinglePkView() throws Exception {
         Connection con = getDataSource().getConnection();
         con.prepareStatement("CREATE VIEW \""+DB2TestUtil.SCHEMA+ "\".\"assignedsinglepk\" AS SELECT * FROM \""+DB2TestUtil.SCHEMA+ "\".\"plaintable\"").execute();
-        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA.toUpperCase()+ "\".gt_pk_metadata VALUES"
+        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA+ "\".gt_pk_metadata VALUES"
                 + "('"+DB2TestUtil.SCHEMA+ "', 'assignedsinglepk', 'key1', 0, 'assigned', NULL)").execute();
         con.close();
     }
@@ -143,9 +143,9 @@ public class DB2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup 
     protected void createAssignedMultiPkView() throws Exception {
         Connection con = getDataSource().getConnection();
         con.prepareStatement("CREATE VIEW \""+DB2TestUtil.SCHEMA+ "\".\"assignedmultipk\" AS SELECT * FROM \""+DB2TestUtil.SCHEMA+ "\".\"plaintable\"").execute();
-        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA.toUpperCase()+ "\".gt_pk_metadata VALUES"
+        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA+ "\".gt_pk_metadata VALUES"
                 + "('"+DB2TestUtil.SCHEMA+ "', 'assignedmultipk', 'key1', 0, 'assigned', NULL)").execute();
-        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA.toUpperCase()+ "\".gt_pk_metadata VALUES"
+        con.prepareStatement("INSERT INTO \""+DB2TestUtil.SCHEMA+ "\".gt_pk_metadata VALUES"
                 + "('"+DB2TestUtil.SCHEMA+ "', 'assignedmultipk', 'key2', 1, 'assigned', NULL)").execute();
         con.close();
 

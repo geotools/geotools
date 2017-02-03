@@ -168,17 +168,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>ysld</id>
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-			<modules>
-				<module>ysld</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geojsonstore</id>
 			<activation>
 				<property>
@@ -201,6 +190,12 @@
                 <module>polylabel</module>
             </modules>
         </profile>
+        <profile>               
+            <id>mbstyle</id>
+            <modules>
+                <module>mbstyle</module>
+            </modules>
+        </profile>        
 		<profile>
 			<id>unsupported</id>
 			<activation>
@@ -237,7 +232,6 @@
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-		<module>ysld</module>
 		<module>polylabel</module>
 	</modules>
 

@@ -67,7 +67,7 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
                 }
             }
             // clone si units
-            Set<Unit<?>> siUnits = NonSI.getInstance().getUnits();
+            Set<Unit<?>> siUnits = SI.getInstance().getUnits();
             for (Unit<?> unit : siUnits) {
                 String name = base.nameFor(unit);
                 if (name != null) {

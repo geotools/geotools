@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
+import static org.custommonkey.xmlunit.XMLAssert.assertXpathNotExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
 import static org.junit.Assert.assertEquals;
@@ -932,9 +933,10 @@ public class SLDTransformerTest {
     @Test
     public void testMinimumLineSymbolizer() throws Exception {
         StyleBuilder sb = new StyleBuilder();
+        
         LineSymbolizer ls = sb.createLineSymbolizer();
         String xml = transformer.transform(ls);
-        // System.out.println(xml);
+        //System.out.println(xml);
         Document doc = buildTestDocument(xml);
 
         // check LineSymbolizer has the stroke element inside, but stroke does not have children
@@ -954,6 +956,8 @@ public class SLDTransformerTest {
         assertXpathEvaluatesTo("2", "count(/sld:LineSymbolizer/sld:Stroke/*)", doc);
         assertXpathEvaluatesTo("#FFFF00", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
         assertXpathEvaluatesTo("3", "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']", doc);
+        
+        
     }
    
     @Test
@@ -1133,7 +1137,7 @@ public class SLDTransformerTest {
 
         // Transform and reimport and compare
     	String xml = transformer.transform(sb.createStyle(ts2));
-
+    	
     	SLDParser sldParser = new SLDParser(sf);
     	sldParser.setInput(new StringReader(xml));
     	Style importedStyle = sldParser.readXML()[0];
@@ -1579,7 +1583,7 @@ public class SLDTransformerTest {
 
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(style);
-        System.out.println(xml);
+        //System.out.println(xml);
         Document doc = buildTestDocument(xml);
 
         assertXpathEvaluatesTo("1", "count(//sld:FeatureTypeStyle/sld:VendorOption)", doc);
@@ -1663,7 +1667,7 @@ public class SLDTransformerTest {
         ce.setMethod(hist);
         xml = st.transform(ce);
         String skeleton = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\"><sld:Histogram/></sld:ContrastEnhancement>";
-        System.out.println(xml);
+        //System.out.println(xml);
         Diff myDiff = new Diff(skeleton, xml);
         
         assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
@@ -1746,6 +1750,77 @@ public class SLDTransformerTest {
         assertXpathEvaluatesTo("2", "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal", doc);
     }
     
+    /**
+     * See https://osgeo-org.atlassian.net/browse/GEOT-5613
+     * @throws Exception
+     */
+    @Test 
+    public void testDefaults() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer(Color.BLACK);
+        
+        SLDTransformer st = new SLDTransformer();
+        st.setExportDefaultValues(true);
+        st.setIndentation(2);
+        String xml = st.transform(ls);
+        
+        Document doc = buildTestDocument(xml);
+
+        assertXpathExists("//sld:LineSymbolizer/sld:Stroke", doc);
+        assertXpathEvaluatesTo("#000000", "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        
+        st.setExportDefaultValues(false);
+        xml = st.transform(ls);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+
+        assertXpathNotExists("//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        
+        st.setExportDefaultValues(true);
+        
+        PolygonSymbolizer ps = sb.createPolygonSymbolizer(Color.GRAY, Color.black,1.0);
+        
+        xml = st.transform(ps);
+        
+        doc = buildTestDocument(xml);
+
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Stroke", doc);
+        assertXpathEvaluatesTo("#000000", "//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Fill", doc);
+        assertXpathEvaluatesTo("#808080", "//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        
+        st.setExportDefaultValues(false);
+        xml = st.transform(ps);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Stroke", doc);
+        assertXpathNotExists("//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PolygonSymbolizer/sld:Fill", doc);
+        assertXpathNotExists("//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        
+        st.setExportDefaultValues(true);
+        PointSymbolizer pos = sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
+        
+        xml = st.transform(pos);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
+        assertXpathEvaluatesTo("#000000", "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
+        assertXpathEvaluatesTo("#808080", "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        assertXpathExists("//sld:WellKnownName", doc);
+        
+        st.setExportDefaultValues(false);
+        xml = st.transform(pos);
+        //System.out.println(xml);
+        doc = buildTestDocument(xml);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", doc);
+        assertXpathNotExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']", doc);
+        assertXpathExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", doc);
+        assertXpathNotExists("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/sld:CssParameter[@name='fill']", doc);
+        assertXpathNotExists("//sld:WellKnownName", doc);
+        
+    }
     private StyledLayerDescriptor buildSLDAroundSymbolizer(org.geotools.styling.Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(symbolizer);

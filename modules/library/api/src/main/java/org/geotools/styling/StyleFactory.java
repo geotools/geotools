@@ -423,15 +423,17 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     ExternalMark externalMark(Icon inline);
 
     /**
+     * Direct FeatureTypeStyle creation (with no default SLD values applied). 
      * 
-     * @param name
-     * @param description
-     * @param definedFor
-     * @param featureTypeNames
-     * @param types
+     * @param name Name
+     * @param description Description with title and abstract information
+     * @param definedFor Currently unused
+     * @param featureTypeNames FeatureTypes this style applies to, use AbstractFeature to match all 
+     * @param types SemanticType 
      * @param rules
      *            May not be null or empty
-     * @return
+     * @return feature type style
+     * @see SimpleFe
      */
     FeatureTypeStyle featureTypeStyle(String name,
             org.opengis.style.Description description, Id definedFor, Set<Name> featureTypeNames,

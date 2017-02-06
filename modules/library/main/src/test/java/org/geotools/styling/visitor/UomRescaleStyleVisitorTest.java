@@ -63,6 +63,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import java.util.Arrays;
 
 
 /**
@@ -293,6 +294,38 @@ public class UomRescaleStyleVisitorTest
         }
     }
     
+    protected void visitLineSymbolizerTestDynamicDashArray(double scaleMetersToPixel, Unit<Length> uom)
+    {
+        try
+        {
+            UomRescaleStyleVisitor visitor = null;
+            double size = 1;
+			double expectedRescaledSize = Math.floor(computeExpectedRescaleSize(size, scaleMetersToPixel, uom) * 10000.0) / 10000.0;
+			FilterFactory2 filterFactory  = new FilterFactoryImpl();
+            Expression func = filterFactory.function("listMultiply", filterFactory.literal(expectedRescaledSize), filterFactory.literal("5 10"));
+			String expectedDashArray = (String)func.evaluate(null);
+			
+			            StyleBuilder styleBuilder = new StyleBuilder();
+
+            LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
+            lineSymb.setUnitOfMeasure(uom);
+			lineSymb.getStroke().setDashArray(Arrays.asList(filterFactory.literal("5.0 10.0")));
+
+            visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
+
+            lineSymb.accept(visitor);
+            LineSymbolizer rescaledLineSymb = (LineSymbolizer) visitor.getCopy();
+            String rescaledDynamicDashArray = (String)((Expression)rescaledLineSymb.getStroke().dashArray().get(0)).evaluate(null);
+            
+            assertEquals(expectedDashArray, rescaledDynamicDashArray);
+            assertNotSame(rescaledLineSymb, lineSymb);
+        }
+        catch (Exception e2)
+        {
+            e2.printStackTrace();
+            fail(e2.getClass().getSimpleName() + " should not be thrown.");
+        }
+    }
 
     // POINT SYMBOLIZER TESTS
     
@@ -370,6 +403,41 @@ public class UomRescaleStyleVisitorTest
         visitLineSymbolizerTest(10, NonSI.FOOT);
     }
     
+    // LINE SYMBOLIZER TESTS with dynamic dash arrays
+	public void testVisitLineSymbolizerDynamicDashArray_ScalePixelNull()
+    {
+        visitLineSymbolizerTestDynamicDashArray(10, null);
+    }
+    
+    
+    public void testVisitLineSymbolizerDynamicDashArray_ScalePixelExplicit()
+    {
+        visitLineSymbolizerTestDynamicDashArray(10, NonSI.PIXEL);
+    }
+    
+    
+    public void testVisitLineSymbolizerDynamicDashArray_ScaleMeter1()
+    {
+        visitLineSymbolizerTestDynamicDashArray(1, SI.METER);
+    }
+    
+    
+    public void testVisitLineSymbolizerDynamicDashArray_ScaleMeter10()
+    {
+        visitLineSymbolizerTestDynamicDashArray(10, SI.METER);
+    }
+    
+    
+    public void testVisitLineSymbolizerDynamicDashArray_ScaleFoot1()
+    {
+        visitLineSymbolizerTestDynamicDashArray(1, NonSI.FOOT);
+    }
+    
+    
+    public void testVisitLineSymbolizerDynamicDashArray_ScaleFoot10()
+    {
+        visitLineSymbolizerTestDynamicDashArray(10, NonSI.FOOT);
+    }
     
     // POLYGON SYMBOLIZER TESTS
     @Test

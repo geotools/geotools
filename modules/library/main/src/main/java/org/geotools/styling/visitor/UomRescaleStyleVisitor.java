@@ -52,21 +52,21 @@ import org.opengis.style.GraphicalSymbol;
  * This visitor extends {@link DuplicatingStyleVisitor} and as such yields a copy of the original
  * Style. Usage is simply to call the desired visit() method and then call getCopy() to retrieve the
  * result.
- * 
+ *
  * @author milton
  * @author Andrea Aime - GeoSolutions
- * 
- * 
+ *
+ *
  * @source $URL$
  */
 public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
-    double mapScale;
+    double mapScale; 
 
     /**
      * Constructor: requires the current mapScale to inform the window to viewport (world to screen)
-     * relation in order to correctly rescale sizes according to units of measure given in world
-     * units (e.g., SI.METER, NonSI.FOOT, etc).
+ relation in order to correctly rescaleDashArray sizes according to units of measure given in world
+ units (e.g., SI.METER, NonSI.FOOT, etc).
      * 
      * @param mapScale The specified map scale, given in pixels per meter.
      */
@@ -79,8 +79,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
-     * Used to rescale the provided unscaled value.
-     * 
+     * Used to rescaleDashArray the provided unscaled value.
+     *
      * @param unscaled the unscaled value.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -98,20 +98,28 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     /**
      * Rescale a list of expressions, can handle null.
      */
-    protected List<Expression> rescale(List<Expression> expressions, Unit<Length> uom) {
-        if(expressions == null || expressions.isEmpty()) {
+    protected List<Expression> rescaleDashArray(List<Expression> expressions, Unit<Length> uom) {
+        if (expressions == null || expressions.isEmpty()) {
             return expressions;
         }
         List<Expression> rescaled = new ArrayList<>(expressions.size());
-        for(Expression expression: expressions) {
-            rescaled.add(rescale(expression, uom));
+        if (expressions.size() == 1) {
+            final Expression expr = expressions.get(0);
+            Expression rescale = ff.function("listMultiply", rescale(ff.literal(1), uom), expr);
+            
+            String constant = (String) rescale.evaluate(null);
+            rescaled.add(ff.literal(constant));
+        } else {
+            for (Expression expression : expressions) {
+                rescaled.add(rescale(expression, uom));
+            }
         }
         return rescaled;
     }
 
     /**
-     * Used to rescale the provided unscaled value.
-     * 
+     * Used to rescaleDashArray the provided unscaled value.
+     *
      * @param unscaled the unscaled value.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -127,8 +135,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
-     * Used to rescale the provided stroke.
-     * 
+     * Used to rescaleDashArray the provided stroke.
+     *
      * @param stroke the unscaled stroke, which will be modified in-place.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -136,7 +144,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
-            stroke.setDashArray(rescale(stroke.dashArray(), uom));
+            stroke.setDashArray(rescaleDashArray(stroke.dashArray(), uom));
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);
@@ -219,7 +227,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         for (Font font : copy.fonts()) {
             font.setSize(rescale(font.getSize(), uom));
         }
-        
+
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
         if (placement instanceof PointPlacement) {
@@ -286,7 +294,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             options.put(optionName, sb.toString());
         }
     }
-    
+
     String toInt(String value) {
         Double dv = Double.valueOf(value);
         return String.valueOf(dv.intValue());

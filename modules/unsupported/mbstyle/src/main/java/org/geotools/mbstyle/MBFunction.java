@@ -226,15 +226,70 @@ public class MBFunction {
         return function.expression();
 
     }
+    
+    /** GeoTools {@link Function} from json definition that evaluates to a color.
+     * <p>
+     * This is the same as {@link #expression()} execept we can make some assumptions about
+     * the values (converting hex to color, looking up color names).
+     * 
+     * @return {@link Function} for the provided json 
+     */
+    public Function color(){
+        if( !category().contains(FunctionCategory.ZOOM)){
+            // this is a plain property category so we can turn it into a function            
+            // Assume a EXPOTENTIAL function for now because it is the default for color
+            FunctionType type = FunctionType.CATEGORICAL;
+            if( type == FunctionType.CATEGORICAL){
+                List<Expression> parameters = new ArrayList<>();
+                parameters.add(ff.property(getProperty()));
+                for (Object obj : getStops()) {
+                    JSONArray entry = parse.jsonArray(obj);
+                    Object stop = entry.get(0);
+                    Object value = entry.get(1);
+                    Expression color = parse.color((String)value); // handles web colors
+                    if( color == null ){
+                        throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
+                    }
+                    parameters.add(ff.literal(stop));
+                    parameters.add(color);
+                }
+                parameters.add(ff.literal("color"));
 
+                return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+            }
+        }
+        throw new UnsupportedOperationException("Not yet implemented support for this function");
+    }
     /**
      * Generate GeoTools {@link Function} from json definition.
      * <p>
-     * This only works for concrete functions, that have been resolved to the current zoom level.
+     * This method is used for numeric properties such as line width or opacity.</p>
+     * <p>
+     * This only works for concrete functions, that have been resolved to the current zoom level.</p>.
      * 
      * @return GeoTools Function or the provided json
      */
     public Function expression() {
+        if( !category().contains(FunctionCategory.ZOOM)){
+            // this is a plain property category so we can turn it into a function
+            
+            // assume a EXPOTENTIAL function for now because it is the default
+            // TODO: make a special case for mapbox style enums which default to CATEGORICAL
+            FunctionType type = FunctionType.CATEGORICAL;
+            
+            if( type == FunctionType.CATEGORICAL){
+                return categorical();
+            }
+        }
+        throw new UnsupportedOperationException("Not yet implemented support for this function");
+    }
+    /**
+     * Create a cateogircal functions as {@link InterpolateFunction} for
+     * {@link FunctionType#CATEGORICAL}.
+     * 
+     * @return Generated InterpolateFunction
+     */
+    public Function categorical() {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(ff.property(getProperty()));
         for (Object obj : getStops()) {

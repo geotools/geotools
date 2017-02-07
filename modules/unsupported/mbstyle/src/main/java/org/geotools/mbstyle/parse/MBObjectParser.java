@@ -20,12 +20,17 @@ import java.awt.Color;
 import java.lang.reflect.Array;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.mbstyle.MBFormatException;
+import org.geotools.mbstyle.MBFunction;
 import org.geotools.styling.StyleFactory2;
+import org.geotools.util.ColorConverterFactory;
+import org.geotools.util.Converters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Helper class used to perform JSON traverse {@link JSONObject} and perform Expression and Filter
@@ -618,20 +623,64 @@ public class MBObjectParser {
         Object obj = json.get(tag);
         return color( "\""+tag+"\"", obj, fallback );
     }
-
+    /**
+     * Handles literal color definitions supplied as a string:
+     * 
+     * <ul>
+     * <li><pre>{"line-color": "yellow"</pre> named: a few have been put in pass test cases, prnding: plan to use {@link Hints#COLOR_NAMES} to allow for web colors.</li>
+     * <li><pre>{"line-color": "#ffff00"}</pre> hex: hex color conversion are supplied by {@link ColorConverterFactory}</li>
+     * <li><pre>{"line-color": "#ff0"}</pre> hex: we will need to special case this</li>
+     * <li><pre>{"line-color": "rgb(255, 255, 0)"}</pre> - we will need to special case this </li>
+     * <li><pre>{"line-color": "rgba(255, 255, 0, 1)"}</pre> - we will need to special case this </li>
+     * <li><pre>{"line-color": "hsl(100, 50%, 50%)"}</pre> - we will need to special case this </li>
+     * <li><pre>{"line-color": "hsla(100, 50%, 50%, 1)"}</pre> - we will need to special case this </li>
+     * <li>
+     * </ul>
+     * 
+     * This method uses {@link Hints#COLOR_NAMES} "CSS" to support the use of web colors names.
+     * 
+     * @param color name of color (CSS or "web" colors)
+     * @return appropriate java color, or null if not available.
+     */
+    public Literal color(String color){
+        if( color == null ){
+            return null;
+        }
+        // quick examples to pass test case (while we work on color converter)
+        if( "red".equalsIgnoreCase(color)){
+            return ff.literal(Color.RED);
+        }
+        else if( "blue".equalsIgnoreCase(color)){
+            return ff.literal(Color.BLUE);
+        }
+        Color cast = Converters.convert(color,  Color.class, null ); // TODO: Hints(Hints.COLOR_NAMES, "CSS")
+        if( cast != null ){
+            return ff.literal( cast );
+        }
+        throw new MBFormatException("Color definition invalid: \""+color+"\"");
+    }
+    
+    /**
+     * Parse obj into a color expression (literal or function).
+     * 
+     * @param context
+     * @param obj
+     * @param fallback
+     * @return color expression (literal or function)
+     */
     private  Expression color(String context, Object obj, Color fallback) {
         if (obj == null) {
             return fallback == null ? null : ff.literal(fallback);
         } else if (obj instanceof String) {
             String str = (String) obj;
-            return ff.literal(str);
+            return color( str );
         } else if (obj instanceof Number) {
             throw new MBFormatException(context + " color from Number not supported");
         } else if (obj instanceof Boolean) {
             throw new MBFormatException(context + "  color from Boolean not supported");
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException(
-                    context + " color from Function not yet supported");
+            MBFunction function = new MBFunction( (JSONObject) obj );
+            return function.color();
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException(context + " color from JSONArray not supported");
         } else {

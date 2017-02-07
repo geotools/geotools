@@ -17,19 +17,21 @@
  */
 package org.geotools.mbstyle;
 
+import java.awt.Color;
 import java.awt.Point;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.Displacement;
 
-public class MBFillLayer extends MBLayer {
+public class FillMBLayer extends MBLayer {
+
+    private JSONObject paint;
+
+    private JSONObject layout;
 
     private static String type = "fill";
-
-    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Controls the translation reference point.
@@ -43,9 +45,11 @@ public class MBFillLayer extends MBLayer {
         MAP, VIEWPORT
     }
 
-    public MBFillLayer(JSONObject json) {
+    public FillMBLayer(JSONObject json) {
         super(json);
 
+        paint = paint();
+        layout = layout();
     }
 
     /**
@@ -54,12 +58,8 @@ public class MBFillLayer extends MBLayer {
      * Defaults to true.
      * 
      */
-    public Boolean getFillAntialias() {
-        if (json.get("fill-antialias") != null) {
-            return (Boolean) json.get("fill-antialias");
-        } else {
-            return true;
-        }
+    public Expression getFillAntialias() {
+        return parse.bool(paint, "fill-antialias", true);
     }
 
     /**
@@ -67,14 +67,21 @@ public class MBFillLayer extends MBLayer {
      * the stroke is used.
      * 
      * Defaults to 1.
+     * @throws MBFormatException 
      * 
      */
-    public Number getFillOpacity() {
-        if (json.get("fill-opacity") != null) {
-            return (Number) json.get("fill-opacity");
-        } else {
-            return 1;
-        }
+    public Number getFillOpacity() throws MBFormatException {
+        return parse.optional(Double.class, paint, "fill-opacity", 1.0 );
+    }
+    
+    /**
+     * Access fill-opacity.
+     * 
+     * @return Access fill-opacity as literal or function expression, defaults to 1.
+     * @throws MBFormatException
+     */
+    public Expression fillOpacity() throws MBFormatException {
+        return parse.percentage( paint, "fill-opacity", 1 );
     }
 
     /**
@@ -85,13 +92,13 @@ public class MBFillLayer extends MBLayer {
      * 
      * Defaults to #000000. Disabled by fill-pattern.
      */
-    public Expression getFillColor() {
-        if (json.get("fill-color") != null) {
-            String color = (String) json.get("fill-color");
-            return ff.literal(color);
-        } else {
-            return ff.literal("#000000");
-        }
+    public Color getFillColor(){
+        return parse.optional(Color.class, paint, "fill-color", Color.BLACK );
+    }
+    
+    /** Access fill-color as literal or function expression, defaults to black. */
+    public Expression fillColor() {      
+        return parse.color(paint, "fill-color", Color.BLACK);
     }
 
     /**
@@ -99,21 +106,34 @@ public class MBFillLayer extends MBLayer {
      * 
      * Matches the value of fill-color if unspecified. Disabled by fill-pattern.
      */
-    public Expression getFillOutlineColor() {
-        if (json.get("fill-outline-color") != null) {
-            String color = (String) json.get("fill-outline-color");
-            return ff.literal(color);
+    public Color getFillOutlineColor(){
+        if (paint.get("fill-outline-color") != null) {
+            return parse.optional(Color.class, paint, "fill-outline-color", Color.BLACK);
         } else {
             return getFillColor();
         }
     }
 
+    /** Access fill-outline-color as literal or function expression, defaults to black. */
+    public Expression fillOutlineColor() {
+        if (paint.get("fill-outline-color") != null) {
+            return parse.color(paint, "fill-outline-color", Color.BLACK);
+        } else {
+            return fillColor();
+        }
+    }
+
     /**
-     * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively. Units in pixels. Defaults to 0, 0.
+     * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up,
+     * respectively. Units in pixels. Defaults to 0, 0.
      */
-    public Point getFillTranslate() {
-        if (json.get("fill-translate") != null) {
-            JSONArray array = (JSONArray) json.get("fill-translate");
+    public double[] getFillTranslate(){
+        return parse.array( paint, "fill-translate", new double[]{ 0.0, 0.0 } ); 
+    }
+     
+    public Point fillTranslate() {
+        if (paint.get("fill-translate") != null) {
+            JSONArray array = (JSONArray) paint.get("fill-translate");
             Number x = (Number) array.get(0);
             Number y = (Number) array.get(1);
             return new Point(x.intValue(), y.intValue());
@@ -133,7 +153,7 @@ public class MBFillLayer extends MBLayer {
      * 
      */
     public FillTranslateAnchor getFillTranslateAnchor() {
-        Object value = json.get("fill-translate-anchor");
+        Object value = paint.get("fill-translate-anchor");
         if (value != null && "viewport".equalsIgnoreCase((String) value)) {
             return FillTranslateAnchor.VIEWPORT;
         } else {
@@ -145,12 +165,8 @@ public class MBFillLayer extends MBLayer {
      * (Optional) Name of image in a sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2,
      * 4, 8, ..., 512).
      */
-    public String getFillPattern() {
-        if (json.get("fill-pattern") != null) {
-            return (String) json.get("fill-pattern");
-        } else {
-            return null;
-        }
+    public Expression getFillPattern() {
+        return parse.string(paint, "fill-pattern", null);
     }
 
     /**
@@ -158,6 +174,31 @@ public class MBFillLayer extends MBLayer {
      */
     public String getType() {
         return type;
+    }
+    
+    /**
+     * Processes the filter-translate into a Displacement.
+     * <p>
+     * This should handle both literals and function stops:</p>
+     * <pre>
+     * filter-translate: [0,0]
+     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
+     * filter-translate: [ 0, { property: "building-height", "type":"exponential","stops": [[0,0],[30, 5]] }
+     * </pre>
+     * @return
+     */
+    public Displacement toDisplacement() {
+        Object defn  = paint.get("filter-translate");
+        if( defn == null ){
+            return null;
+        }
+        else if (defn instanceof JSONArray){
+            JSONArray array = (JSONArray) defn;
+            return sf.displacement(
+                    parse.number( array, 0, 0 ),
+                    parse.number( array, 1, 0 ));
+        }
+        return null;
     }
 
 }

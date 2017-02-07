@@ -19,7 +19,12 @@ package org.geotools.mbstyle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.geotools.mbstyle.parse.MBStyleParser;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
 
@@ -37,8 +42,14 @@ public class MapBoxStyle {
      * @param reader
      * @return geneated style
      */
-    static StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
-        return null;
+    public static StyledLayerDescriptor parse(Reader reader) throws IOException, ParseException {
+        MBStyleParser parser = new MBStyleParser();
+        MBStyle style = parser.parse(reader);
+
+        MBStyleTransformer transform = new MBStyleTransformer();
+
+        StyledLayerDescriptor sld = transform.tranform(style);
+        return sld;
     }
 
     /**
@@ -47,7 +58,46 @@ public class MapBoxStyle {
      * @param stream
      * @return geneated style
      */
-    static StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
-        return null;
+    public static StyledLayerDescriptor parse(InputStream stream) throws IOException, ParseException {
+        MBStyleParser parser = new MBStyleParser();
+        MBStyle style = parser.parse(stream);
+
+        MBStyleTransformer transform = new MBStyleTransformer();
+
+        StyledLayerDescriptor sld = transform.tranform(style);
+        return sld;
+    }
+    
+    /**
+     * Validate ability to read json, and parse each layer.
+     * @param reader
+     * @return 
+     * @throws IOException
+     * @throws ParseException
+     */
+    public static List<Exception> validate(Reader reader) {
+        List<Exception> problems = new ArrayList<Exception>();
+        MBStyleParser parser = new MBStyleParser();
+        MBStyle style;
+        try {
+            style = parser.parse(reader);
+        }
+        catch (Exception invalid){
+            problems.add( invalid );
+            return problems;
+        }
+        MBStyleTransformer transform = new MBStyleTransformer();
+        
+        for (MBLayer layer : style.layers()) {
+            try {
+                FeatureTypeStyle featureTypeStyle = transform.transform(layer);
+            }
+            catch (Exception invalid){
+                problems.add((MBFormatException) new MBFormatException(
+                        "Layer " + layer.getId() + ":" + invalid.getMessage()).initCause(invalid));
+                return problems;
+            }
+        }
+        return problems;
     }
 }

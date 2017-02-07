@@ -30,12 +30,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
-import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
@@ -103,7 +103,6 @@ class Granule {
 
 		final Rectangle rasterDimensions;
 		
-		
 		public AffineTransform getBaseToLevelTransform() {
 			return baseToLevelTransform;
 		}
@@ -144,7 +143,7 @@ class Granule {
 
 		public AffineTransform2D getGridToWorldTransform() {
 			return gridToWorldTransform;
-		}		
+		}
 
 		@Override
 		public String toString() {
@@ -161,47 +160,33 @@ class Granule {
 		}
 	}
 	
-	ReferencedEnvelope  granuleBBOX;
+	ReferencedEnvelope granuleBBOX;
 	
 	File granuleFile;
 	
 	final Map<Integer,Level> granuleLevels= Collections.synchronizedMap(new HashMap<Integer,Level>());
 	
 	AffineTransform baseGridToWorld;
-	
+
+	JP2KReader reader;
+
 	ImageReaderSpi cachedSPI;
 
-	public Granule(BoundingBox granuleBBOX, File granuleFile) {
-		super();
+	public Granule(BoundingBox granuleBBOX, File granuleFile, JP2KReader reader) {
+		this.reader = reader;
 		this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
 		this.granuleFile = granuleFile;
-		
+		ImageReader imageReader = reader.getImageReader();
+		this.cachedSPI = imageReader.getOriginatingProvider();
+
 		// create the base grid to world transformation
-		ImageInputStream inStream = null;
-		ImageReader reader = null;
 		try {
 			//
 			//get info about the raster we have to read
 			//
-			
-			// get a stream
-			inStream = Utils.getInputStream(granuleFile);
-			if(inStream == null)
-				throw new IllegalArgumentException("Unable to get an input stream for the provided file "+granuleFile.getAbsolutePath());
-			
-			// get a reader and try to cache the relevant SPI
-			if (cachedSPI == null){
-				reader = Utils.getReader( inStream);
-				if (reader != null)
-					cachedSPI = reader.getOriginatingProvider();
-			}
-			else
-				reader = cachedSPI.createReaderInstance();
-			if(reader == null)
-				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleFile.getAbsolutePath());
-			
+
 			//get selected level and base level dimensions
-			final Rectangle originalDimension = ImageUtilities.getDimension(0,inStream, reader);
+			final Rectangle originalDimension = new Rectangle(imageReader.getWidth(0), imageReader.getHeight(0));
 			
 			// build the g2W for this tile, in principle we should get it
 			// somehow from the tile itself or from the index, but at the moment
@@ -211,29 +196,17 @@ class Granule {
 					new GridEnvelope2D(originalDimension), granuleBBOX);
 			geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);//this is the default behavior but it is nice to write it down anyway
 			this.baseGridToWorld = geMapper.createAffineTransform();
-			
+
 			// add the base level
 			this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width, originalDimension.height));
 
-		} catch (IllegalStateException e) {
+		} catch (IllegalStateException|IOException e) {
 			throw new IllegalArgumentException(e);
-			
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
-		} 
-		finally{
-			try{
-				if(inStream != null)
-					inStream.close();
+		} finally {
+			if(!JP2KFormatFactory.isImageReaderThreadSafe) {
+				Utils.disposeReaderAndInnerStream(imageReader);
 			}
-			catch (Throwable e) {
-				throw new IllegalArgumentException(e);
-			}
-			finally{
-				if(reader != null)
-					reader.dispose();
-			}
-		}	
+		}
 	}
 	
 	
@@ -244,50 +217,25 @@ class Granule {
 			final MathTransform2D worldToGrid,
 			final RasterLayerRequest request,
 			final Dimension tileDimension) throws IOException {
-		
-		if (LOGGER.isLoggable(java.util.logging.Level.FINE))
-			LOGGER.fine("Loading raster data for granule "+this.toString());
+	    if(LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+            LOGGER.fine("Loading raster data for granule " + this.toString());
+        }
 
-		final ReferencedEnvelope bbox= new ReferencedEnvelope(granuleBBOX);
+		final ReferencedEnvelope bbox = new ReferencedEnvelope(granuleBBOX);
 		// intersection of this tile bound with the current crop bbox
 		final ReferencedEnvelope intersection = new ReferencedEnvelope(bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
 
-		ImageInputStream inStream=null;
-		ImageReader reader=null;
+		ImageReader imageReader = reader.getImageReader();
 		try {
-			//
-			//get info about the raster we have to read
-			//
-			
-			// get a stream
-			inStream = Utils.getInputStream(granuleFile);
-			if(inStream==null)
-				return null;
-	
-			// get a reader and try to cache the relevant SPI
-			if(cachedSPI==null){
-				reader = Utils.getReader( inStream);
-				if(reader!=null)
-					cachedSPI=reader.getOriginatingProvider();
-			}
-			else
-				reader=cachedSPI.createReaderInstance();
-			if(reader==null)
-			{
-				if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-					LOGGER.warning("Unable to get reader for granule "+this.toString()+ " with request "+request.toString());
-				return null;
-			}
-			
 			//get selected level and base level dimensions
 			final Level selectedlevel= getLevel(imageIndex);
-	
+
 			
 			// now create the crop grid to world which can be used to decide
 			// which source area we need to crop in the selected level taking
 			// into account the scale factors imposed by the selection of this
 			// level together with the base level grid to world transformation
-			MathTransform2D cropWorldToGrid=(MathTransform2D) PixelTranslation.translate(ProjectiveTransform.create(selectedlevel.gridToWorldTransform), PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER).inverse();		
+			MathTransform2D cropWorldToGrid=(MathTransform2D) PixelTranslation.translate(ProjectiveTransform.create(selectedlevel.gridToWorldTransform), PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER).inverse();
 			
 			// computing the crop source area which leaves straight into the
 			// selected level raster space, NOTICE that at the end we need to
@@ -298,14 +246,17 @@ class Granule {
 			XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions, sourceArea);//make sure roundings don't bother us
 			// is it empty??
 			if (sourceArea.isEmpty()) {
-				if (LOGGER.isLoggable(java.util.logging.Level.FINE))
-					LOGGER.fine("Got empty area for granule "+this.toString()+ " with request "+request.toString());
+				if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+                    LOGGER.fine("Got empty area for granule "+this.toString()+ " with request "+request.toString());
+                }
 				return null;
 
-			} else if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+			} else if(LOGGER.isLoggable(java.util.logging.Level.FINE)) {
 				LOGGER.fine((new StringBuffer("Loading level ").append(
 						imageIndex).append(" with source region ").append(
 						sourceArea).toString()));
+			}
+
 			final int ssx = readParameters.getSourceXSubsampling();
 			final int ssy = readParameters.getSourceYSubsampling();
 			final int newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx,ssy);
@@ -318,13 +269,15 @@ class Granule {
 			final RenderedImage raster;
 			try{
 				// read
-				raster= request.getReadType().read(readParameters,imageIndex, granuleFile, selectedlevel.rasterDimensions,tileDimension,cachedSPI);
+				raster= request.getReadType().read(readParameters,imageIndex, granuleFile, selectedlevel.rasterDimensions,tileDimension,cachedSPI, imageReader);
 				if (raster == null)
 					return null;
 			}
 			catch (Throwable e) {
-				if(LOGGER.isLoggable(java.util.logging.Level.FINE))
-					LOGGER.log(java.util.logging.Level.FINE,"Unable to load raster for granule "+this.toString()+ " with request "+request.toString(),e);
+                if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+                    LOGGER.log(java.util.logging.Level.FINE,"Unable to load raster for granule "+this.toString()+
+                            " with request "+request.toString(),e);
+                }
 				return null;
 			}
 
@@ -403,28 +356,15 @@ class Granule {
 				return worker.getRenderedImage();
 			}
 		
-		} catch (IllegalStateException e) {
-			if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-				LOGGER.log(java.util.logging.Level.WARNING, "Unable to load raster for granule "+this.toString()+ " with request "+request.toString(), e);
+		} catch (IllegalStateException|TransformException e) {
+			if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+                LOGGER.log(java.util.logging.Level.WARNING, "Unable to load raster for granule "+this.toString()+
+                        " with request "+request.toString(), e);
+            }
 			return null;
-		} 
-		catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
-			if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-				LOGGER.log(java.util.logging.Level.WARNING, "Unable to load raster for granule "+this.toString()+ " with request "+request.toString(), e);
-			return null;
-		} catch (TransformException e) {
-			if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-				LOGGER.log(java.util.logging.Level.WARNING, "Unable to load raster for granule "+this.toString()+ " with request "+request.toString(), e);
-			return null;
-		} 
-		finally{
-			try{
-				if(inStream!=null)
-					inStream.close();
-			}
-			finally{
-				if(reader!=null)
-					reader.dispose();
+		} finally {
+			if (!JP2KFormatFactory.isImageReaderThreadSafe) {
+				Utils.disposeReaderAndInnerStream(imageReader);
 			}
 		}
 	}
@@ -435,33 +375,13 @@ class Granule {
 				return granuleLevels.get(Integer.valueOf(index));
 			else
 			{
+				ImageReader imageReader = reader.getImageReader();
 				//load level
 				// create the base grid to world transformation
-				ImageInputStream inStream=null;
-				ImageReader reader=null;
 				try {
-					//
-					//get info about the raster we have to read
-					//
-					
-					// get a stream
-					inStream = Utils.getInputStream(granuleFile);
-					if(inStream==null)
-						throw new IllegalArgumentException();
-			
-					// get a reader and try to cache the relevant SPI
-					if(cachedSPI==null){
-						reader = Utils.getReader( inStream);
-						if(reader!=null)
-							cachedSPI=reader.getOriginatingProvider();
-					}
-					else
-						reader=cachedSPI.createReaderInstance();
-					if(reader==null)
-						throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleFile.getAbsolutePath());					
-					
 					//get selected level and base level dimensions
-					final Rectangle levelDimension = ImageUtilities.getDimension(index,inStream, reader);
+
+					final Rectangle levelDimension = new Rectangle(imageReader.getWidth(index), imageReader.getHeight(index));
 					final Level baseLevel= granuleLevels.get(0);
 					final double scaleX=baseLevel.width/(1.0*levelDimension.width);
 					final double scaleY=baseLevel.height/(1.0*levelDimension.height);
@@ -470,29 +390,14 @@ class Granule {
 					final Level newLevel=new Level(scaleX,scaleY,levelDimension.width,levelDimension.height);
 					this.granuleLevels.put(Integer.valueOf(index),newLevel);
 					return newLevel;
-					
-
-				} catch (IllegalStateException e) {
+				} catch (IllegalStateException|IOException e) {
 					throw new IllegalArgumentException(e);
-					
-				} catch (IOException e) {
-					throw new IllegalArgumentException(e);
-				} 
-				finally{
-					try{
-						if(inStream!=null)
-							inStream.close();
+				} finally {
+					if(!JP2KFormatFactory.isImageReaderThreadSafe) {
+						Utils.disposeReaderAndInnerStream(imageReader);
 					}
-					catch (Throwable e) {
-						throw new IllegalArgumentException(e);
-					}
-					finally{
-						if(reader!=null)
-							reader.dispose();
-					}
-				}	
-			}			
-			
+				}
+			}
 		}
 	}
 
@@ -511,7 +416,7 @@ class Granule {
 			buffer.append("Description of level ").append(i++).append("\n");
 			buffer.append(level.toString()).append("\n");
 		}
-		return super.toString();
+
+		return buffer.toString();
 	}
-	
 }

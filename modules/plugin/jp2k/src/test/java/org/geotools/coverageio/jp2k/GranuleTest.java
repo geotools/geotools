@@ -32,6 +32,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
@@ -45,20 +48,13 @@ import org.junit.Test;
 public final class GranuleTest extends BaseJP2K {
 
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GranuleTest.class);
-    /**
-     * Creates a new instance of GranuleTest
-     *
-     * @param name
-     */
-    public GranuleTest() {
-    }
 
     @Test
     public void test() throws Exception {
     	if (!testingEnabled()) {
             return;
         }
-    	File file = null;
+    	File file;
         try{
              file = TestData.file(this, "sample.jp2");
          }catch (FileNotFoundException fnfe){
@@ -66,9 +62,10 @@ public final class GranuleTest extends BaseJP2K {
              return;
         }
          
-		final AbstractGridCoverage2DReader reader = new JP2KReader(file);
+		final JP2KReader reader = new JP2KReader(file);
 		final GeneralEnvelope envelope = reader.getOriginalEnvelope();
-		final Granule granule = new Granule(new ReferencedEnvelope(envelope), file);
+
+		final Granule granule = new Granule(new ReferencedEnvelope(envelope), file, reader);
 		final Level level = granule.getLevel(0);
 		if (level != null){
 			final AffineTransform btl = level.getBaseToLevelTransform();
@@ -88,8 +85,7 @@ public final class GranuleTest extends BaseJP2K {
 	         
 	    	final String levelS = level.toString();
 	    	if (TestData.isInteractiveTest()){
-	         	if (LOGGER.isLoggable(java.util.logging.Level.INFO))
-	         		LOGGER.info(levelS);
+				LOGGER.info(levelS);
 	        }
 	    }
     	

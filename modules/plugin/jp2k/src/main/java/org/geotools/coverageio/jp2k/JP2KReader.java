@@ -24,24 +24,22 @@ import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -81,10 +79,8 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @source $URL$
  */
-public final class JP2KReader extends AbstractGridCoverage2DReader implements
-        GridCoverage2DReader {
-
-	/** Logger. */
+public final class JP2KReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
+    /** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KReader.class);
 
 	/** The system-dependent default name-separator character. */
@@ -99,14 +95,14 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
     private final static int WORLD_FILE_INTERPRETATION_PIXEL_CORNER = 1;
     
     /**
-     * The base {@link GridRange} for the {@link GridCoverage2D} of this reader.
+     * The base {@link GridEnvelope2D} for the {@link GridCoverage2D} of this reader.
      */
     private GridEnvelope2D nativeGridRange = null;
     
     private GeneralEnvelope nativeEnvelope = null;
-    
-	ImageReaderSpi cachedSPI;
-    
+
+    private ImageReader imageReader;
+
     /**
      * Creates a new instance of a {@link JP2KReader}. I assume nothing about
      * file extension.
@@ -171,7 +167,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
     }
 
     /**
-     * @param nativeEnvelope
+     * @param coverageEnvelope
      *                the nativeEnvelope to set
      */
     protected void setCoverageEnvelope(GeneralEnvelope coverageEnvelope) {
@@ -186,7 +182,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
     }
 
     /**
-     * @param nativeGridRange
+     * @param coverageGridRange
      *                the nativeGridRange to set
      */
     protected void setCoverageGridRange(GridEnvelope2D coverageGridRange) {
@@ -223,9 +219,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
      */
     private void checkUUIDBoxes(final IIOMetadata metadata) throws IOException{
     	if (!(metadata instanceof JP2KStreamMetadata)) {
-            if (LOGGER.isLoggable(Level.FINE))
-            		LOGGER.fine("Metadata should be an instance of the expected class:"
-                            + " JP2KStreamMetadata.");
+            LOGGER.fine("Metadata should be an instance of the expected class: JP2KStreamMetadata.");
             return;
         }
     	// //
@@ -339,7 +333,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
         	final double tr = -PixelTranslation.getPixelTranslation(PixelInCell.CELL_CORNER);
         	transform.translate(tr, tr);
         	this.raster2Model = ProjectiveTransform.create(transform);
-        } else {
+            } else {
         	this.raster2Model = ProjectiveTransform.create(tempTransform);
         	tempTransform.translate(-0.5, -0.5);
         }
@@ -350,11 +344,9 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
         	envelope.setCoordinateReferenceSystem(crs);
         	this.nativeEnvelope = envelope;
         } catch (TransformException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE,"Unable to parse CRS from underlying TIFF", e);
+            LOGGER.log(Level.FINE,"Unable to parse CRS from underlying TIFF", e);
         } catch (UnsupportedOperationException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE,"Unable to parse CRS from underlying TIFF due to an unsupported CRS", e);
+            LOGGER.log(Level.FINE,"Unable to parse CRS from underlying TIFF due to an unsupported CRS", e);
         } 
         
     }
@@ -390,9 +382,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
              }
 
          } catch (Exception e) {
-             if (LOGGER.isLoggable(Level.FINE))
-                 LOGGER.log(Level.FINE,
-                         "Unable to parse CRS from underlying TIFF", e);
+             LOGGER.log(Level.FINE, "Unable to parse CRS from underlying TIFF", e);
              coordinateReferenceSystem = null;
          } finally {
              if (inputStream != null)
@@ -422,13 +412,18 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
 	@Override
 	public synchronized void dispose() {
 		super.dispose();
-		rasterManager.dispose();
+        rasterManager.dispose();
+
+        Utils.disposeReaderAndInnerStream(imageReader);
+        imageReader = null;
 	}
 
 
 	/**
 	 * The source {@link URL} 
 	 */
+	final File inputFile;
+
 	URL sourceURL;
 
 	boolean expandMe;
@@ -461,58 +456,79 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
             throw new DataSourceException(
                     "This plugin accepts only File,  URL and String pointing to a file");
 
-        final File inputFile = DataUtilities.urlToFile(sourceURL);
+        this.inputFile = DataUtilities.urlToFile(sourceURL);
         if (inputFile == null)
             throw new DataSourceException("Unable to find a file for the provided source");
         parentPath = inputFile.getParent();
-        ImageReader reader = null;
-        final ImageInputStream stream = ImageIO.createImageInputStream(inputFile);
-        if (cachedSPI == null) {
-            reader = Utils.getReader(stream);
-            if (reader != null)
-                cachedSPI = reader.getOriginatingProvider();
-        }
+
+        ImageReader reader = getImageReader();
 
         if (reader == null)
             throw new DataSourceException("No reader found for that source " + sourceURL);
-        reader.setInput(stream);
-        
 
         // //
         //
         // ImageLayout
         //
         // //
-        setLayout(reader);
+        try {
+            setLayout(reader);
 
-        coverageName = inputFile.getName();
+            coverageName = inputFile.getName();
 
-        final int dotIndex = coverageName.lastIndexOf(".");
-        coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
+            final int dotIndex = coverageName.lastIndexOf(".");
+            coverageName = (dotIndex == -1) ? coverageName : coverageName.substring(0, dotIndex);
 
-        // //
-        //
-        // get the crs if able to
-        //
-        // //
-        final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
-        if (tempCRS != null) {
-            this.crs = (CoordinateReferenceSystem) tempCRS;
-            LOGGER.log(Level.WARNING, "Using forced coordinate reference system "+crs.toWKT());
-        } else {
+            // //
+            //
+            // get the crs if able to
+            //
+            // //
+            final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
+            if (tempCRS != null) {
+                this.crs = (CoordinateReferenceSystem) tempCRS;
+                LOGGER.log(Level.WARNING, "Using forced coordinate reference system "+crs.toWKT());
+            } else {
 
-            setCoverageProperties(reader);
+                setCoverageProperties(reader);
 
-            if (crs == null) {
-                throw new DataSourceException("Unable to find a CRS for this coverage, using a default one: "
-                                + crs.toWKT());
+                if (crs == null) {
+                    throw new DataSourceException("Unable to find a CRS for this coverage, using a default one: "
+                            + crs.toWKT());
+                }
+            }
+            setResolutionInfo(reader);
+
+            // creating the raster manager
+            rasterManager = new RasterManager(this);
+        }
+        finally {
+            if (!JP2KFormatFactory.isImageReaderThreadSafe) {
+                Utils.disposeReaderAndInnerStream(reader);
             }
         }
-        setResolutionInfo(reader);
-        reader.dispose();
+    }
 
-        // creating the raster manager
-        rasterManager = new RasterManager(this);
+    public ImageReader getImageReader(){
+        if (JP2KFormatFactory.isImageReaderThreadSafe && this.imageReader != null) {
+            return imageReader;
+        }
+
+        final ImageInputStream stream;
+        try {
+            stream = ImageIO.createImageInputStream(inputFile);
+        }
+        catch(IOException e) {
+            LOGGER.log(Level.WARNING, "Failed to create a stream for File " + inputFile, e);
+            return null;
+        }
+
+        ImageReader reader = Utils.getReader(stream);
+        if(JP2KFormatFactory.isImageReaderThreadSafe) {
+            this.imageReader = reader;
+        }
+
+        return reader;
     }
 
 	/**
@@ -527,11 +543,10 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
 	 */
 	public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
 
-		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine("Reading image from " + sourceURL.toString());
-			LOGGER.fine(new StringBuffer("Highest res ").append(highestRes[0])
-					.append(" ").append(highestRes[1]).toString());
-		}
+        LOGGER.fine("Reading image from " + sourceURL.toString());
+        LOGGER.fine(new StringBuffer("Highest res ").append(highestRes[0])
+                .append(" ").append(highestRes[1]).toString());
+
 
 		final Collection<GridCoverage2D> response = rasterManager.read(params);
 		if(response.isEmpty())
@@ -612,26 +627,16 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
                 projReader = new PrjFileReader(channel);
                 crs = projReader.getCoordinateReferenceSystem();
             // using a default CRS
-            } catch (FileNotFoundException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
-            } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
-            } catch (FactoryException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
-            } finally {
+            }
+             catch (IOException|FactoryException e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            }
+             finally {
                 if (projReader != null) {
                     try {
                         projReader.close();
                     } catch (IOException e) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                        }
+                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                     }
                     if (instream != null)
                         try {
@@ -696,14 +701,8 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
                 final GeneralEnvelope coverageEnvelope = CRS.transform(
                 		tempTransform, gridRange);
                 nativeEnvelope = coverageEnvelope;
-            } catch (TransformException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
-            } catch (IllegalStateException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                }
+            } catch (TransformException|IllegalStateException e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             }
         }
     }
@@ -739,10 +738,10 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
         // //
         highestRes = CoverageUtilities
                 .getResolution((AffineTransform) raster2Model);
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine(new StringBuffer("Highest Resolution = [").append(
-                            highestRes[0]).append(",").append(highestRes[1])
-                            .toString());
+        LOGGER.fine(new StringBuffer("Highest Resolution = [").append(
+                        highestRes[0]).append(",").append(highestRes[1])
+                        .toString());
+
         numOverviews = 0;
 		overViewResolutions = numOverviews >= 1 ? new double[numOverviews][2]: null;
     }

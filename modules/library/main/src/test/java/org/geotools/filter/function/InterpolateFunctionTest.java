@@ -313,8 +313,6 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testColorValuesNumericMethodMismatch() throws Exception {
-        System.out.println("   testColorValuesNumericMethodMismatch");
-
         /*
          * Set interpolation points but let the function default to
          * linear / numeric
@@ -334,8 +332,6 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testNumericValuesColorMethodMismatch() throws Exception {
-        System.out.println("   testNumericValuesColorMethodMismatch");
-
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_COLOR));
 

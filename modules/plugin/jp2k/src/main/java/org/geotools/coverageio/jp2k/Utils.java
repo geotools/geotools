@@ -136,6 +136,22 @@ class Utils {
 		}
 	}
 
+	static void disposeReaderAndInnerStream(ImageReader imageReader) {
+		if (imageReader == null) {
+			return;
+		}
+
+		ImageInputStream inStream = (ImageInputStream) imageReader.getInput();
+		imageReader.dispose();
+		if (inStream != null) {
+			try {
+				inStream.close();
+			}
+			catch (IOException e) {
+			}
+		}
+	}
+
 	/**
 	 * Retrieves an {@link ImageInputStream} for the provided input {@link File}
 	 * .

@@ -137,13 +137,13 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 //            available = KakaduUtilities.isKakaduAvailable();
 
 			if (available) {
-				LOGGER.fine("JP2KFormatFactory is availaible.");
+				LOGGER.fine("JP2KFormatFactory is available.");
 			} else {
-				LOGGER.fine("JP2KFormatFactory is not availaible.");
+				LOGGER.fine("JP2KFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("JP2KFormatFactory is not availaible.");
+                LOGGER.fine("JP2KFormatFactory is not available.");
             }
 
             available = false;

@@ -444,26 +444,14 @@ class RasterManager {
         overviewsController=new OverviewsController();
         decimationController= new DecimationController();
         try {
-			spatialDomainManager= new SpatialDomainManager();
+        	spatialDomainManager= new SpatialDomainManager();
 		} catch (TransformException|FactoryException e) {
 			throw new DataSourceException(e);
 		}
 
         extractOverviewPolicy();
 
-		File granuleFile;
-		try {
-			if (inputURL.getProtocol().equalsIgnoreCase("file"))
-				granuleFile = new File(URLDecoder.decode(inputURL.getFile(),
-						"UTF-8"));
-			else
-				throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
-		}
-		catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException(e);
-		}
-
-		granule = new Granule(new ReferencedEnvelope(coverageEnvelope), granuleFile, reader);
+		granule = new Granule(new ReferencedEnvelope(coverageEnvelope), reader.inputFile, reader);
 	}
 
 	/**
@@ -545,7 +533,6 @@ class RasterManager {
 		return raster2Model;
 	}
 
-	
 	public GridEnvelope getCoverageGridrange() {
 		return coverageGridrange;
 	}

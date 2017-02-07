@@ -103,7 +103,6 @@ class Granule {
 
 		final Rectangle rasterDimensions;
 		
-		
 		public AffineTransform getBaseToLevelTransform() {
 			return baseToLevelTransform;
 		}
@@ -144,7 +143,7 @@ class Granule {
 
 		public AffineTransform2D getGridToWorldTransform() {
 			return gridToWorldTransform;
-		}		
+		}
 
 		@Override
 		public String toString() {
@@ -177,8 +176,7 @@ class Granule {
 		this.reader = reader;
 		this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
 		this.granuleFile = granuleFile;
-		ImageStreamAndReader streamAndReader = reader.getImageStreamAndReader();
-		ImageReader imageReader = streamAndReader.getReader();
+		ImageReader imageReader = reader.getImageReader();
 		this.cachedSPI = imageReader.getOriginatingProvider();
 
 		// create the base grid to world transformation
@@ -198,21 +196,15 @@ class Granule {
 					new GridEnvelope2D(originalDimension), granuleBBOX);
 			geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);//this is the default behavior but it is nice to write it down anyway
 			this.baseGridToWorld = geMapper.createAffineTransform();
-			
+
 			// add the base level
 			this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width, originalDimension.height));
 
 		} catch (IllegalStateException|IOException e) {
 			throw new IllegalArgumentException(e);
-		}
-		finally {
+		} finally {
 			if(!JP2KFormatFactory.isImageReaderThreadSafe) {
-				try {
-					streamAndReader.close();
-				}
-				catch (IOException e){
-
-				}
+				Utils.disposeReaderAndInnerStream(imageReader);
 			}
 		}
 	}
@@ -232,8 +224,8 @@ class Granule {
 		final ReferencedEnvelope bbox = new ReferencedEnvelope(granuleBBOX);
 		// intersection of this tile bound with the current crop bbox
 		final ReferencedEnvelope intersection = new ReferencedEnvelope(bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
-		ImageStreamAndReader streamAndReader = reader.getImageStreamAndReader();
-		ImageReader imageReader = streamAndReader.getReader();
+
+		ImageReader imageReader = reader.getImageReader();
 		try {
 			//get selected level and base level dimensions
 			final Level selectedlevel= getLevel(imageIndex);
@@ -372,10 +364,7 @@ class Granule {
 			return null;
 		} finally {
 			if (!JP2KFormatFactory.isImageReaderThreadSafe) {
-				try {
-					streamAndReader.close();
-				} catch (IOException e) {
-				}
+				Utils.disposeReaderAndInnerStream(imageReader);
 			}
 		}
 	}
@@ -386,8 +375,7 @@ class Granule {
 				return granuleLevels.get(Integer.valueOf(index));
 			else
 			{
-				ImageStreamAndReader streamAndReader = reader.getImageStreamAndReader();
-				ImageReader imageReader = streamAndReader.getReader();
+				ImageReader imageReader = reader.getImageReader();
 				//load level
 				// create the base grid to world transformation
 				try {
@@ -406,11 +394,7 @@ class Granule {
 					throw new IllegalArgumentException(e);
 				} finally {
 					if(!JP2KFormatFactory.isImageReaderThreadSafe) {
-						try {
-							streamAndReader.close();
-						}
-						catch (IOException e){
-						}
+						Utils.disposeReaderAndInnerStream(imageReader);
 					}
 				}
 			}

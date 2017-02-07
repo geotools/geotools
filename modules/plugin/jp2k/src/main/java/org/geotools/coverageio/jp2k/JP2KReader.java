@@ -101,7 +101,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     
     private GeneralEnvelope nativeEnvelope = null;
 
-    private ImageStreamAndReader imageStreamAndReader;
+    private ImageReader imageReader;
 
     /**
      * Creates a new instance of a {@link JP2KReader}. I assume nothing about
@@ -412,23 +412,17 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
 	@Override
 	public synchronized void dispose() {
 		super.dispose();
-		if(imageStreamAndReader != null) {
-		    try {
-                imageStreamAndReader.close();
-            }
-            catch (IOException e) {
+        rasterManager.dispose();
 
-            }
-        }
-
-		rasterManager.dispose();
+        Utils.disposeReaderAndInnerStream(imageReader);
+        imageReader = null;
 	}
 
 
 	/**
 	 * The source {@link URL} 
 	 */
-	private File inputFile;
+	final File inputFile;
 
 	URL sourceURL;
 
@@ -467,8 +461,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
             throw new DataSourceException("Unable to find a file for the provided source");
         parentPath = inputFile.getParent();
 
-        ImageStreamAndReader streamAndReader = getImageStreamAndReader();
-        ImageReader reader = streamAndReader.getReader();
+        ImageReader reader = getImageReader();
 
         if (reader == null)
             throw new DataSourceException("No reader found for that source " + sourceURL);
@@ -511,14 +504,14 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         }
         finally {
             if (!JP2KFormatFactory.isImageReaderThreadSafe) {
-                streamAndReader.close();
+                Utils.disposeReaderAndInnerStream(reader);
             }
         }
     }
 
-    public ImageStreamAndReader getImageStreamAndReader(){
-        if(JP2KFormatFactory.isImageReaderThreadSafe && this.imageStreamAndReader != null) {
-            return imageStreamAndReader;
+    public ImageReader getImageReader(){
+        if (JP2KFormatFactory.isImageReaderThreadSafe && this.imageReader != null) {
+            return imageReader;
         }
 
         final ImageInputStream stream;
@@ -531,12 +524,11 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         }
 
         ImageReader reader = Utils.getReader(stream);
-        ImageStreamAndReader streamAndReader = new ImageStreamAndReader(reader, stream);
         if(JP2KFormatFactory.isImageReaderThreadSafe) {
-            this.imageStreamAndReader = streamAndReader;
+            this.imageReader = reader;
         }
 
-        return streamAndReader;
+        return reader;
     }
 
 	/**

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Indexer>
+    <domains>
+        <domain name="time">
+            <attributes>
+                <attribute>time</attribute>
+            </attributes>
+        </domain>
+    </domains>
+    <schemas>
+        <schema name="default">
+            <attributes>the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date</attributes>
+        </schema>
+    </schemas>
+    <coverages>
+        <coverage>
+            <name>air_temperature</name>
+            <schema ref="default"/>
+            <domains>
+                <domain ref="time"/>
+            </domains>
+        </coverage>
+        <coverage>
+            <name>sea_surface_temperature</name>
+            <schema ref="default"/>
+            <domains>
+                <domain ref="time"/>
+            </domains>
+        </coverage>
+    </coverages>
+    <parameters>
+        <parameter name="AuxiliaryFile" value="multi-coverage.xml"/>
+        <parameter name="AbsolutePath" value="true"/>
+    </parameters>
+</Indexer>

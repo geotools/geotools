@@ -1211,4 +1211,17 @@ public class NetCDFReaderTest extends Assert {
             }
         }
     }
+
+    /**
+     * Test that {@link NetCDFReader#getOriginalEnvelope()}, a method for which no coverage name is specified, works for a NetCDF source containing
+     * multiple coverages. The method is expected to succeed using {@link NetCDFReader#defaultName}.
+     */
+    @Test
+    public void testGetOriginalEnvelopeDefaultName() throws Exception {
+        NetCDFReader reader = new NetCDFReader(TestData.file(this, "O3-NO2.nc"), null);
+        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        assertNotNull(envelope);
+        assertFalse(envelope.isEmpty());
+    }
+
 }

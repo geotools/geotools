@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
@@ -106,6 +104,8 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 /**
  * A NetCDF Reader implementation
@@ -728,18 +728,17 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
     private String checkUnspecifiedCoverage(String coverageName) {
         if (coverageName.equalsIgnoreCase(UNSPECIFIED)) {
-            if (getGridCoverageCount() > 1) {
+            if (defaultName == null) {
                 throw new IllegalArgumentException(
-                        "Need to specify the coverageName for a reader related to multiple coverages");
+                        "coverageName not specified and no defaultName for " + sourceURL);
             } else {
                 return defaultName;
             }
+        } else if (!setNames.contains(coverageName)) {
+            throw new IllegalArgumentException(
+                    "coverageName " + coverageName + " not found for " + sourceURL);
         } else {
-            if (!setNames.contains(coverageName)) {
-                throw new IllegalArgumentException("The specified coverageName is unavailable");
-            } else {
-                return coverageName;
-            }
+            return coverageName;
         }
     }
 

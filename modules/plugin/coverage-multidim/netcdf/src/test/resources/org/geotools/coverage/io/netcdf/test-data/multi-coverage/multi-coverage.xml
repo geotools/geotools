@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <name>air_temperature</name>
+        </coverage>
+        <coverage>
+            <name>sea_surface_temperature</name>
+        </coverage>
+    </coverages>
+</Indexer>

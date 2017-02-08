@@ -67,6 +67,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * Note that as required by the Rendering Transformation API, the output has the CRS of the input data.
  * 
  * @author mdavis
+ * @author Cosmin Cioranu (CozC)
  *
  */
 @DescribeProcess(title = "Point Stacker", description = "Aggregates a collection of points over a grid into one point per grid cell.")

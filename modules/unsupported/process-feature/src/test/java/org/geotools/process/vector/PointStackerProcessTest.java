@@ -48,8 +48,9 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
  * Unit test for PointStackerProcess.
- * 
+ * Added tests for @see testWeightClusterPosition
  * @author Martin Davis, OpenGeo
+ * @author Cosmin Cioranu, Private
  * 
  */
 public class PointStackerProcessTest {

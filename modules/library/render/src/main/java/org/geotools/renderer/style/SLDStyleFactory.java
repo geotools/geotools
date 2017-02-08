@@ -1004,15 +1004,7 @@ public class SLDStyleFactory {
 		}
 
 		// get the other properties needed for the stroke
-        float[] dashes = null;
-        if(stroke.dashArray() != null) {
-            dashes = new float[stroke.dashArray().size()];
-            int index = 0;
-            for (Expression expression : stroke.dashArray()) {
-                dashes[index] = expression.evaluate(feature, Float.class);
-                index++;
-            }
-        }
+        float[] dashes = evaluateDashArray(stroke, feature);
 		float width = evalToFloat(stroke.getWidth(), feature, 1);
 		float dashOffset = evalToFloat(stroke.getDashOffset(), feature, 0);
 
@@ -1035,6 +1027,30 @@ public class SLDStyleFactory {
 
 		return stroke2d;
 	}
+
+    public static float[] evaluateDashArray(org.geotools.styling.Stroke stroke, Object feature) throws NumberFormatException {
+        float[] dashes = null;
+        if(stroke.dashArray() != null) {
+            if (stroke.dashArray().size()==1) {
+                String dashString = stroke.dashArray().get(0).evaluate(feature, String.class);
+                if (dashString!=null && !"".equals(dashString)) {
+                    String[] strok = dashString.split(" ");
+                    dashes = new float[strok.length];
+                    for (int l = 0; l < dashes.length; l++) {
+                        dashes[l] = Float.parseFloat(strok[l]);
+                    }
+                }
+            } else {
+                dashes = new float[stroke.dashArray().size()];
+                int index = 0;
+                for (Expression expression : stroke.dashArray()) {
+                    dashes[index] = expression.evaluate(feature, Float.class);
+                    index++;
+                }
+            }
+        }
+        return dashes;
+    }
 
 	private Paint getStrokePaint(org.geotools.styling.Stroke stroke, Object feature) {
 		if (stroke == null) {

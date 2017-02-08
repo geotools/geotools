@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import javax.measure.unit.SI;
 
@@ -44,6 +45,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -141,6 +143,20 @@ public class RescaleStyleVisitorTest {
         assertEquals(4.0d, clone.getWidth().evaluate(null, Double.class), 0d);
         assertEquals(10.0f, clone.getDashArray()[0], 0d);
         assertEquals(20.0f, clone.getDashArray()[1], 0d);
+    }
+    
+    @Test
+    public void testDynamicStroke() throws Exception {
+        Stroke original = sb.createStroke(Color.RED, 2);
+        original.setDashArray(Arrays.asList((Expression)ff.literal("5 10")));
+        
+        original.accept(visitor);
+        Stroke clone = (Stroke) visitor.getCopy();
+
+        assertEquals(4.0d, Double.valueOf((String)clone.getWidth().evaluate(null)), 0.001);
+        assertNotNull(original.dashArray());
+        assertEquals(1, original.dashArray().size());
+        assertEquals("10.0 20.0", ((Expression) clone.dashArray().get(0)).evaluate(null));
     }
     
     @Test

@@ -150,6 +150,12 @@
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-gdalvrt</artifactId>
       <!-- The version number is specified in the parent POM. -->
+      <exclusions>
+        <exclusion>
+          <groupId>it.geosolutions.imageio-ext</groupId>
+          <artifactId>imageio-ext-gdalgeotiff</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>

@@ -23,15 +23,18 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
+import org.geotools.mbstyle.LineMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
@@ -114,5 +117,82 @@ public class MapBoxStyleTest {
 
         assertEquals(Double.valueOf(.59), rsym.getOpacity().evaluate(null, Double.class));
     }
+
+    /**
+     * Test parsing a Mapbox line layer
+     */
+    @Test
+    public void testLine() throws IOException, ParseException {
+        // Read file to JSONObject
+        InputStream is = this.getClass().getResourceAsStream("lineStyleTest.json");
+        String fileContents = IOUtils.toString(is, "utf-8");
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+
+        // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof LineMBLayer);
+        LineMBLayer mbLine = (LineMBLayer) layers.get(0);
+
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine);
+
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof LineSymbolizer);
+        LineSymbolizer lsym = (LineSymbolizer) symbolizer;
+
+        assertEquals(new Color(0, 153, 255),
+                lsym.getStroke().getColor().evaluate(null, Color.class));
+        assertEquals("square", lsym.getStroke().getLineCap().evaluate(null, String.class));
+        assertEquals("round", lsym.getStroke().getLineJoin().evaluate(null, String.class));
+        assertEquals(.5d, lsym.getStroke().getOpacity().evaluate(null, Double.class), .0001);
+        assertEquals(Integer.valueOf(10), lsym.getStroke().getWidth().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+               
+        List<Integer> expectedDashes = Arrays.asList(10, 5, 3, 2);
+        assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
+        for (int i = 0; i < expectedDashes.size(); i++) {
+            Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
+            assertEquals(expectedDashes.get(i), n);
+        }        
+    }
+    
+    @Test
+    public void testLineDefaults() throws IOException, ParseException {
+        // Read file to JSONObject
+        InputStream is = this.getClass().getResourceAsStream("lineStyleTestEmpty.json");
+        String fileContents = IOUtils.toString(is, "utf-8");
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+
+        // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof LineMBLayer);
+        LineMBLayer mbLine = (LineMBLayer) layers.get(0);
+
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine);
+
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof LineSymbolizer);
+        LineSymbolizer lsym = (LineSymbolizer) symbolizer;
+        
+        assertEquals(Color.BLACK, lsym.getStroke().getColor().evaluate(null, Color.class));
+        assertEquals("butt", lsym.getStroke().getLineCap().evaluate(null, String.class));
+        assertEquals("mitre", lsym.getStroke().getLineJoin().evaluate(null, String.class));
+        assertEquals(Integer.valueOf(1), lsym.getStroke().getOpacity().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(1), lsym.getStroke().getWidth().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(0), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+        assertTrue(lsym.getStroke().dashArray() == null);        
+    }
+    
 
 }

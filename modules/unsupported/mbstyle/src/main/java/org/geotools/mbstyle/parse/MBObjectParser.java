@@ -341,6 +341,41 @@ public class MBObjectParser {
     }
     
     /**
+     * 
+     * Convert a String value to an enum value, ignoring case, with the provided fallback.
+     * 
+     * @param enumeration The enum to convert to.
+     * @param value The string value to convert to an enum value.
+     * @return The enum value from the string, or the fallback value.
+     * @throws MBFormatException if the value is not a String, or it is not a valid value for the enumeration.
+     */
+    public <T extends Enum<?>> T toEnum(JSONObject json, String tag, Class<T> enumeration,
+            T fallback) {
+        Object value = json.get(tag);
+
+        if (value == null) {
+            return fallback;
+        } else if (value instanceof String) {
+            String stringVal = (String) value;
+            if ("".equals(stringVal.trim())) {
+                return fallback;
+            }
+            for (T enumValue : enumeration.getEnumConstants()) {
+                if (enumValue.toString().equalsIgnoreCase(stringVal.trim())) {
+                    return enumValue;
+                }
+            }
+            throw new MBFormatException("\"" + tag + "\" contains invalid value for enumeration "
+                    + enumeration.getSimpleName());
+        } else {
+            throw new MBFormatException(
+                    "Conversion of \"" + tag + "\" value from " + value.getClass().getSimpleName()
+                            + " to " + enumeration.getSimpleName() + " not supported.");
+        }
+
+    }
+    
+    /**
      * Casts the provided obj to a JSONObject (safely reporting format exception 
      * 
      * @param obj

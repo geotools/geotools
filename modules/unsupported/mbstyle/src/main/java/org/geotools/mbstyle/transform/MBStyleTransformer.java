@@ -25,6 +25,7 @@ import javax.measure.unit.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.FillMBLayer;
+import org.geotools.mbstyle.LineMBLayer;
 import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
@@ -33,6 +34,7 @@ import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
@@ -84,6 +86,8 @@ public class MBStyleTransformer {
             return transform((FillMBLayer) layer);
         } else if (layer instanceof RasterMBLayer) {
             return transform((RasterMBLayer) layer);
+        } else if (layer instanceof LineMBLayer) {
+            return transform((LineMBLayer) layer);
         }
 
         throw new MBFormatException(layer.getType() + " not yet supported.");
@@ -187,6 +191,44 @@ public class MBStyleTransformer {
                 Collections.emptySet(), 
                 Collections.singleton(SemanticType.RASTER), 
                 rules);
+    }   
+    
+    /**
+     * Transform {@link LineMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     * 
+     * @param layer Describing line styling
+     * @return FeatureTypeStyle
+     */
+    FeatureTypeStyle transform(LineMBLayer layer) {
+        Stroke stroke = sf.stroke(layer.lineColor(), layer.lineOpacity(), layer.lineWidth(),
+                layer.lineJoin(), layer.lineCap(), null, null); // last "offset" is really "dash offset"
+        stroke.setDashArray(layer.lineDasharray());        
+        LineSymbolizer ls = sf.lineSymbolizer(layer.getId(), null,
+                sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, layer.lineOffset());
+        
+        // Left for the special effects sprint:
+        // layer.linePattern(); // Graphic fill
+        // layer.lineBlur();
+        // layer.lineGapWidth();
+        // layer.lineMiterLimit();
+        // layer.lineRoundLimit();
+        // layer.getLineTranslateAnchor();
+        // layer.toDisplacement()
+
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY,
+                Arrays.asList(ls), Filter.INCLUDE);
+        
+        rules.add(rule);
+        return sf.featureTypeStyle(layer.getId(),
+                sf.description(Text.text("MBStyle " + layer.getId()),
+                        Text.text("Generated for " + layer.getSourceLayer())),
+                null, Collections.emptySet(), Collections.singleton(SemanticType.LINE), rules);
     }
 
 }

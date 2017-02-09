@@ -69,7 +69,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
-import org.jaitools.imageutils.ImageLayout2;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridGeometry;

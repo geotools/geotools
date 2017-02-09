@@ -30,7 +30,7 @@ import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.MosaicType;
 
 import org.geotools.image.ImageWorker;
-import org.jaitools.imageutils.ImageLayout2;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 /**
  * This class is responsible for implementing the strategies for the mosaicking which can be a flat merge of band-stacking merge.

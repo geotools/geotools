@@ -45,7 +45,7 @@ import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.test.TestData;
-import org.jaitools.imageutils.ImageLayout2;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.geometry.BoundingBox;

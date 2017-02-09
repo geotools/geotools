@@ -46,7 +46,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
-import org.jaitools.imageutils.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;

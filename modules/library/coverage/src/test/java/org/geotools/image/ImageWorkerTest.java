@@ -79,7 +79,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
-import org.jaitools.imageutils.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;

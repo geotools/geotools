@@ -272,8 +272,9 @@ public class ColorConverterFactory implements ConverterFactory {
             String key = name.toLowerCase().trim();
             if (CSS_COLORS.containsKey(key)) {
                 return target.cast(CSS_COLORS.get(key));
+            } else {
+                return CONVERT_STRING.convert(source, target);
             }
-            return null; // not defined
         }
     };
 

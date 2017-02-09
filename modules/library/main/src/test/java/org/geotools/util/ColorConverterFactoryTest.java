@@ -67,7 +67,7 @@ public class ColorConverterFactoryTest extends TestCase {
         
         assertEquals( "1 alpha", new Color( 0,0,255,1), convert((long) 0x010000FF) );
     }
-    
+
     public void testFromCssName() throws Exception {
         Converter converter = factory.createConverter(String.class, Color.class,
                 new Hints(Hints.COLOR_NAMES, "CSS"));
@@ -82,9 +82,10 @@ public class ColorConverterFactoryTest extends TestCase {
         assertEquals("black", Color.BLACK, converter.convert("black", Color.class));
         assertEquals("thistle", new Color(216, 191, 216),
                 converter.convert("thistle", Color.class));
+        assertEquals("hex fallback", new Color(128, 128, 128),
+                converter.convert("#808080", Color.class));
     }
-  
-    
+
     Color convert( Object value ) throws Exception {
         Converter converter = factory.createConverter( value.getClass(), Color.class, null );
         return (Color) converter.convert( value, Color.class );

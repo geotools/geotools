@@ -81,7 +81,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
             if (property == null || property.equals(java.awt.Image.UndefinedProperty)
                     || !(property instanceof ROI)) {
                 // Check on the parameterBlock
-                if (pb.getObjectParameter(3) != null) {
+                if (pb.getNumParameters() >= 4 && pb.getObjectParameter(3) != null) {
                     property = pb.getObjectParameter(3);
                 } else {
                     return java.awt.Image.UndefinedProperty;

@@ -106,6 +106,11 @@ public class ColorConverterFactory implements ConverterFactory {
         }
     };
     
+    /**
+     * A mapping from CSS Color Module 4 names to Color objects.
+     * 
+     * @see <a href="https://www.w3.org/TR/css-color-4/#named-colors">https://www.w3.org/TR/css-color-4/#named-colors</a> for more information.
+     */
     public static final Map<String, Color> CSS_COLORS;
 
     static {
@@ -262,9 +267,10 @@ public class ColorConverterFactory implements ConverterFactory {
     }
 
     /**
-     * Converts CSS Color Module 4 names to colors.
+     * Converts CSS Color Module 4 names to colors, with a fallback to the basic {@link #CONVERT_STRING} converter if the provided source String is
+     * not found in the {@link #CSS_COLORS} map.
      */
-    private static Converter CONVERT_CSS_NAME_TO_COLOR = new Converter() {
+    private static Converter CONVERT_CSS_TO_COLOR = new Converter() {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
@@ -285,7 +291,7 @@ public class ColorConverterFactory implements ConverterFactory {
                 if (hints != null && hints.containsKey(Hints.COLOR_NAMES)) {
                     String hint = (String) hints.get(Hints.COLOR_NAMES);
                     if ("CSS".equalsIgnoreCase(hint)) {
-                        return CONVERT_CSS_NAME_TO_COLOR;
+                        return CONVERT_CSS_TO_COLOR;
                     }
                 }
                 return CONVERT_STRING;

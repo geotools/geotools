@@ -2,10 +2,19 @@
 //
 // (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
 //
-// The following test points were calculated with libproj4 utility "cs2cs" 
-// cs2cs -v +datum=WGS84 +proj=lonlat +to +datum=WGS84 +proj=moll
+// The following test points were calculated with online utility "cs2cs"
+// https://mygeodata.cloud/cs2cs/
+// Source points:
+// 0.0, 0.0
+// 10.0, 10.0
+// 30.0, 30.0
+// -180.0, 90.0
+// 180.0, 90.0
+// -180.0, 0.0
+// 180.0, 0.0
 //
-// Andrea Aime - March 2 2011
+// Andrea Aime - March 2, 2011
+// Marco Peters - February 13, 2017
 //
 // --------------------------------------------------------------------------
 // How to run this script:
@@ -24,16 +33,25 @@
 
 
 // CRS used for the test 
+// +proj=lonlat +datum=WGS84
 set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
 
 ////////////////////////////////////////////
-// Robinson
+// Mollweide
 
+// +proj=moll +datum=WGS84
 set _moll_ = PROJCS["Mollweide", _WGS84_, PROJECTION["Mollweide"], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
 
-source crs = _WGS84_
-target crs = _moll_
+// +proj=moll +datum=WGS84 +lon_0=0 +x_0=10000 +y_0=5000
+set _moll_easting_northing_ = PROJCS["Mollweide", _WGS84_, PROJECTION["Mollweide"], PARAMETER["central_meridian", 0.0], PARAMETER["false_easting", 10000.0], PARAMETER["false_northing", 5000.0], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
+// +proj=moll +datum=WGS84 +lon_0=10 +x_0=0 +y_0=0
+set _moll_central_meridian_ = PROJCS["Mollweide", _WGS84_, PROJECTION["Mollweide"], PARAMETER["central_meridian", 10.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
 test tolerance = (0.01, 0.01)
+source crs = _WGS84_
+
+target crs = _moll_
 
 source pt = (0, 0)
 target pt = (0, 0)
@@ -55,3 +73,51 @@ target pt = (-18040095.70,	0.00)
 
 source pt = (180, 0)
 target pt = (18040095.70,	0.00)
+
+
+target crs = _moll_easting_northing_
+
+source pt = (0, 0)
+target pt = (10000, 5000)
+
+source pt = (10, 10)
+target pt = (1002803.77, 1239041.35)
+
+source pt = (30, 30)
+target pt = (2760426.12, 3648853.56)
+
+source pt = (-180, 90)
+target pt = (10000.0, 9025047.85)
+
+source pt = (180, 90)
+target pt = (10000.0, 9025047.85)
+
+source pt = (-180, 0)
+target pt = (-18030095.70, 5000.00)
+
+source pt = (180, 0)
+target pt = (18050095.70, 5000.00)
+
+
+target crs = _moll_central_meridian_
+
+source pt = (0, 0)
+target pt = (-1002227.53867, 0.0)
+
+source pt = (10, 10)
+target pt = (0.0, 1234041.34503)
+
+source pt = (30, 30)
+target pt = (1833617.41079, 3643853.56408)
+
+source pt = (-180, 90)
+target pt = (1.04326853517e-09, 9020047.84807)
+
+source pt = (180, 90)
+target pt = (1.04326853517e-09, 9020047.84807)
+
+source pt = (-180, 0)
+target pt = (17037868.1575, 0.0)
+
+source pt = (180, 0)
+target pt = (17037868.1575, 0.0)

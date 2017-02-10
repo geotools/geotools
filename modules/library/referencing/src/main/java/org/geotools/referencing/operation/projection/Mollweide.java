@@ -34,12 +34,12 @@ import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Mollweide projection
- * 
+ *
  * @see <A HREF="http://mathworld.wolfram.com/MollweideProjection.html">Mollweide</A>
  * @see <A HREF="http://en.wikipedia.org/wiki/Mollweide_projection">"Mollweide" on Wikipedia</A>
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mollweide.html">"Mollweide" on
  *      RemoteSensing.org</A>
- * 
+ *
  * @since 2.7.0
  *
  *
@@ -53,19 +53,19 @@ public class Mollweide extends MapProjection {
      * For cross-version compatibility.
      */
     private static final long serialVersionUID = -737778661392950540L;
-    
+
     private static final int MAX_ITER = 10;
     private static final double LOOP_TOL = 1e-7;
-    
+
     double C_x, C_y, C_p;
-    
+
     static enum ProjectionMode {Mollweide, WagnerIV, WagnerV};
-    
+
     ParameterDescriptorGroup descriptors;
 
     /**
      * Constructs a new map projection from the supplied parameters.
-     * 
+     *
      * @param parameters
      *            The parameter values in standard units.
      * @throws ParameterNotFoundException
@@ -74,7 +74,7 @@ public class Mollweide extends MapProjection {
     protected Mollweide(ProjectionMode mode, final ParameterDescriptorGroup descriptors, final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters, descriptors.descriptors());
         this.descriptors = descriptors;
-        
+
         if(mode == ProjectionMode.WagnerV) {
             C_x = 0.90977;
             C_y = 1.65014;
@@ -93,7 +93,7 @@ public class Mollweide extends MapProjection {
             C_y = r / sp;
             C_p = p2 + sin(p2);
         }
-        
+
     }
 
     /**
@@ -123,7 +123,7 @@ public class Mollweide extends MapProjection {
         } else {
             phi *= 0.5;
         }
-        
+
         if (ptDst == null) {
             ptDst = new Point2D.Double();
         }
@@ -142,7 +142,7 @@ public class Mollweide extends MapProjection {
         double lam = x / (C_x * cos(phi));
         phi += phi;
         phi = aasin((phi + sin(phi)) / C_p);
-        
+
         // the above can occasionaly result in lon out of range, normalize it
         lam = rollLongitude(lam);
 
@@ -153,8 +153,8 @@ public class Mollweide extends MapProjection {
 
         return ptDst;
     }
-    
-    
+
+
 
     /**
      * Compares the specified object with this map projection for equality.
@@ -204,7 +204,7 @@ public class Mollweide extends MapProjection {
         static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
                 new NamedIdentifier[] { new NamedIdentifier(Citations.GEOTOOLS, "Mollweide"),
                         new NamedIdentifier(Citations.ESRI, "Mollweide") },
-                new ParameterDescriptor[] { SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN });
+                new ParameterDescriptor[] { SEMI_MAJOR, SEMI_MINOR, FALSE_EASTING, FALSE_NORTHING, CENTRAL_MERIDIAN });
 
         /**
          * Constructs a new provider.
@@ -215,9 +215,8 @@ public class Mollweide extends MapProjection {
 
         /**
          * Creates a transform from the specified group of parameter values.
-         * 
-         * @param parameters
-         *            The group of parameter values.
+         *
+         * @param parameters The group of parameter values.
          * @return The created math transform.
          * @throws ParameterNotFoundException
          *             if a required parameter was not found.
@@ -243,7 +242,7 @@ public class Mollweide extends MapProjection {
          * For cross-version compatibility.
          */
         private static final long serialVersionUID = 1079407274370647753L;
-        
+
         /**
          * The parameters group.
          */
@@ -260,7 +259,7 @@ public class Mollweide extends MapProjection {
 
         /**
          * Creates a transform from the specified group of parameter values.
-         * 
+         *
          * @param parameters
          *            The group of parameter values.
          * @return The created math transform.
@@ -274,14 +273,14 @@ public class Mollweide extends MapProjection {
             return new Mollweide(ProjectionMode.WagnerIV, PARAMETERS, parameters);
         }
     }
-    
+
     /**
      * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
      * provider} for the Wagner V projection (not part of the EPSG database).
-     * 
+     *
      * @since 2.7.0
      * @author Andrea Aime
-     * 
+     *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
     public static class WagnerVProvider extends AbstractProvider {
@@ -289,7 +288,7 @@ public class Mollweide extends MapProjection {
          * For cross-version compatibility.
          */
         private static final long serialVersionUID = -3583284443974045930L;
-        
+
         /**
          * The parameters group.
          */
@@ -301,13 +300,13 @@ public class Mollweide extends MapProjection {
          * Constructs a new provider.
          */
         public WagnerVProvider() {
-            
+
             super(PARAMETERS);
         }
 
         /**
          * Creates a transform from the specified group of parameter values.
-         * 
+         *
          * @param parameters
          *            The group of parameter values.
          * @return The created math transform.

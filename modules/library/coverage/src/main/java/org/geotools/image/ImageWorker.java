@@ -90,6 +90,7 @@ import javax.media.jai.operator.ExtremaDescriptor;
 import javax.media.jai.operator.HistogramDescriptor;
 import javax.media.jai.operator.InvertDescriptor;
 import javax.media.jai.operator.MeanDescriptor;
+import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.MosaicType;
 import javax.media.jai.operator.MultiplyConstDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
@@ -3969,15 +3970,15 @@ public class ImageWorker {
                         }
                         
                         // handle background values
-                        if(bgValues == null && sourceParamBlock.getNumParameters() > 2) {
+                        if (bgValues == null && sourceParamBlock.getNumParameters() > 2) {
                             bgValues = (double[]) sourceParamBlock.getObjectParameter(2);
                         }
-                        if(bgValues != null) {
+                        if (bgValues != null) {
                             paramBlk.set(bgValues, 2);
                         }
 
                         // Checks if ROI can be processed
-                        if(canProcessROI && hasSameNodata){
+                        if (canProcessROI && hasSameNodata){
                             // force in the image layout, this way we get exactly the same
                             // as the affine we're eliminating
                             Hints localHints = new Hints(getRenderingHints());
@@ -4766,6 +4767,156 @@ public class ImageWorker {
         
         return this;
     }
+    
+    
+    /**
+     * Forces all NODATA pixels, as well as those outside of the ROI, to be transparent (expanding
+     * the color model as needed in order to make it so). In case the image has no ROI or no nodata,
+     * the method won't perform any change
+     */
+    public ImageWorker prepareForRendering() {
+        // anything to do?
+        ROI roi = getROI();
+        if (roi == null) {
+            Object roiCandidate = image.getProperty("roi");
+            if(roiCandidate instanceof ROI) {
+                roi = (ROI) roiCandidate;
+            }
+        }
+        if (nodata == null && roi == null) {
+            return this;
+        }
+        
+        RenderedImage image = getRenderedImage();
+
+        // figure out the suitable background value
+        ColorModel cm = image.getColorModel();
+        double[] bgValues = null; 
+        PlanarImage[] alphaChannels = null;
+        final int transparencyType = cm.getTransparency();
+        
+        // in case of index color model we try to preserve it, so that output
+        // formats that can work with it can enjoy its extra compactness
+        if (cm instanceof IndexColorModel) {
+            IndexColorModel icm = (IndexColorModel) cm;
+            // try to find the index that matches the requested background color
+            final int bgColorIndex;
+            bgColorIndex = icm.getTransparentPixel();
+            
+            // we did not find the background color, well we have to expand to RGB and then tell Mosaic to use the RGB(A) color as the
+            // background
+            if (bgColorIndex == -1) {
+                // we need to expand the image to RGB
+                forceComponentColorModel();
+                addAlphaChannel();
+                bgValues = new double[] { 0, 0, 0, 0};
+            } else {
+                // we found the background color in the original image palette therefore we set its index as the bkg value.
+                // The final Mosaic will use the IndexColorModel of this image anywa, therefore all we need to do is to force
+                // the background to point to the right color in the palette
+                bgValues = new double[] { bgColorIndex };
+            }
+            
+            // collect alpha channels if we have them in order to reuse them later on for mosaic operation
+            if (cm.hasAlpha() && bgColorIndex == -1) {
+                forceComponentColorModel();
+                final RenderedImage alpha = new ImageWorker(getRenderedImage()).retainLastBand().getRenderedImage();
+                alphaChannels = new PlanarImage[] { PlanarImage.wrapRenderedImage(alpha) };
+            } 
+        } else if(cm instanceof ComponentColorModel) {
+            // convert to RGB if necessary
+            ComponentColorModel ccm = (ComponentColorModel) cm;
+            boolean hasAlpha = cm.hasAlpha();
+
+            // if we have a grayscale image see if we have to expand to RGB
+            if (ccm.getNumColorComponents() == 1) {
+                if ((ccm.getTransferType() == DataBuffer.TYPE_DOUBLE || 
+                        ccm.getTransferType() == DataBuffer.TYPE_FLOAT 
+                        || ccm.getTransferType() == DataBuffer.TYPE_UNDEFINED || !hasAlpha)) {
+                    // expand to RGB, this is not a case we can optimize
+                    final ImageWorker iw = new ImageWorker(image);
+                    if (hasAlpha) {
+                        final RenderedImage alpha = iw.retainLastBand().getRenderedImage();
+                        // get first band
+                        final RenderedImage gray = new ImageWorker(image).retainFirstBand()
+                                .getRenderedImage();
+                        image = new ImageWorker(gray).bandMerge(3).addBand(alpha, false)
+                                .forceComponentColorModel().forceColorSpaceRGB().getRenderedImage();
+                    } else {
+                        image = iw.bandMerge(3).forceComponentColorModel().forceColorSpaceRGB()
+                                .getRenderedImage();
+                    }
+                } else {
+                    // has alpha channel, extract it
+                    final ImageWorker iw = new ImageWorker(image);
+                    final RenderedImage alpha = iw.retainLastBand().getRenderedImage();
+                    alphaChannels = new PlanarImage[] { PlanarImage.wrapRenderedImage(alpha) };
+                    
+                    bgValues = new double[] { 0, 0, 0, 0 };
+                } 
+
+                // get back the ColorModel
+                cm = image.getColorModel();
+                ccm = (ComponentColorModel) cm;
+                hasAlpha = cm.hasAlpha();
+            }
+
+            if (bgValues == null) {
+                if (hasAlpha) {
+                    // get alpha
+                    final ImageWorker iw = new ImageWorker(image);
+                    final RenderedImage alpha = iw.retainLastBand().getRenderedImage();
+                    alphaChannels = new PlanarImage[] { PlanarImage.wrapRenderedImage(alpha) };
+    
+                    bgValues = new double[] { 0, 0, 0, 0 };
+                } else {
+                    image = new ImageWorker(image).addAlphaChannel().getRenderedImage();
+                    // this will work fine for all situation where the color components are <= 3
+                    // e.g., one band rasters with no colormap will have only one usually
+                    bgValues = new double[] { 0, 0, 0, 0 };
+                }
+            }
+        }
+        
+        //
+        // If we need to add a collar use mosaic or if we need to blend/apply a bkg color
+        ImageWorker iw = new ImageWorker(image);
+        ROI[] rois = new ROI[] {roi};
+
+        // build the transparency thresholds
+        double[][] thresholds = new double[][] { { ColorUtilities.getThreshold(image
+                .getSampleModel().getDataType()) } };
+        // apply the mosaic
+        iw.setBackground(bgValues);
+        iw.mosaic(new RenderedImage[] { image }, 
+                alphaChannels != null && transparencyType==Transparency.TRANSLUCENT ? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
+                alphaChannels, 
+                rois, 
+                thresholds, 
+                null);
+        this.image = iw.getRenderedImage();
+        
+        return this;
+    }
+
+    /**
+     * Adds an extra channel to the image, with a value of 255 (not public yet because it won't work with
+     * all image types)
+     * 
+     * @return
+     */
+    private ImageWorker addAlphaChannel() {
+        final ImageLayout tempLayout= new ImageLayout(image);
+        tempLayout.unsetValid(ImageLayout.COLOR_MODEL_MASK).unsetValid(ImageLayout.SAMPLE_MODEL_MASK);                    
+        RenderedImage alpha = ConstantDescriptor.create(
+                Float.valueOf( image.getWidth()),
+                Float.valueOf(image.getHeight()),
+                new Byte[] { Byte.valueOf((byte) 255) }, 
+                new RenderingHints(JAI.KEY_IMAGE_LAYOUT,tempLayout));
+        addBand(alpha, false, true, null);
+        return this;
+    }
+    
     /**
      * Writes the {@linkplain #image} to the specified output, trying all encoders in the specified iterator in the iteration order.
      * 

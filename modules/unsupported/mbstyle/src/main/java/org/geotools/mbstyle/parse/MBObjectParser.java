@@ -486,7 +486,9 @@ public class MBObjectParser {
         }
         Object obj = json.get(tag);
 
-        if (obj instanceof String) {
+        if (obj == null) {
+            return ff.literal(fallback);  
+        } else if (obj instanceof String) {
             String str = (String) obj;
             return ff.literal(str);
         } else if (obj instanceof Number) {

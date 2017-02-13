@@ -327,7 +327,7 @@ public class CircleMBLayer extends MBLayer {
 	 * @return
 	 */
 	public Displacement toDisplacement() {
-		Object defn = paint.get("filter-translate");
+		Object defn = paint.get("circle-translate");
 		if (defn == null) {
 			return null;
 		} else if (defn instanceof JSONArray) {

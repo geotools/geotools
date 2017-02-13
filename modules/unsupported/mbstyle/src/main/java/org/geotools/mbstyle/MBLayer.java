@@ -83,13 +83,11 @@ public abstract class MBLayer {
             switch( type ){
             case "line": return new LineMBLayer(layer);
             case "fill": return new FillMBLayer(layer);
-            case "raster": return new RasterMBLayer(layer);
-            
+            case "raster": return new RasterMBLayer(layer);                       
+            case "circle": return new CircleMBLayer(layer);
             case "symbol":
-            case "circle":
             case "fill-extrusion":
-                throw new UnsupportedOperationException("MBLayer type "+type+" not yet implemented");
-                
+                throw new UnsupportedOperationException("MBLayer type "+type+" not yet implemented");                
             default:
                 throw new MBFormatException(("\"type\" " + type
                         + " is not a valid layer type. Must be one of: "

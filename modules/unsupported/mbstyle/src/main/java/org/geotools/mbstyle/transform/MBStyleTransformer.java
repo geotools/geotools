@@ -24,6 +24,7 @@ import java.util.List;
 import javax.measure.unit.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.mbstyle.CircleMBLayer;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.LineMBLayer;
 import org.geotools.mbstyle.MBFormatException;
@@ -88,6 +89,8 @@ public class MBStyleTransformer {
             return transform((RasterMBLayer) layer);
         } else if (layer instanceof LineMBLayer) {
             return transform((LineMBLayer) layer);
+        } else if (layer instanceof CircleMBLayer) {
+            return transform((CircleMBLayer) layer);
         }
 
         throw new MBFormatException(layer.getType() + " not yet supported.");
@@ -229,6 +232,47 @@ public class MBStyleTransformer {
                 sf.description(Text.text("MBStyle " + layer.getId()),
                         Text.text("Generated for " + layer.getSourceLayer())),
                 null, Collections.emptySet(), Collections.singleton(SemanticType.LINE), rules);
+    }
+    
+    /**
+     * Transform {@link CircleMBLayerle} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     * 
+     * @param layer Describing circle styling
+     * @return FeatureTypeStyle
+     */
+    FeatureTypeStyle transform(CircleMBLayer layer) {
+        // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a default opacity.
+        Stroke s = sf.stroke(layer.circleStrokeColor(), layer.circleStrokeOpacity(),
+                layer.circleStrokeWidth(), null, Stroke.DEFAULT.getLineCap(), null, null);
+        Fill f = sf.fill(null, layer.circleColor(), layer.circleOpacity());
+        Mark m = sf.mark(ff.literal("circle"), f, s);
+
+        Graphic gr = sf.graphic(Arrays.asList(m), null,
+                ff.multiply(ff.literal(2), layer.circleRadius()), null, null,
+                layer.toDisplacement());
+        gr.graphicalSymbols().clear();
+        gr.graphicalSymbols().add(m);
+
+        PointSymbolizer ps = sf
+                .pointSymbolizer(layer.getId(), ff.property((String) null),
+                        sf.description(Text.text("MBStyle " + layer.getId()),
+                                Text.text("Generated for " + layer.getSourceLayer())),
+                        NonSI.PIXEL, gr);
+
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY,
+                Arrays.asList(ps), Filter.INCLUDE);
+
+        rules.add(rule);
+        return sf.featureTypeStyle(layer.getId(),
+                sf.description(Text.text("MBStyle " + layer.getId()),
+                        Text.text("Generated for " + layer.getSourceLayer())),
+                null, Collections.emptySet(), Collections.singleton(SemanticType.POINT), rules);
     }
 
 }

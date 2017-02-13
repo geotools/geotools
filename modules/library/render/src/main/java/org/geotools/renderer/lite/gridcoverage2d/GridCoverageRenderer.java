@@ -498,8 +498,10 @@ public final class GridCoverageRenderer {
      */
     private GridCoverage2D reproject(GridCoverage2D preResample, boolean doReprojection, double[] bkgValues) throws FactoryException {
         GridCoverage2D afterReprojection=null;
-        try{
+        try {
             if (doReprojection) {
+                // always have a ROI to account for pixels outside the image
+                preResample = addRoiIfMissing(preResample);
                 afterReprojection = GridCoverageRendererUtilities.reproject(
                         preResample, 
                         destinationCRS,
@@ -880,40 +882,6 @@ public final class GridCoverageRenderer {
             coverages = cropped;
         }
 
-        /////////////////////////////////////////////////////
-        //
-        // Check if Mosaiking and reprojection must be done,
-        // if so we must add a ROIin order to avoid mosaiking issues
-        //
-        /////////////////////////////////////////////////////
-        // TODO optimize by checking if reprojection adds rotational elements
-        if (coverages.size() > 1 && reprojectionNeeded) {
-            // See if we need to add a ROI to the current images
-            for (int i = 0; i < coverages.size(); i++) {
-                GridCoverage2D coverage = coverages.get(i);
-                if (coverage == null) {
-                    continue;
-                }
-                RenderedImage input = coverage.getRenderedImage();
-                Object roiObject = input.getProperty("ROI");
-                Object gcRoiObject = coverage.getProperty("GC_ROI");
-                if (!(roiObject instanceof ROI) && !(gcRoiObject instanceof ROI)) {
-                    Envelope env = new Envelope(input.getMinX(), input.getMinX() + input.getWidth(),
-                            input.getMinY(), input.getMinY() + input.getHeight());
-                    ROI roi = new ROI(new ROIGeometry(JTS.toGeometry(env)).getAsImage());
-                    PlanarImage pi = PlanarImage.wrapRenderedImage(input);
-                    pi.setProperty("ROI", roi);
-                    Map properties = new HashMap(coverage.getProperties());
-                    properties.put("GC_ROI", roi);
-                    GridCoverage2D coverageWithRoi = gridCoverageFactory.create(coverage.getName(),
-                            pi, coverage.getGridGeometry(), null, new GridCoverage2D[] { coverage },
-                            properties);
-                    coverages.set(i, coverageWithRoi);
-
-                }
-            }
-        }
-
         // reproject if needed
         List<GridCoverage2D> reprojectedCoverages = new ArrayList<GridCoverage2D>();
         for (GridCoverage2D coverage : coverages) {
@@ -1030,6 +998,34 @@ public final class GridCoverageRenderer {
         
         return cropped.getRenderedImage();
 
+    }
+
+    /**
+     * Forces adding ROI to the coverage in case it's missing. It will use the renderer image
+     * footprint.
+     * 
+     * @param coverage
+     * @return
+     */
+    private GridCoverage2D addRoiIfMissing(GridCoverage2D coverage) {
+        RenderedImage input = coverage.getRenderedImage();
+        Object roiObject = input.getProperty("ROI");
+        Object gcRoiObject = coverage.getProperty("GC_ROI");
+        if (!(roiObject instanceof ROI) && !(gcRoiObject instanceof ROI)) {
+            Envelope env = new Envelope(input.getMinX(), input.getMinX() + input.getWidth(),
+                    input.getMinY(), input.getMinY() + input.getHeight());
+            ROI roi = new ROI(new ROIGeometry(JTS.toGeometry(env)).getAsImage());
+            PlanarImage pi = PlanarImage.wrapRenderedImage(input);
+            pi.setProperty("ROI", roi);
+            final Map sourceProperties = coverage.getProperties();
+            Map properties = sourceProperties == null ? new HashMap() : new HashMap(sourceProperties);
+            properties.put("GC_ROI", roi);
+            return gridCoverageFactory.create(coverage.getName(),
+                    pi, coverage.getGridGeometry(), null, new GridCoverage2D[] { coverage },
+                    properties);
+        } else {
+            return coverage;
+        }
     }
 
     /**
@@ -1204,14 +1200,22 @@ public final class GridCoverageRenderer {
         }
     }
 
-    private void paintImage(final Graphics2D graphics, RenderedImage finalImage) {
+    private void paintImage(final Graphics2D graphics, RenderedImage inputImage) {
         final RenderingHints oldHints = graphics.getRenderingHints();
         graphics.setRenderingHints(this.hints);
+        
+        // nothing to do if the input image is null
+        if (inputImage == null) {
+            return;
+        }
 
+        // force transparency on NODATA and ROI
+        RenderedImage transparentImage = new ImageWorker(inputImage).prepareForRendering().getRenderedImage();
+        
         try {
             // debug
             if (DEBUG) {
-                writeRenderedImage(finalImage, "final");
+                writeRenderedImage(transparentImage, "final");
             }
 
             // force solid alpha, the transparency has already been
@@ -1222,7 +1226,7 @@ public final class GridCoverageRenderer {
             // //
             // Drawing the Image
             // //
-            graphics.drawRenderedImage(finalImage, GridCoverageRenderer.IDENTITY);
+            graphics.drawRenderedImage(transparentImage, GridCoverageRenderer.IDENTITY);
 
         } catch (Throwable t) {
             try {
@@ -1236,16 +1240,16 @@ public final class GridCoverageRenderer {
                 // /////////////////////////////////////////////////////////////
                 if (t instanceof IllegalArgumentException) {
                     if (DEBUG) {
-                        writeRenderedImage(finalImage, "preWORKAROUND1");
+                        writeRenderedImage(transparentImage, "preWORKAROUND1");
                     }
-                    final RenderedImage image = new ImageWorker(finalImage)
+                    final RenderedImage componentImage = new ImageWorker(transparentImage)
                             .forceComponentColorModel(true).getRenderedImage();
 
                     if (DEBUG) {
-                        writeRenderedImage(image, "WORKAROUND1");
+                        writeRenderedImage(componentImage, "WORKAROUND1");
 
                     }
-                    graphics.drawRenderedImage(image, GridCoverageRenderer.IDENTITY);
+                    graphics.drawRenderedImage(componentImage, GridCoverageRenderer.IDENTITY);
 
                 } else if (t instanceof ImagingOpException)
                 // /////////////////////////////////////////////////////////////
@@ -1264,18 +1268,18 @@ public final class GridCoverageRenderer {
                 // LARGE IMAGES.
                 // /////////////////////////////////////////////////////////////
                 {
-                    BufferedImage buf = finalImage.getColorModel().hasAlpha() ? new BufferedImage(
-                            finalImage.getWidth(), finalImage.getHeight(),
+                    BufferedImage buf = transparentImage.getColorModel().hasAlpha() ? new BufferedImage(
+                            transparentImage.getWidth(), transparentImage.getHeight(),
                             BufferedImage.TYPE_4BYTE_ABGR) : new BufferedImage(
-                            finalImage.getWidth(), finalImage.getHeight(),
+                            transparentImage.getWidth(), transparentImage.getHeight(),
                             BufferedImage.TYPE_3BYTE_BGR);
                     if (DEBUG) {
                         writeRenderedImage(buf, "preWORKAROUND2");
                     }
                     final Graphics2D g = (Graphics2D) buf.getGraphics();
-                    final int translationX = finalImage.getMinX(), translationY = finalImage
+                    final int translationX = transparentImage.getMinX(), translationY = transparentImage
                             .getMinY();
-                    g.drawRenderedImage(finalImage,
+                    g.drawRenderedImage(transparentImage,
                             AffineTransform.getTranslateInstance(-translationX, -translationY));
                     g.dispose();
                     if (DEBUG) {

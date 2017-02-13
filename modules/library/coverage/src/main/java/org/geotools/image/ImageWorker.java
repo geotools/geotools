@@ -3831,6 +3831,7 @@ public class ImageWorker {
             String opName = op.getOperationName();
 
             // check if we can do a warp-affine reduction
+            final ParameterBlock sourceParamBlock = op.getParameterBlock();
             if (WARP_REDUCTION_ENABLED && "Warp".equals(opName)
                     && mtProperty instanceof MathTransform2D
                     && sourceBoundsProperty instanceof Rectangle) {
@@ -3889,7 +3890,7 @@ public class ImageWorker {
                     Warp warp = wb.buildWarp(chained, mappingBB);
 
                     // do the switch only if we get a warp that is as fast as the original one
-                    Warp sourceWarp = (Warp) op.getParameterBlock().getObjectParameter(0);
+                    Warp sourceWarp = (Warp) sourceParamBlock.getObjectParameter(0);
                     if (warp instanceof WarpGrid
                             || warp instanceof WarpAffine
                             || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine)) {
@@ -3900,8 +3901,7 @@ public class ImageWorker {
                         // Boolean indicating if optional ROI may be reprojected back to the initial image
                         boolean canProcessROI = true;
                         // Boolean indicating if NoData are the same as for the source operation or are not present
-                        Range oldNoData = (Range) (op.getParameterBlock().getNumParameters() > 3 ? op
-                                .getParameterBlock().getObjectParameter(4) : null);
+                        Range oldNoData = (Range) (sourceParamBlock.getNumParameters() > 3 ? sourceParamBlock.getObjectParameter(4) : null);
                         boolean hasSameNodata = (oldNoData == null && nodata == null) || (oldNoData != null && nodata != null && oldNoData.equals(nodata));
                         if (((property == null) || property.equals(java.awt.Image.UndefinedProperty)
                                 || !(property instanceof ROI))) {
@@ -3962,10 +3962,18 @@ public class ImageWorker {
                                 newROI = (ROI) property;
                             }
                             setROI(newROI);
-                            paramBlk.add(warp).add(interpolation).add(bgValues).add(newROI);
+                            paramBlk.add(warp).add(interpolation).add(newROI);
                             if (oldNoData != null) {
                                 paramBlk.set(oldNoData, 4);
                             }
+                        }
+                        
+                        // handle background values
+                        if(bgValues == null && sourceParamBlock.getNumParameters() > 2) {
+                            bgValues = (double[]) sourceParamBlock.getObjectParameter(2);
+                        }
+                        if(bgValues != null) {
+                            paramBlk.set(bgValues, 2);
                         }
 
                         // Checks if ROI can be processed
@@ -4010,7 +4018,7 @@ public class ImageWorker {
 
             // see if we can merge affine with other affine types then
             if ("Affine".equals(opName)) {
-                ParameterBlock paramBlock = op.getParameterBlock();
+                ParameterBlock paramBlock = sourceParamBlock;
                 RenderedImage sSource = paramBlock.getRenderedSource(0);
 
                 AffineTransform sTx = (AffineTransform) paramBlock.getObjectParameter(0);
@@ -4060,7 +4068,7 @@ public class ImageWorker {
                     }
                 }
             } else if ("Scale".equals(opName)) {
-                ParameterBlock paramBlock = op.getParameterBlock();
+                ParameterBlock paramBlock = sourceParamBlock;
                 RenderedImage sSource = paramBlock.getRenderedSource(0);
 
                 float xScale = paramBlock.getFloatParameter(0);

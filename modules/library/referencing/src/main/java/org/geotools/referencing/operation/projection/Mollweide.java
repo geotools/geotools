@@ -185,10 +185,10 @@ public class Mollweide extends MapProjection {
     /**
      * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
      * provider} for the Mollweide projection (not part of the EPSG database).
-     * 
+     *
      * @since 2.7.0
      * @author Andrea Aime
-     * 
+     *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
     public static class MollweideProvider extends AbstractProvider {
@@ -196,7 +196,7 @@ public class Mollweide extends MapProjection {
          * For cross-version compatibility.
          */
         private static final long serialVersionUID = -2616680275771881688L;
-        
+
 
         /**
          * The parameters group.
@@ -216,7 +216,8 @@ public class Mollweide extends MapProjection {
         /**
          * Creates a transform from the specified group of parameter values.
          *
-         * @param parameters The group of parameter values.
+         * @param parameters
+         *            The group of parameter values.
          * @return The created math transform.
          * @throws ParameterNotFoundException
          *             if a required parameter was not found.
@@ -227,14 +228,14 @@ public class Mollweide extends MapProjection {
             return new Mollweide(ProjectionMode.Mollweide, PARAMETERS, parameters);
         }
     }
-    
+
     /**
      * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
      * provider} for the Wagner IV projection (not part of the EPSG database).
-     * 
+     *
      * @since 2.7.0
      * @author Andrea Aime
-     * 
+     *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
     public static class WagnerIVProvider extends AbstractProvider {

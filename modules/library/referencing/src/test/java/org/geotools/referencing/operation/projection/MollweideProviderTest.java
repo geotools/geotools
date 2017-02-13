@@ -47,7 +47,6 @@ public class MollweideProviderTest {
         assertNotNull(parameters.descriptor(FALSE_NORTHING));
         assertNotNull(parameters.descriptor(FALSE_EASTING));
         assertNotNull(parameters.descriptor(CENTRAL_MERIDIAN));
-
     }
 
     @Test

@@ -1333,6 +1333,19 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
+    public void testWarpAffinePreserveBackgorund() throws Exception {
+        // pick a RGB image, do warp and then affine
+        double[] background = new double[] {1,2,3};
+        GridCoverage2D warped = project(EXAMPLES.get(0), CRS.parseWKT(GOOGLE_MERCATOR_WKT), null, "nearest", background, null);
+        
+        ImageWorker iwa = new ImageWorker(warped.getRenderedImage());
+        iwa.affine(AffineTransform.getScaleInstance(0.5, 0.5), Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+        RenderedOp reduced = (RenderedOp) iwa.getRenderedImage();
+        assertEquals("Warp", reduced.getOperationName());
+        assertEquals(background, reduced.getParameterBlock().getObjectParameter(2));
+    }
+    
+    @Test
     public void testOptimizedWarpOnLargeUpscale() throws Exception {
         BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_BYTE_INDEXED);
         GridCoverage2D source = new GridCoverageFactory().create("Test", bi, new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));

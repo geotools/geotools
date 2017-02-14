@@ -1,0 +1,117 @@
+{
+    "version": 8,
+    "name": "Empty",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -106.37942820066576,
+        39.62499260458827
+    ],
+    "zoom": 15.80212732929003,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "composite": {
+            "url": "mapbox://test.cixwdy1nj001933p91a6wnxe0-2emxh,mjkruszewski.cixwc3qp2001l2wquza8ccz21-658xw",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/test/cixwe1jim001l2sp6his5j6ns",
+    "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "bgcolor",
+            "type": "background",
+            "source": "test-source",
+            "source-layer": "test-source-bg",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "background-opacity": 0.45,
+                "background-color": "#0000FF"
+            }
+        },
+        {
+            "id": "circles",
+            "type": "circle",
+            "source": "test-source",
+            "source-layer": "test-source-circles",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "circle-color": "#FF0000",
+                "circle-opacity": 0.5,
+                "circle-radius": 15,
+                "circle-blur": 1,
+                "circle-translate": [
+                    0,
+                    0
+                ],
+                "circle-stroke-opacity": 0.75,
+                "circle-stroke-width": 2,
+                "circle-stroke-color": "#00FF00"
+            }
+        },
+        {
+            "id": "fills",
+            "type": "fill",
+            "source": "test-source",
+            "source-layer": "test-source-fills",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "#e100ff",
+                "fill-opacity": 0.84,
+                "fill-translate": [
+                    0,
+                    0
+                ]
+            }
+        },
+        {
+            "id": "lines",
+            "type": "line",
+            "source": "test-source",
+            "source-layer": "test-source-lines",
+            "filter": [
+                "==",
+                "someAttr",
+                "someValue"
+            ],
+            "layout": {
+                "visibility": "visible",
+                "line-cap": "square",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#00FFFF",
+                "line-opacity": 0.75,
+                "line-translate-anchor": "viewport",
+                "line-dasharray": [10, 10],
+                "line-offset": 0,
+                "line-gap-width": 0,
+                "line-translate": [
+                    0,
+                    0
+                ],
+                "line-width": 5,
+                "line-blur": 2
+            }
+        }
+    ],
+    "created": "2017-01-13T22:41:15.108Z",
+    "id": "cixwe1jim001l2sp6his5j6ns",
+    "modified": "2017-02-08T16:37:48.232Z",
+    "owner": "test",
+    "draft": false
+}

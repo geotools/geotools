@@ -18,8 +18,7 @@ package org.geotools.mbstyle.transform;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.awt.RenderingHints;
@@ -37,6 +36,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
+import org.geotools.mbstyle.BackgroundMBLayer;
 import org.geotools.mbstyle.CircleMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
@@ -46,6 +46,11 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -61,21 +66,22 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 
-public class QGISMarkTest {
+public class VisualTests {
 
     JSONParser jsonParser = new JSONParser();
     
-    private static final long DISPLAY_TIME = 3000;
+    private static final long DISPLAY_TIME = 6000;
     
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-
     SimpleFeatureSource pointFS;
-
+    SimpleFeatureSource pointleftFS;
+    SimpleFeatureSource polyRight;
     SimpleFeatureSource lineFS;
-
+    SimpleFeatureSource gridFS;
+    SimpleFeatureSource bgFS;
     ReferencedEnvelope bounds;
 
     @BeforeClass
@@ -89,41 +95,14 @@ public class QGISMarkTest {
         File property = new File(TestData.getResource(this, "testpoints.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         pointFS = ds.getFeatureSource("testpoints");
+        gridFS = ds.getFeatureSource("testgrid");
         lineFS = ds.getFeatureSource("testlines");
+        bgFS = ds.getFeatureSource("background");
+        pointleftFS = ds.getFeatureSource("testpointsleft");
+        polyRight = ds.getFeatureSource("testpolygonsright");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         System.setProperty("org.geotools.test.interactive", "true");
-    }
-
-    File file(String name) {
-        return new File(
-                "src/test/resources/org/geotools/renderer/lite/test-data/mark/" + name + ".png");
-    }
-
-    /**
-     * Test all QGIS marks in a single image.
-     */
-    @Test
-    public void testQGIS() throws Exception {
-        Style lineStyle = styleFactory.createStyle();
-        Rule rule = styleFactory.createRule();
-        Stroke stroke = styleFactory.createStroke(
-                filterFactory.literal(Color.BLACK),
-                filterFactory.literal(1));
-        rule.symbolizers().add(styleFactory.createLineSymbolizer(stroke, null));
-        FeatureTypeStyle fts2 = styleFactory.createFeatureTypeStyle(new Rule[]{rule});        
-        lineStyle.featureTypeStyles().addAll(Arrays.asList(fts2));
-//
-        MapContent mc = new MapContent();
-//        mc.addLayer(new FeatureLayer(pointFS, pStyle));
-        mc.addLayer(new FeatureLayer(lineFS, lineStyle));
-//
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setMapContent(mc);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image = showRender("test name", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
-
-        // ImageAssert.assertEquals(file("qgis"), image, 50);
     }
     
     /**
@@ -156,10 +135,7 @@ public class QGISMarkTest {
 
         // ImageAssert.assertEquals(file("qgis"), image, 50);
     }
-    
-    /**
-     * Test all QGIS marks in a single image.
-     */
+
     @Test
     public void testMBLineVisual() throws Exception {
         
@@ -186,6 +162,103 @@ public class QGISMarkTest {
 
         // ImageAssert.assertEquals(file("qgis"), image, 50);
     }
+
+    @Test
+    public void testMBBackgroundVisual() throws Exception {
+        
+        // Read file to JSONObject
+        InputStream is = this.getClass().getResourceAsStream("backgroundColorStyleTest.json");
+        String fileContents = IOUtils.toString(is, "utf-8");
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);        
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+        
+        
+        MapContent mc = new MapContent();
+        // mc.addLayer(new FeatureLayer(pointFS, pointStyle));
+        mc.addLayer(new FeatureLayer(bgFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();        
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = showRender("test name", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
+
+        // ImageAssert.assertEquals(file("qgis"), image, 50);
+    }    
+    
+    @Test
+    public void testMixed() throws Exception {               
+        MapContent mc = new MapContent();
+        // mc.addLayer(new FeatureLayer(pointFS, pointStyle));
+        
+        mc.addLayer(new FeatureLayer(pointleftFS, defaultPointStyle()));
+        mc.addLayer(new FeatureLayer(polyRight, defaultPolyStyle()));
+        mc.addLayer(new FeatureLayer(gridFS, defaultLineStyle()));
+
+        StreamingRenderer renderer = new StreamingRenderer();        
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = showRender("test name", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
+
+        // ImageAssert.assertEquals(file("qgis"), image, 50);
+    }
+    
+    @Test
+    public void testMixed2() throws Exception {
+        
+        // Read file to JSONObject
+        InputStream is = this.getClass().getResourceAsStream("testVisualize.json");
+        String fileContents = IOUtils.toString(is, "utf-8");
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        
+        List<MBLayer> bgs = mbStyle.layers("test-source", "test-source-bg");
+        List<MBLayer> circles = mbStyle.layers("test-source", "test-source-circles");
+        List<MBLayer> fills = mbStyle.layers("test-source", "test-source-fills");
+        List<MBLayer> lines =mbStyle.layers("test-source", "test-source-lines");
+        
+        assertEquals(1, bgs.size());
+        assertEquals(1, circles.size());
+        assertEquals(1, fills.size());
+        assertEquals(1, lines.size());
+        
+        MapContent mc = new MapContent();
+        MBStyleTransformer transformer = new MBStyleTransformer();
+       
+        Style bgStyle = styleFactory.createStyle();
+        bgStyle.featureTypeStyles().add(transformer.transform(bgs.get(0)));
+        mc.addLayer(new FeatureLayer(bgFS, bgStyle));
+        
+        Style circleStyle = styleFactory.createStyle();
+        circleStyle.featureTypeStyles().add(transformer.transform(circles.get(0)));
+        mc.addLayer(new FeatureLayer(pointleftFS, circleStyle));
+        
+        Style fillStyle = styleFactory.createStyle();
+        fillStyle.featureTypeStyles().add(transformer.transform(fills.get(0)));
+        mc.addLayer(new FeatureLayer(polyRight, fillStyle));
+        
+        Style lineStyle = styleFactory.createStyle();
+        lineStyle.featureTypeStyles().add(transformer.transform(lines.get(0)));
+        mc.addLayer(new FeatureLayer(lineFS, lineStyle));
+        
+//        
+//        mc.addLayer(new FeatureLayer(pointleftFS, defaultPointStyle()));
+//        mc.addLayer(new FeatureLayer(polyRight, defaultPolyStyle()));
+//        mc.addLayer(new FeatureLayer(gridFS, defaultLineStyle()));
+
+        StreamingRenderer renderer = new StreamingRenderer();        
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = showRender("test name", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
+
+        // ImageAssert.assertEquals(file("qgis"), image, 50);
+    }
     
     
     public Style defaultLineStyle() {        
@@ -194,11 +267,62 @@ public class QGISMarkTest {
                 filterFactory.literal(Color.BLACK),
                 filterFactory.literal(1));
         rule.symbolizers().add(styleFactory.createLineSymbolizer(stroke, null));
-        FeatureTypeStyle fts2 = styleFactory.createFeatureTypeStyle(new Rule[]{rule});                
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});                
         Style lineStyle = styleFactory.createStyle();
-        lineStyle.featureTypeStyles().addAll(Arrays.asList(fts2));
+        lineStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return lineStyle;
     }        
+    
+    public Style defaultPointStyle() {        
+        
+        Graphic gr = styleFactory.createDefaultGraphic();
+        Mark mark = styleFactory.getCircleMark();
+        mark.setStroke(styleFactory.createStroke(
+                filterFactory.literal(Color.BLACK), filterFactory.literal(1)));
+        mark.setFill(styleFactory.createFill(filterFactory.literal(Color.BLACK)));
+
+        gr.graphicalSymbols().clear();
+        gr.graphicalSymbols().add(mark);
+        gr.setSize(filterFactory.literal(1));
+        
+        
+        Rule rule = styleFactory.createRule();
+        PointSymbolizer p = styleFactory.createPointSymbolizer(gr, null);
+        
+        rule.symbolizers().add(p);
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});                
+        Style pointStyle = styleFactory.createStyle();
+        pointStyle.featureTypeStyles().addAll(Arrays.asList(fts));
+        return pointStyle;
+    }    
+    
+    public Style defaultPolyStyle() {        
+
+        // create a partially opaque outline stroke
+        Stroke stroke = styleFactory.createStroke(
+                filterFactory.literal(Color.BLACK),
+                filterFactory.literal(1),
+                filterFactory.literal(1));
+
+        // create a partial opaque fill
+        Fill fill = styleFactory.createFill(
+                filterFactory.literal(Color.BLACK),
+                filterFactory.literal(1));
+
+        /*
+         * Setting the geometryPropertyName arg to null signals that we want to
+         * draw the default geometry of features
+         */
+        PolygonSymbolizer sym = styleFactory.createPolygonSymbolizer(stroke, fill, null);
+
+        Rule rule = styleFactory.createRule();
+        rule.symbolizers().add(sym);
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+        Style style = styleFactory.createStyle();
+        style.featureTypeStyles().add(fts);
+
+        return style;
+    }    
     
     
     /**

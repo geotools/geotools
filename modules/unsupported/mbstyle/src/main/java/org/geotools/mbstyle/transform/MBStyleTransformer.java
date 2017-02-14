@@ -111,9 +111,7 @@ public class MBStyleTransformer {
      */
     public FeatureTypeStyle transform(FillMBLayer layer) {
         PolygonSymbolizer symbolizer;
-        // use of factory is more verbose, but we supply every value (no defaults)
-        
-        // stroke from fill outline color and opacity
+        // use factory to avoid defaults values        
         Stroke stroke = sf.stroke(
                 layer.fillOutlineColor(),
                 ff.literal(1),
@@ -122,19 +120,19 @@ public class MBStyleTransformer {
                 ff.literal("butt"),
                 null,
                 null);
-
+        
         // from fill pattern or fill color
-        Fill fill; 
-        if( layer.getFillPattern() != null ){
-            fill = sf.fill(null,null, layer.fillOpacity());
+        Fill fill;
+        if (layer.getFillPattern() != null) {
+            // TODO: Fill graphic (with external graphics)
+            fill = sf.fill(null, null, layer.fillOpacity());    
+        } else {
+            fill = sf.fill(null, layer.fillColor(), layer.fillOpacity());
         }
-        else {
-            fill = sf.fill(null,  layer.fillColor(),  layer.fillOpacity());
-        }
-        // String name, Expression geometry,
+
+        // TODO: Is there a better way to select the first geometry?
         symbolizer = sf.polygonSymbolizer(
                  layer.getId(),
-                 //TODO: Is there a better way to do this? Is there a select first geometry syntax?
                  ff.property((String)null),
                  sf.description(Text.text("fill"),null),
                  NonSI.PIXEL,
@@ -142,15 +140,14 @@ public class MBStyleTransformer {
                  fill,
                  layer.toDisplacement(),
                  ff.literal(0));
-        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
-        symbolizers.add(symbolizer);
         
-        // List of opengis rules here (needed for constructor)
-        List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.POSITIVE_INFINITY,symbolizers, Filter.INCLUDE);
+        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(symbolizer), Filter.INCLUDE);
+
+        // Set legend graphic to null.
         //TODO: How do other style transformers set a null legend?
         rule.setLegendGraphic(new Graphic[0]);
-        rules.add(rule);
+        
+        
         return sf.featureTypeStyle(
                 layer.getId(),
                 sf.description(
@@ -159,7 +156,7 @@ public class MBStyleTransformer {
                 null, // (unused)
                 Collections.emptySet(),
                 Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons 
-                rules
+                Arrays.asList(rule)
                 );
     }
 

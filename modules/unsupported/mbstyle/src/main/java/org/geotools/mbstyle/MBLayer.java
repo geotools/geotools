@@ -164,7 +164,7 @@ public abstract class MBLayer {
      * @return name of source description to be used for this layer
      */
     public String getSource() {
-        return parse.get(json,"source");
+        return parse.optional(String.class, json, "source", null);
     }
 
     /**
@@ -176,7 +176,7 @@ public abstract class MBLayer {
      * @return layer to use from a vector tile source
      */
     public String getSourceLayer() {
-        return parse.get(json,"source-layer");
+        return parse.optional(String.class, json, "source-layer", null);
     }
 
     /**

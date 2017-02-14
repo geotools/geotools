@@ -16,6 +16,8 @@
  */
 package org.geotools.mbstyle;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,11 +147,96 @@ public class MBStyle {
         }
         return layersList;
     }
-    /** 
+    
+    /**
      * A human-readable name for the style
+     * 
      * @return human-readable name, optional string.
      */
     public String getName() {
-        return parse.get(json,"name");
+        return parse.optional(String.class, json, "name", null);
+    }    
+    
+    /**
+     * (Optional) Arbitrary properties useful to track with the stylesheet, but do not influence rendering. Properties should be prefixed to avoid
+     * collisions, like 'mapbox:'.
+     * 
+     * @return {@link JSONObject} containing the metadata.
+     */
+    public JSONObject getMetadata() {
+        return parse.getJSONObject(json, "metadata", new JSONObject());
     }
+    
+    /**
+     *  (Optional) Default map center in longitude and latitude. The style center will be used only if the map has not been positioned by other means (e.g. map options or user interaction).
+
+     * @return A {@link Point} for the map center, or null if the style contains no center.
+     */
+    public Point2D getCenter() {
+        double[] coords = parse.array(json, "center", null);
+        if (coords == null) {
+            return null;
+        } else if (coords.length != 2){
+            throw new MBFormatException("\"center\" array must be length 2.");
+        } else {            
+            return new Point2D.Double(coords[0], coords[1]);            
+        }
+    }
+    
+    /**
+     * (Optional) Default zoom level. The style zoom will be used only if the map has not been positioned by other means (e.g. map options or user interaction).
+     * 
+     * @return Number for the zoom level, or null.
+     */
+    public Number getZoom() {
+        return parse.optional(Number.class, json, "zoom", null);
+    }
+
+    /**
+     * (Optional) Default bearing, in degrees clockwise from true north. The style bearing will be used only if the map has not been positioned by
+     * other means (e.g. map options or user interaction).
+     * 
+     * @return Number for the bearing. Units in degrees. Defaults to 0.
+     * 
+     */
+    public Number getBearing() {
+        return parse.optional(Number.class, json, "bearing", 0);
+    }
+    
+    /**
+     * (Optional) Default pitch, in degrees. Zero is perpendicular to the surface, for a look straight down at the map, while a greater value like 60
+     * looks ahead towards the horizon. The style pitch will be used only if the map has not been positioned by other means (e.g. map options or user
+     * interaction).
+     * 
+     * @return Number for the pitch.Units in degrees. Defaults to 0.
+     */
+    public Number getPitch() {
+        return parse.optional(Number.class, json, "pitch", 0);
+    }   
+
+    /**
+     * A base URL for retrieving the sprite image and metadata. The extensions .png, .json and scale factor @2x.png will be automatically appended.
+     * This property is required if any layer uses the background-pattern, fill-pattern, line-pattern, fill-extrusion-pattern, or icon-image
+     * properties.
+     * 
+     * @return The String URL, or null.
+     */
+    public String getSprite() {
+        return parse.optional(String.class, json, "sprite", null);
+    }
+
+    /**
+     * (Optional) A URL template for loading signed-distance-field glyph sets in PBF format. The URL must include {fontstack} and {range} tokens. This
+     * property is required if any layer uses the text-field layout property. 
+     * <br/>
+     * Example: 
+     * <br/>
+     * <code>"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf"</code>
+     * 
+     * @return A String URL template, or null.
+     */
+    public String getGlyphs() {
+        return parse.optional(String.class, json, "glyphs", null);
+    }    
+    
 }

@@ -32,6 +32,7 @@ import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.LineMBLayer;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
@@ -55,9 +56,7 @@ import org.opengis.style.GraphicalSymbol;
  */
 public class MapBoxStyleTest {
 
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
-    JSONParser jsonParser = new JSONParser();
+    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();  
 
     /**
      * Test parsing a Mapbox fill layer
@@ -338,8 +337,6 @@ public class MapBoxStyleTest {
      * Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}.
      */
     private JSONObject parseTestStyle(String filename) throws IOException, ParseException {
-        InputStream is = this.getClass().getResourceAsStream(filename);
-        String fileContents = IOUtils.toString(is, "utf-8");
-        return (JSONObject) jsonParser.parse(fileContents);
+        return MapboxTestUtils.parseTestStyle(filename);
     }
 }

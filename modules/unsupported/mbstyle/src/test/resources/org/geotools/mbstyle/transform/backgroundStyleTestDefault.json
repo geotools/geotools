@@ -25,6 +25,8 @@
         {
             "id": "backgrounddefault",
             "type": "background",
+            "source": "test-source",
+            "source-layer": "test-source-layer",            
             "metadata": {},
             "layout": {
                 "visibility": "visible"

@@ -16,9 +16,7 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -28,6 +26,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.mbstyle.BackgroundMBLayer;
 import org.geotools.mbstyle.CircleMBLayer;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.LineMBLayer;
@@ -66,10 +65,7 @@ public class MapBoxStyleTest {
     @Test
     public void testFill() throws IOException, ParseException {
 
-        // Read file to JSONObject
-        InputStream is = this.getClass().getResourceAsStream("fillStyleTest.json");
-        String fileContents = IOUtils.toString(is, "utf-8");
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+        JSONObject jsonObject = parseTestStyle("fillStyleTest.json");
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(jsonObject);
@@ -96,10 +92,7 @@ public class MapBoxStyleTest {
      */
     @Test
     public void testRaster() throws IOException, ParseException {
-        // Read file to JSONObject
-        InputStream is = this.getClass().getResourceAsStream("rasterStyleTest.json");
-        String fileContents = IOUtils.toString(is, "utf-8");
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+        JSONObject jsonObject = parseTestStyle("rasterStyleTest.json");
 
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
 
@@ -127,10 +120,7 @@ public class MapBoxStyleTest {
      */
     @Test
     public void testLine() throws IOException, ParseException {
-        // Read file to JSONObject
-        InputStream is = this.getClass().getResourceAsStream("lineStyleTest.json");
-        String fileContents = IOUtils.toString(is, "utf-8");
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+        JSONObject jsonObject = parseTestStyle("lineStyleTest.json");
 
         // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
         MBStyle mbStyle = new MBStyle(jsonObject);
@@ -167,10 +157,7 @@ public class MapBoxStyleTest {
     
     @Test
     public void testLineDefaults() throws IOException, ParseException {
-        // Read file to JSONObject
-        InputStream is = this.getClass().getResourceAsStream("lineStyleTestEmpty.json");
-        String fileContents = IOUtils.toString(is, "utf-8");
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+        JSONObject jsonObject = parseTestStyle("lineStyleTestEmpty.json");
 
         // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
         MBStyle mbStyle = new MBStyle(jsonObject);
@@ -200,10 +187,7 @@ public class MapBoxStyleTest {
     
     @Test
     public void testCircle() throws IOException, ParseException {
-        // Read file to JSONObject
-        InputStream is = this.getClass().getResourceAsStream("circleStyleTest.json");
-        String fileContents = IOUtils.toString(is, "utf-8");
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+        JSONObject jsonObject = parseTestStyle("circleStyleTest.json");
 
         // Find the CircleMBLayer and assert it contains the correct FeatureTypeStyle.
         MBStyle mbStyle = new MBStyle(jsonObject);
@@ -252,10 +236,7 @@ public class MapBoxStyleTest {
 
     @Test
     public void testCircleDefaults() throws IOException, ParseException {
-        // Read file to JSONObject
-        InputStream is = this.getClass().getResourceAsStream("circleStyleTestDefaults.json");
-        String fileContents = IOUtils.toString(is, "utf-8");
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(fileContents);
+        JSONObject jsonObject = parseTestStyle("circleStyleTestDefaults.json");
 
         // Find the CircleMBLayer and assert it contains the correct FeatureTypeStyle.
         MBStyle mbStyle = new MBStyle(jsonObject);
@@ -300,5 +281,65 @@ public class MapBoxStyleTest {
         assertEquals(Integer.valueOf(0), m.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(Integer.valueOf(1), m.getStroke().getOpacity().evaluate(null, Integer.class));
 
+    }
+    
+    @Test
+    public void testBackgroundColor() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("backgroundColorStyleTest.json");
+        
+        // Find the CircleMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof BackgroundMBLayer);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0));
+
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof PolygonSymbolizer);
+        PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
+        
+        assertEquals(Color.GREEN, psym.getFill().getColor().evaluate(null, Color.class));
+        assertEquals(Double.valueOf(.45), psym.getFill().getOpacity().evaluate(null, Double.class), .0001);
+        
+        assertNull(psym.getStroke());
+    }
+    
+    @Test
+    public void testBackgroundDefaults() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("backgroundStyleTestDefault.json");
+        
+        // Find the CircleMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof BackgroundMBLayer);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0));
+
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof PolygonSymbolizer);
+        PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
+        
+        assertEquals(Color.BLACK, psym.getFill().getColor().evaluate(null, Color.class));
+        assertEquals(Integer.valueOf(1), psym.getFill().getOpacity().evaluate(null, Integer.class));
+        
+        assertNull(psym.getStroke());
+    }
+    
+    /**
+     * 
+     * Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}.
+     */
+    private JSONObject parseTestStyle(String filename) throws IOException, ParseException {
+        InputStream is = this.getClass().getResourceAsStream(filename);
+        String fileContents = IOUtils.toString(is, "utf-8");
+        return (JSONObject) jsonParser.parse(fileContents);
     }
 }

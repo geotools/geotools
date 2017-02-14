@@ -25,23 +25,15 @@
         {
             "id": "backgroundimg",
             "type": "background",
+            "source": "test-source",
+            "source-layer": "test-source-layer",            
             "layout": {
                 "visibility": "visible"
             },
             "paint": {
                 "background-pattern": "homer-simpson",
-                "background-opacity": 0.75
-            }
-        },
-        {
-            "id": "mapbox-mapbox-satellite",
-            "type": "raster",
-            "source": "mapbox://mapbox.satellite",
-            "layout": {
-                "visibility": "visible"
-            },
-            "paint": {
-                "raster-opacity": 0.63
+                "background-opacity": 0.75,
+                "background-color": "#00FF00"
             }
         }
     ],

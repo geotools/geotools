@@ -16,15 +16,16 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.BackgroundMBLayer;
 import org.geotools.mbstyle.CircleMBLayer;
@@ -44,7 +45,6 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Symbolizer;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -81,9 +81,20 @@ public class MapBoxStyleTest {
         
         Expression expr =  psym.getFill().getColor();
         assertNotNull("fillColor set", expr);
-        assertEquals( Color.decode("#E100FF"), expr.evaluate(null,Color.class) );
+        assertEquals( Color.decode("#FF595E"), expr.evaluate(null,Color.class) );
         assertEquals(Double.valueOf(.84),
                 psym.getFill().getOpacity().evaluate(null, Double.class));
+        
+        Expression colorStroke = psym.getStroke().getColor();
+        assertNotNull("stroke color set", colorStroke);
+        assertEquals(Color.decode("#1982C4"), colorStroke.evaluate(null, Color.class));
+        
+        assertNotNull("displacement not null", psym.getDisplacement());
+        assertNotNull("displacementX not null",  psym.getDisplacement().getDisplacementX());
+        assertNotNull("displacementY not null",  psym.getDisplacement().getDisplacementY());
+        assertEquals(Integer.valueOf(20), psym.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(20), psym.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+        
     }
 
     /**

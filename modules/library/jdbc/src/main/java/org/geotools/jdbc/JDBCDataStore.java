@@ -306,7 +306,7 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected List<ConnectionLifecycleListener> connectionLifecycleListeners = new CopyOnWriteArrayList<ConnectionLifecycleListener>();
 
-    protected JDBCCallbackFactory callbackFactory;
+    protected JDBCCallbackFactory callbackFactory = JDBCCallbackFactory.NULL;
 
     private volatile NamePatternEscaping namePatternEscaping;
 

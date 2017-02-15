@@ -19,7 +19,7 @@ import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FunctionParseTests {
+public class FunctionParseTest {
 
     Map<String, JSONObject> testLayersById = new HashMap<>();
 

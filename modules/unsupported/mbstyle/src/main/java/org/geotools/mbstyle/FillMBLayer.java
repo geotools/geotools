@@ -188,7 +188,7 @@ public class FillMBLayer extends MBLayer {
      * @return
      */
     public Displacement toDisplacement() {
-        Object defn  = paint.get("filter-translate");
+        Object defn  = paint.get("fill-translate");
         if( defn == null ){
             return null;
         }

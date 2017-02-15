@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.geotools.filter.function.InterpolateFunction;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -199,6 +200,16 @@ public class MBFunction {
      */
     public JSONArray getStops() {
         return parse.getJSONArray(json, "stops", null);
+    }
+    
+    /**
+     * (Optional) Number. Default is 1. The exponential base of the interpolation curve. It controls the rate at which the function output increases.
+     * Higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.
+     * 
+     * @return The exponential base of the interpolation curve.
+     */
+    public Number getBase() {
+        return parse.optional(Number.class, json, "base", 1);
     }
 
     /**

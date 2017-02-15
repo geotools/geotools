@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.factory.Hints;
 import org.geotools.feature.GeometryAttributeImpl;
@@ -97,6 +98,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      * geometry factory used to create geometry objects
      */
     protected GeometryFactory geometryFactory;
+
+    /**
+     * the query
+     */
+    protected Query query;
+
     /**
      * hints
      */
@@ -135,9 +142,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     
     protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
 
-    public JDBCFeatureReader( String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) 
+    public JDBCFeatureReader( String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) 
         throws SQLException {
-        init( featureSource, featureType, hints );
+        init( featureSource, featureType, query );
         
         //create the result set
         this.cx = cx;
@@ -148,10 +155,10 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         runQuery(() -> st.executeQuery(sql), st);
     }
     
-    public JDBCFeatureReader( PreparedStatement st, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) 
+    public JDBCFeatureReader( PreparedStatement st, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) 
         throws SQLException {
             
-        init( featureSource, featureType, hints );
+        init( featureSource, featureType, query );
         
         //create the result set
         this.cx = cx;
@@ -162,8 +169,8 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     }
     
     public JDBCFeatureReader(ResultSet rs, Connection cx, int offset, JDBCFeatureSource featureSource, 
-        SimpleFeatureType featureType, Hints hints) throws SQLException {
-        init(featureSource, featureType, hints);
+        SimpleFeatureType featureType, Query query) throws SQLException {
+        init(featureSource, featureType, query);
         
         this.cx = cx;
         this.st = rs.getStatement();
@@ -171,7 +178,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.offset = offset;
     }
 
-    protected void init( JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) {
+    protected void init( JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) {
         // init the tracer if we need to debug a connection leak
         if(TRACE_ENABLED) {
             tracer = new Exception();
@@ -183,7 +190,8 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.dataStore = featureSource.getDataStore();
         this.featureType = featureType;
         this.tx = featureSource.getTransaction();
-        this.hints = hints;
+        this.query = query;
+        this.hints = query != null ? query.getHints() : null;
         
         //grab a geometry factory... check for a special hint
         geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
@@ -271,6 +279,10 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
 
     public PrimaryKey getPrimaryKey() {
         return pkey;
+    }
+
+    public Query getQuery() {
+        return query;
     }
 
     public boolean hasNext() throws IOException {

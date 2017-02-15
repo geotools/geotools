@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
+import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -35,15 +36,15 @@ public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
     JDBCInsertFeatureWriter inserter;
     
     public JDBCUpdateInsertFeatureWriter(String sql, Connection cx,
-            JDBCFeatureSource featureSource, Hints hints) throws SQLException,
+            JDBCFeatureSource featureSource, Query query) throws SQLException,
             IOException {
-        super(sql, cx, featureSource, hints);
+        super(sql, cx, featureSource, query);
     }
     
     public JDBCUpdateInsertFeatureWriter(PreparedStatement ps, Connection cx,
-            JDBCFeatureSource featureSource, String[] attributeNames, Hints hints) throws SQLException,
+            JDBCFeatureSource featureSource, String[] attributeNames, Query query) throws SQLException,
             IOException {
-        super(ps, cx, featureSource, hints);
+        super(ps, cx, featureSource, query);
     }
     
     public boolean hasNext() throws IOException {

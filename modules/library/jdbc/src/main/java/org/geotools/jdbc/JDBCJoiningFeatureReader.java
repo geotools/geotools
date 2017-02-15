@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -45,26 +46,26 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
     SimpleFeatureBuilder joinFeatureBuilder;
     
     public JDBCJoiningFeatureReader(String sql, Connection cx, JDBCFeatureSource featureSource,
-        SimpleFeatureType featureType, JoinInfo join, Hints hints) 
+        SimpleFeatureType featureType, JoinInfo join, Query query) 
         throws SQLException, IOException {
 
         //super(sql, cx, featureSource, retype(featureType, join), hints);
-        super(sql, cx, featureSource, featureType, hints);
+        super(sql, cx, featureSource, featureType, query);
 
-        init(cx, featureSource, featureType, join, hints);
+        init(cx, featureSource, featureType, join, query);
     }
     
     public JDBCJoiningFeatureReader(PreparedStatement st, Connection cx, JDBCFeatureSource featureSource,
-        SimpleFeatureType featureType, JoinInfo join, Hints hints) 
+        SimpleFeatureType featureType, JoinInfo join, Query query) 
         throws SQLException, IOException {
 
-        super(st, cx, featureSource, featureType, hints);
+        super(st, cx, featureSource, featureType, query);
 
-        init(cx, featureSource, featureType, join, hints);
+        init(cx, featureSource, featureType, join, query);
     }
 
     void init(Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, 
-        JoinInfo join, Hints hints) throws SQLException, IOException {
+        JoinInfo join, Query query) throws SQLException, IOException {
         joinReaders = new ArrayList<JDBCFeatureReader>();
         int offset = featureType.getAttributeCount()
                 + getPrimaryKeyOffset(featureSource, getPrimaryKey(), featureType);
@@ -72,7 +73,7 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
         for (JoinPart part : join.getParts()) {
             SimpleFeatureType ft = part.getQueryFeatureType();
             JDBCFeatureReader joinReader = new JDBCFeatureReader(rs, cx, offset, featureSource.getDataStore()
-                    .getAbsoluteFeatureSource(ft.getTypeName()), ft, hints) {
+                    .getAbsoluteFeatureSource(ft.getTypeName()), ft, query) {
                 @Override
                 protected void finalize() throws Throwable {
                     // Do nothing.

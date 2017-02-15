@@ -945,13 +945,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             SQLDialect dialect = getDataStore().getSQLDialect();
             if ( dialect instanceof PreparedStatementSQLDialect ) {
                 PreparedStatement ps = selectSQLPS(querySchema, preQuery, cx);
-                reader = new JDBCFeatureReader( ps, cx, this, fullSchema, query.getHints() );
+                reader = new JDBCFeatureReader( ps, cx, this, fullSchema, query );
             } else {
                 //build up a statement for the content
                 String sql = selectSQL(querySchema, preQuery, null);
                 getDataStore().getLogger().fine(sql);
     
-                reader = new JDBCFeatureReader( sql, cx, this, fullSchema, query.getHints() );
+                reader = new JDBCFeatureReader( sql, cx, this, fullSchema, query );
             }
         } catch (Exception e) {
             // close the connection 

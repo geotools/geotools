@@ -610,13 +610,13 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 //regular query
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
                     PreparedStatement ps = getDataStore().selectSQLPS(querySchema, preQuery, cx);
-                    reader = new JDBCFeatureReader( ps, cx, this, querySchema, query.getHints() );
+                    reader = new JDBCFeatureReader( ps, cx, this, querySchema, query );
                 } else {
                     //build up a statement for the content
                     String sql = getDataStore().selectSQL(querySchema, preQuery);
                     getDataStore().getLogger().fine(sql);
         
-                    reader = new JDBCFeatureReader( sql, cx, this, querySchema, query.getHints() );
+                    reader = new JDBCFeatureReader( sql, cx, this, querySchema, query );
                 }
             }
             else {
@@ -624,13 +624,13 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
                     PreparedStatement ps =getDataStore().selectJoinSQLPS(querySchema, join, preQuery, cx);
-                    reader = new JDBCJoiningFeatureReader(ps, cx, this, querySchema, join, query.getHints());
+                    reader = new JDBCJoiningFeatureReader(ps, cx, this, querySchema, join, query);
                 } else {
                     //build up a statement for the content
                     String sql = getDataStore().selectJoinSQL(querySchema, join, preQuery);
                     getDataStore().getLogger().fine(sql);
         
-                    reader = new JDBCJoiningFeatureReader(sql, cx, this, querySchema, join, query.getHints());
+                    reader = new JDBCJoiningFeatureReader(sql, cx, this, querySchema, join, query);
                 }
                 
                 //check for post filters

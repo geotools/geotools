@@ -24,6 +24,7 @@ import com.mockrunner.mock.jdbc.MockStatement;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -188,7 +189,7 @@ public class JDBCDataStoreTest {
         rowData.setStatement(new MockStatement(cx));
 
         JDBCFeatureReader reader = 
-            new JDBCFeatureReader(rowData, cx, 0, source, tb.buildFeatureType(), new Hints());
+            new JDBCFeatureReader(rowData, cx, 0, source, tb.buildFeatureType(), new Query());
         while (reader.hasNext()) {
             reader.next();
         }

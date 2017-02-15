@@ -18,11 +18,21 @@ package org.geotools.referencing.operation.projection;
 
 import static java.lang.Math.abs;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.measure.unit.NonSI;
+
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -45,9 +55,46 @@ public class MercatorPseudoProvider extends AbstractProvider {
     private static final long serialVersionUID = 118002069939741891L;
 
     /**
+     * The Auxiliary Sphere Type parameter accepts:
+     * <ul>
+     * <li>0 (use semimajor axis or radius of the geographic coordinate system)<li>
+     * <li>1 (use semiminor axis or radius) </li>
+     * <li>2 (calculate and use authalic radius), or 3 (use authalic radius and convert geodetic latitudes to authalic latitudes).</li>
+     * </ul>
+     * 
+     * Geotools only supports 0 for the moment
+     */
+    public static final ParameterDescriptor AUXILIARY_SPHERE_TYPE = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.ESRI,    "Auxiliary_sphere_type"),
+            },
+            0, 0, 0, null);
+    
+    public static final ParameterDescriptor FAKE_ESRI_STANDARD_PARALLELL = createDescriptor(
+            new NamedIdentifier[] {
+                new NamedIdentifier(Citations.ESRI,    "Standard_parallel_1"),
+            },
+            0, 0, 0, NonSI.DEGREE_ANGLE);
+
+    
+    /**
      * The parameters group.
      */
     static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
+            new NamedIdentifier(Citations.EPSG, "Popular Visualisation Pseudo Mercator"),  
+            new NamedIdentifier (Citations.EPSG, "1024"),
+            new NamedIdentifier(Citations.ESRI, "Mercator_Auxiliary_Sphere"),  
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(
+                    VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
+        }, new ParameterDescriptor[] {
+            SEMI_MAJOR, SEMI_MINOR,
+            LATITUDE_OF_ORIGIN, CENTRAL_MERIDIAN, SCALE_FACTOR,
+            FALSE_EASTING, FALSE_NORTHING, 
+            // these two added for ESRI compatibility
+            FAKE_ESRI_STANDARD_PARALLELL, AUXILIARY_SPHERE_TYPE
+        });
+    
+    static final ParameterDescriptorGroup BASE_PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
             new NamedIdentifier(Citations.EPSG, "Popular Visualisation Pseudo Mercator"),  
             new NamedIdentifier (Citations.EPSG, "1024"),
             new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(
@@ -55,7 +102,7 @@ public class MercatorPseudoProvider extends AbstractProvider {
         }, new ParameterDescriptor[] {
             SEMI_MAJOR, SEMI_MINOR,
             LATITUDE_OF_ORIGIN, CENTRAL_MERIDIAN, SCALE_FACTOR,
-            FALSE_EASTING, FALSE_NORTHING
+            FALSE_EASTING, FALSE_NORTHING, 
         });
 
     /**
@@ -111,25 +158,46 @@ public class MercatorPseudoProvider extends AbstractProvider {
         }
 
         /**
+         * Override to discard ESRI extra parameters, they are adding un-welcomed shift in the
+         * reprojection results
+         */
+        @Override
+        public ParameterValueGroup getParameterValues() {
+            final ParameterDescriptorGroup descriptor = BASE_PARAMETERS;
+            final Collection<GeneralParameterDescriptor> expected = descriptor.descriptors();
+            final ParameterValueGroup values = descriptor.createValue();
+            set(expected, AbstractProvider.SEMI_MAJOR,         values, semiMajor       );
+            set(expected, AbstractProvider.SEMI_MINOR,         values, semiMinor       );
+            set(expected, AbstractProvider.CENTRAL_MERIDIAN,   values, centralMeridian );
+            set(expected, AbstractProvider.LATITUDE_OF_ORIGIN, values, latitudeOfOrigin);
+            set(expected, AbstractProvider.SCALE_FACTOR,       values, scaleFactor     );
+            set(expected, AbstractProvider.FALSE_EASTING,      values, falseEasting    );
+            set(expected, AbstractProvider.FALSE_NORTHING,     values, falseNorthing   );
+            if (!Double.isNaN(standardParallel)) {
+                set(expected, AbstractProvider.STANDARD_PARALLEL_1, values, standardParallel);
+            }
+            return values;
+        }
+       
+        /**
          * {@inheritDoc}
          */
         public ParameterDescriptorGroup getParameterDescriptors() {
             return MercatorPseudoProvider.PARAMETERS;
         }
-        
-		@Override
-		protected double getToleranceForAssertions(double longitude,
-				double latitude) {
-			final double delta = abs(longitude - centralMeridian) / 2
-					+ abs(latitude - latitudeOfOrigin);
-			if (delta > 40) {
-				// When far from the valid area, use a larger tolerance.
-				return 1;
-			} else {
-				// this projection forte is not exactly precision
-				return 0.1;
-			}
-		}
+
+        @Override
+        protected double getToleranceForAssertions(double longitude, double latitude) {
+            final double delta = abs(longitude - centralMeridian) / 2
+                    + abs(latitude - latitudeOfOrigin);
+            if (delta > 40) {
+                // When far from the valid area, use a larger tolerance.
+                return 1;
+            } else {
+                // this projection forte is not exactly precision
+                return 0.1;
+            }
+        }
     }
 
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.io.Writer;
 import java.io.IOException;
 import java.awt.RenderingHints;
-import javax.imageio.spi.ServiceRegistry;
-import javax.imageio.spi.RegisterableService;
 
 import org.opengis.referencing.AuthorityFactory;
 import org.geotools.util.Utilities;
@@ -44,14 +42,14 @@ import org.geotools.resources.i18n.ErrorKeys;
  * <ul>
  *   <li>An initially empty {@linkplain #hints map of hints} to be filled by subclasses
  *       constructors. They are the hints to be returned by {@link #getImplementationHints}.</li>
- *   <li>An automatic {@linkplain ServiceRegistry#setOrdering ordering} applied
+ *   <li>An automatic {@linkplain FactoryRegistry#setOrdering ordering} applied
  *       on the basis of subclasses-provided {@linkplain #priority} rank.</li>
  * </ul>
  * <p>
  * When more than one factory implementation is
- * {@linkplain ServiceRegistry#registerServiceProvider registered} for the same category (i.e. they
+ * {@linkplain FactoryRegistry#registerServiceProvider registered} for the same category (i.e. they
  * implement the same {@link Factory} sub-interface), the actual instance to be used is selected
- * according their {@linkplain ServiceRegistry#setOrdering ordering} and user-supplied
+ * according their {@linkplain FactoryRegistry#setOrdering ordering} and user-supplied
  * {@linkplain Hints hints}. Hints have precedence. If more than one factory matches the hints
  * (including the common case where the user doesn't provide any hint at all), then ordering
  * matter.
@@ -125,7 +123,7 @@ public class AbstractFactory implements Factory, RegisterableService {
     /**
      * The minimum priority for a factory, which is {@value}. Factories with lowest priority
      * will be used only if there is no other factory in the same
-     * {@linkplain ServiceRegistry#getCategories category}.
+     * {@linkplain FactoryRegistry#getCategories category}.
      *
      * @see #priority
      * @see #onRegistration
@@ -143,7 +141,7 @@ public class AbstractFactory implements Factory, RegisterableService {
     /**
      * The maximum priority for a factory, which is {@value}. Factories with highest
      * priority will be preferred to any other factory in the same
-     * {@linkplain ServiceRegistry#getCategories category}.
+     * {@linkplain FactoryRegistry#getCategories category}.
      *
      * @see #priority
      * @see #onRegistration
@@ -288,7 +286,7 @@ public class AbstractFactory implements Factory, RegisterableService {
      * @see #MINIMUM_PRIORITY
      * @see #MAXIMUM_PRIORITY
      */
-    public void onRegistration(final ServiceRegistry registry, final Class category) {
+    public void onRegistration(final FactoryRegistry registry, final Class category) {
         for (final Iterator it=registry.getServiceProviders(category, false); it.hasNext();) {
             final Object provider = it.next();
             if (provider!=this && provider instanceof AbstractFactory) {
@@ -321,7 +319,7 @@ public class AbstractFactory implements Factory, RegisterableService {
      *                 deregistered.
      * @param category The registry category from which this object is being deregistered.
      */
-    public void onDeregistration(final ServiceRegistry registry, final Class category) {
+    public void onDeregistration(final FactoryRegistry registry, final Class category) {
         // No action needed.
     }
 

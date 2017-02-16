@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.lang.ref.Reference;
 import java.awt.RenderingHints;
-import javax.imageio.spi.ServiceRegistry;
 
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -40,7 +39,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * an other category.
  * <p>
  * For each category, implementations are registered in a file placed in the
- * {@code META-INF/services/} directory, as specified in the {@link ServiceRegistry}
+ * {@code META-INF/services/} directory, as specified in the {@link ServiceLoader}
  * javadoc. Those files are usually bundled into the JAR file distributed by the vendor.
  * If the same {@code META-INF/services/} file appears many time in different JARs,
  * they are processed as if their content were merged.
@@ -76,7 +75,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * @see org.geotools.referencing.ReferencingFactoryFinder
  * @see org.geotools.coverage.CoverageFactoryFinder
  */
-public class FactoryRegistry extends ServiceRegistry {
+public class FactoryRegistry {
     /**
      * The logger for all events related to factory registry.
      */
@@ -123,6 +122,180 @@ public class FactoryRegistry extends ServiceRegistry {
      */
     private final RecursionCheckingHelper testingHints = new RecursionCheckingHelper();
 
+    private final Map<Class<?>, SubRegistry> categoryMap = new HashMap<>();
+
+    /**
+     * A simple filter interface used by <code>FactoryRegistry.getServiceProviders</code> to select
+     * providers matching an arbitrary criterion. Classes that implement this interface should be
+     * defined in order to make use of the <code>getServiceProviders</code> method of
+     * <code>FactoryRegistry</code> that takes a <code>Filter</code>.
+     *
+     * @see FactoryRegistry#getServiceProviders(Class, FactoryRegistry.Filter, boolean)
+     */
+    public interface Filter {
+
+        /**
+         * Returns <code>true</code> if the given <code>provider</code> object matches the criterion
+         * defined by this <code>Filter</code>.
+         *
+         * @param provider a service provider <code>Object</code>.
+         *
+         * @return true if the provider matches the criterion.
+         */
+        boolean filter(Object provider);
+    }
+    
+    /**
+     * A class for wrapping <code>Iterators</code> with a filter function.
+     * This provides an iterator for a subset without duplication.
+     * @since 15.0
+     */
+    private static class FilterIterator<T> implements Iterator<T> {
+
+        private final Iterator<T> iter;
+        private final Filter filter;
+
+        private T next = null;
+
+        public FilterIterator(Iterator<T> iter, Filter filter) {
+            this.iter = iter;
+            this.filter = filter;
+            advance();
+        }
+
+        private void advance() {
+            while (iter.hasNext()) {
+                T elt = iter.next();
+                if (filter.filter(elt)) {
+                    next = elt;
+                    return;
+                }
+            }
+
+            next = null;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        public T next() {
+            if (next == null) {
+                throw new NoSuchElementException();
+            }
+            T o = next;
+            advance();
+            return o;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    /**
+     * A portion of a registry dealing with a single superclass or interface.
+     * @since 15.0
+     */
+    private static class SubRegistry {
+
+    	private final FactoryRegistry registry;
+
+    	private final Class<?> category;
+
+        // Provider Objects organized by partial ordering
+    	private final PartiallyOrderedSet<Object> poset = new PartiallyOrderedSet<>();
+
+        // Class -> Provider Object of that class
+    	private final Map<Class<?>,Object> map = new HashMap<>();
+
+        public SubRegistry(FactoryRegistry registry, Class<?> category) {
+            this.registry = registry;
+            this.category = category;
+        }
+
+        public boolean registerServiceProvider(Object provider) {
+            Object oprovider = map.get(provider.getClass());
+            boolean present = oprovider != null;
+
+            if (present) {
+                deregisterServiceProvider(oprovider);
+            }
+            map.put(provider.getClass(), provider);
+            poset.add(provider);
+            if (provider instanceof RegisterableService) {
+                ((RegisterableService)provider).onRegistration(registry, category);
+            }
+
+            return !present;
+        }
+
+        /**
+         * If the provider was not previously registered, do nothing.
+         *
+         * @return true if the provider was previously registered.
+         */
+        public boolean deregisterServiceProvider(Object provider) {
+            Object oprovider = map.get(provider.getClass());
+
+            if (provider == oprovider) {
+                map.remove(provider.getClass());
+                poset.remove(provider);
+                if (provider instanceof RegisterableService) {
+                    ((RegisterableService)provider).onDeregistration(registry, category);
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+        public boolean contains(Object provider) {
+            return map.get(provider.getClass()) == provider;
+        }
+
+        public boolean setOrdering(Object firstProvider, Object secondProvider) {
+            return poset.setOrdering(firstProvider, secondProvider);
+        }
+
+        public boolean unsetOrdering(Object firstProvider, Object secondProvider) {
+            return poset.unsetOrdering(firstProvider, secondProvider);
+        }
+
+        public Iterator getServiceProviders(boolean useOrdering) {
+            if (useOrdering) {
+                return poset.iterator();
+            } else {
+                return map.values().iterator();
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+    	public <T> T getServiceProviderByClass(Class<T> providerClass) {
+            return (T)map.get(providerClass);
+        }
+
+        public void clear() {
+            Iterator<?> iter = map.values().iterator();
+            while (iter.hasNext()) {
+                Object provider = iter.next();
+                iter.remove();
+
+                if (provider instanceof RegisterableService) {
+                    ((RegisterableService)provider).onDeregistration(registry, category);
+                }
+            }
+            poset.clear();
+        }
+
+        public void finalize() {
+            clear();
+        }
+    }
+
     /**
      * Constructs a new registry for the specified category.
      *
@@ -152,12 +325,31 @@ public class FactoryRegistry extends ServiceRegistry {
      * @param categories The categories.
      */
     public FactoryRegistry(final Collection<Class<?>> categories) {
-        super(categories.iterator());
+        this(categories.iterator());
         for (final Iterator<Class<?>> it=getCategories(); it.hasNext();) {
             if (needScanForPlugins == null) {
                 needScanForPlugins = new HashSet<Class<?>>();
             }
             needScanForPlugins.add(it.next());
+        }
+    }
+
+    /**
+     * Constructs a new registry for the specified categories.
+     *
+     * @param categories an <code>Iterator</code> containing
+     * <code>Class</code> objects to be used to define categories.
+     *
+     * @exception IllegalArgumentException if
+     * <code>categories</code> is <code>null</code>.
+     */
+    private FactoryRegistry(Iterator<Class<?>> categories) {
+        if (categories == null) {
+            throw new IllegalArgumentException("categories == null!");
+        }
+        while (categories.hasNext()) {
+            Class<?> category = (Class<?>)categories.next();
+            categoryMap.put(category, new SubRegistry(this, category));
         }
     }
 
@@ -195,6 +387,86 @@ public class FactoryRegistry extends ServiceRegistry {
         synchronizeIteratorProviders();
         scanForPluginsIfNeeded(category);
         return getServiceProviders(category, hintsFilter, true);
+    }
+
+    /**
+     * Returns an <code>Iterator</code> containing service provider objects within a given category
+     * that satisfy a criterion imposed by the supplied <code>FactoryRegistry.Filter</code>
+     * object's <code>filter</code> method.
+     *
+     * <p> The <code>useOrdering</code> argument controls the ordering of the results using the
+     * same rules as <code>getServiceProviders(Class, boolean)</code>.
+     *
+     * @param category the category to be retrieved from.
+     * @param filter an instance of <code>FactoryRegistry.Filter</code> whose <code>filter</code>
+     *        method will be invoked.
+     * @param order <code>true</code> if pairwise orderings should be taken account in ordering the
+     *        returned objects.
+     *
+     * @return an <code>Iterator</code> containing service provider objects from the given
+     *         category, possibly in order.
+     *
+     * @throws IllegalArgumentException if there is no category corresponding to <code>category</code>.
+     */
+    public <T> Iterator<T> getServiceProviders(Class<T> category, Filter filter, boolean order) {
+        SubRegistry reg = categoryMap.get(category);
+        if (reg == null) {
+            throw new IllegalArgumentException("category unknown!");
+        }
+        return new FilterIterator<T>(getServiceProviders(category, order), filter);
+    }
+
+    /**
+     * Returns an <code>Iterator</code> containing all registered service providers in the given
+     * category. If <code>order</code> is <code>false</code>, the iterator will return all of the
+     * server provider objects in an arbitrary order. Otherwise, the ordering will respect any
+     * pairwise orderings that have been set.  If the graph of pairwise orderings contains cycles,
+     * any providers that belong to a cycle will not be returned.
+     *
+     * @param category the category to be retrieved from.
+     * @param order <code>true</code> if pairwise orderings should be taken account in ordering the
+     *        returned objects.
+     *
+     * @return an <code>Iterator</code> containing service provider objects from the given
+     *         category, possibly in order.
+     *
+     * @throws IllegalArgumentException if there is no category corresponding to <code>category</code>.
+     */
+    public <T> Iterator<T> getServiceProviders(Class<T> category, boolean order) {
+        SubRegistry reg = (SubRegistry)categoryMap.get(category);
+        if (reg == null) {
+            throw new IllegalArgumentException("category unknown!");
+        }
+        return reg.getServiceProviders(order);
+    }
+
+    /**
+     * Returns the currently registered service provider object that is of the given class type.
+     * At most one object of a given class is allowed to be registered at any given time. If no
+     * registered object has the desired class type, <code>null</code> is returned.
+     *
+     * @param providerClass the <code>Class</code> of the desired service provider object.
+     *
+     * @return a currently registered service provider object with the desired 
+     * <code>Class</code>type, or <code>null</code> is none is present.
+     *
+     * @throws IllegalArgumentException if <code>providerClass</code> is <code>null</code>.
+     */
+    public <T> T getServiceProviderByClass(Class<T> providerClass) {
+        if (providerClass == null) {
+            throw new IllegalArgumentException("providerClass == null!");
+        }
+        Iterator<Class<?>> iter = categoryMap.keySet().iterator();
+        while (iter.hasNext()) {
+            Class<?> c = iter.next();
+            if (c.isAssignableFrom(providerClass)) {
+                T provider = categoryMap.get(c).getServiceProviderByClass(providerClass);
+                if (provider != null) {
+                    return provider;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -769,7 +1041,7 @@ public class FactoryRegistry extends ServiceRegistry {
              * First, scan META-INF/services directories (the default mechanism).
              */
             for (final ClassLoader loader : loaders) {
-                newServices |= register(lookupProviders(category, loader), category, message);
+                newServices |= register(ServiceLoader.load(category, loader).iterator(), category, message);
                 newServices |= registerFromSystemProperty(loader, category, message);
             }
             /*
@@ -888,6 +1160,81 @@ public class FactoryRegistry extends ServiceRegistry {
             }
         }
         return newServices;
+    }
+
+    /**
+     * Adds a service provider object to the registry.
+     * The provider is associated with the given category.
+     *
+     * <p> If <code>provider</code> implements the <code>RegisterableService</code> interface, its
+     * <code>onRegistration</code> method will be called. Its <code>onDeregistration</code> method
+     * will be called each time it is deregistered from a category, for example if a category is
+     * removed or the registry is garbage collected.
+     *
+     * @param provider the service provide object to be registered.
+     * @param category the category under which to register the provider.
+     *
+     * @return true if no provider of the same class was previously registered in the same category
+     *
+     * @throws IllegalArgumentException if <code>provider</code> is <code>null</code> 
+     *         or if there is no category corresponding to <code>category</code>.
+     * @throws ClassCastException if provider does not implement the <code>Class</code> defined by
+     *         <code>category</code>.
+     */
+    public <T> boolean registerServiceProvider(T provider, Class<T> category) {
+        if (provider == null) {
+            throw new IllegalArgumentException("provider == null!");
+        }
+        SubRegistry reg = categoryMap.get(category);
+        if (reg == null) {
+            throw new IllegalArgumentException("category unknown!");
+        }
+        if (!category.isAssignableFrom(provider.getClass())) {
+            throw new ClassCastException();
+        }
+
+        return reg.registerServiceProvider(provider);
+    }
+
+    /**
+     * Adds a service provider object to the registry.
+     * The provider is associated within each category present in the registry whose
+     * <code>Class</code> it implements.
+     *
+     * <p> If <code>provider</code> implements the <code>RegisterableService</code> interface, its
+     * <code>onRegistration</code> method will be called once for each category it is registered
+     * under. Its <code>onDeregistration</code> method will be called each time it is deregistered
+     * from a category or when the registry is finalized.
+     *
+     * @param provider the service provider object to be registered.
+     *
+     * @throws IllegalArgumentException if <code>provider</code> is <code>null</code>.
+     */
+    public void registerServiceProvider(Object provider) {
+        if (provider == null) {
+            throw new IllegalArgumentException("provider == null!");
+        }
+        Iterator<SubRegistry> regs = getSubRegistries(provider);
+        while (regs.hasNext()) {
+            regs.next().registerServiceProvider(provider);
+        }
+    }
+
+    /**
+     * Removes a service provider object from all categories that contain it.
+     *
+     * @param provider the service provider object to be deregistered.
+     *
+     * @throws IllegalArgumentException if <code>provider</code> is <code>null</code>.
+     */
+    public void deregisterServiceProvider(Object provider) {
+        if (provider == null) {
+            throw new IllegalArgumentException("provider == null!");
+        }
+        Iterator<SubRegistry> regs = getSubRegistries(provider);
+        while (regs.hasNext()) {
+            regs.next().deregisterServiceProvider(provider);
+        }
     }
 
     /**
@@ -1071,7 +1418,7 @@ public class FactoryRegistry extends ServiceRegistry {
                     /*
                      * This exception is expected if the user-supplied comparator follows strictly
                      * the java.util.Comparator specification and has determined that it can't
-                     * compare the supplied factories. From ServiceRegistry point of view, it just
+                     * compare the supplied factories. From FactoryRegistry point of view, it just
                      * means that the ordering between those factories will stay undeterminated.
                      */
                     continue;
@@ -1117,6 +1464,98 @@ public class FactoryRegistry extends ServiceRegistry {
     }
 
     /**
+     * Sets a pairwise ordering between two service provider objects
+     * within a given category.  If one or both objects are not
+     * currently registered within the given category, or if the
+     * desired ordering is already set, nothing happens and
+     * <code>false</code> is returned.  If the providers previously
+     * were ordered in the reverse direction, that ordering is
+     * removed.
+     *
+     * <p> The ordering will be used by the
+     * <code>getServiceProviders</code> methods when their
+     * <code>useOrdering</code> argument is <code>true</code>.
+     *
+     * @param category a <code>Class</code> object indicating the
+     * category under which the preference is to be established.
+     * @param firstProvider the preferred provider.
+     * @param secondProvider the provider to which
+     * <code>firstProvider</code> is preferred.
+     *
+     * @return <code>true</code> if a previously unset ordering
+     * was established.
+     *
+     * @exception IllegalArgumentException if either provider is
+     * <code>null</code> or they are the same object.
+     * @exception IllegalArgumentException if there is no category
+     * corresponding to <code>category</code>.
+     */
+    public <T> boolean setOrdering(Class<T> category,
+                                   T firstProvider,
+                                   T secondProvider) {
+        if (firstProvider == null || secondProvider == null) {
+            throw new IllegalArgumentException("provider is null!");
+        }
+        if (firstProvider == secondProvider) {
+            throw new IllegalArgumentException("providers are the same!");
+        }
+        SubRegistry reg = categoryMap.get(category);
+        if (reg == null) {
+            throw new IllegalArgumentException("category unknown!");
+        }
+        if (reg.contains(firstProvider) &&
+            reg.contains(secondProvider)) {
+            return reg.setOrdering(firstProvider, secondProvider);
+        }
+        return false;
+    }
+
+    /**
+     * Sets a pairwise ordering between two service provider objects
+     * within a given category.  If one or both objects are not
+     * currently registered within the given category, or if no
+     * ordering is currently set between them, nothing happens
+     * and <code>false</code> is returned.
+     *
+     * <p> The ordering will be used by the
+     * <code>getServiceProviders</code> methods when their
+     * <code>useOrdering</code> argument is <code>true</code>.
+     *
+     * @param category a <code>Class</code> object indicating the
+     * category under which the preference is to be disestablished.
+     * @param firstProvider the formerly preferred provider.
+     * @param secondProvider the provider to which
+     * <code>firstProvider</code> was formerly preferred.
+     *
+     * @return <code>true</code> if a previously set ordering was
+     * disestablished.
+     *
+     * @exception IllegalArgumentException if either provider is
+     * <code>null</code> or they are the same object.
+     * @exception IllegalArgumentException if there is no category
+     * corresponding to <code>category</code>.
+     */
+    public <T> boolean unsetOrdering(Class<T> category,
+                                     T firstProvider,
+                                     T secondProvider) {
+        if (firstProvider == null || secondProvider == null) {
+            throw new IllegalArgumentException("provider is null!");
+        }
+        if (firstProvider == secondProvider) {
+            throw new IllegalArgumentException("providers are the same!");
+        }
+        SubRegistry reg = categoryMap.get(category);
+        if (reg == null) {
+            throw new IllegalArgumentException("category unknown!");
+        }
+        if (reg.contains(firstProvider) &&
+            reg.contains(secondProvider)) {
+            return reg.unsetOrdering(firstProvider, secondProvider);
+        }
+        return false;
+    }
+
+    /**
      * Helper method for the above.
      */
     private <T> boolean setOrUnsetOrdering(final Class<T> category, final boolean set,
@@ -1135,5 +1574,40 @@ public class FactoryRegistry extends ServiceRegistry {
             }
         }
         return done;
+    }
+
+    /**
+     * Returns an <code>Iterator</code> of <code>Class</code> objects indicating the current
+     * set of categories. The iterator will be empty if no categories exist.
+     *
+     * @return an <code>Iterator</code> containing <code>Class</code>objects.
+     */
+    public Iterator<Class<?>> getCategories() {
+        return categoryMap.keySet().iterator();
+    }
+
+    /**
+     * Returns an Iterator containing the subregistries to which the provider belongs.
+     */
+    private Iterator<SubRegistry> getSubRegistries(Object provider) {
+        List<SubRegistry> l = new ArrayList<>();
+        Iterator<Class<?>> iter = categoryMap.keySet().iterator();
+        while (iter.hasNext()) {
+            Class<?> c = iter.next();
+            if (c.isAssignableFrom(provider.getClass())) {
+                l.add(categoryMap.get(c));
+            }
+        }
+        return l.iterator();
+    }
+
+    /**
+     * Deregisters all currently registered service providers from all categories.
+     */
+    public void deregisterAll() {
+        Iterator<SubRegistry> iter = categoryMap.values().iterator();
+        while (iter.hasNext()) {
+            ((SubRegistry)iter.next()).clear();
+        }
     }
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.imageio.spi.ServiceRegistry;
 
 import org.geotools.data.efeature.impl.EFeatureContextImpl;
 import org.geotools.data.efeature.impl.EFeatureIDFactoryImpl;
@@ -53,7 +51,7 @@ public class EFeatureContextFactory implements BufferedFactory {
     
     /**
      * Weak reference to instance cached by the 
-     * {@link ServiceRegistry service registry}.
+     * {@link java.util.ServiceLoader service loader}.
      */
     private static WeakReference<EFeatureContextFactory> eInstance;
     

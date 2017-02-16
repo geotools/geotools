@@ -19,9 +19,12 @@ package org.geotools.mbstyle;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.source.MBSource;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -237,6 +240,26 @@ public class MBStyle {
      */
     public String getGlyphs() {
         return parse.optional(String.class, json, "glyphs", null);
-    }    
+    }
+    
+    /**
+     * Data source specifications. 
+     * 
+     * @see {@link MBSource} and its subclasses.
+     * @return Map of data source name -> {@link MBSource} instances.
+     */
+    public Map<String, MBSource> getSources() {
+        Map<String, MBSource> sourceMap = new HashMap<>();
+        JSONObject sources = parse.getJSONObject(json, "sources", new JSONObject());
+        for (Object o: sources.keySet()) {
+            if (o instanceof String) {
+                String k = (String) o;
+                JSONObject j = parse.getJSONObject(sources, k);
+                MBSource s = MBSource.create(j, parse);
+                sourceMap.put(k, s);
+            }
+        }
+        return sourceMap;
+    }
     
 }

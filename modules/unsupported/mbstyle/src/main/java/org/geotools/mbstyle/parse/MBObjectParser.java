@@ -429,8 +429,12 @@ public class MBObjectParser {
         if( json.containsKey(tag)){
             Object obj = json.get(tag);
             if( obj instanceof JSONArray){
-                JSONArray array = (JSONArray) obj;
-                return (T[]) Array.newInstance(type, array.size());
+                JSONArray array = (JSONArray) obj;                
+                T[] returnArray = (T[]) Array.newInstance(type, array.size());
+                for (int i = 0; i < array.size(); i++) {
+                    returnArray[i] = type.cast(array.get(i));
+                }
+                return returnArray;               
             }
             else {
                 throw new MBFormatException("\"" + tag + "\" required as JSONArray of "

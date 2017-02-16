@@ -162,6 +162,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(PK_METADATA_TABLE.key, PK_METADATA_TABLE);
         parameters.put(SQL_ON_BORROW.key, SQL_ON_BORROW);
         parameters.put(SQL_ON_RELEASE.key, SQL_ON_RELEASE);
+        parameters.put(CALLBACK_FACTORY.key, CALLBACK_FACTORY);
     }
 
     @Override

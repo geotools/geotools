@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentState;
 import org.geotools.factory.Hints;
@@ -47,17 +48,17 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader implements
     ReferencedEnvelope lastBounds;
     
     public JDBCUpdateFeatureWriter(String sql, Connection cx,
-            JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
+            JDBCFeatureSource featureSource, Query query) throws SQLException, IOException {
         
-        super(sql, cx, featureSource, featureSource.getSchema(), hints);
+        super(sql, cx, featureSource, featureSource.getSchema(), query);
         md = rs.getMetaData();
         last = new ResultSetFeature( rs, cx );
     }
     
     public JDBCUpdateFeatureWriter(PreparedStatement ps, Connection cx,
-            JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
+            JDBCFeatureSource featureSource, Query query) throws SQLException, IOException {
         
-        super(ps, cx, featureSource, featureSource.getSchema(), hints);
+        super(ps, cx, featureSource, featureSource.getSchema(), query);
         md = rs.getMetaData();
         last = new ResultSetFeature( rs, ps.getConnection());
     }

@@ -228,7 +228,6 @@
 		<module>process-geometry</module>
 		<module>process-raster</module>
 		<module>process-feature</module>
-		<module>wfs</module>
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>

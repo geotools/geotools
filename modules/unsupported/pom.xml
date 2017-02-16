@@ -207,7 +207,6 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>vpf</module>
 				<module>matfile5</module>
 				<module>sfs</module>
 				<module>feature-aggregate</module>

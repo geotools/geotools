@@ -37,9 +37,6 @@ import org.geotools.map.MapContent;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.referencing.CRS;
-import org.geotools.renderer.GTRenderer;
-import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -132,7 +129,7 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image = showRender("Fill Test", renderer, DISPLAY_TIME,
+        BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("fill"), image, 50);
     }
@@ -192,31 +189,6 @@ public class VisualTransformerTest {
         style.featureTypeStyles().add(fts);
 
         return style;
-    }
-
-    /**
-     */
-    protected static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
-            ReferencedEnvelope[] bounds, RenderListener listener) throws Exception {
-        BufferedImage[] images = new BufferedImage[bounds.length];
-        for (int i = 0; i < images.length; i++) {
-            images[i] = RendererBaseTest.renderImage(renderer, bounds[i], listener);
-        }
-        final BufferedImage image = RendererBaseTest.mergeImages(images);
-
-        RendererBaseTest.showImage(testName, timeOut, image);
-        boolean hasData = false; // All I can seem to check reliably.
-
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                if (image.getRGB(x, y) != 0) {
-                    hasData = true;
-                }
-            }
-        }
-
-        assert (hasData);
-        return image;
     }
 
     File file(String name) throws IOException {

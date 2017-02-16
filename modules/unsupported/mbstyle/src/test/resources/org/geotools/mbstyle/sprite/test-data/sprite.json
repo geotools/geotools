@@ -1,0 +1,30 @@
+{
+  "bomb": {
+    "height": 500,
+    "pixelRatio": 1,
+    "width": 500,
+    "x": 0,
+    "y": 0
+  },
+  "face": {
+    "height": 500,
+    "pixelRatio": 1,
+    "width": 500,
+    "x": 500,
+    "y": 0
+  },
+  "goldfish": {
+    "height": 500,
+    "pixelRatio": 1,
+    "width": 500,
+    "x": 0,
+    "y": 500
+  },
+  "owl": {
+    "height": 500,
+    "pixelRatio": 1,
+    "width": 500,
+    "x": 500,
+    "y": 500
+  }
+}

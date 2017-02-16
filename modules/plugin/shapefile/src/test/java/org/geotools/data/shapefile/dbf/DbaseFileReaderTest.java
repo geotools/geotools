@@ -29,33 +29,33 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class DbaseFileReaderTest {
-        /*
-            The nulls.dbf file contains 2 columns: gistool_id (integer) and att_loss (real).
-            There are 4 records:
-            GISTOOL_ID | ATT_LOSS
-            -----------+---------
-              98245    | <all spaces>
-              98289    | ****************** (= all stars)
-              98538    | 0.000000000
-              98586    | 5.210000000
-         */
-        @Test public void test() throws Exception {
-                InputStream dbf = this.getClass().getResourceAsStream(
-                        "/org/geotools/data/shapefile/test-data/dbase-file-reader/nulls.dbf");
-                DbaseFileReader dbfReader = new DbaseFileReader(Channels.newChannel(dbf), false,
-                        StandardCharsets.UTF_8);
+    /*
+        The nulls.dbf file contains 2 columns: gistool_id (integer) and att_loss (real).
+        There are 4 records:
+        GISTOOL_ID | ATT_LOSS
+        -----------+---------
+          98245    | <all spaces>
+          98289    | ****************** (= all stars)
+          98538    | 0.000000000
+          98586    | 5.210000000
+     */
+    @Test public void test() throws Exception {
+        InputStream dbf = this.getClass().getResourceAsStream(
+          "/org/geotools/data/shapefile/test-data/dbase-file-reader/nulls.dbf");
+        DbaseFileReader dbfReader = new DbaseFileReader(Channels.newChannel(dbf), false,
+          StandardCharsets.UTF_8);
 
-                Map<Long, Double> records = new HashMap<>();
-                while (dbfReader.hasNext()) {
-                        final Object[] fields = dbfReader.readEntry();
-                        records.put((Long) fields[0], (Double) fields[1]);
-                }
-                dbfReader.close();
-                dbf.close();
-
-                assertThat(records.get(98586L), is(5.21));
-                assertThat(records.get(98538L), is(0.0));
-                assertThat(records.get(98289L), nullValue());
-                assertThat(records.get(98245L), nullValue()); //this fails with 0.0
+        Map<Long, Double> records = new HashMap<>();
+        while (dbfReader.hasNext()) {
+            final Object[] fields = dbfReader.readEntry();
+            records.put((Long) fields[0], (Double) fields[1]);
         }
+        dbfReader.close();
+        dbf.close();
+
+        assertThat(records.get(98586L), is(5.21));
+        assertThat(records.get(98538L), is(0.0));
+        assertThat(records.get(98289L), nullValue());
+        assertThat(records.get(98245L), nullValue()); //this fails with 0.0
+    }
 }

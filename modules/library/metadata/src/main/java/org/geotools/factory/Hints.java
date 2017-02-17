@@ -670,6 +670,15 @@ public class Hints extends RenderingHints {
             "org.geotools.styling.StyleFactory");
 
     /**
+     * The color names definition to use when converting from String to Color.
+     *
+     * @see CommonFactoryFinder#getStyleFactory
+     *
+     * @since 17
+     */
+    public static final OptionKey COLOR_NAMES = new OptionKey("WEB","CSS","X11","HTML");
+
+    /**
      * The {@link org.geotools.feature.AttributeTypeFactory} instance to use.
      *
      * @see CommonFactoryFinder#getAttributeTypeFactory

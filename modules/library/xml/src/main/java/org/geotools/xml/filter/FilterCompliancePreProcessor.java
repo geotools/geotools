@@ -398,7 +398,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                 child = filter.getFilter();
                 extraData = child.accept(this, extraData);
 
-                Data highFilter = createHighLevelLogicFilter(FilterType.LOGIC_AND, startSize);
+                Data highFilter = createHighLevelLogicFilter(FilterType.LOGIC_NOT, startSize);
                 current.push(highFilter);
 
                 break;

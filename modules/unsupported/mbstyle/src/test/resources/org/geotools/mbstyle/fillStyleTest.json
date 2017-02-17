@@ -22,7 +22,7 @@
     "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
     "layers": [
         {
-            "id": "water",
+            "id": "testid",
             "type": "fill",
             "source": "geoserver-states",
             "source-layer": "states",

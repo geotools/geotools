@@ -92,8 +92,8 @@ public class FillMBLayer extends MBLayer {
      * 
      * Defaults to #000000. Disabled by fill-pattern.
      */
-    public Color getFillColor(){
-        return parse.optional(Color.class, paint, "fill-color", Color.BLACK );
+    public Color getFillColor(){        
+        return parse.convertToColor(parse.optional(String.class, paint, "fill-color", "#000000"));
     }
     
     /** Access fill-color as literal or function expression, defaults to black. */
@@ -108,7 +108,7 @@ public class FillMBLayer extends MBLayer {
      */
     public Color getFillOutlineColor(){
         if (paint.get("fill-outline-color") != null) {
-            return parse.optional(Color.class, paint, "fill-outline-color", Color.BLACK);
+            return parse.convertToColor(parse.optional(String.class, paint, "fill-outline-color", "#000000"));
         } else {
             return getFillColor();
         }

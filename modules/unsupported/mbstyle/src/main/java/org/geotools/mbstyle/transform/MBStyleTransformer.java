@@ -180,7 +180,7 @@ public class MBStyleTransformer {
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
         RasterSymbolizer symbolizer = sf.rasterSymbolizer(layer.getId(), null,
-                sf.description(Text.text("raster"), null), NonSI.PIXEL, layer.getOpacity(), sel,
+                sf.description(Text.text("raster"), null), NonSI.PIXEL, layer.opacity(), sel,
                 null, null, ce, null, null);
 
         List<org.opengis.style.Rule> rules = new ArrayList<>();

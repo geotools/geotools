@@ -664,8 +664,9 @@ public class MBObjectParser {
         Object obj = json.get(tag);
         return color( "\""+tag+"\"", obj, fallback );
     }
+    
     /**
-     * Handles literal color definitions supplied as a string:
+     * Handles literal color definitions supplied as a string, returning a {@link Literal}.
      * 
      * <ul>
      * <li><pre>{"line-color": "yellow"</pre> named: a few have been put in pass test cases, prnding: plan to use {@link Hints#COLOR_NAMES} to allow for web colors.</li>
@@ -683,22 +684,11 @@ public class MBObjectParser {
      * @param color name of color (CSS or "web" colors)
      * @return appropriate java color, or null if not available.
      */
-    public Literal color(String color){
-        if( color == null ){
+    public Literal color(String color) {
+        if (color == null) {
             return null;
         }
-        // quick examples to pass test case (while we work on color converter)
-        if( "red".equalsIgnoreCase(color)){
-            return ff.literal(Color.RED);
-        }
-        else if( "blue".equalsIgnoreCase(color)){
-            return ff.literal(Color.BLUE);
-        }
-        Color cast = Converters.convert(color,  Color.class, null ); // TODO: Hints(Hints.COLOR_NAMES, "CSS")
-        if( cast != null ){
-            return ff.literal( cast );
-        }
-        throw new MBFormatException("Color definition invalid: \""+color+"\"");
+        return ff.literal(convertToColor(color));
     }
     
     /**
@@ -728,6 +718,38 @@ public class MBObjectParser {
             throw new IllegalArgumentException("json contents invalid, " + context
                     + " limited to String or JSONObject but was " + obj.getClass().getSimpleName());
         }
+    }
+    
+    /**
+     * Converts color definitions supplied as a string to Color objects:
+     * 
+     * <ul>
+     * <li><pre>{"line-color": "yellow"</pre> named: a few have been put in pass test cases, prnding: plan to use {@link Hints#COLOR_NAMES} to allow for web colors.</li>
+     * <li><pre>{"line-color": "#ffff00"}</pre> hex: hex color conversion are supplied by {@link ColorConverterFactory}</li>
+     * <li><pre>{"line-color": "#ff0"}</pre> hex: we will need to special case this</li>
+     * <li><pre>{"line-color": "rgb(255, 255, 0)"}</pre> - we will need to special case this </li>
+     * <li><pre>{"line-color": "rgba(255, 255, 0, 1)"}</pre> - we will need to special case this </li>
+     * <li><pre>{"line-color": "hsl(100, 50%, 50%)"}</pre> - we will need to special case this </li>
+     * <li><pre>{"line-color": "hsla(100, 50%, 50%, 1)"}</pre> - we will need to special case this </li>
+     * <li>
+     * </ul>
+     * 
+     * This method uses {@link Hints#COLOR_NAMES} "CSS" to support the use of web colors names.
+     * 
+     * @param color name of color (CSS or "web" colors)
+     * @return appropriate java color, or null if not available.
+     */
+    public Color convertToColor(String color) {
+        if (color == null) {
+            return null;
+        }
+        // quick examples to pass test case (while we work on color converter)
+        if ("red".equalsIgnoreCase(color)) {
+            return Color.RED;
+        } else if ("blue".equalsIgnoreCase(color)) {
+            return Color.BLUE;
+        }
+        return Converters.convert(color, Color.class, null); // TODO: Hints(Hints.COLOR_NAMES, "CSS")
     }
     
     /**

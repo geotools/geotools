@@ -100,7 +100,7 @@ public class MapboxSpriteTest {
         String urlStr = url.toExternalForm();
         spriteBaseUrl = urlStr.substring(0, urlStr.lastIndexOf(".png"));
 
-        System.setProperty("org.geotools.test.interactive", "true");
+        // System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**

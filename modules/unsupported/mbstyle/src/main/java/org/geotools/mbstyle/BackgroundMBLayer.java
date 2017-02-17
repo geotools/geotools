@@ -25,8 +25,8 @@ import org.opengis.filter.expression.Expression;
 /**
  * MBLayer wrapper around a {@link JSONObject} representation of a MapBox Background Layer.
  * <p>
- * All methods act as accessors on provided JSON layer, no other state is maintained. This allows
- * modifications to be made cleanly with out chance of side-effect.
+ * All methods act as accessors on provided JSON layer, no other state is maintained. This allows modifications to be made cleanly with out chance of
+ * side-effect.
  * 
  * <ul>
  * <li>get methods: access the json directly</li>
@@ -55,7 +55,8 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      */
     public Color getBackgroundColor() {
-        return parse.optional(Color.class, paint, "background-color", Color.BLACK);
+        return parse
+                .convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
     }
 
     /**
@@ -77,7 +78,6 @@ public class BackgroundMBLayer extends MBLayer {
      */
     public String getBackgroundPattern() {
         return parse.optional(String.class, paint, "background-pattern", null);
-
     }
 
     /**
@@ -96,7 +96,7 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * The opacity at which the background will be drawn.
      */
-    public Number getBackgroundOpacity() {        
+    public Number getBackgroundOpacity() {
         return parse.optional(Number.class, paint, "background-opacity", 1.0);
     }
 

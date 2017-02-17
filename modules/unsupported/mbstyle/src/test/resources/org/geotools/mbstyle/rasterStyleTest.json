@@ -23,7 +23,7 @@
     "glyphs": "mapbox://fonts/mjkruszewski/{fontstack}/{range}.pbf",
     "layers": [
         {
-            "id": "ugly",
+            "id": "testid",
             "type": "raster",
             "source": "geoserver-raster",
             "source-layer": "layer",
@@ -35,6 +35,7 @@
                 "raster-hue-rotate": 30,
                 "raster-saturation": 0.9,
                 "raster-contrast": 0.94,
+                "raster-fade-duration": 250,
                 "raster-brightness-min": 0.28,
                 "raster-brightness-max": 0.69
             }

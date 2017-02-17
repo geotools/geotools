@@ -244,9 +244,15 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         return true;
     }
 
-    public boolean canSort() {
-        return true;
+  public boolean canSort() {
+    final Version capsVersion = new Version(capabilities.getVersion());
+    //currently on version 1.1.0 supports native sorting
+    if (Versions.v1_1_0.equals(capsVersion)) {
+      return true;
+    } else {
+      return false;
     }
+  }
     
     public boolean supportsStoredQueries() {
         return getStrategy().supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.POST) ||

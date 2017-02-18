@@ -30,6 +30,12 @@ import junit.framework.TestCase;
  */
 public class ColorConverterFactoryTest extends TestCase {
 
+    private static final Color THISTLE = new Color(216, 191, 216);
+    private static final Color LEMON_CHIFFON = new Color(255, 250, 205);
+    private static final Color ALICE_BLUE = new Color(240, 248, 255);
+    private static final Color GRAY_TRANSPARENT = new Color(128, 128, 128, 128);
+    private static final Color GRAY = new Color(128, 128, 128);
+    
     ColorConverterFactory factory;
     
     protected void setUp() throws Exception {
@@ -60,7 +66,7 @@ public class ColorConverterFactoryTest extends TestCase {
     }
     
     public void testFromLong() throws Exception {
-//        assertEquals( Color.RED, convert(0xFF0000) );
+        assertEquals( Color.RED, convert(0xFF0000) );
         assertEquals( "no alpha", new Color( 0,0,255,255), convert((long) 0x000000FF) );
         
         assertEquals( "255 alpha", new Color( 0,0,255,255), convert((long) 0xFF0000FF) );
@@ -68,24 +74,56 @@ public class ColorConverterFactoryTest extends TestCase {
         assertEquals( "1 alpha", new Color( 0,0,255,1), convert((long) 0x010000FF) );
     }
 
-    public void testFromCssName() throws Exception {
+    
+    public void testToCSS() throws Exception {
+        Converter converter = factory.createConverter(Color.class, String.class,
+                new Hints(Hints.COLOR_DEFINITION, "CSS"));
+
+        assertEquals("aliceblue", "aliceblue", converter.convert(ALICE_BLUE, String.class));
+        assertEquals("gray", "gray", converter.convert(GRAY, String.class));
+
+        assertEquals("pale blue", "rgb(33,66,255)",
+                converter.convert(new Color(33, 66, 255), String.class));
+
+        assertEquals("gray transparent", "rgba(128,128,128,0.5)",
+                converter.convert(GRAY_TRANSPARENT, String.class));
+    }
+
+    public void testFromCss() throws Exception {
         Converter converter = factory.createConverter(String.class, Color.class,
-                new Hints(Hints.COLOR_NAMES, "CSS"));
-        assertEquals("aliceblue", new Color(240, 248, 255),
+                new Hints(Hints.COLOR_DEFINITION, "CSS"));
+        assertEquals("aliceblue", ALICE_BLUE,
                 converter.convert("aliceblue", Color.class));
-        assertEquals("AliceBlue", new Color(240, 248, 255),
+        assertEquals("AliceBlue", ALICE_BLUE,
                 converter.convert("AliceBlue", Color.class));
-        assertEquals("gray", new Color(128, 128, 128), converter.convert("gray", Color.class));
-        assertEquals("lemonchiffon", new Color(255, 250, 205),
+        assertEquals("gray", GRAY, converter.convert("gray", Color.class));
+        assertEquals("lemonchiffon", LEMON_CHIFFON,
                 converter.convert("lemonchiffon", Color.class));
         assertEquals("WHITE", Color.WHITE, converter.convert("WHITE", Color.class));
         assertEquals("black", Color.BLACK, converter.convert("black", Color.class));
-        assertEquals("thistle", new Color(216, 191, 216),
-                converter.convert("thistle", Color.class));
-        assertEquals("hex fallback", new Color(128, 128, 128),
-                converter.convert("#808080", Color.class));
+        assertEquals("thistle", THISTLE, converter.convert("thistle", Color.class));
+        assertEquals("hex", GRAY, converter.convert("#808080", Color.class));
+
+        assertEquals("hex alpha", GRAY_TRANSPARENT,
+                converter.convert("#80808080", Color.class));
+        
+        assertEquals("rgb", GRAY,
+                converter.convert("rgb(128,128,128)", Color.class));
+        
+        assertEquals("rgba", GRAY_TRANSPARENT,
+                converter.convert("rgba(128,128,128, 0.5)", Color.class));
+        
+        assertEquals("rgba", GRAY,
+                converter.convert("rgba(128,128,128, 1)", Color.class));
     }
 
+    public void testAlpha() throws Exception {
+        Converter converter = factory.createConverter(String.class, Color.class, null);
+
+        assertEquals("hex", GRAY, converter.convert("#808080", Color.class));
+        assertNull("hex alpha", converter.convert("#80808080", Color.class));
+    }
+    
     Color convert( Object value ) throws Exception {
         Converter converter = factory.createConverter( value.getClass(), Color.class, null );
         return (Color) converter.convert( value, Color.class );

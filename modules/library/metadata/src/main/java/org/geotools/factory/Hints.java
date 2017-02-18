@@ -670,14 +670,14 @@ public class Hints extends RenderingHints {
             "org.geotools.styling.StyleFactory");
 
     /**
-     * The color names definition to use when converting from String to Color. "CSS" corresponds to the CSS Color Module 4 name set (
+     * The color definition to use when converting from String to Color. "CSS" corresponds to the CSS Color Module 4 name set (
      * <a href="https://www.w3.org/TR/css-color-4/#named-colors">https://www.w3.org/TR/css-color-4/#named-colors</a>)
      *
      * @see CommonFactoryFinder#getStyleFactory
      *
      * @since 17
      */
-    public static final OptionKey COLOR_NAMES = new OptionKey("CSS");
+    public static final OptionKey COLOR_DEFINITION = new OptionKey("CSS");
 
     /**
      * The {@link org.geotools.feature.AttributeTypeFactory} instance to use.

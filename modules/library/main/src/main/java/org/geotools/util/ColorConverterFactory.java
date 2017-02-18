@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +59,10 @@ public class ColorConverterFactory implements ConverterFactory {
                 return null;
             }
         }
+        @Override
+        public String toString() {
+            return "CONVERT_STRING";
+        }
     };
 
     /**
@@ -81,6 +86,8 @@ public class ColorConverterFactory implements ConverterFactory {
             return "CONVERT_NUMBER_TO_COLOR";
         }
     };
+
+    protected static DecimalFormat FORMAT = new DecimalFormat("#.###");
 
     /**
      * Converts color to css representation.
@@ -119,7 +126,12 @@ public class ColorConverterFactory implements ConverterFactory {
                 rgba.append( ",");
                 rgba.append( color.getBlue() );
                 rgba.append( ",");
-                rgba.append( ((float)color.getAlpha())/256.0f);
+                
+                float opacity = ((float) color.getAlpha())/256.0f;
+                
+                
+                rgba.append( FORMAT.format(opacity));
+                
                 rgba.append( ")");
                 return target.cast( rgba.toString() );
             }
@@ -353,9 +365,11 @@ public class ColorConverterFactory implements ConverterFactory {
                     String colorString = text.substring(5, text.length() - 1);
                     String rgba[] = colorString.split("\\s*,\\s*");
                     float opacity = Float.parseFloat(rgba[3]);
-
+                    
+                    
                     Color c = new Color(Integer.parseInt(rgba[0]), Integer.parseInt(rgba[1]),
-                            Integer.parseInt(rgba[2]), (int) (Math.min(255, opacity * 256)));
+                            Integer.parseInt(rgba[2]),
+                            (int) (Math.floor(opacity == 1.0f ? 255 : opacity* 256f)));
                     return target.cast(c);
                 } else if (text.startsWith("#") || text.startsWith("0x")) {
                     Number number = Long.decode(text);

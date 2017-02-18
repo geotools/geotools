@@ -87,6 +87,9 @@ public class ColorConverterFactoryTest extends TestCase {
 
         assertEquals("gray transparent", "rgba(128,128,128,0.5)",
                 converter.convert(GRAY_TRANSPARENT, String.class));
+        
+        assertEquals("blueish", "rgba(33,66,255,0.992)",
+                converter.convert(new Color(33, 66, 255, 254), String.class));
     }
 
     public void testFromCss() throws Exception {
@@ -115,6 +118,10 @@ public class ColorConverterFactoryTest extends TestCase {
         
         assertEquals("rgba", GRAY,
                 converter.convert("rgba(128,128,128, 1)", Color.class));
+        
+        assertEquals("rgba", new Color(33,66,255,254),
+                converter.convert("rgba(33,66,255,0.99607843)", Color.class));
+        
     }
 
     public void testAlpha() throws Exception {

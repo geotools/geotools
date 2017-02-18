@@ -207,7 +207,6 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>vpf</module>
 				<module>matfile5</module>
 				<module>sfs</module>
 				<module>feature-aggregate</module>
@@ -228,7 +227,6 @@
 		<module>process-geometry</module>
 		<module>process-raster</module>
 		<module>process-feature</module>
-		<module>wfs</module>
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>

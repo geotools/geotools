@@ -32,6 +32,7 @@ import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
+import org.geotools.mbstyle.SymbolMBLayer;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.opengis.filter.Filter;
@@ -51,10 +52,13 @@ public class MBStyleTransformer {
     private FilterFactory2 ff;
 
     private StyleFactory sf;
+    
+    private StyleBuilder sb;
 
     public MBStyleTransformer() {
         ff = CommonFactoryFinder.getFilterFactory2();
         sf = CommonFactoryFinder.getStyleFactory();
+        sb = new StyleBuilder();
     }
 
     /**
@@ -94,6 +98,8 @@ public class MBStyleTransformer {
             return transform((CircleMBLayer) layer);
         } else if (layer instanceof BackgroundMBLayer) {
             return transform((BackgroundMBLayer) layer);
+        } else if (layer instanceof SymbolMBLayer) {
+            return transform((SymbolMBLayer) layer);
         }
 
         throw new MBFormatException(layer.getType() + " not yet supported.");
@@ -302,6 +308,69 @@ public class MBStyleTransformer {
                 ff.property((String) null), sf.description(Text.text("fill"), null), NonSI.PIXEL,
                 null, // stroke
                 fill, null, ff.literal(0));
+        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        symbolizers.add(symbolizer);
+
+        // List of opengis rules here (needed for constructor)
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
+                Filter.INCLUDE);
+        rule.setLegendGraphic(new Graphic[0]);
+
+        rules.add(rule);
+        return sf.featureTypeStyle(layer.getId(),
+                sf.description(Text.text("MBStyle " + layer.getId()),
+                        Text.text("Generated for " + layer.getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                rules);
+    }
+    
+    /**
+     * Transform {@link SymbolMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     * 
+     * @param layer Describing symbol styling
+     * @return FeatureTypeStyle
+     */
+    FeatureTypeStyle transform(SymbolMBLayer layer) {
+       
+        
+        Font font = sb.createFont(null, ff.literal("normal"), ff.literal("normal"), layer.textSize());
+        font.getFamily().clear();
+        font.getFamily().addAll(layer.textFont());
+        LabelPlacement labelPlacement;
+        
+        // TODO function case.
+        if (SymbolMBLayer.SymbolPlacement.LINE.equals(layer.getSymbolPlacement())) {
+            LinePlacement linePlacement = sb.createLinePlacement(null);            
+            // linePlacement.setRepeated(repeated);
+            labelPlacement = linePlacement;            
+        } else {
+            PointPlacement pointPlacement = sb.createPointPlacement();            
+            // pointPlacement.setAnchorPoint();
+            // pointPlacement.setDisplacement(displacement);
+            pointPlacement.setRotation(layer.textRotate());
+            labelPlacement = pointPlacement;
+        }
+        
+        
+        Halo halo = sf.halo( sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
+        // layer.textHaloBlur();        
+        Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());        
+        TextSymbolizer symbolizer = sf.textSymbolizer(layer.getId(), ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL, layer.textField(), font, labelPlacement, halo, fill);
+                        
+        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?        
+        
+        // TODO Graphic - how to get a TextSymbolizer2?
+        if (symbolizer instanceof TextSymbolizer2) {
+            TextSymbolizer2 symbolizer2 = (TextSymbolizer2) symbolizer;
+            // symbolizer2.setGraphic(graphic);
+        }
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
         symbolizers.add(symbolizer);
 

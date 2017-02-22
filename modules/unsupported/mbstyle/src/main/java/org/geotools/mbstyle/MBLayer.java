@@ -86,7 +86,7 @@ public abstract class MBLayer {
             case "raster": return new RasterMBLayer(layer);                       
             case "circle": return new CircleMBLayer(layer);
             case "background": return new BackgroundMBLayer(layer);
-            case "symbol":
+            case "symbol": return new SymbolMBLayer(layer);
             case "fill-extrusion":
                 throw new UnsupportedOperationException("MBLayer type "+type+" not yet implemented");                
             default:

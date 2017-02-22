@@ -105,7 +105,7 @@ public class VisualTransformerTest {
         polygonFS = ds.getFeatureSource("testpolygons");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
-        // System.setProperty("org.geotools.test.interactive", "true");
+        System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**

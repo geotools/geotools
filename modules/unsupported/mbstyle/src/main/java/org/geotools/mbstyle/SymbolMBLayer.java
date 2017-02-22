@@ -2,6 +2,8 @@ package org.geotools.mbstyle;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.geotools.mbstyle.CircleMBLayer.CirclePitchScale;
@@ -286,7 +288,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getIconSize() throws MBFormatException{
-        return parse.optional(Double.class, layout, "icon-size", 1.0);
+        return parse.optional(Number.class, layout, "icon-size", 1.0);
     }
 
     /**
@@ -345,7 +347,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public String getIconImage() throws MBFormatException {
-        return parse.optional(String.class, layout, "icon-image", "");
+        return parse.optional(String.class, layout, "icon-image", null);
     }
 
     /**
@@ -365,7 +367,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getIconRotate() throws MBFormatException {
-        return parse.optional(Double.class, layout, "icon-rotate", 0.0);
+        return parse.optional(Number.class, layout, "icon-rotate", 0.0);
     }
 
     /**
@@ -384,7 +386,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getIconPadding() throws MBFormatException {
-        return parse.optional(Double.class, layout, "icon-padding", 2.0);
+        return parse.optional(Number.class, layout, "icon-padding", 2.0);
     }
 
     /**
@@ -403,7 +405,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Boolean getIconKeepUpright() throws MBFormatException {
-        return parse.getBoolean(layout, "icon-keep-upright");
+        return parse.getBoolean(layout, "icon-keep-upright", false);
     }
 
     /**
@@ -508,19 +510,27 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * (Optional) Font stack to use for displaying text. 
      * 
-     * @return
+     * Defaults to <code>["Open Sans Regular","Arial Unicode MS Regular"]</code>. Requires text-field. 
+     * 
      */
     public List<String> getTextFont() {
-    	// TODO
-        // json.get("text-font")
-        return null;
+        String[] fonts = parse.array(String.class, layout, "text-font",
+                new String[] { "Open Sans Regular", "Arial Unicode MS Regular" });
+        return Arrays.asList(fonts); 
     }
 
-    public Expression textFont() {
-    	// TODO
-        // json.get("text-font")
-        return null;
+    /**
+     * Access text-font as a literal or function expression.
+     */
+    public List<Expression> textFont() {
+        List<Expression> fontExpressions = new ArrayList<>();
+        String[] fonts = parse.array(String.class, layout, "text-font", new String[] {"Open Sans Regular","Arial Unicode MS Regular"});
+    	for (int i = 0; i < fonts.length; i++) {
+    	    fontExpressions.add(ff.literal(fonts[i]));
+    	}
+    	return fontExpressions;
     }
 
     /**
@@ -531,7 +541,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextSize() throws MBFormatException {
-        return parse.optional(Double.class, layout, "text-size", 16.0);
+        return parse.optional(Number.class, layout, "text-size", 16.0);
     }
 
     /**
@@ -550,7 +560,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextMaxWidth() throws MBFormatException {
-        return parse.optional(Double.class, layout, "text-max-width", 10.0);
+        return parse.optional(Number.class, layout, "text-max-width", 10.0);
     }
 
     /**
@@ -569,7 +579,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextLineHeight() throws MBFormatException {
-    	return parse.optional(Double.class, layout, "text-line-height", 1.2);
+    	return parse.optional(Number.class, layout, "text-line-height", 1.2);
     }
 
     /**
@@ -588,7 +598,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextLetterSpacing() throws MBFormatException {
-    	return parse.optional(Double.class, layout, "text-letter-spacing", 0.0);
+    	return parse.optional(Number.class, layout, "text-letter-spacing", 0.0);
     }
 
     /**
@@ -680,7 +690,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextMaxAngle() throws MBFormatException {
-    	return parse.optional(Double.class, layout, "text-max-angle", 45.0);
+    	return parse.optional(Number.class, layout, "text-max-angle", 45.0);
     }
 
     /**
@@ -699,7 +709,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextRotate() throws MBFormatException {
-    	return parse.optional(Double.class, layout, "text-rotate", 0.0);
+    	return parse.optional(Number.class, layout, "text-rotate", 0.0);
     }
 
     /**
@@ -718,7 +728,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextPadding() throws MBFormatException {
-    	return parse.optional(Double.class, layout, "text-padding", 2.0);
+    	return parse.optional(Number.class, layout, "text-padding", 2.0);
     }
 
     /**
@@ -835,7 +845,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getIconOpacity() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "icon-opacity", 1.0);
+    	return parse.optional(Number.class, paint, "icon-opacity", 1.0);
     }
 
     /**
@@ -866,7 +876,7 @@ public class SymbolMBLayer extends MBLayer {
      * The color of the icon's halo. Icon halos can only be used with SDF icons.
      */
     public Color getIconHaloColor() {
-    	return parse.optional(Color.class, paint, "icon-halo-color", Color.BLACK);
+    	return parse.optional(Color.class, paint, "icon-halo-color", new Color(0,0,0,0));
     }
 
     /** Access icon-halo-color as literal or function expression, defaults to black. */
@@ -882,7 +892,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getIconHaloWidth() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "icon-halo-width", 0.0);
+    	return parse.optional(Number.class, paint, "icon-halo-width", 0.0);
     }
 
     /**
@@ -901,7 +911,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getIconHaloBlur() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "icon-halo-blur", 0.0);
+    	return parse.optional(Number.class, paint, "icon-halo-blur", 0.0);
     }
 
     /**
@@ -963,7 +973,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextOpacity() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "text-opacity", 1.0);
+    	return parse.optional(Number.class, paint, "text-opacity", 1.0);
     }
 
     /**
@@ -982,7 +992,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Color getTextColor() throws MBFormatException {
-    	return parse.optional(Color.class, paint, "text-color", Color.BLACK );
+        return parse.convertToColor(parse.optional(String.class, paint, "text-color", "#000000"));
     }
     
     /** Access text-color as literal or function expression, defaults to black. */
@@ -998,7 +1008,11 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Color getTextHaloColor() throws MBFormatException {
-    	return parse.optional(Color.class, paint, "text-halo-color", Color.BLACK);
+        if (!paint.containsKey("text-halo-color")) {
+            return new Color(0,0,0,0);
+        } else {
+            return parse.convertToColor(parse.optional(String.class, paint, "text-halo-color", "#000000"));             
+        }
     }
 
     /** Access text-halo-color as literal or function expression, defaults to black. */
@@ -1014,7 +1028,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextHaloWidth() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "text-halo-width", 0.0);
+    	return parse.optional(Number.class, paint, "text-halo-width", 0.0);
     }
 
     /**
@@ -1033,7 +1047,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextHaloBlur() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "text-halo-blur", 0.0);
+    	return parse.optional(Number.class, paint, "text-halo-blur", 0.0);
     }
 
     /**

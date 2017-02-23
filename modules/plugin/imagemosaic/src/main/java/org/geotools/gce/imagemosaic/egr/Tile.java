@@ -49,7 +49,7 @@ import org.geotools.util.logging.Logging;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Polygon;
 
-import it.geosolutions.imageio.utilities.SoftValueHashMap;
+import org.geotools.util.SoftValueHashMap;
 import it.geosolutions.jaiext.iterators.RandomIterFactory;
 
 /**

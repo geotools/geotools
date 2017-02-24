@@ -83,7 +83,7 @@ import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.jaitools.imageutils.ImageLayout2;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;

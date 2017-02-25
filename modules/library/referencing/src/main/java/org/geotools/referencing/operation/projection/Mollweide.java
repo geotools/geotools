@@ -204,7 +204,7 @@ public class Mollweide extends MapProjection {
         static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
                 new NamedIdentifier[] { new NamedIdentifier(Citations.GEOTOOLS, "Mollweide"),
                         new NamedIdentifier(Citations.ESRI, "Mollweide") },
-                new ParameterDescriptor[] { SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN });
+                new ParameterDescriptor[] { SEMI_MAJOR, SEMI_MINOR, FALSE_EASTING, FALSE_NORTHING, CENTRAL_MERIDIAN });
 
         /**
          * Constructs a new provider.

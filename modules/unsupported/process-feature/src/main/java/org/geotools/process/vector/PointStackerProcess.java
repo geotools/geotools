@@ -101,12 +101,12 @@ public class PointStackerProcess implements VectorProcess {
     /**
      * bounding box of the clustered points as Poligon Geometry
      */
-    public static final String ATTR_BOUNDING_BOX_GEOM = "geomboundingbox";
+    public static final String ATTR_BOUNDING_BOX_GEOM = "geomBBOX";
     
     /**
      * bounding box of the clustered points as String
      */
-    public static final String ATTR_BOUNDING_BOX = "boundingbox";
+    public static final String ATTR_BOUNDING_BOX = "envBBOX";
 
     public static final String ATTR_NORM_COUNT = "normCount";
 

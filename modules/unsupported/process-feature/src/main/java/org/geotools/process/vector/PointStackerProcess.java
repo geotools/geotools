@@ -43,10 +43,14 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+
+import net.sf.geographiclib.GeodesicMask;
 
 /**
  * A Rendering Transformation process which aggregates features into a set of visually non-conflicting point features. The created points have
@@ -93,6 +97,16 @@ public class PointStackerProcess implements VectorProcess {
     public static final String ATTR_COUNT = "count";
 
     public static final String ATTR_COUNT_UNIQUE = "countunique";
+    
+    /**
+     * bounding box of the clustered points as Poligon Geometry
+     */
+    public static final String ATTR_BOUNDING_BOX_GEOM = "geomboundingbox";
+    
+    /**
+     * bounding box of the clustered points as String
+     */
+    public static final String ATTR_BOUNDING_BOX = "boundingbox";
 
     public static final String ATTR_NORM_COUNT = "normCount";
 
@@ -154,6 +168,7 @@ public class PointStackerProcess implements VectorProcess {
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
 
+        //create cluster points, based on cellSize and width and height of the viewd area.
         Collection<StackedPoint> stackedPts = stackPoints(data, crsTransform, cellSizeSrc,
                 weightClusterPosition, outputEnv.getMinX(), outputEnv.getMinY());
 
@@ -164,7 +179,9 @@ public class PointStackerProcess implements VectorProcess {
         GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
 
         double[] srcPt = new double[2];
+        double[] srcPt2 = new double[2];
         double[] dstPt = new double[2];
+        double[] dstPt2 = new double[2];
 
         // Find maxima of the point stacks if needed.
         int maxCount = 0;
@@ -193,6 +210,20 @@ public class PointStackerProcess implements VectorProcess {
             fb.add(point);
             fb.add(sp.getCount());
             fb.add(sp.getCountUnique());
+            //adding bounding box of the points staked, as geometry
+            //envelope transformation
+            Envelope boundingBox=sp.getBoundingBox();
+            srcPt[0]=boundingBox.getMinX();
+            srcPt[1]=boundingBox.getMinY();
+            srcPt2[0]=boundingBox.getMaxX();
+            srcPt2[1]=boundingBox.getMaxY();
+            
+            invTransform.transform(srcPt, 0, dstPt, 0, 1);
+            invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
+            Envelope boundingBoxTransformed=new Envelope(dstPt[0],dstPt[1],dstPt2[0],dstPt2[1]);
+            fb.add(boundingBoxTransformed);
+            //adding bounding box of the points staked, as string
+            fb.add(boundingBoxTransformed.toString());
             if (normalize) {
                 fb.add(((double) sp.getCount()) / maxCount);
                 fb.add(((double) sp.getCountUnique()) / maxCountUnique);
@@ -269,7 +300,7 @@ public class PointStackerProcess implements VectorProcess {
                 if (stkPt == null) {
 
                     /**
-                     * Note that the
+                     * Note that we compute the cluster position in the middle of the grid
                      */
                     double centreX = indexPt.x * cellSize + cellSize / 2;
                     double centreY = indexPt.y * cellSize + cellSize / 2;
@@ -328,6 +359,8 @@ public class PointStackerProcess implements VectorProcess {
         tb.add(ATTR_GEOM, Point.class, crs);
         tb.add(ATTR_COUNT, Integer.class);
         tb.add(ATTR_COUNT_UNIQUE, Integer.class);
+        tb.add(ATTR_BOUNDING_BOX_GEOM, Polygon.class);
+        tb.add(ATTR_BOUNDING_BOX, String.class);
         if (stretch) {
             tb.add(ATTR_NORM_COUNT, Double.class);
             tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
@@ -347,7 +380,8 @@ public class PointStackerProcess implements VectorProcess {
         private int count = 0;
 
         private Set<Coordinate> uniquePts;
-
+        
+        private Envelope boundingBox=null;
         /**
          * Creates a new stacked point grid cell. The center point of the cell is supplied so that it may be used as or influence the location of the
          * final display point
@@ -377,12 +411,32 @@ public class PointStackerProcess implements VectorProcess {
                 return 1;
             return uniquePts.size();
         }
-
+        /**
+         * compute bounding box
+         * @return
+         */
+        public Envelope getBoundingBox(){
+            return this.boundingBox;
+            /*
+            Coordinate coords[]=uniquePts.toArray(new Coordinate[uniquePts.size()]);
+            
+            Geometry result=factory.createPolygon(coords).getEnvelope();
+            System.out.println(result);
+            return result;
+            */
+       
+        }
         public void add(Coordinate pt) {
             this.add(pt, false);
         }
 
+        /**
+         * @todo change GeometryFactory
+         * @param pt
+         * @param weightClusterPosition
+         */
         public void add(Coordinate pt, boolean weightClusterPosition) {
+            GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
             count++;
             /**
              * Only create set if this is the second point seen (and assum the first pt is in location)
@@ -397,7 +451,11 @@ public class PointStackerProcess implements VectorProcess {
             } else {
                 pickNearestLocation(pt);
             }
-
+            if (boundingBox==null){
+                boundingBox=new Envelope();
+            }else{
+                boundingBox.expandToInclude(pt);
+            }
             // pickCenterLocation(pt);
         }
 

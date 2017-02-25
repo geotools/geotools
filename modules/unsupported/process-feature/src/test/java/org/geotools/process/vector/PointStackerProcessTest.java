@@ -59,8 +59,13 @@ public class PointStackerProcessTest {
         ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
-        Coordinate[] data = new Coordinate[] { new Coordinate(4, 4), new Coordinate(4.1, 4.1),
-                new Coordinate(4.1, 4.1), new Coordinate(8, 8) };
+        Coordinate[] data = new Coordinate[] 
+                    { 
+                      new Coordinate(4, 4), 
+                      new Coordinate(4.1, 4.1),
+                      new Coordinate(4.1, 4.1), 
+                      new Coordinate(8, 8) 
+                    };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
@@ -251,6 +256,7 @@ public class PointStackerProcessTest {
                 1810, // outputWidth
                 768, // outputHeight
                 monitor);
+       
         // check if we did not alter the results
         checkSchemaCorrect(result.getSchema(), false);
         assertEquals(1, result.size());
@@ -328,9 +334,11 @@ public class PointStackerProcessTest {
 
     private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {
         if (includeProportionColumns) {
-            assertEquals(5, ft.getAttributeCount());
+            //assertEquals(5, ft.getAttributeCount()); old version before adding envelope
+            assertEquals(7, ft.getAttributeCount());
         } else {
-            assertEquals(3, ft.getAttributeCount());
+            //assertEquals(3, ft.getAttributeCount()); old version before adding envelope.
+            assertEquals(5, ft.getAttributeCount()); 
         }
         assertEquals(Point.class, ft.getGeometryDescriptor().getType().getBinding());
         assertEquals(Integer.class, ft.getDescriptor(PointStackerProcess.ATTR_COUNT).getType()

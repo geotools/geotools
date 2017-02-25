@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -578,9 +578,8 @@ public class DbaseFileReader implements FileReader {
                     try {
                         object = Double.parseDouble(fastParse(bytes,fieldOffset,fieldLen));
                     } catch (final NumberFormatException e) {
-                        // okay, now whatever we got was truly indigestible. Lets go
-                        // with a zero Double.
-                        object = new Double(0.0);
+                        // okay, now whatever we got was truly indigestible.
+                        object = null;
                     }
                 }
                 break;

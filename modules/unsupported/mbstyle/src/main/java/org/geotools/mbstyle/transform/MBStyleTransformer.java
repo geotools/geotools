@@ -16,10 +16,13 @@
  */
 package org.geotools.mbstyle.transform;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.measure.unit.NonSI;
 
@@ -33,12 +36,15 @@ import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.mbstyle.SymbolMBLayer;
+import org.geotools.mbstyle.sprite.MapboxGraphicFactory;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
+import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
@@ -54,6 +60,8 @@ public class MBStyleTransformer {
     private StyleFactory sf;
     
     private StyleBuilder sb;
+    
+    private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
 
     public MBStyleTransformer() {
         ff = CommonFactoryFinder.getFilterFactory2();
@@ -76,7 +84,7 @@ public class MBStyleTransformer {
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         Style style = sf.createStyle();
         for (MBLayer layer : layers) {
-            FeatureTypeStyle featureTypeStyle = transform(layer);
+            FeatureTypeStyle featureTypeStyle = transform(layer, mbStyle);
             style.featureTypeStyles().add(featureTypeStyle);
         }
         UserLayer userLayer = sf.createUserLayer();
@@ -87,9 +95,9 @@ public class MBStyleTransformer {
         return sld;
     }
 
-    public FeatureTypeStyle transform(MBLayer layer) {
+    public FeatureTypeStyle transform(MBLayer layer, MBStyle styleContext) {
         if (layer instanceof FillMBLayer) {
-            return transform((FillMBLayer) layer);
+            return transform((FillMBLayer) layer, styleContext);
         } else if (layer instanceof RasterMBLayer) {
             return transform((RasterMBLayer) layer);
         } else if (layer instanceof LineMBLayer) {
@@ -113,9 +121,10 @@ public class MBStyleTransformer {
      * <li>stroke-width is assumed to be 1 (not specified by MapBox style)
      * </ul>
      * @param layer Describing polygon fill styling
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle 
      */
-    public FeatureTypeStyle transform(FillMBLayer layer) {
+    public FeatureTypeStyle transform(FillMBLayer layer, MBStyle styleContext) {
         PolygonSymbolizer symbolizer;
         // use factory to avoid defaults values        
         Stroke stroke = sf.stroke(
@@ -131,7 +140,9 @@ public class MBStyleTransformer {
         Fill fill;
         if (layer.getFillPattern() != null) {
             // TODO: Fill graphic (with external graphics)
-            fill = sf.fill(null, null, layer.fillOpacity());    
+            ExternalGraphic eg = createExternalGraphicForSprite(layer.getFillPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), layer.fillOpacity(), null, null, null, layer.toDisplacement());            
+            fill = sf.fill(gf, null, null);                
         } else {
             fill = sf.fill(null, layer.fillColor(), layer.fillOpacity());
         }
@@ -387,6 +398,40 @@ public class MBStyleTransformer {
                 null, // (unused)
                 Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
                 rules);
+    }
+    
+    /**
+     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the full URL of the image for consumption
+     * by the {@link MapboxGraphicFactory}. (The format of the image will be {@link MapboxGraphicFactory#FORMAT}).
+     * 
+     * @see {@link MapboxGraphicFactory} for more information.
+     * 
+     * @param iconName The name of the icon inside the spritesheet.
+     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the {@link MapboxGraphicFactory}).
+     * @return An external graphic with the full URL of the mage for the {@link MapboxGraphicFactory}.
+     */
+    private ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
+        Expression spriteUrl;
+        
+        if (styleContext != null && styleContext.getSprite() != null) {
+            String spriteBase = styleContext.getSprite().trim() + "?icon=";
+            spriteUrl = ff.function("Concatenate", ff.literal(spriteBase),
+                    iconName);
+        } else {
+            spriteUrl = iconName;
+        }
+        
+        // TODO: (Functions milestone) The icon name can be a function, so evaluating the expression to a string (below) is wrong.
+        // Evaluate it for now, because (for now) External Graphics do not take an expression for the URL.
+        // TODO: Allow External Graphics to take an expression for the URL
+        String spriteUrlStr = spriteUrl.evaluate(null, String.class);
+        
+        try {
+            return sf.createExternalGraphic(new URL(spriteUrlStr), MapboxGraphicFactory.FORMAT);
+        } catch (MalformedURLException e) {
+            LOGGER.warning("Mapbox Style graphic has invalid URL: " + spriteUrlStr);
+            return null;
+        }
     }
 
 }

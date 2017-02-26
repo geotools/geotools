@@ -35,7 +35,9 @@ import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.RasterMBLayer;
+import org.geotools.styling.ExternalGraphicImpl;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
@@ -75,7 +77,7 @@ public class MapBoxStyleTest {
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
         assertTrue(layers.get(0) instanceof FillMBLayer);
         FillMBLayer mbFill = (FillMBLayer) layers.get(0);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill, mbStyle);
         
         PolygonSymbolizer psym = SLD.polySymbolizer(fts);
         
@@ -94,6 +96,33 @@ public class MapBoxStyleTest {
         assertNotNull("displacementY not null",  psym.getDisplacement().getDisplacementY());
         assertEquals(Integer.valueOf(20), psym.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
         assertEquals(Integer.valueOf(20), psym.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+        
+    }
+    
+    /**
+     * Test parsing a Mapbox fill layer using a sprite fill-pattern
+     */
+    @Test
+    public void testFillSprite() throws IOException, ParseException {
+
+        JSONObject jsonObject = parseTestStyle("fillStyleSpriteTest.json");
+
+        // Parse to MBStyle
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("geoserver-states");
+
+        assertEquals(1, layers.size());
+
+        // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
+        assertTrue(layers.get(0) instanceof FillMBLayer);
+        FillMBLayer mbFill = (FillMBLayer) layers.get(0);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill, mbStyle);
+        
+        PolygonSymbolizer psym = SLD.polySymbolizer(fts);
+        Graphic g = psym.getFill().getGraphicFill();
+        assertNotNull(g);
+        assertNotNull(g.graphicalSymbols());
+        assertEquals(1, g.graphicalSymbols().size());
         
     }
 
@@ -302,7 +331,7 @@ public class MapBoxStyleTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0));
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0), mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -327,7 +356,7 @@ public class MapBoxStyleTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0));
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0), mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);

@@ -88,6 +88,8 @@ public class VisualTransformerTest {
 
     SimpleFeatureSource polygonFS;
 
+    SimpleFeatureSource polygonsBigFS;    
+
     ReferencedEnvelope bounds;
 
     @BeforeClass
@@ -103,9 +105,10 @@ public class VisualTransformerTest {
         pointFS = ds.getFeatureSource("testpoints");
         gridFS = ds.getFeatureSource("testgrid");
         polygonFS = ds.getFeatureSource("testpolygons");
+        polygonsBigFS = ds.getFeatureSource("testpolygonsbig");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
-        System.setProperty("org.geotools.test.interactive", "true");
+        // System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**
@@ -132,6 +135,32 @@ public class VisualTransformerTest {
         BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("fill"), image, 50);
+    }
+    
+    /**
+     * Test generation of a GeoTools style from an MBFillLayer (using a sprite fill pattern)
+     */
+    @Test
+    public void mbFillLayerSpritesVisualTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("fillStyleSpriteTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(polygonsBigFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("fill-sprite"), image, 50);
     }
 
     public Style defaultLineStyle() {

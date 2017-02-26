@@ -140,7 +140,7 @@ public class MapboxSpriteTest {
                                         filterFactory.literal("#6ba3ff")),
                                 null))));
         
-        mc.addLayer(new FeatureLayer(pointFS, pointStyleWithExternalGraphic(eg, "100")));
+        mc.addLayer(new FeatureLayer(pointFS, pointStyleWithExternalGraphic(eg, null)));
                
         // Render the image and do a perceptual assert.
         StreamingRenderer renderer = new StreamingRenderer();
@@ -161,6 +161,9 @@ public class MapboxSpriteTest {
 
     /**
      * Create a simple style with a {@link PointSymbolizer} using the provided graphic and size.
+     * 
+     * @param eg The external graphic to use 
+     * @param size The size in pixels for the point symbolizer's graphic. If null, defaults to the external graphic's default size.
      */
     public Style pointStyleWithExternalGraphic(ExternalGraphic eg, String size) {
         Graphic gr = styleFactory.graphic(Arrays.asList(eg), filterFactory.literal(1),

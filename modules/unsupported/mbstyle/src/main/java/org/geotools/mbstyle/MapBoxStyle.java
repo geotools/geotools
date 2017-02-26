@@ -90,7 +90,7 @@ public class MapBoxStyle {
         
         for (MBLayer layer : style.layers()) {
             try {
-                FeatureTypeStyle featureTypeStyle = transform.transform(layer);
+                FeatureTypeStyle featureTypeStyle = transform.transform(layer, style);
             }
             catch (Exception invalid){
                 problems.add((MBFormatException) new MBFormatException(

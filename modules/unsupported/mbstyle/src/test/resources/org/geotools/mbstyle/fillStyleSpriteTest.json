@@ -18,7 +18,7 @@
             "type": "vector"
         }
     },
-    "sprite": "file:///Users/mattwork/suite/geotools-fork/modules/unsupported/mbstyle/src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
+    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
     "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
     "layers": [
         {

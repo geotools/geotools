@@ -95,6 +95,14 @@ public class MBStyleTransformer {
         return sld;
     }
 
+    /**
+     * 
+     * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
+     * 
+     * @param layer The MBLayer to transform.
+     * @param styleContext The {@link MBStyle} to use as a context, e.g. for sprite and glyph address resolution.
+     * @return A feature type style from the provided layer.
+     */
     public FeatureTypeStyle transform(MBLayer layer, MBStyle styleContext) {
         if (layer instanceof FillMBLayer) {
             return transform((FillMBLayer) layer, styleContext);

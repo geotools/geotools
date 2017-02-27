@@ -18,8 +18,10 @@ package org.geotools.util;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -87,7 +89,14 @@ public class ColorConverterFactory implements ConverterFactory {
         }
     };
 
-    protected static DecimalFormat FORMAT = new DecimalFormat("#.###");
+    protected static DecimalFormat FORMAT;
+    
+    static {
+        DecimalFormat decimalFormat = (DecimalFormat)
+                NumberFormat.getNumberInstance(Locale.ENGLISH);
+        decimalFormat.applyPattern("#.###");
+        FORMAT = decimalFormat;
+    }
 
     /**
      * Converts color to css representation.

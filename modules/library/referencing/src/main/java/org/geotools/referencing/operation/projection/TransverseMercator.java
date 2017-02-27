@@ -253,21 +253,21 @@ public class TransverseMercator extends MapProjection {
      */
     @Override
     protected double getToleranceForAssertions(final double longitude, final double latitude) {
-        if (abs(longitude - centralMeridian) > 0.26) {   // 15 degrees
+        final double longitudeDifference = abs(longitude - centralMeridian);
+        if (longitudeDifference > 0.26) {   // 15 degrees
             // When far from the valid area, use a larger tolerance.
             return 2.5;
-        } else if (abs(longitude - centralMeridian) > 0.22) {  // 12.5 degrees
+        } else if (longitudeDifference > 0.22) {  // 12.5 degrees
             return 1.0;
-        } else if (abs(longitude - centralMeridian) > 0.17) {  // 10 degrees
+        } else if (longitudeDifference > 0.17) {  // 10 degrees
             return 0.5;
-        } else if(abs(latitude - latitudeOfOrigin) < 0.00001) {
-        	// Strangely, very near the latitude of origin the cos() becomes lossy
-        	// and errors are in excess of a millimeter.
-        	return 0.01;
+        } else if (abs(latitude - latitudeOfOrigin) < 0.00001) {
+            // Strangely, very near the latitude of origin the cos() becomes lossy
+            // and errors are in excess of a millimeter.
+            return 0.01;
         }
         
-        // a normal tolerance
-        return 1E-6;
+        return super.getToleranceForAssertions(longitude, latitude);
     }
 
 

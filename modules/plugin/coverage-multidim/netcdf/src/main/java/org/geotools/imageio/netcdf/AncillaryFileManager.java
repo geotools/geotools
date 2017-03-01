@@ -61,7 +61,7 @@ import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
+import org.geotools.imageio.netcdf.SliceNDIndex.SliceNDIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.factory.gridshift.DataUtilities;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -197,12 +197,12 @@ public class AncillaryFileManager implements FileSetManager{
     /**
      * The list of Slice2D indexes
      */
-    private final List<Slice2DIndex> slicesIndexList = new ArrayList<Slice2DIndex>();
+    private final List<SliceNDIndex> slicesIndexList = new ArrayList<SliceNDIndex>();
     
     /** 
      * The Slice2D index manager
      */
-    Slice2DIndexManager slicesIndexManager;
+    SliceNDIndexManager slicesIndexManager;
 
     /** The map of coverages elements */
     Map<String, Coverage> coveragesMapping = new HashMap<String, Coverage>();
@@ -368,7 +368,7 @@ public class AncillaryFileManager implements FileSetManager{
      */
     public void writeToDisk() throws IOException, JAXBException {
         // Write collected information
-        Slice2DIndexManager.writeIndexFile(slicesIndexFile, slicesIndexList);
+        SliceNDIndexManager.writeIndexFile(slicesIndexFile, slicesIndexList);
         if (!indexerFile.exists()) {
             storeIndexer(indexerFile, coveragesMapping);
         }
@@ -452,15 +452,15 @@ public class AncillaryFileManager implements FileSetManager{
     }
 
     /**
-     * Return a {@link Slice2DIndex} related to the provided imageIndex
+     * Return a {@link SliceNDIndex} related to the provided imageIndex
      * @param imageIndex
      * @return
      * @throws IOException
      */
-    public Slice2DIndex getSlice2DIndex(final int imageIndex) throws IOException {
-        Slice2DIndex variableIndex;
+    public SliceNDIndex getSliceNDIndex(final int imageIndex) throws IOException {
+        SliceNDIndex variableIndex;
         if (slicesIndexManager != null) {
-            variableIndex = slicesIndexManager.getSlice2DIndex(imageIndex);
+            variableIndex = slicesIndexManager.getSliceNDIndex(imageIndex);
         } else {
             variableIndex = slicesIndexList.get(imageIndex);
         }
@@ -483,7 +483,7 @@ public class AncillaryFileManager implements FileSetManager{
         return datastoreIndexFile;
     }
 
-    public void addSlice(final Slice2DIndex variableIndex) {
+    public void addSlice(final SliceNDIndex variableIndex) {
         slicesIndexList.add(variableIndex);
     }
 
@@ -507,7 +507,7 @@ public class AncillaryFileManager implements FileSetManager{
     }
 
     public void initSliceManager() throws IOException {
-        slicesIndexManager = new Slice2DIndexManager(slicesIndexFile);
+        slicesIndexManager = new SliceNDIndexManager(slicesIndexFile);
         slicesIndexManager.open();
     }
 

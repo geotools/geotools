@@ -294,7 +294,8 @@ class NetCDFResponse extends CoverageResponse{
      * @param query
      * @param domainsSubset
      */
-    private void additionalParamsManagement(Query query, Map<String, Set<?>> domainsSubset,  List<DimensionDescriptor> dimensionDescriptors) {
+    private void additionalParamsManagement(Query query, Map<String, Set<?>> domainsSubset,  List<DimensionDescriptor> dimensionDescriptors) 
+        throws IOException {
         if (domainsSubset.isEmpty()){
             return;
         }
@@ -308,7 +309,7 @@ class NetCDFResponse extends CoverageResponse{
                      break;
                 }
             }
-            for(Object value:values){
+            for(Object value:values){               
                 if(value instanceof Range){
                     throw new UnsupportedOperationException();
                 } else {

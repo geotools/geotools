@@ -57,7 +57,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
-import org.geotools.imageio.netcdf.Slice2DIndex;
+import org.geotools.imageio.netcdf.SliceNDIndex;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -123,7 +123,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
             int numImages = reader.getNumImages(true);
             assertEquals(8, numImages);
             for (int i = 0; i < numImages; i++) {
-                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
+                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -273,7 +273,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
             int numImages = reader.getNumImages(true);
             LOGGER.info("Found " + numImages + " images.");
             for (int i = 0; i < numImages; i++) {
-                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
+                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -500,7 +500,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
      * @param i
      * @param sliceIndex
      */
-    private void spitOutSliceInformation(int i, Slice2DIndex sliceIndex) {
+    private void spitOutSliceInformation(int i, SliceNDIndex sliceIndex) {
         if (TestData.isInteractiveTest()) {
             String variableName = sliceIndex.getVariableName();
             StringBuilder sb = new StringBuilder();
@@ -508,9 +508,9 @@ public final class PostGisIndexTest extends OnlineTestCase {
             sb.append("IMAGE: ").append(i).append("\n");
             sb.append(" Variable Name = ").append(variableName);
             sb.append(" ( Z = ");
-            sb.append(sliceIndex.getZIndex());
+            sb.append(sliceIndex.getNIndex(0));
             sb.append("; T = ");
-            sb.append(sliceIndex.getTIndex());
+            sb.append(sliceIndex.getNIndex(1));
             sb.append(")");
             LOGGER.info(sb.toString());
         }

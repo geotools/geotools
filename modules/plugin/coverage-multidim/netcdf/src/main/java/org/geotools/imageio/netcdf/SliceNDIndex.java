@@ -41,34 +41,32 @@ import java.util.List;
  * @author Simone Giannecchini, GeoSolutions
  *
  */
-public class Slice2DIndex {
+public class SliceNDIndex {
 
     /** DEFAULT_INDEX */
     public static final int DEFAULT_INDEX = -1;
     
-    private int tIndex = DEFAULT_INDEX;
-    
-    private int zIndex = DEFAULT_INDEX;
+    private int[] index;
     
     private final String variableName;
     
-    public Slice2DIndex(String variableName) {
-        this(DEFAULT_INDEX, DEFAULT_INDEX, variableName);
+    public SliceNDIndex(String variableName) {
+        this(new int[] {}, variableName);
     }
 
-    public Slice2DIndex(int tIndex, int zIndex, String variableName) {
+    public SliceNDIndex(int[] index, String variableName) {
         org.geotools.util.Utilities.ensureNonNull("variableName", variableName);
-        this.tIndex = tIndex;
-        this.zIndex = zIndex;
+        org.geotools.util.Utilities.ensureNonNull("index", index);
+        this.index = index;
         this.variableName = variableName;
     }
 
-    public int getZIndex() {
-        return zIndex;
+    public int getNIndex(int n) {
+        return index.length > 0 ? index[n] : DEFAULT_INDEX;
     }
 
-    public int getTIndex() {
-        return tIndex;
+    public int getNCount() {
+        return index.length;
     }
 
     public String getVariableName() {
@@ -77,17 +75,16 @@ public class Slice2DIndex {
 
     @Override
     public String toString() {
-        return "UnidataVariableIndex [tIndex=" + tIndex + ", zIndex="
-                + zIndex + ", variableName=" + variableName + "]";
+        return "UnidataVariableIndex [index=" + index + ", variableName=" + variableName + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + tIndex;
+        for (int i = 0; i < index.length; i++) {
+            result = prime * result + index[i];        }
         result = prime * result + ((variableName == null) ? 0 : variableName.hashCode());
-        result = prime * result + zIndex;
         return result;
     }
 
@@ -99,16 +96,35 @@ public class Slice2DIndex {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Slice2DIndex other = (Slice2DIndex) obj;
-        if (tIndex != other.tIndex)
-            return false;
+        SliceNDIndex other = (SliceNDIndex) obj;
         if (variableName == null) {
             if (other.variableName != null)
                 return false;
         } else if (!variableName.equals(other.variableName))
             return false;
-        if (zIndex != other.zIndex)
+        if (index == null) {
+            if (other.index != null) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        } else if (other.index == null) {
+            if (index != null) {
+                return false;
+            } else {
+                return true;
+            }
+        } else if (index.length != other.index.length) {
             return false;
+        } else {
+            for (int i = 0; i < index.length; i++) {
+                if (index[i] != other.index[i]) {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
       
@@ -119,7 +135,7 @@ public class Slice2DIndex {
      * @author Simone Giannecchini, GeoSolutions
      *
      */
-    public static class Slice2DIndexManager {
+    public static class SliceNDIndexManager {
 
         private static final long ADDRESS_SIZE = 8l;
 
@@ -131,7 +147,7 @@ public class Slice2DIndex {
 
         private int numberOfRecords;
 
-        public Slice2DIndexManager( File file ) {
+        public SliceNDIndexManager(File file) {
             this.file = file;
         }
 
@@ -142,13 +158,13 @@ public class Slice2DIndex {
         }
 
         /**
-         * Read a {@link Slice2DIndex} from file given the imageIndex.
+         * Read a {@link SliceNDIndex} from file given the imageIndex.
          * 
          * @param imageIndex the imageIndex to look for.
-         * @return the {@link Slice2DIndex} for the picked image.
+         * @return the {@link SliceNDIndex} for the picked image.
          * @throws IOException
          */
-        public synchronized Slice2DIndex getSlice2DIndex( int imageIndex ) throws IOException {
+        public synchronized SliceNDIndex getSliceNDIndex(int imageIndex) throws IOException {
             // Synchronized these access due to the RAF usage.
             // concurrent seeks and reads on the same RAF may
             // may result into unexpected results
@@ -159,14 +175,17 @@ public class Slice2DIndex {
             long endDataPosition = raf.readLong();
 
             raf.seek(dataPosition);
-            int tIndex = raf.readInt();
-            int zIndex = raf.readInt();
+            int dimensions = raf.readInt();
+            int[] index = new int[dimensions];
+            for (int i = 0; i < dimensions; i++) {
+                index[i] = raf.readInt();
+            }
             int stringSize = (int) (endDataPosition - raf.getFilePointer());
             byte[] stringBytes = new byte[stringSize];
             raf.read(stringBytes);
             String varName = new String(stringBytes);
 
-            return  new Slice2DIndex(tIndex, zIndex, varName);
+            return new SliceNDIndex(index, varName);
         }
         public void dispose() throws IOException {
             if (raf != null) {
@@ -177,10 +196,10 @@ public class Slice2DIndex {
          * Utility method to write an index file.
          * 
          * @param file the file to write to.
-         * @param indexList the list of {@link Slice2DIndex} to dump to file.
+         * @param indexList the list of {@link SliceNDIndex} to dump to file.
          * @throws IOException
          */
-        public static void writeIndexFile( File file, List<Slice2DIndex> indexList ) throws IOException {
+        public static void writeIndexFile(File file, List<SliceNDIndex> indexList) throws IOException {
             writeIndexFile(file, indexList, 2);
         }
         
@@ -188,10 +207,10 @@ public class Slice2DIndex {
          * Utility method to write an index file.
          * 
          * @param file the file to write to.
-         * @param indexList the list of {@link Slice2DIndex} to dump to file.
+         * @param indexList the list of {@link SliceNDIndex} to dump to file.
          * @throws IOException
          */
-        public static void writeIndexFile( File file, List<Slice2DIndex> indexList, int dimensions ) throws IOException {
+        public static void writeIndexFile(File file, List<SliceNDIndex> indexList, int dimensions) throws IOException {
             RandomAccessFile raf = null;
             try {
                 raf = new RandomAccessFile(file, "rw");
@@ -204,12 +223,14 @@ public class Slice2DIndex {
                 raf.seek(dataPosition);
 
                 for( int i = 0; i < size; i++ ) {
-                    Slice2DIndex slice2DIndex = indexList.get(i);
+                    SliceNDIndex sliceNDIndex = indexList.get(i);
                     long pos = raf.getFilePointer();
                     pointer[i] = pos;
-                    raf.writeInt(slice2DIndex.getTIndex());
-                    raf.writeInt(slice2DIndex.getZIndex());
-                    raf.write(slice2DIndex.getVariableName().getBytes());
+                    raf.writeInt(sliceNDIndex.getNCount());
+                    for (int j = 0; j < sliceNDIndex.getNCount(); j++) {
+                        raf.writeInt(sliceNDIndex.getNIndex(j));
+                    }
+                    raf.write(sliceNDIndex.getVariableName().getBytes());
                 }
                 long dataEnd = raf.getFilePointer();
 

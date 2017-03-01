@@ -516,13 +516,13 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     /**
-     * Return the {@link Slice2DIndex} associated to the specified imageIndex
+     * Return the {@link SliceNDIndex} associated to the specified imageIndex
      * @param imageIndex
      * @return
      * @throws IOException
      */
-    public Slice2DIndex getSlice2DIndex( int imageIndex ) throws IOException {
-        return ancillaryFileManager.getSlice2DIndex(imageIndex);
+    public SliceNDIndex getSliceNDIndex( int imageIndex ) throws IOException {
+        return ancillaryFileManager.getSliceNDIndex(imageIndex);
     }
 
     /**
@@ -533,7 +533,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     protected VariableAdapter getCoverageDescriptor( int imageIndex ) {
         checkImageIndex(imageIndex);
         try {
-            Slice2DIndex slice2DIndex = getSlice2DIndex(imageIndex);
+            SliceNDIndex slice2DIndex = getSliceNDIndex(imageIndex);
             if (slice2DIndex != null) {
                 return getCoverageDescriptor(new NameImpl(slice2DIndex.getVariableName()));
             }
@@ -581,7 +581,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     public BufferedImage read( int imageIndex, ImageReadParam param ) throws IOException {
         clearAbortRequest();
     
-        final Slice2DIndex slice2DIndex = getSlice2DIndex(imageIndex);
+        final SliceNDIndex slice2DIndex = getSliceNDIndex(imageIndex);
         final String variableName=slice2DIndex.getVariableName();
         final VariableAdapter wrapper=getCoverageDescriptor(new NameImpl(variableName));
 
@@ -646,16 +646,14 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 }
             }
 
-            // add the ranges the COARDS way: T, Z, Y, X
-            // T
-            int first = slice2DIndex.getTIndex();
-            if (first != -1){
-                ranges.add(new Range(first, first, 1));
-            }
-            // Z
-            first = slice2DIndex.getZIndex();
-            if (first != -1){
-                ranges.add(new Range(first, first, 1));
+            // add the ranges the COARDS way: (additional dims), T, Z, Y, X
+            int first;
+            // (additional), T, Z
+            for (int i = slice2DIndex.getNCount() - 1; i >= 0; i--) {
+                first = slice2DIndex.getNIndex(i);
+                if (first != -1){
+                    ranges.add(new Range(first, first, 1));
+                }
             }
             // Y
             first = srcRegion.y;

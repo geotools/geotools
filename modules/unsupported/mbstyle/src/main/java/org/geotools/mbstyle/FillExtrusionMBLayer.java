@@ -24,7 +24,29 @@ import org.geotools.mbstyle.FillMBLayer.FillTranslateAnchor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
-
+/**
+ * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.
+ * <p>
+ * Example of line JSON:<pre>
+ * {    'id': 'room-extrusion',
+ *      'type': 'fill-extrusion',
+ *      'source': {
+ *          'type': 'geojson',
+ *          'data': 'https://www.mapbox.com/mapbox-gl-js/assets/data/indoor-3d-map.geojson'
+ *      },
+ *      'paint': {
+ *          'fill-extrusion-color': { 'property': 'color', 'type': 'identity'},
+ *          'fill-extrusion-height': { 'property': 'height','type': 'identity'},
+ *          'fill-extrusion-base': { 'property': 'base_height','type': 'identity'},
+ *          'fill-extrusion-opacity': 0.5
+ *      }
+ *  }
+ * </pre>
+ * 
+ * Responsible for accessing wrapped json as expressions (for use in transformer).
+ * 
+ * @author jody
+ */
 public class FillExtrusionMBLayer extends MBLayer {
 
     private JSONObject paint;

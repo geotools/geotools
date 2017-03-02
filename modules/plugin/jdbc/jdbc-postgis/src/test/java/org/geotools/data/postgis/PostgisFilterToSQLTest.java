@@ -23,10 +23,19 @@ import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
+import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Intersects;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -100,5 +109,29 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
                         new Coordinate(2, 0), new Coordinate(0, 0) }))));
         filterToSql.encode(filter);
         assertFalse(writer.toString().toLowerCase().contains("st_envelope"));
+    }
+
+    @Test
+    public void testEncodeBBOX3D() throws FilterToSQLException, MismatchedDimensionException, NoSuchAuthorityCodeException, FactoryException {
+        filterToSql.setFeatureType(testSchema);
+        BBOX3D bbox3d = ff.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 0, 1, CRS.decode("EPSG:7415")));
+        filterToSql.encode(bbox3d);
+        String sql = writer.toString().toLowerCase();
+        assertEquals("where testgeometry &&& st_makeline(st_makepoint(2.0,1.0,0.0), st_makepoint(3.0,2.0,1.0))", sql);
+    }
+
+    @Test
+    public void testBBOX3DCapabilities() throws Exception {
+        BBOX3D bbox3d = ff.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 0, 1, CRS.decode("EPSG:7415")));
+        FilterCapabilities caps = filterToSql.getCapabilities();
+        PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(caps, testSchema, null);
+        bbox3d.accept(splitter, null);
+
+        Filter[] split = new Filter[2];
+        split[0] = splitter.getFilterPre();
+        split[1] = splitter.getFilterPost();
+
+        assertEquals(bbox3d, split[0]);
+        assertEquals(Filter.INCLUDE, split[1]);
     }
 }

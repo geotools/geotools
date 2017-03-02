@@ -59,6 +59,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Contains;
@@ -80,6 +81,7 @@ import org.opengis.filter.temporal.EndedBy;
 import org.opengis.filter.temporal.Ends;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.geometry.BoundingBox3D;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -127,6 +129,7 @@ class FilterToSqlHelper {
 
         // adding the spatial filters support
         caps.addType(BBOX.class);
+        caps.addType(BBOX3D.class);
         caps.addType(Contains.class);
         caps.addType(Crosses.class);
         caps.addType(Disjoint.class);
@@ -262,26 +265,42 @@ class FilterToSqlHelper {
             }
         }
         
-        // add && filter if possible
-        if(!(filter instanceof Disjoint)) {
-            if(encodeBBOXFilterAsEnvelope && !isCurrentGeography()) {
-                out.write("ST_envelope(");
-            }
+        // special case for 3D bbox, it requires a "weird" encoding, from a postgis mail
+        // No, just construct a 3D geometry as your query filter, not a 3d box.
+        // select count(*) from "3dfloor" where geom &&& ST_Makeline(ST_MakePoint(0,0,0), ST_MakePoint(1000000,1000000,1));
+        if(filter instanceof BBOX3D) {
             property.accept(delegate, extraData);
-            if(encodeBBOXFilterAsEnvelope && !isCurrentGeography()) {
-                out.write(")");
-            }
-            out.write(" && ");
-            geometry.accept(delegate, extraData);
-    
-            // if we're just encoding a bbox in loose mode, we're done 
-            if(filter instanceof BBOX && looseBBOXEnabled)
-                return;
-                
-            out.write(" AND ");
-        }
+            out.write(" &&& ");
+            BBOX3D bbox = (BBOX3D) filter;
+            BoundingBox3D bounds = bbox.getBounds();
+            out.write("ST_Makeline(ST_MakePoint(");
+            out.write(bounds.getMinX() + "," + bounds.getMinY() + "," + bounds.getMinZ());
+            out.write("), ST_MakePoint(");
+            out.write(bounds.getMaxX() + "," + bounds.getMaxY() + "," + bounds.getMaxZ());
+            out.write("))");
+        } else {
+            // add && filter if possible
+            if(!(filter instanceof Disjoint)) {
+                if(encodeBBOXFilterAsEnvelope && !isCurrentGeography()) {
+                    out.write("ST_envelope(");
+                }
+                property.accept(delegate, extraData);
+                if(encodeBBOXFilterAsEnvelope && !isCurrentGeography()) {
+                    out.write(")");
+                }
+                out.write(" && ");
+                geometry.accept(delegate, extraData);
 
-        visitBinarySpatialOperator(filter, (Expression)property, (Expression)geometry, swapped, extraData);
+                // if we're just encoding a bbox in loose mode, we're done 
+                if(filter instanceof BBOX && looseBBOXEnabled) {
+                    return;
+                }
+
+                out.write(" AND ");
+            }
+    
+            visitBinarySpatialOperator(filter, (Expression)property, (Expression)geometry, swapped, extraData);
+        }
     }
     
     void visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, 

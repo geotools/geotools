@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.StyleFactory2;
 import org.json.simple.JSONArray;
@@ -58,8 +59,16 @@ public abstract class MBLayer {
     /** field access for "id" key (due to its use in error messages) */
     final protected String id;
 
-    public MBLayer(JSONObject json) {
-        this(json, new MBObjectParser());
+    /**
+     * Whether this layer is displayed.
+     * 
+     * Optional enum.  One of visible, none. Defaults to visible.
+     */
+    public static enum Visibility {
+        /** The layer is shown. */
+        VISIBLE,
+        /** The layer is not shown. */
+        NONE
     }
 
     public MBLayer(JSONObject json, MBObjectParser parse) {
@@ -254,6 +263,25 @@ public abstract class MBLayer {
     public JSONObject getPaint(){
         return parse.paint(json);
     }
+    
+    /** Layout setting - whether this layer is displayed.
+     * 
+     *  @return Optional enum, one of visible, none (Defaults to visible.)
+     */
+    public Visibility getVisibility(){
+        JSONObject layout = layout();
+        return parse.toEnum( layout, "visibility", Visibility.class, Visibility.VISIBLE );
+    }
+    
+    /**
+     * Whether this layer is displayed.
+     * 
+     * @return optional layout setting, defaults to true (visible)
+     */
+    public boolean visibility(){
+        return getVisibility() == Visibility.VISIBLE;
+    }
+    
     /**
      * Query for paint information (making use of {@link #getRef()} if available).
      * 

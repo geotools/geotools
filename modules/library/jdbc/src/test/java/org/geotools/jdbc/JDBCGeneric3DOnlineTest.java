@@ -36,12 +36,14 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -151,6 +153,28 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
             assertTrue(new Coordinate(4, 2, 1).equals3D(ls.getCoordinateN(2)));
             assertTrue(new Coordinate(5, 1, 1).equals3D(ls.getCoordinateN(3)));
         }
+    }
+    
+    public void testBBOX3DReadLine() throws Exception {
+        BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 0, 1, crs));
+        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getLine3d())).getFeatures(bbox3d);
+        try(SimpleFeatureIterator fr = fc.features()) {
+            assertTrue(fr.hasNext());
+            LineString ls = (LineString) fr.next().getDefaultGeometry();
+            // 1 1 0, 2 2 0, 4 2 1, 5 1 1
+            assertEquals(4, ls.getCoordinates().length);
+            assertTrue(new Coordinate(1, 1, 0).equals3D(ls.getCoordinateN(0)));
+            assertTrue(new Coordinate(2, 2, 0).equals3D(ls.getCoordinateN(1)));
+            assertTrue(new Coordinate(4, 2, 1).equals3D(ls.getCoordinateN(2)));
+            assertTrue(new Coordinate(5, 1, 1).equals3D(ls.getCoordinateN(3)));
+        }
+    }
+    
+    public void testBBOX3DOutsideLine() throws Exception {
+        // a bbox 3d well outside the line footprint
+        BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 100, 101, crs));
+        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getLine3d())).getFeatures(bbox3d);
+        assertEquals(0, fc.size());
     }
 
     public void testWriteLine() throws Exception {

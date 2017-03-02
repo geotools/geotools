@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
@@ -28,7 +29,7 @@ public class RasterMBLayer extends MBLayer {
     private static String type = "raster";
 
     public RasterMBLayer(JSONObject json) {
-        super(json);
+        super(json, new MBObjectParser(RasterMBLayer.class));
 
         if (json.get("paint") != null) {
             paintJson = (JSONObject) json.get("paint");

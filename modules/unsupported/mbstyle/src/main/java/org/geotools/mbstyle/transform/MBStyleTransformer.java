@@ -31,11 +31,11 @@ import org.geotools.mbstyle.BackgroundMBLayer;
 import org.geotools.mbstyle.CircleMBLayer;
 import org.geotools.mbstyle.FillMBLayer;
 import org.geotools.mbstyle.LineMBLayer;
-import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.mbstyle.SymbolMBLayer;
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.sprite.MapboxGraphicFactory;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
@@ -84,9 +84,16 @@ public class MBStyleTransformer {
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         Style style = sf.createStyle();
         for (MBLayer layer : layers) {
-            FeatureTypeStyle featureTypeStyle = transform(layer, mbStyle);
-            style.featureTypeStyles().add(featureTypeStyle);
+            if (layer.visibility()) {
+                FeatureTypeStyle featureTypeStyle = transform(layer, mbStyle);
+                style.featureTypeStyles().add(featureTypeStyle);
+            }
         }
+        
+        if( style.featureTypeStyles().isEmpty() ){
+            throw new MBFormatException("No visibile layers");
+        }
+        
         UserLayer userLayer = sf.createUserLayer();
         userLayer.userStyles().add(style);
         
@@ -104,6 +111,9 @@ public class MBStyleTransformer {
      * @return A feature type style from the provided layer.
      */
     public FeatureTypeStyle transform(MBLayer layer, MBStyle styleContext) {
+        if( !layer.visibility()){
+            return null; // layer layout visibility 'none'
+        }
         if (layer instanceof FillMBLayer) {
             return transform((FillMBLayer) layer, styleContext);
         } else if (layer instanceof RasterMBLayer) {

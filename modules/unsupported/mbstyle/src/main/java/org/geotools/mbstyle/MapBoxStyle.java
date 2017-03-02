@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.FeatureTypeStyle;
@@ -87,15 +88,29 @@ public class MapBoxStyle {
             return problems;
         }
         MBStyleTransformer transform = new MBStyleTransformer();
-        
-        for (MBLayer layer : style.layers()) {
-            try {
-                FeatureTypeStyle featureTypeStyle = transform.transform(layer, style);
+        if( style.layers().isEmpty()){
+            problems.add( new MBFormatException("No layers defined"));
+        }
+        else {
+            boolean hasVisibleLayer = false;
+            for (MBLayer layer : style.layers()) {
+                if(!layer.visibility() ){
+                    continue;
+                }
+                try {
+                    FeatureTypeStyle featureTypeStyle = transform.transform(layer, style);
+                    if( featureTypeStyle != null ){
+                        hasVisibleLayer = true;
+                    }
+                }
+                catch (Exception invalid){
+                    problems.add((MBFormatException) new MBFormatException(
+                            "Layer " + layer.getId() + ":" + invalid.getMessage()).initCause(invalid));
+                    return problems;
+                }
             }
-            catch (Exception invalid){
-                problems.add((MBFormatException) new MBFormatException(
-                        "Layer " + layer.getId() + ":" + invalid.getMessage()).initCause(invalid));
-                return problems;
+            if( !hasVisibleLayer){
+                problems.add( new MBFormatException("No layers were visible"));
             }
         }
         return problems;

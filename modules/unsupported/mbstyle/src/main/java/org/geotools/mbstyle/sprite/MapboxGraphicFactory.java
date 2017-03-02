@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.geotools.mbstyle.MBFormatException;
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.renderer.style.ImageGraphicFactory;
 import org.geotools.util.SoftValueHashMap;

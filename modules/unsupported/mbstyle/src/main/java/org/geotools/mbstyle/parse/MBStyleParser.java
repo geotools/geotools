@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import org.geotools.mbstyle.MBFormatException;
 import org.geotools.mbstyle.MBStyle;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -35,7 +34,6 @@ import org.json.simple.parser.ParseException;
 public class MBStyleParser {
 
     JSONParser jsonParser;
-    MBObjectParser parse = new MBObjectParser();
     
     public MBStyleParser() {
         jsonParser = new JSONParser();

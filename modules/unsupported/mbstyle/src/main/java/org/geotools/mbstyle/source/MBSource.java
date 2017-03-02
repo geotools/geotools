@@ -1,6 +1,6 @@
 package org.geotools.mbstyle.source;
 
-import org.geotools.mbstyle.MBFormatException;
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
@@ -25,7 +25,7 @@ public abstract class MBSource {
     
     public MBSource(JSONObject json, MBObjectParser parser) {
         this.json = json != null ? json : new JSONObject();
-        this.parser = parser != null ? parser : new MBObjectParser();
+        this.parser = parser != null ? parser : new MBObjectParser(MBSource.class);
     }
     
     public static MBSource create(JSONObject json, MBObjectParser parser ) {

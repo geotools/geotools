@@ -15,12 +15,16 @@
  *    Lesser General Public License for more details.
  */
 /**
- * Support for MapBox Style generation for GeoTools.
- * <p>
- * This package contains the core data structures for MapBox Style, each implemented as a JSON
- * Wrapper.
- * </p>
+ * JSON Parsing support for MapBox Style support.
+ * 
+ * <ul>
+ * <li>This package contains {@link org.geotools.mbstyle.parse.MBStyleParser} to access JSON
+ * content.</li>
+ * <li>Utility JSON wrappers {@link org.geotools.mbstyle.parse.MBObjectParser},
+ * {@link org.geotools.mbstyle.parse.MBFunction} and {@link org.geotools.mbstyle.parse.MBFilter} are
+ * provided for use.</li>
+ * </ul>
  * 
  * @see org.geotools.styling.StyledLayerDescriptor
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.parse;

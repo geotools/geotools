@@ -20,7 +20,8 @@ package org.geotools.mbstyle;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.geotools.mbstyle.FillMBLayer.FillTranslateAnchor;
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -68,7 +69,7 @@ public class FillExtrusionMBLayer extends MBLayer {
     }
     
     public FillExtrusionMBLayer(JSONObject json) {
-        super(json);
+        super(json,new MBObjectParser(FillExtrusionMBLayer.class));
 
         paint = paint();
         layout = layout();

@@ -21,8 +21,6 @@ import java.lang.reflect.Array;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.mbstyle.MBFormatException;
-import org.geotools.mbstyle.MBFunction;
 import org.geotools.styling.StyleFactory2;
 import org.geotools.util.ColorConverterFactory;
 import org.geotools.util.Converters;
@@ -63,15 +61,18 @@ import org.opengis.filter.expression.Literal;
  * @author Torbien Barsballe (Boundless)
  */
 public class MBObjectParser {
+    /** Wrapper class (used to provide better error messages). */
+    Class<?> context;
     final FilterFactory2 ff;
     final StyleFactory2 sf;
     
-    public MBObjectParser() {
-        this(CommonFactoryFinder.getFilterFactory2(),
+    public MBObjectParser(Class<?> context) {
+        this(context,CommonFactoryFinder.getFilterFactory2(),
                 (StyleFactory2) CommonFactoryFinder.getStyleFactory());
     }
     
-    public MBObjectParser(FilterFactory2 filterFactory, StyleFactory2 styleFactory){
+    public MBObjectParser(Class<?> context, FilterFactory2 filterFactory, StyleFactory2 styleFactory){
+        this.context = context;
         ff = filterFactory;
         sf = styleFactory;
     }
@@ -226,7 +227,77 @@ public class MBObjectParser {
     }
     
     /**
-     * Quickly access required json tag.
+     * Access a literal value (string, numeric, or boolean).
+     * 
+     * @param index
+     * @return required string, numeric or boolean
+     * @throws MBFormatException if required index not available.
+     */
+    public Object value(JSONArray json, int index) {
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        else if (index < json.size() && json.get(index) instanceof String) {
+            return (String) json.get(index);
+        }
+        else if (index < json.size() && json.get(index) instanceof Boolean) {
+            return (Boolean) json.get(index);
+        }
+        else if (index < json.size() && json.get(index) instanceof Number) {
+            return (Number) json.get(index);
+        }
+        else {
+            throw new MBFormatException(
+                    context.getSimpleName() + " requires [" + index + "] string, numeric or boolean");
+        }
+    }
+    /**
+     * Access a literal value (string, numeric, or boolean).
+     * 
+     * @param tag
+     * @return required string, numeric or boolean
+     * @throws MBFormatException if required tag not available.
+     */
+    public Object value(JSONObject json, String tag) {
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        if (json.containsKey(tag)) {
+            Object value = json.get(tag);
+            if (value == null || value instanceof String || value instanceof Boolean
+                    || value instanceof Number) {
+                return value;
+            } else {
+                throw new MBFormatException(context.getSimpleName() + " requires \"" + tag
+                        + "\" literal required (was " + value.getClass().getSimpleName() + ")");
+            }
+        } else {
+            throw new MBFormatException(
+                    context.getSimpleName() + " requires \"" + tag + "\" required.");
+        }
+    }
+
+    /**
+     * Quickly access required json index (as a String).
+     * 
+     * @param index
+     * @return required string
+     * @throws MBFormatException if required index not available.
+     */
+    public String get(JSONArray json, int index) {
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        if (index < json.size() && json.get(index) instanceof String) {
+            return (String) json.get(index);
+        } else {
+            throw new MBFormatException(
+                    context.getSimpleName() + " requires [" + index + "] string");
+        }
+    }
+
+    /**
+     * Quickly access required json tag (as a String).
      * 
      * @param tag
      * @return required string
@@ -243,9 +314,10 @@ public class MBObjectParser {
             return (String) json.get(tag);
         } else {
             throw new MBFormatException(
-                    getClass().getSimpleName() + " requires \"" + tag + "\" string field");
+                    context.getSimpleName() + " requires \"" + tag + "\" string field");
         }
     }
+    
     /**
      * Quickly access required json tag.
      * 
@@ -265,10 +337,23 @@ public class MBObjectParser {
             return (String) json.get(tag);
         } else {
             throw new MBFormatException(
-                    getClass().getSimpleName() + " requires \"" + tag + "\" string field");
+                    context.getSimpleName() + " requires \"" + tag + "\" string field");
         }
     }
 
+    /** Boolean lookup. */
+    public Boolean getBoolean(JSONArray json, int index) {
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        if (index < json.size() && json.get(index) instanceof Boolean) {
+            return (Boolean) json.get(index);
+        } else {
+            throw new MBFormatException(
+                    context.getSimpleName() + " requires [" + index + "] boolean");
+        }
+    }
+    /** Boolean lookup. */
     public Boolean getBoolean(JSONObject json, String tag) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -280,7 +365,7 @@ public class MBObjectParser {
             return (Boolean) json.get(tag);
         } else {
             throw new MBFormatException(
-                    getClass().getSimpleName() + " requires \"" + tag + "\" boolean field");
+                    context.getSimpleName() + " requires \"" + tag + "\" boolean field");
         }
     }
     /** Boolean lookup, using the fallback value if not provided. */
@@ -297,9 +382,21 @@ public class MBObjectParser {
         else if (json.get(tag) instanceof Boolean) {
             return (Boolean) json.get(tag);
         } else {
-            throw new MBFormatException(getClass().getSimpleName() + " requires \"" + tag + "\" boolean field");
+            throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" boolean field");
         }
     }
+    
+    public <T> T require( Class<T> type, JSONArray json, int index ){
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        if (index >= 0 && index <= json.size() && type.isInstance(json.get(index))) {
+            return type.cast(json.get(index));
+        } else {
+            throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] "+type.getSimpleName());
+        }
+    }
+    
     public <T> T require( Class<T> type, JSONObject json, String tag ){
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -310,12 +407,12 @@ public class MBObjectParser {
         if (json.containsKey(tag) && type.isInstance(json.get(tag))) {
             return type.cast(json.get(tag));
         } else {
-            throw new MBFormatException(getClass().getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
+            throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
         }
     }
 
     /**
-     * Optional lookup, will return fallback if not avaialble.
+     * Optional lookup, will return fallback if not available.
      * @param type Type to lookup
      * @param json
      * @param tag
@@ -336,7 +433,7 @@ public class MBObjectParser {
         if (json.containsKey(tag) && type.isInstance(json.get(tag))) {
             return type.cast(json.get(tag));
         } else {
-            throw new MBFormatException(getClass().getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
+            throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
         }
     }
     
@@ -788,5 +885,4 @@ public class MBObjectParser {
                     + obj.getClass().getSimpleName());
         }
     }
-    
 }

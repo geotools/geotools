@@ -14,14 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.parse;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import org.geotools.filter.function.InterpolateFunction;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
@@ -29,7 +28,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
 /**
- * MBFunction wrapper (around one of the MBStyle functions).
+ * MBFunction json wrapper, allowing conversion to a GeoTools Expression.
  */
 public class MBFunction {
     final protected MBObjectParser parse;
@@ -39,7 +38,7 @@ public class MBFunction {
     private FilterFactory2 ff;
 
     public MBFunction(JSONObject json) {
-        this(new MBObjectParser(), json);
+        this(new MBObjectParser(MBFunction.class), json);
     }
 
     public MBFunction(MBObjectParser parse, JSONObject json) {

@@ -20,10 +20,10 @@ package org.geotools.mbstyle;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
 
@@ -36,7 +36,7 @@ public class CircleMBLayer extends MBLayer {
 	private static String type = "circle";
 
 	public CircleMBLayer(JSONObject json) {
-		super(json);
+		super(json,new MBObjectParser(CircleMBLayer.class));
 
 		paint = paint();
 		layout = layout();

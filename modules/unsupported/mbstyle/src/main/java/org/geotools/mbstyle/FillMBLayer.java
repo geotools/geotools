@@ -20,6 +20,8 @@ package org.geotools.mbstyle;
 import java.awt.Color;
 import java.awt.Point;
 
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -35,18 +37,16 @@ public class FillMBLayer extends MBLayer {
 
     /**
      * Controls the translation reference point.
-     * 
-     * Map: The fill is translated relative to the map.
-     * 
-     * Viewport: The fill is translated relative to the viewport.
-     *
      */
-    public enum FillTranslateAnchor {
-        MAP, VIEWPORT
+    public static enum FillTranslateAnchor {
+        /** The fill is translated relative to the map. */
+        MAP,
+        /** The fill is translated relative to the viewport. */
+        VIEWPORT
     }
 
     public FillMBLayer(JSONObject json) {
-        super(json);
+        super(json,new MBObjectParser(FillMBLayer.class));
 
         paint = paint();
         layout = layout();
@@ -145,12 +145,14 @@ public class FillMBLayer extends MBLayer {
     /**
      * (Optional) Controls the translation reference point.
      * 
-     * {@link FillTranslateAnchor#MAP}: The fill is translated relative to the map.
+     * <ul>
+     * <li>{@link FillTranslateAnchor#MAP}: The fill is translated relative to the map.</li>
+     * <li>{@link FillTranslateAnchor#VIEWPORT}: The fill is translated relative to the viewport.</li>
+     * </ul>
      * 
-     * {@link FillTranslateAnchor#VIEWPORT}: The fill is translated relative to the viewport.
+     * Requires fill-translate.
      * 
-     * Defaults to {@link FillTranslateAnchor#MAP}. Requires fill-translate.
-     * 
+     * @return Optional, one of 'map','viewport', defaults to 'map'.
      */
     public FillTranslateAnchor getFillTranslateAnchor() {
         Object value = paint.get("fill-translate-anchor");

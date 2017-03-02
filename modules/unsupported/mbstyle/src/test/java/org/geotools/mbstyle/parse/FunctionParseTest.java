@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.geotools.mbstyle.MBFunction;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.source.MBSource;
 import org.json.simple.JSONArray;
@@ -61,7 +62,7 @@ public class MBStyle {
     
     /** Helper class used to perform JSON travewrse json and
      * perform Expression and Filter conversions. */
-    MBObjectParser parse = new MBObjectParser();
+    MBObjectParser parse = new MBObjectParser(MBStyle.class);
 
     /**
      * MBStyle wrapper on the provided json

@@ -9,6 +9,8 @@ import java.util.List;
 import org.geotools.mbstyle.CircleMBLayer.CirclePitchScale;
 import org.geotools.mbstyle.CircleMBLayer.CircleTranslateAnchor;
 import org.geotools.mbstyle.FillMBLayer.FillTranslateAnchor;
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -162,7 +164,7 @@ public class SymbolMBLayer extends MBLayer {
      * @param json
      */
     public SymbolMBLayer(JSONObject json) {
-        super(json);
+        super(json,new MBObjectParser(SymbolMBLayer.class));
         paint = super.getPaint();
         layout = super.getLayout();
     }

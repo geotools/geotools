@@ -14,7 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.parse;
+
+import org.geotools.mbstyle.MBStyle;
 
 /**
  * Thrown if the MapBox JSON used by {@link MBStyle} does not conform to the MapBox specification

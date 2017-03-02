@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.filter.function.RecodeFunction;
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.Displacement;
 import org.geotools.util.ColorConverterFactory;
 import org.geotools.util.Converter;
@@ -64,7 +66,7 @@ public class LineMBLayer extends MBLayer {
     private static String TYPE = "line";
 
     public LineMBLayer(JSONObject json) {
-        super(json);
+        super(json, new MBObjectParser(LineMBLayer.class));
         paint = super.getPaint();
         layout = super.getLayout();
     }

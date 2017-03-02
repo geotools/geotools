@@ -19,6 +19,7 @@ package org.geotools.mbstyle;
 
 import java.awt.Color;
 
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
@@ -42,8 +43,7 @@ public class BackgroundMBLayer extends MBLayer {
     private static String type = "background";
 
     public BackgroundMBLayer(JSONObject json) {
-        super(json);
-
+        super(json, new MBObjectParser(BackgroundMBLayer.class));
         paint = paint();
         layout = layout();
     }

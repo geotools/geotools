@@ -17,11 +17,6 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -32,6 +27,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Stroke;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MBLayer wrapper for "line" layers.
@@ -265,15 +264,12 @@ public class LineMBLayer extends MBLayer {
      * Defaults to {@link Color#BLACK}, disabled by line-pattern.
      * 
      * @return color to draw the line, optional defaults to black.
-     * @throws Exception
      */
-    public Color getLineColor() throws Exception {
+    public Color getLineColor() {
         if (paint.containsKey("line-pattern")) {
             return null; // disabled
         }
-
-        String colorStr = parse.optional(String.class, paint, "line-color", "black");
-        return colorConverter.convert(colorStr, Color.class);
+        return parse.convertToColor(parse.optional(String.class, paint, "fill-outline-color", "#000000"));
     }
 
     /**

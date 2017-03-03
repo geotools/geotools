@@ -16,36 +16,9 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.awt.Color;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.mbstyle.BackgroundMBLayer;
-import org.geotools.mbstyle.CircleMBLayer;
-import org.geotools.mbstyle.FillMBLayer;
-import org.geotools.mbstyle.LineMBLayer;
-import org.geotools.mbstyle.MBLayer;
-import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.RasterMBLayer;
-import org.geotools.styling.ExternalGraphicImpl;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Symbolizer;
+import org.geotools.mbstyle.*;
+import org.geotools.styling.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -53,10 +26,17 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
+import java.awt.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 /**
  * Test parsing and transforming a Mapbox fill layer from json.
  */
-public class MapBoxStyleTest {
+public class StyleTransformTest {
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();  
 

@@ -1,29 +1,19 @@
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.*;
+import org.geotools.mbstyle.*;
+import org.geotools.mbstyle.SymbolMBLayer.*;
+import org.hamcrest.collection.IsIterableContainingInOrder;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.junit.Assert;
+import org.junit.Test;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.geotools.mbstyle.BackgroundMBLayer;
-import org.geotools.mbstyle.FillMBLayer;
-import org.geotools.mbstyle.MBLayer;
-import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.RasterMBLayer;
-import org.geotools.mbstyle.SymbolMBLayer;
-import org.geotools.mbstyle.SymbolMBLayer.Alignment;
-import org.geotools.mbstyle.SymbolMBLayer.IconTextFit;
-import org.geotools.mbstyle.SymbolMBLayer.Justification;
-import org.geotools.mbstyle.SymbolMBLayer.SymbolPlacement;
-import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
-import org.geotools.mbstyle.SymbolMBLayer.TextTransform;
-import org.geotools.mbstyle.SymbolMBLayer.TranslateAnchor;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class StyleParseTests {
 
@@ -246,6 +236,35 @@ public class StyleParseTests {
         assertEquals(new Color(0x00FF00),  l.getBackgroundColor());
         assertEquals(0.45,  l.getBackgroundOpacity().doubleValue(), .00001);
         assertNull(l.getBackgroundPattern());
+    }
+
+    /**
+     * Verify that line layer properties are parsed correctly.
+     */
+    @Test
+    public void testParseLineLayer() throws  IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTest.json");
+        MBStyle s = new MBStyle(jsonObject);
+        LineMBLayer l = getSingleLayerOfType(s, LineMBLayer.class);
+        assertEquals(LineMBLayer.LineCap.SQUARE, l.getLineCap());
+        assertEquals(LineMBLayer.LineJoin.ROUND, l.getLineJoin());
+        assertEquals(new Color(0x0099ff), l.getLineColor());
+        assertEquals(0.5, l.getLineOpacity());
+        assertEquals(LineMBLayer.LineTranslateAnchor.VIEWPORT, l.getLineTranslateAnchor());
+        Assert.assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(10.0, 5.0, 3.0, 2.0));
+        // line-offset can be either an integer or double.
+        assertEquals(4, l.getLineOffset().intValue());
+        assertEquals(4.0, l.getLineOffset().doubleValue(), .00001);
+        // line-gap-width can be either an integer or double.
+        assertEquals(8, l.getLineGapWidth().intValue());
+        assertEquals(8.0, l.getLineGapWidth().doubleValue(), .00001);
+        assertEquals(new Point(3,3), l.getLineTranslate());
+        // line-width can be either an integer or double.
+        assertEquals(10, l.getLineWidth().intValue());
+        assertEquals(10.0, l.getLineWidth().doubleValue(), .00001);
+        // line-blur can be either an integer or double.
+        assertEquals(2, l.getLineBlur().intValue());
+        assertEquals(2.0, l.getLineBlur().doubleValue(), .00001);
     }
 
 }

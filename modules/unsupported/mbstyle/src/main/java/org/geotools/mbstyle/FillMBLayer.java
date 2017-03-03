@@ -17,9 +17,6 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Color;
-import java.awt.Point;
-
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
@@ -27,6 +24,33 @@ import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
 
+import java.awt.*;
+
+/**
+ * MBLayer wrapper for "Fill" layers.
+ * <p>
+ * Example of line JSON:
+ *
+ * <pre>
+ *      {   "type": "line",
+ *          "source": "http://localhost:8080/geoserver/ne/roads",
+ *          "source-layer": "road"
+ *          "id": "roads",
+ *          "paint": {
+ *              "fill-anitalias": true,
+ *              "fill-opacity": 1
+ *              "fill-color": "#6655ae",
+ *              "fill-outline-color": "#000000",
+ *              "fill-translate": [0,0],
+ *              "fill-translate-anchor": "map",
+ *              "fill-pattern": "trinangle" // Name of image in sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2, 4, 8, ..., 512).
+ *          },
+ *      },
+ * </pre>
+ *
+ * @author Reggie Beckwith (Boundless)
+ *
+ */
 public class FillMBLayer extends MBLayer {
 
     private JSONObject paint;

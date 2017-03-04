@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -179,13 +180,13 @@ public class ProjectionHandler {
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
                 if (re.getMinY() < -180) {
-                    envelopes.add(new ReferencedEnvelope(re.getMinY() + 360,
-                            Math.min(re.getMaxY() + 360, 180), re.getMinX(), re.getMaxX(),
-                            re.getCoordinateReferenceSystem()));
+                    envelopes.add(new ReferencedEnvelope(re.getMinX(), re.getMaxX(),
+                            re.getMinY() + 360,
+                            Math.min(re.getMaxY() + 360, 180), re.getCoordinateReferenceSystem()));
                 }
                 if (re.getMaxY() > 180) {
-                    envelopes.add(new ReferencedEnvelope(Math.max(re.getMinY() - 360, -180),
-                            re.getMaxY() - 360, re.getMinX(), re.getMaxX(),
+                    envelopes.add(new ReferencedEnvelope(re.getMinX(), re.getMaxX(),
+                            Math.max(re.getMinY() - 360, -180), re.getMaxY() - 360,
                             re.getCoordinateReferenceSystem()));
                 }
             } else {
@@ -264,7 +265,7 @@ public class ProjectionHandler {
         }
         mergeEnvelopes(envelopes);
         reprojectEnvelopes(sourceCRS, envelopes);
-        return envelopes;
+        return envelopes.stream().filter(e -> e != null).collect(Collectors.toList());
     }
 
     protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,

@@ -120,7 +120,7 @@ public class ProjectionHandlerTest {
         List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
         assertEquals(2, envelopes.size());
 
-        ReferencedEnvelope expected = new ReferencedEnvelope(170, 180, -90, 45, ED50_LATLON);
+        ReferencedEnvelope expected = new ReferencedEnvelope(-90, 45, 170, 180, ED50_LATLON);
         assertTrue(envelopes.remove(envelope));
         assertEquals(expected, envelopes.get(0));
     }

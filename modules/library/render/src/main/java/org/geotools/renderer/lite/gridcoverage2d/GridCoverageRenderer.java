@@ -710,7 +710,11 @@ public final class GridCoverageRenderer {
         GridCoverage2D coverage = renderCoverage(gridCoverage, symbolizer, interpolation,
                 background, tileSizeX,
                 tileSizeY);
-        return coverage.getRenderedImage();
+        if(coverage == null) {
+            return null;
+        } else {
+            return coverage.getRenderedImage();
+        }
     }
 
     private GridCoverage2D renderCoverage(final GridCoverage2D gridCoverage,

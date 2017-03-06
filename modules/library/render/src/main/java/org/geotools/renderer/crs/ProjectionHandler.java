@@ -221,18 +221,23 @@ public class ProjectionHandler {
                 double maxY = renderingEnvelope.getMaxY();
                 ReferencedEnvelope re1 = new ReferencedEnvelope(minX, datelineX - EPS, minY,
                         maxY, renderingCRS);
+                List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
                 ReferencedEnvelope tx1 = transformEnvelope(re1, WGS84);
-                tx1.expandToInclude(180, tx1.getMinY());
+                if(tx1 != null) {
+                    tx1.expandToInclude(180, tx1.getMinY());
+                    result.add(tx1);
+                }
                 ReferencedEnvelope re2 = new ReferencedEnvelope(datelineX + EPS, maxX, minY,
                         maxY, renderingCRS);
                 ReferencedEnvelope tx2 = transformEnvelope(re2, WGS84);
-                if (tx2.getMinX() > 180) {
-                    tx2.translate(-360, 0);
+                if(tx2 != null) {
+                    if (tx2.getMinX() > 180) {
+                        tx2.translate(-360, 0);
+                    }
+                    tx2.expandToInclude(-180, tx1.getMinY());
+                    result.add(tx2);
                 }
-                tx2.expandToInclude(-180, tx1.getMinY());
-                List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
-                result.add(tx1);
-                result.add(tx2);
+                
                 mergeEnvelopes(result);
                 return result;
             } else {
@@ -245,8 +250,16 @@ public class ProjectionHandler {
             throws TransformException, FactoryException {
         // check if we are crossing the dateline
         ReferencedEnvelope re = transformEnvelope(renderingEnvelope, WGS84);
+        if(re == null) {
+            return Collections.emptyList();
+        }
         if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
-            return Collections.singletonList(transformEnvelope(renderingEnvelope, sourceCRS));
+            final ReferencedEnvelope result = transformEnvelope(renderingEnvelope, sourceCRS);
+            if(result != null) {
+                return Collections.singletonList(result);
+            } else {
+                return Collections.emptyList();
+            }
         }
         // We need to split reprojected envelope and normalize it. To be lenient with
         // situations in which the data is just broken (people saying 4326 just because they
@@ -271,7 +284,24 @@ public class ProjectionHandler {
     protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,
             CoordinateReferenceSystem targetCRS) throws TransformException, FactoryException {
         try {
-            return envelope.transform(targetCRS, true, 10);
+            ReferencedEnvelope transformed = envelope.transform(targetCRS, true, 10);
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(new ReferencedEnvelope(targetCRS),
+                    DefaultGeographicCRS.WGS84, true);
+            // does the target CRS have a strict notion of what's possible in terms of
+            // valid coordinate ranges?
+            if(handler == null || handler instanceof WrappingProjectionHandler) {
+                return transformed;
+            }
+            
+            // if so, cut
+            final ReferencedEnvelope validAreaBounds = handler.getValidAreaBounds();
+            ReferencedEnvelope validArea  = validAreaBounds.transform(targetCRS, true);
+            ReferencedEnvelope reduced = transformed.intersection(validArea);
+            if(reduced.isNull()) {
+                return null;
+            } else {
+                return reduced;
+            }
         } catch (Exception e) {
             LOGGER.fine("Failed to reproject the envelope " + envelope + " to " + targetCRS
                     + " trying an area restriction");
@@ -340,7 +370,10 @@ public class ProjectionHandler {
             List<ReferencedEnvelope> envelopes) throws TransformException, FactoryException {
         // reproject the surviving envelopes
         for (int i = 0; i < envelopes.size(); i++) {
-            envelopes.set(i, transformEnvelope(envelopes.get(i), queryCRS));
+            final ReferencedEnvelope envelope = transformEnvelope(envelopes.get(i), queryCRS);
+            if(envelope != null) {
+                envelopes.set(i, envelope);
+            }
         }
     }
 

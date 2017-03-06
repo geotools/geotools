@@ -485,7 +485,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     /**
      * Returns the count of the number of features of the feature source.
      * <p>
-     * This method calls through to {@link #getCount(Query)} which 
+     * This method calls through to {@link #getCountInternal(Query)} which 
      * subclasses must implement. It also contains optimizations which check 
      * state for cached values.
      * </p>

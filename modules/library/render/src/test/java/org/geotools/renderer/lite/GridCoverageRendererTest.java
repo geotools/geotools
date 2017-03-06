@@ -1136,6 +1136,31 @@ public class GridCoverageRendererTest  {
         assertPixelIsTransparent(bi, bi.getWidth() - 1, 0);
     }
     
+    @Test
+    public void testRenderOutsideBounds() throws Exception {
+        ReferencedEnvelope re = new ReferencedEnvelope(0, 20, 20, 40, DefaultGeographicCRS.WGS84);
+        
+        // get a subset of the coverage
+        GridCoverage2D global = worldReader.read(null);
+        CoverageProcessor processor = CoverageProcessor.getInstance(new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
+        final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters().clone();
+        param.parameter("source").setValue(global);
+        param.parameter("Envelope").setValue(re);
+        GridCoverage2D cropped = (GridCoverage2D) ((Crop)processor.getOperation("CoverageCrop")).doOperation(param, null);
+
+        
+        ReferencedEnvelope reOutside = new ReferencedEnvelope(40, 60, 20, 40, DefaultGeographicCRS.WGS84);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, reOutside,
+                new Rectangle(0, 0, 100, 100), null);
+        
+        RasterSymbolizer symbolizer = new StyleBuilder().createRasterSymbolizer();
+        Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        RenderedImage image = renderer.renderImage(cropped, symbolizer, interpolation, null, 256, 256);
+        
+        // outside coverage bounds, just return null but don't NPE
+        assertNull(image);
+    }
+    
     /**
      * Checks the pixel i/j is fully transparent
      * @param image

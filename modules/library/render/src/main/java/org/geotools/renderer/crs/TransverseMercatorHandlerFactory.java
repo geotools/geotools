@@ -43,8 +43,8 @@ public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactor
             double centralMeridian = mapProjection.getParameterValues().parameter(
                     AbstractProvider.CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
 
-            ReferencedEnvelope validArea = new ReferencedEnvelope(centralMeridian - 45,
-                    centralMeridian + 45, -90, 90, DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope validArea = new ReferencedEnvelope(centralMeridian -45,
+                    centralMeridian + 45, -85, 85, DefaultGeographicCRS.WGS84);
 
             return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
         }

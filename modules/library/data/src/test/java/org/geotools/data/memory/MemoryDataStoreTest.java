@@ -1516,4 +1516,5 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
 
-    }}
+    }
+}

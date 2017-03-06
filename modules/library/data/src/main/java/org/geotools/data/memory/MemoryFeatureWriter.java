@@ -140,7 +140,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
             // add new content
             MemoryEntry entry = state.getEntry();
             synchronized (entry) {
-                entry.memory.put(current.getID(), current);    
+                entry.memory.put(current.getID(), current);
             }
             current = null;
         }

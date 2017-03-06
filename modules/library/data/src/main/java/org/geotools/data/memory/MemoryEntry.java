@@ -16,6 +16,7 @@
  */
 package org.geotools.data.memory;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class MemoryEntry extends ContentEntry {
     MemoryEntry( MemoryDataStore store, SimpleFeatureType schema){
         super( store, schema.getName() );
         this.schema = schema;
-        memory = new LinkedHashMap<String, SimpleFeature>();
+        memory = Collections.synchronizedMap(new LinkedHashMap<String, SimpleFeature>());
     }
 
     protected MemoryState createContentState(ContentEntry entry) {
@@ -70,4 +71,24 @@ public class MemoryEntry extends ContentEntry {
     public String toString() {
         return "MemoryEntry '" + getTypeName()+"': "+memory.size() + " features";
     }
+    
+    /**
+     * Safely add feature to {@link #memory}.
+     * <p>
+     * Feature is required to be non-null, and of the expected {@link #schema}.
+     * @param feature
+     */
+    void addFeature(SimpleFeature feature) {
+        if (feature == null) {
+            throw new IllegalArgumentException("Provided Feature is empty");
+        }
+        else if (feature.getFeatureType() != schema ){
+            throw new IllegalArgumentException("addFeatures expected " + schema.getTypeName()
+                    + "(but was " + feature.getFeatureType().getTypeName() + ")");
+        }
+        synchronized (this) {
+            memory.put(feature.getID(), feature);
+        }
+    }
+
 }

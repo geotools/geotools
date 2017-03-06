@@ -29,6 +29,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -357,8 +358,8 @@ public class ProjectionHandlerTest {
         assertNotNull(va);
         assertTrue(9 - 90 < va.getMinX() && va.getMinX() <= 9 - 3);
         assertTrue(9 + 3 <= va.getMaxX() && va.getMaxX() < 9 + 90);
-        assertEquals(-90, va.getMinY(), EPS);
-        assertEquals(90.0, va.getMaxY(), EPS);
+        assertEquals(-85, va.getMinY(), EPS);
+        assertEquals(85.0, va.getMaxY(), EPS);
     }
 
     @Test
@@ -865,5 +866,24 @@ public class ProjectionHandlerTest {
        // the expected query envelope
        ReferencedEnvelope expected = new ReferencedEnvelope(-180, 0, 0, 85, DefaultGeographicCRS.WGS84).transform(epsg900913, true);
        assertEquals(expected, queryEnvelopes.get(0));
+    }
+    
+    @Test
+    public void testQueryEnvelopeOnInvalidArea() throws Exception {
+        // and Envelope that does not make sense for EPSG:3003, too far away from central meridian
+        ReferencedEnvelope re = new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, CRS.decode("EPSG:3003", true), true);
+        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+        assertEquals(0, queryEnvelopes.size());
+    }
+    
+    @Test
+    public void testQueryEnvelopeOnInvalidArea2() throws Exception {
+        // and Envelope that does not make sense for EPSG:3003, too far away from central meridian
+        ReferencedEnvelope re = new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope re3857 = re.transform(CRS.decode("EPSG:3857", true), true);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re3857, CRS.decode("EPSG:3003", true), true);
+        List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+        assertEquals(0, queryEnvelopes.size());
     }
 }

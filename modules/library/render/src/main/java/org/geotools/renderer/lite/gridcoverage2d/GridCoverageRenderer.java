@@ -878,9 +878,7 @@ public final class GridCoverageRenderer {
                     GeneralEnvelope cutEnvelope = reducer.getCutEnvelope(reduced);
                     GridCoverage2D croppedCoverage = crop(coverage,
                             cutEnvelope, false, bgValues);
-                    if(croppedCoverage != null) {
-                        cropped.add(croppedCoverage);
-                    }
+                    cropped.add(croppedCoverage);
                 } else {
                     cropped.add(coverage);
                 }
@@ -967,9 +965,7 @@ public final class GridCoverageRenderer {
         for (GridCoverage2D displaced : displacedCoverages) {
             GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer,
                     bgValues);
-            if(symbolized != null) {
-                symbolizedCoverages.add(symbolized);
-            }
+            symbolizedCoverages.add(symbolized);
             ii++;
         }
 

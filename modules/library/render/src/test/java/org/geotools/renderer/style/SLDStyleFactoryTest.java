@@ -338,6 +338,9 @@ public class SLDStyleFactoryTest extends TestCase {
     	assertEquals(20, tsd.getFont().getSize());
     	assertEquals(java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
     	assertEquals("Serif", tsd.getFont().getName());
+
+      assertEquals(0.0, tsd.getAnchorX(), 0.0);
+      assertEquals(0.5, tsd.getAnchorY(), 0.0);
     }
     
     public void testAlternativeMarkSizeCalculation() {

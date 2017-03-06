@@ -785,8 +785,8 @@ public class SLDStyleFactory {
 
 		// compute label position, anchor, rotation and displacement
 		LabelPlacement placement = symbolizer.getLabelPlacement();
-		double anchorX = 0;
-		double anchorY = 0;
+		double anchorX = PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointX().evaluate(null, Double.class);
+		double anchorY = PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointY().evaluate(null, Double.class);
 		double rotation = 0;
 		double dispX = 0;
 		double dispY = 0;
@@ -800,9 +800,9 @@ public class SLDStyleFactory {
 			PointPlacement p = (PointPlacement) placement;
 			if (p.getAnchorPoint() != null) {
 				anchorX = evalToDouble(p.getAnchorPoint().getAnchorPointX(),
-						feature, 0);
+						feature, anchorX);
 				anchorY = evalToDouble(p.getAnchorPoint().getAnchorPointY(),
-						feature, 0.5);
+						feature, anchorY);
 			}
 
 			if (p.getDisplacement() != null) {

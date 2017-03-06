@@ -17,6 +17,7 @@
  */
 package org.geotools.styling;
 
+import org.geotools.filter.ConstantExpression;
 import org.opengis.filter.expression.Expression;
 
 
@@ -100,4 +101,41 @@ public interface PointPlacement extends org.opengis.style.PointPlacement,LabelPl
      * @param rotation 
      */
     void setRotation(Expression rotation);
+
+    static final AnchorPoint DEFAULT_ANCHOR_POINT = new AnchorPoint() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant AnchorPoint may not be modified");
+        }
+
+        @Override
+        public void setAnchorPointX(Expression x) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setAnchorPointY(Expression y) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void accept(org.geotools.styling.StyleVisitor visitor) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+            cannotModifyConstant();
+            return null;
+        }
+
+        @Override
+        public Expression getAnchorPointX() {
+            return ConstantExpression.constant(0.0);
+        }
+
+        @Override
+        public Expression getAnchorPointY() {
+            return ConstantExpression.constant(0.5);
+        }
+    };
 }

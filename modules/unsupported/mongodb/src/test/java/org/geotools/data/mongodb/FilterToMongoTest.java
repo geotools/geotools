@@ -64,6 +64,24 @@ public class FilterToMongoTest extends TestCase {
         assertEquals(1, obj.keySet().size());
         assertEquals("bar", obj.get("properties.foo"));
     }
+    
+    public void testEqualToInteger() throws Exception {
+        PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(10));
+        BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        assertEquals(1, obj.keySet().size());
+        assertEquals(10, obj.get("properties.foo"));
+    }
+    
+    public void testEqualToLong() throws Exception {
+        PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(10L));
+        BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        assertEquals(1, obj.keySet().size());
+        assertEquals(10L, obj.get("properties.foo"));
+    }
 
     public void testBBOX() throws Exception {
         BBOX bbox = ff.bbox("loc", 10d,10d,20d,20d, "epsg:4326");

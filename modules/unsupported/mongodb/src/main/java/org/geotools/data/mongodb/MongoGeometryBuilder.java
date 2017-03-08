@@ -25,6 +25,7 @@ import org.geotools.geometry.jts.Geometries;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
+import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
@@ -275,10 +276,17 @@ public class MongoGeometryBuilder {
 
     List<?> toList(Polygon p) {
         BasicDBList l = new BasicDBList();
-        l.add(toList(p.getExteriorRing().getCoordinateSequence()));
+        
+        if (!CGAlgorithms.isCCW(p.getExteriorRing().getCoordinates())) {
+        	l.add(toList(p.getExteriorRing().reverse().getCoordinates()));
+        } else {
+            l.add(toList(p.getExteriorRing().getCoordinateSequence()));
+        }
+        
         for (int i = 0; i < p.getNumInteriorRing(); i++) {
             l.add(toList(p.getInteriorRingN(i).getCoordinateSequence()));
         }
+        
         return l;
     }
 }

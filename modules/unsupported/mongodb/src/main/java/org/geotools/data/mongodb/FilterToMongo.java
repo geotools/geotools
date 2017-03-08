@@ -112,7 +112,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     private static final Logger LOGGER = Logging.getLogger(FilterToMongo.class);
 
-    static final SimpleDateFormat ISO8601_SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    static final SimpleDateFormat ISO8601_SDF = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     final CollectionMapper mapper;
 
@@ -140,8 +141,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     /**
      * Sets the feature type the encoder is encoding a filter for.
      * <p>
-     * The type of the attributes may drive how the filter is translated to a mongodb
-     * query document.
+     * The type of the attributes may drive how the filter is translated to a mongodb query document.
      * </p>
      * 
      * @param featureType
@@ -278,14 +278,13 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         if (e instanceof PropertyName && featureType != null) {
             // we should get the value type from the correspondent attribute descriptor
-            AttributeDescriptor attType = (AttributeDescriptor)e.evaluate(featureType);
+            AttributeDescriptor attType = (AttributeDescriptor) e.evaluate(featureType);
             if (attType != null) {
                 valueType = attType.getType().getBinding();
             }
-        }
-        else if (e instanceof Function) {
+        } else if (e instanceof Function) {
             // get the value type from the function return type
-            Class<?> ret = getFunctionReturnType((Function)e);
+            Class<?> ret = getFunctionReturnType((Function) e);
             if (ret != null) {
                 valueType = ret;
             }
@@ -404,8 +403,10 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         Envelope envelope = filter.getExpression2().evaluate(null, Envelope.class);
 
+        DBObject geometryDBObject = geometryBuilder.toObject(envelope);
+        addCrsToGeometryDBObject(geometryDBObject);
         DBObject dbo = BasicDBObjectBuilder.start().push("$geoIntersects")
-                .add("$geometry", geometryBuilder.toObject(envelope)).get();
+                .add("$geometry", geometryDBObject).get();
 
         output.put((String) e1, dbo);
         return output;
@@ -421,8 +422,10 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         Geometry geometry = filter.getExpression2().evaluate(null, Geometry.class);
 
+        DBObject geometryDBObject = geometryBuilder.toObject(geometry);
+        addCrsToGeometryDBObject(geometryDBObject);
         DBObject dbo = BasicDBObjectBuilder.start().push("$geoIntersects")
-                .add("$geometry", geometryBuilder.toObject(geometry)).get();
+                .add("$geometry", geometryDBObject).get();
 
         output.put((String) e1, dbo);
         return output;
@@ -437,8 +440,10 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         Geometry geometry = filter.getExpression2().evaluate(null, Geometry.class);
 
+        DBObject geometryDBObject = geometryBuilder.toObject(geometry);
+        addCrsToGeometryDBObject(geometryDBObject);
         DBObject dbo = BasicDBObjectBuilder.start().push("$geoWithin")
-                .add("$geometry", geometryBuilder.toObject(geometry)).get();
+                .add("$geometry", geometryDBObject).get();
 
         output.put((String) e1, dbo);
         return output;
@@ -609,7 +614,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
                 return literal;
             }
             // by default, convert date to ISO-8601 string
-            return ISO8601_SDF.format((Date)literal);
+            return ISO8601_SDF.format((Date) literal);
         } else if (literal instanceof String) {
             if (targetType != null && Date.class.isAssignableFrom(targetType)) {
                 // try parse string assuming it's ISO-8601 formatted
@@ -624,5 +629,10 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         } else {
             return literal.toString();
         }
+    }
+
+    void addCrsToGeometryDBObject(DBObject geometryDBObject) {
+        geometryDBObject.put("crs", BasicDBObjectBuilder.start().add("type", "name")
+                .push("properties").add("name", "urn:x-mongodb:crs:strictwinding:EPSG:4326").get());
     }
 }

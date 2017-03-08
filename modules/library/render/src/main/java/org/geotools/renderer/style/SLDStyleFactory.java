@@ -96,6 +96,9 @@ public class SLDStyleFactory {
 	private static final Logger LOGGER = org.geotools.util.logging.Logging
 			.getLogger("org.geotools.rendering");
 
+  /** Java System Property to enable legacy default anchor point. */
+  public static final String USE_LEGACY_ANCHOR_POINT_KEY = "org.geotools.renderer.style.legacyAnchorPoint";
+
 	/**
 	 * The threshold at which we switch from pre-rasterized icons to dynamically
 	 * painted ones (to avoid OOM)
@@ -790,6 +793,12 @@ public class SLDStyleFactory {
 		double rotation = 0;
 		double dispX = 0;
 		double dispY = 0;
+
+    // Set the defaults to legacy values if the Java System property is set to true.
+    if (Boolean.getBoolean(USE_LEGACY_ANCHOR_POINT_KEY)) {
+      anchorX = 0;
+      anchorY = 0;
+    }
 
 		if (placement instanceof PointPlacement) {
 			if (LOGGER.isLoggable(Level.FINER)) {

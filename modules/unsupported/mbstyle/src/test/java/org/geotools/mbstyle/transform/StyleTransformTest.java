@@ -351,6 +351,31 @@ public class StyleTransformTest {
         
         assertNull(psym.getStroke());
     }
+
+    @Test
+    public void testSymbolIcon() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("symbolStyleIconTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("composite");
+
+        int i = 0;
+        for (MBLayer l : layers) {
+            if (l.getId().equalsIgnoreCase("earthquakes")) {
+                i = i;
+                break;
+            }
+            i++;
+        }
+
+        assertEquals(21, layers.size());
+        assertTrue(layers.get(i) instanceof SymbolMBLayer);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(i), mbStyle);
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+        assertEquals(2, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof PointSymbolizer);
+    }
     
     /**
      * 

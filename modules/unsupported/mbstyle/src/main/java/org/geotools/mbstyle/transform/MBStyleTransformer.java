@@ -60,10 +60,103 @@ public class MBStyleTransformer {
     private StyleFactory sf;
     
     private StyleBuilder sb;
+
+    private List<String> defaultFonts;
     
     private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
 
+    public enum AnchorPosition {
+        CENTER("center"), // 0.5, 0.5 (x, y)
+        LEFT("left"), // 0.0, 0.5
+        RIGHT("right"), // 1.0, 0.5
+        TOP("top"), // 0.5, 1.0
+        BOTTOM("bottom"), // 0.5, 0.0
+        TOP_LEFT("top-left"), // 0.0, 1.0
+        TOP_RIGHT("top-right"), // 1.0, 1.0
+        BOTTOM_LEFT("bottom-left"), // 0.0, 0.0
+        BOTTOM_RIGHT("bottom-right"); // 1.0, 0.0
+
+        private final String jsonString;
+
+        AnchorPosition(String jsonString) {
+            this.jsonString = jsonString;
+        }
+
+        public Double getAnchorX(String jsonString) {
+            AnchorPosition pos = AnchorPosition.valueOf(jsonString);
+            Double x = 0.0;
+            switch (pos) {
+                case BOTTOM:
+                    x = 0.5;
+                    break;
+                case BOTTOM_LEFT:
+                    x = 0.0;
+                    break;
+                case BOTTOM_RIGHT:
+                    x = 1.0;
+                    break;
+                case CENTER:
+                    x = 0.5;
+                    break;
+                case LEFT:
+                    x = 0.0;
+                    break;
+                case RIGHT:
+                    x = 1.0;
+                    break;
+                case TOP:
+                    x = 0.5;
+                    break;
+                case TOP_LEFT:
+                    x = 0.0;
+                    break;
+                case TOP_RIGHT:
+                    x = 1.0;
+                    break;
+            }
+            return x;
+        }
+
+        public Double getAnchorY(String jsonString) {
+            AnchorPosition pos = AnchorPosition.valueOf(jsonString);
+            Double y = 0.0;
+            switch (pos) {
+                case BOTTOM:
+                    y = 0.0;
+                    break;
+                case BOTTOM_LEFT:
+                    y = 0.0;
+                    break;
+                case BOTTOM_RIGHT:
+                    y = 0.0;
+                    break;
+                case CENTER:
+                    y = 0.5;
+                    break;
+                case LEFT:
+                    y = 0.5;
+                    break;
+                case RIGHT:
+                    y = 0.5;
+                    break;
+                case TOP:
+                    y = 1.0;
+                    break;
+                case TOP_LEFT:
+                    y = 1.0;
+                    break;
+                case TOP_RIGHT:
+                    y = 1.0;
+                    break;
+            }
+            return y;
+        }
+    }
+
     public MBStyleTransformer() {
+        defaultFonts = new ArrayList<>();
+        defaultFonts.add("Open Sans Regular");
+        defaultFonts.add("Arial Unicode MS Regular");
         ff = CommonFactoryFinder.getFilterFactory2();
         sf = CommonFactoryFinder.getStyleFactory();
         sb = new StyleBuilder();
@@ -125,7 +218,7 @@ public class MBStyleTransformer {
         } else if (layer instanceof BackgroundMBLayer) {
             return transform((BackgroundMBLayer) layer);
         } else if (layer instanceof SymbolMBLayer) {
-            return transform((SymbolMBLayer) layer);
+            return transform((SymbolMBLayer) layer, styleContext);
         }
 
         throw new MBFormatException(layer.getType() + " not yet supported.");
@@ -366,42 +459,58 @@ public class MBStyleTransformer {
      * @param layer Describing symbol styling
      * @return FeatureTypeStyle
      */
-    FeatureTypeStyle transform(SymbolMBLayer layer) {
-       
-        
-        Font font = sb.createFont(null, ff.literal("normal"), ff.literal("normal"), layer.textSize());
-        font.getFamily().clear();
-        font.getFamily().addAll(layer.textFont());
-        LabelPlacement labelPlacement;
-        
-        // TODO function case.
-        if (SymbolMBLayer.SymbolPlacement.LINE.equals(layer.getSymbolPlacement())) {
-            LinePlacement linePlacement = sb.createLinePlacement(null);            
-            // linePlacement.setRepeated(repeated);
-            labelPlacement = linePlacement;            
-        } else {
-            PointPlacement pointPlacement = sb.createPointPlacement();            
-            // pointPlacement.setAnchorPoint();
-            // pointPlacement.setDisplacement(displacement);
-            pointPlacement.setRotation(layer.textRotate());
-            labelPlacement = pointPlacement;
-        }
-        
-        
-        Halo halo = sf.halo( sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
-        // layer.textHaloBlur();        
-        Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());        
-        TextSymbolizer symbolizer = sf.textSymbolizer(layer.getId(), ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL, layer.textField(), font, labelPlacement, halo, fill);
-                        
-        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?        
-        
-        // TODO Graphic - how to get a TextSymbolizer2?
-        if (symbolizer instanceof TextSymbolizer2) {
-            TextSymbolizer2 symbolizer2 = (TextSymbolizer2) symbolizer;
-            // symbolizer2.setGraphic(graphic);
-        }
+    FeatureTypeStyle transform(SymbolMBLayer layer, MBStyle styleContext) {
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
-        symbolizers.add(symbolizer);
+        Font font = null;
+        LabelPlacement labelPlacement;
+        LinePlacement linePlacement;
+        PointPlacement pointPlacement;
+
+        if (SymbolMBLayer.SymbolPlacement.LINE.equals(layer.getSymbolPlacement())) {
+            // TODO complete development of LineSymbolizer
+
+
+        } else {
+            if (layer.getIconImage().isEmpty()) { // icon-image not provided, using default graphic
+                PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
+                        sf.description(Text.text("text"), null), NonSI.PIXEL, sf.createDefaultGraphic());
+            } else {
+                ExternalGraphic eg = createExternalGraphicForSprite(ff.literal(layer.getIconImage()), styleContext);
+                PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
+                        sf.description(Text.text("text"), null), NonSI.PIXEL,
+                        sf.createGraphic(new ExternalGraphic[] { eg }, null, null, ff.literal(layer.getIconOpacity()), ff.literal(layer.getIconSize()), ff.literal(layer.getIconRotate())));
+                symbolizers.add(pointSymbolizer);
+            }
+        }
+
+        if (!layer.getTextField().isEmpty()) { // A text-field was provided - need a TextSymbolizer.
+            Halo halo = sf.halo( sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
+            Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());
+
+            if (layer.getTextFont().isEmpty()) {
+                font = sb.createFont(ff.literal(defaultFonts), ff.literal("normal"), ff.literal("normal"), layer.textSize());
+            } else {
+                font = sb.createFont(ff.literal(layer.getTextFont()), ff.literal("normal"), ff.literal("normal"), layer.textSize());
+            }
+
+            if (symbolizers.get(0) instanceof PointSymbolizer) {
+                pointPlacement = sb.createPointPlacement();
+                pointPlacement.setAnchorPoint(getAnchorPoint(layer.getTextAnchor().toString()));
+                pointPlacement.setDisplacement(sb.createDisplacement(layer.getTextOffset()[0], layer.getTextOffset()[1]));
+                pointPlacement.setRotation(ff.literal(layer.getTextRotate()));
+                labelPlacement = pointPlacement;
+            } else {
+                // TODO finish lineplacement creation;
+                linePlacement = sb.createLinePlacement(null);
+                labelPlacement = linePlacement;
+            }
+            TextSymbolizer symbolizer = sf.textSymbolizer(layer.getId(), ff.property((String) null),
+                    sf.description(Text.text("text"), null), NonSI.PIXEL, layer.textField(),
+                    font, labelPlacement, halo, fill);
+            symbolizers.add(symbolizer);
+        }
+        // layer.textHaloBlur();
+        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
@@ -438,18 +547,25 @@ public class MBStyleTransformer {
         } else {
             spriteUrl = iconName;
         }
-        
+
         // TODO: (Functions milestone) The icon name can be a function, so evaluating the expression to a string (below) is wrong.
         // Evaluate it for now, because (for now) External Graphics do not take an expression for the URL.
         // TODO: Allow External Graphics to take an expression for the URL
         String spriteUrlStr = spriteUrl.evaluate(null, String.class);
-        
-        try {
-            return sf.createExternalGraphic(new URL(spriteUrlStr), MapboxGraphicFactory.FORMAT);
-        } catch (MalformedURLException e) {
-            LOGGER.warning("Mapbox Style graphic has invalid URL: " + spriteUrlStr);
-            return null;
-        }
+
+        return sf.createExternalGraphic(spriteUrlStr, MapboxGraphicFactory.FORMAT);
+
+    }
+
+    /**
+     * Given a string of "bottom-right" or "top-left" find the x,y coordinates and create an AnchorPoint
+     * @param textAnchor The value of the "text-anchor" property in the mapbox style.
+     * @return AnchorPoint
+     */
+    AnchorPoint getAnchorPoint(String textAnchor) {
+        Double anchorX = AnchorPosition.valueOf(textAnchor).getAnchorX(textAnchor);
+        Double anchorY = AnchorPosition.valueOf(textAnchor).getAnchorY(textAnchor);
+        return sb.createAnchorPoint(anchorX, anchorY);
     }
 
 }

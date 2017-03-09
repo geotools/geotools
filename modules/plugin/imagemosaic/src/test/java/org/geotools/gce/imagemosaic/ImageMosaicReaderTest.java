@@ -119,6 +119,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.jaitools.imageutils.ImageUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -3382,7 +3383,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // remove existing properties file and sample_image
-        File sampleImage=new File(TestData.file(this, "."),"/water_temp4/sample_image");
+        File sampleImage=new File(TestData.file(this, "."),"/water_temp4/" + Utils.SAMPLE_IMAGE_NAME);
         assertTrue(sampleImage.exists());
         sampleImage.delete();
         File mosaicProperties=new File(TestData.file(this, "."),"/water_temp4/water_temp4.properties");
@@ -3438,7 +3439,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(reader);
         
         // the mosaic is correctly created
-        File sampleImage=new File(TestData.file(this, "."),"/water_temp5/sample_image");
+        File sampleImage=new File(TestData.file(this, "."),"/water_temp5/" + Utils.SAMPLE_IMAGE_NAME);
         File mosaicProperties=new File(TestData.file(this, "."),"/water_temp5/test.properties");
         assertTrue(sampleImage.exists());
         assertTrue(mosaicProperties.exists());
@@ -3491,7 +3492,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // remove existing properties file and sample_image
-        File sampleImage = new File(TestData.file(this, "."),folder + File.separatorChar + "sample_image");
+        File sampleImage = new File(TestData.file(this, "."),folder + File.separatorChar + Utils.SAMPLE_IMAGE_NAME);
         File mosaicProperties = new File(TestData.file(this, "."),folder + File.separatorChar + folder + ".properties");
 
         // now start the test
@@ -3623,7 +3624,7 @@ public class ImageMosaicReaderTest extends Assert{
         // Deleting mosaic files so that the mosaic will be created again
         File mosaicFile = new File(TestData.file(this, "."), "/stop-it/stop-it.properties");
         mosaicFile.delete();
-        File sampleImageFile = new File(TestData.file(this, "."), "/stop-it/sample_image");
+        File sampleImageFile = new File(TestData.file(this, "."), "/stop-it/" + Utils.SAMPLE_IMAGE_NAME);
         sampleImageFile.delete();
 
         // Since we have deleted some mosaic files but we didn't cleanup the DB tables
@@ -3690,7 +3691,7 @@ public class ImageMosaicReaderTest extends Assert{
 
         // Remove all the auxiliary files if present
         IOFileFilter prefixFileFilter = FileFilterUtils.prefixFileFilter("index_palette");
-        IOFileFilter nameFileFilter = FileFilterUtils.nameFileFilter("sample_image");
+        IOFileFilter nameFileFilter = FileFilterUtils.nameFileFilter(Utils.SAMPLE_IMAGE_NAME);
         FileFilter ff = FileFilterUtils.or(prefixFileFilter, nameFileFilter);
 
         File[] listFiles = currentDir.listFiles(ff);
@@ -3932,7 +3933,7 @@ public class ImageMosaicReaderTest extends Assert{
         for (File configFile : mosaicFolder.listFiles(
                 (FileFilter)FileFilterUtils.or( 
                 FileFilterUtils.suffixFileFilter("db"),
-                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
                 FileFilterUtils.and(
                         FileFilterUtils.suffixFileFilter(".properties"),
                         FileFilterUtils.notFileFilter(
@@ -3998,7 +3999,7 @@ public class ImageMosaicReaderTest extends Assert{
     }
 
     private void cleanConfigurationFiles(File testMosaic, String mosaicName) {
-        new File(testMosaic, "sample_image").delete();
+        new File(testMosaic, Utils.SAMPLE_IMAGE_NAME).delete();
         for (File configFile : testMosaic.listFiles((FileFilter) FileFilterUtils
                 .prefixFileFilter(mosaicName))) {
             configFile.delete();

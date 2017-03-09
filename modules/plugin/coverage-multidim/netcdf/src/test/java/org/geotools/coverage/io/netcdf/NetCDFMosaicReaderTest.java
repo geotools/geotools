@@ -1051,8 +1051,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertNotNull(reader);
         
         // Checking whether different sample images have been created
-        final File sampleImage1 = new File(TestData.file(this,"."),"nc_sampleimages/BrOsample_image");
-        final File sampleImage2 = new File(TestData.file(this,"."),"nc_sampleimages/NO2sample_image");
+        final File sampleImage1 = new File(TestData.file(this,"."),"nc_sampleimages/BrOsample_image.dat");
+        final File sampleImage2 = new File(TestData.file(this,"."),"nc_sampleimages/NO2sample_image.dat");
         assertTrue(sampleImage1.exists());
         assertTrue(sampleImage2.exists());
         reader.dispose();

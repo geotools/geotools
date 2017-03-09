@@ -301,7 +301,7 @@ public class ImageMosaicFootprintsTest {
         ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);
         reader.dispose();
         // get rid of the sample image
-        File sampleImage = new File(testMosaic, "sample_image");
+        File sampleImage = new File(testMosaic, Utils.SAMPLE_IMAGE_NAME);
         sampleImage.delete();
         // a new reader without the sample image, in normal conditions it can actually produce
         // output

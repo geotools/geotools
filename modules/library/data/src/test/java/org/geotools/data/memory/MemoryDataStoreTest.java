@@ -644,7 +644,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
         }
 
-        assertEquals(roadFeatures.length - 1, data.entry("road").memory.size());
+        assertEquals(roadFeatures.length - 1, data.entry("road").getMemory().size());
     }
 
     public void testGetFeaturesWriterAdd() throws IOException {
@@ -660,7 +660,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         feature.setAttributes(newRoad.getAttributes());
         writer.write();
         assertFalse(writer.hasNext());
-        assertEquals(roadFeatures.length + 1, data.entry("road").memory.size());
+        assertEquals(roadFeatures.length + 1, data.entry("road").getMemory().size());
     }
 
     public void testGetFeaturesWriterModify() throws IOException {
@@ -676,7 +676,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
         }
 
-        feature = data.entry("road").memory.get("road.rd1");
+        feature = data.entry("road").getMemory().get("road.rd1");
         assertEquals("changed", feature.getAttribute("name"));
     }
 
@@ -1460,7 +1460,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         mds.addFeature(roadFeatures[0]);
         mds.addFeature(roadFeatures[1]);
 
-        assertEquals(2, mds.entry("road").memory.size());
+        assertEquals(2, mds.entry("road").getMemory().size());
     }
 
     public void testCallingAddFeaturesWithArrayTwiceAndExtentInitialCollection() throws IOException {
@@ -1470,7 +1470,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeature road1 = SimpleFeatureBuilder.template(roadType, null);
         mds.addFeatures(new SimpleFeature[] {road1});
 
-        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
     }
 
     public void testCallingAddFeaturesWithCollectionTwiceAndExtentInitialCollection() throws IOException {
@@ -1481,7 +1481,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         mds.addFeatures(Collections.singletonList(road1));
 
-        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
     }
 
     public void testCallingAddFeaturesWithReaderTwiceAndExtentInitialCollection()
@@ -1490,14 +1490,14 @@ public class MemoryDataStoreTest extends DataTestCase {
                 .reader(roadFeatures);
         MemoryDataStore mds = new MemoryDataStore(reader);
 
-        assertEquals(roadFeatures.length, mds.entry(roadType.getTypeName()).memory.size());
+        assertEquals(roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
 
         FeatureReader<SimpleFeatureType, SimpleFeature> secondReader = DataUtilities
                 .reader(new SimpleFeature[] { SimpleFeatureBuilder.template(
                         roadType, null) });
 
         mds.addFeatures(secondReader);
-        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
     }
 
     public void testCallingAddFeaturesWithIteratorTwiceAndExtentInitialCollection()
@@ -1506,7 +1506,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                 .reader(roadFeatures);
         MemoryDataStore mds = new MemoryDataStore(reader);
 
-        assertEquals(roadFeatures.length, mds.entry(roadType.getTypeName()).memory.size());
+        assertEquals(roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
 
         SimpleFeatureIterator featureIterator = DataUtilities
                 .collection(new SimpleFeature[] { SimpleFeatureBuilder.template(
@@ -1514,6 +1514,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         mds.addFeatures(featureIterator);
 
-        assertEquals(roadFeatures.length + 1, mds.entry("road").memory.size());
+        assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
 
-    }}
+    }
+}

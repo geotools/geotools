@@ -86,9 +86,7 @@ public class MemoryEntry extends ContentEntry {
             throw new IllegalArgumentException("addFeatures expected " + schema.getTypeName()
                     + "(but was " + feature.getFeatureType().getTypeName() + ")");
         }
-        synchronized (this) {
-            memory.put(feature.getID(), feature);
-        }
+        memory.put(feature.getID(), feature);
     }
 
 }

@@ -43,11 +43,8 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         featureType = state.getFeatureType();
         MemoryEntry entry = (MemoryEntry) state.getEntry();
         
-        synchronized (entry) {
-            final List<SimpleFeature> internalCollection = new ArrayList<SimpleFeature>(
-                    entry.memory.values());
-            iterator = internalCollection.iterator();
-        }
+        final List<SimpleFeature> internalCollection = new ArrayList<>(entry.memory.values());
+        iterator = internalCollection.iterator();
     }
 
     public SimpleFeatureType getFeatureType() {

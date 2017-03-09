@@ -49,9 +49,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         this.featureType = state.getFeatureType();
         
         MemoryEntry entry = state.getEntry();
-        synchronized (entry) {
-            iterator = entry.memory.values().iterator();
-        }
+        iterator = entry.memory.values().iterator();
     }
     
     public SimpleFeatureType getFeatureType() {
@@ -139,9 +137,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         } else {
             // add new content
             MemoryEntry entry = state.getEntry();
-            synchronized (entry) {
-                entry.memory.put(current.getID(), current);
-            }
+            entry.addFeature(current);
             current = null;
         }
     }

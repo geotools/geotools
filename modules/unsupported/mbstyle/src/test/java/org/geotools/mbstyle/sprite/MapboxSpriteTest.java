@@ -1,52 +1,52 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.mbstyle.sprite;
 
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.assertTrue;
+import org.geotools.TestData;
+import org.geotools.data.property.PropertyDataStore;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
+import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.referencing.CRS;
+import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
+import org.geotools.renderer.style.ExternalGraphicFactory;
+import org.geotools.styling.*;
+import org.json.simple.parser.JSONParser;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.opengis.filter.FilterFactory;
 
-import java.awt.Color;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Optional;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
-import org.geotools.TestData;
-import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.test.ImageAssert;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.MapContent;
-import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.referencing.CRS;
-import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
-import org.geotools.renderer.style.ExternalGraphicFactory;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.json.simple.parser.JSONParser;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.opengis.filter.FilterFactory;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for {@link MapboxGraphicFactory}.

@@ -35,6 +35,8 @@ import javax.media.jai.remote.SerializerFactory;
  * @author Andrea Aime - GeoSolutions
  */
 public class SampleImage implements Serializable {
+    
+    private static final long serialVersionUID = 6324143924454724262l;
 
     transient SampleModel sampleModel;
 

@@ -83,7 +83,7 @@ public class MemoryFeatureSource extends ContentFeatureSource {
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
             MemoryEntry entry = getEntry();
-            return entry.memory.size();
+            return entry.getMemory().size();
         }
         //feature by feature count required
         return -1;

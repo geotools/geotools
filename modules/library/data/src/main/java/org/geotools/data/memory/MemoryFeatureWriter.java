@@ -49,7 +49,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         this.featureType = state.getFeatureType();
         
         MemoryEntry entry = state.getEntry();
-        iterator = entry.memory.values().iterator();
+        iterator = entry.getMemory().values().iterator();
     }
     
     public SimpleFeatureType getFeatureType() {

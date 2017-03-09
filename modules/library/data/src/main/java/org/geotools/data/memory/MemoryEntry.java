@@ -50,7 +50,7 @@ public class MemoryEntry extends ContentEntry {
      *     entry.memory.put( feature.getID(), feature );
      * }</code></pre>
      */
-    final Map<String, SimpleFeature> memory;
+    private final Map<String, SimpleFeature> memory;
 
     /**
      * Entry to store content of the provided SimpleFeatureType.
@@ -68,8 +68,17 @@ public class MemoryEntry extends ContentEntry {
         return new MemoryState( (MemoryEntry) entry );
     }
     
+    /**
+     * Access the {@link #memory} field used to store feature content.
+     * 
+     * @return the memory
+     */
+    public Map<String, SimpleFeature> getMemory() {
+        return memory;
+    }
+
     public String toString() {
-        return "MemoryEntry '" + getTypeName()+"': "+memory.size() + " features";
+        return "MemoryEntry '" + getTypeName()+"': "+getMemory().size() + " features";
     }
     
     /**
@@ -86,7 +95,7 @@ public class MemoryEntry extends ContentEntry {
             throw new IllegalArgumentException("addFeatures expected " + schema.getTypeName()
                     + "(but was " + feature.getFeatureType().getTypeName() + ")");
         }
-        memory.put(feature.getID(), feature);
+        getMemory().put(feature.getID(), feature);
     }
 
 }

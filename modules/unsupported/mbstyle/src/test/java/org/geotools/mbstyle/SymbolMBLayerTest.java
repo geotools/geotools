@@ -24,7 +24,7 @@ import org.junit.Test;
 public class SymbolMBLayerTest {
 
     @Test
-    public void testAnchorPoint(){
+    public void testTextAnchorEnum(){
         // cannot use valueOf directly
         assertEquals( TextAnchor.CENTER, TextAnchor.parse("center"));
         assertEquals( TextAnchor.BOTTOM_LEFT, TextAnchor.parse("bottom-left"));

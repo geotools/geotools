@@ -90,6 +90,23 @@ public class MBStyle {
     }
     
 
+    /**
+     * Access the layer with the provided id.
+     * 
+     * @param id
+     * @return layer with the provided id, or null if not found.
+     */
+    public MBLayer layer(String id) {
+        if( id == null ) {
+            return null;
+        }
+        for( MBLayer layer : layers() ){
+            if( id.equals(layer.getId())){
+                return layer;
+            }
+        }
+        return null;
+    }
     public List<MBLayer> layers(){
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();

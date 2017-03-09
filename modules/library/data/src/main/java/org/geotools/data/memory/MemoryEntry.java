@@ -50,7 +50,7 @@ public class MemoryEntry extends ContentEntry {
      *     entry.memory.put( feature.getID(), feature );
      * }</code></pre>
      */
-    Map<String, SimpleFeature> memory;
+    final Map<String, SimpleFeature> memory;
 
     /**
      * Entry to store content of the provided SimpleFeatureType.
@@ -82,7 +82,7 @@ public class MemoryEntry extends ContentEntry {
         if (feature == null) {
             throw new IllegalArgumentException("Provided Feature is empty");
         }
-        else if (feature.getFeatureType() != schema ){
+        else if (!feature.getFeatureType().equals(schema) ){
             throw new IllegalArgumentException("addFeatures expected " + schema.getTypeName()
                     + "(but was " + feature.getFeatureType().getTypeName() + ")");
         }

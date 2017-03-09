@@ -1116,13 +1116,20 @@ public class RasterManager {
                 fileName = baseName + name + Utils.SAMPLE_IMAGE_NAME;
                 sampleImageFile = new File(fileName);
                 if (!sampleImageFile.exists() || !sampleImageFile.canRead()) {
-                    sampleImageFile = null;
+                    fileName = baseName + name + Utils.SAMPLE_IMAGE_NAME_LEGACY;
+                    sampleImageFile = new File(fileName);
+                    if (!sampleImageFile.exists() || !sampleImageFile.canRead()) {
+                        sampleImageFile = null;
+                    }
                 }
             }
         }
 
         if (sampleImageFile == null) {
             sampleImageFile = new File(baseName + Utils.SAMPLE_IMAGE_NAME);
+            if(!sampleImageFile.exists()) {
+                sampleImageFile = new File(baseName + Utils.SAMPLE_IMAGE_NAME_LEGACY);
+            }
         }
         final RenderedImage sampleImage = Utils.loadSampleImage(sampleImageFile);
         if (sampleImage != null) {

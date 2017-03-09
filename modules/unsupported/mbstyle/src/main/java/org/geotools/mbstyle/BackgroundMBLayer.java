@@ -24,10 +24,11 @@ import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
 /**
- * MBLayer wrapper around a {@link JSONObject} representation of a MapBox Background Layer.
+ * The background color or pattern of the map.
  * <p>
- * All methods act as accessors on provided JSON layer, no other state is maintained. This allows modifications to be made cleanly with out chance of
- * side-effect.
+ * MBLayer wrapper around a {@link JSONObject} representation of a "background" type latyer. All
+ * methods act as accessors on provided JSON layer, no other state is maintained. This allows
+ * modifications to be made cleanly with out chance of side-effect.
  * 
  * <ul>
  * <li>get methods: access the json directly</li>

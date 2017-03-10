@@ -17,12 +17,14 @@
 package org.geotools.gml2.bindings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -291,24 +293,28 @@ public class GMLEncodingUtils {
                             .qName("PointPropertyType")));
                 }
                 else if ( LineString.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("LineStringPropertyType")));
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(searchType(schemaIndex,
+                            "LineStringPropertyType", "CurvePropertyType"));
                 }
                 else if ( Polygon.class.isAssignableFrom( binding) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("PolygonPropertyType")));
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(searchType(schemaIndex,
+                            "PolygonPropertyType", "SurfacePropertyType"));
                 }
                 else if ( MultiPoint.class.isAssignableFrom( binding ) ) {
                     element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
                             .qName("MultiPointPropertyType")));
                 }
                 else if ( MultiLineString.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("MultiLineStringPropertyType")));
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(searchType(schemaIndex,
+                            "MultiLineStringPropertyType", "MultiCurvePropertyType"));
                 }
                 else if ( MultiPolygon.class.isAssignableFrom( binding) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("MultiPolygonPropertyType")));
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(searchType(schemaIndex,
+                            "MultiPolygonPropertyType", "MultiSurfacePropertyType"));
                 }
                 else {
                     element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
@@ -336,6 +342,25 @@ public class GMLEncodingUtils {
         particle.setElement( dom.createElementNS( XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "sequence") );
         type.setContent(particle);
         return type;
+    }
+
+    /**
+     * Return the first XSD type definition found in the schema index for
+     * the provided GML types names. NULL is returned if no XSD type
+     * definition is found.
+     */
+    private XSDTypeDefinition searchType(SchemaIndex schemaIndex, String... typesNames) {
+        for (String typeName : typesNames) {
+            XSDTypeDefinition type = schemaIndex.getTypeDefinition(gml.qName(typeName));
+            if (type != null) {
+                // we found a matching XSD type
+                return type;
+            }
+        }
+        // no matching XSD type found
+        LOGGER.fine(String.format("No type definition found for types [%s].",
+                Arrays.stream(typesNames).collect(Collectors.joining(", "))));
+        return null;
     }
     
     /**

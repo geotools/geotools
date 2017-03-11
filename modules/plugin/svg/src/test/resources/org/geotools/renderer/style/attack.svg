@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE sld  [ <!ENTITY file SYSTEM "file:///etc/passwd">]>
+<!DOCTYPE sld  [ <!ENTITY file SYSTEM "./passwd">]>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"

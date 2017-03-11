@@ -16,6 +16,9 @@
  */
 package org.geotools.renderer.style;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
+
 import java.awt.RenderingHints.Key;
 import java.net.URL;
 import java.util.HashMap;
@@ -88,7 +91,7 @@ public class SVGGraphicFactoryTest extends TestCase {
             Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
             fail("expected entity resolution exception");
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "Entity resolution disallowed for file:///etc/passwd");
+            assertThat(e.getMessage(), containsString("passwd"));
         }
 
         // now enable references to entity stored on local file

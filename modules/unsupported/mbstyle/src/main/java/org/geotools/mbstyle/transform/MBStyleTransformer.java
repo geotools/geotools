@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.transform;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,9 +33,34 @@ import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.mbstyle.SymbolMBLayer;
+import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.sprite.MapboxGraphicFactory;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Stroke;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.UserLayer;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
@@ -64,94 +87,6 @@ public class MBStyleTransformer {
     private List<String> defaultFonts;
     
     private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
-
-    public enum AnchorPosition {
-        CENTER("center"), // 0.5, 0.5 (x, y)
-        LEFT("left"), // 0.0, 0.5
-        RIGHT("right"), // 1.0, 0.5
-        TOP("top"), // 0.5, 1.0
-        BOTTOM("bottom"), // 0.5, 0.0
-        TOP_LEFT("top-left"), // 0.0, 1.0
-        TOP_RIGHT("top-right"), // 1.0, 1.0
-        BOTTOM_LEFT("bottom-left"), // 0.0, 0.0
-        BOTTOM_RIGHT("bottom-right"); // 1.0, 0.0
-
-        private final String jsonString;
-
-        AnchorPosition(String jsonString) {
-            this.jsonString = jsonString;
-        }
-
-        public Double getAnchorX(String jsonString) {
-            AnchorPosition pos = AnchorPosition.valueOf(jsonString);
-            Double x = 0.0;
-            switch (pos) {
-                case BOTTOM:
-                    x = 0.5;
-                    break;
-                case BOTTOM_LEFT:
-                    x = 0.0;
-                    break;
-                case BOTTOM_RIGHT:
-                    x = 1.0;
-                    break;
-                case CENTER:
-                    x = 0.5;
-                    break;
-                case LEFT:
-                    x = 0.0;
-                    break;
-                case RIGHT:
-                    x = 1.0;
-                    break;
-                case TOP:
-                    x = 0.5;
-                    break;
-                case TOP_LEFT:
-                    x = 0.0;
-                    break;
-                case TOP_RIGHT:
-                    x = 1.0;
-                    break;
-            }
-            return x;
-        }
-
-        public Double getAnchorY(String jsonString) {
-            AnchorPosition pos = AnchorPosition.valueOf(jsonString);
-            Double y = 0.0;
-            switch (pos) {
-                case BOTTOM:
-                    y = 0.0;
-                    break;
-                case BOTTOM_LEFT:
-                    y = 0.0;
-                    break;
-                case BOTTOM_RIGHT:
-                    y = 0.0;
-                    break;
-                case CENTER:
-                    y = 0.5;
-                    break;
-                case LEFT:
-                    y = 0.5;
-                    break;
-                case RIGHT:
-                    y = 0.5;
-                    break;
-                case TOP:
-                    y = 1.0;
-                    break;
-                case TOP_LEFT:
-                    y = 1.0;
-                    break;
-                case TOP_RIGHT:
-                    y = 1.0;
-                    break;
-            }
-            return y;
-        }
-    }
 
     public MBStyleTransformer() {
         defaultFonts = new ArrayList<>();
@@ -269,10 +204,17 @@ public class MBStyleTransformer {
                  layer.toDisplacement(),
                  ff.literal(0));
         
-        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(symbolizer), Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null, 
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(symbolizer),
+                layer.filter());
 
         // Set legend graphic to null.
-        //TODO: How do other style transformers set a null legend?
+        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
         
         
@@ -352,8 +294,14 @@ public class MBStyleTransformer {
         // layer.toDisplacement()
 
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY,
-                Arrays.asList(ls), Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ls),
+                layer.filter());
         
         rules.add(rule);
         return sf.featureTypeStyle(layer.getId(),
@@ -393,8 +341,14 @@ public class MBStyleTransformer {
                         NonSI.PIXEL, gr);
 
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY,
-                Arrays.asList(ps), Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ps),
+                layer.filter());
 
         rules.add(rule);
         return sf.featureTypeStyle(layer.getId(),
@@ -435,8 +389,14 @@ public class MBStyleTransformer {
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
-                Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                symbolizers,
+                layer.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
@@ -474,6 +434,7 @@ public class MBStyleTransformer {
             if (layer.getIconImage().isEmpty()) { // icon-image not provided, using default graphic
                 PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
                         sf.description(Text.text("text"), null), NonSI.PIXEL, sf.createDefaultGraphic());
+                symbolizers.add(pointSymbolizer);
             } else {
                 ExternalGraphic eg = createExternalGraphicForSprite(ff.literal(layer.getIconImage()), styleContext);
                 PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
@@ -495,7 +456,7 @@ public class MBStyleTransformer {
 
             if (symbolizers.get(0) instanceof PointSymbolizer) {
                 pointPlacement = sb.createPointPlacement();
-                pointPlacement.setAnchorPoint(getAnchorPoint(layer.getTextAnchor().toString()));
+                pointPlacement.setAnchorPoint(layer.anchorPoint());
                 pointPlacement.setDisplacement(sb.createDisplacement(layer.getTextOffset()[0], layer.getTextOffset()[1]));
                 pointPlacement.setRotation(ff.literal(layer.getTextRotate()));
                 labelPlacement = pointPlacement;
@@ -514,8 +475,14 @@ public class MBStyleTransformer {
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
-                Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                symbolizers,
+                layer.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
@@ -563,9 +530,8 @@ public class MBStyleTransformer {
      * @return AnchorPoint
      */
     AnchorPoint getAnchorPoint(String textAnchor) {
-        Double anchorX = AnchorPosition.valueOf(textAnchor).getAnchorX(textAnchor);
-        Double anchorY = AnchorPosition.valueOf(textAnchor).getAnchorY(textAnchor);
-        return sb.createAnchorPoint(anchorX, anchorY);
+        TextAnchor anchor = TextAnchor.parse(textAnchor);
+        return sb.createAnchorPoint(anchor.getX(), anchor.getY());
     }
 
 }

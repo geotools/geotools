@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.AnchorPoint;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -742,8 +743,11 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * 
-     * Optional enum. One of center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right. Defaults to center. Requires text-field.  Part of the text placed closest to the anchor.
+     * Part of the text placed closest to the anchor (requires text-field).
+     * <p> 
+     * Optional enum. One of center, left, right, top, bottom, top-left, top-right, bottom-left,
+     * bottom-right. Defaults to center. Requires text-field. Part of the text placed closest to the
+     * anchor.
      * 
      * {@link TextAnchor#CENTER} The center of the text is placed closest to the anchor.
      * 
@@ -757,37 +761,37 @@ public class SymbolMBLayer extends MBLayer {
      * 
      * {@link TextAnchor#TOP_LEFT} The top left corner of the text is placed closest to the anchor.
      * 
-     * {@link TextAnchor#TOP_RIGHT} The top right corner of the text is placed closest to the anchor.
+     * {@link TextAnchor#TOP_RIGHT} The top right corner of the text is placed closest to the
+     * anchor.
      * 
-     * {@link TextAnchor#BOTTOM_LEFT} The bottom left corner of the text is placed closest to the anchor.
+     * {@link TextAnchor#BOTTOM_LEFT} The bottom left corner of the text is placed closest to the
+     * anchor.
      * 
-     * {@link TextAnchor#BOTTOM_RIGHT} The bottom right corner of the text is placed closest to the anchor.
+     * {@link TextAnchor#BOTTOM_RIGHT} The bottom right corner of the text is placed closest to the
+     * anchor.
      * 
-     * @return TextAnchor
+     * @return part of the text placed closest to the anchor. 
      */
     public TextAnchor getTextAnchor() {
-    	Object value = layout.get("text-anchor");
-		if (value != null && "left".equalsIgnoreCase((String) value)) {
-			return TextAnchor.LEFT;
-		} else if (value != null && "right".equalsIgnoreCase((String) value)){
-			return TextAnchor.RIGHT;
-		} else if (value != null && "top".equalsIgnoreCase((String) value)){
-			return TextAnchor.TOP;
-		} else if (value != null && "bottom".equalsIgnoreCase((String) value)){
-			return TextAnchor.BOTTOM;
-		} else if (value != null && "top-left".equalsIgnoreCase((String) value)){
-			return TextAnchor.TOP_LEFT;
-		} else if (value != null && "top-right".equalsIgnoreCase((String) value)){
-			return TextAnchor.TOP_RIGHT;
-		} else if (value != null && "bottom-left".equalsIgnoreCase((String) value)){
-			return TextAnchor.BOTTOM_LEFT;
-		} else if (value != null && "bottom-right".equalsIgnoreCase((String) value)){
-			return TextAnchor.BOTTOM_RIGHT;
-		} else {
-			return TextAnchor.CENTER;
-		}
+        String json = parse.get(layout, "text-anchor");
+        if (json == null) {
+            return null;
+        }
+        return TextAnchor.parse(json);
     }
-
+    
+    /** 
+     * Layout "text-anchor" provided as {@link AnchorPoint}.
+     * 
+     * @return AnchorPoint defined by "text-anchor".
+     */
+    public AnchorPoint anchorPoint() {
+        TextAnchor anchor = getTextAnchor();
+        if (anchor == null) {
+            return null;
+        }
+        return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+    }
     /**
      * (Optional) Units in degrees. Defaults to 45. Requires text-field. Requires symbol-placement = line.
      * 

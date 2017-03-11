@@ -108,7 +108,7 @@ public class MBFilter {
      * 
      * @return GeoTools {@link Filter} specifying conditions on source features.
      */
-    Filter filter() {
+    public Filter filter() {
         if (json == null || json.isEmpty()) {
             return Filter.INCLUDE; // by default include everything!
         }

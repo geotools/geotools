@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.StyleFactory2;
@@ -206,13 +207,20 @@ public abstract class MBLayer {
     }
     
     /**
-     * A JSONArray expression specifying conditions on source features. Only features that match the filter
-     * are displayed. This is available as a GeoTools {@link Filter} via {@link #filter()}.
+     * A MBFilter wrapping optional json specifying conditions on source features. Only features
+     * that match the filter are displayed. This is available as a GeoTools {@link Filter} via
+     * {@link #filter()}.
      * 
-     * @return JSONArray expression specifying conditions on source features, optional may return null.
+     * @return MBFilter expression specifying conditions on source features, optional may return
+     *         null.
      */
-    public JSONArray getFilter(){
-        return parse.getJSONArray(json,"filter", null );
+    public MBFilter getFilter(){
+        JSONArray array = parse.getJSONArray(json,"filter", null );
+        if( array != null ){
+            MBFilter filter = new MBFilter(parse, array);
+            return filter;
+        }
+        return null;
     }
     
     /**
@@ -222,7 +230,11 @@ public abstract class MBLayer {
      * @return Filter
      */
     public Filter filter(){
-        return Filter.INCLUDE; // TODO: Implemented based on getFilter, for now select everything
+        MBFilter mbFilter = getFilter();
+        if (mbFilter == null) {
+            return Filter.INCLUDE;
+        }
+        return mbFilter.filter();
     }
     
     /**

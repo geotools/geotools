@@ -1423,7 +1423,7 @@ public class CssTranslator {
     private void buildFill(CssRule cssRule, final FillBuilder fb, Map<String, List<Value>> values,
             int i) {
         for (Value fillValue : getMultiValue(values, "fill", i)) {
-            if (fillValue instanceof Function) {
+            if (Function.isGraphicsFunction(fillValue)) {
                 new SubgraphicBuilder("fill", fillValue, values, cssRule, i) {
 
                     @Override
@@ -1501,7 +1501,7 @@ public class CssTranslator {
 
         boolean simpleStroke = false;
         for (Value strokeValue : getMultiValue(values, "stroke", i)) {
-            if (strokeValue instanceof Function) {
+            if (Function.isGraphicsFunction(strokeValue)) {
                 new SubgraphicBuilder("stroke", strokeValue, values, cssRule, i) {
 
                     @Override

@@ -176,3 +176,14 @@ org.geotools.filter.function.JenksNaturalBreaksFunction
 org.geotools.filter.function.FilterFunction_listMultiply
 org.geotools.filter.function.FilterFunction_list
 org.geotools.styling.visitor.RescaleToPixelsFunction
+org.geotools.filter.function.color.HSLFunction
+org.geotools.filter.function.color.SaturateFunction
+org.geotools.filter.function.color.DesaturateFunction
+org.geotools.filter.function.color.DarkenFunction
+org.geotools.filter.function.color.LightenFunction
+org.geotools.filter.function.color.SpinFunction
+org.geotools.filter.function.color.MixFunction
+org.geotools.filter.function.color.TintFunction
+org.geotools.filter.function.color.ShadeFunction
+org.geotools.filter.function.color.GrayscaleFunction
+org.geotools.filter.function.color.ConstrastFunction

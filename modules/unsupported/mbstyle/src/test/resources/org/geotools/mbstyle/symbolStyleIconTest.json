@@ -600,20 +600,8 @@
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#8b8a8a",
-                "line-width": {
-                    "base": 1.3,
-                    "stops": [
-                        [
-                            3,
-                            0.5
-                        ],
-                        [
-                            22,
-                            15
-                        ]
-                    ]
-                }
+                "line-color": "#8b8a8a"
+
             }
         },
         {
@@ -857,6 +845,19 @@
             "type": "symbol",
             "source": "composite",
             "source-layer": "earthquakes",
+            "filter": [
+                "all",
+                [
+                    "<=",
+                    "Primary ID",
+                    "3.0"
+                ],
+                [
+                    ">=",
+                    "Primary ID",
+                    "3.0"
+                ]
+            ],
             "layout": {
                 "icon-image": "triangle-11",
                 "text-field": "{Primary ID}",

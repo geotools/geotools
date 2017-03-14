@@ -1,1 +1,2 @@
 org.geotools.processing.jai.ClassBreaksSpi
+org.geotools.processing.jai.TransparencyFillSpi

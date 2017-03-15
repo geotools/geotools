@@ -70,7 +70,12 @@ public class MBObjectParser {
         this(context,CommonFactoryFinder.getFilterFactory2(),
                 (StyleFactory2) CommonFactoryFinder.getStyleFactory());
     }
-    
+
+    /** Copy constructor allowing reuse of factories, whil returning correct {@link #context} */
+    public MBObjectParser(Class<MBFilter> context, MBObjectParser parse) {
+        this( context, parse.getFilterFactory(),parse.getStyleFactory());
+    }
+
     public MBObjectParser(Class<?> context, FilterFactory2 filterFactory, StyleFactory2 styleFactory){
         this.context = context;
         ff = filterFactory;
@@ -82,7 +87,6 @@ public class MBObjectParser {
     //
     // These methds throw a validation error if tag is not available
     //
-
     /** Shared FilterFactory */
     public FilterFactory2 getFilterFactory() {
         return this.ff;

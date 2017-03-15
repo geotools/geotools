@@ -241,7 +241,7 @@ public class MemoryDataStore extends ContentDataStore {
         SimpleFeatureType featureType = feature.getFeatureType();
         try {
             MemoryEntry entry = entry(featureType);
-            entry.memory.put( feature.getID(),  feature );
+            entry.addFeature(feature);
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }

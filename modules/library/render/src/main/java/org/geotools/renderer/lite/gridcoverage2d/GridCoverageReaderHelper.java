@@ -433,8 +433,13 @@ public class GridCoverageReaderHelper {
                 return true;
             }
             // in this case we need to make sure the area is actually safe to perform reprojections on
-            ReferencedEnvelope validBounds = handler.getValidAreaBounds().transform(readCRS, true);
-            return validBounds.contains((Envelope) readEnvelope);
+            try {
+                // when assertions are enabled accuracy tests might fail this path
+                ReferencedEnvelope validBounds = handler.getValidAreaBounds().transform(readCRS, true);
+                return validBounds.contains((Envelope) readEnvelope);
+            } catch(Exception e) {
+                return false;
+            }
         } else {
             return false;
         }

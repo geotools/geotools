@@ -665,9 +665,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      * @return a default PointPlacement.
      */
     public PointPlacement getDefaultPointPlacement() {
-        return this.createPointPlacement(this.createAnchorPoint(
-                filterFactory.literal(0),
-                filterFactory.literal(0.5)),
+        return this.createPointPlacement(PointPlacement.DEFAULT_ANCHOR_POINT,
             this.createDisplacement(filterFactory.literal(0),
                 filterFactory.literal(0)),
             filterFactory.literal(0));

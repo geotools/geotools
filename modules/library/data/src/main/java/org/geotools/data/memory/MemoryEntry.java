@@ -16,6 +16,7 @@
  */
 package org.geotools.data.memory;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class MemoryEntry extends ContentEntry {
      *     entry.memory.put( feature.getID(), feature );
      * }</code></pre>
      */
-    Map<String, SimpleFeature> memory;
+    private final Map<String, SimpleFeature> memory;
 
     /**
      * Entry to store content of the provided SimpleFeatureType.
@@ -60,14 +61,41 @@ public class MemoryEntry extends ContentEntry {
     MemoryEntry( MemoryDataStore store, SimpleFeatureType schema){
         super( store, schema.getName() );
         this.schema = schema;
-        memory = new LinkedHashMap<String, SimpleFeature>();
+        memory = Collections.synchronizedMap(new LinkedHashMap<String, SimpleFeature>());
     }
 
     protected MemoryState createContentState(ContentEntry entry) {
         return new MemoryState( (MemoryEntry) entry );
     }
     
-    public String toString() {
-        return "MemoryEntry '" + getTypeName()+"': "+memory.size() + " features";
+    /**
+     * Access the {@link #memory} field used to store feature content.
+     * 
+     * @return the memory
+     */
+    public Map<String, SimpleFeature> getMemory() {
+        return memory;
     }
+
+    public String toString() {
+        return "MemoryEntry '" + getTypeName()+"': "+getMemory().size() + " features";
+    }
+    
+    /**
+     * Safely add feature to {@link #memory}.
+     * <p>
+     * Feature is required to be non-null, and of the expected {@link #schema}.
+     * @param feature
+     */
+    void addFeature(SimpleFeature feature) {
+        if (feature == null) {
+            throw new IllegalArgumentException("Provided Feature is empty");
+        }
+        else if (!feature.getFeatureType().equals(schema) ){
+            throw new IllegalArgumentException("addFeatures expected " + schema.getTypeName()
+                    + "(but was " + feature.getFeatureType().getTypeName() + ")");
+        }
+        getMemory().put(feature.getID(), feature);
+    }
+
 }

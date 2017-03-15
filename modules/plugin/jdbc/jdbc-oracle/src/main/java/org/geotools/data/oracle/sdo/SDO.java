@@ -2655,7 +2655,7 @@ public final class SDO {
         ensure("ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})", eTYPE,
                 new int[] { ETYPE.COMPOUND_POLYGON_EXTERIOR, ETYPE.COMPOUND_POLYGON, ETYPE.POLYGON,
                         ETYPE.POLYGON_EXTERIOR,
-                        ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR });
+                        ETYPE.FACE_EXTERIOR });
         if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR) && (eTYPE != ETYPE.COMPOUND_POLYGON)
                 && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {
             LOGGER.warning("Could not create JTS Polygon with INTERPRETATION "
@@ -2759,7 +2759,7 @@ public final class SDO {
         ensure("ETYPE {0} must be expected POLYGON or POLYGON_EXTERIOR (one of {1})", eTYPE,
                 new int[] { ETYPE.COMPOUND_POLYGON, ETYPE.COMPOUND_POLYGON_EXTERIOR,
                         ETYPE.COMPOUND_POLYGON_INTERIOR, ETYPE.POLYGON, ETYPE.POLYGON_EXTERIOR,
-                        ETYPE.POLYGON_INTERIOR, ETYPE.FACE_EXTERIOR, ETYPE.FACE_EXTERIOR });
+                        ETYPE.POLYGON_INTERIOR, ETYPE.FACE_EXTERIOR });
         if ((eTYPE != ETYPE.COMPOUND_POLYGON_EXTERIOR) && (eTYPE != ETYPE.COMPOUND_POLYGON)
                 && (eTYPE != ETYPE.COMPOUND_POLYGON_INTERIOR)
                 && ((INTERPRETATION < 1) || (INTERPRETATION > 4))) {

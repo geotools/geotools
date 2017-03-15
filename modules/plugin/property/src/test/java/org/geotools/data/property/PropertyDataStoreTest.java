@@ -589,6 +589,9 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( "auto before", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 before", 5, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 before", 5, roadFromClient2.getFeatures().size() );
+        assertEquals("client 1 before", 5, roadFromClient1.getCount(Query.ALL));
+        assertEquals("client 2 before", 5, roadFromClient2.getCount(Query.ALL));
+        
         
         ReferencedEnvelope bounds = roadAuto.getFeatures().getBounds();
         ReferencedEnvelope client1Bounds = roadFromClient1.getFeatures().getBounds();
@@ -602,6 +605,9 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( "auto after client 1 removes fid1", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 after client 1 removes fid1", 4, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 after client 1 removes fid1", 5, roadFromClient2.getFeatures().size() );
+        assertEquals("client 1 after client 1 removes fid1", 4, roadFromClient1.getCount(Query.ALL));
+        assertEquals("client 2 after client 1 removes fid1", 5, roadFromClient2.getCount(Query.ALL));
+        
         
         bounds = roadAuto.getFeatures().getBounds();
         client1Bounds = roadFromClient1.getFeatures().getBounds();

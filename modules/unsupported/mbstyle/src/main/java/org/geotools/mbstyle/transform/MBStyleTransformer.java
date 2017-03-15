@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.transform;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,9 +33,34 @@ import org.geotools.mbstyle.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.RasterMBLayer;
 import org.geotools.mbstyle.SymbolMBLayer;
+import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.sprite.MapboxGraphicFactory;
-import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Stroke;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.UserLayer;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
@@ -60,10 +83,15 @@ public class MBStyleTransformer {
     private StyleFactory sf;
     
     private StyleBuilder sb;
+
+    private List<String> defaultFonts;
     
     private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
 
     public MBStyleTransformer() {
+        defaultFonts = new ArrayList<>();
+        defaultFonts.add("Open Sans Regular");
+        defaultFonts.add("Arial Unicode MS Regular");
         ff = CommonFactoryFinder.getFilterFactory2();
         sf = CommonFactoryFinder.getStyleFactory();
         sb = new StyleBuilder();
@@ -125,7 +153,7 @@ public class MBStyleTransformer {
         } else if (layer instanceof BackgroundMBLayer) {
             return transform((BackgroundMBLayer) layer);
         } else if (layer instanceof SymbolMBLayer) {
-            return transform((SymbolMBLayer) layer);
+            return transform((SymbolMBLayer) layer, styleContext);
         }
 
         throw new MBFormatException(layer.getType() + " not yet supported.");
@@ -176,10 +204,17 @@ public class MBStyleTransformer {
                  layer.toDisplacement(),
                  ff.literal(0));
         
-        Rule rule = sf.rule(layer.getId(), null,  null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(symbolizer), Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null, 
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(symbolizer),
+                layer.filter());
 
         // Set legend graphic to null.
-        //TODO: How do other style transformers set a null legend?
+        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
         
         
@@ -259,8 +294,14 @@ public class MBStyleTransformer {
         // layer.toDisplacement()
 
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY,
-                Arrays.asList(ls), Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ls),
+                layer.filter());
         
         rules.add(rule);
         return sf.featureTypeStyle(layer.getId(),
@@ -300,8 +341,14 @@ public class MBStyleTransformer {
                         NonSI.PIXEL, gr);
 
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY,
-                Arrays.asList(ps), Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ps),
+                layer.filter());
 
         rules.add(rule);
         return sf.featureTypeStyle(layer.getId(),
@@ -342,8 +389,14 @@ public class MBStyleTransformer {
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
-                Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                symbolizers,
+                layer.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
@@ -366,47 +419,70 @@ public class MBStyleTransformer {
      * @param layer Describing symbol styling
      * @return FeatureTypeStyle
      */
-    FeatureTypeStyle transform(SymbolMBLayer layer) {
-       
-        
-        Font font = sb.createFont(null, ff.literal("normal"), ff.literal("normal"), layer.textSize());
-        font.getFamily().clear();
-        font.getFamily().addAll(layer.textFont());
-        LabelPlacement labelPlacement;
-        
-        // TODO function case.
-        if (SymbolMBLayer.SymbolPlacement.LINE.equals(layer.getSymbolPlacement())) {
-            LinePlacement linePlacement = sb.createLinePlacement(null);            
-            // linePlacement.setRepeated(repeated);
-            labelPlacement = linePlacement;            
-        } else {
-            PointPlacement pointPlacement = sb.createPointPlacement();            
-            // pointPlacement.setAnchorPoint();
-            // pointPlacement.setDisplacement(displacement);
-            pointPlacement.setRotation(layer.textRotate());
-            labelPlacement = pointPlacement;
-        }
-        
-        
-        Halo halo = sf.halo( sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
-        // layer.textHaloBlur();        
-        Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());        
-        TextSymbolizer symbolizer = sf.textSymbolizer(layer.getId(), ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL, layer.textField(), font, labelPlacement, halo, fill);
-                        
-        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?        
-        
-        // TODO Graphic - how to get a TextSymbolizer2?
-        if (symbolizer instanceof TextSymbolizer2) {
-            TextSymbolizer2 symbolizer2 = (TextSymbolizer2) symbolizer;
-            // symbolizer2.setGraphic(graphic);
-        }
+    FeatureTypeStyle transform(SymbolMBLayer layer, MBStyle styleContext) {
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
-        symbolizers.add(symbolizer);
+        Font font = null;
+        LabelPlacement labelPlacement;
+        LinePlacement linePlacement;
+        PointPlacement pointPlacement;
+
+        if (SymbolMBLayer.SymbolPlacement.LINE.equals(layer.getSymbolPlacement())) {
+            // TODO complete development of LineSymbolizer
+
+
+        } else {
+            if (layer.getIconImage().isEmpty()) { // icon-image not provided, using default graphic
+                PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
+                        sf.description(Text.text("text"), null), NonSI.PIXEL, sf.createDefaultGraphic());
+                symbolizers.add(pointSymbolizer);
+            } else {
+                ExternalGraphic eg = createExternalGraphicForSprite(ff.literal(layer.getIconImage()), styleContext);
+                PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
+                        sf.description(Text.text("text"), null), NonSI.PIXEL,
+                        sf.createGraphic(new ExternalGraphic[] { eg }, null, null, ff.literal(layer.getIconOpacity()), ff.literal(layer.getIconSize()), ff.literal(layer.getIconRotate())));
+                symbolizers.add(pointSymbolizer);
+            }
+        }
+
+        if (!layer.getTextField().isEmpty()) { // A text-field was provided - need a TextSymbolizer.
+            Halo halo = sf.halo( sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
+            Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());
+
+            if (layer.getTextFont().isEmpty()) {
+                font = sb.createFont(ff.literal(defaultFonts), ff.literal("normal"), ff.literal("normal"), layer.textSize());
+            } else {
+                font = sb.createFont(ff.literal(layer.getTextFont()), ff.literal("normal"), ff.literal("normal"), layer.textSize());
+            }
+
+            if (symbolizers.get(0) instanceof PointSymbolizer) {
+                pointPlacement = sb.createPointPlacement();
+                pointPlacement.setAnchorPoint(layer.anchorPoint());
+                pointPlacement.setDisplacement(sb.createDisplacement(layer.getTextOffset()[0], layer.getTextOffset()[1]));
+                pointPlacement.setRotation(ff.literal(layer.getTextRotate()));
+                labelPlacement = pointPlacement;
+            } else {
+                // TODO finish lineplacement creation;
+                linePlacement = sb.createLinePlacement(null);
+                labelPlacement = linePlacement;
+            }
+            TextSymbolizer symbolizer = sf.textSymbolizer(layer.getId(), ff.property((String) null),
+                    sf.description(Text.text("text"), null), NonSI.PIXEL, layer.textField(),
+                    font, labelPlacement, halo, fill);
+            symbolizers.add(symbolizer);
+        }
+        // layer.textHaloBlur();
+        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
-                Filter.INCLUDE);
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                symbolizers,
+                layer.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
@@ -438,18 +514,24 @@ public class MBStyleTransformer {
         } else {
             spriteUrl = iconName;
         }
-        
+
         // TODO: (Functions milestone) The icon name can be a function, so evaluating the expression to a string (below) is wrong.
         // Evaluate it for now, because (for now) External Graphics do not take an expression for the URL.
         // TODO: Allow External Graphics to take an expression for the URL
         String spriteUrlStr = spriteUrl.evaluate(null, String.class);
-        
-        try {
-            return sf.createExternalGraphic(new URL(spriteUrlStr), MapboxGraphicFactory.FORMAT);
-        } catch (MalformedURLException e) {
-            LOGGER.warning("Mapbox Style graphic has invalid URL: " + spriteUrlStr);
-            return null;
-        }
+
+        return sf.createExternalGraphic(spriteUrlStr, MapboxGraphicFactory.FORMAT);
+
+    }
+
+    /**
+     * Given a string of "bottom-right" or "top-left" find the x,y coordinates and create an AnchorPoint
+     * @param textAnchor The value of the "text-anchor" property in the mapbox style.
+     * @return AnchorPoint
+     */
+    AnchorPoint getAnchorPoint(String textAnchor) {
+        TextAnchor anchor = TextAnchor.parse(textAnchor);
+        return sb.createAnchorPoint(anchor.getX(), anchor.getY());
     }
 
 }

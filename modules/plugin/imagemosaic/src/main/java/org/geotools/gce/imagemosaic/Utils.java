@@ -474,7 +474,8 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"),
                 FileFilterUtils.nameFileFilter("error.txt"),
                 FileFilterUtils.nameFileFilter("_metadata"),
-                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME_LEGACY),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
                 FileFilterUtils.suffixFileFilter("xml"), FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
@@ -487,7 +488,8 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
                 FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
                 FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
-                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME_LEGACY),
                 FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
     }
@@ -1454,7 +1456,8 @@ public class Utils {
 
     public static final String SCAN_FOR_TYPENAMES = "TypeNames";
 
-    public static final String SAMPLE_IMAGE_NAME = "sample_image";
+    public static final String SAMPLE_IMAGE_NAME_LEGACY = "sample_image";
+    public static final String SAMPLE_IMAGE_NAME = "sample_image.dat";
 
     public static final String BBOX = "BOUNDINGBOX";
 

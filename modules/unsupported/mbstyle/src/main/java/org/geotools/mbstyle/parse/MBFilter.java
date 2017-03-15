@@ -108,7 +108,7 @@ public class MBFilter {
      * 
      * @return GeoTools {@link Filter} specifying conditions on source features.
      */
-    Filter filter() {
+    public Filter filter() {
         if (json == null || json.isEmpty()) {
             return Filter.INCLUDE; // by default include everything!
         }
@@ -178,10 +178,10 @@ public class MBFilter {
         // Set Membership Filters
         else if( "in".equals(operator)){
             String key = parse.get(json, 1);
-            Expression[] args = new Expression[ json.size()-2];
+            Expression[] args = new Expression[json.size()-1];
             args[0] = ff.property(key);
-            for(int i=1; i<json.size()-2;i++){
-                Object value = parse.value( json,1+i);
+            for(int i=1; i<args.length;i++){
+                Object value = parse.value( json,i+1);
                 args[i] = ff.literal( value );
             }
             Function in = ff.function("in", args );
@@ -189,10 +189,10 @@ public class MBFilter {
         }
         else if( "!in".equals(operator)){
             String key = parse.get(json, 1);
-            Expression[] args = new Expression[ json.size()-2];
+            Expression[] args = new Expression[json.size()-1];
             args[0] = ff.property(key);
-            for(int i=1; i<json.size()-2;i++){
-                Object value = parse.value( json,1+i);
+            for(int i=1; i<args.length;i++){
+                Object value = parse.value( json,i+1);
                 args[i] = ff.literal( value );
             }
             Function in = ff.function("in", args );

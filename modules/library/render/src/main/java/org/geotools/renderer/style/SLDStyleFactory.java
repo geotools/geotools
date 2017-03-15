@@ -96,6 +96,9 @@ public class SLDStyleFactory {
 	private static final Logger LOGGER = org.geotools.util.logging.Logging
 			.getLogger("org.geotools.rendering");
 
+  /** Java System Property to enable legacy default anchor point. */
+  public static final String USE_LEGACY_ANCHOR_POINT_KEY = "org.geotools.renderer.style.legacyAnchorPoint";
+
 	/**
 	 * The threshold at which we switch from pre-rasterized icons to dynamically
 	 * painted ones (to avoid OOM)
@@ -785,11 +788,17 @@ public class SLDStyleFactory {
 
 		// compute label position, anchor, rotation and displacement
 		LabelPlacement placement = symbolizer.getLabelPlacement();
-		double anchorX = 0;
-		double anchorY = 0;
+		double anchorX = PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointX().evaluate(null, Double.class);
+		double anchorY = PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointY().evaluate(null, Double.class);
 		double rotation = 0;
 		double dispX = 0;
 		double dispY = 0;
+
+    // Set the defaults to legacy values if the Java System property is set to true.
+    if (Boolean.getBoolean(USE_LEGACY_ANCHOR_POINT_KEY)) {
+      anchorX = 0;
+      anchorY = 0;
+    }
 
 		if (placement instanceof PointPlacement) {
 			if (LOGGER.isLoggable(Level.FINER)) {
@@ -800,9 +809,9 @@ public class SLDStyleFactory {
 			PointPlacement p = (PointPlacement) placement;
 			if (p.getAnchorPoint() != null) {
 				anchorX = evalToDouble(p.getAnchorPoint().getAnchorPointX(),
-						feature, 0);
+						feature, anchorX);
 				anchorY = evalToDouble(p.getAnchorPoint().getAnchorPointY(),
-						feature, 0.5);
+						feature, anchorY);
 			}
 
 			if (p.getDisplacement() != null) {

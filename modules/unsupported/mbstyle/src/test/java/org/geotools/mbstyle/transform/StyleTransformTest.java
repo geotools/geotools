@@ -18,12 +18,14 @@ package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.*;
+import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.styling.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
 
 import java.awt.*;
@@ -350,6 +352,38 @@ public class StyleTransformTest {
         assertEquals(Integer.valueOf(1), psym.getFill().getOpacity().evaluate(null, Integer.class));
         
         assertNull(psym.getStroke());
+    }
+
+    @Test
+    public void testSymbolIcon() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("symbolStyleIconTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("composite");
+
+        MBLayer layer = mbStyle.layer("earthquakes");
+        assertNotNull("earthquakes available", layer );
+        assertTrue(layer instanceof SymbolMBLayer);
+        
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(layer, mbStyle);
+        
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+        assertEquals(2, r.symbolizers().size());
+        
+        PointSymbolizer pointSymbolizer = (PointSymbolizer) r.symbolizers().get(0);
+        TextSymbolizer textSymbolizer = (TextSymbolizer) r.symbolizers().get(1);
+        Graphic graphic = pointSymbolizer.getGraphic();
+        ExternalGraphic externalGraphic = (ExternalGraphic) graphic.graphicalSymbols().get(0);
+        assertEquals( "mbsprite", externalGraphic.getFormat() );
+        
+        
+        PointPlacement placement = (PointPlacement) textSymbolizer.getLabelPlacement();
+        AnchorPoint anchor = placement.getAnchorPoint();
+        
+        assertEquals( "bottom-right x", 1.0,
+                anchor.getAnchorPointX().evaluate(null,Double.class), 0.0 );
+        assertEquals( "bottom-right y", 0.0,
+                anchor.getAnchorPointY().evaluate(null,Double.class), 0.0 );
     }
     
     /**

@@ -87,11 +87,32 @@ final class URN_Parser extends URI_Parser {
                     if (candidate != null) {
                         final int nameEnd = code.indexOf(URN_SEPARATOR, typeEnd + 1);
                         if (nameEnd >= 0) {
+                            final int versionEnd = code.indexOf(URN_SEPARATOR, nameEnd + 1);
                             final int lastEnd = code.lastIndexOf(URN_SEPARATOR);
-                            Version urnVersion = (lastEnd <= nameEnd) ? null : new Version(
-                                    code.substring(nameEnd + 1, lastEnd));
-                            String urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
-                            String urnCode = code.substring(lastEnd + 1).trim();
+                            Version urnVersion;
+                            String urnAuthority;
+                            String urnCode;
+                            if (versionEnd != lastEnd && versionEnd != -1) {
+                                urnVersion = (lastEnd <= nameEnd) ?
+                                    null :
+                                    new Version(code.substring(nameEnd + 1, versionEnd));
+                                urnAuthority = code.substring(typeEnd + 1, nameEnd);
+                                urnCode = code.substring(versionEnd + 1).trim();
+                                urnCode = urnCode.replaceAll(String.valueOf(URN_SEPARATOR), ",");
+                            } else {
+                                urnVersion = (lastEnd <= nameEnd) ?
+                                    null :
+                                    new Version(code.substring(nameEnd + 1, lastEnd));
+                                urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
+                                urnCode = code.substring(lastEnd + 1).trim();
+                            }
+                            if (urnCode.contains("CRS")) {
+                                urnAuthority = "CRS";
+                                urnCode = urnCode.substring(3);
+                            } else if (urnCode.contains("AUTO")) {
+                                urnAuthority = "AUTO";
+                                urnCode = urnCode.substring(4);
+                            }
                             URI_Type urnType = candidate;
                             return new URN_Parser(urn, urnType, urnAuthority, urnVersion, urnCode);
                         }

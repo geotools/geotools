@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.mbstyle;
 
 import java.awt.Color;
@@ -6,15 +22,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.geotools.mbstyle.CircleMBLayer.CirclePitchScale;
-import org.geotools.mbstyle.CircleMBLayer.CircleTranslateAnchor;
-import org.geotools.mbstyle.FillMBLayer.FillTranslateAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.AnchorPoint;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * A filled circle.
+ * <p>
+ * MBLayer wrapper around a {@link JSONObject} representation of a "circle" type latyer. All
+ * methods act as accessors on provided JSON layer, no other state is maintained. This allows
+ * modifications to be made cleanly with out chance of side-effect.
+ * 
+ * <ul>
+ * <li>get methods: access the json directly</li>
+ * <li>query methods: provide logic / transforms to GeoTools classes as required.</li>
+ * </ul>
+ */
 public class SymbolMBLayer extends MBLayer {
 
     private JSONObject layout;
@@ -80,53 +106,133 @@ public class SymbolMBLayer extends MBLayer {
          */
         RIGHT
     }
-
+    /**
+     * Text justification options.
+     */
     public static enum TextAnchor {
         /**
          * The center of the text is placed closest to the anchor.
          */
-        CENTER,
+        CENTER(0.5, 0.5),
 
         /**
          * The left side of the text is placed closest to the anchor.
          */
-        LEFT,
+        LEFT(0.0, 0.5),
 
         /**
          * The right side of the text is placed closest to the anchor.
          */
-        RIGHT,
+        RIGHT(1.0, 0.5),
 
         /**
          * The top of the text is placed closest to the anchor.
          */
-        TOP,
+        TOP(0.5, 1.0),
 
         /**
          * The bottom of the text is placed closest to the anchor.
          */
-        BOTTOM,
+        BOTTOM(0.5, 0.0),
 
         /**
          * The top left corner of the text is placed closest to the anchor.
          */
-        TOP_LEFT,
+        TOP_LEFT(0.0, 1.0),
 
         /**
          * The top right corner of the text is placed closest to the anchor.
          */
-        TOP_RIGHT,
+        TOP_RIGHT(1.0, 1.0),
 
         /**
          * The bottom left corner of the text is placed closest to the anchor.
          */
-        BOTTOM_LEFT,
+        BOTTOM_LEFT(0.0, 0.0),
 
         /**
          * The bottom right corner of the text is placed closest to the anchor.
          */
-        BOTTOM_RIGHT,
+        BOTTOM_RIGHT(1.0, 0.0);
 
+        /** horizontal justification */
+        final private double x;
+
+        /** vertical justification */
+        final private double y;
+
+        private TextAnchor(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         * Horizontal justification.
+         * 
+         * @return horizontal alignment between 0.0 and 1.0.
+         */
+        public double getX() {
+            return x;
+        }
+
+        /**
+         * Vertical justification.
+         * 
+         * @return vertical alignment between 0.0 and 1.0.
+         */
+        public double getY() {
+            return y;
+        }
+
+        /**
+         * Parse provided jsonString as a TextAnchor.
+         * <p>
+         * One of center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right. Defaults to center.</p>
+         *  
+         * @param jsonString text anchor definition
+         * @return TextAnchor, defaults TextAnchor#CENTER if undefined
+         */
+        public static TextAnchor parse(String jsonString){
+            if( jsonString == null ){
+                return CENTER;
+            }
+            String name = jsonString.toUpperCase().trim().replace('-', '_');
+            try {
+                return TextAnchor.valueOf(name);
+            }
+            catch (IllegalArgumentException invalid){
+                throw new MBFormatException("Invalid text-alginment '"+jsonString+"' expected one of"
+                        + "center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right");
+            }
+        }
+        
+        /**
+         * The json represetnation of this TextAnchor.
+         * 
+         * @return json representation
+         */
+        public String json(){
+            return name().toLowerCase().replace('_', '-');
+        }
+        
+        /**
+         * Quickly grab y justification for jsonString.
+         * 
+         * @param jsonString
+         * @return vertical anchor, defaults to 0.5
+         */
+        public static double getAnchorY(String jsonString){
+            return TextAnchor.parse(jsonString).getY();
+        }
+        /**
+         * Quickly grab x justification for jsonString.
+         * 
+         * @param jsonString
+         * @return horizontal anchor, defaults to 0.5
+         */
+        public static double getAnchorX(String jsonString){
+            return TextAnchor.parse(jsonString).getX();
+        }
     }
 
     public static enum TextTransform {
@@ -637,8 +743,11 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * 
-     * Optional enum. One of center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right. Defaults to center. Requires text-field.  Part of the text placed closest to the anchor.
+     * Part of the text placed closest to the anchor (requires text-field).
+     * <p> 
+     * Optional enum. One of center, left, right, top, bottom, top-left, top-right, bottom-left,
+     * bottom-right. Defaults to center. Requires text-field. Part of the text placed closest to the
+     * anchor.
      * 
      * {@link TextAnchor#CENTER} The center of the text is placed closest to the anchor.
      * 
@@ -652,37 +761,37 @@ public class SymbolMBLayer extends MBLayer {
      * 
      * {@link TextAnchor#TOP_LEFT} The top left corner of the text is placed closest to the anchor.
      * 
-     * {@link TextAnchor#TOP_RIGHT} The top right corner of the text is placed closest to the anchor.
+     * {@link TextAnchor#TOP_RIGHT} The top right corner of the text is placed closest to the
+     * anchor.
      * 
-     * {@link TextAnchor#BOTTOM_LEFT} The bottom left corner of the text is placed closest to the anchor.
+     * {@link TextAnchor#BOTTOM_LEFT} The bottom left corner of the text is placed closest to the
+     * anchor.
      * 
-     * {@link TextAnchor#BOTTOM_RIGHT} The bottom right corner of the text is placed closest to the anchor.
+     * {@link TextAnchor#BOTTOM_RIGHT} The bottom right corner of the text is placed closest to the
+     * anchor.
      * 
-     * @return TextAnchor
+     * @return part of the text placed closest to the anchor. 
      */
     public TextAnchor getTextAnchor() {
-    	Object value = layout.get("text-anchor");
-		if (value != null && "left".equalsIgnoreCase((String) value)) {
-			return TextAnchor.LEFT;
-		} else if (value != null && "right".equalsIgnoreCase((String) value)){
-			return TextAnchor.RIGHT;
-		} else if (value != null && "top".equalsIgnoreCase((String) value)){
-			return TextAnchor.TOP;
-		} else if (value != null && "bottom".equalsIgnoreCase((String) value)){
-			return TextAnchor.BOTTOM;
-		} else if (value != null && "top-left".equalsIgnoreCase((String) value)){
-			return TextAnchor.TOP_LEFT;
-		} else if (value != null && "top-right".equalsIgnoreCase((String) value)){
-			return TextAnchor.TOP_RIGHT;
-		} else if (value != null && "bottom-left".equalsIgnoreCase((String) value)){
-			return TextAnchor.BOTTOM_LEFT;
-		} else if (value != null && "bottom-right".equalsIgnoreCase((String) value)){
-			return TextAnchor.BOTTOM_RIGHT;
-		} else {
-			return TextAnchor.CENTER;
-		}
+        String json = parse.get(layout, "text-anchor");
+        if (json == null) {
+            return null;
+        }
+        return TextAnchor.parse(json);
     }
-
+    
+    /** 
+     * Layout "text-anchor" provided as {@link AnchorPoint}.
+     * 
+     * @return AnchorPoint defined by "text-anchor".
+     */
+    public AnchorPoint anchorPoint() {
+        TextAnchor anchor = getTextAnchor();
+        if (anchor == null) {
+            return null;
+        }
+        return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+    }
     /**
      * (Optional) Units in degrees. Defaults to 45. Requires text-field. Requires symbol-placement = line.
      * 

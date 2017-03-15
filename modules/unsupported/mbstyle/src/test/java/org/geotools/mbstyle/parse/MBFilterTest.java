@@ -38,6 +38,34 @@ import org.opengis.filter.expression.Literal;
 public class MBFilterTest {
 
     @Test
+    public void id() throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONArray json;
+        MBFilter mbfilter;
+        Filter filter;
+        
+        json = (JSONArray) parser.parse("[\"has\", \"$id\",\"foo.1\"]");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("IN ('foo.1')", ECQL.toCQL(filter) );
+        
+        json = (JSONArray) parser.parse("[\"in\", \"$id\",\"foo.1\",\"foo.2\"]");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("IN ('foo.1','foo.2')", ECQL.toCQL(filter) );
+        
+        json = (JSONArray) parser.parse("[\"!has\", \"$id\",\"foo.1\"]");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("NOT (IN ('foo.1'))", ECQL.toCQL(filter) );
+        
+        json = (JSONArray) parser.parse("[\"!in\", \"$id\",\"foo.1\",\"foo.2\"]");
+        mbfilter = new MBFilter(json);
+        filter = mbfilter.filter();
+        assertEquals("NOT (IN ('foo.1','foo.2'))", ECQL.toCQL(filter) );
+    }
+    
+    @Test
     public void existential() throws ParseException {
         JSONParser parser = new JSONParser();
         JSONArray json = (JSONArray) parser.parse("[\"has\", \"key\"]");

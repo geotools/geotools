@@ -17,13 +17,19 @@
 package org.geotools.mbstyle.parse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.style.SemanticType;
 
 /**
  * MBFilter json wrapper, allowing conversion to a GeoTools Filter.
@@ -82,23 +88,123 @@ import org.opengis.filter.expression.Function;
  * @see MBFunction
  */
 public class MBFilter {
+    
+    /** Default syntaticType (or null for "geometry"). */
+    final protected SemanticType semanticType;
+    
+    /** Parser context. */
     final protected MBObjectParser parse;
 
+    /** Wrapped json */
     final protected JSONArray json;
-
-    private FilterFactory2 ff;
 
     public MBFilter(JSONArray json) {
         this(new MBObjectParser(MBFilter.class), json);
     }
 
     public MBFilter(MBObjectParser parse, JSONArray json) {
-        this.parse = parse;
-        this.ff = parse.getFilterFactory();
-
+        this.parse = new MBObjectParser(MBFilter.class, parse);
         this.json = json;
+        this.semanticType = null;
+        
     }
 
+    /**
+     * Translate "$type": the feature type we need This key may be used with the "==",  "!=", "in", and "!in" operators.
+     * Possible values are  "Point", "LineString", and "Polygon".</li>
+     * 
+     * @param layer MBLayer type (as each has a different default SemanticType)
+     * @return
+     */
+    public Set<SemanticType> semanticTypeIdentifiers(){
+        if (json == null || json.isEmpty()) {
+            // return the default for this layer type
+            return semanticTypeIdentifiersDefaults();
+        }
+        
+        String operator = parse.get(json, 0);
+        if(("==".equals(operator) || "!=".equals(operator) ||
+                "in".equals(operator) || "!in".equals(operator))&&
+                "$type".equals(parse.get(json, 1))){
+            if( "in".equals(operator) || "==".equals(operator)){
+                Set<SemanticType> semanticTypes = new HashSet<>();
+                List<?> types = json.subList(2, json.size()-1);
+                for(Object type : types ){
+                    if( type instanceof String ){
+                        String jsonText = (String) type;
+                        SemanticType semanticType = translateSemanticType(jsonText);
+                        semanticTypes.add(semanticType);
+                    }
+                    else {
+                        throw new MBFormatException("[\"in\",\"$type\", ...] limited to Point, LineString, Polygion: "+type);
+                    }
+                }
+                return semanticTypes;
+            }
+            else if( "!in=".equals(operator)){
+                Set<SemanticType> semanticTypes = new HashSet<>( Arrays.asList(SemanticType.values()) );
+                List<?> types = json.subList(2, json.size()-1);
+                for(Object type : types ){
+                    if( type instanceof String ){
+                        String jsonText = (String) type;
+                        SemanticType semanticType = translateSemanticType(jsonText);
+                        semanticTypes.remove(semanticType);
+                    }
+                    else {
+                        throw new MBFormatException("[\"!in\",\"$type\", ...] limited to Point, LineString, Polygion: "+type);
+                    }
+                }
+                return semanticTypes;
+            }
+        }
+        return semanticTypeIdentifiersDefaults();
+    }
+    /** 
+     * Generate default set of semantic types based on {@link #semanticType} default.
+     * 
+     * @return default to use, if nothing is provided explicitly by json "$type" field.
+     */
+    private Set<SemanticType> semanticTypeIdentifiersDefaults(){
+        Set<SemanticType> defaults = new HashSet<>();
+        if( semanticType != null ){
+            defaults.add(semanticType); // default as provided
+        }
+        return defaults;
+    }
+    /**
+     * Set of translated SemanticType definitions. 
+     * @param jsonTexts
+     * @param translate Optional set for translated definitions 
+     * @return translated SemanticType definitions.
+     */
+    private Set<SemanticType> translateSemanticTypes(Collection<String> jsonTexts, Set<SemanticType> translate){
+        if(translate == null){
+            translate = new HashSet<>();
+        }
+        for( String json : jsonTexts){
+            translate.add(translateSemanticType(json));
+        }
+        return translate;
+    }
+    
+    /**
+     * Translate from json "Point", "LineString", and "Polygon".
+     * @param jsonText
+     * @return translate from jsonText
+     */
+    private SemanticType translateSemanticType(String jsonText) {
+        switch (jsonText) {
+        case "Point":
+            return SemanticType.POINT;
+        case "LineString":
+            return SemanticType.LINE;
+        case "Polygon":
+            return SemanticType.POLYGON;
+        default:
+            return null;
+        }
+    }
+    
     /**
      * Generate GeoTools {@link Filter} from json definition.
      * <p>
@@ -109,24 +215,42 @@ public class MBFilter {
      * @return GeoTools {@link Filter} specifying conditions on source features.
      */
     public Filter filter() {
+        final FilterFactory2 ff = parse.getFilterFactory();
+
         if (json == null || json.isEmpty()) {
             return Filter.INCLUDE; // by default include everything!
         }
         String operator = parse.get(json, 0);
-        
         //
         // TYPE
         //
         if(("==".equals(operator) || "!=".equals(operator) ||
                 "in".equals(operator) || "!in".equals(operator))&&
                 "$type".equals(parse.get(json, 1))){
-            throw new UnsupportedOperationException("$type Point,LineString,Polygon comparisions not yet supported");
+            // handled by semanticsTypes() method
+            // (unsure if #type can be used with all/any/none - if so we will process the json)
+            return Filter.INCLUDE;
         }
         if(("==".equals(operator) || "!=".equals(operator) ||
                 "has".equals(operator) || "!has".equals(operator) ||
                 "in".equals(operator) || "!in".equals(operator))&&
                 "$id".equals(parse.get(json, 1))){
-            throw new UnsupportedOperationException("$id comparisions not yet supported");
+            Set<FeatureId> fids = new HashSet<>();
+            for( Object value : json.subList(2,json.size())){
+                if( value instanceof String){
+                    String fid = (String) value;
+                    fids.add(ff.featureId(fid));
+                }
+            }
+            if("has".equals(operator)||"in".equals(operator)){
+                return ff.id(fids);
+            }
+            else if("!has".equals(operator)||"!in".equals(operator)){
+                return ff.not(ff.id(fids));
+            }
+            else {
+                throw new UnsupportedOperationException("$id \""+operator+"\" not valid");
+            }
         }
         // ID
         //
@@ -219,7 +343,6 @@ public class MBFilter {
             List<Filter> none = new ArrayList<>();
             for( int i = 1; i < json.size();i++){
                 // using not here so we can short circuit the and filter below
-
                 MBFilter filter = new MBFilter((JSONArray) json.get(i));
                 none.add( ff.not(filter.filter()));
             }

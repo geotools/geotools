@@ -128,7 +128,7 @@ public class MBFilter {
                 "$type".equals(parse.get(json, 1))){
             if( "in".equals(operator) || "==".equals(operator)){
                 Set<SemanticType> semanticTypes = new HashSet<>();
-                List<?> types = json.subList(2, json.size()-1);
+                List<?> types = json.subList(2, json.size());
                 for(Object type : types ){
                     if( type instanceof String ){
                         String jsonText = (String) type;

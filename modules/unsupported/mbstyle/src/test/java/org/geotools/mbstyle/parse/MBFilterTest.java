@@ -20,6 +20,7 @@ import static org.geotools.mbstyle.MapboxTestUtils.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.geotools.filter.text.ecql.ECQL;
 import org.json.simple.JSONArray;
@@ -33,10 +34,28 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.SemanticType;
 import org.opengis.filter.expression.Literal;
 
 public class MBFilterTest {
 
+    @Test
+    public void type() throws ParseException {
+        JSONParser parser = new JSONParser();
+        JSONArray json;
+        MBFilter mbfilter;
+        Filter filter;
+        
+        json = (JSONArray) parser.parse("[\"in\", \"$type\",\"LineString\"]");
+        mbfilter = new MBFilter(json);
+        
+        Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
+        assertTrue( types.contains(SemanticType.LINE) && types.size()==1);
+        
+        filter = mbfilter.filter();
+        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        
+    }
     @Test
     public void id() throws ParseException {
         JSONParser parser = new JSONParser();

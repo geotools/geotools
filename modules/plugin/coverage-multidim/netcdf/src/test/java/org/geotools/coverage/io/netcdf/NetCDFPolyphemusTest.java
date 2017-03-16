@@ -26,7 +26,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.PlanarImage;
@@ -196,9 +195,10 @@ public final class NetCDFPolyphemusTest extends Assert {
                             .getVerticalElements(false, null);
                     final int numLevels = verticalElements.size();
                     final Iterator<? extends NumberRange<Double>> iterator = verticalElements.iterator();
+                    int step = ((numLevels / 5) > 0) ? (numLevels / 5) : 1;
                     for (int i = 0; i < numLevels; i++) {
                         NumberRange<Double> level = iterator.next();
-                        if (i % (numLevels / 5) == 1) {
+                        if ((i % step) == 0) {
                             requestedVerticalSubset.add(level);
                         }
                     }
@@ -208,9 +208,10 @@ public final class NetCDFPolyphemusTest extends Assert {
                     SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(false, null);
                     final int numTimes = temporalElements.size();
                     Iterator<? extends DateRange> iteratorT = temporalElements.iterator();
+                    step = ((numTimes / 5) > 0) ? (numTimes / 5) : 1;
                     for (int i = 0; i < numTimes; i++) {
                         DateRange time = iteratorT.next();
-                        if (i % (numTimes / 5) == 1) {
+                        if ((i % step) == 0) {
                             requestedTemporalSubset.add(time);
                         }
                     }
@@ -244,10 +245,6 @@ public final class NetCDFPolyphemusTest extends Assert {
                         LOGGER.info(buffer.toString());
                     }
                     gridSource.dispose();
-                }
-            } catch (Throwable t) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, t.getLocalizedMessage(), t);
                 }
             } finally {
                 if (access != null) {

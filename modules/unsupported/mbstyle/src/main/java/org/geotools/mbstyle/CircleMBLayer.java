@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
+import org.opengis.style.SemanticType;
 
 /**
  * A filled circle.
@@ -55,7 +56,10 @@ public class CircleMBLayer extends MBLayer {
         paint = paint();
         layout = layout();
     }
-
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.POINT;
+    }
     /**
      * (Optional) Circle radius.
      * 

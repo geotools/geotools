@@ -20,6 +20,7 @@ package org.geotools.mbstyle;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
 
 
 public class RasterMBLayer extends MBLayer {
@@ -36,6 +37,10 @@ public class RasterMBLayer extends MBLayer {
         } else {
             paintJson = new JSONObject();
         }
+    }
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.RASTER;
     }
 
     /**

@@ -28,6 +28,7 @@ import org.geotools.styling.AnchorPoint;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
 
 /**
  * A filled circle.
@@ -274,7 +275,11 @@ public class SymbolMBLayer extends MBLayer {
         paint = super.getPaint();
         layout = super.getLayout();
     }
-
+    
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.ANY;
+    }
     /**
 	 * (Optional) One of point, line. Defaults to point.
 	 * 

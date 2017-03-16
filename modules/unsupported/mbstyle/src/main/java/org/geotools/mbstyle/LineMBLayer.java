@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.factory.Hints;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -26,6 +27,7 @@ import org.geotools.util.Converter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
 import org.opengis.style.Stroke;
 
 import java.awt.*;
@@ -58,9 +60,8 @@ public class LineMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    // TODO Add color hints for CSS color names.
     private static Converter colorConverter = new ColorConverterFactory()
-            .createConverter(String.class, Color.class, null);
+            .createConverter(String.class, Color.class, new Hints(Hints.COLOR_DEFINITION,"CSS"));
 
     private static String TYPE = "line";
 
@@ -70,6 +71,11 @@ public class LineMBLayer extends MBLayer {
         layout = super.getLayout();
     }
 
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.LINE;
+    }
+    
     /**
      * The display of line endings.
      */

@@ -25,6 +25,7 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
 /**
  * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.
  * <p>
@@ -74,7 +75,10 @@ public class FillExtrusionMBLayer extends MBLayer {
         paint = paint();
         layout = layout();
     }
-    
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.POLYGON;
+    }
     /**
      * (Optional) Defaults to 1.
      * 

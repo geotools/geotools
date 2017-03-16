@@ -23,6 +23,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
+import org.opengis.style.SemanticType;
 
 import java.awt.*;
 
@@ -74,6 +75,10 @@ public class FillMBLayer extends MBLayer {
 
         paint = paint();
         layout = layout();
+    }
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.POLYGON;
     }
 
     /**

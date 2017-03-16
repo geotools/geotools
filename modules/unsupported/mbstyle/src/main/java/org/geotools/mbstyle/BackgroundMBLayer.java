@@ -22,6 +22,7 @@ import java.awt.Color;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
 
 /**
  * The background color or pattern of the map.
@@ -48,7 +49,11 @@ public class BackgroundMBLayer extends MBLayer {
         paint = paint();
         layout = layout();
     }
-
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.POLYGON;
+    }
+    
     /**
      * Optional color. Defaults to #000000. Disabled by background-pattern.
      * 

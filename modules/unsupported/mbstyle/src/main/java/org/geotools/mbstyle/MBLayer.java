@@ -25,6 +25,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.style.SemanticType;
 
 /**
  * MBLayer wrapper (around one of the MBStyle layers).
@@ -217,11 +218,20 @@ public abstract class MBLayer {
     public MBFilter getFilter(){
         JSONArray array = parse.getJSONArray(json,"filter", null );
         if( array != null ){
-            MBFilter filter = new MBFilter(parse, array);
+            MBFilter filter = new MBFilter(array, parse, defaultSemanticType());
             return filter;
         }
         return null;
     }
+    
+    /**
+     * Default {@link SemanticType} to use when generating {@link #getFilter()}.
+     * <p>
+     * Use ANY to match all geometry, or fill in LINE, POINT, POLYGON if needed.</p>
+     * 
+     * @return Appropriate LINE, POINT, POLYGON value, or ANY to match any geometry.
+     */
+    abstract SemanticType defaultSemanticType();
     
     /**
      * The "filter" as a GeoTools {@link Filter} suitable for feature selection, as defined by

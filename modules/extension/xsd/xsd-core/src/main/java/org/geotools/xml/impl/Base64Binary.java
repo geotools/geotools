@@ -17,37 +17,40 @@
 package org.geotools.xml.impl;
 
 import java.io.IOException;
+import java.util.Base64;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-
-/** A utility class for working with base64 encoding.
- *
- *
+/**
+ * A utility class for working with base64 encoding.
+ * 
+ * @see java.util.Base64
  *
  * @source $URL$
  */
 public class Base64Binary {
-	/** Creates a clone of the byte array <code>pValue</code>.
-	 */
-	public static byte[] getClone(byte[] pValue) {
-		byte[] result = new byte[pValue.length];
-		System.arraycopy(pValue, 0, result, 0, pValue.length);
-		return result;
-	}
+    /** Thread safe Base64 Decoder */
+    static final Base64.Decoder DECODER = Base64.getDecoder();
+    /** Thread safe Base64 Encoder */
+    static final Base64.Encoder ENCODER = Base64.getEncoder();
+    /**
+     * Creates a clone of the byte array <code>pValue</code>.
+     */
+    public static byte[] getClone(byte[] pValue) {
+        byte[] result = new byte[pValue.length];
+        System.arraycopy(pValue, 0, result, 0, pValue.length);
+        return result;
+    }
 
-	/** Converts the string <code>pValue</code> into a
-	 * base64 encoded byte array.
-	 */
-	public static byte[] decode(String pValue) throws IOException {
-		return (new BASE64Decoder()).decodeBuffer(pValue);
-	}
+    /**
+     * Converts the string <code>pValue</code> into a base64 encoded byte array.
+     */
+    public static byte[] decode(String pValue) throws IOException {
+        return DECODER.decode(pValue);
+    }
 
-	/** Converts the base64 encoded byte array <code>pValue</code>
-	 * into a string.
-	 */
-	public static String encode(byte[] pValue) {
-		return (new BASE64Encoder()).encode(pValue);
-	}
+    /**
+     * Converts the base64 encoded byte array <code>pValue</code> into a string.
+     */
+    public static String encode(byte[] pValue) {
+        return ENCODER.encodeToString(pValue);
+    }
 }

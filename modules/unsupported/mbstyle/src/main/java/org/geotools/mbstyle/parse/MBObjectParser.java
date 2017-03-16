@@ -66,26 +66,34 @@ public class MBObjectParser {
     final FilterFactory2 ff;
     final StyleFactory2 sf;
     
+    /**
+     * Parser used to in the provided context.
+     * 
+     * @param context Context this parser is being used in (for better error reporting)
+     */
     public MBObjectParser(Class<?> context) {
-        this(context,CommonFactoryFinder.getFilterFactory2(),
-                (StyleFactory2) CommonFactoryFinder.getStyleFactory());
-    }
-
-    /** Copy constructor allowing reuse of factories, whil returning correct {@link #context} */
-    public MBObjectParser(Class<MBFilter> context, MBObjectParser parse) {
-        this( context, parse.getFilterFactory(),parse.getStyleFactory());
-    }
-
-    public MBObjectParser(Class<?> context, FilterFactory2 filterFactory, StyleFactory2 styleFactory){
         this.context = context;
-        ff = filterFactory;
-        sf = styleFactory;
+        this.sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory();
+        this.ff = CommonFactoryFinder.getFilterFactory2();
     }
-    
+
+    /**
+     * Copy constructor allowing reuse of factories, while returning correct {@link #context}.
+     * 
+     * @param context Context this parser is being used in (for better error reporting)
+     * @param parse Parent parser used to configure factories consistently
+     */
+    public MBObjectParser(Class<MBFilter> context, MBObjectParser parse) {
+        this.context = context;
+        sf = parse == null ? (StyleFactory2) CommonFactoryFinder.getStyleFactory()
+                : parse.getStyleFactory();
+        ff = parse == null ? CommonFactoryFinder.getFilterFactory2() : parse.getFilterFactory();
+    }
+
     //
     // Utility methods for required lookup
     //
-    // These methds throw a validation error if tag is not available
+    // These methods throw a validation error if tag is not available
     //
     /** Shared FilterFactory */
     public FilterFactory2 getFilterFactory() {

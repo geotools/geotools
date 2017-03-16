@@ -99,14 +99,16 @@ public class MBFilter {
     final protected JSONArray json;
 
     public MBFilter(JSONArray json) {
-        this(new MBObjectParser(MBFilter.class), json);
+        this(json, new MBObjectParser(MBFilter.class));
     }
-
-    public MBFilter(MBObjectParser parse, JSONArray json) {
-        this.parse = new MBObjectParser(MBFilter.class, parse);
+    public MBFilter(JSONArray json, MBObjectParser parse) {
+        this( json, parse, null );
+    }
+    public MBFilter(JSONArray json, MBObjectParser parse, SemanticType semanticType) {
+        this.parse = parse == null ? new MBObjectParser(MBFilter.class)
+                : new MBObjectParser(MBFilter.class, parse);
         this.json = json;
-        this.semanticType = null;
-        
+        this.semanticType = semanticType;
     }
 
     /**
@@ -139,6 +141,9 @@ public class MBFilter {
                         throw new MBFormatException("[\"in\",\"$type\", ...] limited to Point, LineString, Polygion: "+type);
                     }
                 }
+                if("==".equals(operator) && types.size() != 1){
+                    throw new MBFormatException("[\"==\",\"$type\", ...] limited one geometry type, to test more than one use \"in\" operator.");
+                }
                 return semanticTypes;
             }
             else if( "!in=".equals(operator)){
@@ -153,6 +158,9 @@ public class MBFilter {
                     else {
                         throw new MBFormatException("[\"!in\",\"$type\", ...] limited to Point, LineString, Polygion: "+type);
                     }
+                }
+                if("!=".equals(operator) && types.size() != 1){
+                    throw new MBFormatException("[\"!=\",\"$type\", ...] limited one geometry type, to test more than one use \"!in\" operator.");
                 }
                 return semanticTypes;
             }

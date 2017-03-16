@@ -45,16 +45,56 @@ public class MBFilterTest {
         JSONArray json;
         MBFilter mbfilter;
         Filter filter;
+        Set<SemanticType> types;
         
+        // common $tye examples
         json = (JSONArray) parser.parse("[\"in\", \"$type\",\"LineString\"]");
         mbfilter = new MBFilter(json);
-        
-        Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
+        types = mbfilter.semanticTypeIdentifiers();
         assertTrue( types.contains(SemanticType.LINE) && types.size()==1);
-        
         filter = mbfilter.filter();
         assertEquals("INCLUDE", ECQL.toCQL(filter) );
         
+        json = (JSONArray) parser.parse("[\"in\", \"$type\",\"Polygon\"]");
+        mbfilter = new MBFilter(json);
+        types = mbfilter.semanticTypeIdentifiers();
+        assertTrue( types.contains(SemanticType.POLYGON) && types.size()==1);
+        filter = mbfilter.filter();
+        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        
+        json = (JSONArray) parser.parse("[\"==\", \"$type\",\"Point\"]");
+        mbfilter = new MBFilter(json);
+        types = mbfilter.semanticTypeIdentifiers();
+        assertTrue( types.contains(SemanticType.POINT) && types.size()==1);
+        filter = mbfilter.filter();
+        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        
+        json = (JSONArray) parser.parse("[\"in\", \"$type\",\"Point\", \"LineString\"]");
+        mbfilter = new MBFilter(json, null );
+        types = mbfilter.semanticTypeIdentifiers();
+        assertTrue(types.contains(SemanticType.POINT) && types.contains(SemanticType.LINE)
+                && types.size() == 2);
+        filter = mbfilter.filter();
+        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        try {
+            json = (JSONArray) parser.parse("[\"==\", \"$type\",\"Point\", \"LineString\"]");
+            mbfilter = new MBFilter(json, null );
+            types = mbfilter.semanticTypeIdentifiers();
+            fail("expected format exception due to \"==\" having too many arguments above");
+        }
+        catch (MBFormatException expected){
+        }
+        
+        // test default handling 
+        json = (JSONArray) parser.parse("[\"==\", \"key\", \"value\"]");
+        mbfilter = new MBFilter(json);
+        types = mbfilter.semanticTypeIdentifiers();
+        assertTrue( types.isEmpty() );
+        
+        json = (JSONArray) parser.parse("[\"!=\", \"key\", \"value\"]");
+        mbfilter = new MBFilter(json, null, SemanticType.LINE);
+        types = mbfilter.semanticTypeIdentifiers();
+        assertTrue( types.contains(SemanticType.LINE) && types.size()==1);
     }
     @Test
     public void id() throws ParseException {

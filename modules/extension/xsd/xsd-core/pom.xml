@@ -70,17 +70,6 @@
     </developer>
   </developers>
 
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
@@ -158,7 +147,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 
 </project>
 

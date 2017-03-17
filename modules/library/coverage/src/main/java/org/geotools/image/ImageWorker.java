@@ -4272,9 +4272,7 @@ public class ImageWorker {
         }
         
         image = JAI.create("Crop", pb, commonHints);
-
-        // image = GTCropDescriptor.create(source, x, y, width, height, commonHints);
-
+        invalidateStatistics();
         return this;
     }
 

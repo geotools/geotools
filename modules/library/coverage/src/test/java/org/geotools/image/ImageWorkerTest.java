@@ -1581,4 +1581,28 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(255, pixel[0]);
         assertEquals(255, pixel[1]);
     }
+
+    @Test
+    public void testStatsAfterCrop() throws IOException {
+        final int width = 100;
+        final int height = 100;
+        final WritableRaster raster = RasterFactory.createBandedRaster(
+                        DataBuffer.TYPE_BYTE, width, height, 1, null);
+        for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                        raster.setSample(x, y, 0, x+y);
+                }
+        }
+        final ColorModel cm = new ComponentColorModelJAI(ColorSpace
+                        .getInstance(ColorSpace.CS_GRAY), false, false,
+                        Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+        final BufferedImage image = new BufferedImage(cm, raster, false, null);
+        ImageWorker worker = new ImageWorker(image);
+        double maxs[] = worker.getMaximums();
+        assertEquals(width + height - 2, (int)maxs[0]);
+
+        worker = worker.crop(0, 0, width/2, height/2);
+        maxs = worker.getMaximums();
+        assertEquals(width/2 + height/2 - 2, (int)maxs[0]);
+    }
 }

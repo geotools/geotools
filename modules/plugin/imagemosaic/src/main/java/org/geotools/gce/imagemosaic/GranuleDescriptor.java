@@ -23,6 +23,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
@@ -91,6 +93,7 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
@@ -912,6 +915,15 @@ public class GranuleDescriptor {
 
             // set the source region
             readParameters.setSourceRegion(sourceArea);
+            
+            // don't pass down the band selection if the original color model is indexed and
+            // color expansion is enabled
+            final boolean expandToRGB = request.getRasterManager().isExpandMe();
+            if(expandToRGB && getRawColorModel(reader, ovrIndex) instanceof IndexColorModel && readParameters instanceof EnhancedImageReadParam) {
+                EnhancedImageReadParam erp = (EnhancedImageReadParam) readParameters;
+                erp.setBands(null);
+            }
+            
             RenderedImage raster;
             try {
                 // read
@@ -934,6 +946,11 @@ public class GranuleDescriptor {
             // be used to know if the low level reader already performed the bands selection or if
             // image mosaic is responsible for do it
             if(request.getBands() != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
+                // if we are expanding the color model, do so before selecting the bands
+                if(raster.getColorModel() instanceof IndexColorModel && expandToRGB) {
+                    raster = new ImageWorker(raster).forceComponentColorModel().getRenderedImage();                    
+                }
+                
                 int[] bands = request.getBands();
                 // delegate the band selection operation on JAI BandSelect operation
                 raster = new ImageWorker(raster).retainBands(bands).getRenderedImage();
@@ -1163,6 +1180,27 @@ public class GranuleDescriptor {
                 }
             }
         }
+    }
+
+    /**
+     * Returns the raw color model of the reader at the specified image index
+     * @param reader
+     * @param imageIndex
+     * @return
+     */
+    private ColorModel getRawColorModel(ImageReader reader, int imageIndex) {
+        try {
+            ImageTypeSpecifier imageType = reader.getRawImageType(imageIndex);
+            if(imageType == null) {
+                return null;
+            }
+            ColorModel cm = imageType.getColorModel();
+            return cm;
+        } catch(Exception e) {
+            LOGGER.log(Level.FINE, "Failed to determine the native color model of the reader", e);
+        }
+        
+        return null;
     }
 
     private GranuleOverviewLevelDescriptor getLevel(final int index, final ImageReader reader,

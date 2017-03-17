@@ -23,6 +23,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -934,6 +935,11 @@ public class GranuleDescriptor {
             // be used to know if the low level reader already performed the bands selection or if
             // image mosaic is responsible for do it
             if(request.getBands() != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
+                // if we are expanding the color model, do so before selecting the bands
+                if(raster.getColorModel() instanceof IndexColorModel && request.getRasterManager().isExpandMe()) {
+                    raster = new ImageWorker(raster).forceComponentColorModel().getRenderedImage();                    
+                }
+                
                 int[] bands = request.getBands();
                 // delegate the band selection operation on JAI BandSelect operation
                 raster = new ImageWorker(raster).retainBands(bands).getRenderedImage();

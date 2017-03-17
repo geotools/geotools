@@ -18,7 +18,7 @@ package org.geotools.mbstyle.parse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -120,17 +120,44 @@ public class MBFilter {
      */
     public Set<SemanticType> semanticTypeIdentifiers(){
         if (json == null || json.isEmpty()) {
-            // return the default for this layer type
             return semanticTypeIdentifiersDefaults();
         }
-        
-        String operator = parse.get(json, 0);
+        Set<SemanticType> semanticTypes = semanticTypeIdentifiers(json);
+        return semanticTypes.isEmpty() ? semanticTypeIdentifiersDefaults() : semanticTypes;
+    }
+    
+    /** 
+     * Generate default set of semantic types based on {@link #semanticType} default.
+     * 
+     * @return default to use, if nothing is provided explicitly by json "$type" field.
+     */
+    private Set<SemanticType> semanticTypeIdentifiersDefaults(){
+        Set<SemanticType> defaults = new HashSet<>();
+        if( semanticType != null ){
+            defaults.add(semanticType); // default as provided
+        }
+        return defaults;
+    }
+
+    /**
+     * Utility method to convert json to set of {@link SemanticType}.
+     * <p>
+     * This method recusrively calls itself to handle all and any operators.</p>
+     * 
+     * @param array JSON array defining filter
+     * @return SemanticTypes from provided json, may be nested
+     */
+    Set<SemanticType> semanticTypeIdentifiers(JSONArray array){
+        if (array == null || array.isEmpty()) {
+            throw new MBFormatException("MBFilter expected");
+        }
+        String operator = parse.get(array, 0);
         if(("==".equals(operator) || "!=".equals(operator) ||
                 "in".equals(operator) || "!in".equals(operator))&&
-                "$type".equals(parse.get(json, 1))){
+                "$type".equals(parse.get(array, 1))){
             if( "in".equals(operator) || "==".equals(operator)){
                 Set<SemanticType> semanticTypes = new HashSet<>();
-                List<?> types = json.subList(2, json.size());
+                List<?> types = array.subList(2, array.size());
                 for(Object type : types ){
                     if( type instanceof String ){
                         String jsonText = (String) type;
@@ -146,9 +173,9 @@ public class MBFilter {
                 }
                 return semanticTypes;
             }
-            else if( "!in=".equals(operator)){
+            else if( "!in".equals(operator) || "!=".equals(operator)){
                 Set<SemanticType> semanticTypes = new HashSet<>( Arrays.asList(SemanticType.values()) );
-                List<?> types = json.subList(2, json.size()-1);
+                List<?> types = array.subList(2, array.size());
                 for(Object type : types ){
                     if( type instanceof String ){
                         String jsonText = (String) type;
@@ -165,36 +192,46 @@ public class MBFilter {
                 return semanticTypes;
             }
         }
-        return semanticTypeIdentifiersDefaults();
-    }
-    /** 
-     * Generate default set of semantic types based on {@link #semanticType} default.
-     * 
-     * @return default to use, if nothing is provided explicitly by json "$type" field.
-     */
-    private Set<SemanticType> semanticTypeIdentifiersDefaults(){
-        Set<SemanticType> defaults = new HashSet<>();
-        if( semanticType != null ){
-            defaults.add(semanticType); // default as provided
+        
+        if( "all".equals(operator)){
+            Set<SemanticType> semanticTypes = new HashSet<>();
+            for( int i = 1; i < json.size();i++){
+                JSONArray alternative = (JSONArray) json.get(i);
+                Set<SemanticType> types = semanticTypeIdentifiers(alternative);
+                if( types.isEmpty()){
+                    continue;
+                }
+                else {
+                    if (semanticTypes.isEmpty()){
+                        // exactly one alternative is okay
+                        semanticTypes.addAll(types);
+                    }
+                    else {
+                        throw new MBFormatException("Only one \"all\" alternative may be a $type filter");
+                    }
+                } 
+            }
+            return semanticTypes;
         }
-        return defaults;
-    }
-    /**
-     * Set of translated SemanticType definitions. 
-     * @param jsonTexts
-     * @param translate Optional set for translated definitions 
-     * @return translated SemanticType definitions.
-     */
-    private Set<SemanticType> translateSemanticTypes(Collection<String> jsonTexts, Set<SemanticType> translate){
-        if(translate == null){
-            translate = new HashSet<>();
+        else if( "any".equals(operator)){
+            Set<SemanticType> semanticTypes = new HashSet<>();
+            for( int i = 1; i < json.size();i++){
+                Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) json.get(i));
+                semanticTypes.addAll(types);
+            }
+            return semanticTypes;
         }
-        for( String json : jsonTexts){
-            translate.add(translateSemanticType(json));
+        else if( "none".equals(operator)){
+            Set<SemanticType> semanticTypes = new HashSet<>(Arrays.asList(SemanticType.values()));
+            for( int i = 1; i < json.size();i++){
+                Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) json.get(i));
+                semanticTypes.removeAll(types);
+            }
+            return semanticTypes;
         }
-        return translate;
+        return Collections.emptySet();
     }
-    
+
     /**
      * Translate from json "Point", "LineString", and "Polygon".
      * @param jsonText
@@ -334,25 +371,34 @@ public class MBFilter {
         else if( "all".equals(operator)){
             List<Filter> all = new ArrayList<>();
             for( int i = 1; i < json.size();i++){
-                MBFilter filter = new MBFilter((JSONArray) json.get(i));
-                all.add( filter.filter() );
+                MBFilter mbFilter = new MBFilter((JSONArray) json.get(i));
+                Filter filter = mbFilter.filter();
+                if (filter != Filter.INCLUDE) {
+                    all.add(filter);
+                }
             }
             return ff.and(all);
         }
         else if( "any".equals(operator)){
             List<Filter> any = new ArrayList<>();
-            for( int i = 1; i < json.size();i++){
-                MBFilter filter = new MBFilter((JSONArray) json.get(i));
-                any.add( filter.filter() );
+            for (int i = 1; i < json.size(); i++) {
+                MBFilter mbFilter = new MBFilter((JSONArray) json.get(i));
+                Filter filter = mbFilter.filter();
+                if (filter != Filter.INCLUDE) {
+                    any.add(filter);
+                }
             }
             return ff.or(any);
         }
         else if( "none".equals(operator)){
             List<Filter> none = new ArrayList<>();
-            for( int i = 1; i < json.size();i++){
+            for (int i = 1; i < json.size(); i++) {
                 // using not here so we can short circuit the and filter below
-                MBFilter filter = new MBFilter((JSONArray) json.get(i));
-                none.add( ff.not(filter.filter()));
+                MBFilter mbFilter = new MBFilter((JSONArray) json.get(i));
+                Filter filter = mbFilter.filter();
+                if (filter != Filter.INCLUDE) {
+                    none.add(ff.not(filter));
+                }
             }
             return ff.and(none);
         }

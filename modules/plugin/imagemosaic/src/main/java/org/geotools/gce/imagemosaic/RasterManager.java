@@ -984,6 +984,10 @@ public class RasterManager {
         }
     }
 
+    public boolean isExpandMe() {
+        return expandMe;
+    }
+
     private void updateHints(Hints hints, MosaicConfigurationBean configuration,
             ImageMosaicReader parentReader) {
         if (configuration != null) {

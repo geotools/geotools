@@ -207,6 +207,7 @@ class FilterToSqlHelper {
         }
         return extraData;
     }
+    
     void visitDistanceSpatialOperator(DistanceBufferOperator filter,
             PropertyName property, Literal geometry, boolean swapped,
             Object extraData) throws IOException {
@@ -217,7 +218,7 @@ class FilterToSqlHelper {
             out.write(",");
             geometry.accept(delegate, extraData);
             out.write(",");
-            out.write(toMeters(filter.getDistance(), filter.getDistanceUnits()));
+            out.write(toNativeUnits(filter));
             out.write(")");
         }
         if ((filter instanceof DWithin && swapped)
@@ -227,20 +228,28 @@ class FilterToSqlHelper {
             out.write(",");
             geometry.accept(delegate, extraData);
             out.write(") > ");
-            out.write(Double.toString(filter.getDistance()));
+            out.write(toNativeUnits(filter));
         }
     }
 
-    private String toMeters(double distance, String unit) {
-        // only geography uses metric units
-        if(isCurrentGeography()) {
-            Double conversion = UNITS_MAP.get(unit);
-            if(conversion != null) {
-                return String.valueOf(distance * conversion);
+    private String toNativeUnits(DistanceBufferOperator operator) {
+        double distance;
+        if(isCurrentGeography()) { 
+            // need the value in meters
+            if(delegate instanceof PostgisPSFilterToSql) {
+                distance = ((PostgisPSFilterToSql) delegate).getDistanceInMeters(operator);
+            } else {
+                distance = ((PostgisFilterToSQL) delegate).getDistanceInMeters(operator);
+            }
+        } else {
+            // need the value in native units
+            if(delegate instanceof PostgisPSFilterToSql) {
+                distance = ((PostgisPSFilterToSql) delegate).getDistanceInNativeUnits(operator);
+            } else {
+                distance = ((PostgisFilterToSQL) delegate).getDistanceInNativeUnits(operator);
             }
         }
-        
-        // in case unknown unit or not geography, use as-is
+
         return String.valueOf(distance);
     }
 

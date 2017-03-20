@@ -23,6 +23,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.spatial.DistanceBufferOperator;
 
 /**
  * 
@@ -80,6 +81,16 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
 
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         this.functionEncodingEnabled = functionEncodingEnabled;
+    }
+    
+    @Override
+    public double getDistanceInMeters(DistanceBufferOperator operator) {
+        return super.getDistanceInMeters(operator);
+    }
+
+    @Override
+    public double getDistanceInNativeUnits(DistanceBufferOperator operator) {
+        return super.getDistanceInNativeUnits(operator);
     }
 
 }

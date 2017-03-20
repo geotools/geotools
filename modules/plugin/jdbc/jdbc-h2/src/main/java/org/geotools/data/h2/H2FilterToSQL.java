@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -98,6 +97,7 @@ public class H2FilterToSQL extends FilterToSQL {
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
                 Expression e2, boolean swapped, Object extraData) {
 
+        double distance = 0;
         try {
             if (filter instanceof DistanceBufferOperator) {
                 out.write("ST_Distance(");
@@ -115,7 +115,8 @@ public class H2FilterToSQL extends FilterToSQL {
                 else {
                     throw new RuntimeException("Unknown distance operator");
                 }
-                out.write(Double.toString(((DistanceBufferOperator)filter).getDistance()));
+                distance = getDistanceInNativeUnits((DistanceBufferOperator) filter);
+                out.write(Double.toString(distance));
             }
             else if (filter instanceof BBOX) {
                 //TODO: make a loose bounding box parameter
@@ -170,7 +171,7 @@ public class H2FilterToSQL extends FilterToSQL {
             }
             
             Expression geometry = e1 instanceof Literal ? e1 : e2 instanceof Literal ? e2 : null;
-            if (geometry != null && !(filter instanceof Disjoint)) {
+            if (geometry != null && !(filter instanceof Disjoint) && !(filter instanceof Beyond)) {
                 String spatialIndex = (String) 
                     currentGeometry.getUserData().get(H2Dialect.H2_SPATIAL_INDEX);
                 if (spatialIndex != null) {
@@ -179,6 +180,10 @@ public class H2FilterToSQL extends FilterToSQL {
                         Number.class.isAssignableFrom(primaryKey.getColumns().get(0).getType())) {
                         
                         Envelope e = geometry.evaluate(null, Envelope.class);
+                        
+                        if (filter instanceof DWithin) {
+                            e.expandBy(distance);
+                        }
                         
                         out.write( " AND ");
                         out.write("\"" + primaryKey.getColumns().get(0).getName() + "\" ");

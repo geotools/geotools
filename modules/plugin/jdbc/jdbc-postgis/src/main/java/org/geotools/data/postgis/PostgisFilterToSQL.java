@@ -29,6 +29,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.spatial.DistanceBufferOperator;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -158,5 +159,15 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         this.functionEncodingEnabled = functionEncodingEnabled;
+    }
+    
+    @Override
+    public double getDistanceInMeters(DistanceBufferOperator operator) {
+        return super.getDistanceInMeters(operator);
+    }
+    
+    @Override
+    public double getDistanceInNativeUnits(DistanceBufferOperator operator) {
+        return super.getDistanceInNativeUnits(operator);
     }
 }

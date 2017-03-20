@@ -32,7 +32,7 @@ import org.opengis.filter.capability.FunctionName;
  * @source $URL$
  */
 public class FilterFunction_pow extends FunctionExpressionImpl {
-    //public static FunctionName NAME = new FunctionNameImpl("pow", "base","exponent");
+
     public static FunctionName NAME = new FunctionNameImpl("pow",
             parameter("power", Double.class),
             parameter("base",Number.class),

@@ -50,7 +50,7 @@ public class FunctionParseTest {
     @Test
     public void testParseLinearColorFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function1");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "line-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "line-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
@@ -67,7 +67,7 @@ public class FunctionParseTest {
     @Test
     public void testParseExpColorFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function2");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "line-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "line-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
@@ -84,7 +84,7 @@ public class FunctionParseTest {
     @Test
     public void testParseExpRadiusFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function3");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-radius");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-radius");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
@@ -103,7 +103,7 @@ public class FunctionParseTest {
     @Test
     public void testParsePropertyZoomFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function4");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-radius");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-radius");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
@@ -124,7 +124,7 @@ public class FunctionParseTest {
     @Test
     public void testParsePropertyFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function5");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
@@ -140,7 +140,7 @@ public class FunctionParseTest {
     @Test
     public void testParseCategoricalFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function6");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.CATEGORICAL, fn.getType());
@@ -154,19 +154,23 @@ public class FunctionParseTest {
 
     /**
      * Traverse a nested map using the array of strings, and cast the result to the provided class, or return {@link Optional#empty()}.
+     * @param map
+     * @param clazz expected type
+     * @param path used to access map
+     * @return result at the provided path, or {@link Optional#empty()}. 
      */
-    private <T> Optional<T> safeTraverse(Map<String, Object> map, Class<T> clazz,
-            String... strings) {
-        if (strings == null || strings.length == 0) {
+    private <T> Optional<T> traverse(JSONObject map, Class<T> clazz,
+            String... path) {
+        if (path == null || path.length == 0) {
             return Optional.empty();
         }
 
-        Object curObj = map;
-        for (String s : Arrays.asList(strings)) {
-            if (curObj instanceof Map) {
-                Map m = (Map) curObj;
-                if (m.containsKey(s)) {
-                    curObj = m.get(s);
+        Object value = map;
+        for (String key : path) {
+            if (value instanceof JSONObject) {
+                JSONObject m = (JSONObject) value;
+                if (m.containsKey(key)) {
+                    value = m.get(key);
                 } else {
                     return Optional.empty();
                 }
@@ -174,7 +178,6 @@ public class FunctionParseTest {
                 return Optional.empty();
             }
         }
-
-        return Optional.of(clazz.cast(curObj));
+        return Optional.of(clazz.cast(value));
     }
 }

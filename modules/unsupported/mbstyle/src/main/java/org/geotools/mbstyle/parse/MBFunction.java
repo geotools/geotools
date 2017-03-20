@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.geotools.coverage.processing.operation.Interpolate;
+import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.InterpolateFunction;
+import org.geotools.filter.function.RecodeFunction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
@@ -58,7 +61,9 @@ public class MBFunction {
          * greater than the function input. The domain must be numeric. This is the default for
          * properties marked with "exponential" symbol.
          * <p>
-         * This is the default function type for continuous value (such as color or line width).
+         * This is the default function type for continuous value (such as color or line width).</p>
+         * <p>
+         * Maps to {@link Interpolate}, requiring use of {@link FilterFunction_pow} for base other that 1.</p>
          */
         EXPONENTIAL,
         /**
@@ -66,18 +71,24 @@ public class MBFunction {
          * domain must be numeric. This is the default for properties marked with thie "interval"
          * symbol.
          * <p>
-         * This is the default function type for enums values (such as line_cap).
+         * This is the default function type for enums values (such as line_cap).</p>
+         * <p>
+         * Maps to {@link CategorizeFunction}.</p>
          */
         INTERVAL,
 
-        /** Functions return the output value of the stop equal to the function input. */
+        /**
+         * Functions return the output value of the stop equal to the function input.
+         * <p>
+         * Maps to {@link RecodeFunction}.</p>
+         */
         CATEGORICAL
     }
 
     public FunctionType getType() {
         String type = parse.get(json, "type", "exponential");
         switch (type) {
-        case "identiy":
+        case "identity":
             return FunctionType.IDENITY;
         case "exponential":
             return FunctionType.EXPONENTIAL;
@@ -87,7 +98,7 @@ public class MBFunction {
             return FunctionType.CATEGORICAL;
         default:
             throw new MBFormatException("Function type \"" + type
-                    + "\" invalid - expected identiy, expontential, interval, categorical");
+                    + "\" invalid - expected identity, expontential, interval, categorical");
         }
     }
 
@@ -180,6 +191,9 @@ public class MBFunction {
     public EnumSet<FunctionCategory> category() {
         String property = getProperty();
         JSONArray stops = getStops();
+        if( property != null && stops == null ){
+            return EnumSet.of(FunctionCategory.PROPERTY);
+        }
         JSONArray first = parse.jsonArray(stops.get(0));
 
         if (property == null) {
@@ -231,42 +245,85 @@ public class MBFunction {
         return null;
     }
 
-    public Function expression(JSONObject json) {
-        MBFunction function = create(json);
-        return function.expression();
-
-    }
-    
     /** GeoTools {@link Function} from json definition that evaluates to a color.
      * <p>
-     * This is the same as {@link #expression()} execept we can make some assumptions about
+     * This is the same as {@link #numeric()} execept we can make some assumptions about
      * the values (converting hex to color, looking up color names).
      * 
-     * @return {@link Function} for the provided json 
+     * @return {@link Function} (or identity {@link Expression} for the provided json 
      */
-    public Function color(){
-        if( !category().contains(FunctionCategory.ZOOM)){
-            // this is a plain property category so we can turn it into a function            
-            // Assume a EXPOTENTIAL function for now because it is the default for color
-            FunctionType type = FunctionType.CATEGORICAL;
-            if( type == FunctionType.CATEGORICAL){
-                List<Expression> parameters = new ArrayList<>();
-                parameters.add(ff.property(getProperty()));
-                for (Object obj : getStops()) {
-                    JSONArray entry = parse.jsonArray(obj);
-                    Object stop = entry.get(0);
-                    Object value = entry.get(1);
-                    Expression color = parse.color((String)value); // handles web colors
-                    if( color == null ){
-                        throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
-                    }
-                    parameters.add(ff.literal(stop));
-                    parameters.add(color);
+    public Expression color(){
+        if( category().contains(FunctionCategory.ZOOM)){
+            throw new IllegalStateException("Please reduce function to zoom level for concreate color expression");
+        }
+        // this is a plain property category so we can turn it into a function
+        // Assume a EXPOTENTIAL function for now because it is the default for color
+        FunctionType type = getType();
+        if( type == null || type == FunctionType.CATEGORICAL){
+            List<Expression> parameters = new ArrayList<>();
+            parameters.add(ff.property(getProperty()));
+            for (Object obj : getStops()) {
+                JSONArray entry = parse.jsonArray(obj);
+                Object stop = entry.get(0);
+                Object value = entry.get(1);
+                Expression color = parse.color((String)value); // handles web colors
+                if( color == null ){
+                    throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
                 }
-                parameters.add(ff.literal("color"));
-
-                return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+                parameters.add(ff.literal(stop));
+                parameters.add(color);
             }
+            parameters.add(ff.literal("color"));
+            return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        }
+        else if( type == FunctionType.EXPONENTIAL){
+            List<Expression> parameters = new ArrayList<>();
+            
+            // See FilterFunction_pow: pow( base, exponent ): power
+            Expression property = ff.property(getProperty());
+            Expression base = parse.number(json, "base", null);
+            if( base != null ){
+                Function power = ff.function("pow", property, base);
+                parameters.add(power);
+            }
+            else {
+                parameters.add(property);
+            }
+
+            for (Object obj : getStops()) {
+                JSONArray entry = parse.jsonArray(obj);
+                Object stop = entry.get(0);
+                Object value = entry.get(1);
+                Expression color = parse.color((String)value); // handles web colors
+                if( color == null ){
+                    throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
+                }
+                parameters.add(ff.literal(stop));
+                parameters.add(color);
+            }
+            parameters.add(ff.literal("color"));
+            return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+            
+        }
+        else if( type == FunctionType.INTERVAL){
+            List<Expression> parameters = new ArrayList<>();
+            parameters.add(ff.property(getProperty()));
+            for (Object obj : getStops()) {
+                JSONArray entry = parse.jsonArray(obj);
+                Object stop = entry.get(0);
+                Object value = entry.get(1);
+                Expression color = parse.color((String)value); // handles web colors
+                if( color == null ){
+                    throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
+                }
+                parameters.add(ff.literal(stop));
+                parameters.add(color);
+            }
+            parameters.add(ff.literal("color"));
+            return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+        }
+        else if( type == FunctionType.IDENITY){
+            return ff.property(getProperty()); // or default
         }
         throw new UnsupportedOperationException("Not yet implemented support for this function");
     }
@@ -279,7 +336,7 @@ public class MBFunction {
      * 
      * @return GeoTools Function or the provided json
      */
-    public Function expression() {
+    public Function numeric() {
         if( !category().contains(FunctionCategory.ZOOM)){
             // this is a plain property category so we can turn it into a function
             

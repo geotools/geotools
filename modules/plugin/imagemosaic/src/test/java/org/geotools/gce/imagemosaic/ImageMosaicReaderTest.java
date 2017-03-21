@@ -3705,6 +3705,49 @@ public class ImageMosaicReaderTest extends Assert{
         }
     }
     
+    
+    @Test
+    public void testExpandToRGBBandSelection() throws Exception {
+        // Delete test folder if present
+        final File workDir = new File(TestData.file(this, "."), "index_palette_bandselect");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        File mosaicSource = TestData.file(this, "index_palette");
+        FileUtils.copyDirectory(mosaicSource, workDir);
+        URL testURL = DataUtilities.fileToURL(workDir);
+        
+        // grab the reader to force mosaic config creation
+        final AbstractGridFormat format = TestUtils.getFormat(testURL);
+        ImageMosaicReader reader = TestUtils.getReader(testURL, format);
+        reader.dispose();
+        
+        // enable palette expansion 
+        File props = new File(workDir, "index_palette_bandselect.properties");
+        assertTrue(props.exists() && props.canRead() && props.canWrite());
+        String properties = FileUtils.readFileToString(props);
+        assertTrue(properties.contains("ExpandToRGB"));
+        properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
+        FileUtils.write(props, properties, false);
+        
+        // grab the reader again
+        reader = TestUtils.getReader(testURL, format);
+        
+        // prepare band selection
+        ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
+        selectedBands.setValue(new int[] { 2 });
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader,
+                new GeneralParameterValue[] { selectedBands }, null);
+        
+        // Check that the coverage has a component Colormodel
+        final RenderedImage ri = coverage.getRenderedImage();
+        assertTrue(ri.getColorModel() instanceof ComponentColorModel);
+        assertEquals(1, ri.getSampleModel().getNumBands());
+        reader.dispose();
+    }
+    
     /**
      * Tests {@link ImageMosaicReader} when the native CRS differs from the requested CRS only because of metadata.
      * Test case uses 3857 data bt request with 900913

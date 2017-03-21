@@ -189,17 +189,17 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     // logical
     //
 
-    // Expressions like ((A == 1) AND (B == 2)) are basically
-    // implied. So just build up all sub expressions
     @Override
     public Object visit(And filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
-
         List<Filter> children = filter.getChildren();
+        BasicDBList andList = new BasicDBList();
         if (children != null) {
             for (Filter child : children) {
-                child.accept(this, output);
+                BasicDBObject item = (BasicDBObject) child.accept(this, null);
+                andList.add(item);
             }
+            output.put("$and", andList);
         }
 
         return output;

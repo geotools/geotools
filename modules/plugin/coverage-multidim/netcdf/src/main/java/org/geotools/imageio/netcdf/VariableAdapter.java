@@ -1131,7 +1131,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             int[] index = splitIndex(imageIndex);
 
             //Put a new sliceIndex in the list
-            final SliceNDIndex variableIndex = new SliceNDIndex(index, varName);
+            final Slice2DIndex variableIndex = new Slice2DIndex(index, varName);
             reader.ancillaryFileManager.addSlice(variableIndex);
 
             // Create a feature for that index to be put in the CoverageSlicesCatalog

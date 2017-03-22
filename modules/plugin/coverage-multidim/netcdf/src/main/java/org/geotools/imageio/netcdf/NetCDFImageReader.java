@@ -516,13 +516,13 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     /**
-     * Return the {@link SliceNDIndex} associated to the specified imageIndex
+     * Return the {@link Slice2DIndex} associated to the specified imageIndex
      * @param imageIndex
      * @return
      * @throws IOException
      */
-    public SliceNDIndex getSliceNDIndex( int imageIndex ) throws IOException {
-        return ancillaryFileManager.getSliceNDIndex(imageIndex);
+    public Slice2DIndex getSlice2DIndex( int imageIndex ) throws IOException {
+        return ancillaryFileManager.getSlice2DIndex(imageIndex);
     }
 
     /**
@@ -533,7 +533,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     protected VariableAdapter getCoverageDescriptor( int imageIndex ) {
         checkImageIndex(imageIndex);
         try {
-            SliceNDIndex slice2DIndex = getSliceNDIndex(imageIndex);
+            Slice2DIndex slice2DIndex = getSlice2DIndex(imageIndex);
             if (slice2DIndex != null) {
                 return getCoverageDescriptor(new NameImpl(slice2DIndex.getVariableName()));
             }
@@ -581,7 +581,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     public BufferedImage read( int imageIndex, ImageReadParam param ) throws IOException {
         clearAbortRequest();
     
-        final SliceNDIndex slice2DIndex = getSliceNDIndex(imageIndex);
+        final Slice2DIndex slice2DIndex = getSlice2DIndex(imageIndex);
         final String variableName=slice2DIndex.getVariableName();
         final VariableAdapter wrapper=getCoverageDescriptor(new NameImpl(variableName));
 

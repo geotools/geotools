@@ -42,7 +42,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
-import org.geotools.imageio.netcdf.SliceNDIndex;
+import org.geotools.imageio.netcdf.Slice2DIndex;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.test.TestData;
 import org.junit.After;
@@ -88,7 +88,7 @@ public final class NetCDFBasicTest extends Assert {
             int numImages = reader.getNumImages(true);
             assertEquals(1008, numImages);
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -151,7 +151,7 @@ public final class NetCDFBasicTest extends Assert {
             int numImages = reader.getNumImages(true);
             LOGGER.info("Found " + numImages + " images.");
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -299,7 +299,7 @@ public final class NetCDFBasicTest extends Assert {
             reader.setInput(file);
             int numImages = reader.getNumImages(true);
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -338,7 +338,7 @@ public final class NetCDFBasicTest extends Assert {
             assertEquals(1, numImages);
             LOGGER.info("Found " + numImages + " images.");
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -406,7 +406,7 @@ public final class NetCDFBasicTest extends Assert {
             assertEquals(1, numImages);
             LOGGER.info("Found " + numImages + " images.");
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -474,7 +474,7 @@ public final class NetCDFBasicTest extends Assert {
             reader.setInput(file);
             int numImages = reader.getNumImages(true);
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }
@@ -533,7 +533,7 @@ public final class NetCDFBasicTest extends Assert {
      * @param i
      * @param sliceIndex
      */
-    private void spitOutSliceInformation(int i, SliceNDIndex sliceIndex) {
+    private void spitOutSliceInformation(int i, Slice2DIndex sliceIndex) {
         if (TestData.isInteractiveTest()) {
             String variableName = sliceIndex.getVariableName();
             StringBuilder sb = new StringBuilder();
@@ -573,7 +573,7 @@ public final class NetCDFBasicTest extends Assert {
             int numImages = reader.getNumImages(true);
             assertEquals(1008, numImages);
             for (int i = 0; i < numImages; i++) {
-                SliceNDIndex sliceIndex = reader.getSliceNDIndex(i);
+                Slice2DIndex sliceIndex = reader.getSlice2DIndex(i);
                 assertNotNull(sliceIndex);
                 spitOutSliceInformation(i, sliceIndex);
             }

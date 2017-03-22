@@ -41,7 +41,7 @@ import java.util.List;
  * @author Simone Giannecchini, GeoSolutions
  *
  */
-public class SliceNDIndex {
+public class Slice2DIndex {
 
     /** DEFAULT_INDEX */
     public static final int DEFAULT_INDEX = -1;
@@ -50,11 +50,11 @@ public class SliceNDIndex {
     
     private final String variableName;
     
-    public SliceNDIndex(String variableName) {
+    public Slice2DIndex(String variableName) {
         this(new int[] {}, variableName);
     }
 
-    public SliceNDIndex(int[] index, String variableName) {
+    public Slice2DIndex(int[] index, String variableName) {
         org.geotools.util.Utilities.ensureNonNull("variableName", variableName);
         org.geotools.util.Utilities.ensureNonNull("index", index);
         this.index = index;
@@ -96,7 +96,7 @@ public class SliceNDIndex {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SliceNDIndex other = (SliceNDIndex) obj;
+        Slice2DIndex other = (Slice2DIndex) obj;
         if (variableName == null) {
             if (other.variableName != null)
                 return false;
@@ -135,7 +135,7 @@ public class SliceNDIndex {
      * @author Simone Giannecchini, GeoSolutions
      *
      */
-    public static class SliceNDIndexManager {
+    public static class Slice2DIndexManager {
 
         private static final long ADDRESS_SIZE = 8l;
 
@@ -147,7 +147,7 @@ public class SliceNDIndex {
 
         private int numberOfRecords;
 
-        public SliceNDIndexManager(File file) {
+        public Slice2DIndexManager(File file) {
             this.file = file;
         }
 
@@ -158,13 +158,13 @@ public class SliceNDIndex {
         }
 
         /**
-         * Read a {@link SliceNDIndex} from file given the imageIndex.
+         * Read a {@link Slice2DIndex} from file given the imageIndex.
          * 
          * @param imageIndex the imageIndex to look for.
-         * @return the {@link SliceNDIndex} for the picked image.
+         * @return the {@link Slice2DIndex} for the picked image.
          * @throws IOException
          */
-        public synchronized SliceNDIndex getSliceNDIndex(int imageIndex) throws IOException {
+        public synchronized Slice2DIndex getSlice2DIndex(int imageIndex) throws IOException {
             // Synchronized these access due to the RAF usage.
             // concurrent seeks and reads on the same RAF may
             // may result into unexpected results
@@ -185,7 +185,7 @@ public class SliceNDIndex {
             raf.read(stringBytes);
             String varName = new String(stringBytes);
 
-            return new SliceNDIndex(index, varName);
+            return new Slice2DIndex(index, varName);
         }
         public void dispose() throws IOException {
             if (raf != null) {
@@ -196,10 +196,10 @@ public class SliceNDIndex {
          * Utility method to write an index file.
          * 
          * @param file the file to write to.
-         * @param indexList the list of {@link SliceNDIndex} to dump to file.
+         * @param indexList the list of {@link Slice2DIndex} to dump to file.
          * @throws IOException
          */
-        public static void writeIndexFile(File file, List<SliceNDIndex> indexList) throws IOException {
+        public static void writeIndexFile(File file, List<Slice2DIndex> indexList) throws IOException {
             writeIndexFile(file, indexList, 2);
         }
         
@@ -207,10 +207,10 @@ public class SliceNDIndex {
          * Utility method to write an index file.
          * 
          * @param file the file to write to.
-         * @param indexList the list of {@link SliceNDIndex} to dump to file.
+         * @param indexList the list of {@link Slice2DIndex} to dump to file.
          * @throws IOException
          */
-        public static void writeIndexFile(File file, List<SliceNDIndex> indexList, int dimensions) throws IOException {
+        public static void writeIndexFile(File file, List<Slice2DIndex> indexList, int dimensions) throws IOException {
             RandomAccessFile raf = null;
             try {
                 raf = new RandomAccessFile(file, "rw");
@@ -223,7 +223,7 @@ public class SliceNDIndex {
                 raf.seek(dataPosition);
 
                 for( int i = 0; i < size; i++ ) {
-                    SliceNDIndex sliceNDIndex = indexList.get(i);
+                    Slice2DIndex sliceNDIndex = indexList.get(i);
                     long pos = raf.getFilePointer();
                     pointer[i] = pos;
                     raf.writeInt(sliceNDIndex.getNCount());

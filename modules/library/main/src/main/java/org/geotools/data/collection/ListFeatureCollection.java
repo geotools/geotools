@@ -187,9 +187,13 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
     protected ReferencedEnvelope calculateBounds() {
         ReferencedEnvelope extent = new ReferencedEnvelope();
         for( SimpleFeature feature : list ){
-            if( feature == null ) continue;
+            if( feature == null ) {
+                continue;
+            }
             ReferencedEnvelope bbox = ReferencedEnvelope.reference( feature.getBounds() );
-            if( bbox == null || bbox.isEmpty() || bbox.isNull() ) continue;
+            if( bbox == null || bbox.isEmpty() || bbox.isNull() ) {
+                continue;
+            }
             extent.expandToInclude( bbox );
         }
         return new ReferencedEnvelope(extent, getSchema().getCoordinateReferenceSystem());

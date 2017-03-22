@@ -175,11 +175,21 @@ public class Slice2DIndex {
             long endDataPosition = raf.readLong();
 
             raf.seek(dataPosition);
-            int dimensions = raf.readInt();
-            int[] index = new int[dimensions];
-            for (int i = 0; i < dimensions; i++) {
-                index[i] = raf.readInt();
+            int nextValue = raf.readInt();
+
+            int[] index;
+            if (nextValue < 0) {
+                int dimensions = -nextValue;
+                index = new int[dimensions];
+                for (int i = 0; i < dimensions; i++) {
+                    index[i] = raf.readInt();
+                }
+            } else { //backwards compatibility
+                index = new int[2];
+                index[VariableAdapter.T] = nextValue;
+                index[VariableAdapter.Z] = raf.readInt();
             }
+
             int stringSize = (int) (endDataPosition - raf.getFilePointer());
             byte[] stringBytes = new byte[stringSize];
             raf.read(stringBytes);
@@ -192,6 +202,7 @@ public class Slice2DIndex {
                 raf.close();
             }
         }
+
         /**
          * Utility method to write an index file.
          * 
@@ -200,17 +211,6 @@ public class Slice2DIndex {
          * @throws IOException
          */
         public static void writeIndexFile(File file, List<Slice2DIndex> indexList) throws IOException {
-            writeIndexFile(file, indexList, 2);
-        }
-        
-        /**
-         * Utility method to write an index file.
-         * 
-         * @param file the file to write to.
-         * @param indexList the list of {@link Slice2DIndex} to dump to file.
-         * @throws IOException
-         */
-        public static void writeIndexFile(File file, List<Slice2DIndex> indexList, int dimensions) throws IOException {
             RandomAccessFile raf = null;
             try {
                 raf = new RandomAccessFile(file, "rw");
@@ -226,7 +226,8 @@ public class Slice2DIndex {
                     Slice2DIndex sliceNDIndex = indexList.get(i);
                     long pos = raf.getFilePointer();
                     pointer[i] = pos;
-                    raf.writeInt(sliceNDIndex.getNCount());
+                    //write as negative value, so if negative is missing -> old file (backwards compatibility)
+                    raf.writeInt(-sliceNDIndex.getNCount());
                     for (int j = 0; j < sliceNDIndex.getNCount(); j++) {
                         raf.writeInt(sliceNDIndex.getNIndex(j));
                     }

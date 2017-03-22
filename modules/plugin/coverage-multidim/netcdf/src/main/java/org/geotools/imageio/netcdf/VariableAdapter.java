@@ -99,8 +99,8 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     private final static boolean QUICK_SCAN;
     private final static String QUICK_SCAN_KEY = "org.geotools.netcdf.quickscan"; 
 
-    private final static int Z = 0;
-    private final static int T = 1;
+    public final static int Z = 0;
+    public final static int T = 1;
 
     /** 
      * Simple chars replacing classes to deal with "custom" 

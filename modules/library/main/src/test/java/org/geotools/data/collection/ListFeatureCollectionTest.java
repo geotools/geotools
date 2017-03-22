@@ -17,27 +17,33 @@
 
 package org.geotools.data.collection;
 
-import org.junit.Before;
-import java.util.Random;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 
 /**
@@ -129,6 +135,64 @@ public class ListFeatureCollectionTest {
             assertTrue(copy.remove(f));
         }
         assertTrue(copy.isEmpty());
+    }
+
+    /**
+     * Test for ticket GEOT-5684
+     * Bounds cache was wrong after features were removed from list
+     */
+    @Test
+    public void removeAndAddFeatureBounds() {
+        // create test points
+        createPointFeatures(WORLD, 3);
+        // remove last feature in collection
+        List<SimpleFeature> copy = new ArrayList<SimpleFeature>(featureList);
+        SimpleFeature f = copy.get(2);
+        featureCollection.remove(f);
+        // get the new bounds (removed feature)
+        ReferencedEnvelope postRemoveFeatureBounds = featureCollection.getBounds();
+        // add new feature
+        SimpleFeature newFeature = createPointFeature(10, 4);
+        featureCollection.add(newFeature);
+        // get new bounds
+        ReferencedEnvelope newFeatureBounds = featureCollection.getBounds();
+        // compare new bounds with old
+        boolean isContained = newFeatureBounds.contains((Envelope) postRemoveFeatureBounds);
+        assertTrue(isContained);
+        // ensure new point bounds don't equal over-all bounds
+        assertNotEquals(newFeatureBounds, newFeature.getBounds());
+    }
+
+    /**
+     * Test for ticket GEOT-5682
+     * ListFeatureCollection handling of ReferencedEnvelope3D
+     */
+    @Test
+    public void threeDimensionalFeatureBounds() {
+        GeometryFactory gf = new GeometryFactory(new PrecisionModel());
+        SimpleFeatureType type = null;
+        try {
+            type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
+        } catch (SchemaException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // initialize FC with test features
+        featureCollection = new ListFeatureCollection(TYPE, featureList);
+        SimpleFeature f1 = SimpleFeatureBuilder.build(type, new Object[] { "testFeature1", gf.createPoint(new Coordinate(10, 20, 30)) }, null);
+        SimpleFeature f2 = SimpleFeatureBuilder.build(type, new Object[] { "testFeature2", gf.createPoint(new Coordinate(10, 10, 60)) }, null);
+        SimpleFeature f3 = SimpleFeatureBuilder.build(type, new Object[] { "testFeature2", gf.createPoint(new Coordinate(1, 10, 6)) }, null);
+        featureCollection.add(f1);
+        featureCollection.add(f2);
+
+        // get the bounds with two features, remove and add another feature
+        ReferencedEnvelope origBounds = featureCollection.getBounds();
+        featureCollection.remove(f2);
+        featureCollection.add(f3);
+        ReferencedEnvelope postRemoveBounds = featureCollection.getBounds();
+        assertNotEquals(origBounds, postRemoveBounds);
+        assertNotEquals(postRemoveBounds, f3.getBounds());
     }
 
     /**

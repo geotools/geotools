@@ -36,7 +36,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
-import org.opengis.geometry.BoundingBox;
 
 /**
  * FeatureCollection implementation wrapping around a java.util.List.
@@ -177,11 +176,13 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
     protected ReferencedEnvelope calculateBounds() {
         ReferencedEnvelope extent = ReferencedEnvelope.create( getSchema().getCoordinateReferenceSystem() );
         for( SimpleFeature feature : list ){
-            if( feature == null )
+            if( feature == null ) {
                 continue;
+            }
             ReferencedEnvelope bbox = ReferencedEnvelope.reference( feature.getBounds() );
-            if( bbox == null || bbox.isEmpty() || bbox.isNull() )
+            if( bbox == null || bbox.isEmpty() || bbox.isNull() ) {
                 continue;
+            }
             extent.expandToInclude( bbox );
         }
         return extent;

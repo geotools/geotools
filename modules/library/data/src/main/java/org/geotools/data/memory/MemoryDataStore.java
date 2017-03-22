@@ -26,24 +26,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.geotools.data.*;
+import org.geotools.data.DataSourceException;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureImpl;
-import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.identity.FeatureId;
 
 /**
  * This is an example implementation of a DataStore used for testing.
@@ -312,32 +310,7 @@ public class MemoryDataStore extends ContentDataStore {
     }
     
     protected ContentFeatureSource createFeatureSource(ContentEntry entry, Query query) {
-        return new MemoryFeatureStore(entry, query) {
-            @Override protected QueryCapabilities buildQueryCapabilities() {
-                return new QueryCapabilities() {
-                    @Override public boolean isUseProvidedFIDSupported() {
-                        return true;
-                    }
-                };
-            }
-
-            //need to actually use the provided FID
-            @Override protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-                Query query, int flags) throws IOException {
-                return new MemoryFeatureWriter(getState(), query) {
-                    @Override public void write() throws IOException {
-                        if (Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID))) {
-                            if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
-                                String fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
-                                FeatureId id = new FeatureIdImpl(fid);
-                                current = new SimpleFeatureImpl(current.getAttributes(), current.getFeatureType(), id);
-                            }
-                        }
-                        super.write();
-                    }
-                };
-            }
-        };
+        return new MemoryFeatureStore(entry, query);
     }
 
     /**

@@ -7,7 +7,7 @@
     <parent>
         <artifactId>app-schema</artifactId>
         <groupId>org.geotools</groupId>
-        <version>17-SNAPSHOT</version>
+        <version>17.0</version>
     </parent>
 
     <groupId>org.geotools</groupId>

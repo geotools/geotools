@@ -96,9 +96,6 @@ public class MemoryFeatureStore extends ContentFeatureStore {
         return delegate.handleVisitor(query, visitor);
     }
 
-    /**
-     *  GEOT-5683] preserve FeatureIDd during add feature
-     */
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities() {

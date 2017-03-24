@@ -193,6 +193,8 @@ public class ListFeatureCollectionTest {
         ReferencedEnvelope postRemoveBounds = featureCollection.getBounds();
         assertNotEquals(origBounds, postRemoveBounds);
         assertNotEquals(postRemoveBounds, f3.getBounds());
+        assertTrue(postRemoveBounds.contains(f1.getBounds()));
+        assertTrue(postRemoveBounds.contains(f3.getBounds()));
     }
 
     /**

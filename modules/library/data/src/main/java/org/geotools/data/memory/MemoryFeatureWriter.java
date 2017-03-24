@@ -115,7 +115,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         if (current == null) {
             throw new IOException("No feature available to write");
         }
-        //[GEOT-5683] preserve FeatureIDd during add feature
+        //preserve FeatureIDs during insert feature
         if (Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID))) {
             if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                 String fid = (String) current.getUserData().get(Hints.PROVIDED_FID);

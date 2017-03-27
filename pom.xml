@@ -214,6 +214,10 @@
                         <checkstyleRules>
                             <module name="Checker">
                                 <module name="FileTabCharacter" />
+                                <module name="RegexpMultiline">
+                                    <property name="format" value="(?s:(\r\n|\r).*)"/>
+                                    <property name="message" value="CRLF and CR line endings are prohibited, but this file uses them."/>
+                                </module>
                             </module>
                         </checkstyleRules>
                     </configuration>

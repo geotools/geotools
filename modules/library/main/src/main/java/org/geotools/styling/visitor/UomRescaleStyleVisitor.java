@@ -39,6 +39,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
 
 /**
@@ -65,7 +66,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /**
      * Constructor: requires the current mapScale to inform the window to viewport (world to screen)
-     * relation in order to correctly rescale sizes according to units of measure given in world
+     * relation in order to correctly rescaleDashArray sizes according to units of measure given in world
      * units (e.g., SI.METER, NonSI.FOOT, etc).
      * 
      * @param mapScale The specified map scale, given in pixels per meter.
@@ -79,8 +80,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
-     * Used to rescale the provided unscaled value.
-     * 
+     * Used to rescaleDashArray the provided unscaled value.
+     *
      * @param unscaled the unscaled value.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -98,20 +99,27 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     /**
      * Rescale a list of expressions, can handle null.
      */
-    protected List<Expression> rescale(List<Expression> expressions, Unit<Length> uom) {
-        if(expressions == null || expressions.isEmpty()) {
+    protected List<Expression> rescaleDashArray(List<Expression> expressions, Unit<Length> uom) {
+        if (expressions == null || expressions.isEmpty()) {
             return expressions;
         }
         List<Expression> rescaled = new ArrayList<>(expressions.size());
-        for(Expression expression: expressions) {
-            rescaled.add(rescale(expression, uom));
+        final Expression scale = rescale(ff.literal(1), uom);
+        
+        for (Expression expression : expressions) {
+            Expression rescale = ff.function("listMultiply", scale, expression);
+            if (expression instanceof Literal) {
+                rescaled.add(ff.literal(rescale.evaluate(null)));
+            } else {
+                rescaled.add(rescale);
+            }
         }
         return rescaled;
     }
 
     /**
-     * Used to rescale the provided unscaled value.
-     * 
+     * Used to rescaleDashArray the provided unscaled value.
+     *
      * @param unscaled the unscaled value.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -127,8 +135,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
-     * Used to rescale the provided stroke.
-     * 
+     * Used to rescaleDashArray the provided stroke.
+     *
      * @param stroke the unscaled stroke, which will be modified in-place.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -136,7 +144,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
-            stroke.setDashArray(rescale(stroke.dashArray(), uom));
+            stroke.setDashArray(rescaleDashArray(stroke.dashArray(), uom));
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);

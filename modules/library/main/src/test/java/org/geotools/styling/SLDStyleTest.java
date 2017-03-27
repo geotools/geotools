@@ -215,6 +215,14 @@ public class SLDStyleTest extends TestCase {
         assertTrue("not expected expression", expressions.get(2).equals(ff.property("stroke2")));
         assertTrue("not expected expression", expressions.get(3).equals(ff.literal(2.0)));
     }
+    
+    public void testDashArray3_dynamic() throws Exception {
+        java.net.URL surl = TestData.getResource(this, "dasharray3_dynamic.sld");
+        SLDParser stylereader = new SLDParser(sf, surl);
+        StyledLayerDescriptor sld = stylereader.parseSLD();
+        
+        validateDynamicDashArrayStyle(sld);
+    }
 
     private Stroke validateDashArrayStyle(StyledLayerDescriptor sld) {
         assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
@@ -234,6 +242,23 @@ public class SLDStyleTest extends TestCase {
         assertNotNull("stroke dasharray is null", stroke.dashArray());
 
         return stroke;
+    }
+    
+    private void validateDynamicDashArrayStyle(StyledLayerDescriptor sld) {
+        assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
+        Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
+        List<FeatureTypeStyle> fts = style.featureTypeStyles();
+        assertEquals(1, fts.size());
+        List<Rule> rules = fts.get(0).rules();
+        assertEquals(1, rules.size());
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        assertEquals(1, symbolizers.size());
+        
+        LineSymbolizer ls = (LineSymbolizer) symbolizers.get(0);
+		assertNotNull(ls.getStroke().dashArray());
+		List<Expression> e = ls.getStroke().dashArray();
+        assertEquals(1, e.size());
+        assertEquals("2.0 1.0 4.0 1.0", e.get(0).evaluate(null));
     }
 
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {

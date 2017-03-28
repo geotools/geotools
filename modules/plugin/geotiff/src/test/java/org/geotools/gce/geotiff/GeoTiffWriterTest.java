@@ -51,6 +51,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.test.TestData;
 import org.junit.Test;
@@ -696,5 +697,51 @@ public class GeoTiffWriterTest extends Assert {
                 i++;
             }
         }
-    
+
+    /**
+     * Test writing and reading a GeoTIFF with an {@link AzimuthalEquidistant} projection.
+     */
+    @Test
+    public void testWriteReadAzimuthalEquidistant() throws Exception {
+        // @formatter:off
+        CoordinateReferenceSystem crs = CRS.parseWKT("PROJCS[\"unnamed\", "
+                + "GEOGCS[\"unnamed ellipse\", "
+                + "DATUM[\"unknown\", SPHEROID[\"unnamed\",6370841.391468334,0]], "
+                + "PRIMEM[\"Greenwich\",0], "
+                + "UNIT[\"degree\",0.0174532925199433]], "
+                + "PROJECTION[\"Azimuthal_Equidistant\"], "
+                + "PARAMETER[\"latitude_of_center\",42.42], "
+                + "PARAMETER[\"longitude_of_center\",16.16], "
+                + "PARAMETER[\"false_easting\",100000], "
+                + "PARAMETER[\"false_northing\",200000],"
+                + "UNIT[\"metre\", 1, AUTHORITY[\"EPSG\",\"9001\"]]]");
+        // @formatter:on
+        double range = 100;
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-range, range, -range, range, crs);
+        GridCoverageFactory f = new GridCoverageFactory();
+        GridCoverage2D coverage = f.create("test-azimuthal-equidistant",
+                new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB), envelope, null, null,
+                null);
+        // test that writing succeeds without an exception
+        File outputDir = new File("./target", "test-azimuthal-equidistant");
+        outputDir.mkdirs();
+        File output = new File(outputDir, "test-azimuthal-equidistant.tif");
+        GeoTiffFormat format = new GeoTiffFormat();
+        GridCoverageWriter writer = format.getWriter(output);
+        writer.write(coverage, null);
+        writer.dispose();
+        coverage.dispose(true);
+        // test that reading succeeds and that the projection name and parameters are correct
+        GeoTiffReader reader = format.getReader(output);
+        GridCoverage2D readCoverage = reader.read(null);
+        String wkt = readCoverage.getCoordinateReferenceSystem().toWKT();
+        readCoverage.dispose(true);
+        reader.dispose();
+        org.junit.Assert.assertTrue(wkt.contains("PROJECTION[\"Azimuthal_Equidistant\"]"));
+        org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"latitude_of_center\", 42.42]"));
+        org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"longitude_of_center\", 16.16]"));
+        org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"false_easting\", 100000.0]"));
+        org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"false_northing\", 200000.0]"));
+    }
+
 }

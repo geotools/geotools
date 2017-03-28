@@ -25,7 +25,7 @@ Parameter      Description
 "host"         Machine name or IP address to connect to
 "port"         Port number to connect to, default 1521
 "schema"       The database schema to access
-"database"     The databse to connect to
+"database"     The database to connect to
 "user"         User name
 "passwd"       Password
 ============== =============================

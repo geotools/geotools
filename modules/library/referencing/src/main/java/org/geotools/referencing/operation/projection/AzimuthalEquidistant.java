@@ -152,6 +152,20 @@ public class AzimuthalEquidistant {
             return Provider.PARAMETERS;
         }
 
+        /**
+         * Return the values of the parameters that define the projection.
+         * 
+         * @see org.geotools.referencing.operation.projection.MapProjection#getParameterValues()
+         */
+        @Override
+        public ParameterValueGroup getParameterValues() {
+            ParameterValueGroup values = super.getParameterValues();
+            List<GeneralParameterDescriptor> descriptors = getParameterDescriptors().descriptors();
+            set(descriptors, Provider.LONGITUDE_OF_CENTRE, values, centralMeridian);
+            set(descriptors, Provider.LATITUDE_OF_CENTRE, values, latitudeOfOrigin);
+            return values;
+        }
+
     };
 
     /**

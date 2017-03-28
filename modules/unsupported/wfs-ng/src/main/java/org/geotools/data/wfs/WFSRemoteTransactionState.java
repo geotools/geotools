@@ -35,7 +35,6 @@ import javax.xml.namespace.QName;
 import org.geotools.data.Diff;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
-import org.geotools.data.TransactionStateDiff;
 import org.geotools.data.wfs.WFSDiff.BatchUpdate;
 import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.TransactionRequest.Delete;

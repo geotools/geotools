@@ -73,6 +73,7 @@ import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.BufferedAuthorityFactory;
 import org.geotools.referencing.factory.DirectAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
+import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.DefaultOperation;
 import org.geotools.referencing.operation.DefaultOperationMethod;
@@ -209,8 +210,9 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             case 9103: return NonSI.MINUTE_ANGLE;
             case 9104: return NonSI.SECOND_ANGLE;
             case 9105: return NonSI.GRADE;
-            case 9107: return Units.DEGREE_MINUTE_SECOND;
-            case 9108: return Units.DEGREE_MINUTE_SECOND;
+            // DMS is a way to format information but not a real unit, decode towards DEGREE instead
+            case 9107: return NonSI.DEGREE_ANGLE;// return Units.DEGREE_MINUTE_SECOND;
+            case 9108: return NonSI.DEGREE_ANGLE; // return Units.DEGREE_MINUTE_SECOND;
             case 9109: return    SI.MICRO(SI.RADIAN);
             case 9110: return Units.SEXAGESIMAL_DMS;
 //TODO      case 9111: return NonSI.SEXAGESIMAL_DM;
@@ -489,6 +491,11 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * The "fast" sql query used to check if a connection is still valid
      */
     private String validationQuery;
+    
+    /**
+     * A factory used in fast lookups to avoid discarding right away flipped axis variants
+     */
+    private OrderedAxisAuthorityFactory lonLatFactory;
 
     /**
      * Constructs an authority factory using the specified connection.
@@ -514,6 +521,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS,   Boolean.FALSE);
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS,        Boolean.FALSE);
         this.dataSource = dataSource;
+        this.lonLatFactory = new OrderedAxisAuthorityFactory(buffered, userHints, null);
         ensureNonNull("dataSource", dataSource);
     }
 
@@ -2989,22 +2997,27 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         Finder(final AbstractAuthorityFactory buffered, final Class/*<? extends IdentifiedObject>*/ type) {
             super(buffered, type);
         }
-
+        
+        
         /**
          * Returns a set of authority codes that <strong>may</strong> identify the same object
          * than the specified one. This implementation tries to get a smaller set than what
          * {@link DirectEpsgFactory#getAuthorityCodes} would produce.
          */
         @Override
-        protected Set getCodeCandidates(final IdentifiedObject object) throws FactoryException {
+        protected Set getSpecificCodeCandidates(final IdentifiedObject object) throws FactoryException {
             String select = "COORD_REF_SYS_CODE";
             String from   = "[Coordinate Reference System]";
             String where, code;
+            String sql;
             if (object instanceof Ellipsoid) {
-                select = "ELLIPSOID_CODE";
-                from   = "[Ellipsoid]";
-                where  = "SEMI_MAJOR_AXIS";
-                code   = Double.toString(((Ellipsoid) object).getSemiMajorAxis());
+                final double semiMajorAxis = ((Ellipsoid) object).getSemiMajorAxis();
+                double tol = getTolerance();
+                // consider tolerance
+                final double min = semiMajorAxis - semiMajorAxis * tol; 
+                final double max = semiMajorAxis + semiMajorAxis * tol;
+                code   = Double.toString(semiMajorAxis);
+                sql = "SELECT ELLIPSOID_CODE FROM [Ellipsoid] JOIN [Unit of Measure] on [Ellipsoid].UOM_CODE = [Unit of Measure].UOM_CODE WHERE (SEMI_MAJOR_AXIS * FACTOR_B / FACTOR_C) between " + min + " AND " + max + " ORDER BY ABS(DEPRECATED)";
             } else {
                 IdentifiedObject dependency;
                 if (object instanceof GeneralDerivedCRS) {
@@ -3021,13 +3034,32 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 } else {
                     return super.getCodeCandidates(object);
                 }
-                dependency = buffered.getIdentifiedObjectFinder(dependency.getClass()).find(dependency);
-                Identifier id = AbstractIdentifiedObject.getIdentifier(dependency, getAuthority());
-                if (id == null || (code = id.getCode()) == null) {
-                    return super.getCodeCandidates(object);
+                if(dependency instanceof Ellipsoid) {
+                    // since we match only by major axis length, which is shared among several,
+                    // we need to pick all codes, not just some
+                    Set candidates = getSpecificCodeCandidates(dependency);
+                    if(candidates.isEmpty()) {
+                        // could not find the object using a fast scan, bail out
+                        return Collections.emptySet();
+                    }
+                    sql = "SELECT " + select + " FROM " + from + " WHERE " + where + " in (";
+                    code = candidates.toString(); // just for the exception
+                    for (Object candidate : candidates) {
+                        sql += candidate + ", ";
+                    }
+                    sql = sql.substring(0, sql.length() - 2) + ")";
+                } else {
+                    Identifier id = identifySubObject(buffered, dependency);
+                    if (id == null || (code = id.getCode()) == null) {
+                        id = identifySubObject(lonLatFactory, dependency);
+                        if (id == null || (code = id.getCode()) == null) {
+                            // could not find the object using a fast scan, bail out
+                            return Collections.emptySet();
+                        }
+                    }
+                    sql = "SELECT " + select + " FROM " + from + " WHERE " + where + "='" + code + "' ORDER BY ABS(DEPRECATED)";
                 }
             }
-            String sql = "SELECT " + select + " FROM " + from + " WHERE " + where + "='" + code + '\'';
             sql = adaptSQL(sql);
             final Set<String> result = new LinkedHashSet<String>();
             try {
@@ -3042,6 +3074,28 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 throw databaseFailure(Identifier.class, code, exception);
             }
             return result;
+        }
+
+
+
+        private Identifier identifySubObject(AbstractAuthorityFactory factory, IdentifiedObject dependency) throws FactoryException {
+            IdentifiedObjectFinder identifiedObjectFinder = factory.getIdentifiedObjectFinder(dependency.getClass());
+            identifiedObjectFinder.setFullScanAllowed(isFullScanAllowed());
+            IdentifiedObject identifiedDependency = identifiedObjectFinder.find(dependency);
+            Identifier id = AbstractIdentifiedObject.getIdentifier(identifiedDependency, getAuthority());
+            return id;
+        }
+        
+        /**
+         * Gathers the tolerance for floating point comparisons
+         * @return The tolerance set in the hints, or its default value if not set
+         */
+        private double getTolerance() {
+            Double tol = ((Double) Hints.getSystemDefault(Hints.COMPARISON_TOLERANCE));
+            if(tol == null)
+                return Hints.COMPARISON_TOLERANCE.getDefault();
+            else
+                return tol;
         }
     }
 

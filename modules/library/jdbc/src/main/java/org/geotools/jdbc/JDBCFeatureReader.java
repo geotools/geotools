@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.factory.Hints;
 import org.geotools.feature.GeometryAttributeImpl;
@@ -97,6 +98,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      * geometry factory used to create geometry objects
      */
     protected GeometryFactory geometryFactory;
+
+    /**
+     * the query
+     */
+    protected Query query;
+
     /**
      * hints
      */
@@ -124,6 +131,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     protected Statement st;
     protected ResultSet rs;
     protected Connection cx;
+    protected ResultSetMetaData md;
     protected Exception tracer;
     protected String[] columnNames;
     
@@ -132,9 +140,11 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      */
     protected int offset = 0;
     
-    public JDBCFeatureReader( String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) 
+    protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
+
+    public JDBCFeatureReader( String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) 
         throws SQLException {
-        init( featureSource, featureType, hints );
+        init( featureSource, featureType, query );
         
         //create the result set
         this.cx = cx;
@@ -142,53 +152,33 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         st.setFetchSize(featureSource.getDataStore().getFetchSize());
         
         ((BasicSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
-        try {
-            rs = st.executeQuery(sql);
-        } catch (Exception e1) {
-            LOGGER.log(Level.SEVERE, "Failed to execute statement " + sql);
-            // make sure to mark as closed, otherwise we are going to log that it was not
-            try {
-                close();
-            } catch (IOException e2) {
-                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
-            }
-            throw new SQLException(e1);
-        }
+        runQuery(() -> st.executeQuery(sql), st);
     }
     
-    public JDBCFeatureReader( PreparedStatement st, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) 
+    public JDBCFeatureReader( PreparedStatement st, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) 
         throws SQLException {
             
-        init( featureSource, featureType, hints );
+        init( featureSource, featureType, query );
         
         //create the result set
         this.cx = cx;
         this.st = st;
         
         ((PreparedStatementSQLDialect)featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
-        try {
-            rs = st.executeQuery();
-        } catch (Exception e1) {
-            // make sure to mark as closed, otherwise we are going to log that it was not
-            try {
-                close();
-            } catch (IOException e2) {
-                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
-            }
-            throw new SQLException(e1);
-        }
+        runQuery(st::executeQuery, st);
     }
     
     public JDBCFeatureReader(ResultSet rs, Connection cx, int offset, JDBCFeatureSource featureSource, 
-        SimpleFeatureType featureType, Hints hints) throws SQLException {
-        init(featureSource, featureType, hints);
+        SimpleFeatureType featureType, Query query) throws SQLException {
+        init(featureSource, featureType, query);
         
         this.cx = cx;
         this.st = rs.getStatement();
         this.rs = rs;
         this.offset = offset;
     }
-    protected void init( JDBCFeatureSource featureSource, SimpleFeatureType featureType, Hints hints ) {
+
+    protected void init( JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) {
         // init the tracer if we need to debug a connection leak
         if(TRACE_ENABLED) {
             tracer = new Exception();
@@ -200,7 +190,8 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.dataStore = featureSource.getDataStore();
         this.featureType = featureType;
         this.tx = featureSource.getTransaction();
-        this.hints = hints;
+        this.query = query;
+        this.hints = query != null ? query.getHints() : null;
         
         //grab a geometry factory... check for a special hint
         geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
@@ -238,6 +229,31 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             throw new RuntimeException(e);
         }
 
+        callback = dataStore.getCallbackFactory().createReaderCallback();
+        callback.init(this);
+    }
+
+    @FunctionalInterface
+    interface QueryRunner {
+        ResultSet run() throws Exception;
+    }
+
+    void runQuery(QueryRunner runner, Statement st) throws SQLException {
+        callback.beforeQuery(st);
+        try {
+            rs = runner.run();
+            callback.afterQuery(st);
+        } catch (Exception e1) {
+            callback.queryError(e1);
+
+            // make sure to mark as closed, otherwise we are going to log that it was not
+            try {
+                close();
+            } catch (IOException e2) {
+                LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
+            }
+            throw new SQLException(e1);
+        }
     }
 
     public JDBCFeatureReader( JDBCFeatureReader other ) {
@@ -250,6 +266,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         this.builder = other.builder;
         this.st = other.st;
         this.rs = other.rs;
+        this.md = other.md;
     }
 
     public void setNext(Boolean next) {
@@ -264,13 +281,24 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         return pkey;
     }
 
+    public Query getQuery() {
+        return query;
+    }
+
     public boolean hasNext() throws IOException {
         ensureOpen();
         
         if (next == null) {
             try {
+                callback.beforeNext(rs);
                 next = Boolean.valueOf(rs.next());
+                callback.afterNext(rs, next);
+
+                if (!next) {
+                    callback.finish(this);
+                }
             } catch (SQLException e) {
+                callback.rowError(e);
                 throw new RuntimeException(e);
             }
         }
@@ -429,6 +457,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         else {
             //means we are already closed... should we throw an exception?
         }
+
         cleanup();
     }
 
@@ -464,7 +493,8 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     }
     
      /**
-     * Feature wrapper around a result set.
+     * Feature wrapper around a result set. (used only by the writing subclasses, make sure the
+     * metadata field is initialized before using it)
      */
     protected class ResultSetFeature implements SimpleFeature {
         /**
@@ -517,19 +547,16 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         ResultSetFeature(ResultSet rs, Connection cx) throws SQLException, IOException {
             this.rs = rs;
             this.cx = cx;
-            
-            //get the result set metadata
-            ResultSetMetaData md = rs.getMetaData();
 
             //get the primary key, ensure its not contained in the values
             key = dataStore.getPrimaryKey(featureType);
             int count = md.getColumnCount();
-            columnNames=new String[count];
+            columnNames = new String[count];
 
             exposePrimaryKeys = featureSource.getState().isExposePrimaryKeyColumns();
             for (int i = 0; i < md.getColumnCount(); i++) {
-            	String columnName =md.getColumnName(i + 1); 
-            	columnNames[i]=columnName;
+            	String columnName = md.getColumnName(i + 1); 
+            	columnNames[i] = columnName;
             	if(!exposePrimaryKeys) {
                     for ( PrimaryKeyColumn col : key.getColumns() ) {
                         if (col.getName().equals(columnName)) {
@@ -704,7 +731,14 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             return dirty[index];
         }
 
+        /** 
+         * @deprecated use {@link #isDirty(String)} instead
+         */
         public boolean isDirrty(String name) {
+        	return isDirty(name);
+        }
+        
+        public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }
 
@@ -786,7 +820,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
-        public Collection<?extends Property> getValue() {
+        public Collection<? extends Property> getValue() {
             return getProperties();
         }
 

@@ -508,9 +508,9 @@ public final class PostGisIndexTest extends OnlineTestCase {
             sb.append("IMAGE: ").append(i).append("\n");
             sb.append(" Variable Name = ").append(variableName);
             sb.append(" ( Z = ");
-            sb.append(sliceIndex.getZIndex());
+            sb.append(sliceIndex.getNIndex(0));
             sb.append("; T = ");
-            sb.append(sliceIndex.getTIndex());
+            sb.append(sliceIndex.getNIndex(1));
             sb.append(")");
             LOGGER.info(sb.toString());
         }

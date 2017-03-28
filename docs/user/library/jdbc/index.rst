@@ -45,6 +45,7 @@ DataStore plugins:
    spatialite
    sqlserver
    teradata
+   ../data/geopackage
 
 Unsupported plugins:
 

@@ -16,9 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import ucar.nc2.dataset.NetcdfDataset;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
@@ -31,7 +28,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -90,6 +86,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
@@ -108,6 +105,8 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 /**
  * A NetCDF Reader implementation
@@ -418,11 +417,11 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
             } else {
                 // min or max requests
                 Set<Object> elements = additionalDomain.getElements(true, null);
-                NumberRange<Double> range = (NumberRange<Double>) elements.iterator().next();
+                Range<?> range = (Range<?>) elements.iterator().next();
                 if (name.endsWith("maximum")) {
-                    return Double.toString(range.getMaximum());
+                    return ConvertersHack.convert(range.getMaxValue(), String.class);
                 } else if (name.endsWith("minimum")) {
-                    return Double.toString(range.getMinimum());
+                    return ConvertersHack.convert(range.getMinValue(), String.class);
                 } else {
                     throw new IllegalArgumentException("Unsupported metadata name");
                 }
@@ -474,8 +473,8 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         LinkedHashSet<String> ranges = new LinkedHashSet<String>();
 
         while (iterator.hasNext()) {
-            Number value = (Number) iterator.next();
-            ranges.add(value.toString());
+            Object value = (Object) iterator.next();
+            ranges.add(ConvertersHack.convert(value, String.class));
         }
         return buildResultsString(ranges);
     }
@@ -729,18 +728,17 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
 
     private String checkUnspecifiedCoverage(String coverageName) {
         if (coverageName.equalsIgnoreCase(UNSPECIFIED)) {
-            if (getGridCoverageCount() > 1) {
+            if (defaultName == null) {
                 throw new IllegalArgumentException(
-                        "Need to specify the coverageName for a reader related to multiple coverages");
+                        "coverageName not specified and no defaultName for " + sourceURL);
             } else {
                 return defaultName;
             }
+        } else if (!setNames.contains(coverageName)) {
+            throw new IllegalArgumentException(
+                    "coverageName " + coverageName + " not found for " + sourceURL);
         } else {
-            if (!setNames.contains(coverageName)) {
-                throw new IllegalArgumentException("The specified coverageName is unavailable");
-            } else {
-                return coverageName;
-            }
+            return coverageName;
         }
     }
 

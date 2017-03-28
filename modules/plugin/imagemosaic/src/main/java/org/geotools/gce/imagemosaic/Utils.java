@@ -16,17 +16,18 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -63,7 +64,6 @@ import javax.media.jai.BorderExtender;
 import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import javax.media.jai.RasterFactory;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
@@ -474,7 +474,8 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("ncx2"), FileFilterUtils.suffixFileFilter("ncx3"),
                 FileFilterUtils.nameFileFilter("error.txt"),
                 FileFilterUtils.nameFileFilter("_metadata"),
-                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME_LEGACY),
                 FileFilterUtils.nameFileFilter("error.txt.lck"),
                 FileFilterUtils.suffixFileFilter("xml"), FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
@@ -487,7 +488,8 @@ public class Utils {
                 FileFilterUtils.suffixFileFilter("sbn"), FileFilterUtils.suffixFileFilter("sbx"),
                 FileFilterUtils.suffixFileFilter("shx"), FileFilterUtils.suffixFileFilter("qix"),
                 FileFilterUtils.suffixFileFilter("lyr"), FileFilterUtils.suffixFileFilter("prj"),
-                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME_LEGACY),
                 FileFilterUtils.suffixFileFilter("db"));
         return filesFilter;
     }
@@ -1024,21 +1026,16 @@ public class Utils {
      */
     public static void storeSampleImage(final File sampleImageFile, final SampleModel defaultSM,
             final ColorModel defaultCM) throws IOException {
-        // create 1X1 image
-        final SampleModel sm = defaultSM.createCompatibleSampleModel(1, 1);
-        final WritableRaster raster = RasterFactory.createWritableRaster(sm, null);
-        final BufferedImage sampleImage = new BufferedImage(defaultCM, raster,
-                defaultCM.isAlphaPremultiplied(), null);
-
+        
+        SampleImage sampleImage = new SampleImage(defaultSM, defaultCM);
+        
         // serialize it
         OutputStream outStream = null;
         ObjectOutputStream ooStream = null;
-        SerializableRenderedImage sri = null;
         try {
             outStream = new BufferedOutputStream(new FileOutputStream(sampleImageFile));
             ooStream = new ObjectOutputStream(outStream);
-            sri = new SerializableRenderedImage(sampleImage, true);
-            ooStream.writeObject(sri);
+            ooStream.writeObject(sampleImage);
         } finally {
             try {
                 if (ooStream != null)
@@ -1051,11 +1048,6 @@ public class Utils {
                     outStream.close();
             } catch (Throwable e) {
                 IOUtils.closeQuietly(outStream);
-            }
-            try {
-                if (sri != null)
-                    sri.dispose();
-            } catch (Throwable e) {
             }
         }
     }
@@ -1078,7 +1070,33 @@ public class Utils {
                 oiStream = new ObjectInputStream(inStream);
 
                 // load the image
-                return (RenderedImage) oiStream.readObject();
+                Object object = oiStream.readObject();
+                if(object instanceof SampleImage) {
+                    SampleImage si = (SampleImage) object;
+                    return si.toBufferedImage();
+                } else if(object instanceof SerializableRenderedImage) {
+                    SerializableRenderedImage sri = (SerializableRenderedImage) object;
+                    // SerializableRenderedImage is a finalization thread killer, try to replace
+                    // it with SampleImage on disk instead
+                    if(sampleImageFile.canWrite()) {
+                        try {
+                            storeSampleImage(sampleImageFile, sri.getSampleModel(), sri.getColorModel());
+                        } catch(Exception e) {
+                            if(LOGGER.isLoggable(Level.WARNING)) {
+                                LOGGER.log(Level.WARNING, "Failed to upgrade the sample image to the new storage format", e);
+                            }
+                        }
+                    }
+                    // note, disposing the SerializableRenderedImage here is not done on purpose,
+                    // as it will hang, timeout and fail, and then on finalize
+                    // it will do it again, so there is really no point in doing that
+                    return new SampleImage(sri.getSampleModel(), sri.getColorModel()).toBufferedImage();
+                } else {
+                    if(LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning("Unrecognized sample_image content: " +  object);
+                    }
+                    return null;
+                }
 
             } else {
                 if (LOGGER.isLoggable(Level.WARNING))
@@ -1438,7 +1456,8 @@ public class Utils {
 
     public static final String SCAN_FOR_TYPENAMES = "TypeNames";
 
-    public static final String SAMPLE_IMAGE_NAME = "sample_image";
+    public static final String SAMPLE_IMAGE_NAME_LEGACY = "sample_image";
+    public static final String SAMPLE_IMAGE_NAME = "sample_image.dat";
 
     public static final String BBOX = "BOUNDINGBOX";
 

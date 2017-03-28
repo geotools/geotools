@@ -145,7 +145,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      */
     // Copied from FunctionExpressionImpl KS
     public String toString(){
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(getName());
         sb.append("(");
         List<org.opengis.filter.expression.Expression> params = getParameters();

@@ -33,13 +33,22 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -141,15 +150,11 @@ import org.opengis.style.PolygonSymbolizer;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.TopologyException;
-import com.vividsolutions.jts.precision.GeometryPrecisionReducer;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
+
 
 /**
  * A streaming implementation of the GTRenderer interface.
@@ -272,7 +277,7 @@ public class StreamingRenderer implements GTRenderer {
     protected LabelCache labelCache = new LabelCacheImpl();
 
     /** The painter class we use to depict shapes onto the screen */
-    private StyledShapePainter painter = new StyledShapePainter(labelCache);
+    protected StyledShapePainter painter = new StyledShapePainter(labelCache);
     private BlockingQueue<RenderingRequest> requests;
 
     private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
@@ -3547,11 +3552,19 @@ public class StreamingRenderer implements GTRenderer {
             boolean done = false;
             while(!done) {
                 try {
+                    List<RenderingRequest> localRequests = new ArrayList<StreamingRenderer.RenderingRequest>();
                     RenderingRequest request = requests.take();
-                    if(request instanceof EndRequest || renderingStopRequested) {
-                        done = true;
-                    } else {
-                        request.execute();
+                    
+                    requests.drainTo(localRequests);
+                    localRequests.add(0, request);
+                    
+                    for (RenderingRequest r : localRequests) {
+                        if(r instanceof EndRequest || renderingStopRequested) {
+                            done = true;
+                            break;
+                        } else {
+                            r.execute();
+                        }
                     }
                 } catch(InterruptedException e) {
                     // ok, we might have been interrupted to stop processing
@@ -3599,6 +3612,17 @@ public class StreamingRenderer implements GTRenderer {
                 return super.take();
             } else {
                 return new EndRequest();
+            }
+        }
+        
+        @Override
+        public int drainTo(Collection<? super RenderingRequest> list) {
+            if(!renderingStopRequested) {
+                return super.drainTo(list);
+            } else {
+                list.clear();
+                list.add(new EndRequest());
+                return 1;
             }
         }
         

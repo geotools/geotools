@@ -63,6 +63,7 @@ import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
 
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -348,8 +349,8 @@ public final class ImageUtilities {
             return null;
         }
         ImageLayout layout = initToImage ? new ImageLayout(image) : null;
-        if ((image.getNumXTiles()==1 || image.getTileWidth () <= STRIPE_SIZE) &&
-            (image.getNumYTiles()==1 || image.getTileHeight() <= STRIPE_SIZE))
+        if ((image.getNumXTiles()==1 || image.getTileWidth () < STRIPE_SIZE) &&
+            (image.getNumYTiles()==1 || image.getTileHeight() < STRIPE_SIZE))
         {
             // If the image was already tiled, reuse the same tile size.
             // Otherwise, compute default tile size.  If a default tile
@@ -368,6 +369,11 @@ public final class ImageUtilities {
                 }
                 layout = layout.setTileWidth(s);
                 layout.setTileGridXOffset(image.getMinX());
+            } else if(image.getTileWidth () <= STRIPE_SIZE) {
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                layout = layout.setTileWidth(defaultSize.width);
             }
             if ((s=toTileSize(image.getHeight(), defaultSize.height)) != 0) {
                 if (layout == null) {
@@ -375,6 +381,11 @@ public final class ImageUtilities {
                 }
                 layout = layout.setTileHeight(s);
                 layout.setTileGridYOffset(image.getMinY());
+            } else if(image.getTileHeight() < STRIPE_SIZE) {
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                layout = layout.setTileHeight(defaultSize.height);
             }
         }
         return layout;
@@ -800,7 +811,7 @@ public final class ImageUtilities {
             }
         }
         // dispose the image itself
-        pi.dispose();
+        disposeSinglePlanarImage(pi);
         visited.add(pi);
         
         // check the image sources
@@ -867,7 +878,7 @@ public final class ImageUtilities {
     	// in which there is not a special ImageReadparam used.
     
     	// Create a new ImageReadParam instance.
-    	ExtendedImageParam newParam = new ExtendedImageParam();
+    	EnhancedImageReadParam newParam = new EnhancedImageReadParam();
     
     	// Set all fields which need to be set.
     
@@ -902,8 +913,8 @@ public final class ImageUtilities {
     			.getSubsamplingYOffset());
 
         // check if need to copy extra parameters
-        if (param instanceof ExtendedImageParam) {
-            newParam.setBands(((ExtendedImageParam) param).getBands());
+        if (param instanceof EnhancedImageReadParam) {
+            newParam.setBands(((EnhancedImageReadParam) param).getBands());
         }
 
     	// Replace the local variable with the new ImageReadParam.
@@ -1245,42 +1256,50 @@ public final class ImageUtilities {
                     }
                 }
 
-                // Looking for an ROI image and disposing it too
-                final Object roi = inputImage.getProperty("ROI");
-                if ((roi != null) && ((ROI.class.equals(roi) || (roi instanceof RenderedImage)))) {
-                    if (roi instanceof ROI) {
-                        ROI roiImage = (ROI) roi;
-                        Rectangle bounds = roiImage.getBounds();
-                        if (!(bounds.isEmpty())) {
-                            PlanarImage image = roiImage.getAsImage();
-                            if (image != null) {
-                                disposeImage(image);
-                            }
-                        }
-                    } else {
-                        disposeImage((RenderedImage) roi);
-                    }
-                }
-
-                try {
-                    if(planarImage instanceof RenderedImageAdapter) {
-                        cleanField(planarImage, "theImage");
-                    } 
-                    if(planarImage instanceof WritableRenderedImageAdapter) {
-                        cleanField(planarImage, "theWritableImage");
-                    }
-                } catch(NoSuchFieldException | IllegalAccessException e) {
-                    // fine, we tried
-                    LOGGER.log(Level.FINE, "Failed to clear rendered image adapters field to null. "
-                            + "Not a problem per se, but if the finalizer thread is not fast enough, this might result in a OOM", e);
-                }
-                
-                planarImage.dispose();
+                disposeSinglePlanarImage(planarImage);
             } else if (inputImage instanceof BufferedImage) {
                 ((BufferedImage) inputImage).flush();
                 inputImage = null;
             }
         }
+    }
+
+    /**
+     * Disposes the specified image, without recursing back in the sources
+     * @param planarImage
+     */
+    public static void disposeSinglePlanarImage(PlanarImage planarImage) {
+        // Looking for an ROI image and disposing it too
+        final Object roi = planarImage.getProperty("ROI");
+        if ((roi != null) && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
+            if (roi instanceof ROI) {
+                ROI roiImage = (ROI) roi;
+                Rectangle bounds = roiImage.getBounds();
+                if (!(bounds.isEmpty())) {
+                    PlanarImage image = roiImage.getAsImage();
+                    if (image != null) {
+                        // do not recurse, we have ROIs that have ROIs that have ROIs ....
+                        image.dispose();
+                    }
+                }
+            } else {
+                disposeImage((RenderedImage) roi);
+            }
+        }
+
+        try {
+            if(planarImage instanceof RenderedImageAdapter) {
+                cleanField(planarImage, "theImage");
+            } 
+            if(planarImage instanceof WritableRenderedImageAdapter) {
+                cleanField(planarImage, "theWritableImage");
+            }
+        } catch(NoSuchFieldException | IllegalAccessException e) {
+            // fine, we tried
+            LOGGER.log(Level.FINE, "Failed to clear rendered image adapters field to null. "
+                    + "Not a problem per se, but if the finalizer thread is not fast enough, this might result in a OOM", e);
+        }
+        planarImage.dispose();
     }
 
     /**

@@ -33,6 +33,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.FactoryCreator;
+import org.geotools.factory.FactoryRegistry;
+import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.SimpleInternationalString;
 
@@ -146,7 +149,20 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
             "SQL statement executed when the connection is released to the pool", false, null,
             Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
 
-    
+    /** JDBC callback factory */
+    public static final Param CALLBACK_FACTORY = new Param("Callback factory", String.class, 
+        "Name of JDBCReaderCallbackFactory to enable on the data store", false);
+
+    /**
+     * system property  name used to set callback factory
+     */
+    static final String CALLBACK_PROPERTY = "gt2.jdbc.callback";
+
+    /**
+     * registry for callback plugins
+     */
+    static final FactoryRegistry CALLBACK_REGISTRY = new FactoryCreator(JDBCCallbackFactory.class);
+
     @Override
     public String getDisplayName() {
         return getDescription();
@@ -267,6 +283,15 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
             dataStore.getConnectionLifecycleListeners().add(listener);
         }
         
+        // callback factory
+        String callbackFactory = (String) CALLBACK_FACTORY.lookUp(params);
+        if (callbackFactory == null) {
+            // look for system property
+            callbackFactory = System.getProperty(CALLBACK_PROPERTY);
+        }
+        dataStore.setCallbackFactory(callbackFactory != null 
+            ? findCallbackFactory(callbackFactory) : JDBCCallbackFactory.NULL);
+        
         // factories
         dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         dataStore.setGeometryFactory(new GeometryFactory());
@@ -363,6 +388,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         parameters.put(PK_METADATA_TABLE.key, PK_METADATA_TABLE);
         parameters.put(SQL_ON_BORROW.key, SQL_ON_BORROW);
         parameters.put(SQL_ON_RELEASE.key, SQL_ON_RELEASE);
+        parameters.put(CALLBACK_FACTORY.key, CALLBACK_FACTORY);
     }
 
     /**
@@ -566,5 +592,25 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
             url += "/" + db; 
         }
         return url;
+    }
+
+    /**
+     * Looks up the callback factory with the specified name.
+     * <p>
+     *   Will return {@link JDBCCallbackFactory#NULL} if the factory with the specified name can't be found.
+     * </p>
+     */
+    static JDBCCallbackFactory findCallbackFactory(String factoryName) {
+        if (factoryName != null) {
+            try {
+                return CALLBACK_REGISTRY.getServiceProvider(JDBCCallbackFactory.class,
+                    f -> factoryName.equalsIgnoreCase(((JDBCCallbackFactory) f).getName()), null, null
+                );
+            }
+            catch(FactoryRegistryException e) {
+                // pass through
+            }
+        }
+        return JDBCCallbackFactory.NULL;
     }
 }

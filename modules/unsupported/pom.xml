@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>17-SNAPSHOT</version>
+		<version>18-SNAPSHOT</version>
 	</parent>
 
 
@@ -93,6 +93,7 @@
 				</property>
 			</activation>
 			<modules>
+				<module>process</module>
 				<module>process-geometry</module>
 				<module>process-raster</module>
 				<module>process-feature</module>
@@ -167,17 +168,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>ysld</id>
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-			<modules>
-				<module>ysld</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geojsonstore</id>
 			<activation>
 				<property>
@@ -200,6 +190,12 @@
                 <module>polylabel</module>
             </modules>
         </profile>
+        <profile>               
+            <id>mbstyle</id>
+            <modules>
+                <module>mbstyle</module>
+            </modules>
+        </profile>        
 		<profile>
 			<id>unsupported</id>
 			<activation>
@@ -211,7 +207,6 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>vpf</module>
 				<module>matfile5</module>
 				<module>sfs</module>
 				<module>feature-aggregate</module>
@@ -229,12 +224,12 @@
 		<module>swing</module>
 		<module>swt</module>
 		<module>process</module>
-		<module>wfs</module>
+		<module>process-geometry</module>
+		<module>process-raster</module>
+		<module>process-feature</module>
 		<module>geojson</module>
-		<module>geopkg</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-		<module>ysld</module>
 		<module>polylabel</module>
 	</modules>
 

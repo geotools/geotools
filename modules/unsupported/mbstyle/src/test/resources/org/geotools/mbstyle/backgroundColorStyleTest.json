@@ -1,0 +1,45 @@
+{
+    "version": 8,
+    "name": "backgrounds",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -90.87858151552054,
+        51.45533956736787
+    ],
+    "zoom": 2.960501033250624,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "mapbox://sprites/testuser/ciz48dnnj004l2rplkpqsra81",
+    "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "backgroundcolor",
+            "type": "background",
+            "source": "test-source",
+            "source-layer": "test-source-layer",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "background-opacity": 0.45,
+                "background-color": "#00FF00"
+            }
+        }
+    ],
+    "created": "2017-02-13T15:04:34.388Z",
+    "id": "ciz48dnnj004l2rplkpqsra81",
+    "modified": "2017-02-13T19:10:11.052Z",
+    "owner": "testuser",
+    "visibility": "private",
+    "draft": false
+}

@@ -34,7 +34,7 @@ The DataAccess<T,F> defined as:
 
 * F: Feature - class used to represent content.
   
-  Currently Feature and SimpleFeature area available.
+  Currently Feature and SimpleFeature are available.
 
 * DataStore is a short hand for DataAccess<SimpleFeatureType,SimpleFeature> with a few extra methods allowing
   the contents to be accessed using a type name defined as a simple String

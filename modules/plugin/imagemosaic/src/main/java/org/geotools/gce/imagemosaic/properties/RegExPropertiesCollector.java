@@ -76,18 +76,16 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
         final Matcher matcher = pattern.matcher(name);
 
         while (matcher.find()) {
-            if (!fullPath) {
-                addMatch(matcher.group());
-            } else {
-                // Chaining group Strings together
-                int count = matcher.groupCount();
-                String match = "";
-                for (int i = 1; i <= count; i++) {
-                    match += matcher.group(i);
-                }
-                addMatch(match);
-
+            // Chaining group Strings together
+            int count = matcher.groupCount();
+            String match = "";
+            if(count == 0) {
+                match = matcher.group();
             }
+            for (int i = 1; i <= count; i++) {
+                match += matcher.group(i);
+            }
+            addMatch(match);
         }
         return this;
     }

@@ -426,10 +426,8 @@ class NetCDFGeoreferenceManager {
                         }
                         break;
                     default:
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine("The specified axis type isn't currently supported: " 
-                        + axisType + "\nskipping it");
-                        }
+                        //additional dimension
+                        dimensions.put(name.toUpperCase(), name);
                         break;
                     }
                 } else {

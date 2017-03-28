@@ -19,16 +19,11 @@ package org.geotools.gce.imagemosaic;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
-import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMParser;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -71,9 +66,6 @@ import java.util.logging.Logger;
 import javax.media.jai.RenderedOp;
 import javax.swing.JFrame;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -106,6 +98,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -126,6 +119,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
+import org.jaitools.imageutils.ImageUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -153,6 +147,14 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
+
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
+import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import it.geosolutions.jaiext.JAIExt;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -1939,10 +1941,25 @@ public class ImageMosaicReaderTest extends Assert{
 		outTransp.setValue(Color.black);
 
 
-		// test the coverage
-		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, outTransp },title);
-
+        final double[] baseResolutions = reader.getResolutionLevels()[0];
+        // test the coverage
+        final double tolerance = Math.max(baseResolutions[0], baseResolutions[1]) * 10;
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader,
+                new GeneralParameterValue[] { gg, outTransp }, title);
+        // the envelope is the requested one
+        assertEnvelope(coverage.getEnvelope(), cropEnvelope, tolerance);
+        // the raster space ordinates are not far away from the origin
+        RenderedImage ri = coverage.getRenderedImage();
+        assertEquals(0, ri.getMinX(), 10);
+        assertEquals(0, ri.getMinY(), 10);
 	}
+	
+    void assertEnvelope(Envelope expected, Envelope actual, double tolerance) {
+        assertEquals(expected.getMinimum(0), actual.getMinimum(0), tolerance);
+        assertEquals(expected.getMaximum(0), actual.getMaximum(0), tolerance);
+        assertEquals(expected.getMinimum(1), actual.getMinimum(1), tolerance);
+        assertEquals(expected.getMaximum(1), actual.getMaximum(1), tolerance);
+    }
 	
     @Test
     //@Ignore
@@ -1968,10 +1985,8 @@ public class ImageMosaicReaderTest extends Assert{
         assertTrue(coverage.getEnvelope2D().intersects((Rectangle2D) env));
         
         // and that the color is the expected one given the background values provided
-        RenderedImage ri = coverage.getRenderedImage();
         int[] pixel = new int[4];
-        Raster tile = ri.getTile(ri.getMinTileX(), ri.getMinTileY());
-        tile.getPixel(411, 87, pixel);
+        coverage.evaluate(new Point2D.Double(497987,3197819), pixel);
         assertEquals(255, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -2000,14 +2015,12 @@ public class ImageMosaicReaderTest extends Assert{
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
         assertNotNull(coverage);
-        assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
+        final Envelope2D envelope2d = coverage.getEnvelope2D();
+        assertTrue(envelope2d.contains((Rectangle2D) env));
         
         // and that the color is the expected one given the background values provided
-        RenderedImage ri = coverage.getRenderedImage();
         int[] pixel = new int[4];
-        Raster tile = ri.getTile(ri.getMinTileX() + ri.getNumXTiles()  - 1, 
-                ri.getMinTileY() + ri.getNumYTiles() - 1);
-        tile.getPixel(410, 120, pixel);
+        coverage.evaluate(new Point2D.Double(430000, 2700000), pixel);
         assertEquals(255, pixel[0]);
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -2018,39 +2031,41 @@ public class ImageMosaicReaderTest extends Assert{
     public void testRequestInAreaWithNoGranulesBecomesTransparent() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(rgbURL);
         final ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+        try {
+            assertNotNull(reader);
 
-        assertNotNull(reader);
+            // ask to extract an area that is inside the coverage bbox, but it doesn't cover any granule.
+            // the output should be transparent
+            final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
+            GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
+            ggp.setValue(gg);
 
-        // ask to extract an area that is inside the coverage bbox, but it doesn't cover any granule.
-        // the output should be transparent
-        final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
-        ggp.setValue(gg);
+            // Setting transparency
+            final ParameterValue<Color> transparent =  ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+            transparent.setValue(new Color(0, 0, 0));
 
-        // Setting transparency
-        final ParameterValue<Color> transparent =  ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
-        transparent.setValue(new Color(0, 0, 0));
+            // read and check we actually got a coverage in the requested area
+            GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, transparent});
+            assertNotNull(coverage);
+            assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
 
-        // read and check we actually got a coverage in the requested area
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, transparent});
-        assertNotNull(coverage);
-        assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
-
-        RenderedImage ri = coverage.getRenderedImage();
-        int[] pixel = new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE,
-                Integer.MAX_VALUE };
-        ri.getData().getPixel(220, 15, pixel);
-        assertEquals(0, pixel[0]);
-        assertEquals(0, pixel[1]);
-        assertEquals(0, pixel[2]);
-
-        // We only have input RGB granules.
-        // The mosaic should have been added the alpha component.
-        // Moreover it should have been set to fully transparent (0)
-        // since no granules are available in the requested area.
-        assertEquals(0, pixel[3]);
+            int[] pixel = new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE,
+                    Integer.MAX_VALUE };
+            coverage.evaluate(new Point2D.Double(20,  45), pixel);
+            assertEquals(0, pixel[0]);
+            assertEquals(0, pixel[1]);
+            assertEquals(0, pixel[2]);
+            // We only have input RGB granules.
+            // The mosaic should have been added the alpha component.
+            // Moreover it should have been set to fully transparent (0)
+            // since no granules are available in the requested area.
+            assertEquals(0, pixel[3]);
+        } finally {
+        reader.dispose();
+        }
     }
+        
 
 	/**
 	 * @param args
@@ -3371,7 +3386,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // remove existing properties file and sample_image
-        File sampleImage=new File(TestData.file(this, "."),"/water_temp4/sample_image");
+        File sampleImage=new File(TestData.file(this, "."),"/water_temp4/" + Utils.SAMPLE_IMAGE_NAME);
         assertTrue(sampleImage.exists());
         sampleImage.delete();
         File mosaicProperties=new File(TestData.file(this, "."),"/water_temp4/water_temp4.properties");
@@ -3427,7 +3442,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(reader);
         
         // the mosaic is correctly created
-        File sampleImage=new File(TestData.file(this, "."),"/water_temp5/sample_image");
+        File sampleImage=new File(TestData.file(this, "."),"/water_temp5/" + Utils.SAMPLE_IMAGE_NAME);
         File mosaicProperties=new File(TestData.file(this, "."),"/water_temp5/test.properties");
         assertTrue(sampleImage.exists());
         assertTrue(mosaicProperties.exists());
@@ -3480,7 +3495,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // remove existing properties file and sample_image
-        File sampleImage = new File(TestData.file(this, "."),folder + File.separatorChar + "sample_image");
+        File sampleImage = new File(TestData.file(this, "."),folder + File.separatorChar + Utils.SAMPLE_IMAGE_NAME);
         File mosaicProperties = new File(TestData.file(this, "."),folder + File.separatorChar + folder + ".properties");
 
         // now start the test
@@ -3612,7 +3627,7 @@ public class ImageMosaicReaderTest extends Assert{
         // Deleting mosaic files so that the mosaic will be created again
         File mosaicFile = new File(TestData.file(this, "."), "/stop-it/stop-it.properties");
         mosaicFile.delete();
-        File sampleImageFile = new File(TestData.file(this, "."), "/stop-it/sample_image");
+        File sampleImageFile = new File(TestData.file(this, "."), "/stop-it/" + Utils.SAMPLE_IMAGE_NAME);
         sampleImageFile.delete();
 
         // Since we have deleted some mosaic files but we didn't cleanup the DB tables
@@ -3679,7 +3694,7 @@ public class ImageMosaicReaderTest extends Assert{
 
         // Remove all the auxiliary files if present
         IOFileFilter prefixFileFilter = FileFilterUtils.prefixFileFilter("index_palette");
-        IOFileFilter nameFileFilter = FileFilterUtils.nameFileFilter("sample_image");
+        IOFileFilter nameFileFilter = FileFilterUtils.nameFileFilter(Utils.SAMPLE_IMAGE_NAME);
         FileFilter ff = FileFilterUtils.or(prefixFileFilter, nameFileFilter);
 
         File[] listFiles = currentDir.listFiles(ff);
@@ -3688,6 +3703,49 @@ public class ImageMosaicReaderTest extends Assert{
                 FileUtils.deleteQuietly(f);
             }
         }
+    }
+    
+    
+    @Test
+    public void testExpandToRGBBandSelection() throws Exception {
+        // Delete test folder if present
+        final File workDir = new File(TestData.file(this, "."), "index_palette_bandselect");
+        if (!workDir.mkdir()) {
+            FileUtils.deleteDirectory(workDir);
+            assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
+        }
+
+        File mosaicSource = TestData.file(this, "index_palette");
+        FileUtils.copyDirectory(mosaicSource, workDir);
+        URL testURL = DataUtilities.fileToURL(workDir);
+        
+        // grab the reader to force mosaic config creation
+        final AbstractGridFormat format = TestUtils.getFormat(testURL);
+        ImageMosaicReader reader = TestUtils.getReader(testURL, format);
+        reader.dispose();
+        
+        // enable palette expansion 
+        File props = new File(workDir, "index_palette_bandselect.properties");
+        assertTrue(props.exists() && props.canRead() && props.canWrite());
+        String properties = FileUtils.readFileToString(props);
+        assertTrue(properties.contains("ExpandToRGB"));
+        properties = properties.replace("ExpandToRGB=false", "ExpandToRGB=true");
+        FileUtils.write(props, properties, false);
+        
+        // grab the reader again
+        reader = TestUtils.getReader(testURL, format);
+        
+        // prepare band selection
+        ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
+        selectedBands.setValue(new int[] { 2 });
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader,
+                new GeneralParameterValue[] { selectedBands }, null);
+        
+        // Check that the coverage has a component Colormodel
+        final RenderedImage ri = coverage.getRenderedImage();
+        assertTrue(ri.getColorModel() instanceof ComponentColorModel);
+        assertEquals(1, ri.getSampleModel().getNumBands());
+        reader.dispose();
     }
     
     /**
@@ -3921,7 +3979,7 @@ public class ImageMosaicReaderTest extends Assert{
         for (File configFile : mosaicFolder.listFiles(
                 (FileFilter)FileFilterUtils.or( 
                 FileFilterUtils.suffixFileFilter("db"),
-                FileFilterUtils.suffixFileFilter("sample_image"),
+                FileFilterUtils.suffixFileFilter(Utils.SAMPLE_IMAGE_NAME),
                 FileFilterUtils.and(
                         FileFilterUtils.suffixFileFilter(".properties"),
                         FileFilterUtils.notFileFilter(
@@ -3987,7 +4045,7 @@ public class ImageMosaicReaderTest extends Assert{
     }
 
     private void cleanConfigurationFiles(File testMosaic, String mosaicName) {
-        new File(testMosaic, "sample_image").delete();
+        new File(testMosaic, Utils.SAMPLE_IMAGE_NAME).delete();
         for (File configFile : testMosaic.listFiles((FileFilter) FileFilterUtils
                 .prefixFileFilter(mosaicName))) {
             configFile.delete();

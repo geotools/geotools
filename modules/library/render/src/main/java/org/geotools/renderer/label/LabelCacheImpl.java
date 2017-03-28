@@ -341,6 +341,7 @@ public final class LabelCacheImpl implements LabelCache {
         item.setGraphicsResize((GraphicResize) voParser.getEnumOption(symbolizer, "graphic-resize", GraphicResize.NONE));
         item.setGraphicMargin(voParser.getGraphicMargin(symbolizer, "graphic-margin"));
         item.setPartialsEnabled(voParser.getBooleanOption(symbolizer, PARTIALS_KEY, DEFAULT_PARTIALS));
+        item.setTextUnderlined(voParser.getBooleanOption(symbolizer, UNDERLINE_TEXT_KEY, DEFAULT_UNDERLINE_TEXT));
 
         return item;
     }
@@ -614,11 +615,11 @@ public final class LabelCacheImpl implements LabelCache {
         // ... use at least a 8 pixel step (curved processing is quite expensive), no matter what the label length is
         final double step = painter.getLineHeight() > 8 ? painter.getLineHeight() : 8;
         int space = labelItem.getSpaceAround();
-        int haloRadius = Math.round(labelItem.getTextStyle().getHaloFill() != null ? labelItem
-                .getTextStyle().getHaloRadius() : 0);
         // repetition distance, if any
-        //We extend this distance for a better placement of long labels
-        int labelDistance = (int) (labelItem.getRepeat() > 0 ? labelItem.getRepeat() + (textBounds.getWidth()*2) : 0);
+        int labelDistance = labelItem.getRepeat();
+        if(labelDistance > 0 && labelItem.isFollowLineEnabled()) {
+            labelDistance += textBounds.getWidth();
+        }
         // min distance, if any
         int minDistance = labelItem.getMinGroupDistance();
         LabelIndex groupLabels = new LabelIndex();
@@ -654,7 +655,9 @@ public final class LabelCacheImpl implements LabelCache {
             // labels
             double[] labelPositions;
             if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
-                labelPositions = new double[(int) (lineStringLength / (labelDistance*0.5))];
+                // one label in the middle, plus all the labels we can fit before/after on the two half lines
+                final int positionCount = (int) ((lineStringLength / 2) / labelDistance) * 2 + 1;
+                labelPositions = new double[positionCount];
                 labelPositions[0] = lineStringLength / 2;
                 double offset = labelDistance;
                 for (int i = 1; i < labelPositions.length; i++) {
@@ -681,13 +684,9 @@ public final class LabelCacheImpl implements LabelCache {
 
                 // label displacement loop
                 boolean painted = false;
-                //Original has labelOffset * 2
-                //The displacement limit is augmented for
-                //better flexibility
-                while (Math.abs(currOffset) <= (labelOffset + (textBounds.getWidth()))&& !painted) {
+                while (Math.abs(currOffset) <= (labelOffset * 2) && !painted) {
                     // reset transform and other computation parameters
                     tx.setToIdentity();
-                    Rectangle2D labelEnvelope = null;
                     double maxAngleChange = 0;
                     boolean curved = false;
 
@@ -702,15 +701,8 @@ public final class LabelCacheImpl implements LabelCache {
                         // curved label, but we might end up drawing a straight
                         // one as an optimization
                         maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate);
-                        if (maxAngleChange < MIN_CURVED_DELTA) {
-                            // if label will be painted as straight, use the
-                            // straight bounds
-                            setupLineTransform(painter, cursor, centroid, tx, true);
-                        } else {
-                            // otherwise use curved bounds, more expensive to
-                            // compute
-                            curved = true;
-                        }
+                        setupLineTransform(painter, cursor, centroid, tx, true);
+                        curved = maxAngleChange >= MIN_CURVED_DELTA;
                     } else {
                         setupLineTransform(painter, cursor, centroid, tx, false);
                     }
@@ -739,10 +731,13 @@ public final class LabelCacheImpl implements LabelCache {
                             // overrun
                             if ((startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength())) {
                                 if (maxAngleChange < maxAngleDelta) {
+                                    // a max distance related to both the font size, but also having a visual limit
+                                    // of a couple of millimeters assuming 90dpi
+                                    double maxDistance = Math.min(painter.getLineHeight() / 2, 7);
                                     // if straight segment connecting the start and end ordinate is really close, paint as a straight label
                                     if (maxAngleChange == 0
                                             || cursor.getMaxDistanceFromStraightLine(startOrdinate,
-                                            endOrdinate) < painter.getLineHeight() / 2) {
+                                            endOrdinate) < maxDistance) {
                                         painter.paintStraightLabel(tx);
                                     } else {
                                         painter.paintCurvedLabel(cursor);

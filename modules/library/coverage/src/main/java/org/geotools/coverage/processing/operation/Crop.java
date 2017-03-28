@@ -604,7 +604,7 @@ public class Crop extends Operation2D {
 			java.awt.Polygon rasterSpaceROI=null;
 			double[] background = destnodata != null ? destnodata : CoverageUtilities.getBackgroundValues(sourceCoverage);
             String operatioName=null;
-            if (!isSimpleTransform || cropROI!=null || nodata != null) {
+            if (!isSimpleTransform || cropROI != null) {
                 // /////////////////////////////////////////////////////////////////////
                 //
                 // We don't have a simple scale and translate transform, JAI
@@ -622,16 +622,15 @@ public class Crop extends Operation2D {
 				// //
 				final List<Point2D> points = new ArrayList<Point2D>(5);
 				rasterSpaceROI = FeatureUtilities.convertPolygonToPointArray(modelSpaceROI, ProjectiveTransform.create(sourceWorldToGridTransform), points);
-                                if (isSimpleTransform && cropROI == null) {
-                                    rasterSpaceROI = rectangleToPolygon(finalRasterArea);
-                                }
+                if (isSimpleTransform && cropROI == null) {
+                    rasterSpaceROI = rectangleToPolygon(finalRasterArea);
+                }
 				if(rasterSpaceROI==null||rasterSpaceROI.getBounds().isEmpty())
 		            if(finalRasterArea.isEmpty())
 		            	throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
-				final boolean doMosaic = forceMosaic ? true : decideJAIOperation(roiTolerance, rasterSpaceROI.getBounds2D(), points);
-				if (doMosaic || cropROI != null || internalROI != null || nodata != null) {
+				if (forceMosaic || cropROI != null || internalROI != null || nodata != null) {
 					// prepare the params for the mosaic
-                    final ROI[] roiarr;
+                    ROI[] roiarr = null;
                     if(cropROI != null) {
                         Geometry txROI = JTS.transform(cropROI, ProjectiveTransform.create(sourceWorldToGridTransform));
                         if (!hasIntegerBounds(JTS.toRectangle2D(txROI.getEnvelopeInternal()))) {
@@ -640,11 +639,11 @@ public class Crop extends Operation2D {
                         }
                         ROI cropRS = getAsROI(txROI);
                         roiarr = new ROI[]{cropRS};
-                    } else {
+                    } else if(forceMosaic) {
                         ROI roi = getAsROI(JTS.toPolygon(rasterSpaceROI));
                         roiarr = new ROI[]{roi};
                     }
-                    if(roiarr[0].getBounds().isEmpty()){
+                    if(roiarr != null && roiarr[0].getBounds().isEmpty()){
                         throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
                     }
                     worker.setBackground(background);
@@ -660,7 +659,7 @@ public class Crop extends Operation2D {
 
 					// we do not have to crop in this case (should not really happen at
                     // this time)
-                    if (!doMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform && nodata == null)
+                    if (!forceMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform && nodata == null)
                             return sourceCoverage;
 
 
@@ -823,26 +822,6 @@ public class Crop extends Operation2D {
 		        layout.setTileHeight(height);
 		}
         return layout;
-    }
-
-    /**
-     * Decides whether we would benefit from using a mosaic instead of a crop
-     * @param parameters
-     * @param finalGridRange
-     * @param points
-     * @return
-     * @throws InvalidParameterTypeException
-     * @throws ParameterNotFoundException
-     */
-    private static boolean decideJAIOperation(
-            final double roiTolerance, 
-            final Rectangle2D finalGridRange,
-            final List<Point2D> points) throws InvalidParameterTypeException,
-            ParameterNotFoundException {
-        final double cropArea = finalGridRange.getWidth()* finalGridRange.getHeight();
-        final double roiArea = Math.abs(FeatureUtilities.area((Point2D[]) points.toArray(new Point2D[] {})));
-        final boolean doMosaic = roiTolerance * cropArea > roiArea;
-        return doMosaic;
     }
 
     /**

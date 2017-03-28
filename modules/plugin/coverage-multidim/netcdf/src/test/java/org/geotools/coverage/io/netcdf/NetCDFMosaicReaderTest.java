@@ -18,6 +18,7 @@ package org.geotools.coverage.io.netcdf;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -60,7 +61,6 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils.Prop;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
@@ -1051,8 +1051,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertNotNull(reader);
         
         // Checking whether different sample images have been created
-        final File sampleImage1 = new File(TestData.file(this,"."),"nc_sampleimages/BrOsample_image");
-        final File sampleImage2 = new File(TestData.file(this,"."),"nc_sampleimages/NO2sample_image");
+        final File sampleImage1 = new File(TestData.file(this,"."),"nc_sampleimages/BrOsample_image.dat");
+        final File sampleImage2 = new File(TestData.file(this,"."),"nc_sampleimages/NO2sample_image.dat");
         assertTrue(sampleImage1.exists());
         assertTrue(sampleImage2.exists());
         reader.dispose();
@@ -1134,7 +1134,61 @@ public class NetCDFMosaicReaderTest extends Assert {
                 
                 
         }
-    
+
+    /**
+     * Test that expected data values can be read from an ImageMosaic of multi-coverage NetCDF files.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testMultiCoverage() throws Exception {
+        File testDir = new File("target", "multi-coverage");
+        URL testUrl = DataUtilities.fileToURL(testDir);
+        if (testDir.exists()) {
+            FileUtils.deleteDirectory(testDir);
+        }
+        FileUtils.copyDirectory(TestData.file(this, "multi-coverage"), testDir);
+        ImageMosaicReader reader = null;
+        try {
+            reader = new ImageMosaicReader(testUrl);
+            assertNotNull(reader);
+            checkMultiCoverage(reader, "air_temperature", -85, 26, "2017-02-06T00:00:00.000", 295);
+            checkMultiCoverage(reader, "sea_surface_temperature", -85, 26, "2017-02-06T00:00:00.000", 296);
+            checkMultiCoverage(reader, "air_temperature", -85, 26, "2017-02-06T12:00:00.000", 296);
+            checkMultiCoverage(reader, "sea_surface_temperature", -85, 26, "2017-02-06T12:00:00.000", 295);
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+
+    /**
+     * Check that reading a single data value from an ImageMosaic of multi-coverage NetCDF files yields the expected value.
+     * 
+     * @param reader
+     * @param coverageName
+     * @param longitude
+     * @param latitude
+     * @param timestamp
+     * @param expected
+     * @throws Exception
+     */
+    private void checkMultiCoverage(ImageMosaicReader reader, String coverageName, double longitude,
+            double latitude, String timestamp, double expected) throws Exception {
+        ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        useJai.setValue(false);
+        @SuppressWarnings("rawtypes")
+        ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        time.setValue(Arrays.asList(new Date[] { parseTimeStamp(timestamp) }));
+        GeneralParameterValue[] params = new GeneralParameterValue[] { useJai, time };
+        GridCoverage2D coverage = reader.read(coverageName, params);
+        assertNotNull(coverage);
+        // delta is zero because an exact match is expected
+        assertEquals(expected,
+                coverage.evaluate(new Point2D.Double(longitude, latitude), (double[]) null)[0], 0);
+    }
+
     private Date parseTimeStamp(String timeStamp) throws ParseException {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         formatD.setTimeZone(TimeZone.getTimeZone("Zulu"));

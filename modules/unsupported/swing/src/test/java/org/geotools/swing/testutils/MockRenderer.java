@@ -17,12 +17,13 @@
 
 package org.geotools.swing.testutils;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +37,8 @@ import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * A simple mock GTRenderer.
  * 
@@ -46,6 +49,8 @@ import org.geotools.renderer.RenderListener;
  * @version $Id$
  */
 public class MockRenderer implements GTRenderer {
+    protected List<RenderListener> listeners = new ArrayList<RenderListener>();
+    
     private MapContent mapContent;
     private long paintTime;
     private boolean verbose;
@@ -87,10 +92,12 @@ public class MockRenderer implements GTRenderer {
 
     @Override
     public void addRenderListener(RenderListener listener) {
+        this.listeners.add(listener);
     }
 
     @Override
     public void removeRenderListener(RenderListener listener) {
+        this.listeners.remove(listener);
     }
 
     @Override
@@ -156,7 +163,7 @@ public class MockRenderer implements GTRenderer {
         pretendToPaint();
     }
 
-    private void pretendToPaint() {
+    protected void pretendToPaint() {
         lock.lock();
         try {
             if (verbose) {

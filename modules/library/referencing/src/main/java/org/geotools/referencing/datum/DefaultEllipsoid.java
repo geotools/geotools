@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
+import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Length;
 
 import org.opengis.referencing.datum.Ellipsoid;
@@ -442,11 +443,22 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
         }
         if (super.equals(object, compareMetadata)) {
             final DefaultEllipsoid that = (DefaultEllipsoid) object;
-            return (!compareMetadata || this.ivfDefinitive == that.ivfDefinitive)   &&
-                   Utilities.equals(this.semiMajorAxis,     that.semiMajorAxis)     &&
-                   Utilities.equals(this.semiMinorAxis,     that.semiMinorAxis)     &&
-                   Utilities.equals(this.inverseFlattening, that.inverseFlattening) &&
-                   Utilities.equals(this.unit,              that.unit);
+            
+            if(!compareMetadata) {
+                UnitConverter converter = that.unit.getConverterTo(this.unit);
+                return Utilities.equals(this.semiMajorAxis, converter.convert(that.semiMajorAxis))
+                        && Utilities.equals(this.semiMinorAxis, converter.convert(that.semiMinorAxis));
+            } else {
+                return (this.ivfDefinitive == that.ivfDefinitive)   &&
+                        Utilities.equals(this.semiMajorAxis,     that.semiMajorAxis)     &&
+                        Utilities.equals(this.semiMinorAxis,     that.semiMinorAxis)     &&
+                        Utilities.equals(this.inverseFlattening, that.inverseFlattening) &&
+                        Utilities.equals(this.unit,              that.unit);
+            }
+            
+            
+            
+            
         }
         return false;
     }

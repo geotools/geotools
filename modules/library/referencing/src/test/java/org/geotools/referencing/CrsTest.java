@@ -26,15 +26,19 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.projection.Mercator;
+import org.geotools.referencing.operation.projection.Mercator1SP;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 
 
@@ -375,5 +379,43 @@ public final class CrsTest {
         for(String wkt : wkts) {
             assertNotNull(CRS.parseWKT(wkt));
         }
+    }
+    
+    @Test
+    public void parseEsriWebMercator() throws Exception {
+        String wkt = "PROJCS[\"WGS_1984_Web_Mercator_Auxiliary_Sphere\","
+                + "GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],"
+                + "PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],"
+                + "PROJECTION[\"Mercator_Auxiliary_Sphere\"],PARAMETER[\"False_Easting\",0.0],"
+                + "PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",0.0],"
+                + "PARAMETER[\"Standard_Parallel_1\",0.0],PARAMETER[\"Auxiliary_Sphere_Type\",0.0],"
+                + "UNIT[\"Meter\",1.0]]";
+        ProjectedCRS esriCrs = (ProjectedCRS) CRS.parseWKT(wkt);
+        assertEquals("Popular Visualisation Pseudo Mercator", esriCrs.getConversionFromBase().getMethod().getName().getCode());
+        
+        String wkt3857 = "PROJCS[\"WGS 84 / Pseudo-Mercator\", \n" + 
+                "  GEOGCS[\"WGS 84\", \n" + 
+                "    DATUM[\"World Geodetic System 1984\", \n" + 
+                "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n" + 
+                "      AUTHORITY[\"EPSG\",\"6326\"]], \n" + 
+                "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n" + 
+                "    UNIT[\"degree\", 0.017453292519943295], \n" + 
+                "    AXIS[\"Geodetic longitude\", EAST], \n" + 
+                "    AXIS[\"Geodetic latitude\", NORTH], \n" + 
+                "    AUTHORITY[\"EPSG\",\"4326\"]], \n" + 
+                "  PROJECTION[\"Popular Visualisation Pseudo Mercator\", AUTHORITY[\"EPSG\",\"1024\"]], \n" + 
+                "  PARAMETER[\"semi_minor\", 6378137.0], \n" + 
+                "  PARAMETER[\"latitude_of_origin\", 0.0], \n" + 
+                "  PARAMETER[\"central_meridian\", 0.0], \n" + 
+                "  PARAMETER[\"scale_factor\", 1.0], \n" + 
+                "  PARAMETER[\"false_easting\", 0.0], \n" + 
+                "  PARAMETER[\"false_northing\", 0.0], \n" + 
+                "  UNIT[\"m\", 1.0], \n" + 
+                "  AXIS[\"Easting\", EAST], \n" + 
+                "  AXIS[\"Northing\", NORTH], \n" + 
+                "  AUTHORITY[\"EPSG\",\"3857\"]]";
+        CoordinateReferenceSystem epsg3857 = CRS.parseWKT(wkt);
+        
+        assertTrue(CRS.equalsIgnoreMetadata(esriCrs, epsg3857));
     }
 }

@@ -1,0 +1,47 @@
+{
+    "version": 8,
+    "name": "rootPropertyTest",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -73.9749,
+        40.7736
+    ],
+    "zoom": 12.5,
+    "bearing": 29,
+    "pitch": 50,
+    "sources": {
+        "geoserver-states": {
+            "url": "http://localhost:8080/geoserver/topp/states/wms",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/test/ciym62qtf005d2rnopgu725qo",
+    "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "water",
+            "type": "fill",
+            "source": "geoserver-states",
+            "source-layer": "states",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "#e100ff",
+                "fill-opacity": 0.84,
+                "fill-translate": [
+                    10,
+                    20
+                ]
+            }
+        }
+    ],
+    "created": "2017-01-31T23:40:15.130Z",
+    "id": "ciym62qtf005d2rnopgu725qo",
+    "modified": "2017-01-31T23:40:52.754Z",
+    "owner": "test",
+    "draft": false
+}

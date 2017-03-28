@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
@@ -46,14 +47,16 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     private int curBufferPos = 0;
     
     public JDBCInsertFeatureWriter(String sql, Connection cx,
-            JDBCFeatureSource featureSource, Hints hints) throws SQLException, IOException {
-        super(sql, cx, featureSource, featureSource.getSchema(), hints);
+            JDBCFeatureSource featureSource, Query query) throws SQLException, IOException {
+        super(sql, cx, featureSource, featureSource.getSchema(), query);
+        md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
 
-    public JDBCInsertFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Hints hints)
+    public JDBCInsertFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
         throws SQLException, IOException {
-        super( ps, cx, featureSource, featureSource.getSchema(), hints );
+        super( ps, cx, featureSource, featureSource.getSchema(), query );
+        md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
     

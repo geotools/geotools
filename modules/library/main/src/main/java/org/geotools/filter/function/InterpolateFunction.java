@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +37,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * This is an implemenation of the Interpolate function as defined by
@@ -433,7 +435,10 @@ public class InterpolateFunction implements Function {
             }
         }
     }
-
+    
+    /**
+     * Review parameters and generate {@link Mode} linear cosine, cubbic based on optional parameter.
+     */
     private void setMode() {
         boolean specified = false;
 
@@ -469,6 +474,9 @@ public class InterpolateFunction implements Function {
         modeSpecified = specified;
     }
 
+    /**
+     * Review parameters and generate {@link Method} numeric or color based on optional parameter.
+     */
     private void setMethod() {
         boolean specified = false;
 
@@ -635,6 +643,31 @@ public class InterpolateFunction implements Function {
     private double clamp(double x, double min, double max) {
         return Math.max(min, Math.min(max, x));
     }
-
+    
+    /**
+     * Creates a String representation of this Function with
+     * the function name and the arguments.
+     */
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName());
+        sb.append("(");
+        List<org.opengis.filter.expression.Expression> params = getParameters();
+        if(params != null){
+            org.opengis.filter.expression.Expression exp;
+            for(Iterator<org.opengis.filter.expression.Expression> it = params.iterator(); it.hasNext();){
+                exp = it.next();
+                sb.append("[");
+                sb.append(exp);
+                sb.append("]");
+                if(it.hasNext()){
+                    sb.append(", ");
+                }
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }
 

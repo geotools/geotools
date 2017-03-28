@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.LineString;
  *  
  * @author Andrea Aime
  */
-class ParallelLinesFiller {
+public class ParallelLinesFiller {
     
     /**
      * The four types of orientation that can give birth to a parallel line set
@@ -168,6 +168,13 @@ class ParallelLinesFiller {
         return Math.abs(d1 - d2) < 1e-3;
     }
     
+    /**
+     * Fills the specified rectangle with parallel lines
+     * @param bounds
+     * @param painter
+     * @param graphics
+     * @param ls2d
+     */
     public void fillRectangle(Rectangle2D bounds, StyledShapePainter painter, Graphics2D graphics, LineStyle2D ls2d) {
         // the shape painter works only with liteshape, prepare objects so that we don't end up re-creating them
         // over and over

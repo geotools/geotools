@@ -44,7 +44,7 @@ import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
-import org.geotools.resources.image.ExtendedImageParam;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
@@ -587,8 +587,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         // let's see if we have some extra parameters
         int[] bands = null;
-        if (param instanceof ExtendedImageParam) {
-            bands = ((ExtendedImageParam) param).getBands();
+        if (param instanceof EnhancedImageReadParam) {
+            bands = ((EnhancedImageReadParam) param).getBands();
         }
 
         /*
@@ -646,16 +646,14 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 }
             }
 
-            // add the ranges the COARDS way: T, Z, Y, X
-            // T
-            int first = slice2DIndex.getTIndex();
-            if (first != -1){
-                ranges.add(new Range(first, first, 1));
-            }
-            // Z
-            first = slice2DIndex.getZIndex();
-            if (first != -1){
-                ranges.add(new Range(first, first, 1));
+            // add the ranges the COARDS way: (additional dims), T, Z, Y, X
+            int first;
+            // (additional), T, Z
+            for (int i = slice2DIndex.getNCount() - 1; i >= 0; i--) {
+                first = slice2DIndex.getNIndex(i);
+                if (first != -1){
+                    ranges.add(new Range(first, first, 1));
+                }
             }
             // Y
             first = srcRegion.y;

@@ -1,3 +1,12 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This file is hereby placed into the Public Domain. This means anyone is
+ *    free to do whatever they wish with this file. Use it well and enjoy!
+ */
 package org.geotools.po.bindings;
 
 import org.geotools.xml.Configuration;
@@ -33,8 +42,10 @@ public class POConfiguration extends Configuration {
         container.registerComponentImplementation(PO.SKU,SKUBinding.class);
         container.registerComponentImplementation(PO.USAddress,USAddressBinding.class);
         container.registerComponentImplementation(PO.Items_item,Items_itemBinding.class);
-
-
+        
+        //Elements
+        container.registerComponentImplementation(PO.comment,CommentBinding.class);
+        container.registerComponentImplementation(PO.purchaseOrder,PurchaseOrderBinding.class);
     
     }
 } 

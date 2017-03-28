@@ -270,7 +270,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                 queryNone.setFilter(Filter.EXCLUDE);
                 if ( getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect ) {
                     PreparedStatement ps = getDataStore().selectSQLPS(getSchema(), queryNone, cx);
-                    return new JDBCInsertFeatureWriter( ps, cx, delegate, query.getHints() );
+                    return new JDBCInsertFeatureWriter( ps, cx, delegate, query );
                 }
                 else {
                     //build up a statement for the content, inserting only so we dont want
@@ -278,7 +278,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                     String sql = getDataStore().selectSQL(getSchema(), queryNone);
                     getDataStore().getLogger().fine(sql);
     
-                    return new JDBCInsertFeatureWriter( sql, cx, delegate, query.getHints() );
+                    return new JDBCInsertFeatureWriter( sql, cx, delegate, query );
                 }
             }
             
@@ -293,20 +293,20 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             if(getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
                 PreparedStatement ps = getDataStore().selectSQLPS(getSchema(), preQuery, cx);
                 if ( (flags | WRITER_UPDATE) == WRITER_UPDATE ) {
-                    writer = new JDBCUpdateFeatureWriter(ps, cx, delegate, query.getHints() );
+                    writer = new JDBCUpdateFeatureWriter(ps, cx, delegate, query );
                 } else {
                     //update insert case
-                    writer = new JDBCUpdateInsertFeatureWriter(ps, cx, delegate, query.getPropertyNames(), query.getHints() );
+                    writer = new JDBCUpdateInsertFeatureWriter(ps, cx, delegate, query.getPropertyNames(), query );
                 }
             } else {
                 String sql = getDataStore().selectSQL(getSchema(), preQuery);
                 getDataStore().getLogger().fine(sql);
                 
                 if ( (flags | WRITER_UPDATE) == WRITER_UPDATE ) {
-                    writer = new JDBCUpdateFeatureWriter( sql, cx, delegate, query.getHints() );
+                    writer = new JDBCUpdateFeatureWriter( sql, cx, delegate, query );
                 } else {
                     //update insert case
-                    writer = new JDBCUpdateInsertFeatureWriter( sql, cx, delegate, query.getHints() );
+                    writer = new JDBCUpdateInsertFeatureWriter( sql, cx, delegate, query);
                 }
             }
         } catch (Throwable e) { // NOSONAR

@@ -11,3 +11,4 @@ org.geotools.coverageio.gdal.ehdr.EsriHdrFormatFactory
 org.geotools.coverageio.gdal.envihdr.EnviHdrFormatFactory
 org.geotools.coverageio.gdal.aig.AIGFormatFactory
 org.geotools.coverageio.gdal.rpftoc.RPFTOCFormatFactory
+org.geotools.coverageio.gdal.vrt.VRTFormatFactory

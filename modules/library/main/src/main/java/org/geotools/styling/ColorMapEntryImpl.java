@@ -137,4 +137,11 @@ public class ColorMapEntryImpl implements ColorMapEntry {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "ColorMapEntryImpl [quantity=" + quantity + ", opacity=" + opacity + ", color="
+                + color + ", label=" + label + "]";
+    }
+
+    
 }

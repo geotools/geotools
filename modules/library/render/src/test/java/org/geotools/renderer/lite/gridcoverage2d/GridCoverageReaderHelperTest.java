@@ -30,6 +30,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.Envelope2D;
@@ -41,17 +42,15 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.lite.GridCoverageRendererTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.EngineeringCRS;
 
 public class GridCoverageReaderHelperTest {
 
@@ -270,6 +269,31 @@ public class GridCoverageReaderHelperTest {
             assertEquals(0, envelope.getMaximum(0), EPS);
             assertEquals(-45, envelope.getMinimum(1), EPS);
             assertEquals(45, envelope.getMaximum(1), EPS);
+        } finally {
+            if(reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+    
+    @Test
+    public void testReadResolution3003InvalidArea() throws Exception {
+        coverageFile = DataUtilities
+                .urlToFile(GridCoverageRendererTest.class.getResource("test-data/test3003.tif"));
+        assertTrue(coverageFile.exists());
+        GeoTiffReader reader = new GeoTiffReader(coverageFile);
+        try {
+            reader = new GeoTiffReader(coverageFile);
+            ReferencedEnvelope mapExtent = new ReferencedEnvelope(-130, -120, -40, 30, DefaultGeographicCRS.WGS84);
+            GridCoverageReaderHelper helper = new GridCoverageReaderHelper(reader, new Rectangle(200,
+                    200), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            // make sure the accurate resolution does not happen, it cannot work in this context
+            ReferencedEnvelope readExtent = mapExtent.transform(reader.getCoordinateReferenceSystem(), true);
+            assertFalse(helper.isAccurateResolutionComputationSafe(readExtent));
+            // nothing is really getting read
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(new ReferencedEnvelope(DefaultGeographicCRS.WGS84), reader.getCoordinateReferenceSystem(), false);
+            List<GridCoverage2D> coverages = helper.readCoverageInEnvelope(mapExtent, null, handler, true);
+            assertNull(coverages);
         } finally {
             if(reader != null) {
                 reader.dispose();

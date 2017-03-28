@@ -37,7 +37,7 @@ import javax.media.jai.Warp;
 import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.factory.Hints;
-import org.jaitools.imageutils.ImageLayout2;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 import com.sun.media.jai.util.PropertyGeneratorImpl;
 
@@ -60,8 +60,6 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
     public synchronized static void register(boolean force) {
         if (!registered || force) {
             OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
-            PropertyGenerator[] stdGenerators = new WarpDescriptor()
-                    .getPropertyGenerators("rendered");
             registry.addPropertyGenerator("rendered", "Warp", new GTWarpPropertyGenerator());
             registered = true;
         }
@@ -132,6 +130,8 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             layout.setMinY(miny);
             layout.setWidth(w);
             layout.setHeight(h);
+            layout.setTileWidth(op.getTileWidth());
+            layout.setTileHeight(op.getTileHeight());
             RenderingHints hints = op.getRenderingHints();
             hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
@@ -162,6 +162,8 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             il.setMinY(dstBounds.y);
             il.setWidth(dstBounds.width);
             il.setHeight(dstBounds.height);
+            il.setTileWidth(op.getTileWidth());
+            il.setTileHeight(op.getTileHeight());
             localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
             roiImage = JAI.create("Warp", paramBlk, localHints);
             ROI dstROI = new ROI(roiImage, 1);

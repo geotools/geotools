@@ -629,9 +629,14 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                             ImageIO.getUseCache(), ImageIO.getCacheDirectory()));
                     pbjRead.add(imageChoice - extOvrImgChoice);
                 } else {
-                    pbjRead.add(inStreamSPI != null ? inStreamSPI.createInputStreamInstance(source,
-                            ImageIO.getUseCache(), ImageIO.getCacheDirectory()) : ImageIO
-                            .createImageInputStream(source));
+                    if(inStream instanceof ImageInputStream && !closeMe) {
+                        pbjRead.add(inStream);
+                    }
+                    else {
+                        pbjRead.add(inStreamSPI != null ? inStreamSPI.createInputStreamInstance(source,
+                                ImageIO.getUseCache(), ImageIO.getCacheDirectory()) : ImageIO
+                                .createImageInputStream(source));
+                    }
                     // Setting correct ImageChoice (taking into account overviews and masks)
                     int overviewImageIndex = dtLayout.getInternalOverviewImageIndex(imageChoice);
                     int index = overviewImageIndex >= 0 ? overviewImageIndex : 0;

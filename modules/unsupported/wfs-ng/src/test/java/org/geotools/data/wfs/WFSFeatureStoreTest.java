@@ -32,12 +32,11 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
-import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -197,7 +196,7 @@ public class WFSFeatureStoreTest {
         transaction.commit();
         
         ContentFeatureCollection coll = store.getFeatures();
-        FeatureIterator it= coll.features();
+        SimpleFeatureIterator it= coll.features();
         while (it.hasNext()) {
             System.err.println(it.next());
         }

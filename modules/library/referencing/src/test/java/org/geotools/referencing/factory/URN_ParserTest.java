@@ -88,4 +88,59 @@ public final class URN_ParserTest {
             assertEquals("dummy", e.getAuthorityCode());
         }
     }
+
+    @Test
+    public void testOgcCRS84() throws NoSuchAuthorityCodeException {
+        final String urn_crs84 = "urn:ogc:def:crs:OGC:1.3:CRS84";
+        final URN_Parser parser = URN_Parser.buildParser(urn_crs84);
+        assertEquals("crs", parser.type.name);
+        assertEquals("CRS", parser.authority);
+        assertEquals("1.3", parser.version.toString());
+        assertEquals("84", parser.code);
+        assertEquals("CRS:84", parser.getAuthorityCode());
+    }
+
+    @Test
+    public void testOgcCRS84NoVersion() throws NoSuchAuthorityCodeException {
+        final String urn_crs84 = "urn:ogc:def:crs:OGC:CRS84";
+        final URN_Parser parser = URN_Parser.buildParser(urn_crs84);
+        assertEquals("crs", parser.type.name);
+        assertEquals("CRS", parser.authority);
+        assertNull(parser.version);
+        assertEquals("84", parser.code);
+        assertEquals("CRS:84", parser.getAuthorityCode());
+    }
+
+    @Test
+    public void testAutoLatLon() throws NoSuchAuthorityCodeException {
+        final String urn_auto = "urn:ogc:def:crs:OGC:1.3:AUTO42002:180:90";
+        final URN_Parser parser = URN_Parser.buildParser(urn_auto);
+        assertEquals("crs", parser.type.name);
+        assertEquals("AUTO", parser.authority);
+        assertEquals("1.3", parser.version.toString());
+        assertEquals("42002,180,90", parser.code);
+        assertEquals("AUTO:42002,180,90", parser.getAuthorityCode());
+    }
+
+    @Test
+    public void testAuto() throws NoSuchAuthorityCodeException {
+        final String urn_auto = "urn:ogc:def:crs:OGC:1.3:AUTO42002";
+        final URN_Parser parser = URN_Parser.buildParser(urn_auto);
+        assertEquals("crs", parser.type.name);
+        assertEquals("AUTO", parser.authority);
+        assertEquals("1.3", parser.version.toString());
+        assertEquals("42002", parser.code);
+        assertEquals("AUTO:42002", parser.getAuthorityCode());
+    }
+
+    @Test
+    public void testAutoNoVersion() throws NoSuchAuthorityCodeException {
+        final String urn_auto = "urn:ogc:def:crs:OGC:AUTO42002";
+        final URN_Parser parser = URN_Parser.buildParser(urn_auto);
+        assertEquals("crs", parser.type.name);
+        assertEquals("AUTO", parser.authority);
+        assertNull(parser.version);
+        assertEquals("42002", parser.code);
+        assertEquals("AUTO:42002", parser.getAuthorityCode());
+    }
 }

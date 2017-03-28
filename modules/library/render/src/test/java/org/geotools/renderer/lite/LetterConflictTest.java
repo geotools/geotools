@@ -139,7 +139,7 @@ public class LetterConflictTest extends TestCase {
         mc.dispose();
         
         assertTrue("More labels in image2 than image1",
-                countPixels(image2, Color.BLACK) > countPixels(image1, Color.BLACK));
+                countPixels(image2, Color.BLACK) >= countPixels(image1, Color.BLACK));
 
         writeImage("letterConflictEnabledFalse", image1);
         writeImage("letterConflictEnabledTrue", image2);
@@ -251,7 +251,7 @@ public class LetterConflictTest extends TestCase {
             mc.dispose();
 
             assertTrue("More labels in image2 than image1",
-                    countDarkPixels(image2) > countDarkPixels(image1));
+                    countDarkPixels(image2) >= countDarkPixels(image1));
 
             writeImage("letterConflictEnabledPerfFalse",image1);
             writeImage("letterConflictEnabledPerfTrue",image2);

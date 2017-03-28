@@ -230,13 +230,16 @@ public class DataUtilitiesTest extends DataTestCase {
             handleFile("one");
             handleFile("/one/two/and three");
             handleFile("/hello world/this++().file");
-        }
+        }       
         assertURL("one", "file:one");
         assertURL("/one", "file:///one");
         assertURL(replaceSlashes("C:\\"), "file://C:/");
         assertURL(replaceSlashes("C:\\one"), "file://C:/one");
         assertURL(replaceSlashes("C:\\one\\two"), "file://C:/one/two");
         assertURL(replaceSlashes("C:\\one\\two\\and three"), "file://C:/one/two/and three");
+
+        assertEquals( "sample",DataUtilities.urlToFile(new URL("file:sample?query")).toString());
+        assertEquals( "sample",DataUtilities.urlToFile(new URL("file:sample#ref")).toString());
 
         File file = File.createTempFile("hello", "world");
         handleFile(file.getAbsolutePath());
@@ -645,6 +648,16 @@ public class DataUtilitiesTest extends DataTestCase {
         after = DataUtilities.createSubType(before, new String[]{"name", "the_geom1", "the_geom2"}, DefaultGeographicCRS.WGS84);
         assertEquals(3, after.getAttributeCount());
         assertEquals("the_geom2", after.getGeometryDescriptor().getLocalName());
+    }
+
+    public void testCreateSubTypeWithPropertyNotMatchingAnAttributeDescriptor() throws Exception {
+        // creating a sub type with a property that doesn't map to an attribute descriptor
+        SimpleFeatureType before = DataUtilities.createType("cities","the_geom:Point:srid=4326,name:String");
+        SimpleFeatureType after = DataUtilities.createSubType(before, new String[] { "the_geom", "name", "not_existing" });
+        // the not_existing property should have been ignored
+        assertEquals(2, after.getAttributeCount());
+        assertNotNull(after.getDescriptor("the_geom"));
+        assertNotNull(after.getDescriptor("name"));
     }
 
     public void testSource() throws Exception {

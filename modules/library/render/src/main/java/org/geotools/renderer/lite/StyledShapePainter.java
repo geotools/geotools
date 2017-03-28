@@ -73,7 +73,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @source $URL$
  */
-public final class StyledShapePainter {
+public class StyledShapePainter {
     public final static Key TEXTURE_ANCHOR_HINT_KEY = new TextureAnchorKey();
     private final static AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
 
@@ -234,7 +234,7 @@ public final class StyledShapePainter {
             }
             // if the style is a polygon one, process it even if the polyline is
             // not closed (by SLD specification)
-            if (style instanceof PolygonStyle2D) {
+            if (style instanceof PolygonStyle2D && !optimizeOutFill((PolygonStyle2D) style, shape)) {
                 PolygonStyle2D ps2d = (PolygonStyle2D) style;
 
                 if (ps2d.getFill() != null) {
@@ -277,6 +277,45 @@ public final class StyledShapePainter {
                 paintLineStyle(graphics, shape, ls2d, isLabelObstacle, 0.5f);
             }
         }
+    }
+
+    /**
+     * Checks if the fill can simply be omitted because it's not going to be visible
+     * anyways. It takes a style that has a solid outline and a width or height that's
+     * less than the stroke width
+     * @param style
+     * @param shape
+     * @return
+     */
+    private boolean optimizeOutFill(PolygonStyle2D style, LiteShape2 shape) {
+        // if we have a graphic stroke the outline might not be solid, so, not covering
+        if(style.getGraphicStroke() != null) {
+            return false;
+        }
+        
+        final Stroke stroke = style.getStroke();
+        if(stroke == null || !(stroke instanceof BasicStroke)) {
+            return false;
+        } 
+        // we need a solid composite to optimize out
+        Composite composite = style.getContourComposite();
+        if(!(composite instanceof AlphaComposite)) {
+            return false;
+        }
+        AlphaComposite ac = (AlphaComposite) composite;
+        if(ac.getAlpha() < 1) {
+            return false;
+        }
+        
+        // if dashed, it's not covering
+        BasicStroke basic = (BasicStroke) stroke;
+        if(basic.getDashArray() != null) {
+            return false;
+        }
+        
+        float lineWidth = basic.getLineWidth();
+        Rectangle2D bounds = shape.getBounds2D();
+        return bounds.getWidth() < lineWidth || bounds.getHeight() < lineWidth;
     }
 
     void paintLineStyle(final Graphics2D graphics, final LiteShape2 shape,
@@ -728,7 +767,7 @@ public final class StyledShapePainter {
      * @throws TransformException
      * @throws FactoryException
      */
-    private void paintGraphicFill(Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) 
+    protected void paintGraphicFill(Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) 
     {
         // retrieves the bounds of the provided shape
         Rectangle2D boundsShape = shape.getBounds2D();

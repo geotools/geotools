@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -215,13 +218,25 @@ public class ShapefileDumper {
         Map<Class, StoreWriter> writers = new HashMap<Class, StoreWriter>();
         boolean featuresWritten = false;
         Class geomType = schema.getGeometryDescriptor().getType().getBinding();
+        // let's see if we will need to write multiple geometry types
         boolean multiWriter = GeometryCollection.class.equals(geomType)
                 || Geometry.class.equals(geomType);
+        // we write all the features with no geometry type defined and NULL geometries to the same file
+        StoreWriter nullStoreWriter = null;
         try (SimpleFeatureIterator it = fc.features()) {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
-
-                StoreWriter storeWriter = getStoreWriter(f, writers, multiWriter);
+                // if the geometry type is not defined and the geometry value is NULL we write it
+                // to the NULL geometries file otherwise we write it to the correspondent geometry file
+                StoreWriter storeWriter;
+                if (multiWriter && f.getDefaultGeometry() == null) {
+                    // lazy instantiation of NULL geometries writer
+                    nullStoreWriter = nullStoreWriter == null ?
+                            getStoreWriter(schema, null, multiWriter, Point.class, "_NULL") : nullStoreWriter;
+                    storeWriter = nullStoreWriter;
+                } else {
+                    storeWriter = getStoreWriter(f, writers, multiWriter);
+                }
                 // try to write, the shapefile size limits could be reached
                 try {
                     writeToShapefile(f, storeWriter.writer);
@@ -256,7 +271,12 @@ public class ShapefileDumper {
             // during closeup (shapefile datastore will have to copy the shapefiles, that migh
             // fail in many ways)
             IOException stored = null;
-            for (StoreWriter sw : writers.values()) {
+            // add the not defined and NULL geometries store writer if defined
+            List<StoreWriter> writersValues = new ArrayList<>(writers.values());
+            if (nullStoreWriter != null) {
+                writersValues.add(nullStoreWriter);
+            }
+            for (StoreWriter sw : writersValues) {
                 try {
                     SimpleFeatureType writerSchema = sw.dstore.getSchema();
                     sw.writer.close();
@@ -396,10 +416,13 @@ public class ShapefileDumper {
         Class<?> target = null;
         String geometryType = null;
         if (multiWriter) {
+            // geometry type is not defined (we have the generic Geometry type) so we iterate
+            // over all geometries objects and extract the correct type
             Map<String, Object> map = getGeometryType(f);
             target = (Class<?>) map.get("target");
             geometryType = (String) map.get("geometryType");
         } else {
+            // we have a specific geometry type defined (Point, LineString, etc ...)
             target = Geometry.class;
             geometryType = "Geometry";
         }
@@ -408,10 +431,9 @@ public class ShapefileDumper {
     }
 
     private StoreWriter getStoreWriter(SimpleFeatureType original, Map<Class, StoreWriter> writers,
-            boolean multiWriter, Class<?> target, String geometryType)
-                    throws MalformedURLException, FileNotFoundException, IOException {
+            boolean multiWriter, Class<?> target, String geometryType) throws IOException {
         // see if we already have a cached writer
-        StoreWriter storeWriter = writers.get(target);
+        StoreWriter storeWriter = writers != null ? writers.get(target) : null;
         if (storeWriter == null) {
             // retype the schema
             SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -437,10 +459,11 @@ public class ShapefileDumper {
 
             SimpleFeatureType retyped = builder.buildFeatureType();
 
-
-            // cache it
+            // cache it if cache map provided
             storeWriter = new StoreWriter(retyped);
-            writers.put(target, storeWriter);
+            if (writers != null) {
+                writers.put(target, storeWriter);
+            }
         }
         return storeWriter;
     }

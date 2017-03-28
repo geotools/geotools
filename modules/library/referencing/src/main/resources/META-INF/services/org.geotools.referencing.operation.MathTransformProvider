@@ -57,3 +57,6 @@ org.geotools.referencing.operation.projection.MeteosatSG$Provider
 org.geotools.referencing.operation.projection.GeostationarySatellite$Provider
 org.geotools.referencing.operation.projection.RotatedPole$Provider
 org.geotools.referencing.operation.projection.AzimuthalEquidistant$Provider
+org.geotools.referencing.operation.projection.CylindricalEqualArea$Provider
+org.geotools.referencing.operation.projection.CylindricalEqualArea$BehrmannProvider
+org.geotools.referencing.operation.projection.CylindricalEqualArea$LambertCylindricalEqualAreaProvider

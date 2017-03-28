@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
@@ -63,18 +64,22 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
-import org.jaitools.imageutils.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -1251,6 +1256,29 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
+    public void testTileSizeScale() throws Exception {
+        // apply straight translation
+        AffineTransform at = AffineTransform.getScaleInstance(1000, 1000);
+        testTileSize(at);
+    }
+    
+    @Test
+    public void testTileSizeGenericAffine() throws Exception {
+        // apply straight translation
+        AffineTransform at = new AffineTransform(100, 0.5, -0.5, 100, 20, 20);
+        testTileSize(at);
+    }
+
+    private void testTileSize(AffineTransform at) {
+        BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_3BYTE_BGR);
+        ImageWorker iw = new ImageWorker(bi);
+        iw.affine(at, null, null);
+        RenderedImage t1 = iw.getRenderedImage();
+        assertEquals(512, t1.getTileWidth());
+        assertEquals(512, t1.getTileHeight());
+    }
+    
+    @Test
     public void testAffineNegative() throws Exception {
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         ImageWorker iw = new ImageWorker(bi);
@@ -1302,6 +1330,41 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(0, reduced.getTileGridYOffset());
         assertEquals(ushortCoverage.getRenderedImage().getTileWidth(), reduced.getTileWidth());
         assertEquals(ushortCoverage.getRenderedImage().getTileHeight(), reduced.getTileHeight());
+    }
+    
+    @Test
+    public void testWarpAffinePreserveBackgorund() throws Exception {
+        // pick a RGB image, do warp and then affine
+        double[] background = new double[] {1,2,3};
+        GridCoverage2D warped = project(EXAMPLES.get(0), CRS.parseWKT(GOOGLE_MERCATOR_WKT), null, "nearest", background, null);
+        
+        ImageWorker iwa = new ImageWorker(warped.getRenderedImage());
+        iwa.affine(AffineTransform.getScaleInstance(0.5, 0.5), Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+        RenderedOp reduced = (RenderedOp) iwa.getRenderedImage();
+        assertEquals("Warp", reduced.getOperationName());
+        assertEquals(background, reduced.getParameterBlock().getObjectParameter(2));
+    }
+    
+    @Test
+    public void testOptimizedWarpOnLargeUpscale() throws Exception {
+        BufferedImage bi = new BufferedImage(4, 4, BufferedImage.TYPE_BYTE_INDEXED);
+        GridCoverage2D source = new GridCoverageFactory().create("Test", bi, new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+        GridCoverage2D coverage = project(source, CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,
+                "nearest", null);
+        RenderedImage ri = coverage.getRenderedImage();
+        
+        checkTileSize(ri, AffineTransform.getScaleInstance(100, 100));
+        checkTileSize(ri, new AffineTransform(100, 0, 0, 100, 10, 10));
+    }
+
+    private void checkTileSize(RenderedImage ri, AffineTransform scale) {
+        final Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        RenderedOp reduced = (RenderedOp) new ImageWorker(ri).affine(scale,
+                interpolation, new double[] { 0 })
+                .getRenderedImage();
+        // the tile size is not 4x4
+        assertEquals(400, reduced.getTileWidth());
+        assertEquals(400, reduced.getTileHeight());
     }
 
     @Test
@@ -1580,5 +1643,72 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ri.getData().getPixel(256, 256, pixel);
         assertEquals(255, pixel[0]);
         assertEquals(255, pixel[1]);
+    }
+    
+    @Test
+    public void testWarpROITileSize() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        worker.setROI(new ROIShape(new Rectangle(0, 0, gray.getWidth(), gray.getHeight())));
+        RenderedImage image = worker.getRenderedImage();
+        assertNotEquals(java.awt.Image.UndefinedProperty, image.getProperty("ROI"));
+
+        ImageWorker iw = new ImageWorker(image);
+        iw.warp(new WarpAffine(AffineTransform.getScaleInstance(0.5, 0.5)),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        RenderedImage warped = iw.getRenderedImage();
+        
+        assertNotEquals(java.awt.Image.UndefinedProperty, warped.getProperty("ROI"));
+        ROI warpedROI = (ROI) warped.getProperty("ROI");
+        // turned into raster, the ROI has the same tile structure as the image
+        assertEquals(ROI.class, warpedROI.getClass());
+        assertEquals(warped.getTileWidth(), warpedROI.getAsImage().getTileWidth());
+        assertEquals(warped.getTileHeight(), warpedROI.getAsImage().getTileHeight());
+    }
+    
+    @Test
+    public void testAffineROITileSize() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        ROIShape roiShape = new ROIShape(new Rectangle(0, 0, gray.getWidth(), gray.getHeight()));
+        ROI roi = new ROI(roiShape.getAsImage());
+        worker.setROI(roi);
+        RenderedImage image = worker.getRenderedImage();
+        assertNotEquals(java.awt.Image.UndefinedProperty, image.getProperty("ROI"));
+
+        ImageWorker iw = new ImageWorker(image);
+        iw.affine(AffineTransform.getScaleInstance(0.5, 0.5),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+        RenderedImage scaled = iw.getRenderedImage();
+        
+        assertNotEquals(java.awt.Image.UndefinedProperty, scaled.getProperty("ROI"));
+        ROI scaledROI = (ROI) scaled.getProperty("ROI");
+        assertEquals(ROI.class, scaledROI.getClass());
+        assertEquals(scaled.getTileWidth(), scaledROI.getAsImage().getTileWidth());
+        assertEquals(scaled.getTileHeight(), scaledROI.getAsImage().getTileHeight());
+    }
+
+    @Test
+    public void testStatsAfterCrop() throws IOException {
+        final int width = 100;
+        final int height = 100;
+        final WritableRaster raster = RasterFactory.createBandedRaster(
+                        DataBuffer.TYPE_BYTE, width, height, 1, null);
+        for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                        raster.setSample(x, y, 0, x+y);
+                }
+        }
+        final ColorModel cm = new ComponentColorModelJAI(ColorSpace
+                        .getInstance(ColorSpace.CS_GRAY), false, false,
+                        Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+        final BufferedImage image = new BufferedImage(cm, raster, false, null);
+        ImageWorker worker = new ImageWorker(image);
+        double maxs[] = worker.getMaximums();
+        assertEquals(width + height - 2, (int)maxs[0]);
+
+        worker = worker.crop(0, 0, width/2, height/2);
+        maxs = worker.getMaximums();
+        assertEquals(width/2 + height/2 - 2, (int)maxs[0]);
     }
 }

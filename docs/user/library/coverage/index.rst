@@ -63,6 +63,7 @@ Format plugins:
    mosaic
    pyramid
    multidim
+   ../data/geopackage
 
 Unsupported plugins:
    

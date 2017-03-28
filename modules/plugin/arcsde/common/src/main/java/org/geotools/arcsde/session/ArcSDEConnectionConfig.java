@@ -39,7 +39,7 @@ public class ArcSDEConnectionConfig {
     /** ArcSDE server port parameter name */
     public static final String PORT_NUMBER_PARAM_NAME = "port";
 
-    /** ArcSDE databse name parameter name */
+    /** ArcSDE database name parameter name */
     public static final String INSTANCE_NAME_PARAM_NAME = "instance";
 
     /** ArcSDE database user name parameter name */

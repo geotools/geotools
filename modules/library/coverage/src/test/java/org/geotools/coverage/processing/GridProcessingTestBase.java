@@ -98,6 +98,26 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
                                       final CoordinateReferenceSystem targetCRS,
                                       final GridGeometry2D            geometry,
                                       final String                    interpolationType,
+                                      final Hints                     hints) {
+        return project(coverage, targetCRS, geometry, interpolationType, null, hints);
+    }
+    
+    /**
+     * Projects the specified coverage to the specified CRS using the specified hints.
+     *
+     * @param coverage  The coverage to project.
+     * @param targetCRS The target CRS, or {@code null} if the same.
+     * @param geometry  The target geometry, or {@code null} if the same.
+     * @param interpolationType The target interpolation.
+     * @param backgroundValues The background values
+     * @param hints     An optional set of hints, or {@code null} if none.
+     * @return The operation name which was applied on the image, or {@code null} if none.
+     */
+    protected static GridCoverage2D project(GridCoverage2D            coverage,
+                                      final CoordinateReferenceSystem targetCRS,
+                                      final GridGeometry2D            geometry,
+                                      final String                    interpolationType,
+                                      final double[]                  backgroundValues,
                                       final Hints                     hints)
     {
         final CoverageProcessor processor = CoverageProcessor.getInstance(hints);
@@ -107,14 +127,19 @@ public class GridProcessingTestBase extends GridCoverageTestBase {
             param.parameter("CoordinateReferenceSystem").setValue(targetCRS);
         }
         if (geometry != null) {
-            param.parameter( "GridGeometry").setValue(geometry);
+            param.parameter("GridGeometry").setValue(geometry);
         }
-        if (interpolationType != null&&interpolationType.length()!=0) {
-            param.parameter( "InterpolationType").setValue(interpolationType);
+        if (interpolationType != null && interpolationType.length() != 0) {
+            param.parameter("InterpolationType").setValue(interpolationType);
+        }
+        if (backgroundValues != null && backgroundValues.length > 0) {
+            param.parameter("BackgroundValues").setValue(backgroundValues);
         }
         coverage = (GridCoverage2D) processor.doOperation(param);
         return coverage;
     }
+    
+    
 
     /**
      * Projects the specified coverage to the specified CRS using the specified hints.

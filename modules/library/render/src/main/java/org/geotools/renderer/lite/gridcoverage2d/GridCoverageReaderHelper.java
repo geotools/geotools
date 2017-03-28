@@ -44,8 +44,11 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -281,7 +284,7 @@ public class GridCoverageReaderHelper {
         }
     }
 
-    private List<GridCoverage2D> readCoverageInEnvelope(ReferencedEnvelope envelope,
+    List<GridCoverage2D> readCoverageInEnvelope(ReferencedEnvelope envelope,
             GeneralParameterValue[] readParams, ProjectionHandler handler, boolean paddingRequired)
                     throws TransformException, FactoryException, IOException {
         Polygon polygon = JTS.toGeometry(envelope);
@@ -407,7 +410,7 @@ public class GridCoverageReaderHelper {
             double[][] resolutionLevels = reader.getResolutionLevels();
             ReadResolutionCalculator calculator = new ReadResolutionCalculator(localGridGeometry,
                     readerCRS, resolutionLevels != null ? resolutionLevels[0] : null);
-            calculator.setAccurateResolution(true);
+            calculator.setAccurateResolution(isAccurateResolutionComputationSafe(readEnvelope));
             double[] readResolution = calculator.computeRequestedResolution(reducedEnvelope);
             int width = (int) Math.max(1,
                     Math.round(readEnvelope.getWidth() / Math.abs(readResolution[0])));
@@ -417,6 +420,29 @@ public class GridCoverageReaderHelper {
             readingGridGeometry = new GridGeometry2D(gridRange, readEnvelope);
         }
         return readingGridGeometry;
+    }
+
+    boolean isAccurateResolutionComputationSafe(ReferencedEnvelope readEnvelope) throws MismatchedDimensionException, FactoryException, TransformException {
+        // accurate resolution computation depends on reprojection working, we need
+        // to make sure the read envelope is sane for the source data at hand
+        CoordinateReferenceSystem readCRS = readEnvelope.getCoordinateReferenceSystem();
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(new ReferencedEnvelope(readCRS), DefaultGeographicCRS.WGS84, true);
+        if(handler != null) {
+            // if there are no limits or the projection is periodic, assume it's fine to read whatever 
+            if(handler.getValidAreaBounds() == null || handler instanceof WrappingProjectionHandler) {
+                return true;
+            }
+            // in this case we need to make sure the area is actually safe to perform reprojections on
+            try {
+                // when assertions are enabled accuracy tests might fail this path
+                ReferencedEnvelope validBounds = handler.getValidAreaBounds().transform(readCRS, true);
+                return validBounds.contains((Envelope) readEnvelope);
+            } catch(Exception e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     private ReferencedEnvelope reduceEnvelope(ReferencedEnvelope envelope, ProjectionHandler handler)
@@ -447,7 +473,7 @@ public class GridCoverageReaderHelper {
      * @return
      * @throws IOException
      */
-    private GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
+    GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
             throws IOException {
         // //
         //

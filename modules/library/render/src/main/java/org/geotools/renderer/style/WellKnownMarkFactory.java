@@ -92,20 +92,17 @@ public class WellKnownMarkFactory implements MarkFactory {
         ((ExplicitBoundsShape)X).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
         
         GeneralPath starPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-        starPath.moveTo(0.191f, 0.0f);
-        starPath.lineTo(0.25f, 0.344f);
-        starPath.lineTo(0.0f, 0.588f);
-        starPath.lineTo(0.346f, 0.638f);
-        starPath.lineTo(0.5f, 0.951f);
-        starPath.lineTo(0.654f, 0.638f);
-        starPath.lineTo(1.0f, 0.588f); // max = 7.887
-        starPath.lineTo(0.75f, 0.344f);
-        starPath.lineTo(0.89f, 0f);
-        starPath.lineTo(0.5f, 0.162f);
-        starPath.lineTo(0.191f, 0.0f);
-        at = new AffineTransform();
-        at.translate(-.5, -.5);
-        starPath.transform(at);
+        starPath.moveTo(-0.309f, -0.5f);
+        starPath.lineTo(-0.25f, -0.156f);
+        starPath.lineTo(-0.5f, 0.088f);
+        starPath.lineTo(-0.154f, 0.138f);
+        starPath.lineTo(0.0f, 0.451f);
+        starPath.lineTo(0.154f, 0.138f);
+        starPath.lineTo(.5f, 0.088f); // max = 7.887
+        starPath.lineTo(0.25f, -0.156f);
+        starPath.lineTo(0.309f, -0.5f);
+        starPath.lineTo(0.0f, -0.338);
+        starPath.lineTo(-0.309f, -0.5f);
         
         star = new ExplicitBoundsShape(starPath);
         ((ExplicitBoundsShape)star).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));

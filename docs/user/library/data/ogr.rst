@@ -36,7 +36,7 @@ If you are using Bridj::
 
 or if you are using JNI::
 
-    OGRDataStoreFactor factory = new JniOGRDataStoreFactory();
+    OGRDataStoreFactory factory = new JniOGRDataStoreFactory();
 
 You can list available drivers::
 

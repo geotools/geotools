@@ -30,7 +30,7 @@ These examples use the file :download:`example.properties </tutorial/artifacts/e
 
 Here is an example to parse the above file:
 
-.. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/property/PropertyExamples.java
    :language: java
    :start-after: // example3 start
    :end-before: // example3 end

@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -32,6 +33,7 @@ import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.spatial.BBOX;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.vividsolutions.jts.geom.Point;
 
@@ -136,6 +138,19 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filter);
         assertEquals(MongoTestSetup.parseDate(LOWER_BOUND), filter.get("$gte"));
         assertEquals(MongoTestSetup.parseDate(UPPER_BOUND), filter.get("$lte"));
+    }
+    
+    public void testAndComparison() {
+        PropertyIsGreaterThan greaterThan = ff.greater(ff.property("property"), ff.literal(0));
+        PropertyIsLessThan lessThan = ff.less(ff.property("property"), ff.literal(10));
+        And and = ff.and(greaterThan, lessThan);
+        BasicDBObject obj = (BasicDBObject) and.accept(filterToMongo, null);
+        assertNotNull(obj);
+        System.out.println(obj.toJson());
+        
+        BasicDBList andFilter = (BasicDBList) obj.get("$and");
+        assertNotNull(andFilter);
+        assertEquals(andFilter.size(), 2);  
     }
 
 }

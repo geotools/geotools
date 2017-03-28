@@ -22,6 +22,7 @@ import java.awt.RenderingHints;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
@@ -90,8 +91,9 @@ public final class DTEDTest extends GDALTestCase {
         GridCoverage2D gc = (GridCoverage2D) reader.read(null);
         forceDataLoading(gc);
         
-        // check band names (check they are not all UNKNOWN)
-        System.out.println(Arrays.toString(gc.getSampleDimensions()));
+        // log band names (check they are not all UNKNOWN)
+        if (LOGGER.isLoggable(Level.FINE))
+        	LOGGER.log(Level.FINE, Arrays.toString(gc.getSampleDimensions()));
 
         // /////////////////////////////////////////////////////////////////////
         //

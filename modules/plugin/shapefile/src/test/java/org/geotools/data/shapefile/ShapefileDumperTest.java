@@ -16,9 +16,13 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -26,6 +30,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -33,6 +38,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +57,8 @@ public class ShapefileDumperTest {
     static final String BASIC_POLYGONS = "BasicPolygons";
 
     static final String ALL_TYPES = "AllTypes";
+
+    static final String ALL_TYPES_WITH_NULL = "AllTypesWithNull";
 
     static final String LONGNAMES = "longnames";
 
@@ -111,9 +119,17 @@ public class ShapefileDumperTest {
         dumper.dump(fc);
 
         SimpleFeatureCollection actual = getFeaturesFromShapefile(NULLGEOM);
-        assertEquals(2, actual.size());
+        assertEquals(1, actual.size());
         checkTypeStructure(actual.getSchema(), MultiPolygon.class, "FID", "NAME");
         assertCst(NULLGEOM, "ISO-8859-1");
+
+        // check features attributes
+        List<SimpleFeature> features = getFeaturesSortedById(fc);
+        // check the first feature with a geometry
+        assertThat(features.get(0).getAttribute("FID"), notNullValue());
+        assertThat(features.get(0).getAttribute("FID"), is("117"));
+        assertThat(features.get(0).getAttribute("NAME"), is("Ashton"));
+        assertThat(features.get(0).getAttribute("the_geom"), notNullValue());
     }
 
     @Test
@@ -147,6 +163,12 @@ public class ShapefileDumperTest {
     @Test
     public void testMultipleTypesDot() throws Exception {
         testMultipleTypes("All.Types.Dots", "All.Types.Dots");
+    }
+
+    @Test
+    public void testMultipleTypesWithNullGeometries() throws Exception {
+        // features with null geometries  will be ignored
+        testMultipleTypes(ALL_TYPES_WITH_NULL, ALL_TYPES_WITH_NULL);
     }
 
     private void testMultipleTypes(String inputTypeName, String baseTypeName) throws IOException {
@@ -331,6 +353,28 @@ public class ShapefileDumperTest {
                         + type.getAttributeDescriptors(), type.getDescriptor(attribute));
             }
         }
+    }
+
+    /**
+     * Helper method that extract the features from a feature collection
+     * and sort them by their ID.
+     */
+    private List<SimpleFeature> getFeaturesSortedById(SimpleFeatureCollection featureCollection) {
+        // extract the features
+        List<SimpleFeature> features = new ArrayList<>();
+        try (SimpleFeatureIterator iterator = featureCollection.features()) {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                features.add(feature);
+            }
+        }
+        // sort the features by their ID
+        Collections.sort(features, (feature1, feature2) -> {
+            assertThat(feature1.getID(), notNullValue());
+            assertThat(feature2.getID(), notNullValue());
+            return feature1.getID().compareTo(feature2.getID());
+        });
+        return features;
     }
 
     private void assertFieldsNotEmpty(SimpleFeatureCollection fc) {

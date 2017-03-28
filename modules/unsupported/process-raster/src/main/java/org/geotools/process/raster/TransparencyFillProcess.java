@@ -59,7 +59,7 @@ public class TransparencyFillProcess implements RasterProcess {
     @DescribeResult(name = "result", description = "The processed coverage")
     public GridCoverage2D execute(
             @DescribeParameter(name = "data", description = "Input coverage") GridCoverage2D coverage,
-            @DescribeParameter(name = "type", description = "Type of filling algorithm", min = 0) FillType type,
+//            @DescribeParameter(name = "type", description = "Type of filling algorithm", min = 0) FillType type,
             ProgressListener listener) throws ProcessException {
 
         if (coverage == null) {
@@ -95,9 +95,9 @@ public class TransparencyFillProcess implements RasterProcess {
         final ParameterValueGroup param = PROCESSOR.getOperation("TransparencyFill")
                 .getParameters();
         param.parameter("source").setValue(coverage);
-        if (type != null && type instanceof FillType) { 
-            param.parameter("type").setValue(type);
-        }
+//        if (type != null && type instanceof FillType) { 
+//            param.parameter("type").setValue(type);
+//        }
         return (GridCoverage2D) PROCESSOR.doOperation(param);
     }
 

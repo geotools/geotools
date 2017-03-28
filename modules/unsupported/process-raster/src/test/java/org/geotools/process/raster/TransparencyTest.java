@@ -70,7 +70,7 @@ public class TransparencyTest {
             Assert.assertEquals(255, maxs[0], 1E-6);
 
             TransparencyFillProcess process = new TransparencyFillProcess();
-            coverage = process.execute(coverage, null, null);
+            coverage = process.execute(coverage, null);
 
             worker = new ImageWorker(coverage.getRenderedImage()).crop(0, 0, 39, 19)
                     .retainLastBand();

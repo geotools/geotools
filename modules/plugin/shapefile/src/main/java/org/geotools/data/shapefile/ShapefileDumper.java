@@ -221,6 +221,11 @@ public class ShapefileDumper {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
 
+                // skip features with NULL geometries
+                if (f.getDefaultGeometry() == null) {
+                    continue;
+                }
+
                 StoreWriter storeWriter = getStoreWriter(f, writers, multiWriter);
                 // try to write, the shapefile size limits could be reached
                 try {

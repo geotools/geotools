@@ -25,11 +25,15 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
+import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.identity.FeatureId;
 
 /**
  * Update contents of MemoryDataStore. 
@@ -112,7 +116,15 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         if (current == null) {
             throw new IOException("No feature available to write");
         }
-    
+        //preserve FeatureIDs during insert feature
+        if (Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID))) {
+            if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
+                String fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
+                FeatureId id = new FeatureIdImpl(fid);
+                current = new SimpleFeatureImpl(current.getAttributes(), current.getFeatureType(), id);
+            }
+        }
+
         if (live != null) {
             if (live.equals(current)) {
                 // no modifications made to current

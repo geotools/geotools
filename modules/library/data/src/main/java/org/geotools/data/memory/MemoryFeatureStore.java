@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
@@ -93,5 +94,15 @@ public class MemoryFeatureStore extends ContentFeatureStore {
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return delegate.handleVisitor(query, visitor);
+    }
+
+    @Override
+    protected QueryCapabilities buildQueryCapabilities() {
+        return new QueryCapabilities() {
+            @Override
+            public boolean isUseProvidedFIDSupported() {
+                return true;
+            }
+        };
     }
 }

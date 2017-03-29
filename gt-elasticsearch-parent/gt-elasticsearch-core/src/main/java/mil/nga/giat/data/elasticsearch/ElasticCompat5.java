@@ -85,8 +85,12 @@ public class ElasticCompat5 implements ElasticCompat {
 
     @Override
     public boolean isAnalyzed(Map<String, Object> map) {
-        final String index = (String) map.get("index");
-        return index != null && index.equals("analyzed");
+        boolean analyzed = false;
+        Object value = map.get("type");
+        if (value != null && value instanceof String && ((String) value).equals("text")) {
+            analyzed = true;
+        }
+        return analyzed;
     }
 
     @Override

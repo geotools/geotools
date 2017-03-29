@@ -7,6 +7,7 @@ package mil.nga.giat.process.elasticsearch;
 import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -50,9 +51,12 @@ public class GeoHashGridProcessTest {
         int height = 4;
         int pixelsPerCell = 1;
         String strategy = "Basic";
+        List<String> strategyArgs = null;
+        Float emptyCellValue = null;
+        List<String> scale = null;
 
         GeoHashGridProcess process = new GeoHashGridProcess();
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scale, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -64,9 +68,12 @@ public class GeoHashGridProcessTest {
         int height = 8;
         int pixelsPerCell = 1;
         String strategy = "Basic";
+        List<String> strategyArgs = null;
+        Float emptyCellValue = null;
+        List<String> scale = null;
 
         GeoHashGridProcess process = new GeoHashGridProcess();
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scale, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -78,9 +85,12 @@ public class GeoHashGridProcessTest {
         int height = 8;
         int pixelsPerCell = 1;
         String strategy = "Basic";
+        List<String> strategyArgs = null;
+        Float emptyCellValue = null;
+        List<String> scale = null;
 
         GeoHashGridProcess process = new GeoHashGridProcess();
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scale, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
@@ -92,14 +102,17 @@ public class GeoHashGridProcessTest {
         int height = 600;
         int pixelsPerCell = 1;
         String strategy = "Basic";
+        List<String> strategyArgs = null;
+        Float emptyCellValue = null;
+        List<String> scale = null;
 
         GeoHashGridProcess process = new GeoHashGridProcess();
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scale, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
     }
 
     private void checkInternal(GridCoverage2D coverage, double delta) {
-        assertEquals(10, coverage.evaluate(new Point2D.Double(-135-delta, -45-delta), new float[1])[0],1e-10);
+    	assertEquals(10, coverage.evaluate(new Point2D.Double(-135-delta, -45-delta), new float[1])[0],1e-10);
         assertEquals(0, coverage.evaluate(new Point2D.Double(-135+delta, -45+delta), new float[1])[0],1e-10);
 
         assertEquals(0, coverage.evaluate(new Point2D.Double(-delta, -delta), new float[1])[0],1e-10);

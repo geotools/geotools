@@ -10,7 +10,7 @@ public class BasicGeoHashGrid extends GeoHashGrid {
 
     @Override
     public Number computeCellValue(Map<String,Object> bucket) {
-        return (Number) bucket.get("doc_count");
+        return super.pluckDocCount(bucket);
     }
 
 }

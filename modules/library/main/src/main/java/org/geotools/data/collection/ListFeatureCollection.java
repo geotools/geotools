@@ -36,7 +36,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
-import org.opengis.geometry.BoundingBox;
 
 /**
  * FeatureCollection implementation wrapping around a java.util.List.
@@ -147,17 +146,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
      
     @Override
     public boolean add(SimpleFeature f) {
-          //maintain the bounds
-          BoundingBox boundingBox = f.getBounds();
-          if (bounds == null){
-              bounds = new ReferencedEnvelope(
-                      boundingBox.getMinX(), boundingBox.getMaxX(),
-                      boundingBox.getMinY(), boundingBox.getMaxY(),
-                      schema.getCoordinateReferenceSystem());
-          } else {
-              bounds.expandToInclude(boundingBox.getMinX(), boundingBox.getMinY());   
-              bounds.expandToInclude(boundingBox.getMaxX(), boundingBox.getMaxY());   
-          }
+          bounds = null; //reset
           return list.add(f);
     }
 
@@ -185,14 +174,18 @@ public class ListFeatureCollection extends AbstractFeatureCollection implements 
      * @return 
      */
     protected ReferencedEnvelope calculateBounds() {
-        ReferencedEnvelope extent = new ReferencedEnvelope();
+        ReferencedEnvelope extent = ReferencedEnvelope.create( getSchema().getCoordinateReferenceSystem() );
         for( SimpleFeature feature : list ){
-            if( feature == null ) continue;
+            if( feature == null ) {
+                continue;
+            }
             ReferencedEnvelope bbox = ReferencedEnvelope.reference( feature.getBounds() );
-            if( bbox == null || bbox.isEmpty() || bbox.isNull() ) continue;
+            if( bbox == null || bbox.isEmpty() || bbox.isNull() ) {
+                continue;
+            }
             extent.expandToInclude( bbox );
         }
-        return new ReferencedEnvelope(extent, getSchema().getCoordinateReferenceSystem());
+        return extent;
     }
 
     @Override

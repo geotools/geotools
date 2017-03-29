@@ -49,10 +49,12 @@ public class ElasticCompatTest {
         assertEquals(1, point.getLon(), 1e-4);
         assertEquals(86461000, compat.parseDateTime("1970-01-02 00:01:01", "yyyy-mm-dd HH:mm:ss").getTime());
         assertFalse(compat.isAnalyzed(new HashMap<>()));
-        assertFalse(compat.isAnalyzed(ImmutableMap.of("index", "not_analyzed")));
-        assertFalse(compat.isAnalyzed(ImmutableMap.of("index", "not_valid")));
-        assertTrue(compat.isAnalyzed(ImmutableMap.of("index", "analyzed")));
+        assertFalse(compat.isAnalyzed(ImmutableMap.of("type", "keyword")));
+        assertFalse(compat.isAnalyzed(ImmutableMap.of("type", ImmutableMap.of("type", "keyword"))));
+        assertFalse(compat.isAnalyzed(ImmutableMap.of("type", "not_valid")));
+        assertTrue(compat.isAnalyzed(ImmutableMap.of("type", "text")));
     }
+    
 
     @Test(expected=IOException.class)
     public void testCreateClient() throws IOException {

@@ -6,6 +6,7 @@ package mil.nga.giat.process.elasticsearch;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -36,6 +37,11 @@ public abstract class GeoHashGrid {
 
     private static final int DEFAULT_PRECISION = 2;
 
+    public static final String BUCKET_NAME_KEY = "key";
+    public static final String BUCKETS_KEY = "buckets";
+    public static final String DOC_COUNT_KEY = "doc_count";
+    public static final String VALUE_KEY = "value";
+
     private double cellWidth;
 
     private double cellHeight;
@@ -46,8 +52,12 @@ public abstract class GeoHashGrid {
 
     private List<Map<String, Object>> buckets;
 
-    private float[][] grid;
+    private float emptyCellValue = 0;
 
+    private float[][] grid;
+    
+    private RasterScale scale = new RasterScale(null);
+        
     public GeoHashGrid initalize(ReferencedEnvelope srcEnvelope, SimpleFeatureCollection features) throws NoSuchAuthorityCodeException, TransformException, FactoryException {
         this.buckets = readFeatures(features);
 
@@ -75,14 +85,23 @@ public abstract class GeoHashGrid {
         final int numRow = (int) Math.round((envelope.getMaxY()-envelope.getMinY())/cellHeight+1);
         grid = new float[numRow][numCol];
 
-        buckets.stream().forEach(bucket -> updateCell((String) bucket.get("key"), computeCellValue(bucket)));
-
+        if (emptyCellValue != 0) {
+            for (float[] row: grid)
+                Arrays.fill(row, emptyCellValue);
+        }
+        List<GridCell> cells = new ArrayList<GridCell>();
+        buckets.stream().forEach(bucket -> {
+           Number rasterValue =  computeCellValue(bucket);
+           cells.add(new GridCell((String) bucket.get("key"), rasterValue));
+           scale.prepareScale(rasterValue.floatValue());
+        });
+        cells.stream().forEach(cell -> updateGrid(cell.getGeohash(), cell.getValue()));
         return this;
     }
 
     public abstract Number computeCellValue(Map<String,Object> bucket);
 
-    protected boolean updateCell(String geohash, Number value) {
+    protected boolean updateGrid(String geohash, Number value) {
         final boolean valid;
         if (geohash != null && value != null) {
             final LatLong latLon = GeoHash.decodeHash(geohash);
@@ -92,14 +111,14 @@ public abstract class GeoHashGrid {
             if (valid) {
                 final int row = grid.length-(int) Math.round((lat-envelope.getMinY())/cellHeight)-1;
                 final int col = (int) Math.round((lon-envelope.getMinX())/cellWidth);
-                grid[Math.min(row,grid.length-1)][Math.min(col,grid[0].length-1)] = value.floatValue();
+                grid[Math.min(row,grid.length-1)][Math.min(col,grid[0].length-1)] = scale.scaleValue(value.floatValue());
             }
         } else {
             valid = false;
         }
         return valid;
     }
-
+    
     public GridCoverage2D toGridCoverage2D() {
         final GridCoverageFactory coverageFactory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         return coverageFactory.create("geohashGridAgg", grid, boundingBox);
@@ -142,6 +161,64 @@ public abstract class GeoHashGrid {
         return geohash != null && GeoHash.encodeHash(GeoHash.decodeHash(geohash), geohash.length()).equals(geohash);
     }
 
+    protected String pluckBucketName(Map<String,Object> bucket) {
+        if (!bucket.containsKey(BUCKET_NAME_KEY)) {
+          LOGGER.warning("Unable to pluck key, bucket does not contain required field:" + BUCKET_NAME_KEY);
+          throw new IllegalArgumentException();
+        }
+        return bucket.get(BUCKET_NAME_KEY) + "";
+    }
+    
+    protected Number pluckDocCount(Map<String,Object> bucket) {
+        if (!bucket.containsKey(DOC_COUNT_KEY)) {
+            LOGGER.warning("Unable to pluck document count, bucket does not contain required key:" + DOC_COUNT_KEY);
+            throw new IllegalArgumentException();
+        }
+        return (Number) bucket.get(DOC_COUNT_KEY);
+    }
+    
+    protected Number pluckMetricValue(Map<String,Object> bucket, String metricKey, String valueKey) {
+        Number value;
+        if (null == metricKey || metricKey.trim().length() == 0) {
+            value = pluckDocCount(bucket);
+        } else {
+            if (!bucket.containsKey(metricKey)) {
+                LOGGER.warning("Unable to pluck metric, bucket does not contain required key:" + metricKey);
+                throw new IllegalArgumentException();
+            }
+            Map<String,Object> metric = (Map<String,Object>) bucket.get(metricKey);
+            if (!metric.containsKey(valueKey)) {
+                LOGGER.warning("Unable to pluck value, metric does not contain required key:" + valueKey);
+                throw new IllegalArgumentException();
+            }
+            value = (Number) metric.get(valueKey);
+        }
+        return value;
+    }
+    
+    protected List<Map<String,Object>> pluckAggBuckets(Map<String,Object> parentBucket, String aggKey) {
+        if (!parentBucket.containsKey(aggKey)) {
+          LOGGER.warning("Unable to pluck aggregation results, parent bucket does not contain required key:" + aggKey);
+          throw new IllegalArgumentException();
+        }
+        Map<String,Object> aggResults = (Map<String,Object>) parentBucket.get(aggKey);
+        if (!aggResults.containsKey(BUCKETS_KEY)) {
+          LOGGER.warning("Unable to pluck buckets, aggregation results bucket does not contain required key:" + BUCKETS_KEY);
+          throw new IllegalArgumentException();
+        }
+        return (List<Map<String,Object>>) aggResults.get(BUCKETS_KEY);
+    }
+
+    public void setParams(List<String> params) {
+        //ignore params
+    }
+    
+    public void setEmptyCellValue(Float value) {
+        if (null != value) {
+            this.emptyCellValue = value;
+        }
+    }
+
     public double getCellWidth() {
         return cellWidth;
     }
@@ -161,5 +238,8 @@ public abstract class GeoHashGrid {
     public float[][] getGrid() {
         return grid;
     }
-
+    
+    public void setScale(RasterScale scale) {
+        this.scale = scale;
+    }
 }

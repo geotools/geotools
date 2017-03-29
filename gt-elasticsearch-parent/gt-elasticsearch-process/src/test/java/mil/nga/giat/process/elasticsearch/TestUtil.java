@@ -5,6 +5,7 @@
 package mil.nga.giat.process.elasticsearch;
 
 import java.awt.image.Raster;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,48 @@ public class TestUtil {
             });
         });
         return grid;
+    }
+
+    public static Map<String,Object> createDocCountBucket(String bucketName, int docCount) {
+         Map<String,Object> bucket = new HashMap<>();
+         bucket.put(GeoHashGrid.BUCKET_NAME_KEY, bucketName);
+         bucket.put("doc_count", docCount);
+         return bucket;
+    }
+
+    public static Map<String,Object> createMetricBucket(int docCount, String metricName, String valueName, int value) {
+         Map<String,Object> metric = new HashMap<>();
+         metric.put(valueName, value);
+         
+         Map<String,Object> bucket = createDocCountBucket("grid_cell_name", docCount);
+         bucket.put(metricName, metric);
+         
+         return bucket;
+    }
+
+    public static List<Map<String,Object>> createBuckets(int[] values) {
+    List<Map<String,Object>> buckets = new ArrayList<>();
+        for (int i=0; i<values.length; i++) {
+             buckets.add(createDocCountBucket(Integer.toString(i), values[i]));
+        }
+        return buckets;
+    }
+
+    public static Map<String,Object> createAggBucket(String aggName, int[] values) {
+         int totalDocCount = 0;
+         List<Map<String,Object>> buckets = new ArrayList<>();
+         for (int i=0; i<values.length; i++) {
+              totalDocCount += values[i];
+              buckets.add(createDocCountBucket(Integer.toString(i), values[i]));
+         }
+         
+         Map<String,Object> aggResults = new HashMap<>();
+         aggResults.put(GeoHashGrid.BUCKETS_KEY, buckets);
+         
+         Map<String,Object> bucket = createDocCountBucket("grid_cell_name", totalDocCount);
+         bucket.put(aggName, aggResults);
+         
+         return bucket;
     }
 
     public static String toString(float[][] grid) {

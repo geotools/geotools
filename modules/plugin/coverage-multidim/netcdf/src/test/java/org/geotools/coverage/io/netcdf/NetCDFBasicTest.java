@@ -251,15 +251,19 @@ public final class NetCDFBasicTest extends Assert {
      * @param file
      */
     private void removeIndexes(final File file) {
-        if (file.isFile()) {
-            final String absolutePath = file.getAbsolutePath().toLowerCase();
-            if (absolutePath.endsWith(".idx") || absolutePath.endsWith(".db")) {
-                file.delete();
-            }
-        } else {
-            final File[] files = file.listFiles();
-            for (File f : files) {
-                removeIndexes(f);
+        if (file != null) {
+            if (file.isFile()) {
+                final String absolutePath = file.getAbsolutePath().toLowerCase();
+                if (absolutePath.endsWith(".idx") || absolutePath.endsWith(".db")) {
+                    file.delete();
+                }
+            } else {
+                final File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        removeIndexes(f);
+                    }
+                }
             }
         }
     }

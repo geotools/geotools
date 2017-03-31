@@ -16,12 +16,11 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.*;
 
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -55,6 +54,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
@@ -167,9 +167,18 @@ public final class CropTest extends GridProcessingTestBase {
         CoverageUtilities.setNoDataProperty(properties, theNoData);
         GridCoverage2D source = new GridCoverageFactory().create(coverage.getName().toString(), coverage.getRenderedImage(), coverage.getEnvelope(), coverage.getSampleDimensions(), null, properties);
         
+        // check the grid coverage
         GridCoverage2D cropped = testCrop(source);
         NoDataContainer noData = CoverageUtilities.getNoDataProperty(cropped);
         assertEquals(theNoData, noData.getAsSingleValue(), 0d);
+        
+        // but also check the image
+        RenderedImage renderedImage = cropped.getRenderedImage();
+        Object property = renderedImage.getProperty(NoDataContainer.GC_NODATA);
+        assertNotEquals(property, Image.UndefinedProperty);
+        assertThat(property, instanceOf(NoDataContainer.class));
+        NoDataContainer nd = (NoDataContainer) property;
+        assertEquals(-123, nd.getAsSingleValue(), 0d);
     }
     
     /**

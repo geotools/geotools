@@ -1322,6 +1322,8 @@ public class ImageWorker {
         final int length = extrema[0].length;
         final double[] scale = new double[length];
         final double[] offset = new double[length];
+        final double destNodata = (background != null && background.length > 0) ? background[0] : ((nodata != null && !nodata.contains(0)) ? 0d: Double.NaN);
+
         boolean computeRescale = false;
         for (int i = 0; i < length; i++) {
             final double delta = extrema[1][i] - extrema[0][i];
@@ -1349,10 +1351,8 @@ public class ImageWorker {
             pb.set(offset, 1); // The per-band offsets to be added.
             pb.set(roi, 2); // ROI
             pb.set(nodata, 3); // NoData range
-            if (isNoDataNeeded()) {
-                if (background != null && background.length > 0) {
-                    pb.set(background[0], 5); // destination No Data value
-                }
+            if (isNoDataNeeded() && !Double.isNaN(destNodata)) {
+                pb.set(destNodata, 5);
             }
 
             image = JAI.create("Rescale", pb, hints);
@@ -4278,8 +4278,10 @@ public class ImageWorker {
         pb.set(roi, 4);
         pb.set(nodata, 5);
         if (isNoDataNeeded()) {
-            if (background != null && background.length > 0) {
-                pb.set(background, 6);
+            double destinationNoData = nodata != null? nodata.getMin().doubleValue() : (background!= null && background.length > 0)?
+                    background[0] : Double.NaN;
+            if (!Double.isNaN(destinationNoData)){
+                pb.set(new double[]{destinationNoData}, 6);
             }
         }
         

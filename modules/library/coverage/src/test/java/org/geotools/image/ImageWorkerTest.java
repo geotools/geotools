@@ -28,6 +28,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Transparency;
@@ -832,6 +833,26 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     	Assert.assertTrue(Math.abs(minimums5a[1]-minimums5b[1])>1E-10);    
     	
     	
+    }
+    
+    @Test
+    public void rescaleToBytesNoData(){
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        
+        // set up synthetic images for testing
+        final RenderedImage test3 = getSynthetic(20000);
+        ImageWorker worker = new ImageWorker(test3);
+        Range noData = RangeFactory.convert(RangeFactory.create(-10, -10), test3.getSampleModel().getDataType());
+        worker.setNoData(noData);
+        worker.rescaleToBytes();
+        RenderedImage image = worker.getRenderedImage();
+        
+        // check the nodata has been actually set
+        Object property = image.getProperty(NoDataContainer.GC_NODATA);
+        assertNotEquals(property, Image.UndefinedProperty);
+        assertThat(property, instanceOf(NoDataContainer.class));
+        NoDataContainer nd = (NoDataContainer) property;
+        assertEquals(-10, nd.getAsSingleValue(), 0d);
     }
     
     /**

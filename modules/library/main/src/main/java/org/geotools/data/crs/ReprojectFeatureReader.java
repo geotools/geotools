@@ -182,8 +182,11 @@ public class ReprojectFeatureReader implements DelegatingFeatureReader<SimpleFea
             throw new DataSourceException("A transformation exception occurred while reprojecting data on the fly",
                 e);
         }
-
-        return SimpleFeatureBuilder.build(schema, attributes, next.getID());
+        // building the new reprojected feature
+        SimpleFeature reprojected = SimpleFeatureBuilder.build(schema, attributes, next.getID());
+        // copying the user data if any
+        reprojected.getUserData().putAll(next.getUserData());
+        return reprojected;
     }
 
     /**

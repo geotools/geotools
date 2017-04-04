@@ -199,8 +199,7 @@ public class PartialsTest extends TestCase {
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         // RenderedImageBrowser.showChain(image);
-        RendererBaseTest.assertPixel(image, 150, 2, Color.BLACK, 30);
-
+        RendererBaseTest.assertPixel(image, 150, 1, Color.BLACK, 30);
     }
 
     public void testPartialAreaLabelNo() throws Exception {

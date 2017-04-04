@@ -570,6 +570,9 @@ The majority of hints focus on controlling text:
       
       # The minimum distance between two labels, in pixels
       x-spaceAround: 50
+      
+      # When true enables text kerning (adjustment of space between characters to get a more compact and readable layout)
+      x-kerning: true
 
 Additional hints for working with graphic fills:
 

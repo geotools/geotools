@@ -17,11 +17,13 @@
 package org.geotools.renderer.style;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
@@ -413,6 +415,33 @@ public class SLDStyleFactoryTest extends TestCase {
         options.put(FeatureTypeStyle.SORT_BY, sortBySpec);
         SortBy[] sortBy = SLDStyleFactory.getSortBy(options);
         assertArrayEquals(expected, sortBy);
+    }
+    
+    public void testKerningOnByDefault() throws Exception {
+        TextSymbolizer ts = sf.createTextSymbolizer();
+        ts.setFill(sf.createFill(null));
+        Font font = sf.createFont(ff.literal("Serif"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
+        ts.setFont(font);
+        
+        TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
+        assertEquals(20, tsd.getFont().getSize());
+        Map<TextAttribute, ?> attributes = tsd.getFont().getAttributes();
+        Object kerningValue = attributes.get(TextAttribute.KERNING);
+        assertEquals(TextAttribute.KERNING_ON, kerningValue);
+    }
+    
+    public void testKerningOffByDefault() throws Exception {
+        TextSymbolizer ts = sf.createTextSymbolizer();
+        ts.setFill(sf.createFill(null));
+        Font font = sf.createFont(ff.literal("Serif"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
+        ts.setFont(font);
+        ts.getOptions().put(TextSymbolizer.KERNING, "false");
+        
+        TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
+        assertEquals(20, tsd.getFont().getSize());
+        Map<TextAttribute, ?> attributes = tsd.getFont().getAttributes();
+        Object kerningValue = attributes.get(TextAttribute.KERNING);
+        assertNull(kerningValue);
     }
 
 }

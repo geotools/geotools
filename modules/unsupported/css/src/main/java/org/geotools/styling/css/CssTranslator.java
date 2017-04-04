@@ -217,6 +217,7 @@ public class CssTranslator {
             put("-gt-label-force-ltr", "forceLeftToRight");
             put("-gt-label-conflict-resolution", "conflictResolution");
             put("-gt-label-fit-goodness", "goodnessOfFit");
+            put("-gt-label-kerning", "kerning");
             put("-gt-shield-resize", "graphic-resize");
             put("-gt-shield-margin", "graphic-margin");
         }

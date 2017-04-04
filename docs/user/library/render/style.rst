@@ -550,6 +550,8 @@ Considerable vendor options are provided for working with TextSymbolizers:
 
 * underlineText(true): When true instructs the renderer to underline labels
 
+* kerning(true): When true enables text kerning (adjustment of space between characters to get a more compact and readable layout) 
+
 Raster Symbolizer
 '''''''''''''''''
 

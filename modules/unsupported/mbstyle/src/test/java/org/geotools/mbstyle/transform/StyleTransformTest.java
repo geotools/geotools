@@ -18,14 +18,12 @@ package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.styling.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
 
 import java.awt.*;
@@ -72,7 +70,7 @@ public class StyleTransformTest {
         Expression colorStroke = psym.getStroke().getColor();
         assertNotNull("stroke color set", colorStroke);
         assertEquals(Color.decode("#1982C4"), colorStroke.evaluate(null, Color.class));
-        
+
         assertNotNull("displacement not null", psym.getDisplacement());
         assertNotNull("displacementX not null",  psym.getDisplacement().getDisplacementX());
         assertNotNull("displacementY not null",  psym.getDisplacement().getDisplacementY());
@@ -80,7 +78,41 @@ public class StyleTransformTest {
         assertEquals(Integer.valueOf(20), psym.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
         
     }
-    
+
+    /**
+     * Test parsing and generating a MapBox fill extrusion
+     */
+    @Test
+    public void testFillExtrusion() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("fillExtrusionTest.json");
+
+        // Parse to MBStyle
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("composite");
+
+        assertEquals(1, layers.size());
+
+        // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
+        assertTrue(layers.get(0) instanceof FillExtrusionMBLayer);
+        FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(0);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill, mbStyle);
+
+        PolygonSymbolizer psym = SLD.polySymbolizer(fts);
+
+        Expression expr =  psym.getFill().getColor();
+        assertNotNull("fillColor set", expr);
+        assertEquals( Color.decode("#FF595E"), expr.evaluate(null,Color.class) );
+        assertEquals(Double.valueOf(.91),
+                psym.getFill().getOpacity().evaluate(null, Double.class));
+
+
+        assertNotNull("displacement not null", psym.getDisplacement());
+        assertNotNull("displacementX not null",  psym.getDisplacement().getDisplacementX());
+        assertNotNull("displacementY not null",  psym.getDisplacement().getDisplacementY());
+        assertEquals(Integer.valueOf(0), psym.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(30), psym.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+    }
+
     /**
      * Test parsing a Mapbox fill layer using a sprite fill-pattern
      */

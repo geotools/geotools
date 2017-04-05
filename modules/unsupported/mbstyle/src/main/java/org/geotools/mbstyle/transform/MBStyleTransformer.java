@@ -16,51 +16,13 @@
  */
 package org.geotools.mbstyle.transform;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.measure.unit.NonSI;
-
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.mbstyle.BackgroundMBLayer;
-import org.geotools.mbstyle.CircleMBLayer;
-import org.geotools.mbstyle.FillMBLayer;
-import org.geotools.mbstyle.LineMBLayer;
-import org.geotools.mbstyle.MBLayer;
-import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.RasterMBLayer;
-import org.geotools.mbstyle.SymbolMBLayer;
+import org.geotools.filter.AttributeExpressionImpl;
+import org.geotools.mbstyle.*;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.sprite.MapboxGraphicFactory;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
@@ -70,6 +32,13 @@ import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
+
+import javax.measure.unit.NonSI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Responsible for traverse {@link MBStyle} and generating {@link StyledLayerDescriptor}.
@@ -154,6 +123,8 @@ public class MBStyleTransformer {
             return transform((BackgroundMBLayer) layer);
         } else if (layer instanceof SymbolMBLayer) {
             return transform((SymbolMBLayer) layer, styleContext);
+        } else if (layer instanceof FillExtrusionMBLayer) {
+            return transform(layer, styleContext);
         }
 
         throw new MBFormatException(layer.getType() + " not yet supported.");
@@ -311,7 +282,7 @@ public class MBStyleTransformer {
     }
     
     /**
-     * Transform {@link CircleMBLayerle} to GeoTools FeatureTypeStyle.
+     * Transform {@link CircleMBLayer} to GeoTools FeatureTypeStyle.
      * <p>
      * Notes:
      * </p>
@@ -493,7 +464,68 @@ public class MBStyleTransformer {
                 Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
                 rules);
     }
-    
+
+    /**
+     *
+     * Transform {@link FillExtrusionMBLayer} to GeoTools FeatureTypeStyle.
+     */
+    FeatureTypeStyle transform(FillExtrusionMBLayer layer, MBStyle styleContext) {
+        PolygonSymbolizer symbolizer;
+
+        // from fill pattern or fill color
+        Fill fill;
+
+        DisplacementImpl displacement = new DisplacementImpl();
+
+        displacement.setDisplacementX(layer.getFillExtrusionBase().doubleValue());
+        displacement.setDisplacementY(layer.getFillExtrusionHeight().doubleValue());
+
+        if (layer.getFillExtrusionPattern() != null) {
+            // TODO: Fill graphic (with external graphics)
+            ExternalGraphic eg = createExternalGraphicForSprite(layer.getFillExtrusionPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), layer.fillExtrusionOpacity(), null, null, null, displacement);
+            fill = sf.fill(gf, null, null);
+        } else {
+            fill = sf.fill(null, layer.fillExtrusionColor(), layer.fillExtrusionOpacity());
+        }
+
+        // TODO: Is there a better way to select the first geometry?
+        symbolizer = sf.polygonSymbolizer(
+                layer.getId(),
+                ff.property((String)null),
+                sf.description(Text.text("fill"),null),
+                NonSI.PIXEL,
+                null,
+                fill,
+                displacement,
+                ff.literal(0));
+
+        Rule rule = sf.rule(
+                layer.getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(symbolizer),
+                layer.filter());
+
+        // Set legend graphic to null.
+        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
+        rule.setLegendGraphic(new Graphic[0]);
+
+
+        return sf.featureTypeStyle(
+                layer.getId(),
+                sf.description(
+                        Text.text("MBStyle "+layer.getId()),
+                        Text.text("Generated for "+layer.getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                Arrays.asList(rule)
+        );
+    }
+
     /**
      * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the full URL of the image for consumption
      * by the {@link MapboxGraphicFactory}. (The format of the image will be {@link MapboxGraphicFactory#FORMAT}).

@@ -25,11 +25,13 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.sprite.SpriteGraphicFactory.SpriteIndex;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.styling.*;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,16 +42,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
- * Tests for {@link MapboxGraphicFactory}.
+ * Tests for {@link SpriteGraphicFactory}.
  * 
  * Some of the tests are perceptual. In order to display these tests as they run, uncomment the following line below:
  * 
@@ -63,7 +66,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class MapboxSpriteTest {
 
-    protected MapboxGraphicFactory mgf = new MapboxGraphicFactory();
+    protected SpriteGraphicFactory mgf = new SpriteGraphicFactory();
 
     JSONParser jsonParser = new JSONParser();
 
@@ -100,11 +103,12 @@ public class MapboxSpriteTest {
         String urlStr = url.toExternalForm();
         spriteBaseUrl = urlStr.substring(0, urlStr.lastIndexOf(".png"));
 
+        // UNCOMMENT THE BELOW LINE TO SHOW VISUAL TESTS
         // System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**
-     * Test that the {@link MapboxGraphicFactory} is registered with the {@link DynamicSymbolFactoryFinder}.
+     * Test that the {@link SpriteGraphicFactory} is registered with the {@link DynamicSymbolFactoryFinder}.
      */
     @Test
     public void testServiceRegistered() {
@@ -113,7 +117,7 @@ public class MapboxSpriteTest {
         boolean foundIt = false;
         while (it.hasNext()) {
             ExternalGraphicFactory egf = it.next();
-            if (egf instanceof MapboxGraphicFactory) {
+            if (egf instanceof SpriteGraphicFactory) {
                 foundIt = true;
             }
         }
@@ -150,13 +154,50 @@ public class MapboxSpriteTest {
                 DISPLAY_TIME, new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("rendered-icons"), image, 50);
     }  
+    
+    /**
+     * Test that {@link SpriteGraphicFactory} correctly parses both the sprite base URL and the icon name from External Graphic URLs.
+     * 
+     * @throws MalformedURLException
+     */
+    @Test
+    public void testSpriteUrlFunctions() throws MalformedURLException {
+        URL url = new URL("file:/GeoServerDataDirs/release/styles/testSpritesheet#someIconName");        
+        assertEquals("file:/GeoServerDataDirs/release/styles/testSpritesheet",  SpriteGraphicFactory.parseBaseUrl(url).toExternalForm());
+        assertEquals("someIconName", SpriteGraphicFactory.parseIconName(url));        
+        
+        URL url2x = new URL("file:/GeoServerDataDirs/release/styles/testSpritesheet@2x#someIconName");        
+        assertEquals("file:/GeoServerDataDirs/release/styles/testSpritesheet@2x",  SpriteGraphicFactory.parseBaseUrl(url2x).toExternalForm());
+        assertEquals("someIconName", SpriteGraphicFactory.parseIconName(url2x));           
+    }
+    
+    /**
+     * Test that {@link SpriteGraphicFactory} correctly fetches and parses a sprite index file.
+     * 
+     * @throws IOException 
+     * @throws MalformedURLException 
+     */
+    @Test
+    public void testParseSpriteIndexFile() throws MalformedURLException, IOException {        
+        SpriteIndex spriteIndex = mgf.getSpriteIndex(new URL(spriteBaseUrl));        
+        assertNotNull(spriteIndex);
+        
+        assertEquals(6, spriteIndex.getIcons().keySet().size());
+        assertTrue(spriteIndex.getIcons().keySet().containsAll(Arrays.asList("bomb", "face", "goldfish", "owl", "owlhead", "pattern")));
+        
+        assertEquals(32, spriteIndex.getIcon("goldfish").getHeight());
+        assertEquals(32, spriteIndex.getIcon("goldfish").getWidth());
+        assertEquals(1, spriteIndex.getIcon("goldfish").getPixelRatio());
+        assertEquals(64, spriteIndex.getIcon("goldfish").getX());
+        assertEquals(64, spriteIndex.getIcon("goldfish").getY());               
+    }
 
     /**
-     * Append a base url with ?icon={iconName}. This parameter is used by the {@link MapboxGraphicFactory} to pull the correct icon from the
+     * Append a base url with #{iconName}. This parameter is used by the {@link SpriteGraphicFactory} to pull the correct icon from the
      * spritesheet.
      */
     private String constructSpriteUrl(String baseUrl, String iconName) {
-        return baseUrl + "?icon=" + iconName;
+        return baseUrl + "#" + iconName;
     }
 
     /**
@@ -166,6 +207,7 @@ public class MapboxSpriteTest {
      * @param size The size in pixels for the point symbolizer's graphic. If null, defaults to the external graphic's default size.
      */
     public Style pointStyleWithExternalGraphic(ExternalGraphic eg, String size) {
+        size = size == null ? "-1" : size;
         Graphic gr = styleFactory.graphic(Arrays.asList(eg), filterFactory.literal(1),
                 filterFactory.literal(size), null, null, null);
         Rule rule = styleFactory.createRule();

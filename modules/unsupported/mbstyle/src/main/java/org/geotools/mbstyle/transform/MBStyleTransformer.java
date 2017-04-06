@@ -21,8 +21,8 @@ import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.mbstyle.*;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.sprite.MapboxGraphicFactory;
 import org.geotools.styling.*;
+import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
@@ -410,7 +410,7 @@ public class MBStyleTransformer {
                 ExternalGraphic eg = createExternalGraphicForSprite(ff.literal(layer.getIconImage()), styleContext);
                 PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
                         sf.description(Text.text("text"), null), NonSI.PIXEL,
-                        sf.createGraphic(new ExternalGraphic[] { eg }, null, null, ff.literal(layer.getIconOpacity()), ff.literal(layer.getIconSize()), ff.literal(layer.getIconRotate())));
+                        sf.createGraphic(new ExternalGraphic[] { eg }, null, null, ff.literal(layer.getIconOpacity()), null, ff.literal(layer.getIconRotate())));
                 symbolizers.add(pointSymbolizer);
             }
         }
@@ -528,19 +528,19 @@ public class MBStyleTransformer {
 
     /**
      * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the full URL of the image for consumption
-     * by the {@link MapboxGraphicFactory}. (The format of the image will be {@link MapboxGraphicFactory#FORMAT}).
+     * by the {@link SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
      * 
-     * @see {@link MapboxGraphicFactory} for more information.
+     * @see {@link SpriteGraphicFactory} for more information.
      * 
      * @param iconName The name of the icon inside the spritesheet.
-     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the {@link MapboxGraphicFactory}).
-     * @return An external graphic with the full URL of the mage for the {@link MapboxGraphicFactory}.
+     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the {@link SpriteGraphicFactory}).
+     * @return An external graphic with the full URL of the mage for the {@link SpriteGraphicFactory}.
      */
     private ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
         Expression spriteUrl;
         
         if (styleContext != null && styleContext.getSprite() != null) {
-            String spriteBase = styleContext.getSprite().trim() + "?icon=";
+            String spriteBase = styleContext.getSprite().trim() + "#";
             spriteUrl = ff.function("Concatenate", ff.literal(spriteBase),
                     iconName);
         } else {
@@ -552,7 +552,7 @@ public class MBStyleTransformer {
         // TODO: Allow External Graphics to take an expression for the URL
         String spriteUrlStr = spriteUrl.evaluate(null, String.class);
 
-        return sf.createExternalGraphic(spriteUrlStr, MapboxGraphicFactory.FORMAT);
+        return sf.createExternalGraphic(spriteUrlStr, SpriteGraphicFactory.FORMAT);
 
     }
 

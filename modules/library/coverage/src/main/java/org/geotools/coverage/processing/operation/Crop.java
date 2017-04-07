@@ -681,7 +681,7 @@ public class Crop extends Operation2D {
             if(operatioName==null) {
                 // executing the crop
                 worker.setImage(sourceImage);
-                worker.setNoData(null);
+                worker.setNoData(nodata);
                 worker.setRenderingHints(targetHints);
                 worker.crop((float) minX, (float) minY, (float) width, (float) height);
                 operatioName = "Crop";

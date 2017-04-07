@@ -621,6 +621,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
             }
             // by default, return string as is
             return literal;
+        } else if (literal instanceof Integer || literal instanceof Long || literal instanceof Double) {
+            return literal;
         } else {
             return literal.toString();
         }

@@ -29,20 +29,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
-import org.geotools.util.logging.LoggerFactory;
+import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
+import org.geotools.data.mongodb.complex.JsonSelectFunction;
+import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
 
 import static org.geotools.util.Converters.convert;
 
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
@@ -273,8 +275,25 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         return output;
     }
 
+    private Class getJsonSelectType(Expression expression) {
+        if (expression instanceof JsonSelectFunction) {
+            PropertyDescriptor descriptor = featureType.getDescriptor(((JsonSelectFunction) expression).getJsonPath());
+            return descriptor == null ? null : descriptor.getType().getBinding();
+        }
+        if (expression instanceof JsonSelectAllFunction) {
+            PropertyDescriptor descriptor = featureType.getDescriptor(((JsonSelectAllFunction) expression).getJsonPath());
+            return descriptor == null ? null : descriptor.getType().getBinding();
+        }
+        return null;
+    }
+
     private Class<?> getValueType(Expression e) {
         Class<?> valueType = null;
+
+        valueType = getJsonSelectType(e);
+        if (valueType != null) {
+            return valueType;
+        }
 
         if (e instanceof PropertyName && featureType != null) {
             // we should get the value type from the correspondent attribute descriptor
@@ -510,6 +529,12 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     @Override
     public Object visit(Function function, Object extraData) {
+        if (function instanceof JsonSelectFunction) {
+            return ((JsonSelectFunction) function).getJsonPath();
+        }
+        if (function instanceof JsonSelectAllFunction) {
+            return ((JsonSelectAllFunction) function).getJsonPath();
+        }
         throw new UnsupportedOperationException();
     }
 
@@ -619,10 +644,28 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
                     LOGGER.log(Level.WARNING, "Could not parse String literal as ISO-8601 date", e);
                 }
             }
-            // by default, return string as is
-            return literal;
+            // try to convert to the expected type
+            return convertLiteral(literal, targetType);
         } else {
+            // try to convert to the expected type
+            return convertLiteral(literal, targetType);
+        }
+    }
+
+    /**
+     * Helper method that tries to convert a literal to the expected type.
+     */
+    private Object convertLiteral(Object literal, Class<?> targetType) {
+        if (literal == null || targetType == null) {
+            // return the literal as is
+            return literal;
+        }
+        Object converted = Converters.convert(literal, targetType);
+        if (converted == null) {
+            // no conversion found return the literal as string
             return literal.toString();
         }
+        // return the converted value
+        return converted;
     }
 }

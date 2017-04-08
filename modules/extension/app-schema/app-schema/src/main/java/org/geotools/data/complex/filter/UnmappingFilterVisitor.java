@@ -33,6 +33,7 @@ import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.spi.CustomImplementationsFinder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.NestedAttributeExpression;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -831,11 +832,19 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             // means some attributes are mapped separately in feature chaining
             for (NestedAttributeMapping nestedMapping : nestedMappings) {
                 if (simplifiedSteps.startsWith(nestedMapping.getTargetXPath())) {
-                    matchingMappings.add(new NestedAttributeExpression(simplifiedSteps,
-                            nestedMapping));
+                    Expression nestedAttributeExpression = CustomImplementationsFinder.find(
+                            mappings, simplifiedSteps, nestedMapping);
+                    if (nestedAttributeExpression != null) {
+                        matchingMappings.add(nestedAttributeExpression);
+                    } else {
+                        matchingMappings.add(new NestedAttributeExpression(simplifiedSteps,
+                                nestedMapping));
+                    }
                 }
             }
         }
+
+        matchingMappings.remove(Expression.NIL);
 
         if (matchingMappings.size() == 0) {
             throw new IllegalArgumentException("Can't find source expression for: " + targetXPath);

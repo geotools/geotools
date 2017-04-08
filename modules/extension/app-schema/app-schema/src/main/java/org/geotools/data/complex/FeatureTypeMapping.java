@@ -388,4 +388,7 @@ public class FeatureTypeMapping {
         this.isDenormalised = isDenormalised;
     }
 
+    public void setSource(FeatureSource<? extends FeatureType, ? extends Feature> source) {
+        this.source = source;
+    }
 }

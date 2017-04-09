@@ -405,7 +405,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
             }
             GML3EncodingUtils.encodeClientProperties(complex, value);
             GML3EncodingUtils.encodeSimpleContent(complex, document, value);
-        } else if(!isPlaceholderObject(object)) {
+        } else if (!isPlaceholderObject(object) && !(object instanceof Collection)) {
             GML3EncodingUtils.encodeAsText(document, value, object);
         }
         return value;

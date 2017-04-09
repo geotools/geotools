@@ -28,6 +28,8 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
+import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
+import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -36,8 +38,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -259,6 +264,20 @@ public class MongoFeatureSource extends ContentFeatureSource {
     Filter[] splitFilter(Filter f) {
         PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(
                 getDataStore().getFilterCapabilities(), null, null){
+
+            @Override
+            protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
+                Expression expression1 = filter.getExpression1();
+                Expression expression2 = filter.getExpression2();
+                if ((expression1 instanceof JsonSelectFunction
+                        || expression1 instanceof JsonSelectAllFunction) && expression2 instanceof Literal) {
+                    preStack.push(filter);
+                } else if ((expression2 instanceof JsonSelectFunction
+                        || expression2 instanceof JsonSelectAllFunction) && expression1 instanceof Literal) {
+                    preStack.push(filter);
+                }
+            }
+
             public Object visit(PropertyIsLike filter, Object notUsed) {
                 if (original == null)
                     original = filter;

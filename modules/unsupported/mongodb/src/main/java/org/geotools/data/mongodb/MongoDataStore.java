@@ -141,6 +141,14 @@ public class MongoDataStore extends ContentDataStore {
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "Unable to create mongodb-based schema store with URI \"" + schemaStoreURI + "\"", e);
             }
+        } else {
+            try {
+                return new MongoSchemaFileStore("file:" + schemaStoreURI);
+            } catch (URISyntaxException e) {
+                LOGGER.log(Level.SEVERE, "Unable to create file-based schema store with URI \"" + schemaStoreURI + "\"", e);
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Unable to create file-based schema store with URI \"" + schemaStoreURI + "\"", e);
+            }
         }
         LOGGER.log(Level.SEVERE, "Unsupported URI \"{0}\" for schema store", schemaStoreURI);
         return null;

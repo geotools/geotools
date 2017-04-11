@@ -14,20 +14,19 @@
     <artifactId>gt-sample-data-access</artifactId>
     <name>Sample DataAccess</name>
 
-
     <description>DataAccess for testing complex feature integration without introducing app-schema dependency.</description>
 
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Java Developer</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
     </developers>
 

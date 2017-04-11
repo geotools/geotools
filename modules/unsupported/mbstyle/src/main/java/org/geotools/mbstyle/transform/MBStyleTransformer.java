@@ -18,18 +18,23 @@ package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.AttributeExpressionImpl;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.mbstyle.*;
+import org.geotools.mbstyle.SymbolMBLayer.IconTextFit;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.styling.*;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicFill;
+import org.opengis.style.GraphicStroke;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
@@ -39,6 +44,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Responsible for traverse {@link MBStyle} and generating {@link StyledLayerDescriptor}.
@@ -54,6 +61,8 @@ public class MBStyleTransformer {
     private StyleBuilder sb;
 
     private List<String> defaultFonts;
+    
+    protected static Pattern mapboxTokenPattern = Pattern.compile("\\{(.*?)\\}");
     
     private static final Logger LOGGER = Logging.getLogger(MBStyleTransformer.class);
 
@@ -378,7 +387,7 @@ public class MBStyleTransformer {
                 Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
                 rules);
     }
-    
+
     /**
      * Transform {@link SymbolMBLayer} to GeoTools FeatureTypeStyle.
      * <p>
@@ -392,67 +401,132 @@ public class MBStyleTransformer {
      */
     FeatureTypeStyle transform(SymbolMBLayer layer, MBStyle styleContext) {
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
-        Font font = null;
+
         LabelPlacement labelPlacement;
-        LinePlacement linePlacement;
-        PointPlacement pointPlacement;
+        
+        // Create point or line placement
+        if (SymbolMBLayer.SymbolPlacement.POINT.equals(layer.getSymbolPlacement())) {
+            PointPlacement pointP = sb.createPointPlacement();
+            // Set anchor point (translated by text-translate)
+            // TODO - GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement    
+            pointP.setAnchorPoint(layer.anchorPoint());
 
-        if (SymbolMBLayer.SymbolPlacement.LINE.equals(layer.getSymbolPlacement())) {
-            // TODO complete development of LineSymbolizer
+            // MapBox text-offset: +y means down
+            Displacement textTranslate = layer.textTranslateDisplacement();             
+            textTranslate.setDisplacementY(ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
+            pointP.setDisplacement(textTranslate);
 
+            pointP.setRotation(layer.textRotate());
 
+            labelPlacement = pointP;
         } else {
-            if (layer.getIconImage().isEmpty()) { // icon-image not provided, using default graphic
-                PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
-                        sf.description(Text.text("text"), null), NonSI.PIXEL, sf.createDefaultGraphic());
-                symbolizers.add(pointSymbolizer);
+            LinePlacement lineP = sb.createLinePlacement(null);
+            lineP.setRepeated(true);
+            
+            // TODO pixels (geotools) vs ems (mapbox) for text-offset
+            lineP.setPerpendicularOffset(
+                    ff.multiply(ff.literal(-1), layer.textOffsetDisplacement().getDisplacementY()));
+
+            labelPlacement = lineP;
+        }
+
+        Halo halo = sf.halo(sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
+        Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());
+
+        Font font;
+        if (layer.getTextFont() == null) {
+            font = sb.createFont(ff.literal(defaultFonts), ff.literal("normal"),
+                    ff.literal("normal"), layer.textSize());
+        } else {
+            // TODO fonts
+            font = sb.createFont(ff.literal(layer.getTextFont()), ff.literal("normal"),
+                    ff.literal("normal"), layer.textSize());
+        }
+
+        // If the textField is a literal string (not a function), then
+        // we need to support Mapbox token replacement.
+        Expression textExpression = layer.textField();
+        if (textExpression instanceof Literal) {
+            String text = textExpression.evaluate(null, String.class);
+            if (text.trim().isEmpty()) {
+                textExpression = ff.literal(" ");
             } else {
-                ExternalGraphic eg = createExternalGraphicForSprite(ff.literal(layer.getIconImage()), styleContext);
-                PointSymbolizer pointSymbolizer = sf.pointSymbolizer(layer.getId(),ff.property((String) null),
-                        sf.description(Text.text("text"), null), NonSI.PIXEL,
-                        sf.createGraphic(new ExternalGraphic[] { eg }, null, null, ff.literal(layer.getIconOpacity()), null, ff.literal(layer.getIconRotate())));
-                symbolizers.add(pointSymbolizer);
+                textExpression = cqlExpressionFromTokens(text);
             }
         }
 
-        if (!layer.getTextField().isEmpty()) { // A text-field was provided - need a TextSymbolizer.
-            Halo halo = sf.halo( sf.fill(null, layer.textHaloColor(), null), layer.textHaloWidth());
-            Fill fill = sf.fill(null, layer.textColor(), layer.textOpacity());
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) sf.textSymbolizer(layer.getId(),
+                ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
+                textExpression, font, labelPlacement, halo, fill);        
 
-            if (layer.getTextFont().isEmpty()) {
-                font = sb.createFont(ff.literal(defaultFonts), ff.literal("normal"), ff.literal("normal"), layer.textSize());
-            } else {
-                font = sb.createFont(ff.literal(layer.getTextFont()), ff.literal("normal"), ff.literal("normal"), layer.textSize());
-            }
+        // TODO Vendor options can't be expressions.
+        symbolizer.getOptions().put("repeat", String.valueOf(layer.getSymbolSpacing()));
 
-            if (symbolizers.get(0) instanceof PointSymbolizer) {
-                pointPlacement = sb.createPointPlacement();
-                pointPlacement.setAnchorPoint(layer.anchorPoint());
-                pointPlacement.setDisplacement(sb.createDisplacement(layer.getTextOffset()[0], layer.getTextOffset()[1]));
-                pointPlacement.setRotation(ff.literal(layer.getTextRotate()));
-                labelPlacement = pointPlacement;
-            } else {
-                // TODO finish lineplacement creation;
-                linePlacement = sb.createLinePlacement(null);
-                labelPlacement = linePlacement;
-            }
-            TextSymbolizer symbolizer = sf.textSymbolizer(layer.getId(), ff.property((String) null),
-                    sf.description(Text.text("text"), null), NonSI.PIXEL, layer.textField(),
-                    font, labelPlacement, halo, fill);
-            symbolizers.add(symbolizer);
+        // text max angle
+        // layer.getTextMaxAngle();
+        // symbolizer.getOptions().put("maxAngleDelta", "40");
+
+        // conflictResolution
+        // Mapbox allows text overlap and icon overlap separately. GeoTools only has conflictResolution.       
+        symbolizer.getOptions().put("conflictResolution",
+                String.valueOf(!(layer.getTextAllowOverlap()||layer.getIconAllowOverlap())));       
+        
+        // TODO Vendor options can't be expressions
+        IconTextFit textFit = layer.getIconTextFit();
+        if (IconTextFit.NONE.equals(textFit)) { 
+            symbolizer.getOptions().put("graphic-resize",
+                    "none");
+        } else if (IconTextFit.HEIGHT.equals(textFit) || IconTextFit.WIDTH.equals(textFit)) {
+            symbolizer.getOptions().put("graphic-resize",
+                    "stretch");
+        } else if (IconTextFit.BOTH.equals(textFit)) {
+            symbolizer.getOptions().put("graphic-resize",
+                    "proportional");            
         }
+        
+        // TODO Mapbox allows you to sapecify an array of values, one for each side
+        if (layer.getIconTextFitPadding() != null && !layer.getIconTextFitPadding().isEmpty()) {
+            symbolizer.getOptions().put("graphic-margin",
+                    String.valueOf(layer.getIconTextFitPadding().get(0)));
+        } else {
+            symbolizer.getOptions().put("graphic-margin",
+                    "0");
+        }
+
+        // halo blur
         // layer.textHaloBlur();
+
+        // auto wrap
         // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?
+
+        // If the layer has an icon image, add it to our symbolizer
+        if (layer.getIconImage() != null && !layer.getIconImage().trim().isEmpty()) {
+
+            // If the iconImage is a literal string (not a function), then
+            // we need to support Mapbox token replacement.
+            // Note: the URL is expected to be a CQL STRING ...
+            Expression iconExpression = layer.iconImage();
+            if (iconExpression instanceof Literal) {
+                iconExpression = ff
+                        .literal(cqlStringFromTokens(iconExpression.evaluate(null, String.class)));
+            }
+
+            ExternalGraphic eg = createExternalGraphicForSprite(iconExpression, styleContext);
+            // TODO layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
+            Graphic g = sf.graphic(Arrays.asList(eg), layer.iconOpacity(), null,
+                    layer.iconRotate(), null, null);
+            Displacement d = layer.iconOffsetDisplacement();
+            d.setDisplacementY(d.getDisplacementY());
+            g.setDisplacement(d);
+            symbolizer.setGraphic(g);
+
+        }
+
+        symbolizers.add(symbolizer);
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
-        Rule rule = sf.rule(
-                layer.getId(),
-                null,
-                null,
-                0.0,
-                Double.POSITIVE_INFINITY,
-                symbolizers,
+        Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
                 layer.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
@@ -564,6 +638,49 @@ public class MBStyleTransformer {
     AnchorPoint getAnchorPoint(String textAnchor) {
         TextAnchor anchor = TextAnchor.parse(textAnchor);
         return sb.createAnchorPoint(anchor.getX(), anchor.getY());
+    }     
+    
+    /**
+     * Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression string.
+     * 
+     * E.g., convert "<code>String with {tokens}</code>" to a CQL Expression (String) "<code>Value with ${tokens}</code>".
+     * 
+     * See documentation of Mapbox {token} values:
+     * 
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox Style Spec: {token} values for icon-image</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox Style Spec: {token} values for text-field</a>
+     * 
+     * @param tokenStr A string with mapbox-style tokens
+     * @return A CQL Expression
+     */
+    public String cqlStringFromTokens(String tokenStr) {
+        // Find all {tokens} and turn them into CQL ${expressions}
+        Matcher m = mapboxTokenPattern.matcher(tokenStr);
+        return m.replaceAll("\\${$1}");       
+    }
+
+    /**
+     * Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression.
+     * 
+     * E.g., convert "<code>String with {tokens}</code>" to a CQL Expression "<code>Value with ${tokens}</code>".
+     * 
+     * See documentation of Mapbox {token} values:
+     * 
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox Style Spec: {token} values for icon-image</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox Style Spec: {token} values for text-field</a>
+     * 
+     * @param tokenStr A string with mapbox-style tokens
+     * @return A CQL Expression
+     */
+    public Expression cqlExpressionFromTokens(String tokenStr) {
+        try {
+            return ExpressionExtractor.extractCqlExpressions(cqlStringFromTokens(tokenStr));
+        } catch (IllegalArgumentException iae) {
+            LOGGER.warning(
+                    "Exception converting Mapbox token string to CQL expression. Mapbox token string was: \""
+                            + tokenStr + "\". Exception was: " + iae.getMessage());
+            return ff.literal(tokenStr);
+        }
     }
 
 }

@@ -32,21 +32,29 @@
             "source": "testsource",
             "source-layer": "testsource-layer",
             "layout": {
-                "icon-offset": [
-                    0,
-                    0
-                ],
-                "icon-image": "{icon}",
-                "icon-rotate": 40,
+                "text-line-height": 1,
+                "text-size": 23,
+                "text-transform": "lowercase",
+                "text-justify": "left",
                 "visibility": "visible",
-                "icon-size": 1,
-                "icon-allow-overlap": true,
-                "text-allow-overlap": true
+                "text-offset": [
+                    00,
+                    00
+                ],
+                "text-anchor": "CENTER",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{text}",
+                "icon-image": "pattern",
+                "symbol-placement": "point"            
             },
             "paint": {
-                "icon-translate": [
-                    0,
-                    0
+                "text-color": "#eeedf7",
+                "text-halo-color": "#5d588c",
+                "text-halo-width": 2,
+                "text-opacity": 1,
+                "text-translate": [
+                      0,
+                      0
                 ]
             }
         }

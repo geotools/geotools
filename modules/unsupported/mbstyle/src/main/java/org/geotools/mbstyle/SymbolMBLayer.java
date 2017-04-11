@@ -25,6 +25,7 @@ import java.util.List;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -289,7 +290,7 @@ public class SymbolMBLayer extends MBLayer {
 	 * @throws MBFormatException
 	 */
     public SymbolPlacement getSymbolPlacement() {
-    	Object value = paint.get("symbol-placement");
+    	Object value = layout.get("symbol-placement");
 		if (value != null && "line".equalsIgnoreCase((String) value)) {
 			return SymbolPlacement.LINE;
 		} else {
@@ -306,7 +307,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getSymbolSpacing() throws MBFormatException {
-    	return parse.optional(Integer.class, layout, "symbol-spacing", 250);
+    	return parse.optional(Number.class, layout, "symbol-spacing", 250);
     }
 
     /**
@@ -778,7 +779,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return part of the text placed closest to the anchor. 
      */
     public TextAnchor getTextAnchor() {
-        String json = parse.get(layout, "text-anchor");
+        String json = parse.get(layout, "text-anchor", "center");
         if (json == null) {
             return null;
         }
@@ -825,7 +826,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextRotate() throws MBFormatException {
-    	return parse.optional(Number.class, layout, "text-rotate", 0.0);
+    	return parse.optional(Number.class, paint, "text-rotate", 0.0);
     }
 
     /**
@@ -833,7 +834,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Expression textRotate() throws MBFormatException {
-    	return parse.percentage(layout, "text-rotate", 0.0);
+    	return parse.percentage(paint, "text-rotate", 0.0);
     }
 
     /**
@@ -1220,6 +1221,38 @@ public class SymbolMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    /**
+     * Maps {@link #getTextOffset()} to a {@link Displacement}.
+     * 
+     * (Optional) Units in ems. Defaults to 0,0. Requires text-field.
+     */
+    public Displacement textOffsetDisplacement() {
+        return parse.displacement(layout, "text-offset",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    /**
+     * Maps {@link #getTextTranslate()} to a {@link Displacement}.
+     * 
+     * Distance that the text's anchor is moved from its original placement. Positive values indicate right and down, while negative values indicate
+     * left and up. (Optional) Units in pixels. Defaults to 0,0. Requires text-field.
+     */
+    public Displacement textTranslateDisplacement() {
+        return parse.displacement(paint, "text-translate",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+    
+
+    public Displacement iconOffsetDisplacement() {
+        return parse.displacement(layout, "icon-offset",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    public Displacement iconTranslateDisplacement() {
+        return parse.displacement(paint, "icon-translate",
+                sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
 }

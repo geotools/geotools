@@ -21,6 +21,7 @@ import java.lang.reflect.Array;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.styling.Displacement;
 import org.geotools.styling.StyleFactory2;
 import org.geotools.util.ColorConverterFactory;
 import org.geotools.util.Converters;
@@ -895,6 +896,26 @@ public class MBObjectParser {
             throw new IllegalArgumentException("json contents invalid, \"" + tag
                     + "\" value limited to String, Boolean or JSONObject but was "
                     + obj.getClass().getSimpleName());
+        }
+    }
+    
+
+    /**
+     * Maps a {@link JSONArray} to a {@link Displacement}.
+     * 
+     */
+    public Displacement displacement(JSONObject json, String tag, Displacement fallback) {
+        Object defn = json.get(tag);
+        if (defn == null) {
+            return fallback;
+        } else if (defn instanceof JSONArray) {
+            JSONArray array = (JSONArray) defn;
+            return sf.displacement(number(array, 0, 0), number(array, 1, 0));
+        } else if (defn instanceof JSONObject) {
+            throw new MBFormatException("\"" + tag + "\": Functions not supported yet.");
+        } else {
+            throw new MBFormatException("\"" + tag + "\": Expected array or function, but was "
+                    + defn.getClass().getSimpleName());
         }
     }
 }

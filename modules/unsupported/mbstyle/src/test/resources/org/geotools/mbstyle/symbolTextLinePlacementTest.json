@@ -23,7 +23,7 @@
             "type": "vector"
         }
     },
-    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
+    "sprite": "mapbox://sprites/testUser/ciz5qbyd3007j2spd3flvk2uh",
     "glyphs": "mapbox://fonts/testUser/{fontstack}/{range}.pbf",
     "layers": [
         {
@@ -32,21 +32,31 @@
             "source": "testsource",
             "source-layer": "testsource-layer",
             "layout": {
-                "icon-offset": [
-                    0,
-                    0
-                ],
-                "icon-image": "{icon}",
-                "icon-rotate": 40,
+                "text-line-height": 1,
+                "text-size": 14,
+                "text-transform": "lowercase",
+                "text-justify": "left",
                 "visibility": "visible",
-                "icon-size": 1,
-                "icon-allow-overlap": true,
+                "text-offset": [
+                    00,
+                    10
+                ],
+                "text-anchor": "CENTER",
+                "text-pitch-alignment": "viewport",
+                "text-field": "Sample Text",
+                "text-letter-spacing": 0.05,
+                "text-max-width": 5,
+                "text-font": ["Some Test Font", "Other Test Font"],
+                "symbol-placement": "line",
+                "symbol-spacing": 80,
                 "text-allow-overlap": true
             },
             "paint": {
-                "icon-translate": [
-                    0,
-                    0
+                "text-color": "#334d77",
+                "text-opacity": 1,
+                "text-translate": [
+                      0,
+                      0
                 ]
             }
         }

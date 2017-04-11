@@ -14,7 +14,6 @@
     <artifactId>gt-app-schema-resolver</artifactId>
     <name>Application Schema Resolver</name>
 
-
     <description>
         Support for resolution of GML application schemas obtained from an OASIS Catalog,
         the Java classpath, or cached network download.
@@ -24,18 +23,18 @@
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Java Developer</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
     </developers>
 
     <dependencies>
-		<dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-xml</artifactId>
             <version>${project.version}</version>

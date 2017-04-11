@@ -14,7 +14,6 @@
     <artifactId>gt-webservice</artifactId>
     <name>Web Service DataAccess</name>
 
-
     <description>
         DataAccess to create complex feature types defined in a GML application schema,
         providing access to data obtained from a generic web service.
@@ -107,6 +106,7 @@
     </dependencies>
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -121,6 +121,7 @@
                 </executions>
             </plugin>
         </plugins>
+
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
@@ -133,6 +134,7 @@
                 </includes>
             </testResource>
         </testResources>
+
     </build>
 
 </project>

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,6 @@ import org.geotools.util.Version;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,8 +100,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         }
 
         final HTTPClient http = new SimpleHttpClient();// new MultithreadedHttpClient();
-        // TODO: let HTTPClient be configured for gzip
-        // http.setTryGzip(tryGZIP);
+        http.setTryGzip(config.isTryGZIP());
         http.setUser(config.getUser());
         http.setPassword(config.getPassword());
         int timeoutMillis = config.getTimeoutMillis();

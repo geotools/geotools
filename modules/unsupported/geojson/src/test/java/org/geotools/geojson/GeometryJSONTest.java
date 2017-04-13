@@ -478,5 +478,70 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         assertEquals(10, p2.getX(), 0d);
         assertEquals(10, p2.getY(), 0d);
     }
-    
+
+    public void testKeyOrderInGeometryCollectionParsing() throws Exception {
+        /* Test parsing of two variations of the same GeoJSON object. */
+
+        /* input1 tests parsing when "type" occurs at the top of each sub-object */
+        String input1 = "{" +
+                " \"type\": \"GeometryCollection\"," +
+                " \"geometries\": [{" +
+                "  \"type\": \"Polygon\"," +
+                "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]" +
+                "  }]" +
+                "}";
+
+        /* input2 tests parsing when "type" in a geometry of the geom collection occurs after "coordinates" */
+        String input2 = "{" +
+                " \"type\": \"GeometryCollection\"," +
+                " \"geometries\": [{" +
+                "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]," +
+                "  \"type\": \"Polygon\"" +
+                " }]" +
+                "}";
+
+        /* input3 tests parsing when  "type" of the geometry collection occurs after "geometries" */
+        String input3 = "{" +
+                " \"geometries\": [{" +
+                "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]," +
+                "  \"type\": \"Polygon\"" +
+                " }]," +
+                " \"type\": \"GeometryCollection\"" +
+                "}";
+
+        Point expectedLastPoint = gf.createPoint(new Coordinate(100.0,1.0));
+
+        org.geotools.geojson.geom.GeometryJSON geometryJSON = new org.geotools.geojson.geom.GeometryJSON();
+
+        /* test input 1 */
+        GeometryCollection collection = geometryJSON.readGeometryCollection(input1);
+        testKeyOrderInGeometryCollectionParsing_VerifyContents(collection, expectedLastPoint);
+
+        /* test input 2 */
+        collection = geometryJSON.readGeometryCollection(input2);
+        testKeyOrderInGeometryCollectionParsing_VerifyContents(collection, expectedLastPoint);
+
+        /* test input 3 */
+        collection = geometryJSON.readGeometryCollection(input3);
+        testKeyOrderInGeometryCollectionParsing_VerifyContents(collection, expectedLastPoint);
+    }
+
+    /*
+     * Helper function that specifically supports test case testKeyOrderInGeometryCollectionParsing
+     */
+    private final void testKeyOrderInGeometryCollectionParsing_VerifyContents(GeometryCollection collection, Point expectedLastPoint) {
+        assertNotNull(collection);
+        assertNotNull(expectedLastPoint);
+        assertEquals(1, collection.getNumGeometries());
+        Object geomObj = collection.getGeometryN(0);
+        assertTrue(geomObj instanceof Polygon);
+        Polygon polygon = (Polygon)geomObj;
+        assertEquals(1, polygon.getNumGeometries(), 0d);
+        assertEquals(0, polygon.getNumInteriorRing(), 0d);
+        assertEquals(4, polygon.getNumPoints(), 0);
+        LineString outerBoundary = polygon.getExteriorRing();
+        assertEquals(4, outerBoundary.getNumPoints());
+        Point lastPoint = outerBoundary.getPointN(3);
+        assertTrue(lastPoint.equalsExact(expectedLastPoint));
+    }
 }

@@ -33,6 +33,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -44,6 +45,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
@@ -1000,4 +1002,99 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         sb.append("}");
         return sb.toString();
     }
+
+    public void testKeyOrderInFeatureCollectionParsing() throws Exception {
+        /* Test parsing of three variations of the same GeoJSON object. */
+
+        /* input1 tests parsing when "type" occurs at the top of each sub-object */
+        String input1 = "{" +
+                " \"type\": \"FeatureCollection\"," +
+                " \"features\": [{" +
+                "  \"type\": \"Feature\"," +
+                "  \"geometry\": {" +
+                "   \"type\": \"GeometryCollection\"," +
+                "   \"geometries\": [{" +
+                "    \"type\": \"Polygon\"," +
+                "    \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]" +
+                "   }]" +
+                "  }," +
+                "  \"properties\": {}" +
+                " }]" +
+                "}";
+
+        /* input2 tests parsing when "type" in a geometry of the geom collection occurs after "coordinates". */
+        String input2 = "{" +
+                " \"type\": \"FeatureCollection\"," +
+                " \"features\": [{" +
+                "  \"type\": \"Feature\"," +
+                "  \"geometry\": {" +
+                "   \"type\": \"GeometryCollection\"," +
+                "   \"geometries\": [{" +
+                "    \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]," +
+                "    \"type\": \"Polygon\"" +
+                "   }]" +
+                "  }," +
+                "  \"properties\": {}" +
+                " }]" +
+                "}";
+
+        /* input3 is similar to input 2 but also tests parsing when "type" for the feature collection occurs after
+         * "features".
+         */
+        String input3 = "{" +
+                " \"features\": [{" +
+                "  \"type\": \"Feature\"," +
+                "  \"geometry\": {" +
+                "   \"type\": \"GeometryCollection\"," +
+                "   \"geometries\": [{" +
+                "    \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]," +
+                "    \"type\": \"Polygon\"" +
+                "   }]" +
+                "  }," +
+                "  \"properties\": {}" +
+                " }]," +
+                " \"type\": \"FeatureCollection\"" +
+                "}";
+
+        GeometryFactory factory = new GeometryFactory();
+        Point expectedLastPoint = factory.createPoint(new Coordinate(100.0, 1.0));
+
+        /* test input 1 */
+        FeatureCollection featureCollection = fjson.readFeatureCollection(input1);
+        testKeyOrderInFeatureCollectionParsing_VerifyContents(featureCollection, expectedLastPoint);
+
+        /* test input 2 */
+        featureCollection = fjson.readFeatureCollection(input2);
+        testKeyOrderInFeatureCollectionParsing_VerifyContents(featureCollection, expectedLastPoint);
+
+        /* test input 3 */
+        featureCollection = fjson.readFeatureCollection(input3);
+        testKeyOrderInFeatureCollectionParsing_VerifyContents(featureCollection, expectedLastPoint);
+    }
+
+    /*
+     * Helper function that specifically supports test case testParseFeatureCollectionKeyOrder
+     */
+    private final void testKeyOrderInFeatureCollectionParsing_VerifyContents(FeatureCollection featureCollection, Point expectedLastPoint) {
+        assertNotNull(featureCollection);
+        assertNotNull(expectedLastPoint);
+        assertEquals(1, featureCollection.size(), 0);
+        FeatureIterator fiter = featureCollection.features();
+        assertTrue(fiter.hasNext());
+        Feature feature = fiter.next();
+        GeometryAttribute geomAttrib = feature.getDefaultGeometryProperty();
+        Object collectionObj = geomAttrib.getValue();
+        assertTrue(collectionObj instanceof GeometryCollection);
+        GeometryCollection geomCollection = (GeometryCollection)collectionObj;
+        assertEquals(1, geomCollection.getNumGeometries());
+        Object geomObj = geomCollection.getGeometryN(0);
+        assertTrue(geomObj instanceof Polygon);
+        Polygon polygon = (Polygon)geomObj;
+        assertEquals(4, polygon.getNumPoints());
+        assertEquals(1, polygon.getNumGeometries(), 0);
+        LineString outerBoundary = polygon.getExteriorRing();
+        assertEquals(4, outerBoundary.getNumPoints());
+        Point lastPoint = outerBoundary.getPointN(3);
+        assertTrue(lastPoint.equalsExact(expectedLastPoint));
+        assertFalse(fiter.hasNext());    }
 }

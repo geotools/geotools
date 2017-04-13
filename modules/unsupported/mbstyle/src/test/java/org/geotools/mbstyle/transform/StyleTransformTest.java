@@ -16,20 +16,31 @@
  */
 package org.geotools.mbstyle.transform;
 
+import org.geotools.TestData;
+import org.geotools.data.property.PropertyDataStore;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.mbstyle.*;
+import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -385,38 +396,6 @@ public class StyleTransformTest {
         
         assertNull(psym.getStroke());
     }
-
-    @Test
-    public void testSymbolIcon() throws IOException, ParseException {
-        JSONObject jsonObject = parseTestStyle("symbolStyleIconTest.json");
-        MBStyle mbStyle = new MBStyle(jsonObject);
-        List<MBLayer> layers = mbStyle.layers("composite");
-
-        MBLayer layer = mbStyle.layer("earthquakes");
-        assertNotNull("earthquakes available", layer );
-        assertTrue(layer instanceof SymbolMBLayer);
-        
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(layer, mbStyle);
-        
-        assertEquals(1, fts.rules().size());
-        Rule r = fts.rules().get(0);
-        assertEquals(2, r.symbolizers().size());
-        
-        PointSymbolizer pointSymbolizer = (PointSymbolizer) r.symbolizers().get(0);
-        TextSymbolizer textSymbolizer = (TextSymbolizer) r.symbolizers().get(1);
-        Graphic graphic = pointSymbolizer.getGraphic();
-        ExternalGraphic externalGraphic = (ExternalGraphic) graphic.graphicalSymbols().get(0);
-        assertEquals( "mbsprite", externalGraphic.getFormat() );
-        
-        
-        PointPlacement placement = (PointPlacement) textSymbolizer.getLabelPlacement();
-        AnchorPoint anchor = placement.getAnchorPoint();
-        
-        assertEquals( "bottom-right x", 1.0,
-                anchor.getAnchorPointX().evaluate(null,Double.class), 0.0 );
-        assertEquals( "bottom-right y", 0.0,
-                anchor.getAnchorPointY().evaluate(null,Double.class), 0.0 );
-    }
     
     /**
      * 
@@ -424,5 +403,27 @@ public class StyleTransformTest {
      */
     private JSONObject parseTestStyle(String filename) throws IOException, ParseException {
         return MapboxTestUtils.parseTestStyle(filename);
+    }
+    
+    @Test
+    public void testMapboxTokenValues() throws Exception {
+        
+        File property = new File(TestData.getResource(this, "testpoints.properties").toURI());
+        PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
+        ContentFeatureSource pointFS = ds.getFeatureSource("testpoints");
+        
+        
+        MBStyleTransformer transformer =new MBStyleTransformer(); 
+        Expression e = transformer.cqlExpressionFromTokens("Replace text here: \"{text}\"");
+        Map<String, String> m = new HashMap<>();
+        
+        SimpleFeatureIterator sfi = pointFS.getFeatures().features();
+        while (sfi.hasNext()) {
+            SimpleFeature sf = sfi.next();
+            String s = e.evaluate(sf, String.class);
+            System.out.println(s);
+        }
+        
+        
     }
 }

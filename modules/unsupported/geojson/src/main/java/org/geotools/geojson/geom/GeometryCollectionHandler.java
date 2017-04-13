@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.geojson.DelegatingHandler;
+import org.geotools.geojson.RecordingHandler;
 import org.json.simple.parser.ParseException;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -37,11 +38,13 @@ public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollect
     GeometryFactory factory;
     List<Geometry> geoms;
     GeometryCollection value;
+    RecordingHandler proxy;
     Class delegateClass;
+
     public GeometryCollectionHandler(GeometryFactory factory) {
         this.factory = factory;
     }
-    
+
     @Override
     public boolean startObject() throws ParseException, IOException {
         if (geoms != null) {
@@ -56,7 +59,9 @@ public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollect
         if (delegate instanceof GeometryHandlerBase) {
             //end of a member geometry
             ((GeometryHandlerBase)delegate).endObject();
-            geoms.add(((GeometryHandlerBase)delegate).getValue());
+            Geometry geomObject = ((GeometryHandlerBase)delegate).getValue();
+            if (geomObject != null)
+                geoms.add(geomObject);
             delegate = NULL;
         }
         else {
@@ -70,7 +75,18 @@ public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollect
     
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
-        if ("geometries".equals(key)) {
+        if ("coordinates".equals(key) && delegate == UNINITIALIZED) {
+            /* case of specifying coordinates before the actual geometry type. create a proxy
+             * handler that will simply track calls until the type is actually specified
+             */
+            proxy = new RecordingHandler();
+            delegate = proxy;
+            return super.startObjectEntry(key);
+        }
+        else if ("type".equals(key) && delegate == proxy) {
+            delegate = UNINITIALIZED;
+        }
+        else if ("geometries".equals(key)) {
             geoms = new ArrayList();
         }
         else if (geoms != null) {
@@ -91,9 +107,17 @@ public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollect
     
     @Override
     public boolean primitive(Object value) throws ParseException, IOException {
-        if (geoms != null && delegate == UNINITIALIZED) {
-            //this is the "type" of a member geometry
+        /* handle special case of "type" belonging to one of the collection's geometries
+         * being found after "coordinates" for that geometry.
+         */
+        if (geoms != null && value instanceof String && delegate == UNINITIALIZED) {
             delegateClass = lookupDelegate(value.toString());
+            if (proxy != null) {
+                delegate = createDelegate(delegateClass, new Object[]{factory});
+                delegateClass = null;
+                proxy.replay(delegate);
+                proxy = null;
+            }
         }
         else {
             return super.primitive(value);

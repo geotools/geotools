@@ -275,7 +275,7 @@ public class LineMBLayer extends MBLayer {
         if (paint.containsKey("line-pattern")) {
             return null; // disabled
         }
-        return parse.convertToColor(parse.optional(String.class, paint, "fill-outline-color", "#000000"));
+        return parse.convertToColor(parse.optional(String.class, paint, "line-color", "#000000"));
     }
 
     /**

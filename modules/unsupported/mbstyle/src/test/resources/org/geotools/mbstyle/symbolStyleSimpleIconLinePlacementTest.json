@@ -36,14 +36,16 @@
                     0,
                     0
                 ],
-                "icon-image": "{icon}",
+                "icon-image": "goldfish",
                 "icon-rotate": 40,
                 "visibility": "visible",
                 "icon-size": 1,
-                "icon-allow-overlap": true,
-                "text-allow-overlap": true
+                "symbol-placement": "line",
+                "symbol-spacing": 50.0
+                
             },
             "paint": {
+                "icon-opacity": 0.75,
                 "icon-translate": [
                     0,
                     0

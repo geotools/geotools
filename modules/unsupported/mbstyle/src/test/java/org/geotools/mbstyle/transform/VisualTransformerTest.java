@@ -83,6 +83,8 @@ public class VisualTransformerTest {
     SimpleFeatureSource pointFS;
 
     SimpleFeatureSource gridFS;
+    
+    SimpleFeatureSource lineFS;
 
     SimpleFeatureSource bgFS;
 
@@ -106,6 +108,7 @@ public class VisualTransformerTest {
         gridFS = ds.getFeatureSource("testgrid");
         polygonFS = ds.getFeatureSource("testpolygons");
         polygonsBigFS = ds.getFeatureSource("testpolygonsbig");
+        lineFS = ds.getFeatureSource("testlines");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
@@ -136,6 +139,7 @@ public class VisualTransformerTest {
         BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("fill"), image, 50);
+        mc.dispose();
     }
     
     /**
@@ -162,6 +166,7 @@ public class VisualTransformerTest {
         BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("fill-sprite"), image, 50);
+        mc.dispose();
     }
     
     
@@ -189,8 +194,119 @@ public class VisualTransformerTest {
         BufferedImage image = MapboxTestUtils.showRender("Symbol Sprite Test", renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("symbol-sprite"), image, 50);
+        mc.dispose();
     }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerTextVisualTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextTest.json");
+        testVisualizeStyleWithPointFeatures(jsonObject, "Symbol Text Test", "symbol-text", true, 300, 300);
+    }
+    
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerTextAndIconVisualTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextAndIconTest.json");
+        testVisualizeStyleWithPointFeatures(jsonObject, "Symbol Text and Icon Test", "symbol-text-icon", true, 450, 450);
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerHaloTextVisualTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextHaloTest.json");
+        testVisualizeStyleWithPointFeatures(jsonObject, "Symbol Text Halo Test", "symbol-halo-text", true, 300, 300);
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerTextLinePlacementVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextLinePlacementTest.json");        
+        testVisualizeStyleWithLineFeatures(jsonObject, "Symbol Text Line Placement", "symbol-text-line-placement", true);
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerIconLinePlacementVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconLinePlacementTest.json");        
+        testVisualizeStyleWithLineFeatures(jsonObject, "Symbol Icon Line Placement", "symbol-icon-line-placement", true);
+    }
+    
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerIconAndTextLinePlacementVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconAndTextLinePlacementTest.json");        
+        testVisualizeStyleWithLineFeatures(jsonObject, "Symbol Text+Icon Line Placement", "symbol-text-icon-line-placement", true);
+    }
+    
+    public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {
 
+        // Read file to JSONObject
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();        
+        if (includeGrid) {
+            mc.addLayer(new FeatureLayer(gridFS, defaultLineStyle()));    
+        }        
+        mc.addLayer(new FeatureLayer(pointFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));        
+        BufferedImage image = MapboxTestUtils.showRender(renderTitle, renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null, width, height);
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 50);
+        mc.dispose();
+    }
+    
+
+    public void testVisualizeStyleWithLineFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean showLines) throws Exception {
+        // Read file to JSONObject
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+
+        if (showLines) {
+            mc.addLayer(new FeatureLayer(lineFS, defaultLineStyle()));    
+        }
+        mc.addLayer(new FeatureLayer(lineFS, style));    
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender(renderTitle, renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 50);        
+        mc.dispose();
+    }
+    
 
     public Style defaultLineStyle() {
         Rule rule = styleFactory.createRule();

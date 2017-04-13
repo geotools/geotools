@@ -112,7 +112,7 @@ public class VisualTransformerTest {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
-        // System.setProperty("org.geotools.test.interactive", "true");
+        System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**
@@ -254,6 +254,37 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconAndTextLinePlacementTest.json");        
         testVisualizeStyleWithLineFeatures(jsonObject, "Symbol Text+Icon Line Placement", "symbol-text-icon-line-placement", true);
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Circle Layer
+     */
+    @Test
+    public void mbCircleLayerVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTest.json");        
+        testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test", "circle-style-test", true, 300, 300);
+    }
+    
+    /**
+     * 
+     * Test visualization of a GeoTools style from an MB Circle Layer using defaults
+     */
+    @Test
+    public void mbCircleLayerDefaultsVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTestDefaults.json");        
+        testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Defaults", "circle-style-test-defaults", true, 300, 300);
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Circle Layer with opacity and overlaps
+     */
+    @Test
+    public void mbCircleLayerOverlapVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTestOverlap.json");        
+        testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Overlap", "circle-style-test-overlap", true, 300, 300);
     }
     
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {

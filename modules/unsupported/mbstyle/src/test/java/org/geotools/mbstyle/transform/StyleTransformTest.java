@@ -276,7 +276,7 @@ public class StyleTransformTest {
 
         assertNotNull(psym.getGraphic().getDisplacement());
         assertEquals(Integer.valueOf(10), psym.getGraphic().getDisplacement().getDisplacementX().evaluate(null, Integer.class));
-        assertEquals(Integer.valueOf(15),psym.getGraphic().getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(10),psym.getGraphic().getDisplacement().getDisplacementY().evaluate(null, Integer.class));
 
         assertEquals(1, psym.getGraphic().graphicalSymbols().size());
         
@@ -421,7 +421,6 @@ public class StyleTransformTest {
         while (sfi.hasNext()) {
             SimpleFeature sf = sfi.next();
             String s = e.evaluate(sf, String.class);
-            System.out.println(s);
         }
         
         

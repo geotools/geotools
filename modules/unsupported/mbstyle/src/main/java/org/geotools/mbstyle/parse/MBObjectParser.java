@@ -859,7 +859,8 @@ public class MBObjectParser {
         } else if ("blue".equalsIgnoreCase(color)) {
             return Color.BLUE;
         }
-        return Converters.convert(color, Color.class, null); // TODO: Hints(Hints.COLOR_NAMES, "CSS")
+        Hints h = new Hints(Hints.COLOR_DEFINITION, "CSS");
+        return Converters.convert(color, Color.class, h);
     }
     
     /**

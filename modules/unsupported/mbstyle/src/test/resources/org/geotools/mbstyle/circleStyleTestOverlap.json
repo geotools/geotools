@@ -22,25 +22,47 @@
     "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
     "layers": [
         {
-            "id": "place-label",
+            "id": "layer1",
             "type": "circle",
             "source": "test-source",
+            "source-layer": "test-source-layer1",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "circle-color": "#CC6055",
+                "circle-opacity": 1,
+                "circle-radius": 15,
+                "circle-blur": 3,
+                "circle-translate": [
+                    6,
+                    6
+                ],
+                "circle-stroke-opacity": 1,
+                "circle-stroke-width": 5,
+                "circle-stroke-color": "#a52b1f"
+            }
+        },
+        {
+            "id": "layer2",
+            "type": "circle",
+            "source": "test-source-layer2",
             "source-layer": "place_label",
             "layout": {
                 "visibility": "visible"
             },
             "paint": {
-                "circle-color": "#FF0000",
+                "circle-color": "#DBD2D9",
                 "circle-opacity": 0.5,
                 "circle-radius": 15,
-                "circle-blur": 1,
+                "circle-blur": 3,
                 "circle-translate": [
-                    10,
-                    10
+                    -6,
+                    -6
                 ],
-                "circle-stroke-opacity": 0.75,
-                "circle-stroke-width": 2,
-                "circle-stroke-color": "#00FF00"
+                "circle-stroke-opacity": 0.5,
+                "circle-stroke-width": 5,
+                "circle-stroke-color": "#0F2C14"
             }
         }
     ],

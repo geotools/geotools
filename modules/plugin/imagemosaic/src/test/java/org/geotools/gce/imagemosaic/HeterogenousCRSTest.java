@@ -17,26 +17,34 @@
 
 package org.geotools.gce.imagemosaic;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import static org.geotools.referencing.crs.DefaultGeographicCRS.*;
+
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 
 import org.apache.commons.io.FileUtils;
-import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -98,11 +106,10 @@ public class HeterogenousCRSTest {
     }
 
     private void testMosaic(String testLocation, String sortOrder, String resultLocation,
-
         String expectedCRS, GeneralParameterValue... params)
         throws URISyntaxException, IOException {
 
-        URL storeUrl = org.geotools.TestData.url(this, testLocation);
+        URL storeUrl = TestData.url(this, testLocation);
 
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
@@ -113,29 +120,115 @@ public class HeterogenousCRSTest {
 
         //hack workaround for the store not being created with a consistent CRS in certain
         //environments.
-        if (CRS.toSRS(imReader.getCoordinateReferenceSystem()).equals(expectedCRS)) {
-            Collection<GeneralParameterValue> finalParamsCollection =
-                new ArrayList<>(Arrays.asList(params));
+        assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), expectedCRS);
+        Collection<GeneralParameterValue> finalParamsCollection =
+            new ArrayList<>(Arrays.asList(params));
 
-            //Let's do a sort order to get the correct results
-            ParameterValue<String> sortByParam = ImageMosaicFormat.SORT_BY.createValue();
-            sortByParam.setValue(sortOrder);
+        //Let's do a sort order to get the correct results
+        ParameterValue<String> sortByParam = ImageMosaicFormat.SORT_BY.createValue();
+        sortByParam.setValue(sortOrder);
 
-            finalParamsCollection.add(sortByParam);
+        finalParamsCollection.add(sortByParam);
 
-            GridCoverage2D gc2d = imReader
-                .read(finalParamsCollection.toArray(new GeneralParameterValue[]{}));
+        GridCoverage2D gc2d = imReader
+            .read(finalParamsCollection.toArray(new GeneralParameterValue[]{}));
+        assertEquals(CRS.toSRS(gc2d.getCoordinateReferenceSystem()), expectedCRS);
 
-            if (resultLocation != null) {
-                RenderedImage renderImage = gc2d.getRenderedImage();
-                File resultsFile = org.geotools.TestData
-                    .file(this, resultLocation);
+        if (resultLocation != null) {
+            RenderedImage renderImage = gc2d.getRenderedImage();
+            File resultsFile = testFile(resultLocation);
 
-                //number 1000 was a bit arbitrary for differences, should account for small differences in
-                //interpolation and such, but not the reprojection of the blue tiff. Correct and incorrect
-                //images will be pretty similar anyway
-                ImageAssert.assertEquals(resultsFile, renderImage, 1000);
-            }
+            //number 1000 was a bit arbitrary for differences, should account for small differences in
+            //interpolation and such, but not the reprojection of the blue tiff. Correct and incorrect
+            //images will be pretty similar anyway
+            ImageAssert.assertEquals(resultsFile, renderImage, 1000);
         }
     }
+    
+    @Test
+    public void testHarvestHeteroUTM() throws Exception {
+        File indexer = TestData.file(this, "hetero_utm/indexer.properties");
+        File utm32n = TestData.file(this, "hetero_utm/utm32n.tiff");
+        File utm33n = TestData.file(this, "hetero_utm/utm33n.tiff");
+        File utm32s = TestData.file(this, "hetero_utm/utm32s.tiff");
+        File utm33s = TestData.file(this, "hetero_utm/utm33s.tiff");
+        
+        File testStoreDirectory = crsMosaicFolder.newFolder("harvestHeteroUtm");
+        FileUtils.copyFile(utm32n, new File(testStoreDirectory, utm32n.getName()));
+        FileUtils.copyFile(indexer, new File(testStoreDirectory, indexer.getName()));
+
+        // setup reader and check initial status
+        ImageMosaicReader reader = new ImageMosaicReader(testStoreDirectory);
+        Assert.assertNotNull(reader);
+        assertExpectedBounds(new ReferencedEnvelope(11, 12, 0, 1, WGS84), reader);
+        assertExpectedMosaic(reader, "hetero_utm_results/topleft.png");
+        
+        // update and check
+        assertEquals(1, reader.harvest(null, utm33n, null).size());
+        assertExpectedBounds(new ReferencedEnvelope(11, 13, 0, 1, WGS84), reader);
+        assertExpectedMosaic(reader, "hetero_utm_results/top.png");
+        
+        // update and check
+        assertEquals(1, reader.harvest(null, utm32s, null).size());
+        assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), reader);
+        assertExpectedMosaic(reader, "hetero_utm_results/top_bottoleft.png");
+        
+        // update and check
+        assertEquals(1, reader.harvest(null, utm33s, null).size());
+        assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), reader);
+        assertExpectedMosaic(reader, "hetero_utm_results/full.png");
+        
+        reader.dispose();
+    }
+    
+    @Test
+    public void testHeteroUTM() throws Exception {
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        
+        // check we have the expected bounds and CRS
+        assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), imReader);
+        
+        // read a coverage and compare with expected image
+        final String expectedResultLocation = "hetero_utm_results/full.png";
+        assertExpectedMosaic(imReader, expectedResultLocation);
+        imReader.dispose();
+    }
+
+    private void assertExpectedBounds(ReferencedEnvelope expected, ImageMosaicReader imReader) {
+        // the specified CRS has been honored
+        assertTrue(CRS.equalsIgnoreMetadata(imReader.getCoordinateReferenceSystem(), expected.getCoordinateReferenceSystem()));
+        
+        // getting the expected bounds (more or less)
+        double EPS = 0.5d / 110; // pixel size is 1km, use half a pixel tolerance
+        GeneralEnvelope envelope = imReader.getOriginalEnvelope();
+        
+        assertEquals(expected.getMinX(), envelope.getMinimum(0), EPS);
+        assertEquals(expected.getMaxX(), envelope.getMaximum(0), EPS);
+        assertEquals(expected.getMinY(), envelope.getMinimum(1), EPS);
+        assertEquals(expected.getMaxY(), envelope.getMaximum(1), EPS);
+    }
+
+    private void assertExpectedMosaic(ImageMosaicReader imReader,
+            final String expectedResultLocation) throws IOException {
+        GridCoverage2D coverage = imReader.read(null);
+        File resultsFile = testFile(expectedResultLocation);
+        ImageAssert.assertEquals(resultsFile, coverage.getRenderedImage(), 1000);
+        
+        // cleanup
+        coverage.dispose(true);
+    }
+    
+    File testFile(String name) {
+        return new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/" + name);
+    }
+    
+
 }

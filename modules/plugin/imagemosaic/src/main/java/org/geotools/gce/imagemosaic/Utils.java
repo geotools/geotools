@@ -399,6 +399,7 @@ public class Utils {
 
         // create a mosaic index builder and set the relevant elements
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
+        // check if the indexer.properties is there
         configuration.setHints(hints);// retain hints as this may contain an instance of an ImageMosaicReader
         List<Parameter> parameterList = configuration.getIndexer().getParameters().getParameter();
 
@@ -785,7 +786,7 @@ public class Utils {
     }
 
     private static CoordinateReferenceSystem decodeSrs(String property) throws FactoryException {
-        return CRS.decode(property);
+        return CRS.decode(property, true);
     }
 
     private static Indexer loadIndexer(File parentFolder) {
@@ -1343,6 +1344,15 @@ public class Utils {
     }
 
     private static String getDefaultIndexName(final String locationPath) {
+        String name = getIndexerProperty(locationPath, Utils.Prop.NAME);
+        if (name != null) {
+            return name;
+        }
+
+        return FilenameUtils.getName(locationPath);
+    }
+
+    public static String getIndexerProperty(String locationPath, String propertyName) {
         if (locationPath == null) {
             return null;
         }
@@ -1353,7 +1363,7 @@ public class Utils {
                 URL indexerUrl = DataUtilities.fileToURL(indexer);
                 Properties config = CoverageUtilities.loadPropertiesFromURL(indexerUrl);
                 if (config != null && config.get(Utils.Prop.NAME) != null) {
-                    return (String) config.get(Utils.Prop.NAME);
+                    return (String) config.get(propertyName);
                 }
             }
             indexer = new File(file, IndexerUtils.INDEXER_XML);
@@ -1362,8 +1372,8 @@ public class Utils {
                 return name;
             }
         }
-
-        return FilenameUtils.getName(locationPath);
+        
+        return null;
     }
 
     /**

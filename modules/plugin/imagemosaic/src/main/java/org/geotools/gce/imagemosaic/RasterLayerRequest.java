@@ -199,7 +199,7 @@ public class RasterLayerRequest {
         this.rasterManager = rasterManager;
         this.heterogeneousGranules = rasterManager.heterogeneousGranules;
         CoverageProperties coverageProperties = new CoverageProperties();
-        coverageProperties.setBBox(rasterManager.spatialDomainManager.coverageBBox);
+        coverageProperties.setBBox(computeCoverageBoundingBox(rasterManager));
         coverageProperties.setRasterArea(rasterManager.spatialDomainManager.coverageRasterArea);
         coverageProperties
                 .setFullResolution(rasterManager.spatialDomainManager.coverageFullResolution);

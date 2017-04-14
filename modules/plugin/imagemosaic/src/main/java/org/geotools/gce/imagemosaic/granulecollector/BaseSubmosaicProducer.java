@@ -350,9 +350,13 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
     @Override
     public List<MosaicElement> createMosaic() throws IOException {
-        return Collections
-                .singletonList((new Mosaicker(this.rasterLayerResponse,
-                        collectGranules(), MergeBehavior.FLAT)).createMosaic());
+        final MosaicElement mosaic = (new Mosaicker(this.rasterLayerResponse,
+                collectGranules(), MergeBehavior.FLAT)).createMosaic();
+        if (mosaic == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.singletonList(mosaic);
+        }
     }
 
     @Override

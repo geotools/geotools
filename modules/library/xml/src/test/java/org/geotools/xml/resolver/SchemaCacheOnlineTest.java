@@ -44,16 +44,15 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
     private static final String HTTPS_PROTOCOLS = "https.protocols";
 
     /**
-     * Downloaded files are stored in this directory. We intentionally use a non-canonical cache
-     * directory to test that resolved locations are canonical.
+     * Downloaded files are stored in this directory. We intentionally use a non-canonical cache directory to test that resolved locations are
+     * canonical.
      */
-    private static final File CACHE_DIRECTORY = new File(
-            "target/schema-cache/../schema-cache");
+    private static final File CACHE_DIRECTORY = new File("target/schema-cache/../schema-cache");
 
     /**
      * Schema that is downloaded.
      */
-    private static final String SCHEMA_LOCATION = "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd";
+    private static final String SCHEMA_LOCATION = "http://schemas.geosciml.org/geosciml/2.0/xsd/geosciml.xsd";
 
     /**
      * Filename of the schema.
@@ -115,8 +114,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
      */
     @Test
     public void downloadHttpWithLargeBlockSize() throws Exception {
-        check(SchemaCache.download(new URI(
-                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd"), 65536));
+        check(SchemaCache.download(new URI(SCHEMA_LOCATION), 65536));
     }
 
     /**
@@ -184,14 +182,12 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
             Assert.assertTrue(DataUtilities.urlToFile((new URI(location)).toURL()).exists());
             // test that cache path is not canonical
-            Assert.assertFalse(CACHE_DIRECTORY.toString().equals(
-                    CACHE_DIRECTORY.getCanonicalFile().toString()));
+            Assert.assertFalse(CACHE_DIRECTORY.toString()
+                    .equals(CACHE_DIRECTORY.getCanonicalFile().toString()));
             // test that resolved location is canonical, despite cache directory not being canonical
             Assert.assertEquals(location, DataUtilities.urlToFile((new URI(location)).toURL())
                     .getCanonicalFile().toURI().toString());
         }
     }
-    
-    
 
 }

@@ -19,6 +19,9 @@ package org.geotools.imageio.netcdf.utilities;
 import it.geosolutions.imageio.stream.AccessibleStream;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
+import thredds.featurecollection.FeatureCollectionConfig;
+import thredds.featurecollection.FeatureCollectionConfigBuilder;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
@@ -31,13 +34,17 @@ import ucar.nc2.*;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.NetcdfDataset.Enhance;
 import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.ft.fmrc.Fmrc;
 import ucar.nc2.jni.netcdf.Nc4Iosp;
 
 import java.awt.image.DataBuffer;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.Format;
@@ -46,6 +53,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 
 /**
  * Set of NetCDF utility methods.
@@ -252,6 +265,12 @@ public class NetCDFUtilities {
     public static final String ENHANCE_SCALE_MISSING_DEFER = "org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer";
 
     public static boolean ENHANCE_SCALE_OFFSET = false;
+    
+    /**
+     * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have WMO headers prepended by a telecommunications
+     * gateway. NetCDF-Java Grib{1,2}RecordScanner look for the header in this many bytes.
+     */
+    private static final int GRIB_SEARCH_BYTES = 16000;
 
     static {
         //TODO remove this block when enhance mode can be set some other way, possibly via read params
@@ -293,6 +312,10 @@ public class NetCDFUtilities {
 
     public static enum CheckType {
         NONE, UNSET, NOSCALARS, ONLYGEOGRIDS
+    }
+    
+    public static enum FileFormat {
+        NONE, CDF, HDF5, GRIB, NCML, FC
     }
 
     /**
@@ -636,6 +659,93 @@ public class NetCDFUtilities {
             return true;
         }
     }
+        
+    public static FileFormat getFormat(URI uri) throws IOException {
+        //try binary
+        try (InputStream input = uri.toURL().openStream()) {
+            // Checking Magic Number
+            byte[] b = new byte[GRIB_SEARCH_BYTES];
+            int count = input.read(b);
+            if (count < 3) {
+                return FileFormat.NONE;
+            }
+            // CDF signature at start of file
+            if ((b[0] == (byte) 0x43 && b[1] == (byte) 0x44
+                    && b[2] == (byte) 0x46)) {
+                return FileFormat.CDF;
+            }
+            // HDF signature at start of file
+            if ((b[0] == (byte) 0x89 && b[1] == (byte) 0x48
+                    && b[2] == (byte) 0x44)) {
+                return FileFormat.HDF5;
+            }
+            // Search for GRIB signature in first count bytes (up to GRIB_SEARCH_BYTES)
+            for (int i = 0; i < count - 3; i++) {
+                if (b[i] == (byte) 0x47 && b[i + 1] == (byte) 0x52 && b[i + 2] == (byte) 0x49
+                        && b[i + 3] == (byte) 0x42) {
+                    return FileFormat.GRIB;
+                }
+            }
+        }
+        
+        //try XML
+        try (InputStream input = uri.toURL().openStream()) {
+            StreamSource streamSource = null;
+            XMLStreamReader reader = null;
+            try {
+                streamSource = new StreamSource(input);
+                XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+                reader = inputFactory.createXMLStreamReader(streamSource);
+                reader.nextTag();
+                if ("netcdf".equals(reader.getName().getLocalPart())) {
+                    return FileFormat.NCML;
+                }
+                if ("featureCollection".equals(reader.getName().getLocalPart())) {
+                    return FileFormat.FC;
+                }
+            } catch (XMLStreamException e) {
+    
+            } catch (FactoryConfigurationError e) {
+    
+            } finally {
+                if (input != null) {
+                    input.close();
+                }
+                if (reader != null) {
+                    if (streamSource.getInputStream() != null) {
+                        streamSource.getInputStream().close();
+                    }
+                    try {
+                        reader.close();
+                    } catch (XMLStreamException e) {
+                    }
+                }
+    
+            }
+        }
+        return FileFormat.NONE;
+    }
+    
+    public static NetcdfDataset acquireFeatureCollection(String path) throws IOException {
+        Formatter formatter = new Formatter(System.err);
+        FeatureCollectionConfigBuilder builder
+                    = new FeatureCollectionConfigBuilder(formatter);
+        FeatureCollectionConfig config
+                    = builder.readConfigFromFile(path.toString()); //this is the path to the feature collection XML
+        Fmrc fmrc = Fmrc.open(config, formatter);
+        NetcdfDataset dataset = new NetcdfDataset();
+        fmrc.getDataset2D(dataset);
+        dataset.setLocation(path); 
+        return dataset;
+    }
+    
+    public static NetcdfDataset acquireDataset(URI uri) throws IOException {
+        if (getFormat(uri) == FileFormat.FC) {
+            return acquireFeatureCollection(uri.toString());
+        } else {
+            return NetcdfDataset.acquireDataset(uri.toString(), null);
+        }
+    }
 
     /**
      * Returns a {@code NetcdfDataset} given an input object
@@ -651,17 +761,20 @@ public class NetCDFUtilities {
      */
     public static NetcdfDataset getDataset(Object input) throws IOException {
         NetcdfDataset dataset = null;
-        if (input instanceof File) {
+        if (input instanceof URI) {
+            dataset = acquireDataset((URI) input);
+        }
+        else if (input instanceof File) {
             final File file= (File) input;
             if (!file.isDirectory()) {
-                dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
+                dataset = acquireDataset(file.toURI());
             } else {
                 throw new IllegalArgumentException("Error occurred during NetCDF file reading: The input file is a Directory.");
             }
         } else if (input instanceof String) {
             File file = new File((String) input);
             if (!file.isDirectory()) {
-                dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
+                dataset = acquireDataset(file.toURI());
             } else {
                 throw new IllegalArgumentException( "Error occurred during NetCDF file reading: The input file is a Directory.");
             }
@@ -671,26 +784,30 @@ public class NetCDFUtilities {
             if (protocol.equalsIgnoreCase("file")) {
                 File file = ImageIOUtilities.urlToFile(tempURL);
                 if (!file.isDirectory()) {
-                    dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
+                    dataset = acquireDataset(file.toURI());
                 } else {
                     throw new IllegalArgumentException( "Error occurred during NetCDF file reading: The input file is a Directory.");
                 }
             } else if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
-                dataset = NetcdfDataset.acquireDataset(tempURL.toExternalForm(), null);
+                try {
+                    dataset = acquireDataset(tempURL.toURI());
+                } catch (URISyntaxException e) {
+                    throw new IOException(e);
+                }
             }
-        } else if (input instanceof URIImageInputStream) {
-            final URIImageInputStream uriInStream = (URIImageInputStream) input;
-            dataset = NetcdfDataset.acquireDataset(uriInStream.getUri().toString(), null);
         } else if (input instanceof AccessibleStream) {
             final AccessibleStream<?> stream= (AccessibleStream<?>) input;
             if (stream.getBinding().isAssignableFrom(File.class)) {
                 final File file = ((AccessibleStream<File>) input).getTarget();
                 if (!file.isDirectory()) {
-                    dataset = NetcdfDataset.acquireDataset(file.getPath(), null);
+                    dataset = acquireDataset(file.toURI());
+                } else {
+                    throw new IllegalArgumentException("Error occurred during NetCDF file reading: The input file is a Directory.");
                 }
-            } else {
-                throw new IllegalArgumentException("Error occurred during NetCDF file reading: The input file is a Directory.");
-            }
+            } else if (stream.getBinding().isAssignableFrom(URI.class)) {
+                final URI uri = ((AccessibleStream<URI>) input).getTarget();
+                dataset = acquireDataset(uri);
+            } 
         }
         return dataset;
     }
@@ -1155,4 +1272,53 @@ public class NetCDFUtilities {
         throw new IllegalArgumentException("Unsupported type or value: type = " +
         type.toString() + " value = " + value);
     }
+
+    /**
+     * Default parameter behavior properties
+     * TODO: better way of handling configuration settings, such as read parameters.
+     */
+    public final static String PARAMS_MAX_KEY = "org.geotools.coverage.io.netcdf.param.max";
+
+    public final static String PARAMS_MIN_KEY = "org.geotools.coverage.io.netcdf.param.min";
+
+    private static Set<String> PARAMS_MAX;
+
+    private static Set<String> PARAMS_MIN;
+
+    static {
+        refreshParameterBehaviors();
+    }
+
+    public static void refreshParameterBehaviors() {
+        PARAMS_MAX = new HashSet<String>();
+        String maxProperty = System.getProperty(PARAMS_MAX_KEY);
+        if (maxProperty != null) {
+            for (String param : maxProperty.split(",")) {
+                PARAMS_MAX.add(param.trim().toUpperCase());
+            }
+        }
+        
+        String minProperty = System.getProperty(PARAMS_MIN_KEY);
+        PARAMS_MIN = new HashSet<String>();
+        if (minProperty != null) {
+            for (String param : minProperty.split(",")) {
+                PARAMS_MIN.add(param.trim().toUpperCase());
+            }
+        }
+    }
+
+    public enum ParameterBehaviour {
+        DO_NOTHING, MAX, MIN 
+    }
+
+    public static ParameterBehaviour getParameterBehaviour(String parameter) {
+        if (PARAMS_MAX.contains(parameter.toUpperCase())) {
+            return ParameterBehaviour.MAX;
+        } else if (PARAMS_MIN.contains(parameter.toUpperCase())) {
+            return ParameterBehaviour.MIN;
+        } else {
+            return ParameterBehaviour.DO_NOTHING;
+        }
+    }
+
 }

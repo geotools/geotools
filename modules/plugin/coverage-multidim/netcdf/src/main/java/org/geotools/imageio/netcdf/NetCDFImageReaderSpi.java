@@ -40,6 +40,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities.FileFormat;
 import org.geotools.util.logging.Logging;
 
 import it.geosolutions.imageio.stream.AccessibleStream;
@@ -167,112 +168,25 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
     @Override
     public boolean canDecodeInput(Object source) throws IOException {
-        boolean canDecode = false;
-        File input = null;
-        if (source instanceof FileImageInputStreamExtImpl) {
-            input = ((FileImageInputStreamExtImpl) source).getFile();
-            if (LOGGER.isLoggable(Level.FINE))
+        URI input = null;
+        if (source instanceof URI) {
+            input = (URI) source;
+        } else if (source instanceof File) {
+            input = ((File) source).toURI();
+        } else if (source instanceof FileImageInputStreamExtImpl) {
+            input = ((FileImageInputStreamExtImpl) source).getFile().toURI();
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Found a valid FileImageInputStream");
-        }
-        if (source instanceof File) {
-            input = (File) source;
-        }
-        if (source instanceof URIImageInputStream) {
-            URIImageInputStream uriInStream = (URIImageInputStream) source;
-            try {
-                // TODO perhaps it would be better to not make an online check. Might be slowing down.
-                NetcdfDataset openDataset = NetcdfDataset.acquireDataset(uriInStream.getUri().toString(), null);
-                openDataset.close();
-                return true;
-            } catch (IOException e) {
-                return false;
             }
+        } else if (source instanceof URIImageInputStream) {
+            input = ((URIImageInputStream) source).getUri();
         }
+        
         if (input != null) {
-            try {
-                // Checking Magic Number
-                byte[] b = new byte[GRIB_SEARCH_BYTES];
-                int count = 0;
-                try (FileInputStream fis = new FileInputStream(input)) {
-                    count = fis.read(b);
-                }
-                if (count < 3) {
-                    return false;
-                }
-                // CDF signature at start of file
-                boolean cdfCheck = (b[0] == (byte) 0x43 && b[1] == (byte) 0x44
-                        && b[2] == (byte) 0x46);
-                // HDF signature at start of file
-                boolean hdf5Check = (b[0] == (byte) 0x89 && b[1] == (byte) 0x48
-                        && b[2] == (byte) 0x44);
-                boolean gribCheck = false;
-                // Search for GRIB signature in first count bytes (up to GRIB_SEARCH_BYTES)
-                for (int i = 0; i < count - 3; i++) {
-                    if (b[i] == (byte) 0x47 && b[i + 1] == (byte) 0x52 && b[i + 2] == (byte) 0x49
-                            && b[i + 3] == (byte) 0x42) {
-                        gribCheck = true;
-                        break;
-                    }
-                }
-                // Check if the GRIB library is available
-                gribCheck &= NetCDFUtilities.isGribAvailable();
-                boolean isNetCDF = true;
-                if (!cdfCheck && !hdf5Check && !gribCheck) {
-                    if (!isNcML(input)) {
-                        isNetCDF = false;
-                    }
-                }
-                if (!isNetCDF) {
-                    return false;
-                }
-                try (NetcdfFile file = NetcdfDataset
-                        .acquireDataset(DataUtilities.fileToURL(input).toString(), null)) {
-                    if (file != null) {
-                        if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.fine("File successfully opened");
-                        canDecode = true;
-                    }
-                }
-            } catch (IOException ioe) {
-                canDecode = false;
-            }
+            return NetCDFUtilities.getFormat(input) != FileFormat.NONE;
+        } else {
+            return false;
         }
-        return canDecode;
-    }
-
-    private boolean isNcML(File file) throws IOException {
-        FileInputStream input = null;
-        StreamSource streamSource = null;
-        XMLStreamReader reader = null;
-        try {
-            input  = new FileInputStream(file);
-            streamSource = new StreamSource(input);
-            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            reader = inputFactory.createXMLStreamReader(streamSource);
-            reader.nextTag();
-            if ("netcdf".equals(reader.getName().getLocalPart())) {
-                return true;
-            }
-        } catch (XMLStreamException e) {
-
-        } catch (FactoryConfigurationError e) {
-
-        } finally {
-            if (input != null) {
-                input.close();
-            }
-            if (reader != null) {
-                if (streamSource.getInputStream() != null) {
-                    streamSource.getInputStream().close();
-                }
-                try {
-                    reader.close();
-                } catch (XMLStreamException e) {
-                }
-            }
-
-        }
-        return false;
     }
 
 }

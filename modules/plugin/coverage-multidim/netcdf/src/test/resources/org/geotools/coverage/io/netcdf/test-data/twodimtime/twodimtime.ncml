@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+    <variable name="runtime" type="double">
+        <attribute type="string" name="_CoordinateAxisType" value="RunTime"/>
+        <attribute type="string" name="units" value="hours since 2012-04-01 0:00:00"/>
+        <attribute type="string" name="time_origin" value="2012-04-01 0:00:00"/>
+        <values>2 3</values>
+    </variable>
+
+    <variable name="D">
+     <attribute type="string" name="coordinates" value="runtime time z lat lon"/>
+    </variable>
+    <variable name="time">
+     <attribute type="string" name="coordinates" value="runtime time"/>
+    </variable> 
+
+    <aggregation type="joinNew" dimName="runtime">
+        <netcdf coordValue="2" location="twodimtime1.nc" />
+        <netcdf coordValue="3" location="twodimtime2.nc" />
+        <variableAgg name="D" />
+        <variableAgg name="time"/>
+    </aggregation>
+</netcdf>

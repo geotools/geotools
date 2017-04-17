@@ -574,29 +574,27 @@ class NetCDFGeoreferenceManager {
         Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
         Set<String> ignored = NetCDFUtilities.getIgnoredDimensions();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
-            String axisName = axis.getFullName(); 
-            if (axis instanceof CoordinateAxis1D && axis.getAxisType() != null && !"reftime".equalsIgnoreCase(axisName)) {
-                coordinates.put(axisName, CoordinateVariable.create((CoordinateAxis1D)axis));
-            } else {
-                // Workaround for Unsupported Axes
-                if (axis instanceof CoordinateAxis1D && unsupported.contains(axisName)) {
-                    axis.setAxisType(AxisType.GeoZ);
-                    coordinates.put(axisName, CoordinateVariable.create((CoordinateAxis1D) axis));
-                // Workaround for files that have a time dimension, but in a format that could not be parsed
-                } else if ("time".equals(axisName)) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Detected unparseable unit string in time axis: '"
-                            + axis.getUnitsString() + "'.");
+            if (axis.getDimensions().size() > 0) {
+                String axisName = axis.getFullName(); 
+                if (axis.getAxisType() != null) {
+                    coordinates.put(axisName, CoordinateVariable.create(axis));
+                } else {
+                    // Workaround for Unsupported Axes
+                    if (unsupported.contains(axisName)) {
+                        axis.setAxisType(AxisType.GeoZ);
+                        coordinates.put(axisName, CoordinateVariable.create(axis));
+                    // Workaround for files that have a time dimension, but in a format that could not be parsed
+                    } else if ("time".equals(axisName)) {
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine("Detected unparseable unit string in time axis: '"
+                                + axis.getUnitsString() + "'.");
+                        }
+                        axis.setAxisType(AxisType.Time);
+                        coordinates.put(axisName, CoordinateVariable.create(axis));
+                    } else if (!ignored.contains(axisName)){
+                        LOGGER.warning("Unsupported axis: " + axis + " in input: " + dataset.getLocation()
+                                + " has been found");
                     }
-                    axis.setAxisType(AxisType.Time);
-                    coordinates.put(axisName, CoordinateVariable.create((CoordinateAxis1D) axis));
-                } else if ("reftime".equals(axisName) || AxisType.RunTime.equals(axis.getAxisType())) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Unable to support reftime which is not a CoordinateAxis1D");
-                    }
-                } else if (!ignored.contains(axisName)){
-                    LOGGER.warning("Unsupported axis: " + axis + " in input: " + dataset.getLocation()
-                            + " has been found");
                 }
             }
         }

@@ -18,6 +18,7 @@ package org.geotools.imageio.netcdf.cv;
 
 import java.util.Set;
 
+import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
 
 /**
@@ -55,7 +56,7 @@ public interface CoordinateHandlerSpi {
      * @param axis
      * @return
      */
-    public boolean canHandle(CoordinateAxis1D axis);
+    public boolean canHandle(CoordinateAxis axis);
 
     /** Create a {@link CoordinateHandler} */
     public CoordinateHandler createHandler();
@@ -65,7 +66,7 @@ public interface CoordinateHandlerSpi {
 
     public interface CoordinateHandler {
 
-        public CoordinateVariable<?> createCoordinateVariable(CoordinateAxis1D axis);
+        public CoordinateVariable<?> createCoordinateVariable(CoordinateAxis axis);
 
     }
 }

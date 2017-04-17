@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -430,7 +431,8 @@ public class CoordinateVariableTest extends Assert {
             calendar.set(Calendar.MONTH, 11);
             assertEquals(calendar.getTimeInMillis(), timeVariable.getMaximum().getTime());
             calendar.set(Calendar.MONTH, 2);
-            assertEquals(calendar.getTimeInMillis(), timeVariable.read(2).getTime());
+            assertEquals(calendar.getTimeInMillis(), timeVariable.read(
+                    Collections.singletonMap("time", 2)).getTime());
 
         } finally {
             dataset.close();

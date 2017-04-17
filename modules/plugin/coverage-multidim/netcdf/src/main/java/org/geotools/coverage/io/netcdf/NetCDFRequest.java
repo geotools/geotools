@@ -37,6 +37,8 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.VariableAdapter;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities.ParameterBehaviour;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
@@ -200,7 +202,8 @@ class NetCDFRequest extends CoverageReadRequest{
         // //
         SortedSet<DateRange> temporalSubset = request.getTemporalSubset();
         if (temporalDomain != null) {
-            if (temporalSubset.isEmpty()) {
+            if (temporalSubset.isEmpty() && 
+                    NetCDFUtilities.getParameterBehaviour(NetCDFUtilities.TIME_DIM) == ParameterBehaviour.DO_NOTHING) {
                 Set<DateRange> temporalExtent = temporalDomain.getTemporalExtent();
                 if (temporalExtent != null) {
                     temporalSubset = new DateRangeTreeSet(temporalExtent);
@@ -217,7 +220,8 @@ class NetCDFRequest extends CoverageReadRequest{
         Set<NumberRange<Double>> verticalSubset = request.getVerticalSubset();
         if (verticalDomain != null) {
             Set<NumberRange<Double>> verticalExtent = verticalDomain.getVerticalExtent();
-            if (verticalSubset.isEmpty()) {
+            if (verticalSubset.isEmpty() && NetCDFUtilities.getParameterBehaviour(
+                    NetCDFUtilities.ELEVATION_DIM) == ParameterBehaviour.DO_NOTHING) {
                 if (verticalExtent != null) {
                     verticalSubset = new HashSet<NumberRange<Double>>(verticalExtent);
                 }

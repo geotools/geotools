@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<featureCollection featureType="FMRC" name="NCOM-GLOBAL" path="ncom/global" xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0">
+  <collection spec="${DIRECTORY}/twodimtimediff[12].nc"/>
+</featureCollection>

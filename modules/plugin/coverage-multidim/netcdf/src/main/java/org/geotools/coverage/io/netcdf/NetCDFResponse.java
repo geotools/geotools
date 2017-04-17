@@ -54,6 +54,10 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
+import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -243,6 +247,7 @@ class NetCDFResponse extends CoverageResponse{
             GridSampleDimension sampleDimension = sampleDimensions[0];
             noData = sampleDimension.getNoDataValues();
         }
+
         // handling date and time
         for (DateRange timeRange : tempSubset) {
             for (NumberRange<Double> elevation : vertSubset) {
@@ -255,13 +260,24 @@ class NetCDFResponse extends CoverageResponse{
                 // handle additional params
                 additionalParamsManagement(query, domainsSubset, dimensionDescriptors);
 
+                //set query typename
+                query.setTypeName(request.name);
+
+                //handle default params
+                if (timeRange == null && timeFilterAttribute != null) {
+                    defaultQuery(query, timeFilterAttribute);
+                }
+                if (elevation == null && elevationFilterAttribute != null) {
+                    defaultQuery(query, elevationFilterAttribute);
+                }
+                defaultParamsManagement(query, domainsSubset, dimensionDescriptors);
+
                 // bbox
                 query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
                         FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
                                 FeatureUtilities.DEFAULT_FILTER_FACTORY.property("the_geom"),
                                 targetBBox)));
 
-                query.setTypeName(request.name);
                 List<Integer> indexes = request.source.reader.getImageIndex(query);
                 if (indexes == null || indexes.isEmpty()) {
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -373,6 +389,54 @@ class NetCDFResponse extends CoverageResponse{
 
         Filter filter = FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters);
         query.setFilter(filter);
+    }
+
+    private Object findDefaultValue(Query query, String attribute) {
+        FeatureCalc aggFunc;
+        switch (NetCDFUtilities.getParameterBehaviour(attribute)) {
+        case MAX:
+            aggFunc = new MaxVisitor(attribute);
+            break;
+        case MIN:
+            aggFunc = new MinVisitor(attribute);
+            break;
+        default:
+            return null;
+        }
+        try {
+            request.source.reader.getCatalog().computeAggregateFunction(query, aggFunc);
+            return aggFunc.getResult().getValue();
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private void defaultQuery(Query query, String filterAttribute) {
+        Object value = findDefaultValue(query, filterAttribute);
+        if (value != null) {
+            Filter filter = query.getFilter();
+            filter = FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filter,
+                    FeatureUtilities.DEFAULT_FILTER_FACTORY.equals(
+                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(filterAttribute),
+                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value)));
+            query.setFilter(filter);
+        }
+    }
+
+    private void defaultParamsManagement(Query query, Map<String, Set<?>> domainsSubset,
+            List<DimensionDescriptor> dimensionDescriptors) {
+        for (DimensionDescriptor dim : dimensionDescriptors) {
+            boolean notPresent = true;
+            for (String key : domainsSubset.keySet()) {
+                if (dim.getName().toUpperCase().equalsIgnoreCase(key)) {
+                     notPresent = false;
+                }
+            }
+            if (notPresent) {
+                defaultQuery(query, dim.getStartAttribute());
+            }
+        }
     }
 
     private void prepareParams() throws DataSourceException {

@@ -21,9 +21,7 @@ import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.mbstyle.*;
-import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -36,7 +34,6 @@ import org.opengis.style.GraphicalSymbol;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -106,9 +103,9 @@ public class StyleTransformTest {
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
         assertTrue(layers.get(0) instanceof FillExtrusionMBLayer);
         FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(0);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill, mbStyle);
+        List<FeatureTypeStyle> fts = new MBStyleTransformer().transform(mbFill, mbStyle, true);
 
-        PolygonSymbolizer psym = SLD.polySymbolizer(fts);
+        PolygonSymbolizer psym = SLD.polySymbolizer(fts.get(0));
 
         Expression expr =  psym.getFill().getColor();
         assertNotNull("fillColor set", expr);

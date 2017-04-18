@@ -100,7 +100,7 @@ public class ImageMosaicEgrTest {
         // create the base mosaic we are going to use
         File mosaicSource = TestData.file(this, "egr");
         FileUtils.copyDirectory(mosaicSource, testMosaic);
-        System.out.println(testMosaic.getAbsolutePath());
+        // System.out.println(testMosaic.getAbsolutePath());
         testMosaicUrl = DataUtilities.fileToURL(testMosaic);
     }
 

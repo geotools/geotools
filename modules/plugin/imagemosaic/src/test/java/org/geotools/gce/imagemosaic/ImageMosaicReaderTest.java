@@ -4355,4 +4355,30 @@ public class ImageMosaicReaderTest extends Assert{
         SampleModel sampleModel = coverage.getRenderedImage().getSampleModel();
         assertThat(sampleModel.getNumBands(), is(5));
     }
+    
+    @Test
+    public void testFilteredGranuleFootprint() throws Exception {
+        AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+        ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+        ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
+        filter.setValue(ECQL.toFilter("location = 'global_mosaic_16.png'"));
+        GridCoverage2D coverage = TestUtils.checkCoverage(reader, new GeneralParameterValue[]{filter}, null);
+        
+        // now grab specific reader
+        File file = new File(DataUtilities.urlToFile(rgbURL), "global_mosaic_16.png");
+        URL granuleUrl = DataUtilities.fileToURL(file);
+        AbstractGridFormat granuleFormat = TestUtils.getFormat(granuleUrl);
+        AbstractGridCoverage2DReader granuleReader = granuleFormat.getReader(granuleUrl);
+        GridCoverage2D expected = granuleReader.read(null);
+        
+        // check footprint is the same
+        final Envelope expectedEnvelope = expected.getEnvelope();
+        final Envelope actualEnvelope = coverage.getEnvelope();
+        final double EPS = 1e-6;
+        assertEquals(expectedEnvelope.getMinimum(0), actualEnvelope.getMinimum(0), EPS);
+        assertEquals(expectedEnvelope.getMinimum(1), actualEnvelope.getMinimum(1), EPS);
+        assertEquals(expectedEnvelope.getMaximum(0), actualEnvelope.getMaximum(0), EPS);
+        assertEquals(expectedEnvelope.getMaximum(1), actualEnvelope.getMaximum(1), EPS);
+        
+    }
 }

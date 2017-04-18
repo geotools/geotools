@@ -23,25 +23,11 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-
 import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
-
-import static org.geotools.util.Converters.convert;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -100,6 +86,18 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
+import static org.geotools.util.Converters.convert;
 
 /**
  * Visitor responsible for generating a BasicDBObject to use as a MongoDB query.
@@ -653,12 +651,29 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Helper method that tries to convert a literal to the expected type.
+     * Java primitives types supported by MongoDB.
+     */
+    private static final Class[] SUPPORTED_PRIMITIVES_TYPES = new Class[] { Boolean.class,
+            Double.class, Integer.class, Long.class, String.class, };
+
+    /**
+     * Helper method that tries to convert a literal to the expected type. If the target
+     * type is not supported by MongoDB the string representation of the literal is returned.
      */
     private Object convertLiteral(Object literal, Class<?> targetType) {
-        if (literal == null || targetType == null) {
-            // return the literal as is
-            return literal;
+        if (literal == null) {
+            // return the NULL value
+            return null;
+        }
+        // do we have a target type ?
+        if (targetType == null) {
+            // no target type, if the literal is already a supported Java
+            // primitive type we return it otherwise we do a to string
+            return covertToPrimitive(literal);
+        }
+        // let's see if the target type is a primitive type supported by MongoDB
+        if (!isPrimitiveTypeSupported(targetType)) {
+            return literal.toString();
         }
         Object converted = Converters.convert(literal, targetType);
         if (converted == null) {
@@ -667,5 +682,38 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         }
         // return the converted value
         return converted;
+    }
+
+    /**
+     * Helper method that tries to convert a literal to a Java
+     * primitive type supported by MongoDB.
+     */
+    private Object covertToPrimitive(Object literal) {
+        for (Class<?> supportedType : SUPPORTED_PRIMITIVES_TYPES) {
+            if (supportedType.isAssignableFrom(literal.getClass())) {
+                //literal is already a Java primitive type supported by MongoDB
+                return literal;
+            }
+        }
+        return literal.toString();
+    }
+
+    /**
+     * Returns TRUE if the Java primitive type is supported by MongoDB.
+     */
+    private boolean isPrimitiveTypeSupported(Class<?> type) {
+        for (Class<?> supportedType : SUPPORTED_PRIMITIVES_TYPES) {
+            if (supportedType.isAssignableFrom(type)) {
+                // java primitive type is supported by MongoDB
+                return true;
+            }
+        }
+        // java primitive type not supported by MongoDB
+        return false;
+    }
+
+    void addCrsToGeometryDBObject(DBObject geometryDBObject) {
+        geometryDBObject.put("crs", BasicDBObjectBuilder.start().add("type", "name")
+                .push("properties").add("name", "urn:x-mongodb:crs:strictwinding:EPSG:4326").get());
     }
 }

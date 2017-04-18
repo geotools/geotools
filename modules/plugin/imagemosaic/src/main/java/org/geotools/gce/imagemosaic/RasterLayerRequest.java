@@ -19,12 +19,18 @@ package org.geotools.gce.imagemosaic;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
+import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.*;
@@ -32,6 +38,8 @@ import org.opengis.referencing.ReferenceIdentifier;
 
 import javax.media.jai.Interpolation;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,10 +186,10 @@ public class RasterLayerRequest {
      * 
      * @param params The {@code GeneralParameterValue}s to initialize this request
      * @param baseGridCoverage2DReader
-     * @throws DataSourceException
+     * @throws IOException 
      */
     public RasterLayerRequest(final GeneralParameterValue[] params,
-            final RasterManager rasterManager) throws DataSourceException {
+            final RasterManager rasterManager) throws IOException {
 
         // //
         //
@@ -219,6 +227,10 @@ public class RasterLayerRequest {
                 }
             }
         }
+        // re-compute bbox now that eventual filter has been read
+        if(this.filter != null) {
+            coverageProperties.setBBox(computeCoverageBoundingBox(rasterManager));
+        }
 
         // //
         //
@@ -229,6 +241,26 @@ public class RasterLayerRequest {
         checkReadType();
         spatialRequestHelper.setAccurateResolution(accurateResolution);
         spatialRequestHelper.compute();
+    }
+
+    private ReferencedEnvelope computeCoverageBoundingBox(final RasterManager rasterManager) throws IOException {
+        if(filter != null && ! Filter.INCLUDE.equals(filter)) {
+            // limit it to the filtered granules bounding box by full enumeration, to avoid
+            // imprecise datastore optimizations (e.g., loose bounds)
+            GranuleSource granules = rasterManager.getGranuleSource(true, null);
+            Query query = new Query(granules.getSchema().getTypeName(), filter);
+            // ... load only the default geometry if possible
+            final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();
+            if(gd != null) {
+                query.setPropertyNames(new String[] {gd.getLocalName()});
+            }
+            SimpleFeatureCollection features = granules.getGranules(query);
+            ReferencedEnvelope envelope = DataUtilities.bounds(features);
+            if(envelope != null && !envelope.isEmpty()) {
+                return envelope;
+            }
+        }
+        return rasterManager.spatialDomainManager.coverageBBox;
     }
 
     private void setDefaultParameterValues() {

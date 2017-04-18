@@ -703,7 +703,7 @@ public class RasterLayerResponse {
         // SG using the above may lead to problems since the reason is that may be a little (1 px) bigger
         // than what we need. The code below is a bit better since it uses a proper logic (see GridEnvelope
         // Javadoc)
-        // rasterBounds = new GridEnvelope2D(new Envelope2D(tempRasterBounds), PixelInCell.CELL_CORNER);
+        rasterBounds = new GridEnvelope2D(new Envelope2D(tempRasterBounds), PixelInCell.CELL_CORNER);
         if (rasterBounds.width == 0)
             rasterBounds.width++;
         if (rasterBounds.height == 0)

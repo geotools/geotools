@@ -289,15 +289,22 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             type = atts.getValue(namespaceURI, "type");
         }
 
-        if ((ref != null) || "".equalsIgnoreCase(ref)) {
-            if (!(((name == null) || "".equalsIgnoreCase(name))
-                    && ((type == null) || "".equalsIgnoreCase(type)))) {
-                throw new SAXException(
-                    "Elements cannot have both a 'ref' and a 'name' + 'type' attribute");
+        if (ref != null && !ref.isEmpty()) {
+            if (name != null && !name.isEmpty()) {
+                throw new SAXException(String.format(
+                        "Schema element declaration cannot have both "
+                                + "'ref' and 'name' attributes (ref=\"%s\", name=\"%s\")",
+                        ref, name));
             }
-
+            if (type != null && !type.isEmpty()) {
+                throw new SAXException(String.format(
+                        "Schema element declaration cannot have both "
+                                + "'ref' and 'type' attributes (ref=\"%s\", type=\"%s\")",
+                        ref, type));
+            }
             name = type = ref;
         }
+
     }
 
     /**

@@ -45,7 +45,7 @@ import org.opengis.filter.expression.Literal;
 /**
  * Filter function factory that uses the service provider interface (SPI) lookup mechanism to create functions.
  * <p>
- * DefaultFunctionFactory is responsible for collection {@link FunctionExpressio} implementations into a
+ * DefaultFunctionFactory is responsible for collection {@link FunctionExpression} implementations into a
  * FunctionFactory.
  * 
  * @author Justin Deoliveira, OpenGeo

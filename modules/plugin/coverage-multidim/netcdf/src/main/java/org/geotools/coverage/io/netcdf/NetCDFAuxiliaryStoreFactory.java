@@ -55,6 +55,8 @@ import org.geotools.data.store.ContentDataStore;
  */
 public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
     
+    public final static String AUXILIARY_STORE_KEY = "org.geotools.coverage.io.netcdf.auxiliary.store";
+    
     public static final Param FILE_PARAM = new Param("File", File.class, "NetCDF File Path", true,
             null, Collections.emptyMap());
     
@@ -92,14 +94,13 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
             DataStoreConfiguration datastoreConfig = ancilaryFileManager.getDatastoreConfiguration();
             return datastoreConfig.getDatastoreSpi().canProcess(datastoreConfig.getParams());            
         } catch (NoSuchAlgorithmException | JAXBException | IOException e) {
-            
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean isAvailable() {
-        return true;
+        return "true".equalsIgnoreCase(System.getProperty(AUXILIARY_STORE_KEY));
     }
 
     @Override

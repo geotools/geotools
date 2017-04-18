@@ -2,6 +2,7 @@ package org.geotools.coverage.io.netcdf;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -43,7 +44,7 @@ public class NetCDFAuxiliaryTest {
         //first create reader to build index
         new NetCDFFormat().getReader(file);
         
-        NetCDFAuxiliaryStoreFactory fac = new NetCDFAuxiliaryStoreFactory();        
+        NetCDFAuxiliaryStoreFactory fac = new NetCDFAuxiliaryStoreFactory();
         Map<String, Serializable> params = new HashMap<>();
         params.put(NetCDFAuxiliaryStoreFactory.FILE_PARAM.getName(), file);
         
@@ -66,6 +67,21 @@ public class NetCDFAuxiliaryTest {
         assertEquals("time", type.getAttributeDescriptors().get(2).getName().getLocalPart());
         assertEquals("z", type.getAttributeDescriptors().get(3).getName().getLocalPart());
         assertEquals("runtime", type.getAttributeDescriptors().get(4).getName().getLocalPart());
+    }
+    
+    @Test
+    public void testAvailability() {
+        NetCDFAuxiliaryStoreFactory fac = new NetCDFAuxiliaryStoreFactory();
+        
+        assertFalse(fac.isAvailable());
+        
+        System.setProperty(NetCDFAuxiliaryStoreFactory.AUXILIARY_STORE_KEY, "true");
+        
+        assertTrue(fac.isAvailable());
+        
+        System.clearProperty(NetCDFAuxiliaryStoreFactory.AUXILIARY_STORE_KEY);
+        
+        assertFalse(fac.isAvailable());
     }
 
 }

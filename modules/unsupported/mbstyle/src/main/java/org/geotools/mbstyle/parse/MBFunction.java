@@ -271,10 +271,23 @@ public class MBFunction {
         }
         throw new UnsupportedOperationException("Not yet implemented support for '"+type+"' function");
     }
-
+    
+    /**
+     * Extracts value expression this function is performed against.
+     * <p>
+     * The value is determined by:
+     * <ul>
+     * <li>{@link FunctionCategory#ZOOM}: uses zoolLevel function with wms_scale_denominator evn variable</li>
+     * <li>{@link FunctionCategory#PROPERTY}: uses the provided property to exract value from each feature</li>
+     * </ul>
+     * Zoom and Property functions are not supported and are expected to be reduced by the current zoom level prior to use.
+     * </p>
+     * @return expression function is evaualted against
+     */
     private Expression value() {
         EnumSet<FunctionCategory> category = category();
         if (category.containsAll(EnumSet.of(FunctionCategory.ZOOM, FunctionCategory.PROPERTY))) {
+            // double check if this can/should be supported now that we have a zoomLevel function
             throw new IllegalStateException("Reduce zoom and property function prior to use.");
         }
         else if( category.contains(FunctionCategory.ZOOM)){
@@ -305,14 +318,56 @@ public class MBFunction {
         parameters.add(ff.literal("color"));
         return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
     }
-
+    
+    /**
+     * Used to covert a zoom level function that has been reduced to two stops.
+     * @param expression
+     * @return
+     */
+    private Expression colorZoomExponential() {
+        Expression zoomLevel = ff.function("zoomLevel",
+                ff.function("env", ff.literal("wms_scale_denominator")),
+                ff.literal("EPSG:3857")
+        );
+        List<Expression> parameters = new ArrayList<>();
+        
+        // See FilterFunction_pow: pow( base, exponent ): power
+        Expression base = parse.number(json, "base", null);
+        if( base == null ){
+            base = ff.literal(1.0);
+        }
+//        JSONArray stops = getStops();
+//        Object stop1 = entry.get(0);
+//        Expression color1 = parse.color(entry.get(1));
+//        Object stop2 = entry.get(2);
+//        Expression color2 = parse.color(entry.get(3));
+        
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            Expression color = parse.color((String)value); // handles web colors
+            if( color == null ){
+                throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
+            }
+            parameters.add(ff.literal(stop));
+            parameters.add(color);
+        }
+        parameters.add(ff.literal("color"));
+        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+    }
+    /**
+     * Used to 
+     * @param expression
+     * @return
+     */
     private Expression colorExponential(Expression expression) {
         List<Expression> parameters = new ArrayList<>();
         
         // See FilterFunction_pow: pow( base, exponent ): power
         Expression base = parse.number(json, "base", null);
         if( base != null ){
-            Function power = ff.function("pow", expression, base);
+            Function power = ff.function("pow", expression, ff.divide(ff.literal(1.0),base));
             parameters.add(power);
         }
         else {
@@ -373,6 +428,48 @@ public class MBFunction {
             }
         }
         throw new UnsupportedOperationException("Not yet implemented support for this function");
+    }
+    
+    /**
+     * Used to calculate a numeric value.
+     * <p>
+     * Example adjusts circle size between 2 and 180 pixels when zooming between levels 12 and 22.
+     * <pre><code>'circle-radius': {
+     *   'base': 1.75,
+     *   'stops': [[12, 2], [22, 180]]
+     * }</pre></code>
+     * 
+     * @param value
+     * @return
+     */
+    private Expression numericExponential(Expression value){
+        
+        // See FilterFunction_pow: pow( base, exponent ): power
+//        Expression base = parse.number(json, "base", null);
+//        if( base == null ){
+//            base = ff.literal(1.0);
+//        }
+        double base = Double.valueOf( (String) json.get("base"));
+        JSONArray stops = getStops();
+        JSONArray entry1 = parse.jsonArray(stops.get(0));
+        double stop1 = Double.valueOf((String)entry1.get(0));
+        double value1 = Double.valueOf((String)entry1.get(1));
+        
+      
+        JSONArray entry2 = parse.jsonArray(stops.get(1));
+        double stop2 = Double.valueOf((String)entry2.get(0));
+        double value2 = Double.valueOf((String)entry2.get(1));
+        
+        double scale = (value2-value1)/(Math.pow(stop2, base) - Math.pow(stop1, base));
+        double offset = value1-scale*Math.pow(stop1, base);
+        
+        return ff.add(
+                ff.literal(offset),
+                ff.multiply(
+                        ff.literal(scale),
+                        ff.function("pow", value, ff.literal(base))
+                    )
+                );
     }
     /**
      * Create a cateogircal functions as {@link InterpolateFunction} for

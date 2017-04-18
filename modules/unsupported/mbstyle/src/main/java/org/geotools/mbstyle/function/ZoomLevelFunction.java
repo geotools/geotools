@@ -54,13 +54,13 @@ import org.opengis.filter.capability.FunctionName;
  * 
  *          
  */
-public class FilterFunction_zoomLevel extends FunctionExpressionImpl {
+public class ZoomLevelFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("zoomLevel",
             parameter("zoomLevel", Number.class), parameter("scaleDenominator", Number.class),
             parameter("srid", String.class));
 
-    public FilterFunction_zoomLevel() {
+    public ZoomLevelFunction() {
         super(NAME);
     }
 

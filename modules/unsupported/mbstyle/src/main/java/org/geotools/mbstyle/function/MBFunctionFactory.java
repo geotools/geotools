@@ -29,15 +29,16 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
 /**
- * 
- * Function factory supporting {@link FilterFunction_zoomLevel}.
+ * Custom functions to support the use of MBStyle, {@link ZoomLevelFunction},
+ * {@link ExponentialFunction}.
  */
-public class ZoomLevelFunctionFactory implements FunctionFactory {
+public class MBFunctionFactory implements FunctionFactory {
 
     @Override
     public List<FunctionName> getFunctionNames() {
         List<FunctionName> functionList = new ArrayList<>();
-        functionList.add(FilterFunction_zoomLevel.NAME);
+        functionList.add(ZoomLevelFunction.NAME);
+        functionList.add(ExponentialFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -48,10 +49,17 @@ public class ZoomLevelFunctionFactory implements FunctionFactory {
 
     @Override
     public Function function(Name name, List<Expression> args, Literal fallback) {
-        if (FilterFunction_zoomLevel.NAME.getFunctionName().equals(name)) {
-            FilterFunction_zoomLevel f = new FilterFunction_zoomLevel();
+        if (ZoomLevelFunction.NAME.getFunctionName().equals(name)) {
+            ZoomLevelFunction f = new ZoomLevelFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
+            return f;
+        }
+        if (ExponentialFunction.NAME.getFunctionName().equals(name)) {
+            ExponentialFunction f = new ExponentialFunction();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+
             return f;
         }
         return null;

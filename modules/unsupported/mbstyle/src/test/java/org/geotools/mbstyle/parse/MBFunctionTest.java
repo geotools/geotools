@@ -308,7 +308,7 @@ public class MBFunctionTest {
                 + envZoomLevel + ")");
         assertEquals(1091957.546779, ff.function("env", ff.literal("wms_scale_denominator"))
                 .evaluate(null, Number.class).doubleValue(), .00001);
-        assertEquals(9.0, envZoomLevel.doubleValue(), .00001);
+        assertEquals("Zoom level is 9", 9.0, envZoomLevel.doubleValue(), .00001);
 
         // Create a Mapbox Function
         String jsonStr = "{'base': 1.9, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
@@ -326,6 +326,7 @@ public class MBFunctionTest {
         System.out.println("The interpolated color should be BETWEEN 'red' (255, 0, 0) and 'lime' (0, 255, 0)");
         
         Function fn = (Function) function.color();
+        System.out.println("cql: "+ECQL.toCQL( fn ));
         Color result = fn.evaluate(feature, Color.class);
         System.out.println("The interpolated color is: " + result);
         

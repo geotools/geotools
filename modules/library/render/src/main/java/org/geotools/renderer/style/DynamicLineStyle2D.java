@@ -78,15 +78,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         capCode = SLDStyleFactory.lookUpCap(capType);
 
         // get the other properties needed for the stroke
-        float[] dashes = null;
-        if(stroke.dashArray() != null) {
-            dashes = new float[stroke.dashArray().size()];
-            int index = 0;
-            for (Expression expression : stroke.dashArray()) {
-                dashes[index] = expression.evaluate(feature, Float.class);
-                index++;
-            }
-        }
+        float[] dashes = SLDStyleFactory.evaluateDashArray(stroke, feature);
         float width = ((Float) stroke.getWidth().evaluate(feature, Float.class)).floatValue();
         float dashOffset = ((Float) stroke.getDashOffset().evaluate(feature, Float.class)).floatValue();
 

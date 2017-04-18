@@ -133,6 +133,34 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
+     * Rescale using listMultiply, if there is only one entry.
+     *
+     * @param expressions
+     * @return
+     */
+    protected List<Expression> rescaleDashArray(List<Expression> expressions) {
+        if (expressions == null || expressions.isEmpty()) {
+            return expressions;
+        }
+        
+        Expression rescaleToExpression = rescale(ff.literal(1));
+        //How to test, if it is a measure with a unit or not?
+        String data = ((Literal)rescaleToExpression).getValue().toString();
+        boolean evaluate = rescaleToExpression instanceof Literal && Character.isDigit(data.charAt(data.length()-1));
+        
+        List<Expression> rescaled = new ArrayList<>(expressions.size());
+        for (Expression expression : expressions) {
+            Expression rescale = ff.function("listMultiply", rescaleToExpression, expression);
+            if (expression instanceof Literal && evaluate) {
+                rescaled.add(ff.literal(rescale.evaluate(null)));
+            } else {
+                rescaled.add(rescale);
+            }
+        }
+        return rescaled;
+    }
+
+    /**
      * Increase stroke width.
      * <p>
      * Based on feedback we may need to change the dash array as well.
@@ -141,7 +169,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     public void visit(org.geotools.styling.Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor( copy(stroke.getColor()));
-        copy.setDashArray( rescale(stroke.dashArray()));
+        copy.setDashArray( rescaleDashArray(stroke.dashArray()));
         copy.setDashOffset( rescale(stroke.getDashOffset()));
         copy.setGraphicFill( copy(stroke.getGraphicFill()));
         copy.setGraphicStroke( copy( stroke.getGraphicStroke()));

@@ -82,6 +82,8 @@ import org.opengis.filter.sort.SortOrder;
 import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.Collections;
+import java.util.regex.Pattern;
 
 /**
  * Factory object that converts SLD style into rendered styles.
@@ -1013,15 +1015,7 @@ public class SLDStyleFactory {
 		}
 
 		// get the other properties needed for the stroke
-        float[] dashes = null;
-        if(stroke.dashArray() != null) {
-            dashes = new float[stroke.dashArray().size()];
-            int index = 0;
-            for (Expression expression : stroke.dashArray()) {
-                dashes[index] = expression.evaluate(feature, Float.class);
-                index++;
-            }
-        }
+        float[] dashes = evaluateDashArray(stroke, feature);
 		float width = evalToFloat(stroke.getWidth(), feature, 1);
 		float dashOffset = evalToFloat(stroke.getDashOffset(), feature, 0);
 
@@ -1044,6 +1038,35 @@ public class SLDStyleFactory {
 
 		return stroke2d;
 	}
+
+    public static float[] evaluateDashArray(org.geotools.styling.Stroke stroke, Object feature) throws NumberFormatException {
+        if(stroke.dashArray() != null && !stroke.dashArray().isEmpty()) {
+            List<Float> dashArrayValues = new ArrayList<>();
+            for (Expression expression : stroke.dashArray()) {
+                dashArrayValues.addAll(dashArrayExpressionToFloatList(expression, feature));
+            }
+            float[] dashArray = new float[dashArrayValues.size()];
+            for (int i = 0; i < dashArray.length; i++) {
+                dashArray[i] = dashArrayValues.get(i);
+            }
+            return dashArray;
+        }
+        return null;
+    }
+    
+    private static final Pattern WHITE_SPACE_SPLIT = Pattern.compile("\\s+");
+    
+    private static List<Float> dashArrayExpressionToFloatList(Expression expression, Object feature) {
+        String dashString = expression.evaluate(feature, String.class);
+        if (dashString==null || dashString.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Float> dashValues = new ArrayList<>();
+        for (String dashItem : WHITE_SPACE_SPLIT.split(dashString)) {
+           dashValues.add(Float.parseFloat(dashItem));
+        }
+        return dashValues;
+    }
 
 	private Paint getStrokePaint(org.geotools.styling.Stroke stroke, Object feature) {
 		if (stroke == null) {

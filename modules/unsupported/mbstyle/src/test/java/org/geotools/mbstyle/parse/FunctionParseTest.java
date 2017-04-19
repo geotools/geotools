@@ -20,12 +20,21 @@ import org.geotools.mbstyle.MapboxTestUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.hamcrest.Matchers;
 
 import java.io.IOException;
 import java.util.*;
 
+import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class FunctionParseTest {
@@ -151,7 +160,42 @@ public class FunctionParseTest {
         assertNotNull(fn.getStops());
         assertEquals(5, fn.getStops().size());
     }
-
+    
+    /**
+     * Verify that an interval function for colours can be parsed.
+     */
+    @Test
+    public void testParseIntervalFunctionColour() throws IOException, ParseException {
+        JSONObject layer = testLayersById.get("functionIntervalColour");
+        JSONObject j = traverse(layer, JSONObject.class, "paint", "circle-color").get();
+        MBFunction fn = new MBFunction(j);
+        assertThat(fn, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
+        assertThat(fn, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
+        assertThat(fn, hasProperty("property", equalTo("temperature")));
+        assertThat(fn, hasProperty("stops", contains(
+                contains(-273.15, "#4488FF"),
+                contains(10.0, "#00FF00"),
+                contains(30.0, "#FF8800")
+            )));
+    }
+    /**
+     * Verify that an interval function for number can be parsed.
+     */
+    @Test
+    public void testParseIntervalFunctionNumber() throws IOException, ParseException {
+        JSONObject layer = testLayersById.get("functionIntervalNumeric");
+        JSONObject j = traverse(layer, JSONObject.class, "paint", "circle-radius").get();
+        MBFunction fn = new MBFunction(j);
+        assertThat(fn, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
+        assertThat(fn, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
+        assertThat(fn, hasProperty("property", equalTo("rating")));
+        assertThat(fn, hasProperty("stops", contains(
+                contains(0L, 0L),
+                contains(2L, 5L),
+                contains(5L, 10L),
+                contains(10L, 20L)
+            )));
+    }
     /**
      * Traverse a nested map using the array of strings, and cast the result to the provided class, or return {@link Optional#empty()}.
      * @param map

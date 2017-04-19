@@ -347,21 +347,13 @@ public class MBFunction {
     }
     
     private Expression colorGenerateCategorize(Expression expression) {
-        List<Expression> parameters = new ArrayList<>();
-        parameters.add(expression);
-        for (Object obj : getStops()) {
-            JSONArray entry = parse.jsonArray(obj);
-            Object stop = entry.get(0);
-            Object value = entry.get(1);
-            Expression color = parse.color((String)value); // handles web colors
+        return generateCategorize(expression, (value, stop)->{
+            Expression color = parse.color((String)value);
             if( color == null ){
                 throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
             }
-            parameters.add(ff.literal(stop));
-            parameters.add(color);
-        }
-        parameters.add(ff.literal("preceding"));
-        return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+            return color;
+        });
     }
     /**
      * Use Recode function to implement {@link FunctionType#CATEGORICAL}.
@@ -576,15 +568,20 @@ public class MBFunction {
         }
         throw new UnsupportedOperationException("Function unavailable for '"+type+"' function with "+clazz.getSimpleName());
     }
+    
     private Expression generateCategorize(Expression expression) {
-        List<Expression> parameters = new ArrayList<>();
-        parameters.add(expression);
+        return generateCategorize(expression, (value, stop)->ff.literal(value));
+    }
+    
+    private Expression generateCategorize(Expression expression, java.util.function.BiFunction<Object, Object, Expression> parseValue) {
         
         JSONArray stopsJson = getStops();
+        List<Expression> parameters = new ArrayList<>(stopsJson.size()*2+3); // each stop is 2, plus property name, leading interval value, and "succeeding"
+        parameters.add(expression);
         for (int i = 0; i < stopsJson.size(); i++) {
             JSONArray entry = parse.jsonArray(stopsJson.get(i));
             Object stop = entry.get(0);
-            Object value = entry.get(1);
+            Expression value = parseValue.apply(entry.get(1), stop);
             
             if (i == 0) {
                 // CategorizeFunction expects there to be a leading value for inputs < firstStopThreshold.
@@ -592,13 +589,13 @@ public class MBFunction {
                 // (spec: "functions return the output value of the stop just less than the function input.")
                 // TODO Default value could go here.
                 // Temporarily, return first interval value for inputs < firstStopThreshold.
-                parameters.add(ff.literal(value));
+                parameters.add(value);
             }
             
             parameters.add(ff.literal(stop));
-            parameters.add(ff.literal(value));                     
+            parameters.add(value);
         }
-       parameters.add(ff.literal("succeeding"));
+        parameters.add(ff.literal("succeeding"));
         return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
     }
     private Expression generateRecode(Expression input) {
@@ -699,17 +696,7 @@ public class MBFunction {
     
     private Expression enumGenerateCategorize(Expression input,
             Class<? extends Enum<?>> enumeration) {
-        List<Expression> parameters = new ArrayList<>();
-        parameters.add(input);
-        for (Object obj : getStops()) {
-            JSONArray entry = parse.jsonArray(obj);
-            Object stop = entry.get(0);
-            Object value = entry.get(1);
-            parameters.add(ff.literal(stop));
-            parameters.add(constant(value,enumeration));
-        }
-        parameters.add(ff.literal("preceding"));
-        return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+        return generateCategorize(input,(value, stop)->constant(value,enumeration));
     }
 
     private Expression enumGenerateIdentiy(Expression input, Class<? extends Enum<?>> enumeration) {

@@ -130,29 +130,36 @@ public class MBFunctionTest {
 
         Function fn = (Function) function.color();
         assertNotNull(fn);
-        assertEquals("Interpolate", fn.getName());
+        assertEquals("Exponential", fn.getName());
+        
         Expression property = fn.getParameters().get(0);
-        assertEquals("pow(temperature,'1.1')", ECQL.toCQL(property));
+        assertEquals("temperature", ECQL.toCQL(property));
+        
+        Literal base = (Literal) fn.getParameters().get(1);
+        assertEquals(new Double(1.1), base.evaluate(null, Double.class));
 
-        Literal stop1 = (Literal) fn.getParameters().get(1);
+        Literal stop1 = (Literal) fn.getParameters().get(2);
         assertEquals(new Integer(0), stop1.evaluate(null, Integer.class));
 
-        Literal color1 = (Literal) fn.getParameters().get(2);
+        Literal color1 = (Literal) fn.getParameters().get(3);
         assertEquals(Color.BLUE, color1.evaluate(null, Color.class));
 
-        Literal stop2 = (Literal) fn.getParameters().get(3);
+        Literal stop2 = (Literal) fn.getParameters().get(4);
         assertEquals(new Integer(100), stop2.evaluate(null, Integer.class));
 
-        Literal color2 = (Literal) fn.getParameters().get(4);
+        Literal color2 = (Literal) fn.getParameters().get(5);
         assertEquals(Color.RED, color2.evaluate(null, Color.class));
 
-        // We are taking care to check that the function method has been supplied
-        Literal method = (Literal) fn.getParameters().get(5);
-        assertEquals("color", method.evaluate(null, String.class));
-
         Color result = fn.evaluate(feature, Color.class);
-        assertEquals(new Color(189, 0, 66), result);
+        
+        // When the base is greater than 1, more growth should be at the end of the range.
+        // So the interpolation on the halfway input value should be less than the halfway output value, which would be (128, 0 , 128).        
+        assertEquals(0, result.getGreen());
+        assertTrue(result.getBlue() > 128);
+        assertTrue(result.getRed() < 128);
+        
     }
+    
     @Test
     public void propertyValueStops() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
@@ -286,7 +293,7 @@ public class MBFunctionTest {
     
     /**
      * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates color values
-     * for zoom levels between stops.
+     * for zoom levels between stops, when the exponential base is > 1.
      * 
      * @throws Exception
      */
@@ -300,15 +307,10 @@ public class MBFunctionTest {
         String scaleDenomForZoom9 = "1091957.546779";
         EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
 
-        // Verify environment has expected scale denominator (and thus zoom level)
-        Number envZoomLevel = ff.function("zoomLevel",
-                ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))
-                .evaluate(null, Number.class);
-        System.out.println("wms_scale_denominator set to " + scaleDenomForZoom9 + " (zoomLevel = "
-                + envZoomLevel + ")");
+        // Verify environment has expected scale denominator (and zoom level)
         assertEquals(1091957.546779, ff.function("env", ff.literal("wms_scale_denominator"))
                 .evaluate(null, Number.class).doubleValue(), .00001);
-        assertEquals("Zoom level is 9", 9.0, envZoomLevel.doubleValue(), .00001);
+        verifyEnvironmentZoomLevel(9);
 
         // Create a Mapbox Function
         String jsonStr = "{'base': 1.9, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
@@ -319,23 +321,250 @@ public class MBFunctionTest {
         assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
         assertEquals(1.9, function.getBase().doubleValue(), .00001);
-
-        // The environment zoomLevel is 9
-        // which means the color should be between 'red' (255, 0, 0) and 'lime' (0, 255, 0)
-        System.out.println("The function JSON is: " + jsonStr);
-        System.out.println("The interpolated color should be BETWEEN 'red' (255, 0, 0) and 'lime' (0, 255, 0)");
         
         Function fn = (Function) function.color();
-        System.out.println("cql: "+ECQL.toCQL( fn ));
+        //System.out.println("cql: "+ECQL.toCQL( fn ));
         Color result = fn.evaluate(feature, Color.class);
-        System.out.println("The interpolated color is: " + result);
+        //System.out.println("The interpolated color is: " + result);
         
         Expression zoomLevel = fn.getParameters().get(0);        
         Number n = zoomLevel.evaluate(null, Number.class);   
-        System.out.println("(the function's interpolate value was " + n + ")");
+        //System.out.println("(the function's interpolate value was " + n + ")");
                 
         assertTrue("Color has no red, but should be interpolated mix of red and green", result.getRed() > 0);
-        assertTrue("Color has full green, but should be interpolated mix of red and green", result.getGreen() < 255);        
+        assertTrue("Color has full green, but should be interpolated mix of red and green", result.getGreen() < 255);
+        
+        // We are interpolating at the halfway point, so the linear interpolation would have been (128, 128, 0).        
+        assertTrue("Exponential interpolation base is > 1, so the interpolated green value should lag behind the linear interpolation.", result.getGreen() < 128);
+        assertTrue("Exponential interpolation base is > 1, so the interpolated red value should lag behind the linear interpolation.", result.getRed() > 128);   
 
     }
+    
+    /**
+     * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates color values
+     * for zoom levels between stops, when the exponential base is < 1.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void zoomColorStopsExponentialInterpolationTestBaseLessThan1() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
+        
+        // Set scale denominator to the equivalent of zoomLevel 9
+        String scaleDenomForZoom9 = "1091957.546779";
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
+
+        // Verify environment has expected scale denominator (and zoom level)
+        assertEquals(1091957.546779, ff.function("env", ff.literal("wms_scale_denominator"))
+                .evaluate(null, Number.class).doubleValue(), .00001);
+        verifyEnvironmentZoomLevel(9);
+
+        // Create a Mapbox Function
+        String jsonStr = "{'base': 0.1, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
+        JSONObject json = object(jsonStr);        
+        MBFunction function = new MBFunction(json);
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(0.1, function.getBase().doubleValue(), .00001);
+
+        Function fn = (Function) function.color();
+        Color result = fn.evaluate(feature, Color.class);
+        
+        Expression zoomLevel = fn.getParameters().get(0);        
+        Number n = zoomLevel.evaluate(null, Number.class);
+                
+        assertTrue("Color has no red, but should be interpolated mix of red and green", result.getRed() > 0);
+        assertTrue("Color has full green, but should be interpolated mix of red and green", result.getGreen() < 255);
+        
+        // We are interpolating at the halfway point, so the linear interpolation would have been (128, 128, 0).        
+        assertTrue("Exponential interpolation base is < 1, so the interpolated green value should lead the linear interpolation.", result.getGreen() > 128);
+        assertTrue("Exponential interpolation base is < 1, so the interpolated red value should lead the linear interpolation.", result.getRed() < 128);   
+
+    }
+    
+    /**
+     * Tests that a MapBox exponential zoom function (outputting a color) correctly interpolates color values
+     * for zoom levels between stops, when the exponential base is == 1 (linear).
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void zoomColorStopsLinearInterpolationTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
+        
+        // Set scale denominator to the equivalent of zoomLevel 9
+        String scaleDenomForZoom9 = "1091957.546779";
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
+
+        // Verify environment has expected scale denominator (and zoom level)
+        assertEquals(1091957.546779, ff.function("env", ff.literal("wms_scale_denominator"))
+                .evaluate(null, Number.class).doubleValue(), .00001);
+        verifyEnvironmentZoomLevel(9);
+
+        // Create a Mapbox Function
+        String jsonStr = "{'base': 1.0, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
+        JSONObject json = object(jsonStr);        
+        MBFunction function = new MBFunction(json);
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(1.0, function.getBase().doubleValue(), .00001);
+        
+        Function fn = (Function) function.color();
+        Color result = fn.evaluate(feature, Color.class);
+        
+        Expression zoomLevel = fn.getParameters().get(0);        
+        Number n = zoomLevel.evaluate(null, Number.class);
+                
+        assertTrue("Color has no red, but should be interpolated mix of red and green", result.getRed() > 0);
+        assertTrue("Color has full green, but should be interpolated mix of red and green", result.getGreen() < 255);
+        
+        // We are interpolating at the halfway point, so the linear interpolation would have been (128, 128, 0).        
+        assertEquals("Exponential interpolation base is = 1, so the interpolated green value should equal the linear interpolation.", 128, result.getGreen());
+        assertEquals("Exponential interpolation base is = 1, so the interpolated red value should equal the linear interpolation.", 127, result.getRed());   
+
+    }
+    
+    /**
+     * Tests that a MapBox exponential zoom function (outputting a numeric value) correctly interpolates values
+     * for zoom levels between stops.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void zoomStopsNumericInterpolationTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
+        
+        // Set scale denominator to the equivalent of zoomLevel 9
+        String scaleDenomForZoom9 = "1091957.546779";
+        EnvFunction.setGlobalValue("wms_scale_denominator", scaleDenomForZoom9);
+
+        // Verify environment has expected scale denominator (and zoom level)
+        assertEquals(1091957.546779, ff.function("env", ff.literal("wms_scale_denominator"))
+                .evaluate(null, Number.class).doubleValue(), .00001);
+        verifyEnvironmentZoomLevel(9);
+
+        // -------- Test interpolation for base > 1
+        // Create a Mapbox Function for base > 1
+        String jsonStr = "{'base': 1.9, 'stops':[[0,12],[6,24],[12,48]]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(1.9, function.getBase().doubleValue(), .00001);
+        
+        Function fn = (Function) function.numeric();
+        Number result = fn.evaluate(feature, Number.class);       
+           
+        assertTrue("Interpolated value should be above lower stop", result.doubleValue() > 24);    
+        assertTrue("Interpolated value should be below midpoint (for base > 1)", result.doubleValue() < 36);
+        
+        // -------- Test interpolation for base < 1
+        jsonStr = "{'base': 0.1, 'stops':[[0,12],[6,24],[12,48]]}";
+        function = new MBFunction(object(jsonStr));
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(0.1, function.getBase().doubleValue(), .00001);
+        
+        fn = (Function) function.numeric();
+        result = fn.evaluate(feature, Number.class);       
+        
+        assertTrue("Interpolated value should be above lower stop", result.doubleValue() > 24);    
+        assertTrue("Interpolated value should be above midpoint (for base < 1)", result.doubleValue() > 36);
+        
+        // -------- Test interpolation for base = 1        
+        jsonStr = "{'base': 1.0, 'stops':[[0,12],[6,24],[12,48]]}";
+        function = new MBFunction(object(jsonStr));
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(1.0, function.getBase().doubleValue(), .00001);
+        
+        fn = (Function) function.numeric();
+        result = fn.evaluate(feature, Number.class);       
+        
+        assertTrue("Interpolated value should be above lower stop", result.doubleValue() > 24);    
+        assertEquals("Interpolated value should = midpoint (for base = 1)", result.doubleValue(), 36.0, .0001);
+    }
+    
+    
+    /**
+     * Tests that a MapBox exponential property function (outputting a numeric value) correctly interpolates values
+     * for zoom levels between stops.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void propertyStopsNumericInterpolationTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
+
+        // -------- Test interpolation for base > 1
+        // Create a Mapbox Function for base > 1
+        String jsonStr = "{'base': 1.9, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a property function", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(1.9, function.getBase().doubleValue(), .00001);
+        
+        Function fn = (Function) function.numeric();
+        Number result = fn.evaluate(feature, Number.class);       
+           
+        assertTrue("Interpolated value should be above lower stop", result.doubleValue() > 24);    
+        assertTrue("Interpolated value should be below midpoint (for base > 1)", result.doubleValue() < 36);
+        
+        // -------- Test interpolation for base < 1
+        jsonStr = "{'base': 0.1, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
+        function = new MBFunction(object(jsonStr));
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a property function", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(0.1, function.getBase().doubleValue(), .00001);
+        
+        fn = (Function) function.numeric();
+        result = fn.evaluate(feature, Number.class);       
+        
+        assertTrue("Interpolated value should be above lower stop", result.doubleValue() > 24);    
+        assertTrue("Interpolated value should be above midpoint (for base < 1)", result.doubleValue() > 36);
+        
+        // -------- Test interpolation for base = 1        
+        jsonStr = "{'base': 1.0, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
+        function = new MBFunction(object(jsonStr));
+        
+        // Assert it is an exponential function with the correct base
+        assertTrue("Is a property function", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
+        assertEquals(1.0, function.getBase().doubleValue(), .00001);
+        
+        fn = (Function) function.numeric();
+        result = fn.evaluate(feature, Number.class);       
+        
+        assertTrue("Interpolated value should be above lower stop", result.doubleValue() > 24);    
+        assertEquals("Interpolated value should = midpoint (for base = 1)", result.doubleValue(), 36.0, .0001);
+    }
+    
+    public void verifyEnvironmentZoomLevel(int zoomLevel) {
+        Number envZoomLevel = ff.function("zoomLevel",
+                ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))
+                .evaluate(null, Number.class);
+        assertEquals("Zoom level is " + zoomLevel, zoomLevel, envZoomLevel.doubleValue(), .00001);
+    }
+    
 }

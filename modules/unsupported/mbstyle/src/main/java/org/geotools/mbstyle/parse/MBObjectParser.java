@@ -354,6 +354,33 @@ public class MBObjectParser {
         }
     }
 
+    /** Numeric lookup. */
+    public double getNumeric(JSONArray json, int index) {
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        if (index < json.size() && json.get(index) instanceof Number) {
+            return ((Number) json.get(index)).doubleValue();
+        } else {
+            throw new MBFormatException(
+                    context.getSimpleName() + " requires [" + index + "] numeric value");
+        }
+    }
+    /** Numeric lookup. */
+    public Double getNumeric(JSONObject json, String tag) {
+        if (json == null) {
+            throw new IllegalArgumentException("json required");
+        }
+        if (tag == null) {
+            throw new IllegalArgumentException("tag required for json access");
+        }
+        if (json.containsKey(tag) && json.get(tag) instanceof Number) {
+            return ((Number) json.get(tag)).doubleValue();
+        } else {
+            throw new MBFormatException(
+                    context.getSimpleName() + " requires \"" + tag + "\" numeric field");
+        }
+    }
     /** Boolean lookup. */
     public Boolean getBoolean(JSONArray json, int index) {
         if (json == null) {

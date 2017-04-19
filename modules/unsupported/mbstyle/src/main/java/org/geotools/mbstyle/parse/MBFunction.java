@@ -16,22 +16,35 @@
  */
 package org.geotools.mbstyle.parse;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import org.geotools.coverage.processing.operation.Interpolate;
 import org.geotools.filter.function.CategorizeFunction;
-import org.geotools.filter.function.InterpolateFunction;
 import org.geotools.filter.function.RecodeFunction;
+import org.geotools.filter.function.math.FilterFunction_pow;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 
 /**
  * MBFunction json wrapper, allowing conversion to a GeoTools Expression.
+ * <p>
+ * Each function is evaluated according type: {@link FunctionType#IDENITY},
+ * {@link FunctionType#INTERVAL}, {@link FunctionType#CATEGORICAL},
+ * {@link FunctionType#EXPONENTIAL}.
+ * <p>
+ * We have several methods that intelligently review {@link #getType()} and produce the correct
+ * expression.</p>
+ * <ul>
+ * <li>{@link #color()}</li>
+ * </ul>
+ * 
  */
 public class MBFunction {
     final protected MBObjectParser parse;
@@ -226,53 +239,6 @@ public class MBFunction {
     }
 
     /**
-     * Function as defined by json.
-     * <p>
-     * The value for any layout or paint property may be specified as a function. Functions allow
-     * you to make the appearance of a map feature change with the current zoom level and/or the
-     * feature's properties.
-     * </p>
-     * <p>
-     * Function types:
-     * </p>
-     * <p>
-     * <em>
-     * 
-     * @param json JSONOBject definition of Function
-     * @return Function as defined by json
-     */
-    public static MBFunction create(JSONObject json) {
-        return null;
-    }
-
-    /** GeoTools {@link Function} from json definition that evaluates to a color.
-     * <p>
-     * This is the same as {@link #numeric()} except we can make some assumptions about
-     * the values (converting hex to color, looking up color names).
-     * 
-     * @return {@link Function} (or identity {@link Expression} for the provided json 
-     */
-    public Expression color(){
-        Expression value = value();
-        // this is a plain property category so we can turn it into a function
-        // Assume a EXPOTENTIAL function for now because it is the default for color
-        FunctionType type = getType();
-        if( type == null || type == FunctionType.CATEGORICAL){
-            return colorCategorical(value); // CATEGORICAL is the default
-        }
-        else if( type == FunctionType.EXPONENTIAL){
-            return colorExponential(value);
-        }
-        else if( type == FunctionType.INTERVAL){
-            return colorInterval(value);
-        }
-        else if( type == FunctionType.IDENITY){
-            return value;
-        }
-        throw new UnsupportedOperationException("Not yet implemented support for '"+type+"' function");
-    }
-    
-    /**
      * Extracts value expression this function is performed against.
      * <p>
      * The value is determined by:
@@ -301,7 +267,73 @@ public class MBFunction {
         }
     }
 
-    private Expression colorInterval(Expression expression) {
+    /**
+     * Function as defined by json.
+     * <p>
+     * The value for any layout or paint property may be specified as a function. Functions allow
+     * you to make the appearance of a map feature change with the current zoom level and/or the
+     * feature's properties.
+     * </p>
+     * <p>
+     * Function types:
+     * </p>
+     * <p>
+     * <em>
+     * 
+     * @param json JSONOBject definition of Function
+     * @return Function as defined by json
+     */
+    public static MBFunction create(JSONObject json) {
+        return null;
+    }
+    
+    //
+    // Color
+    //
+    /**
+     * GeoTools {@link Expression} from json definition that evaluates to a color, used for
+     * properties such as 'color' and 'fill-color'.
+     * <p>
+     * This is the same as {@link #numeric()} except we can make some assumptions about the values
+     * (converting hex to color, looking up color names).
+     * </p>
+     * <ul>
+     * <li>{@link FunctionType#IDENITY}: input is directly converted to a color, providing a way to process attribute data
+     * into colors.</li>
+     * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input value</li>
+     * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input value</li>
+     * <li>{@link FunctionType#EXPONENTIAL}: interpolates an output color between two stops</li>  
+     * </ul>
+     * If type is unspecified exponential is used as a default.</li>
+     * 
+     * @return {@link Function} (or identity {@link Expression} for the provided json)
+     */
+    public Expression color(){
+        Expression value = value();
+        FunctionType type = getType();
+        
+        if( type == null || type == FunctionType.EXPONENTIAL){
+            double base = parse.optional(Double.class, json, "base", 1.0 );
+            if( base == 1.0){
+                return colorGenerateInterpolation(value);
+            }
+            else {
+                return colorGenerateExponential(value, base);
+            }
+        }
+        if( type == null || type == FunctionType.CATEGORICAL){
+            return colorGenerateRecode(value);
+        }
+        else if( type == FunctionType.INTERVAL){
+            return colorGenerateCategorize(value);
+        }
+        else if( type == FunctionType.IDENITY){
+            return value;
+        }
+        throw new UnsupportedOperationException("Color unavailable for '"+type+"' function");
+    }
+    
+    private Expression colorGenerateCategorize(Expression expression) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
         for (Object obj : getStops()) {
@@ -315,81 +347,36 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        parameters.add(ff.literal("color"));
+        parameters.add(ff.literal("preceding"));
         return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
     }
+    /**
+     * Use Recode function to implement {@link FunctionType#CATEGORICAL}.
+     * <p>
+     * Generated expression of the form:
+     * <code>Recode( input, stop1, color1, stop2, color2, 'preceding')</code></p>
+     * 
+     * @param input input expression
+     * @return recode function
+     */
+    private Expression colorGenerateRecode(Expression input) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            Expression color = parse.color((String)value); // handles web colors
+            if( color == null ){
+                throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
+            }
+            parameters.add(ff.literal(stop));
+            parameters.add(color);
+        }
+        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+    }
     
-    /**
-     * Used to covert a zoom level function that has been reduced to two stops.
-     * @param expression
-     * @return
-     */
-    private Expression colorZoomExponential() {
-        Expression zoomLevel = ff.function("zoomLevel",
-                ff.function("env", ff.literal("wms_scale_denominator")),
-                ff.literal("EPSG:3857")
-        );
-        List<Expression> parameters = new ArrayList<>();
-        
-        // See FilterFunction_pow: pow( base, exponent ): power
-        Expression base = parse.number(json, "base", null);
-        if( base == null ){
-            base = ff.literal(1.0);
-        }
-//        JSONArray stops = getStops();
-//        Object stop1 = entry.get(0);
-//        Expression color1 = parse.color(entry.get(1));
-//        Object stop2 = entry.get(2);
-//        Expression color2 = parse.color(entry.get(3));
-        
-        for (Object obj : getStops()) {
-            JSONArray entry = parse.jsonArray(obj);
-            Object stop = entry.get(0);
-            Object value = entry.get(1);
-            Expression color = parse.color((String)value); // handles web colors
-            if( color == null ){
-                throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
-            }
-            parameters.add(ff.literal(stop));
-            parameters.add(color);
-        }
-        parameters.add(ff.literal("color"));
-        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
-    }
-    /**
-     * Used to 
-     * @param expression
-     * @return
-     */
-    private Expression colorExponential(Expression expression) {
-        List<Expression> parameters = new ArrayList<>();
-        
-        // See FilterFunction_pow: pow( base, exponent ): power
-        Expression base = parse.number(json, "base", null);
-        if( base != null ){
-            Function power = ff.function("pow", expression, ff.divide(ff.literal(1.0),base));
-            parameters.add(power);
-        }
-        else {
-            parameters.add(expression);
-        }
-
-        for (Object obj : getStops()) {
-            JSONArray entry = parse.jsonArray(obj);
-            Object stop = entry.get(0);
-            Object value = entry.get(1);
-            Expression color = parse.color((String)value); // handles web colors
-            if( color == null ){
-                throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
-            }
-            parameters.add(ff.literal(stop));
-            parameters.add(color);
-        }
-        parameters.add(ff.literal("color"));
-        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
-    }
-
-    private Expression colorCategorical(Expression expression) {
+    private Expression colorGenerateInterpolation(Expression expression) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
         for (Object obj : getStops()) {
@@ -404,32 +391,102 @@ public class MBFunction {
             parameters.add(color);
         }
         parameters.add(ff.literal("color"));
-        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
     }
+    private Expression colorGenerateExponential(Expression expression, double base) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(expression);
+        parameters.add(ff.literal(base));
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            Expression color = parse.color((String) value);
+            if (color == null) {
+                throw new MBFormatException(
+                        "Could not convert stop " + stop + " color " + value + " into a color");
+            }
+            parameters.add(ff.literal(stop));
+            parameters.add(color);
+        }
+        return ff.function("Exponential", parameters.toArray(new Expression[parameters.size()]));
+    }
+
+    //
+    // Numeric
+    //
+    
     /**
-     * Generate GeoTools {@link Function} from json definition.
+     * GeoTools {@link Expression} from json definition that evaluates to a numeric, used for
+     * properties such as 'line-width' and 'opacity'.
      * <p>
-     * This method is used for numeric properties such as line width or opacity.</p>
-     * <p>
-     * This only works for concrete functions, that have been resolved to the current zoom level.</p>.
+     * This is the same as {@link #color()} except we can make some assumptions about the values
+     * (converting "50%"  to 0.5).
+     * </p>
+     * <ul>
+     * <li>{@link FunctionType#IDENITY}: input is directly converted to a numeric output</li>
+     * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a number</li>
+     * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value as a number</li>
+     * <li>{@link FunctionType#EXPONENTIAL}: interpolates a numeric output between two stops</li>  
+     * </ul>
+     * If type is unspecified exponential is used as a default.</li>
      * 
-     * @return GeoTools Function or the provided json
+     * @return {@link Function} (or identity {@link Expression} for the provided json)
      */
-    public Function numeric() {
-        if( !category().contains(FunctionCategory.ZOOM)){
-            // this is a plain property category so we can turn it into a function
-            
-            // assume a EXPOTENTIAL function for now because it is the default
-            // TODO: make a special case for mapbox style enums which default to CATEGORICAL
-            FunctionType type = FunctionType.CATEGORICAL;
-            
-            if( type == FunctionType.CATEGORICAL){
-                return categorical();
+    public Expression numeric() {
+        Expression input = value();
+        FunctionType type = getType();
+        
+        if( type == null || type == FunctionType.EXPONENTIAL){
+            double base = parse.optional(Double.class, json, "base", 1.0 );
+            if( base == 1.0){
+                return numericGenerateInterpolation(input);
+            }
+            else {
+                return numericGenerateExponential(input, base);
             }
         }
-        throw new UnsupportedOperationException("Not yet implemented support for this function");
+        if( type == null || type == FunctionType.CATEGORICAL){
+            return generateRecode(input);
+        }
+        else if( type == FunctionType.INTERVAL){
+            return generateCategorize(input);
+        }
+        else if( type == FunctionType.IDENITY){
+            return input;
+        }
+        throw new UnsupportedOperationException("Numeric unavailable for '"+type+"' function");
     }
-    
+
+    /**
+     * Used to calculate a numeric value.
+     * <p>
+     * Example adjusts circle size between 2 and 180 pixels when zooming between levels 12 and 22.
+     * <pre><code>'circle-radius': {
+     *   'stops': [[12, 2], [22, 180]]
+     * }</pre></code>
+     * 
+     * @param value
+     * @return Interpolate function
+     */
+    private Expression numericGenerateInterpolation(Expression input) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            if (value == null || !(value instanceof Number)) {
+                throw new MBFormatException(
+                        "Could not convert stop " + stop + " color " + value + " into a numeric");
+            }
+            parameters.add(ff.literal(stop));
+            parameters.add(ff.literal(value));
+        }
+        parameters.add(ff.literal("numeric"));
+        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+    }
+
     /**
      * Used to calculate a numeric value.
      * <p>
@@ -440,51 +497,187 @@ public class MBFunction {
      * }</pre></code>
      * 
      * @param value
-     * @return
+     * @return Exponential function
      */
-    private Expression numericExponential(Expression value){
+    private Expression numericGenerateExponential(Expression input, double base){
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        parameters.add(ff.literal(base));
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            if (value == null || !(value instanceof Number)) {
+                throw new MBFormatException(
+                        "Could not convert stop " + stop + " color " + value + " into a numeric");
+            }
+            parameters.add(ff.literal(stop));
+            parameters.add(ff.literal(value));
+        }
+        return ff.function("Exponential", parameters.toArray(new Expression[parameters.size()]));
+    }
+    
+    //
+    // General Purpose
+    //
+    @SuppressWarnings("unchecked")
+    public Expression function(Class<?> clazz){
+        // check for special cases
+        if (clazz.isAssignableFrom(Color.class)) {
+            return color();
+        } else if (clazz.isAssignableFrom(Number.class)) {
+            return numeric();
+        } else if (clazz.isAssignableFrom(Enum.class)) {
+            return enumeration((Class<? extends Enum<?>>) clazz);
+        }
         
-        // See FilterFunction_pow: pow( base, exponent ): power
-//        Expression base = parse.number(json, "base", null);
-//        if( base == null ){
-//            base = ff.literal(1.0);
-//        }
-        double base = Double.valueOf( (String) json.get("base"));
-        JSONArray stops = getStops();
-        JSONArray entry1 = parse.jsonArray(stops.get(0));
-        double stop1 = Double.valueOf((String)entry1.get(0));
-        double value1 = Double.valueOf((String)entry1.get(1));
-        
-      
-        JSONArray entry2 = parse.jsonArray(stops.get(1));
-        double stop2 = Double.valueOf((String)entry2.get(0));
-        double value2 = Double.valueOf((String)entry2.get(1));
-        
-        double scale = (value2-value1)/(Math.pow(stop2, base) - Math.pow(stop1, base));
-        double offset = value1-scale*Math.pow(stop1, base);
-        
-        return ff.add(
-                ff.literal(offset),
-                ff.multiply(
-                        ff.literal(scale),
-                        ff.function("pow", value, ff.literal(base))
-                    )
-                );
+        Expression input = value();
+        FunctionType type = getType();
+        if( type == null || type == FunctionType.INTERVAL){
+            return generateCategorize(input);
+        }
+        else if( type == FunctionType.CATEGORICAL){
+            return generateRecode(input);
+        }
+        else if( type == FunctionType.IDENITY){
+            return input;
+        }
+        throw new UnsupportedOperationException("Function unavailable for '"+type+"' function with "+clazz.getSimpleName());
+    }
+    private Expression generateCategorize(Expression expression) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(expression);
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            parameters.add(ff.literal(stop));
+            parameters.add(ff.literal(value));
+        }
+        parameters.add(ff.literal("preceding"));
+        return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+    }
+    private Expression generateRecode(Expression input) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            parameters.add(ff.literal(stop));
+            parameters.add(ff.literal(value));
+        }
+        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+    }
+    
+    //
+    // Enumerations
+    //
+    /**
+     * GeoTools {@link Expression} from json definition that evaluates to the provided Enum, used for
+     * properties such as 'line-cap' and 'text-transform'.
+     * <ul>
+     * <li>{@link FunctionType#IDENITY}: input is directly converted to an appropriate literal</li>
+     * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a literal</li>
+     * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value a literal</li>
+     * </ul>
+     * If type is unspecified internval is used as a default.</li>
+     * 
+     * @return {@link Function} (or identity {@link Expression} for the provided json)
+     */
+    public Expression enumeration( Class<? extends Enum<?>> enumeration){
+        Expression input = value();
+        // this is a plain property category so we can turn it into a function
+        // Assume a EXPOTENTIAL function for now because it is the default for color
+        FunctionType type = getType();
+        if( type == null || type == FunctionType.INTERVAL){
+            return enumGenerateCategorize(input,enumeration);
+        }
+        else if( type == FunctionType.CATEGORICAL){
+            return enumGenerateRecode(input,enumeration);
+        }
+        else if( type == FunctionType.IDENITY){
+            return enumGenerateIdentiy(input, enumeration);
+        }
+        throw new UnsupportedOperationException("Unable to support '"+type+"' function for "+enumeration.getSimpleName());
     }
     /**
-     * Create a cateogircal functions as {@link InterpolateFunction} for
-     * {@link FunctionType#CATEGORICAL}.
-     * 
-     * @return Generated InterpolateFunction
+     * Utilty method used to convert enumerations to an appropriate literal string.
+     * <p>
+     * Any coversion between mapbox constants and geotools constants will be done here.
+     * @param value
+     * @param enumeration
+     * @return Literal, or null if unavailable
      */
-    public Function categorical() {
-        List<Expression> parameters = new ArrayList<>();
-        parameters.add(ff.property(getProperty()));
-        for (Object obj : getStops()) {
-            JSONArray stop = parse.jsonArray(obj);
-            parameters.add(ff.literal(stop.get(0)));
-            parameters.add(ff.literal(stop.get(1)));
+    private Literal constant( Object value, Class<? extends Enum<?>> enumeration){
+        if( value == null ){
+            return null;
         }
-        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+        if( value instanceof String){
+            // step 1 look up enumValue
+            String stringVal = (String) value;
+            if ("".equals(stringVal.trim())) {
+                return null;
+            }
+            Object enumValue = null;
+            for (Object constant : enumeration.getEnumConstants()) {
+                if (constant.toString().equalsIgnoreCase(stringVal.trim())) {
+                    enumValue = constant;
+                    break;
+                }
+            }
+            if( enumValue == null ){
+                throw new MBFormatException("\"" + stringVal + "\" invalid value for enumeration "
+                    + enumeration.getSimpleName());
+            }
+            // step 2 - convert to geotools constant
+            // (for now just convert to lowe case)
+            //
+            String literal = enumValue.toString().toLowerCase();
+            
+            return ff.literal(literal);
+        }
+        return null;
+    }
+    
+    private Expression enumGenerateRecode(Expression input, Class<? extends Enum<?>> enumeration) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            parameters.add(ff.literal(stop));
+            parameters.add(constant(value,enumeration));
+        }
+        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+    }
+    
+    private Expression enumGenerateCategorize(Expression input,
+            Class<? extends Enum<?>> enumeration) {
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        for (Object obj : getStops()) {
+            JSONArray entry = parse.jsonArray(obj);
+            Object stop = entry.get(0);
+            Object value = entry.get(1);
+            parameters.add(ff.literal(stop));
+            parameters.add(constant(value,enumeration));
+        }
+        parameters.add(ff.literal("preceding"));
+        return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+    }
+
+    private Expression enumGenerateIdentiy(Expression input, Class<? extends Enum<?>> enumeration) {
+        // this is an interesting challenge, we need to generate a recode mapping
+        // mapbox constants defined by the enum, to appropriate geotools literals
+        List<Expression> parameters = new ArrayList<>();
+        parameters.add(input);
+        for (Enum<?> constant : enumeration.getEnumConstants()) {
+            Object value = constant.name().toLowerCase();
+            parameters.add(ff.literal(value));
+            parameters.add(constant(value,enumeration));
+        }
+        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
     }
 }

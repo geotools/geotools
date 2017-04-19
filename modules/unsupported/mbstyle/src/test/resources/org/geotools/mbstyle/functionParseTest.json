@@ -185,7 +185,49 @@
                     ]
                 }
             }
-        }  
+        },
+        
+        {
+            "id": "functionIntervalColour",
+            "type": "circle",
+            "source": "composite",
+            "source-layer": "airport_label",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "circle-color": {
+                    "property": "temperature",
+                    "type": "interval",
+                    "stops": [
+                        [-273.15, "#4488FF"],
+                        [10.0, "#00FF00"],
+                        [30.0, "#FF8800"]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "functionIntervalNumeric",
+            "type": "circle",
+            "source": "composite",
+            "source-layer": "airport_label",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "circle-radius": {
+                    "property": "rating",
+                    "type": "interval",
+                    "stops": [
+                      [0, 0],
+                      [2, 5],
+                      [5, 10],
+                      [10, 20]
+                    ]
+                }
+            }
+        }
     ],
     "created": "2017-02-15T14:31:51.108Z",
     "id": "ciz723a3y000g2so5l675lmz8",

@@ -16,6 +16,15 @@
  */
 package org.geotools.mbstyle.parse;
 
+import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
+import static org.geotools.mbstyle.parse.MBStyleTestUtils.equalInt;
+import static org.geotools.mbstyle.parse.MBStyleTestUtils.evaluatesTo;
+import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
@@ -39,6 +48,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+
+import org.hamcrest.Matchers;
 
 /**
  * Try out property and zoom function.
@@ -448,31 +459,95 @@ public class MBFunctionTest {
     public void colorIntervalFunctionTest() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",numbervalue,location=4326");
-       
+        java.util.function.Function<Long, SimpleFeature> features = (value)->
+            DataUtilities.createFeature(SAMPLE, "measure1=A|"+value+"|POINT(0,0)");
         
-        String jsonStr = "{'property': 'temperature', 'type': 'interval', 'default': 1, 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, ' #FFFFFF']]}";
+        String jsonStr = "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, '#FFFFFF']]}";
         MBFunction function = new MBFunction(object(jsonStr));
         assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());        
         
         Expression outputExpression = function.color();
         
+        // Before the first stop is undefined
+        assertThat(outputExpression, evaluatesTo(features.apply(-10000L), Color.class, any(Color.class)));
+        
         // Test each interval
-        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-900|POINT(0,0)");
-        Color result = outputExpression.evaluate(feature, Color.class);
-        assertEquals(Color.BLACK, result);
-                
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-20|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Color.class);
-        assertEquals(Color.GREEN, result);
+        assertThat(outputExpression, evaluatesTo(features.apply(-900L), Color.class, equalTo(Color.BLACK)));
+        assertThat(outputExpression, evaluatesTo(features.apply(-20L), Color.class, equalTo(Color.GREEN)));
+        assertThat(outputExpression, evaluatesTo(features.apply(10L), Color.class, equalTo(Color.BLUE)));
+        assertThat(outputExpression, evaluatesTo(features.apply(500L), Color.class, equalTo(Color.WHITE)));
         
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|10|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Color.class);
-        assertEquals(Color.BLUE, result);
+        // Test at stops
+        assertThat(outputExpression, evaluatesTo(features.apply(-1000L), Color.class, equalTo(Color.BLACK)));
+        assertThat(outputExpression, evaluatesTo(features.apply(-30L), Color.class, equalTo(Color.GREEN)));
+        assertThat(outputExpression, evaluatesTo(features.apply(0L), Color.class, equalTo(Color.BLUE)));
+        assertThat(outputExpression, evaluatesTo(features.apply(100L), Color.class, equalTo(Color.WHITE)));
+    }
+    
+    /**
+     * 
+     * Test an {@link MBFunction} (type = interval) that returns a color value.
+     * 
+     */
+    @Test
+    public void enumIntervalFunctionTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",numbervalue,location=4326");
+        java.util.function.Function<Long, SimpleFeature> features = (value)->
+            DataUtilities.createFeature(SAMPLE, "measure1=A|"+value+"|POINT(0,0)");
         
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|500|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Color.class);
-        assertEquals(Color.WHITE, result);
+        String jsonStr = "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, 'INTERVAL'], [-30, 'CATEGORICAL'], [0, 'EXPONENTIAL'], [100, 'IDENTITY']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());        
+        
+        Expression outputExpression = function.enumeration(MBFunction.FunctionType.class);
+        
+        // Before the first stop is undefined
+        assertThat(outputExpression, evaluatesTo(features.apply(-10000L), String.class, any(String.class)));
+        
+        // Test each interval
+        assertThat(outputExpression, evaluatesTo(features.apply(-900L), String.class, equalTo("interval")));
+        assertThat(outputExpression, evaluatesTo(features.apply(-20L), String.class, equalTo("categorical")));
+        assertThat(outputExpression, evaluatesTo(features.apply(10L), String.class, equalTo("exponential")));
+        assertThat(outputExpression, evaluatesTo(features.apply(500L), String.class, equalTo("identity")));
+        
+        // Test at stops
+        assertThat(outputExpression, evaluatesTo(features.apply(-1000L), String.class, equalTo("interval")));
+        assertThat(outputExpression, evaluatesTo(features.apply(-30L), String.class, equalTo("categorical")));
+        assertThat(outputExpression, evaluatesTo(features.apply(0L), String.class, equalTo("exponential")));
+        assertThat(outputExpression, evaluatesTo(features.apply(100L), String.class, equalTo("identity")));
+    }
+    
+    @Test
+    public void stringIntervalFunctionTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",numbervalue,location=4326");
+        java.util.function.Function<Long, SimpleFeature> features = (value)->
+            DataUtilities.createFeature(SAMPLE, "measure1=A|"+value+"|POINT(0,0)");
+        
+        String jsonStr = "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, 'foo'], [-30, 'bar'], [0, 'baz'], [100, 'quux']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());
+        
+        Expression outputExpression = function.function(String.class);
+        
+        // Before the first stop is undefined
+        assertThat(outputExpression, evaluatesTo(features.apply(-10000L), String.class, any(String.class)));
+        
+        // Test each interval
+        assertThat(outputExpression, evaluatesTo(features.apply(-900L), String.class, equalTo("foo")));
+        assertThat(outputExpression, evaluatesTo(features.apply(-20L), String.class, equalTo("bar")));
+        assertThat(outputExpression, evaluatesTo(features.apply(10L), String.class, equalTo("baz")));
+        assertThat(outputExpression, evaluatesTo(features.apply(500L), String.class, equalTo("quux")));
+        
+        // Test at stops
+        assertThat(outputExpression, evaluatesTo(features.apply(-1000L), String.class, equalTo("foo")));
+        assertThat(outputExpression, evaluatesTo(features.apply(-30L), String.class, equalTo("bar")));
+        assertThat(outputExpression, evaluatesTo(features.apply(0L), String.class, equalTo("baz")));
+        assertThat(outputExpression, evaluatesTo(features.apply(100L), String.class, equalTo("quux")));
     }
     
     /**
@@ -654,40 +729,29 @@ public class MBFunctionTest {
 
         
         String jsonStr = "{'property': 'temperature','type': 'interval','stops': [[0, 2],[100, 4],[1000, 6]]}";
-        MBFunction function = new MBFunction(object(jsonStr));        
-        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
-        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());        
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertThat(function, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
+        assertThat(function, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
         
-
         Expression outputExpression = function.numeric();
         
         // Test each interval
-        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+        final SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",temperature,location=4326");
+        java.util.function.Function<Long, SimpleFeature> features = (temp)->
+            DataUtilities.createFeature(SAMPLE, "measure1=A|"+temp+"|POINT(0,0)");
         
-        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|0|POINT(0,0)");
-        Number result = outputExpression.evaluate(feature, Number.class);        
-        assertEquals(2, result.intValue());
+        // Bellow the first stop is undefined but at least it shouldn't throw an exception
+        assertThat(outputExpression, evaluatesTo(features.apply(-1L), Number.class, any(Number.class)));
         
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|20|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Number.class);        
-        assertEquals(2, result.intValue());     
+        assertThat(outputExpression, evaluatesTo(features.apply(0L), Number.class, equalInt(2)));
+        assertThat(outputExpression, evaluatesTo(features.apply(20L), Number.class, equalInt(2)));
         
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|100|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Number.class);        
-        assertEquals(4, result.intValue());  
+        assertThat(outputExpression, evaluatesTo(features.apply(100L), Number.class, equalInt(4)));
+        assertThat(outputExpression, evaluatesTo(features.apply(200L), Number.class, equalInt(4)));
         
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|200|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Number.class);        
-        assertEquals(4, result.intValue());  
-        
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|1000|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Number.class);        
-        assertEquals(6, result.intValue());  
-        
-        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|2000|POINT(0,0)");
-        result = outputExpression.evaluate(feature, Number.class);        
-        assertEquals(6, result.intValue());  
+        assertThat(outputExpression, evaluatesTo(features.apply(1000L), Number.class, equalInt(6)));
+        assertThat(outputExpression, evaluatesTo(features.apply(2000L), Number.class, equalInt(6)));
     }
     
     /**

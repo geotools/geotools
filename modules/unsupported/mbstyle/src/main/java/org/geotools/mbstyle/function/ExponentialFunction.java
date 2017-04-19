@@ -1,12 +1,15 @@
 package org.geotools.mbstyle.function;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.data.Parameter;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
@@ -26,6 +29,7 @@ import org.opengis.filter.expression.Expression;
  * @author Jody Garnett (Boundless)
  */
 public class ExponentialFunction extends FunctionImpl {
+    private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
     public static final FunctionName NAME;
     static {
         Parameter<Object> input = new Parameter<Object>("input",Object.class,1,1);
@@ -95,12 +99,20 @@ public class ExponentialFunction extends FunctionImpl {
         }
         Stop lower = stops.get(find-1);
         Stop upper = stops.get(find);
-        double exponential = exponential(object, inputValue, baseValue, lower, upper);
+        Object exponential = exponential(object, inputValue, baseValue, lower, upper, context);
         
         return context.cast(exponential);
     }
+    
+    private <T> Object exponential(Object object, double inputValue, double base, Stop lower, Stop upper, Class<T> context) {
+        if (Color.class.isAssignableFrom(context)) {
+            return colorExponential(object, inputValue, base, lower, upper);
+        } else {
+            return numericExponential(object, inputValue, base, lower, upper);
+        }
+    }
 
-    private double exponential(Object object, double inputValue, double base, Stop lower, Stop upper) {
+    private double numericExponential(Object object, double inputValue, double base, Stop lower, Stop upper) {
         
         double stop1 = lower.stop.evaluate(object,Double.class);
         double value1 = lower.value.evaluate(object,Double.class);
@@ -111,6 +123,35 @@ public class ExponentialFunction extends FunctionImpl {
         double offset = value1-scale*Math.pow(stop1, base);
         
         return offset + scale*Math.pow(inputValue, base);
+    }
+
+    /**
+     * Perform exponential interpolation on each of the channels of the color values at each stop.
+     */
+    private Object colorExponential(Object object, double inputValue, double base, Stop lower,
+            Stop upper) {
+        Color lowerValue = lower.value.evaluate(object, Color.class);
+        Color upperValue = upper.value.evaluate(object, Color.class);
+
+        Stop redLowerStop = new Stop(lower.stop, ff2.literal(lowerValue.getRed()));
+        Stop redUpperStop = new Stop(upper.stop, ff2.literal(upperValue.getRed()));
+
+        Stop greenLowerStop = new Stop(lower.stop, ff2.literal(lowerValue.getGreen()));
+        Stop greenUpperStop = new Stop(upper.stop, ff2.literal(upperValue.getGreen()));
+
+        Stop blueLowerStop = new Stop(lower.stop, ff2.literal(lowerValue.getBlue()));
+        Stop blueUpperStop = new Stop(upper.stop, ff2.literal(upperValue.getBlue()));
+
+        Stop alphaLowerStop = new Stop(lower.stop, ff2.literal(lowerValue.getAlpha()));
+        Stop alphaUpperStop = new Stop(upper.stop, ff2.literal(upperValue.getAlpha()));
+
+        double r = exponential(object, inputValue, base, redLowerStop, redUpperStop);
+        double g = exponential(object, inputValue, base, greenLowerStop, greenUpperStop);
+        double b = exponential(object, inputValue, base, blueLowerStop, blueUpperStop);
+        double a = exponential(object, inputValue, base, alphaLowerStop, alphaUpperStop);
+
+        return new Color((int) Math.round(r), (int) Math.round(g), (int) Math.round(b),
+                (int) Math.round(a));
     }
     
     /**

@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.text.commons;
 
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -182,19 +183,41 @@ public class ExpressionToText implements ExpressionVisitor {
 
             Period period = (Period) literal;
             
-            output = dateToText( period.getBeginning().getPosition().getDate(), output );
+            output = dateToText(period.getBeginning().getPosition().getDate(), output);
             output.append("/");
-    		output = dateToText( period.getEnding().getPosition().getDate(), output );
-    		
-    		return output;
+            output = dateToText(period.getEnding().getPosition().getDate(), output);
+
+            return output;
+        } else if (literal instanceof Color) {
+            Color color = (Color) literal;
+
+            String redCode = Integer.toHexString(color.getRed());
+            String greenCode = Integer.toHexString(color.getGreen());
+            String blueCode = Integer.toHexString(color.getBlue());
+
+            output.append("'#");
+            if (redCode.length() == 1) {
+                output.append("0");
+            }
+            output.append(redCode.toUpperCase());
+
+            if (greenCode.length() == 1) {
+                output.append("0");
+            }
+            output.append(greenCode.toUpperCase());
+
+            if (blueCode.length() == 1) {
+                output.append("0");
+            }
+            output.append(blueCode.toUpperCase());
+            output.append("'");
         }
         else {
             String escaped = literal.toString().replaceAll("'", "''");
             output.append("'" + escaped + "'");
         }
         return output;
-	}
-	
+    }	
 
 	/* (non-Javadoc)
 	 * @see org.opengis.filter.expression.ExpressionVisitor#visit(org.opengis.filter.expression.Multiply, java.lang.Object)

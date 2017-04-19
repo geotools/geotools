@@ -13,6 +13,15 @@ import org.opengis.filter.expression.Expression;
 /**
  * Generate an output by interpolating between stops just less than and just
  * greater than the function input. The domain must be numeric.
+ * 
+ * <h2>Parameters:</h2>
+ * 
+ * <ol start="0">
+ * <li>The interpolation input</li>
+ * <li>The base of the interpolation</li>
+ * <li>(...n) The remaining args are interpreted as pairs of stop values (input, output) for the interpolation. There must be an even number.</li>
+ * </ol>
+ * 
  *
  * @author Jody Garnett (Boundless)
  */
@@ -55,10 +64,16 @@ public class ExponentialFunction extends FunctionImpl {
         Expression input = parameters.get(0);
         Expression base = parameters.get(1);
         
-        for (int i = 2; i < parameters.size(); i++) {
+        if (parameters.size() % 2 != 0) {
+            throw new IllegalArgumentException(this.getClass().getSimpleName()
+                    + " requires an even number of stop values, but " + (parameters.size() - 2) + " were provided.");
+        }
+        
+        for (int i = 2; (i + 1) < parameters.size(); i = i + 2) {
             Stop stop = new Stop(parameters.get(i), parameters.get(i + 1));
             stops.add(stop);
         }
+        
         Double inputValue = input.evaluate(object, Double.class);
         Double baseValue = base.evaluate(object, Double.class);
         if( stops.size()==1){

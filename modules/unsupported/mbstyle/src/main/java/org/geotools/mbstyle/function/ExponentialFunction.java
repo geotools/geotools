@@ -145,10 +145,10 @@ public class ExponentialFunction extends FunctionImpl {
         Stop alphaLowerStop = new Stop(lower.stop, ff2.literal(lowerValue.getAlpha()));
         Stop alphaUpperStop = new Stop(upper.stop, ff2.literal(upperValue.getAlpha()));
 
-        double r = exponential(object, inputValue, base, redLowerStop, redUpperStop);
-        double g = exponential(object, inputValue, base, greenLowerStop, greenUpperStop);
-        double b = exponential(object, inputValue, base, blueLowerStop, blueUpperStop);
-        double a = exponential(object, inputValue, base, alphaLowerStop, alphaUpperStop);
+        double r = numericExponential(object, inputValue, base, redLowerStop, redUpperStop);
+        double g = numericExponential(object, inputValue, base, greenLowerStop, greenUpperStop);
+        double b = numericExponential(object, inputValue, base, blueLowerStop, blueUpperStop);
+        double a = numericExponential(object, inputValue, base, alphaLowerStop, alphaUpperStop);
 
         return new Color((int) Math.round(r), (int) Math.round(g), (int) Math.round(b),
                 (int) Math.round(a));

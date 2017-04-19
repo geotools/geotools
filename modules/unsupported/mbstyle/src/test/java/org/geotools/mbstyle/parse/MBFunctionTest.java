@@ -168,7 +168,7 @@ public class MBFunctionTest {
         assertTrue("property", function.category().contains(MBFunction.FunctionCategory.PROPERTY));
         assertEquals(MBFunction.FunctionType.EXPONENTIAL, function.getType());
 
-        Function fn = function.numeric();
+        Function fn = (Function) function.numeric();
         assertNotNull(fn);
         assertEquals("Interpolate", fn.getName());
         PropertyName propertyName = (PropertyName) fn.getParameters().get(0);

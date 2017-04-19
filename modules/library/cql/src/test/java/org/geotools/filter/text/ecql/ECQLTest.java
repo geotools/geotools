@@ -19,6 +19,7 @@ package org.geotools.filter.text.ecql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -444,4 +445,23 @@ public final class ECQLTest  {
         assertEquals(expected, filter);
     }
 
+    @Test
+    public void colorLiterals() throws CQLException{
+        String expected = "Interpolate(population,0,'#FF0000',10,'#0000FF')";
+        Expression expr = ECQL.toExpression( expected );
+        String actual = ECQL.toCQL(expr);
+        assertEquals("color literals",expected,actual);
+        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        
+        Function function = ff.function("Interpolate",ff.property("population"),
+                ff.literal(0), ff.literal(Color.RED),
+                ff.literal(10), ff.literal(Color.BLUE));
+        
+        actual = ECQL.toCQL(function);
+        assertEquals("color literals",expected,actual);
+                
+        
+        
+    }
 }

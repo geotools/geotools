@@ -20,6 +20,7 @@ package org.geotools.mbstyle;
 import org.geotools.factory.Hints;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBFunction;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.Displacement;
 import org.geotools.util.ColorConverterFactory;
@@ -60,9 +61,6 @@ public class LineMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private static Converter colorConverter = new ColorConverterFactory()
-            .createConverter(String.class, Color.class, new Hints(Hints.COLOR_DEFINITION,"CSS"));
-
     private static String TYPE = "line";
 
     public LineMBLayer(JSONObject json) {
@@ -79,7 +77,7 @@ public class LineMBLayer extends MBLayer {
     /**
      * The display of line endings.
      */
-    public enum LineCap {
+    public static enum LineCap {
         /** A cap with a squared-off end which is drawn to the exact endpoint of the line. */
         BUTT,
         /**
@@ -119,7 +117,7 @@ public class LineMBLayer extends MBLayer {
 
         if (obj == null) {
             return ff.literal("butt");
-        } else if (obj instanceof String) {            
+        } else if (obj instanceof String) {
             return ff.literal(
                     parse.toEnum(layout, "line-cap", LineCap.class, LineCap.BUTT).name().toLowerCase());
         } else if (obj instanceof Number) {
@@ -127,7 +125,8 @@ public class LineMBLayer extends MBLayer {
         } else if (obj instanceof Boolean) {
             throw new UnsupportedOperationException("\"line-cap\": Boolean not supported");
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException("\"line-cap\": Function not yet supported");
+            MBFunction function = new MBFunction(parse, (JSONObject) obj);
+            return function.enumeration(LineCap.class );
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException("\"line-cap\": JSONArray not supported");
         } else {

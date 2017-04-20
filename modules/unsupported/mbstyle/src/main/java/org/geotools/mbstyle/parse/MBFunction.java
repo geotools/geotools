@@ -560,14 +560,26 @@ public class MBFunction {
     private Expression generateCategorize(Expression expression) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
-        for (Object obj : getStops()) {
-            JSONArray entry = parse.jsonArray(obj);
+        
+        JSONArray stopsJson = getStops();
+        for (int i = 0; i < stopsJson.size(); i++) {
+            JSONArray entry = parse.jsonArray(stopsJson.get(i));
             Object stop = entry.get(0);
             Object value = entry.get(1);
+            
+            if (i == 0) {
+                // CategorizeFunction expects there to be a leading value for inputs < firstStopThreshold.
+                // But the MapBox spec does not define the expected behavior in that case.
+                // (spec: "functions return the output value of the stop just less than the function input.")
+                // TODO Default value could go here.
+                // Temporarily, return first interval value for inputs < firstStopThreshold.
+                parameters.add(ff.literal(value));
+            }
+            
             parameters.add(ff.literal(stop));
-            parameters.add(ff.literal(value));
+            parameters.add(ff.literal(value));                     
         }
-       parameters.add(ff.literal("preceding"));
+       parameters.add(ff.literal("succeeding"));
         return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
     }
     private Expression generateRecode(Expression input) {

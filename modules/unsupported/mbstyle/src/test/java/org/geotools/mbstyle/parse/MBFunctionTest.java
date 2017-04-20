@@ -606,6 +606,55 @@ public class MBFunctionTest {
         
         assertEquals(2, result.intValue());     
     }
+    
+    /**
+     * 
+     * Test an {@link MBFunction} (type = interval) that returns a numeric value.
+     * 
+     */
+    @Test
+    public void numericIntervalFunctionTest() throws Exception {
+
+        
+        String jsonStr = "{'property': 'temperature','type': 'interval','stops': [[0, 2],[100, 4],[1000, 6]]}";
+        MBFunction function = new MBFunction(object(jsonStr));        
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());        
+        
+
+        Expression outputExpression = function.numeric();
+        
+        // Test each interval
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature,location=4326");
+        
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|0|POINT(0,0)");
+        Number result = outputExpression.evaluate(feature, Number.class);        
+        assertEquals(2, result.intValue());
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|20|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);        
+        assertEquals(2, result.intValue());     
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|100|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);        
+        assertEquals(4, result.intValue());  
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|200|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);        
+        assertEquals(4, result.intValue());  
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|1000|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);        
+        assertEquals(6, result.intValue());  
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|2000|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);        
+        assertEquals(6, result.intValue());  
+    }
+    
+    
+    
     public void verifyEnvironmentZoomLevel(int zoomLevel) {
         Number envZoomLevel = ff.function("zoomLevel",
                 ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))

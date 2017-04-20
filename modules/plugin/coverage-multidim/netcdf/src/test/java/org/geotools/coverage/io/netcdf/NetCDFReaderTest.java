@@ -16,10 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
-import ucar.nc2.dataset.NetcdfDataset;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
@@ -48,6 +44,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -90,6 +87,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import ucar.nc2.dataset.NetcdfDataset;
 
 public class NetCDFReaderTest extends Assert {
 
@@ -1252,6 +1253,19 @@ public class NetCDFReaderTest extends Assert {
         GeneralEnvelope envelope = reader.getOriginalEnvelope();
         assertNotNull(envelope);
         assertFalse(envelope.isEmpty());
+    }
+
+    /**
+     * Test that {@link GridCoverage2DReader#SOURCE_URL_PROPERTY} is correctly set on a coverage read from a NetCDF file.
+     */
+    @Test
+    public void testSourceUrl() throws Exception {
+        NetCDFReader reader = new NetCDFReader(TestData.file(this, "O3-NO2.nc"), null);
+        GridCoverage2D coverage = reader.read("O3", new GeneralParameterValue[] {});
+        URL sourceUrl = (URL) coverage.getProperty(GridCoverage2DReader.SOURCE_URL_PROPERTY);
+        assertNotNull(sourceUrl);
+        assertEquals("file", sourceUrl.getProtocol());
+        assertTrue(sourceUrl.getPath().endsWith("O3-NO2.nc"));
     }
 
 }

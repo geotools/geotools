@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.mbstyle.function;
 
 import java.awt.Color;
@@ -9,6 +25,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
+import org.geotools.util.Converters;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -32,6 +49,7 @@ public class ExponentialFunction extends FunctionImpl {
     private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
     public static final FunctionName NAME;
     static {
+        Parameter<Object> result = new Parameter<Object>("result",Object.class,1,1);
         Parameter<Object> input = new Parameter<Object>("input",Object.class,1,1);
         Parameter<Double> base = new Parameter<Double>(
                 "base", Double.class,
@@ -42,7 +60,7 @@ public class ExponentialFunction extends FunctionImpl {
                 null
         );
         Parameter<Object> stops= new Parameter<Object>("stops",Object.class,4,-1);
-        NAME = new FunctionNameImpl("Exponential", input, base, stops);
+        NAME = new FunctionNameImpl("Exponential", result, input, base, stops);
     }
     private static class Stop {
         Expression stop;
@@ -101,7 +119,7 @@ public class ExponentialFunction extends FunctionImpl {
         Stop upper = stops.get(find);
         Object exponential = exponential(object, inputValue, baseValue, lower, upper, context);
         
-        return context.cast(exponential);
+        return Converters.convert(exponential, context);
     }
     
     private <T> Object exponential(Object object, double inputValue, double base, Stop lower, Stop upper, Class<T> context) {

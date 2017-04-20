@@ -64,16 +64,21 @@ public class MBFunctionTest {
     public void identity() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",temperature:0.0,location=4326,color:java.awt.Color");
-        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|#FF0000");
-
+        SimpleFeature feature1 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|#FF0000");
+        SimpleFeature feature2 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|red");
+        
+        // color test
         JSONObject json = object("{'property':'color','type':'identity'}");
         MBFunction function = new MBFunction(json);
         assertTrue("property", function.category().contains(MBFunction.FunctionCategory.PROPERTY));
-        assertTrue("identity", function.getType() == FunctionType.IDENITY );
+        assertTrue("identity", function.getType() == FunctionType.IDENTITY );
         
         Expression fn = function.color();
-        Color result = fn.evaluate(feature, Color.class);
-        assertEquals(Color.RED, result);
+        
+        assertEquals("hex",Color.RED, fn.evaluate(feature1, Color.class));
+        
+        assertEquals("css",Color.RED, fn.evaluate(feature2, Color.class));
+        
     }
     
     @Test

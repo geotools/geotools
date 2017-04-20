@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -273,23 +273,45 @@ public class GeometryBuilder {
 		// - Start and end params for the CurveSegments will be set
 		return getPrimitiveFactory().createCurve(segments);
 	}
-    public Curve createCurve(PointArray points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+	
+    @Deprecated
+    public Curve createCurve(PointArray points)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return createCurve(points, true);
+    }
+
+    public Curve createCurve(PointArray points, boolean closed)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
         if (points == null)
             throw new NullPointerException("Points are required to create a curve");
+        if (points.size() < 2)
+            throw new IllegalArgumentException(
+                    "At least two points are required to create a curve");
 
         // A curve will be created
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
-        List/*<LineSegment>*/ segmentList = new ArrayList/*<LineSegment>*/();
-        for( int i=0; i<points.size();i++){
+        List/* <LineSegment> */ segmentList = new ArrayList/* <LineSegment> */();
+        for (int i = 0; i < points.size() - 1; i++) {
             int start = i;
-            int end = (i+1)%points.size();
-            DirectPosition point1 = points.getDirectPosition( start, null );
-            DirectPosition point2 = points.getDirectPosition( end, null );
-            LineSegment segment = createLineSegment( point1, point2 );
-            segmentList.add( segment );
+            int end = i + 1;
+            DirectPosition point1 = points.getDirectPosition(start, null);
+            DirectPosition point2 = points.getDirectPosition(end, null);
+            LineSegment segment = createLineSegment(point1, point2);
+            segmentList.add(segment);
         }
-        return getPrimitiveFactory().createCurve( segmentList );
+
+        if (closed) {
+            LineSegment first = (LineSegment) segmentList.get(0);
+            LineSegment last = (LineSegment) segmentList.get(segmentList.size() - 1);
+
+            if (!first.getStartPoint().equals(last.getEndPoint())) {
+                LineSegment segment = createLineSegment(last.getEndPoint(), first.getStartPoint());
+                segmentList.add(segment);
+            }
+        }
+
+        return getPrimitiveFactory().createCurve(segmentList);
     }
 
 	/**
@@ -424,9 +446,9 @@ public class GeometryBuilder {
 		return getPrimitiveFactory().createSolid(boundary);
 	}
 
-    public SurfaceBoundary createSurfaceBoundary(PointArray points ) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        Curve curve = createCurve( points );
-        return createSurfaceBoundary( curve);
+    public SurfaceBoundary createSurfaceBoundary(PointArray points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        Curve curve = createCurve(points);
+        return createSurfaceBoundary(curve);
     }
 	public Surface createSurface(List surfaces) throws MismatchedReferenceSystemException, MismatchedDimensionException {
 		return getPrimitiveFactory().createSurface(surfaces);

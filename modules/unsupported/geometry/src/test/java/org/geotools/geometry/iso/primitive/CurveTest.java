@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,35 +19,33 @@ package org.geotools.geometry.iso.primitive;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.PositionFactoryImpl;
 import org.geotools.geometry.iso.PrecisionModel;
 import org.geotools.geometry.iso.aggregate.AggregateFactoryImpl;
 import org.geotools.geometry.iso.complex.ComplexFactoryImpl;
-import org.geotools.geometry.iso.coordinate.EnvelopeImpl;
 import org.geotools.geometry.iso.coordinate.GeometryFactoryImpl;
 import org.geotools.geometry.iso.coordinate.LineSegmentImpl;
 import org.geotools.geometry.iso.coordinate.LineStringImpl;
 import org.geotools.geometry.iso.coordinate.PositionImpl;
 import org.geotools.geometry.iso.io.CollectionFactoryMemoryImpl;
-import org.geotools.geometry.iso.primitive.CurveImpl;
-import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.geometry.iso.util.elem2D.Geo2DFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
 import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.complex.Complex;
 import org.opengis.geometry.complex.CompositeCurve;
+import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
+import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
+
+import junit.framework.TestCase;
 
 /**
  * @author sanjay
@@ -297,5 +295,106 @@ public class CurveTest extends TestCase {
 
 		
 	}
+	
+    public void testCreateCurveWithNull() {
+        GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
 
+        try {
+            Curve c = builder.createCurve(null, false);
+            fail();
+        } catch (NullPointerException e) {
+            // success
+        } catch (Exception e2) {
+            fail();
+        }
+
+        try {
+            Curve c = builder.createCurve(null, true);
+            fail();
+        } catch (NullPointerException e) {
+            // success
+        } catch (Exception e2) {
+            fail();
+        }
+    }
+
+    public void testCreateCurveWithEmptyPts() {
+        GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
+
+        double[] pts = {};
+        PointArray parr = builder.createPointArray(pts);
+        try {
+            Curve c = builder.createCurve(parr, false);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // success
+        } catch (Exception e2) {
+            fail();
+        }
+
+        try {
+            Curve c = builder.createCurve(parr, true);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // success
+        } catch (Exception e2) {
+            fail();
+        }
+    }
+
+    public void testCreateCurveWithOnePts() {
+        GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
+
+        double[] pts = { 1.0, 1.0 };
+        PointArray parr = builder.createPointArray(pts);
+        try {
+            Curve c = builder.createCurve(parr, false);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // success
+        } catch (Exception e2) {
+            fail();
+        }
+
+        try {
+            Curve c = builder.createCurve(parr, true);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // success
+        } catch (Exception e2) {
+            fail();
+        }
+    }
+
+    public void testCreateCurveWithClosedParam() {
+        GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
+
+        // creating a curve which guarantees to be a closed curve.
+        double[] pts = { 1.0, 1.0, 0.0, 2.0, 2.0, 2.0, 4.0, 2.0, 2.0, 0.0 };
+        PointArray parr = builder.createPointArray(pts);
+        Curve c = builder.createCurve(parr, true);
+        assertTrue(c.getStartPoint().equals(c.getEndPoint()));
+        assertTrue(c.isCycle());
+
+        // creating a curve which guarantees to be a closed curve and it doesn't add a end point again.
+        double[] pts2 = { 1.0, 1.0, 0.0, 2.0, 2.0, 2.0, 4.0, 2.0, 2.0, 0.0, 1.0, 1.0 };
+        PointArray parr2 = builder.createPointArray(pts2);
+
+        Curve c2 = builder.createCurve(parr2, true);
+        assertTrue(c2.getStartPoint().equals(c2.getEndPoint()));
+        assertTrue(c2.isSimple());
+
+        // creating a curve and it doesn't add a same coordinate with the start point to make a closed curve.
+        double[] pts3 = { 1.0, 1.0, 0.0, 2.0, 2.0, 2.0, 4.0, 2.0, 2.0, 0.0 };
+        PointArray parr3 = builder.createPointArray(pts3);
+        Curve c3 = builder.createCurve(parr3, false);
+        assertFalse(c3.getStartPoint().equals(c3.getEndPoint()));
+
+        double[] pts4 = { 1.0, 1.0, 0.0, 2.0, 2.0, 2.0, 4.0, 2.0, 2.0, 0.0, 1.0, 1.0 };
+        PointArray parr4 = builder.createPointArray(pts4);
+        Curve c4 = builder.createCurve(parr4, false);
+        assertTrue(c4.getStartPoint().equals(c4.getEndPoint()));
+        assertTrue(c.isCycle());
+    }
+	
 }

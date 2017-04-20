@@ -440,7 +440,7 @@ public class MBFunctionTest {
     
     /**
      * Tests that a MapBox exponential zoom function (outputting a numeric value) correctly interpolates values
-     * for zoom levels between stops.
+     * for zoom levels between stops. Tests exponential base == 1 and <> 1.
      * 
      * @throws Exception
      */
@@ -460,7 +460,6 @@ public class MBFunctionTest {
         verifyEnvironmentZoomLevel(9);
 
         // -------- Test interpolation for base > 1
-        // Create a Mapbox Function for base > 1
         String jsonStr = "{'base': 1.9, 'stops':[[0,12],[6,24],[12,48]]}";
         MBFunction function = new MBFunction(object(jsonStr));
         
@@ -509,7 +508,7 @@ public class MBFunctionTest {
     
     /**
      * Tests that a MapBox exponential property function (outputting a numeric value) correctly interpolates values
-     * for zoom levels between stops.
+     * for zoom levels between stops. Tests exponential base == 1 and <> 1.
      * 
      * @throws Exception
      */
@@ -520,7 +519,6 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
         // -------- Test interpolation for base > 1
-        // Create a Mapbox Function for base > 1
         String jsonStr = "{'base': 1.9, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
         MBFunction function = new MBFunction(object(jsonStr));
         
@@ -566,6 +564,48 @@ public class MBFunctionTest {
         assertEquals("Interpolated value should = midpoint (for base = 1)", result.doubleValue(), 36.0, .0001);
     }
     
+    /**
+     * Test an MBFunction (type = Identity) that returns a numeric value for a given property.
+     */
+    @Test
+    public void numericIdentityFunctionTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
+
+        // Verify the function was created correctly
+        String jsonStr = "{'property':'temperature', 'type':'identity'}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"Identity\"", MBFunction.FunctionType.IDENTITY, function.getType());
+        
+        // Verify that the output is correct (== input)
+        Expression outputExpression = function.numeric();
+        Number result = outputExpression.evaluate(feature, Number.class);
+        
+        assertEquals("Numeric identity function output is == input property value", 50.0, result.doubleValue(), .000001);        
+    }
+    
+    /**
+     * Test an {@link MBFunction} (type = categorical) that returns a numeric value.
+     */
+    @Test
+    public void numericCategoricalFunctionTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",roadtype,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|dirtroad|POINT(0,0)");
+        
+        String jsonStr = "{'property': 'roadtype', 'type': 'categorical', 'default': 1, 'stops': [['trail', 1], ['dirtroad', 2], ['road', 3], ['highway', 4]]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"categorical\"", MBFunction.FunctionType.CATEGORICAL, function.getType());        
+        
+
+        Expression outputExpression = function.numeric();
+        Number result = outputExpression.evaluate(feature, Number.class);
+        
+        assertEquals(2, result.intValue());     
+    }
     public void verifyEnvironmentZoomLevel(int zoomLevel) {
         Number envZoomLevel = ff.function("zoomLevel",
                 ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))

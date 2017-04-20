@@ -19,20 +19,15 @@ package org.geotools.process.raster;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 
-import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
-import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.processing.jai.TransparencyFillDescriptor;
-import org.geotools.processing.jai.TransparencyFillDescriptor.FillType;
-import org.geotools.processing.jai.TransparencyFillRIF;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.image.ImageUtilities;
@@ -50,11 +45,6 @@ import org.opengis.util.ProgressListener;
 public class TransparencyFillProcess implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
-
-    static {
-        Registry.registerRIF(JAI.getDefaultInstance(), new TransparencyFillDescriptor(),
-                new TransparencyFillRIF(), "it.geosolutions.jaiext");
-    }
 
     @DescribeResult(name = "result", description = "The processed coverage")
     public GridCoverage2D execute(

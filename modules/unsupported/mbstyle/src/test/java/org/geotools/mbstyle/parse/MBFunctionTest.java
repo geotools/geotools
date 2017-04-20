@@ -439,6 +439,42 @@ public class MBFunctionTest {
     }
     
     /**
+     * 
+     * Test an {@link MBFunction} (type = interval) that returns a color value.
+     * 
+     */
+    @Test
+    public void colorIntervalFunctionTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",numbervalue,location=4326");
+       
+        
+        String jsonStr = "{'property': 'temperature', 'type': 'interval', 'default': 1, 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, ' #FFFFFF']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());        
+        
+        Expression outputExpression = function.color();
+        
+        // Test each interval
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-900|POINT(0,0)");
+        Color result = outputExpression.evaluate(feature, Color.class);
+        assertEquals(Color.BLACK, result);
+                
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-20|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Color.class);
+        assertEquals(Color.GREEN, result);
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|10|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Color.class);
+        assertEquals(Color.BLUE, result);
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|500|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Color.class);
+        assertEquals(Color.WHITE, result);
+    }
+    
+    /**
      * Tests that a MapBox exponential zoom function (outputting a numeric value) correctly interpolates values
      * for zoom levels between stops. Tests exponential base == 1 and <> 1.
      * 

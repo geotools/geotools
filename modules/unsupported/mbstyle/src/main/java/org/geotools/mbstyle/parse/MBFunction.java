@@ -559,6 +559,12 @@ public class MBFunction {
         
         Expression input = input();
         FunctionType type = getType();
+
+        if (type == null) {
+            // For the other return types (boolean, string, array) the default function type is INTERVAL.
+            type = FunctionType.INTERVAL;
+        }
+        
         if( type == null || type == FunctionType.INTERVAL){
             return generateCategorize(input);
         }

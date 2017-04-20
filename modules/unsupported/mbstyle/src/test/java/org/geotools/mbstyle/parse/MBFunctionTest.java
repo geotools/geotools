@@ -63,22 +63,23 @@ public class MBFunctionTest {
     @Test
     public void identity() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
-                "id:\"\",temperature:0.0,location=4326,color:java.awt.Color");
-        SimpleFeature feature1 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|#FF0000");
-        SimpleFeature feature2 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|red");
+                "id:\"\",temperature:0.0,location=4326,color:java.awt.Color,text:String:");
+        SimpleFeature feature1 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|#FF0000|red");
+        SimpleFeature feature2 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|#0000FF|rgb(0,0,255)");
         
         // color test
-        JSONObject json = object("{'property':'color','type':'identity'}");
-        MBFunction function = new MBFunction(json);
+        MBFunction function = new MBFunction(object("{'property':'color','type':'identity'}"));
         assertTrue("property", function.category().contains(MBFunction.FunctionCategory.PROPERTY));
         assertTrue("identity", function.getType() == FunctionType.IDENTITY );
         
-        Expression fn = function.color();
+        Expression color = function.color();
+        assertEquals("color",Color.RED, color.evaluate(feature1, Color.class));
+        assertEquals("color",Color.BLUE, color.evaluate(feature2, Color.class));
         
-        assertEquals("hex",Color.RED, fn.evaluate(feature1, Color.class));
-        
-        assertEquals("css",Color.RED, fn.evaluate(feature2, Color.class));
-        
+        function = new MBFunction(object("{'property':'text','type':'identity'}"));
+        Expression text= function.color();
+        assertEquals("text",Color.RED, text.evaluate(feature1, Color.class));
+        assertEquals("text",Color.BLUE, text.evaluate(feature2, Color.class));
     }
     
     @Test

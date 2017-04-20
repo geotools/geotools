@@ -354,7 +354,7 @@ public class ColorConverterFactory implements ConverterFactory {
      * <li>Hex representation of the form <code>#RRGGBB</code> and <code>#RRGGBBAA</code></li>
      * </ul>
      */
-    private static Converter CONVERT_CSS_TO_COLOR = new Converter() {
+    public static Converter CONVERT_CSS_TO_COLOR = new Converter() {
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
@@ -417,7 +417,7 @@ public class ColorConverterFactory implements ConverterFactory {
     /**
      * Converts color to hex representation.
      */
-    private static Converter CONVERT_COLOR_TO_STRING = new Converter() {
+    public static Converter CONVERT_COLOR_TO_STRING = new Converter() {
     
         public <T> T convert(Object source, Class<T> target) throws Exception {
             Color color = (Color) source;

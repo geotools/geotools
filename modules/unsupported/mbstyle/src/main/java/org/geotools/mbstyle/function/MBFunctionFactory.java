@@ -39,6 +39,7 @@ public class MBFunctionFactory implements FunctionFactory {
         List<FunctionName> functionList = new ArrayList<>();
         functionList.add(ZoomLevelFunction.NAME);
         functionList.add(ExponentialFunction.NAME);
+        functionList.add(ColorFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -57,6 +58,13 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (ExponentialFunction.NAME.getFunctionName().equals(name)) {
             ExponentialFunction f = new ExponentialFunction();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+
+            return f;
+        }
+        if (ColorFunction.NAME.getFunctionName().equals(name)) {
+            ColorFunction f = new ColorFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
 

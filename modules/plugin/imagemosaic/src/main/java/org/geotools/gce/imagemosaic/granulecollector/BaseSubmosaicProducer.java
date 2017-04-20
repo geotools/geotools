@@ -25,6 +25,7 @@ import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,6 @@ import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.management.RuntimeErrorException;
 import javax.media.jai.Histogram;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
@@ -55,10 +55,11 @@ import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 
 /**
  * Basic submosaic producer. Accepts all granules and mosaics without any real special handling
@@ -112,6 +113,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
         // execute them all
         final StringBuilder paths = new StringBuilder();
+        URL sourceUrl = null;
         final List<MosaicElement> returnValues = new ArrayList<>();
         // collect sources for the current dimension and then process them
         for (Future<GranuleDescriptor.GranuleLoadingResult> future : granulesFutures) {
@@ -192,6 +194,10 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
                 }
                 paths.append(canonicalPath).append(",");
+                // take only the first source URL found
+                if (sourceUrl == null) {
+                    sourceUrl = result.getGranuleUrl();
+                }
 
                 // add to the mosaic collection, with preprocessing
                 // TODO pluggable mechanism for processing (artifacts,etc...)
@@ -211,7 +217,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         // collect paths
         rasterLayerResponse.setGranulesPaths(
                 paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "");
-        
+        rasterLayerResponse.setSourceUrl(sourceUrl);
+
         if (returnValues == null || returnValues.isEmpty()) {
             if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.info("The MosaicElement list is null or empty");

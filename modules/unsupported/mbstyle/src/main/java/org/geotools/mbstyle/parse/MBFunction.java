@@ -239,7 +239,7 @@ public class MBFunction {
     }
 
     /**
-     * Extracts value expression this function is performed against.
+     * Extracts input value expression this function is performed against.
      * <p>
      * The value is determined by:
      * <ul>
@@ -250,7 +250,7 @@ public class MBFunction {
      * </p>
      * @return expression function is evaualted against
      */
-    private Expression value() {
+    private Expression input() {
         EnumSet<FunctionCategory> category = category();
         if (category.containsAll(EnumSet.of(FunctionCategory.ZOOM, FunctionCategory.PROPERTY))) {
             // double check if this can/should be supported now that we have a zoomLevel function
@@ -309,7 +309,7 @@ public class MBFunction {
      * @return {@link Function} (or identity {@link Expression} for the provided json)
      */
     public Expression color(){
-        Expression value = value();
+        Expression value = input();
         FunctionType type = getType();
         
         if( type == null || type == FunctionType.EXPONENTIAL){
@@ -434,7 +434,7 @@ public class MBFunction {
      * @return {@link Function} (or identity {@link Expression} for the provided json)
      */
     public Expression numeric() {
-        Expression input = value();
+        Expression input = input();
         FunctionType type = getType();
         
         if( type == null || type == FunctionType.EXPONENTIAL){
@@ -544,7 +544,7 @@ public class MBFunction {
             return enumeration((Class<? extends Enum<?>>) clazz);
         }
         
-        Expression input = value();
+        Expression input = input();
         FunctionType type = getType();
         if( type == null || type == FunctionType.INTERVAL){
             return generateCategorize(input);
@@ -599,7 +599,7 @@ public class MBFunction {
      * @return {@link Function} (or identity {@link Expression} for the provided json)
      */
     public Expression enumeration( Class<? extends Enum<?>> enumeration){
-        Expression input = value();
+        Expression input = input();
         // this is a plain property category so we can turn it into a function
         // Assume a EXPOTENTIAL function for now because it is the default for color
         FunctionType type = getType();

@@ -25,6 +25,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.mbstyle.LineMBLayer.LineJoin;
 import org.geotools.mbstyle.parse.MBFunction;
 import org.geotools.mbstyle.parse.MBFunction.FunctionType;
 import org.json.simple.JSONObject;
@@ -61,7 +62,7 @@ public class MBFunctionTest {
         return (JSONObject) object;
     }
     @Test
-    public void identity() throws Exception {
+    public void colorIdentityTest() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",temperature:0.0,location=4326,color:java.awt.Color,text:String:");
         SimpleFeature feature1 = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)|#FF0000|red");
@@ -689,7 +690,62 @@ public class MBFunctionTest {
         assertEquals(6, result.intValue());  
     }
     
+    /**
+     * Test a {@link MBFunction} (type = identity) that returns a string value.
+     */
+    @Test
+    public void stringIdentityFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'textproperty','type': 'identity'}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY, function.getType());                      
+        
+        Expression outputExpression = function.function(String.class);
+        
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",textproperty,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|textvalue|POINT(0,0)");
+        String output = outputExpression.evaluate(feature, String.class);
+        assertEquals("textvalue", output);        
+    }
+        
+    /**
+     * Test a {@link MBFunction} (type = identity) that returns an enum value.
+     */
+    @Test
+    public void enumIdentityFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'linecap','type': 'identity'}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY, function.getType());                      
+        
+        Expression outputExpression = function.function(LineJoin.class);
+        
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",linecap,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|square|POINT(0,0)");
+        String output = outputExpression.evaluate(feature, String.class);
+        assertEquals("square", output);        
+    }
     
+    /**
+     * Test a {@link MBFunction} (type = identity) that returns a boolean value.
+     */    
+    @Test
+    public void booleanIdentityFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'propName','type': 'identity'}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY, function.getType());                      
+        
+        Expression outputExpression = function.function(Boolean.class);
+        
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",propName,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|true|POINT(0,0)");
+        Boolean output = outputExpression.evaluate(feature, Boolean.class);
+        assertTrue(output);        
+    }        
     
     public void verifyEnvironmentZoomLevel(int zoomLevel) {
         Number envZoomLevel = ff.function("zoomLevel",
@@ -697,5 +753,7 @@ public class MBFunctionTest {
                 .evaluate(null, Number.class);
         assertEquals("Zoom level is " + zoomLevel, zoomLevel, envZoomLevel.doubleValue(), .00001);
     }
+    
+
     
 }

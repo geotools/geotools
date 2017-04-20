@@ -98,8 +98,21 @@ public class MBFunction {
         CATEGORICAL
     }
 
+    /**
+     * Access the function 'type', or null if not specified.
+     * <p>
+     * Depending on the domain you are working with ( {@link #enumeration(Class)}, {@link #color()},
+     * {@link #enumeration(Class)}} ) the default value to use is different. These functions check
+     * for null and use the appropriate setting.
+     * </p>
+     * 
+     * @return function type, or null if not defined.
+     */
     public FunctionType getType() {
-        String type = parse.get(json, "type", "exponential");
+        String type = parse.get(json, "type", null);
+        if (type == null) {
+            return null;
+        }
         switch (type) {
         case "identity":
             return FunctionType.IDENTITY;

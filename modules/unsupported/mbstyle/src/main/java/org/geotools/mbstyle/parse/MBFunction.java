@@ -35,7 +35,7 @@ import org.opengis.filter.expression.Literal;
 /**
  * MBFunction json wrapper, allowing conversion to a GeoTools Expression.
  * <p>
- * Each function is evaluated according type: {@link FunctionType#IDENITY},
+ * Each function is evaluated according type: {@link FunctionType#IDENTITY},
  * {@link FunctionType#INTERVAL}, {@link FunctionType#CATEGORICAL},
  * {@link FunctionType#EXPONENTIAL}.
  * <p>
@@ -68,7 +68,7 @@ public class MBFunction {
     /** Optional type, one of identity, exponential, interval, categorical. */
     public static enum FunctionType {
         /** Functions return their input as their output. */
-        IDENITY,
+        IDENTITY,
         /**
          * Functions generate an output by interpolating between stops just less than and just
          * greater than the function input. The domain must be numeric. This is the default for
@@ -102,7 +102,7 @@ public class MBFunction {
         String type = parse.get(json, "type", "exponential");
         switch (type) {
         case "identity":
-            return FunctionType.IDENITY;
+            return FunctionType.IDENTITY;
         case "exponential":
             return FunctionType.EXPONENTIAL;
         case "internval":
@@ -298,7 +298,7 @@ public class MBFunction {
      * (converting hex to color, looking up color names).
      * </p>
      * <ul>
-     * <li>{@link FunctionType#IDENITY}: input is directly converted to a color, providing a way to process attribute data
+     * <li>{@link FunctionType#IDENTITY}: input is directly converted to a color, providing a way to process attribute data
      * into colors.</li>
      * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input value</li>
      * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input value</li>
@@ -327,7 +327,7 @@ public class MBFunction {
         else if( type == FunctionType.INTERVAL){
             return colorGenerateCategorize(value);
         }
-        else if( type == FunctionType.IDENITY){
+        else if( type == FunctionType.IDENTITY){
             return value;
         }
         throw new UnsupportedOperationException("Color unavailable for '"+type+"' function");
@@ -424,7 +424,7 @@ public class MBFunction {
      * (converting "50%"  to 0.5).
      * </p>
      * <ul>
-     * <li>{@link FunctionType#IDENITY}: input is directly converted to a numeric output</li>
+     * <li>{@link FunctionType#IDENTITY}: input is directly converted to a numeric output</li>
      * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a number</li>
      * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value as a number</li>
      * <li>{@link FunctionType#EXPONENTIAL}: interpolates a numeric output between two stops</li>  
@@ -452,7 +452,7 @@ public class MBFunction {
         else if( type == FunctionType.INTERVAL){
             return generateCategorize(input);
         }
-        else if( type == FunctionType.IDENITY){
+        else if( type == FunctionType.IDENTITY){
             return input;
         }
         throw new UnsupportedOperationException("Numeric unavailable for '"+type+"' function");
@@ -520,6 +520,19 @@ public class MBFunction {
     //
     // General Purpose
     //
+    /**
+     * GeoTools {@link Expression} from json definition.
+     * <p>
+     * Delegates handling of Color, Number and Enum - for generic values (such as String) the following are available:
+     * <ul>
+     * <li>{@link FunctionType#IDENTITY}: input is directly converted to a literal</li>
+     * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a literal</li>
+     * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value a literal</li>
+     * </ul>
+     * If type is unspecified interval is used as a default.
+     * 
+     * @return {@link Function} (or identity {@link Expression} for the provided json)
+     */
     @SuppressWarnings("unchecked")
     public Expression function(Class<?> clazz){
         // check for special cases
@@ -539,7 +552,7 @@ public class MBFunction {
         else if( type == FunctionType.CATEGORICAL){
             return generateRecode(input);
         }
-        else if( type == FunctionType.IDENITY){
+        else if( type == FunctionType.IDENTITY){
             return input;
         }
         throw new UnsupportedOperationException("Function unavailable for '"+type+"' function with "+clazz.getSimpleName());
@@ -577,7 +590,7 @@ public class MBFunction {
      * GeoTools {@link Expression} from json definition that evaluates to the provided Enum, used for
      * properties such as 'line-cap' and 'text-transform'.
      * <ul>
-     * <li>{@link FunctionType#IDENITY}: input is directly converted to an appropriate literal</li>
+     * <li>{@link FunctionType#IDENTITY}: input is directly converted to an appropriate literal</li>
      * <li>{@link FunctionType#CATEGORICAL}: selects stop equal to input, and returns stop value as a literal</li>
      * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value a literal</li>
      * </ul>
@@ -596,7 +609,7 @@ public class MBFunction {
         else if( type == FunctionType.CATEGORICAL){
             return enumGenerateRecode(input,enumeration);
         }
-        else if( type == FunctionType.IDENITY){
+        else if( type == FunctionType.IDENTITY){
             return enumGenerateIdentiy(input, enumeration);
         }
         throw new UnsupportedOperationException("Unable to support '"+type+"' function for "+enumeration.getSimpleName());

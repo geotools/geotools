@@ -147,7 +147,7 @@ public class LineMBLayer extends MBLayer {
      * 
      * Miter - A join with a sharp, angled corner which is drawn with the outer sides beyond the endpoint of the path until they meet.
      */
-    public enum LineJoin {
+    public static enum LineJoin {
         BEVEL, ROUND, MITER
     }
 

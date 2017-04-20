@@ -105,7 +105,7 @@ public class MBFunction {
             return FunctionType.IDENTITY;
         case "exponential":
             return FunctionType.EXPONENTIAL;
-        case "internval":
+        case "interval":
             return FunctionType.INTERVAL;
         case "categorical":
             return FunctionType.CATEGORICAL;
@@ -567,7 +567,7 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        parameters.add(ff.literal("preceding"));
+       parameters.add(ff.literal("preceding"));
         return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
     }
     private Expression generateRecode(Expression input) {

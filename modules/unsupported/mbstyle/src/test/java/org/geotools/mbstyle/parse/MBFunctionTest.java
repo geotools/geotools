@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
@@ -49,7 +48,6 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-import org.hamcrest.Matchers;
 
 /**
  * Try out property and zoom function.
@@ -100,7 +98,7 @@ public class MBFunctionTest {
                 "id:\"\",temperature:0.0,location=4326");
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
-        JSONObject json = object("{'property':'temperature','stops':[[0,'blue'],[100,'red']]}");
+        JSONObject json = object("{'property':'temperature','type':'exponential','stops':[[0,'blue'],[100,'red']]}");
         MBFunction function = new MBFunction(json);
 
         assertEquals("temperature", function.getProperty());
@@ -139,7 +137,7 @@ public class MBFunctionTest {
                 "id:\"\",temperature:0.0,location=4326");
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
-        JSONObject json = object("{'property':'temperature','stops':[[0,'blue'],[100,'red']],'base':1.1}");
+        JSONObject json = object("{'property':'temperature','type':'exponential','stops':[[0,'blue'],[100,'red']],'base':1.1}");
         MBFunction function = new MBFunction(json);
 
         assertEquals("temperature", function.getProperty());
@@ -185,7 +183,7 @@ public class MBFunctionTest {
 
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
-        JSONObject json = object("{'property':'temperature','stops':[[0,5],[100,10]]}");
+        JSONObject json = object("{'type':'exponential', 'property':'temperature','stops':[[0,5],[100,10]]}");
 
         MBFunction function = new MBFunction(json);
 
@@ -215,7 +213,7 @@ public class MBFunctionTest {
         
         EnvFunction.setGlobalValue("wms_scale_denominator", "2132.729584");
 
-        JSONObject json = object("{'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}");
+        JSONObject json = object("{'type':'exponential','stops':[[0,'blue'],[6,'red'],[12, 'lime']]}");
         MBFunction function = new MBFunction(json);
 
         assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
@@ -269,7 +267,7 @@ public class MBFunctionTest {
         
         EnvFunction.setGlobalValue("wms_scale_denominator", "69885282.993862");
 
-        JSONObject json = object("{'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}");
+        JSONObject json = object("{'type':'exponential', 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}");
         
         MBFunction function = new MBFunction(json);
         assertTrue("Is a zoom function", EnumSet.of(MBFunction.FunctionCategory.ZOOM).equals(function.category()));
@@ -331,7 +329,7 @@ public class MBFunctionTest {
         verifyEnvironmentZoomLevel(9);
 
         // Create a Mapbox Function
-        String jsonStr = "{'base': 1.9, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
+        String jsonStr = "{'type':'exponential', 'base': 1.9, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
         JSONObject json = object(jsonStr);        
         MBFunction function = new MBFunction(json);
         
@@ -380,7 +378,7 @@ public class MBFunctionTest {
         verifyEnvironmentZoomLevel(9);
 
         // Create a Mapbox Function
-        String jsonStr = "{'base': 0.1, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
+        String jsonStr = "{'type':'exponential', 'base': 0.1, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
         JSONObject json = object(jsonStr);        
         MBFunction function = new MBFunction(json);
         
@@ -426,7 +424,7 @@ public class MBFunctionTest {
         verifyEnvironmentZoomLevel(9);
 
         // Create a Mapbox Function
-        String jsonStr = "{'base': 1.0, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
+        String jsonStr = "{'type':'exponential', 'base': 1.0, 'stops':[[0,'blue'],[6,'red'],[12, 'lime']]}";
         JSONObject json = object(jsonStr);        
         MBFunction function = new MBFunction(json);
         
@@ -572,7 +570,7 @@ public class MBFunctionTest {
         verifyEnvironmentZoomLevel(9);
 
         // -------- Test interpolation for base > 1
-        String jsonStr = "{'base': 1.9, 'stops':[[0,12],[6,24],[12,48]]}";
+        String jsonStr = "{'type':'exponential', 'base': 1.9, 'stops':[[0,12],[6,24],[12,48]]}";
         MBFunction function = new MBFunction(object(jsonStr));
         
         // Assert it is an exponential function with the correct base
@@ -587,7 +585,7 @@ public class MBFunctionTest {
         assertTrue("Interpolated value should be below midpoint (for base > 1)", result.doubleValue() < 36);
         
         // -------- Test interpolation for base < 1
-        jsonStr = "{'base': 0.1, 'stops':[[0,12],[6,24],[12,48]]}";
+        jsonStr = "{'type':'exponential', 'base': 0.1, 'stops':[[0,12],[6,24],[12,48]]}";
         function = new MBFunction(object(jsonStr));
         
         // Assert it is an exponential function with the correct base
@@ -602,7 +600,7 @@ public class MBFunctionTest {
         assertTrue("Interpolated value should be above midpoint (for base < 1)", result.doubleValue() > 36);
         
         // -------- Test interpolation for base = 1        
-        jsonStr = "{'base': 1.0, 'stops':[[0,12],[6,24],[12,48]]}";
+        jsonStr = "{'type':'exponential', 'base': 1.0, 'stops':[[0,12],[6,24],[12,48]]}";
         function = new MBFunction(object(jsonStr));
         
         // Assert it is an exponential function with the correct base
@@ -631,7 +629,7 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
         // -------- Test interpolation for base > 1
-        String jsonStr = "{'base': 1.9, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
+        String jsonStr = "{'type':'exponential', 'base': 1.9, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
         MBFunction function = new MBFunction(object(jsonStr));
         
         // Assert it is an exponential function with the correct base
@@ -646,7 +644,7 @@ public class MBFunctionTest {
         assertTrue("Interpolated value should be below midpoint (for base > 1)", result.doubleValue() < 36);
         
         // -------- Test interpolation for base < 1
-        jsonStr = "{'base': 0.1, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
+        jsonStr = "{'type':'exponential', 'base': 0.1, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
         function = new MBFunction(object(jsonStr));
         
         // Assert it is an exponential function with the correct base
@@ -661,7 +659,7 @@ public class MBFunctionTest {
         assertTrue("Interpolated value should be above midpoint (for base < 1)", result.doubleValue() > 36);
         
         // -------- Test interpolation for base = 1        
-        jsonStr = "{'base': 1.0, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
+        jsonStr = "{'type':'exponential', 'base': 1.0, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]]}";
         function = new MBFunction(object(jsonStr));
         
         // Assert it is an exponential function with the correct base
@@ -809,7 +807,8 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|true|POINT(0,0)");
         Boolean output = outputExpression.evaluate(feature, Boolean.class);
         assertTrue(output);        
-    }        
+    }    
+    
     @Test
     public void stringCategoricalFunctionTest() throws Exception {
         String jsonStr = "{'property': 'roadtype', 'type': 'categorical', 'default': 'defaultStr', 'stops': [['trail', 'string1'], ['dirtroad', 'string2'], ['road', 'string3'], ['highway', 'string4']]}";
@@ -818,7 +817,9 @@ public class MBFunctionTest {
                 EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"categorical\"", MBFunction.FunctionType.CATEGORICAL,
                 function.getType());
+
         Expression outputExpression = function.function(String.class);
+
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",roadtype,location=4326");
 

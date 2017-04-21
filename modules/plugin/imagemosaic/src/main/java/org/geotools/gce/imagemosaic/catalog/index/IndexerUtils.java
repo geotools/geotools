@@ -721,6 +721,10 @@ public class IndexerUtils {
         if (props.containsKey(Utils.Prop.HETEROGENEOUS_CRS)) {
             setParam(parameters, props, Utils.Prop.HETEROGENEOUS_CRS);
         }
+        
+        if (props.containsKey(Utils.Prop.MOSAIC_CRS)) {
+            setParam(parameters, props, Utils.Prop.MOSAIC_CRS);
+        }
 
         return indexer;
     }

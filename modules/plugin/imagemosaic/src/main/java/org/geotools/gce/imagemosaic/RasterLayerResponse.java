@@ -376,17 +376,13 @@ public class RasterLayerResponse {
                     LOGGER.fine("Submosaic producer being called: " + collector.toString());
                 }
                 final List<MosaicElement> preparedMosaic = collector.createMosaic();
-                size += preparedMosaic.size();
                 if (preparedMosaic.size() > 0
                         && !preparedMosaic.stream().allMatch(p -> p == null)) {
+                    size += preparedMosaic.size();
                     mosaicInputs.addAll(preparedMosaic);
                     if (first == null) {
                         first = collector;
                     }
-                } else {
-                    // we were not able to mosaic these granules, e.g. we have ROIs and the requested area
-                    // fell outside the ROI
-                    size--;
                 }
             }
             LOGGER.fine("Producing the final mosaic, step 2, final mosaicking");

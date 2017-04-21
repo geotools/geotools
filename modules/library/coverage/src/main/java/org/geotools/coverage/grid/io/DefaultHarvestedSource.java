@@ -51,4 +51,9 @@ public class DefaultHarvestedSource implements HarvestedSource {
         return message;
     }
 
+    @Override
+    public String toString() {
+        return "DefaultHarvestedSource [source=" + source + ", success=" + success + ", message="
+                + message + "]";
+    }
 }

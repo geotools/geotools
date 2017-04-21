@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.EnumSet;
+import java.util.Enumeration;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -918,8 +919,8 @@ public class MBFunctionTest {
         assertTrue("Function category is \"property\"",
                 EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
 
-        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL,
-                function.getTypeWithDefault(String.class));
+        assertEquals("The default function type for String returns should be interval",
+                MBFunction.FunctionType.INTERVAL, function.getTypeWithDefault(String.class));
     }
 
     @Test
@@ -929,8 +930,8 @@ public class MBFunctionTest {
         assertTrue("Function category is \"property\"",
                 EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
 
-        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL,
-                function.getTypeWithDefault(Boolean.class));
+        assertEquals("The default function type for Boolean returns should be interval",
+                MBFunction.FunctionType.INTERVAL, function.getTypeWithDefault(Boolean.class));
     }
 
     @Test
@@ -939,6 +940,14 @@ public class MBFunctionTest {
         MBFunction function = new MBFunction(object(jsonStr));
         assertEquals("The default function type for Number returns should be exponential",
                 FunctionType.EXPONENTIAL, function.getTypeWithDefault(Number.class));
+    }
+
+    @Test
+    public void enumDefaultFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'temperature','stops': [[0, 'ENUM_VAL1'],[100, 'ENUM_VAL2'],[1000, 'ENUM_VAL3']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertEquals("The default function type for Enums returns should be interval",
+                FunctionType.INTERVAL, function.getTypeWithDefault(Enumeration.class));
     }
 
     @Test

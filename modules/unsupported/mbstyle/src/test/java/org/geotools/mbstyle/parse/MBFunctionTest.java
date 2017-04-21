@@ -910,8 +910,46 @@ public class MBFunctionTest {
         // result = outputExpression.evaluate(feature, String.class);
         // assertEquals(false, result); // TODO default case.
     }
-
     
+    @Test
+    public void stringDefaultFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'temperature',  'stops': [[0, 'string1'], [100, 'string2'], [200, 'string3'], [300, 'string4']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"",
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL,
+                function.getTypeWithDefault(String.class));
+    }
+
+    @Test
+    public void booleanDefaultFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'temperature',  'stops': [[0, 'true'], [100, 'false'], [200, 'true'], [300, 'false']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"",
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL,
+                function.getTypeWithDefault(Boolean.class));
+    }
+
+    @Test
+    public void numericDefaultFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'temperature','stops': [[0, 2],[100, 4],[1000, 6]]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertEquals("The default function type for Number returns should be exponential",
+                FunctionType.EXPONENTIAL, function.getTypeWithDefault(Number.class));
+    }
+
+    @Test
+    public void colorDefaultFunctionTest() throws Exception {
+        JSONObject json = object("{'property':'temperature','stops':[[0,'blue'],[100,'red']]}");
+        MBFunction function = new MBFunction(json);
+
+        assertEquals("The default function type for Color returns should be exponential",
+                FunctionType.EXPONENTIAL, function.getTypeWithDefault(Color.class));
+    }
+
     public void verifyEnvironmentZoomLevel(int zoomLevel) {
         Number envZoomLevel = ff.function("zoomLevel",
                 ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))

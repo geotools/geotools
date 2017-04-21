@@ -19,6 +19,7 @@ package org.geotools.mbstyle.parse;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Enumeration;
 import java.util.List;
 
 import org.geotools.coverage.processing.operation.Interpolate;
@@ -125,6 +126,42 @@ public class MBFunction {
         default:
             throw new MBFormatException("Function type \"" + type
                     + "\" invalid - expected identity, expontential, interval, categorical");
+        }
+    }
+    
+    /**
+     * <p>
+     * Return the function type, falling back to the default function type for the provided {@link Class} if no function type is explicitly declared.
+     * The parameter is necessary because different output classes will have different default function types.
+     * </p>
+     *
+     * <p>
+     * Examples (For a function with no explicitly declared type):
+     * </p>
+     * 
+     * <pre>
+     * getTypeWithDefault(String.class); // -> "interval" function type
+     * getTypeWithDefault(Number.class); // -> "exponential" function type
+     * </pre>
+     * 
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#types-function">The "type" header under Mapbox Spec: Functions</a>
+     * @param clazz The class for which to return the default function type
+     * @return The function type, falling back to the default when the provided {@link Class} is the return type.
+     */
+    public FunctionType getTypeWithDefault(Class<?> clazz) {
+
+        // If a function type is explicitly declared, return that.
+        FunctionType declaredType = getType();
+
+        if (declaredType != null) {
+            return declaredType;
+        }
+
+        // Otherwise, return the correct default type for the provided class.
+        if (Color.class.isAssignableFrom(clazz) || Number.class.isAssignableFrom(clazz)) {
+            return FunctionType.EXPONENTIAL;
+        } else {
+            return FunctionType.INTERVAL;
         }
     }
 
@@ -323,9 +360,9 @@ public class MBFunction {
      */
     public Expression color(){
         Expression value = input();
-        FunctionType type = getType();
+        FunctionType type = getTypeWithDefault(Color.class);
         
-        if( type == null || type == FunctionType.EXPONENTIAL){
+        if (type == FunctionType.EXPONENTIAL) {
             double base = parse.optional(Double.class, json, "base", 1.0 );
             if( base == 1.0){
                 return colorGenerateInterpolation(value);
@@ -440,9 +477,9 @@ public class MBFunction {
      */
     public Expression numeric() {
         Expression input = input();
-        FunctionType type = getType();
+        FunctionType type = getTypeWithDefault(Number.class);
         
-        if( type == null || type == FunctionType.EXPONENTIAL){
+        if (type == FunctionType.EXPONENTIAL) {
             double base = parse.optional(Double.class, json, "base", 1.0 );
             if( base == 1.0){
                 return numericGenerateInterpolation(input);
@@ -451,7 +488,7 @@ public class MBFunction {
                 return numericGenerateExponential(input, base);
             }
         }
-        if( type == null || type == FunctionType.CATEGORICAL){
+        if (type == FunctionType.CATEGORICAL) {
             return generateRecode(input);
         }
         else if( type == FunctionType.INTERVAL){
@@ -550,12 +587,7 @@ public class MBFunction {
         }
         
         Expression input = input();
-        FunctionType type = getType();
-
-        if (type == null) {
-            // For the other return types (boolean, string, array) the default function type is INTERVAL.
-            type = FunctionType.INTERVAL;
-        }
+        FunctionType type = getTypeWithDefault(clazz);
         
         if( type == null || type == FunctionType.INTERVAL){
             return generateCategorize(input);
@@ -628,10 +660,8 @@ public class MBFunction {
      */
     public Expression enumeration( Class<? extends Enum<?>> enumeration){
         Expression input = input();
-        // this is a plain property category so we can turn it into a function
-        // Assume a EXPOTENTIAL function for now because it is the default for color
-        FunctionType type = getType();
-        if( type == null || type == FunctionType.INTERVAL){
+        FunctionType type = getTypeWithDefault(Enumeration.class);
+        if (type == FunctionType.INTERVAL) {
             return enumGenerateCategorize(input,enumeration);
         }
         else if( type == FunctionType.CATEGORICAL){

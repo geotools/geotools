@@ -810,6 +810,106 @@ public class MBFunctionTest {
         Boolean output = outputExpression.evaluate(feature, Boolean.class);
         assertTrue(output);        
     }        
+    @Test
+    public void stringCategoricalFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'roadtype', 'type': 'categorical', 'default': 'defaultStr', 'stops': [['trail', 'string1'], ['dirtroad', 'string2'], ['road', 'string3'], ['highway', 'string4']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"",
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"categorical\"", MBFunction.FunctionType.CATEGORICAL,
+                function.getType());
+        Expression outputExpression = function.function(String.class);
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",roadtype,location=4326");
+
+        // Test for each category
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|trail|POINT(0,0)");
+        String result = outputExpression.evaluate(feature, String.class);
+        assertEquals("string1", result);
+
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|dirtroad|POINT(0,0)");
+        result = outputExpression.evaluate(feature, String.class);
+        assertEquals("string2", result);
+
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|road|POINT(0,0)");
+        result = outputExpression.evaluate(feature, String.class);
+        assertEquals("string3", result);
+
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|highway|POINT(0,0)");
+        result = outputExpression.evaluate(feature, String.class);
+        assertEquals("string4", result);
+
+        // feature = DataUtilities.createFeature(SAMPLE, "measure1=A|other|POINT(0,0)");
+        // result = outputExpression.evaluate(feature, String.class);
+        // assertEquals("defaultStr", result); // TODO default case.
+    }
+    
+    @Test
+    public void booleanIntervalFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'temperature','type': 'interval','stops': [[-1000, 'true'],[0, 'false'],[1000, 'true']]}";
+        MBFunction function = new MBFunction(object(jsonStr));        
+        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());                
+
+        Expression outputExpression = function.function(Boolean.class);
+        
+        // Test each interval
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature,location=4326");
+        
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-500|POINT(0,0)");
+        Boolean result = outputExpression.evaluate(feature, Boolean.class);        
+        assertEquals(true, result);
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|0|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);        
+        assertEquals(false, result);     
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|500|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);        
+        assertEquals(false, result);    
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|1000|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);        
+        assertEquals(true, result);  
+        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|9999|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);        
+        assertEquals(true, result);  
+    }
+    
+    @Test
+    public void booleanCategoricalFunctionTest() throws Exception {
+        String jsonStr = "{'property': 'roadtype', 'type': 'categorical', 'default': 'false', 'stops': [['trail', 'true'], ['dirtroad', 'false'], ['road', 'true']]}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        assertTrue("Function category is \"property\"",
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"categorical\"", MBFunction.FunctionType.CATEGORICAL,
+                function.getType());
+
+        Expression outputExpression = function.function(Boolean.class);
+
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",roadtype,location=4326");
+
+        // Test for each category
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|trail|POINT(0,0)");
+        Boolean result = outputExpression.evaluate(feature, Boolean.class);
+        assertEquals(true, result);
+
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|dirtroad|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);
+        assertEquals(false, result);
+
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|road|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);
+        assertEquals(true, result);
+
+        // feature = DataUtilities.createFeature(SAMPLE,Boolean"measure1=A|other|POINT(0,0)");
+        // result = outputExpression.evaluate(feature, String.class);
+        // assertEquals(false, result); // TODO default case.
+    }
+
     
     public void verifyEnvironmentZoomLevel(int zoomLevel) {
         Number envZoomLevel = ff.function("zoomLevel",

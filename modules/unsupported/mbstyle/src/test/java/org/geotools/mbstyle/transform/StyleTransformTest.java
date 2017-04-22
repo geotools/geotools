@@ -22,11 +22,11 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.parse.MBObjectZoomLevels;
 import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
@@ -48,7 +48,19 @@ import static org.junit.Assert.*;
  */
 public class StyleTransformTest {
 
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();  
+    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
+    Map<String, JSONObject> testLayersById = new HashMap<>();
+
+    @Before
+    public void setUp() throws IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
+        JSONArray layers = (JSONArray) jsonObject.get("layers");
+        for (Object o : layers) {
+            JSONObject layer = (JSONObject) o;
+            testLayersById.put((String) layer.get("id"), layer);
+        }
+    }
 
     /**
      * Test parsing a Mapbox fill layer
@@ -394,39 +406,6 @@ public class StyleTransformTest {
         assertEquals(Integer.valueOf(1), psym.getFill().getOpacity().evaluate(null, Integer.class));
         
         assertNull(psym.getStroke());
-    }
-
-    @Test
-    public void testGetZoomLevels() throws IOException, ParseException {
-        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
-
-        MBStyle mbStyle = new MBStyle(jsonObject);
-        List<Long> zoomLevels = MBObjectZoomLevels.getZoomLevels(mbStyle);
-
-        assertEquals(6, zoomLevels.size());
-
-    }
-
-    @Test
-    public void testStylesForZoomLevels() throws IOException, ParseException {
-        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
-
-        MBStyle mbStyle = new MBStyle(jsonObject);
-        List<Long> zoomLevels = MBObjectZoomLevels.getZoomLevels(mbStyle);
-
-        List<MBStyle> zoomStyles = MBObjectZoomLevels.getStylesForZoomLevels(zoomLevels, jsonObject);
-
-        assertEquals(6, zoomStyles.size());
-
-        // Zoom-and-property functions Style has been "smuched" into normal properies / function calls
-        MBStyle s = zoomStyles.get(0);
-        MBLayer layer = s.layers().get(5);
-        JSONObject circleRadius = (JSONObject) layer.getPaint().get("circle-radius");
-        JSONArray stopsArray = (JSONArray) circleRadius.get("stops");
-
-        assertEquals("rating", circleRadius.get("property"));
-        assertEquals(2, stopsArray.size());
-        assertFalse(stopsArray.get(0) instanceof JSONObject);
     }
     
     /**

@@ -16,18 +16,18 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.source.MBSource;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MapBox Style implemented as wrapper around parsed JSON file.
@@ -58,7 +58,7 @@ public class MBStyle {
      * All methods act as accessors on this JSON document, no other state is maintained. This
      * allows modifications to be made cleaning with out chance of side-effect. 
      */
-    JSONObject json;
+    public JSONObject json;
     
     /** Helper class used to perform JSON travewrse json and
      * perform Expression and Filter conversions. */

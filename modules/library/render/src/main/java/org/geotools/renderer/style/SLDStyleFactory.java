@@ -27,12 +27,15 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -785,7 +788,7 @@ public class SLDStyleFactory {
 
 		// get the sequence of fonts to be used and set the first one available
 		List<Font> fonts = symbolizer.fonts();
-		java.awt.Font[] javaFonts = getFonts(feature, fonts);
+		java.awt.Font[] javaFonts = getFonts(feature, fonts, symbolizer);
 	        ts2d.setFonts(javaFonts);
 
 		// compute label position, anchor, rotation and displacement
@@ -910,10 +913,14 @@ public class SLDStyleFactory {
      * @param fonts
      *            An array of fonts dependent of the feature, the first that is
      *            found on the current machine is returned
+     * @param vendorOptions 
      *
      * @return The first of the specified fonts found on this machine (Serif 10 if none found)
      */
-    private java.awt.Font[] getFonts(Object feature, List<Font> fonts) {
+    private java.awt.Font[] getFonts(Object feature, List<Font> fonts, TextSymbolizer symbolizer) {
+        
+        // add kerning here!
+        
         List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
         if (fonts != null) {
@@ -923,7 +930,7 @@ public class SLDStyleFactory {
                     java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
 
                     if (javaFont != null) {
-                        java.awt.Font font = styleFont(feature, curr, javaFont);
+                        java.awt.Font font = styleFont(feature, curr, javaFont, symbolizer);
                         result.add(font);
                     }
                 }
@@ -933,16 +940,22 @@ public class SLDStyleFactory {
         if (result.isEmpty()) {
             java.awt.Font font = new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
             if (fonts != null && !fonts.isEmpty()) {
-                font = styleFont(feature, fonts.get(0), font);
+                font = styleFont(feature, fonts.get(0), font, symbolizer);
+            } else {
+                font = applyKerning(font);
             }
             result.add(font);
         }
 
         return result.toArray(new java.awt.Font[result.size()]);
     }
+    
+    private java.awt.Font applyKerning(java.awt.Font font) {
+        return font.deriveFont(Collections.singletonMap(TextAttribute.KERNING, TextAttribute.KERNING_ON));
+    }
 
     private java.awt.Font styleFont(Object feature, Font curr,
-        java.awt.Font javaFont) {
+        java.awt.Font javaFont, TextSymbolizer symbolizer) {
         String reqStyle = evalToString(curr.getFontStyle(), feature, null);
 
         int styleCode;
@@ -960,8 +973,17 @@ public class SLDStyleFactory {
         }
 
         float size = evalToFloat(curr.getSize(), feature, 10);
-
-        return javaFont.deriveFont(styleCode, size);
+ 
+        // apply basic styling
+        javaFont = javaFont.deriveFont(styleCode, size);
+        
+        // check vendor options
+        boolean kerning = voParser.getBooleanOption(symbolizer, TextSymbolizer.KERNING, 
+                TextSymbolizer.DEFAULT_KERNING);
+        if(kerning) {
+            javaFont = applyKerning(javaFont);
+        }
+        return javaFont;
     }
 
 	void setScaleRange(Style style, Range scaleRange) {

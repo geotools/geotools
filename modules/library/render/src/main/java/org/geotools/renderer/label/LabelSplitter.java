@@ -251,7 +251,7 @@ class LabelSplitter {
                         Font.LAYOUT_RIGHT_TO_LEFT);
             }
         }
-        return font.createGlyphVector(graphics.getFontRenderContext(), chars);
+        return font.layoutGlyphVector(graphics.getFontRenderContext(), chars, 0, chars.length, 0);
     }
 
     List<FontRange> buildFontRanges(String text, Font[] fonts) {

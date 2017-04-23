@@ -310,6 +310,16 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     boolean DEFAULT_PARTIALS = false;
     
     /**
+     * Option to enable automatic adjustment of the space between characters
+     */
+    String KERNING = "kerning";
+
+    /**
+     * Default behaviour is to perform kerning
+     */
+    boolean DEFAULT_KERNING = true;
+    
+    /**
      * Returns the expression that will be evaluated to determine what text is
      * displayed.
      *

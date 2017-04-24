@@ -16,4 +16,5 @@ jdk:
 addons:
   apt:
     packages:
+      - libnetcdf6
       - python-sphinx

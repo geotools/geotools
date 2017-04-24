@@ -642,8 +642,8 @@ public class MBObjectParser {
             throw new MBFormatException("\"" + tag + "\" percentage from boolean " + obj
                     + " not supported, expected value between 0 and 1");
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException(
-                    "\"" + tag + "\"precentage from Function not yet supported");
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.numeric();
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException("\"" + tag
                     + "\" percentage from JSONArray not supported, expected value between 0 and 1");
@@ -671,8 +671,8 @@ public class MBObjectParser {
             throw new MBFormatException(
                     context + " number from Boolean " + bool + " not supported");
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException(
-                    context + " number from Function not yet supported");
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.numeric();
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException(context + " number from JSONArray not supported");
         } else {
@@ -720,7 +720,7 @@ public class MBObjectParser {
      * @return Expression based on provided json, or null
      * @throws MBFormatException
      */
-    public  Expression number(JSONObject json, String tag) throws MBFormatException {
+    public Expression number(JSONObject json, String tag) throws MBFormatException {
         return number(json, tag, null);
     }
 
@@ -759,8 +759,8 @@ public class MBObjectParser {
             Boolean bool = (Boolean) obj;
             return ff.literal(bool.toString());
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException(
-                    context + " string from Function not yet supported");
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.function(String.class);
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException(context + " string from JSONArray not supported");
         } else {
@@ -919,8 +919,8 @@ public class MBObjectParser {
             Boolean b = (Boolean) obj;
             return ff.literal(b);
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException(
-                    "\"" + tag + "\": boolean from Function not yet supported");
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.function(Boolean.class);
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException("\"" + tag + "\": boolean from JSONArray not supported");
         } else {

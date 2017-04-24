@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import org.hamcrest.Matchers;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.*;
 
@@ -62,7 +63,12 @@ public class FunctionParseTest {
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "line-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for color returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Color.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.ZOOM), fn.category());
         assertEquals(1, fn.getBase().intValue());
         assertNull(fn.getProperty());
@@ -79,7 +85,12 @@ public class FunctionParseTest {
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "line-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for color returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Color.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.ZOOM), fn.category());
         assertEquals(1.75, fn.getBase().doubleValue(), .00001);
         assertNull(fn.getProperty());
@@ -96,7 +107,12 @@ public class FunctionParseTest {
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-radius");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for number returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Number.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.ZOOM), fn.category());
         assertEquals(1.5, fn.getBase().doubleValue(), .00001);
         assertNull(fn.getProperty());
@@ -115,7 +131,12 @@ public class FunctionParseTest {
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-radius");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for number returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Number.class));
+        
         assertEquals(
                 EnumSet.of(MBFunction.FunctionCategory.PROPERTY, MBFunction.FunctionCategory.ZOOM),
                 fn.category());
@@ -136,7 +157,12 @@ public class FunctionParseTest {
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for color returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Color.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.PROPERTY), fn.category());
         assertEquals("temperature", fn.getProperty());
         assertNotNull(fn.getStops());

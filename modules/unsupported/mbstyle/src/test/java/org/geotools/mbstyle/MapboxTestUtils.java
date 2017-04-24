@@ -71,4 +71,16 @@ public class MapboxTestUtils {
         return image;
     }
 
+    /**
+     * Parse JSONObject using ' rather than " for faster test case writing.
+     * @param json
+     * @return parsed JSONArray
+     * @throws ParseException
+     */
+    public static JSONObject object(String json) throws ParseException{
+        JSONParser parser = new JSONParser();
+        String text = json.replace('\'', '\"');
+        Object object = parser.parse(text);
+        return (JSONObject) object;
+    }
 }

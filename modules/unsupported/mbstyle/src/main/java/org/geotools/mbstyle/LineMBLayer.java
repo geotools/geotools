@@ -183,7 +183,8 @@ public class LineMBLayer extends MBLayer {
         } else if (obj instanceof Boolean) {
             throw new UnsupportedOperationException("\"line-join\": Boolean not supported");
         } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException("\"line-join\": Function not yet supported");
+            MBFunction function = new MBFunction(parse, (JSONObject) obj);
+            return function.enumeration(LineJoin.class);
         } else if (obj instanceof JSONArray) {
             throw new MBFormatException("\"line-join\": JSONArray not supported");
         } else {

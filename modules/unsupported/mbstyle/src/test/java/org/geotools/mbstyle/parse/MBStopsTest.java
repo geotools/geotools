@@ -90,8 +90,8 @@ public class MBStopsTest {
             // the created FetureTypeStyle as default values set for MIN/MAX Scale Denominator
             // Edit these values to correspond to the stop level of the layer.
             Rule rule = fts.rules().get(0);
-            rule.setMinScaleDenominator(MBObjectStops.getMinScaleDenominator(rangeForStopLevel[0]));
-            rule.setMaxScaleDenominator(MBObjectStops.getMaxScaleDenominator(rangeForStopLevel[1]));
+            rule.setMinScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]));
+            rule.setMaxScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]));
             ftsList.add(fts);
         }
     }

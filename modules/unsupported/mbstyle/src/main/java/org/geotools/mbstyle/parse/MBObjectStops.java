@@ -149,14 +149,19 @@ public class MBObjectStops {
             }
         }
         return rangeForStopLevel;
-    }
+    }    
 
-    public static Double getMinScaleDenominator(Long minScale) {
-        return 0.0;
-    }
-
-    public static Double getMaxScaleDenominator(Long maxScale) {
-        return 0.0;
+    /**
+     * Take a web mercator zoom level, and return the equivalent scale denominator (at the equator).
+     * 
+     * Converting to a scale denominator at the equator is consistent with the conversion elsewhere in GeoTools, e.g., in the GeoTools YSLD
+     * ZoomContextFinder.
+     * 
+     * @param zoomLevel The zoom level
+     * @return The equivalent scale denominator (at the equator)
+     */
+    public static Double zoomLevelToScaleDenominator(Long zoomLevel) {
+        return 559_082_263.9508929 / Math.pow(2, zoomLevel);
     }
 
     public static long getStop(MBLayer layer) {

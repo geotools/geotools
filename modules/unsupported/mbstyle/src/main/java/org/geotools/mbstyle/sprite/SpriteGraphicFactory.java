@@ -34,6 +34,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.renderer.style.CachingExternalGraphicFactory;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.util.SoftValueHashMap;
@@ -87,7 +88,7 @@ import com.google.common.collect.ImmutableMap;
  * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
  * 
  */
-public class SpriteGraphicFactory implements ExternalGraphicFactory {
+public class SpriteGraphicFactory implements CachingExternalGraphicFactory {
 
     /**
      * {@link ExternalGraphic} instances with this format will be handled by the {@link SpriteGraphicFactory}.
@@ -435,7 +436,8 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory {
     /**
      * Images are cached by this factory. This method can be used to drop the cache.
      */
-    public static void resetCaches() {
+    @Override
+    public void clearCache() {
         imageCache.clear();
         indexCache.clear();
     }

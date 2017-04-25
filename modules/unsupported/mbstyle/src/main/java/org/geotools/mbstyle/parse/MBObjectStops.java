@@ -141,6 +141,10 @@ public class MBObjectStops {
         return ranges;
     }
 
+    public static Boolean hasStops(JSONObject jsonObject) {
+        return traverse(jsonObject);
+    }
+
     public static long[] getRangeForStop(Long stop, List<long[]> ranges) {
         long[] rangeForStopLevel = {0,0};
         for (int i = 0; i < ranges.size(); i++) {
@@ -168,13 +172,30 @@ public class MBObjectStops {
         return stop(layer);
     }
 
+    static Boolean traverse(JSONObject jsonObject) {
+        Boolean hasStops = false;
+
+        Set<?> keySet = jsonObject.keySet();
+        Iterator<?> keys = keySet.iterator();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            if (jsonObject.get(key) instanceof JSONObject) {
+                JSONObject child = (JSONObject) jsonObject.get(key);
+                if (child.containsKey("stops")) {
+                    hasStops = true;
+                }
+            }
+        }
+        return hasStops;
+    }
+
     static long stop (MBLayer layer) {
         long s = 0;
         if (layer.getPaint() != null) {
-            s = traverse(layer.getPaint());
+            s = traverse(layer.getPaint(), s);
         }
         if (layer.getLayout() != null) {
-            s = traverse(layer.getLayout());
+            s = traverse(layer.getLayout(), s);
         }
         return s;
     }
@@ -222,8 +243,7 @@ public class MBObjectStops {
         return mbStyle;
     }
 
-    static long traverse(JSONObject jsonObject) {
-        long layerStop = 0;
+    static long traverse(JSONObject jsonObject, long layerStop) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         while (keys.hasNext()) {

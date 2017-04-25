@@ -125,7 +125,7 @@ public class SVGGraphicFactoryTest extends TestCase {
     }
     
     /**
-     * Tests that a fetched graphic is added to the cache, and that the {@link CachingExternalGraphicFactory#clearCache()} method correctly clears the
+     * Tests that a fetched graphic is added to the cache, and that the {@link GraphicCache#clearCache()} method correctly clears the
      * cache.
      */
     public void testClearCache() throws Exception {
@@ -140,7 +140,7 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertTrue(svg.glyphCache.containsKey(evaluatedUrl));
         assertNotNull(svg.glyphCache.get(evaluatedUrl));
 
-        ((CachingExternalGraphicFactory) svg).clearCache();
+        ((GraphicCache) svg).clearCache();
         assertTrue(svg.glyphCache.isEmpty());
     }
 }

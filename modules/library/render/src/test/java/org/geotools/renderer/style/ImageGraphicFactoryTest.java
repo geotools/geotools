@@ -78,7 +78,7 @@ public class ImageGraphicFactoryTest extends TestCase {
     }
     
     /**
-     * Tests that a fetched icon is added to the cache, and that the {@link CachingExternalGraphicFactory#clearCache()} method correctly clears the
+     * Tests that a fetched icon is added to the cache, and that the {@link GraphicCache#clearCache()} method correctly clears the
      * cache.
      */
     public void testClearCache() {
@@ -88,7 +88,7 @@ public class ImageGraphicFactoryTest extends TestCase {
         assertTrue(image.imageCache.containsKey(u));
         assertNotNull(image.imageCache.get(u));
 
-        ((CachingExternalGraphicFactory) image).clearCache();
+        ((GraphicCache) image).clearCache();
 
         assertTrue(image.imageCache.isEmpty());
     }

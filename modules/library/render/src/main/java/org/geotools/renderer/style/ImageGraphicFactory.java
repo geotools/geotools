@@ -48,7 +48,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class ImageGraphicFactory implements CachingExternalGraphicFactory {
+public class ImageGraphicFactory implements ExternalGraphicFactory,GraphicCache {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER = Logging.getLogger(ImageGraphicFactory.class);

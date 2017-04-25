@@ -81,7 +81,7 @@ import org.xml.sax.SAXException;
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/svg/src/main/java/org/geotools
  *         /renderer/style/SVGGraphicFactory.java $
  */
-public class SVGGraphicFactory implements Factory, CachingExternalGraphicFactory {
+public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, GraphicCache {
 
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("param\\((.+)\\).*");
 

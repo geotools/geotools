@@ -472,9 +472,12 @@ public class MBObjectParser {
         }
         if (json.containsKey(tag) && type.isInstance(json.get(tag))) {
             return type.cast(json.get(tag));
+        } else if (json.containsKey(tag) && !type.isInstance(json.get(tag))) {
+            return fallback;
         } else {
-            throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
+                throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
         }
+
     }
     
     /**

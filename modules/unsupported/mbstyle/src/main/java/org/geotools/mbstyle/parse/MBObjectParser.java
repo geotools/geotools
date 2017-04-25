@@ -467,17 +467,29 @@ public class MBObjectParser {
         else if (tag == null) {
             throw new IllegalArgumentException("tag required for json access");
         }
-        else if (!json.containsKey(tag) || json.get(tag)==null){
+        else if (!json.containsKey(tag)){
             return fallback;
         }
-        if (json.containsKey(tag) && type.isInstance(json.get(tag))) {
-            return type.cast(json.get(tag));
-        } else if (json.containsKey(tag) && !type.isInstance(json.get(tag))) {
-            return fallback;
-        } else {
-                throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" "+type.getSimpleName()+" field");
+        else {
+            Object value = json.get(tag);
+            if (!json.containsKey(tag) || json.get(tag)==null){
+                return fallback;
+            }
+            else if( Number.class.isAssignableFrom(type)){
+                T number = Converters.convert(value, type);
+                if( number == null){
+                    throw new MBFormatException(context.getSimpleName() + " optional \"" + tag + "\" expects "+type.getSimpleName()+" value");
+                }
+                else {
+                    return type.cast(number);
+                }
+            }
+            else if (type.isInstance(value)) {
+                return type.cast(value);
+            } else {
+                throw new MBFormatException(context.getSimpleName() + " optional \"" + tag + "\" expects "+type.getSimpleName()+" value");
+            }
         }
-
     }
     
     /**

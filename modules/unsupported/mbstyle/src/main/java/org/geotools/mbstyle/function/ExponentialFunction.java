@@ -98,6 +98,11 @@ public class ExponentialFunction extends FunctionImpl {
         
         Double inputValue = input.evaluate(object, Double.class);
         Double baseValue = base.evaluate(object, Double.class);
+        
+        if (inputValue == null) {
+            return null;
+        }
+        
         if( stops.size()==1){
             // single stop
             Stop single = stops.get(0);

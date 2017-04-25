@@ -91,6 +91,22 @@ public class MBFunctionTest {
         Expression text= function.color();
         assertEquals("text",Color.RED, text.evaluate(feature1, Color.class));
         assertEquals("text",Color.BLUE, text.evaluate(feature2, Color.class));
+        
+  
+    }
+
+    /**
+     * Assert that the color identity function correctly returns the default value when the property is not a valid color.
+     */
+    @Test
+    public void colorIdentityDefaultValueTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326,color:java.awt.Color,text:String:");
+        MBFunction function = new MBFunction(
+                object("{'property':'color','type':'identity', 'default':'#FFFFFF'}"));
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE,
+                "measure1=A|50.0|POINT(0,0)|NOT_A_VALID_COLOR|NOT_A_VALID_COLOR");
+        assertEquals("Default", Color.WHITE, function.color().evaluate(feature, Color.class));
     }
     
     @Test
@@ -130,6 +146,23 @@ public class MBFunctionTest {
 
         Color result = fn.evaluate(feature, Color.class);
         assertEquals(new Color(128, 0, 128), result);
+    }
+    
+    /**
+     * Assert that the an exponential color function correctly falls back to the default value if the input property is not numeric.
+     */
+    @Test
+    public void propertyColorStopsDefaultValue() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|NOT_A_VALID_NUMBER|POINT(0,0)");
+
+        JSONObject json = object("{'property':'temperature','type':'exponential','stops':[[0,'blue'],[100,'red']], 'default':'#000000'}");
+        MBFunction function = new MBFunction(json);
+        
+        Color result = function.color().evaluate(feature, Color.class);
+        assertEquals(new Color(0, 0, 0), result);
+
     }
 
     @Test
@@ -461,15 +494,15 @@ public class MBFunctionTest {
         java.util.function.Function<Long, SimpleFeature> features = (value)->
             DataUtilities.createFeature(SAMPLE, "measure1=A|"+value+"|POINT(0,0)");
         
-        String jsonStr = "{'property': 'numbervalue', 'type': 'interval', 'default': 1, 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, '#FFFFFF']]}";
+        String jsonStr = "{'property': 'numbervalue', 'type': 'interval', 'default': '#0F0F0F', 'stops': [[-1000, '#000000'], [-30, '#00FF00'], [0, '#0000FF'], [100, '#FFFFFF']]}";
         MBFunction function = new MBFunction(object(jsonStr));
         assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());        
         
         Expression outputExpression = function.color();
         
-        // Before the first stop is undefined
-        assertThat(outputExpression, evaluatesTo(features.apply(-10000L), Color.class, any(Color.class)));
+        // Before the first stop is undefined (return default value)
+        assertThat(outputExpression, evaluatesTo(features.apply(-10000L), Color.class, equalTo(new Color(0x0F0F0F))));
         
         // Test each interval
         assertThat(outputExpression, evaluatesTo(features.apply(-900L), Color.class, equalTo(Color.BLACK)));
@@ -676,6 +709,24 @@ public class MBFunctionTest {
     }
     
     /**
+     * Assert that the numeric exponential function correctly returns the default value when the property input is not a valid number.
+     */
+    @Test
+    public void numericExponentialDefaultValueTest() throws Exception {
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326");
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|NOT_A_VALID_NUMBER|POINT(0,0)");
+
+
+        String jsonStr = "{'type':'exponential', 'base': 1.9, 'property':'temperature', 'stops':[[0,12],[30,24],[70,48]], 'default':42}";
+        MBFunction function = new MBFunction(object(jsonStr));
+        
+        Expression fn = function.numeric();
+        Number result = fn.evaluate(feature, Number.class); 
+        assertEquals(42, result.intValue());
+    }
+    
+    /**
      * Test an MBFunction (type = Identity) that returns a numeric value for a given property.
      */
     @Test
@@ -685,7 +736,7 @@ public class MBFunctionTest {
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|50.0|POINT(0,0)");
 
         // Verify the function was created correctly
-        String jsonStr = "{'property':'temperature', 'type':'identity'}";
+        String jsonStr = "{'property':'temperature', 'type':'identity', 'default':-1}";
         MBFunction function = new MBFunction(object(jsonStr));
         assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"Identity\"", MBFunction.FunctionType.IDENTITY, function.getType());
@@ -694,9 +745,14 @@ public class MBFunctionTest {
         Expression outputExpression = function.numeric();
         Number result = outputExpression.evaluate(feature, Number.class);
         
-        assertEquals("Numeric identity function output is == input property value", 50.0, result.doubleValue(), .000001);        
+        assertEquals("Numeric identity function output is == input property value", 50.0, result.doubleValue(), .000001);
+        
+        // Check default (for a feature missing the property)
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A||POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);
+        assertEquals(-1, result.intValue());
     }
-    
+
     /**
      * Test an {@link MBFunction} (type = categorical) that returns a numeric value.
      */
@@ -704,18 +760,25 @@ public class MBFunctionTest {
     public void numericCategoricalFunctionTest() throws Exception {
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",roadtype,location=4326");
-        SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|dirtroad|POINT(0,0)");
-        
-        String jsonStr = "{'property': 'roadtype', 'type': 'categorical', 'default': 1, 'stops': [['trail', 1], ['dirtroad', 2], ['road', 3], ['highway', 4]]}";
+
+        String jsonStr = "{'property': 'roadtype', 'type': 'categorical', 'default': -1, 'stops': [['trail', 1], ['dirtroad', 2], ['road', 3], ['highway', 4]]}";
         MBFunction function = new MBFunction(object(jsonStr));
-        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
-        assertEquals("Function type is \"categorical\"", MBFunction.FunctionType.CATEGORICAL, function.getType());        
-        
+        assertTrue("Function category is \"property\"",
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"categorical\"", MBFunction.FunctionType.CATEGORICAL,
+                function.getType());
 
         Expression outputExpression = function.numeric();
+
+        SimpleFeature feature = DataUtilities.createFeature(SAMPLE,
+                "measure1=A|dirtroad|POINT(0,0)");
         Number result = outputExpression.evaluate(feature, Number.class);
-        
-        assertEquals(2, result.intValue());     
+        assertEquals(2, result.intValue());
+
+        // Check default
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|other|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Number.class);
+        assertEquals(-1, result.intValue());
     }
     
     /**
@@ -727,7 +790,7 @@ public class MBFunctionTest {
     public void numericIntervalFunctionTest() throws Exception {
 
         
-        String jsonStr = "{'property': 'temperature','type': 'interval','stops': [[0, 2],[100, 4],[1000, 6]]}";
+        String jsonStr = "{'property': 'temperature', 'default':0, 'type': 'interval','stops': [[0, 2],[100, 4],[1000, 6]]}";
         MBFunction function = new MBFunction(object(jsonStr));
         assertThat(function, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
         assertThat(function, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
@@ -740,8 +803,8 @@ public class MBFunctionTest {
         java.util.function.Function<Long, SimpleFeature> features = (temp)->
             DataUtilities.createFeature(SAMPLE, "measure1=A|"+temp+"|POINT(0,0)");
         
-        // Bellow the first stop is undefined but at least it shouldn't throw an exception
-        assertThat(outputExpression, evaluatesTo(features.apply(-1L), Number.class, any(Number.class)));
+        // Bellow the first stop is undefined (return default value)
+        assertThat(outputExpression, evaluatesTo(features.apply(-1L), Number.class, equalInt(0)));
         
         assertThat(outputExpression, evaluatesTo(features.apply(0L), Number.class, equalInt(2)));
         assertThat(outputExpression, evaluatesTo(features.apply(20L), Number.class, equalInt(2)));
@@ -758,7 +821,7 @@ public class MBFunctionTest {
      */
     @Test
     public void stringIdentityFunctionTest() throws Exception {
-        String jsonStr = "{'property': 'textproperty','type': 'identity'}";
+        String jsonStr = "{'property': 'textproperty','type': 'identity', 'default':'defaultText'}";
         MBFunction function = new MBFunction(object(jsonStr));
         assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY, function.getType());                      
@@ -767,9 +830,17 @@ public class MBFunctionTest {
         
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",textproperty,location=4326");
+
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|textvalue|POINT(0,0)");
         String output = outputExpression.evaluate(feature, String.class);
-        assertEquals("textvalue", output);        
+        assertEquals("textvalue", output);     
+
+        // Check default (for a feature that's missing the function's property)
+        SAMPLE = DataUtilities.createType("SAMPLE", "id:\"\",location=4326");
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|POINT(0,0)");
+        output = outputExpression.evaluate(feature, String.class);
+        assertEquals("defaultText", output);         
+        
     }
         
     /**
@@ -777,7 +848,7 @@ public class MBFunctionTest {
      */
     @Test
     public void enumIdentityFunctionTest() throws Exception {
-        String jsonStr = "{'property': 'linecap','type': 'identity'}";
+        String jsonStr = "{'property': 'linecap','type': 'identity', 'default':'round'}";
         MBFunction function = new MBFunction(object(jsonStr));
         assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY, function.getType());                      
@@ -786,29 +857,45 @@ public class MBFunctionTest {
         
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",linecap,location=4326");
+        
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|square|POINT(0,0)");
         String output = outputExpression.evaluate(feature, String.class);
-        assertEquals("square", output);        
+        assertEquals("square", output);    
+        
+        // Check default (for a feature that's missing the function's property)
+        SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",location=4326");
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|POINT(0,0)");
+        output = outputExpression.evaluate(feature, String.class);
+        assertEquals("round", output);
     }
     
     /**
      * Test a {@link MBFunction} (type = identity) that returns a boolean value.
-     */    
+     */
     @Test
     public void booleanIdentityFunctionTest() throws Exception {
-        String jsonStr = "{'property': 'propName','type': 'identity'}";
+        String jsonStr = "{'property': 'propName','type': 'identity', 'default':'false'}";
         MBFunction function = new MBFunction(object(jsonStr));
-        assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
-        assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY, function.getType());                      
-        
+        assertTrue("Function category is \"property\"",
+                EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
+        assertEquals("Function type is \"identity\"", MBFunction.FunctionType.IDENTITY,
+                function.getType());
+
         Expression outputExpression = function.function(Boolean.class);
-        
+
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
                 "id:\"\",propName,location=4326");
+
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|true|POINT(0,0)");
         Boolean output = outputExpression.evaluate(feature, Boolean.class);
-        assertTrue(output);        
-    }    
+        assertTrue(output);
+
+        // Check default
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A||POINT(0,0)");
+        output = outputExpression.evaluate(feature, Boolean.class);
+        assertFalse(output);
+    }
     
     @Test
     public void stringCategoricalFunctionTest() throws Exception {
@@ -841,14 +928,15 @@ public class MBFunctionTest {
         result = outputExpression.evaluate(feature, String.class);
         assertEquals("string4", result);
 
-        // feature = DataUtilities.createFeature(SAMPLE, "measure1=A|other|POINT(0,0)");
-        // result = outputExpression.evaluate(feature, String.class);
-        // assertEquals("defaultStr", result); // TODO default case.
+        // Check default
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|other|POINT(0,0)");
+        result = outputExpression.evaluate(feature, String.class);
+        assertEquals("defaultStr", result);
     }
     
     @Test
     public void booleanIntervalFunctionTest() throws Exception {
-        String jsonStr = "{'property': 'temperature','type': 'interval','stops': [[-1000, 'true'],[0, 'false'],[1000, 'true']]}";
+        String jsonStr = "{'property': 'temperature', 'default':'false', 'type': 'interval','stops': [[-1000, 'true'],[0, 'false'],[1000, 'true']]}";
         MBFunction function = new MBFunction(object(jsonStr));        
         assertTrue("Function category is \"property\"", EnumSet.of(MBFunction.FunctionCategory.PROPERTY).equals(function.category()));
         assertEquals("Function type is \"interval\"", MBFunction.FunctionType.INTERVAL, function.getType());                
@@ -857,7 +945,7 @@ public class MBFunctionTest {
         
         // Test each interval
         SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
-                "id:\"\",temperature,location=4326");
+                "id:\"\",temperature,location=4326");        
         
         SimpleFeature feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-500|POINT(0,0)");
         Boolean result = outputExpression.evaluate(feature, Boolean.class);        
@@ -878,6 +966,11 @@ public class MBFunctionTest {
         feature = DataUtilities.createFeature(SAMPLE, "measure1=A|9999|POINT(0,0)");
         result = outputExpression.evaluate(feature, Boolean.class);        
         assertEquals(true, result);  
+        
+        // Below lowest stop, the default should be returned.        
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|-9999|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);        
+        assertEquals(false, result); 
     }
     
     @Test
@@ -907,11 +1000,16 @@ public class MBFunctionTest {
         result = outputExpression.evaluate(feature, Boolean.class);
         assertEquals(true, result);
 
-        // feature = DataUtilities.createFeature(SAMPLE,Boolean"measure1=A|other|POINT(0,0)");
-        // result = outputExpression.evaluate(feature, String.class);
-        // assertEquals(false, result); // TODO default case.
+        // Check default
+        feature = DataUtilities.createFeature(SAMPLE, "measure1=A|other|POINT(0,0)");
+        result = outputExpression.evaluate(feature, Boolean.class);
+        assertEquals(false, result);
+
     }
     
+    /**
+     * Assert that {@link MBFunction} uses the correct default function type when the requested return class is String.
+     */
     @Test
     public void stringDefaultFunctionTest() throws Exception {
         String jsonStr = "{'property': 'temperature',  'stops': [[0, 'string1'], [100, 'string2'], [200, 'string3'], [300, 'string4']]}";
@@ -923,6 +1021,9 @@ public class MBFunctionTest {
                 MBFunction.FunctionType.INTERVAL, function.getTypeWithDefault(String.class));
     }
 
+    /**
+     * Assert that {@link MBFunction} uses the correct default function type when the requested return class is Boolean.
+     */
     @Test
     public void booleanDefaultFunctionTest() throws Exception {
         String jsonStr = "{'property': 'temperature',  'stops': [[0, 'true'], [100, 'false'], [200, 'true'], [300, 'false']]}";
@@ -934,6 +1035,9 @@ public class MBFunctionTest {
                 MBFunction.FunctionType.INTERVAL, function.getTypeWithDefault(Boolean.class));
     }
 
+    /**
+     * Assert that {@link MBFunction} uses the correct default function type when the requested return class is Number.
+     */
     @Test
     public void numericDefaultFunctionTest() throws Exception {
         String jsonStr = "{'property': 'temperature','stops': [[0, 2],[100, 4],[1000, 6]]}";
@@ -942,6 +1046,9 @@ public class MBFunctionTest {
                 FunctionType.EXPONENTIAL, function.getTypeWithDefault(Number.class));
     }
 
+    /**
+     * Assert that {@link MBFunction} uses the correct default function type when the requested return class is Enum.
+     */
     @Test
     public void enumDefaultFunctionTest() throws Exception {
         String jsonStr = "{'property': 'temperature','stops': [[0, 'ENUM_VAL1'],[100, 'ENUM_VAL2'],[1000, 'ENUM_VAL3']]}";
@@ -950,6 +1057,9 @@ public class MBFunctionTest {
                 FunctionType.INTERVAL, function.getTypeWithDefault(Enumeration.class));
     }
 
+    /**
+     * Assert that {@link MBFunction} uses the correct default function type when the requested return class is Color.
+     */
     @Test
     public void colorDefaultFunctionTest() throws Exception {
         JSONObject json = object("{'property':'temperature','stops':[[0,'blue'],[100,'red']]}");
@@ -964,8 +1074,6 @@ public class MBFunctionTest {
                 ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))
                 .evaluate(null, Number.class);
         assertEquals("Zoom level is " + zoomLevel, zoomLevel, envZoomLevel.doubleValue(), .00001);
-    }
-    
-
+    }    
     
 }

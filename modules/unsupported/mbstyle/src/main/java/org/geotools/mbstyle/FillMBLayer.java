@@ -196,8 +196,16 @@ public class FillMBLayer extends MBLayer {
      * (Optional) Name of image in a sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2,
      * 4, 8, ..., 512).
      */
-    public Expression getFillPattern() {
+    public Expression fillPattern() {
         return parse.string(paint, "fill-pattern", null);
+    }
+    
+    /**
+     * 
+     * @return True if the layer has a fill-pattern explicitly provided.
+     */
+    public boolean hasFillPattern() {
+        return parse.isPropertyDefined(paint, "fill-pattern");
     }
 
     /**

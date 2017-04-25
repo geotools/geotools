@@ -186,9 +186,9 @@ public class MBStyleTransformer {
         
         // from fill pattern or fill color
         Fill fill;
-        if (layer.getFillPattern() != null) {
+        if (layer.hasFillPattern()) {
             // TODO: Fill graphic (with external graphics)
-            ExternalGraphic eg = createExternalGraphicForSprite(layer.getFillPattern(), styleContext);
+            ExternalGraphic eg = createExternalGraphicForSprite(layer.fillPattern(), styleContext);
             GraphicFill gf = sf.graphicFill(Arrays.asList(eg), layer.fillOpacity(), null, null, null, layer.toDisplacement());            
             fill = sf.fill(gf, null, null);                
         } else {
@@ -374,7 +374,7 @@ public class MBStyleTransformer {
         // TODO - How to create the background polygon?
 
         Fill fill;
-        if (layer.getBackgroundPattern() != null) {
+        if (layer.hasBackgroundPattern()) {
             // TODO Use the background pattern
             fill = sf.fill(null, null, layer.backgroundOpacity());
         } else {
@@ -427,7 +427,12 @@ public class MBStyleTransformer {
         LabelPlacement labelPlacement;
         
         // Create point or line placement
-        if (SymbolMBLayer.SymbolPlacement.POINT.equals(layer.getSymbolPlacement())) {
+        
+        // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
+        String symbolPlacementVal = requireLiteral(layer.symbolPlacement(), String.class, "point", "symbol-placement", layer.getId());
+        
+        if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+            // Point Placement (default)            
             PointPlacement pointP = sb.createPointPlacement();
             // Set anchor point (translated by text-translate)
             // TODO - GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement    
@@ -442,6 +447,8 @@ public class MBStyleTransformer {
 
             labelPlacement = pointP;
         } else {
+            // Line Placement
+            
             LinePlacement lineP = sb.createLinePlacement(null);
             lineP.setRepeated(true);
             
@@ -482,7 +489,9 @@ public class MBStyleTransformer {
                 textExpression, font, labelPlacement, halo, fill);        
 
         // TODO Vendor options can't be expressions.
-        symbolizer.getOptions().put("repeat", String.valueOf(layer.getSymbolSpacing()));
+        Number symbolSpacing = requireLiteral(layer.symbolSpacing(), Number.class, 250,
+                "symbol-spacing", layer.getId());
+        symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
 
         // text max angle
         // layer.getTextMaxAngle();
@@ -490,20 +499,27 @@ public class MBStyleTransformer {
 
         // conflictResolution
         // Mapbox allows text overlap and icon overlap separately. GeoTools only has conflictResolution.       
+        Boolean textAllowOverlap = requireLiteral(layer.textAllowOverlap(), Boolean.class, false,
+                "text-allow-overlap", layer.getId());
+        Boolean iconAllowOverlap = requireLiteral(layer.iconAllowOverlap(), Boolean.class, false,
+                "icon-allow-overlap", layer.getId());
+
         symbolizer.getOptions().put("conflictResolution",
-                String.valueOf(!(layer.getTextAllowOverlap()||layer.getIconAllowOverlap())));       
+                String.valueOf(!(textAllowOverlap || iconAllowOverlap)));      
         
         // TODO Vendor options can't be expressions
-        IconTextFit textFit = layer.getIconTextFit();
-        if (IconTextFit.NONE.equals(textFit)) { 
-            symbolizer.getOptions().put("graphic-resize",
-                    "none");
-        } else if (IconTextFit.HEIGHT.equals(textFit) || IconTextFit.WIDTH.equals(textFit)) {
+        
+        String textFitVal = requireLiteral(layer.iconTextFit(), String.class, "none", "icon-text-fit", layer.getId()).trim();                
+        if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
             symbolizer.getOptions().put("graphic-resize",
                     "stretch");
-        } else if (IconTextFit.BOTH.equals(textFit)) {
+        } else if ("both".equalsIgnoreCase(textFitVal)) {
             symbolizer.getOptions().put("graphic-resize",
-                    "proportional");            
+                    "proportional");  
+        } else {
+            // Default
+            symbolizer.getOptions().put("graphic-resize",
+                    "none");
         }
         
         // TODO Mapbox allows you to sapecify an array of values, one for each side
@@ -522,7 +538,7 @@ public class MBStyleTransformer {
         // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?
 
         // If the layer has an icon image, add it to our symbolizer
-        if (layer.getIconImage() != null && !layer.getIconImage().trim().isEmpty()) {
+        if (layer.hasIconImage()) {
 
             // If the iconImage is a literal string (not a function), then
             // we need to support Mapbox token replacement.
@@ -787,6 +803,37 @@ public class MBStyleTransformer {
                     "Exception converting Mapbox token string to CQL expression. Mapbox token string was: \""
                             + tokenStr + "\". Exception was: " + iae.getMessage());
             return ff.literal(tokenStr);
+        }
+    }
+
+    /**
+     * Utility method for getting a concrete value out of an expression, used by transformer methods when GeoTools is unable to accept an expression.
+     * <ul>
+     * <li>If the provided {@link Expression} is a {@link Literal}, evaluates it and returns the value.</li>
+     * <li>Otherwise, returns the provided fallback value and logs a warning that dynamic styling is not yet supported for this property.</li>
+     * </ul>
+     * 
+     * @param expression The expression
+     * @param clazz The type to provide as the context for the expression's evaluation.
+     * @param fallback The value to return if the expression is not a literal
+     * @param propertyName The name of the property that the expression corresponds to, for logging purposes.
+     * @param layerId The ID of the layer that the expression corresponds to, for logging purposes.
+     * @return The evaluated value of the provided {@link Expression}, or the provided fallback value.
+     */
+    protected static <T> T requireLiteral(Expression expression, Class<T> clazz, T fallback,
+            String propertyName, String layerId) {
+        if (expression instanceof Literal) {
+            T value = expression.evaluate(null, clazz);
+            if (value != null) {
+                return value;
+            } else {
+                return fallback;
+            }
+        } else {
+            LOGGER.warning("Mapbox '" + propertyName
+                    + "' property: functions not yet supported for this property, falling back to default value."
+                    + " (layerId = '" + layerId + "')");
+            return fallback;
         }
     }
 

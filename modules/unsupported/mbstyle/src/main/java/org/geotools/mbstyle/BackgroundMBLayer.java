@@ -85,6 +85,14 @@ public class BackgroundMBLayer extends MBLayer {
     public String getBackgroundPattern() {
         return parse.optional(String.class, paint, "background-pattern", null);
     }
+    
+    /**
+     * 
+     * @return True if the layer has a background-pattern explicitly provided.
+     */
+    public boolean hasBackgroundPattern() {
+        return parse.isPropertyDefined(layout, "background-pattern");
+    }
 
     /**
      * Maps {@link #getBackgroundPattern()} to an {@link Expression}.

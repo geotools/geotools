@@ -949,4 +949,12 @@ public class MBObjectParser {
                     + defn.getClass().getSimpleName());
         }
     }
+    
+    /**
+     * 
+     * @return True if the layer has the provided property explicitly provided.
+     */
+    public boolean isPropertyDefined(JSONObject json, String propertyName) throws MBFormatException {
+        return json.containsKey(propertyName) && json.get(propertyName) != null;
+    }
 }

@@ -297,6 +297,10 @@ public class SymbolMBLayer extends MBLayer {
 			return SymbolPlacement.POINT;
 		}
     }
+    
+    public Expression symbolPlacement() {
+        return parse.string(layout, "symbol-placement", "point");        
+    }
 
     /**
      *  (Optional) Units in pixels. Defaults to 250. Requires SymbolPlacement.LINE
@@ -340,7 +344,18 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Boolean getIconAllowOverlap() throws MBFormatException {
-        return parse.getBoolean(layout, "ico-allow-overlap", false);
+        return parse.getBoolean(layout, "icon-allow-overlap", false);
+    }
+
+    /**
+     * Wraps {@link #getIconAllowOverlap()} in a GeoTools expression.
+     * 
+     * (Optional) Defaults to false. Requires icon-image.
+     * 
+     * If true, the icon will be visible even if it collides with other previously drawn symbols.
+     */
+    public Expression iconAllowOverlap() throws MBFormatException {
+        return parse.bool(layout, "icon-allow-overlap", false);
     }
 
     /**
@@ -436,6 +451,16 @@ public class SymbolMBLayer extends MBLayer {
         }
 
     }
+    
+    /**
+     * Wraps {@link #getIconTextFit()} in a GeoTools expression.
+     * 
+     *  (Optional) One of none, width, height, both. Defaults to none. Requires icon-image. Requires text-field.
+     *  Scales the icon to fit around the associated text.
+     */
+    public Expression iconTextFit() {
+        return parse.string(layout, "icon-text-fit", "none");
+    }
 
     /**
      * (Optional) Units in pixels. Defaults to 0,0,0,0. Requires icon-image. Requires text-field. Requires icon-text-fit = one of both, width, height.
@@ -462,6 +487,14 @@ public class SymbolMBLayer extends MBLayer {
      */
     public String getIconImage() throws MBFormatException {
         return parse.optional(String.class, layout, "icon-image", null);
+    }
+    
+    /**
+     * 
+     * @return True if the layer has a icon-image explicitly provided.
+     */
+    public boolean hasIconImage() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "icon-image");
     }
 
     /**
@@ -929,6 +962,17 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Boolean getTextAllowOverlap() throws MBFormatException {
     	return parse.getBoolean(layout, "text-allow-overlap", false);
+    }
+    
+    /**
+     * Wraps {@link #getTextAllowOverlap()} in a GeoTools {@link Expression}.
+     * 
+     * (Optional) Defaults to false. Requires text-field.
+     * 
+     * If true, the text will be visible even if it collides with other previously drawn symbols.
+     */
+    public Expression textAllowOverlap() throws MBFormatException {
+        return parse.bool(layout, "text-allow-overlap", false);
     }
 
     /**

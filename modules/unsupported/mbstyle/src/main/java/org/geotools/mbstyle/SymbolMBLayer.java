@@ -826,7 +826,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Number getTextRotate() throws MBFormatException {
-    	return parse.optional(Number.class, paint, "text-rotate", 0.0);
+    	return parse.optional(Number.class, layout, "text-rotate", 0.0);
     }
 
     /**

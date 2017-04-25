@@ -16,18 +16,18 @@
  */
 package org.geotools.mbstyle;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MapBox Style facade offering utility methods for quickly working with JSON and converting to
@@ -49,7 +49,7 @@ public class MapBoxStyle {
 
         MBStyleTransformer transform = new MBStyleTransformer();
 
-        StyledLayerDescriptor sld = transform.tranform(style);
+        StyledLayerDescriptor sld = transform.transform(style);
         return sld;
     }
 
@@ -65,7 +65,7 @@ public class MapBoxStyle {
 
         MBStyleTransformer transform = new MBStyleTransformer();
 
-        StyledLayerDescriptor sld = transform.tranform(style);
+        StyledLayerDescriptor sld = transform.transform(style);
         return sld;
     }
     

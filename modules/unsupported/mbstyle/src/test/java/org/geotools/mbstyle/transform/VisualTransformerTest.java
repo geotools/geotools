@@ -16,16 +16,6 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-
-import java.awt.Color;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-
 import org.geotools.TestData;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -38,24 +28,23 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 /**
  * Perceptual tests for {@link MBStyleTransformer}.
@@ -126,7 +115,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -153,7 +142,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -181,7 +170,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -293,7 +282,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
-        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -318,7 +307,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
-        StyledLayerDescriptor sld = new MBStyleTransformer().tranform(mbStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 

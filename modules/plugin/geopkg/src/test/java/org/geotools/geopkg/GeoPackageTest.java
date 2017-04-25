@@ -22,6 +22,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +44,10 @@ import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -55,6 +63,10 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geopkg.mosaic.GeoPackageFormat;
+import org.geotools.geopkg.mosaic.GeoPackageReader;
+import org.geotools.image.test.ImageAssert;
+import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.sql.SqlUtil;
@@ -74,6 +86,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
+
+import javax.imageio.ImageIO;
+import javax.media.jai.PlanarImage;
 
 public class GeoPackageTest {
 
@@ -578,6 +595,50 @@ public class GeoPackageTest {
         TileEntry te = lt.get(0);
         assertEquals("foo", te.getTableName());
         assertEquals(2, te.getTileMatricies().size());
+    }
+
+    @Test
+    /*
+     * From the OGC GeoPackage Specification [1]:
+     *
+     * "The tile coordinate (0,0) always refers to the tile in the upper left corner of the tile matrix at any zoom
+     * level, regardless of the actual availability of that tile"
+     *
+     * [1]: http://www.geopackage.org/spec/#tile_matrix
+     */
+    public void testTopLeftTile() throws IOException, FactoryException {
+        File sourceFile = GeoPackageFormat.getFileFromSource(getClass().getResource("Blue_Marble.gpkg"));
+        GeoPackage geopkg = new GeoPackage(sourceFile);
+        List<TileEntry> tiles = geopkg.tiles();
+
+        //Get 0,0,0 tile
+        Tile topLeftTile = geopkg.reader(tiles.get(0), 0, 0, 0, 0, 0, 0).next();
+
+        BufferedImage tileImg = ImageIO.read(new ByteArrayInputStream(topLeftTile.getData()));
+        ImageAssert.assertEquals(DataUtilities.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), tileImg, 250);
+
+        //Render the GeoPackage at zoom level 0
+        GeoPackageReader reader = new GeoPackageReader(getClass().getResource("Blue_Marble.gpkg"), null);
+
+        GeneralParameterValue[] parameters = new GeneralParameterValue[1];
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(new Rectangle(1536,768)), new ReferencedEnvelope(-180,180,-90,90, CRS.decode("EPSG:4326", true)));
+        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
+        BufferedImage img = ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage();
+
+        //ImageIO.write(img, "JPEG", new File("bluemarblerendered.jpeg"));
+
+        //Get top left tile
+        BufferedImage topLeftImg = new BufferedImage(256, 256, img.getType());
+        Graphics2D graphics = topLeftImg.createGraphics();
+        graphics.drawImage(img,
+                0, 0, 256, 256, //Destination coordinates
+                0, 0, 256, 256, //Source coordinates
+                null);
+
+        //ImageIO.write(topLeftImg, "JPEG", new File("bluemarbletopleft.jpeg"));
+        ImageAssert.assertEquals(DataUtilities.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), topLeftImg, 250);
+
     }
 
     void assertTiles(List<Tile> tiles, TileReader r) throws IOException {

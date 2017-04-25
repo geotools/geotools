@@ -70,6 +70,12 @@ public class MBFunctionFactory implements FunctionFactory {
 
             return f;
         }
+        if (DefaultIfNullFunction.NAME.getFunctionName().equals(name)) {
+            DefaultIfNullFunction f = new DefaultIfNullFunction();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
         return null;
     }
 

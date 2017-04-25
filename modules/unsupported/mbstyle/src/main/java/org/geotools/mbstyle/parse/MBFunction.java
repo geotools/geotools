@@ -131,6 +131,33 @@ public class MBFunction {
     
     /**
      * <p>
+     * A value to serve as a fallback function result when a value isn't otherwise available. It is used in the following circumstances:
+     * </p>
+     * 
+     * <ul>
+     * <li>In categorical functions, when the feature value does not match any of the stop domain values.</li>
+     * <li>In property and zoom-and-property functions, when a feature does not contain a value for the specified property.</li>
+     * <li>In identity functions, when the feature value is not valid for the style property (for example, if the function is being used for a
+     * circle-color property but the feature property value is not a string or not a valid color).</li>
+     * <li>In interval or exponential property and zoom-and-property functions, when the feature value is not numeric.</li>
+     * </ul>
+     * 
+     * <p>
+     * If no default is provided, the style property's default is used in these circumstances.
+     * </p>
+     * 
+     * @return The function's default value, or null if none was provided.
+     */
+    public Object getDefault() {
+        if (json == null || !json.containsKey("default")) {
+            return null;
+        } else {
+            return json.get("default");
+        }
+    }
+    
+    /**
+     * <p>
      * Return the function type, falling back to the default function type for the provided {@link Class} if no function type is explicitly declared.
      * The parameter is necessary because different output classes will have different default function types.
      * </p>
@@ -378,7 +405,7 @@ public class MBFunction {
             return colorGenerateCategorize(value);
         }
         else if( type == FunctionType.IDENTITY){
-            return ff.function("color", value); // force conversion of CSS color names
+            return withFallback(ff.function("color", value)); // force conversion of CSS color names
         }
         throw new UnsupportedOperationException("Color unavailable for '"+type+"' function");
     }
@@ -415,7 +442,7 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
     
     private Expression colorGenerateInterpolation(Expression expression) {
@@ -433,7 +460,7 @@ public class MBFunction {
             parameters.add(color);
         }
         parameters.add(ff.literal("color"));
-        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
     private Expression colorGenerateExponential(Expression expression, double base) {
         List<Expression> parameters = new ArrayList<>();
@@ -451,7 +478,7 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        return ff.function("Exponential", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
     }
 
     //
@@ -495,7 +522,7 @@ public class MBFunction {
             return generateCategorize(input);
         }
         else if( type == FunctionType.IDENTITY){
-            return input;
+            return withFallback(input);
         }
         throw new UnsupportedOperationException("Numeric unavailable for '"+type+"' function");
     }
@@ -526,7 +553,7 @@ public class MBFunction {
             parameters.add(ff.literal(value));
         }
         parameters.add(ff.literal("numeric"));
-        return ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -556,7 +583,7 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        return ff.function("Exponential", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
     }
     
     //
@@ -596,13 +623,30 @@ public class MBFunction {
             return generateRecode(input);
         }
         else if( type == FunctionType.IDENTITY){
-            return input;
+            return withFallback(input);
         }
         throw new UnsupportedOperationException("Function unavailable for '"+type+"' function with "+clazz.getSimpleName());
     }
     
     private Expression generateCategorize(Expression expression) {
         return generateCategorize(expression, (value, stop)->ff.literal(value));
+    }
+
+    /**
+     * 
+     * Takes an expression and wraps it with a function that falls back to this {@link MBFunction}'s default return value.
+     * 
+     * If the input expression evaluates to null, the wrapper function will return the fallback value instead.
+     * 
+     * @param expression The expression to wrap with a fallback to this {@link MBFunction}'s return value.
+     */
+    private Expression withFallback(Expression expression) {
+        Object defaultValue = getDefault();
+        if (defaultValue != null) {
+            return ff.function("DefaultIfNull", expression, ff.literal(defaultValue));
+        } else {
+            return expression;
+        }
     }
     
     private Expression generateCategorize(Expression expression, java.util.function.BiFunction<Object, Object, Expression> parseValue) {
@@ -619,16 +663,24 @@ public class MBFunction {
                 // CategorizeFunction expects there to be a leading value for inputs < firstStopThreshold.
                 // But the MapBox spec does not define the expected behavior in that case.
                 // (spec: "functions return the output value of the stop just less than the function input.")
-                // TODO Default value could go here.
-                // Temporarily, return first interval value for inputs < firstStopThreshold.
-                parameters.add(value);
+                // Return the default value (if any), otherwise the first stop's value.
+                Expression initialValue;
+                Object defaultValue = getDefault();
+                if (defaultValue != null) {
+                    initialValue = ff.literal(defaultValue);
+                } else {
+                    initialValue = value; // The first stop's value
+                }
+                parameters.add(initialValue);
             }
             
             parameters.add(ff.literal(stop));
             parameters.add(value);
         }
         parameters.add(ff.literal("succeeding"));
-        return ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+        
+        Function categorizeFunction = ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(categorizeFunction);
     }
     private Expression generateRecode(Expression input) {
         List<Expression> parameters = new ArrayList<>();
@@ -640,7 +692,8 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        Function recodeFn = ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(recodeFn);
     }
     
     //
@@ -668,7 +721,7 @@ public class MBFunction {
             return enumGenerateRecode(input,enumeration);
         }
         else if( type == FunctionType.IDENTITY){
-            return enumGenerateIdentiy(input, enumeration);
+            return withFallback(enumGenerateIdentiy(input, enumeration));
         }
         throw new UnsupportedOperationException("Unable to support '"+type+"' function for "+enumeration.getSimpleName());
     }
@@ -721,12 +774,13 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(constant(value,enumeration));
         }
-        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
     
     private Expression enumGenerateCategorize(Expression input,
             Class<? extends Enum<?>> enumeration) {
-        return generateCategorize(input,(value, stop)->constant(value,enumeration));
+        return withFallback(generateCategorize(input,(value, stop)->constant(value,enumeration)));
     }
 
     private Expression enumGenerateIdentiy(Expression input, Class<? extends Enum<?>> enumeration) {
@@ -739,6 +793,6 @@ public class MBFunction {
             parameters.add(ff.literal(value));
             parameters.add(constant(value,enumeration));
         }
-        return ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 }

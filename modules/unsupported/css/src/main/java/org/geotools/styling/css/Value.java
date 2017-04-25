@@ -31,9 +31,11 @@ import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
+import org.geotools.styling.css.Value.Function;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 
 /**
  * A value for a CSS property. Values can be several things, including from literals, expressions,
@@ -287,6 +289,15 @@ abstract class Value {
         static final String URL = "url";
 
         static final String SYMBOL = "symbol";
+        
+        public static boolean isGraphicsFunction(Value v) {
+            if(!(v instanceof Function)) {
+                return false;
+            } else {
+                Function f = (Function) v;
+                return URL.equals(f.name) || SYMBOL.equals(f.name);
+            }
+        }
 
         public String name;
 
@@ -329,6 +340,15 @@ abstract class Value {
             result = prime * result + ((name == null) ? 0 : name.hashCode());
             result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
             return result;
+        }
+        
+        @Override
+        public org.opengis.filter.expression.Expression toExpression() {
+            // turn function call if possible
+            org.opengis.filter.expression.Expression[] params = this.parameters.stream()
+                    .map(v -> v.toExpression())
+                    .toArray(s -> new org.opengis.filter.expression.Expression[s]);
+            return FF.function(this.name, params);
         }
 
         @Override

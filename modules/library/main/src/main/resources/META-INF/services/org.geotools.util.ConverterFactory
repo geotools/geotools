@@ -1,5 +1,6 @@
 org.geotools.util.CommonsConverterFactory
 org.geotools.util.NumericConverterFactory
+org.geotools.util.PercentageConverterFactory
 org.geotools.util.GeometryConverterFactory
 org.geotools.util.GeometryTypeConverterFactory
 org.geotools.util.TemporalConverterFactory

@@ -17,19 +17,16 @@
 package org.geotools.styling.css;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import org.geotools.filter.function.color.DarkenFunction;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.AnchorPoint;
@@ -1055,6 +1052,29 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(ECQL.toExpression("a * 2"), ls.getPerpendicularOffset());
     }
+    
+    @Test
+    public void testDarkenAsCQL() throws Exception {
+        String css = "* { fill: [darken('#FF0000', '30%')]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PolygonSymbolizer ps = assertSingleSymbolizer(rule, PolygonSymbolizer.class);
+        final Expression color = ps.getFill().getColor();
+        assertThat(color, instanceOf(DarkenFunction.class));
+        assertEquals(Color.decode("#660000"), color.evaluate(null, Color.class));
+    }
+    
+    @Test
+    public void testDarkenAsFunction() throws Exception {
+        String css = "* { fill: darken(red, 30%);}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PolygonSymbolizer ps = assertSingleSymbolizer(rule, PolygonSymbolizer.class);
+        final Expression color = ps.getFill().getColor();
+        assertThat(color, instanceOf(DarkenFunction.class));
+        assertEquals(Color.decode("#660000"), color.evaluate(null, Color.class));
+    }
+
 
     private Function assertTransformation(FeatureTypeStyle fts) {
         Expression ex = fts.getTransformation();

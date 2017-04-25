@@ -187,6 +187,55 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
             }
         }
     }
+    
+    /**
+     * Evaluates a specific argument against the context, checking for required values and
+     * proper conversion.
+     * 
+     * @param object
+     * @param argumentIndex
+     * @return
+     */
+    protected Object getParameterValue(Object object, int argumentIndex) {
+        Parameter<?> parameter = getFunctionName().getArguments().get(argumentIndex);
+        if (params.size() <= argumentIndex) {
+            if (parameter.getMinOccurs() == 0) {
+                return null;
+            } else {
+                throw new IllegalArgumentException(
+                        String.format("No arguments specified for arg " + "%s, minOccurs = %d",
+                                parameter.getName().toString(), parameter.getMinOccurs()));
+            }
+        }
+
+        final Expression expression = params.get(argumentIndex);
+        Object value = expression.evaluate(object, parameter.getType());
+        if (value == null && expression.evaluate(object) != null) {
+            throw new IllegalArgumentException(String.format(
+                    "Failure converting value for "
+                            + "argument %s. %s could not be converted to %s",
+                    parameter.getName(), expression.toString(), parameter.getType().getName()));
+        }
+        return value;
+    }
+    
+    /**
+     * Evaluates a specific argument against the context, checking for required values and
+     * proper conversion. This version accepts a default value
+     * 
+     * @param object
+     * @param argumentIndex
+     * @param defaultValue
+     * @return
+     */
+    protected Object getParameterValue(Object object, int argumentIndex, Object defaultValue) {
+        Object value = getParameterValue(object, argumentIndex);
+        if(value == null) {
+            return defaultValue;
+        } else {
+            return value;
+        }
+    }
 
     /**
      * Gathers up and groups the parameters to the function based on the declared parameters.

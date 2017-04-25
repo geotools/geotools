@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.transform;
 
-import java.io.IOException;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
@@ -26,6 +24,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
+
+import java.io.IOException;
 
 public class StyleTransformFunctionTest {
 
@@ -37,7 +37,7 @@ public class StyleTransformFunctionTest {
         
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().tranform(mbStyle);    // TODO fails b/c functions aren't used by transformers & parsers  
+        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);    // TODO fails b/c functions aren't used by transformers & parsers
         
         // Assert that things are as expected
     }

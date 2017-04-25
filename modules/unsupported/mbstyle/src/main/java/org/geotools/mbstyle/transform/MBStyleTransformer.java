@@ -21,38 +21,19 @@ import org.geotools.mbstyle.*;
 import org.geotools.mbstyle.SymbolMBLayer.IconTextFit;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.styling.*;
+import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.style.*;
+import org.opengis.style.ContrastMethod;
+import org.opengis.style.GraphicFill;
+import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
 import javax.measure.unit.NonSI;
@@ -95,20 +76,44 @@ public class MBStyleTransformer {
     /**
      * Transform MBStyle to a GeoTools UserLayer.
      * 
-     * @param layer MBStyle
+     * @param mbStyle MBStyle
      * @return user layer
      */
-    public StyledLayerDescriptor tranform(MBStyle mbStyle) {
+    public StyledLayerDescriptor transform(MBStyle mbStyle) {
         List<MBLayer> layers = mbStyle.layers();
         if (layers.isEmpty()) {
             throw new MBFormatException("layers empty");
         }
+        List<Long> stopLevels = MBObjectStops.getStopLevels(mbStyle);
+        List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         Style style = sf.createStyle();
+
         for (MBLayer layer : layers) {
+            Boolean hasStops = false;
             if (layer.visibility()) {
-                FeatureTypeStyle featureTypeStyle = transform(layer, mbStyle);
+                if (layer.getPaint() != null) {
+                    hasStops = MBObjectStops.hasStops(layer.getPaint());
+                }
+                if (layer.getLayout() != null) {
+                    hasStops = MBObjectStops.hasStops(layer.getPaint());
+                }
+                FeatureTypeStyle featureTypeStyle = null;
+                if (stopLevels.size() > 0 && hasStops) {
+                    long stopLevel = MBObjectStops.getStop(layer);
+                    long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
+
+                    featureTypeStyle = transform(layer, mbStyle);
+                    Rule rule = featureTypeStyle.rules().get(0);
+                    rule.setMinScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]));
+                    if (stopLevel != rangeForStopLevel[1]) {
+                        rule.setMaxScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]));
+                    }
+                } else {
+                    featureTypeStyle = transform(layer, mbStyle);
+                }
+
                 style.featureTypeStyles().add(featureTypeStyle);
             }
         }

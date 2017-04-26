@@ -30,7 +30,16 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-pattern": "pattern"
+                "fill-pattern": {
+                    "default": "bomb",
+                    "property": "category"
+                    "stops": [
+                        ["category1", "pattern"],
+                        ["category2", "owlhead"],
+                        ["category3", "pattern"],
+                        ["category4", "face"]
+                    ]
+                }
             }
         }
     ],

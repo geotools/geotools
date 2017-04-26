@@ -30,7 +30,7 @@
                 "visibility": "visible"
             },
             "paint": {
-                "fill-pattern": "pattern"
+                "fill-pattern": "{icon}"
             }
         }
     ],

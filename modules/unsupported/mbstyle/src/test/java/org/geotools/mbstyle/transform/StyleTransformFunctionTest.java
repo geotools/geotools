@@ -18,15 +18,12 @@ package org.geotools.mbstyle.transform;
 
 import java.io.IOException;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
-
-import java.io.IOException;
 
 public class StyleTransformFunctionTest {
 
@@ -53,6 +50,15 @@ public class StyleTransformFunctionTest {
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
         StyledLayerDescriptor transform = new MBStyleTransformer().transform(mbStyle);
-
     }
+    
+    @Test
+    public void testSymbolLayerWithFunctions() throws IOException, ParseException {
+        JSONObject styleJson = MapboxTestUtils.parseTestStyle("symbolStyleFunctionTest.json");
+        
+        // Parse to MBStyle
+        MBStyle mbStyle = new MBStyle(styleJson);
+        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+    }
+    
 }

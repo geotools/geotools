@@ -18,7 +18,6 @@ package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.SymbolMBLayer.IconTextFit;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectStops;
@@ -27,6 +26,8 @@ import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -80,12 +81,13 @@ public class MBStyleTransformer {
      * @return user layer
      */
     public StyledLayerDescriptor transform(MBStyle mbStyle) {
+        JSONParser parser = new JSONParser();
+
         List<MBLayer> layers = mbStyle.layers();
         if (layers.isEmpty()) {
             throw new MBFormatException("layers empty");
         }
-        List<Long> stopLevels = MBObjectStops.getStopLevels(mbStyle);
-        List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
+
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         Style style = sf.createStyle();
@@ -100,21 +102,31 @@ public class MBStyleTransformer {
                     hasStops = MBObjectStops.hasStops(layer.getPaint());
                 }
                 FeatureTypeStyle featureTypeStyle = null;
+                List<Long> stopLevels = MBObjectStops.getStopLevels(layer);
                 if (stopLevels.size() > 0 && hasStops) {
-                    long stopLevel = MBObjectStops.getStop(layer);
-                    long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
+                    List<Long> layerStops = MBObjectStops.getLayerStopLevels(layer);
+                    try {
+                        List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, layerStops);
+                        for (MBLayer l : stopLayers) {
+                            long stopLevel = MBObjectStops.getStop(l);
+                            List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
+                            long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
+                            featureTypeStyle = transform(l, mbStyle);
+                            Rule rule = featureTypeStyle.rules().get(0);
+                            rule.setMinScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]));
+                            if (stopLevel != rangeForStopLevel[1] && rangeForStopLevel[1] != -1) {
+                                rule.setMaxScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]));
+                            }
+                            style.featureTypeStyles().add(featureTypeStyle);
+                        }
+                    } catch (ParseException e) {
 
-                    featureTypeStyle = transform(layer, mbStyle);
-                    Rule rule = featureTypeStyle.rules().get(0);
-                    rule.setMinScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]));
-                    if (stopLevel != rangeForStopLevel[1]) {
-                        rule.setMaxScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]));
                     }
+
                 } else {
                     featureTypeStyle = transform(layer, mbStyle);
+                    style.featureTypeStyles().add(featureTypeStyle);
                 }
-
-                style.featureTypeStyles().add(featureTypeStyle);
             }
         }
         

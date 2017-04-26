@@ -194,8 +194,9 @@ public abstract class MBLayer {
      * 
      * @return minimum zoom level, optional number may return null.
      */
-    public Integer getMinZoom(){
-        return parse.optional(Integer.class, json, "minzoom", null);
+    public int getMinZoom(){
+        Integer min = parse.optional(Integer.class, json, "minzoom", null);
+        return min == null ? Integer.MIN_VALUE : min;
     }
     
     /**
@@ -203,8 +204,9 @@ public abstract class MBLayer {
      * 
      * @return maximum zoom level, optional number may return null.
      */
-    public Integer getMaxZoom(){
-        return parse.optional(Integer.class, json, "maxzoom", null);
+    public int getMaxZoom(){
+        Integer max = parse.optional(Integer.class, json, "maxzoom", null);
+        return max == null ? Integer.MAX_VALUE : max;
     }
     
     /**

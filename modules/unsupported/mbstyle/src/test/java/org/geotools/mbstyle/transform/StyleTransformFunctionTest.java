@@ -61,4 +61,22 @@ public class StyleTransformFunctionTest {
         StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
     }
     
+    @Test
+    public void testFillLayerWithFunctions() throws IOException, ParseException {
+        JSONObject styleJson = MapboxTestUtils.parseTestStyle("fillStyleFunctionTest.json");
+        
+        // Parse to MBStyle
+        MBStyle mbStyle = new MBStyle(styleJson);
+        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+    }
+    
+    @Test
+    public void testFillLayerWithFunctionsZoomAndProperty() throws IOException, ParseException {
+        JSONObject styleJson = MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
+        
+        // Parse to MBStyle
+        MBStyle mbStyle = new MBStyle(styleJson);
+        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+    }
+    
 }

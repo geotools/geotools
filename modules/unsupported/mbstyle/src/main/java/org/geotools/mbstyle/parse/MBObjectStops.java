@@ -32,6 +32,8 @@ import java.util.*;
  * Created by vickdw on 4/17/17.
  */
 public class MBObjectStops {
+
+    static JSONParser parser = new JSONParser();
     static List<Long> layerZoomLevels;
 
     /**
@@ -58,6 +60,24 @@ public class MBObjectStops {
         return zoomLevels;
     }
 
+    public static List<Long> getStopLevels(MBLayer mbLayer) {
+        Set<Long> distinctValues = new HashSet<>();
+        List<Long> zoomLevels = new ArrayList<>();
+
+        layerZoomLevels = new ArrayList<>();
+        if (mbLayer.getPaint() != null) {
+            traverse(mbLayer.getPaint(), layerZoomLevels);
+        }
+        if (mbLayer.getLayout() != null) {
+            traverse(mbLayer.getLayout(), layerZoomLevels);
+        }
+        distinctValues.addAll(layerZoomLevels);
+        zoomLevels.addAll(distinctValues);
+        Collections.sort(zoomLevels);
+
+        return zoomLevels;
+    }
+
     /**
      * Get the stop levels for the layer.
      * @param mbLayer
@@ -75,9 +95,30 @@ public class MBObjectStops {
         return zoomLevels;
     }
 
+    public static List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Long> layerStops) throws ParseException {
+        List<MBLayer> layers = new ArrayList<>();
+
+        for (int i = 0; i < layerStops.size(); i ++) {
+            JSONObject obj = (JSONObject) parser.parse(layer.getJson().toJSONString());
+            MBLayer workingLayer = MBLayer.create(obj);
+            Long maxZoom = layerStops.get(layerStops.size() - 1);
+            Long current = layerStops.get(i);
+            long[] range = {0, 0};
+            if (current < maxZoom) {
+                range[0] = current;
+                range[1] = layerStops.get(i + 1);
+            } else if ( current == maxZoom) {
+                range[0] = current;
+                range[1] = maxZoom;
+            }
+            layers.add(createLayerStopStyle(workingLayer, range));
+        }
+
+        return layers;
+    }
+
     public static List<MBStyle> getLayerStylesForStops(List<Long> layerZoomLevels, MBStyle mbStyle, MBLayer mbLayer)
             throws ParseException{
-        JSONParser parser = new JSONParser();
         List<MBStyle> styles = new ArrayList<>();
 
         for (int i = 0; i < layerZoomLevels.size(); i++)  {
@@ -132,11 +173,12 @@ public class MBObjectStops {
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = stops.get(i + 1);
-            } else if (current == maxZoom) {
+            } else if (current ==  maxZoom) {
                 range[0] = current;
-                range[1] = maxZoom;
+                range[1] = -1;
             }
             ranges.add(range);
+
         }
         return ranges;
     }
@@ -241,6 +283,17 @@ public class MBObjectStops {
         }
 
         return mbStyle;
+    }
+
+    static MBLayer createLayerStopStyle(MBLayer layer, long[] range) {
+        if (layer.getPaint() != null ) {
+            traverse(layer.getPaint(), range);
+        }
+        if (layer.getLayout() != null) {
+            traverse(layer.getLayout(), range);
+        }
+
+        return layer;
     }
 
     static long traverse(JSONObject jsonObject, long layerStop) {

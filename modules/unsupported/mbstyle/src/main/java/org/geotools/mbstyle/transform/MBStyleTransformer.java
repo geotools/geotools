@@ -114,12 +114,18 @@ public class MBStyleTransformer {
                             long stopLevel = MBObjectStops.getStop(l);
                             List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
                             long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
-                            featureTypeStyle = transform(l, mbStyle);
-                            Rule rule = featureTypeStyle.rules().get(0);
-                            rule.setMinScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]));
+                            Double minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+                            Double maxScaleDenominator = null;
                             if (stopLevel != rangeForStopLevel[1] && rangeForStopLevel[1] != -1) {
-                                rule.setMaxScaleDenominator(MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]));
+                                maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
                             }
+                            
+                            featureTypeStyle = transform(l, mbStyle, minScaleDenominator, maxScaleDenominator);
+//                            Rule rule = featureTypeStyle.rules().get(0);
+//                            
+//                            rule.setMinScaleDenominator(minScaleDenominator);
+//                            rule.setMaxScaleDenominator(maxScaleDenominator);
+                            
                             style.featureTypeStyles().add(featureTypeStyle);
                         }
                     } catch (ParseException e) {
@@ -144,7 +150,34 @@ public class MBStyleTransformer {
         sld.setName(mbStyle.getName());
         return sld;
     }
-
+    
+    /**
+     * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
+     * 
+     * @param layer The MBLayer to transform.
+     * @param styleContext The {@link MBStyle} to use as a context, e.g. for sprite and glyph address resolution.
+     * @param minScaleDenominator Used to determine zoom level restructions for generated rules
+     * @param maxScaleDenominator Used to determine zoom level restructions for generated rules
+     * @return A feature type style from the provided layer.
+     */
+    public FeatureTypeStyle transform(MBLayer layer, MBStyle styleContext,
+            Double minScaleDenominator, Double maxScaleDenominator) {
+        // TODO: Would prefer to accept zoom levels here (less concepts in our API)
+        // If we accept zoom levels we may be able to reduce, and return a list of FeatureTypeStyles
+        // (with the understanding that the list may be empty if the MBLayer does not contribute any content
+        //  at a specific zoom level range)
+        FeatureTypeStyle style = transform(layer, styleContext);
+        for (Rule rule : style.rules()) {
+            if (minScaleDenominator != null) {
+                rule.setMinScaleDenominator(minScaleDenominator);
+            }
+            if (maxScaleDenominator != null) {
+                rule.setMaxScaleDenominator(maxScaleDenominator);
+            }
+        }
+        
+        return style;
+    }
     /**
      * 
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.

@@ -332,7 +332,7 @@ public class MBObjectStops {
                         JSONArray stop = (JSONArray) stops.get(i);
                         if (stop.get(0) instanceof Long) {
                             if (((Long) stop.get(0)).longValue() != range[0]) {
-                                objectsToRemove.add(stops.get(i));
+                                //objectsToRemove.add(stops.get(i));
                             }
                         }
                         if (stop.get(0) instanceof JSONObject) {

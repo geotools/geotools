@@ -25,6 +25,7 @@ import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -48,6 +49,11 @@ public class MongoFeatureStore extends ContentFeatureStore {
 
     public void setMapper(CollectionMapper mapper) {
         delegate.setMapper(mapper);
+    }
+    
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return delegate.handleVisitor(query, visitor);
     }
 
     @Override

@@ -75,6 +75,8 @@ public abstract class MongoTestSupport extends OnlineTestCase {
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put(MongoDataStoreFactory.DATASTORE_URI.key, "mongodb://geotools:geotools@localhost:27017/geotools");
+        fixture.put(MongoDataStoreFactory.SCHEMASTORE_URI.key, "mongodb://geotools:geotools@localhost:27017/geotools");
+
         return fixture;
     }
 

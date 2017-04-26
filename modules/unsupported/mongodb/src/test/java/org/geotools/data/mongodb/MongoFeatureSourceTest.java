@@ -68,13 +68,14 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         Query q = new Query("ft1", f);
         
         assertEquals(1, source.getCount(q));
-        assertEquals(new ReferencedEnvelope(2d,2d,2d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+        ReferencedEnvelope e = source.getBounds();
+        assertEquals(new ReferencedEnvelope(2d,0d,2d,0d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         SimpleFeatureIterator it = features.features();
         try {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 2);
+            assertFeature(it.next(), 0);
         }
         finally {
             it.close();
@@ -151,14 +152,14 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", gt);
 
-        assertEquals(1, source.getCount(q));
-        assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+        assertEquals(2, source.getCount(q));
+        assertEquals(new ReferencedEnvelope(0d,2d,0d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         SimpleFeatureIterator it = features.features();
         try {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 1);
+            assertFeature(it.next(), 0);
         }
         finally {
             it.close();
@@ -170,12 +171,12 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
                 ff.literal(MongoTestSetup.parseDate("2015-01-01T11:30:00.000Z")));
         q = new Query("ft1", gt);
 
-        assertEquals(1, source.getCount(q));
-        assertEquals(new ReferencedEnvelope(1d,1d,1d,1d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+        assertEquals(2, source.getCount(q));
+        assertEquals(new ReferencedEnvelope(0d,2d,0d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
         it = source.getFeatures(q).features();
         try {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 1);
+            assertFeature(it.next(), 0);
         }
         finally {
             it.close();
@@ -184,7 +185,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         // test no-match filter
         gt = ff.greater(
                 ff.property("properties.dateProperty"),
-                ff.literal("2015-01-01T17:30:00.000Z"));
+                ff.literal("2015-01-01T22:30:00.000Z"));
         q = new Query("ft1", gt);
 
         // no feature should match
@@ -195,19 +196,19 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         PropertyIsLessThan lt = ff.less(
                 ff.property("properties.dateProperty"),
-                ff.literal("2015-01-01T00:00:00.000Z"));
+                ff.literal("2015-01-01T16:00:00.000Z"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", lt);
 
         assertEquals(1, source.getCount(q));
-        assertEquals(new ReferencedEnvelope(2d,2d,2d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(0d,2d,0d,2d,DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         SimpleFeatureIterator it = features.features();
         try {
             assertTrue(it.hasNext());
-            assertFeature(it.next(), 2);
+            assertFeature(it.next(), 0);
         }
         finally {
             it.close();
@@ -216,7 +217,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         // test no-match filter
         lt = ff.less(
                 ff.property("properties.dateProperty"),
-                ff.literal("0000-00-00T01:00:00.000Z"));
+                ff.literal("2015-01-01T00:00:00.000Z"));
         q = new Query("ft1", lt);
 
         // no feature should match

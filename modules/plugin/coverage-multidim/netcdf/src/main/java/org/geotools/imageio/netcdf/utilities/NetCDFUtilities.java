@@ -251,6 +251,23 @@ public class NetCDFUtilities {
 
     public static final String ENHANCE_SCALE_MISSING_DEFER = "org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer";
 
+    /** GridCoverage property key for netCDF variable attributes */
+    public static final String NETCDF_VARIABLE_ATTRIBUTES = "additionalVariableAttributes";
+
+    /**
+     * CF variable names which are not carried along as Grid2DCoverage properties.  These variables are already
+     * represented in the existing GridCoverage model.  For example, grid coverage unit of measure names are carried
+     * on the GridSampleDimension class
+     */
+    public static Map<String, Boolean> CF_IGNORED_VARIABLE_NAMES = new HashMap<>();
+
+    static {
+        CF_IGNORED_VARIABLE_NAMES.put(UNITS, true);
+        CF_IGNORED_VARIABLE_NAMES.put(FILL_VALUE, true);
+        CF_IGNORED_VARIABLE_NAMES.put(MISSING_VALUE, true);
+        CF_IGNORED_VARIABLE_NAMES.put(STANDARD_NAME, true);
+    }
+
     public static boolean ENHANCE_SCALE_OFFSET = false;
 
     static {

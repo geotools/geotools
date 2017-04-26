@@ -19,7 +19,7 @@
       "tileSize": 256
     },
     "composite": {
-      "url": "mapbox://test.cixwdy1nj001933p91a6wnxe0-2emxh,mjkruszewski.cixwc3qp2001l2wquza8ccz21-658xw",
+      "url": "mapbox://test.cixwdy1nj001933p91a6wnxe0-2emxh,testuser.cixwc3qp2001l2wquza8ccz21-658xw",
       "type": "vector"
     }
   },
@@ -43,11 +43,11 @@
           "stops": [
             [
               0,
-              "{name_en}-test"
+              "test"
             ],
             [
               22,
-              "{name_en}-test2"
+              "test2"
             ]
           ]
         },

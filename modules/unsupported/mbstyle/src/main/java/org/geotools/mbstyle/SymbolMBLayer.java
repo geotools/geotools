@@ -867,7 +867,7 @@ public class SymbolMBLayer extends MBLayer {
      * @throws MBFormatException
      */
     public Expression textRotate() throws MBFormatException {
-    	return parse.percentage(paint, "text-rotate", 0.0);
+    	return parse.percentage(layout, "text-rotate", 0.0);
     }
 
     /**

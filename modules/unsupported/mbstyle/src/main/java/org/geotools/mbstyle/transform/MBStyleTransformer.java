@@ -17,12 +17,15 @@
 package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FunctionFinder;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.*;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
+import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
@@ -199,8 +202,20 @@ public class MBStyleTransformer {
         // from fill pattern or fill color
         Fill fill;
         if (layer.hasFillPattern()) {
-            // TODO: Fill graphic (with external graphics)
-            ExternalGraphic eg = createExternalGraphicForSprite(layer.fillPattern(), styleContext);
+            
+            // If the fill-pattern is a literal string (not a function), then
+            // we need to support Mapbox {token} replacement.
+            Expression fillPatternExpr = layer.fillPattern();
+            if (fillPatternExpr instanceof Literal) {
+                String text = fillPatternExpr.evaluate(null, String.class);
+                if (text.trim().isEmpty()) {
+                    fillPatternExpr = ff.literal(" ");
+                } else {
+                    fillPatternExpr = cqlExpressionFromTokens(text);
+                }
+            }
+            
+            ExternalGraphic eg = createExternalGraphicForSprite(fillPatternExpr, styleContext);
             GraphicFill gf = sf.graphicFill(Arrays.asList(eg), layer.fillOpacity(), null, null, null, layer.toDisplacement());            
             fill = sf.fill(gf, null, null);                
         } else {
@@ -557,8 +572,7 @@ public class MBStyleTransformer {
             // Note: the URL is expected to be a CQL STRING ...
             Expression iconExpression = layer.iconImage();
             if (iconExpression instanceof Literal) {
-                iconExpression = ff
-                        .literal(cqlStringFromTokens(iconExpression.evaluate(null, String.class)));
+                iconExpression = cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
             }
 
             ExternalGraphic eg = createExternalGraphicForSprite(iconExpression, styleContext);
@@ -569,7 +583,6 @@ public class MBStyleTransformer {
             d.setDisplacementY(d.getDisplacementY());
             g.setDisplacement(d);
             symbolizer.setGraphic(g);
-
         }
 
         symbolizers.add(symbolizer);
@@ -736,33 +749,36 @@ public class MBStyleTransformer {
     }
 
     /**
-     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the full URL of the image for consumption
-     * by the {@link SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
+     * <p>
+     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the full URL of the image for
+     * consumption by the {@link SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
+     * </p>
      * 
      * @see {@link SpriteGraphicFactory} for more information.
      * 
      * @param iconName The name of the icon inside the spritesheet.
-     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the {@link SpriteGraphicFactory}).
+     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the
+     *        {@link SpriteGraphicFactory}).
      * @return An external graphic with the full URL of the mage for the {@link SpriteGraphicFactory}.
      */
     private ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
-        Expression spriteUrl;
+        String spriteUrl;
+        String iconNameCql = ECQL.toCQL(iconName);
         
+        /*
+         * Note: The provided iconName {@link Expression} will be embedded in the {@link ExternalGraphic}'s URL as a CQL string, in order to support
+         * Mapbox functions. The {@link SLDStyleFactory} will transform it back into a proper {@link Expression} before sending it to the {@link
+         * SpriteGraphicFactory}.
+         */
+
         if (styleContext != null && styleContext.getSprite() != null) {
             String spriteBase = styleContext.getSprite().trim() + "#";
-            spriteUrl = ff.function("Concatenate", ff.literal(spriteBase),
-                    iconName);
+            spriteUrl = spriteBase + "${" + iconNameCql + "}"; 
         } else {
-            spriteUrl = iconName;
+            spriteUrl = iconNameCql;
         }
 
-        // TODO: (Functions milestone) The icon name can be a function, so evaluating the expression to a string (below) is wrong.
-        // Evaluate it for now, because (for now) External Graphics do not take an expression for the URL.
-        // TODO: Allow External Graphics to take an expression for the URL
-        String spriteUrlStr = spriteUrl.evaluate(null, String.class);
-
-        return sf.createExternalGraphic(spriteUrlStr, SpriteGraphicFactory.FORMAT);
-
+        return sf.createExternalGraphic(spriteUrl, SpriteGraphicFactory.FORMAT);
     }
 
     /**
@@ -776,11 +792,11 @@ public class MBStyleTransformer {
     }     
     
     /**
-     * Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression string.
+     * <p>Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression string.</p>
      * 
-     * E.g., convert "<code>String with {tokens}</code>" to a CQL Expression (String) "<code>Value with ${tokens}</code>".
+     * <p>E.g., convert "<code>String with {tokens}</code>" to a CQL Expression (String) "<code>String with ${tokens}</code>".</p>
      * 
-     * See documentation of Mapbox {token} values:
+     * <p>See documentation of Mapbox {token} values, linked below.</p>
      * 
      * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox Style Spec: {token} values for icon-image</a>
      * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox Style Spec: {token} values for text-field</a>
@@ -795,11 +811,11 @@ public class MBStyleTransformer {
     }
 
     /**
-     * Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression.
+     * <p>Take a string that may contain Mapbox-style tokens, and convert it to a CQL expression.</p>
      * 
-     * E.g., convert "<code>String with {tokens}</code>" to a CQL Expression "<code>Value with ${tokens}</code>".
+     * <p>E.g., convert "<code>String with {tokens}</code>" to a CQL Expression: "<code>String with ${tokens}</code>".</p>
      * 
-     * See documentation of Mapbox {token} values:
+     * <p>See documentation of Mapbox {token} values, linked below.</p>
      * 
      * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-icon-image">Mapbox Style Spec: {token} values for icon-image</a>
      * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-symbol-text-field">Mapbox Style Spec: {token} values for text-field</a>

@@ -132,7 +132,34 @@ public class VisualTransformerTest {
     }
     
     /**
-     * Test generation of a GeoTools style from an MBFillLayer (using a sprite fill pattern)
+     * Test generation of a GeoTools style from an MBFillLayer (using a {tokenized} sprite fill pattern)
+     */
+    @Test
+    public void mbFillLayerSpritesTokenizedVisualTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("fillStyleTokenizedSpriteTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(polygonsBigFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("fill-sprite-tokenized"), image, 50);
+        mc.dispose();
+    }    
+    
+    /**
+     * Test generation of a GeoTools style from an MBFillLayer (using a constant sprite fill pattern)
      */
     @Test
     public void mbFillLayerSpritesVisualTest() throws Exception {
@@ -156,8 +183,34 @@ public class VisualTransformerTest {
                 new ReferencedEnvelope[] { bounds }, null);
         ImageAssert.assertEquals(file("fill-sprite"), image, 50);
         mc.dispose();
-    }
+    }   
     
+    /**
+     * Test generation of a GeoTools style from an MBFillLayer (using a function-defined sprite fill pattern)
+     */
+    @Test
+    public void mbFillLayerSpritesFunctionTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("fillStyleFunctionSpriteTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(polygonsBigFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("fill-sprite-function"), image, 50);
+        mc.dispose();
+    } 
     
     /**
      * Test visualization of a GeoTools style from an MB Symbol Layer

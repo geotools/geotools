@@ -94,6 +94,14 @@ public class MBStyleTransformer {
         Style style = sf.createStyle();
 
         for (MBLayer layer : layers) {
+            
+            int layerMaxZoom = layer.getMaxZoom();   
+            int layerMinZoom = layer.getMinZoom();            
+            Double layerMinScaleDenominator = layerMaxZoom == Integer.MAX_VALUE ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator((long) Math.min(25, layerMaxZoom));
+            Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator((long) Math.max(-25, layerMinZoom));
+            
             Boolean hasStops = false;
             if (layer.visibility()) {
                 if (layer.getPaint() != null) {
@@ -130,7 +138,7 @@ public class MBStyleTransformer {
                     }
 
                 } else {
-                    featureTypeStyle = transform(layer, mbStyle);
+                    featureTypeStyle = transform(layer, mbStyle, layerMinScaleDenominator, layerMaxScaleDenominator);
                     style.featureTypeStyles().add(featureTypeStyle);
                 }
             }

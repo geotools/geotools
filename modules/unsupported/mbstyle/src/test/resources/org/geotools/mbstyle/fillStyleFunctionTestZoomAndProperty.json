@@ -93,12 +93,12 @@
                 },
                 "fill-outline-color": {
                     "property": "someTextProperty",
-                    "default" "#000000",
+                    "default": "#000000",
                     "type": "categorical",
                     "stops": [
                         [
                             {"zoom": 3, "value": "val1"},
-                            "#CCFF33"
+                            "#CCFFFF"
                         ],
                         [
                             {"zoom": 3, "value": "val2"},

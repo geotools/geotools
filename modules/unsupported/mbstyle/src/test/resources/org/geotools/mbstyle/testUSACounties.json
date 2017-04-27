@@ -29,6 +29,7 @@
             {
             "id": "county-fill",
             "type": "fill",
+           "minzoom": 10,            
             "source": "test-source",
             "source-layer": "test-source-layer",
 
@@ -47,6 +48,7 @@
         {
             "id": "county-outline",
             "type": "line",
+           "minzoom": 10,            
             "source": "test-source",
             "source-layer": "test-source-layer",
             "layout": {
@@ -73,6 +75,7 @@
             "type": "symbol",
             "source": "testsource",
             "source-layer": "testsource-layer",
+            "minzoom": 10,
             "filter": [">=", "POP2000", "50000"]
             "layout": {
                 "symbol-placement": "line",

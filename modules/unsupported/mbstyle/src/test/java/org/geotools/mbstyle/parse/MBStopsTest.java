@@ -27,10 +27,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -120,7 +121,7 @@ public class MBStopsTest {
         Style[] styles = userLayer.getUserStyles();
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
-        assertEquals(22, fts.size());
+        assertEquals(20, fts.size());
     }
 
     @Test
@@ -177,10 +178,10 @@ public class MBStopsTest {
         assertEquals(0L, stop0.get(0));
         assertEquals(0L, stop0.get(1));
            
-        Object stop1Obj = stopsArray.get(0);
+        Object stop1Obj = stopsArray.get(1);
         assertTrue(stop1Obj instanceof JSONArray);
         // For zoom level 0,  Expect: [5, 5]
-        JSONArray stop1 =(JSONArray) stop0Obj; 
+        JSONArray stop1 =(JSONArray) stop1Obj;
         assertEquals(5L, stop1.get(0));
         assertEquals(5L, stop1.get(1));
     }

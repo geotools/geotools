@@ -50,7 +50,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
     private String geometryName;
     private Symbolizer symbolizer;
     private Expression opacity;
-    private Expression overlap;
 
     public RasterSymbolizerImpl(){
         this( CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
@@ -64,7 +63,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
         super(name, desc, (String) null, uom);
         this.filterFactory = factory;
         this.opacity = filterFactory.literal(1.0);
-        this.overlap = filterFactory.literal(OverlapBehavior.RANDOM);
         this.behavior = behavior;
     }
     
@@ -80,7 +78,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
                 + ((contrastEnhancement == null) ? 0 : contrastEnhancement.hashCode());
         result = prime * result + ((filterFactory == null) ? 0 : filterFactory.hashCode());
         result = prime * result + ((opacity == null) ? 0 : opacity.hashCode());
-        result = prime * result + ((overlap == null) ? 0 : overlap.hashCode());
         result = prime * result + ((shadedRelief == null) ? 0 : shadedRelief.hashCode());
         result = prime * result + ((symbolizer == null) ? 0 : symbolizer.hashCode());
         return result;
@@ -124,11 +121,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
             if (other.opacity != null)
                 return false;
         } else if (!opacity.equals(other.opacity))
-            return false;
-        if (overlap == null) {
-            if (other.overlap != null)
-                return false;
-        } else if (!overlap.equals(other.overlap))
             return false;
         if (shadedRelief == null) {
             if (other.shadedRelief != null)
@@ -255,7 +247,11 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
      */
     @Deprecated
     public Expression getOverlap() {
-        return overlap;
+        OverlapBehavior overlap = getOverlapBehavior();
+        if (overlap == null) {
+            overlap = OverlapBehavior.RANDOM;
+        }
+        return filterFactory.literal(overlap.toString());
     }
     
     public OverlapBehavior getOverlapBehavior() {
@@ -425,10 +421,13 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
      */
     @Deprecated
     public void setOverlap(Expression overlap) {
-        if (this.overlap == overlap) {
+        if(overlap == null)	{
             return;
         }
-        this.overlap = overlap;
+
+        OverlapBehavior overlapBehavior = OverlapBehavior
+                .valueOf(overlap.evaluate(null, String.class));
+        setOverlapBehavior(overlapBehavior);
     }
 
     /**

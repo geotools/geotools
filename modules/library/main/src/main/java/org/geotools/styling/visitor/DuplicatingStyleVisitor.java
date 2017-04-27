@@ -786,7 +786,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setUnitOfMeasure(raster.getUnitOfMeasure());
         copy.setImageOutline( copy( raster.getImageOutline()));
         copy.setOpacity( copy( raster.getOpacity() ));
-        copy.setOverlap( copy( raster.getOverlap()));
+        copy.setOverlapBehavior( raster.getOverlapBehavior());
         copy.setShadedRelief( copy( raster.getShadedRelief()));
         
         if( STRICT && !copy.equals( raster )){

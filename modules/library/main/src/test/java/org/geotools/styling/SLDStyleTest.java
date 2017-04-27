@@ -745,6 +745,10 @@ public class SLDStyleTest extends TestCase {
          String type = (String)overlapExpr.evaluate(null);
          assertEquals("LATEST_ON_TOP", type);
          
+         org.opengis.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
+         type = overlapBehavior.name();
+         assertEquals("LATEST_ON_TOP", type);
+
          //ContrastEnhancement
          ContrastEnhancement ce =  rs.getContrastEnhancement();
          Double v = (Double)ce.getGammaValue().evaluate(null);

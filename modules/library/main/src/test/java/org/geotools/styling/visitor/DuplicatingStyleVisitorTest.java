@@ -72,6 +72,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.OverlapBehavior;
 import org.opengis.util.Cloneable;
 
 
@@ -302,6 +303,38 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         RasterSymbolizer notEq = sf.createRasterSymbolizer();
 
         assertFalse(Utilities.equals(notEq.getUnitOfMeasure(), rasterSymb.getUnitOfMeasure()));
+    }
+
+    public void testRasterSymbolizerWithOverlapBehavior() throws Exception {
+        RasterSymbolizer rasterSymb1 = sf.createRasterSymbolizer();
+        rasterSymb1.setOverlapBehavior(OverlapBehavior.AVERAGE);
+        rasterSymb1.accept(visitor);
+        RasterSymbolizer clone1 = (RasterSymbolizer) visitor.getCopy();
+
+        assertEquals(clone1.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
+
+        // Try literal expression
+        RasterSymbolizer rasterSymbLiteral = sf.createRasterSymbolizer();
+        rasterSymbLiteral.setOverlap(ff.literal(OverlapBehavior.EARLIEST_ON_TOP.toString()));
+        rasterSymbLiteral.accept(visitor);
+        RasterSymbolizer cloneLiteral = (RasterSymbolizer) visitor.getCopy();
+
+        assertEquals(cloneLiteral.getOverlapBehavior(), rasterSymbLiteral.getOverlapBehavior());
+        assertEquals(cloneLiteral.getOverlap(), rasterSymbLiteral.getOverlap());
+
+        // Try with invalid expression string
+        RasterSymbolizer rasterSymb3 = sf.createRasterSymbolizer();
+        try {
+            rasterSymb3.setOverlap(ff.literal("invalid string"));
+        } catch (IllegalArgumentException e) {
+            // Expected result
+        } catch (Exception e) {
+            fail();
+        }
+
+        // Compare rastersymbolizer overlap behaviour
+        RasterSymbolizer notEq = sf.createRasterSymbolizer();
+        assertFalse(Utilities.equals(notEq.getOverlapBehavior(), rasterSymb1.getOverlapBehavior()));
     }
 
     public void testPointSymbolizerWithUOM() throws Exception {

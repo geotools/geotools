@@ -17,7 +17,6 @@
 package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionFinder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.*;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
@@ -25,12 +24,10 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -104,38 +101,45 @@ public class MBStyleTransformer {
                 if (layer.getLayout() != null) {
                     hasStops = MBObjectStops.hasStops(layer.getPaint());
                 }
+
                 FeatureTypeStyle featureTypeStyle = null;
-                List<Long> stopLevels = MBObjectStops.getStopLevels(layer);
-                if (stopLevels.size() > 0 && hasStops) {
-                    List<Long> layerStops = MBObjectStops.getLayerStopLevels(layer);
-                    try {
-                        List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, layerStops);
-                        for (MBLayer l : stopLayers) {
-                            long stopLevel = MBObjectStops.getStop(l);
-                            List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
-                            long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
-                            Double minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
-                            Double maxScaleDenominator = null;
-                            if (stopLevel != rangeForStopLevel[1] && rangeForStopLevel[1] != -1) {
-                                maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
-                            }
-                            
-                            featureTypeStyle = transform(l, mbStyle, minScaleDenominator, maxScaleDenominator);
-//                            Rule rule = featureTypeStyle.rules().get(0);
-//                            
-//                            rule.setMinScaleDenominator(minScaleDenominator);
-//                            rule.setMaxScaleDenominator(maxScaleDenominator);
-                            
-                            style.featureTypeStyles().add(featureTypeStyle);
-                        }
-                    } catch (ParseException e) {
 
-                    }
+                // TODO reduce property and zoom functions before transformation
+                layer = MBObjectStops.reducePropertyAndZoomFunctions(layer);
+                featureTypeStyle = transform(layer, mbStyle);
+                style.featureTypeStyles().add(featureTypeStyle);
 
-                } else {
-                    featureTypeStyle = transform(layer, mbStyle);
-                    style.featureTypeStyles().add(featureTypeStyle);
-                }
+//                List<Long> stopLevels = MBObjectStops.getStopLevels(layer);
+//                if (stopLevels.size() > 0 && hasStops) {
+//                    List<Long> layerStops = MBObjectStops.getLayerStopLevels(layer);
+//                    try {
+//                        List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, layerStops);
+//                        for (MBLayer l : stopLayers) {
+//                            long stopLevel = MBObjectStops.getStop(l);
+//                            List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
+//                            long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
+//                            Double minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+//                            Double maxScaleDenominator = null;
+//                            if (stopLevel != rangeForStopLevel[1] && rangeForStopLevel[1] != -1) {
+//                                maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
+//                            }
+//                            System.out.print(l.getJson().toJSONString());
+//                            featureTypeStyle = transform(l, mbStyle, minScaleDenominator, maxScaleDenominator);
+////                            Rule rule = featureTypeStyle.rules().get(0);
+////
+////                            rule.setMinScaleDenominator(minScaleDenominator);
+////                            rule.setMaxScaleDenominator(maxScaleDenominator);
+//
+//                            style.featureTypeStyles().add(featureTypeStyle);
+//                        }
+//                    } catch (ParseException e) {
+//
+//                    }
+
+//                } else {
+                    //featureTypeStyle = transform(layer, mbStyle);
+
+//                }
             }
         }
         

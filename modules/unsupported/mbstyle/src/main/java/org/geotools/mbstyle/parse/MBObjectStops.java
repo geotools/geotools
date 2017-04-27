@@ -95,6 +95,46 @@ public class MBObjectStops {
         return zoomLevels;
     }
 
+    public static MBLayer reducePropertyAndZoomFunctions(MBLayer layer) {
+        JSONObject jsonObject = (JSONObject) layer.getJson();
+        MBLayer newLayer = MBLayer.create(jsonObject);
+
+        if (newLayer.getPaint() != null) {
+            getReducedProperty(newLayer.getPaint());
+        }
+
+        return newLayer;
+    }
+
+    static JSONObject getReducedProperty(JSONObject jsonObject) {
+        Set<?> keySet = jsonObject.keySet();
+        Iterator<?> keys = keySet.iterator();
+        JSONArray reducedStops = null;
+        while (keys.hasNext()) {
+            String key = (String)keys.next();
+            if (jsonObject.get(key) instanceof JSONObject) {
+                JSONObject child = (JSONObject) jsonObject.get(key);
+                if (child.containsKey("stops")) {
+                    JSONArray stops = (JSONArray) child.get("stops");
+                    for (int i = 0; i < stops.size(); i++) {
+                        JSONArray stop = (JSONArray) stops.get(i);
+                        if (stop.get(0) instanceof JSONObject) {
+                            reducedStops = new JSONArray();
+                            JSONArray x = (JSONArray) stops.get(i);
+                            reducedStops.add(0, ((Long)((JSONObject)x.get(0)).get("zoom")).longValue());
+                            reducedStops.add(1, x.get(1));
+                            stop.remove(0);
+                            stop.remove(0);
+                            stop.add( 0, reducedStops.get(0));
+                            stop.add(1, reducedStops.get(1));
+                        }
+                    }
+                }
+            }
+        }
+        return jsonObject;
+    }
+
     public static List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Long> layerStops) throws ParseException {
         List<MBLayer> layers = new ArrayList<>();
 
@@ -265,10 +305,10 @@ public class MBObjectStops {
     static MBStyle getStopStyles(MBStyle style, long[] range) {
         for (MBLayer layer : style.layers()) {
             if (layer.getPaint() != null) {
-                traverse(layer.getPaint(), range);
+                reduce(layer.getPaint(), range);
             }
             if (layer.getLayout() != null) {
-                traverse(layer.getLayout(), range);
+                reduce(layer.getLayout(), range);
             }
         }
         return style;
@@ -276,10 +316,10 @@ public class MBObjectStops {
 
     static MBStyle createLayerStopStyle(MBStyle mbStyle, MBLayer layer, long[] range) {
         if (layer.getPaint() != null ) {
-            traverse(layer.getPaint(), range);
+            reduce(layer.getPaint(), range);
         }
         if (layer.getLayout() != null) {
-            traverse(layer.getLayout(), range);
+            reduce(layer.getLayout(), range);
         }
 
         return mbStyle;
@@ -287,10 +327,10 @@ public class MBObjectStops {
 
     static MBLayer createLayerStopStyle(MBLayer layer, long[] range) {
         if (layer.getPaint() != null ) {
-            traverse(layer.getPaint(), range);
+            reduce(layer.getPaint(), range);
         }
         if (layer.getLayout() != null) {
-            traverse(layer.getLayout(), range);
+            reduce(layer.getLayout(), range);
         }
 
         return layer;
@@ -317,7 +357,7 @@ public class MBObjectStops {
         return layerStop;
     }
 
-    static JSONObject traverse(JSONObject jsonObject, long[] range) {
+    static JSONObject reduce(JSONObject jsonObject, long[] range) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         List<Object> objectsToRemove = new ArrayList<>();
@@ -332,7 +372,7 @@ public class MBObjectStops {
                         JSONArray stop = (JSONArray) stops.get(i);
                         if (stop.get(0) instanceof Long) {
                             if (((Long) stop.get(0)).longValue() != range[0]) {
-                                //objectsToRemove.add(stops.get(i));
+                                objectsToRemove.add(stops.get(i));
                             }
                         }
                         if (stop.get(0) instanceof JSONObject) {

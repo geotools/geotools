@@ -63,7 +63,7 @@ public class VisualTransformerTest {
 
     JSONParser jsonParser = new JSONParser();
 
-    private static final long DISPLAY_TIME = 5000;
+    private static final long DISPLAY_TIME = 1000;
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
@@ -327,6 +327,19 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTestOverlap.json");        
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Overlap", "circle-style-test-overlap", true, 300, 300);
+    }
+    
+    @Test
+    public void mbLineLayerTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTest.json");
+        testVisualizeStyleWithLineFeatures(jsonObject, "Line Style", "line-style", true);
+    }
+    
+    
+    @Test
+    public void mbLineLayerSpriteTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleSpriteTest.json");
+        testVisualizeStyleWithLineFeatures(jsonObject, "Line Style w Sprite", "line-style-sprite", true);
     }
     
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {

@@ -37,6 +37,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicFill;
+import org.opengis.style.GraphicStroke;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
@@ -195,7 +196,7 @@ public class MBStyleTransformer {
         } else if (layer instanceof RasterMBLayer) {
             return transform((RasterMBLayer) layer);
         } else if (layer instanceof LineMBLayer) {
-            return transform((LineMBLayer) layer);
+            return transform((LineMBLayer) layer, styleContext);
         } else if (layer instanceof CircleMBLayer) {
             return transform((CircleMBLayer) layer);
         } else if (layer instanceof BackgroundMBLayer) {
@@ -339,15 +340,24 @@ public class MBStyleTransformer {
      * @param layer Describing line styling
      * @return FeatureTypeStyle
      */
-    FeatureTypeStyle transform(LineMBLayer layer) {
+    FeatureTypeStyle transform(LineMBLayer layer, MBStyle styleContext) {
         Stroke stroke = sf.stroke(layer.lineColor(), layer.lineOpacity(), layer.lineWidth(),
                 layer.lineJoin(), layer.lineCap(), null, null); // last "offset" is really "dash offset"
+        
         stroke.setDashArray(layer.lineDasharray());        
         LineSymbolizer ls = sf.lineSymbolizer(layer.getId(), null,
-                sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, layer.lineOffset());
+                sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, layer.lineOffset());        
+        
+        if (layer.hasLinePattern()) {            
+            ExternalGraphic eg = createExternalGraphicForSprite(layer.linePattern(), styleContext);
+            // GraphicStroke graphicStroke = sf.graphicStroke(Arrays.asList(eg), layer.lineOpacity(), layer.lineWidth(), null, null, null, null, null);
+            GraphicFill fill = sf.graphicFill(Arrays.asList(eg), layer.lineOpacity(), null, null, null, null);
+            stroke.setGraphicFill(fill);
+            //stroke.setGraphicFill(graphicFill);
+        }
         
         // Left for the special effects sprint:
-        // layer.linePattern(); // Graphic fill
+        //  // Graphic fill
         // layer.lineBlur();
         // layer.lineGapWidth();
         // layer.lineMiterLimit();

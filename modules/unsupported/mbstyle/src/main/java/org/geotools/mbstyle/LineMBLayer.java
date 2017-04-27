@@ -531,6 +531,14 @@ public class LineMBLayer extends MBLayer {
     public Expression linePattern() {
         return parse.string(paint, "line-pattern", null);
     }
+    
+    /**
+     * 
+     * @return True if the layer has a line-pattern explicitly provided.
+     */
+    public boolean hasLinePattern() {
+        return parse.isPropertyDefined(paint, "line-pattern");
+    }
 
     /**
      * {@inheritDoc}

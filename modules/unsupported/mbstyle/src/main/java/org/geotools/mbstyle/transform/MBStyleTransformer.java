@@ -99,7 +99,7 @@ public class MBStyleTransformer {
                 if (layer.getPaint() != null) {
                     hasStops = MBObjectStops.hasStops(layer.getPaint());
                 }
-                if (layer.getLayout() != null) {
+                if (layer.getLayout() != null && !hasStops) {
                     hasStops = MBObjectStops.hasStops(layer.getLayout());
                 }
                 FeatureTypeStyle featureTypeStyle = null;

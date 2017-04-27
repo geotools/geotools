@@ -121,7 +121,7 @@ public class MBStopsTest {
         Style[] styles = userLayer.getUserStyles();
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
-        assertEquals(20, fts.size());
+        assertEquals(11, fts.size());
     }
 
     @Test
@@ -196,7 +196,7 @@ public class MBStopsTest {
         SLDTransformer styleTransform = new SLDTransformer();
         try {
             String xml = styleTransform.transform(sld);
-            System.out.print(xml);
+//            System.out.print(xml);
         } catch (Exception e) {
 
         }

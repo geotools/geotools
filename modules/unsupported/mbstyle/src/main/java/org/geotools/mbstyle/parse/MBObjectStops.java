@@ -223,7 +223,7 @@ public class MBObjectStops {
             String key = (String) keys.next();
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
-                if (child.containsKey("stops") && ((JSONArray)child.get("stops")).get(0) instanceof JSONObject) {
+                if (child.containsKey("stops") && ((JSONArray)((JSONArray)child.get("stops")).get(0)).get(0) instanceof JSONObject) {
                     hasStops = true;
                 }
             }

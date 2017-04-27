@@ -2440,19 +2440,25 @@ public class StreamingRenderer implements GTRenderer {
             Graphics2D graphics = fts.graphics;
             // applicable rules
             final int length = ruleList.length;
+            int paintCommands = 0;
             for (int t = 0; t < length; t++) {
                 r = ruleList[t];
                 filter = r.getFilter();
 
                 if (filter == null || filter.evaluate(rf.feature)) {
                     doElse = false;
-                    processSymbolizers(graphics, rf, r.symbolizers());
+                    paintCommands += processSymbolizers(graphics, rf, r.symbolizers());
 
                     // bail out if we are in match first mode
                     if (fts.matchFirst) {
                         break;
                     }
                 }
+            }
+            // only emit a feature drawn event if we actually painted something with it, 
+            // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
+            if(paintCommands > 0) {
+                requests.put(new FeatureRenderedRequest(rf.feature));
             }
 
             if (doElse) {
@@ -2489,7 +2495,7 @@ public class StreamingRenderer implements GTRenderer {
      * @throws TransformException
      * @throws FactoryException
      */
-    private void processSymbolizers(final Graphics2D graphics,
+    private int processSymbolizers(final Graphics2D graphics,
             final RenderableFeature drawMe,
             final List<Symbolizer> symbolizers)
             throws Exception {
@@ -2616,11 +2622,8 @@ public class StreamingRenderer implements GTRenderer {
 
             }
         }
-        // only emit a feature drawn event if we actually painted something with it, 
-        // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
-        if(paintCommands > 0) {
-            requests.put(new FeatureRenderedRequest(drawMe.feature));
-        }
+        
+        return paintCommands;
     }
 
     /**

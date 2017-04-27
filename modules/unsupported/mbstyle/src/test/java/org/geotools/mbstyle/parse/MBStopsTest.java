@@ -189,11 +189,40 @@ public class MBStopsTest {
     @Test
     public void testMBStylesForStops2() throws IOException, ParseException {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("testUSACounties.json");
+        boolean hasStops = false;
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        List<Long> zoomLevels = MBObjectStops.getStopLevels(mbStyle);        
-        List<long[]> ranges = MBObjectStops.getStopLevelRanges(zoomLevels);
-        List<MBStyle> zoomStyles = MBObjectStops.getStylesForStopLevels(zoomLevels, mbStyle);
+        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        SLDTransformer styleTransform = new SLDTransformer();
+        try {
+            String xml = styleTransform.transform(sld);
+            System.out.print(xml);
+        } catch (Exception e) {
+
+        }
+
+
+//        for (MBLayer layer : mbStyle.layers()) {
+//            if (MBObjectStops.hasStops(layer.getPaint())) {
+//                hasStops = true;
+//            }
+//            if (MBObjectStops.hasStops(layer.getLayout())) {
+//                hasStops = true;
+//            }
+//            List<Long> stopLevels = MBObjectStops.getStopLevels(layer);
+//            if (stopLevels.size() > 0 && hasStops) {
+//                List<Long> zoomLevels = MBObjectStops.getStopLevels(mbStyle);
+//                List<long[]> ranges = MBObjectStops.getStopLevelRanges(zoomLevels);
+//                List<MBStyle> zoomStyles = MBObjectStops.getStylesForStopLevels(zoomLevels, mbStyle);
+//            }
+//            else {
+//                System.out.print("stop");
+//            }
+//
+//        }
+
+
+
         
         // There should be only one style, because this style has no zoom-and-property functions.
 

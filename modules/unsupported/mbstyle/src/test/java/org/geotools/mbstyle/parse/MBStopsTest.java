@@ -121,7 +121,7 @@ public class MBStopsTest {
         Style[] styles = userLayer.getUserStyles();
         assertEquals(1, styles.length);
         List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
-        assertEquals(22, fts.size());
+        assertEquals(10, fts.size());
     }
 
     @Test

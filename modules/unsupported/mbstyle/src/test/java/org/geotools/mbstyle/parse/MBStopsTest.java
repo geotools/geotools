@@ -27,11 +27,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  *
@@ -140,11 +139,50 @@ public class MBStopsTest {
         MBStyle s = zoomStyles.get(0);
         MBLayer layer = s.layers().get(5);
         JSONObject circleRadius = (JSONObject) layer.getPaint().get("circle-radius");
+        
+        /*
+         * Here we are testing this function, when reduced to zoom level 0.
+         * 
+            "circle-radius": {
+                                "property": "rating",
+                                "stops": [
+                                  [{"zoom": 0,  "value": 0}, 0],
+                                  [{"zoom": 0,  "value": 5}, 5],
+                                  [{"zoom": 20, "value": 0}, 0],
+                                  [{"zoom": 20, "value": 5}, 20]
+                                ]
+            }
+         * 
+         *  Reduced for zoom level 0, it should look like this:
+         *  
+            "circle-radius": {
+                                "property": "rating",
+                                "stops": [
+                                  [0, 0],
+                                  [5, 5]
+                                ]
+            }
+         *  
+         * 
+         */
+        
         JSONArray stopsArray = (JSONArray) circleRadius.get("stops");
-
         assertEquals("rating", circleRadius.get("property"));
         assertEquals(2, stopsArray.size());
-        assertFalse(stopsArray.get(0) instanceof JSONObject);
+        
+        Object stop0Obj = stopsArray.get(0);
+        assertTrue(stop0Obj instanceof JSONArray);
+        JSONArray stop0 =(JSONArray) stop0Obj;
+        // For zoom level 0, Expect: [0, 0]
+        assertEquals(0L, stop0.get(0));
+        assertEquals(0L, stop0.get(1));
+           
+        Object stop1Obj = stopsArray.get(0);
+        assertTrue(stop1Obj instanceof JSONArray);
+        // For zoom level 0,  Expect: [5, 5]
+        JSONArray stop1 =(JSONArray) stop0Obj; 
+        assertEquals(5L, stop1.get(0));
+        assertEquals(5L, stop1.get(1));
     }
 
 }

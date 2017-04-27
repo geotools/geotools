@@ -17,7 +17,6 @@
 package org.geotools.mbstyle.transform;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionFinder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.*;
 import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
@@ -25,7 +24,6 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
@@ -37,7 +35,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicFill;
-import org.opengis.style.GraphicStroke;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
@@ -108,9 +105,8 @@ public class MBStyleTransformer {
                 FeatureTypeStyle featureTypeStyle = null;
                 List<Long> stopLevels = MBObjectStops.getStopLevels(layer);
                 if (stopLevels.size() > 0 && hasStops) {
-                    List<Long> layerStops = MBObjectStops.getLayerStopLevels(layer);
                     try {
-                        List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, layerStops);
+                        List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, stopLevels);
                         for (MBLayer l : stopLayers) {
                             long stopLevel = MBObjectStops.getStop(l);
                             List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);

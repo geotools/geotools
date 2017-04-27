@@ -100,7 +100,7 @@ public class MBStyleTransformer {
                     hasStops = MBObjectStops.hasStops(layer.getPaint());
                 }
                 if (layer.getLayout() != null) {
-                    hasStops = MBObjectStops.hasStops(layer.getPaint());
+                    hasStops = MBObjectStops.hasStops(layer.getLayout());
                 }
                 FeatureTypeStyle featureTypeStyle = null;
                 List<Long> stopLevels = MBObjectStops.getStopLevels(layer);

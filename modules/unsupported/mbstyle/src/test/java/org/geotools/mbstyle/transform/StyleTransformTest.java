@@ -204,7 +204,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof LineMBLayer);
         LineMBLayer mbLine = (LineMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine, mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -222,7 +222,7 @@ public class StyleTransformTest {
         assertEquals(Integer.valueOf(10), lsym.getStroke().getWidth().evaluate(null, Integer.class));
         assertEquals(Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
                
-        List<Integer> expectedDashes = Arrays.asList(10, 5, 3, 2);
+        List<Integer> expectedDashes = Arrays.asList(50, 50);
         assertEquals(expectedDashes.size(), lsym.getStroke().dashArray().size());
         for (int i = 0; i < expectedDashes.size(); i++) {
             Integer n = (Integer) lsym.getStroke().dashArray().get(i).evaluate(null, Integer.class);
@@ -241,7 +241,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof LineMBLayer);
         LineMBLayer mbLine = (LineMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine);
+        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine, mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);

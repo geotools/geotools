@@ -316,6 +316,7 @@ public class MBStyleTransformer {
         Rule rule = sf.rule(layer.getId(), null, null, 0.0, Double.MAX_VALUE,
                 Arrays.asList(symbolizer), Filter.INCLUDE);
         rules.add(rule);
+        rule.setLegendGraphic(new Graphic[0]);
         return sf.featureTypeStyle(layer.getId(),
                 sf.description(Text.text("MBStyle " + layer.getId()),
                                Text.text("Generated for " + layer.getSourceLayer())),
@@ -370,7 +371,7 @@ public class MBStyleTransformer {
                 Double.POSITIVE_INFINITY,
                 Arrays.asList(ls),
                 layer.filter());
-        
+        rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);
         return sf.featureTypeStyle(layer.getId(),
                 sf.description(Text.text("MBStyle " + layer.getId()),
@@ -419,6 +420,7 @@ public class MBStyleTransformer {
                 layer.filter());
 
         rules.add(rule);
+        rule.setLegendGraphic(new Graphic[0]);
         return sf.featureTypeStyle(layer.getId(),
                 sf.description(Text.text("MBStyle " + layer.getId()),
                         Text.text("Generated for " + layer.getSourceLayer())),

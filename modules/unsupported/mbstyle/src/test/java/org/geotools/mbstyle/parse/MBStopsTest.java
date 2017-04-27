@@ -100,11 +100,11 @@ public class MBStopsTest {
             sld.featureTypeStyles().add(fts);
         }
         assertEquals(3, sld.featureTypeStyles().size());
-        assertEquals(34123.67333684649, sld.featureTypeStyles().get(0).rules().get(0).getMaxScaleDenominator(), 0.1);
-        assertEquals(5.590822639508929E8, sld.featureTypeStyles().get(0).rules().get(0).getMinScaleDenominator(), 0.1);
+        assertEquals(1.1181645279017859E9, sld.featureTypeStyles().get(0).rules().get(0).getMaxScaleDenominator(), 0.1);
+        assertEquals(133.2955989720566, sld.featureTypeStyles().get(0).rules().get(0).getMinScaleDenominator(), 0.1);
 
-        assertEquals(133.2955989720566, sld.featureTypeStyles().get(1).rules().get(0).getMaxScaleDenominator(), 0.1);
-        assertEquals(34123.67333684649, sld.featureTypeStyles().get(1).rules().get(0).getMinScaleDenominator(), 0.1);
+        assertEquals(1.1181645279017859E9, sld.featureTypeStyles().get(1).rules().get(0).getMaxScaleDenominator(), 0.1);
+        assertEquals(133.2955989720566, sld.featureTypeStyles().get(1).rules().get(0).getMinScaleDenominator(), 0.1);
 
         assertEquals(1.1181645279017859E9, sld.featureTypeStyles().get(2).rules().get(0).getMaxScaleDenominator(), 0.1);
         assertEquals(133.2955989720566, sld.featureTypeStyles().get(2).rules().get(0).getMinScaleDenominator(), 0.1);

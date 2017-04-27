@@ -320,25 +320,20 @@ public class MBObjectStops {
     static JSONObject traverse(JSONObject jsonObject, long[] range) {
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
-        List<Object> objectsToRemove = new ArrayList<>();
-        List<JSONArray> objectsToEdit = new ArrayList<>();
+        List<String> keyToRemove = new ArrayList<>();
         while (keys.hasNext()) {
             String key = (String)keys.next();
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
                 if (child.containsKey("stops")) {
+                    List<JSONArray> objectsToEdit = new ArrayList<>();
+                    List<Object> objectsToRemove = new ArrayList<>();
                     JSONArray stops = (JSONArray) child.get("stops");
                     for (int i = 0; i < stops.size(); i++) {
                         JSONArray stop = (JSONArray) stops.get(i);
-                        if (stop.get(0) instanceof Long) {
-                            if (((Long) stop.get(0)).longValue() != range[0]) {
-                                objectsToRemove.add(stops.get(i));
-                            }
-                        }
                         if (stop.get(0) instanceof JSONObject) {
                             if (((Long)((JSONObject) stop.get(0)).get("zoom")).longValue() == range[0]) {
                                 objectsToEdit.add((JSONArray) stops.get(i));
-
                             } else {
                                 objectsToRemove.add(stops.get(i));
                             }
@@ -349,18 +344,64 @@ public class MBObjectStops {
                     }
                     for (JSONArray o : objectsToEdit) {
                         JSONArray stopsArray = new JSONArray();
-                        stopsArray.add(0, ((Long)((JSONObject) o.get(0)).get("zoom")).longValue());
+                        stopsArray.add(0, ((JSONObject) o.get(0)).get("value"));
                         stopsArray.add(1, o.get(1));
                         stops.remove(o);
                         stops.add(stopsArray);
                     }
                 }
                 if (((JSONArray)child.get("stops")).size() == 0) {
-                    child.remove("stops");
+                    keyToRemove.add(key);
                 }
             }
         }
+        for (String key : keyToRemove) {
+            jsonObject.remove(key);
+        }
         return jsonObject;
+//        Set<?> keySet = jsonObject.keySet();
+//        Iterator<?> keys = keySet.iterator();
+//        List<Object> objectsToRemove = new ArrayList<>();
+//        List<JSONArray> objectsToEdit = new ArrayList<>();
+//        while (keys.hasNext()) {
+//            String key = (String)keys.next();
+//            if (jsonObject.get(key) instanceof JSONObject) {
+//                JSONObject child = (JSONObject) jsonObject.get(key);
+//                if (child.containsKey("stops")) {
+//                    JSONArray stops = (JSONArray) child.get("stops");
+//                    for (int i = 0; i < stops.size(); i++) {
+//                        JSONArray stop = (JSONArray) stops.get(i);
+//                        if (stop.get(0) instanceof Long) {
+//                            if (((Long) stop.get(0)).longValue() != range[0]) {
+//                                objectsToRemove.add(stops.get(i));
+//                            }
+//                        }
+//                        if (stop.get(0) instanceof JSONObject) {
+//                            if (((Long)((JSONObject) stop.get(0)).get("zoom")).longValue() == range[0]) {
+//                                objectsToEdit.add((JSONArray) stops.get(i));
+//
+//                            } else {
+//                                objectsToRemove.add(stops.get(i));
+//                            }
+//                        }
+//                    }
+//                    for (Object o : objectsToRemove) {
+//                        stops.remove(o);
+//                    }
+//                    for (JSONArray o : objectsToEdit) {
+//                        JSONArray stopsArray = new JSONArray();
+//                        stopsArray.add(0, ((Long)((JSONObject) o.get(0)).get("zoom")).longValue());
+//                        stopsArray.add(1, o.get(1));
+//                        stops.remove(o);
+//                        stops.add(stopsArray);
+//                    }
+//                }
+//                if (((JSONArray)child.get("stops")).size() == 0) {
+//                    child.remove("stops");
+//                }
+//            }
+//        }
+//        return jsonObject;
     }
 
     static List<Long> traverse(JSONObject jsonObject, List<Long> layerZoomLevels) {

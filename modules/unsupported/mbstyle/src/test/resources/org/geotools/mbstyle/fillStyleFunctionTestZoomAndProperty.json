@@ -102,11 +102,11 @@
                         ],
                         [
                             {"zoom": 3, "value": "val2"},
-                            "#CCFF33"
+                            "#CCFF00"
                         ],                        
                         [
                            {"zoom": 21, "value": "val1"},
-                            "#B88A00"
+                            "#B88AFF"
                         ],
                         [
                            {"zoom": 21, "value": "val2"},

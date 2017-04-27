@@ -185,5 +185,19 @@ public class MBStopsTest {
         assertEquals(5L, stop1.get(0));
         assertEquals(5L, stop1.get(1));
     }
+    
+    @Test
+    public void testMBStylesForStops2() throws IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("testUSACounties.json");
 
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<Long> zoomLevels = MBObjectStops.getStopLevels(mbStyle);        
+        List<long[]> ranges = MBObjectStops.getStopLevelRanges(zoomLevels);
+        List<MBStyle> zoomStyles = MBObjectStops.getStylesForStopLevels(zoomLevels, mbStyle);
+        
+        // There should be only one style, because this style has no zoom-and-property functions.
+
+
+
+    }
 }

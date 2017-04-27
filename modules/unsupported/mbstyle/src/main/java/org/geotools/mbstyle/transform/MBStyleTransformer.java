@@ -230,7 +230,7 @@ public class MBStyleTransformer {
         // use factory to avoid defaults values        
         Stroke stroke = sf.stroke(
                 layer.fillOutlineColor(),
-                ff.literal(1),
+                layer.fillOpacity(),
                 ff.literal(1),
                 ff.literal("miter"),
                 ff.literal("butt"),

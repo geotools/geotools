@@ -6,16 +6,16 @@
     service="WCS" version="2.0.1">
     <wcs:CoverageId>C0001</wcs:CoverageId>
     <wcs:Extension>    
-        <rsub:rangeSubset>
-            <rsub:rangeItem>
-                <rsub:rangeComponent>band1</rsub:rangeComponent>
-            </rsub:rangeItem>    
-            <rsub:rangeItem>        
-                <rsub:rangeInterval>
+        <rsub:RangeSubset>
+            <rsub:RangeItem>
+                <rsub:RangeComponent>band1</rsub:RangeComponent>
+            </rsub:RangeItem>    
+            <rsub:RangeItem>        
+                <rsub:RangeInterval>
                     <rsub:startComponent>band3</rsub:startComponent>
                     <rsub:endComponent>band5</rsub:endComponent>
-                </rsub:rangeInterval>
-            </rsub:rangeItem>        
-        </rsub:rangeSubset>
+                </rsub:RangeInterval>
+            </rsub:RangeItem>        
+        </rsub:RangeSubset>
     </wcs:Extension>
 </wcs:GetCoverage>

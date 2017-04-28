@@ -69,12 +69,12 @@ public final class RangeSubset extends XSD {
 
 
     /** Range subset extension **/
-    public static final QName rangeSubsetType = new QName(NAMESPACE, "rangeSubsetType");
+    public static final QName rangeSubsetType = new QName(NAMESPACE, "RangeSubsetType");
 
-    public static final QName rangeItemType = new QName(NAMESPACE, "rangeItemType");
+    public static final QName rangeItemType = new QName(NAMESPACE, "RangeItemType");
 
     public static final QName rangeIntervalType = new QName(NAMESPACE,
-            "rangeIntervalType");
+            "RangeIntervalType");
     
 
 }

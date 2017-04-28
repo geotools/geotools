@@ -95,8 +95,8 @@ public class MBStyleTransformer {
 
         for (MBLayer layer : layers) {
             
-            int layerMaxZoom = layer.getMaxZoom();   
-            int layerMinZoom = layer.getMinZoom();            
+            int layerMaxZoom = layer.getMaxZoom();
+            int layerMinZoom = layer.getMinZoom();
             Double layerMinScaleDenominator = layerMaxZoom == Integer.MAX_VALUE ? null
                     : MBObjectStops.zoomLevelToScaleDenominator((long) Math.min(25, layerMaxZoom));
             Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE ? null
@@ -115,9 +115,11 @@ public class MBStyleTransformer {
                 if (stopLevels.size() > 0 && hasStops) {
                     try {
                         List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, stopLevels);
+                        List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
+                        int j = 0;
                         for (MBLayer l : stopLayers) {
-                            long stopLevel = MBObjectStops.getStop(l);
-                            List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
+                            long stopLevel = stopLevels.get(j);
+
                             long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
                             Double minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
                             Double maxScaleDenominator = null;
@@ -132,6 +134,7 @@ public class MBStyleTransformer {
 //                            rule.setMaxScaleDenominator(maxScaleDenominator);
                             
                             style.featureTypeStyles().add(featureTypeStyle);
+                            j++;
                         }
                     } catch (ParseException e) {
 

@@ -448,6 +448,9 @@ public class StreamingRenderer implements GTRenderer {
      */
     public void addRenderListener(RenderListener listener) {
         renderListeners.add(listener);
+        if(labelCache instanceof LabelCacheImpl) {
+            ((LabelCacheImpl) labelCache).addRenderListener(listener);
+        }
     }
 
     /**

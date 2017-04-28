@@ -29,7 +29,7 @@
             {
             "id": "county-fill",
             "type": "fill",
-           "minzoom": 10,            
+           "minzoom": 10,
             "source": "test-source",
             "source-layer": "test-source-layer",
 
@@ -39,8 +39,12 @@
             "paint": {
                 "fill-color": {
                   "property": "POP2000",
-                  "base": 0.2
-                  "stops": [[0, "AliceBlue"], [1000000, "MidnightBlue"]]
+                  "base": 0.2,
+                  "stops": [
+                      [{"zoom": 0, "value": 100000}, "AliceBlue"],
+                      [{"zoom": 0, "value": 600000}, "MidnightBlue"],
+                      [{"zoom": 10, "value": 100000}, "Red"],
+                      [{"zoom": 10, "value": 600000}, "Green"]]
                 },
                 "fill-opacity": 0.5
             }
@@ -76,7 +80,7 @@
             "source": "testsource",
             "source-layer": "testsource-layer",
             "minzoom": 10,
-            "filter": [">=", "POP2000", "50000"]
+            "filter": [">=", "POP2000", "50000"],
             "layout": {
                 "symbol-placement": "line",
                 "symbol-spacing": 0,

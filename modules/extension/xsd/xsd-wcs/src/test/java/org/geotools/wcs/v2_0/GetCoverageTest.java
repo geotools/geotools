@@ -152,7 +152,7 @@ public class GetCoverageTest {
         Map<String, Object> extensions = getExtensionsMap(gc);
         assertEquals(1, extensions.size());
         
-        RangeSubsetType rangeSubset = (RangeSubsetType) extensions.get("http://www.opengis.net/wcs/range-subsetting/1.0:rangeSubset");
+        RangeSubsetType rangeSubset = (RangeSubsetType) extensions.get(RangeSubset.NAMESPACE + ":RangeSubset");
         
         // check values
         assertEquals(2, rangeSubset.getRangeItems().size());

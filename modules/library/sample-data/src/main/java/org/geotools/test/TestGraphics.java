@@ -250,8 +250,8 @@ public class TestGraphics extends Graphics2D{
 
     @Override
     public void setRenderingHints(Map<?, ?> hints) {
-        // TODO Auto-generated method stub
-        
+        this.hints = (Map<Key, ?>) hints;
+
     }
 
     @Override

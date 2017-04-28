@@ -1,18 +1,23 @@
 package org.geotools.renderer.label;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Font;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
 import org.junit.Test;
@@ -121,6 +126,36 @@ public class LabelCacheImplTest {
         LabelCacheItem item2 = labels.get(1);
         assertEquals("label1", item2.getLabel());
         assertEquals(Arrays.asList(L2), item2.getGeoms());
+    }
+    
+    @Test
+    public void testRendererListener() throws Exception {
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+
+        AtomicReference<Exception> exception = new AtomicReference<Exception>(null);
+        RenderListener listener = new RenderListener() {
+            
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void errorOccurred(Exception e) {
+                exception.set(e);
+            }
+        };
+        cache.addRenderListener(listener);
+        SimpleFeature f1 = createFeature("label1", L1);
+        cache.put(LAYER_ID, ts, f1, new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null,
+                false), ALL_SCALES);
+        cache.endLayer("layerId", null, null);
+        TestGraphics testGraphics = new TestGraphics();
+        testGraphics.setRenderingHints(Collections.emptyMap());
+        cache.end(testGraphics, new Rectangle(0, 0, 10, 10));
+        // got here, did we get the exception
+        assertNotNull(exception.get());
     }
 
     private SimpleFeature createFeature(String label, Geometry geom) {

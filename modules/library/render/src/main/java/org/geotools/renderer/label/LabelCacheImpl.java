@@ -36,11 +36,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.label.LabelCacheItem.GraphicResize;
 import org.geotools.renderer.lite.LabelCache;
@@ -161,6 +163,8 @@ public final class LabelCacheImpl implements LabelCache {
     private boolean needsOrdering = false;
     
     private VendorOptionParser voParser = new VendorOptionParser();
+    
+    private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
 
     public void enableLayer(String layerId) {
         needsOrdering = true;
@@ -463,8 +467,8 @@ public final class LabelCacheImpl implements LabelCache {
             if (stop)
                 return;
             
-            painter.setLabel(labelItem);
             try {
+                painter.setLabel(labelItem);
                 // LabelCacheItem labelItem = (LabelCacheItem)
                 // labelCache.get(labelIter.next());
 
@@ -501,10 +505,12 @@ public final class LabelCacheImpl implements LabelCache {
                         || geom instanceof LinearRing)
                     paintPolygonLabel(painter, tempTransform, displayArea, glyphs);
             } catch (Exception e) {
-                System.out.println("Issues painting " + labelItem.getLabel());
-                // the decimation can cause problems - we try to minimize it
-                // do nothing
-                e.printStackTrace();
+                if(LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, "Failure while painting labels", e);
+                }
+                for (RenderListener listener : renderListeners) {
+                    listener.errorOccurred(e);
+                }
             }
         }
         //Output for line labels
@@ -1991,5 +1997,18 @@ public final class LabelCacheImpl implements LabelCache {
             return null;
         return r;
     }
+    
+    /**
+     * adds a listener that responds to error events of feature rendered events.
+     * 
+     * @see RenderListener
+     * 
+     * @param listener
+     *            the listener to add.
+     */
+    public void addRenderListener(RenderListener listener) {
+        renderListeners.add(listener);
+    }
+
 
 }

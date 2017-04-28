@@ -127,7 +127,7 @@ public class MBStyleTransformer {
                                 maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
                             }
                             
-                            featureTypeStyle = transform(l, mbStyle, minScaleDenominator, maxScaleDenominator);
+                            featureTypeStyle = transform(l, mbStyle, maxScaleDenominator, minScaleDenominator);
 //                            Rule rule = featureTypeStyle.rules().get(0);
 //                            
 //                            rule.setMinScaleDenominator(minScaleDenominator);

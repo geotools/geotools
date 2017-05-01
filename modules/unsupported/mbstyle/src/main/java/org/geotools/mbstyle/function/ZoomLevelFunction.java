@@ -60,6 +60,8 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
             parameter("zoomLevel", Number.class), parameter("scaleDenominator", Number.class),
             parameter("srid", String.class));
 
+    public static final double EPSG_3857_O_SCALE = 559_082_263.9508929;
+
     public ZoomLevelFunction() {
         super(NAME);
     }
@@ -90,7 +92,7 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
 
         if ("EPSG:3857".equals(arg1)) {
             // This constant is the zoomLevel 0 scale denominator for web mercator at the equator.
-            return Math.log(559_082_263.9508929 / arg0.doubleValue()) / Math.log(2);
+            return Math.log(EPSG_3857_O_SCALE / arg0.doubleValue()) / Math.log(2);
         } else {
             throw new IllegalArgumentException("Unsupported srid for zoomLevel function: " + arg1);
         }

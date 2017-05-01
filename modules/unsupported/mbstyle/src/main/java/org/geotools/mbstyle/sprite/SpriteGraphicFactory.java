@@ -25,7 +25,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -44,8 +43,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * 
@@ -122,7 +119,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
         // Retrieve and parse the sprite index file.
         SpriteIndex spriteIndex = getSpriteIndex(baseUrl);
 
-        IconInfo iconInfo = spriteIndex.getIcon(iconName);
+        SpriteIndex.IconInfo iconInfo = spriteIndex.getIcon(iconName);
 
         // Retrieve the sprite sheet and get the icon as a sub image
         BufferedImage spriteImg = getSpriteSheet(baseUrl);
@@ -131,9 +128,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
 
         // Use "size" to scale the image, if > 0
         if (size > 0 && iconSubImg.getHeight() != size) {
-            double dsize = (double) size;
-
-            double scaleY = dsize / iconSubImg.getHeight(); // >1 if you're magnifying
+            double scaleY = ((double) size) / iconSubImg.getHeight(); // >1 if you're magnifying
             double scaleX = scaleY; // keep aspect ratio!
 
             AffineTransform scaleTx = AffineTransform.getScaleInstance(scaleX, scaleY);
@@ -142,7 +137,6 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
         }
 
         return new ImageIcon(iconSubImg);
-
     }
 
     /**
@@ -216,13 +210,13 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
                     spriteIndex = new SpriteIndex(indexUrlStr, (JSONObject) parsed);
                     indexCache.put(baseUrl, spriteIndex);
                 } else {
-                    throw new MapboxSpriteException("Exception parsing sprite index file from: "
+                    throw new MBSpriteException("Exception parsing sprite index file from: "
                             + indexUrlStr + ". Expected JSONObject, but was: "
                             + parsed.getClass().getSimpleName());
                 }
 
             } catch (ParseException e) {
-                throw new MapboxSpriteException(
+                throw new MBSpriteException(
                         "Exception parsing sprite index file from: " + indexUrlStr, e);
             }
         }
@@ -244,193 +238,13 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
             } catch (Exception e) {
                 LOGGER.warning("Unable to retrieve sprite sheet from location: "
                         + baseUrl.toExternalForm() + " (" + e.getMessage() + ")");
-                throw new MapboxSpriteException(
+                throw new MBSpriteException(
                         "Failed to retrieve sprite sheet for baseUrl: " + baseUrl.toExternalForm(),
                         e);
             }
             imageCache.put(baseUrl, image);
         }
         return image;
-    }
-
-    /**
-     * Wrapper that takes the sprite index file (as a JSONObject) for a Mapbox Sprite Sheet and parses the all the individual icons as
-     * {@link IconInfo} objects. For example:
-     * 
-     * <pre>
-     * <code>
-     * {
-     *    "goldfish": {
-     *      "height": 32,
-     *      "pixelRatio": 1,
-     *      "width": 32,
-     *      "x": 64,
-     *      "y": 64
-     *    },
-     *    "owl": {
-     *      "height": 64,
-     *      "pixelRatio": 1,
-     *      "width": 64,
-     *      "x": 0,
-     *      "y": 0
-     *    }
-     * }
-     * </code>
-     * </pre>
-     * 
-     * 
-     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
-     *
-     */
-    public static class SpriteIndex {
-
-        private String spriteIndexUrl;
-
-        private JSONObject json;
-
-        private Map<String, IconInfo> icons;
-
-        /**
-         * 
-         * @param spriteIndexUrl The URL of the sprite index file (used for error messages).
-         * @param json The sprite index file as a {@link JSONObject}.
-         */
-        public SpriteIndex(String spriteIndexUrl, JSONObject json) {
-            this.spriteIndexUrl = spriteIndexUrl;
-            this.json = json;
-            this.icons = new HashMap<>();
-
-            for (Object key : this.json.keySet()) {
-                if (key instanceof String) {
-                    String iconName = (String) key;
-                    try {
-                        IconInfo iconInfo = parseIconInfoFromIndex(this.json, iconName);
-                        icons.put(iconName, iconInfo);
-                    } catch (Exception e) {
-                        LOGGER.warning("Mapbox sprite icon index file " + this.spriteIndexUrl
-                                + " contained invalid value for key \"" + iconName
-                                + "\". Exception was: " + e.getMessage());
-                    }
-                }
-            }
-        }
-
-        /**
-         * Parse the {@link IconInfo} for the provided iconName in the provided icon index.
-         * 
-         * @param iconIndex The icon index file.
-         * @param iconName The name of the icon in the index file.
-         * @return An {@link IconInfo} for the icon.
-         */
-        protected static IconInfo parseIconInfoFromIndex(JSONObject iconIndex, String iconName) {
-            if (!iconIndex.containsKey(iconName)) {
-                throw new MapboxSpriteException(
-                        "Sprite index file does not contain entry for icon with name: " + iconName);
-            }
-
-            Object o = iconIndex.get(iconName);
-            if (!(o instanceof JSONObject)) {
-                throw new MapboxSpriteException("Error parsing sprite index for \"" + iconName
-                        + "\": Expected JSONObject, but is " + o.getClass().getSimpleName());
-            }
-            return new IconInfo(iconName, (JSONObject) o);
-        }
-
-        public ImmutableMap<String, IconInfo> getIcons() {
-            return ImmutableMap.copyOf(icons);
-        }
-
-        public IconInfo getIcon(String iconName) {
-            if (!icons.containsKey(iconName)) {
-                throw new MapboxSpriteException("Mapbox sprite icon index file "
-                        + this.spriteIndexUrl + " does not contain icon with name: " + iconName);
-            } else {
-                return icons.get(iconName);
-            }
-        }
-
-    }
-
-    /**
-     * Wrapper for parsing the properties of an individual sprite index entry (JSONObject) for a single icon. For example:
-     * 
-     * <pre>
-     * <code>
-     * {
-     *  "width": 32,
-     *  "height": 32,
-     *  "x": 0,
-     *  "y": 0,
-     *  "pixelRatio": 1
-     * }
-     * </code>
-     * </pre>
-     * 
-     * 
-     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
-     *
-     */
-    public static class IconInfo {
-
-        private String iconName;
-
-        private JSONObject json;
-
-        /**
-         * 
-         * @param iconName The name of this sprite icon (used for error messages)
-         * @param json The sprite index entry for this icon, as a {@link JSONObject}
-         */
-        public IconInfo(String iconName, JSONObject json) {
-            this.iconName = iconName;
-            this.json = json;
-        }
-
-        public int getWidth() {
-            return intOrException("width");
-        }
-
-        public int getHeight() {
-            return intOrException("height");
-        }
-
-        public int getX() {
-            return intOrException("x");
-        }
-
-        public int getY() {
-            return intOrException("y");
-        }
-
-        public int getPixelRatio() {
-            return intOrException("pixelRatio");
-        }
-
-        private int intOrException(String k) {
-            if (!json.containsKey(k)) {
-                throw new MapboxSpriteException("Mapbox sprite icon with name \"" + iconName
-                        + "\" is missing required property: " + k);
-            }
-            Object o = json.get(k);
-
-            try {
-                if (o instanceof Number) {
-                    return ((Number) o).intValue();
-                } else if (o instanceof String) {
-                    return Integer.valueOf((String) o);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            } catch (Exception e) {
-                throw new MapboxSpriteException(
-                        "Mapbox sprite icon with name \"" + iconName
-                                + "\" contains invalid value for property \"" + k
-                                + "\". Expected integer, but was: " + o.getClass().getSimpleName(),
-                        e);
-            }
-
-        }
-
     }
 
     /**
@@ -441,5 +255,4 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
         imageCache.clear();
         indexCache.clear();
     }
-
 }

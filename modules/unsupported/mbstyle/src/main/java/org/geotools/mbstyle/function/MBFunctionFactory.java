@@ -40,6 +40,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(ZoomLevelFunction.NAME);
         functionList.add(ExponentialFunction.NAME);
         functionList.add(CSSFunction.NAME);
+        functionList.add(DefaultIfNullFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -78,5 +79,4 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         return null;
     }
-
 }

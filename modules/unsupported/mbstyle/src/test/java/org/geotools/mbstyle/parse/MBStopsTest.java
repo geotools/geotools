@@ -16,10 +16,9 @@
  */
 package org.geotools.mbstyle.parse;
 
-import org.geotools.mbstyle.MBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -147,7 +146,7 @@ public class MBStopsTest {
     public void testPropertyAndZoomScaleDenominators() throws IOException, ParseException {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transformed = mbStyle.transform();
         List<StyledLayer> styledLayers = transformed.layers();
         List<FeatureTypeStyle> fts = ((UserLayer)styledLayers.get(0)).userStyles().get(0).featureTypeStyles();
 

@@ -141,7 +141,12 @@ public class ExponentialFunction extends FunctionImpl {
         double value1 = lower.value.evaluate(object,Double.class);
         double stop2 = upper.stop.evaluate(object,Double.class);
         double value2 = upper.value.evaluate(object,Double.class); 
-        
+
+        // Basic exponential function:
+        //
+        // value_i = scale*(stop_i)^base - offset
+        //
+        // Determine scale and offset based on the upper and lower stops:
         double scale = (value2-value1)/(Math.pow(stop2, base) - Math.pow(stop1, base));
         double offset = value1-scale*Math.pow(stop1, base);
         

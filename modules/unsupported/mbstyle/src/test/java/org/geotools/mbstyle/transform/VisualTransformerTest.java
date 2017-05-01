@@ -115,7 +115,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -142,7 +142,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -169,7 +169,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -196,7 +196,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -223,7 +223,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -307,7 +307,7 @@ public class VisualTransformerTest {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTest.json");        
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test", "circle-style-test", true, 300, 300);
     }
-    
+
     /**
      * 
      * Test visualization of a GeoTools style from an MB Circle Layer using defaults
@@ -342,13 +342,23 @@ public class VisualTransformerTest {
         testVisualizeStyleWithLineFeatures(jsonObject, "Line Style w Sprite", "line-style-sprite", true);
     }
     
+    /**
+     * Test specifying displacement as an array function.
+     */
+    @Test
+    public void testDisplacementAsInterpolatedFunction() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("testDisplacementAsFunction.json");        
+        testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Displacement Function", "circle-style-displacement-fn-test", true, 300, 300);
+    }
+    
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {
 
         // Read file to JSONObject
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -373,7 +383,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 

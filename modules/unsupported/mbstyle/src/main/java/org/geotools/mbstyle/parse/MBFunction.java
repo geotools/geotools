@@ -405,7 +405,7 @@ public class MBFunction {
             return colorGenerateCategorize(value);
         }
         else if( type == FunctionType.IDENTITY){
-            return withFallback(ff.function("color", value)); // force conversion of CSS color names
+            return withFallback(ff.function("css", value)); // force conversion of CSS color names
         }
         throw new UnsupportedOperationException("Color unavailable for '"+type+"' function");
     }

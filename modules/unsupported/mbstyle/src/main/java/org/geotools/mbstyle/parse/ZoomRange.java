@@ -34,8 +34,9 @@ import org.json.simple.JSONObject;
 /**
  * Data object capturing a range between two zoom levels.
  */
-public class ZoomRange {
-
+public class ZoomRange implements Comparable<ZoomRange>{
+    private static MBObjectParser parse = new MBObjectParser(ZoomRange.class);
+    
     /** Min zoom level, may {@link Integer#MIN_NORMAL} if unset. */
     int min = Integer.MIN_VALUE;
 
@@ -127,9 +128,9 @@ public class ZoomRange {
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append("ZoomLevel ");
-        str.append(min == Long.MIN_VALUE ? "min" : String.valueOf(min));
+        str.append(min == Integer.MIN_VALUE ? "min" : String.valueOf(min));
         str.append(":");
-        str.append(max == Long.MAX_VALUE ? "max" : String.valueOf(max));
+        str.append(max == Integer.MAX_VALUE ? "max" : String.valueOf(max));
 
         return str.toString();
     }
@@ -145,7 +146,7 @@ public class ZoomRange {
      * @param layer
      * @return List of zoom levels, may be empty if layer is not visible.
      */
-    List<ZoomRange> zoomLevels(MBLayer layer) {
+    public static List<ZoomRange> zoomLevels(MBLayer layer) {
         if (!layer.visibility()) {
             return Collections.emptyList();
         }
@@ -155,8 +156,6 @@ public class ZoomRange {
         // These are intended to go early in the rendering chain
         // prefer use of rules if possible
         JSONObject paint = layer.paint();
-        
-        zoomLevels.addAll( zoomLevelsPaint( paint ));
         
         // These are intended to go late in the rendering chain
         // prefer use of functions if possible
@@ -168,9 +167,54 @@ public class ZoomRange {
         return zoomLevels;
     }
 
-    private List<ZoomRange> zoomLevelsPaint(JSONObject paint) {
-        // TODO Auto-generated method stub
-        return null;
+    @SuppressWarnings("unchecked")
+    public static List<ZoomRange> zoomLevelsPaint(JSONObject paint, ZoomRange layerRange) {
+        SortedSet<ZoomRange> levels = new TreeSet<>();
+        for( Entry<String,Object> entry : (Set<Entry<String,Object>>) paint.entrySet() ){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (value instanceof JSONObject) {
+                JSONObject child = (JSONObject) value;
+                if( isFunction(child) && isZoomAndPropertyFunction(child)){
+                    List<ZoomRange> list = zoomLevelsFunction( child, layerRange );
+                    levels.addAll(list);
+                }
+            }
+        }
+        return new ArrayList<>( levels );
+    }
+
+    private static List<ZoomRange> zoomLevelsFunction(JSONObject function, ZoomRange layerRange){
+        if(!isZoomAndPropertyFunction(function)){
+            return Collections.emptyList();
+        }
+        SortedSet<Integer> set = new TreeSet<>();
+        set.add(layerRange.getMin());
+        set.add(layerRange.getMax());
+        
+        JSONArray stops = (JSONArray) function.get("stops");
+        for( Object obj : stops ){
+            JSONObject stop = (JSONObject) ((JSONArray) obj).get(0);
+            Object value = stop.get("zoom");
+            if(!(value instanceof Number)){
+                throw new MBFormatException("Zoom level required to be integer, was "+value.getClass().getSimpleName());
+            }
+            int zoom = ((Number)value).intValue();
+            set.add(zoom);
+        }
+
+        List<ZoomRange> levels = new ArrayList<>();
+        Iterator<Integer> iterator = set.iterator();
+        int zoom = iterator.next();
+        while( iterator.hasNext() ){
+            ZoomRange range = new  ZoomRange();
+            range.setMin(zoom);
+            zoom = iterator.next();
+            range.setMax(zoom);
+            
+            levels.add(range);
+        }
+        return levels;
     }
     
     /**
@@ -178,30 +222,30 @@ public class ZoomRange {
      * @param paint
      * @return true if zoom and property function found.
      */
-    static boolean hasZoomAndPropertyFunction(JSONObject paint) {
+    private static boolean hasZoomAndPropertyFunction(JSONObject paint) {
         for( Entry<String,Object> entry : (Set<Entry<String,Object>>) paint.entrySet() ){        
             String key = entry.getKey();
             Object value = entry.getValue();
             if (value instanceof JSONObject) {
                 JSONObject child = (JSONObject) value;
                 if( isFunction(child) && isZoomAndPropertyFunction(child)){
-                    return true; // we found a zoom and property function
+                    // drill down and grab the stops ranges
                 }
             }
         }
         return false;
     }
 
-    static boolean isFunction(JSONObject json){
+    private  static boolean isFunction(JSONObject json){
         if( json.containsKey("type")){
             return "identity".equals(json.get("type"));
         }
-        else if (json.containsKey("stop")){
+        else if (json.containsKey("stops")){
             return true;
         }
         return false;
     }
-    static boolean isZoomAndPropertyFunction(JSONObject json){
+    private static boolean isZoomAndPropertyFunction(JSONObject json){
         if (json.containsKey("property") && json.containsKey("stops")) {
             JSONArray stops = (JSONArray) json.get("stops");
             Object stop = stops.get(0);
@@ -213,6 +257,14 @@ public class ZoomRange {
             }
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(ZoomRange other) {
+        if( min == other.min ){
+            return 0;
+        }
+        return min < other.min ? -1 : 1;
     }
     
 }

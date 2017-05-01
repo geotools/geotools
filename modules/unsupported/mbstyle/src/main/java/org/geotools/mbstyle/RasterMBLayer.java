@@ -22,12 +22,11 @@ import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.SemanticType;
 
-
 public class RasterMBLayer extends MBLayer {
 
     private JSONObject paintJson;
 
-    private static String type = "raster";
+    private static String TYPE = "raster";
 
     public RasterMBLayer(JSONObject json) {
         super(json, new MBObjectParser(RasterMBLayer.class));
@@ -47,7 +46,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) The opacity (Number) at which the image will be drawn.
      * 
      * Defaults to 1. Range: [0, 1]
-     * 
+     *
+     * @return The opacity of this raster layer.
      */
     public Expression opacity() {
         return parse.percentage(paintJson, "raster-opacity", 1);
@@ -57,7 +57,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) The opacity (Number) at which the image will be drawn.
      * 
      * Defaults to 1. Range: [0, 1]
-     * 
+     *
+     * @return The opacity of this raster layer.
      */
     public Number getOpacity() {
         return parse.optional(Number.class , paintJson, "raster-opacity", 1);        
@@ -67,6 +68,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Rotates hues around the color wheel.
      * 
      * Number. Units in degrees. Defaults to 0.
+     *
+     * @return The angle to rotate the hue of the raster image by.
      */
     public Expression hueRotate() {
         return parse.number(paintJson, "raster-hue-rotate", 0);
@@ -76,42 +79,52 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Rotates hues around the color wheel.
      * 
      * Number. Units in degrees. Defaults to 0.
+     *
+     * @return The angle to rotate the hue of the raster image by.
      */    
     public Number getHueRotate() {
         return parse.optional(Number.class, paintJson, "raster-hue-rotate", 0);
     }
 
     /**
-     * (Optional) Increase or reduce the brightness of the image. The value is the minimum brightness.
+     * (Optional) Scale the brightness of the image. The value is the minimum brightness.
      * 
      * Number. Defaults to 0. Range: [0, 1]
+     *
+     * @return The minimum magnitude of the brightness.
      */
     public Expression brightnessMin() {
         return parse.number(paintJson, "raster-brightness-min", 0);
     }
     
     /**
-     * (Optional) Increase or reduce the brightness of the image. The value is the minimum brightness.
+     * (Optional) Scale the brightness of the image. The value is the minimum brightness.
      * 
      * Number. Defaults to 0. Range: [0, 1]
+     *
+     * @return The minimum magnitude of the brightness.
      */
     public Number getBrightnessMin() {
         return parse.optional(Number.class, paintJson, "raster-brightness-min", 0);
     }
 
     /**
-     * (Optional) Increase or reduce the brightness of the image. The value is the maximum brightness.
+     * (Optional) Scale the brightness of the image. The value is the maximum brightness.
      * 
      * Number. Defaults to 1. Range: [0, 1]
+     *
+     * @return The maximum magnitude of the brightness.
      */
     public Expression brightnessMax() {
         return parse.number(paintJson, "raster-brightness-max", 1);
     }
     
     /**
-     * (Optional) Increase or reduce the brightness of the image. The value is the maximum brightness.
+     * (Optional) Scale the brightness of the image. The value is the maximum brightness.
      * 
      * Number. Defaults to 1. Range: [0, 1]
+     *
+     * @return The maximum magnitude of the brightness.
      */
     public Number getBrightnessMax() {
         return parse.optional(Number.class, paintJson, "raster-brightness-max", 1);
@@ -121,6 +134,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Increase or reduce the saturation of the image.
      * 
      * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * @return The change in saturation
      */
     public Expression saturation() {
         return parse.number(paintJson, "raster-saturation", 0);
@@ -130,6 +145,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Increase or reduce the saturation of the image.
      * 
      * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * @return The change in saturation
      */
     public Number getSaturation() {
         return parse.optional(Number.class, paintJson,  "raster-saturation", 0);
@@ -139,6 +156,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Increase or reduce the contrast of the image.
      * 
      * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * @return The change in contrast
      */
     public Expression contrast() {
         return parse.number(paintJson, "raster-contrast", 0);
@@ -148,6 +167,8 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Increase or reduce the contrast of the image.
      * 
      * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * @return The change in contrast
      */
     public Number getContrast() {
         return parse.optional(Number.class, paintJson,  "raster-contrast", 0);
@@ -157,20 +178,31 @@ public class RasterMBLayer extends MBLayer {
      * (Optional) Fade duration when a new tile is added.
      * 
      * Number. Units in milliseconds. Defaults to 300.
+     *
+     * @return The duration of the fade when a new tile is added.
      */
     public Expression fadeDuration() {
         return parse.number(paintJson, "raster-fade-duration", 300);
     }
-    
+
+    /**
+     * (Optional) Fade duration when a new tile is added.
+     *
+     * Number. Units in milliseconds. Defaults to 300.
+     *
+     * @return The duration of the fade when a new tile is added.
+     */
     public Number getFadeDuration() {
         return parse.optional(Number.class, paintJson,  "raster-fade-duration", 300);
     }
 
     /**
-     * {@inheritDoc}
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
      */
     public String getType() {
-        return type;
+        return TYPE;
     }
 
 }

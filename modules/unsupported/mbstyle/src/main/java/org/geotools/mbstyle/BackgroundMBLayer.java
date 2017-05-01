@@ -42,7 +42,7 @@ public class BackgroundMBLayer extends MBLayer {
 
     private JSONObject layout;
 
-    private static String type = "background";
+    private static String TYPE = "background";
 
     public BackgroundMBLayer(JSONObject json) {
         super(json, new MBObjectParser(BackgroundMBLayer.class));
@@ -57,12 +57,10 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Optional color. Defaults to #000000. Disabled by background-pattern.
      * 
-     * The color with which the background will be drawn.
-     * 
+     * @return The color with which the background will be drawn.
      */
     public Color getBackgroundColor() {
-        return parse
-                .convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
+        return parse.convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
     }
 
     /**
@@ -70,8 +68,7 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * Optional color. Defaults to #000000. Disabled by background-pattern.
      * 
-     * The color with which the background will be drawn.
-     * 
+     * @return The color with which the background will be drawn.
      */
     public Expression backgroundColor() {
         return parse.color(paint, "background-color", Color.BLACK);
@@ -80,7 +77,8 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Optional string. Name of image in sprite to use for drawing an image background. For seamless patterns, image width and height must be a factor
      * of two (2, 4, 8, ..., 512).
-     * 
+     *
+     * @return Name of image in sprite to use for drawing an image background, or null if not defined.
      */
     public String getBackgroundPattern() {
         return parse.optional(String.class, paint, "background-pattern", null);
@@ -99,7 +97,8 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * Optional string. Name of image in sprite to use for drawing an image background. For seamless patterns, image width and height must be a factor
      * of two (2, 4, 8, ..., 512).
-     * 
+     *
+     * @return Name of image in sprite to use for drawing an image background, or null if not defined.
      */
     public Expression backgroundPattern() {
         return parse.string(paint, "background-pattern", null);
@@ -108,7 +107,7 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Optional number. Defaults to 1.
      * 
-     * The opacity at which the background will be drawn.
+     * @return The opacity at which the background will be drawn.
      */
     public Number getBackgroundOpacity() {
         return parse.optional(Number.class, paint, "background-opacity", 1.0);
@@ -119,15 +118,20 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * Optional number. Defaults to 1.
      * 
-     * The opacity at which the background will be drawn.
+     * @retur The opacity at which the background will be drawn.
      */
     public Expression backgroundOpacity() {
         return parse.percentage(paint, "background-opacity", 1.0);
     }
 
+    /**
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
+     */
     @Override
     public String getType() {
-        return type;
+        return TYPE;
     }
 
 }

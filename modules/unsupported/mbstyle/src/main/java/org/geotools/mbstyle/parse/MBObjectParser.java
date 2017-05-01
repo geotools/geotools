@@ -18,6 +18,8 @@ package org.geotools.mbstyle.parse;
 
 import java.awt.Color;
 import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.function.IntFunction;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
@@ -578,17 +580,26 @@ public class MBObjectParser {
 
     @SuppressWarnings("unchecked")
     public <T> T[] array(Class<T> type, JSONObject json, String tag, T[] fallback) {
-        if( json.containsKey(tag)){
+        if (json.containsKey(tag)) {
             Object obj = json.get(tag);
-            if( obj instanceof JSONArray){
+            if (obj instanceof JSONArray) {
                 JSONArray array = (JSONArray) obj;                
                 T[] returnArray = (T[]) Array.newInstance(type, array.size());
                 for (int i = 0; i < array.size(); i++) {
+                    Object value = array.get(i);
+                    if (Number.class.isAssignableFrom(type) && value instanceof Number) {
+                        if (type == Double.class) {
+                            returnArray[i] = (T)new Double(((Number)value).doubleValue());
+                            continue;
+                        } else if (type == Integer.class) {
+                            returnArray[i] = (T)new Integer(((Number)value).intValue());
+                            continue;
+                        }
+                    }
                     returnArray[i] = type.cast(array.get(i));
                 }
                 return returnArray;               
-            }
-            else {
+            } else {
                 throw new MBFormatException("\"" + tag + "\" required as JSONArray of "
                         + type.getSimpleName() + ": Unexpected " + obj.getClass().getSimpleName());
             }
@@ -596,24 +607,18 @@ public class MBObjectParser {
         return fallback;
     }
 
-    /** Convert to doublep[] */
+    /** Convert to int[] */
+    public int[] array(JSONObject json, String tag, int[] fallback) {
+        Integer[] array = array(Integer.class, json, tag, fallback == null ? null :
+                Arrays.stream(fallback).mapToObj(i -> i).toArray(Integer[]::new));
+        return array == null ? fallback : Arrays.stream(array).mapToInt(i -> i).toArray();
+    }
+
+    /** Convert to double[] */
     public double[] array(JSONObject json, String tag, double[] fallback) {
-        if (json.containsKey(tag)) {
-            Object obj = json.get(tag);
-            if (obj instanceof JSONArray) {
-                JSONArray array = (JSONArray) obj;
-                double result[] = new double[array.size()];
-                for (int i = 0; i < array.size(); i++) {
-                    result[i] = ((Number) array.get(i)).doubleValue();
-                }
-                return result;
-            } else {
-                throw new MBFormatException(
-                        "\"" + tag + "\" required as JSONArray of Number: Unexpected "
-                                + obj.getClass().getSimpleName());
-            }
-        }
-        return fallback;
+        Double[] array = array(Double.class, json, tag, fallback == null ? null :
+                Arrays.stream(fallback).mapToObj(i -> i).toArray(Double[]::new));
+        return array == null ? fallback : Arrays.stream(array).mapToDouble(i -> i).toArray();
     }
 
     /**

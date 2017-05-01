@@ -274,7 +274,7 @@ public class StyleParseTests {
         // line-gap-width can be either an integer or double.
         assertEquals(8, l.getLineGapWidth().intValue());
         assertEquals(8.0, l.getLineGapWidth().doubleValue(), .00001);
-        assertEquals(new Point(3,3), l.getLineTranslate());
+        assertEquals(new Point(3,3), l.lineTranslate());
         // line-width can be either an integer or double.
         assertEquals(10, l.getLineWidth().intValue());
         assertEquals(10.0, l.getLineWidth().doubleValue(), .00001);

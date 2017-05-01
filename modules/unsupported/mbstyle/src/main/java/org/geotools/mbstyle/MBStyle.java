@@ -45,13 +45,13 @@ import java.util.Map;
  * </p>
  * <p>
  * This class works closely with {@link MBLayer} hierarchy used to represent the fill, line, symbol,
- * raster, circle layers. Additional support will be required to work with sprties and glyphs.
+ * raster, circle layers. Additional support will be required to work with sprites and glyphs.
  * </p>
  * 
  * @author Jody Garnett (Boundless)
  */
 public class MBStyle {
-    
+
     /**
      * JSON document being wrapped by this class.
      * <p>
@@ -60,7 +60,7 @@ public class MBStyle {
      */
     public JSONObject json;
     
-    /** Helper class used to perform JSON travewrse json and
+    /** Helper class used to perform JSON traversal and
      * perform Expression and Filter conversions. */
     MBObjectParser parse = new MBObjectParser(MBStyle.class);
 
@@ -88,7 +88,6 @@ public class MBStyle {
             throw new MBFormatException("Root must be a JSON Object: " + json.toString());
         }
     }
-    
 
     /**
      * Access the layer with the provided id.
@@ -107,12 +106,17 @@ public class MBStyle {
         }
         return null;
     }
+
+    /**
+     * Access all layers.
+     *
+     * @return list of layers
+     */
     public List<MBLayer> layers(){
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
-                // MBLayer layer = MBObjectParser.parseLayer(obj);
                 MBLayer layer = MBLayer.create((JSONObject) obj);
                 layersList.add(layer);
             } else {
@@ -121,6 +125,7 @@ public class MBStyle {
         }
         return layersList;
     }
+
     /**
      * Access layers matching provided source.
      * 
@@ -168,33 +173,33 @@ public class MBStyle {
         }
         return layersList;
     }
-    
+
     /**
      * A human-readable name for the style
      * 
-     * @return human-readable name, optional string.
+     * @return human-readable name, or "name" if the style has no name.
      */
     public String getName() {
         return parse.optional(String.class, json, "name", null);
     }    
-    
+
     /**
      * (Optional) Arbitrary properties useful to track with the stylesheet, but do not influence rendering. Properties should be prefixed to avoid
      * collisions, like 'mapbox:'.
      * 
-     * @return {@link JSONObject} containing the metadata.
+     * @return {@link JSONObject} containing the metadata, or an empty JSON object the style has no metadata.
      */
     public JSONObject getMetadata() {
         return parse.getJSONObject(json, "metadata", new JSONObject());
     }
-    
+
     /**
      *  (Optional) Default map center in longitude and latitude. The style center will be used only if the map has not been positioned by other means (e.g. map options or user interaction).
 
      * @return A {@link Point} for the map center, or null if the style contains no center.
      */
     public Point2D getCenter() {
-        double[] coords = parse.array(json, "center", null);
+        double[] coords = parse.array(json, "center", (double[])null);
         if (coords == null) {
             return null;
         } else if (coords.length != 2){
@@ -203,11 +208,11 @@ public class MBStyle {
             return new Point2D.Double(coords[0], coords[1]);            
         }
     }
-    
+
     /**
      * (Optional) Default zoom level. The style zoom will be used only if the map has not been positioned by other means (e.g. map options or user interaction).
      * 
-     * @return Number for the zoom level, or null.
+     * @return Number for the zoom level, or null if the style has no default zoom level.
      */
     public Number getZoom() {
         return parse.optional(Number.class, json, "zoom", null);
@@ -217,19 +222,19 @@ public class MBStyle {
      * (Optional) Default bearing, in degrees clockwise from true north. The style bearing will be used only if the map has not been positioned by
      * other means (e.g. map options or user interaction).
      * 
-     * @return Number for the bearing. Units in degrees. Defaults to 0.
+     * @return The bearing in degrees. Defaults to 0 if the style has no bearing.
      * 
      */
     public Number getBearing() {
         return parse.optional(Number.class, json, "bearing", 0);
     }
-    
+
     /**
      * (Optional) Default pitch, in degrees. Zero is perpendicular to the surface, for a look straight down at the map, while a greater value like 60
      * looks ahead towards the horizon. The style pitch will be used only if the map has not been positioned by other means (e.g. map options or user
      * interaction).
      * 
-     * @return Number for the pitch.Units in degrees. Defaults to 0.
+     * @return The pitch in degrees. Defaults to 0 if the style has no pitch.
      */
     public Number getPitch() {
         return parse.optional(Number.class, json, "pitch", 0);
@@ -240,7 +245,7 @@ public class MBStyle {
      * This property is required if any layer uses the background-pattern, fill-pattern, line-pattern, fill-extrusion-pattern, or icon-image
      * properties.
      * 
-     * @return The String URL, or null.
+     * @return The sprite URL, or null if the style has no sprite URL.
      */
     public String getSprite() {
         return parse.optional(String.class, json, "sprite", null);
@@ -254,12 +259,12 @@ public class MBStyle {
      * <br/>
      * <code>"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf"</code>
      * 
-     * @return A String URL template, or null.
+     * @return The glyphs URL template, or null if the style has no glyphs URL template.
      */
     public String getGlyphs() {
         return parse.optional(String.class, json, "glyphs", null);
     }
-    
+
     /**
      * Data source specifications. 
      * 
@@ -279,5 +284,4 @@ public class MBStyle {
         }
         return sourceMap;
     }
-    
 }

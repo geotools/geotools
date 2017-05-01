@@ -44,7 +44,7 @@ import java.awt.*;
  *              "fill-outline-color": "#000000",
  *              "fill-translate": [0,0],
  *              "fill-translate-anchor": "map",
- *              "fill-pattern": "trinangle" // Name of image in sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2, 4, 8, ..., 512).
+ *              "fill-pattern": "triangle" // Name of image in sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2, 4, 8, ..., 512).
  *          },
  *      },
  * </pre>
@@ -58,7 +58,7 @@ public class FillMBLayer extends MBLayer {
 
     private JSONObject layout;
 
-    private static String type = "fill";
+    private static String TYPE = "fill";
 
     /**
      * Controls the translation reference point.
@@ -85,28 +85,30 @@ public class FillMBLayer extends MBLayer {
      * (Optional) Whether or not the fill should be antialiased.
      * 
      * Defaults to true.
-     * 
+     *
+     * @return Whether the fill should be antialiased.
      */
     public Expression getFillAntialias() {
         return parse.bool(paint, "fill-antialias", true);
     }
 
     /**
-     * (Optional) The opacity of the entire fill layer. In contrast to the fill-color, this value will also affect the 1px stroke around the fill, if
-     * the stroke is used.
+     * (Optional) The opacity of the entire fill layer. In contrast to the fill-color, this value will also affect the
+     * 1px stroke around the fill, if the stroke is used.
      * 
      * Defaults to 1.
-     * @throws MBFormatException 
-     * 
+     *
+     * @return The opacity of the layer.
+     * @throws MBFormatException
      */
     public Number getFillOpacity() throws MBFormatException {
         return parse.optional(Double.class, paint, "fill-opacity", 1.0 );
     }
     
     /**
-     * Access fill-opacity.
+     * Access fill-opacity, defaults to 1.
      * 
-     * @return Access fill-opacity as literal or function expression, defaults to 1.
+     * @return The opacity of the layer.
      * @throws MBFormatException
      */
     public Expression fillOpacity() throws MBFormatException {
@@ -114,18 +116,24 @@ public class FillMBLayer extends MBLayer {
     }
 
     /**
-     * (Optional). The color of the filled part of this layer. This color can be specified as rgba with an alpha component and the color's opacity
-     * will not affect the opacity of the 1px stroke, if it is used.
+     * (Optional). The color of the filled part of this layer. This color can be specified as rgba with an alpha
+     * component and the color's opacity will not affect the opacity of the 1px stroke, if it is used.
      * 
      * Colors are written as JSON strings in a variety of permitted formats.
      * 
      * Defaults to #000000. Disabled by fill-pattern.
+     *
+     * @return The fill color.
      */
     public Color getFillColor(){        
         return parse.convertToColor(parse.optional(String.class, paint, "fill-color", "#000000"));
     }
     
-    /** Access fill-color as literal or function expression, defaults to black. */
+    /**
+     * Access fill-color as literal or function expression, defaults to black.
+     *
+     * @return The fill color.
+     */
     public Expression fillColor() {      
         return parse.color(paint, "fill-color", Color.BLACK);
     }
@@ -134,6 +142,8 @@ public class FillMBLayer extends MBLayer {
      * (Optional). Requires fill-antialias = true. The outline color of the fill.
      * 
      * Matches the value of fill-color if unspecified. Disabled by fill-pattern.
+     *
+     * @return The outline color of the fill.
      */
     public Color getFillOutlineColor(){
         if (paint.get("fill-outline-color") != null) {
@@ -143,7 +153,11 @@ public class FillMBLayer extends MBLayer {
         }
     }
 
-    /** Access fill-outline-color as literal or function expression, defaults to black. */
+    /**
+     * Access fill-outline-color as literal or function expression, defaults to black.
+     *
+     * @return The outline color of the fill.
+     */
     public Expression fillOutlineColor() {
         if (paint.get("fill-outline-color") != null) {
             return parse.color(paint, "fill-outline-color", Color.BLACK);
@@ -155,20 +169,21 @@ public class FillMBLayer extends MBLayer {
     /**
      * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up,
      * respectively. Units in pixels. Defaults to 0, 0.
+     *
+     * @return The geometry's offset
      */
-    public double[] getFillTranslate(){
-        return parse.array( paint, "fill-translate", new double[]{ 0.0, 0.0 } ); 
+    public int[] getFillTranslate(){
+        return parse.array( paint, "fill-translate", new int[]{ 0, 0 } );
     }
-     
+
+    /**
+     * Access fill-translate as Point.
+     *
+     * @return The geometry's offset, in pixels.
+     */
     public Point fillTranslate() {
-        if (paint.get("fill-translate") != null) {
-            JSONArray array = (JSONArray) paint.get("fill-translate");
-            Number x = (Number) array.get(0);
-            Number y = (Number) array.get(1);
-            return new Point(x.intValue(), y.intValue());
-        } else {
-            return new Point(0, 0);
-        }
+        int[] translate = getFillTranslate();
+        return new Point(translate[0], translate[1]);
     }
 
     /**
@@ -181,7 +196,7 @@ public class FillMBLayer extends MBLayer {
      * 
      * Requires fill-translate.
      * 
-     * @return Optional, one of 'map','viewport', defaults to 'map'.
+     * @return One of 'map','viewport', defaults to 'map'.
      */
     public FillTranslateAnchor getFillTranslateAnchor() {
         Object value = paint.get("fill-translate-anchor");
@@ -193,8 +208,10 @@ public class FillMBLayer extends MBLayer {
     }
 
     /**
-     * (Optional) Name of image in a sprite to use for drawing image fills. For seamless patterns, image width and height must be a factor of two (2,
-     * 4, 8, ..., 512).
+     * (Optional) Name of image in a sprite to use for drawing image fills. For seamless patterns, image width and
+     * height must be a factor of two (2, 4, 8, ..., 512).
+     *
+     * @return name of the sprite for the fill pattern, or null if not defined.
      */
     public Expression fillPattern() {
         return parse.string(paint, "fill-pattern", null);
@@ -209,10 +226,13 @@ public class FillMBLayer extends MBLayer {
     }
 
     /**
-     * {@inheritDoc}
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
      */
+    @Override
     public String getType() {
-        return type;
+        return TYPE;
     }
     
     /**
@@ -222,22 +242,12 @@ public class FillMBLayer extends MBLayer {
      * <pre>
      * filter-translate: [0,0]
      * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
-     * filter-translate: [ 0, { property: "building-height", "type":"exponential","stops": [[0,0],[30, 5]] }
+     * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
      * </pre>
-     * @return
+     * @return The geometry displacement
      */
     public Displacement toDisplacement() {
-        Object defn  = paint.get("fill-translate");
-        if( defn == null ){
-            return null;
-        }
-        else if (defn instanceof JSONArray){
-            JSONArray array = (JSONArray) defn;
-            return sf.displacement(
-                    parse.number( array, 0, 0 ),
-                    parse.number( array, 1, 0 ));
-        }
-        return null;
+        int[] translate = getFillTranslate();
+        return sf.displacement(ff.literal(translate[0]), ff.literal(translate[0]));
     }
-
 }

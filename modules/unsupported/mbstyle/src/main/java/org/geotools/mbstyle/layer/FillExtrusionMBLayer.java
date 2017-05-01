@@ -15,17 +15,25 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
-import java.awt.Color;
-import java.awt.Point;
-
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.json.simple.JSONArray;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
+
+import javax.measure.unit.NonSI;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
  * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.
  * <p>
@@ -55,9 +63,9 @@ public class FillExtrusionMBLayer extends MBLayer {
 
     private JSONObject layout;
 
-    private static String type = "fill-extrusion";
+    private static String TYPE = "fill-extrusion";
     
-    public static enum TranslateAnchor {
+    public enum TranslateAnchor {
         /**
          * Translation relative to the map.
          */
@@ -82,34 +90,46 @@ public class FillExtrusionMBLayer extends MBLayer {
     /**
      * (Optional) Defaults to 1.
      * 
-     * The opacity of the entire fill extrusion layer. This is rendered on a per-layer, not per-feature, basis, and data-driven styling is not available.
-     * @return Number
+     * The opacity of the entire fill extrusion layer. This is rendered on a per-layer, not per-feature, basis, and
+     * data-driven styling is not available.
+     *
+     * @return The opacity of the fill extrusion layer.
      * @throws MBFormatException
      */
     public Number getFillExtrusionOpacity() throws MBFormatException {
-    	return parse.optional(Double.class, paint, "fill-extrusion-opacity", 1.0);
+        return parse.optional(Double.class, paint, "fill-extrusion-opacity", 1.0);
     }
 
     /**
      * Access fill-extrusion-opacity as literal or function expression
+     *
+     * @return The opacity of the fill extrusion layer.
      * @throws MBFormatException
      */
     public Expression fillExtrusionOpacity() throws MBFormatException {
-    	return parse.percentage(paint, "fill-extrusion-opacity", 1.0);
+        return parse.percentage(paint, "fill-extrusion-opacity", 1.0);
     }
     
     /**
      * (Optional). Defaults to #000000. Disabled by fill-extrusion-pattern.
      * 
-     * The base color of the extruded fill. The extrusion's surfaces will be shaded differently based on this color in combination with the root light settings.
+     * The base color of the extruded fill. The extrusion's surfaces will be shaded differently based on this
+     * color in combination with the root light settings.
      * 
-     * If this color is specified as  rgba with an alpha component, the alpha component will be ignored; use fill-extrusion-opacity to set layer opacity.
+     * If this color is specified as  rgba with an alpha component, the alpha component will be ignored; use
+     * fill-extrusion-opacity to set layer opacity.
+     *
+     * @return The color of the extruded fill.
      */
     public Color getFillExtrusionColor() throws MBFormatException {
         return parse.optional(Color.class, paint, "fill-extrusion-color", Color.BLACK );
     }
     
-    /** Access fill-extrusion-color as literal or function expression, defaults to black. */
+    /**
+     * Access fill-extrusion-color as literal or function expression, defaults to black.
+     *
+     * @return The color of the extruded fill.
+     */
     public Expression fillExtrusionColor() throws MBFormatException {      
         return parse.color(paint, "fill-extrusion-color", Color.BLACK);
     }
@@ -118,20 +138,21 @@ public class FillExtrusionMBLayer extends MBLayer {
      * (Optional) Units in pixels. Defaults to 0,0.
      * 
      * The geometry's offset. Values are [x, y] where negatives indicate left and up (on the flat plane), respectively.
+     *
+     * @return The geometry's offset, in pixels.
      */
-    public double[] getFillExtrusionTranslate() throws MBFormatException{
-        return parse.array( paint, "fill-extrusion-translate", new double[]{ 0.0, 0.0 } ); 
+    public int[] getFillExtrusionTranslate() throws MBFormatException{
+        return parse.array( paint, "fill-extrusion-translate", new int[]{ 0, 0 } );
     }
-     
+
+    /**
+     * Access fill-extrusion-translate as Point
+     *
+     * @return The geometry's offset, in pixels.
+     */
     public Point fillExtrusionTranslate() {
-        if (paint.get("fill-extrusion-translate") != null) {
-            JSONArray array = (JSONArray) paint.get("fill-extrusion-translate");
-            Number x = (Number) array.get(0);
-            Number y = (Number) array.get(1);
-            return new Point(x.intValue(), y.intValue());
-        } else {
-            return new Point(0, 0);
-        }
+        int[] translate = getFillExtrusionTranslate();
+        return new Point(translate[0], translate[1]);
     }
    
     /**
@@ -144,7 +165,8 @@ public class FillExtrusionMBLayer extends MBLayer {
      * {@link TranslateAnchor#VIEWPORT}: The fill extrusion is translated relative to the viewport.
      * 
      * Defaults to {@link TranslateAnchor#MAP}.
-     * 
+     *
+     * @return The translation reference point
      */
     public TranslateAnchor getFillExtrusionTranslateAnchor() {
         Object value = paint.get("fill-extrusion-translate-anchor");
@@ -156,7 +178,10 @@ public class FillExtrusionMBLayer extends MBLayer {
     }
     
     /**
-     * (Optional) Name of image in sprite to use for drawing images on extruded fills. For seamless patterns, image width and height must be a factor of two (2, 4, 8, ..., 512).
+     * (Optional) Name of image in sprite to use for drawing images on extruded fills. For seamless patterns, image
+     * width and height must be a factor of two (2, 4, 8, ..., 512).
+     *
+     * @return The name of the image sprite, or null if not defined.
      */
     public Expression getFillExtrusionPattern()  throws MBFormatException{
         return parse.string(paint, "fill-extrusion-pattern", null);
@@ -164,6 +189,8 @@ public class FillExtrusionMBLayer extends MBLayer {
     
     /**
      * (Optional) Units in meters. Defaults to 0. The height with which to extrude this layer.
+     *
+     * @return The height with which to extrude this layer.
      */
     public Number getFillExtrusionHeight() throws MBFormatException {
         return parse.optional(Double.class, paint, "fill-extrusion-height", 0.0);
@@ -171,6 +198,8 @@ public class FillExtrusionMBLayer extends MBLayer {
 
     /**
      * Access fill-extrusion-height as literal or function expression
+     *
+     * @return The height with which to extrude this layer.
      * @throws MBFormatException
      */
     public Expression fillExtrusionHeight() throws MBFormatException {
@@ -181,6 +210,8 @@ public class FillExtrusionMBLayer extends MBLayer {
      * (Optional) Units in meters. Defaults to 0. Requires fill-extrusion-height.
      * 
      * The height with which to extrude the base of this layer. Must be less than or equal to fill-extrusion-height.
+     *
+     * @return The height with which to extrude the base of this layer
      */
     public Number getFillExtrusionBase() throws MBFormatException {
         return parse.optional(Double.class, paint, "fill-extrusion-base", 0.0);
@@ -188,17 +219,85 @@ public class FillExtrusionMBLayer extends MBLayer {
 
     /**
      * Access fill-extrusion-base as literal or function expression
+     *
+     * @return The height with which to extrude the base of this layer
      * @throws MBFormatException
      */
     public Expression fillExtrusionBase() throws MBFormatException {
         return parse.percentage(paint, "fill-extrusion-base", 0.0);
     }
-    
+
     /**
-     * {@inheritDoc}
+     * Transform {@link FillExtrusionMBLayer} to GeoTools FeatureTypeStyle.
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      */
-    public String getType() {
-        return type;
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        PolygonSymbolizer symbolizer;
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+
+        // from fill pattern or fill color
+        Fill fill;
+
+        DisplacementImpl displacement = new DisplacementImpl();
+
+        displacement.setDisplacementX(getFillExtrusionBase().doubleValue());
+        displacement.setDisplacementY(getFillExtrusionHeight().doubleValue());
+
+        if (getFillExtrusionPattern() != null) {
+            //Fill graphic (with external graphics)
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(getFillExtrusionPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, displacement);
+            fill = sf.fill(gf, null, null);
+        } else {
+            fill = sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
+        }
+
+        symbolizer = sf.polygonSymbolizer(
+                getId(),
+                ff.property((String)null),
+                sf.description(Text.text("fill"),null),
+                NonSI.PIXEL,
+                null,
+                fill,
+                displacement,
+                ff.literal(0));
+
+        MBFilter filter = getFilter();
+        
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(symbolizer),
+                filter.filter());
+
+        // Set legend graphic to null.
+        //setLegend(null) to empty list.
+        rule.setLegendGraphic(new Graphic[0]);
+
+
+        return sf.featureTypeStyle(
+                getId(),
+                sf.description(
+                        Text.text("MBStyle "+getId()),
+                        Text.text("Generated for "+getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                Arrays.asList(rule)
+        );
     }
 
+    /**
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
+     */
+    @Override
+    public String getType() {
+        return TYPE;
+    }
 }

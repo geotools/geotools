@@ -1,0 +1,97 @@
+{
+  "version": 8,
+  "name": "getRefTest",
+  "metadata": {
+    "mapbox:autocomposite": true,
+    "mapbox:type": "template"
+  },
+  "center": [
+    0,
+    -1.1368683772161603e-13
+  ],
+  "zoom": 0.9915217327085096,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "geoserver-states": {
+      "url": "http://localhost:8080/geoserver/topp/states/wms",
+      "type": "vector"
+    }
+  },
+  "sprite": "mapbox://sprites/testuser/ciym62qtf005d2rnopgu725qo",
+  "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "layout": {
+        "line-join": "round"
+      },
+      "id": "water",
+      "type": "fill",
+      "source": "mapbox",
+      "source-layer": "water",
+      "minzoom": 11,
+      "maxzoom": 22,
+      "filter": [
+        "all",
+        [
+          "!=",
+          "class",
+          "river"
+        ],
+        [
+          "!=",
+          "class",
+          "stream"
+        ],
+        [
+          "!=",
+          "class",
+          "canal"
+        ]
+      ],
+      "paint": {
+        "fill-color": "#a0c8f0"
+      },
+      "metadata": {
+        "mapbox:group": "1444849382550.77"
+      },
+      "interactive": true
+    },
+    {
+      "id": "water_pattern",
+      "paint": {
+        "fill-translate": [
+          0,
+          2.5
+        ],
+        "fill-pattern": "wave"
+      },
+      "metadata": {
+        "mapbox:group": "1444849382550.77"
+      },
+      "interactive": true,
+      "ref": "water"
+    },
+    {
+      "id": "water_offset",
+      "paint": {
+        "fill-color": "white",
+        "fill-opacity": 0.3,
+        "fill-translate": [
+          0,
+          2.5
+        ]
+      },
+      "metadata": {
+        "mapbox:group": "1444849382550.77"
+      },
+      "interactive": true,
+      "ref": "water"
+    }
+  ],
+  "created": "2017-01-31T23:40:15.130Z",
+  "id": "ciym62qtf005d2rnopgu725qo",
+  "modified": "2017-01-31T23:40:52.754Z",
+  "owner": "testuser",
+  "draft": false
+}

@@ -18,9 +18,11 @@ package org.geotools.mbstyle.parse;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.geotools.coverage.processing.operation.Interpolate;
 import org.geotools.filter.function.CategorizeFunction;
@@ -28,6 +30,8 @@ import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.math.FilterFunction_pow;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -41,9 +45,12 @@ import org.opengis.filter.expression.Literal;
  * {@link FunctionType#EXPONENTIAL}.
  * <p>
  * We have several methods that intelligently review {@link #getType()} and produce the correct
- * expression.</p>
+ * expression:</p>
  * <ul>
  * <li>{@link #color()}</li>
+ * <li>{@link #numeric()}</li>
+ * <li>{@link #function(Class)}</li>
+ * <li>{@link #enumeration(Class)}</li>
  * </ul>
  * 
  */
@@ -53,6 +60,8 @@ public class MBFunction {
     final protected JSONObject json;
 
     private FilterFactory2 ff;
+    
+    JSONParser parser = new JSONParser();
 
     public MBFunction(JSONObject json) {
         this(new MBObjectParser(MBFunction.class), json);
@@ -63,11 +72,10 @@ public class MBFunction {
         this.ff = parse.getFilterFactory();
 
         this.json = json;
-
     }
 
     /** Optional type, one of identity, exponential, interval, categorical. */
-    public static enum FunctionType {
+    public enum FunctionType {
         /** Functions return their input as their output. */
         IDENTITY,
         /**
@@ -125,21 +133,25 @@ public class MBFunction {
             return FunctionType.CATEGORICAL;
         default:
             throw new MBFormatException("Function type \"" + type
-                    + "\" invalid - expected identity, expontential, interval, categorical");
+                    + "\" invalid - expected identity, exponential, interval, categorical");
         }
     }
     
     /**
      * <p>
-     * A value to serve as a fallback function result when a value isn't otherwise available. It is used in the following circumstances:
+     * A value to serve as a fallback function result when a value isn't otherwise available. It is used in the
+     * following circumstances:
      * </p>
      * 
      * <ul>
      * <li>In categorical functions, when the feature value does not match any of the stop domain values.</li>
-     * <li>In property and zoom-and-property functions, when a feature does not contain a value for the specified property.</li>
-     * <li>In identity functions, when the feature value is not valid for the style property (for example, if the function is being used for a
-     * circle-color property but the feature property value is not a string or not a valid color).</li>
-     * <li>In interval or exponential property and zoom-and-property functions, when the feature value is not numeric.</li>
+     * <li>In property and zoom-and-property functions, when a feature does not contain a value for the specified
+     * property.</li>
+     * <li>In identity functions, when the feature value is not valid for the style property (for example, if the
+     * function is being used for a circle-color property but the feature property value is not a string or not a valid
+     * color).</li>
+     * <li>In interval or exponential property and zoom-and-property functions, when the feature value is not
+     * numeric.</li>
      * </ul>
      * 
      * <p>
@@ -158,7 +170,8 @@ public class MBFunction {
     
     /**
      * <p>
-     * Return the function type, falling back to the default function type for the provided {@link Class} if no function type is explicitly declared.
+     * Return the function type, falling back to the default function type for the provided {@link Class} if no function
+     * type is explicitly declared.
      * The parameter is necessary because different output classes will have different default function types.
      * </p>
      *
@@ -171,7 +184,8 @@ public class MBFunction {
      * getTypeWithDefault(Number.class); // -> "exponential" function type
      * </pre>
      * 
-     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#types-function">The "type" header under Mapbox Spec: Functions</a>
+     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#types-function">The "type" header under Mapbox
+     * Spec: Functions</a>
      * @param clazz The class for which to return the default function type
      * @return The function type, falling back to the default when the provided {@link Class} is the return type.
      */
@@ -306,8 +320,10 @@ public class MBFunction {
     }
     
     /**
-     * (Optional) Number. Default is 1. The exponential base of the interpolation curve. It controls the rate at which the function output increases.
-     * Higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.
+     * (Optional) Number. Default is 1. The exponential base of the interpolation curve. It controls the rate at which
+     * the function output increases.
+     * Higher values make the output increase more towards the high end of the range. With values close to 1 the output
+     * increases linearly.
      * 
      * @return The exponential base of the interpolation curve.
      */
@@ -320,12 +336,13 @@ public class MBFunction {
      * <p>
      * The value is determined by:
      * <ul>
-     * <li>{@link FunctionCategory#ZOOM}: uses zoolLevel function with wms_scale_denominator evn variable</li>
-     * <li>{@link FunctionCategory#PROPERTY}: uses the provided property to exract value from each feature</li>
+     * <li>{@link FunctionCategory#ZOOM}: uses zoomLevel function with wms_scale_denominator evn variable</li>
+     * <li>{@link FunctionCategory#PROPERTY}: uses the provided property to extract value from each feature</li>
      * </ul>
-     * Zoom and Property functions are not supported and are expected to be reduced by the current zoom level prior to use.
+     * Zoom and Property functions are not supported and are expected to be reduced by the current zoom level prior to
+     * use.
      * </p>
-     * @return expression function is evaualted against
+     * @return expression function is evaluated against
      */
     private Expression input() {
         EnumSet<FunctionCategory> category = category();
@@ -357,7 +374,7 @@ public class MBFunction {
      * <p>
      * <em>
      * 
-     * @param json JSONOBject definition of Function
+     * @param json Definition of Function
      * @return Function as defined by json
      */
     public static MBFunction create(JSONObject json) {
@@ -391,29 +408,32 @@ public class MBFunction {
         
         if (type == FunctionType.EXPONENTIAL) {
             double base = parse.optional(Double.class, json, "base", 1.0 );
-            if( base == 1.0){
+            if (base == 1.0) {
                 return colorGenerateInterpolation(value);
-            }
-            else {
+            } else {
                 return colorGenerateExponential(value, base);
             }
         }
-        if( type == null || type == FunctionType.CATEGORICAL){
+        if (type == null || type == FunctionType.CATEGORICAL) {
             return colorGenerateRecode(value);
-        }
-        else if( type == FunctionType.INTERVAL){
+        } else if (type == FunctionType.INTERVAL) {
             return colorGenerateCategorize(value);
-        }
-        else if( type == FunctionType.IDENTITY){
+        } else if (type == FunctionType.IDENTITY) {
             return withFallback(ff.function("css", value)); // force conversion of CSS color names
         }
         throw new UnsupportedOperationException("Color unavailable for '"+type+"' function");
     }
     
+    /**
+     * Generates a color expression for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * 
+     * @param expression The expression for the function input
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL} function)
+     */
     private Expression colorGenerateCategorize(Expression expression) {
         return generateCategorize(expression, (value, stop)->{
             Expression color = parse.color((String)value);
-            if( color == null ){
+            if (color == null) {
                 throw new MBFormatException("Could not convert stop "+stop+" color "+value+" into a color");
             }
             return color;
@@ -422,8 +442,6 @@ public class MBFunction {
     /**
      * Use Recode function to implement {@link FunctionType#CATEGORICAL}.
      * <p>
-     * Generated expression of the form:
-     * <code>Recode( input, stop1, color1, stop2, color2, 'preceding')</code></p>
      * 
      * @param input input expression
      * @return recode function
@@ -445,6 +463,12 @@ public class MBFunction {
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
     
+    /**
+     * Generates a color expression for the output of this {@link MBFunction} (as a interpolate function), based on the provided input Expression.
+     * 
+     * @param expression The expression for the function input
+     * @return The expression for the output of this function (as an interpolate function)
+     */
     private Expression colorGenerateInterpolation(Expression expression) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
@@ -462,6 +486,13 @@ public class MBFunction {
         parameters.add(ff.literal("color"));
         return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
+    
+    /**
+     * Generates a color expression for the output of this {@link MBFunction} (as an exponential function), based on the provided input Expression.
+     * 
+     * @param expression The expression for the function input
+     * @return The expression for the output of this function (as an exponential function)
+     */
     private Expression colorGenerateExponential(Expression expression, double base) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
@@ -508,20 +539,17 @@ public class MBFunction {
         
         if (type == FunctionType.EXPONENTIAL) {
             double base = parse.optional(Double.class, json, "base", 1.0 );
-            if( base == 1.0){
+            if (base == 1.0) {
                 return numericGenerateInterpolation(input);
-            }
-            else {
+            } else {
                 return numericGenerateExponential(input, base);
             }
         }
         if (type == FunctionType.CATEGORICAL) {
             return generateRecode(input);
-        }
-        else if( type == FunctionType.INTERVAL){
+        } else if (type == FunctionType.INTERVAL) {
             return generateCategorize(input);
-        }
-        else if( type == FunctionType.IDENTITY){
+        } else if (type == FunctionType.IDENTITY) {
             return withFallback(input);
         }
         throw new UnsupportedOperationException("Numeric unavailable for '"+type+"' function");
@@ -535,8 +563,8 @@ public class MBFunction {
      *   'stops': [[12, 2], [22, 180]]
      * }</pre></code>
      * 
-     * @param value
-     * @return Interpolate function
+     * @param input The expression for the function input
+     * @return The expression for the output of this function (as an interpolate function)
      */
     private Expression numericGenerateInterpolation(Expression input) {
         List<Expression> parameters = new ArrayList<>();
@@ -565,10 +593,11 @@ public class MBFunction {
      *   'stops': [[12, 2], [22, 180]]
      * }</pre></code>
      * 
-     * @param value
-     * @return Exponential function
+     * @param input The expression for the function input
+     * @param base The base of the exponential interpolation
+     * @return The expression for the output of this function (as an exponential function)
      */
-    private Expression numericGenerateExponential(Expression input, double base){
+    private Expression numericGenerateExponential (Expression input, double base) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(input);
         parameters.add(ff.literal(base));
@@ -649,6 +678,15 @@ public class MBFunction {
         }
     }
     
+    /**
+     * Generates an expression for the output of this {@link MBFunction} (as an  {@link MBFunction.FunctionType#INTERVAL}  function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function, hence the name of this method.
+     * 
+     * @param expression The expression for the function input
+     * @param parseValue A function of two arguments (stopValue, stop) that parses the stop value into an Expression. 
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#INTERVAL} function)
+     */
     private Expression generateCategorize(Expression expression, java.util.function.BiFunction<Object, Object, Expression> parseValue) {
         
         JSONArray stopsJson = getStops();
@@ -682,6 +720,15 @@ public class MBFunction {
         Function categorizeFunction = ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
         return withFallback(categorizeFunction);
     }
+    
+    /**
+     * Generates an expression for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this method.
+     * 
+     * @param input The expression for the function input
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL} function)
+     */
     private Expression generateRecode(Expression input) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(input);
@@ -711,29 +758,28 @@ public class MBFunction {
      * 
      * @return {@link Function} (or identity {@link Expression} for the provided json)
      */
-    public Expression enumeration( Class<? extends Enum<?>> enumeration){
+    public Expression enumeration(Class<? extends Enum<?>> enumeration) {
         Expression input = input();
         FunctionType type = getTypeWithDefault(Enumeration.class);
         if (type == FunctionType.INTERVAL) {
             return enumGenerateCategorize(input,enumeration);
-        }
-        else if( type == FunctionType.CATEGORICAL){
+        } else if (type == FunctionType.CATEGORICAL) {
             return enumGenerateRecode(input,enumeration);
-        }
-        else if( type == FunctionType.IDENTITY){
-            return withFallback(enumGenerateIdentiy(input, enumeration));
+        } else if (type == FunctionType.IDENTITY) {
+            return withFallback(enumGenerateIdentity(input, enumeration));
         }
         throw new UnsupportedOperationException("Unable to support '"+type+"' function for "+enumeration.getSimpleName());
     }
     /**
-     * Utilty method used to convert enumerations to an appropriate literal string.
+     * Utilty method used to convert enumerations to an appropriate GeoTools literal string.
      * <p>
-     * Any coversion between mapbox constants and geotools constants will be done here.
-     * @param value
-     * @param enumeration
+     * Any conversion between mapbox constants and geotools constants will be done here.
+     * 
+     * @param value The value to be converted to the appropriate GeoTools literal
+     * @param enumeration The type of the mapbox enumeration
      * @return Literal, or null if unavailable
      */
-    private Literal constant( Object value, Class<? extends Enum<?>> enumeration){
+    private Literal constant(Object value, Class<? extends Enum<?>> enumeration) {
         if( value == null ){
             return null;
         }
@@ -755,7 +801,7 @@ public class MBFunction {
                     + enumeration.getSimpleName());
             }
             // step 2 - convert to geotools constant
-            // (for now just convert to lowe case)
+            // (for now just convert to lower case)
             //
             String literal = enumValue.toString().toLowerCase();
             
@@ -764,6 +810,15 @@ public class MBFunction {
         return null;
     }
     
+    /**
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this method.
+     * 
+     * @param input The expression for the function input
+     * @param enumeration The type of the enumeration for the mapbox style property
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL} function)
+     */
     private Expression enumGenerateRecode(Expression input, Class<? extends Enum<?>> enumeration) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(input);
@@ -778,12 +833,28 @@ public class MBFunction {
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
     
+    /**
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#INTERVAL} function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function, hence the name of this method.
+     * 
+     * @param input The expression for the function input
+     * @param enumeration The type of the enumeration for the mapbox style property
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#INTERVAL} function)
+     */
     private Expression enumGenerateCategorize(Expression input,
             Class<? extends Enum<?>> enumeration) {
         return withFallback(generateCategorize(input,(value, stop)->constant(value,enumeration)));
     }
 
-    private Expression enumGenerateIdentiy(Expression input, Class<? extends Enum<?>> enumeration) {
+    /**
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#IDENTITY} function), based on the provided input Expression.
+     * 
+     * @param input The expression for the function input
+     * @param enumeration The type of the enumeration for the mapbox style property
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#IDENTITY} function)
+     */
+    private Expression enumGenerateIdentity(Expression input, Class<? extends Enum<?>> enumeration) {
         // this is an interesting challenge, we need to generate a recode mapping
         // mapbox constants defined by the enum, to appropriate geotools literals
         List<Expression> parameters = new ArrayList<>();
@@ -794,5 +865,172 @@ public class MBFunction {
             parameters.add(constant(value,enumeration));
         }
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+    }
+
+    /**
+     * <p>
+     * Returns true if this function's stop values are all arrays.
+     * </p>
+     * 
+     * <p>
+     * For example, the following is an array function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          // [stopkey, stopValueArray]
+     *             [0,       [0,10]], 
+     *             [100,     [2,15]]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * @return true if this function's stop values are all arrays.
+     */
+    public boolean isArrayFunction() {
+        
+        if (getStops() == null) {
+            return false;
+        }
+        
+        // If any of the stops is not array-valued, return false.
+        for (Object o : getStops()) {
+            if (!(o instanceof JSONArray)) {
+                return false;
+            } else {
+                JSONArray stop = (JSONArray) o;
+                if (stop.size() != 2 || !(stop.get(1) instanceof JSONArray)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * <p>
+     * Splits an array function into multiple functions, one for each dimension in the function's stop value arrays.
+     * </p>
+     * 
+     * <p>
+     * For example, for the following array function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          // [stopkey, stopValueArray]
+     *             [0,       [0,10]], 
+     *             [100,     [2,15]]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * <p>
+     * This method would split the above function into the following two functions:
+     * </p>
+     * 
+     * <p>
+     * "X" Function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          [0,   0], 
+     *          [100, 2]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * <p>
+     * And "Y" Function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          [0,   10], 
+     *          [100, 15]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * @return A list of {@link MBFunctions}, one for each dimension in the stop value array.
+     */
+    public List<MBFunction> splitArrayFunction() throws ParseException {
+        JSONArray arr = getStops();
+
+        // No need to split if there are no stops.
+        if (arr.size() == 0) {
+            return Arrays.asList(this);
+        }
+        
+        // Parse the stops
+        List<MBArrayStop> parsedStops = new ArrayList<>();
+        for (Object o : arr) {
+            if (o instanceof JSONArray) {
+                parsedStops.add(new MBArrayStop((JSONArray) o));
+            } else {
+                throw new MBFormatException(
+                        "Exception handling array function: encountered non-array stop value.");
+            }
+        }
+
+        // Make sure that all the stop value arrays have the same number of dimensions
+        int dimensionCount = parsedStops.get(0).getStopValueCount();
+        boolean allStopsSameDimension = parsedStops.stream()
+                .allMatch(stop -> stop.getStopValueCount() == dimensionCount);
+
+        if (!allStopsSameDimension) {
+            throw new MBFormatException(
+                    "Exception handling array function: all stops arrays must have the same length.");
+        }
+        
+        // Make sure that the default value also has the same number of dimensions
+        JSONArray defaultStopValues = null;
+        if (getDefault() != null) {
+            Object def = getDefault();
+            if ((def instanceof JSONArray) && ((JSONArray) def).size() == dimensionCount) {
+                defaultStopValues = (JSONArray) def;
+            } else {
+                throw new MBFormatException(
+                        "Exception handling array function: the default value must also be an array of length "
+                                + dimensionCount);
+            }
+        }
+
+        // Split the function into N functions, one for each dimension in the stop array values.
+        List<MBFunction> functions = new ArrayList<>();
+        for (int i = 0; i < dimensionCount; i++) {
+            final Integer n = i;
+            JSONArray newStops = parsedStops.stream().map(stop -> stop.reducedToIndex(n))
+                    .collect(Collectors.toCollection(JSONArray::new));
+            JSONObject newObj = (JSONObject) parser.parse(json.toJSONString());
+            
+            newObj.put("stops", newStops);
+            if (defaultStopValues != null) {
+                newObj.put("default",  defaultStopValues.get(n));
+            }
+           
+            MBFunction reduced = new MBFunction(newObj);
+            functions.add(reduced);
+        }
+
+        return functions;
     }
 }

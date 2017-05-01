@@ -27,8 +27,8 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 /**
- * Function that takes an input value, and a default value. If the input value is null (or evaluating it raises an exception), returns the default
- * value; otherwise, returns the input value.
+ * Function that takes an input value, and a default value. If the input value is null (or evaluating it raises an
+ * exception), returns the default value; otherwise, returns the input value.
  * 
  */
 public class DefaultIfNullFunction extends FunctionImpl {

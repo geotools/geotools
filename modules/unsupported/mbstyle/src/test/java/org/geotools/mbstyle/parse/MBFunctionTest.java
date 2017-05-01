@@ -29,12 +29,13 @@ import static org.junit.Assert.*;
 import java.awt.Color;
 import java.util.EnumSet;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.mbstyle.LineMBLayer.LineJoin;
+import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.parse.MBFunction.FunctionType;
 import org.json.simple.JSONObject;
@@ -1060,6 +1061,83 @@ public class MBFunctionTest {
                 ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"))
                 .evaluate(null, Number.class);
         assertEquals("Zoom level is " + zoomLevel, zoomLevel, envZoomLevel.doubleValue(), .00001);
+    }
+    
+    /**
+     * Test splitting an array function into an array of functions -- one for each dimension in the array. (Exponential function).
+     */
+    @Test
+    public void testArrayFunction() throws Exception {
+        JSONObject json = MapboxTestUtils.object("{'property':'temperature','type':'exponential', 'base':1.5, 'stops':[ [0,[0,5]], [100,[2,10]] ]}");
+        MBFunction function = new MBFunction(json);
+                
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326,color:java.awt.Color,text:String:");
+        SimpleFeature feature1 = DataUtilities.createFeature(SAMPLE, "measure1=A|0|POINT(0,0)|#FF0000|red");
+        SimpleFeature feature2 = DataUtilities.createFeature(SAMPLE, "measure1=A|100|POINT(0,0)|#FF0000|red");
+        
+        List<MBFunction> splitFunctions = function.splitArrayFunction();
+        assertEquals(2, splitFunctions.size());
+        
+        MBFunction xFn = splitFunctions.get(0);
+        MBFunction yFn = splitFunctions.get(1);
+        
+        assertEquals(0, xFn.numeric().evaluate(feature1, Integer.class).intValue());
+        assertEquals(5, yFn.numeric().evaluate(feature1, Integer.class).intValue());
+  
+        assertEquals(2, xFn.numeric().evaluate(feature2, Integer.class).intValue());
+        assertEquals(10, yFn.numeric().evaluate(feature2, Integer.class).intValue());        
+    }
+    
+    /**
+     * Test splitting an array function into an array of functions -- one for each dimension in the array. (Categorical function, with default).
+     */
+    @Test
+    public void testArrayFunctionCategoricalWithDefault() throws Exception {
+        JSONObject json = MapboxTestUtils.object("{'property':'character','type':'categorical', 'base':1.5, 'default': [-1,-2], 'stops':[ ['a',[0,5]], ['b',[2,10]] ]}");
+        MBFunction function = new MBFunction(json);
+                
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326,color:java.awt.Color,character:String:");
+        SimpleFeature featurea = DataUtilities.createFeature(SAMPLE, "measure1=A|0|POINT(0,0)|#FF0000|a");
+        SimpleFeature featureb = DataUtilities.createFeature(SAMPLE, "measure1=A|100|POINT(0,0)|#FF0000|b");
+        SimpleFeature featuredefault = DataUtilities.createFeature(SAMPLE, "measure1=A|100|POINT(0,0)|#FF0000|default");
+        
+        List<MBFunction> splitFunctions = function.splitArrayFunction();
+        assertEquals(2, splitFunctions.size());
+        
+        MBFunction xFn = splitFunctions.get(0);
+        MBFunction yFn = splitFunctions.get(1);
+        
+        assertEquals(0, xFn.numeric().evaluate(featurea, Integer.class).intValue());
+        assertEquals(5, yFn.numeric().evaluate(featurea, Integer.class).intValue());
+  
+        assertEquals(2, xFn.numeric().evaluate(featureb, Integer.class).intValue());
+        assertEquals(10, yFn.numeric().evaluate(featureb, Integer.class).intValue());     
+        
+        assertEquals(-1, xFn.numeric().evaluate(featuredefault, Integer.class).intValue());
+        assertEquals(-2, yFn.numeric().evaluate(featuredefault, Integer.class).intValue()); 
+    }
+    
+    /**
+     * Test that nothing breaks when an array function has output arrays of size one.
+     * @throws Exception
+     */
+    @Test
+    public void testArrayFunctionSize1() throws Exception {
+        JSONObject json = MapboxTestUtils.object("{'property':'temperature','type':'exponential', 'base':1.5, 'stops':[ [0,[0]], [100,[2]] ]}");
+        MBFunction function = new MBFunction(json);
+          
+        List<MBFunction> splitFunctions = function.splitArrayFunction();
+        assertEquals(1, splitFunctions.size());  
+        
+        SimpleFeatureType SAMPLE = DataUtilities.createType("SAMPLE",
+                "id:\"\",temperature:0.0,location=4326,color:java.awt.Color,text:String:");
+        SimpleFeature feature1 = DataUtilities.createFeature(SAMPLE, "measure1=A|0|POINT(0,0)|#FF0000|red");
+        SimpleFeature feature2 = DataUtilities.createFeature(SAMPLE, "measure1=A|100|POINT(0,0)|#FF0000|red");
+        
+        assertEquals(0, splitFunctions.get(0).numeric().evaluate(feature1, Integer.class).intValue());  
+        assertEquals(2, splitFunctions.get(0).numeric().evaluate(feature2, Integer.class).intValue());        
     }
 
 }

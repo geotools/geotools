@@ -40,7 +40,7 @@ public class StyleTransformFunctionTest {
         
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transformed = mbStyle.transform();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class StyleTransformFunctionTest {
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transform = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transform = mbStyle.transform();
     }
     
     @Test
@@ -58,7 +58,7 @@ public class StyleTransformFunctionTest {
         
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transformed = mbStyle.transform();
     }
     
     @Test
@@ -67,7 +67,7 @@ public class StyleTransformFunctionTest {
         
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transformed = mbStyle.transform();
     }
     
     @Test
@@ -76,7 +76,7 @@ public class StyleTransformFunctionTest {
         
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transformed = mbStyle.transform();
     }
     
 }

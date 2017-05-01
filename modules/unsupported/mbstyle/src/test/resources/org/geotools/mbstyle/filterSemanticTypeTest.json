@@ -1,0 +1,126 @@
+{
+    "version": 8,
+    "name": "circles",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -349.3130614537612,
+        46.25811573431122
+    ],
+    "zoom": 4.169248639484669,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/test/ciz06c19m000a2spr9s5h0nx2",
+    "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "circle-layer",
+            "filter": ["==", "$type", "Point"],
+            "type": "circle",
+            "source": "test-source",
+            "source-layer": "place_label",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "circle-color": "#FF0000",
+                "circle-opacity": 0.5,
+                "circle-radius": 15,
+                "circle-blur": 1,
+                "circle-translate": [
+                    10,
+                    10
+                ],
+                "circle-stroke-opacity": 0.75,
+                "circle-stroke-width": 2,
+                "circle-stroke-color": "#00FF00"
+            }
+        },
+        {
+            "id": "line-layer",
+            "type": "line",
+            "filter": ["==", "$type", "LineString"],
+            "source": "test-source",
+            "source-layer": "test-source-layer",
+            "layout": {
+                "visibility": "visible",
+                "line-cap": "square",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#0099ff",
+                "line-opacity": 0.5,
+                "line-translate-anchor": "viewport",
+                "line-dasharray": [50, 50],
+                "line-offset": 4,
+                "line-gap-width": 8,
+                "line-translate": [
+                    3,
+                    3
+                ],
+                "line-width": 10,
+                "line-blur": 2
+            }
+        },
+        {
+            "id": "symbol-layer",
+            "type": "symbol",
+            "filter": ["in", "$type", "Point", "Polygon"],
+            "source": "testsource",
+            "source-layer": "testsource-layer",
+            "layout": {
+                "text-line-height": 1,
+                "text-size": 20,
+                "icon-offset": [
+                    -1,
+                    -10
+                ],
+                "icon-image": "homer-simpson",
+                "text-transform": "lowercase",
+                "icon-rotate": 40,
+                "text-justify": "left",
+                "visibility": "visible",
+                "text-offset": [
+                    1,
+                    1
+                ],
+                "icon-size": 0.1,
+                "text-anchor": "top",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{name}",
+                "text-rotate": 10,
+                "text-letter-spacing": 0.05,
+                "text-max-width": 5
+            },
+            "paint": {
+                "text-color": "#fedcba",
+                "text-opacity": 0.94,
+                "text-halo-color": "#abcdef",
+                "icon-translate": [
+                    1,
+                    1
+                ],
+                "text-halo-width": 0,
+                "text-translate": [
+                    -1,
+                    -1
+                ],
+                "text-halo-blur": 0
+            }
+        }
+    ],
+    "created": "2017-02-10T18:56:14.990Z",
+    "id": "ciz06c19m000a2spr9s5h0nx2",
+    "modified": "2017-02-10T19:08:34.562Z",
+    "owner": "test",
+    "visibility": "private",
+    "draft": false
+}

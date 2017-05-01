@@ -18,7 +18,7 @@ package org.geotools.mbstyle;
 
 import static org.junit.Assert.*;
 
-import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.junit.Test;
 
 public class SymbolMBLayerTest {

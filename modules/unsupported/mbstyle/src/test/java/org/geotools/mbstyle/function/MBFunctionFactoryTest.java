@@ -40,15 +40,15 @@ public class MBFunctionFactoryTest {
     
     @Test
     public void colorFunction() throws Exception {
-        Function expr = (Function) ECQL.toExpression("color('#ff0000')");
+        Function expr = (Function) ECQL.toExpression("css('#ff0000')");
         assertEquals("hex", Color.red, expr.evaluate(null, Color.class));
         assertEquals("hex", "#FF0000", expr.evaluate(null, String.class));
 
-        expr = (Function) ECQL.toExpression("color('red')");
+        expr = (Function) ECQL.toExpression("css('red')");
         assertEquals("css", Color.red, expr.evaluate(null, Color.class));
         assertEquals("css", "#FF0000", expr.evaluate(null, String.class));
 
-        expr = (Function) ECQL.toExpression("color('rgb(255,0,0)')");
+        expr = (Function) ECQL.toExpression("css('rgb(255,0,0)')");
         assertEquals("rgb", Color.red, expr.evaluate(null, Color.class));
         assertEquals("rgb", "#FF0000", expr.evaluate(null, String.class));
     }
@@ -164,5 +164,26 @@ public class MBFunctionFactoryTest {
         f = ff.function("DefaultIfNull", recode, ff.literal("DefautValue"));
         assertEquals("DefautValue", f.evaluate(feature, String.class));
  
+    }
+    
+    /**
+     * Tests for {@link ZoomLevelFunction}, converting scale 3857 denominators to zoom levels. 
+     */
+    @Test
+    public void zoomFunctionTest() throws Exception {
+        double tol = .00000001;
+        
+        Function f = (Function) ECQL.toExpression("zoomLevel(" + ZoomLevelFunction.EPSG_3857_O_SCALE +", 'EPSG:3857')");
+        assertEquals(0.0, f.evaluate(null, Number.class).doubleValue(), tol);
+        
+        Function f2 = (Function) ECQL.toExpression("zoomLevel(" + (ZoomLevelFunction.EPSG_3857_O_SCALE / 2.0) +", 'EPSG:3857')");
+        assertEquals(1.0, f2.evaluate(null, Number.class).doubleValue(), tol);
+        
+        Function fhalf = (Function) ECQL.toExpression("zoomLevel(" + (ZoomLevelFunction.EPSG_3857_O_SCALE / (Math.pow(2.0, 0.5))) +", 'EPSG:3857')");
+        assertEquals(0.5, fhalf.evaluate(null, Number.class).doubleValue(), tol);
+        
+        double scaleDenomForZoom22 = 133.295598972;
+        Function f22 = (Function) ECQL.toExpression("zoomLevel(" +  scaleDenomForZoom22 +", 'EPSG:3857')");
+        assertEquals(22.0, f22.evaluate(null, Number.class).doubleValue(), tol);
     }
 }

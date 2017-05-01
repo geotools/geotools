@@ -20,7 +20,9 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 
+import org.geotools.mbstyle.layer.LineMBLayer;
 import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -80,6 +82,49 @@ public class MBObjectParserTest {
         Expression expression = parser.bool(object, "expr", true);
         assertTrue("Parse result must be a function",
             Function.class.isAssignableFrom(expression.getClass()));
+    }
+    
+    /**
+     * Test parsing from a Mapbox enumeration property to a GeoTools expression.
+     */
+    @Test
+    public void testEnumToExpression() throws ParseException {
+        // Test for text-pitch-alignment
+        JSONObject object = MapboxTestUtils.object("{'text-pitch-alignment': 'map'}"); // viewport, auto
+        Expression expression = parser.enumToExpression(object, "text-pitch-alignment", SymbolMBLayer.Alignment.class, SymbolMBLayer.Alignment.AUTO);
+        assertEquals("Enum correctly parsed", "map", expression.evaluate(null, String.class));
+        
+        // Test for line-cap
+        object =  MapboxTestUtils.object("{'line-cap': 'round'}");
+        expression = parser.enumToExpression(object, "line-cap", LineMBLayer.LineCap.class, LineMBLayer.LineCap.BUTT);
+        assertEquals("round", expression.evaluate(null, String.class));
+        
+        // Test for line-join
+        object =  MapboxTestUtils.object("{'line-join': 'bevel'}");
+        expression = parser.enumToExpression(object, "line-join", LineMBLayer.LineJoin.class, LineMBLayer.LineJoin.MITER);
+        assertEquals("bevel", expression.evaluate(null, String.class));
+    }
+    
+    /**
+     * Test parsing from a Mapbox enumeration property to a GeoTools expression, when the JSON property value is invalid for the enumeration (should
+     * fallback to default).
+     */
+    @Test
+    public void testInvalidEnumProperty() throws ParseException {
+        // Test for text-pitch-alignment
+        JSONObject object = MapboxTestUtils.object("{'text-pitch-alignment': 'bad_value'}");
+        Expression expression = parser.enumToExpression(object, "text-pitch-alignment", SymbolMBLayer.Alignment.class, SymbolMBLayer.Alignment.AUTO);
+        assertEquals("auto", expression.evaluate(null, String.class));
+        
+        // Test for line-cap
+        object =  MapboxTestUtils.object("{'line-cap': 'bad_value'}");
+        expression = parser.enumToExpression(object, "line-cap", LineMBLayer.LineCap.class, LineMBLayer.LineCap.BUTT);
+        assertEquals("butt", expression.evaluate(null, String.class));
+        
+        // Test for line-join
+        object =  MapboxTestUtils.object("{'line-join': 'bad_value'}");
+        expression = parser.enumToExpression(object, "line-join", LineMBLayer.LineJoin.class, LineMBLayer.LineJoin.MITER);
+        assertEquals("mitre", expression.evaluate(null, String.class));
     }
 
 }

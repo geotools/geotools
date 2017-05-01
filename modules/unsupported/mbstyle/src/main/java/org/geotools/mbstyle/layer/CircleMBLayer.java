@@ -15,18 +15,26 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
-import java.awt.Color;
-import java.awt.Point;
-
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.json.simple.JSONArray;
+import org.geotools.styling.*;
+import org.geotools.styling.Stroke;
+import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
 import org.opengis.style.SemanticType;
+
+import javax.measure.unit.NonSI;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A filled circle.
@@ -48,7 +56,7 @@ public class CircleMBLayer extends MBLayer {
 
     private JSONObject layout;
 
-    private static String type = "circle";
+    private static String TYPE = "circle";
 
     public CircleMBLayer(JSONObject json) {
         super(json, new MBObjectParser(CircleMBLayer.class));
@@ -60,12 +68,11 @@ public class CircleMBLayer extends MBLayer {
     protected SemanticType defaultSemanticType() {
         return SemanticType.POINT;
     }
+
     /**
-     * (Optional) Circle radius.
+     * (Optional) Circle radius in pixels. Defaults to 5.
      * 
-     * Units in pixels. Defaults to 5.
-     * 
-     * @return Number
+     * @return The circle radius
      * @throws MBFormatException
      */
     public Number getCircleRadius() throws MBFormatException {
@@ -75,7 +82,7 @@ public class CircleMBLayer extends MBLayer {
     /**
      * Access circle-radius as literal or function expression, defaults to 5
      * 
-     * @return Access circle-radius as literal or function expression
+     * @return The circle radius as literal or function expression
      * @throws MBFormatException
      */
     public Expression circleRadius() throws MBFormatException {
@@ -83,11 +90,9 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
-     * (Optional) The fill color of the circle.
+     * (Optional) The fill color of the circle. Defaults to #000000.
      * 
-     * Defaults to #000000.
-     * 
-     * @return Color - fill color of the circle
+     * @return The fill color of the circle
      * @throws MBFormatException
      * 
      */
@@ -98,7 +103,7 @@ public class CircleMBLayer extends MBLayer {
     /**
      * Access circle-color as literal or function expression, defaults to black.
      * 
-     * @return Access circle-color as literal or function expression
+     * @return The circle color as literal or function expression
      * @throws MBFormatException
      */
     public Expression circleColor() throws MBFormatException {
@@ -107,11 +112,9 @@ public class CircleMBLayer extends MBLayer {
 
     /**
      * (Optional) Amount to blur the circle. 1 blurs the circle such that only the centerpoint is
-     * full opacity.
+     * full opacity. Defaults to 0.
      * 
-     * Defaults to 0.
-     * 
-     * @return Number - Amount to blur circle
+     * @return The amount to blur the circle.
      * @throws MBFormatException
      * 
      */
@@ -122,7 +125,7 @@ public class CircleMBLayer extends MBLayer {
     /**
      * Access circle-blur as literal or function expression, defaults to 0
      * 
-     * @return Access circle-blur as literal or function expression
+     * @return The amount to blur the circle, as literal or function expression
      * @throws MBFormatException
      */
     public Expression circleBlur() throws MBFormatException {
@@ -130,11 +133,9 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
-     * (Optional) The opacity at which the circle will be drawn.
+     * (Optional) The opacity at which the circle will be drawn.  Defaults to 1.
      * 
-     * Defaults to 1.
-     * 
-     * @return Number - The opacity at which the circle will be drawn.
+     * @return The opacity at which the circle will be drawn.
      * @throws MBFormatException
      * 
      */
@@ -143,9 +144,9 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
-     * Access circle-opacity.
+     * Access circle-opacity, defaults to 1.
      * 
-     * @return Access circle-opacity as literal or function expression, defaults to 1.
+     * @return The opacity at which the circle will be drawn as literal or function expression.
      * @throws MBFormatException
      */
     public Expression circleOpacity() throws MBFormatException {
@@ -154,41 +155,49 @@ public class CircleMBLayer extends MBLayer {
 
     /**
      * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up,
-     * respectively.
+     * respectively. Units in pixels. Defaults to 0, 0.
      * 
-     * Units in pixels. Defaults to 0, 0.
-     * 
-     * @return double[] - double[] of offset in pixels
+     * @return x and y offset in pixels.
      * @throws MBFormatException
      */
-    public double[] getCircleTranslate() throws MBFormatException {
-        return parse.array(paint, "circle-translate", new double[] { 0.0, 0.0 });
+    public int[] getCircleTranslate() throws MBFormatException {
+        return parse.array(paint, "circle-translate", new int[] { 0, 0 });
     }
 
     /**
      * Access circle-translate
      * 
-     * @return circle-translate as Point
+     * @return x and y offset in pixels as Point
      * @throws MBFormatException
      */
     public Point circleTranslate() throws MBFormatException {
-        if (paint.get("circle-translate") != null) {
-            JSONArray array = (JSONArray) paint.get("circle-translate");
-            Number x = (Number) array.get(0);
-            Number y = (Number) array.get(1);
-            return new Point(x.intValue(), y.intValue());
-        } else {
-            return new Point(0, 0);
-        }
+        int[] circleTranslate = getCircleTranslate();
+        return new Point(circleTranslate[0], circleTranslate[1]);
+    }
+
+    /**
+     * Processes the filter-translate into a Displacement.
+     * <p>
+     * This should handle both literals and function stops:
+     * </p>
+     * 
+     * <pre>
+     * filter-translate: [0,0]
+     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
+     * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
+     * </pre>
+     * 
+     * @return
+     */
+    public Displacement circleTranslateDisplacement() {
+        return parse.displacement(paint, "circle-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
      * Controls the translation reference point.
      * 
      * Map: The circle is translated relative to the map.
-     * 
      * Viewport: The circle is translated relative to the viewport.
-     *
      */
     public enum CircleTranslateAnchor {
         MAP, VIEWPORT
@@ -198,11 +207,11 @@ public class CircleMBLayer extends MBLayer {
      * (Optional) Controls the translation reference point.
      * 
      * {@link CircleTranslateAnchor#MAP}: The circle is translated relative to the map.
-     * 
      * {@link CircleTranslateAnchor#VIEWPORT}: The circle is translated relative to the viewport.
      * 
      * Defaults to {@link CircleTranslateAnchor#MAP}. Requires circle-translate.
-     * 
+     *
+     * @return The translation reference point.
      */
     public CircleTranslateAnchor getCircleTranslateAnchor() {
         Object value = paint.get("circle-translate-anchor");
@@ -217,7 +226,6 @@ public class CircleMBLayer extends MBLayer {
      * Controls the translation reference point.
      * 
      * Map: The circle is translated relative to the map.
-     * 
      * Viewport: The circle is translated relative to the viewport.
      *
      */
@@ -230,11 +238,11 @@ public class CircleMBLayer extends MBLayer {
      * 
      * {@link CirclePitchScale#MAP}: Circles are scaled according to their apparent distance to the
      * camera.
-     * 
      * {@link CirclePitchScale#VIEWPORT}: Circles are not scaled.
      * 
      * Defaults to {@link CirclePitchScale#MAP}.
-     * 
+     *
+     * @return The circle scaling behavior.
      */
     public CirclePitchScale getCirclePitchScale() {
         Object value = paint.get("circle-pitch-scale");
@@ -250,7 +258,7 @@ public class CircleMBLayer extends MBLayer {
      * 
      * Units in pixels. Defaults to 0.
      * 
-     * @return Number representing the circle stroke width
+     * @return The circle stroke width.
      * @throws MBFormatException
      * 
      */
@@ -259,9 +267,9 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
-     * Access circle-stroke-width.
+     * Access circle-stroke-width, defaults to 0.
      * 
-     * @return Access circle-stroke-width as literal or function expression, defaults to 0.
+     * @return The circle stroke width.
      * @throws MBFormatException
      */
     public Expression circleStrokeWidth() throws MBFormatException {
@@ -273,7 +281,7 @@ public class CircleMBLayer extends MBLayer {
      * 
      * Defaults to #000000.
      * 
-     * @return Color - the color of the circle stroke
+     * @return The color of the circle stroke.
      * @throws MBFormatException
      * 
      */
@@ -284,7 +292,7 @@ public class CircleMBLayer extends MBLayer {
     /**
      * Access circle-stroke-color as literal or function expression, defaults to black.
      * 
-     * @return Access circle-stroke-width as literal or function expression, defaults to black.
+     * @return The color of the circle stroke.
      * @throws MBFormatException
      */
     public Expression circleStrokeColor() throws MBFormatException {
@@ -296,7 +304,7 @@ public class CircleMBLayer extends MBLayer {
      * 
      * Defaults to 1.
      * 
-     * @return Number - Number representing the stroke opacity
+     * @return Number representing the stroke opacity.
      * @throws MBFormatException
      * 
      */
@@ -305,9 +313,9 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
-     * Access circle-stroke-opacity.
+     * Access circle-stroke-opacity, defaults to 1.
      * 
-     * @return Access circle-stroke-opacity as literal or function expression, defaults to 1.
+     * @return Number representing the stroke opacity.
      * @throws MBFormatException
      */
     public Expression circleStrokeOpacity() throws MBFormatException {
@@ -315,35 +323,62 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
-     * {@inheritDoc}
+     * Transform {@link CircleMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
      */
-    public String getType() {
-        return type;
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a default opacity.
+        Stroke s = sf.stroke(circleStrokeColor(), circleStrokeOpacity(),
+                circleStrokeWidth(), null, Stroke.DEFAULT.getLineCap(), null, null);
+        Fill f = sf.fill(null, circleColor(), circleOpacity());
+        Mark m = sf.mark(ff.literal("circle"), f, s);
+
+        Graphic gr = sf.graphic(Arrays.asList(m), null,
+                ff.multiply(ff.literal(2), circleRadius()), null, null,
+                circleTranslateDisplacement());
+        gr.graphicalSymbols().clear();
+        gr.graphicalSymbols().add(m);
+
+        PointSymbolizer ps = sf
+                .pointSymbolizer(getId(), ff.property((String) null),
+                        sf.description(Text.text("MBStyle " + getId()),
+                                Text.text("Generated for " + getSourceLayer())),
+                        NonSI.PIXEL, gr);
+
+        MBFilter filter = getFilter();
+        
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ps),
+                filter.filter());
+
+        rules.add(rule);
+        rule.setLegendGraphic(new Graphic[0]);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules);
     }
 
     /**
-     * Processes the filter-translate into a Displacement.
-     * <p>
-     * This should handle both literals and function stops:
-     * </p>
-     * 
-     * <pre>
-     * filter-translate: [0,0]
-     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
-     * filter-translate: [ 0, { property: "building-height", "type":"exponential","stops": [[0,0],[30, 5]] }
-     * </pre>
-     * 
-     * @return
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
      */
-    public Displacement toDisplacement() {
-        Object defn = paint.get("circle-translate");
-        if (defn == null) {
-            return null;
-        } else if (defn instanceof JSONArray) {
-            JSONArray array = (JSONArray) defn;
-            return sf.displacement(parse.number(array, 0, 0), parse.number(array, 1, 0));
-        }
-        return null;
+    @Override
+    public String getType() {
+        return TYPE;
     }
-
 }

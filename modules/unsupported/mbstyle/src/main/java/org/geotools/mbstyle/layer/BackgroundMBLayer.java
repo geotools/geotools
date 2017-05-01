@@ -15,14 +15,26 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
-import java.awt.Color;
-
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
+import org.opengis.style.Symbolizer;
+
+import javax.measure.unit.NonSI;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The background color or pattern of the map.
@@ -42,7 +54,7 @@ public class BackgroundMBLayer extends MBLayer {
 
     private JSONObject layout;
 
-    private static String type = "background";
+    private static String TYPE = "background";
 
     public BackgroundMBLayer(JSONObject json) {
         super(json, new MBObjectParser(BackgroundMBLayer.class));
@@ -57,12 +69,10 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Optional color. Defaults to #000000. Disabled by background-pattern.
      * 
-     * The color with which the background will be drawn.
-     * 
+     * @return The color with which the background will be drawn.
      */
     public Color getBackgroundColor() {
-        return parse
-                .convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
+        return parse.convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
     }
 
     /**
@@ -70,8 +80,7 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * Optional color. Defaults to #000000. Disabled by background-pattern.
      * 
-     * The color with which the background will be drawn.
-     * 
+     * @return The color with which the background will be drawn.
      */
     public Expression backgroundColor() {
         return parse.color(paint, "background-color", Color.BLACK);
@@ -80,7 +89,8 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Optional string. Name of image in sprite to use for drawing an image background. For seamless patterns, image width and height must be a factor
      * of two (2, 4, 8, ..., 512).
-     * 
+     *
+     * @return Name of image in sprite to use for drawing an image background, or null if not defined.
      */
     public String getBackgroundPattern() {
         return parse.optional(String.class, paint, "background-pattern", null);
@@ -91,7 +101,7 @@ public class BackgroundMBLayer extends MBLayer {
      * @return True if the layer has a background-pattern explicitly provided.
      */
     public boolean hasBackgroundPattern() {
-        return parse.isPropertyDefined(layout, "background-pattern");
+        return parse.isPropertyDefined(paint, "background-pattern");
     }
 
     /**
@@ -99,7 +109,8 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * Optional string. Name of image in sprite to use for drawing an image background. For seamless patterns, image width and height must be a factor
      * of two (2, 4, 8, ..., 512).
-     * 
+     *
+     * @return Name of image in sprite to use for drawing an image background, or null if not defined.
      */
     public Expression backgroundPattern() {
         return parse.string(paint, "background-pattern", null);
@@ -108,7 +119,7 @@ public class BackgroundMBLayer extends MBLayer {
     /**
      * Optional number. Defaults to 1.
      * 
-     * The opacity at which the background will be drawn.
+     * @return The opacity at which the background will be drawn.
      */
     public Number getBackgroundOpacity() {
         return parse.optional(Number.class, paint, "background-opacity", 1.0);
@@ -119,15 +130,71 @@ public class BackgroundMBLayer extends MBLayer {
      * 
      * Optional number. Defaults to 1.
      * 
-     * The opacity at which the background will be drawn.
+     * @retur The opacity at which the background will be drawn.
      */
     public Expression backgroundOpacity() {
         return parse.percentage(paint, "background-opacity", 1.0);
     }
 
+    /**
+     * Transform {@link BackgroundMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        Fill fill;
+        if (hasBackgroundPattern()) {
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
+            fill = sf.fill(gf, backgroundColor(), backgroundOpacity());
+        } else {
+            fill = sf.fill(null, backgroundColor(), backgroundOpacity());
+        }
+
+        Symbolizer symbolizer = sf.polygonSymbolizer(getId(),
+                ff.property((String) null), sf.description(Text.text("fill"), null), NonSI.PIXEL,
+                null, // stroke
+                fill, null, ff.literal(0));
+        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        symbolizers.add(symbolizer);
+
+        // List of opengis rules here (needed for constructor)
+        MBFilter filter = getFilter();
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                symbolizers,
+                filter.filter());
+        rule.setLegendGraphic(new Graphic[0]);
+
+        rules.add(rule);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(), filter.semanticTypeIdentifiers(),
+                rules);
+    }
+
+    /**
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
+     */
     @Override
     public String getType() {
-        return type;
+        return TYPE;
     }
 
 }

@@ -32,7 +32,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 
 /**
- * Test the {@link ExponentialFunction}, {@link ZoomLevelFunction} and {@link ColorFunction}.
+ * Test the {@link ExponentialFunction}, {@link ZoomLevelFunction} and {@link CSSFunction}.
  */
 public class MBFunctionFactoryTest {
 

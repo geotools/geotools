@@ -47,7 +47,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Jody Garnett (Boundless)
  */
-public class ColorFunction extends FunctionImpl {
+public class CSSFunction extends FunctionImpl {
 
     public static final FunctionName NAME;
     static {
@@ -55,10 +55,10 @@ public class ColorFunction extends FunctionImpl {
         Parameter<Double> string = new Parameter<Double>("string", Double.class,
                 Text.text("String"),
                 Text.text("Color definition provided as hex, rgb, or css color name."));
-        NAME = new FunctionNameImpl("color", color, string);
+        NAME = new FunctionNameImpl("css", color, string);
     }
 
-    public ColorFunction() {
+    public CSSFunction() {
         this.functionName = NAME;
     }
 

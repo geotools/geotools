@@ -40,15 +40,15 @@ public class MBFunctionFactoryTest {
     
     @Test
     public void colorFunction() throws Exception {
-        Function expr = (Function) ECQL.toExpression("color('#ff0000')");
+        Function expr = (Function) ECQL.toExpression("css('#ff0000')");
         assertEquals("hex", Color.red, expr.evaluate(null, Color.class));
         assertEquals("hex", "#FF0000", expr.evaluate(null, String.class));
 
-        expr = (Function) ECQL.toExpression("color('red')");
+        expr = (Function) ECQL.toExpression("css('red')");
         assertEquals("css", Color.red, expr.evaluate(null, Color.class));
         assertEquals("css", "#FF0000", expr.evaluate(null, String.class));
 
-        expr = (Function) ECQL.toExpression("color('rgb(255,0,0)')");
+        expr = (Function) ECQL.toExpression("css('rgb(255,0,0)')");
         assertEquals("rgb", Color.red, expr.evaluate(null, Color.class));
         assertEquals("rgb", "#FF0000", expr.evaluate(null, String.class));
     }

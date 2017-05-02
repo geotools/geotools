@@ -187,6 +187,21 @@ public class FillMBLayer extends MBLayer {
     }
 
     /**
+     * Processes the filter-translate into a Displacement.
+     * <p>
+     * This should handle both literals and function stops:</p>
+     * <pre>
+     * filter-translate: [0,0]
+     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
+     * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
+     * </pre>
+     * @return The geometry displacement
+     */
+    public Displacement toDisplacement() {
+        return parse.displacement(paint, "fill-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+    
+    /**
      * (Optional) Controls the translation reference point.
      * 
      * <ul>
@@ -233,21 +248,5 @@ public class FillMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
-    }
-    
-    /**
-     * Processes the filter-translate into a Displacement.
-     * <p>
-     * This should handle both literals and function stops:</p>
-     * <pre>
-     * filter-translate: [0,0]
-     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
-     * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
-     * </pre>
-     * @return The geometry displacement
-     */
-    public Displacement toDisplacement() {
-        int[] translate = getFillTranslate();
-        return sf.displacement(ff.literal(translate[0]), ff.literal(translate[0]));
     }
 }

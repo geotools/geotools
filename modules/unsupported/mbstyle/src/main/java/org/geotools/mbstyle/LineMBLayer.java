@@ -19,7 +19,6 @@ package org.geotools.mbstyle;
 
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBFunction;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.Displacement;
 import org.json.simple.JSONArray;
@@ -29,7 +28,6 @@ import org.opengis.style.SemanticType;
 import org.opengis.style.Stroke;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,17 +258,6 @@ public class LineMBLayer extends MBLayer {
         return parse.array( paint, "line-translate", new int[]{ 0, 0 } );
     }
 
-    /**
-     * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively.
-     * 
-     * Units in pixels. Defaults to 0,0.
-     *
-     * @return The geometry's offset, as a Point.
-     */
-    public Point lineTranslate() {
-        int[] translate = getLineTranslate();
-        return new Point(translate[0], translate[1]);
-    }
 
     /**
      * Maps {@link #getLineTranslate()} to a {@link Displacement}.
@@ -281,19 +268,8 @@ public class LineMBLayer extends MBLayer {
      *
      * @return The geometry's offset, as a Displacement.
      */
-    public Displacement toDisplacement() {
-        Object defn = paint.get("line-translate");
-        if (defn == null) {
-            return null;
-        } else if (defn instanceof JSONArray) {
-            JSONArray array = (JSONArray) defn;
-            return sf.displacement(parse.number(array, 0, 0), parse.number(array, 1, 0));
-        } else if (defn instanceof JSONObject) {
-            throw new MBFormatException("\"line-translate\": Functions not supported yet.");
-        } else {
-            throw new MBFormatException("\"line-translate\": Expected array or function, but was "
-                    + defn.getClass().getSimpleName());
-        }
+    public Displacement lineTranslateDisplacement() {
+        return parse.displacement(paint, "line-translate", sf.displacement(ff.literal(0), ff.literal(0)));        
     }
 
     /**

@@ -170,6 +170,24 @@ public class CircleMBLayer extends MBLayer {
     }
 
     /**
+     * Processes the filter-translate into a Displacement.
+     * <p>
+     * This should handle both literals and function stops:
+     * </p>
+     * 
+     * <pre>
+     * filter-translate: [0,0]
+     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
+     * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
+     * </pre>
+     * 
+     * @return
+     */
+    public Displacement toDisplacement() {
+        return parse.displacement(paint, "circle-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    /**
      * Controls the translation reference point.
      * 
      * Map: The circle is translated relative to the map.
@@ -306,24 +324,5 @@ public class CircleMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
-    }
-
-    /**
-     * Processes the filter-translate into a Displacement.
-     * <p>
-     * This should handle both literals and function stops:
-     * </p>
-     * 
-     * <pre>
-     * filter-translate: [0,0]
-     * filter-translate: { property: "building-height", "stops": [[0,[0,0]],[5,[1,2]]] }
-     * filter-translate: [ 0, { property: "building-height", "TYPE":"exponential","stops": [[0,0],[30, 5]] }
-     * </pre>
-     * 
-     * @return
-     */
-    public Displacement toDisplacement() {
-        int[] circleTranslate = getCircleTranslate();
-        return sf.displacement(ff.literal(circleTranslate[0]), ff.literal(circleTranslate[0]));
     }
 }

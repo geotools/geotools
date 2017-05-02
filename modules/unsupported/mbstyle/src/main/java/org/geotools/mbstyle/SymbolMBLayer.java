@@ -689,6 +689,18 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Maps {@link #getIconOffset()} to a {@link Displacement}
+     * 
+     * (Optional) Defaults to 0,0. Requires icon-image. Offset distance of icon from its anchor. Positive values indicate right and down, while
+     * negative values indicate left and up. When combined with icon-rotate the offset will be as if the rotated direction was up.
+     *
+     */
+    public Displacement iconOffsetDisplacement() {
+        return parse.displacement(layout, "icon-offset",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    /**
      * 
      * Optional enum. One of map, viewport, auto. Defaults to auto. Requires text-field. Orientation of text when map is pitched.
      * 
@@ -1145,6 +1157,16 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Maps {@link #getTextOffset()} to a {@link Displacement}.
+     * 
+     * (Optional) Units in ems. Defaults to 0,0. Requires text-field.
+     */
+    public Displacement textOffsetDisplacement() {
+        return parse.displacement(layout, "text-offset",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    /**
      * (Optional) Defaults to false. Requires text-field.
      * 
      * If true, the text will be visible even if it collides with other previously drawn symbols.
@@ -1353,6 +1375,18 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Maps {@link #getIconTranslate()} to a {@link Displacement}
+     * 
+     * (Optional) Units in pixels. Defaults to 0,0. Requires icon-image. Distance that the icon's anchor is moved from its original placement. Positive values
+     * indicate right and down, while negative values indicate left and up.
+     *
+     */
+    public Displacement iconTranslateDisplacement() {
+        return parse.displacement(paint, "icon-translate",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    /**
      * (Optional) One of map, viewport. Defaults to map. Requires icon-image. Requires icon-translate.
      * 
      * Controls the translation reference point.
@@ -1524,6 +1558,17 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Maps {@link #getTextTranslate()} to a {@link Displacement}.
+     * 
+     * Distance that the text's anchor is moved from its original placement. Positive values indicate right and down, while negative values indicate
+     * left and up. (Optional) Units in pixels. Defaults to 0,0. Requires text-field.
+     */
+    public Displacement textTranslateDisplacement() {
+        return parse.displacement(paint, "text-translate",
+                sf.displacement(ff.literal(0), ff.literal(0)));
+    }
+
+    /**
      * (Optional) One of map, viewport. Defaults to map. Requires text-field. Requires text-translate.
      * 
      * Controls the translation reference point.
@@ -1563,51 +1608,5 @@ public class SymbolMBLayer extends MBLayer {
     @Override
     public String getType() {
         return TYPE;
-    }
-
-    /**
-     * Maps {@link #getTextOffset()} to a {@link Displacement}.
-     * 
-     * (Optional) Units in ems. Defaults to 0,0. Requires text-field.
-     */
-    public Displacement textOffsetDisplacement() {
-        return parse.displacement(layout, "text-offset",
-                sf.displacement(ff.literal(0), ff.literal(0)));
-    }
-
-    /**
-     * Maps {@link #getTextTranslate()} to a {@link Displacement}.
-     * 
-     * Distance that the text's anchor is moved from its original placement. Positive values indicate right and down, while negative values indicate
-     * left and up. (Optional) Units in pixels. Defaults to 0,0. Requires text-field.
-     */
-    public Displacement textTranslateDisplacement() {
-        return parse.displacement(paint, "text-translate",
-                sf.displacement(ff.literal(0), ff.literal(0)));
-    }
-    
-    
-    /**
-     * Maps {@link #getIconOffset()} to a {@link Displacement}
-     * 
-     * (Optional) Defaults to 0,0. Requires icon-image. Offset distance of icon from its anchor. Positive values indicate right and down, while
-     * negative values indicate left and up. When combined with icon-rotate the offset will be as if the rotated direction was up.
-     *
-     */
-    public Displacement iconOffsetDisplacement() {
-        return parse.displacement(layout, "icon-offset",
-                sf.displacement(ff.literal(0), ff.literal(0)));
-    }
-
-    /**
-     * Maps {@link #getIconTranslate()} to a {@link Displacement}
-     * 
-     * (Optional) Units in pixels. Defaults to 0,0. Requires icon-image. Distance that the icon's anchor is moved from its original placement. Positive values
-     * indicate right and down, while negative values indicate left and up.
-     *
-     */
-    public Displacement iconTranslateDisplacement() {
-        return parse.displacement(paint, "icon-translate",
-                sf.displacement(ff.literal(0), ff.literal(0)));
     }
 }

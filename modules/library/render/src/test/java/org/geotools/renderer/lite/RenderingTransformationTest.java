@@ -1,6 +1,23 @@
+/*
+ * GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+ *
+ * (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ */
 package org.geotools.renderer.lite;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -40,6 +57,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class RenderingTransformationTest {
 
@@ -80,6 +99,33 @@ public class RenderingTransformationTest {
         assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
         assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
         assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
+    }
+
+    @Test
+    public void testTransformBBOXIsCorrect() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "noop_colormap.sld");
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "watertemp.tiff"));
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridReaderLayer(reader, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+
+        CRSAuthorityFactory factory = CRS.getAuthorityFactory(true);
+        CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("EPSG:4326");
+
+        ReferencedEnvelope reWgs84 = new ReferencedEnvelope(
+            9.848993475036622,
+            11.958867853088378,
+            40.74254816253662,
+            41.64941961090088,
+            crs);
+
+        BufferedImage image = RendererBaseTest.showRender("Transform BBOX", renderer,  4000, reWgs84);
+        //last pixel is white when doing a transformation and the rendering transform BBOX transforms are
+        //incorrect, it shouldn't be
+        assertNotEquals(Color.WHITE, getPixelColor(image, 299, 0));
+        assertEquals(new Color(133, 130, 188), getPixelColor(image, 299, 0));
     }
 
     @Test

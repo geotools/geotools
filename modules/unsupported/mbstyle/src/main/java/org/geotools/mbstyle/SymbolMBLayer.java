@@ -341,11 +341,25 @@ public class SymbolMBLayer extends MBLayer {
      * If true, the symbols will not cross tile edges to avoid mutual collisions. Recommended in layers that don't have
      * enough padding in the vector tile to prevent collisions, or if it is a point symbol layer placed after a line
      * symbol layer.
+     * 
      * @return Whether or not the symbols should avoid edges.
      * @throws MBFormatException
      */
     public Boolean getSymbolAvoidEdges() throws MBFormatException {
         return parse.getBoolean(layout, "symbol-avoid-edges", false);
+    }
+    
+    /**
+     * Wraps {@link #getSymbolAvoidEdges()} in a GeoTools expression.
+     * 
+     * (Optional) Defaults to false. If true, the symbols will not cross tile edges to avoid mutual collisions. Recommended in layers that don't have
+     * enough padding in the vector tile to prevent collisions, or if it is a point symbol layer placed after a line symbol layer.
+     * 
+     * @return Whether or not the symbols should avoid edges.
+     * @throws MBFormatException
+     */
+    public Expression symbolAvoidEdges() {
+        return parse.bool(layout, "symbol-avoid-edges", false);
     }
 
     /**
@@ -386,6 +400,19 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * 
+     * Wraps {@link #getIconIgnorePlacement()} in a GeoTools expression.
+     * 
+     * (Optional) Defaults to false. Requires icon-image. If true, other symbols can be visible even if they collide with the icon.
+     * 
+     * @return Whether or not other symbols should be allowed to overlap symbols in this layer.
+     * @throws MBFormatException
+     */
+    public Expression iconIgnorePlacement() {
+        return parse.bool(layout, "icon-ignore-placement", false);
+    }
+
+    /**
      * (Optional) Defaults to false. Requires icon-image. Requires text-field.
      * 
      * If true, text will display without their corresponding icons when the icon collides with other symbols and the
@@ -401,6 +428,20 @@ public class SymbolMBLayer extends MBLayer {
     /**
      * Optional enum. One of map, viewport, auto. Defaults to auto. Requires icon-image. In combination with
      * symbol-placement, determines the rotation
+     * 
+     * Wraps {@link #getIconOptional()} in a GeoTools expression. (Optional) Defaults to false. Requires icon-image. Requires text-field.
+     * 
+     * If true, text will display without their corresponding icons when the icon collides with other symbols and the text does not.
+     * 
+     * @return Whether or not the label may be drawn when the icon is not drawn due to collisions
+     * @throws MBFormatException
+     */
+    public Expression iconOptional() {
+        return parse.bool(layout, "icon-optional", false);
+    }
+
+    /**
+     * Optional enum. One of map, viewport, auto. Defaults to auto. Requires icon-image. In combination with symbol-placement, determines the rotation
      * behavior of icons.
      * 
      * Possible values:
@@ -426,6 +467,13 @@ public class SymbolMBLayer extends MBLayer {
             return Alignment.AUTO;
         }
         
+    }
+    
+    /**
+     * Converts {@link #getIconRotationAlignment()} to a GeoTools expression. Returns an expression that evaluates to one of "map", "viewport", or "auto".
+     */
+    public Expression iconRotationAlignment() {
+        return parse.enumToExpression(layout, "icon-rotation-alignment", Alignment.class, Alignment.AUTO);
     }
 
     /**
@@ -598,6 +646,21 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Wraps {@link #getIconKeepUpright()} in a GeoTools expression. 
+     * 
+     * (Optional) Defaults to false. Requires icon-image. Requires
+     * icon-rotation-alignment = map. Requires symbol-placement = line.
+     * 
+     * If true, the icon may be flipped to prevent it from being rendered upside-down.
+     * 
+     * @return Whether to flip the icon if the orientation of the geometry would cause it to be rendered upside-down
+     * @throws MBFormatException
+     */
+    public Expression iconKeepUpright() {
+        return parse.bool(layout, "icon-keep-upright", false);
+    }
+
+    /**
      * (Optional) Defaults to 0,0. Requires icon-image.
      * 
      * Offset distance of icon from its anchor. Positive values indicate right and down, while negative values indicate left and up. When combined with icon-rotate the offset will be as if the rotated direction was up.
@@ -649,6 +712,13 @@ public class SymbolMBLayer extends MBLayer {
             return Alignment.AUTO;
         }
     }
+    
+    /**
+     * Converts {@link #getTextPitchAlignment()} to a GeoTools expression. Returns an expression that evaluates to one of "map", "viewport", or "auto".
+     */
+    public Expression textPitchAlignment() {
+        return parse.enumToExpression(layout, "text-pitch-alignment", Alignment.class, Alignment.AUTO);
+    }
 
     /**
      * 
@@ -677,6 +747,17 @@ public class SymbolMBLayer extends MBLayer {
         } else {
             return Alignment.AUTO;
         }
+    }
+    
+    /**
+     * Converts {@link #getTextRotationAlignment()} to a GeoTools expression.
+     * 
+     * @return A GeoTools expression that evaluates to "map", "viewport", or "auto".
+     * @see {@link #getTextRotationAlignment()}}.
+     */
+    public Expression textRotationAlignment() {
+        return parse.enumToExpression(layout, "text-rotation-alignment", Alignment.class,
+                Alignment.AUTO);
     }
 
     /**
@@ -837,6 +918,15 @@ public class SymbolMBLayer extends MBLayer {
             return Justification.CENTER;
         }
     }
+    
+    /**
+     * Converts {@link #getTextJustify()} to a GeoTools expression. Returns an expression that evaluates to one of "left", "right", or "center".
+     * 
+     * @see {@link #getTextJustify()}
+     */
+    public Expression textJustify() {
+        return parse.enumToExpression(layout, "text-justify", Justification.class, Justification.CENTER);
+    }
 
     /**
      * Part of the text placed closest to the anchor (requires text-field).
@@ -875,6 +965,18 @@ public class SymbolMBLayer extends MBLayer {
         }
         return TextAnchor.parse(json);
     }
+    
+    /**
+     * Converts {@link #getTextAnchor()} to a GeoTools expression. Returns an expression that evaluates to one of "center", "left", or "right", "top",
+     * "bottom", "top_left", "top_right", "bottom_left", "bottom_right".
+     * 
+     * @see {@link #getTextAnchor()}
+     */
+    public Expression textAnchor() {
+        return parse.enumToExpression(layout, "text-anchor", TextAnchor.class,
+                TextAnchor.CENTER);
+    }
+
     
     /** 
      * Layout "text-anchor" provided as {@link AnchorPoint}.
@@ -967,6 +1069,19 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Wraps {@link #getTextKeepUpright()} in a GeoTools expression (Optional) Defaults to true. Requires text-field. Requires text-rotation-alignment
+     * = map. Requires symbol-placement = line.
+     * 
+     * If true, the text may be flipped vertically to prevent it from being rendered upside-down.
+     * 
+     * @return Boolean
+     * @throws MBFormatException
+     */
+    public Expression textKeepUpright() {
+        return parse.bool(layout, "text-keep-upright", true);
+    }
+
+    /**
      * One of none, uppercase, lowercase. Defaults to none. Requires text-field.
      * 
      * Specifies how to capitalize text, similar to the CSS text-transform property.
@@ -988,6 +1103,16 @@ public class SymbolMBLayer extends MBLayer {
         } else {
             return TextTransform.NONE;
         }
+    }
+    
+    /**
+     * Converts {@link #getTextTransform()} to a GeoTools expression. Returns an expression that evaluates to one of "uppercase", "lowercase", "none".
+     * 
+     * @see {@link #getTextTransform()}
+     */
+    public Expression textTransform() {
+        return parse.enumToExpression(layout, "text-transform", TextTransform.class,
+                TextTransform.NONE);
     }
 
     /**
@@ -1057,6 +1182,18 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     * Wraps {@link #getTextIgnorePlacement()} in a GeoTools expression Defaults to false. Requires text-field.
+     * 
+     * If true, other symbols can be visible even if they collide with the text.
+     * 
+     * @return Boolean
+     * @throws MBFormatException
+     */
+    public Expression textIgnorePlacement() {
+        return parse.bool(layout, "text-ignore-placement", false);
+    }
+
+    /**
      * Defaults to false. Requires text-field. Requires icon-image.
      * 
      * If true, icons will display without their corresponding text when the text collides with other symbols and the icon does not.
@@ -1066,6 +1203,20 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Boolean getTextOptional() throws MBFormatException {
         return parse.getBoolean(layout, "text-optional", false);
+    }
+
+    /**
+     * Wraps {@link #getTextOptional()} in a GeoTools expression.
+     * 
+     * Defaults to false. Requires text-field. Defaults to false. Requires text-field. Requires icon-image.
+     * 
+     * If true, icons will display without their corresponding text when the text collides with other symbols and the icon does not.
+     * 
+     * @return Boolean
+     * @throws MBFormatException
+     */
+    public Expression textOptional() {
+        return parse.bool(layout, "text-optional", false);
     }
 
     /**
@@ -1175,7 +1326,7 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
-     * Units in pixels. Defaults to 0,0. Requires icon-image.
+     * (Optional) Units in pixels. Defaults to 0,0. Requires icon-image.
      * 
      * Distance that the icon's anchor is moved from its original placement. Positive values indicate right and down,
      * while negative values indicate left and up.
@@ -1221,6 +1372,16 @@ public class SymbolMBLayer extends MBLayer {
         } else {
             return TranslateAnchor.MAP;
         }
+    }
+    
+    /**
+     * Converts {@link #getIconTranslateAnchor()} to a GeoTools expression. Returns an expression that evaluates to one of "map", "viewport".
+     * 
+     * @see {@link #getIconTranslateAnchor()}
+     */
+    public Expression iconTranslateAnchor() {
+        return parse.enumToExpression(layout, "icon-translate-anchor", TranslateAnchor.class,
+                TranslateAnchor.MAP);
     }
 
     /**
@@ -1383,6 +1544,16 @@ public class SymbolMBLayer extends MBLayer {
             return TranslateAnchor.MAP;
         }
     }
+    
+    /**
+     * Converts {@link #getTextTranslateAnchor()} to a GeoTools expression. Returns an expression that evaluates to one of "map", "viewport".
+     * 
+     * @see {@link #getTextTranslateAnchor()}
+     */
+    public Expression textTranslateAnchor() {
+        return parse.enumToExpression(layout, "text-translate-anchor", TranslateAnchor.class,
+                TranslateAnchor.MAP);
+    }
 
     /**
      * Rendering type of this layer.
@@ -1415,12 +1586,26 @@ public class SymbolMBLayer extends MBLayer {
                 sf.displacement(ff.literal(0), ff.literal(0)));
     }
     
-
+    
+    /**
+     * Maps {@link #getIconOffset()} to a {@link Displacement}
+     * 
+     * (Optional) Defaults to 0,0. Requires icon-image. Offset distance of icon from its anchor. Positive values indicate right and down, while
+     * negative values indicate left and up. When combined with icon-rotate the offset will be as if the rotated direction was up.
+     *
+     */
     public Displacement iconOffsetDisplacement() {
         return parse.displacement(layout, "icon-offset",
                 sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
+    /**
+     * Maps {@link #getIconTranslate()} to a {@link Displacement}
+     * 
+     * (Optional) Units in pixels. Defaults to 0,0. Requires icon-image. Distance that the icon's anchor is moved from its original placement. Positive values
+     * indicate right and down, while negative values indicate left and up.
+     *
+     */
     public Displacement iconTranslateDisplacement() {
         return parse.displacement(paint, "icon-translate",
                 sf.displacement(ff.literal(0), ff.literal(0)));

@@ -99,7 +99,7 @@ public class LineMBLayer extends MBLayer {
      * @return One of butt, round, square, optional defaults to butt.
      */
     public LineCap getLineCap() {
-        return parse.toEnum(layout, "line-cap", LineCap.class, LineCap.BUTT);
+        return parse.getEnum(layout, "line-cap", LineCap.class, LineCap.BUTT);
     }
 
     /**
@@ -110,29 +110,7 @@ public class LineMBLayer extends MBLayer {
      * @return Expression for {@link Stroke#getLineCap()} use.
      */
     public Expression lineCap() {
-
-        Object obj = layout.get("line-cap");
-
-        if (obj == null) {
-            return ff.literal("butt");
-        } else if (obj instanceof String) {
-            return ff.literal(
-                    parse.toEnum(layout, "line-cap", LineCap.class, LineCap.BUTT).name().toLowerCase());
-        } else if (obj instanceof Number) {
-            throw new UnsupportedOperationException("\"line-cap\": Number not supported");
-        } else if (obj instanceof Boolean) {
-            throw new UnsupportedOperationException("\"line-cap\": Boolean not supported");
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(parse, (JSONObject) obj);
-            return function.enumeration(LineCap.class );
-        } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"line-cap\": JSONArray not supported");
-        } else {
-            throw new IllegalArgumentException(
-                    "json contents invalid: \"line-cap\" value limited to String or JSONObject but was "
-                            + obj.getClass().getSimpleName());
-        }
-
+        return parse.enumToExpression(layout, "line-cap", LineCap.class, LineCap.BUTT); 
     }
 
     /**
@@ -155,7 +133,7 @@ public class LineMBLayer extends MBLayer {
      * @return The line join
      */
     public LineJoin getLineJoin() {
-        return parse.toEnum(layout, "line-join", LineJoin.class, LineJoin.MITER);
+        return parse.getEnum(layout, "line-join", LineJoin.class, LineJoin.MITER);
     }
 
     /**
@@ -166,32 +144,7 @@ public class LineMBLayer extends MBLayer {
      * @return Expression for {@link Stroke#getLineJoin()()} use.
      */
     public Expression lineJoin() {
-        Object obj = layout.get("line-join");
-
-        if (obj == null) {
-            return ff.literal("mitre");
-        } else if (obj instanceof String) {
-            LineJoin lj = parse.toEnum(layout, "line-join", LineJoin.class, LineJoin.MITER);
-            if (lj.equals(LineJoin.MITER)) {
-                // miter (MapBox) -> mitre (GeoTools)
-                return ff.literal("mitre");
-            } else {
-                return ff.literal(lj.name().toLowerCase());
-            }
-        } else if (obj instanceof Number) {
-            throw new UnsupportedOperationException("\"line-join\": Number not supported");
-        } else if (obj instanceof Boolean) {
-            throw new UnsupportedOperationException("\"line-join\": Boolean not supported");
-        } else if (obj instanceof JSONObject) {
-            MBFunction function = new MBFunction(parse, (JSONObject) obj);
-            return function.enumeration(LineJoin.class);
-        } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"line-join\": JSONArray not supported");
-        } else {
-            throw new IllegalArgumentException(
-                    "json contents invalid: \"line-join\" value limited to String or JSONObject but was "
-                            + obj.getClass().getSimpleName());
-        }
+        return parse.enumToExpression(layout, "line-join", LineJoin.class, LineJoin.MITER);
     }
 
     /**
@@ -367,7 +320,15 @@ public class LineMBLayer extends MBLayer {
      * @return The translation reference point.
      */
     public LineTranslateAnchor getLineTranslateAnchor() {
-        return parse.toEnum(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
+        return parse.getEnum(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
+    }
+    
+    /**
+     * Wraps {@link #getLineTranslateAnchor()} in a GeoTools expression. Returns an expression that evaluates to "map" or "viewport".
+     * 
+     */
+    public Expression lineTranslateAnchor() {
+        return parse.enumToExpression(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
     }
 
     /**

@@ -294,7 +294,7 @@ public abstract class MBLayer {
      */
     public Visibility getVisibility(){
         JSONObject layout = layout();
-        return parse.toEnum( layout, "visibility", Visibility.class, Visibility.VISIBLE );
+        return parse.getEnum( layout, "visibility", Visibility.class, Visibility.VISIBLE );
     }
     
     /**

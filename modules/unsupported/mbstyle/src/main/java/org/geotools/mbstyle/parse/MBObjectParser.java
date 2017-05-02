@@ -20,13 +20,19 @@ import java.awt.Color;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.function.IntFunction;
+import java.util.Enumeration;
+import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.mbstyle.LineMBLayer;
+import org.geotools.mbstyle.LineMBLayer.LineJoin;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.StyleFactory2;
 import org.geotools.util.ColorConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.FilterFactory2;
@@ -68,6 +74,7 @@ public class MBObjectParser {
     Class<?> context;
     final FilterFactory2 ff;
     final StyleFactory2 sf;
+    private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
     
     /**
      * Parser used to in the provided context.
@@ -503,7 +510,7 @@ public class MBObjectParser {
      * @return The enum value from the string, or the fallback value.
      * @throws MBFormatException if the value is not a String, or it is not a valid value for the enumeration.
      */
-    public <T extends Enum<?>> T toEnum(JSONObject json, String tag, Class<T> enumeration,
+    public <T extends Enum<?>> T getEnum(JSONObject json, String tag, Class<T> enumeration,
             T fallback) {
         Object value = json.get(tag);
 
@@ -527,6 +534,78 @@ public class MBObjectParser {
                             + " to " + enumeration.getSimpleName() + " not supported.");
         }
 
+    }
+    
+    /**
+     * 
+     * <p>Parse a Mapbox enumeration property to a GeoTools Expression that evaluates to a GeoTools constant (supports the property being specified as a
+     * mapbox function). </p>
+     * 
+     * <p>For example, converts {@link LineMBLayer#LineJoin#BEVEL} to an expression that evaluates to the String value "bevel", or
+     * {@link LineMBLayer#LineJoin#MITER} to an expression that evaluates to "mitre".</p>
+     * 
+     * @param json The json object containing the property
+     * @param tag The json key corresponding to the property
+     * @param enumeration The Mapbox enumeration that the value should be an instance of
+     * @param fallback The fallback enumeration value, if the value is missing or invalid for the provided enumeration.
+     * @return A GeoTools expression corresponding to the Mapbox enumeration value, evaluating to a GeoTools constant.
+     */
+    public <T extends Enum<?>> Expression enumToExpression(JSONObject json, String tag,
+            Class<T> enumeration, T fallback) {
+        // Function name is inconsistent because "enum" is not a valid function name.
+        Object value = json.get(tag);
+        if (value == null) {
+            return ff.literal(convertEnumValueToGeoToolsConstant(fallback));
+        } else if (value instanceof String) {
+            // step 1 look up enumValue
+            String stringVal = (String) value;
+            if ("".equals(stringVal.trim())) {
+                return ff.literal(convertEnumValueToGeoToolsConstant(fallback));
+            }
+            T enumValue = null;
+            for (T constant : enumeration.getEnumConstants()) {
+                if (constant.toString().equalsIgnoreCase(stringVal.trim())) {
+                    enumValue = constant;
+                    break;
+                }
+            }
+            if (enumValue == null) {
+                LOGGER.warning("\"" + stringVal + "\" invalid value for enumeration "
+                        + enumeration.getSimpleName() + ", falling back to default value.");
+                return ff.literal(convertEnumValueToGeoToolsConstant(fallback));
+            }
+            // step 2 - convert to geotools constant
+            // (for now just convert to lower case)
+            //
+            return ff.literal(convertEnumValueToGeoToolsConstant(enumValue));
+        } else if (value instanceof JSONObject) {
+            MBFunction function = new MBFunction(this, (JSONObject) value);
+            return function.enumeration(enumeration);
+        } else {
+            throw new MBFormatException(
+                    "Conversion of \"" + tag + "\" value from " + value.getClass().getSimpleName()
+                            + " to " + enumeration.getSimpleName() + " not supported.");
+        }
+    }
+
+    /**
+     * Transform a Mapbox enumeration value to the corresponding GeoTools constant. For example, converts {@link LineMBLayer#LineJoin#BEVEL} to the
+     * String value "bevel", or {@link LineMBLayer#LineJoin#MITER} to the String value "mitre".
+     * 
+     * @param enumValue The Mapbox enumeration value.
+     * @return The GeoTools constant.
+     */
+    private Object convertEnumValueToGeoToolsConstant(Enum<?> enumValue) {
+
+        if (enumValue instanceof LineJoin && LineJoin.MITER.equals(enumValue)) {
+            return ff.literal("mitre");
+        }
+
+        // Can add additional transformations as necessary.
+        // (Converting the string value to lowercase takes care of most cases).
+
+        String literal = enumValue.toString().toLowerCase();
+        return ff.literal(literal);
     }
     
     /**

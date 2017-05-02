@@ -83,9 +83,8 @@ public abstract class MBSource {
         }
         if ("canvas".equalsIgnoreCase(type)) {
             return new CanvasMBSource(json, parser);
-        } else {
-            throw new MBFormatException("Mapbox source \"type\" is required and must be one of: vector, raster, geojson, image, video, or canvas.");
         }
+        throw new MBFormatException("Mapbox source \"type\" is required and must be one of: vector, raster, geojson, image, video, or canvas.");
     }
     
     /**

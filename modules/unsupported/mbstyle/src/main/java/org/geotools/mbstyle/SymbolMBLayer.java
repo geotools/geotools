@@ -20,16 +20,22 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.SemanticType;
+import org.opengis.style.Symbolizer;
+
+import javax.measure.unit.NonSI;
 
 /**
  * A symbol.
@@ -1598,6 +1604,173 @@ public class SymbolMBLayer extends MBLayer {
     public Expression textTranslateAnchor() {
         return parse.enumToExpression(layout, "text-translate-anchor", TranslateAnchor.class,
                 TranslateAnchor.MAP);
+    }
+
+    /**
+     * Transform {@link SymbolMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        StyleBuilder sb = new StyleBuilder();
+        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+
+        LabelPlacement labelPlacement;
+
+        // Create point or line placement
+
+        // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
+        String symbolPlacementVal = transformer.requireLiteral(symbolPlacement(), String.class, "point", "symbol-placement", getId());
+
+        if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+            // Point Placement (default)
+            PointPlacement pointP = sb.createPointPlacement();
+            // Set anchor point (translated by text-translate)
+            // TODO - GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
+            pointP.setAnchorPoint(anchorPoint());
+
+            // MapBox text-offset: +y means down
+            Displacement textTranslate = textTranslateDisplacement();
+            textTranslate.setDisplacementY(ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
+            pointP.setDisplacement(textTranslate);
+
+            pointP.setRotation(textRotate());
+
+            labelPlacement = pointP;
+        } else {
+            // Line Placement
+
+            LinePlacement lineP = sb.createLinePlacement(null);
+            lineP.setRepeated(true);
+
+            // TODO pixels (geotools) vs ems (mapbox) for text-offset
+            lineP.setPerpendicularOffset(
+                    ff.multiply(ff.literal(-1), textOffsetDisplacement().getDisplacementY()));
+
+            labelPlacement = lineP;
+        }
+
+        Halo halo = sf.halo(sf.fill(null, textHaloColor(), null), textHaloWidth());
+        Fill fill = sf.fill(null, textColor(), textOpacity());
+
+        Font font;
+        if (getTextFont() == null) {
+            font = sb.createFont(ff.literal(transformer.getDefaultFonts()), ff.literal("normal"),
+                    ff.literal("normal"), textSize());
+        } else {
+            // TODO fonts
+            font = sb.createFont(ff.literal(getTextFont()), ff.literal("normal"),
+                    ff.literal("normal"), textSize());
+        }
+
+        // If the textField is a literal string (not a function), then
+        // we need to support Mapbox token replacement.
+        Expression textExpression = textField();
+        if (textExpression instanceof Literal) {
+            String text = textExpression.evaluate(null, String.class);
+            if (text.trim().isEmpty()) {
+                textExpression = ff.literal(" ");
+            } else {
+                textExpression = transformer.cqlExpressionFromTokens(text);
+            }
+        }
+
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) sf.textSymbolizer(getId(),
+                ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
+                textExpression, font, labelPlacement, halo, fill);
+
+        // TODO Vendor options can't be expressions.
+        Number symbolSpacing = transformer.requireLiteral(symbolSpacing(), Number.class, 250,
+                "symbol-spacing", getId());
+        symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
+
+        // text max angle
+        // layer.getTextMaxAngle();
+        // symbolizer.getOptions().put("maxAngleDelta", "40");
+
+        // conflictResolution
+        // Mapbox allows text overlap and icon overlap separately. GeoTools only has conflictResolution.
+        Boolean textAllowOverlap = transformer.requireLiteral(textAllowOverlap(), Boolean.class, false,
+                "text-allow-overlap", getId());
+        Boolean iconAllowOverlap = transformer.requireLiteral(iconAllowOverlap(), Boolean.class, false,
+                "icon-allow-overlap", getId());
+
+        symbolizer.getOptions().put("conflictResolution",
+                String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
+
+        // TODO Vendor options can't be expressions
+
+        String textFitVal = transformer.requireLiteral(iconTextFit(), String.class, "none", "icon-text-fit", getId()).trim();
+        if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
+            symbolizer.getOptions().put("graphic-resize",
+                    "stretch");
+        } else if ("both".equalsIgnoreCase(textFitVal)) {
+            symbolizer.getOptions().put("graphic-resize",
+                    "proportional");
+        } else {
+            // Default
+            symbolizer.getOptions().put("graphic-resize",
+                    "none");
+        }
+
+        // TODO Mapbox allows you to sapecify an array of values, one for each side
+        if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
+            symbolizer.getOptions().put("graphic-margin",
+                    String.valueOf(getIconTextFitPadding().get(0)));
+        } else {
+            symbolizer.getOptions().put("graphic-margin", "0");
+        }
+
+        // halo blur
+        // layer.textHaloBlur();
+
+        // auto wrap
+        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?
+
+        // If the layer has an icon image, add it to our symbolizer
+        if (hasIconImage()) {
+
+            // If the iconImage is a literal string (not a function), then
+            // we need to support Mapbox token replacement.
+            // Note: the URL is expected to be a CQL STRING ...
+            Expression iconExpression = iconImage();
+            if (iconExpression instanceof Literal) {
+                iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
+            }
+
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, styleContext);
+            // TODO layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
+            Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
+                    iconRotate(), null, null);
+            Displacement d = iconOffsetDisplacement();
+            d.setDisplacementY(d.getDisplacementY());
+            g.setDisplacement(d);
+            symbolizer.setGraphic(g);
+        }
+
+        symbolizers.add(symbolizer);
+
+        // List of opengis rules here (needed for constructor)
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
+                filter());
+        rule.setLegendGraphic(new Graphic[0]);
+
+        rules.add(rule);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                rules);
     }
 
     /**

@@ -19,14 +19,29 @@ package org.geotools.mbstyle;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.*;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Stroke;
+import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.*;
 import org.opengis.style.Displacement;
-import org.opengis.style.SemanticType;
+
+import javax.measure.unit.NonSI;
 
 import static java.lang.Math.round;
 
@@ -314,6 +329,54 @@ public class CircleMBLayer extends MBLayer {
      */
     public Expression circleStrokeOpacity() throws MBFormatException {
         return parse.percentage(paint, "circle-stroke-opacity", 1);
+    }
+
+    /**
+     * Transform {@link CircleMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a default opacity.
+        Stroke s = sf.stroke(circleStrokeColor(), circleStrokeOpacity(),
+                circleStrokeWidth(), null, Stroke.DEFAULT.getLineCap(), null, null);
+        Fill f = sf.fill(null, circleColor(), circleOpacity());
+        Mark m = sf.mark(ff.literal("circle"), f, s);
+
+        Graphic gr = sf.graphic(Arrays.asList(m), null,
+                ff.multiply(ff.literal(2), circleRadius()), null, null,
+                toDisplacement());
+        gr.graphicalSymbols().clear();
+        gr.graphicalSymbols().add(m);
+
+        PointSymbolizer ps = sf
+                .pointSymbolizer(getId(), ff.property((String) null),
+                        sf.description(Text.text("MBStyle " + getId()),
+                                Text.text("Generated for " + getSourceLayer())),
+                        NonSI.PIXEL, gr);
+
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ps),
+                filter());
+
+        rules.add(rule);
+        rule.setLegendGraphic(new Graphic[0]);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, Collections.emptySet(), Collections.singleton(SemanticType.POINT), rules);
     }
 
     /**

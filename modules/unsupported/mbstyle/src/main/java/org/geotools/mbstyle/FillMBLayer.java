@@ -19,13 +19,21 @@ package org.geotools.mbstyle;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.Displacement;
+import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 
+import javax.measure.unit.NonSI;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * MBLayer wrapper for "Fill" layers.
@@ -238,6 +246,89 @@ public class FillMBLayer extends MBLayer {
      */
     public boolean hasFillPattern() {
         return parse.isPropertyDefined(paint, "fill-pattern");
+    }
+
+    /**
+     * Transform MBFillLayer to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:</p>
+     * <ul>
+     * <li>stroke-width is assumed to be 1 (not specified by MapBox style)
+     * </ul>
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        PolygonSymbolizer symbolizer;
+        // use factory to avoid defaults values
+        org.geotools.styling.Stroke stroke = sf.stroke(
+                fillOutlineColor(),
+                fillOpacity(),
+                ff.literal(1),
+                ff.literal("miter"),
+                ff.literal("butt"),
+                null,
+                null);
+
+        // from fill pattern or fill color
+        Fill fill;
+        if (hasFillPattern()) {
+
+            // If the fill-pattern is a literal string (not a function), then
+            // we need to support Mapbox {token} replacement.
+            Expression fillPatternExpr = fillPattern();
+            if (fillPatternExpr instanceof Literal) {
+                String text = fillPatternExpr.evaluate(null, String.class);
+                if (text.trim().isEmpty()) {
+                    fillPatternExpr = ff.literal(" ");
+                } else {
+                    fillPatternExpr = transformer.cqlExpressionFromTokens(text);
+                }
+            }
+
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, toDisplacement());
+            fill = sf.fill(gf, null, null);
+        } else {
+            fill = sf.fill(null, fillColor(), fillOpacity());
+        }
+
+        // TODO: Is there a better way to select the first geometry?
+        symbolizer = sf.polygonSymbolizer(
+                getId(),
+                ff.property((String)null),
+                sf.description(Text.text("fill"),null),
+                NonSI.PIXEL,
+                stroke,
+                fill,
+                toDisplacement(),
+                ff.literal(0));
+
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(symbolizer),
+                filter());
+
+        // Set legend graphic to null.
+        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
+        rule.setLegendGraphic(new Graphic[0]);
+
+
+        return sf.featureTypeStyle(
+                getId(),
+                sf.description(
+                        Text.text("MBStyle "+getId()),
+                        Text.text("Generated for "+getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                Arrays.asList(rule)
+        );
     }
 
     /**

@@ -19,13 +19,30 @@ package org.geotools.mbstyle;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.Rule;
+import org.geotools.styling.Symbolizer;
+import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.SemanticType;
+import org.opengis.style.*;
+
+import javax.measure.unit.NonSI;
+
 /**
  * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.
  * <p>
@@ -217,6 +234,158 @@ public class FillExtrusionMBLayer extends MBLayer {
      */
     public Expression fillExtrusionBase() throws MBFormatException {
         return parse.percentage(paint, "fill-extrusion-base", 0.0);
+    }
+
+    /**
+     * Transform {@link FillExtrusionMBLayer} to GeoTools FeatureTypeStyle.
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        PolygonSymbolizer symbolizer;
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+
+        // from fill pattern or fill color
+        Fill fill;
+
+        DisplacementImpl displacement = new DisplacementImpl();
+
+        displacement.setDisplacementX(getFillExtrusionBase().doubleValue());
+        displacement.setDisplacementY(getFillExtrusionHeight().doubleValue());
+
+        if (getFillExtrusionPattern() != null) {
+            // TODO: Fill graphic (with external graphics)
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(getFillExtrusionPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, displacement);
+            fill = sf.fill(gf, null, null);
+        } else {
+            fill = sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
+        }
+
+        // TODO: Is there a better way to select the first geometry?
+        symbolizer = sf.polygonSymbolizer(
+                getId(),
+                ff.property((String)null),
+                sf.description(Text.text("fill"),null),
+                NonSI.PIXEL,
+                null,
+                fill,
+                displacement,
+                ff.literal(0));
+
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(symbolizer),
+                filter());
+
+        // Set legend graphic to null.
+        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
+        rule.setLegendGraphic(new Graphic[0]);
+
+
+        return sf.featureTypeStyle(
+                getId(),
+                sf.description(
+                        Text.text("MBStyle "+getId()),
+                        Text.text("Generated for "+getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                Arrays.asList(rule)
+        );
+    }
+
+    //TODO: useMultipleFeatureTypeStyles is never used. Why?
+    public List<FeatureTypeStyle> transform(MBStyle styleContext, Boolean useMultipleFeatureTypeStyles) {
+        if (!visibility()) {
+            return null;
+        }
+        PolygonSymbolizer symbolizer;
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        // from fill pattern or fill color
+        Fill fill;
+
+        DisplacementImpl displacement = new DisplacementImpl();
+
+        displacement.setDisplacementX(getFillExtrusionBase().doubleValue());
+        displacement.setDisplacementY(getFillExtrusionHeight().doubleValue());
+
+        if (getFillExtrusionPattern() != null) {
+            // TODO: Fill graphic (with external graphics)
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(getFillExtrusionPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, displacement);
+            fill = sf.fill(gf, null, null);
+        } else {
+            fill = sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
+        }
+
+        // Creating 3D polygons from the fill Extrusion
+        // Extrusions require 3 FeatureTypeStyles 2 with offset functions and 1 isometric function
+        // Using hard coded values for now.
+
+        // TODO: figure out how to use property values from the data.
+        Expression shadows = ff.function("offset", ff.property("geom"),
+                ff.literal(3),
+                ff.literal(-3));
+        Expression sides = ff.function("isometric", ff.property("geom"), ff.literal(5));
+        Expression roofs = ff.function("offset", ff.property("geom"),
+                ff.literal(0),
+                ff.literal(5));
+
+        List<Expression> extrusionExpressions = new ArrayList<>();
+        extrusionExpressions.add(shadows);
+        extrusionExpressions.add(sides);
+        extrusionExpressions.add(roofs);
+
+        List<org.opengis.style.Symbolizer> symbolizers = new ArrayList<>();
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+
+        for (Expression e : extrusionExpressions) {
+            symbolizer = sf.createPolygonSymbolizer();
+            symbolizer.setName(getId());
+            symbolizer.setGeometry(e);
+            symbolizer.setDescription(sf.description(Text.text("fill"),null));
+            symbolizer.setUnitOfMeasure(NonSI.PIXEL);
+            symbolizer.setStroke(null);
+            symbolizer.setFill(fill);
+            symbolizer.setDisplacement(displacement);
+//            symbolizer = sf.polygonSymbolizer(
+//                    layer.getId(),
+//                    e,
+//                    sf.description(Text.text("fill"),null),
+//                    NonSI.PIXEL,
+//                    null,
+//                    fill,
+//                    displacement,
+//                    ff.literal(0));
+            symbolizers.add(symbolizer);
+        }
+
+
+        // TODO: Is there a better way to select the first geometry?
+        List<FeatureTypeStyle> ftsList = new ArrayList<>();
+        for (org.opengis.style.Symbolizer s : symbolizers) {
+            FeatureTypeStyle fs = sf.createFeatureTypeStyle();
+            Rule rule = sf.rule(
+                    getId(),
+                    null,
+                    null,
+                    0.0,
+                    Double.POSITIVE_INFINITY,
+                    Arrays.asList(s),
+                    filter());
+            // Set legend graphic to null.
+            //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
+            rule.setLegendGraphic(new Graphic[0]);
+            fs.rules().add(rule);
+            ftsList.add(fs);
+        }
+
+        return ftsList;
     }
 
     /**

@@ -18,9 +18,20 @@
 package org.geotools.mbstyle;
 
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONObject;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.ContrastMethod;
+import org.opengis.style.Rule;
 import org.opengis.style.SemanticType;
+
+import javax.measure.unit.NonSI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class RasterMBLayer extends MBLayer {
 
@@ -194,6 +205,43 @@ public class RasterMBLayer extends MBLayer {
      */
     public Number getFadeDuration() {
         return parse.optional(Number.class, paintJson,  "raster-fade-duration", 300);
+    }
+
+    /**
+     * Transform {@link RasterMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * <li>Assumes 3-band RGB</li>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
+        ChannelSelection sel = sf.channelSelection(sf.createSelectedChannelType("1", ce),
+                sf.createSelectedChannelType("2", ce), sf.createSelectedChannelType("3", ce));
+
+        // Use of builder is easier for code examples; but fills in SLD defaults
+        // Currently only applies the opacity.
+        RasterSymbolizer symbolizer = sf.rasterSymbolizer(getId(), null,
+                sf.description(Text.text("raster"), null), NonSI.PIXEL, opacity(), sel,
+                null, null, ce, null, null);
+
+        List<Rule> rules = new ArrayList<>();
+        org.geotools.styling.Rule rule = sf.rule(getId(), null, null, 0.0, Double.MAX_VALUE,
+                Arrays.asList(symbolizer), Filter.INCLUDE);
+        rules.add(rule);
+        rule.setLegendGraphic(new Graphic[0]);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null,
+                Collections.emptySet(),
+                Collections.singleton(SemanticType.RASTER),
+                rules);
     }
 
     /**

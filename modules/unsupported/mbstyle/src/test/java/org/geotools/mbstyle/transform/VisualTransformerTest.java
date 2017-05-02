@@ -115,7 +115,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -142,7 +142,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -169,7 +169,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -196,7 +196,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -223,7 +223,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -348,7 +348,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 
@@ -373,7 +373,7 @@ public class VisualTransformerTest {
 
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
-        StyledLayerDescriptor sld = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor sld = mbStyle.transform();
         UserLayer l = (UserLayer) sld.layers().get(0);
         Style style = l.getUserStyles()[0];
 

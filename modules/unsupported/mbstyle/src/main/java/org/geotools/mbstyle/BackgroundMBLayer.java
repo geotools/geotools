@@ -18,11 +18,22 @@
 package org.geotools.mbstyle;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Rule;
+import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.SemanticType;
+import org.opengis.style.Symbolizer;
+
+import javax.measure.unit.NonSI;
 
 /**
  * The background color or pattern of the map.
@@ -122,6 +133,57 @@ public class BackgroundMBLayer extends MBLayer {
      */
     public Expression backgroundOpacity() {
         return parse.percentage(paint, "background-opacity", 1.0);
+    }
+
+    /**
+     * Transform {@link BackgroundMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        // TODO - How to create the background polygon?
+
+        Fill fill;
+        if (hasBackgroundPattern()) {
+            // TODO Use the background pattern
+            fill = sf.fill(null, null, backgroundOpacity());
+        } else {
+            fill = sf.fill(null, backgroundColor(), backgroundOpacity());
+        }
+
+        Symbolizer symbolizer = sf.polygonSymbolizer(getId(),
+                // TODO: Is there a better way to do this? Is there a select first geometry syntax?
+                ff.property((String) null), sf.description(Text.text("fill"), null), NonSI.PIXEL,
+                null, // stroke
+                fill, null, ff.literal(0));
+        List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
+        symbolizers.add(symbolizer);
+
+        // List of opengis rules here (needed for constructor)
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                symbolizers,
+                filter());
+        rule.setLegendGraphic(new Graphic[0]);
+
+        rules.add(rule);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                rules);
     }
 
     /**

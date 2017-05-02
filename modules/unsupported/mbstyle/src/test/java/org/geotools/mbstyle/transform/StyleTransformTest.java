@@ -22,6 +22,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.*;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -79,7 +80,7 @@ public class StyleTransformTest {
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
         assertTrue(layers.get(0) instanceof FillMBLayer);
         FillMBLayer mbFill = (FillMBLayer) layers.get(0);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill, mbStyle);
+        FeatureTypeStyle fts = mbFill.transform(mbStyle);
         
         PolygonSymbolizer psym = SLD.polySymbolizer(fts);
         
@@ -117,7 +118,7 @@ public class StyleTransformTest {
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
         assertTrue(layers.get(0) instanceof FillExtrusionMBLayer);
         FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(0);
-        List<FeatureTypeStyle> fts = new MBStyleTransformer().transform(mbFill, mbStyle, true);
+        List<FeatureTypeStyle> fts = mbFill.transform(mbStyle, true);
 
         PolygonSymbolizer psym = SLD.polySymbolizer(fts.get(0));
 
@@ -152,7 +153,7 @@ public class StyleTransformTest {
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
         assertTrue(layers.get(0) instanceof FillMBLayer);
         FillMBLayer mbFill = (FillMBLayer) layers.get(0);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill, mbStyle);
+        FeatureTypeStyle fts = mbFill.transform(mbStyle);
         
         PolygonSymbolizer psym = SLD.polySymbolizer(fts);
         Graphic g = psym.getFill().getGraphicFill();
@@ -177,7 +178,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof RasterMBLayer);
         RasterMBLayer mbFill = (RasterMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbFill);
+        FeatureTypeStyle fts = mbFill.transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -204,7 +205,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof LineMBLayer);
         LineMBLayer mbLine = (LineMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine, mbStyle);
+        FeatureTypeStyle fts = mbLine.transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -241,7 +242,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof LineMBLayer);
         LineMBLayer mbLine = (LineMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbLine, mbStyle);
+        FeatureTypeStyle fts = mbLine.transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -271,7 +272,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof CircleMBLayer);
         CircleMBLayer mbCircle = (CircleMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbCircle);
+        FeatureTypeStyle fts = mbCircle.transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -320,7 +321,7 @@ public class StyleTransformTest {
         assertTrue(layers.get(0) instanceof CircleMBLayer);
         CircleMBLayer mbCircle = (CircleMBLayer) layers.get(0);
 
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(mbCircle);
+        FeatureTypeStyle fts = mbCircle.transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -367,7 +368,7 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0), mbStyle);
+        FeatureTypeStyle fts = layers.get(0).transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -392,7 +393,7 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof BackgroundMBLayer);
-        FeatureTypeStyle fts = new MBStyleTransformer().transform(layers.get(0), mbStyle);
+        FeatureTypeStyle fts = layers.get(0).transform(mbStyle);
 
         assertEquals(1, fts.rules().size());
         Rule r = fts.rules().get(0);
@@ -424,7 +425,7 @@ public class StyleTransformTest {
         ContentFeatureSource pointFS = ds.getFeatureSource("testpoints");
         
         
-        MBStyleTransformer transformer =new MBStyleTransformer(); 
+        MBStyleTransformer transformer =new MBStyleTransformer(new MBObjectParser(SymbolMBLayer.class));
         Expression e = transformer.cqlExpressionFromTokens("Replace text here: \"{text}\"");
         Map<String, String> m = new HashMap<>();
         

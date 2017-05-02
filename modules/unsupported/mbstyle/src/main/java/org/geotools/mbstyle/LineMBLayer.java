@@ -20,15 +20,21 @@ package org.geotools.mbstyle;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.Displacement;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Stroke;
 
+import javax.measure.unit.NonSI;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -494,6 +500,49 @@ public class LineMBLayer extends MBLayer {
      */
     public boolean hasLinePattern() {
         return parse.isPropertyDefined(paint, "line-pattern");
+    }
+
+    /**
+     * Transform {@link LineMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
+     */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        org.geotools.styling.Stroke stroke = sf.stroke(lineColor(), lineOpacity(), lineWidth(),
+                lineJoin(), lineCap(), null, null); // last "offset" is really "dash offset"
+
+        stroke.setDashArray(lineDasharray());
+        LineSymbolizer ls = sf.lineSymbolizer(getId(), null,
+                sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, lineOffset());
+
+        if (hasLinePattern()) {
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(linePattern(), styleContext);
+            GraphicFill fill = sf.graphicFill(Arrays.asList(eg), lineOpacity(), null, null, null, null);
+            stroke.setGraphicFill(fill);
+        }
+
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ls),
+                filter());
+        rule.setLegendGraphic(new Graphic[0]);
+        rules.add(rule);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, Collections.emptySet(), Collections.singleton(SemanticType.LINE), rules);
     }
 
     /**

@@ -47,9 +47,7 @@ public class MapBoxStyle {
         MBStyleParser parser = new MBStyleParser();
         MBStyle style = parser.parse(reader);
 
-        MBStyleTransformer transform = new MBStyleTransformer();
-
-        StyledLayerDescriptor sld = transform.transform(style);
+        StyledLayerDescriptor sld = style.transform();
         return sld;
     }
 
@@ -63,9 +61,7 @@ public class MapBoxStyle {
         MBStyleParser parser = new MBStyleParser();
         MBStyle style = parser.parse(stream);
 
-        MBStyleTransformer transform = new MBStyleTransformer();
-
-        StyledLayerDescriptor sld = transform.transform(style);
+        StyledLayerDescriptor sld = style.transform();
         return sld;
     }
     
@@ -84,7 +80,6 @@ public class MapBoxStyle {
             problems.add( invalid );
             return problems;
         }
-        MBStyleTransformer transform = new MBStyleTransformer();
         if (style.layers().isEmpty()) {
             problems.add( new MBFormatException("No layers defined"));
         } else {
@@ -94,7 +89,7 @@ public class MapBoxStyle {
                     continue;
                 }
                 try {
-                    FeatureTypeStyle featureTypeStyle = transform.transform(layer, style);
+                    FeatureTypeStyle featureTypeStyle = layer.transform(style);
                     if (featureTypeStyle != null) {
                         hasVisibleLayer = true;
                     }

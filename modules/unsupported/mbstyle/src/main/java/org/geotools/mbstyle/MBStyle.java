@@ -18,9 +18,12 @@ package org.geotools.mbstyle;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.source.MBSource;
+import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -298,5 +301,70 @@ public class MBStyle {
             }
         }
         return sourceMap;
+    }
+
+    /**
+     * Transform MBStyle to a GeoTools StyledLayerDescriptor.
+     *
+     * @return StyledLayerDescriptor
+     */
+    public StyledLayerDescriptor transform() {
+        StyleFactory sf = parse.getStyleFactory();
+        List<MBLayer> layers = layers();
+        if (layers.isEmpty()) {
+            throw new MBFormatException("layers empty");
+        }
+
+
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        Style style = sf.createStyle();
+
+        for (MBLayer layer : layers) {
+            MBObjectStops mbObjectStops = new MBObjectStops(layer);
+
+            int layerMaxZoom = layer.getMaxZoom();
+            int layerMinZoom = layer.getMinZoom();
+            Double layerMinScaleDenominator = layerMaxZoom == Integer.MAX_VALUE ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator((long) Math.min(25, layerMaxZoom));
+            Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator((long) Math.max(-25, layerMinZoom));
+
+            if (layer.visibility()) {
+                FeatureTypeStyle featureTypeStyle = null;
+                // check for property and zoom functions, if true we will have a layer for each one that
+                // becomes a feature type style.
+                if (mbObjectStops.hasStops) {
+                    List<Long> stopLevels = mbObjectStops.stops;
+                    int i = 0;
+                    for (MBLayer l : mbObjectStops.layersForStop) {
+                        long s = stopLevels.get(i);
+                        long[] rangeForStopLevel = mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
+                        Double maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+                        Double minScaleDenominator = null;
+                        if (rangeForStopLevel[1] != -1) {
+                            minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
+                        }
+
+                        featureTypeStyle = l.transform(this, minScaleDenominator, maxScaleDenominator);
+                        style.featureTypeStyles().add(featureTypeStyle);
+                        i++;
+                    }
+                } else {
+                    featureTypeStyle = layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator);
+                    style.featureTypeStyles().add(featureTypeStyle);
+                }
+            }
+        }
+
+        if( style.featureTypeStyles().isEmpty() ){
+            throw new MBFormatException("No visibile layers");
+        }
+
+        UserLayer userLayer = sf.createUserLayer();
+        userLayer.userStyles().add(style);
+
+        sld.layers().add(userLayer);
+        sld.setName(getName());
+        return sld;
     }
 }

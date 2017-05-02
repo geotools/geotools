@@ -147,7 +147,7 @@ public class MBStopsTest {
     public void testPropertyAndZoomScaleDenominators() throws IOException, ParseException {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor transformed = new MBStyleTransformer().transform(mbStyle);
+        StyledLayerDescriptor transformed = mbStyle.transform();
         List<StyledLayer> styledLayers = transformed.layers();
         List<FeatureTypeStyle> fts = ((UserLayer)styledLayers.get(0)).userStyles().get(0).featureTypeStyles();
 

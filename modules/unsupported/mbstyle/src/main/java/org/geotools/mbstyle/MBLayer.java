@@ -147,7 +147,7 @@ public abstract class MBLayer {
     public String getRef(){
         // We should update getType(), getSource(), getSourceLayer(), getMinZoom(), getMaxZoom(),
         // getFilter() to look up value provided by getRef() if needed.
-        throw new UnsupportedOperationException();
+        return parse.optional(String.class, json, "ref", null);
     }
     
     

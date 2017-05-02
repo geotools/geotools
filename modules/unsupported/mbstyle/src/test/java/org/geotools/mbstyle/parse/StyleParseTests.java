@@ -290,9 +290,14 @@ public class StyleParseTests {
     @Test
     public void getRefTest() throws IOException, ParseException {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("getRefTest.json");
-        MBLayer layer = MBLayer.create(jsonObject);
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        MBLayer layer = mbStyle.layers().get(2);
 
-        System.out.print("st");
+        assertEquals("water", layer.getRef());
+        assertEquals("water", mbStyle.layer(layer.getRef()).getSourceLayer());
+        assertEquals("mapbox", mbStyle.layer(layer.getRef()).getSource());
+        assertEquals(11, mbStyle.layer(layer.getRef()).getMinZoom());
+        assertEquals(22, mbStyle.layer(layer.getRef()).getMaxZoom());
     }
 
 }

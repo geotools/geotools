@@ -287,4 +287,12 @@ public class StyleParseTests {
         assertEquals(2.0, l.getLineBlur().doubleValue(), .00001);
     }
 
+    @Test
+    public void getRefTest() throws IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("getRefTest.json");
+        MBLayer layer = MBLayer.create(jsonObject);
+
+        System.out.print("st");
+    }
+
 }

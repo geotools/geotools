@@ -29,7 +29,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Given JSON input (as a {@link String} or {@link Reader}, parses and returns a {@link MBStyle}.
  * 
- * @author Torbien Barsballe (Boundless)
+ * @author Torben Barsballe (Boundless)
  */
 public class MBStyleParser {
 

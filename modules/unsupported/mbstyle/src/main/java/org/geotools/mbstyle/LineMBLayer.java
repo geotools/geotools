@@ -73,7 +73,7 @@ public class LineMBLayer extends MBLayer {
     /**
      * The display of line endings.
      */
-    public static enum LineCap {
+    public enum LineCap {
         /** A cap with a squared-off end which is drawn to the exact endpoint of the line. */
         BUTT,
         /**
@@ -121,7 +121,7 @@ public class LineMBLayer extends MBLayer {
      * 
      * Miter - A join with a sharp, angled corner which is drawn with the outer sides beyond the endpoint of the path until they meet.
      */
-    public static enum LineJoin {
+    public enum LineJoin {
         BEVEL, ROUND, MITER
     }
 

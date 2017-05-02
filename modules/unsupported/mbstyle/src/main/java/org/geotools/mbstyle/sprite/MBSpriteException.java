@@ -16,18 +16,16 @@
  */
 package org.geotools.mbstyle.sprite;
 
-import org.json.simple.parser.ParseException;
-
-public class MapboxSpriteException extends RuntimeException {
+public class MBSpriteException extends RuntimeException {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 1371164543614500159L;
 
-    public MapboxSpriteException(String msg) {
+    public MBSpriteException(String msg) {
         super(msg);
     }
     
-    public MapboxSpriteException(String msg, Throwable cause) {
+    public MBSpriteException(String msg, Throwable cause) {
         super(msg, cause);
     }
 

@@ -150,31 +150,6 @@ public class MBStyle {
     }
 
     /**
-     * Access layers matching provided source and selector.
-     * 
-     * @param source
-     * @param sourceLayer
-     * @return list of layers matching provided source
-     */
-    public List<MBLayer> layers(String source, String sourceLayer) {
-        JSONArray layers = parse.getJSONArray(json, "layers");
-        List<MBLayer> layersList = new ArrayList<>();
-        for (Object obj : layers) {
-            if (obj instanceof JSONObject) {
-                MBLayer layer = MBLayer.create((JSONObject) obj);
-                
-                if( source.equals(layer.getSource()) &&
-                        sourceLayer.equals(layer.getSourceLayer())){
-                    layersList.add(layer);
-                }
-            } else {
-                throw new MBFormatException("Unexpected layer definition " + obj);
-            }
-        }
-        return layersList;
-    }
-
-    /**
      * A human-readable name for the style
      * 
      * @return human-readable name, or "name" if the style has no name.

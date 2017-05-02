@@ -28,7 +28,6 @@ import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.geotools.util.logging.Logging;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -94,6 +93,7 @@ public class MBStyleTransformer {
         Style style = sf.createStyle();
 
         for (MBLayer layer : layers) {
+            MBObjectStops mbObjectStops = new MBObjectStops(layer);
             
             int layerMaxZoom = layer.getMaxZoom();
             int layerMinZoom = layer.getMinZoom();
@@ -101,45 +101,27 @@ public class MBStyleTransformer {
                     : MBObjectStops.zoomLevelToScaleDenominator((long) Math.min(25, layerMaxZoom));
             Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE ? null
                     : MBObjectStops.zoomLevelToScaleDenominator((long) Math.max(-25, layerMinZoom));
-            
-            Boolean hasStops = false;
+
             if (layer.visibility()) {
-                if (layer.getPaint() != null) {
-                    hasStops = MBObjectStops.hasStops(layer.getPaint());
-                }
-                if (layer.getLayout() != null && !hasStops) {
-                    hasStops = MBObjectStops.hasStops(layer.getLayout());
-                }
                 FeatureTypeStyle featureTypeStyle = null;
-                List<Long> stopLevels = MBObjectStops.getStopLevels(layer);
-                if (stopLevels.size() > 0 && hasStops) {
-                    try {
-                        List<MBLayer> stopLayers = MBObjectStops.getLayerStyleForStops(layer, stopLevels);
-                        List<long[]> ranges = MBObjectStops.getStopLevelRanges(stopLevels);
-                        int j = 0;
-                        for (MBLayer l : stopLayers) {
-                            long stopLevel = stopLevels.get(j);
-
-                            long[] rangeForStopLevel = MBObjectStops.getRangeForStop(stopLevel, ranges);
-                            Double minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
-                            Double maxScaleDenominator = null;
-                            if (stopLevel != rangeForStopLevel[1] && rangeForStopLevel[1] != -1) {
-                                maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
-                            }
-                            
-                            featureTypeStyle = transform(l, mbStyle, maxScaleDenominator, minScaleDenominator);
-//                            Rule rule = featureTypeStyle.rules().get(0);
-//                            
-//                            rule.setMinScaleDenominator(minScaleDenominator);
-//                            rule.setMaxScaleDenominator(maxScaleDenominator);
-                            
-                            style.featureTypeStyles().add(featureTypeStyle);
-                            j++;
+                // check for property and zoom functions, if true we will have a layer for each one that
+                // becomes a feature type style.
+                if (mbObjectStops.hasStops) {
+                    List<Long> stopLevels = mbObjectStops.stops;
+                    int i = 0;
+                    for (MBLayer l : mbObjectStops.layersForStop) {
+                        long s = stopLevels.get(i);
+                        long[] rangeForStopLevel = mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
+                        Double maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+                        Double minScaleDenominator = null;
+                        if (rangeForStopLevel[1] != -1) {
+                            minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
                         }
-                    } catch (ParseException e) {
 
+                        featureTypeStyle = transform(l, mbStyle, minScaleDenominator, maxScaleDenominator);
+                        style.featureTypeStyles().add(featureTypeStyle);
+                        i++;
                     }
-
                 } else {
                     featureTypeStyle = transform(layer, mbStyle, layerMinScaleDenominator, layerMaxScaleDenominator);
                     style.featureTypeStyles().add(featureTypeStyle);

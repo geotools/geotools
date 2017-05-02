@@ -24,6 +24,8 @@ import org.json.simple.parser.ParseException;
 
 import java.util.*;
 
+import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
+
 /**
  * This class provides the ability to find all the zoom levels within a MapBox Style and returns a reduced list
  * of only the layers and properties containing Base and Stops values.
@@ -147,7 +149,7 @@ public class MBObjectStops {
      * @return The equivalent scale denominator (at the equator)
      */
     public static Double zoomLevelToScaleDenominator(Long zoomLevel) {
-        return 559_082_263.9508929 / Math.pow(2, zoomLevel);
+        return EPSG_3857_O_SCALE / Math.pow(2, zoomLevel);
     }
 
     public long getStop(MBLayer layer) {

@@ -31,16 +31,18 @@ import org.geotools.mbstyle.MBLayer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
+
 /**
  * Data object capturing a range between two zoom levels.
  */
 public class ZoomRange implements Comparable<ZoomRange>{
     private static MBObjectParser parse = new MBObjectParser(ZoomRange.class);
     
-    /** Min zoom level, may {@link Integer#MIN_NORMAL} if unset. */
+    /** Min zoom level, {@link Integer#MIN_VALUE} if unset. */
     int min = Integer.MIN_VALUE;
 
-    /** Max zoom level, may {@link Integer#MAX_VALUE} if unset. */
+    /** Max zoom level, {@link Integer#MAX_VALUE} if unset. */
     int max = Integer.MAX_VALUE;
 
     public ZoomRange() {
@@ -51,7 +53,7 @@ public class ZoomRange implements Comparable<ZoomRange>{
         this.max = max;
     }
 
-    /** Min zoom level, may {@link Integer#MIN_NORMAL} if unset. */
+    /** Min zoom level, {@link Integer#MIN_VALUE} if unset. */
     public int getMin() {
         return min;
     }
@@ -60,7 +62,7 @@ public class ZoomRange implements Comparable<ZoomRange>{
         this.min = min;
     }
 
-    /** Max zoom level, may {@link Integer#MAX_VALUE} if unset. */
+    /** Max zoom level, {@link Integer#MAX_VALUE} if unset. */
     public int getMax() {
         return max;
     }
@@ -70,21 +72,25 @@ public class ZoomRange implements Comparable<ZoomRange>{
     }
 
     /**
-     * Min scale denominator, or null if unset.
+     * Min scale denominator.
      * 
-     * @return scale denominator, or {@link Double#MIN_VALUE} if unset..
+     * @return scale denominator, or {@link Double#MIN_VALUE} if unset.
      */
-
     public double minScaleDenominator() {
         return scaleDenominator(min);
     }
 
+    /**
+     * Max scale denominator.
+     *
+     * @return scale denominator, or {@link Double#MAX_VALUE} if unset.
+     */
     public double maxScaleDenominator() {
         return scaleDenominator(max);
     }
 
     /**
-     * Calcualte scale denominator for the provided zoom level.
+     * Calculate scale denominator for the provided zoom level.
      * 
      * @param zoomLevel
      * @return scale denominator
@@ -96,7 +102,7 @@ public class ZoomRange implements Comparable<ZoomRange>{
         if (zoomLevel == Integer.MAX_VALUE) {
             return Double.MAX_VALUE;
         }
-        return 559_082_263.9508929 / Math.pow(2, (double) zoomLevel);
+        return EPSG_3857_O_SCALE / Math.pow(2, (double) zoomLevel);
     }
 
     @Override
@@ -218,7 +224,7 @@ public class ZoomRange implements Comparable<ZoomRange>{
     }
     
     /**
-     * Review paint for zoom and properrty functions suitable for representation as rules.
+     * Review paint for zoom and property functions suitable for representation as rules.
      * @param paint
      * @return true if zoom and property function found.
      */
@@ -239,8 +245,7 @@ public class ZoomRange implements Comparable<ZoomRange>{
     private  static boolean isFunction(JSONObject json){
         if( json.containsKey("type")){
             return "identity".equals(json.get("type"));
-        }
-        else if (json.containsKey("stops")){
+        } else if (json.containsKey("stops")){
             return true;
         }
         return false;

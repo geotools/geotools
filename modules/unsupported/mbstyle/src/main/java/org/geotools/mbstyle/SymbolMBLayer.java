@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
@@ -30,6 +31,7 @@ import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.SemanticType;
@@ -1757,11 +1759,12 @@ public class SymbolMBLayer extends MBLayer {
         }
 
         symbolizers.add(symbolizer);
+        MBFilter filter = getFilter();
 
         // List of opengis rules here (needed for constructor)
         List<org.opengis.style.Rule> rules = new ArrayList<>();
         Rule rule = sf.rule(getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers,
-                filter());
+                filter.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
@@ -1769,7 +1772,7 @@ public class SymbolMBLayer extends MBLayer {
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null, // (unused)
-                Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                Collections.emptySet(), filter.semanticTypeIdentifiers(), // we only expect this to be applied to polygons
                 rules);
     }
 

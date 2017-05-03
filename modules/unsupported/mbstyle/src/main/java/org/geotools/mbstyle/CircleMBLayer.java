@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
@@ -350,6 +351,8 @@ public class CircleMBLayer extends MBLayer {
                                 Text.text("Generated for " + getSourceLayer())),
                         NonSI.PIXEL, gr);
 
+        MBFilter filter = getFilter();
+        
         List<org.opengis.style.Rule> rules = new ArrayList<>();
         Rule rule = sf.rule(
                 getId(),
@@ -358,14 +361,14 @@ public class CircleMBLayer extends MBLayer {
                 0.0,
                 Double.POSITIVE_INFINITY,
                 Arrays.asList(ps),
-                filter());
+                filter.filter());
 
         rules.add(rule);
         rule.setLegendGraphic(new Graphic[0]);
         return sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
-                null, Collections.emptySet(), Collections.singleton(SemanticType.POINT), rules);
+                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules);
     }
 
     /**

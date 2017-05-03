@@ -18,6 +18,7 @@
 package org.geotools.mbstyle;
 
 import org.geotools.filter.function.RecodeFunction;
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
@@ -25,6 +26,7 @@ import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
@@ -528,6 +530,7 @@ public class LineMBLayer extends MBLayer {
             stroke.setGraphicFill(fill);
         }
 
+        MBFilter filter = getFilter();
         List<org.opengis.style.Rule> rules = new ArrayList<>();
         Rule rule = sf.rule(
                 getId(),
@@ -536,13 +539,13 @@ public class LineMBLayer extends MBLayer {
                 0.0,
                 Double.POSITIVE_INFINITY,
                 Arrays.asList(ls),
-                filter());
+                filter.filter());
         rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);
         return sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
-                null, Collections.emptySet(), Collections.singleton(SemanticType.LINE), rules);
+                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules);
     }
 
     /**

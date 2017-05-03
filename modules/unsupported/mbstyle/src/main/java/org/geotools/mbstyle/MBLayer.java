@@ -214,15 +214,12 @@ public abstract class MBLayer {
      * that match the filter are displayed. This is available as a GeoTools {@link Filter} via
      * {@link #filter()}.
      * 
-     * @return MBFilter expression specifying conditions on source features, or null if the style has no filter.
+     * @return MBFilter expression specifying conditions on source features.
      */
     public MBFilter getFilter(){
         JSONArray array = parse.getJSONArray(json,"filter", null );
-        if( array != null ){
-            MBFilter filter = new MBFilter(array, parse, defaultSemanticType());
-            return filter;
-        }
-        return null;
+        MBFilter filter = new MBFilter(array, parse, defaultSemanticType());
+        return filter;
     }
     
     /**

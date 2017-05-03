@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
@@ -231,8 +232,9 @@ public class RasterMBLayer extends MBLayer {
                 null, null, ce, null, null);
 
         List<Rule> rules = new ArrayList<>();
+        MBFilter filter = getFilter();
         org.geotools.styling.Rule rule = sf.rule(getId(), null, null, 0.0, Double.MAX_VALUE,
-                Arrays.asList(symbolizer), Filter.INCLUDE);
+                Arrays.asList(symbolizer), filter.filter());
         rules.add(rule);
         rule.setLegendGraphic(new Graphic[0]);
         return sf.featureTypeStyle(getId(),
@@ -240,7 +242,7 @@ public class RasterMBLayer extends MBLayer {
                         Text.text("Generated for " + getSourceLayer())),
                 null,
                 Collections.emptySet(),
-                Collections.singleton(SemanticType.RASTER),
+                filter.semanticTypeIdentifiers(),
                 rules);
     }
 

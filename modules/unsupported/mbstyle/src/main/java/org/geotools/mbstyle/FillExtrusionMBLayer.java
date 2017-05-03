@@ -17,6 +17,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
@@ -262,6 +263,8 @@ public class FillExtrusionMBLayer extends MBLayer {
                 displacement,
                 ff.literal(0));
 
+        MBFilter filter = getFilter();
+        
         Rule rule = sf.rule(
                 getId(),
                 null,
@@ -269,7 +272,7 @@ public class FillExtrusionMBLayer extends MBLayer {
                 0.0,
                 Double.POSITIVE_INFINITY,
                 Arrays.asList(symbolizer),
-                filter());
+                filter.filter());
 
         // Set legend graphic to null.
         //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
@@ -283,7 +286,7 @@ public class FillExtrusionMBLayer extends MBLayer {
                         Text.text("Generated for "+getSourceLayer())),
                 null, // (unused)
                 Collections.emptySet(),
-                Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                filter.semanticTypeIdentifiers(),
                 Arrays.asList(rule)
         );
     }

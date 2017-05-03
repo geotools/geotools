@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -166,6 +167,7 @@ public class BackgroundMBLayer extends MBLayer {
         symbolizers.add(symbolizer);
 
         // List of opengis rules here (needed for constructor)
+        MBFilter filter = getFilter();
         List<org.opengis.style.Rule> rules = new ArrayList<>();
         Rule rule = sf.rule(
                 getId(),
@@ -174,7 +176,7 @@ public class BackgroundMBLayer extends MBLayer {
                 0.0,
                 Double.POSITIVE_INFINITY,
                 symbolizers,
-                filter());
+                filter.filter());
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
@@ -182,7 +184,7 @@ public class BackgroundMBLayer extends MBLayer {
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null, // (unused)
-                Collections.emptySet(), Collections.singleton(SemanticType.POLYGON), // we only expect this to be applied to polygons
+                Collections.emptySet(), filter.semanticTypeIdentifiers(),
                 rules);
     }
 

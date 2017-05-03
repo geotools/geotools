@@ -334,7 +334,7 @@ public abstract class MBLayer {
      * @return A feature type style from the provided layer.
      */
     protected FeatureTypeStyle transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
-        // TODO: Would prefer to accept zoom levels here (less concepts in our API)
+        // Would prefer to accept zoom levels here (less concepts in our API)
         // If we accept zoom levels we may be able to reduce, and return a list of FeatureTypeStyles
         // (with the understanding that the list may be empty if the MBLayer does not contribute any content
         //  at a specific zoom level range)

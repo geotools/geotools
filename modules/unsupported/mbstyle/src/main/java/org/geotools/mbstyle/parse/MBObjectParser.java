@@ -21,6 +21,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.function.IntFunction;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -35,6 +37,7 @@ import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -992,7 +995,6 @@ public class MBObjectParser {
         }
     }
     
-
     /**
      * Maps a {@link JSONArray} to a {@link Displacement}.
      * 
@@ -1005,7 +1007,35 @@ public class MBObjectParser {
             JSONArray array = (JSONArray) defn;
             return sf.displacement(number(array, 0, 0), number(array, 1, 0));
         } else if (defn instanceof JSONObject) {
-            throw new MBFormatException("\"" + tag + "\": Functions not supported yet.");
+            MBFunction function = new MBFunction(this, (JSONObject) defn);
+            if (!function.isArrayFunction()) {
+                throw new MBFormatException("\"" + tag
+                        + "\": Exception parsing displacement from Mapbox function: function values must all be arrays with length 2.");
+            }
+
+            List<MBFunction> functionForEachDimension;
+            try {
+                functionForEachDimension = function.splitArrayFunction();
+            } catch (ParseException pe) {
+                throw new MBFormatException(
+                        "\"" + tag + "\": Exception parsing displacement from Mapbox function: "
+                                + pe.getMessage(),
+                        pe);
+            } catch (Exception e) {
+                throw new MBFormatException(
+                        "\"" + tag + "\": Exception parsing displacement from Mapbox function: "
+                                + e.getMessage(),
+                        e);
+            }
+
+            if (functionForEachDimension.size() != 2) {
+                throw new MBFormatException("\"" + tag
+                        + "\": Exception parsing displacement from Mapbox function: function values must all be arrays with length 2.");
+            }
+            
+            Expression xFn = functionForEachDimension.get(0).numeric();
+            Expression yFn = functionForEachDimension.get(1).numeric();
+            return sf.displacement(xFn, yFn);
         } else {
             throw new MBFormatException("\"" + tag + "\": Expected array or function, but was "
                     + defn.getClass().getSimpleName());

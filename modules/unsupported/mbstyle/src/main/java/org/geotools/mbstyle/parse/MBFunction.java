@@ -18,9 +18,11 @@ package org.geotools.mbstyle.parse;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.geotools.coverage.processing.operation.Interpolate;
 import org.geotools.filter.function.CategorizeFunction;
@@ -28,6 +30,8 @@ import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.math.FilterFunction_pow;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -56,6 +60,8 @@ public class MBFunction {
     final protected JSONObject json;
 
     private FilterFactory2 ff;
+    
+    JSONParser parser = new JSONParser();
 
     public MBFunction(JSONObject json) {
         this(new MBObjectParser(MBFunction.class), json);
@@ -798,5 +804,172 @@ public class MBFunction {
             parameters.add(constant(value,enumeration));
         }
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+    }
+
+    /**
+     * <p>
+     * Returns true if this function's stop values are all arrays.
+     * </p>
+     * 
+     * <p>
+     * For example, the following is an array function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          // [stopkey, stopValueArray]
+     *             [0,       [0,10]], 
+     *             [100,     [2,15]]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * @return true if this function's stop values are all arrays.
+     */
+    public boolean isArrayFunction() {
+        
+        if (getStops() == null) {
+            return false;
+        }
+        
+        // If any of the stops is not array-valued, return false.
+        for (Object o : getStops()) {
+            if (!(o instanceof JSONArray)) {
+                return false;
+            } else {
+                JSONArray stop = (JSONArray) o;
+                if (stop.size() != 2 || !(stop.get(1) instanceof JSONArray)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * <p>
+     * Splits an array function into multiple functions, one for each dimension in the function's stop value arrays.
+     * </p>
+     * 
+     * <p>
+     * For example, for the following array function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          // [stopkey, stopValueArray]
+     *             [0,       [0,10]], 
+     *             [100,     [2,15]]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * <p>
+     * This method would split the above function into the following two functions:
+     * </p>
+     * 
+     * <p>
+     * "X" Function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          [0,   0], 
+     *          [100, 2]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * <p>
+     * And "Y" Function:
+     * </p>
+     * 
+     * <pre>
+     *  
+     * "{'property':'temperature',
+     *   'type':'exponential', 
+     *   'base':1.5, 
+     *   'stops': [ 
+     *          [0,   10], 
+     *          [100, 15]
+     *    ]
+     *   }"
+     * </pre>
+     * 
+     * @return A list of {@link MBFunctions}, one for each dimension in the stop value array.
+     */
+    public List<MBFunction> splitArrayFunction() throws ParseException {
+        JSONArray arr = getStops();
+
+        // No need to split if there are no stops.
+        if (arr.size() == 0) {
+            return Arrays.asList(this);
+        }
+        
+        // Parse the stops
+        List<MBArrayStop> parsedStops = new ArrayList<>();
+        for (Object o : arr) {
+            if (o instanceof JSONArray) {
+                parsedStops.add(new MBArrayStop((JSONArray) o));
+            } else {
+                throw new MBFormatException(
+                        "Exception handling array function: encountered non-array stop value.");
+            }
+        }
+
+        // Make sure that all the stop value arrays have the same number of dimensions
+        int dimensionCount = parsedStops.get(0).getStopValueCount();
+        boolean allStopsSameDimension = parsedStops.stream()
+                .allMatch(stop -> stop.getStopValueCount() == dimensionCount);
+
+        if (!allStopsSameDimension) {
+            throw new MBFormatException(
+                    "Exception handling array function: all stops arrays must have the same length.");
+        }
+        
+        // Make sure that the default value also has the same number of dimensions
+        JSONArray defaultStopValues = null;
+        if (getDefault() != null) {
+            Object def = getDefault();
+            if ((def instanceof JSONArray) && ((JSONArray) def).size() == dimensionCount) {
+                defaultStopValues = (JSONArray) def;
+            } else {
+                throw new MBFormatException(
+                        "Exception handling array function: the default value must also be an array of length "
+                                + dimensionCount);
+            }
+        }
+
+        // Split the function into N functions, one for each dimension in the stop array values.
+        List<MBFunction> functions = new ArrayList<>();
+        for (int i = 0; i < dimensionCount; i++) {
+            final Integer n = i;
+            JSONArray newStops = parsedStops.stream().map(stop -> stop.reducedToIndex(n))
+                    .collect(Collectors.toCollection(JSONArray::new));
+            JSONObject newObj = (JSONObject) parser.parse(json.toJSONString());
+            
+            newObj.put("stops", newStops);
+            if (defaultStopValues != null) {
+                newObj.put("default",  defaultStopValues.get(n));
+            }
+           
+            MBFunction reduced = new MBFunction(newObj);
+            functions.add(reduced);
+        }
+
+        return functions;
     }
 }

@@ -306,8 +306,8 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTest.json");        
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test", "circle-style-test", true, 300, 300);
-    }
-    
+    }   
+
     /**
      * 
      * Test visualization of a GeoTools style from an MB Circle Layer using defaults
@@ -340,6 +340,16 @@ public class VisualTransformerTest {
     public void mbLineLayerSpriteTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleSpriteTest.json");
         testVisualizeStyleWithLineFeatures(jsonObject, "Line Style w Sprite", "line-style-sprite", true);
+    }
+    
+    /**
+     * Test specifying displacement as an array function.
+     */
+    @Test
+    public void testDisplacementAsInterpolatedFunction() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("testDisplacementAsFunction.json");        
+        testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Displacement Function", "circle-style-displacement-fn-test", true, 300, 300);
     }
     
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {
@@ -456,6 +466,6 @@ public class VisualTransformerTest {
         // -Dorg.geotools.image.test.interactive=true</code>
         return new File("src/test/resources/org/geotools/mbstyle/transform/test-data/rendered/"
                 + name + ".png");
-    }
+    }       
 
 }

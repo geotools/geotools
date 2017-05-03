@@ -306,7 +306,7 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTest.json");        
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test", "circle-style-test", true, 300, 300);
-    }   
+    }
 
     /**
      * 
@@ -466,6 +466,6 @@ public class VisualTransformerTest {
         // -Dorg.geotools.image.test.interactive=true</code>
         return new File("src/test/resources/org/geotools/mbstyle/transform/test-data/rendered/"
                 + name + ".png");
-    }       
+    }
 
 }

@@ -16,28 +16,26 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
+import org.geotools.styling.Font;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
 import javax.measure.unit.NonSI;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A symbol.
@@ -1731,7 +1729,7 @@ public class SymbolMBLayer extends MBLayer {
         // layer.textHaloBlur();
 
         // auto wrap
-        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); // TODO - Pixels (GS) vs ems (MB); Vendor options with expressions?
+        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); //  Pixels (GS) vs ems (MB); Vendor options with expressions?
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {
@@ -1745,7 +1743,7 @@ public class SymbolMBLayer extends MBLayer {
             }
 
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, styleContext);
-            // TODO layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
+            // layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
             Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
                     iconRotate(), null, null);
             Displacement d = iconOffsetDisplacement();

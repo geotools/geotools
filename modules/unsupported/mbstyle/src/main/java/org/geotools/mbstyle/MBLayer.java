@@ -136,7 +136,7 @@ public abstract class MBLayer {
      * @return Arbitrary properties useful to track with the layer. 
      */
     public JSONObject getMetadata() {
-        throw new UnsupportedOperationException();
+        return parse.getJSONObject(json, "metadata", new JSONObject());
     }
 
     /**

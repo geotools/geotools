@@ -173,9 +173,9 @@ public class MBObjectParser {
      * Confirms json contains the provided tag as a JSONObject, correctly
      * throwing {@link MBFormatException} if not available.
      * 
-     * @param json
-     * @param tag
-     * @return JSONObject 
+     * @param json The JSONObject in which to lookup the provided tag and return a JSONObject
+     * @param tag The tag to look up in the provided JSONObject
+     * @return The JSONObject at the provided tag
      * @throws MBFormatException If JSONObject not available for the provided tag
      */
     public JSONObject getJSONObject(JSONObject json, String tag) {
@@ -191,6 +191,15 @@ public class MBObjectParser {
             throw new MBFormatException("\""+tag+"\" requires JSONObject");
         }
     }
+    
+    /**
+     * Access JSONObject for the indicated tag, with the provided fallback if the the json does not contain a JSONObject for that tag.
+     * 
+     * @param json The JSONObject in which to lookup the provided tag and return a JSONObject
+     * @param tag The tag to look up in the provided JSONObject
+     * @param fallback The JSONObject to return if the provided json does not contain a JSONObject for that tag.
+     * @return The JSONObject at the provided tag, or the fallback object.
+     */
     public JSONObject getJSONObject(JSONObject json, String tag, JSONObject fallback) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -228,6 +237,15 @@ public class MBObjectParser {
             throw new MBFormatException("\""+tag+"\" requires JSONArray");
         }
     }
+    
+    /**
+     * Access a JSONArray at the provided tag in the provided JSONObject, with a fallback if no JSONArray is found at that tag.
+     * 
+     * @param json The JSONObject in which to lookup the provided tag and return a JSONArray
+     * @param tag The tag to look up in the provided JSONObject
+     * @param fallback The JSONArray to return if the provided json does not contain a JSONArray for that tag.
+     * @return The JSONArray at the provided tag, or the fallback JSONArray.
+     */    
     public JSONArray getJSONArray(JSONObject json, String tag, JSONArray fallback) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -416,6 +434,15 @@ public class MBObjectParser {
         }
     }
     
+    /**
+     * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link MBFormatException} if 
+     * no object of that type is found at that index of the array.
+     * 
+     * @param type The type of the object to retrieve.
+     * @param json The JSONArray in which to retrieve the object.
+     * @param index The index in the JSONArray at which to retrieve the object.
+     * @return The object of the required type in the array at index.
+     */
     public <T> T require(Class<T> type, JSONArray json, int index) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -427,6 +454,15 @@ public class MBObjectParser {
         }
     }
     
+    /**
+     * Retrieve an object of the provided type in the JSONObject at this tag, throwing an {@link MBFormatException} if 
+     * no object of that type is found at that tag in the object.
+     * 
+     * @param type  The type of the object to retrieve.
+     * @param json The JSONObject in which to retrieve the object.
+     * @param tag The index in the JSONObject at which to retrieve the object.
+     * @return The object of the required type in the JSONObject at the tag.
+     */
     public <T> T require(Class<T> type, JSONObject json, String tag) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -443,6 +479,7 @@ public class MBObjectParser {
 
     /**
      * Optional lookup, will return fallback if not available.
+     * 
      * @param type Type to lookup
      * @param json
      * @param tag
@@ -600,7 +637,15 @@ public class MBObjectParser {
             throw new MBFormatException("Not a JSONObject: " + obj.toString());
         }
     }
-
+    
+    /**
+     * Casts the provided obj to a JSONObject (safely reporting format exception, with the provided message).
+     * 
+     * @param obj The object to cast
+     * @param message The message for the exception of the object is not a JSONObject
+     * @return The object, cast to JSONObject
+     * @throws MBFormatException
+     */
     public JSONObject jsonObect(Object obj, String message) throws MBFormatException {
         if (obj instanceof JSONObject) {
             return (JSONObject) obj;
@@ -609,6 +654,13 @@ public class MBObjectParser {
         }
     }
 
+    /**
+     * Casts the provided obj to a JSONArray (otherwise throws an {@link MBFormatException}).
+     * 
+     * @param obj The object to cast
+     * @return The object, cast to JSONArray
+     * @throws MBFormatException
+     */
     public JSONArray jsonArray(Object obj) throws MBFormatException {
         if( obj instanceof JSONArray){
             return (JSONArray) obj;
@@ -619,6 +671,14 @@ public class MBObjectParser {
         }
     }
 
+    /**
+     * Casts the provided obj to a JSONArray (otherwise throws an {@link MBFormatException} with the provided message).
+     * 
+     * @param obj The object to cast
+     * @param message The message for the exception of the object is not a JSONArray
+     * @return The object, cast to JSONArray
+     * @throws MBFormatException
+     */
     public JSONArray jsonArray(Object obj, String message) throws MBFormatException {
         if (obj instanceof JSONArray) {
             return (JSONArray) obj;
@@ -627,6 +687,16 @@ public class MBObjectParser {
         }
     }
 
+    /**
+     * Lookup an array of the provided type in the provided JSONObject at 'tag', with a fallback if that tag is not found. Throws an exception if
+     * that tag is something other than an array, or if its contents cannot be cast to type.
+     * 
+     * @param type The type of the array
+     * @param json The JSONObject in which to look up the array
+     * @param tag The tag at which to look up the array
+     * @param fallback The fallback array
+     * @return An array of the provided type, or the fallback array.
+     */
     @SuppressWarnings("unchecked")
     public <T> T[] array(Class<T> type, JSONObject json, String tag, T[] fallback) {
         if (json.containsKey(tag)) {
@@ -719,9 +789,19 @@ public class MBObjectParser {
                     + obj.getClass().getSimpleName());
         }
     }
+    
     //
     // NUMBER
     //
+    
+    /**
+     * Convert the provided object to a numeric Expression (or function), with a fallback value if the object is null.
+     * 
+     * @param context The json context of the object, used for error messages.
+     * @param obj The object to convert
+     * @param fallback The fallback value, used when the provided object is null.
+     * @return A numeric expression for the provided object 
+     */
     private Expression number(String context, Object obj, Number fallback) {
         if (obj == null) {
             return fallback == null ? null : ff.literal(fallback);
@@ -749,11 +829,11 @@ public class MBObjectParser {
     }
 
     /**
-     * Convert json to Expression number, or a function.
+     * Convert the value at 'index' in the provided JSONArray to a numeric Expression or a Function.
      * 
-     * @param json json representation
-     * @param index
-     * @return Expression based on provided json, or null
+     * @param json The JSONArray in which to look up a value
+     * @param index The index in the JSONArray
+     * @return Numeric Expression based on provided json, or null.
      * @throws MBFormatException
      */
     public Expression number(JSONArray json, int index) throws MBFormatException {
@@ -810,7 +890,15 @@ public class MBObjectParser {
 
     //
     // STRING
-    //
+    //    
+    
+    /**
+     * Convert the provided object to a string Expression (or function), with a fallback value if the object is null.
+     * @param context The json context of the object, used for error messages.
+     * @param obj The object to convert
+     * @param fallback The fallback value, used when the provided object is null.
+     * @return A string expression for the provided object
+     */
     private Expression string(String context, Object obj, String fallback) {
         if (obj == null) {
             return fallback == null ? null : ff.literal(fallback);
@@ -995,9 +1083,14 @@ public class MBObjectParser {
         }
     }
     
+
     /**
-     * Maps a {@link JSONArray} to a {@link Displacement}.
+     * Maps a json value at 'tag' in the provided JSONObject to a {@link Displacement}.
      * 
+     * @param json The JSONObject in which to look up a displacement value
+     * @param tag The tag in the JSONObject
+     * @param fallback The fallback displacement, if no value is found at that tag.
+     * @return A displacement
      */
     public Displacement displacement(JSONObject json, String tag, Displacement fallback) {
         Object defn = json.get(tag);
@@ -1007,6 +1100,7 @@ public class MBObjectParser {
             JSONArray array = (JSONArray) defn;
             return sf.displacement(number(array, 0, 0), number(array, 1, 0));
         } else if (defn instanceof JSONObject) {
+            // Function case 
             MBFunction function = new MBFunction(this, (JSONObject) defn);
             if (!function.isArrayFunction()) {
                 throw new MBFormatException("\"" + tag
@@ -1044,7 +1138,7 @@ public class MBObjectParser {
     
     /**
      * 
-     * @return True if the layer has the provided property explicitly provided.
+     * @return True if the layer has the provided property explicitly provided, False otherwise.
      */
     public boolean isPropertyDefined(JSONObject json, String propertyName) throws MBFormatException {
         return json.containsKey(propertyName) && json.get(propertyName) != null;

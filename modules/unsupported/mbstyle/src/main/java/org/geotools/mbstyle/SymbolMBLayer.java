@@ -546,7 +546,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return The padding to add to icon-text-fit
      */
     public List<Number> getIconTextFitPadding() {
-        // TODO
+        // Not currently supported. (GT padding does not support multiple values).
         // json.get("icon-text-fit-padding")
         return null;
     }
@@ -561,7 +561,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return The padding to add to icon-text-fit
      */
     public Expression iconTextFitPadding() {
-        // TODO
+        // Not curreently supported. (GT padding does not support multiple values).
         // json.get("icon-text-fit-padding")
         return null;
     }

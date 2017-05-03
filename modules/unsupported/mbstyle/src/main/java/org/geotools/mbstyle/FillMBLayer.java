@@ -294,7 +294,6 @@ public class FillMBLayer extends MBLayer {
             fill = sf.fill(null, fillColor(), fillOpacity());
         }
 
-        // TODO: Is there a better way to select the first geometry?
         symbolizer = sf.polygonSymbolizer(
                 getId(),
                 ff.property((String)null),
@@ -317,7 +316,7 @@ public class FillMBLayer extends MBLayer {
                 filter.filter());
 
         // Set legend graphic to null.
-        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
+        //How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
 
 

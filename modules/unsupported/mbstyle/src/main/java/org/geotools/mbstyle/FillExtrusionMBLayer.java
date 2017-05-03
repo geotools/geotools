@@ -244,7 +244,7 @@ public class FillExtrusionMBLayer extends MBLayer {
         displacement.setDisplacementY(getFillExtrusionHeight().doubleValue());
 
         if (getFillExtrusionPattern() != null) {
-            // TODO: Fill graphic (with external graphics)
+            //Fill graphic (with external graphics)
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(getFillExtrusionPattern(), styleContext);
             GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, displacement);
             fill = sf.fill(gf, null, null);
@@ -252,7 +252,6 @@ public class FillExtrusionMBLayer extends MBLayer {
             fill = sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
         }
 
-        // TODO: Is there a better way to select the first geometry?
         symbolizer = sf.polygonSymbolizer(
                 getId(),
                 ff.property((String)null),
@@ -275,7 +274,7 @@ public class FillExtrusionMBLayer extends MBLayer {
                 filter.filter());
 
         // Set legend graphic to null.
-        //TODO: How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
+        //setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
 
 

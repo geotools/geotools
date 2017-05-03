@@ -1636,7 +1636,7 @@ public class SymbolMBLayer extends MBLayer {
             // Point Placement (default)
             PointPlacement pointP = sb.createPointPlacement();
             // Set anchor point (translated by text-translate)
-            // TODO - GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
+            // GeoTools AnchorPoint doesn't seem to have an effect on PointPlacement
             pointP.setAnchorPoint(anchorPoint());
 
             // MapBox text-offset: +y means down
@@ -1653,7 +1653,7 @@ public class SymbolMBLayer extends MBLayer {
             LinePlacement lineP = sb.createLinePlacement(null);
             lineP.setRepeated(true);
 
-            // TODO pixels (geotools) vs ems (mapbox) for text-offset
+            // pixels (geotools) vs ems (mapbox) for text-offset
             lineP.setPerpendicularOffset(
                     ff.multiply(ff.literal(-1), textOffsetDisplacement().getDisplacementY()));
 
@@ -1668,7 +1668,6 @@ public class SymbolMBLayer extends MBLayer {
             font = sb.createFont(ff.literal(transformer.getDefaultFonts()), ff.literal("normal"),
                     ff.literal("normal"), textSize());
         } else {
-            // TODO fonts
             font = sb.createFont(ff.literal(getTextFont()), ff.literal("normal"),
                     ff.literal("normal"), textSize());
         }
@@ -1689,7 +1688,6 @@ public class SymbolMBLayer extends MBLayer {
                 ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
                 textExpression, font, labelPlacement, halo, fill);
 
-        // TODO Vendor options can't be expressions.
         Number symbolSpacing = transformer.requireLiteral(symbolSpacing(), Number.class, 250,
                 "symbol-spacing", getId());
         symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
@@ -1708,8 +1706,6 @@ public class SymbolMBLayer extends MBLayer {
         symbolizer.getOptions().put("conflictResolution",
                 String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
-        // TODO Vendor options can't be expressions
-
         String textFitVal = transformer.requireLiteral(iconTextFit(), String.class, "none", "icon-text-fit", getId()).trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
             symbolizer.getOptions().put("graphic-resize",
@@ -1723,7 +1719,7 @@ public class SymbolMBLayer extends MBLayer {
                     "none");
         }
 
-        // TODO Mapbox allows you to sapecify an array of values, one for each side
+        //Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
             symbolizer.getOptions().put("graphic-margin",
                     String.valueOf(getIconTextFitPadding().get(0)));

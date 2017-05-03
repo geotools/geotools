@@ -408,6 +408,30 @@ public class StyleTransformTest {
         
         assertNull(psym.getStroke());
     }
+
+    @Test
+    public void testBackgroundPattern() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("backgroundImgStyleTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof BackgroundMBLayer);
+        FeatureTypeStyle fts = layers.get(0).transform(mbStyle);
+
+        assertEquals(1, fts.rules().size());
+        Rule r = fts.rules().get(0);
+
+        assertEquals(1, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof PolygonSymbolizer);
+        PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
+
+        assertEquals(Color.GREEN, psym.getFill().getColor().evaluate(null, Color.class));
+        assertEquals(1, psym.getFill().getGraphicFill().graphicalSymbols().size());
+        assertEquals(Double.valueOf(0.75), psym.getFill().getOpacity().evaluate(null, Double.class));
+
+        assertNull(psym.getStroke());
+    }
     
     /**
      * 

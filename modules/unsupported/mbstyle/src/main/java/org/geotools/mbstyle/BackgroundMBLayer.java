@@ -17,24 +17,23 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Rule;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
 import javax.measure.unit.NonSI;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The background color or pattern of the map.
@@ -101,7 +100,7 @@ public class BackgroundMBLayer extends MBLayer {
      * @return True if the layer has a background-pattern explicitly provided.
      */
     public boolean hasBackgroundPattern() {
-        return parse.isPropertyDefined(layout, "background-pattern");
+        return parse.isPropertyDefined(paint, "background-pattern");
     }
 
     /**
@@ -148,18 +147,17 @@ public class BackgroundMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     public FeatureTypeStyle transformInternal(MBStyle styleContext) {
-        // TODO - How to create the background polygon?
-
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
         Fill fill;
         if (hasBackgroundPattern()) {
-            // TODO Use the background pattern
-            fill = sf.fill(null, null, backgroundOpacity());
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
+            fill = sf.fill(gf, backgroundColor(), backgroundOpacity());
         } else {
             fill = sf.fill(null, backgroundColor(), backgroundOpacity());
         }
 
         Symbolizer symbolizer = sf.polygonSymbolizer(getId(),
-                // TODO: Is there a better way to do this? Is there a select first geometry syntax?
                 ff.property((String) null), sf.description(Text.text("fill"), null), NonSI.PIXEL,
                 null, // stroke
                 fill, null, ff.literal(0));

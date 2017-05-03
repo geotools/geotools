@@ -23,7 +23,6 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

@@ -19,17 +19,12 @@ package org.geotools.mbstyle.parse;
 import java.awt.Color;
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.function.IntFunction;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.mbstyle.LineMBLayer;
 import org.geotools.mbstyle.LineMBLayer.LineJoin;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.StyleFactory2;
 import org.geotools.util.ColorConverterFactory;
@@ -365,7 +360,13 @@ public class MBObjectParser {
         }
     }
 
-    /** Numeric lookup. */
+    /**
+     * Look up a double in the provided {@link JSONArray} at the provided index, or throw an {@link MBFormatException}.
+     * 
+     * @param json The array in which to look up the double
+     * @param index The index at which to look up the double
+     * @return The double from the array at index.
+     */
     public double getNumeric(JSONArray json, int index) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -377,7 +378,14 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires [" + index + "] numeric value");
         }
     }
-    /** Numeric lookup. */
+    
+    /**
+     * Look up a Double in the provided {@link JSONObject} at the provided 'tag', or thrown an {@link MBFormatException}.
+     * 
+     * @param json The object in which to look up the Double
+     * @param tag The tag at which to look up the Double
+     * @return The Double from the object at 'tag'
+     */
     public Double getNumeric(JSONObject json, String tag) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -392,7 +400,14 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires \"" + tag + "\" numeric field");
         }
     }
-    /** Boolean lookup. */
+    
+    /**
+     * Look up a Boolean in the provided {@link JSONArray} at the provided index, or throw an {@link MBFormatException}.
+     * 
+     * @param json The array in which to look up the Boolean
+     * @param index The index at which to look up the Boolean
+     * @return The Boolean from the array at index.
+     */
     public Boolean getBoolean(JSONArray json, int index) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -404,7 +419,14 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires [" + index + "] boolean");
         }
     }
-    /** Boolean lookup. */
+    
+    /**
+     * Look up a Boolean in the provided {@link JSONObject} at the provided 'tag', or thrown an {@link MBFormatException}.
+     * 
+     * @param json The object in which to look up the Boolean
+     * @param tag The tag at which to look up the Boolean
+     * @return The Boolean from the object at 'tag'
+     */
     public Boolean getBoolean(JSONObject json, String tag) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -419,7 +441,16 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires \"" + tag + "\" boolean field");
         }
     }
-    /** Boolean lookup, using the fallback value if not provided. */
+    
+    /**
+     * Look up a Boolean in the provided {@link JSONObject} at the provided 'tag', or thrown an {@link MBFormatException},
+     * with a fallback if the json is null or contains no such 'tag'.
+     * 
+     * @param json The object in which to look up the Boolean
+     * @param tag  The tag at which to look up the Boolean
+     * @param fallback The value to return if the json is null or contains no such 'tag'.
+     * @return The Boolean from the object at 'tag', or the fallback value
+     */
     public Boolean getBoolean(JSONObject json, String tag, Boolean fallback) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -481,11 +512,11 @@ public class MBObjectParser {
      * Optional lookup, will return fallback if not available.
      * 
      * @param type Type to lookup
-     * @param json
-     * @param tag
-     * @param fallback
+     * @param json The JSONObject in which to lookup the value
+     * @param tag The tag at which to lookupthe value in the JSONObject
+     * @param fallback The fallback value to use if the JSONObject is null or does not contain the provided tag
      * @return value for the provided tag, or fallback if not available
-     * @throws MBFormatException If alue is found and is not the expected type
+     * @throws MBFormatException If value is found and is not the expected type
      */
     public <T> T optional(Class<T> type, JSONObject json, String tag, T fallback) {
         if (json == null) {
@@ -841,10 +872,10 @@ public class MBObjectParser {
     }
 
     /**
-     * Convert json to Expression number, or a function.
+     * Convert the value in the provided JSONArray at index to a numeric Expression, or a function, with a fallback if the json is null.
      * 
-     * @param json json representation
-     * @param index
+     * @param json The JSONArray in which to look up the value
+     * @param index The index in the JSONArray at which to look up the value
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
      * @throws MBFormatException
@@ -859,10 +890,10 @@ public class MBObjectParser {
     }
 
     /**
-     * Convert json to Expression number, or a function.
+     * Convert the value in the provided JSONObject at 'tag' to a numeric Expression, or a function.
      * 
-     * @param json json representation
-     * @param tag
+     * @param json The JSONObject in which to look up the value
+     * @param tag The tag in the JSONObject at which to look up the value
      * @return Expression based on provided json, or null
      * @throws MBFormatException
      */
@@ -871,11 +902,11 @@ public class MBObjectParser {
     }
 
     /**
-     * Convert json to Expression number, or a function.
+     * Convert the value in the provided JSONObject at 'tag' to a numeric Expression, or a function, with a fallback if the json is null.
      * 
-     * @param json json representation
-     * @param tag
-     * @param fallback default value if json is null
+     * @param json The JSONObject in which to look up the value
+     * @param tag The tag in the JSONObject at which to look up the value
+     * @param fallback default value if the JSONObject is null
      * @return Expression based on provided json, or literal if json was null.
      * @throws MBFormatException
      */
@@ -1090,7 +1121,7 @@ public class MBObjectParser {
      * @param json The JSONObject in which to look up a displacement value
      * @param tag The tag in the JSONObject
      * @param fallback The fallback displacement, if no value is found at that tag.
-     * @return A displacement
+     * @return A displacement from the json
      */
     public Displacement displacement(JSONObject json, String tag, Displacement fallback) {
         Object defn = json.get(tag);

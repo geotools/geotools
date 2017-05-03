@@ -22,6 +22,9 @@
   "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
   "layers": [
     {
+      "layout": {
+        "line-join": "round"
+      },
       "id": "water",
       "type": "fill",
       "source": "mapbox",

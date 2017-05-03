@@ -298,6 +298,7 @@ public class StyleParseTests {
         assertEquals("mapbox", mbStyle.layer(layer.getRef()).getSource());
         assertEquals(11, mbStyle.layer(layer.getRef()).getMinZoom());
         assertEquals(22, mbStyle.layer(layer.getRef()).getMaxZoom());
+        assertEquals("round", mbStyle.layer(layer.getRef()).getLayout().get("line-join"));
     }
 
 }

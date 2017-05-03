@@ -23,7 +23,6 @@ import org.geotools.mbstyle.source.MBSource;
 import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -131,11 +130,17 @@ public class MBStyle {
                     if (refObject.size() > 0) {
                         // At a minimum, a type is needed to create a layer
                         ((JSONObject) obj).put("type", refObject.get("type"));
-//                        ((JSONObject) obj).put("source", refObject.get("source"));
-//                        ((JSONObject) obj).put("source-layer", refObject.get("source-layer"));
-//                        ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
-//                        ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
-//                        ((JSONObject) obj).put("filter", refObject.get("filter"));
+                        ((JSONObject) obj).put("source", refObject.get("source"));
+                        ((JSONObject) obj).put("source-layer", refObject.get("source-layer"));
+                        ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
+                        ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
+                        ((JSONObject) obj).put("filter", refObject.get("filter"));
+                        if(!((JSONObject) obj).containsKey("layout")){
+                            ((JSONObject) obj).put("layout", refObject.get("layout"));
+                        }
+                        if(!((JSONObject) obj).containsKey("paint")){
+                            ((JSONObject) obj).put("paint", refObject.get("paint"));
+                        }
 
                         MBLayer layer = MBLayer.create((JSONObject) obj);
                         layersList.add(layer);
@@ -177,6 +182,12 @@ public class MBStyle {
                         ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
                         ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
                         ((JSONObject) obj).put("filter", refObject.get("filter"));
+                        if(!((JSONObject) obj).containsKey("layout")){
+                            ((JSONObject) obj).put("layout", refObject.get("layout"));
+                        }
+                        if(!((JSONObject) obj).containsKey("paint")){
+                            ((JSONObject) obj).put("paint", refObject.get("paint"));
+                        }
 
                         MBLayer layer = MBLayer.create((JSONObject) obj);
                         layersList.add(layer);

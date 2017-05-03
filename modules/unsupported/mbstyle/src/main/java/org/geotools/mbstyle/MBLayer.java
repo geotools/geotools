@@ -271,7 +271,7 @@ public abstract class MBLayer {
      * @return Layout properties to use for this layer.
      */
     public JSONObject layout(){
-        return getLayout(); // TODO: Lookup ref
+        return getLayout();
     }
     
     /**
@@ -314,7 +314,7 @@ public abstract class MBLayer {
      * @return Paint properties to use for this layer.
      */
     public JSONObject paint(){
-        return getPaint(); // TODO: Lookup ref
+        return getPaint();
     }
 
     /**

@@ -424,6 +424,12 @@ public class MBFunction {
         throw new UnsupportedOperationException("Color unavailable for '"+type+"' function");
     }
     
+    /**
+     * Generates a color expression for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * 
+     * @param expression The expression for the function input
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL} function)
+     */
     private Expression colorGenerateCategorize(Expression expression) {
         return generateCategorize(expression, (value, stop)->{
             Expression color = parse.color((String)value);
@@ -436,8 +442,6 @@ public class MBFunction {
     /**
      * Use Recode function to implement {@link FunctionType#CATEGORICAL}.
      * <p>
-     * Generated expression of the form:
-     * <code>Recode( input, stop1, color1, stop2, color2, 'preceding')</code></p>
      * 
      * @param input input expression
      * @return recode function
@@ -459,6 +463,12 @@ public class MBFunction {
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
     
+    /**
+     * Generates a color expression for the output of this {@link MBFunction} (as a interpolate function), based on the provided input Expression.
+     * 
+     * @param expression The expression for the function input
+     * @return The expression for the output of this function (as an interpolate function)
+     */
     private Expression colorGenerateInterpolation(Expression expression) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
@@ -476,6 +486,13 @@ public class MBFunction {
         parameters.add(ff.literal("color"));
         return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
+    
+    /**
+     * Generates a color expression for the output of this {@link MBFunction} (as an exponential function), based on the provided input Expression.
+     * 
+     * @param expression The expression for the function input
+     * @return The expression for the output of this function (as an exponential function)
+     */
     private Expression colorGenerateExponential(Expression expression, double base) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(expression);
@@ -546,8 +563,8 @@ public class MBFunction {
      *   'stops': [[12, 2], [22, 180]]
      * }</pre></code>
      * 
-     * @param input
-     * @return Interpolate function
+     * @param input The expression for the function input
+     * @return The expression for the output of this function (as an interpolate function)
      */
     private Expression numericGenerateInterpolation(Expression input) {
         List<Expression> parameters = new ArrayList<>();
@@ -576,9 +593,9 @@ public class MBFunction {
      *   'stops': [[12, 2], [22, 180]]
      * }</pre></code>
      * 
-     * @param input
-     * @param base
-     * @return Exponential function
+     * @param input The expression for the function input
+     * @param base The base of the exponential interpolation
+     * @return The expression for the output of this function (as an exponential function)
      */
     private Expression numericGenerateExponential (Expression input, double base) {
         List<Expression> parameters = new ArrayList<>();
@@ -661,6 +678,15 @@ public class MBFunction {
         }
     }
     
+    /**
+     * Generates an expression for the output of this {@link MBFunction} (as an  {@link MBFunction.FunctionType#INTERVAL}  function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function, hence the name of this method.
+     * 
+     * @param expression The expression for the function input
+     * @param parseValue A function of two arguments (stopValue, stop) that parses the stop value into an Expression. 
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#INTERVAL} function)
+     */
     private Expression generateCategorize(Expression expression, java.util.function.BiFunction<Object, Object, Expression> parseValue) {
         
         JSONArray stopsJson = getStops();
@@ -694,6 +720,15 @@ public class MBFunction {
         Function categorizeFunction = ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
         return withFallback(categorizeFunction);
     }
+    
+    /**
+     * Generates an expression for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this method.
+     * 
+     * @param input The expression for the function input
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL} function)
+     */
     private Expression generateRecode(Expression input) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(input);
@@ -736,11 +771,12 @@ public class MBFunction {
         throw new UnsupportedOperationException("Unable to support '"+type+"' function for "+enumeration.getSimpleName());
     }
     /**
-     * Utilty method used to convert enumerations to an appropriate literal string.
+     * Utilty method used to convert enumerations to an appropriate GeoTools literal string.
      * <p>
-     * Any coversion between mapbox constants and geotools constants will be done here.
-     * @param value
-     * @param enumeration
+     * Any conversion between mapbox constants and geotools constants will be done here.
+     * 
+     * @param value The value to be converted to the appropriate GeoTools literal
+     * @param enumeration The type of the mapbox enumeration
      * @return Literal, or null if unavailable
      */
     private Literal constant(Object value, Class<? extends Enum<?>> enumeration) {
@@ -774,6 +810,15 @@ public class MBFunction {
         return null;
     }
     
+    /**
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this method.
+     * 
+     * @param input The expression for the function input
+     * @param enumeration The type of the enumeration for the mapbox style property
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#CATEGORICAL} function)
+     */
     private Expression enumGenerateRecode(Expression input, Class<? extends Enum<?>> enumeration) {
         List<Expression> parameters = new ArrayList<>();
         parameters.add(input);
@@ -788,11 +833,27 @@ public class MBFunction {
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
     
+    /**
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#INTERVAL} function), based on the provided input Expression.
+     * 
+     * Note: A mapbox "interval" function is implemented as a GeoTools "categorize" function, hence the name of this method.
+     * 
+     * @param input The expression for the function input
+     * @param enumeration The type of the enumeration for the mapbox style property
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#INTERVAL} function)
+     */
     private Expression enumGenerateCategorize(Expression input,
             Class<? extends Enum<?>> enumeration) {
         return withFallback(generateCategorize(input,(value, stop)->constant(value,enumeration)));
     }
 
+    /**
+     * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#IDENTITY} function), based on the provided input Expression.
+     * 
+     * @param input The expression for the function input
+     * @param enumeration The type of the enumeration for the mapbox style property
+     * @return The expression for the output of this function (as a {@link MBFunction.FunctionType#IDENTITY} function)
+     */
     private Expression enumGenerateIdentity(Expression input, Class<? extends Enum<?>> enumeration) {
         // this is an interesting challenge, we need to generate a recode mapping
         // mapbox constants defined by the enum, to appropriate geotools literals

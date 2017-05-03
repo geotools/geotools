@@ -22,6 +22,7 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -204,7 +205,7 @@ public class FillMBLayer extends MBLayer {
      * </pre>
      * @return The geometry displacement
      */
-    public Displacement lineTranslateDisplacement() {
+    public Displacement fillTranslateDisplacement() {
         return parse.displacement(paint, "fill-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
     
@@ -287,7 +288,7 @@ public class FillMBLayer extends MBLayer {
             }
 
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
-            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, lineTranslateDisplacement());
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, fillTranslateDisplacement());
             fill = sf.fill(gf, null, null);
         } else {
             fill = sf.fill(null, fillColor(), fillOpacity());
@@ -301,7 +302,7 @@ public class FillMBLayer extends MBLayer {
                 NonSI.PIXEL,
                 stroke,
                 fill,
-                lineTranslateDisplacement(),
+                fillTranslateDisplacement(),
                 ff.literal(0));
 
         Rule rule = sf.rule(

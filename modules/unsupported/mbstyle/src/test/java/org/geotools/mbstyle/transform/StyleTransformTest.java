@@ -113,11 +113,11 @@ public class StyleTransformTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
         List<MBLayer> layers = mbStyle.layers("composite");
 
-        assertEquals(1, layers.size());
+        assertEquals(2, layers.size());
 
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
-        assertTrue(layers.get(0) instanceof FillExtrusionMBLayer);
-        FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(0);
+        assertTrue(layers.get(1) instanceof FillExtrusionMBLayer);
+        FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(1);
         List<FeatureTypeStyle> fts = mbFill.transform(mbStyle, true);
 
         PolygonSymbolizer psym = SLD.polySymbolizer(fts.get(0));

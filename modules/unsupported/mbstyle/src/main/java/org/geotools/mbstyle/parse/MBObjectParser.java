@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.mbstyle.LineMBLayer.LineJoin;
+import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.StyleFactory2;
 import org.geotools.util.ColorConverterFactory;

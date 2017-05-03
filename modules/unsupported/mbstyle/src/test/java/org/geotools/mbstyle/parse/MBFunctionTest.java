@@ -27,23 +27,17 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.mbstyle.LineMBLayer.LineJoin;
+import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.parse.MBFunction.FunctionType;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;

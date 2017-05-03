@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle.parse;
 
-import org.geotools.mbstyle.MBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

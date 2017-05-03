@@ -16,10 +16,9 @@
  */
 package org.geotools.mbstyle.parse;
 
-import org.geotools.mbstyle.MBLayer;
+import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

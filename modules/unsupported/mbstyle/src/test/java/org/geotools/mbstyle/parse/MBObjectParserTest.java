@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 
-import org.geotools.mbstyle.LineMBLayer;
+import org.geotools.mbstyle.layer.LineMBLayer;
 import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.SymbolMBLayer;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;

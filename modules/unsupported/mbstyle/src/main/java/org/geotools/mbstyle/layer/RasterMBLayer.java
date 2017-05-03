@@ -15,14 +15,14 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
+import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
-import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Rule;

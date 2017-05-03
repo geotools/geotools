@@ -22,6 +22,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.*;
+import org.geotools.mbstyle.layer.*;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
 import org.json.simple.JSONArray;

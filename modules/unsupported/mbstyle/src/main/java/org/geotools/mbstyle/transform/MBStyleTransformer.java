@@ -18,7 +18,7 @@ package org.geotools.mbstyle.transform;
 
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.SymbolMBLayer.TextAnchor;
+import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;

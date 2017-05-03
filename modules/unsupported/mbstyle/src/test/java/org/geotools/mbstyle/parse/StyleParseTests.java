@@ -17,7 +17,8 @@
 package org.geotools.mbstyle.parse;
 
 import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.SymbolMBLayer.*;
+import org.geotools.mbstyle.layer.*;
+import org.geotools.mbstyle.layer.SymbolMBLayer.*;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;

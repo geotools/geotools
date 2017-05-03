@@ -15,8 +15,9 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
+import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -333,7 +334,7 @@ public abstract class MBLayer {
      * @param maxScaleDenominator Used to determine zoom level restructions for generated rules
      * @return A feature type style from the provided layer.
      */
-    protected FeatureTypeStyle transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
+    public FeatureTypeStyle transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
         // Would prefer to accept zoom levels here (less concepts in our API)
         // If we accept zoom levels we may be able to reduce, and return a list of FeatureTypeStyles
         // (with the understanding that the list may be empty if the MBLayer does not contribute any content

@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.parse.MBObjectStops;

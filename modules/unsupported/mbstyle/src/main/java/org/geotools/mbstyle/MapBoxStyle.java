@@ -16,9 +16,9 @@
  */
 package org.geotools.mbstyle;
 
+import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;

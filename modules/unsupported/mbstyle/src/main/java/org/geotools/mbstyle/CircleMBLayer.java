@@ -17,33 +17,22 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Color;
-import java.awt.Point;
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.*;
+import org.geotools.styling.Stroke;
+import org.geotools.text.Text;
+import org.json.simple.JSONObject;
+import org.opengis.filter.expression.Expression;
+import org.opengis.style.Displacement;
+import org.opengis.style.SemanticType;
+
+import javax.measure.unit.NonSI;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.*;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.text.Text;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.*;
-import org.opengis.style.Displacement;
-
-import javax.measure.unit.NonSI;
-
-import static java.lang.Math.round;
 
 /**
  * A filled circle.
@@ -198,7 +187,7 @@ public class CircleMBLayer extends MBLayer {
      * 
      * @return
      */
-    public Displacement toDisplacement() {
+    public Displacement circleTranslateDisplacement() {
         return parse.displacement(paint, "circle-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
@@ -351,7 +340,7 @@ public class CircleMBLayer extends MBLayer {
 
         Graphic gr = sf.graphic(Arrays.asList(m), null,
                 ff.multiply(ff.literal(2), circleRadius()), null, null,
-                toDisplacement());
+                circleTranslateDisplacement());
         gr.graphicalSymbols().clear();
         gr.graphicalSymbols().add(m);
 

@@ -330,9 +330,9 @@ public abstract class MBLayer {
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
      * @param layer The MBLayer to transform.
-     * @param minScaleDenominator Used to determine zoom level restructions for generated rules
-     * @param maxScaleDenominator Used to determine zoom level restructions for generated rules
-     * @return A feature type style from the provided layer.
+     * @param minScaleDenominator Used to determine zoom level restrictions for generated rules
+     * @param maxScaleDenominator Used to determine zoom level restrictions for generated rules
+     * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
      */
     public FeatureTypeStyle transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
         // Would prefer to accept zoom levels here (less concepts in our API)
@@ -340,6 +340,9 @@ public abstract class MBLayer {
         // (with the understanding that the list may be empty if the MBLayer does not contribute any content
         //  at a specific zoom level range)
         FeatureTypeStyle style = transform(styleContext);
+        if (style == null) {
+            return null;
+        }
         for (Rule rule : style.rules()) {
             if (minScaleDenominator != null) {
                 rule.setMinScaleDenominator(minScaleDenominator);
@@ -355,7 +358,7 @@ public abstract class MBLayer {
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
-     * @return A feature type style from the provided layer.
+     * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
      */
     public final FeatureTypeStyle transform(MBStyle styleContext) {
         MBLayer layer = this;

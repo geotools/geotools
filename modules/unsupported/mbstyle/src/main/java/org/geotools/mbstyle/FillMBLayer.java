@@ -205,7 +205,7 @@ public class FillMBLayer extends MBLayer {
      * </pre>
      * @return The geometry displacement
      */
-    public Displacement toDisplacement() {
+    public Displacement fillTranslateDisplacement() {
         return parse.displacement(paint, "fill-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
     
@@ -288,7 +288,7 @@ public class FillMBLayer extends MBLayer {
             }
 
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
-            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, toDisplacement());
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, fillTranslateDisplacement());
             fill = sf.fill(gf, null, null);
         } else {
             fill = sf.fill(null, fillColor(), fillOpacity());
@@ -302,7 +302,7 @@ public class FillMBLayer extends MBLayer {
                 NonSI.PIXEL,
                 stroke,
                 fill,
-                toDisplacement(),
+                fillTranslateDisplacement(),
                 ff.literal(0));
 
         Rule rule = sf.rule(

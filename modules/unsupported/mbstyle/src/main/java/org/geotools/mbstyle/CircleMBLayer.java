@@ -198,7 +198,7 @@ public class CircleMBLayer extends MBLayer {
      * 
      * @return
      */
-    public Displacement toDisplacement() {
+    public Displacement circleTranslateDisplacement() {
         return parse.displacement(paint, "circle-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
@@ -351,7 +351,7 @@ public class CircleMBLayer extends MBLayer {
 
         Graphic gr = sf.graphic(Arrays.asList(m), null,
                 ff.multiply(ff.literal(2), circleRadius()), null, null,
-                toDisplacement());
+                circleTranslateDisplacement());
         gr.graphicalSymbols().clear();
         gr.graphicalSymbols().add(m);
 

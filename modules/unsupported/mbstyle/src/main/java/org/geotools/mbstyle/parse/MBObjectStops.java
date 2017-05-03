@@ -30,7 +30,7 @@ import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
  * This class provides the ability to find all the zoom levels within a MapBox Style and returns a reduced list
  * of only the layers and properties containing Base and Stops values.
  *
- * Created by vickdw on 4/17/17.
+ * @author David Vick (Boundless)
  */
 public class MBObjectStops {
 

@@ -61,6 +61,15 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>David Vick</name>
+      <id>vickdw</id>
+      <email>dvick@boundlessgeo.com</email>
+      <organization>Boundless</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <!--   GeoTools modules   -->

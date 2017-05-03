@@ -118,9 +118,9 @@ public class StyleTransformTest {
         // Find the MBFillLayer and assert it contains the correct FeatureTypeStyle.
         assertTrue(layers.get(1) instanceof FillExtrusionMBLayer);
         FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(1);
-        List<FeatureTypeStyle> fts = mbFill.transform(mbStyle, true);
+        FeatureTypeStyle fts = mbFill.transform(mbStyle);
 
-        PolygonSymbolizer psym = SLD.polySymbolizer(fts.get(0));
+        PolygonSymbolizer psym = SLD.polySymbolizer(fts);
 
         Expression expr =  psym.getFill().getColor();
         assertNotNull("fillColor set", expr);

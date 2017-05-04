@@ -1,0 +1,84 @@
+{
+    "version": 8,
+    "name": "functions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -470.7348815284837,
+        59.39095672561683
+    ],
+    "zoom": 7.941231876413346,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "testSpriteshseet",
+    "glyphs": "testGlyphs",
+    "layers": [
+        {
+            "id": "linelayer_with_functions",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "visibility": "visible",
+                "line-cap": {
+                    "base": 1.0,
+                    "stops": [
+                        [ 0,"butt"],
+                        [ 9,"round"],
+                        [ 22,"square"]
+                    ]
+                },
+                "line-join": {
+                    "base": 1.0,
+                    "stops": [
+                        [ 0,"bevel" ],
+                        [ 9,"round" ],
+                        [ 22,"miter"]
+                    ]
+                }
+            },
+            "paint": {
+                "line-color": {
+                    "base": 1.0,
+                    "stops": [
+                        [0, "#FF0000"],
+                        [22,"#00FF00"]
+                    ]
+                },
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [0, 5],
+                        [10, 15]
+                    ]
+                },
+                "line-opacity": {
+                    "base": 1.0,
+                    "stops": [
+                        [0, 0],
+                        [22,1]
+                    ]
+                }
+            }
+        }
+    ],
+    "created": "2017-02-15T14:31:51.108Z",
+    "id": "ciz723a3y000g2so5l675lmz8",
+    "modified": "2017-04-20T17:09:04.570Z",
+    "owner": "testuser",
+    "visibility": "private",
+    "draft": false
+}

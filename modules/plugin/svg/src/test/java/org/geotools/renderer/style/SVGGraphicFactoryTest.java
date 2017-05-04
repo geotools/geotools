@@ -123,4 +123,24 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertNotNull(icon);
         assertEquals(500, icon.getIconHeight());
     }
+    
+    /**
+     * Tests that a fetched graphic is added to the cache, and that the {@link GraphicCache#clearCache()} method correctly clears the
+     * cache.
+     */
+    public void testClearCache() throws Exception {
+        SVGGraphicFactory svg = new SVGGraphicFactory();
+        URL url = SVGGraphicFactory.class.getResource("gradient.svg");
+
+        assertNotNull(url);
+        Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", -1);
+        assertNotNull(icon);
+
+        String evaluatedUrl = ff.literal(url).evaluate(null, String.class);
+        assertTrue(svg.glyphCache.containsKey(evaluatedUrl));
+        assertNotNull(svg.glyphCache.get(evaluatedUrl));
+
+        ((GraphicCache) svg).clearCache();
+        assertTrue(svg.glyphCache.isEmpty());
+    }
 }

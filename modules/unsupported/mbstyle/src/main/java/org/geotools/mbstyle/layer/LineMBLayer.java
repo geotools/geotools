@@ -15,21 +15,28 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
 import org.geotools.filter.function.RecodeFunction;
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.Displacement;
-import org.geotools.util.ColorConverterFactory;
-import org.geotools.util.Converter;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.*;
+import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.GraphicFill;
+import org.opengis.style.SemanticType;
 import org.opengis.style.Stroke;
 
-import java.awt.*;
+import javax.measure.unit.NonSI;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -58,10 +65,6 @@ public class LineMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    // TODO Add color hints for CSS color names.
-    private static Converter colorConverter = new ColorConverterFactory()
-            .createConverter(String.class, Color.class, null);
-
     private static String TYPE = "line";
 
     public LineMBLayer(JSONObject json) {
@@ -70,6 +73,11 @@ public class LineMBLayer extends MBLayer {
         layout = super.getLayout();
     }
 
+    @Override
+    protected SemanticType defaultSemanticType() {
+        return SemanticType.LINE;
+    }
+    
     /**
      * The display of line endings.
      */
@@ -97,7 +105,7 @@ public class LineMBLayer extends MBLayer {
      * @return One of butt, round, square, optional defaults to butt.
      */
     public LineCap getLineCap() {
-        return parse.toEnum(layout, "line-cap", LineCap.class, LineCap.BUTT);
+        return parse.getEnum(layout, "line-cap", LineCap.class, LineCap.BUTT);
     }
 
     /**
@@ -108,28 +116,7 @@ public class LineMBLayer extends MBLayer {
      * @return Expression for {@link Stroke#getLineCap()} use.
      */
     public Expression lineCap() {
-
-        Object obj = layout.get("line-cap");
-
-        if (obj == null) {
-            return ff.literal("butt");
-        } else if (obj instanceof String) {            
-            return ff.literal(
-                    parse.toEnum(layout, "line-cap", LineCap.class, LineCap.BUTT).name().toLowerCase());
-        } else if (obj instanceof Number) {
-            throw new UnsupportedOperationException("\"line-cap\": Number not supported");
-        } else if (obj instanceof Boolean) {
-            throw new UnsupportedOperationException("\"line-cap\": Boolean not supported");
-        } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException("\"line-cap\": Function not yet supported");
-        } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"line-cap\": JSONArray not supported");
-        } else {
-            throw new IllegalArgumentException(
-                    "json contents invalid: \"line-cap\" value limited to String or JSONObject but was "
-                            + obj.getClass().getSimpleName());
-        }
-
+        return parse.enumToExpression(layout, "line-cap", LineCap.class, LineCap.BUTT); 
     }
 
     /**
@@ -148,9 +135,11 @@ public class LineMBLayer extends MBLayer {
 
     /**
      * Optional enum. One of bevel, round, miter. Defaults to miter. The display of lines when joining.
+     *
+     * @return The line join
      */
     public LineJoin getLineJoin() {
-        return parse.toEnum(layout, "line-join", LineJoin.class, LineJoin.MITER);
+        return parse.getEnum(layout, "line-join", LineJoin.class, LineJoin.MITER);
     }
 
     /**
@@ -161,38 +150,15 @@ public class LineMBLayer extends MBLayer {
      * @return Expression for {@link Stroke#getLineJoin()()} use.
      */
     public Expression lineJoin() {
-        Object obj = layout.get("line-join");
-
-        if (obj == null) {
-            return ff.literal("mitre");
-        } else if (obj instanceof String) {
-            LineJoin lj = parse.toEnum(layout, "line-join", LineJoin.class, LineJoin.MITER);
-            if (lj.equals(LineJoin.MITER)) {
-                // miter (MapBox) -> mitre (GeoTools)
-                return ff.literal("mitre");
-            } else {
-                return ff.literal(lj.name().toLowerCase());
-            }
-        } else if (obj instanceof Number) {
-            throw new UnsupportedOperationException("\"line-join\": Number not supported");
-        } else if (obj instanceof Boolean) {
-            throw new UnsupportedOperationException("\"line-join\": Boolean not supported");
-        } else if (obj instanceof JSONObject) {
-            throw new UnsupportedOperationException("\"line-join\": Function not yet supported");
-        } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"line-join\": JSONArray not supported");
-        } else {
-            throw new IllegalArgumentException(
-                    "json contents invalid: \"line-join\" value limited to String or JSONObject but was "
-                            + obj.getClass().getSimpleName());
-        }
+        return parse.enumToExpression(layout, "line-join", LineJoin.class, LineJoin.MITER);
     }
 
     /**
      * (Optional) Used to automatically convert miter joins to bevel joins for sharp angles.
      * 
      * Defaults to 2. Requires line-join = miter.
-     * 
+     *
+     * @return The threshold at which miter joins are converted to bevel joins.
      */
     public Number getLineMiterLimit() {
         return parse.optional(Number.class, layout, "line-miter-limit", 2);
@@ -211,10 +177,11 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * (Optional) Used to automatically convert miter joins to bevel joins for sharp angles.
+     * (Optional) Used to automatically convert round joins to bevel joins for sharp angles.
      * 
      * Defaults to 1.05. Requires line-join = round.
-     * 
+     *
+     * @return The threshold at which round joins are converted to bevel joins.
      */
     public Number getLineRoundLimit() {
         return parse.optional(Number.class, layout, "line-round-limit", 1.05);
@@ -223,7 +190,7 @@ public class LineMBLayer extends MBLayer {
     /**
      * Maps {@link #getLineRoundLimit()} to an {@link Expression}.
      * 
-     * (Optional) Used to automatically convert miter joins to bevel joins for sharp angles.
+     * (Optional) Used to automatically convert round joins to bevel joins for sharp angles.
      * 
      * Defaults to 1.05. Requires line-join = round.
      * 
@@ -236,14 +203,14 @@ public class LineMBLayer extends MBLayer {
      * (Optional) The opacity at which the line will be drawn.
      * 
      * Defaults to 1.
-     * 
+     *
+     * @return The line opacity
      */
     public Number getLineOpacity() {
         return parse.optional(Number.class, paint, "line-opacity", 1);
     }
 
     /**
-     * 
      * Maps {@link #getLineOpacity()} to an {@link Expression}.
      * 
      * (Optional) The opacity at which the line will be drawn.
@@ -258,7 +225,6 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * 
      * (Optional) The color with which the line will be drawn.
      * 
      * Defaults to {@link Color#BLACK}, disabled by line-pattern.
@@ -269,7 +235,7 @@ public class LineMBLayer extends MBLayer {
         if (paint.containsKey("line-pattern")) {
             return null; // disabled
         }
-        return parse.convertToColor(parse.optional(String.class, paint, "fill-outline-color", "#000000"));
+        return parse.convertToColor(parse.optional(String.class, paint, "line-color", "#000000"));
     }
 
     /**
@@ -291,23 +257,15 @@ public class LineMBLayer extends MBLayer {
 
     /**
      * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively.
-     * 
+     *
      * Units in pixels. Defaults to 0,0.
-     * 
+     *
+     * @return The geometry's offset.
      */
-    public Point getLineTranslate() {
-        if (paint.get("line-translate") != null) {
-            JSONArray array = (JSONArray) paint.get("line-translate");
-            if (array.size() != 2) {
-                throw new MBFormatException("line-translate must be an array of length 2");
-            }
-            Number x = (Number) array.get(0);
-            Number y = (Number) array.get(1);
-            return new Point(x.intValue(), y.intValue());
-        } else {
-            return new Point(0, 0);
-        }
+    public int[] getLineTranslate() {
+        return parse.array( paint, "line-translate", new int[]{ 0, 0 } );
     }
+
 
     /**
      * Maps {@link #getLineTranslate()} to a {@link Displacement}.
@@ -315,21 +273,11 @@ public class LineMBLayer extends MBLayer {
      * (Optional) The geometry's offset. Values are [x, y] where negatives indicate left and up, respectively.
      * 
      * Units in pixels. Defaults to 0,0.
-     * 
+     *
+     * @return The geometry's offset, as a Displacement.
      */
-    public Displacement toDisplacement() {
-        Object defn = paint.get("line-translate");
-        if (defn == null) {
-            return null;
-        } else if (defn instanceof JSONArray) {
-            JSONArray array = (JSONArray) defn;
-            return sf.displacement(parse.number(array, 0, 0), parse.number(array, 1, 0));
-        } else if (defn instanceof JSONObject) {
-            throw new MBFormatException("\"line-translate\": Functions not supported yet.");
-        } else {
-            throw new MBFormatException("\"line-translate\": Expected array or function, but was "
-                    + defn.getClass().getSimpleName());
-        }
+    public Displacement lineTranslateDisplacement() {
+        return parse.displacement(paint, "line-translate", sf.displacement(ff.literal(0), ff.literal(0)));        
     }
 
     /**
@@ -352,17 +300,27 @@ public class LineMBLayer extends MBLayer {
      * {@link LineTranslateAnchor#VIEWPORT}: The fill is translated relative to the viewport.
      * 
      * Defaults to {@link LineTranslateAnchor#MAP}. Requires fill-translate.
-     * 
+     *
+     * @return The translation reference point.
      */
     public LineTranslateAnchor getLineTranslateAnchor() {
-        return parse.toEnum(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
+        return parse.getEnum(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
+    }
+    
+    /**
+     * Wraps {@link #getLineTranslateAnchor()} in a GeoTools expression. Returns an expression that evaluates to "map" or "viewport".
+     * 
+     */
+    public Expression lineTranslateAnchor() {
+        return parse.enumToExpression(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
     }
 
     /**
      * (Optional) Stroke thickness.
      * 
      * Units in pixels. Defaults to 1.
-     * 
+     *
+     * @return The stroke thickness.
      */
     public Number getLineWidth() {
         if (paint.get("line-width") != null) {
@@ -377,6 +335,8 @@ public class LineMBLayer extends MBLayer {
      * Convert {@link #getLineWidth()} to an Expression.
      * 
      * (Optional) Stroke thickness. Units in pixels. Defaults to 1.
+     *
+     * @return The stroke thickness.
      */
     public Expression lineWidth() {
         return parse.number(paint, "line-width", 1);
@@ -386,7 +346,8 @@ public class LineMBLayer extends MBLayer {
      * (Optional) Draws a line casing outside of a line's actual path. Value indicates the width of the inner gap.
      * 
      * Units in pixels. Defaults to 0.
-     * 
+     *
+     * @return The inner gap between the sides of the line casing
      */
     public Number getLineGapWidth() {
         return parse.optional(Number.class, paint, "line-gap-width", 0);
@@ -398,7 +359,8 @@ public class LineMBLayer extends MBLayer {
      * (Optional) Draws a line casing outside of a line's actual path. Value indicates the width of the inner gap.
      * 
      * Units in pixels. Defaults to 0.
-     * 
+     *
+     * @return The inner gap between the sides of the line casing
      */
     public Expression lineGapWidth() {
         return parse.number(paint, "line-gap-width", 0);
@@ -409,7 +371,8 @@ public class LineMBLayer extends MBLayer {
      * negative value to the left. For polygon features, a positive value results in an inset, and a negative value results in an outset.
      * 
      * Units in pixels. Defaults to 0.
-     * 
+     *
+     * @return The line's offset.
      */
     public Number getLineOffset() {
         return parse.optional(Number.class, paint, "line-offset", 0);
@@ -422,7 +385,8 @@ public class LineMBLayer extends MBLayer {
      * negative value to the left. For polygon features, a positive value results in an inset, and a negative value results in an outset.
      * 
      * Units in pixels. Defaults to 0.
-     * 
+     *
+     * @return The line's offset.
      */
     public Expression lineOffset() {
         return parse.number(paint, "line-offset", 0);
@@ -432,7 +396,8 @@ public class LineMBLayer extends MBLayer {
      * (Optional) Blur applied to the line, in pixels.
      * 
      * Units in pixels. Defaults to 0.
-     * 
+     *
+     * @return The line blur.
      */
     public Number getLineBlur() {
         return parse.optional(Number.class, paint, "line-blur", 0);
@@ -444,7 +409,8 @@ public class LineMBLayer extends MBLayer {
      * (Optional) Blur applied to the line, in pixels.
      * 
      * Units in pixels. Defaults to 0.
-     * 
+     *
+     * @return The line blur.
      */
     public Expression lineBlur() {
         return parse.number(paint, "line-blur", 0);
@@ -455,7 +421,8 @@ public class LineMBLayer extends MBLayer {
      * To convert a dash length to pixels, multiply the length by the current line width.
      * 
      * Units in line widths. Disabled by line-pattern.
-     * 
+     *
+     * @return A list of dash and gap lengths defining the pattern for a dashed line.
      */
     public List<Double> getLineDasharray() {
         List<Double> ret = new ArrayList<>();
@@ -479,7 +446,8 @@ public class LineMBLayer extends MBLayer {
      * To convert a dash length to pixels, multiply the length by the current line width.
      * 
      * Units in line widths. Disabled by line-pattern.
-     * 
+     *
+     * @return  A list of dash and gap lengths defining the pattern for a dashed line.
      */
     public List<Expression> lineDasharray() {
         Object defn = paint.get("line-dasharray");
@@ -502,11 +470,12 @@ public class LineMBLayer extends MBLayer {
     }
 
     /**
-     * (Optional) Name of image in sprite to use for drawing image lines. For seamless patterns, image width must be a factor of two (2, 4, 8, ...,
-     * 512).
+     * (Optional) Name of image in sprite to use for drawing image lines. For seamless patterns, image width must be a
+     * factor of two (2, 4, 8, ..., 512).
      * 
      * Units in line widths. Disabled by line-pattern.
-     * 
+     *
+     * The name of the sprite to use for the line pattern.
      */
     public String getLinePattern() {
         return parse.optional(String.class, paint, "line-pattern", null);
@@ -516,21 +485,76 @@ public class LineMBLayer extends MBLayer {
      * 
      * Converts {@link #getLinePattern()} to an Expression.
      * 
-     * (Optional) Name of image in sprite to use for drawing image lines. For seamless patterns, image width must be a factor of two (2, 4, 8, ...,
-     * 512).
+     * (Optional) Name of image in sprite to use for drawing image lines. For seamless patterns, image width must be a
+     * factor of two (2, 4, 8, ..., 512).
      * 
      * Units in line widths. Disabled by line-pattern.
-     * 
+     *
+     * The name of the sprite to use for the line pattern.
      */
     public Expression linePattern() {
         return parse.string(paint, "line-pattern", null);
     }
+    
+    /**
+     * 
+     * @return True if the layer has a line-pattern explicitly provided.
+     */
+    public boolean hasLinePattern() {
+        return parse.isPropertyDefined(paint, "line-pattern");
+    }
 
     /**
-     * {@inheritDoc}
+     * Transform {@link LineMBLayer} to GeoTools FeatureTypeStyle.
+     * <p>
+     * Notes:
+     * </p>
+     * <ul>
+     * </ul>
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return FeatureTypeStyle
      */
+    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+        MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        org.geotools.styling.Stroke stroke = sf.stroke(lineColor(), lineOpacity(), lineWidth(),
+                lineJoin(), lineCap(), null, null); // last "offset" is really "dash offset"
+
+        stroke.setDashArray(lineDasharray());
+        LineSymbolizer ls = sf.lineSymbolizer(getId(), null,
+                sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, lineOffset());
+
+        if (hasLinePattern()) {
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(linePattern(), styleContext);
+            GraphicFill fill = sf.graphicFill(Arrays.asList(eg), lineOpacity(), null, null, null, null);
+            stroke.setGraphicFill(fill);
+        }
+
+        MBFilter filter = getFilter();
+        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        Rule rule = sf.rule(
+                getId(),
+                null,
+                null,
+                0.0,
+                Double.POSITIVE_INFINITY,
+                Arrays.asList(ls),
+                filter.filter());
+        rule.setLegendGraphic(new Graphic[0]);
+        rules.add(rule);
+        return sf.featureTypeStyle(getId(),
+                sf.description(Text.text("MBStyle " + getId()),
+                        Text.text("Generated for " + getSourceLayer())),
+                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules);
+    }
+
+    /**
+     * Rendering type of this layer.
+     *
+     * @return {@link #TYPE}
+     */
+    @Override
     public String getType() {
         return TYPE;
     }
-
 }

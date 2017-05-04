@@ -76,4 +76,22 @@ public class ImageGraphicFactoryTest extends TestCase {
         assertNotNull(icon);
         assertEquals(22, icon.getIconHeight());
     }
+    
+    /**
+     * Tests that a fetched icon is added to the cache, and that the {@link GraphicCache#clearCache()} method correctly clears the
+     * cache.
+     */
+    public void testClearCache() {
+        URL u = this.getClass().getResource("test-data/test.png");
+        Icon icon = image.getIcon(null, ff.literal(u), "image/png", -1);
+
+        assertTrue(image.imageCache.containsKey(u));
+        assertNotNull(image.imageCache.get(u));
+
+        ((GraphicCache) image).clearCache();
+
+        assertTrue(image.imageCache.isEmpty());
+    }
+    
+    
 }

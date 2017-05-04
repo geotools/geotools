@@ -1,0 +1,156 @@
+{
+    "version": 8,
+    "name": "functions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -471.94386313994966,
+        59.368697607077564
+    ],
+    "zoom": 7.35530582299833,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "testSpritesheet",
+    "glyphs": "testGlyphs",
+    "layers": [
+        {
+            "id": "poi-label",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "poi_label",
+            "layout": {
+                "visibility": "visible",
+                "text-field": {
+                    "property": "someNumericProperty",
+                    "default": "freezing",
+                    "stops": [
+                        [
+                            0,
+                            "cold"
+                        ],
+                        [
+                            30,
+                            "hot"
+                        ]
+                    ]
+                },
+                "text-rotate":  {
+                    "property": "someNumericProperty",
+                    "default": -45,
+                    "stops": [
+                        [
+                            0,
+                            0
+                        ],
+                        [
+                            30,
+                            45
+                        ]
+                    ]
+                },                
+                "icon-image": {
+                    "property": "someNumericProperty",
+                    "default": "snowflake",
+                    "stops": [
+                        [
+                            0,
+                            "normal"
+                        ],
+                        [
+                            30,
+                            "toast"
+                        ]
+                    ]
+                },
+                "icon-size": {
+                    "stops": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            10,
+                            1.5
+                        ],         
+                        [
+                            15,
+                            1.9
+                        ]
+                    ]
+                },
+                "text-offset": [
+                    0,
+                    2.5
+                ],
+                "icon-offset": [
+                    0,
+                    0
+                ],
+                "symbol-placement": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            0,
+                            "point"
+                        ],
+                        [
+                            8,
+                            "line"
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color":{
+                    "property": "someNumericProperty",
+                    "default": "DeepSkyBlue",
+                    "stops": [
+                        [
+                            0,
+                            "Chartreuse"
+                        ],
+                        [
+                            30,
+                            "Cornsilk"
+                        ]
+                    ]
+                },
+                "icon-opacity":{
+                    "stops": [
+                        [
+                            2,
+                            1
+                        ],
+                        [
+                            8,
+                            0.5
+                        ],         
+                        [
+                            20,
+                            0.3
+                        ]
+                    ]
+                }
+            }
+        }
+    ],
+    "created": "2017-02-15T14:31:51.108Z",
+    "id": "ciz723a3y000g2so5l675lmz8",
+    "modified": "2017-04-25T14:36:07.247Z",
+    "owner": "testuser",
+    "visibility": "private",
+    "draft": false
+}

@@ -1,0 +1,106 @@
+{
+    "version": 8,
+    "name": "functions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -423.96500736815887,
+        49.05603059845177
+    ],
+    "zoom": 3.511754487634505,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "testSpritesheet",
+    "glyphs": "testGlyphs",
+    "layers": [
+        {
+            "id": "water",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "water",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            2,
+                            "#3366FF"
+                        ],
+                        [
+                            8,
+                            "#6633FF"
+                        ],
+                        [
+                            12,
+                            "#CC33FF"
+                        ],
+                        [
+                            13,
+                            "#FF33CC"
+                        ],
+                        [
+                            14,
+                            "#FF3366"
+                        ],
+                        [
+                            22,
+                            "#FF6633"
+                        ]
+                    ]
+                },
+                "fill-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            5,
+                            1
+                        ],
+                        [
+                            10,
+                            0.75
+                        ],
+                        [
+                            15,
+                            0.5
+                        ]
+                    ]
+                },
+                "fill-outline-color": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            4,
+                            "#CCFF33"
+                        ],
+                        [
+                            16,
+                            "#B88A00"
+                        ]
+                    ]
+                }
+            }
+        }
+    ],
+    "created": "2017-02-15T14:31:51.108Z",
+    "id": "ciz723a3y000g2so5l675lmz8",
+    "modified": "2017-04-26T20:44:41.356Z",
+    "owner": "testuser",
+    "visibility": "private",
+    "draft": false
+}

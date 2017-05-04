@@ -20,12 +20,22 @@ import org.geotools.mbstyle.MapboxTestUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.hamcrest.Matchers;
+
+import java.awt.Color;
 import java.io.IOException;
 import java.util.*;
 
+import static org.geotools.mbstyle.parse.MBStyleTestUtils.categories;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class FunctionParseTest {
@@ -50,10 +60,15 @@ public class FunctionParseTest {
     @Test
     public void testParseLinearColorFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function1");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "line-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "line-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for color returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Color.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.ZOOM), fn.category());
         assertEquals(1, fn.getBase().intValue());
         assertNull(fn.getProperty());
@@ -67,10 +82,15 @@ public class FunctionParseTest {
     @Test
     public void testParseExpColorFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function2");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "line-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "line-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for color returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Color.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.ZOOM), fn.category());
         assertEquals(1.75, fn.getBase().doubleValue(), .00001);
         assertNull(fn.getProperty());
@@ -84,10 +104,15 @@ public class FunctionParseTest {
     @Test
     public void testParseExpRadiusFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function3");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-radius");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-radius");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for number returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Number.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.ZOOM), fn.category());
         assertEquals(1.5, fn.getBase().doubleValue(), .00001);
         assertNull(fn.getProperty());
@@ -103,10 +128,15 @@ public class FunctionParseTest {
     @Test
     public void testParsePropertyZoomFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function4");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-radius");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-radius");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for number returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Number.class));
+        
         assertEquals(
                 EnumSet.of(MBFunction.FunctionCategory.PROPERTY, MBFunction.FunctionCategory.ZOOM),
                 fn.category());
@@ -124,10 +154,15 @@ public class FunctionParseTest {
     @Test
     public void testParsePropertyFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function5");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
-        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getType());
+        
+        // The function type is not specified in the JSON, so getType should return null.
+        assertNull(fn.getType());
+        // But the default fallback function type for color returns is 'exponential':
+        assertEquals(MBFunction.FunctionType.EXPONENTIAL, fn.getTypeWithDefault(Color.class));
+        
         assertEquals(EnumSet.of(MBFunction.FunctionCategory.PROPERTY), fn.category());
         assertEquals("temperature", fn.getProperty());
         assertNotNull(fn.getStops());
@@ -140,7 +175,7 @@ public class FunctionParseTest {
     @Test
     public void testParseCategoricalFunction() throws IOException, ParseException {
         JSONObject layer = testLayersById.get("function6");
-        Optional<JSONObject> o = safeTraverse(layer, JSONObject.class, "paint", "circle-color");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint", "circle-color");
         JSONObject j = o.get();
         MBFunction fn = new MBFunction(j);
         assertEquals(MBFunction.FunctionType.CATEGORICAL, fn.getType());
@@ -151,22 +186,61 @@ public class FunctionParseTest {
         assertNotNull(fn.getStops());
         assertEquals(5, fn.getStops().size());
     }
-
+    
+    /**
+     * Verify that an interval function for colours can be parsed.
+     */
+    @Test
+    public void testParseIntervalFunctionColour() throws IOException, ParseException {
+        JSONObject layer = testLayersById.get("functionIntervalColour");
+        JSONObject j = traverse(layer, JSONObject.class, "paint", "circle-color").get();
+        MBFunction fn = new MBFunction(j);
+        assertThat(fn, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
+        assertThat(fn, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
+        assertThat(fn, hasProperty("property", equalTo("temperature")));
+        assertThat(fn, hasProperty("stops", contains(
+                contains(-273.15, "#4488FF"),
+                contains(10.0, "#00FF00"),
+                contains(30.0, "#FF8800")
+            )));
+    }
+    /**
+     * Verify that an interval function for number can be parsed.
+     */
+    @Test
+    public void testParseIntervalFunctionNumber() throws IOException, ParseException {
+        JSONObject layer = testLayersById.get("functionIntervalNumeric");
+        JSONObject j = traverse(layer, JSONObject.class, "paint", "circle-radius").get();
+        MBFunction fn = new MBFunction(j);
+        assertThat(fn, hasProperty("type", is(MBFunction.FunctionType.INTERVAL)));
+        assertThat(fn, categories(containsInAnyOrder(MBFunction.FunctionCategory.PROPERTY)));
+        assertThat(fn, hasProperty("property", equalTo("rating")));
+        assertThat(fn, hasProperty("stops", contains(
+                contains(0L, 0L),
+                contains(2L, 5L),
+                contains(5L, 10L),
+                contains(10L, 20L)
+            )));
+    }
     /**
      * Traverse a nested map using the array of strings, and cast the result to the provided class, or return {@link Optional#empty()}.
+     * @param map
+     * @param clazz expected type
+     * @param path used to access map
+     * @return result at the provided path, or {@link Optional#empty()}. 
      */
-    private <T> Optional<T> safeTraverse(Map<String, Object> map, Class<T> clazz,
-            String... strings) {
-        if (strings == null || strings.length == 0) {
+    private <T> Optional<T> traverse(JSONObject map, Class<T> clazz,
+            String... path) {
+        if (path == null || path.length == 0) {
             return Optional.empty();
         }
 
-        Object curObj = map;
-        for (String s : Arrays.asList(strings)) {
-            if (curObj instanceof Map) {
-                Map m = (Map) curObj;
-                if (m.containsKey(s)) {
-                    curObj = m.get(s);
+        Object value = map;
+        for (String key : path) {
+            if (value instanceof JSONObject) {
+                JSONObject m = (JSONObject) value;
+                if (m.containsKey(key)) {
+                    value = m.get(key);
                 } else {
                     return Optional.empty();
                 }
@@ -174,7 +248,6 @@ public class FunctionParseTest {
                 return Optional.empty();
             }
         }
-
-        return Optional.of(clazz.cast(curObj));
+        return Optional.of(clazz.cast(value));
     }
 }

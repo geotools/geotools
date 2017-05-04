@@ -45,9 +45,14 @@ public class MapboxTestUtils {
     
     public static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
             ReferencedEnvelope[] bounds, RenderListener listener) throws Exception {
+        return showRender(testName, renderer, timeOut, bounds, listener, 300, 300);
+    }
+    
+    public static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
+            ReferencedEnvelope[] bounds, RenderListener listener, int width, int height) throws Exception {
         BufferedImage[] images = new BufferedImage[bounds.length];
         for (int i = 0; i < images.length; i++) {
-            images[i] = RendererBaseTest.renderImage(renderer, bounds[i], listener);
+            images[i] = RendererBaseTest.renderImage(renderer, bounds[i], listener, width, height);
         }
         final BufferedImage image = RendererBaseTest.mergeImages(images);
 
@@ -66,4 +71,16 @@ public class MapboxTestUtils {
         return image;
     }
 
+    /**
+     * Parse JSONObject using ' rather than " for faster test case writing.
+     * @param json
+     * @return parsed JSONArray
+     * @throws ParseException
+     */
+    public static JSONObject object(String json) throws ParseException{
+        JSONParser parser = new JSONParser();
+        String text = json.replace('\'', '\"');
+        Object object = parser.parse(text);
+        return (JSONObject) object;
+    }
 }

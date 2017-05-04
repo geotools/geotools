@@ -16,18 +16,21 @@
  */
 package org.geotools.mbstyle;
 
-import java.awt.Point;
+import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.parse.MBObjectStops;
+import org.geotools.mbstyle.source.MBSource;
+import org.geotools.styling.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.mbstyle.source.MBSource;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  * MapBox Style implemented as wrapper around parsed JSON file.
@@ -45,22 +48,22 @@ import org.json.simple.JSONObject;
  * </p>
  * <p>
  * This class works closely with {@link MBLayer} hierarchy used to represent the fill, line, symbol,
- * raster, circle layers. Additional support will be required to work with sprties and glyphs.
+ * raster, circle layers. Additional support will be required to work with sprites and glyphs.
  * </p>
  * 
  * @author Jody Garnett (Boundless)
  */
 public class MBStyle {
-    
+
     /**
      * JSON document being wrapped by this class.
      * <p>
      * All methods act as accessors on this JSON document, no other state is maintained. This
      * allows modifications to be made cleaning with out chance of side-effect. 
      */
-    JSONObject json;
+    public JSONObject json;
     
-    /** Helper class used to perform JSON travewrse json and
+    /** Helper class used to perform JSON traversal and
      * perform Expression and Filter conversions. */
     MBObjectParser parse = new MBObjectParser(MBStyle.class);
 
@@ -88,7 +91,6 @@ public class MBStyle {
             throw new MBFormatException("Root must be a JSON Object: " + json.toString());
         }
     }
-    
 
     /**
      * Access the layer with the provided id.
@@ -107,20 +109,54 @@ public class MBStyle {
         }
         return null;
     }
+
+    /**
+     * Access all layers.
+     *
+     * @return list of layers
+     */
     public List<MBLayer> layers(){
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
-                // MBLayer layer = MBObjectParser.parseLayer(obj);
-                MBLayer layer = MBLayer.create((JSONObject) obj);
-                layersList.add(layer);
+                if (((JSONObject) obj).containsKey("ref")) {
+                    String refLayer = ((JSONObject) obj).get("ref").toString();
+                    JSONObject refObject = new JSONObject();
+                    for (Object layer : layers) {
+                        if (refLayer.equalsIgnoreCase(((JSONObject)layer).get("id").toString())) {
+                            refObject = (JSONObject) layer;
+                        }
+                    }
+                    if (refObject.size() > 0) {
+                        // At a minimum, a type is needed to create a layer
+                        ((JSONObject) obj).put("type", refObject.get("type"));
+                        ((JSONObject) obj).put("source", refObject.get("source"));
+                        ((JSONObject) obj).put("source-layer", refObject.get("source-layer"));
+                        ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
+                        ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
+                        ((JSONObject) obj).put("filter", refObject.get("filter"));
+                        if(!((JSONObject) obj).containsKey("layout")){
+                            ((JSONObject) obj).put("layout", refObject.get("layout"));
+                        }
+                        if(!((JSONObject) obj).containsKey("paint")){
+                            ((JSONObject) obj).put("paint", refObject.get("paint"));
+                        }
+
+                        MBLayer layer = MBLayer.create((JSONObject) obj);
+                        layersList.add(layer);
+                    }
+                } else {
+                    MBLayer layer = MBLayer.create((JSONObject) obj);
+                    layersList.add(layer);
+                }
             } else {
                 throw new MBFormatException("Unexpected layer definition " + obj);
             }
         }
         return layersList;
     }
+
     /**
      * Access layers matching provided source.
      * 
@@ -132,9 +168,33 @@ public class MBStyle {
         List<MBLayer> layersList = new ArrayList<>();
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
-                MBLayer layer = MBLayer.create((JSONObject) obj);
-                
-                if( source.equals(layer.getSource())){
+                if (((JSONObject) obj).containsKey("ref")) {
+                    String refLayer = ((JSONObject) obj).get("ref").toString();
+                    JSONObject refObject = new JSONObject();
+                    for (Object layer : layers) {
+                        if (refLayer.equalsIgnoreCase(((JSONObject)layer).get("id").toString())) {
+                            refObject = (JSONObject) layer;
+                        }
+                    }
+                    if (refObject.size() > 0) {
+                        ((JSONObject) obj).put("type", refObject.get("type"));
+                        ((JSONObject) obj).put("source", refObject.get("source"));
+                        ((JSONObject) obj).put("source-layer", refObject.get("source-layer"));
+                        ((JSONObject) obj).put("minzoom", refObject.get("minzoom"));
+                        ((JSONObject) obj).put("maxzoom", refObject.get("maxzoom"));
+                        ((JSONObject) obj).put("filter", refObject.get("filter"));
+                        if(!((JSONObject) obj).containsKey("layout")){
+                            ((JSONObject) obj).put("layout", refObject.get("layout"));
+                        }
+                        if(!((JSONObject) obj).containsKey("paint")){
+                            ((JSONObject) obj).put("paint", refObject.get("paint"));
+                        }
+
+                        MBLayer layer = MBLayer.create((JSONObject) obj);
+                        layersList.add(layer);
+                    }
+                } else {
+                    MBLayer layer = MBLayer.create((JSONObject) obj);
                     layersList.add(layer);
                 }
             } else {
@@ -145,56 +205,31 @@ public class MBStyle {
     }
 
     /**
-     * Access layers matching provided source and selector.
-     * 
-     * @param source
-     * @param sourceLayer
-     * @return list of layers matching provided source
-     */
-    public List<MBLayer> layers(String source, String sourceLayer) {
-        JSONArray layers = parse.getJSONArray(json, "layers");
-        List<MBLayer> layersList = new ArrayList<>();
-        for (Object obj : layers) {
-            if (obj instanceof JSONObject) {
-                MBLayer layer = MBLayer.create((JSONObject) obj);
-                
-                if( source.equals(layer.getSource()) &&
-                        sourceLayer.equals(layer.getSourceLayer())){
-                    layersList.add(layer);
-                }
-            } else {
-                throw new MBFormatException("Unexpected layer definition " + obj);
-            }
-        }
-        return layersList;
-    }
-    
-    /**
      * A human-readable name for the style
      * 
-     * @return human-readable name, optional string.
+     * @return human-readable name, or "name" if the style has no name.
      */
     public String getName() {
         return parse.optional(String.class, json, "name", null);
     }    
-    
+
     /**
      * (Optional) Arbitrary properties useful to track with the stylesheet, but do not influence rendering. Properties should be prefixed to avoid
      * collisions, like 'mapbox:'.
      * 
-     * @return {@link JSONObject} containing the metadata.
+     * @return {@link JSONObject} containing the metadata, or an empty JSON object the style has no metadata.
      */
     public JSONObject getMetadata() {
         return parse.getJSONObject(json, "metadata", new JSONObject());
     }
-    
+
     /**
      *  (Optional) Default map center in longitude and latitude. The style center will be used only if the map has not been positioned by other means (e.g. map options or user interaction).
 
      * @return A {@link Point} for the map center, or null if the style contains no center.
      */
     public Point2D getCenter() {
-        double[] coords = parse.array(json, "center", null);
+        double[] coords = parse.array(json, "center", (double[])null);
         if (coords == null) {
             return null;
         } else if (coords.length != 2){
@@ -203,11 +238,11 @@ public class MBStyle {
             return new Point2D.Double(coords[0], coords[1]);            
         }
     }
-    
+
     /**
      * (Optional) Default zoom level. The style zoom will be used only if the map has not been positioned by other means (e.g. map options or user interaction).
      * 
-     * @return Number for the zoom level, or null.
+     * @return Number for the zoom level, or null if the style has no default zoom level.
      */
     public Number getZoom() {
         return parse.optional(Number.class, json, "zoom", null);
@@ -217,19 +252,19 @@ public class MBStyle {
      * (Optional) Default bearing, in degrees clockwise from true north. The style bearing will be used only if the map has not been positioned by
      * other means (e.g. map options or user interaction).
      * 
-     * @return Number for the bearing. Units in degrees. Defaults to 0.
+     * @return The bearing in degrees. Defaults to 0 if the style has no bearing.
      * 
      */
     public Number getBearing() {
         return parse.optional(Number.class, json, "bearing", 0);
     }
-    
+
     /**
      * (Optional) Default pitch, in degrees. Zero is perpendicular to the surface, for a look straight down at the map, while a greater value like 60
      * looks ahead towards the horizon. The style pitch will be used only if the map has not been positioned by other means (e.g. map options or user
      * interaction).
      * 
-     * @return Number for the pitch.Units in degrees. Defaults to 0.
+     * @return The pitch in degrees. Defaults to 0 if the style has no pitch.
      */
     public Number getPitch() {
         return parse.optional(Number.class, json, "pitch", 0);
@@ -240,7 +275,7 @@ public class MBStyle {
      * This property is required if any layer uses the background-pattern, fill-pattern, line-pattern, fill-extrusion-pattern, or icon-image
      * properties.
      * 
-     * @return The String URL, or null.
+     * @return The sprite URL, or null if the style has no sprite URL.
      */
     public String getSprite() {
         return parse.optional(String.class, json, "sprite", null);
@@ -254,12 +289,12 @@ public class MBStyle {
      * <br/>
      * <code>"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf"</code>
      * 
-     * @return A String URL template, or null.
+     * @return The glyphs URL template, or null if the style has no glyphs URL template.
      */
     public String getGlyphs() {
         return parse.optional(String.class, json, "glyphs", null);
     }
-    
+
     /**
      * Data source specifications. 
      * 
@@ -279,5 +314,69 @@ public class MBStyle {
         }
         return sourceMap;
     }
-    
+
+    /**
+     * Transform MBStyle to a GeoTools StyledLayerDescriptor.
+     *
+     * @return StyledLayerDescriptor
+     */
+    public StyledLayerDescriptor transform() {
+        StyleFactory sf = parse.getStyleFactory();
+        List<MBLayer> layers = layers();
+        if (layers.isEmpty()) {
+            throw new MBFormatException("layers empty");
+        }
+
+
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        Style style = sf.createStyle();
+
+        for (MBLayer layer : layers) {
+            MBObjectStops mbObjectStops = new MBObjectStops(layer);
+
+            int layerMaxZoom = layer.getMaxZoom();
+            int layerMinZoom = layer.getMinZoom();
+            Double layerMinScaleDenominator = layerMaxZoom == Integer.MAX_VALUE ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator((long) Math.min(25, layerMaxZoom));
+            Double layerMaxScaleDenominator = layerMinZoom == Integer.MIN_VALUE ? null
+                    : MBObjectStops.zoomLevelToScaleDenominator((long) Math.max(-25, layerMinZoom));
+
+            if (layer.visibility()) {
+                FeatureTypeStyle featureTypeStyle = null;
+                // check for property and zoom functions, if true we will have a layer for each one that
+                // becomes a feature type style.
+                if (mbObjectStops.hasStops) {
+                    List<Long> stopLevels = mbObjectStops.stops;
+                    int i = 0;
+                    for (MBLayer l : mbObjectStops.layersForStop) {
+                        long s = stopLevels.get(i);
+                        long[] rangeForStopLevel = mbObjectStops.getRangeForStop(s, mbObjectStops.ranges);
+                        Double maxScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[0]);
+                        Double minScaleDenominator = null;
+                        if (rangeForStopLevel[1] != -1) {
+                            minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
+                        }
+
+                        featureTypeStyle = l.transform(this, minScaleDenominator, maxScaleDenominator);
+                        style.featureTypeStyles().add(featureTypeStyle);
+                        i++;
+                    }
+                } else {
+                    featureTypeStyle = layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator);
+                    style.featureTypeStyles().add(featureTypeStyle);
+                }
+            }
+        }
+
+        if( style.featureTypeStyles().isEmpty() ){
+            throw new MBFormatException("No visibile layers");
+        }
+
+        UserLayer userLayer = sf.createUserLayer();
+        userLayer.userStyles().add(style);
+
+        sld.layers().add(userLayer);
+        sld.setName(getName());
+        return sld;
+    }
 }

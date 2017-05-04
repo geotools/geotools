@@ -15,15 +15,20 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.mbstyle;
+package org.geotools.mbstyle.layer;
 
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.style.SemanticType;
 
 /**
  * MBLayer wrapper (around one of the MBStyle layers).
@@ -37,7 +42,7 @@ import org.opengis.filter.FilterFactory2;
  * </ul>
  * 
  * <p>
- * In the normal course of events MBLayer is constructed as a flighweight object by MBStyle to
+ * In the normal course of events MBLayer is constructed as a flyweight object by MBStyle to
  * provide easy access to its layers list.
  * </p>
  * 
@@ -86,22 +91,21 @@ public abstract class MBLayer {
     /**
      * Factory method creating the appropriate MBStyle based on the "type" indicated in the layer JSON.
      */
-    public static MBLayer create(JSONObject layer ){
-        if( layer.containsKey("type") && layer.get("type") instanceof String){
+    public static MBLayer create(JSONObject layer) {
+        if (layer.containsKey("type") && layer.get("type") instanceof String) {
             String type = (String) layer.get("type");
-            switch( type ){
-            case "line": return new LineMBLayer(layer);
-            case "fill": return new FillMBLayer(layer);
-            case "raster": return new RasterMBLayer(layer);
-            case "circle": return new CircleMBLayer(layer);
-            case "background": return new BackgroundMBLayer(layer);
-            case "symbol": return new SymbolMBLayer(layer);
-            case "fill-extrusion": return new FillExtrusionMBLayer(layer);
-            default:
-                throw new MBFormatException(("\"type\" " + type
-                        + " is not a valid layer type. Must be one of: "
-                        + "background, fill, line, symbol, raster, circle, fill-extrusion"));
-
+            switch (type) {
+                case "line": return new LineMBLayer(layer);
+                case "fill": return new FillMBLayer(layer);
+                case "raster": return new RasterMBLayer(layer);
+                case "circle": return new CircleMBLayer(layer);
+                case "background": return new BackgroundMBLayer(layer);
+                case "symbol": return new SymbolMBLayer(layer);
+                case "fill-extrusion": return new FillExtrusionMBLayer(layer);
+                default:
+                    throw new MBFormatException(("\"type\" " + type
+                            + " is not a valid layer type. Must be one of: "
+                            + "background, fill, line, symbol, raster, circle, fill-extrusion"));
             }
         }
         // technically we may be able to do this via a ref
@@ -122,8 +126,7 @@ public abstract class MBLayer {
      * <li>background: The background color or pattern of the map.</li>
      * </ul>
      * 
-     * @return Optional field, one of fill, line, symbol, circle, fill-extrusion, raster,
-     *         background.
+     * @return One of fill, line, symbol, circle, fill-extrusion, raster, background.
      */
     public abstract String getType();
     
@@ -133,8 +136,8 @@ public abstract class MBLayer {
      * 
      * @return Arbitrary properties useful to track with the layer. 
      */
-    public JSONObject getMetadata(){
-        throw new UnsupportedOperationException(); 
+    public JSONObject getMetadata() {
+        return parse.getJSONObject(json, "metadata", new JSONObject());
     }
 
     /**
@@ -147,7 +150,7 @@ public abstract class MBLayer {
     public String getRef(){
         // We should update getType(), getSource(), getSourceLayer(), getMinZoom(), getMaxZoom(),
         // getFilter() to look up value provided by getRef() if needed.
-        throw new UnsupportedOperationException();
+        return parse.optional(String.class, json, "ref", null);
     }
     
     
@@ -169,7 +172,7 @@ public abstract class MBLayer {
      * While this value is optional, it may be obtained via {@link #getRef()} if needed.
      * </p>
      * 
-     * @return name of source description to be used for this layer
+     * @return name of source description to be used for this layer, or null if the style has no source.
      */
     public String getSource() {
         return parse.optional(String.class, json, "source", null);
@@ -181,7 +184,7 @@ public abstract class MBLayer {
      * While this value is optional, it may be obtained via {@link #getRef()} if needed.
      * </p>
      * 
-     * @return layer to use from a vector tile source
+     * @return layer to use from a vector tile source, or null if the style has no source-layer.
      */
     public String getSourceLayer() {
         return parse.optional(String.class, json, "source-layer", null);
@@ -190,39 +193,57 @@ public abstract class MBLayer {
     /**
      * The minimum zoom level on which the layer gets parsed and appears on.
      * 
-     * @return minimum zoom level, optional number may return null.
+     * @return minimum zoom level, or Integer.MIN_VALUE if the style has no minzoom.
      */
-    public Integer getMinZoom(){
-        return parse.optional(Integer.class, json, "minzoom", null);
+    public int getMinZoom() {
+        Integer min = parse.optional(Integer.class, json, "minzoom", null);
+        return min == null ? Integer.MIN_VALUE : min;
     }
     
     /**
      * The maximum zoom level on which the layer gets parsed and appears on.
      * 
-     * @return maximum zoom level, optional number may return null.
+     * @return maximum zoom level, or Integer.MAX_VALUE if the style has no maxzoom.
      */
-    public Integer getMaxZoom(){
-        return parse.optional(Integer.class, json, "maxzoom", null);
+    public int getMaxZoom() {
+        Integer max = parse.optional(Integer.class, json, "maxzoom", null);
+        return max == null ? Integer.MAX_VALUE : max;
     }
     
     /**
-     * A JSONArray expression specifying conditions on source features. Only features that match the filter
-     * are displayed. This is available as a GeoTools {@link Filter} via {@link #filter()}.
+     * A MBFilter wrapping optional json specifying conditions on source features. Only features
+     * that match the filter are displayed. This is available as a GeoTools {@link Filter} via
+     * {@link #filter()}.
      * 
-     * @return JSONArray expression specifying conditions on source features, optional may return null.
+     * @return MBFilter expression specifying conditions on source features.
      */
-    public JSONArray getFilter(){
-        return parse.getJSONArray(json,"filter", null );
+    public MBFilter getFilter(){
+        JSONArray array = parse.getJSONArray(json,"filter", null );
+        MBFilter filter = new MBFilter(array, parse, defaultSemanticType());
+        return filter;
     }
+    
+    /**
+     * Default {@link SemanticType} to use when generating {@link #getFilter()}.
+     * <p>
+     * Use ANY to match all geometry, or fill in LINE, POINT, POLYGON if needed.</p>
+     * 
+     * @return Appropriate LINE, POINT, POLYGON value, or ANY to match any geometry.
+     */
+    abstract SemanticType defaultSemanticType();
     
     /**
      * The "filter" as a GeoTools {@link Filter} suitable for feature selection, as defined by
      * {@link #getFilter()}.
      * 
-     * @return Filter
+     * @return Filter, or Filter.INCLUDE if the style has no filter.
      */
     public Filter filter(){
-        return Filter.INCLUDE; // TODO: Implemented based on getFilter, for now select everything
+        MBFilter mbFilter = getFilter();
+        if (mbFilter == null) {
+            return Filter.INCLUDE;
+        }
+        return mbFilter.filter();
     }
     
     /**
@@ -235,7 +256,8 @@ public abstract class MBLayer {
      * two layers will share GPU memory and other resources associated with the layer.
      * </p>
      * 
-     * @return Layout properties defined for layer, optional value may be empty.
+     * @return Layout properties defined for layer, or an empty {@link JSONObject} if no layout properties are defined
+     * for the style.
      */
     public JSONObject getLayout(){
         return parse.layout(json);
@@ -247,7 +269,7 @@ public abstract class MBLayer {
      * @return Layout properties to use for this layer.
      */
     public JSONObject layout(){
-        return getLayout(); // TODO: Lookup ref
+        return getLayout();
     }
     
     /**
@@ -258,25 +280,27 @@ public abstract class MBLayer {
      * in the layer's "paint" object.
      * </p>
      * 
-     * @return Default paint properties for this layer, optinal value may be empty.
+     * @return Default paint properties for this layer, or an empty {@link JSONObject} if no paint properties are
+     * defined for the style.
      */
     public JSONObject getPaint(){
         return parse.paint(json);
     }
     
-    /** Layout setting - whether this layer is displayed.
+    /**
+     * Layout setting - whether this layer is displayed.
      * 
-     *  @return Optional enum, one of visible, none (Defaults to visible.)
+     *  @return One of visible, none. Defaults to visible if not defined in the style.
      */
     public Visibility getVisibility(){
         JSONObject layout = layout();
-        return parse.toEnum( layout, "visibility", Visibility.class, Visibility.VISIBLE );
+        return parse.getEnum( layout, "visibility", Visibility.class, Visibility.VISIBLE );
     }
     
     /**
      * Whether this layer is displayed.
      * 
-     * @return optional layout setting, defaults to true (visible)
+     * @return Whether the layout is visible. Defaults to true.
      */
     public boolean visibility(){
         return getVisibility() == Visibility.VISIBLE;
@@ -288,7 +312,7 @@ public abstract class MBLayer {
      * @return Paint properties to use for this layer.
      */
     public JSONObject paint(){
-        return getPaint(); // TODO: Lookup ref
+        return getPaint();
     }
 
     /**
@@ -301,6 +325,50 @@ public abstract class MBLayer {
     public JSONObject getPaintProperties(){
         return new JSONObject();
     }
+
+    /**
+     * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
+     *
+     * @param layer The MBLayer to transform.
+     * @param minScaleDenominator Used to determine zoom level restrictions for generated rules
+     * @param maxScaleDenominator Used to determine zoom level restrictions for generated rules
+     * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
+     */
+    public FeatureTypeStyle transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
+        // Would prefer to accept zoom levels here (less concepts in our API)
+        // If we accept zoom levels we may be able to reduce, and return a list of FeatureTypeStyles
+        // (with the understanding that the list may be empty if the MBLayer does not contribute any content
+        //  at a specific zoom level range)
+        FeatureTypeStyle style = transform(styleContext);
+        if (style == null) {
+            return null;
+        }
+        for (Rule rule : style.rules()) {
+            if (minScaleDenominator != null) {
+                rule.setMinScaleDenominator(minScaleDenominator);
+            }
+            if (maxScaleDenominator != null) {
+                rule.setMaxScaleDenominator(maxScaleDenominator);
+            }
+        }
+        return style;
+    }
+    /**
+     *
+     * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
+     *
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
+     */
+    public final FeatureTypeStyle transform(MBStyle styleContext) {
+        MBLayer layer = this;
+        if (!layer.visibility()) {
+            return null; // layer layout visibility 'none'
+        }
+        return transformInternal(styleContext);
+    }
+
+    public abstract FeatureTypeStyle transformInternal(MBStyle styleContext);
     
     //
     // Data Object based on wrapped json

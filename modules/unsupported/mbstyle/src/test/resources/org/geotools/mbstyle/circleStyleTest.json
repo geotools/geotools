@@ -36,7 +36,7 @@
                 "circle-blur": 1,
                 "circle-translate": [
                     10,
-                    15
+                    10
                 ],
                 "circle-stroke-opacity": 0.75,
                 "circle-stroke-width": 2,

@@ -17,7 +17,8 @@
 package org.geotools.mbstyle.parse;
 
 import org.geotools.mbstyle.*;
-import org.geotools.mbstyle.SymbolMBLayer.*;
+import org.geotools.mbstyle.layer.*;
+import org.geotools.mbstyle.layer.SymbolMBLayer.*;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -267,20 +268,38 @@ public class StyleParseTests {
         assertEquals(new Color(0x0099ff), l.getLineColor());
         assertEquals(0.5, l.getLineOpacity());
         assertEquals(LineMBLayer.LineTranslateAnchor.VIEWPORT, l.getLineTranslateAnchor());
-        Assert.assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(10.0, 5.0, 3.0, 2.0));
+        Assert.assertThat(l.getLineDasharray(), IsIterableContainingInOrder.contains(50.0, 50.0));
         // line-offset can be either an integer or double.
         assertEquals(4, l.getLineOffset().intValue());
         assertEquals(4.0, l.getLineOffset().doubleValue(), .00001);
         // line-gap-width can be either an integer or double.
         assertEquals(8, l.getLineGapWidth().intValue());
         assertEquals(8.0, l.getLineGapWidth().doubleValue(), .00001);
-        assertEquals(new Point(3,3), l.getLineTranslate());
+        assertNotNull(l.lineTranslateDisplacement());
+        Number dispX = l.lineTranslateDisplacement().getDisplacementX().evaluate(null, Number.class);
+        Number dispY = l.lineTranslateDisplacement().getDisplacementY().evaluate(null, Number.class);
+        assertEquals(3, dispX.intValue());
+        assertEquals(3, dispY.intValue());
         // line-width can be either an integer or double.
         assertEquals(10, l.getLineWidth().intValue());
         assertEquals(10.0, l.getLineWidth().doubleValue(), .00001);
         // line-blur can be either an integer or double.
         assertEquals(2, l.getLineBlur().intValue());
         assertEquals(2.0, l.getLineBlur().doubleValue(), .00001);
+    }
+
+    @Test
+    public void getRefTest() throws IOException, ParseException {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("getRefTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        MBLayer layer = mbStyle.layers().get(2);
+
+        assertEquals("water", layer.getRef());
+        assertEquals("water", mbStyle.layer(layer.getRef()).getSourceLayer());
+        assertEquals("mapbox", mbStyle.layer(layer.getRef()).getSource());
+        assertEquals(11, mbStyle.layer(layer.getRef()).getMinZoom());
+        assertEquals(22, mbStyle.layer(layer.getRef()).getMaxZoom());
+        assertEquals("round", mbStyle.layer(layer.getRef()).getLayout().get("line-join"));
     }
 
 }

@@ -24,8 +24,23 @@ import org.json.simple.JSONObject;
  * 
  * Wrapper around a {@link JSONObject} containing the "sources" in a Mapbox style. Mapbox sources supply data to be shown on the map. The type of
  * source is specified by the "type" property, and must be one of vector, raster, geojson, image, video, canvas.
- * 
+ *  
  * "Layers refer to a source and give it a visual representation. This makes it possible to style the same source in different ways, like differentiating between types of roads in a highways layer."
+ * 
+ * <p>Internally we use a wtms end-point to refer to the data source:
+ * <pre>
+ * "us-states": {
+ *    "type": "vector",
+ *    "url": "https://localhost:8080/geoserver/gwc/service/wmts#us:states"
+ * }
+ * </pre>
+ * </p>
+ * This is based on the following request for a single file::
+ * <pre>http://localhost:8080/geoserver/gwc/service/wmts?
+ *   REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&
+ *   LAYER=dfs:ne_110m_coastline&STYLE=&TILEMATRIX=EPSG:4326:2&TILEMATRIXSET=EPSG:4326&
+ *   FORMAT=application/x-protobuf;type=mapbox-vector
+ *   &TILECOL=3&TILEROW=1</pre>
  * 
  * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources</a>
  *
@@ -68,9 +83,8 @@ public abstract class MBSource {
         }
         if ("canvas".equalsIgnoreCase(type)) {
             return new CanvasMBSource(json, parser);
-        } else {
-            throw new MBFormatException("Mapbox source \"type\" is required and must be one of: vector, raster, geojson, image, video, or canvas.");
         }
+        throw new MBFormatException("Mapbox source \"type\" is required and must be one of: vector, raster, geojson, image, video, or canvas.");
     }
     
     /**

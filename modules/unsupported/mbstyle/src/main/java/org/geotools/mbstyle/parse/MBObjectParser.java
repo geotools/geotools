@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -600,29 +601,19 @@ public class MBObjectParser {
         // Function name is inconsistent because "enum" is not a valid function name.
         Object value = json.get(tag);
         if (value == null) {
-            return ff.literal(convertEnumValueToGeoToolsConstant(fallback));
+            return constant(fallback.toString(), enumeration);
         } else if (value instanceof String) {
-            // step 1 look up enumValue
             String stringVal = (String) value;
             if ("".equals(stringVal.trim())) {
-                return ff.literal(convertEnumValueToGeoToolsConstant(fallback));
+                return constant(fallback.toString(), enumeration);
             }
-            T enumValue = null;
-            for (T constant : enumeration.getEnumConstants()) {
-                if (constant.toString().equalsIgnoreCase(stringVal.trim())) {
-                    enumValue = constant;
-                    break;
-                }
-            }
-            if (enumValue == null) {
-                LOGGER.warning("\"" + stringVal + "\" invalid value for enumeration "
+            try {
+                return constant(stringVal, enumeration);
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "\"" + stringVal + "\" Exception parsing value for enumeration "
                         + enumeration.getSimpleName() + ", falling back to default value.");
-                return ff.literal(convertEnumValueToGeoToolsConstant(fallback));
-            }
-            // step 2 - convert to geotools constant
-            // (for now just convert to lower case)
-            //
-            return ff.literal(convertEnumValueToGeoToolsConstant(enumValue));
+                return constant(fallback.toString(), enumeration);
+            }  
         } else if (value instanceof JSONObject) {
             MBFunction function = new MBFunction(this, (JSONObject) value);
             return function.enumeration(enumeration);
@@ -632,26 +623,49 @@ public class MBObjectParser {
                             + " to " + enumeration.getSimpleName() + " not supported.");
         }
     }
-
-    /**
-     * Transform a Mapbox enumeration value to the corresponding GeoTools constant. For example, converts {@link LineJoin#BEVEL} to the
-     * String value "bevel", or {@link LineJoin#MITER} to the String value "mitre".
-     * 
-     * @param enumValue The Mapbox enumeration value.
-     * @return The GeoTools constant.
-     */
-    private Object convertEnumValueToGeoToolsConstant(Enum<?> enumValue) {
-
-        if (enumValue instanceof LineJoin && LineJoin.MITER.equals(enumValue)) {
-            return ff.literal("mitre");
-        }
-
-        // Can add additional transformations as necessary.
-        // (Converting the string value to lowercase takes care of most cases).
-        String literal = enumValue.toString().toLowerCase();
-        return ff.literal(literal);
-    }
     
+    /**
+     * Utility method used to convert enumerations to an appropriate GeoTools literal string.
+     * <p>
+     * Any conversion between mapbox constants and geotools constants will be done here.
+     * 
+     * @param value The value to be converted to the appropriate GeoTools literal
+     * @param enumeration The type of the mapbox enumeration
+     * @return Literal, or null if unavailable
+     */
+    public Literal constant(Object value, Class<? extends Enum<?>> enumeration) {
+        if( value == null ){
+            return null;
+        }
+        if( value instanceof String){
+            // step 1 look up enumValue
+            String stringVal = (String) value;
+            if ("".equals(stringVal.trim())) {
+                return null;
+            }
+            Object enumValue = null;
+            for (Object constant : enumeration.getEnumConstants()) {
+                if (constant.toString().equalsIgnoreCase(stringVal.trim())) {
+                    enumValue = constant;
+                    break;
+                }
+            }
+            if( enumValue == null ){
+                throw new MBFormatException("\"" + stringVal + "\" invalid value for enumeration "
+                    + enumeration.getSimpleName());
+            }
+                        
+            // step 2 - convert to geotools constant
+            // (Converting the string value to lowercase takes care of most cases).
+            if (enumValue instanceof LineJoin && LineJoin.MITER.equals(enumValue)) {
+                return ff.literal("mitre");
+            }
+            String literal = enumValue.toString().toLowerCase();            
+            return ff.literal(literal);
+        }
+        return null;
+    }
+
     /**
      * Casts the provided obj to a JSONObject (safely reporting format exception 
      * 

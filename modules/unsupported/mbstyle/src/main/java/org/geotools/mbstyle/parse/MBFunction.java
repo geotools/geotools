@@ -771,46 +771,6 @@ public class MBFunction {
         throw new UnsupportedOperationException("Unable to support '"+type+"' function for "+enumeration.getSimpleName());
     }
     /**
-     * Utilty method used to convert enumerations to an appropriate GeoTools literal string.
-     * <p>
-     * Any conversion between mapbox constants and geotools constants will be done here.
-     * 
-     * @param value The value to be converted to the appropriate GeoTools literal
-     * @param enumeration The type of the mapbox enumeration
-     * @return Literal, or null if unavailable
-     */
-    private Literal constant(Object value, Class<? extends Enum<?>> enumeration) {
-        if( value == null ){
-            return null;
-        }
-        if( value instanceof String){
-            // step 1 look up enumValue
-            String stringVal = (String) value;
-            if ("".equals(stringVal.trim())) {
-                return null;
-            }
-            Object enumValue = null;
-            for (Object constant : enumeration.getEnumConstants()) {
-                if (constant.toString().equalsIgnoreCase(stringVal.trim())) {
-                    enumValue = constant;
-                    break;
-                }
-            }
-            if( enumValue == null ){
-                throw new MBFormatException("\"" + stringVal + "\" invalid value for enumeration "
-                    + enumeration.getSimpleName());
-            }
-            // step 2 - convert to geotools constant
-            // (for now just convert to lower case)
-            //
-            String literal = enumValue.toString().toLowerCase();
-            
-            return ff.literal(literal);
-        }
-        return null;
-    }
-    
-    /**
      * Generates an expression (based on a mapbox enumeration property) for the output of this {@link MBFunction} (as a {@link MBFunction.FunctionType#CATEGORICAL} function), based on the provided input Expression.
      * 
      * Note: A mapbox "categorical" function is implemented as a GeoTools "recode" function, hence the name of this method.
@@ -827,7 +787,7 @@ public class MBFunction {
             Object stop = entry.get(0);
             Object value = entry.get(1);
             parameters.add(ff.literal(stop));
-            parameters.add(constant(value,enumeration));
+            parameters.add(parse.constant(value, enumeration));
         }
         
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
@@ -844,7 +804,7 @@ public class MBFunction {
      */
     private Expression enumGenerateCategorize(Expression input,
             Class<? extends Enum<?>> enumeration) {
-        return withFallback(generateCategorize(input,(value, stop)->constant(value,enumeration)));
+        return withFallback(generateCategorize(input,(value, stop)->parse.constant(value, enumeration)));
     }
 
     /**
@@ -862,7 +822,7 @@ public class MBFunction {
         for (Enum<?> constant : enumeration.getEnumConstants()) {
             Object value = constant.name().toLowerCase();
             parameters.add(ff.literal(value));
-            parameters.add(constant(value,enumeration));
+            parameters.add(parse.constant(value, enumeration));
         }
         return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }

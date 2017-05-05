@@ -359,6 +359,10 @@ public class GranuleDescriptor {
             gcReader = format.getReader(granuleFile, hints);
             // Getting Dataset Layout
             layout = gcReader.getDatasetLayout();
+            if(heterogeneousGranules) {
+                // do not trust the index, use the reader instead (reprojection might be involved)
+                this.granuleBBOX = ReferencedEnvelope.reference(gcReader.getOriginalEnvelope());
+            }
             //
             // get info about the raster we have to read
             //
@@ -418,7 +422,7 @@ public class GranuleDescriptor {
             // we do not have such info, hence we assume that it is a simple
             // scale and translate
             this.geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension),
-                    granuleBBOX);
+                    this.granuleBBOX);
             geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);// this is the default behavior but it is nice to write it down anyway
             this.baseGridToWorld = geMapper.createAffineTransform();
 
@@ -494,6 +498,10 @@ public class GranuleDescriptor {
             }
 
         }
+    }
+
+    public OverviewsController getOverviewsController() {
+        return overviewsController;
     }
 
     /**
@@ -578,6 +586,16 @@ public class GranuleDescriptor {
             final int maxDecimationFactor, final boolean heterogeneousGranules,
             final boolean handleArtifactsFiltering) {
 
+        this(granuleLocation, granuleBBox, suggestedSPI, roiProvider, maxDecimationFactor,
+                heterogeneousGranules, handleArtifactsFiltering, null);
+
+    }
+
+    public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
+            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final int maxDecimationFactor, final boolean heterogeneousGranules,
+            final boolean handleArtifactsFiltering, final Hints hints) {
+
         this.maxDecimationFactor = maxDecimationFactor;
         final URL rasterFile = DataUtilities.fileToURL(new File(granuleLocation));
 
@@ -591,8 +609,7 @@ public class GranuleDescriptor {
 
         this.originator = null;
         init(granuleBBox, rasterFile, suggestedSPI, roiProvider, heterogeneousGranules,
-                handleArtifactsFiltering, null);
-
+                handleArtifactsFiltering, hints);
     }
 
     /**

@@ -161,10 +161,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
         // managing hints
         //
         // //
-        if (this.hints == null)
-            this.hints = new Hints();
-        if (uHints != null) {
-            this.hints.add(uHints);
+        if (uHints == null) {
+            this.hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
+        } else {
+            this.hints = uHints;
         }
         this.coverageFactory = CoverageFactoryFinder.getGridCoverageFactory(this.hints);
 

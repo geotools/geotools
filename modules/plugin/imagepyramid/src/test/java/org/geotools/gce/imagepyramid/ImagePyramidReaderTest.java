@@ -694,8 +694,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         //
         // Get the reader
         //
-        final ImagePyramidReader reader = new ImagePyramidReader(testFile, new Hints(
-                Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        final ImagePyramidReader reader = new ImagePyramidReader(testFile);
         assertNotNull(reader);
 
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
@@ -777,8 +776,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         //
         // Get the reader
         //
-        final ImagePyramidReader reader = new ImagePyramidReader(testFile, new Hints(
-                Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+        final ImagePyramidReader reader = new ImagePyramidReader(testFile);
         assertNotNull(reader);
         String coverageName = reader.getGridCoverageNames()[0];
         assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));

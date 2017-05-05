@@ -228,6 +228,8 @@ public class Utils {
 
         public static final String ADDITIONAL_DOMAIN_ATTRIBUTES = "AdditionalDomainAttributes";
 
+        public static final String CRS_ATTRIBUTE = "CrsAttribute";
+        
         /**
          * Sets if the target schema should be used to locate granules (default is FALSE)<br/>
          * {@value TRUE|FALSE}
@@ -650,6 +652,14 @@ public class Utils {
                     .trim();
             retValue.setElevationAttribute(elevationAttribute);
         }
+        
+        //
+        // crs attribute is optional
+        //
+        if (properties.containsKey(Prop.CRS_ATTRIBUTE)) {
+            final String crsAttribute = properties.getProperty(Prop.CRS_ATTRIBUTE).trim();
+            retValue.setCRSAttribute(crsAttribute);
+        }
 
         //
         // additional domain attribute is optional
@@ -709,6 +719,12 @@ public class Utils {
                     .valueOf(properties.getProperty(Prop.HETEROGENEOUS, "false").trim());
             catalogConfigurationBean.setHeterogeneous(heterogeneous);
         }
+        if (!catalogConfigurationBean.isHeterogeneous() && (!ignoreSome || !ignorePropertiesSet.contains(Prop.HETEROGENEOUS_CRS))) {
+            final boolean heterogeneous = Boolean
+                    .valueOf(properties.getProperty(Prop.HETEROGENEOUS_CRS, "false").trim());
+            catalogConfigurationBean.setHeterogeneous(heterogeneous);
+        }
+
 
         //
         // Absolute or relative path

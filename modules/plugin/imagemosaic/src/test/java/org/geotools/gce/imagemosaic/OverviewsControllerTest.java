@@ -19,12 +19,14 @@ package org.geotools.gce.imagemosaic;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
@@ -42,6 +44,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.DataUtilities;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -50,10 +53,13 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -122,7 +128,7 @@ public class OverviewsControllerTest extends Assert {
             new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
             new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 1)),
             new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 1)),
-            new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 8), new GranuleParams(0, 5, 5))});
+            new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 9), new GranuleParams(0, 5, 5))});
     private final static TestSet at2 = new TestSet(new OverviewConfig[]{
             new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
             new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 2)),
@@ -137,7 +143,6 @@ public class OverviewsControllerTest extends Assert {
 
     private static final ImageReaderSpi spi = new TIFFImageReaderSpi();
     
-	
     /**
      * Tests the {@link OverviewsController} with support for different
      * resolutions/different number of overviews.
@@ -165,6 +170,7 @@ public class OverviewsControllerTest extends Assert {
         //
         // //
         final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, WGS84);
+        hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true);
         final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(heterogeneousGranulesURL, hints);
         Assert.assertNotNull(format);
         Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
@@ -188,9 +194,11 @@ public class OverviewsControllerTest extends Assert {
         final ImageReadParam readParamsG2 = new ImageReadParam();
         int imageIndexG1 = 0;
         int imageIndexG2 = 0;
-
-        final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(g1File.getAbsolutePath(), TEST_BBOX_A, spi, (MultiLevelROI) null, true);
-        final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(g2File.getAbsolutePath(), TEST_BBOX_B, spi, (MultiLevelROI) null, true);
+        
+        final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(g1File.getAbsolutePath(),
+                TEST_BBOX_A, spi, (MultiLevelROI) null, -1, true, false, hints);
+        final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(g2File.getAbsolutePath(),
+                TEST_BBOX_B, spi, (MultiLevelROI) null, -1, true, false, hints);
         assertNotNull(granuleDescriptor1.toString());
         assertNotNull(granuleDescriptor2.toString());
 

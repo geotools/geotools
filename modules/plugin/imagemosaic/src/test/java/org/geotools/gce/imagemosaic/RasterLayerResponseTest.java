@@ -52,7 +52,7 @@ public class RasterLayerResponseTest {
         ImageMosaicReader reader = null;
         try {
 
-            reader = new ImageMosaicFormat().getReader(testMosaic, null);
+            reader = new ImageMosaicFormat().getReader(testMosaic);
 
             final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
                     .createValue();
@@ -62,7 +62,8 @@ public class RasterLayerResponseTest {
             final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
             rasterArea.setSize(dim);
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
-            gg.setValue(new GridGeometry2D(range, envelope));
+            GridGeometry2D gridGeometryValue = new GridGeometry2D(range, envelope);
+            gg.setValue(gridGeometryValue);
 
             final RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
             final RasterLayerRequest request = new RasterLayerRequest(
@@ -80,8 +81,13 @@ public class RasterLayerResponseTest {
             finalGridToWorldCorner.setAccessible(true);
             MathTransform2D transform = (MathTransform2D) finalGridToWorldCorner.get(response);
             AffineTransform2D affineTransform = (AffineTransform2D) transform;
-            assertEquals(18, XAffineTransform.getScaleX0(affineTransform), DELTA);
-            assertEquals(18, XAffineTransform.getScaleY0(affineTransform), DELTA);
+            AffineTransform2D gridToCRS = (AffineTransform2D) gridGeometryValue.getGridToCRS2D();
+            
+            // heteroegenous mode, the response code should not be picking a target resolution, just
+            // reflect the requested one and let the GranuleDescriptor own overview controller pick
+            // the best one for that granule
+            assertEquals(gridToCRS.getScaleX(), XAffineTransform.getScaleX0(affineTransform), DELTA);
+            assertEquals(Math.abs(gridToCRS.getScaleY()), XAffineTransform.getScaleY0(affineTransform), DELTA);
         } finally {
             if (reader != null) {
                 try {

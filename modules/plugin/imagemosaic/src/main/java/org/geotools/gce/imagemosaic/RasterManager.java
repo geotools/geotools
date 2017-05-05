@@ -24,6 +24,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,7 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -59,6 +61,7 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -78,6 +81,7 @@ import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
+import org.geotools.gce.imagemosaic.properties.CRSExtractor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -97,8 +101,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.Identifier;
@@ -119,7 +125,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class RasterManager {
+public class RasterManager implements Cloneable {
 
     final Hints excludeMosaicHints = new Hints(Utils.EXCLUDE_MOSAIC, true);
 
@@ -1005,7 +1011,7 @@ public class RasterManager {
             }
         }
     }
-
+    
     private void updateHints(Hints hints, MosaicConfigurationBean configuration,
             ImageMosaicReader parentReader) {
         if (configuration != null) {
@@ -1643,5 +1649,87 @@ public class RasterManager {
 
     public ImageMosaicReader getParentReader() {
         return parentReader;
+    }
+    
+    /**
+     * Builds a RasterManager for the sub mosaic of a given template granule, and within a given search bounds
+     * 
+     * @throws Exception
+     */
+    public RasterManager getForGranuleCRS(GranuleDescriptor templateDescriptor,
+            ReferencedEnvelope requestBounds) throws Exception {
+        CoordinateReferenceSystem granuleCRS = templateDescriptor.getGranuleEnvelope()
+                .getCoordinateReferenceSystem();
+        if (CRS.equalsIgnoreMetadata(spatialDomainManager.coverageCRS2D, granuleCRS)) {
+            return this;
+        }
+
+        // compute the bounds of the sub-mosaic in that CRS
+        ReferencedEnvelope bounds = getBoundsForGranuleCRS(templateDescriptor, requestBounds);
+        ReferencedEnvelope targetBounds = bounds.transform(granuleCRS, true);
+
+        // rebuild the raster manager
+        RasterManager reprojected = (RasterManager) this.clone();
+        reprojected.configuration = new MosaicConfigurationBean(this.configuration);
+        reprojected.configuration.setCrs(granuleCRS);
+        reprojected.configuration.setEnvelope(targetBounds);
+        if (reprojected.imposedEnvelope != null) {
+            // we might have an imposed bbox
+            reprojected.imposedEnvelope = targetBounds;
+        }
+        if (templateDescriptor.getOverviewsController() != null) {
+            reprojected.overviewsController = templateDescriptor.getOverviewsController();
+        }
+
+        OverviewLevel level = templateDescriptor.getOverviewsController().getLevel(0);
+        // original gridrange (estimated). I am using the floor here in order to make sure
+        // we always stays inside the real area that we have for the granule
+        final double highestRes[] = new double[] { level.resolutionX, level.resolutionY };
+        GridEnvelope2D originalGridRange = new GridEnvelope2D(
+                new Rectangle((int) (targetBounds.getSpan(0) / highestRes[0]),
+                        (int) (targetBounds.getSpan(1) / highestRes[1])));
+        AffineTransform2D raster2Model = new AffineTransform2D(highestRes[0], 0, 0, -highestRes[1],
+                targetBounds.getLowerCorner().getOrdinate(0) + 0.5 * highestRes[0],
+                targetBounds.getUpperCorner().getOrdinate(1) - 0.5 * highestRes[1]);
+        reprojected.spatialDomainManager = new SpatialDomainManager(
+                new GeneralEnvelope(targetBounds), originalGridRange, granuleCRS, raster2Model,
+                reprojected.overviewsController);
+
+        return reprojected;
+    }
+
+    /**
+     * Grab the bounds of the mosaic granules in the template granule CRS (cannot reproject, in general, the whole mosaic bounds in the granule local
+     * CRS)
+     *
+     * @param templateDescriptor
+     * @param requestBounds
+     * @return
+     * @throws IOException
+     */
+    private ReferencedEnvelope getBoundsForGranuleCRS(GranuleDescriptor templateDescriptor,
+            ReferencedEnvelope requestBounds) throws IOException {
+        
+        String crsAttribute = configuration.getCRSAttribute();
+        if (crsAttribute == null) {
+            crsAttribute = CRSExtractor.DEFAULT_ATTRIBUTE_NAME;
+        }
+        GranuleSource granuleSource = getGranuleSource(true, null);
+        if(granuleSource.getSchema().getDescriptor(crsAttribute) == null) {
+            throw new IllegalStateException("Invalid heterogeneous mosaic configuration, "
+                    + "the 'crs' property is missing from the index schema");
+        }
+        
+        String granuleCRSCode = (String) templateDescriptor.getOriginator()
+                .getAttribute(crsAttribute);
+        FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+        PropertyIsEqualTo crsFilter = ff.equal(ff.property(crsAttribute),
+                ff.literal(granuleCRSCode), false);
+        BBOX bbox = ff.bbox(ff.property(""), requestBounds);
+        Filter filter = ff.and(crsFilter, bbox);
+        Query q = new Query(granuleSource.getSchema().getTypeName(), filter);
+        SimpleFeatureCollection granules = granuleSource.getGranules(q);
+        ReferencedEnvelope bounds = granules.getBounds();
+        return bounds;
     }
 }

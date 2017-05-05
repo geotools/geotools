@@ -57,10 +57,13 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
@@ -93,9 +96,14 @@ import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -313,10 +321,21 @@ public class RasterLayerResponse {
             //
             // create a granuleDescriptor loader
             final Geometry bb = JTS.toGeometry((BoundingBox) mosaicBBox);
-            final Geometry inclusionGeometry = granuleDescriptor.getFootprint();
+            Geometry inclusionGeometry = granuleDescriptor.getFootprint();
             boolean intersects = false;
             if (inclusionGeometry != null) {
-                intersects = inclusionGeometry.intersects(bb);
+                CoordinateReferenceSystem granuleCRS = granuleDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
+                CoordinateReferenceSystem mosaicCRS = mosaicBBox.getCoordinateReferenceSystem();
+                try {
+                    if(!CRS.equalsIgnoreMetadata(granuleCRS, mosaicCRS)) {
+                        MathTransform mt = CRS.findMathTransform(granuleCRS, mosaicCRS);
+                        inclusionGeometry = JTS.transform(inclusionGeometry, mt);
+                    }
+                    intersects = inclusionGeometry.intersects(bb);
+                } catch (FactoryException | MismatchedDimensionException | TransformException e) {
+                    // in case there was a reprojection issue assume intersection
+                    intersects = true;
+                }
             }
             if (!footprintBehavior.handleFootprints() || inclusionGeometry == null
                     || (footprintBehavior.handleFootprints() && intersects)) {
@@ -1329,4 +1348,34 @@ public class RasterLayerResponse {
     public ROIExcessGranuleRemover getExcessGranuleRemover() {
         return excessGranuleRemover;
     }
+    
+    /**
+     * Builds an alternate view of request/response/manager based on a template descriptor
+     * @param templateDescriptor
+     * @return
+     * @throws Exception
+     */
+    public RasterLayerResponse reprojectTo(GranuleDescriptor templateDescriptor) throws Exception {
+        // optimization in case the granule CRS and the mosaic CRS correspond
+        CoordinateReferenceSystem granuleCRS = templateDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
+        if(CRS.equalsIgnoreMetadata(rasterManager.spatialDomainManager.coverageCRS2D, granuleCRS)) {
+            return this;
+        }
+        
+        // rebuild
+        RasterLayerRequest originalRequest = this.getRequest();
+        RasterManager originalRasterManager = originalRequest.getRasterManager();
+        RasterManager manager = originalRasterManager.getForGranuleCRS(templateDescriptor, this.mosaicBBox);
+        RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager);
+        RasterLayerResponse response = new RasterLayerResponse(request, manager,
+                this.submosaicProducerFactory);
+        // initialize enough info without actually running the output computation
+        response.chooseOverview();
+        response.initBBOX();
+        response.initTransformations();
+        response.initRasterBounds();
+
+        return response;
+    }
+    
 }

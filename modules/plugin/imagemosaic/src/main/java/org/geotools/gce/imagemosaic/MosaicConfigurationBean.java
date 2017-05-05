@@ -25,6 +25,7 @@ import java.util.Arrays;
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
+import org.geotools.gce.imagemosaic.properties.CRSExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -81,6 +82,9 @@ public class MosaicConfigurationBean {
 
     /** elevation attribute name. <code>null</code> if absent. */
     private String elevationAttribute;
+    
+    /** crs attribute name, or <code>null</code> if absent */
+    private String crsAttribute;
 
     /** additional domain attributes names. <code>null</code> if absent. */
     private String additionalDomainAttributes;
@@ -157,6 +161,14 @@ public class MosaicConfigurationBean {
 
     public void setTimeAttribute(final String timeAttribute) {
         this.timeAttribute = timeAttribute;
+    }
+    
+    public String getCRSAttribute() {
+        return crsAttribute;
+    }
+
+    public void setCRSAttribute(final String crsAttribute) {
+        this.crsAttribute = crsAttribute;
     }
 
     public String getAdditionalDomainAttributes() {
@@ -260,6 +272,7 @@ public class MosaicConfigurationBean {
         return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
                 + Arrays.toString(levels) + ", name=" + name + ", levelsNum=" + levelsNum
                 + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
+                + ", crsAttribute=" + crsAttribute
                 + ",sampleModel=" + sampleModel + ", envelope=" + envelope
                 + ", footprintManagement=" + footprintManagement + ", checkAuxiliaryMetadata="
                 + checkAuxiliaryMetadata + "]";

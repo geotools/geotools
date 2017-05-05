@@ -878,7 +878,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             }
             return null;
         } else {
-            return response.iterator().next();
+            GridCoverage2D coverage = response.iterator().next();
+            return coverage;
         }
     }
 

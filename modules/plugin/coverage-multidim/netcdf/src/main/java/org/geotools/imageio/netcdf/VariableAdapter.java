@@ -923,25 +923,26 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 } else {
 
                     // model space is not declared to be regular, but we kind of assume it is!!!
-                    final int valuesLength=(int) cv.getSize();
+                    @SuppressWarnings("unchecked") 
+                    List<Number> vals = (List<Number>) cv.read();
                     double min = ((Number)cv.getMinimum()).doubleValue();
                     double max = ((Number)cv.getMaximum()).doubleValue();
                     // make sure we skip nodata coords, bah...
                     if (!Double.isNaN(min) && !Double.isNaN(max)) {
                         origin[0] = min;
-                        scaleX = (max-min) / valuesLength;
+                        scaleX = (max-min) / vals.size();
                     } else {
                         if (LOGGER.isLoggable(Level.FINE)) {
                             LOGGER.log(Level.FINE, "Axis values contains NaN; finding first valid values");
                         }
-                        for( int j = 0; j < valuesLength; j++ ) {
-                            double v = ((Number)cv.read(j)).doubleValue();
+                        for( int j = 0; j < vals.size(); j++ ) {
+                            double v = ((Number)vals.get(j)).doubleValue();
                             if (!Double.isNaN(v)) {
-                                for( int k = valuesLength; k > j; k-- ) {
-                                    double vv = ((Number)cv.read(k)).doubleValue();
+                                for( int k = vals.size(); k > j; k-- ) {
+                                    double vv = ((Number)vals.get(k)).doubleValue();
                                     if (!Double.isNaN(vv)) {
                                         origin[0] = v;
-                                        scaleX = (vv - v) / valuesLength;
+                                        scaleX = (vv - v) / vals.size();
                                     }
                                 }
                             }
@@ -966,27 +967,27 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                         origin[1] = cv.getStart();
                     }
                 } else {
-
                     // model space is not declared to be regular, but we kind of assume it is!!!
-                    final int valuesLength=(int) cv.getSize();
+                    @SuppressWarnings("unchecked") 
+                    List<Number> values = (List<Number>) cv.read();
                     double min = ((Number)cv.getMinimum()).doubleValue();
                     double max = ((Number)cv.getMaximum()).doubleValue();
                     // make sure we skip nodata coords, bah...
                     if (!Double.isNaN(min) && !Double.isNaN(max)) {
-                        scaleY = -(max-min) / valuesLength;
+                        scaleY = -(max-min) / values.size();
                         origin[1] = max;
                     } else {
                         if (LOGGER.isLoggable(Level.FINE)) {
                             LOGGER.log(Level.FINE, "Axis values contains NaN; finding first valid values");
                         }
-                        for( int j = 0; j < valuesLength; j++ ) {
-                            double v = ((Number)cv.read(j)).doubleValue();
+                        for( int j = 0; j < values.size(); j++ ) {
+                            double v = ((Number)values.get(j)).doubleValue();
                             if (!Double.isNaN(v)) {
-                                for( int k = valuesLength; k > j; k-- ) {
-                                    double vv = ((Number)cv.read(k)).doubleValue();
+                                for( int k = values.size(); k > j; k-- ) {
+                                    double vv = ((Number)values.get(k)).doubleValue();
                                     if (!Double.isNaN(vv)) {
                                         origin[1] = v;
-                                        scaleY = -(vv - v) / valuesLength;
+                                        scaleY = -(vv - v) / values.size();
                                     }
                                 }
                             }
@@ -1093,6 +1094,16 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         return resultIndex;
     }
 
+    public Map<String, Integer> mapIndex(int[] splittedIndex) {
+        Map<String, Integer> resultIndex = new HashMap<String, Integer>();
+        for (int n = 0; n < splittedIndex.length; n++) {
+            if (nDimensionIndex[n] != -1) {
+                resultIndex.put(variableDS.getDimension(nDimensionIndex[n]).getFullName(), splittedIndex[n]);
+            }
+        }
+        return resultIndex;
+    }
+
     /**
      * @return the numberOfSlices
      */
@@ -1115,7 +1126,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * @param limit the max number of features to be created
      * @param collection the feature collection where features need to be stored
      */
-    public void getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection) {
+    public int getFeatures(final int startIndex, final int limit, final ListFeatureCollection collection) {
         final SimpleFeatureType indexSchema = collection.getSchema();
         final int slicesNum = getNumberOfSlices();
         if (startIndex > slicesNum) {
@@ -1136,20 +1147,22 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
             // Create a feature for that index to be put in the CoverageSlicesCatalog
             final SimpleFeature feature = createFeature(
-                    variableDS, 
                     coverageName.toString(), 
                     index,
                     coordinateSystem, 
                     imageIndex, 
                     indexSchema);
-            collection.add(feature);
+            if (feature != null) {
+                collection.add(feature);
+            } //or else it is a non-existing slice (not in catalog, but counted)
         }
+        //return processed slices
+        return lastIndex - startIndex;
     }
 
     /**
-     * Create a SimpleFeature on top of the provided variable and indexes.
+     * Create a SimpleFeature on top of the variable and indexes.
      * 
-     * @param variable the input variable 
      * @param tIndex the time index 
      * @param zIndex the zeta index
      * @param cs the {@link CoordinateSystem} associated with that variable
@@ -1160,7 +1173,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * TODO move to variable wrapper
      */
     private SimpleFeature createFeature(
-            final Variable variable,
             final String coverageName,
             final int[] index,
             final CoordinateSystem cs,
@@ -1169,18 +1181,26 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
         final SimpleFeature feature = DataUtilities.template(indexSchema);
         feature.setAttribute(CoverageSlice.Attributes.GEOMETRY, 
-                NetCDFCRSUtilities.GEOM_FACTORY.toGeometry(reader.georeferencing.getBoundingBox(variable.getShortName())));
+                NetCDFCRSUtilities.GEOM_FACTORY.toGeometry(reader.georeferencing.getBoundingBox(variableDS.getShortName())));
         feature.setAttribute(CoverageSlice.Attributes.INDEX, imageIndex);
+
+        Map<String, Integer> mappedIndex = mapIndex(index);
 
         // TIME management
         // Check if we have time and elevation domain and set the attribute if needed
         if (nDimensionIndex[T] >= 0) {
-            final Date date = getTimeValueByIndex(variable, nDimensionIndex[T], index[T]);
+            final Date date = getValueByIndex(nDimensionIndex[T], mappedIndex);
+            if (date == null) { //non-existing slice, not in catalog
+                return null;
+            }
             setFeatureTime(feature, date, cs);
         }
         // elevation
         if (nDimensionIndex[Z] >= 0) {
-            final Number verticalValue = getNumberValueByIndex(variable, nDimensionIndex[Z], index[Z]);
+            final Number verticalValue = getValueByIndex(nDimensionIndex[Z], mappedIndex);
+            if (verticalValue == null) { //non-existing slice, not in catalog
+                return null;
+            }
             feature.setAttribute(reader.georeferencing.getDimensionMapper().getDimension(NetCDFUtilities.ELEVATION_DIM), 
                 verticalValue);
         }
@@ -1191,9 +1211,12 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 AdditionalDomain domain = getAdditionalDomains().get(i);
                 final Object value;
                 if (domain.getType().equals(DomainType.DATE)) {
-                    value = getTimeValueByIndex(variable, nDimensionIndex[i + 2], index[i + 2]);
+                    value = getValueByIndex(nDimensionIndex[i + 2], mappedIndex);
                 } else {
-                    value = getNumberValueByIndex(variable, nDimensionIndex[i + 2], index[i + 2]);
+                    value = getValueByIndex(nDimensionIndex[i + 2], mappedIndex);
+                }
+                if (value == null) { //non-existing slice, not in catalog
+                    return null;
                 }
                 feature.setAttribute(reader.georeferencing.getDimensionMapper().getDimension(domain.getName().toUpperCase()), value);
             }
@@ -1227,32 +1250,15 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         return timeAttribute;
     }
 
-    /** Return the zIndex-th value of the vertical dimension of the specified variable, as a double.
+    /** Return the value of a particular dimension.
      * 
-     * @param unidataReader the reader to be used for that search
-     * @param variable the variable to be accessed
-     * @param timeIndex the requested index
-     * @param cs the coordinateSystem to be scan
-     * @return
-     * TODO move to variable wrapper
+     * @param dimensionIndex the index of the dimension
+     * @return the value
      */
-    private Number getNumberValueByIndex(Variable variable, int dimensionIndex, final int index) {
-        final Dimension verticalDimension = variable.getDimension(dimensionIndex);
-        return (Number) reader.georeferencing.getCoordinateVariable(verticalDimension.getFullName()).read(index);
-    }
-
-    /** Return the timeIndex-th value of the time dimension of the specified variable, as a Date.
-     * 
-     * @param unidataReader the reader to be used for that search
-     * @param variable the variable to be accessed
-     * @param timeIndex the requested index
-     * @param cs the coordinateSystem to be scan
-     * @return
-     * TODO move to variable wrapper
-     */
-    private Date getTimeValueByIndex(Variable variable, int timeDimensionIndex, int timeIndex) {
-        final Dimension temporalDimension = variable.getDimension(timeDimensionIndex);
-        return (Date) reader.georeferencing.getCoordinateVariable(temporalDimension.getFullName()).read(timeIndex);
+    @SuppressWarnings("unchecked")
+    private <T> T getValueByIndex(int dimensionIndex, final Map<String, Integer> mappedIndex) {
+        final Dimension dimension = variableDS.getDimension(dimensionIndex);
+        return (T) reader.georeferencing.getCoordinateVariable(dimension.getFullName()).read(mappedIndex);
     }
 
     /**

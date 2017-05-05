@@ -29,6 +29,7 @@ import org.geotools.factory.FactoryRegistry;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
 import org.geotools.util.logging.Logging;
 
+import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
 
 /**
@@ -129,7 +130,7 @@ public final class CoordinateHandlerFinder {
      * @return an unmodifiable {@link Set} comprising all the {@link CoordinateHandler} 
      * that can handle the {@link CoordinateAxis1D} axis.
      */
-    public static synchronized Set<CoordinateHandler> findHandlers(CoordinateAxis1D axis) {
+    public static synchronized Set<CoordinateHandler> findHandlers(CoordinateAxis axis) {
         final Set<CoordinateHandlerSpi> availableHandlersSpi = getAvailableHandlers();
         final Set<CoordinateHandler> handlers = new HashSet<CoordinateHandler>();
         final Iterator<CoordinateHandlerSpi> it = availableHandlersSpi.iterator();
@@ -151,7 +152,7 @@ public final class CoordinateHandlerFinder {
      *
      * @param axis the object to check for acceptance.
      */
-    public static synchronized CoordinateHandler findHandler(CoordinateAxis1D axis) {
+    public static synchronized CoordinateHandler findHandler(CoordinateAxis axis) {
         final Set<CoordinateHandler> formats = findHandlers(axis);
         final Iterator<CoordinateHandler> it = formats.iterator();
         if (it.hasNext()) {

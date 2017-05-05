@@ -25,6 +25,7 @@ import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -172,13 +173,17 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         NetcdfDataset dataset = null;
         if (input instanceof URIImageInputStream) {
             URIImageInputStream uriInStream = (URIImageInputStream) input;
-            dataset = NetcdfDataset.acquireDataset(uriInStream.getUri().toString(), null);
+            dataset = NetCDFUtilities.acquireDataset(uriInStream.getUri());
         }
         if (input instanceof URL) {
             final URL tempURL = (URL) input;
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("http") || protocol.equalsIgnoreCase("dods")) {
-                dataset = NetcdfDataset.acquireDataset(tempURL.toExternalForm(), null);
+                try {
+                    dataset = NetCDFUtilities.acquireDataset(tempURL.toURI());
+                } catch (URISyntaxException e) {
+                    throw new IOException(e);
+                }
             }
         }
 
@@ -329,10 +334,12 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                         final int limit = INTERNAL_INDEX_CREATION_PAGE_SIZE;
                         final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
 
-                        int writtenFeatures = 0;
-                        while (writtenFeatures < numberOfSlices) {
+                        //features may be < slices, since some slices do not really exist
+                        //but we do count them as processed
+                        int processedSlices = 0; 
+                        while (processedSlices < numberOfSlices) {
                             // Get a bunch of features 
-                            vaAdapter.getFeatures(startPagingIndex, limit, collection);
+                            processedSlices += vaAdapter.getFeatures(startPagingIndex, limit, collection);
                             if (variableImageStartIndex != 0 || isShared) {
                                 // Need to updated the imageIndex of the features since all indexes 
                                 // are zero based inside each variable but we need to index them inside
@@ -349,7 +356,6 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                                 collection.clear();
                                 startPagingIndex += features;
                             }
-                            writtenFeatures += features;
                         }
                     }
                 }

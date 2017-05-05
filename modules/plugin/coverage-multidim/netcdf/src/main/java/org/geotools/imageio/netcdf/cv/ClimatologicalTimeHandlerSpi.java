@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import org.geotools.util.logging.Logging;
 
-import ucar.nc2.dataset.CoordinateAxis1D;
+import ucar.nc2.dataset.CoordinateAxis;
 
 public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
 
@@ -45,7 +45,7 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
     }
 
     @Override
-    public boolean canHandle(CoordinateAxis1D axis) {
+    public boolean canHandle(CoordinateAxis axis) {
         if (axis != null && "time".equalsIgnoreCase(axis.getShortName())
                 && CLIMATOLOGICAL_UNITS.equalsIgnoreCase(axis.getUnitsString())) {
             if (LOGGER.isLoggable(Level.FINEST)) {
@@ -64,7 +64,7 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
     public class ClimatologicalTimeHandler implements CoordinateHandler {
 
         @Override
-        public CoordinateVariable<Date> createCoordinateVariable(CoordinateAxis1D axis) {
+        public CoordinateVariable<Date> createCoordinateVariable(CoordinateAxis axis) {
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.finest("Creating ClimatologicalTimeCoordinateVariable");
             }

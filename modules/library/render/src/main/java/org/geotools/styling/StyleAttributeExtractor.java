@@ -244,6 +244,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
             this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
         }
 
+        if (line.getPerpendicularOffset() != null) {
+            line.getPerpendicularOffset().accept(this, null);
+        }
+
         if (line.getStroke() != null) {
             line.getStroke().accept(this);
         }

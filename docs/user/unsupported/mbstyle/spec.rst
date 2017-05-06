@@ -1461,71 +1461,53 @@ map. *Requires* fill-translate.
 
 Controls the translation reference point.
 
-
 map
     The fill is translated relative to the map.
 
 viewport
     The fill is translated relative to the viewport.
 
-
 .. list-table:: 
    :widths: 10, 30, 30, 30
    :header-rows: 1
    
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
+   * - Basic
+     - 0.10.0
      - 18.0
      - 4.1.1
-
->= 0.10.0
->= 2.0.1
->= 2.0.0
->= 0.1.0
-data-driven styling
-
-Not yet supported
-Not yet supported
-Not yet supported
-Not yet supported
+   * - Data
+     - not yet supported
+     - not yet supported
+     - not yet supported
 
 `fill-pattern <#paint-fill-pattern>`__
 
 *Optional `string <#types-string>`__.*
 
-
 Name of image in sprite to use for drawing image fills. For seamless
 patterns, image width and height must be a factor of two (2, 4, 8, ...,
 512).
-
 
 .. list-table:: 
    :widths: 10, 30, 30, 30
    :header-rows: 1
    
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
+   * - Basic
+     - 0.10.0
      - 18.0
      - 4.1.1
-
->= 0.10.0
->= 2.0.1
->= 2.0.0
->= 0.1.0
-data-driven styling
-
-Not yet supported
-Not yet supported
-Not yet supported
-Not yet supported
-
-
-
-
+   * - Data
+     - not yet supported
+     - 18.0
+     - not yet supported
 
 .. raw:: html
 
@@ -1533,8 +1515,6 @@ Not yet supported
 
 `line <#layers-line>`__
 ~~~~~~~~~~~~~~~~~~~~~~~
-
-
 
 `Layout Properties <#layout_line>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^`line-cap <#layout-line-line-cap>`__
@@ -1564,12 +1544,18 @@ square
    :widths: 10, 30, 30, 30
    :header-rows: 1
    
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
+   * - Basic
+     - 0.10.0
      - 18.0
      - 4.1.1
+   * - Data
+     - not yet supported
+     - 18.0
+     - not yet supported
 
 >= 0.10.0
 >= 2.0.1

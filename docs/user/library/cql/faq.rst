@@ -65,5 +65,5 @@ as is showed in the following example
 
 .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
    :language: java
-   :start-after: // expressionLessThanOrEqualToProperty start
-   :end-before: // expressionLessThanOrEqualToProperty end
+   :start-after: // ecql expressionLessThanOrEqualToProperty start
+   :end-before: // ecql expressionLessThanOrEqualToProperty end

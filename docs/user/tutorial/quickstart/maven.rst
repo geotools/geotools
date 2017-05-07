@@ -207,7 +207,7 @@ Creating a new project
    .. literalinclude:: artifacts/pom2.xml
         :language: xml
         :start-after: </repositories>
-        :end-before: <project>
+        :end-before: </project>
      
 #. Return to the command line and get maven to download the required jars for your project with this
    command::

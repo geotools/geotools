@@ -170,6 +170,8 @@ public class StyleLab {
         }
     }
 
+    // docs end alternative
+
     /**
      * Create a Style to draw polygon features with a thin blue outline and
      * a cyan fill

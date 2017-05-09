@@ -88,6 +88,10 @@ import org.opengis.style.SemanticType;
  * @see MBFunction
  */
 public class MBFilter {
+
+    public static final String TYPE_POINT = "Point";
+    public static final String TYPE_LINE = "LineString";
+    public static final String TYPE_POLYGON = "Polygon";
     
     /** Default semanticType (or null for "geometry"). */
     final protected SemanticType semanticType;
@@ -225,6 +229,25 @@ public class MBFilter {
         return Collections.emptySet();
     }
 
+    private Filter translateType(String jsonText) {
+        final FilterFactory2 ff = parse.getFilterFactory();
+        //TODO: How to wildcard geometry
+        Expression dimension = ff.function("dimension", ff.function("geometry"));
+
+        switch (jsonText) {
+            case TYPE_POINT:
+                return ff.equals(dimension, ff.literal(0));
+            case TYPE_LINE:
+                return ff.equals(dimension, ff.literal(1));
+            case TYPE_POLYGON:
+                return ff.and(
+                        ff.equals(dimension, ff.literal(2)),
+                        ff.not(ff.equals(ff.function("isCoverage"), ff.literal(true))));
+            default:
+                return null;
+        }
+    }
+
     /**
      * Translate from json "Point", "LineString", and "Polygon".
      * @param jsonText
@@ -232,11 +255,11 @@ public class MBFilter {
      */
     private SemanticType translateSemanticType(String jsonText) {
         switch (jsonText) {
-        case "Point":
+        case TYPE_POINT:
             return SemanticType.POINT;
-        case "LineString":
+        case TYPE_LINE:
             return SemanticType.LINE;
-        case "Polygon":
+        case TYPE_POLYGON:
             return SemanticType.POLYGON;
         default:
             return null;
@@ -266,9 +289,36 @@ public class MBFilter {
                 "in".equals(operator) || "!in".equals(operator)) &&
                 "$type".equals(parse.get(json, 1))) {
 
-            // handled by semanticsTypes() method
-            // (unsure if #type can be used with all/any/none - if so we will process the json)
-            return Filter.INCLUDE;
+            List<Filter> typeFilters = new ArrayList<>();
+            List<?> types = json.subList(2, json.size());
+            for (Object type : types ) {
+                Filter typeFilter = null;
+                if (type instanceof String) {
+                    typeFilter = translateType((String) type);
+                }
+                if (typeFilter == null) {
+                    throw new MBFormatException("\"$type\" limited to Point, LineString, Polygon: "+type);
+                }
+                typeFilters.add(typeFilter);
+            }
+            if ("==".equals(operator)) {
+                if (typeFilters.size() != 1) {
+                    throw new MBFormatException("[\"==\",\"$type\", ...] limited one geometry type, to test more than one use \"in\" operator.");
+                }
+                return typeFilters.get(0);
+            }
+            if ("!=".equals(operator)) {
+                if (typeFilters.size() != 1) {
+                    throw new MBFormatException("[\"!=\",\"$type\", ...] limited one geometry type, to test more than one use \"!in\" operator.");
+                }
+                return ff.not(typeFilters.get(0));
+            }
+            if ("in".equals(operator)) {
+                return ff.or(typeFilters);
+            }
+            if ("!in".equals(operator)) {
+                return ff.not(ff.or(typeFilters));
+            }
         }
         //
         // ID

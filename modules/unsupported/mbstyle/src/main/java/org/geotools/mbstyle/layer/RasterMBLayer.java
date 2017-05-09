@@ -222,13 +222,11 @@ public class RasterMBLayer extends MBLayer {
      */
     public FeatureTypeStyle transformInternal(MBStyle styleContext) {
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
-        ChannelSelection sel = sf.channelSelection(sf.createSelectedChannelType("1", ce),
-                sf.createSelectedChannelType("2", ce), sf.createSelectedChannelType("3", ce));
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
         RasterSymbolizer symbolizer = sf.rasterSymbolizer(getId(), null,
-                sf.description(Text.text("raster"), null), NonSI.PIXEL, opacity(), sel,
+                sf.description(Text.text("raster"), null), NonSI.PIXEL, opacity(), null,
                 null, null, ce, null, null);
 
         List<Rule> rules = new ArrayList<>();

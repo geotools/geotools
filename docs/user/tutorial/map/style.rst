@@ -19,7 +19,7 @@ Style
  
 Please ensure your pom.xml includes the following:
 
-.. literalinclude:: artifacts/pom.xml
+.. literalinclude:: ./artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: <repositories>

@@ -50,7 +50,7 @@ First we must configure the pom.xml file of our project to use the `maven-jaxb2-
 
 1. Add a dependency on jaxb api:
 
-.. literalinclude:: /artifacts/xml/pom2.xml
+.. literalinclude:: ../../../artifacts/xml/pom2.xml
    :start-after: </repositories>
    :end-before: <pluginRepositories>
 

@@ -57,7 +57,7 @@ public class MBFilterTest {
         Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
         assertTrue(!types.contains(SemanticType.POLYGON));
         Filter filter = mbfilter.filter();
-        assertEquals("class = 'street_limited' AND admin_level >= 3", ECQL.toCQL(filter) );
+        assertEquals("class = 'street_limited' AND admin_level >= 3 AND NOT ((dimension(geometry()) = 2 AND NOT (isCoverage() = 'true')))", ECQL.toCQL(filter) );
     }
     
     @Test
@@ -73,21 +73,21 @@ public class MBFilterTest {
         types = mbfilter.semanticTypeIdentifiers();
         assertTrue( types.contains(SemanticType.LINE) && types.size()==1);
         filter = mbfilter.filter();
-        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        assertEquals("dimension(geometry()) IN (1)", ECQL.toCQL(filter) );
         
         json = array("['in', '$type','Polygon']");
         mbfilter = new MBFilter(json);
         types = mbfilter.semanticTypeIdentifiers();
         assertTrue( types.contains(SemanticType.POLYGON) && types.size()==1);
         filter = mbfilter.filter();
-        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        assertEquals("(dimension(geometry()) = 2 AND NOT (isCoverage() = 'true'))", ECQL.toCQL(filter) );
         
         json = array("['==', '$type','Point']");
         mbfilter = new MBFilter(json);
         types = mbfilter.semanticTypeIdentifiers();
         assertTrue( types.contains(SemanticType.POINT) && types.size()==1);
         filter = mbfilter.filter();
-        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        assertEquals("dimension(geometry()) = 0", ECQL.toCQL(filter) );
         
         json = array("['in', '$type','Point', 'LineString']");
         mbfilter = new MBFilter(json, null );
@@ -95,7 +95,7 @@ public class MBFilterTest {
         assertTrue(types.contains(SemanticType.POINT) && types.contains(SemanticType.LINE)
                 && types.size() == 2);
         filter = mbfilter.filter();
-        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        assertEquals("dimension(geometry()) IN (0,1)", ECQL.toCQL(filter) );
         try {
             json = array("['==', '$type','Point', 'LineString']");
             mbfilter = new MBFilter(json, null );
@@ -111,7 +111,7 @@ public class MBFilterTest {
         types = mbfilter.semanticTypeIdentifiers();
         assertTrue(types.contains(SemanticType.POLYGON) && !types.contains(SemanticType.LINE));
         filter = mbfilter.filter();
-        assertEquals("INCLUDE", ECQL.toCQL(filter) );
+        assertEquals("NOT (dimension(geometry()) IN (0,1))", ECQL.toCQL(filter) );
         
         // test default handling 
         json = array("['==', 'key', 'value']");

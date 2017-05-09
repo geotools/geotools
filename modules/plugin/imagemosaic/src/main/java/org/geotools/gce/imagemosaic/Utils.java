@@ -90,10 +90,14 @@ import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.granulecollector.ReprojectingSubmosaicProducerFactory;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -105,7 +109,10 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -2130,5 +2137,71 @@ public class Utils {
         AttributeDescriptor location = schema.getDescriptor(locationAttributeName);
         return location != null
                 && CharSequence.class.isAssignableFrom(location.getType().getBinding());
+    }
+    
+    public static ReferencedEnvelope reprojectEnvelope(ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, ReferencedEnvelope targetReferenceEnvelope)
+            throws FactoryException, TransformException {
+        Geometry reprojected = Utils.reprojectEnvelopeToGeometry(sourceEnvelope, targetCRS, targetReferenceEnvelope);
+        if(reprojected == null) {
+            return new ReferencedEnvelope(targetCRS);
+        } else {
+            if(reprojected.getNumGeometries() > 1) {
+                return new ReferencedEnvelope(reprojected.getGeometryN(0).getEnvelopeInternal(), targetCRS);
+            } else {
+                return new ReferencedEnvelope(reprojected.getEnvelopeInternal(), targetCRS);
+            }
+        }
+
+    }
+    
+    public static Geometry reprojectEnvelopeToGeometry(ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, ReferencedEnvelope targetReferenceEnvelope)
+            throws FactoryException, TransformException {
+        ProjectionHandler handler;
+        CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
+        if(targetReferenceEnvelope == null) {
+            targetReferenceEnvelope = ReferencedEnvelope.reference(getCRSEnvelope(targetCRS));
+        }
+        if(targetReferenceEnvelope != null) {
+            handler = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, sourceCRS, true);
+        } else {
+            // cannot handle wrapping if we do not have a reference envelope, but
+            // cutting/adapting will still work
+            ReferencedEnvelope reference = new ReferencedEnvelope(targetCRS);
+            handler = ProjectionHandlerFinder.getHandler(reference, sourceCRS, false);
+        }
+        
+        if(handler != null) {
+            MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
+            Geometry footprint = JTS.toGeometry(sourceEnvelope);
+            Geometry preProcessed = handler.preProcess(footprint);
+            if(preProcessed == null) {
+                return null;
+            }
+            Geometry transformed = JTS.transform(preProcessed, transform);
+            // this might generate multipolygons for data crossing the dataline, which 
+            // is actually what we want
+            Geometry postProcessed = handler.postProcess(transform.inverse(), transformed);
+            if(postProcessed == null) {
+                return null;
+            }
+            return postProcessed;
+        } else {
+            sourceEnvelope = new ReferencedEnvelope(CRS.transform(sourceEnvelope, targetCRS));
+        }
+        
+        
+        return JTS.toGeometry(sourceEnvelope);
+    }
+
+    private static org.opengis.geometry.Envelope getCRSEnvelope(CoordinateReferenceSystem targetCRS)
+            throws FactoryException, NoSuchAuthorityCodeException {
+        if(targetCRS.getDomainOfValidity() == null) {
+            Integer code = CRS.lookupEpsgCode(targetCRS, true);
+            if(code != null) {
+                CRS.decode("EPSG:" + code, CRS.getAxisOrder(targetCRS) != AxisOrder.NORTH_EAST);
+            }
+        }
+        org.opengis.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
+        return envelope;
     }
 }

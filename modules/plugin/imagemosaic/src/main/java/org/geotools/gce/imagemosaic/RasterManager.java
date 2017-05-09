@@ -90,6 +90,8 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.image.ImageUtilities;
@@ -1666,7 +1668,22 @@ public class RasterManager implements Cloneable {
 
         // compute the bounds of the sub-mosaic in that CRS
         ReferencedEnvelope bounds = getBoundsForGranuleCRS(templateDescriptor, requestBounds);
-        ReferencedEnvelope targetBounds = bounds.transform(granuleCRS, true);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(requestBounds, granuleCRS, true);
+        ReferencedEnvelope targetBounds = null;
+        if(ph != null) {
+            List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+            for (ReferencedEnvelope envelope : queryEnvelopes) {
+                ReferencedEnvelope transformed = envelope.transform(granuleCRS, true);
+                if(targetBounds == null) {
+                    targetBounds = transformed;
+                } else {
+                    targetBounds.expandToInclude(transformed);
+                }
+            }
+        } else {
+            targetBounds = bounds.transform(granuleCRS, true);
+        }
+        
 
         // rebuild the raster manager
         RasterManager reprojected = (RasterManager) this.clone();
@@ -1710,12 +1727,8 @@ public class RasterManager implements Cloneable {
     private ReferencedEnvelope getBoundsForGranuleCRS(GranuleDescriptor templateDescriptor,
             ReferencedEnvelope requestBounds) throws IOException {
         
-        String crsAttribute = configuration.getCRSAttribute();
-        if (crsAttribute == null) {
-            crsAttribute = CRSExtractor.DEFAULT_ATTRIBUTE_NAME;
-        }
-        GranuleSource granuleSource = getGranuleSource(true, null);
-        if(granuleSource.getSchema().getDescriptor(crsAttribute) == null) {
+        String crsAttribute = getCrsAttribute();
+        if(crsAttribute == null) {
             throw new IllegalStateException("Invalid heterogeneous mosaic configuration, "
                     + "the 'crs' property is missing from the index schema");
         }
@@ -1727,9 +1740,32 @@ public class RasterManager implements Cloneable {
                 ff.literal(granuleCRSCode), false);
         BBOX bbox = ff.bbox(ff.property(""), requestBounds);
         Filter filter = ff.and(crsFilter, bbox);
+
+        GranuleSource granuleSource = getGranuleSource(true, null);
         Query q = new Query(granuleSource.getSchema().getTypeName(), filter);
         SimpleFeatureCollection granules = granuleSource.getGranules(q);
         ReferencedEnvelope bounds = granules.getBounds();
         return bounds;
+    }
+
+    /**
+     * Returns the name of the crs attribute in heterogeneous mosaics (for non 
+     * heterogenous ones, it will return null
+     * @return
+     * @throws IOException 
+     */
+    public String getCrsAttribute() throws IOException {
+        String crsAttribute = configuration.getCRSAttribute();
+        if (crsAttribute == null) {
+            crsAttribute = CRSExtractor.DEFAULT_ATTRIBUTE_NAME;
+        }
+        
+        GranuleSource granuleSource = getGranuleSource(true, null);
+        if(granuleSource.getSchema().getDescriptor(crsAttribute) == null) {
+            return null;
+        }
+
+        
+        return crsAttribute;
     }
 }

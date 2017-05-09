@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import it.geosolutions.jaiext.JAIExt;
-
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
@@ -26,6 +24,7 @@ import java.util.Arrays;
 import javax.media.jai.Interpolation;
 import javax.media.jai.Warp;
 
+import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.factory.Hints;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -41,6 +40,10 @@ import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
+
+import com.vividsolutions.jts.geom.Geometry;
+
+import it.geosolutions.jaiext.JAIExt;
 
 
 /**
@@ -506,6 +509,22 @@ public class Operations {
     {
         return doOperation("CoverageCrop", Source, "Envelope", envelope);
     }
+    
+    /**
+     * Crops the image to a specified clipping area
+     *
+     * @param source   The source coverage.
+     * @param envelope The cutting geometr
+     * @throws CoverageProcessingException if the operation can't be applied.
+     *
+     * @see org.geotools.coverage.processing.operation.Crop
+     */
+    public Coverage crop(final Coverage Source, final Geometry roi)
+            throws CoverageProcessingException
+    {
+        return doOperation("CoverageCrop", Source, Crop.CROP_ROI.getName().getCode(), roi);
+    }
+
     
 
     /**

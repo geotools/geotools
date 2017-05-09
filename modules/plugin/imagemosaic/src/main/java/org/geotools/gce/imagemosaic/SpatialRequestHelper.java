@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +36,8 @@ import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
@@ -46,6 +49,8 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Helper class which takes coverage's spatial information input (CRS, bbox, resolution,...) and a set of request's parameters (requestedCRS,
@@ -383,19 +388,8 @@ public class SpatialRequestHelper {
                 // are imposing
                 // the same raster area somehow
                 //
-
-                final GeneralEnvelope cropBBOXInRequestCRS = CRS.transform(computedBBox,
-                        requestCRS);
-                // make sure it falls within the requested envelope
-                cropBBOXInRequestCRS.intersect(requestedBBox);
-
-                // now go back to raster space
-                computedRasterArea = new GeneralGridEnvelope(
-                        CRS.transform(requestedWorldToGrid, cropBBOXInRequestCRS),
-                        PixelInCell.CELL_CORNER, false).toRectangle();
-                // intersect with the original requested raster space to be sure that we stay within
-                // the requested raster area
-                XRectangle2D.intersect(computedRasterArea, requestedRasterArea, computedRasterArea);
+                Rectangle computedRasterArea = computeRasterArea(computedBBox, requestedWorldToGrid);
+                this.computedRasterArea = computedRasterArea;
 
             }
         } catch (Exception e) {
@@ -411,6 +405,22 @@ public class SpatialRequestHelper {
             return;
         }
 
+    }
+
+    private Rectangle computeRasterArea(ReferencedEnvelope computedBBox, MathTransform2D requestedWorldToGrid)
+            throws TransformException, FactoryException {
+        final ReferencedEnvelope cropBBOXInRequestCRS =  Utils.reprojectEnvelope(computedBBox, requestCRS, requestedBBox);
+        // make sure it falls within the requested envelope
+        cropBBOXInRequestCRS.intersection((com.vividsolutions.jts.geom.Envelope) requestedBBox);
+
+        // now go back to raster space
+        Rectangle computedRasterArea = new GeneralGridEnvelope(
+                CRS.transform(requestedWorldToGrid, cropBBOXInRequestCRS),
+                PixelInCell.CELL_CORNER, false).toRectangle();
+        // intersect with the original requested raster space to be sure that we stay within
+        // the requested raster area
+        XRectangle2D.intersect(computedRasterArea, requestedRasterArea, computedRasterArea);
+        return computedRasterArea;
     }
 
     /**
@@ -552,12 +562,14 @@ public class SpatialRequestHelper {
             //
             // The destination to source transform has been computed (and eventually erased) already
             // by inspectCoordinateSystem()
-
+            
             // now transform the requested envelope to source crs
             if (needsReprojection) {
-                final GeneralEnvelope requestedBBoxInCoverageCRS = CRS.transform(requestedBBox,
-                        coverageProperties.crs2D);
-                computedBBox = new ReferencedEnvelope(requestedBBoxInCoverageCRS);
+                try {
+                    this.computedBBox = Utils.reprojectEnvelope(requestedBBox, coverageProperties.crs2D, coverageProperties.bbox);
+                } catch(FactoryException e) {
+                    throw new DataSourceException(e);
+                }
             } else {
                 // we do not need to do anything, but we do this in order to avoid problems with the envelope checks
                 computedBBox = new ReferencedEnvelope(requestedBBox);

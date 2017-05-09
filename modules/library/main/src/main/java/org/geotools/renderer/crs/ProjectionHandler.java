@@ -455,11 +455,12 @@ public class ProjectionHandler {
             geWGS84.expandBy(EPS);
         }
         if(validArea == null) {
+            
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validAreaBounds.contains((Envelope) geWGS84)) {
                 return geometry;
-            }
+            } 
 
             // we need to cut, first thing, we intersect the geometry envelope
             // and the valid area in WGS84, which is a neutral, everything can
@@ -469,7 +470,25 @@ public class ProjectionHandler {
             
             // if the intersection is empty the geometry is completely outside of the valid area, skip it
             if(envIntWgs84.isEmpty()) {
-                return null;
+                // valid area is crossing dateline?
+                if(validAreaBounds.contains(180, (validAreaBounds.getMinY() + validAreaBounds.getMaxY()) / 2)) {
+                    ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
+                    translated.translate(-360, 0);
+                    if(translated.contains((Envelope) geWGS84)) {
+                        return geometry;
+                    }
+                    envIntWgs84 = translated.intersection(geWGS84);
+                } else if(validAreaBounds.contains(-180, (validAreaBounds.getMinY() + validAreaBounds.getMaxY()) / 2)) {
+                    ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
+                    translated.translate(360, 0);
+                    if(translated.contains((Envelope) geWGS84)) {
+                        return geometry;
+                    }
+                    envIntWgs84 = translated.intersection(geWGS84);
+                }
+                if(envIntWgs84.isEmpty()) {
+                    return null;
+                }
             }
                 
             ReferencedEnvelope envInt = envIntWgs84.transform(geometryCRS, true);
@@ -717,6 +736,11 @@ public class ProjectionHandler {
                     + "in the current projection", e);
         }
 
+        computeDatelineX();
+
+    }
+
+    protected void computeDatelineX() {
         // compute the x of the dateline in the rendering CRS
         try {
             double[] ordinates = new double[] { 180, -80, 180, 80 };
@@ -728,7 +752,6 @@ public class ProjectionHandler {
             // should never happen...
             throw new RuntimeException(e);
         }
-
     }
 
     /**

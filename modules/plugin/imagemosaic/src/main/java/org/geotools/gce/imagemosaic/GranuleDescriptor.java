@@ -878,9 +878,8 @@ public class GranuleDescriptor {
             // which source area we need to crop in the selected level taking
             // into account the scale factors imposed by the selection of this
             // level together with the base level grid to world transformation
-            AffineTransform2D cropWorldToGrid = new AffineTransform2D(
-                    selectedlevel.gridToWorldTransformCorner);
-            cropWorldToGrid = (AffineTransform2D) cropWorldToGrid.inverse();
+            AffineTransform2D cropGridToWorld = new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
+            AffineTransform2D cropWorldToGrid = (AffineTransform2D) cropGridToWorld.inverse();
             // computing the crop source area which lives into the
             // selected level raster space, NOTICE that at the end we need to
             // take into account the fact that we might also decimate therefore
@@ -1044,8 +1043,9 @@ public class GranuleDescriptor {
                     }
                     // Check for Raster ROI
                     if (transformed == null || transformed.getBounds().isEmpty()) {
-                        if (LOGGER.isLoggable(java.util.logging.Level.INFO))
-                            LOGGER.info("Unable to create a granuleDescriptor " + this.toString()
+                        // ROI is less than a pixel big, it happens when zooming out 
+                        if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+                            LOGGER.fine("Unable to create a granuleDescriptor " + this.toString()
                                     + " due to a problem when managing the ROI");
                         return null;
                     }
@@ -1075,8 +1075,8 @@ public class GranuleDescriptor {
                     (float) finalRaster2Model.getTranslateX(),
                     (float) finalRaster2Model.getTranslateY(), interpolation);
             if (finalLayout.isEmpty()) {
-                if (LOGGER.isLoggable(java.util.logging.Level.INFO))
-                    LOGGER.info("Unable to create a granuleDescriptor " + this.toString()
+                if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+                    LOGGER.fine("Unable to create a granuleDescriptor " + this.toString()
                             + " due to jai scale bug creating a null source area");
                 return null;
             }

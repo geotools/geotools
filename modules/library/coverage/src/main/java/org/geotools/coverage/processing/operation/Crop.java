@@ -82,6 +82,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -637,8 +638,16 @@ public class Crop extends Operation2D {
                             // Approximate Geometry
                             transformGeometry(txROI);
                         }
-                        ROI cropRS = getAsROI(txROI);
-                        roiarr = new ROI[]{cropRS};
+                        // skip the ROI if it fully contains the target raster area
+                        try {
+                            if(!txROI.contains(JTS.toGeometry(finalRasterArea))) {
+                                ROI cropRS = getAsROI(txROI);
+                                roiarr = new ROI[]{cropRS};    
+                            }
+                        } catch(TopologyException e) {
+                            ROI cropRS = getAsROI(txROI);
+                            roiarr = new ROI[]{cropRS};
+                        }
                     } else if(forceMosaic) {
                         ROI roi = getAsROI(JTS.toPolygon(rasterSpaceROI));
                         roiarr = new ROI[]{roi};
@@ -659,7 +668,7 @@ public class Crop extends Operation2D {
 
 					// we do not have to crop in this case (should not really happen at
                     // this time)
-                    if (!forceMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform && nodata == null)
+                    if (!forceMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform && nodata == null && roiarr == null)
                             return sourceCoverage;
 
 

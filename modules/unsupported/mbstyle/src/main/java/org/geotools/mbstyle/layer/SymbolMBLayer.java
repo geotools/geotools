@@ -1662,14 +1662,15 @@ public class SymbolMBLayer extends MBLayer {
         Halo halo = sf.halo(sf.fill(null, textHaloColor(), null), textHaloWidth());
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
-        Font font;
-        if (getTextFont() == null) {
-            font = sb.createFont(ff.literal(transformer.getDefaultFonts()), ff.literal("normal"),
-                    ff.literal("normal"), textSize());
-        } else {
+
+        //Font not supported until glyphs are working
+        Font font = sb.createFont(ff.literal("" /* transformer.getDefaultFonts() */), ff.literal("normal"),
+                ff.literal("normal"), textSize());
+        /* else {
             font = sb.createFont(ff.literal(getTextFont()), ff.literal("normal"),
                     ff.literal("normal"), textSize());
-        }
+        } */
+
 
         // If the textField is a literal string (not a function), then
         // we need to support Mapbox token replacement.

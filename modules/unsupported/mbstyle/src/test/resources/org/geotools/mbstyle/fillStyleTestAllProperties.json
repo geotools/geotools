@@ -1,0 +1,50 @@
+{
+    "version": 8,
+    "name": "fillStyleTest",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        0,
+        -1.1368683772161603e-13
+    ],
+    "zoom": 0.9915217327085096,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "geoserver-states": {
+            "url": "http://localhost:8080/geoserver/topp/states/wms",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/testuser/ciym62qtf005d2rnopgu725qo",
+    "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "testid",
+            "type": "fill",
+            "source": "geoserver-states",
+            "source-layer": "states",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "green",
+                "fill-opacity": 0.84,
+                "fill-translate": [
+                    20,
+                    20
+                ],
+                "fill-antialias": true,
+                "fill-translate-anchor": "map",
+                "fill-outline-color":"orangered"
+            }
+        }
+    ],
+    "created": "2017-01-31T23:40:15.130Z",
+    "id": "ciym62qtf005d2rnopgu725qo",
+    "modified": "2017-01-31T23:40:52.754Z",
+    "owner": "testuser",
+    "draft": false
+}

@@ -74,6 +74,8 @@ public class VisualTransformerTest {
     SimpleFeatureSource gridFS;
     
     SimpleFeatureSource lineFS;
+    
+    SimpleFeatureSource lineZigFS;
 
     SimpleFeatureSource bgFS;
 
@@ -98,6 +100,7 @@ public class VisualTransformerTest {
         polygonFS = ds.getFeatureSource("testpolygons");
         polygonsBigFS = ds.getFeatureSource("testpolygonsbig");
         lineFS = ds.getFeatureSource("testlines");
+        lineZigFS = ds.getFeatureSource("testlinezigs");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
@@ -130,6 +133,34 @@ public class VisualTransformerTest {
         ImageAssert.assertEquals(file("fill"), image, 50);
         mc.dispose();
     }
+    
+    /**
+     * Test generation of a GeoTools style from an MBFillLayer
+     */
+    @Test
+    public void mbFillLayerAllPropertiesVisualTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("fillStyleTestAllProperties.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(polygonFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Fill Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("fill-test-all"), image, 50);
+        mc.dispose();
+    }
+    
     
     /**
      * Test generation of a GeoTools style from an MBFillLayer (using a {tokenized} sprite fill pattern)
@@ -333,6 +364,31 @@ public class VisualTransformerTest {
     public void mbLineLayerTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTest.json");
         testVisualizeStyleWithLineFeatures(jsonObject, "Line Style", "line-style", true);
+    }    
+    
+    @Test
+    public void mbLineLayerAllPropertiesTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTestAllProperties.json");        
+        
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+        
+        MapContent mc = new MapContent();
+
+        // mc.addLayer(new FeatureLayer(lineFS, defaultLineStyle()));
+
+        mc.addLayer(new FeatureLayer(lineZigFS, style));    
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Line Style", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("line-style-all-props"), image, 5000);        
+        mc.dispose();
     }
     
     

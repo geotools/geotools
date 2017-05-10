@@ -17,11 +17,11 @@
 
 package org.geotools.gce.imagemosaic;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.*;
-
+import java.awt.Color;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,20 +30,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.media.jai.Interpolation;
 
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.HarvestedSource;
+import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -201,7 +199,53 @@ public class HeterogenousCRSTest {
         assertExpectedMosaic(imReader, expectedResultLocation);
         imReader.dispose();
     }
+    
+    @Test
+    public void testHeteroSentinel2() throws Exception {
+        String testLocation = "hetero_s2";
+        URL storeUrl = TestData.url(this, testLocation);
 
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        
+        // read a coverage and compare with expected image
+        final String expectedResultLocation = "hetero_s2_results/overlap.png";
+        ParameterValue<Color> inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        inputTransparentColor.setValue(Color.BLACK);
+        ParameterValue<Color> outputTransparentColor = ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+        outputTransparentColor.setValue(Color.BLACK);
+
+        
+        assertExpectedMosaic(imReader, expectedResultLocation, inputTransparentColor, outputTransparentColor);
+        imReader.dispose();
+    }
+
+    @Test
+    public void testHeteroSentinel2Footprints() throws Exception {
+        String testLocation = "hetero_s2_footprints";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        
+        // read a coverage and compare with expected image
+        final String expectedResultLocation = "hetero_s2_results/footprints.png";
+        ParameterValue<String> footprintBehavior = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        footprintBehavior.setValue("Transparent");
+        
+        assertExpectedMosaic(imReader, expectedResultLocation, footprintBehavior);
+        imReader.dispose();
+    }
+
+    
     private void assertExpectedBounds(ReferencedEnvelope expected, ImageMosaicReader imReader) {
         // the specified CRS has been honored
         assertTrue(CRS.equalsIgnoreMetadata(imReader.getCoordinateReferenceSystem(), expected.getCoordinateReferenceSystem()));
@@ -217,10 +261,11 @@ public class HeterogenousCRSTest {
     }
 
     private void assertExpectedMosaic(ImageMosaicReader imReader,
-            final String expectedResultLocation) throws IOException {
-        GridCoverage2D coverage = imReader.read(null);
+            final String expectedResultLocation, GeneralParameterValue... params) throws IOException {
+        GridCoverage2D coverage = imReader.read(params);
         File resultsFile = testFile(expectedResultLocation);
-        ImageAssert.assertEquals(resultsFile, coverage.getRenderedImage(), 1000);
+        RenderedImage image = coverage.getRenderedImage();
+        ImageAssert.assertEquals(resultsFile, image, 1000);
         
         // cleanup
         coverage.dispose(true);

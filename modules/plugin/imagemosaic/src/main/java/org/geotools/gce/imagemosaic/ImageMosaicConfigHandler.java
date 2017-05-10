@@ -312,6 +312,7 @@ public class ImageMosaicConfigHandler {
         //
         // do we have a datastore.properties file?
         final File parent = new File(runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR));
+        
         GranuleCatalog catalog;
 
         // Consider checking that from the indexer if any
@@ -991,6 +992,7 @@ public class ImageMosaicConfigHandler {
 
         // parse the string
         final List<PropertiesCollector> pcs = new ArrayList<>();
+        boolean hasCRSCollector = false;
         for (Collector collector : collectorList) {
             PropertiesCollectorSPI selectedSPI = null;
             final String spiName = collector.getSpi();
@@ -1024,12 +1026,17 @@ public class ImageMosaicConfigHandler {
             final PropertiesCollector pc = selectedSPI.create(config,
                     Arrays.asList(collector.getMapped()));
             if (pc != null) {
+                hasCRSCollector |= pc instanceof CRSExtractor;
                 pcs.add(pc);
             } else {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info("Unable to create PropertyCollector");
                 }
             }
+        }
+        
+        if(heterogeneousCRS && !hasCRSCollector) {
+            pcs.add(new CRSExtractor());
         }
 
         this.propertiesCollectors = pcs;
@@ -1162,6 +1169,13 @@ public class ImageMosaicConfigHandler {
         if (elevationAttribute != null) {
             properties.setProperty(Utils.Prop.ELEVATION_ATTRIBUTE,
                     mosaicConfiguration.getElevationAttribute());
+        }
+        
+        // CRS
+        final String crsAttribute = mosaicConfiguration.getCRSAttribute();
+        if (crsAttribute != null) {
+            properties.setProperty(Utils.Prop.CRS_ATTRIBUTE,
+                    mosaicConfiguration.getCRSAttribute());
         }
 
         // Additional domains
@@ -1316,6 +1330,7 @@ public class ImageMosaicConfigHandler {
         int numberOfLevels = 1;
         double[][] resolutionLevels = null;
         CatalogBuilderConfiguration catalogConfig;
+        Boolean heterogeneousCRS = Boolean.valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
         if (mosaicConfiguration == null) {
             catalogConfig = getRunConfiguration();
             // We don't have a configuration for this configuration
@@ -1360,6 +1375,8 @@ public class ImageMosaicConfigHandler {
             configBuilder.setName(targetCoverageName);
             configBuilder.setTimeAttribute(
                     IndexerUtils.getAttribute(targetCoverageName, Utils.TIME_DOMAIN, indexer));
+            configBuilder.setCrsAttribute(
+                    IndexerUtils.getAttribute(targetCoverageName, Prop.CRS_ATTRIBUTE, indexer));
             configBuilder.setElevationAttribute(
                     IndexerUtils.getAttribute(targetCoverageName, Utils.ELEVATION_DOMAIN, indexer));
             configBuilder.setAdditionalDomainAttributes(IndexerUtils
@@ -1405,6 +1422,9 @@ public class ImageMosaicConfigHandler {
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
 
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
+            if(heterogeneousCRS) {
+                currentConfigurationBean.getCatalogConfigurationBean().setHeterogeneous(true);
+            }
 
             // Creating a rasterManager which will be initialized after populating the catalog
             getParentReader().addRasterManager(currentConfigurationBean, false);

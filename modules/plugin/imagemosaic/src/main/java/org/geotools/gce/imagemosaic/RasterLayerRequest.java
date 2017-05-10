@@ -129,12 +129,18 @@ public class RasterLayerRequest {
      */
     private ExcessGranulePolicy excessGranuleRemovalPolicy;
 
+    private GeneralParameterValue[] params;
+
     public List<?> getElevation() {
         return elevation;
     }
 
     public String getSortClause() {
         return sortClause;
+    }
+
+    public GeneralParameterValue[] getParams() {
+        return params;
     }
 
     public void setSortClause(String sortClause) {
@@ -173,7 +179,7 @@ public class RasterLayerRequest {
         this.heterogeneousGranules = heterogeneousGranules;
     }
 
-    RasterManager getRasterManager() {
+    public RasterManager getRasterManager() {
         return rasterManager;
     }
 
@@ -191,6 +197,8 @@ public class RasterLayerRequest {
     public RasterLayerRequest(final GeneralParameterValue[] params,
             final RasterManager rasterManager) throws IOException {
 
+        this.params = params;
+        
         // //
         //
         // Setting default parameters

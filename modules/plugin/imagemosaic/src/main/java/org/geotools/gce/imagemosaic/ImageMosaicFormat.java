@@ -498,7 +498,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     @Override
     public ImageMosaicReader getReader(Object source, Hints hints) {
         try {
-
+            if(hints == null) {
+                hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
+            }
             final ImageMosaicReader reader = new ImageMosaicReader(source, hints);
             return reader;
         } catch (MalformedURLException e) {

@@ -66,6 +66,9 @@ public class MosaicBeanBuilder {
 
     /** elevation attribute name. <code>null</code> if absent. */
     private String elevationAttribute;
+    
+    /** crs attribute name. <code>null</code> if absent. */
+    private String crsAttribute;
 
     /** additional domain attributes names. <code>null</code> if absent. */
     private String additionalDomainAttributes;
@@ -141,6 +144,15 @@ public class MosaicBeanBuilder {
 
     public void setTimeAttribute(final String timeAttribute) {
         this.timeAttribute = timeAttribute;
+        bean = null;
+    }
+    
+    public String getCrsAttribute() {
+        return timeAttribute;
+    }
+
+    public void setCrsAttribute(final String crsAttribute) {
+        this.crsAttribute = crsAttribute;
         bean = null;
     }
 
@@ -237,7 +249,7 @@ public class MosaicBeanBuilder {
         return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
                 + Arrays.toString(levels) + ", name=" + name + ", levelsNum=" + levelsNum
                 + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
-                + ",sampleModel=" + sampleModel + "]";
+                + ", crsAttribute=" + crsAttribute + ",sampleModel=" + sampleModel + "]";
     }
 
     public MosaicConfigurationBean getMosaicConfigurationBean() {
@@ -249,6 +261,7 @@ public class MosaicBeanBuilder {
             bean.setCrs(crs);
             bean.setCatalogConfigurationBean(catalogConfigurationBean);
             bean.setTimeAttribute(timeAttribute);
+            bean.setCRSAttribute(crsAttribute);
             bean.setElevationAttribute(elevationAttribute);
             bean.setAdditionalDomainAttributes(additionalDomainAttributes);
             bean.setExpandToRGB(expandToRGB);

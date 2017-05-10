@@ -198,6 +198,27 @@ public class CssRule {
 
         return false;
     }
+    
+    /**
+     * Returns the property with a given name (will look for an exact match)
+     * 
+     * @param pseudoClass
+     * @param propertyName
+     * @return
+     */
+    public Property getProperty(PseudoClass pseudoClass, String propertyName) {
+        List<Property> psProperties = getProperties().get(pseudoClass);
+        if (psProperties == null) {
+            return null;
+        }
+        for (Property property : psProperties) {
+            if (propertyName.equals(property.getName())) {
+                return property;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Returns true if any of the properties specified is found in the given pseudo-class

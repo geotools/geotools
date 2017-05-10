@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -890,7 +891,7 @@ public class CssTranslator {
         // see if we can fold the stroke into a polygon symbolizer
         boolean generateStroke = cssRule.hasProperty(PseudoClass.ROOT, "stroke");
         boolean lineSymbolizerSpecificProperties = cssRule.hasAnyProperty(PseudoClass.ROOT,
-                LINE_VENDOR_OPTIONS.keySet());
+                LINE_VENDOR_OPTIONS.keySet()) || !sameGeometry(cssRule, "stroke-geometry", "fill-geometry");
         boolean includeStrokeInPolygonSymbolizer = generateStroke
                 && !lineSymbolizerSpecificProperties;
         boolean generatePolygonSymbolizer = cssRule.hasProperty(PseudoClass.ROOT, "fill");
@@ -909,6 +910,12 @@ public class CssTranslator {
         if (cssRule.hasProperty(PseudoClass.ROOT, "raster-channels")) {
             addRasterSymbolizer(cssRule, ruleBuilder);
         }
+    }
+
+    private boolean sameGeometry(CssRule cssRule, String geomProperty1, String geomProperty2) {
+        Property p1 = cssRule.getProperty(PseudoClass.ROOT, geomProperty1);
+        Property p2 = cssRule.getProperty(PseudoClass.ROOT, geomProperty2);
+        return Objects.equals(p1, p2);
     }
 
     private String getCombinedTag(String comment, Pattern p, String separator) {

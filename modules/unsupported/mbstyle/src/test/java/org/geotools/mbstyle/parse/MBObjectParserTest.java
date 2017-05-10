@@ -37,6 +37,42 @@ public class MBObjectParserTest {
     private MBObjectParser parser = new MBObjectParser(this.getClass());
 
     @Test
+    public void optional() throws ParseException {
+        String jsonStr ="{'name1': 'fred', 'name2' : 1, 'name3' : null, 'name4': { 'age': 1 }}";
+        JSONObject object = MapboxTestUtils.object(jsonStr);
+        
+        // expected 
+        assertEquals("fred", parser.optional(String.class, object, "name1",null));
+        
+        // fallback
+        assertNull(parser.optional(String.class, object, "name0",null));
+        assertEquals("sample",parser.optional(String.class, object, "name0","sample"));
+        assertNull(parser.optional(String.class, object, "name3",null));
+        assertEquals("sample",parser.optional(String.class, object, "name3","sample"));
+        
+        // validation
+        try {
+            assertEquals("1", parser.optional(String.class, object, "name2",null));
+        }
+        catch( MBFormatException expected){
+            assertTrue( expected.toString().contains("name2"));
+        }
+        try {
+            assertNull(parser.optional(String.class, object, "name4",null));
+            fail("Optional name4 lookup was object, rather than string");
+        }
+        catch( MBFormatException expected){
+            assertTrue( expected.toString().contains("name4"));
+        }
+        try {
+            assertEquals("sample", parser.optional(String.class, object, "name4","sample"));
+            fail("Optional name4 lookup was object, rather than string");
+        }
+        catch( MBFormatException expected){
+            assertTrue( expected.toString().contains("name4"));
+        }
+    }
+    @Test
     public void testNumberFromFunction() throws ParseException {
         String jsonStr = "{'expr': {'type':'exponential', 'base': 1.9, 'property':'temperature', "
             + "'stops':[[0,12],[30,24],[70,48]]}}";

@@ -28,13 +28,23 @@ import org.json.simple.parser.ParseException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class MapboxTestUtils {
 
     static JSONParser jsonParser = new JSONParser();
 
     /**
-     * 
+     * Reader for a test Mapbox Style file (json).
+     */
+    public static Reader readerTestStyle(String filename) throws IOException, ParseException {
+        InputStream is = MapboxTestUtils.class.getResourceAsStream(filename);
+        String fileContents = IOUtils.toString(is, "utf-8");
+        return new StringReader( fileContents );
+    }
+    
+    /**
      * Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}.
      */
     public static JSONObject parseTestStyle(String filename) throws IOException, ParseException {

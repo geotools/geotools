@@ -17,9 +17,11 @@
 package org.geotools.mbstyle.transform;
 
 import org.geotools.TestData;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
@@ -27,7 +29,9 @@ import org.geotools.map.MapContent;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.referencing.CRS;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
 import org.json.simple.JSONObject;
@@ -36,15 +40,21 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.media.jai.Interpolation;
+
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.junit.Assert.*;
 
 /**
  * Perceptual tests for {@link MBStyleTransformer}.
@@ -406,6 +416,34 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("testDisplacementAsFunction.json");        
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Displacement Function", "circle-style-displacement-fn-test", true, 300, 300);
+    }
+        
+    @Test
+    public void testRasterLayer() throws Exception {
+        File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader worldPaletteReader = new GeoTiffReader(coverageFile);
+        
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
+                -20037508.34, 20037508.34, googleMercator);
+        Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
+                / mapExtent.getWidth() * 200));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+                screenSize, w2s);        
+        
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("rasterStyleTestAllProperties.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+        RasterSymbolizer s = (RasterSymbolizer)style.featureTypeStyles().get(0).getRules()[0].getSymbolizers()[0];      
+
+        RenderedImage image = renderer.renderImage(worldPaletteReader, null, s,
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC), null, 256, 256);
+
+        ImageAssert.assertEquals(file("raster"), image, 50);
     }
     
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {

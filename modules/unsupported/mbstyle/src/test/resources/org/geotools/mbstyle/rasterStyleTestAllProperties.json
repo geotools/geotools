@@ -1,0 +1,49 @@
+{
+    "version": 8,
+    "name": "RASTER",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        0,
+        -1.1368683772161603e-13
+    ],
+    "zoom": 0.9915217327085096,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "geoserver-elevation": {
+            "url": "http://localhost:8080/geoserver/sf/sfdem/wms",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "testSpritesheet",
+    "glyphs": "testGlyph",
+    "layers": [
+        {
+            "id": "testid",
+            "type": "raster",
+            "source": "geoserver-raster",
+            "source-layer": "layer",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "raster-opacity": 0.75,
+                "raster-hue-rotate": 30,
+                "raster-saturation": 0.9,
+                "raster-contrast": 0.5,
+                "raster-fade-duration": 250,
+                "raster-brightness-min": 0.28,
+                "raster-brightness-max": 0.69
+            }
+        }
+    ],
+    "created": "2017-02-01T21:15:52.218Z",
+    "id": "ciyngcxc3008l2smg9z1fzljh",
+    "modified": "2017-02-01T21:18:40.805Z",
+    "owner": "testuser",
+    "draft": false
+}

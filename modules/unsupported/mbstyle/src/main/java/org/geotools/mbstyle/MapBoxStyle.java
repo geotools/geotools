@@ -101,7 +101,7 @@ public class MapBoxStyle {
                 continue;
             }
             try {
-                FeatureTypeStyle featureTypeStyle = layer.transform(style);
+                List<FeatureTypeStyle> featureTypeStyle = layer.transform(style);
                 if (featureTypeStyle != null) {
                     hasVisibleLayer = true;
                 }

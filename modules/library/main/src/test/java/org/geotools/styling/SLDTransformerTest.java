@@ -21,11 +21,7 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathNotExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -834,6 +830,54 @@ public class SLDTransformerTest {
         String secondExport = st.transform(firstImport);
 
     }
+
+    // GEOT-5726
+    @Test
+    public void testTextSymbolizerTransformOutAndInAndOutAndInAgainWithEmptyFontFamily() throws Exception {
+        //Construct a style with an empty "" font
+        StyleBuilder sb = new StyleBuilder();
+
+        Font font = sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), ff.literal(12));
+        TextSymbolizer ts = sb.createStaticTextSymbolizer(Color.BLACK, font, "label");
+        Style style = sb.createStyle(ts);
+
+        assertEquals("", getFontFamily(style));
+
+        //Encode the style, and parse it
+        SLDTransformer st = new SLDTransformer();
+        String firstExport = st.transform(style);
+        SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
+        sldp.setInput(new StringReader(firstExport));
+        Style[] firstImport = sldp.readXML();
+
+        assertNotNull(firstImport[0]);
+
+        // previously got null here
+        assertEquals("", getFontFamily(firstImport[0]));
+
+        //Encode the style, and parse it again
+        String secondExport = st.transform(firstImport);
+        sldp.setInput(new StringReader(secondExport));
+        Style[] secondImport = sldp.readXML();
+
+        // previously got "Serif" here
+        assertEquals("", getFontFamily(secondImport[0]));
+    }
+
+    private String getFontFamily(Style s) {
+
+        List<org.geotools.styling.Symbolizer> symbolizers = s.featureTypeStyles().get(0).rules().get(0).symbolizers();
+        for (org.geotools.styling.Symbolizer symbolizer : symbolizers) {
+            if (symbolizer instanceof TextSymbolizer) {
+                Font font = ((TextSymbolizer)symbolizer).fonts().get(0);
+                assertTrue(font.getFamily().size() > 0);
+                return font.getFamily().get(0) == null ? null : font.getFamily().get(0).toString();
+            }
+        }
+        fail("Style should contain a TextSymbolizer");
+        return null;
+    }
+
     
 
     /**                 

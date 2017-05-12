@@ -342,7 +342,7 @@ public class MBStyle {
                     : MBObjectStops.zoomLevelToScaleDenominator((long) Math.max(-25, layerMinZoom));
 
             if (layer.visibility()) {
-                FeatureTypeStyle featureTypeStyle = null;
+                List<FeatureTypeStyle> featureTypeStyle = null;
                 // check for property and zoom functions, if true we will have a layer for each one that
                 // becomes a feature type style.
                 if (mbObjectStops.hasStops) {
@@ -358,12 +358,12 @@ public class MBStyle {
                         }
 
                         featureTypeStyle = l.transform(this, minScaleDenominator, maxScaleDenominator);
-                        style.featureTypeStyles().add(featureTypeStyle);
+                        style.featureTypeStyles().addAll(featureTypeStyle);
                         i++;
                     }
                 } else {
                     featureTypeStyle = layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator);
-                    style.featureTypeStyles().add(featureTypeStyle);
+                    style.featureTypeStyles().addAll(featureTypeStyle);
                 }
             }
         }

@@ -30,6 +30,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.style.SemanticType;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * MBLayer wrapper (around one of the MBStyle layers).
  * <p>
@@ -329,26 +332,27 @@ public abstract class MBLayer {
     /**
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
-     * @param layer The MBLayer to transform.
      * @param minScaleDenominator Used to determine zoom level restrictions for generated rules
      * @param maxScaleDenominator Used to determine zoom level restrictions for generated rules
      * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
      */
-    public FeatureTypeStyle transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
+    public List<FeatureTypeStyle> transform(MBStyle styleContext, Double minScaleDenominator, Double maxScaleDenominator) {
         // Would prefer to accept zoom levels here (less concepts in our API)
         // If we accept zoom levels we may be able to reduce, and return a list of FeatureTypeStyles
         // (with the understanding that the list may be empty if the MBLayer does not contribute any content
         //  at a specific zoom level range)
-        FeatureTypeStyle style = transform(styleContext);
+        List<FeatureTypeStyle> style = transform(styleContext);
         if (style == null) {
-            return null;
+            return Collections.emptyList();
         }
-        for (Rule rule : style.rules()) {
-            if (minScaleDenominator != null) {
-                rule.setMinScaleDenominator(minScaleDenominator);
-            }
-            if (maxScaleDenominator != null) {
-                rule.setMaxScaleDenominator(maxScaleDenominator);
+        for (FeatureTypeStyle fts : style) {
+            for (Rule rule : fts.rules()) {
+                if (minScaleDenominator != null) {
+                    rule.setMinScaleDenominator(minScaleDenominator);
+                }
+                if (maxScaleDenominator != null) {
+                    rule.setMaxScaleDenominator(maxScaleDenominator);
+                }
             }
         }
         return style;
@@ -360,7 +364,7 @@ public abstract class MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return A feature type style from the provided layer, or null if the visibility of that layer is false.
      */
-    public final FeatureTypeStyle transform(MBStyle styleContext) {
+    public final List<FeatureTypeStyle> transform(MBStyle styleContext) {
         MBLayer layer = this;
         if (!layer.visibility()) {
             return null; // layer layout visibility 'none'
@@ -368,7 +372,7 @@ public abstract class MBLayer {
         return transformInternal(styleContext);
     }
 
-    public abstract FeatureTypeStyle transformInternal(MBStyle styleContext);
+    public abstract List<FeatureTypeStyle> transformInternal(MBStyle styleContext);
     
     //
     // Data Object based on wrapped json

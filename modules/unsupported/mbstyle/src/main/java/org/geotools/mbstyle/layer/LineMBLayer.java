@@ -515,7 +515,7 @@ public class LineMBLayer extends MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
-    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         org.geotools.styling.Stroke stroke = sf.stroke(lineColor(), lineOpacity(), lineWidth(),
                 lineJoin(), lineCap(), null, null); // last "offset" is really "dash offset"
@@ -542,10 +542,11 @@ public class LineMBLayer extends MBLayer {
                 filter.filter());
         rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);
-        return sf.featureTypeStyle(getId(),
+
+        return Collections.singletonList(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
-                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules);
+                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules));
     }
 
     /**

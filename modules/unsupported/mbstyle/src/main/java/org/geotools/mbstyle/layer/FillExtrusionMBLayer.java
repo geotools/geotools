@@ -33,6 +33,7 @@ import javax.measure.unit.NonSI;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * MBLayer wrapper for "fill extrusion" representing extruded (3D) polygon.
@@ -232,7 +233,7 @@ public class FillExtrusionMBLayer extends MBLayer {
      *
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      */
-    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         PolygonSymbolizer symbolizer;
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
 
@@ -278,8 +279,7 @@ public class FillExtrusionMBLayer extends MBLayer {
         //setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
 
-
-        return sf.featureTypeStyle(
+        return Collections.singletonList(sf.featureTypeStyle(
                 getId(),
                 sf.description(
                         Text.text("MBStyle "+getId()),
@@ -288,7 +288,7 @@ public class FillExtrusionMBLayer extends MBLayer {
                 Collections.emptySet(),
                 filter.semanticTypeIdentifiers(),
                 Arrays.asList(rule)
-        );
+        ));
     }
 
     /**

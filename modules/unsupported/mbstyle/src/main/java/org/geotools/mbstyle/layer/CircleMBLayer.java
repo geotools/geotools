@@ -333,7 +333,7 @@ public class CircleMBLayer extends MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
-    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a default opacity.
         Stroke s = sf.stroke(circleStrokeColor(), circleStrokeOpacity(),
                 circleStrokeWidth(), null, Stroke.DEFAULT.getLineCap(), null, null);
@@ -366,10 +366,12 @@ public class CircleMBLayer extends MBLayer {
 
         rules.add(rule);
         rule.setLegendGraphic(new Graphic[0]);
-        return sf.featureTypeStyle(getId(),
+        List<FeatureTypeStyle> style = new ArrayList<>();
+        style.add(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
-                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules);
+                null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules));
+        return style;
     }
 
     /**

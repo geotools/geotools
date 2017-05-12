@@ -220,7 +220,7 @@ public class RasterMBLayer extends MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
-    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
 
         // Use of builder is easier for code examples; but fills in SLD defaults
@@ -235,13 +235,15 @@ public class RasterMBLayer extends MBLayer {
                 Arrays.asList(symbolizer), filter.filter());
         rules.add(rule);
         rule.setLegendGraphic(new Graphic[0]);
-        return sf.featureTypeStyle(getId(),
+        List<FeatureTypeStyle> style = new ArrayList<>();
+        style.add(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null,
                 Collections.emptySet(),
                 filter.semanticTypeIdentifiers(),
-                rules);
+                rules));
+        return style;
     }
 
     /**

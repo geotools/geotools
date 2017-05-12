@@ -1618,7 +1618,7 @@ public class SymbolMBLayer extends MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
-    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
 
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         StyleBuilder sb = new StyleBuilder();
@@ -1764,12 +1764,14 @@ public class SymbolMBLayer extends MBLayer {
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
-        return sf.featureTypeStyle(getId(),
+        List<FeatureTypeStyle> style = new ArrayList<>();
+        style.add(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null, // (unused)
                 Collections.emptySet(), filter.semanticTypeIdentifiers(), // we only expect this to be applied to polygons
-                rules);
+                rules));
+        return style;
     }
 
     /**

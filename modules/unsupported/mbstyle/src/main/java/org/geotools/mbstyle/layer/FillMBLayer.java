@@ -33,8 +33,8 @@ import org.opengis.style.SemanticType;
 
 import javax.measure.unit.NonSI;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
+import java.util.*;
 
 /**
  * MBLayer wrapper for "Fill" layers.
@@ -259,7 +259,7 @@ public class FillMBLayer extends MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
-    public FeatureTypeStyle transformInternal(MBStyle styleContext) {
+    public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         PolygonSymbolizer symbolizer;
         // use factory to avoid defaults values
@@ -321,7 +321,8 @@ public class FillMBLayer extends MBLayer {
         rule.setLegendGraphic(new Graphic[0]);
 
 
-        return sf.featureTypeStyle(
+        List<FeatureTypeStyle> style = new ArrayList<>();
+        style.add(sf.featureTypeStyle(
                 getId(),
                 sf.description(
                         Text.text("MBStyle "+getId()),
@@ -330,7 +331,10 @@ public class FillMBLayer extends MBLayer {
                 Collections.emptySet(),
                 filter.semanticTypeIdentifiers(),
                 Arrays.asList(rule)
-        );
+        ));
+
+
+        return style;
     }
 
     /**

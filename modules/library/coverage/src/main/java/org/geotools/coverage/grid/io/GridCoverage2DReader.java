@@ -21,6 +21,7 @@ import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
@@ -113,7 +114,12 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      */
     public static final String FILE_SOURCE_PROPERTY = "OriginalFileSource";
 
-    
+    /**
+     * Name of a {@link GridCoverage2D} property that is a {@link URL} for the original source of the coverage. This {@link URL} might be used to
+     * obtain further information on the coverage that is not otherwise available through the {@link GridCoverage2D} API.
+     */
+    public static String SOURCE_URL_PROPERTY = "SourceUrl";
+
     /**
      * This property is present, and evaluates to "true", if the reader can do reprojection
      * on its own (that is, it is not backed by actual data, but by a remote service that

@@ -16,12 +16,19 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.*;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,7 +50,6 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -51,7 +57,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.data.DataSourceException;
@@ -62,8 +67,8 @@ import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.DomainDescriptor;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
-import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducer;
+import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducer;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.geometry.Envelope2D;
@@ -78,12 +83,10 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;
@@ -102,10 +105,12 @@ import org.opengis.util.InternationalString;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.util.Assert;
 
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a requestCoverage is called to a reader.
@@ -472,7 +477,12 @@ public class RasterLayerResponse {
     private Hints hints;
 
     private String granulesPaths;
-    
+
+    /**
+     * See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}.
+     */
+    private URL sourceUrl;
+
     private ROIExcessGranuleRemover excessGranuleRemover;
 
     /**
@@ -1189,12 +1199,13 @@ public class RasterLayerResponse {
         }
 
         // creating the final coverage by keeping into account the fact that we
-        Map<String, Object> properties = null;
+        Map<String, Object> properties = new HashMap<String, Object>();
         if (granulesPaths != null) {
-            properties = new HashMap<String, Object>();
-            properties.put(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY, granulesPaths);
+            properties.put(GridCoverage2DReader.FILE_SOURCE_PROPERTY, granulesPaths);
         }
-
+        if (sourceUrl != null) {
+            properties.put(GridCoverage2DReader.SOURCE_URL_PROPERTY, sourceUrl);
+        }
         if (mosaicOutput.pamDataset != null) {
             properties.put(Utils.PAM_DATASET, mosaicOutput.pamDataset);
         }
@@ -1288,6 +1299,15 @@ public class RasterLayerResponse {
 
     public void setGranulesPaths(String granulesPaths) {
         this.granulesPaths = granulesPaths;
+    }
+
+    /**
+     * See {@link GridCoverage2DReader#SOURCE_URL_PROPERTY}.
+     * 
+     * @param sourceUrl
+     */
+    public void setSourceUrl(URL sourceUrl) {
+        this.sourceUrl = sourceUrl;
     }
 
     public int getDefaultArtifactsFilterThreshold() {

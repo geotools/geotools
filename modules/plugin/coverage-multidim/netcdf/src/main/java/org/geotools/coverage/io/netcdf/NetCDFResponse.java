@@ -45,6 +45,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.io.CoverageReadRequest;
 import org.geotools.coverage.io.CoverageResponse;
 import org.geotools.coverage.io.SpatialRequestHelper.CoverageProperties;
@@ -478,18 +479,16 @@ class NetCDFResponse extends CoverageResponse{
      * @throws IOException
      */
     private GridCoverage2D prepareCoverage(RenderedImage image, GridSampleDimension[] sampleDimensions, double[] noData) throws IOException {
-
-        Map<String, Object> properties = null;
+        Map<String, Object> properties = new HashMap<String, Object>();
         if (noData != null && noData.length > 0) {
-            properties = new HashMap<String, Object>();
             CoverageUtilities.setNoDataProperty(properties, noData[0]);
         }
+        properties.put(GridCoverage2DReader.SOURCE_URL_PROPERTY, datasetURL);
         return COVERAGE_FACTORY.create(request.name, image, new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
                         .getBounds()), PixelInCell.CELL_CORNER, finalGridToWorldCorner,
                         this.targetBBox.getCoordinateReferenceSystem(), hints), sampleDimensions, null,
                 properties);
     }
-    
 
     /**
      * Load a specified a raster as a portion of the granule describe by this {@link DefaultGranuleDescriptor}.

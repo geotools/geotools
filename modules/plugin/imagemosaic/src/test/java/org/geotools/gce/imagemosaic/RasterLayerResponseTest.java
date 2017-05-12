@@ -17,15 +17,20 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -87,4 +92,44 @@ public class RasterLayerResponseTest {
             }
         }
     }
+
+    /**
+     * Test that {@link GridCoverage2DReader#SOURCE_URL_PROPERTY} is correctly set on a coverage created by {@link RasterLayerResponse}.
+     */
+    @Test
+    public void testSourceUrl() throws Exception {
+        final URL testMosaic = TestData.url(this, "heterogeneous");
+        ImageMosaicReader reader = null;
+        try {
+            reader = new ImageMosaicFormat().getReader(testMosaic, null);
+            ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                    .createValue();
+            GeneralEnvelope envelope = reader.getOriginalEnvelope();
+            Dimension dim = new Dimension();
+            dim.setSize(10, 20);
+            Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+            rasterArea.setSize(dim);
+            GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+            gg.setValue(new GridGeometry2D(range, envelope));
+            RasterManager manager = reader.getRasterManager(reader.getGridCoverageNames()[0]);
+            RasterLayerRequest request = new RasterLayerRequest(new GeneralParameterValue[] { gg },
+                    manager);
+            RasterLayerResponse response = new RasterLayerResponse(request, manager,
+                    new DefaultSubmosaicProducerFactory());
+            GridCoverage2D coverage = response.createResponse();
+            URL sourceUrl = (URL) coverage.getProperty(GridCoverage2DReader.SOURCE_URL_PROPERTY);
+            assertNotNull(sourceUrl);
+            assertEquals("file", sourceUrl.getProtocol());
+            assertTrue(sourceUrl.getPath().endsWith(".tif"));
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // we tried
+                }
+            }
+        }
+    }
+
 }

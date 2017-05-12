@@ -1663,13 +1663,13 @@ public class SymbolMBLayer extends MBLayer {
         Fill fill = sf.fill(null, textColor(), textOpacity());
 
 
-        //Font not supported until glyphs are working
-        Font font = sb.createFont(ff.literal("" /* transformer.getDefaultFonts() */), ff.literal("normal"),
-                ff.literal("normal"), textSize());
-        /* else {
-            font = sb.createFont(ff.literal(getTextFont()), ff.literal("normal"),
-                    ff.literal("normal"), textSize());
-        } */
+        Font font = sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), textSize());
+        if (getTextFont() != null) {
+            font.getFamily().clear();
+            for (String textFont : getTextFont()) {
+                font.getFamily().add(ff.literal(textFont));
+            }
+        }
 
 
         // If the textField is a literal string (not a function), then

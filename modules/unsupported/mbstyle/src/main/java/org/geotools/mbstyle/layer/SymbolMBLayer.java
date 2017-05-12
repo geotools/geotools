@@ -1764,14 +1764,13 @@ public class SymbolMBLayer extends MBLayer {
         rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
-        List<FeatureTypeStyle> style = new ArrayList<>();
-        style.add(sf.featureTypeStyle(getId(),
+
+        return Collections.singletonList(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null, // (unused)
                 Collections.emptySet(), filter.semanticTypeIdentifiers(), // we only expect this to be applied to polygons
                 rules));
-        return style;
     }
 
     /**

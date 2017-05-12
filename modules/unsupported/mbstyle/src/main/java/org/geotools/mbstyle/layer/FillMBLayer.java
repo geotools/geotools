@@ -320,9 +320,7 @@ public class FillMBLayer extends MBLayer {
         //How do other style transformers set a null legend? SLD/SE difference - fix setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
 
-
-        List<FeatureTypeStyle> style = new ArrayList<>();
-        style.add(sf.featureTypeStyle(
+        return Collections.singletonList(sf.featureTypeStyle(
                 getId(),
                 sf.description(
                         Text.text("MBStyle "+getId()),
@@ -332,9 +330,6 @@ public class FillMBLayer extends MBLayer {
                 filter.semanticTypeIdentifiers(),
                 Arrays.asList(rule)
         ));
-
-
-        return style;
     }
 
     /**

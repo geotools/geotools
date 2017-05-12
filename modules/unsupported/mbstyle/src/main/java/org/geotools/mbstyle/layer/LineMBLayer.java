@@ -542,12 +542,11 @@ public class LineMBLayer extends MBLayer {
                 filter.filter());
         rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);
-        List<FeatureTypeStyle> style = new ArrayList<>();
-        style.add(sf.featureTypeStyle(getId(),
+
+        return Collections.singletonList(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules));
-        return style;
     }
 
     /**

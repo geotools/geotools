@@ -358,12 +358,12 @@ public class MBStyle {
                         }
 
                         featureTypeStyle = l.transform(this, minScaleDenominator, maxScaleDenominator);
-                        style.featureTypeStyles().add(featureTypeStyle.get(0));
+                        style.featureTypeStyles().addAll(featureTypeStyle);
                         i++;
                     }
                 } else {
                     featureTypeStyle = layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator);
-                    style.featureTypeStyles().add(featureTypeStyle.get(0));
+                    style.featureTypeStyles().addAll(featureTypeStyle);
                 }
             }
         }

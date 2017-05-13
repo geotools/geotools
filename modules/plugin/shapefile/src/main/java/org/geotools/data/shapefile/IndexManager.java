@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.shapefile;
 
 import static org.geotools.data.shapefile.files.ShpFileType.*;
@@ -15,6 +31,8 @@ import java.util.logging.Logger;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.shapefile.dbf.index.DbaseIndexManager;
+import org.geotools.data.shapefile.dbf.index.ExpressionFilterVisitor;
 import org.geotools.data.shapefile.fid.FidIndexer;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileWriter;
@@ -28,32 +46,33 @@ import org.geotools.data.shapefile.index.quadtree.QuadTree;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.data.shapefile.index.quadtree.fs.FileSystemIndexStore;
 import org.geotools.data.shapefile.shp.IndexFile;
+import org.geotools.data.shapefile.shp.ShapefileReader;
+import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Manages the index files on behalf of the the {@link ShapefileDataStore}
  * 
  * @author Andrea Aime - GeoSolutions
  */
-class IndexManager {
+class IndexManager extends DbaseIndexManager {
 
     static final Logger LOGGER = Logging.getLogger(IndexManager.class);
 
     static final int DEFAULT_MAX_QIX_CACHE_SIZE;
 
-    ShpFiles shpFiles;
-
     int maxQixCacheSize = DEFAULT_MAX_QIX_CACHE_SIZE;
 
     CachedQuadTree cachedTree;
 
-    ShapefileDataStore store;
-    
     /**
      * Used to lock the files when doing accesses to check indexes and the like
      */
@@ -79,8 +98,11 @@ class IndexManager {
     }
 
     public IndexManager(ShpFiles shpFiles, ShapefileDataStore store) {
-        this.shpFiles = shpFiles;
-        this.store = store;
+        super(shpFiles, store);
+    }
+    
+    ShpFiles shpFiles() {
+        return shpFiles;
     }
 
     /**
@@ -237,7 +259,7 @@ class IndexManager {
 
         IndexedFidReader reader = new IndexedFidReader(shpFiles);
 
-        List<Data> records = new ArrayList(idsSet.size());
+        List<Data> records = new ArrayList<Data>(idsSet.size());
         try {
             IndexFile shx = store.shpManager.openIndexFile();
             try {
@@ -280,6 +302,66 @@ class IndexManager {
         return records;
     }
 
+    /**
+     * Queries the spatial index for features available in the specified bbox, 
+     * applying the BBOX filter if specifided.
+     * 
+     * @param bbox
+     */
+    protected CloseableIterator<Data> querySpatialIndex(Envelope bbox, boolean applyEnvelopeFilter) throws DataSourceException, TreeException, IOException {
+        
+        CloseableIterator<Data> records = querySpatialIndex(bbox);
+        
+        if (records != null && applyEnvelopeFilter) {
+            
+            ShapefileReader shp = null;
+            
+            try {
+                shp = store.shpManager.openShapeReader(new GeometryFactory(), true);
+                
+                DataDefinition def = new DataDefinition("US-ASCII");
+                def.addField(Integer.class);
+                def.addField(Long.class);
+                
+                List<Data> resultList = new ArrayList<Data>();
+                
+                while (records.hasNext()) {
+                    Long offset = (Long)records.next().getValue(1);
+                    
+                    org.geotools.data.shapefile.shp.ShapefileReader.Record record = shp.recordAt((int)offset.longValue());
+                    Envelope envelope = record.envelope();
+                    
+                    if (bbox.intersects(envelope)) {
+                        Data data = new Data(def);
+                        data.addValue(record.number);
+                        data.addValue(offset);
+                        resultList.add(data);
+                    }
+                }
+                return new CloseableIteratorWrapper<Data>(resultList.iterator());
+            }
+            finally {
+                try {
+                    if (records != null) {
+                        records.close();
+                    }
+                }
+                catch (IOException ioe) {
+                    // do nothing
+                }
+                try {
+                    if (shp != null) {
+                        shp.close();
+                    }
+                }
+                catch (IOException ioe) {
+                    // do nothing
+                }
+            }
+        }
+        return records;
+    }
+    
     /**
      * Queries the spatial index for features available in the specified bbox
      * 
@@ -375,5 +457,47 @@ class IndexManager {
 
     public void dispose() {
         this.cachedTree = null;
+    }
+    
+    /**
+     * Creates a new ExpressionFilterVisitor to resolve the specified Filter.
+     */
+    @Override
+    protected ExpressionFilterVisitor createExpressionFilterVisitor(Filter filter) {
+        
+        if (isSpatialIndexAvailable() || store.isIndexCreationEnabled()) {
+            ShapeFileExpressionFilterVisitor filterVisitor = new ShapeFileExpressionFilterVisitor(this);
+            return filterVisitor;
+        }
+        return super.createExpressionFilterVisitor(filter);
+    }
+    
+    /**
+     * Queries a supported index for features available in the specified filter.
+     * 
+     * @param filter Filter to use
+     * @param maxFeatures Maximum number of features to fetch
+     * @return a list of Data objects
+     * @throws IOException
+     */
+    public CloseableIterator<Data> queryFilterIndex(Filter filter, int maxFeatures) throws IOException {
+        
+        // Resolve the filter using a Dbase-index when possible.
+        List<Data> recordList = super.queryDbaseIndex(filter, maxFeatures);
+        if (recordList != null) {
+            return new CloseableIteratorWrapper<Data>(recordList.iterator());
+        }
+        
+        // The filter was not supported, there is not a Dbase-index or it is a pure spatial filter.
+        if (isSpatialIndexAvailable() || store.isIndexCreationEnabled()) {
+            
+            Envelope bbox = new ReferencedEnvelope();
+            bbox = (Envelope)filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+            
+            if (bbox != null && !bbox.isNull() && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
+                return querySpatialIndex(bbox);
+            }
+        }
+        return null;
     }
 }

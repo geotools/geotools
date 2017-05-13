@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,9 +50,9 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
     public IndexedShapefileFeatureWriter(IndexManager indexes,
             ShapefileFeatureReader featureReader, Charset charset, TimeZone timeZone)
             throws IOException {
-        super(indexes.shpFiles, featureReader, charset, timeZone);
+        super(indexes.shpFiles(), featureReader, charset, timeZone);
         this.indexes = indexes;
-        if (!indexes.shpFiles.isLocal()) {
+        if (!indexes.shpFiles().isLocal()) {
             this.fidWriter = IndexedFidWriter.EMPTY_WRITER;
         } else {
             StorageFile storageFile = shpFiles.getStorageFile(FIX);

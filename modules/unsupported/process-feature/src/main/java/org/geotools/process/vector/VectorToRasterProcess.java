@@ -84,7 +84,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
-
+import org.opengis.geometry.BoundingBox;
 /**
  * A Process to rasterize vector features in an input FeatureCollection.
  * <p>
@@ -181,6 +181,46 @@ public class VectorToRasterProcess implements VectorProcess {
         return process.convert(features, attribute, gridDim, bounds, covName, monitor);
     }
 
+    /**
+     * A static helper method that can be called directy to run the process.
+     * <p>
+     * The process interface is useful for advertising functionality to
+     * dynamic applications, but for 'hands on' coding this method is much more
+     * convenient than working via the {@linkplain org.geotools.process.Process#execute }.
+     *
+     * @param feature  one simple feature to be (wholly or partially) rasterized
+     *
+     * @param attribute source of values for the output grid: either a
+     *        {@code String} for the name of a numeric feature property or
+     *        an {@code org.opengis.filter.expression.Expression} that
+     *        evaluates to a numeric value
+     *
+     * @param gridWidthInCells width (cell) of the output raster
+     *
+     * @param gridHeightInCells height (cell) of the output raster
+     *
+     * @param bounds bounds (world coordinates) of the output raster
+     *
+     * @param covName a name for the output raster
+     *
+     * @param monitor an optional {@code ProgressListener} (may be {@code null}
+     *
+     * @return a new grid coverage
+     *
+     * @throws org.geotools.process.raster.VectorToRasterException
+     */
+    public static GridCoverage2D process(
+            SimpleFeature feature,
+            Object attribute,
+            Dimension gridDim,
+            Envelope bounds,
+            String covName,
+            ProgressListener monitor) throws VectorToRasterException {
+
+        VectorToRasterProcess process = new VectorToRasterProcess();
+        return process.convert(feature, attribute, gridDim, bounds, covName, monitor);
+    }
+
     @DescribeResult(name = "result", description = "Rasterized grid")
     public GridCoverage2D execute(
         @DescribeParameter(name = "features", description = "Features to process", min = 1, max = 1) SimpleFeatureCollection features,
@@ -192,11 +232,14 @@ public class VectorToRasterProcess implements VectorProcess {
         ProgressListener progressListener) {
         
         Expression attributeExpr = null;
-        try {
-              attributeExpr = ECQL.toExpression(attribute);
-        } catch(CQLException e) {
-              throw new VectorToRasterException(e);
-        }
+	if (attribute != null)
+	    {
+		try {
+		    attributeExpr = ECQL.toExpression(attribute);
+		} catch(CQLException e) {
+		    throw new VectorToRasterException(e);
+		}
+	    }
         return convert(features, attributeExpr, new Dimension(rasterWidth, rasterHeight), bounds, 
             title, progressListener);
     }
@@ -218,34 +261,38 @@ public class VectorToRasterProcess implements VectorProcess {
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
 
         if (geometry.intersects(extentGeometry)) {
-
-            Number value = getFeatureValue(feature, attribute);
-            switch (transferType) {
-                case FLOAT:
-                    if (minAttValue == null) {
-                        minAttValue = maxAttValue = Float.valueOf(value.floatValue());
-                    } else if (Float.compare(value.floatValue(), minAttValue.floatValue()) < 0) {
-                        minAttValue = value.floatValue();
-                    } else if (Float.compare(value.floatValue(), maxAttValue.floatValue()) > 0) {
-                        maxAttValue = value.floatValue();
-                    }
-
-                    break;
-
-                case INTEGRAL:
-                    if (minAttValue == null) {
-                        minAttValue = maxAttValue = Integer.valueOf(value.intValue());
-                    } else if (value.intValue() < minAttValue.intValue()) {
-                        minAttValue = value.intValue();
-                    } else if (value.intValue() > maxAttValue.intValue()) {
-                        maxAttValue = value.intValue();
-                    }
-
-                    break;
-            }
-
-            graphics.setColor(valueToColor(value));
-            
+	    if (attribute == null)
+		{
+		    graphics.setColor(Color.GRAY);
+		}
+	    else
+		{
+		    Number value = getFeatureValue(feature, attribute);
+		    switch (transferType) {
+		    case FLOAT:
+			if (minAttValue == null) {
+			    minAttValue = maxAttValue = Float.valueOf(value.floatValue());
+			} else if (Float.compare(value.floatValue(), minAttValue.floatValue()) < 0) {
+			    minAttValue = value.floatValue();
+			} else if (Float.compare(value.floatValue(), maxAttValue.floatValue()) > 0) {
+			    maxAttValue = value.floatValue();
+			}
+			
+			break;
+			
+		    case INTEGRAL:
+			if (minAttValue == null) {
+			    minAttValue = maxAttValue = Integer.valueOf(value.intValue());
+			} else if (value.intValue() < minAttValue.intValue()) {
+			    minAttValue = value.intValue();
+			} else if (value.intValue() > maxAttValue.intValue()) {
+			    maxAttValue = value.intValue();
+			}
+			
+			break;
+		    }
+		    graphics.setColor(valueToColor(value));
+		}
             Geometries geomType = Geometries.get(geometry);
             switch (geomType) {
                 case MULTIPOLYGON:
@@ -272,10 +319,16 @@ public class VectorToRasterProcess implements VectorProcess {
         }
     }
 
+
     private Number getFeatureValue(SimpleFeature feature, Object attribute) {
+	if (attribute == null) return null;
         Class<? extends Number> rtnType = transferType == TransferType.FLOAT ? Float.class : Integer.class;
         if (valueSource == ValueSource.PROPERTY_NAME) {
-            return rtnType.cast(feature.getAttribute((String)attribute));
+	    Object value = feature.getAttribute((String)attribute);
+	    if ((rtnType == Float.class) && (value instanceof Double))
+		return new Float(((Double)value).floatValue());
+	    else
+		return rtnType.cast(feature.getAttribute((String)attribute));
         } else {
             return ((Expression)attribute).evaluate(feature, rtnType);
         }
@@ -326,8 +379,31 @@ public class VectorToRasterProcess implements VectorProcess {
         return gcf.create(covName, image, extent);
     }
 
+
+    private GridCoverage2D convert(
+            SimpleFeature feature,
+            Object attribute,
+            Dimension gridDim,
+            Envelope bounds,
+            String covName,
+            ProgressListener monitor)
+        throws VectorToRasterException {
+
+        if ( monitor == null ) {
+            monitor = new NullProgressListener();
+        }
+
+        initialize( feature, bounds, gridDim );
+	try {processFeature(feature, attribute);}
+	catch (Exception e){System.err.println("rasterization failed " + e);}
+	    
+        GridCoverageFactory gcf = new GridCoverageFactory();
+        return gcf.create(covName, image, extent);
+    }
+
+
     private void initialize(SimpleFeatureCollection features,
-            Envelope bounds, Object attribute, Dimension gridDim ) throws VectorToRasterException {
+			    Envelope bounds, Object attribute, Dimension gridDim ) throws VectorToRasterException {
 
         // check the attribute argument
         if (attribute instanceof String) {
@@ -401,9 +477,14 @@ public class VectorToRasterProcess implements VectorProcess {
                 transferType = TransferType.INTEGRAL;
             }
             
-        } else {
+        } 
+	else if (attribute == null)
+	    {
+		// allow null attribute
+	    }
+	else {
             throw new VectorToRasterException(
-                    "value attribute must be a feature property name" +
+                    "value attribute must be a feature property name, null " +
                     "or an org.opengis.filter.expression.Expression object");
         }
 
@@ -423,6 +504,28 @@ public class VectorToRasterProcess implements VectorProcess {
     }
 
     /**
+     * when drawing a simple feature, we are ignoring the attribute
+     */
+    private void initialize(SimpleFeature feature,
+            Envelope bounds, Dimension gridDim ) throws VectorToRasterException {
+        minAttValue = maxAttValue = null;
+
+        try {
+	    BoundingBox boundingBox = feature.getBounds();
+            setBounds(boundingBox, bounds);
+        } catch (TransformException ex) {
+            throw new VectorToRasterException(ex);
+        }
+        
+        createImage( gridDim );
+        
+        gridGeom = new GridGeometry2D(
+                new GridEnvelope2D(0, 0, gridDim.width, gridDim.height), 
+                extent);
+
+    }
+
+    /**
      * Sets the output coverage bounds and checks whether features need to be 
      * transformed into the output CRS. 
      *
@@ -432,10 +535,15 @@ public class VectorToRasterProcess implements VectorProcess {
     private void setBounds( SimpleFeatureCollection features, Envelope bounds) 
             throws TransformException {
 
-        ReferencedEnvelope featureBounds = features.getBounds();
+        BoundingBox featureBounds = features.getBounds();
+	setBounds(featureBounds, bounds);
+    }
+
+    private void setBounds( BoundingBox featureBounds, Envelope bounds) 
+            throws TransformException {
 
         if (bounds == null) {
-            extent = featureBounds;
+            extent = new ReferencedEnvelope(featureBounds);
             
         } else {
             extent = new ReferencedEnvelope(bounds);
@@ -604,6 +712,7 @@ public class VectorToRasterProcess implements VectorProcess {
             coordGridX[n] = gridPos.x;
             coordGridY[n] = gridPos.y;
         }
+
 
         switch (geomType) {
             case POLYGON:

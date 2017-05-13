@@ -17,12 +17,15 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.SQLDialect;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -66,6 +69,14 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         caps.addType(DWithin.class);
         caps.addType(Beyond.class);
         return caps;
+    }
+
+	@Override
+    public String encodeToString(Filter filter) throws FilterToSQLException {
+        StringWriter out = new StringWriter();
+        this.out = out;
+        this.encode(filter);
+        return out.getBuffer().toString().replaceAll("= '", "= N'");
     }
     
     @Override

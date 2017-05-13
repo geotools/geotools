@@ -231,8 +231,12 @@ public class WPSUtils
             Class type = Object.class;
             if (literalData != null)
             {
+              if(literalData.getDataType()!=null){
                 String reference = literalData.getDataType().getReference();
                 type = getLiteralTypeFromReference(reference);
+              }else{
+                type = String.class;
+              }
             }
             else if (complexData != null)
             {
@@ -401,6 +405,8 @@ public class WPSUtils
      */
     private static Class getLiteralTypeFromReference(String ref)
     {
+    	if(ref == null) 
+    		return String.class;
         Class guess = guessLiteralType(ref);
         
         return guess != null? guess : String.class; // default to string
@@ -526,15 +532,17 @@ public class WPSUtils
                 // use the converters api to try and create an object of the type
                 // we want (default to the String value if it failed).
                 Object value = literalData.getValue();
+                Class type = String.class;
                 if (literalData.getDataType() != null)
                 {
-                    Class type = getLiteralTypeFromReference(literalData.getDataType());
-                    Object convertedValue = Converters.convert(literalData.getValue(), type);
-                    if (convertedValue != null)
-                    {
-                        value = convertedValue;
-                    }
+                    type = getLiteralTypeFromReference(literalData.getDataType());
                 }
+                Object convertedValue = Converters.convert(literalData.getValue(), type);
+                if (convertedValue != null)
+                {
+                    value = convertedValue;
+                }
+                  
                 map.put(odt.getIdentifier().getValue(), value);
             }
             else if (complexData != null)

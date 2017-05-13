@@ -24,11 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import net.opengis.wps10.DataType;
-import net.opengis.wps10.ExecuteResponseType;
-import net.opengis.wps10.InputDescriptionType;
-import net.opengis.wps10.ProcessDescriptionType;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -37,7 +33,13 @@ import org.geotools.data.wps.response.ExecuteProcessResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.impl.AbstractProcess;
+import org.geotools.util.logging.Logging;
 import org.opengis.util.ProgressListener;
+
+import net.opengis.wps10.DataType;
+import net.opengis.wps10.ExecuteResponseType;
+import net.opengis.wps10.InputDescriptionType;
+import net.opengis.wps10.ProcessDescriptionType;
 
 /**
  * This is a representation of a process built from the WPSFactory class.
@@ -53,7 +55,7 @@ import org.opengis.util.ProgressListener;
  * @source $URL$
  */
 public class WPSProcess extends AbstractProcess {
-
+	private static final Logger LOGGER = Logging.getLogger(WPSProcess.class.getName());
 	protected WPSProcess(ProcessFactory factory) {
 		super(factory);
 	}
@@ -124,20 +126,28 @@ public class WPSProcess extends AbstractProcess {
 				exeRequest.addInput(identifier, list);
 			}
 		}
-		
+		LOGGER.info(exeRequest.toString());
 		// send the request and get the response
 		ExecuteProcessResponse response;
 		try {
 			response = wps.issueRequest(exeRequest);
 		} catch (ServiceException e) {
+			LOGGER.info(e.getMessage());
 			return null;
 		} catch (IOException e) {
+			LOGGER.info(e.getMessage());
 			return null;
 		}
 		
 		// if there is an exception in the response, return null
 		// TODO:  properly handle the exception?
-		if (response.getExceptionResponse() != null || response.getExecuteResponse() == null) {
+		if (response.getExceptionResponse() != null) {
+			LOGGER.info(response.getExceptionResponse().getException().get(0).toString());
+			return null;
+		}
+				
+		if(response.getExecuteResponse() == null) {
+			LOGGER.info("response is null");
 			return null;
 		}
 		

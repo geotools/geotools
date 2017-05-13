@@ -69,7 +69,7 @@ Conventions:
 Tools:
 
 * Inkscape
-  
+
   Used for the diagrams (please don't use visio); and the result exported as a PNG for the docs.
 
 * ObjectAid
@@ -246,7 +246,7 @@ The faq is pretty simple; please use headings so that people can quickly find co
         Q: What is JMapPane for?
         ^^^^^^^^^^^^^^^^^^^^^^^^
         
-        The JMapPane class is primiarly used as a teaching aid for the
+        The JMapPane class is primarily used as a teaching aid for the
         :doc:`tutorials </tutorial/index>` used to explore the GeoTools library.
         
         It is developed in collaboration with the user list, and while not a intended as a

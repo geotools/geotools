@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 
@@ -99,6 +100,31 @@ public class StyleAttributeExtractorTest {
         assertEquals(2, atts.size());
         assertTrue(atts.contains("ax"));
         assertTrue(atts.contains("ay"));
+    }
+
+    @Test
+    public void testLineSymbolizer() {
+        // Try with property
+        Expression expression = ff.property("attribute");
+
+        LineSymbolizer lineSymbolizer = sb.createLineSymbolizer();
+        lineSymbolizer.setPerpendicularOffset(expression);
+        Rule r = sb.createRule(lineSymbolizer);
+
+        StyleAttributeExtractor extractor = new StyleAttributeExtractor();
+        r.accept(extractor);
+
+        Set<String> atts = extractor.getAttributeNameSet();
+        assertTrue(atts.contains("attribute"));
+        assertEquals(1, atts.size());
+
+        // Try without property but with a literal value
+        lineSymbolizer.setPerpendicularOffset(ff.literal(34.12));
+        extractor = new StyleAttributeExtractor();
+        r.accept(extractor);
+
+        atts = extractor.getAttributeNameSet();
+        assertEquals(0, atts.size());
     }
 
 }

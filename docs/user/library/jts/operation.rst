@@ -17,7 +17,6 @@ Buffer
 ^^^^^^
 
 Creates a polygon or multi polygon containing all points within a within a set distance:
-distance of the Geometry::
    
    Geometry buffer = geometry.buffer( 2.0 ); // note distance is in same units as geometry
 

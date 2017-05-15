@@ -2308,6 +2308,10 @@ public class SLDParser {
         for (Expression expression : expressions) {
             ret = manageMixed(ret, expression);
         }
+        //If the expression list is empty, we have an empty tag, and should return an empty string.
+        if (ret == null) {
+            return ff.literal("");
+        }
 
         return ret;
     }

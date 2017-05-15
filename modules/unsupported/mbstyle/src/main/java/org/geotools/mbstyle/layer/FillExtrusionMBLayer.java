@@ -32,6 +32,7 @@ import org.opengis.style.SemanticType;
 import javax.measure.unit.NonSI;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -278,17 +279,16 @@ public class FillExtrusionMBLayer extends MBLayer {
         //setLegend(null) to empty list.
         rule.setLegendGraphic(new Graphic[0]);
 
-        return null;
-//        return sf.featureTypeStyle(
-//                getId(),
-//                sf.description(
-//                        Text.text("MBStyle "+getId()),
-//                        Text.text("Generated for "+getSourceLayer())),
-//                null, // (unused)
-//                Collections.emptySet(),
-//                filter.semanticTypeIdentifiers(),
-//                Arrays.asList(rule)
-//        );
+        return Collections.singletonList(sf.featureTypeStyle(
+                getId(),
+                sf.description(
+                        Text.text("MBStyle "+getId()),
+                        Text.text("Generated for "+getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                Arrays.asList(rule)
+        ));
     }
 
     /**

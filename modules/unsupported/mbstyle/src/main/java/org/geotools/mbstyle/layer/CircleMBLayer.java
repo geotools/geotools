@@ -366,12 +366,11 @@ public class CircleMBLayer extends MBLayer {
 
         rules.add(rule);
         rule.setLegendGraphic(new Graphic[0]);
-        List<FeatureTypeStyle> style = new ArrayList<>();
-        style.add(sf.featureTypeStyle(getId(),
+
+        return Collections.singletonList(sf.featureTypeStyle(getId(),
                 sf.description(Text.text("MBStyle " + getId()),
                         Text.text("Generated for " + getSourceLayer())),
                 null, Collections.emptySet(), filter.semanticTypeIdentifiers(), rules));
-        return style;
     }
 
     /**

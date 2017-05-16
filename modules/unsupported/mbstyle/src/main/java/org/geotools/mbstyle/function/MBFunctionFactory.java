@@ -77,6 +77,12 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
+        if (StringTransformFunction.NAME.getFunctionName().equals(name)) {
+            StringTransformFunction f = new StringTransformFunction();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
         return null;
     }
 }

@@ -186,4 +186,37 @@ public class MBFunctionFactoryTest {
         Function f22 = (Function) ECQL.toExpression("zoomLevel(" +  scaleDenomForZoom22 +", 'EPSG:3857')");
         assertEquals(22.0, f22.evaluate(null, Number.class).doubleValue(), tol);
     }
+    
+    @Test
+    public void stringTransformFunctionTest() throws Exception {
+        Function f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'uppercase')");
+        assertEquals("SOMESTRING", f.evaluate(null, String.class));
+        
+        f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'UPPERCASE')");
+        assertEquals("SOMESTRING", f.evaluate(null, String.class));
+        
+        f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'lowercase')");
+        assertEquals("somestring", f.evaluate(null, String.class));
+        
+        f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'LOWERCASE')");
+        assertEquals("somestring", f.evaluate(null, String.class));
+        
+        f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'none')");
+        assertEquals("SoMeString", f.evaluate(null, String.class));
+        
+        f = (Function) ECQL.toExpression("StringTransform('SoMeString', 'default')");
+        assertEquals("SoMeString", f.evaluate(null, String.class));    
+       
+        f = (Function) ECQL.toExpression("StringTransform('SoMeString', '')");
+        assertEquals("SoMeString", f.evaluate(null, String.class));    
+        
+        f = (Function) ECQL.toExpression("StringTransform('', '')");
+        assertEquals("", f.evaluate(null, String.class));
+        
+        f = ff.function("StringTransform", ff.literal("SoMeString"), ff.literal(null));
+        assertEquals("SoMeString", f.evaluate(null, String.class));    
+        
+        f = ff.function("StringTransform", ff.literal(null), ff.literal(null));
+        assertTrue(null == f.evaluate(null, String.class));    
+    }
 }

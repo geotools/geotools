@@ -322,6 +322,16 @@ public class VisualTransformerTest {
      * Test visualization of a GeoTools style from an MB Symbol Layer
      */
     @Test
+    public void mbSymbolLayerTextTransformVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextTransformFunctionTest.json");        
+        testVisualizeStyleWithLineFeatures(jsonObject, "Symbol Text Transform", "symbol-text-transform", false);
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
     public void mbSymbolLayerIconLinePlacementVisualTest() throws Exception {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconLinePlacementTest.json");        

@@ -1683,6 +1683,8 @@ public class SymbolMBLayer extends MBLayer {
                 textExpression = transformer.cqlExpressionFromTokens(text);
             }
         }
+        
+        textExpression = ff.function("StringTransform", textExpression, textTransform());
 
         TextSymbolizer2 symbolizer = (TextSymbolizer2) sf.textSymbolizer(getId(),
                 ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,

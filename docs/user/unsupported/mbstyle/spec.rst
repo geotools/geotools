@@ -11,7 +11,7 @@ The intended audience of this quick reference includes:
 - Feature support is provided for the `Mapbox GL JS <https://www.mapbox.com/mapbox-gl-js/api/>`__, `Open Layers <http://openlayers.org>`__ and the GeoTools mbstyle module.
 - Where appropriate examples have been changed to reference `GeoWebCache <http://geowebcache.org/>`__.
 
-:info:
+.. info::
       The `Mapbox Style Specification <https://www.mapbox.com/mapbox-gl-style-spec>`__ is generated from the BSD `Mapbox GL JS <https://github.com/mapbox/mapbox-gl-js>`__ github repository, reproduced here with details on this GeoTools implementation.
 
 
@@ -60,7 +60,7 @@ A human-readable name for the style.
 
 Arbitrary properties useful to track with the stylesheet, but do not influence rendering. Properties should be prefixed to avoid collisions.
 
-:note: *unsupported.*
+.. note:: *unsupported.*
 
 `center <#root-center>`__
 
@@ -76,7 +76,7 @@ Default map center in longitude and latitude. The style center will be used only
       -73.9749, 40.7736
     ]
 
-:note: *unsupported*
+.. note:: *unsupported*
 
 `zoom <#root-zoom>`__
 
@@ -102,7 +102,7 @@ will be used only if the map has not been positioned by other means
 
     "bearing": 29
 
-:note: *unsupported*
+.. note:: *unsupported*
 
 `pitch <#root-pitch>`__
 

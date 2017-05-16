@@ -240,11 +240,8 @@ style.
     }
 
 
-.. raw:: html
-
-   <div class="pad2 keyline-all fill-white">
-
-`anchor <#light-anchor>`__
+anchor
+~~~~~~
 
 *Optional* :ref:`types-enum`. *One of* map, viewport. *Defaults to* viewport.
 
@@ -277,7 +274,8 @@ viewport
      - not yet supported
      - not yet supported
 
-`position <#light-position>`__
+position
+~~~~~~~~
 
 *Optional* :ref:`types-array`. *Defaults to* 1.15,210,30.
 
@@ -313,7 +311,8 @@ the light (from 0°, directly above, to 180°, directly below).
      - not yet supported
      - not yet supported
 
-`color <#light-color>`__
+color
+~~~~~
 
 *Optional* :ref:`types-color`. *Defaults to* #ffffff.
 
@@ -334,7 +333,8 @@ Color tint for lighting extruded geometries.
      - not yet supported
      - not yet supported
 
-`intensity <#light-intensity>`__
+intensity
+~~~~~~~~~
 
 *Optional* :ref:`types-number`. *Defaults to* 0.5.
 
@@ -359,7 +359,7 @@ present as more extreme contrast.
 .. _sources:
 
 Sources
---------
+-------
 
 Sources supply data to be shown on the map. The type of source is
 specified by the ``"type"`` property, and must be one of vector, raster,
@@ -378,10 +378,6 @@ done in several ways:
 -  By supplying TileJSON properties such as ``"tiles"``, ``"minzoom"``,
    and ``"maxzoom"`` directly in the source:
 
-   .. raw:: html
-
-      <div class="space-bottom1 clearfix">
-
    ::
 
        "mapbox-streets": {
@@ -392,10 +388,6 @@ done in several ways:
          ],
          "maxzoom": 14
        }
-
-   .. raw:: html
-
-      </div>
 
 -  By providing a ``"url"`` to a TileJSON resource:
 
@@ -409,10 +401,6 @@ done in several ways:
          "type": "vector",
          "url": "http://api.example.com/tilejson.json"
        }
-
-   .. raw:: html
-
-      </div>
 
 -  By providing a url to a WMS server that supports EPSG:3857 (or
    EPSG:900913) as a source of tiled data. The server url should contain
@@ -428,8 +416,6 @@ done in several ways:
          ],
          "tileSize": 256
        }
-
-.. _sources-vector:
 
 vector
 ~~~~~~
@@ -447,7 +433,8 @@ Mapbox, the ``"url"`` value should be of the form ``mapbox://mapid``.
       "url": "mapbox://mapbox.mapbox-streets-v6"
     }
 
-`url <#sources-vector-url>`__
+url
+^^^
 
 *Optional* :ref:`types-string`.
 
@@ -456,7 +443,8 @@ Mapbox, the ``"url"`` value should be of the form ``mapbox://mapid``.
 A URL to a TileJSON resource. Supported protocols are ``http:``,
 ``https:``, and ``mapbox://<mapid>``.
 
-`tiles <#sources-vector-tiles>`__
+tiles
+^^^^^
 
 *Optional* :ref:`types-array`.
 
@@ -464,7 +452,8 @@ A URL to a TileJSON resource. Supported protocols are ``http:``,
 
 An array of one or more tile source URLs, as in the TileJSON spec.
 
-`minzoom <#sources-vector-minzoom>`__
+minzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
@@ -472,7 +461,8 @@ An array of one or more tile source URLs, as in the TileJSON spec.
 Minimum zoom level for which tiles are available, as in the TileJSON
 spec.
 
-`maxzoom <#sources-vector-maxzoom>`__
+maxzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 22.
 
@@ -497,12 +487,6 @@ higher zoom levels.
      - >= 2.0.0
      - >= 0.1.0
 
-.. raw:: html
-
-   <div id="sources-raster" class="pad2 keyline-bottom">
-
-.. _sources-raster:
-
 raster
 ~~~~~~
 
@@ -517,7 +501,8 @@ value should be of the form ``mapbox://mapid``.
       "tileSize": 256
     }
 
-`url <#sources-raster-url>`__
+url
+^^^
 
 *Optional* :ref:`types-string`.
 
@@ -525,7 +510,8 @@ value should be of the form ``mapbox://mapid``.
 A URL to a TileJSON resource. Supported protocols are ``http:``,
 ``https:``, and ``mapbox://<mapid>``.
 
-`tiles <#sources-raster-tiles>`__
+tiles
+^^^^^
 
 *Optional* :ref:`types-array`.
 
@@ -533,7 +519,8 @@ A URL to a TileJSON resource. Supported protocols are ``http:``,
 
 An array of one or more tile source URLs, as in the TileJSON spec.
 
-`minzoom <#sources-raster-minzoom>`__
+minzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
@@ -541,7 +528,8 @@ An array of one or more tile source URLs, as in the TileJSON spec.
 Minimum zoom level for which tiles are available, as in the TileJSON
 spec.
 
-`maxzoom <#sources-raster-maxzoom>`__
+maxzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 22.
 
@@ -550,7 +538,8 @@ Maximum zoom level for which tiles are available, as in the TileJSON
 spec. Data from tiles at the maxzoom are used when displaying the map at
 higher zoom levels.
 
-`tileSize <#sources-raster-tileSize>`__
+tileSize
+^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 512.
 
@@ -573,15 +562,8 @@ configurable for raster layers.
      - >= 2.0.0
      - >= 0.1.0
 
-
-.. raw:: html
-
-   <div id="sources-geojson" class="pad2 keyline-bottom">
-
-.. _sources-geojson:
-
 geojson
-~~~~~~~~
+~~~~~~~
 
 A `GeoJSON <http://geojson.org/>`__ source. Data must be provided via a
 ``"data"`` property, whose value can be a URL or inline GeoJSON.
@@ -613,14 +595,16 @@ accessible using `CORS <http://enable-cors.org/>`__.
       "data": "./lines.geojson"
     }
 
-`data <#sources-geojson-data>`__
+data
+^^^^
 
 *Optional*
 
 
 A URL to a GeoJSON file, or inline GeoJSON.
 
-`maxzoom <#sources-geojson-maxzoom>`__
+maxzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 18.
 
@@ -628,7 +612,8 @@ A URL to a GeoJSON file, or inline GeoJSON.
 Maximum zoom level at which to create vector tiles (higher means greater
 detail at high zoom levels).
 
-`buffer <#sources-geojson-buffer>`__
+buffer
+^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 128.
 
@@ -638,7 +623,8 @@ value of 512 produces a buffer as wide as the tile itself. Larger values
 produce fewer rendering artifacts near tile edges and slower
 performance.
 
-`tolerance <#sources-geojson-tolerance>`__
+tolerance
+^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 0.375.
 
@@ -646,7 +632,8 @@ performance.
 Douglas-Peucker simplification tolerance (higher means simpler
 geometries and faster performance).
 
-`cluster <#sources-geojson-cluster>`__
+cluster
+^^^^^^^
 
 *Optional* :ref:`types-boolean`. *Defaults to* false.
 
@@ -654,7 +641,8 @@ geometries and faster performance).
 If the data is a collection of point features, setting this to true
 clusters the points by radius into groups.
 
-`clusterRadius <#sources-geojson-clusterRadius>`__
+clusterRadius
+^^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 50.
 
@@ -663,10 +651,10 @@ clusters the points by radius into groups.
 Radius of each cluster if clustering is enabled. A value of 512
 indicates a radius equal to the width of a tile.
 
-`clusterMaxZoom <#sources-geojson-clusterMaxZoom>`__
+clusterMaxZoom
+^^^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`.
-
 
 
 Max zoom on which to cluster points if clustering is enabled. Defaults
@@ -709,13 +697,6 @@ clustered).
    >= 3.4.0
    >= 0.3.0
 
-
-.. raw:: html
-
-   <div id="sources-image" class="pad2 keyline-bottom">
-
-.. _sources-image:
-
 image
 ~~~~~
 
@@ -737,19 +718,17 @@ right, bottom left.
       ]
     }
 
-
-`url <#sources-image-url>`__
+url
+^^^
 
 *Required* :ref:`types-string`. 
 
-
-
 URL that points to an image.
 
-`coordinates <#sources-image-coordinates>`__
+coordinates
+^^^^^^^^^^^
 
 *Required* :ref:`types-array`.
-
 
 Corners of image specified in longitude, latitude pairs.
 
@@ -767,13 +746,6 @@ Corners of image specified in longitude, latitude pairs.
      - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
      - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
      - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
-
-
-.. raw:: html
-
-   <div id="sources-video" class="pad2 keyline-bottom">
-
-.. _sources-video:
 
 video
 ~~~~~
@@ -803,8 +775,8 @@ right, bottom left.
       ]
     }
 
-`urls <#sources-video-urls>`__
-
+urls
+^^^^
 
 *Required* :ref:`types-array`.
 
@@ -812,10 +784,10 @@ right, bottom left.
 
 URLs to video content in order of preferred format.
 
-`coordinates <#sources-video-coordinates>`__
+coordinates
+^^^^^^^^^^^
 
 *Required* :ref:`types-array`.
-
 
 
 Corners of video specified in longitude, latitude pairs.
@@ -850,15 +822,8 @@ Corners of video specified in longitude, latitude pairs.
    `Not yet
    supported <https://github.com/mapbox/mapbox-gl-native/issues/601>`__
 
-
-.. raw:: html
-
-   <div id="sources-canvas" class="pad2 keyline-bottom">
-
-.. _sources-canvas:
-
 canvas
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
 
 A canvas source. The ``"canvas"`` value is the ID of the canvas element
 in the document.
@@ -875,8 +840,6 @@ If an HTML document contains a canvas such as this:
 
 the corresponding canvas source would be specified as follows:
 
-
-
 ::
 
     "canvas": {
@@ -890,8 +853,8 @@ the corresponding canvas source would be specified as follows:
       ]
     }
 
-`coordinates <#sources-canvas-coordinates>`__
-
+coordinates
+^^^^^^^^^^^
 
 *Required* :ref:`types-array`.
 
@@ -899,22 +862,16 @@ the corresponding canvas source would be specified as follows:
 
 Corners of canvas specified in longitude, latitude pairs.
 
-`animate <#sources-canvas-animate>`__
-
-.. raw:: html
-
-   <i>Optional <a href="#boolean">boolean</a>. </i><i>Defaults to </i>true.
-
-
+animate
+^^^^^^^
 
 Whether the canvas source is animated. If the canvas is static,
 ``animate`` should be set to ``false`` to improve performance.
 
-`canvas <#sources-canvas-canvas>`__
+canvas
+^^^^^^
 
 *Required* :ref:`types-string`. 
-
-
 
 HTML ID of the canvas from which to read pixels.
 
@@ -934,14 +891,10 @@ HTML ID of the canvas from which to read pixels.
      - Not supported
      - Not supported
 
-.. raw:: html
-
-   <div class="pad2 prose">
-
 .. _sprite:
 
 Sprite
---------------------
+------
 
 A style's ``sprite`` property supplies a URL template for loading small
 images to use in rendering ``background-pattern``, ``fill-pattern``,

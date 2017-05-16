@@ -11,7 +11,7 @@ The intended audience of this quick reference includes:
 - Feature support is provided for the `Mapbox GL JS <https://www.mapbox.com/mapbox-gl-js/api/>`__, `Open Layers <http://openlayers.org>`__ and the GeoTools mbstyle module.
 - Where appropriate examples have been changed to reference `GeoWebCache <http://geowebcache.org/>`__.
 
-.. info::
+.. note::
       The `Mapbox Style Specification <https://www.mapbox.com/mapbox-gl-style-spec>`__ is generated from the BSD `Mapbox GL JS <https://github.com/mapbox/mapbox-gl-js>`__ github repository, reproduced here with details on this GeoTools implementation.
 
 
@@ -33,7 +33,7 @@ Root level properties of a Mapbox style specify the map's layers, tile sources a
 
 
 version
-^^^^^^^
+~~~~~~~
 
 *Required* :ref:`types-enum`.
 
@@ -45,7 +45,7 @@ Style specification version number. Must be 8.
 
 
 name
-^^^^
+~~~~
 
 *Optional* :ref:`types-string`.
 
@@ -56,7 +56,7 @@ A human-readable name for the style.
     "name": "Bright"
 
 metadata
-^^^^^^^^
+~~~~~~~~
 
 *Optional*
 
@@ -65,7 +65,7 @@ Arbitrary properties useful to track with the stylesheet, but do not influence r
 .. note:: *unsupported.*
 
 center
-^^^^^^
+~~~~~~
 
 *Optional* :ref:`types-array`.
 
@@ -81,7 +81,7 @@ Default map center in longitude and latitude. The style center will be used only
 .. note:: *unsupported*
 
 zoom
-^^^^
+~~~~
 
 *Optional* :ref:`types-number`.
 
@@ -94,7 +94,7 @@ been positioned by other means (e.g. map options or user interaction).
     "zoom": 12.5
 
 bearing
-^^^^^^^
+~~~~~~~
 
 *Optional* :ref:`types-number`. *Units in degrees. Defaults to* 0.
 
@@ -109,7 +109,7 @@ will be used only if the map has not been positioned by other means
 .. note:: *unsupported*
 
 pitch
-^^^^^
+~~~~~
 
 *Optional* :ref:`types-number`. *Units in degrees. Defaults to* 0.
 
@@ -124,7 +124,7 @@ interaction).
     "pitch": 50
 
 light
-^^^^^
+~~~~~
 
 The global light source.
 
@@ -137,7 +137,7 @@ The global light source.
     }
 
 sources
-^^^^^^^
+~~~~~~~
 
 *Required* :ref:`sources`.
 
@@ -154,7 +154,7 @@ Data source specifications.
     }
 
 sprite
-^^^^^^
+~~~~~~
 
 *Optional* :ref:`types-string`.
 
@@ -171,7 +171,7 @@ appended. This property is required if any layer uses the
     "sprite" : "/geoserver/styles/mark"
 
 glyphs
-^^^^^^
+~~~~~~
 
 *Optional* :ref:`types-string`.
 
@@ -187,7 +187,7 @@ property.
     "glyphs": "{fontstack}/{range}.pbf"
 
 transition
-^^^^^^^^^^
+~~~~~~~~~~
 
 *Required* :ref:`transition`.
 
@@ -203,7 +203,7 @@ A global transition definition to use as a default across properties.
     }
 
 layers
-^^^^^^
+~~~~~~
 
 *Required* :ref:`types-array`.
 
@@ -1286,7 +1286,7 @@ constant functions <#function>`__ transitionable
 
 
 `Layout Properties <#layout_background>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `visibility <#layout-background-visibility>`__
 
@@ -1316,7 +1316,7 @@ none
      - not yet supported
 
 `Paint Properties <#paint_background>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `background-color <#paint-background-color>`__
 
@@ -1391,7 +1391,7 @@ The opacity at which the background will be drawn.
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 `Layout Properties <#layout_fill>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `visibility <#layout-fill-visibility>`__
 
@@ -1420,7 +1420,7 @@ none
      - not yet supported
 
 `Paint Properties <#paint_fill>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `fill-antialias <#paint-fill-antialias>`__
 
@@ -1618,7 +1618,7 @@ patterns, image width and height must be a factor of two (2, 4, 8, ...,
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 `Layout Properties <#layout_line>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `line-cap <#layout-line-line-cap>`__
 
@@ -1866,7 +1866,7 @@ none
 
 
 `Paint Properties <#paint_line>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `line-opacity <#paint-line-opacity>`__
 
@@ -2294,7 +2294,7 @@ patterns, image width must be a factor of two (2, 4, 8, ..., 512).
 
 
 `Layout Properties <#layout_symbol>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `symbol-placement <#layout-symbol-symbol-placement>`__
 
@@ -3883,7 +3883,7 @@ none
 
 
 `Paint Properties <#paint_symbol>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `icon-opacity <#paint-icon-opacity>`__
 
@@ -4498,7 +4498,7 @@ viewport
 
 
 `Layout Properties <#layout_raster>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `visibility <#layout-raster-visibility>`__
 
@@ -4550,7 +4550,7 @@ none
 
 
 `Paint Properties <#paint_raster>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `raster-opacity <#paint-raster-opacity>`__
 
@@ -4853,7 +4853,7 @@ Fade duration when a new tile is added.
 
 
 `Layout Properties <#layout_circle>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `visibility <#layout-circle-visibility>`__
 
@@ -4899,7 +4899,7 @@ none
 
 
 `Paint Properties <#paint_circle>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `circle-radius <#paint-circle-radius>`__
 
@@ -5342,7 +5342,7 @@ The opacity of the circle's stroke.
 
 
 `Layout Properties <#layout_fill-extrusion>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `visibility <#layout-fill-extrusion-visibility>`__
 
@@ -5389,7 +5389,7 @@ none
 
 
 `Paint Properties <#paint_fill-extrusion>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `fill-extrusion-opacity <#paint-fill-extrusion-opacity>`__
 
@@ -6194,7 +6194,7 @@ one of the following forms:
    <div class="col12 clearfix space-bottom2">
 
 Existential Filters
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 
 ``["has", key]`` feature[key] exists
 
@@ -6203,7 +6203,7 @@ Existential Filters
 
 
 Comparison Filters
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 ``["==", key, value]`` equality: feature[key] = value
 
@@ -6224,7 +6224,7 @@ Comparison Filters
 
 
 Set Membership Filters
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 ``["in", key, v0, ..., vn]`` set inclusion: feature[key] ∈ {v0, ..., vn}
 
@@ -6234,7 +6234,7 @@ vn}
 
 
 Combining Filters
-^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~
 
 ``["all", f0, ..., fn]`` logical ``AND``: f0 ∧ ... ∧ fn
 

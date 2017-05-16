@@ -32,8 +32,8 @@ Root level properties of a Mapbox style specify the map's layers, tile sources a
     }
 
 
-`version <#root-version>`__
-
+version
+^^^^^^^
 
 *Required* :ref:`types-enum`.
 
@@ -44,7 +44,8 @@ Style specification version number. Must be 8.
     "version": 8
 
 
-`name <#root-name>`__
+name
+^^^^
 
 *Optional* :ref:`types-string`.
 
@@ -54,7 +55,8 @@ A human-readable name for the style.
 
     "name": "Bright"
 
-`metadata <#root-metadata>`__
+metadata
+^^^^^^^^
 
 *Optional*
 
@@ -62,8 +64,8 @@ Arbitrary properties useful to track with the stylesheet, but do not influence r
 
 .. note:: *unsupported.*
 
-`center <#root-center>`__
-
+center
+^^^^^^
 
 *Optional* :ref:`types-array`.
 
@@ -78,7 +80,8 @@ Default map center in longitude and latitude. The style center will be used only
 
 .. note:: *unsupported*
 
-`zoom <#root-zoom>`__
+zoom
+^^^^
 
 *Optional* :ref:`types-number`.
 
@@ -90,7 +93,8 @@ been positioned by other means (e.g. map options or user interaction).
 
     "zoom": 12.5
 
-`bearing <#root-bearing>`__
+bearing
+^^^^^^^
 
 *Optional* :ref:`types-number`. *Units in degrees. Defaults to* 0.
 
@@ -104,7 +108,8 @@ will be used only if the map has not been positioned by other means
 
 .. note:: *unsupported*
 
-`pitch <#root-pitch>`__
+pitch
+^^^^^
 
 *Optional* :ref:`types-number`. *Units in degrees. Defaults to* 0.
 
@@ -118,14 +123,8 @@ interaction).
 
     "pitch": 50
 
-.. _root-light:
-
-Light
-
-.. raw:: html
-
-   <i>Optional <a href="#light">light</a>.</i>
-
+light
+^^^^^
 
 The global light source.
 
@@ -137,7 +136,8 @@ The global light source.
       "intensity": 0.4
     }
 
-`sources <#root-sources>`__
+sources
+^^^^^^^
 
 *Required* :ref:`sources`.
 
@@ -153,7 +153,8 @@ Data source specifications.
       }
     }
 
-`sprite <#root-sprite>`__
+sprite
+^^^^^^
 
 *Optional* :ref:`types-string`.
 
@@ -169,7 +170,8 @@ appended. This property is required if any layer uses the
 
     "sprite" : "/geoserver/styles/mark"
 
-`glyphs <#root-glyphs>`__
+glyphs
+^^^^^^
 
 *Optional* :ref:`types-string`.
 
@@ -184,7 +186,8 @@ property.
 
     "glyphs": "{fontstack}/{range}.pbf"
 
-`transition <#root-transition>`__
+transition
+^^^^^^^^^^
 
 *Required* :ref:`transition`.
 
@@ -199,7 +202,8 @@ A global transition definition to use as a default across properties.
       "delay": 0
     }
 
-`layers <#root-layers>`__
+layers
+^^^^^^
 
 *Required* :ref:`types-array`.
 
@@ -221,23 +225,11 @@ Layers will be drawn in the order of this array.
       }
     ]
 
-
-
-
-
-.. raw:: html
-
-   <div class="pad2 prose">
-
-`Light <#light>`__
-------------------
+Light
+-----
 
 A style's ``light`` property provides global light source for that
 style.
-
-.. raw:: html
-
-   <div class="space-bottom1 pad2x clearfix">
 
 ::
 

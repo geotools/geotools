@@ -22,6 +22,7 @@ import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
 
 import java.awt.image.RenderedImage;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.media.jai.ParameterBlockJAI;
@@ -30,6 +31,8 @@ import javax.media.jai.operator.MultiplyDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseMathOperationJAI;
 import org.geotools.util.NumberRange;
+import org.opengis.parameter.InvalidParameterValueException;
+import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -133,9 +136,23 @@ public class Multiply extends BaseMathOperationJAI {
         }
     }
 
+    @Override
+    protected void extractSources(ParameterValueGroup parameters, Collection<GridCoverage2D> sources, String[] sourceNames) throws ParameterNotFoundException, InvalidParameterValueException {
+        try {
+            Collection<GridCoverage2D> paramSources = (Collection<GridCoverage2D>) parameters.parameter("Sources").getValue();
+            if (paramSources.size() >= 2) {
+                sources.addAll(paramSources);
+                return;
+            }
+        } catch (ParameterNotFoundException e) {
+            //sources parameter from jai ext not set, try to continue?
+        }
+        super.extractSources(parameters, sources, sourceNames);
+    }
+
     protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
-            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
-            Parameters parameters) {
+                                           InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+                                           Parameters parameters) {
         return handleROINoDataProperties(null, parameters.parameters, sources[0], "algebric", 1, 2, 3);
     }
 }

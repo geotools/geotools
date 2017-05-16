@@ -473,19 +473,17 @@ higher zoom levels.
 
 
 .. list-table::
-   :widths: 20, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - >= 2.0.1
-     - >= 2.0.0
-     - >= 0.1.0
+     - not yet supported
+     - 
 
 raster
 ~~~~~~
@@ -548,19 +546,17 @@ The minimum visual size to display tiles for this layer. Only
 configurable for raster layers.
 
 .. list-table::
-   :widths: 20, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - >= 2.0.1
-     - >= 2.0.0
-     - >= 0.1.0
+     - not yet supported
+     - 
 
 geojson
 ~~~~~~~
@@ -662,40 +658,21 @@ to one zoom less than maxzoom (so that last zoom features are not
 clustered).
 
 .. list-table::
-   :widths: 20, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - >= 2.0.1
-     - >= 2.0.0
-     - >= 0.1.0
+     - not yet supported
+     - 
    * - clustering
      - >= 0.14.0
-     - >= 4.2.0
-     - >= 3.4.0
-     - >= 0.3.0
-..
-   SDK Requirements
-   Mapbox GL JS
-   Android SDK
-   iOS SDK
-   macOS SDK
-   basic functionality
-   >= 0.10.0
-   >= 2.0.1
-   >= 2.0.0
-   >= 0.1.0
-   clustering
-   >= 0.14.0
-   >= 4.2.0
-   >= 3.4.0
-   >= 0.3.0
+     - not yet supported
+     - 
 
 image
 ~~~~~
@@ -733,19 +710,17 @@ coordinates
 Corners of image specified in longitude, latitude pairs.
 
 .. list-table::
-   :widths: 20, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
-     - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
-     - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
+     - not yet supported
+     - 
 
 video
 ~~~~~
@@ -793,34 +768,17 @@ coordinates
 Corners of video specified in longitude, latitude pairs.
 
 .. list-table::
-   :widths: 20, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
-     - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
-     - `Not yet supported <https://github.com/mapbox/mapbox-gl-native/issues/1350>`__
-
-..
-   SDK Support
-   Mapbox GL JS
-   Android SDK
-   iOS SDK
-   macOS SDK
-   basic functionality
-   >= 0.10.0
-   `Not yet
-   supported <https://github.com/mapbox/mapbox-gl-native/issues/601>`__
-   `Not yet
-   supported <https://github.com/mapbox/mapbox-gl-native/issues/601>`__
-   `Not yet
-   supported <https://github.com/mapbox/mapbox-gl-native/issues/601>`__
+     - not yet supported
+     - 
 
 canvas
 ~~~~~~
@@ -877,19 +835,17 @@ HTML ID of the canvas from which to read pixels.
 
 
 .. list-table::
-   :widths: 20, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.32.0
-     - Not supported
-     - Not supported
-     - Not supported
+     - not yet supported
+     - 
 
 .. _sprite:
 

@@ -3,10 +3,10 @@ Mapbox Styles Module
 
 The **gt-mbstyle** module is an unsupported module that provides a parser/encoder to convert between Mapbox Styles and GeoTools style objects. These docs are under active development, along with the module itself.
 
-* Human readable alternative to machine readable XML
-* Compact representation
-* A JSON object with specific root level and nested properties
-* Full access to GeoTools rendering engine not limited by SLD specification
+.. toctree::
+   :maxdepth: 1
+
+   spec
 
 References:
 
@@ -19,7 +19,8 @@ Quick example of module usage (API change):
 
 .. code-block:: java
 
-    StyledLayerDescriptor style = MapBoxStyle.parse( reader );
+    MBStyle style = MapBoxStyle.parse( reader );
+    StyleLayerDescriptor sld = style.transform();
 
 Internally the extension provides greater access to the parsed style:
 
@@ -28,22 +29,23 @@ Internally the extension provides greater access to the parsed style:
     MBStyle mbstyle = MapBoxStyleParser.parse( reader );
 
     // pull back all layers for a provided source
-    List<MBLayer> layers = mbstyle.layers( "mapbox://mapbox.mapbox-streets-v6" );
+    List<MBLayer> layers = mbstyle.layers( "sf:roads" );
 
     // pull back selected layers for a provided source
-    List<MBLayer> layers = mbstyle.layers( "mapbox://mapbox.mapbox-streets-v6", "water" );
+    List<MBLayer> layers = mbstyle.layers( "sf:roads" );
 
-    //Which can be used to Generate Styler Layer Descriptor:
-    StyleLayerDescriptor sld = MBStyleTransformer.transform( layers );
+    //Which can be used to Generate a List of FeatureTypeStyles:
+    List<FeatureTypeStyle> fts = layer.transform( style );
 
 MapBox Types
 ^^^^^^^^^^^^
- copied from the `MapBox Style Specification <https://www.mapbox.com/mapbox-gl-js/style-spec/>`_
+  copied from the `MapBox Style Specification <https://www.mapbox.com/mapbox-gl-js/style-spec/>`_
+
   Color
-  '''''
+
     Colors are written as JSON strings in a variety of permitted formats: HTML-style hex values, rgb, rgba, hsl, and hsla. Predefined HTML colors names, like yellow and blue, are also permitted.
 
-      .. code-block:: json
+      ::
 
         {
           "line-color": "#ff0",
@@ -54,53 +56,54 @@ MapBox Types
           "line-color": "hsla(100, 50%, 50%, 1)",
           "line-color": "yellow"
         }
+
     Especially of note is the support for hsl, which can be easier to reason about than rgb().
 
   Enum
-  ''''
+
     One of a fixed list of string values. Use quotes around values.
 
-    .. code-block:: json
+    ::
 
       {
         "text-transform": "uppercase"
       }
 
   String
-  ''''''
+
     A string is basically just text. In Mapbox styles, you're going to put it in quotes. Strings can be anything, though pay attention to the case of text-field - it actually will refer to features, which you refer to by putting them in curly braces, as seen in the example below.
 
-    .. code-block:: json
+    ::
 
       {
         "text-field": "{MY_FIELD}"
       }
 
   Boolean
-  '''''''
+
     Boolean means yes or no, so it accepts the values true or false.
 
-    .. code-block:: json
+    ::
 
       {
         "fill-enabled": true
       }
 
   Number
-  ''''''
+
     A number value, often an integer or floating point (decimal number). Written without quotes.
 
-    .. code-block:: json
+    ::
 
       {
         "text-size": 24
       }
 
   Array
-  '''''
+
     Arrays are comma-separated lists of one or more numbers in a specific order. For example, they're used in line dash arrays, in which the numbers specify intervals of line, break, and line again.
 
-    .. code-block:: json
+    ::
 
       {
         "line-dasharray": [2, 4]
@@ -111,81 +114,80 @@ Function
 The value for any layout or paint property may be specified as a function. Functions allow you to make the appearance of a map feature change with the current zoom level and/or the feature's properties.
 
   stops
-  '''''
-  *Required (except for identity functions) array.*
 
-  Functions are defined in terms of input and output values. A set of one input value and one output value is known as a "stop."
+    *Required (except for identity functions) array.*
+
+    Functions are defined in terms of input and output values. A set of one input value and one output value is known as a "stop."
 
   property
-  ''''''''
-  *Optional string*
 
-  If specified, the function will take the specified feature property as an input. See *Zoom Functions and Property Functions* for more information.
+    *Optional string*
+
+    If specified, the function will take the specified feature property as an input. See *Zoom Functions and Property Functions* for more information.
 
   base
-  ''''
-  *Optional number. Default is 1.*
 
-  The exponential base of the interpolation curve. It controls the rate at which the function output increases. Higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.
+    *Optional number. Default is 1.*
+
+    The exponential base of the interpolation curve. It controls the rate at which the function output increases. Higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.
 
   type
-  ''''
-  *Optional enum. One of identity, exponential, interval, categorical*
 
-    identity
-    ''''''''
-    functions return their input as their output.
+    *Optional enum. One of identity, exponential, interval, categorical*
 
-    exponential
-    '''''''''''
-    functions generate an output by interpolating between stops just less than and just greater than the function input. The domain must be numeric.
+      identity
 
-    interval
-    ''''''''
-    functions return the output value of the stop just less than the function input. The domain must be numeric.
+        functions return their input as their output.
 
-    categorical
-    '''''''''''
-    functions return the output value of the stop equal to the function input.
+      exponential
 
-    default
-    '''''''
-    A value to serve as a fallback function result when a value isn't otherwise available. It is used in the following circumstances:
+        functions generate an output by interpolating between stops just less than and just greater than the function input. The domain must be numeric.
 
-      * In categorical functions, when the feature value does not match any of the stop domain values.
-      * In property and zoom-and-property functions, when a feature does not contain a value for the specified property.
-      * In identity functions, when the feature value is not valid for the style property (for example, if the function is being used for a circle-color property but the feature property value is not a string or not a valid color).
-      * In interval or exponential property and zoom-and-property functions, when the feature value is not numeric.
-    If no default is provided, the style property's default is used in these circumstances.
+      interval
+
+        functions return the output value of the stop just less than the function input. The domain must be numeric.
+
+      categorical
+
+        functions return the output value of the stop equal to the function input.
+
+      default
+
+        A value to serve as a fallback function result when a value isn't otherwise available. It is used in the following circumstances:
+
+          * In categorical functions, when the feature value does not match any of the stop domain values.
+          * In property and zoom-and-property functions, when a feature does not contain a value for the specified property.
+          * In identity functions, when the feature value is not valid for the style property (for example, if the function is being used for a circle-color property but the feature property value is not a string or not a valid color).
+          * In interval or exponential property and zoom-and-property functions, when the feature value is not numeric.
+
+      If no default is provided, the style property's default is used in these circumstances.
 
     colorSpace
-    ''''''''''
-    *Optional enum. One of rgb, lab, hcl*
 
-    The color space in which colors interpolated. Interpolating colors in perceptual color spaces like LAB and HCL tend to produce color ramps that look more consistent and produce colors that can be differentiated more easily than those interpolated in RGB space.
+      *Optional enum. One of rgb, lab, hcl*
 
-    *rgb*
+        The color space in which colors interpolated. Interpolating colors in perceptual color spaces like LAB and HCL tend to produce color ramps that look more consistent and produce colors that can be differentiated more easily than those interpolated in RGB space.
 
-    Use the RGB color space to interpolate color values
+      *rgb*
 
-    *lab*
+        Use the RGB color space to interpolate color values
 
-    Use the LAB color space to interpolate color values.
+      *lab*
 
-    *hcl*
+        Use the LAB color space to interpolate color values.
 
-    Use the HCL color space to interpolate color values, interpolating the Hue, Chroma, and Luminance channels individually.
+      *hcl*
+
+        Use the HCL color space to interpolate color values, interpolating the Hue, Chroma, and Luminance channels individually.
 
     **Zoom Functions** allow the appearance of a map feature to change with map’s zoom level. Zoom functions can be used to create the illusion of depth and control data density. Each stop is an array with two elements: the first is a zoom level and the second is a function output value.
 
-    .. code-block:: json
+    ::
 
       {
         "circle-radius": {
           "stops": [
-            // zoom is 5 -> circle radius will be 1px
             [5, 1],
-            // zoom is 10 -> circle radius will be 2px
             [10, 2]
           ]
         }
@@ -197,78 +199,72 @@ The value for any layout or paint property may be specified as a function. Funct
 
     **Property functions** allow the appearance of a map feature to change with its properties. Property functions can be used to visually differentate types of features within the same layer or create data visualizations. Each stop is an array with two elements, the first is a property input value and the second is a function output value. Note that support for property functions is not available across all properties and platforms at this time.
 
-    .. code-block:: json
+    ::
 
       {
         "circle-color": {
           "property": "temperature",
           "stops": [
-            // "temperature" is 0   -> circle color will be blue
-            [0, 'blue'],
-            // "temperature" is 100 -> circle color will be red
-            [100, 'red']
+            [0, "blue"],
+            [100, "red"]
           ]
         }
       }
 
     **Zoom-and-property functions** allow the appearance of a map feature to change with both its properties and zoom. Each stop is an array with two elements, the first is an object with a property input value and a zoom, and the second is a function output value. Note that support for property functions is not yet complete.
 
-    .. code-block:: json
+    ::
 
       {
         "circle-radius": {
           "property": "rating",
           "stops": [
-            // zoom is 0 and "rating" is 0 -> circle radius will be 0px
-            [{zoom: 0, value: 0}, 0],
-            // zoom is 0 and "rating" is 5 -> circle radius will be 5px
-            [{zoom: 0, value: 5}, 5],
-            // zoom is 20 and "rating" is 0 -> circle radius will be 0px
-            [{zoom: 20, value: 0}, 0],
-            // zoom is 20 and "rating" is 5 -> circle radius will be 20px
-            [{zoom: 20, value: 5}, 20]
+            [{"zoom": 0, "value": 0}, 0],
+            [{"zoom": 0, "value": 5}, 5],
+            [{"zoom": 20, "value": 0}, 0],
+            [{"zoom": 20, "value": 5}, 20]
           ]
         }
       }
 
   Filter
-  ''''''
+
 
   A filter selects specific features from a layer. A filter is an array of one of the following forms:
 
     **Existential Filters**
 
-    ["has", *key*]   *feature[key]* exists
+      ["has", *key*]   *feature[key]* exists
 
-    ["!has", *key*] *feature[key]* does not exist
+      ["!has", *key*] *feature[key]* does not exist
 
     **Comparison Filters**
 
-    ["==", *key, value*] equality: *feature[key] = value*
+      ["==", *key, value*] equality: *feature[key] = value*
 
-    ["!=", *key, value*] inequality: *feature[key] ≠ value*
+      ["!=", *key, value*] inequality: *feature[key] ≠ value*
 
-    [">", *key, value*] greater than: *feature[key] > value*
+      [">", *key, value*] greater than: *feature[key] > value*
 
-    [">=", *key, value*] greater than or equal: *feature[key] ≥ value*
+      [">=", *key, value*] greater than or equal: *feature[key] ≥ value*
 
-    ["<", *key, value*] less than: *feature[key] < value*
+      ["<", *key, value*] less than: *feature[key] < value*
 
-    ["<=", *key, value*] less than or equal: *feature[key] ≤ value*
+      ["<=", *key, value*] less than or equal: *feature[key] ≤ value*
 
     **Set Membership Filters**
 
-    ["in", *key, v0, ..., vn*] set inclusion: *feature[key] ∈ {v0, ..., vn}*
+      ["in", *key, v0, ..., vn*] set inclusion: *feature[key] ∈ {v0, ..., vn}*
 
-    ["!in", *key, v0, ..., vn*] set exclusion: *feature[key] ∉ {v0, ..., vn}*
+      ["!in", *key, v0, ..., vn*] set exclusion: *feature[key] ∉ {v0, ..., vn}*
 
     **Combining Filters**
 
-    ["all", *f0, ..., fn*] logical AND: *f0 ∧ ... ∧ fn*
+      ["all", *f0, ..., fn*] logical AND: *f0 ∧ ... ∧ fn*
 
-    ["any", *f0, ..., fn*] logical OR: *f0 ∨ ... ∨ fn*
+      ["any", *f0, ..., fn*] logical OR: *f0 ∨ ... ∨ fn*
 
-    ["none", *f0, ..., fn*] logical NOR: *¬f0 ∧ ... ∧ ¬fn*
+      ["none", *f0, ..., fn*] logical NOR: *¬f0 ∧ ... ∧ ¬fn*
 
     A *key* must be a string that identifies a feature property, or one of the following special keys:
 
@@ -284,19 +280,19 @@ The value for any layout or paint property may be specified as a function. Funct
 
     The "all", "any", and "none" filter operators are used to create compound filters. The values *f0, ..., fn* must be filter expressions themselves.
 
-    .. code-block:: json
+    ::
 
       ["==", "$type", "LineString"]
 
     This filter requires that the class property of each feature is equal to either "street_major", "street_minor", or "street_limited".
 
-    .. code-block:: json
+    ::
 
       ["in", "class", "street_major", "street_minor", "street_limited"]
 
     The combining filter "all" takes the three other filters that follow it and requires all of them to be true for a feature to be included: a feature must have a class equal to "street_limited", its admin_level must be greater than or equal to 3, and its type cannot be Polygon. You could change the combining filter to "any" to allow features matching any of those criteria to be included - features that are Polygons, but have a different class value, and so on.
 
-    .. code-block:: json
+    ::
 
       [
         "all",
@@ -310,9 +306,9 @@ MapBox Style Grammar
   *JSON does not allow for comments within the data therefore comments will be noted through the placement of the comment between open < and close > angle brackets. All properties are optional unless otherwise noted as Requried*
 
   Root Properties
-  '''''''''''''''
 
-  .. code-block:: json
+
+  ::
 
     {
       "version": 8, <Required>
@@ -324,12 +320,12 @@ MapBox Style Grammar
     }
 
   layers
-  ''''''
+
   Layers are drawn in the order they appear in the layer array. Layers have two additional properties that determine how data is rendered: *layout* and *paint*
 
   Background Layer definition
-  '''''''''''''''''''''''''''
-  .. code-block:: json
+
+  ::
 
     {
       "layers" : [
@@ -352,8 +348,8 @@ MapBox Style Grammar
   *background-color* is disabled by the presence of *background-pattern*
 
   Fill Layer Definition
-  '''''''''''''''''''''
-  .. code-block:: json
+
+  ::
 
     {
       "layers": [
@@ -379,9 +375,9 @@ MapBox Style Grammar
     }
 
   Line Layer Definition
-  '''''''''''''''''''''
 
-  .. code-block:: json
+
+  ::
 
     {
       "layers": [
@@ -412,10 +408,11 @@ MapBox Style Grammar
         }
       ],
     }
-  Symbol Layer Definition
-  '''''''''''''''''''''''
 
-  .. code-block:: json
+  Symbol Layer Definition
+
+
+  ::
 
     {
       "layers": [
@@ -483,9 +480,10 @@ MapBox Style Grammar
         }
       ],
     }
+
   Raster Layer Definition
-  '''''''''''''''''''''''
-  .. code-block:: json
+
+  ::
 
     {
       "layers": [
@@ -509,9 +507,10 @@ MapBox Style Grammar
         }
       ],
     }
+
   Circle Layer definition
-  '''''''''''''''''''''''
-  .. code-block:: json
+
+  ::
 
     {
       "layers": [
@@ -538,9 +537,10 @@ MapBox Style Grammar
         }
       ],
     }
+
   Fill-Extrusion Layer Definition
-  '''''''''''''''''''''''''''''''
-  .. code-block:: json
+
+  ::
 
     {
       {

@@ -22,7 +22,7 @@ Research and Development:
    geojson
    geometry/index
    jts-wrapper
-   mbstyle
+   mbstyle/index
    process/index
    swing/index
    swt/index

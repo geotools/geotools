@@ -5251,31 +5251,17 @@ none
 
 
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
-     - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
+     - >= 17.1
+     - 
 
 
 Paint Properties
@@ -5293,38 +5279,22 @@ available.
 
 
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
-     - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
-
+     - >= 17.1
+     - 
 
 fill-extrusion-color
 """"""""""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Disabled by* fill-extrusion-pattern.
-
 
 
 The base color of the extruded fill. The extrusion's surfaces will be
@@ -5335,37 +5305,17 @@ component, the alpha component will be ignored; use
 
 
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
-     - Not yet supported
-     - Not yet supported
-     - Not yet supported
-   * - data-driven styling
-     - >= 0.27.0
-     - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
-
+     - >= 17.1
+     - 
 
 fill-extrusion-translate
 """"""""""""""""""""""""
@@ -5379,37 +5329,21 @@ and up (on the flat plane), respectively.
 
 
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
    * - data-driven styling
      - Not yet supported
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
-
+     - 
 
 fill-extrusion-translate-anchor
 """""""""""""""""""""""""""""""
@@ -5429,36 +5363,21 @@ viewport
 
 
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
    * - data-driven styling
      - Not yet supported
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
+     - 
 
 
 fill-extrusion-pattern
@@ -5472,39 +5391,22 @@ Name of image in sprite to use for drawing images on extruded fills. For
 seamless patterns, image width and height must be a factor of two (2, 4,
 8, ..., 512).
 
-
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
    * - data-driven styling
      - Not yet supported
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
-
+     - 
 
 fill-extrusion-height
 """""""""""""""""""""
@@ -5516,36 +5418,21 @@ The height with which to extrude this layer.
 
 
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
    * - data-driven styling
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
-
+     - 
 
 
 fill-extrusion-base
@@ -5558,37 +5445,22 @@ fill-extrusion-base
 The height with which to extrude the base of this layer. Must be less
 than or equal to ``fill-extrusion-height``.
 
-
 .. list-table::
-   :widths: 10, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - Mapbox
+   * - Support
+     - Mapbox
      - GeoTools
      - OpenLayers
-   * - 0.27.0
-     - 18.0
-     - 4.1.1
-
-.. list-table::
-   :widths: 30, 30, 30, 30, 30
-   :header-rows: 1
-
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
    * - basic functionality
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
    * - data-driven styling
      - >= 0.27.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
 
 
 Types

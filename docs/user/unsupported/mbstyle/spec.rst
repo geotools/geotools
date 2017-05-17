@@ -5815,59 +5815,49 @@ hcl
 
 
 .. list-table::
-   :widths: 30, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - >= 2.0.1
-     - >= 2.0.0
-     - >= 0.1.0
+     - >= 17.1
+     - 
    * - ``property``
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``type``
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``exponential`` type
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``interval`` type
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``categorical`` type
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``identity`` type
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``default`` type
      - >= 0.18.0
-     - >= 5.0.0
-     - >= 3.5.0
-     - >= 0.4.0
+     - >= 17.1
+     - 
    * - ``colorSpace`` type
      - >= 0.26.0
      - Not yet supported
-     - Not yet supported
-     - Not yet supported
+     - 
 
 
 **Zoom functions** allow the appearance of a map feature to change with
@@ -6082,24 +6072,19 @@ are Polygons, but have a different ``class`` value, and so on.
       ["!in", "$type", "Polygon"]
     ]
 
-
 .. list-table::
-   :widths: 30, 30, 30, 30, 30
+   :widths: 10, 30, 30, 30
    :header-rows: 1
 
-   * - SDK Support
-     - Mapbox GL JS
-     - Android SDK
-     - iOS SDK
-     - macOS SDK
+   * - Support
+     - Mapbox
+     - GeoTools
+     - OpenLayers
    * - basic functionality
      - >= 0.10.0
-     - >= 2.0.1
-     - >= 2.0.0
-     - >= 0.1.0
+     - >= 17.1
+     - 
    * - ``has``/``!has``
      - >= 0.19.0
-     - >= 4.1.0
-     - >= 3.3.0
-     - >= 0.1.0
-
+     - >= 17.1
+     - 

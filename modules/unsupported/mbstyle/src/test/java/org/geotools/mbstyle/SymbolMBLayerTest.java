@@ -16,12 +16,33 @@
  */
 package org.geotools.mbstyle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
+import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SymbolMBLayerTest {
+    SymbolMBLayer testLayerDefault;
+    SymbolMBLayer testLayer;
+    MBStyle defaultStyle;
+
+    
+    @Before
+    public void setUp() throws IOException, ParseException {
+        JSONObject jsonDefault = MapboxTestUtils.parseTestStyle("symbolStyleTestDefaults.json");
+        JSONObject json = MapboxTestUtils.parseTestStyle("symbolStyleTest.json");
+        defaultStyle = MBStyle.create(jsonDefault);
+        testLayerDefault = (SymbolMBLayer) MBStyle.create(jsonDefault).layer("testid");
+        testLayer = (SymbolMBLayer) MBStyle.create(json).layer("testid");
+
+        
+    }
 
     @Test
     public void testTextAnchorEnum(){
@@ -35,5 +56,14 @@ public class SymbolMBLayerTest {
         // justification
         assertEquals( 0.5, TextAnchor.getAnchorX("center"), 0.0 );
         assertEquals( 0.5, TextAnchor.getAnchorY("center"), 0.0 );
+    }
+
+    @Test
+    public void testTextMaxWidth(){
+        //Test default MBStyle value
+        assertEquals(160, testLayerDefault.getTextMaxWidth().intValue() * testLayerDefault.getTextSize().intValue());
+        //Test generated MBStyle values
+        assertEquals(100, testLayer.getTextMaxWidth().intValue() * testLayer.getTextSize().intValue());
+        
     }
 }

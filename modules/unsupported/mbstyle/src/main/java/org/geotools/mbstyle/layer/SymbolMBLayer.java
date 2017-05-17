@@ -1731,7 +1731,9 @@ public class SymbolMBLayer extends MBLayer {
         // layer.textHaloBlur();
 
         // auto wrap
-        // symbolizer.getOptions().put("autoWrap", layer.textMaxWidth()); //  Pixels (GS) vs ems (MB); Vendor options with expressions?
+        // getTextSize defaults to 16, and getTextMaxWidth defaults to 10 
+        // converts text-max-width(mbstyle) from ems to pixels for autoWrap(sld)
+        symbolizer.getOptions().put("autoWrap", String.valueOf(getTextMaxWidth().intValue() * getTextSize().intValue())); 
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {

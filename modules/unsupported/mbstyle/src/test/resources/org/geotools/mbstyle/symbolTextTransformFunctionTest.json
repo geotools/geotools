@@ -34,29 +34,26 @@
             "layout": {
                 "text-line-height": 1,
                 "text-size": 14,
-                "text-justify": "left",
+                "text-transform": {
+                    "type": "interval",
+                    "property": "text",
+                    "default": "none",
+                    "stops": [ 
+                        ["1", "uppercase"],
+                        ["2", "lowercase"],
+                        ["3", "none"],
+                        ["4", "uppercase"],
+                        ["5", "lowercase"],
+                        ["6", "none"]                        
+                    ]
+                }
                 "visibility": "visible",
-                "text-offset": [
-                    00,
-                    10
-                ],
-                "text-anchor": "CENTER",
-                "text-pitch-alignment": "viewport",
-                "text-field": "Sample Text",
-                "text-letter-spacing": 0.05,
-                "text-max-width": 5,
-                "text-font": ["Some Test Font", "Other Test Font"],
-                "symbol-placement": "line",
-                "symbol-spacing": 80,
-                "text-allow-overlap": true
+                "text-field": "TesT",
+                "symbol-placement": "line"
             },
             "paint": {
                 "text-color": "#334d77",
-                "text-opacity": 1,
-                "text-translate": [
-                      0,
-                      0
-                ]
+                "text-opacity": 1
             }
         }
     ],

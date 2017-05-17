@@ -856,10 +856,6 @@ A style's ``sprite`` property supplies a URL template for loading small
 images to use in rendering ``background-pattern``, ``fill-pattern``,
 ``line-pattern``, and ``icon-image`` style properties.
 
-.. raw:: html
-
-   <div class="space-bottom1 pad2x clearfix">
-
 ::
 
     "sprite" : "/geoserver/styles/mark"
@@ -876,10 +872,6 @@ A valid sprite source must supply two types of files:
    (``x`` and ``y``). For example, a sprite containing a single image
    might have the following index file contents:
 
-   .. raw:: html
-
-      <div class="space-bottom1 clearfix">
-
    ::
 
        {
@@ -891,10 +883,6 @@ A valid sprite source must supply two types of files:
            "pixelRatio": 1
          }
        }
-
-   .. raw:: html
-
-      </div>
 
    Then the style could refer to this sprite image by creating a symbol
    layer with the layout property ``"icon-image": "poi"``, or with the
@@ -922,22 +910,13 @@ files, you can use
 line utility that builds Mapbox GL compatible sprite PNGs and index
 files from a directory of SVGs.
 
-
-.. raw:: html
-
-   <div class="pad2 prose">
-
 .. _glyphs:
 
 Glyphs
---------------------
+------
 
 A style's ``glyphs`` property provides a URL template for loading
 signed-distance-field glyph sets in PBF format.
-
-.. raw:: html
-
-   <div class="space-bottom1 pad2x clearfix">
 
 ::
 
@@ -957,22 +936,13 @@ This URL template should include two tokens:
    would be ``0-255``. The actual ranges that are loaded are determined
    at runtime based on what text needs to be displayed.
 
-
-.. raw:: html
-
-   <div class="pad2 prose">
-
 .. _transition:
 
 Transition
-----------------------------
+----------
 
 A style's ``transition`` property provides global transition defaults
 for that style.
-
-.. raw:: html
-
-   <div class="space-bottom1 pad2x clearfix">
 
 ::
 
@@ -981,38 +951,25 @@ for that style.
       "delay": 0
     }
 
-
-.. raw:: html
-
-   <div class="pad2 keyline-all fill-white">
-
-`duration <#transition-duration>`__
+duration
+~~~~~~~~
 
 *Optional* :ref:`types-number`. *Units in milliseconds. Defaults to* 300. 
 
 
 Time allotted for transitions to complete.
 
-`delay <#transition-delay>`__
+delay
+~~~~~
 
 *Optional* :ref:`types-number`. *Units in milliseconds. Defaults to* 0. 
 
-
-
 Length of time before a transition begins.
-
-
-
-
-
-.. raw:: html
-
-   <div class="pad2 prose">
 
 .. _layers:
 
 Layers
---------------------
+------
 
 A style's ``layers`` property lists all of the layers available in that
 style. The type of layer is specified by the ``"type"`` property, and
@@ -1022,10 +979,6 @@ fill-extrusion.
 Except for layers of the background type, each layer needs to refer to a
 source. Layers take the data that they get from a source, optionally
 filter features, and then define how those features are styled.
-
-.. raw:: html
-
-   <div class="space-bottom1 pad2x clearfix">
 
 ::
 
@@ -1041,24 +994,19 @@ filter features, and then define how those features are styled.
       }
     ]
 
+Layer Properties
+~~~~~~~~~~~~~~~~
 
-.. raw:: html
-
-   <div class="pad2 keyline-all fill-white">
-
-.. _layer_id:
-
-``id``
+id
+^^
 
 *Required* :ref:`types-string`. 
 
 
 Unique layer name.
 
-.. _layer-type:
-
-``type``
-
+type
+^^^^
 
 *Optional* :ref:`types-enum`. *One of fill, line, symbol, circle, fill-extrusion, raster, background.*
 
@@ -1087,7 +1035,8 @@ Rendering type of this layer.
 *background*
     The background color or pattern of the map.
 
-``metadata``
+metadata
+^^^^^^^^
 
 *Optional*
 
@@ -1096,7 +1045,8 @@ Arbitrary properties useful to track with the layer, but do not
 influence rendering. Properties should be prefixed to avoid collisions,
 like 'mapbox:'.
 
-``ref``
+ref
+^^^
 
 *Optional* :ref:`types-string`.
 
@@ -1106,7 +1056,8 @@ References another layer to copy ``type``, ``source``, ``source-layer``,
 ``minzoom``, ``maxzoom``, ``filter``, and ``layout`` properties from.
 This allows the layers to share processing and be more efficient.
 
-``source``
+source
+^^^^^^
 
 *Optional* :ref:`types-string`.
 
@@ -1114,7 +1065,8 @@ This allows the layers to share processing and be more efficient.
 
 Name of a source description to be used for this layer.
 
-``source-layer``
+source-layer
+^^^^^^^^^^^^
 
 *Optional* :ref:`types-string`.
 
@@ -1123,7 +1075,8 @@ Name of a source description to be used for this layer.
 Layer to use from a vector tile source. Required if the source supports
 multiple layers.
 
-``minzoom``
+minzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`.
 
@@ -1131,7 +1084,8 @@ multiple layers.
 
 The minimum zoom level on which the layer gets parsed and appears on.
 
-``maxzoom``
+maxzoom
+^^^^^^^
 
 *Optional* :ref:`types-number`.
 
@@ -1139,7 +1093,8 @@ The minimum zoom level on which the layer gets parsed and appears on.
 
 The maximum zoom level on which the layer gets parsed and appears on.
 
-``filter``
+filter
+^^^^^^
 
 *Optional* :ref:`types-filter`.
 
@@ -1148,18 +1103,15 @@ The maximum zoom level on which the layer gets parsed and appears on.
 A expression specifying conditions on source features. Only features
 that match the filter are displayed.
 
-``layout``
+layout
+^^^^^^
 
 layout properties for the layer
 
-``paint``
+paint
+^^^^^
 
 *Optional* paint properties for the layer
-
-
-.. raw:: html
-
-   <div class="pad2 prose">
 
 Layers have two sub-properties that determine how data from that layer
 is rendered: ``layout`` and ``paint`` properties.
@@ -1177,27 +1129,14 @@ that shares layout properties with another layer can have independent
 paint properties. Paint properties appear in the layer's ``"paint"``
 object.
 
-Key: `supports interpolated functions <#function>`__ `supports piecewise
-constant functions <#function>`__ transitionable
+background
+~~~~~~~~~~
 
-.. raw:: html
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-   <div class="space-bottom4 fill-white keyline-all">
-
-.. raw:: html
-
-   <div id="layers-background" class="pad2 keyline-bottom">
-
-
-`background <#layers-background>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-`Layout Properties <#layout_background>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`visibility <#layout-background-visibility>`__
+visibility
+""""""""""
 
 *Optional* :ref:`types-enum`. *One of* visible, none, *Defaults to* visible.
 
@@ -1224,11 +1163,11 @@ none
      - not yet supported
      - not yet supported
 
-`Paint Properties <#paint_background>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`background-color <#paint-background-color>`__
-
+background-color
+""""""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Disabled by* background-pattern.
 
@@ -1249,7 +1188,8 @@ The color with which the background will be drawn.
      - not yet supported
      - not yet supported
 
-`background-pattern <#paint-background-pattern>`__
+background-pattern
+""""""""""""""""""
 
 *Optional* :ref:`types-string`.
 
@@ -1273,7 +1213,8 @@ seamless patterns, image width and height must be a factor of two (2, 4,
      - not yet supported
      - not yet supported
 
-`background-opacity <#paint-background-opacity>`__
+background-opacity
+""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -1292,17 +1233,14 @@ The opacity at which the background will be drawn.
      - not yet supported
      - not yet supported
 
-.. raw:: html
+fill
+~~~~
 
-   <div id="layers-fill" class="pad2 keyline-bottom">
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-`fill <#layers-fill>`__
-~~~~~~~~~~~~~~~~~~~~~~~
-
-`Layout Properties <#layout_fill>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`visibility <#layout-fill-visibility>`__
+visibility
+""""""""""
 
 
 *Optional* :ref:`types-enum`. *One of* visible, none. *Defaults to* visible.
@@ -1328,14 +1266,13 @@ none
      - not yet supported
      - not yet supported
 
-`Paint Properties <#paint_fill>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`fill-antialias <#paint-fill-antialias>`__
+fill-antialias
+""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* true.
-
-
 
 
 Whether or not the fill should be antialiased.
@@ -1358,7 +1295,8 @@ Whether or not the fill should be antialiased.
      - 18.0
      - not yet supported
 
-`fill-opacity <#paint-fill-opacity>`__
+fill-opacity
+""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -1384,8 +1322,8 @@ stroke is used.
      - 18.0
      - 4.1.1
 
-`fill-color <#paint-fill-color>`__
-
+fill-color
+""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Disabled by* fill-pattern.
 
@@ -1412,8 +1350,8 @@ affect the opacity of the 1px stroke, if it is used.
      - 18.0
      - 4.1.1
 
-`fill-outline-color <#paint-fill-outline-color>`__
-
+fill-outline-color
+""""""""""""""""""
 
 *Optional* :ref:`types-color`. *Disabled by* fill-pattern. *Requires* fill-antialias = true.
 
@@ -1438,7 +1376,8 @@ unspecified.
      - 18.0
      - 4.1.1
 
-`fill-translate <#paint-fill-translate>`__
+fill-translate
+""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0.0.
 
@@ -1463,8 +1402,8 @@ and up, respectively.
      - 18.0
      - not yet supported
 
-`fill-translate-anchor <#paint-fill-translate-anchor>`__
-
+fill-translate-anchor
+"""""""""""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* map, viewport. *Defaults to* map. *Requires* fill-translate.
 
@@ -1493,7 +1432,8 @@ viewport
      - not yet supported
      - not yet supported
 
-`fill-pattern <#paint-fill-pattern>`__
+fill-pattern
+""""""""""""
 
 *Optional* :ref:`types-string`.
 
@@ -1523,14 +1463,14 @@ patterns, image width and height must be a factor of two (2, 4, 8, ...,
 
    <div id="layers-line" class="pad2 keyline-bottom">
 
-`line <#layers-line>`__
-~~~~~~~~~~~~~~~~~~~~~~~
+line
+~~~~
 
-`Layout Properties <#layout_line>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-`line-cap <#layout-line-line-cap>`__
-
+line-cap
+""""""""
 
 *Optional* :ref:`types-enum`. *One of* butt, round, square. *Defaults to* butt.
 
@@ -1591,8 +1531,8 @@ square
      - Not yet supported
 
 
-`line-join <#layout-line-line-join>`__
-
+line-join
+"""""""""
 
 *Optional* :ref:`types-enum`. *One of* bevel, round, miter. *Defaults to* miter.
 
@@ -1645,8 +1585,8 @@ miter
      - Not yet supported
 
 
-`line-miter-limit <#layout-line-line-miter-limit>`__
-
+line-miter-limit
+""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 2. *Requires* line-join = miter.
 
@@ -1686,7 +1626,8 @@ angles.
      - Not yet supported
 
 
-`line-round-limit <#layout-line-line-round-limit>`__
+line-round-limit
+""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.05. *Requires* line-join = round.
 
@@ -1727,8 +1668,8 @@ angles.
      - Not yet supported
 
 
-`visibility <#layout-line-visibility>`__
-
+visibility
+""""""""""
 
 *Optional* :ref:`types-enum`. *One of* visible, none. *Defaults to* visible.
 
@@ -1774,10 +1715,11 @@ none
      - Not yet supported
 
 
-`Paint Properties <#paint_line>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`line-opacity <#paint-line-opacity>`__
+line-opacity
+""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -1817,8 +1759,8 @@ The opacity at which the line will be drawn.
      - >= 0.4.0
 
 
-`line-color <#paint-line-color>`__
-
+line-color
+""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Disabled by* line-pattern.
 
@@ -1857,7 +1799,8 @@ The color with which the line will be drawn.
      - >= 0.4.0
 
 
-`line-translate <#paint-line-translate>`__
+line-translate
+""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0.0.
 
@@ -1899,9 +1842,8 @@ and up, respectively.
 
 
 
-`line-translate-anchor <#paint-line-translate-anchor>`__
-
-
+line-translate-anchor
+"""""""""""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* map, viewport. *Defaults to* map. *Requires* line-translate.
 
@@ -1947,7 +1889,8 @@ viewport
      - Not yet supported
 
 
-`line-width <#paint-line-width>`__
+line-width
+""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 1.
 
@@ -1986,7 +1929,8 @@ Stroke thickness.
      - Not yet supported
 
 
-`line-gap-width <#paint-line-gap-width>`__
+line-gap-width
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0.
 
@@ -2027,7 +1971,8 @@ width of the inner gap.
      - >= 3.5.0
      - >= 0.4.0
 
-`line-offset <#paint-line-offset>`__
+line-offset
+"""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0.
 
@@ -2070,7 +2015,8 @@ inset, and a negative value results in an outset.
      - >= 0.4.0
 
 
-`line-blur <#paint-line-blur>`__
+line-blur
+"""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0.
 
@@ -2110,8 +2056,8 @@ Blur applied to the line, in pixels.
      - >= 0.4.0
 
 
-`line-dasharray <#paint-line-dasharray>`__
-
+line-dasharray
+""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* line widths. *Disabled by* line-pattern.
 
@@ -2151,7 +2097,8 @@ a dash length to pixels, multiply the length by the current line width.
      - Not yet supported
      - Not yet supported
 
-`line-pattern <#paint-line-pattern>`__
+line-pattern
+""""""""""""
 
 *Optional* :ref:`types-string`.
 
@@ -2197,15 +2144,14 @@ patterns, image width must be a factor of two (2, 4, 8, ..., 512).
 
    <div id="layers-symbol" class="pad2 keyline-bottom">
 
-`symbol <#layers-symbol>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+symbol
+~~~~~~
 
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-
-`Layout Properties <#layout_symbol>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`symbol-placement <#layout-symbol-symbol-placement>`__
+symbol-placement
+""""""""""""""""
 
 
 *Optional* :ref:`types-enum`. *One of* point, line. *Defaults to* point.
@@ -2253,9 +2199,8 @@ line
      - Not yet supported
 
 
-`symbol-spacing <#layout-symbol-symbol-spacing>`__
-
-
+symbol-spacing
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 250. *Requires* symbol-placement = line.
 
@@ -2294,7 +2239,8 @@ Distance between two symbol anchors.
      - Not yet supported
 
 
-`symbol-avoid-edges <#layout-symbol-symbol-avoid-edges>`__
+symbol-avoid-edges
+""""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false.
 
@@ -2337,7 +2283,8 @@ placed after a line symbol layer.
      - Not yet supported
 
 
-`icon-allow-overlap <#layout-symbol-icon-allow-overlap>`__
+icon-allow-overlap
+""""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *Requires* icon-image.
 
@@ -2378,7 +2325,8 @@ previously drawn symbols.
      - Not yet supported
 
 
-`icon-ignore-placement <#layout-symbol-icon-ignore-placement>`__
+icon-ignore-placement
+"""""""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *Requires* icon-image.
 
@@ -2419,7 +2367,8 @@ icon.
      - Not yet supported
 
 
-`icon-optional <#layout-symbol-icon-optional>`__
+icon-optional
+"""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *<Requires* icon-image, text-field.
 
@@ -2461,8 +2410,8 @@ icon collides with other symbols and the text does not.
      - Not yet supported
 
 
-`icon-rotation-alignment <#layout-symbol-icon-rotation-alignment>`__
-
+icon-rotation-alignment
+"""""""""""""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* map, viewport, auto. *Defaults to* auto. *Requires* icon-image.
 
@@ -2522,8 +2471,8 @@ auto
      - Not yet supported
 
 
-`icon-size <#layout-symbol-icon-size>`__
-
+icon-size
+"""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1. *Requires* icon-image.
 Scale factor for icon. 1 is original size, 3 triples the size.
@@ -2562,8 +2511,8 @@ Scale factor for icon. 1 is original size, 3 triples the size.
 
 
 
-`icon-text-fit <#layout-symbol-icon-text-fit>`__
-
+icon-text-fit
+"""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* none, width, height, both. *Defaults to* none. *Requires* icon-image, text-field.
 
@@ -2616,8 +2565,8 @@ both
      - Not yet supported
 
 
-`icon-text-fit-padding <#layout-symbol-icon-text-fit-padding>`__
-
+icon-text-fit-padding
+"""""""""""""""""""""
 
 *Optional :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0,0,0. *Requires* icon-image, text-field, icon-text-fit = one of both, width, height.
 
@@ -2657,7 +2606,8 @@ Size of the additional area added to dimensions determined by
      - Not yet supported
 
 
-`icon-image <#layout-symbol-icon-image>`__
+icon-image
+""""""""""
 
 *Optional* :ref:`types-string`.
 
@@ -2699,8 +2649,8 @@ with {tokens} replaced, referencing the data property to pull from.
      - Not yet supported
 
 
-`icon-rotate <#layout-symbol-icon-rotate>`__
-
+icon-rotate
+"""""""""""
 
 *Optional* :ref:`types-number`. *Units in* degrees. *Defaults to* 0. *Requires* icon-image.
 
@@ -2739,8 +2689,8 @@ Rotates the icon clockwise.
      - >= 0.4.0
 
 
-`icon-padding <#layout-symbol-icon-padding>`__
-
+icon-padding
+""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 2. *Requires* icon-image.
 
@@ -2782,7 +2732,8 @@ detecting symbol collisions.
 
 
 
-`icon-keep-upright <#layout-symbol-icon-keep-upright>`__
+icon-keep-upright
+"""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *Requires* icon-image, icon-rotation-alignment = map, symbol-placement = line.
 
@@ -2823,8 +2774,8 @@ upside-down.
      - Not yet supported
 
 
-`icon-offset <#layout-symbol-icon-offset>`__
-
+icon-offset
+"""""""""""
 
 *Optional* :ref:`types-array`. *Defaults to* 0,0. *Requires* icon-image.
 
@@ -2865,8 +2816,8 @@ and down, while negative values indicate left and up. When combined with
      - >= 0.4.0
 
 
-`text-pitch-alignment <#layout-symbol-text-pitch-alignment>`__
-
+text-pitch-alignment
+""""""""""""""""""""
 
 *Optional* :ref:`types-enum` *One of* map, viewport, auto. *Defaults to* auto. *Requires* text-field.
 
@@ -2921,7 +2872,8 @@ auto
 
 
 
-`text-rotation-alignment <#layout-symbol-text-rotation-alignment>`__
+text-rotation-alignment
+"""""""""""""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* map, viewport, auto. *Defaults to* auto. *Requires* text-field.
 
@@ -2982,7 +2934,8 @@ auto
 
 
 
-`text-field <#layout-symbol-text-field>`__
+text-field
+""""""""""
 
 *Optional* :ref:`types-string`.
 
@@ -3025,8 +2978,8 @@ literal ``text-field`` values--not for property functions.)
      - >= 0.4.0
 
 
-`text-font <#layout-symbol-text-font>`__
-
+text-font
+"""""""""
 
 *Optional* :ref:`types-array`. *Defaults to* Open Sans Regular,Arial Unicode MS Regular. *Requires* text-field.
 
@@ -3066,7 +3019,8 @@ Font stack to use for displaying text.
 
 
 
-`text-size <#layout-symbol-text-size>`__
+text-size
+"""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 16. *Requires* text-field.
 
@@ -3108,7 +3062,8 @@ Font size.
 
 
 
-`text-max-width <#layout-symbol-text-max-width>`__
+text-max-width
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 10. *Requires* text-field.
 
@@ -3149,7 +3104,8 @@ The maximum line width for text wrapping.
      - Not yet supported
 
 
-`text-line-height <#layout-symbol-text-line-height>`__
+text-line-height
+""""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* ems. *Defaults to* 1.2. *Requires* text-field.
 
@@ -3190,7 +3146,8 @@ Text leading value for multi-line text.
      - Not yet supported
 
 
-`text-letter-spacing <#layout-symbol-text-letter-spacing>`__
+text-letter-spacing
+"""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* ems. *Defaults to* 0. *Requires* text-field.
 
@@ -3232,7 +3189,8 @@ Text tracking amount.
 
 
 
-`text-justify <#layout-symbol-text-justify>`__
+text-justify
+""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* left, center, right. *Defaults to* center. *Requires* text-field.
 
@@ -3282,7 +3240,8 @@ right
      - Not yet supported
 
 
-`text-anchor <#layout-symbol-text-anchor>`__
+text-anchor
+"""""""""""
 
 *Optional* :ref:`types-enum`. *One of* center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right.
 *Defaults to* center. *Requires* text-field.
@@ -3352,7 +3311,8 @@ bottom-right
      - Not yet supported
 
 
-`text-max-angle <#layout-symbol-text-max-angle>`__
+text-max-angle
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* degrees. *Defaults to* 45. *Requires* text-field, symbol-placement = line.
 
@@ -3392,7 +3352,8 @@ Maximum angle change between adjacent characters.
      - Not yet supported
 
 
-`text-rotate <#layout-symbol-text-rotate>`__
+text-rotate
+"""""""""""
 
 *Optional* :ref:`types-number`. *Units in* degrees. *Defaults to* 0. *Requires* text-field.
 
@@ -3434,7 +3395,8 @@ Rotates the text clockwise.
 
 
 
-`text-padding <#layout-symbol-text-padding>`__
+text-padding
+""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 2. *Requires* text-field.
 
@@ -3477,7 +3439,8 @@ detecting symbol collisions.
 
 
 
-`text-keep-upright <#layout-symbol-text-keep-upright>`__
+text-keep-upright
+"""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* true. *Requires* text-field, text-rotation-alignment = true, symbol-placement = true.
 
@@ -3520,8 +3483,8 @@ rendered upside-down.
 
 
 
-`text-transform <#layout-symbol-text-transform>`__
-
+text-transform
+""""""""""""""
 
 *Optional* :ref:`types-enum`. *One of* none, uppercase, lowercase. *Defaults to* none. *Requires* text-field.
 
@@ -3572,7 +3535,8 @@ lowercase
 
 
 
-`text-offset <#layout-symbol-text-offset>`__
+text-offset
+"""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0. *Requires* icon-image.
 
@@ -3613,7 +3577,8 @@ and down, while negative values indicate left and up.
 
 
 
-`text-allow-overlap <#layout-symbol-text-allow-overlap>`__
+text-allow-overlap
+""""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *Requires* text-field.
 
@@ -3656,7 +3621,8 @@ previously drawn symbols.
 
 
 
-`text-ignore-placement <#layout-symbol-text-ignore-placement>`__
+text-ignore-placement
+"""""""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *Requires* text-field
 
@@ -3699,7 +3665,8 @@ text.
 
 
 
-`text-optional <#layout-symbol-text-optional>`__
+text-optional
+"""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* false. *Requires* text-field, icon-image.
 
@@ -3742,7 +3709,8 @@ text collides with other symbols and the icon does not.
 
 
 
-`visibility <#layout-symbol-visibility>`__
+visibility
+""""""""""
 
 *Optional* :ref:`types-enum`. *One of* visible, none. *Defaults to* visible.
 
@@ -3791,10 +3759,11 @@ none
 
 
 
-`Paint Properties <#paint_symbol>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`icon-opacity <#paint-icon-opacity>`__
+icon-opacity
+""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1. <i>Requires </i>icon-image.
 
@@ -3834,7 +3803,8 @@ The opacity at which the icon will be drawn.
      - >= 0.4.0
 
 
-`icon-color <#paint-icon-color>`__
+icon-color
+""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Requires* icon-image.
 
@@ -3876,7 +3846,8 @@ The color of the icon. This can only be used with sdf icons.
 
 
 
-`icon-halo-color <#paint-icon-halo-color>`__
+icon-halo-color
+"""""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* rgba(0, 0, 0, 0). *Requires* icon-image.
 
@@ -3918,7 +3889,8 @@ icons.
      - >= 0.4.0
 
 
-`icon-halo-width <#paint-icon-halo-width>`__
+icon-halo-width
+"""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0. *Requires* icon-image.
 
@@ -3960,7 +3932,8 @@ Distance of halo to the icon outline.
 
 
 
-`icon-halo-blur <#paint-icon-halo-blur>`__
+icon-halo-blur
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0. *Requires* icon-image.
 
@@ -4002,7 +3975,8 @@ Fade out the halo towards the outside.
 
 
 
-`icon-translate <#paint-icon-translate>`__
+icon-translate
+""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0. *Requires* icon-image.
 
@@ -4046,7 +4020,8 @@ left and up.
 
 
 
-`icon-translate-anchor <#paint-icon-translate-anchor>`__
+icon-translate-anchor
+"""""""""""""""""""""
 
 *Optional* :ref:`types-enum` *One of* map, viewport. *Defaults to* map. *Requires* icon-image, icon-translate.
 
@@ -4094,7 +4069,8 @@ viewport
      - Not yet supported
 
 
-`text-opacity <#paint-text-opacity>`__
+text-opacity
+""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1. <i>Requires </i>text-field.
 
@@ -4135,7 +4111,8 @@ The opacity at which the text will be drawn.
 
 
 
-`text-color <#paint-text-color>`__
+text-color
+""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Requires* text-field.
 
@@ -4177,7 +4154,8 @@ The color with which the text will be drawn.
 
 
 
-`text-halo-color <#paint-text-halo-color>`__
+text-halo-color
+"""""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* rgba(0, 0, 0, 0). *Requires* text-field.
 
@@ -4219,7 +4197,8 @@ The color of the text's halo, which helps it stand out from backgrounds.
 
 
 
-`text-halo-width <#paint-text-halo-width>`__
+text-halo-width
+"""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0. *Requires* text-field.
 
@@ -4262,7 +4241,8 @@ font-size.
 
 
 
-`text-halo-blur <#paint-text-halo-blur>`__
+text-halo-blur
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 0. *Requires* text-field.
 
@@ -4304,7 +4284,8 @@ The halo's fadeout distance towards the outside.
 
 
 
-`text-translate <#paint-text-translate>`__
+text-translate
+""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0. *Requires* text-field.
 
@@ -4348,7 +4329,8 @@ left and up.
 
 
 
-`text-translate-anchor <#paint-text-translate-anchor>`__
+text-translate-anchor
+"""""""""""""""""""""
 
 *Optional* :ref:`types-enum` *One of* map, viewport. *Defaults to* map. *Requires* text-field, text-translate.
 
@@ -4396,20 +4378,14 @@ viewport
      - Not yet supported
 
 
+raster
+~~~~~~
 
-.. raw:: html
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-   <div id="layers-raster" class="pad2 keyline-bottom">
-
-`raster <#layers-raster>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-`Layout Properties <#layout_raster>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`visibility <#layout-raster-visibility>`__
+visibility
+""""""""""
 
 *Optional* :ref:`types-enum`. *One of* visible, none. *Defaults to* visible.
 
@@ -4458,10 +4434,11 @@ none
 
 
 
-`Paint Properties <#paint_raster>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`raster-opacity <#paint-raster-opacity>`__
+raster-opacity
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -4544,7 +4521,8 @@ Rotates hues around the color wheel.
 
 
 
-`raster-brightness-min <#paint-raster-brightness-min>`__
+raster-brightness-min
+"""""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
@@ -4586,7 +4564,8 @@ brightness.
 
 
 
-`raster-brightness-max <#paint-raster-brightness-max>`__
+raster-brightness-max
+"""""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -4628,7 +4607,8 @@ brightness.
 
 
 
-`raster-saturation <#paint-raster-saturation>`__
+raster-saturation
+"""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
@@ -4669,7 +4649,8 @@ Increase or reduce the saturation of the image.
 
 
 
-`raster-contrast <#paint-raster-contrast>`__
+raster-contrast
+"""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
@@ -4710,7 +4691,8 @@ Increase or reduce the contrast of the image.
 
 
 
-`raster-fade-duration <#paint-raster-fade-duration>`__
+raster-fade-duration
+""""""""""""""""""""
 
 *Optional* :ref:`types-number` *Units in* milliseconds. *Defaults to* 300.
 
@@ -4751,20 +4733,14 @@ Fade duration when a new tile is added.
      - Not yet supported
 
 
+circle
+~~~~~~
 
-.. raw:: html
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-   <div id="layers-circle" class="pad2 keyline-bottom">
-
-`circle <#layers-circle>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-`Layout Properties <#layout_circle>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`visibility <#layout-circle-visibility>`__
+visibility
+""""""""""
 
 *Optional* :ref:`types-enum`. *One of* visible, none. *Defaults to* visible.
 
@@ -4807,10 +4783,11 @@ none
      - >= 0.1.0
 
 
-`Paint Properties <#paint_circle>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`circle-radius <#paint-circle-radius>`__
+circle-radius
+"""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 5.
 
@@ -4852,7 +4829,8 @@ Circle radius.
 
 
 
-`circle-color <#paint-circle-color>`__
+circle-color
+""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000.
 
@@ -4894,7 +4872,8 @@ The fill color of the circle.
 
 
 
-`circle-blur <#paint-circle-blur>`__
+circle-blur
+"""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
@@ -4936,7 +4915,8 @@ centerpoint is full opacity.
 
 
 
-`circle-opacity <#paint-circle-opacity>`__
+circle-opacity
+""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -4976,7 +4956,8 @@ The opacity at which the circle will be drawn.
      - >= 0.4.0
 
 
-`circle-translate <#paint-circle-translate>`__
+circle-translate
+""""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0.
 
@@ -5019,7 +5000,8 @@ and up, respectively.
 
 
 
-`circle-translate-anchor <#paint-circle-translate-anchor>`__
+circle-translate-anchor
+"""""""""""""""""""""""
 
 *Optional* :ref:`types-enum` *One of* map, viewport. *Defaults to* map. *Requires* circle-translate.
 
@@ -5068,7 +5050,8 @@ viewport
 
 
 
-`circle-pitch-scale <#paint-circle-pitch-scale>`__
+circle-pitch-scale
+""""""""""""""""""
 
 *Optional* :ref:`types-enum` *One of* map, viewport. *Defaults to* map.
 
@@ -5118,7 +5101,8 @@ viewport
 
 
 
-`circle-stroke-width <#paint-circle-stroke-width>`__
+circle-stroke-width
+"""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Units in* pixels. *Defaults to* 5.
 
@@ -5160,7 +5144,8 @@ The width of the circle's stroke. Strokes are placed outside of the
      - >= 0.4.0
 
 
-`circle-stroke-color <#paint-circle-stroke-color>`__
+circle-stroke-color
+"""""""""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000.
 
@@ -5200,7 +5185,8 @@ The stroke color of the circle.
      - >= 3.5.0
      - >= 0.4.0
 
-`circle-stroke-opacity <#paint-circle-stroke-opacity>`__
+circle-stroke-opacity
+"""""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -5241,19 +5227,14 @@ The opacity of the circle's stroke.
 
 
 
-.. raw:: html
+fill-extrusion
+~~~~~~~~~~~~~~
 
-   <div id="layers-fill-extrusion" class="pad2 keyline-bottom">
+Layout Properties
+^^^^^^^^^^^^^^^^^
 
-`fill-extrusion <#layers-fill-extrusion>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-`Layout Properties <#layout_fill-extrusion>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`visibility <#layout-fill-extrusion-visibility>`__
+visibility
+""""""""""
 
 *Optional* :ref:`types-enum`. *One of* visible, none. *Defaults to* visible.
 
@@ -5297,10 +5278,11 @@ none
 
 
 
-`Paint Properties <#paint_fill-extrusion>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Paint Properties
+^^^^^^^^^^^^^^^^
 
-`fill-extrusion-opacity <#paint-fill-extrusion-opacity>`__
+fill-extrusion-opacity
+""""""""""""""""""""""
 
 *Optional* :ref:`types-number`. *Defaults to* 1.
 
@@ -5338,7 +5320,8 @@ available.
 
 
 
-`fill-extrusion-color <#paint-fill-extrusion-color>`__
+fill-extrusion-color
+""""""""""""""""""""
 
 *Optional* :ref:`types-color`. *Defaults to* #000000. *Disabled by* fill-extrusion-pattern.
 
@@ -5384,7 +5367,8 @@ component, the alpha component will be ignored; use
 
 
 
-`fill-extrusion-translate <#paint-fill-extrusion-translate>`__
+fill-extrusion-translate
+""""""""""""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* pixels. *Defaults to* 0,0.
 
@@ -5427,7 +5411,8 @@ and up (on the flat plane), respectively.
 
 
 
-`fill-extrusion-translate-anchor <#paint-fill-extrusion-translate-anchor>`__
+fill-extrusion-translate-anchor
+"""""""""""""""""""""""""""""""
 
 *Optional* :ref:`types-enum` *One of* map, viewport. *Defaults to* map. *Requires* fill-extrusion-translate.
 
@@ -5476,7 +5461,8 @@ viewport
 
 
 
-`fill-extrusion-pattern <#paint-fill-extrusion-pattern>`__
+fill-extrusion-pattern
+""""""""""""""""""""""
 
 *Optional* :ref:`types-string`.
 
@@ -5520,7 +5506,8 @@ seamless patterns, image width and height must be a factor of two (2, 4,
 
 
 
-`fill-extrusion-height <#paint-fill-extrusion-height>`__
+fill-extrusion-height
+"""""""""""""""""""""
 
 *Optional* :ref:`types-number` *Units in* meters. *Defaults to* 0.
 
@@ -5561,7 +5548,8 @@ The height with which to extrude this layer.
 
 
 
-`fill-extrusion-base <#paint-fill-extrusion-base>`__
+fill-extrusion-base
+"""""""""""""""""""
 
 *Optional* :ref:`types-number` *Units in* meters. *Defaults to* 0. *Requires* fill-extrusion-height.
 
@@ -5602,11 +5590,6 @@ than or equal to ``fill-extrusion-height``.
      - Not yet supported
      - Not yet supported
 
-
-
-.. raw:: html
-
-   <div class="pad2 prose">
 
 `Types <#types>`__
 ------------------

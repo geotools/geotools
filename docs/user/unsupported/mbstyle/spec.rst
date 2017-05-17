@@ -5591,24 +5591,16 @@ than or equal to ``fill-extrusion-height``.
      - Not yet supported
 
 
-`Types <#types>`__
-------------------
+Types
+-----
 
 A Mapbox style contains values of various types, most commonly as values
 for the style properties of a layer.
 
-.. raw:: html
-
-   <div class="keyline-all fill-white">
-
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
-
 .. _types-color:
 
 Color
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
 
 Colors are written as JSON strings in a variety of permitted formats:
 HTML-style hex values, rgb, rgba, hsl, and hsla. Predefined HTML colors
@@ -5629,11 +5621,6 @@ names, like ``yellow`` and ``blue``, are also permitted.
 Especially of note is the support for hsl, which can be `easier to
 reason about than rgb() <http://mothereffinghsl.com/>`__.
 
-
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
-
 .. _types-enum:
 
 Enum
@@ -5646,11 +5633,6 @@ One of a fixed list of string values. Use quotes around values.
     {
       "text-transform": "uppercase"
     }
-
-
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
 
 .. _types-string:
 
@@ -5669,10 +5651,6 @@ to by putting them in curly braces, as seen in the example below.
     }
 
 
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
-
 .. _types-boolean:
 
 Boolean
@@ -5685,11 +5663,6 @@ Boolean means yes or no, so it accepts the values ``true`` or ``false``.
     {
       "fill-enabled": true
     }
-
-
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
 
 .. _types-number:
 
@@ -5704,11 +5677,6 @@ Written without quotes.
     {
       "text-size": 24
     }
-
-
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
 
 .. _types-array:
 
@@ -5725,11 +5693,6 @@ numbers specify intervals of line, break, and line again.
       "line-dasharray": [2, 4]
     }
 
-
-.. raw:: html
-
-   <div class="pad2 keyline-bottom">
-
 .. _types-function:
 
 Function
@@ -5739,21 +5702,13 @@ The value for any layout or paint property may be specified as a
 *function*. Functions allow you to make the appearance of a map feature
 change with the current zoom level and/or the feature's properties.
 
-.. raw:: html
-
-   <div class="col12 pad1x">
-
-.. raw:: html
-
-   <div class="col12 clearfix pad0y pad2x space-bottom2">
-
-
 
 .. _stops:
 
 stops
+^^^^^
 
-*Required (except for identity functions) `array <#types-array>`__.*
+*Required (except for identity functions) :ref:`types-array`.*
 
 
 
@@ -5761,15 +5716,10 @@ stops
 Functions are defined in terms of input and output values. A set of one
 input value and one output value is known as a "stop."
 
-
-
-.. raw:: html
-
-   <div class="col12 clearfix pad0y pad2x space-bottom2">
-
 .. _property:
 
 property
+^^^^^^^^
 
 *Optional* :ref:`types-string`.
 
@@ -5782,20 +5732,12 @@ an input. See `Zoom Functions and Property
 Functions <#types-function-zoom-property>`__ for more information.
 
 
-
-.. raw:: html
-
-   <div class="col12 clearfix pad0y pad2x space-bottom2">
-
 .. _base:
 
 base
-.. raw:: html
+^^^^
 
-   <i>Optional <a href="#number">number</a>. Default is</i> 1.
-
-
-
+*Optional* :ref:`types-number`. *Default is* 1.
 
 
 The exponential base of the interpolation curve. It controls the rate at
@@ -5803,21 +5745,12 @@ which the function output increases. Higher values make the output
 increase more towards the high end of the range. With values close to 1
 the output increases linearly.
 
-
-
-.. raw:: html
-
-   <div class="col12 clearfix pad0y pad2x space-bottom2">
-
 .. _type:
 
 type
+^^^^
 
-.. raw:: html
-
-   <i>Optional <a href="#enum">enum</a>. One of</i> identity, exponential, interval, categorical.
-
-
+*Optional* :ref:`types-enum`. *One of* identity, exponential, interval, categorical.
 
 identity
     functions return their input as their output.
@@ -5834,17 +5767,10 @@ categorical
     functions return the output value of the stop equal to the function
     input.
 
-
-.. raw:: html
-
-   <div class="col12 clearfix pad0y pad2x space-bottom2">
-
 .. _function-default:
 
 default
-
-
-
+^^^^^^^
 
 A value to serve as a fallback function result when a value isn't
 otherwise available. It is used in the following circumstances:
@@ -5862,25 +5788,16 @@ otherwise available. It is used in the following circumstances:
    when the feature value is not numeric.
 
 
-
 If no default is provided, the style property's default is used in these
 circumstances.
 
 
-
-.. raw:: html
-
-   <div class="col12 clearfix pad0y pad2x space-bottom2">
-
 .. _function-colorspace:
 
 colorSpace
+^^^^^^^^^^
 
-.. raw:: html
-
-   <i>Optional <a href="#enum">enum</a>. One of</i> rgb, lab, hcl.
-
-
+*Optional* :ref:`types-enum`. *One of* rgb, lab, hcl.
 
 The color space in which colors interpolated. Interpolating colors in
 perceptual color spaces like LAB and HCL tend to produce color ramps
@@ -5958,10 +5875,6 @@ map’s zoom level. Zoom functions can be used to create the illusion of
 depth and control data density. Each stop is an array with two elements:
 the first is a zoom level and the second is a function output value.
 
-.. raw:: html
-
-   <div class="col12 space-bottom">
-
 ::
 
     {
@@ -5978,12 +5891,10 @@ the first is a zoom level and the second is a function output value.
       }
     }
 
-
-
-The rendered values of `color <#types-color>`__,
-`number <#types-number>`__, and `array <#types-array>`__ properties are
-intepolated between stops. `Enum <#types-enum>`__,
-`boolean <#types-boolean>`__, and `string <#types-string>`__ property
+The rendered values of :ref:`types-color`,
+:ref:`types-number`, and :ref:`types-array` properties are
+intepolated between stops. :ref:`types-enum`,
+:ref:`types-boolean`, and :ref:`types-string` property
 values cannot be intepolated, so their rendered values only change at
 the specified stops.
 
@@ -6010,10 +5921,6 @@ property input value and the second is a function output value. Note
 that support for property functions is not available across all
 properties and platforms at this time.
 
-.. raw:: html
-
-   <div class="col12 space-bottom">
-
 ::
 
     {
@@ -6033,15 +5940,11 @@ properties and platforms at this time.
 
 
 
-\ **Zoom-and-property functions** allow the appearance of a map feature
+**Zoom-and-property functions** allow the appearance of a map feature
 to change with both its properties *and* zoom. Each stop is an array
 with two elements, the first is an object with a property input value
 and a zoom, and the second is a function output value. Note that support
 for property functions is not yet complete.
-
-.. raw:: html
-
-   <div class="col12 space-bottom">
 
 ::
 
@@ -6066,13 +5969,6 @@ for property functions is not yet complete.
       }
     }
 
-
-
-
-.. raw:: html
-
-   <div class="pad2">
-
 .. _types-filter:
 
 Filter
@@ -6081,12 +5977,8 @@ Filter
 A filter selects specific features from a layer. A filter is an array of
 one of the following forms:
 
-.. raw:: html
-
-   <div class="col12 clearfix space-bottom2">
-
 Existential Filters
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 ``["has", key]`` feature[key] exists
 
@@ -6095,7 +5987,7 @@ Existential Filters
 
 
 Comparison Filters
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 ``["==", key, value]`` equality: feature[key] = value
 
@@ -6116,7 +6008,7 @@ Comparison Filters
 
 
 Set Membership Filters
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 ``["in", key, v0, ..., vn]`` set inclusion: feature[key] ∈ {v0, ..., vn}
 
@@ -6126,7 +6018,7 @@ vn}
 
 
 Combining Filters
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 ``["all", f0, ..., fn]`` logical ``AND``: f0 ∧ ... ∧ fn
 
@@ -6149,7 +6041,7 @@ following special keys:
    operators.
 
 A value (and v0, ..., vn for set operators) must be a
-`string <#string>`__, `number <#number>`__, or `boolean <#boolean>`__ to
+:ref:`types-string`, :ref:`types-number`, or :ref:`types-boolean` to
 compare the property value against.
 
 Set membership filters are a compact and efficient way to test whether a

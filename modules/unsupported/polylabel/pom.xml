@@ -31,6 +31,6 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>unsupported</artifactId>
-		<version>17-SNAPSHOT</version>
+		<version>17.1</version>
 	</parent>
 </project>

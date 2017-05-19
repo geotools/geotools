@@ -22,9 +22,14 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -32,6 +37,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.renderer.style.GraphicCache;
 import org.geotools.renderer.style.ExternalGraphicFactory;
@@ -52,24 +58,25 @@ import org.opengis.filter.expression.Expression;
  * </p>
  * 
  * <p>
- * Note that this factory expects the {@link MBStyleTransformer} to produce {@link ExternalGraphic} instances with slightly modified URLs of the
- * following form:
+ * Note that this factory expects the {@link MBStyleTransformer} to produce {@link ExternalGraphic} instances with slightly modified URLs using one of the
+ * following forms:
  * </p>
  * 
  * <code>{baseUrl}#{iconName}</code>
+ * <code>{baseUrl}#icon={iconName}&size={sizeMultiplier}</code>
  * 
  * <p>
- * Only the baseUrl is used to retrieve the sprite sheet (at {baseUrl}.png) and sprite index (at {baseUrl}.json). The iconName is then used by this
- * factory to select the correct icon from the spritesheet.
+ * Only the baseUrl is used to retrieve the sprite sheet (at {baseUrl}.png) and sprite index (at {baseUrl}.json). The iconName (required) is then used by this
+ * factory to select the correct icon from the spritesheet, and the size (optional) is used to scale the icon.
  * </p>
  * 
  * 
- * For example, for the following Mapbox style:
+ * For example, for the following style:
  * 
  * <pre>
  * {
  *  "version": 8,
- *  "name": "A Mapbox Style",
+ *  "name": "A Style",
  *  "sprite": "file:/GeoServerDataDirs/release/styles/testSpritesheet",
  *  "glyphs": "...",
  *  "sources": {...},
@@ -114,8 +121,22 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
 
         URL loc = url.evaluate(feature, URL.class);
         URL baseUrl = parseBaseUrl(loc);
-        String iconName = parseIconName(loc);
 
+        Map<String, String> paramsMap = parseFragmentParams(loc);
+        String iconName = paramsMap.get("icon");
+        String sizeStr = paramsMap.get("size");
+        sizeStr = sizeStr == null ? "1.0" : sizeStr;
+        
+        Double sizeMultiplier = null;        
+        try {
+            sizeMultiplier = Double.parseDouble(sizeStr); 
+            if (sizeMultiplier < 0) {
+                sizeMultiplier = 1.0;
+            }
+        } catch (NumberFormatException e) {
+            throw new MBSpriteException("Exception parsing size parameter from Sprite External Graphic URL. URL was: " + loc, e);
+        }        
+        
         // Retrieve and parse the sprite index file.
         SpriteIndex spriteIndex = getSpriteIndex(baseUrl);
 
@@ -135,8 +156,71 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory,GraphicCache
             AffineTransformOp ato = new AffineTransformOp(scaleTx, AffineTransformOp.TYPE_BILINEAR);
             iconSubImg = ato.filter(iconSubImg, null);
         }
+        
+        // Use the size multiplier, if any, to scale the image
+        if (sizeMultiplier != null && sizeMultiplier != 1.0) {
+            AffineTransform scaleTx = AffineTransform.getScaleInstance(sizeMultiplier, sizeMultiplier);
+            AffineTransformOp ato = new AffineTransformOp(scaleTx, AffineTransformOp.TYPE_BILINEAR);
+            iconSubImg = ato.filter(iconSubImg, null);
+        }        
 
         return new ImageIcon(iconSubImg);
+    }
+    
+    /**
+     * 
+     * Parse the parameters from the URL fragment in the provided URL (interpreting the fragment like a query string). The "name" parameter
+     * is required and will cause an {@link MBFormatException} if missing. The "size" parameter is optional and defaults to "1".
+     *      
+     * @param url
+     * @return
+     */
+    protected static Map<String, String> parseFragmentParams(URL url) {
+        String urlStr = url.toExternalForm();
+        int fragmentIdx = urlStr.indexOf(ICON_NAME_DELIMITER);
+
+        if (fragmentIdx == -1) {
+            throw new IllegalArgumentException(
+                    "Sprite external graphics must have url with fragment of the form #icon=test&size=1.5. URL was: "
+                            + urlStr);
+        }
+
+        String fragment = urlStr.substring(fragmentIdx + 1);
+        
+        if (fragment.trim().length() == 0) {
+            throw new IllegalArgumentException(
+                    "Sprite external graphics must have url with non-empty fragment of the form #icon=test&size=1.5. URL was: "
+                            + urlStr);
+        }
+        
+        String[] nvps = fragment.split("&");
+                
+        Map<String, String> paramsMap = new HashMap<>();        
+        for (int i = 0; i < nvps.length; i++) {            
+            try {
+                String[] nvp = nvps[i].split("="); 
+                if (nvp.length == 1 && nvps.length == 1) {
+                    // Allow the simple case url#iconName (omitting name=iconName) 
+                    paramsMap.put("icon", URLDecoder.decode(nvp[0], "utf-8"));
+                } else {
+                    String k = URLDecoder.decode(nvp[0], "utf-8").trim().toLowerCase();
+                    String v = URLDecoder.decode(nvp[1], "utf-8");
+                    paramsMap.put(k, v);      
+                }
+              
+            } catch(UnsupportedEncodingException uee) {
+                throw new MBSpriteException("Exception decoding URL fragment for external graphic URL. URL was: " + urlStr, uee);
+            }
+            
+        }
+        
+        if (paramsMap.get("icon") == null || paramsMap.get("icon").trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Sprite external graphics must provide an icon name using a URL fragment of the form #icon=test&size=1.5 . URL was: "
+                            + urlStr);
+        }
+
+        return paramsMap;
     }
 
     /**

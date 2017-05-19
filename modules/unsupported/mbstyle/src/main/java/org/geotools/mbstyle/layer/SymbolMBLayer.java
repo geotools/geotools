@@ -1747,8 +1747,8 @@ public class SymbolMBLayer extends MBLayer {
             if (iconExpression instanceof Literal) {
                 iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
             }
-
-            ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, styleContext);
+            
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);            
             // layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
             Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
                     iconRotate(), null, null);

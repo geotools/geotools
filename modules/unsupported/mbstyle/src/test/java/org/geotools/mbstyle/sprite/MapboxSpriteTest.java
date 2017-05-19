@@ -36,7 +36,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
@@ -189,6 +190,36 @@ public class MapboxSpriteTest {
         assertEquals(64, spriteIndex.getIcon("goldfish").getX());
         assertEquals(64, spriteIndex.getIcon("goldfish").getY());               
     }
+    
+    /**
+     * Test the parsing of additional sprite parameters from the #-fragment part of an external graphic URL.
+     */
+    @Test
+    public void testParseFragmentParameters() throws MalformedURLException {
+        String urlString = "http://localhost:8080/testlocation#icon=testName&size=1.25";
+        URL url = new URL(urlString);
+        Map<String, String> paramsMap = SpriteGraphicFactory.parseFragmentParams(url);
+        assertEquals("testName", paramsMap.get("icon"));
+        assertEquals(1.25, Double.valueOf(paramsMap.get("size")), .000001);
+        
+        urlString = "http://localhost:8080/testlocation#icon=testName";
+        url = new URL(urlString);
+        paramsMap = SpriteGraphicFactory.parseFragmentParams(url);
+        assertEquals("testName", paramsMap.get("icon"));
+        assertTrue(null==paramsMap.get("size"));
+        
+        urlString = "http://localhost:8080/testlocation#size=1.25&icon=testName";
+        url = new URL(urlString);
+        paramsMap = SpriteGraphicFactory.parseFragmentParams(url);
+        assertEquals("testName", paramsMap.get("icon"));
+        assertEquals(1.25, Double.valueOf(paramsMap.get("size")), .000001);       
+        
+        urlString = "http://localhost:8080/testlocation#testName";
+        url = new URL(urlString);
+        paramsMap = SpriteGraphicFactory.parseFragmentParams(url);
+        assertEquals("testName", paramsMap.get("icon"));
+        assertTrue(null==paramsMap.get("size"));     
+    }
 
     /**
      * Append a base url with #{iconName}. This parameter is used by the {@link SpriteGraphicFactory} to pull the correct icon from the
@@ -223,4 +254,5 @@ public class MapboxSpriteTest {
         return new File("src/test/resources/org/geotools/mbstyle/sprite/test-data/rendered/"
                 + name + ".png");
     }
+    
 }

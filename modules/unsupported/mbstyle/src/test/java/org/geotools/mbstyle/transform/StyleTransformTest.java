@@ -110,7 +110,7 @@ public class StyleTransformTest {
     /**
      * Test parsing and generating a MapBox fill extrusion
      */
-    //@Test
+    @Test
     public void testFillExtrusion() throws IOException, ParseException {
         JSONObject jsonObject = parseTestStyle("fillExtrusionTest.json");
 

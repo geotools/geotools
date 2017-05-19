@@ -21,7 +21,11 @@ import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.mbstyle.*;
+import org.geotools.filter.LiteralExpressionImpl;
+import org.geotools.filter.function.FilterFunction_isometric;
+import org.geotools.filter.function.FilterFunction_offset;
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.*;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
@@ -120,8 +124,28 @@ public class StyleTransformTest {
         assertTrue(layers.get(1) instanceof FillExtrusionMBLayer);
         FillExtrusionMBLayer mbFill = (FillExtrusionMBLayer) layers.get(1);
         List<FeatureTypeStyle> fts = mbFill.transform(mbStyle);
+        assertEquals(3, fts.size());
 
         PolygonSymbolizer psym = SLD.polySymbolizer(fts.get(0));
+        PolygonSymbolizer sides = SLD.polySymbolizer(fts.get(1));
+        PolygonSymbolizer roof = SLD.polySymbolizer(fts.get(2));
+
+        Expression shadowGeometry = psym.getGeometry();
+        assertEquals("offset", ((FilterFunction_offset)shadowGeometry).getName());
+        assertEquals(3, ((FilterFunction_offset)shadowGeometry).getParameters().size());
+
+        Expression roofGeometry = roof.getGeometry();
+        assertEquals("offset", ((FilterFunction_offset)roofGeometry).getName());
+        assertEquals(3, ((FilterFunction_offset)roofGeometry).getParameters().size());
+        assertEquals("the_geom", ((FilterFunction_offset) roofGeometry).getParameters().get(0).toString());
+        assertEquals(Double.valueOf(0), ((FilterFunction_offset) roofGeometry).getParameters().get(1).evaluate(null, LiteralExpressionImpl.class).getValue());
+        assertEquals(Double.valueOf(5), ((FilterFunction_offset) roofGeometry).getParameters().get(2).evaluate(null, LiteralExpressionImpl.class).getValue());
+
+        Expression sidesGeometry = sides.getGeometry();
+        assertEquals("isometric", ((FilterFunction_isometric)sidesGeometry).getName());
+        assertEquals(2, ((FilterFunction_isometric)sidesGeometry).getParameters().size());
+        assertEquals("the_geom", ((FilterFunction_isometric) sidesGeometry).getParameters().get(0).toString());
+        assertEquals(Double.valueOf(5), ((FilterFunction_isometric) sidesGeometry).getParameters().get(1).evaluate(null, LiteralExpressionImpl.class).getValue());
 
         Expression expr =  psym.getFill().getColor();
         assertNotNull("fillColor set", expr);
@@ -134,7 +158,7 @@ public class StyleTransformTest {
         assertNotNull("displacementX not null",  psym.getDisplacement().getDisplacementX());
         assertNotNull("displacementY not null",  psym.getDisplacement().getDisplacementY());
         assertEquals(Integer.valueOf(0), psym.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
-        assertEquals(Integer.valueOf(30), psym.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(5), psym.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
     }
 
     /**

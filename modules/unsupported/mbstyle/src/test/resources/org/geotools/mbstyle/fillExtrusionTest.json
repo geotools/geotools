@@ -35,30 +35,15 @@
             "type": "fill-extrusion",
             "source": "composite",
             "source-layer": "building",
-            "filter": [
-                "all",
-                [
-                    "!=",
-                    "type",
-                    "building:part"
-                ],
-                [
-                    "==",
-                    "extrude",
-                    "true"
-                ],
-                [
-                    "==",
-                    "underground",
-                    "false"
-                ]
-            ],
             "layout": {},
             "paint": {
-                "fill-extrusion-opacity": 0.91,
-                "fill-extrusion-color": "#FF595E",
-                "fill-extrusion-base": 0.0,
-                "fill-extrusion-height": 30.0
+                "fill-extrusion-color": "#aaa",
+                "fill-extrusion-height": {
+                    "type": "identity",
+                    "property": "Height"
+                },
+                "fill-extrusion-base": 0,
+                "fill-extrusion-opacity": 0.6
             }
         }
     ],

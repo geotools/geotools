@@ -71,13 +71,19 @@ public class MBStyleTransformer {
      * @see {@link SpriteGraphicFactory} for more information.
      * 
      * @param iconName The name of the icon inside the spritesheet.
+     * @param iconSize The size (scale multiplier) to apply to the icon. (Nullable).
      * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the
      *        {@link SpriteGraphicFactory}).
      * @return An external graphic with the full URL of the mage for the {@link SpriteGraphicFactory}.
      */
-    public ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
+    public ExternalGraphic createExternalGraphicForSprite(Expression iconName, Expression iconSize, MBStyle styleContext) {
         String spriteUrl;
-        String iconNameCql = ECQL.toCQL(iconName);
+        String iconNameCql = ECQL.toCQL(ff.function("strURLEncode", iconName));      
+    
+        String iconSizeCql = null;
+        if (iconSize != null) {
+            iconSizeCql = ECQL.toCQL(ff.function("strURLEncode", iconSize));
+        }
         
         /*
          * Note: The provided iconName {@link Expression} will be embedded in the {@link ExternalGraphic}'s URL as a CQL string, in order to support
@@ -86,14 +92,42 @@ public class MBStyleTransformer {
          */
 
         if (styleContext != null && styleContext.getSprite() != null) {
-            String spriteBase = styleContext.getSprite().trim() + "#";
-            spriteUrl = spriteBase + "${" + iconNameCql + "}"; 
+            String spriteBase = styleContext.getSprite().trim();
+
+            String fragment;
+            if (iconSizeCql != null) {
+                fragment = "icon=${" + iconNameCql + "}&size=${" + iconSizeCql + "}";
+            } else {
+                fragment = "icon=${" + iconNameCql + "}";
+            }
+
+            spriteUrl = spriteBase + "#" + fragment;
         } else {
             spriteUrl = iconNameCql;
         }
 
         return sf.createExternalGraphic(spriteUrl, SpriteGraphicFactory.FORMAT);
     }
+    
+
+    /**
+     * <p>
+     * Takes the name of an icon, and an {@link MBStyle} as a context, and returns an External Graphic referencing the full URL of the image for
+     * consumption by the {@link SpriteGraphicFactory}. (The format of the image will be {@link SpriteGraphicFactory#FORMAT}).
+     * </p>
+     * 
+     * @see {@link SpriteGraphicFactory} for more information.
+     * 
+     * @param iconName The name of the icon inside the spritesheet.
+     * @param styleContext The style context in which to resolve the icon name to the full sprite URL (for consumption by the
+     *        {@link SpriteGraphicFactory}).
+     * @return An external graphic with the full URL of the mage for the {@link SpriteGraphicFactory}.
+     */
+    public ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
+        return createExternalGraphicForSprite(iconName, ff.literal("1"), styleContext);
+    }
+    
+
 
     /**
      * Given a string of "bottom-right" or "top-left" find the x,y coordinates and create an AnchorPoint

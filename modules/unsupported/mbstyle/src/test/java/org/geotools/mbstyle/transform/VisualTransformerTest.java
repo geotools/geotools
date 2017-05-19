@@ -281,6 +281,33 @@ public class VisualTransformerTest {
     }
     
     /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer that uses an icon-size function.
+     */
+    @Test
+    public void mbSymbolLayerIconSizeVisualTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleIconSizeTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Symbol Sprite Icon Size Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("symbol-sprite-icon-size"), image, 50);
+        mc.dispose();
+    }
+    
+    /**
      * Test visualization of a GeoTools style from an MB Symbol Layer
      */
     @Test

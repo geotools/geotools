@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -24,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -93,6 +95,8 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -1107,6 +1111,55 @@ public class GridCoverageRendererTest  {
         assertEquals(rasterSymbolizer, expectedRasterSymbolizer);
         ImageUtilities.disposeImage(image);
         
+    }
+    
+    @Test
+    public void testPaintBandSelectionNonSupportingReader() throws Exception {
+        File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
+        
+        RasterSymbolizer rasterSymbolizer = buildChannelSelectingSymbolizer(1);
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, ReferencedEnvelope.reference(reader.getOriginalEnvelope()),
+                new Rectangle(0, 0, 100, 100), null);
+        Graphics2D graphics = (Graphics2D) bi.getGraphics();
+        renderer.paint(graphics, reader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK);
+        graphics.dispose();
+        
+        // check we got a gray image
+        final double[] minimums = new ImageWorker(bi).getMaximums();
+        final double[] maximums = new ImageWorker(bi).getMaximums();
+        assertThat(maximums[0], equalTo(maximums[1]));
+        assertThat(maximums[1], equalTo(maximums[2]));
+        assertThat(minimums[0], equalTo(minimums[1]));
+        assertThat(minimums[1], equalTo(minimums[2]));
+    }
+    
+    @Test
+    public void testPaintSelectionSupportingReader() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
+        
+        GridCoverage2DReader reader = new TestSingleBandReader(2);
+        
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
+                new Rectangle(0, 0, 100, 100), null);
+        // keeping a reference to the raster symbolizer so we can check we has not altered
+        // during the band setup the raster symbolizer channel selection needs to be rearranged
+        // but the original raster symbolizer should not be altered
+        RasterSymbolizer rasterSymbolizer = buildChannelSelectingSymbolizer(3);
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = (Graphics2D) bi.getGraphics();
+        // .. the reader here checks the band selection params were passed down
+        renderer.paint(graphics, reader, null, rasterSymbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK);
+        
+        // check we got a gray image
+        final double[] minimums = new ImageWorker(bi).getMaximums();
+        final double[] maximums = new ImageWorker(bi).getMaximums();
+        assertThat(maximums[0], equalTo(maximums[1]));
+        assertThat(maximums[1], equalTo(maximums[2]));
+        assertThat(minimums[0], equalTo(minimums[1]));
+        assertThat(minimums[1], equalTo(minimums[2]));
     }
     
     @Test

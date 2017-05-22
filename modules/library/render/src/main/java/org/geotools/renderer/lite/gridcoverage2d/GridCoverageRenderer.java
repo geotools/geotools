@@ -1190,7 +1190,7 @@ public final class GridCoverageRenderer {
         // Band selection
         //
         if (isBandsSelectionApplicable(gridCoverageReader, symbolizer)){
-            applyBandsSelectionParameter(gridCoverageReader, readParams, symbolizer);
+            readParams = applyBandsSelectionParameter(gridCoverageReader, readParams, symbolizer);
             finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
         }
 

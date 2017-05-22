@@ -154,7 +154,7 @@ public class SimpleHttpClient implements HTTPClient {
 
         if (http && username != null && password != null) {
             String userpassword = username + ":" + password;
-            String encodedAuthorization = Base64.encodeBytes(userpassword.getBytes("UTF-8"));
+            String encodedAuthorization = Base64.encodeBytes(userpassword.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
             connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);
         }
         return connection;

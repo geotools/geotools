@@ -16,6 +16,7 @@
  */
 package org.geotools.data.ows;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
@@ -32,7 +34,12 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 /**
  * Tests for {@link MultithreadedHttpClient}.
@@ -150,4 +157,27 @@ public class MultithreadedHttpClientTest {
 			System.setProperty(SYS_PROP_KEY_HOST, sysPropOriginalValue[1]);
 		}
 	}
+	
+    // use a dynamic http port to avoid conflicts
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(
+            WireMockConfiguration.options().dynamicPort());
+
+    @Test
+    public void testBasicHeader() throws IOException {
+        stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>")));
+
+        String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
+        String userName = "user";
+        MultithreadedHttpClient client = new MultithreadedHttpClient();
+        client.setUser(userName);
+        client.setPassword(longPassword);
+        client.get(new URL("http://localhost:" + wireMockRule.port() + "/test"));
+
+        String encodedCredentials = "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
+        WireMock.verify(getRequestedFor(urlEqualTo("/test")).withHeader("Authorization",
+                equalTo("Basic " + encodedCredentials)));
+    }
 }

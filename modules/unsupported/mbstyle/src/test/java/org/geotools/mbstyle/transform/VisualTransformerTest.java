@@ -42,6 +42,7 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import javax.media.jai.Interpolation;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -50,11 +51,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.media.jai.Interpolation;
-
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Perceptual tests for {@link MBStyleTransformer}.
@@ -114,7 +113,7 @@ public class VisualTransformerTest {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
-        // System.setProperty("org.geotools.test.interactive", "true");
+         System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**
@@ -481,6 +480,29 @@ public class VisualTransformerTest {
                 Interpolation.getInstance(Interpolation.INTERP_BICUBIC), null, 256, 256);
 
         ImageAssert.assertEquals(file("raster"), image, 50);
+    }
+
+//    @Test
+    public void testFillExtrusion() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("fillExtrusionTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+
+        mc.addLayer(new FeatureLayer(polygonFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Fill Extrusion", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("fill-extrusion"), image, 5000);
+        mc.dispose();
     }
     
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {

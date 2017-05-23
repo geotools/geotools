@@ -242,46 +242,78 @@ public class FillExtrusionMBLayer extends MBLayer {
         // from fill pattern or fill color
         Fill fill;
 
-        DisplacementImpl displacement = new DisplacementImpl();
-
-        displacement.setDisplacementX(getFillExtrusionBase().doubleValue());
-        displacement.setDisplacementY(getFillExtrusionHeight().doubleValue());
+//        DisplacementImpl displacement = new DisplacementImpl();
+//
+//        displacement.setDisplacementX(getFillExtrusionBase().doubleValue());
+//        displacement.setDisplacementY(getFillExtrusionHeight().doubleValue());
 
         if (getFillExtrusionPattern() != null) {
             //Fill graphic (with external graphics)
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(getFillExtrusionPattern(), styleContext);
-            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, displacement);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, null);
             fill = sf.fill(gf, null, null);
         } else {
             fill = sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
         }
 
         // Create 3 symbolizers one each for shadow, sides, and roof.
-        PolygonSymbolizer shadowSymbolizer = sf.polygonSymbolizer("shadow",
-                ff.function("offset", ff.property("the_geom"), ff.literal(0.005), ff.literal(-0.005)),
-                sf.description(Text.text("fill"),null),
-                NonSI.PIXEL,
-                null,
-                fill,
-                displacement,
-                ff.literal(0));
+        PolygonSymbolizer shadowSymbolizer = sf. createPolygonSymbolizer();
+        PolygonSymbolizer sidesSymbolizer = sf.createPolygonSymbolizer();
+        PolygonSymbolizer roofSymbolizer = sf.createPolygonSymbolizer();
 
-        PolygonSymbolizer sidesSymbolizer = sf.polygonSymbolizer("sides",
-                ff.function("isometric", ff.property("the_geom"), ff.literal(fillExtrusionHeight())),
-                sf.description(Text.text("fill"),null),
-                NonSI.PIXEL,
-                null,
-                fill,
-                displacement,
-                ff.literal(0));
-        PolygonSymbolizer roofSymbolizer = sf.polygonSymbolizer("shadow",
-                ff.function("offset", ff.property("the_geom"), ff.literal(fillExtrusionBase()), ff.literal(fillExtrusionHeight())),
-                sf.description(Text.text("fill"),null),
-                NonSI.PIXEL,
-                null,
-                fill,
-                displacement,
-                ff.literal(0));
+        shadowSymbolizer.setName("shadow");
+        shadowSymbolizer.setGeometry(ff.function("offset", ff.property((String) null), ff.literal(0.005), ff.literal(-0.005)));
+        shadowSymbolizer.setDescription(sf.description(Text.text("fill"),null));
+        shadowSymbolizer.setUnitOfMeasure(NonSI.PIXEL);
+        shadowSymbolizer.setStroke(null);
+        shadowSymbolizer.setFill(fill);
+        shadowSymbolizer.setDisplacement(null);
+        shadowSymbolizer.setPerpendicularOffset(ff.literal(0));
+
+        sidesSymbolizer.setName("sides");
+        sidesSymbolizer.setGeometry(ff.function("isometric", ff.property((String) null), ff.literal(fillExtrusionHeight())));
+        sidesSymbolizer.setDescription(sf.description(Text.text("fill"),null));
+        sidesSymbolizer.setUnitOfMeasure(NonSI.PIXEL);
+        sidesSymbolizer.setStroke(null);
+        sidesSymbolizer.setFill(fill);
+        sidesSymbolizer.setDisplacement(null);
+        sidesSymbolizer.setPerpendicularOffset(ff.literal(0));
+
+        roofSymbolizer.setName("roof");
+        roofSymbolizer.setGeometry(ff.function("offset", ff.property((String) null), ff.literal(fillExtrusionBase()), ff.literal(fillExtrusionHeight())));
+        roofSymbolizer.setDescription(sf.description(Text.text("fill"),null));
+        roofSymbolizer.setUnitOfMeasure(NonSI.PIXEL);
+        roofSymbolizer.setStroke(null);
+        roofSymbolizer.setFill(fill);
+        roofSymbolizer.setDisplacement(null);
+        roofSymbolizer.setPerpendicularOffset(ff.literal(0));
+
+//        PolygonSymbolizer shadowSymbolizer = sf.polygonSymbolizer("shadow",
+//                ff.function("offset", ff.property("the_geom"), ff.literal(0.005), ff.literal(-0.005)),
+//                sf.description(Text.text("fill"),null),
+//                NonSI.PIXEL,
+//                null,
+//                fill,
+//                null,
+//                ff.literal(0));
+
+//        PolygonSymbolizer sidesSymbolizer = sf.polygonSymbolizer("sides",
+//                ff.function("isometric", ff.property("the_geom"), ff.literal(fillExtrusionHeight())),
+//                sf.description(Text.text("fill"),null),
+//                NonSI.PIXEL,
+//                null,
+//                fill,
+//                null,
+//                ff.literal(0));
+
+//        PolygonSymbolizer roofSymbolizer = sf.polygonSymbolizer("shadow",
+//                ff.function("offset", ff.property("the_geom"), ff.literal(fillExtrusionBase()), ff.literal(fillExtrusionHeight())),
+//                sf.description(Text.text("fill"),null),
+//                NonSI.PIXEL,
+//                null,
+//                fill,
+//                null,
+//                ff.literal(0));
 
         MBFilter filter = getFilter();
 

@@ -604,6 +604,17 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals(-180d, transformed.getMinimum(0), 0d);
         assertEquals(180d, transformed.getMaximum(0), 0d);
     }
+    
+    public void testTransformLambertAzimuthalEqualAreaWgs84NonPolar() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3035", true);
+        // a bbox that does _not_ include the pole
+        Envelope2D envelope = new Envelope2D(crs);
+        envelope.setFrameFromDiagonal(4029000, 2676000, 4696500, 3567700);
+        Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
+        // check we did _not_ get the whole range of longitudes
+        assertEquals(5.42, transformed.getMinimum(0), 1e-2);
+        assertEquals(15.88, transformed.getMaximum(0), 1e-2);
+    }
 
     public void testTransformPolarStereographicWgs84FalseOrigin() throws Exception {
         // this one has false origins at 6000000/6000000

@@ -34,6 +34,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
+import org.geotools.data.complex.config.DataAccessMap;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -67,10 +68,11 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
-        return createDataStore(params, false);
+        return createDataStore(params, false, new DataAccessMap());
     }
 
-    public DataAccess<FeatureType, Feature> createDataStore(Map params, boolean hidden) throws IOException {
+    public DataAccess<FeatureType, Feature> createDataStore(Map params, boolean hidden,
+            DataAccessMap sourceDataStoreMap) throws IOException {
         Set<FeatureTypeMapping> mappings;
         AppSchemaDataAccess dataStore;
 
@@ -94,11 +96,15 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
             URL relatedConfigURL = DataUtilities.fileToURL(includedConfig);
             params.put("url", relatedConfigURL);
-            // this will register the related data access, to enable feature chaining
-            createDataStore(params, true);
+            // this will register the related data access, to enable feature chaining;
+            // sourceDataStoreMap is passed on to keep track of the already created source data stores
+            // and avoid creating the same data store twice (this enables feature iterators sharing
+            // the same transaction to re-use the connection instead of opening a new one for each
+            // joined type)
+            createDataStore(params, true, sourceDataStoreMap);
         }
 
-        mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
+        mappings = AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
 
         dataStore = new AppSchemaDataAccess(mappings, hidden);
 

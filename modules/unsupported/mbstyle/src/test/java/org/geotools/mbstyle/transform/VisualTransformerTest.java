@@ -521,7 +521,7 @@ public class VisualTransformerTest {
 
         MapContent mc = new MapContent();        
         if (includeGrid) {
-            mc.addLayer(new FeatureLayer(gridFS, defaultPointStyle()));    
+            mc.addLayer(new FeatureLayer(gridFS, defaultLineStyle()));    
         }        
         mc.addLayer(new FeatureLayer(pointFS, style));
 

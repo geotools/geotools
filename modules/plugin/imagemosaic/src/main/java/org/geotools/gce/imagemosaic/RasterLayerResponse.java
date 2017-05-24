@@ -57,21 +57,20 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.DomainDescriptor;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducer;
 import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
+import org.geotools.gce.imagemosaic.granulecollector.ReprojectingSubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducer;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.geometry.Envelope2D;
@@ -81,6 +80,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
@@ -96,8 +97,7 @@ import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
@@ -285,6 +285,8 @@ public class RasterLayerResponse {
          */
         private List<SubmosaicProducer> granuleCollectors = new ArrayList<>();
 
+        private boolean heterogeneousCRS;
+
         /**
          * Default {@link Constructor}
          */
@@ -305,6 +307,7 @@ public class RasterLayerResponse {
         private MosaicProducer(final boolean dryRun, List<SubmosaicProducer> collectors) {
             this.granuleCollectors = collectors;
             this.mergeBehavior = request.getMergeBehavior();
+            this.heterogeneousCRS = collectors.stream().anyMatch(c -> c.isReprojecting());
         }
 
         /**
@@ -315,7 +318,6 @@ public class RasterLayerResponse {
          * If not {@link MergeBehavior#STACK}ing is required, we collect them all together with an include filter.
          */
         public void visit(GranuleDescriptor granuleDescriptor, SimpleFeature sf) {
-
             //
             // load raster data
             //
@@ -328,8 +330,17 @@ public class RasterLayerResponse {
                 CoordinateReferenceSystem mosaicCRS = mosaicBBox.getCoordinateReferenceSystem();
                 try {
                     if(!CRS.equalsIgnoreMetadata(granuleCRS, mosaicCRS)) {
+                        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mosaicBBox, granuleCRS, true);
                         MathTransform mt = CRS.findMathTransform(granuleCRS, mosaicCRS);
-                        inclusionGeometry = JTS.transform(inclusionGeometry, mt);
+                        if(handler != null) {
+                            Geometry preProcessed = handler.preProcess(inclusionGeometry);
+                            if(preProcessed != null) {
+                                Geometry transformed = JTS.transform(inclusionGeometry, mt);
+                                inclusionGeometry = handler.postProcess(mt.inverse(), transformed);
+                            }
+                        } else {
+                            inclusionGeometry = JTS.transform(inclusionGeometry, mt);
+                        }
                     }
                     intersects = inclusionGeometry.intersects(bb);
                 } catch (FactoryException | MismatchedDimensionException | TransformException e) {
@@ -350,9 +361,10 @@ public class RasterLayerResponse {
                     }
                 }
 
-                // did we find a place for it? If we are doing EGR then it's ok, otherwise not so much
-                if (!found && getExcessGranuleRemover() == null) {
-                    throw new IllegalStateException("Unable to locate a filter for this granule:\n"
+                // did we find a place for it? If we are doing EGR then it's ok, if we are dealing
+                // with an heterogenous CRS that also happens when zooming out a lot, otherwise not so much
+                if (!found && getExcessGranuleRemover() == null && !heterogeneousCRS) {
+                    throw new IllegalStateException("Unable to locate a granule collector accepting this granule:\n"
                             + granuleDescriptor.toString());
                 }
 
@@ -867,11 +879,31 @@ public class RasterLayerResponse {
             if (request.getMaximumNumberOfGranules() > 0) {
                 query.setMaxFeatures(request.getMaximumNumberOfGranules());
             }
-            bbox = FeatureUtilities.DEFAULT_FILTER_FACTORY
-                    .bbox(FeatureUtilities.DEFAULT_FILTER_FACTORY
-                            .property(rasterManager.getGranuleCatalog().getType(typeName)
-                                    .getGeometryDescriptor().getName()),
-                            mosaicBBox);
+            final PropertyName geometryProperty = FeatureUtilities.DEFAULT_FILTER_FACTORY
+                    .property(rasterManager.getGranuleCatalog().getType(typeName)
+                            .getGeometryDescriptor().getName());
+            if(request.isHeterogeneousGranules()) {
+                ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mosaicBBox, mosaicBBox.getCoordinateReferenceSystem(), true);
+                if(handler != null) {
+                    List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+                    if(envelopes != null && envelopes.size() > 0) {
+                        List<Filter> filters = new ArrayList<>();
+                        for (ReferencedEnvelope envelope : envelopes) {
+                            Filter f = FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(geometryProperty, envelope);
+                            filters.add(f);
+                        }
+                        if(envelopes.size() == 1) {
+                            bbox = filters.get(0);
+                        } else {
+                            bbox = FeatureUtilities.DEFAULT_FILTER_FACTORY.or(filters);
+                        }
+                    }
+                    
+                }
+            }
+            if(bbox == null) {
+                bbox = FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(geometryProperty, mosaicBBox);
+            }
             query.setFilter(bbox);
             return query;
         } else {
@@ -936,11 +968,13 @@ public class RasterLayerResponse {
      * Handles the optional {@link SortBy} clause for the query to the catalog
      *
      * @param query the {@link Query} to set the {@link SortBy} for.
+     * @throws IOException 
      */
-    private void handleSortByClause(final Query query) {
+    private void handleSortByClause(final Query query) throws IOException {
         Utilities.ensureNonNull("query", query);
         LOGGER.fine("Prepping to manage SortBy Clause");
         final String sortByClause = request.getSortClause();
+        final GranuleCatalog catalog = rasterManager.getGranuleCatalog();
         if (sortByClause != null && sortByClause.length() > 0) {
             final String[] elements = sortByClause.split(",");
             if (elements != null && elements.length > 0) {
@@ -981,12 +1015,22 @@ public class RasterLayerResponse {
                 // assign to query if sorting is supported!
 
                 this.sortBy = clauses.toArray(new SortBy[] {});
-                if (rasterManager.getGranuleCatalog()
+                if (catalog
                         .getQueryCapabilities(rasterManager.getTypeName()).supportsSorting(sortBy)) {
                     query.setSortBy(sortBy);
                 }
             } else {
                 LOGGER.fine("No SortBy Clause");
+            }
+        } else {
+            // no specified sorting, is this a heterogeneous CRS mosaic?
+            String crsAttribute = rasterManager.getCrsAttribute();
+            if(crsAttribute != null) {
+                SortBy sort = new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(crsAttribute), SortOrder.ASCENDING);
+                this.sortBy = new SortBy[] {sort};
+                if (catalog.getQueryCapabilities(rasterManager.getTypeName()).supportsSorting(sortBy)) {
+                    query.setSortBy(sortBy);
+                }               
             }
         }
     }
@@ -1367,6 +1411,9 @@ public class RasterLayerResponse {
         RasterManager originalRasterManager = originalRequest.getRasterManager();
         RasterManager manager = originalRasterManager.getForGranuleCRS(templateDescriptor, this.mosaicBBox);
         RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager);
+        if(request.spatialRequestHelper.isEmpty()) {
+            return null;
+        }
         RasterLayerResponse response = new RasterLayerResponse(request, manager,
                 this.submosaicProducerFactory);
         // initialize enough info without actually running the output computation

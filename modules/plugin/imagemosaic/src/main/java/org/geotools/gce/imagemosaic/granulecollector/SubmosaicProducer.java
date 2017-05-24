@@ -38,4 +38,8 @@ public interface SubmosaicProducer {
     boolean hasAlpha();
 
     double[][] getSourceThreshold();
+    
+    default boolean isReprojecting() {
+        return false;
+    }
 }

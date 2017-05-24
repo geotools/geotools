@@ -590,28 +590,10 @@ public final class CropTest extends GridProcessingTestBase {
         param.parameter("ROI").setValue(mask);
 
         GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
-        if (SHOW) {
-            Viewer.show(coverage, "Original");
-            Viewer.show(cropped, "Cropped");
-            Thread.sleep(10000);
-        } else {
-            // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
-        }
+        cropped = (GridCoverage2D) processor.doOperation(param);
         RenderedImage raster = cropped.getRenderedImage();
 
-        // Checking pixel values in the top left corner (0,0)
-        // It's not zero due to having used a crop instead of a mosaic
-        assertEquals(240, raster.getTile(0, 0).getSample(0, 0, 0));
-        assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
-
-        // Forcing the mosaic operation and repeating the computation
-        param.parameter("ForceMosaic").setValue(true);
-
-        cropped = (GridCoverage2D) processor.doOperation(param);
-        raster = cropped.getRenderedImage();
-
-        // Now the value should be zero since we have cut away the corner
+        // The value should be zero since we have cut away the corner
         assertEquals(0, raster.getTile(0, 0).getSample(0, 0, 0));
         assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
     }

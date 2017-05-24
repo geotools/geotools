@@ -440,4 +440,5 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
     public boolean hasAlpha() {
         return hasAlpha;
     }
+    
 }

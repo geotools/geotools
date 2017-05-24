@@ -75,7 +75,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                 return;
             
             boolean ring = geom instanceof LinearRing || cs.getCoordinate(0).equals(cs.getCoordinate(cs.size() - 1));
-            applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2, ring);
+            applyOffset(cs, direction == EAST_TO_WEST || ring ? 0 : wrapLimit * 2, ring);
         }
     }
 

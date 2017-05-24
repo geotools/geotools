@@ -27,14 +27,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
@@ -131,22 +134,34 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     private Filter listFilter;
 
+
+    private boolean isTransactionOwner;
+
+    public boolean isTransactionOwner() {
+        return isTransactionOwner;
+    }
+
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised) throws IOException {
-        this(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, false);        
+        this(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, false);
     }
-    
+
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised, boolean hasPostFilter) throws IOException {
-        super(store, mapping, query, null, removeQueryLimitIfDenormalised, hasPostFilter);
+        this(store, mapping, query, isFiltered, removeQueryLimitIfDenormalised, hasPostFilter, null);
+    }
+
+    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, boolean isFiltered, boolean removeQueryLimitIfDenormalised,
+            boolean hasPostFilter, Transaction transaction) throws IOException {
+        super(store, mapping, query, null, removeQueryLimitIfDenormalised, hasPostFilter, transaction);
         this.isFiltered = isFiltered;
         if (isFiltered) {
             filteredFeatures = new ArrayList<String>();
         }
     }
-    
-    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query) throws IOException {
+
+    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) throws IOException {
         this(store, mapping, query, null, false);
     }
 
@@ -163,7 +178,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised) throws IOException {
-        super(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised);
+        this(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised, null);
+    }
+
+    public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised, Transaction transaction) throws IOException {
+        super(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised, false, transaction);
     }
 
     @Override
@@ -326,13 +346,31 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         //NC - joining query
         if (query instanceof JoiningQuery) {
+            JoiningJDBCFeatureSource joiningJdbcFS = null;
             if (mappedSource instanceof JDBCFeatureSource) {
-                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
+                joiningJdbcFS = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
             } else if (mappedSource instanceof JDBCFeatureStore) {
-                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
+                joiningJdbcFS = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
             } else {
                 throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
             }
+
+            // we have a database backend and Joining is enabled: make sure a transaction is available
+            // to allow downstream iterators (i.e. iterators going through nested features) to share the
+            // connection stored in the transaction's state (note that this is possible only if the
+            // source data store of the nested feature types is the same as their parent's).
+            if (this.transaction != null) {
+                // transaction provided by calling code: iterator shall not consider itself owner of the
+                // transaction and hence shall not close it when done
+                this.isTransactionOwner = false;
+            } else {
+                this.transaction = new DefaultTransaction();
+                // iterator owns the transaction it has created and hence shall close it when done
+                this.isTransactionOwner = true;
+            }
+
+            joiningJdbcFS.setTransaction(transaction);
+            mappedSource = joiningJdbcFS;
         }
         String version=(String)this.mapping.getTargetFeature().getType().getUserData().get("targetVersion");
         // might be because top level feature has no geometry
@@ -871,24 +909,22 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         query.setFilter(fidFilter);
         matchingFeatures = this.mappedSource.getFeatures(query);
-        
-        FeatureIterator<? extends Feature> iterator = matchingFeatures.features();
 
         List<Feature> features = new ArrayList<Feature>();
-        while (iterator.hasNext()) {
-            features.add(iterator.next());
-        }
-        // Probably cause there is no primary key nor idExpression
-        if (features.isEmpty()) {
-            features.add(curSrcFeature);
+        try (FeatureIterator<? extends Feature> iterator = matchingFeatures.features()) {
+            while (iterator.hasNext()) {
+                features.add(iterator.next());
+            }
+            // Probably cause there is no primary key nor idExpression
+            if (features.isEmpty()) {
+                features.add(curSrcFeature);
+            }
+
+            filteredFeatures.add(fId);
         }
 
-        filteredFeatures.add(fId);
-
-        iterator.close();
-        
         curSrcFeature = null;
-        
+
         return features;
     }
 
@@ -1143,6 +1179,15 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
                 }
             }
+
+            if (transaction != null && isTransactionOwner)
+            {
+                try {
+                    transaction.close();
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Exception occurred closing transaction: " + e.getMessage(), e);
+                }
+            }
         }
     }
 
@@ -1279,4 +1324,14 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
         return (Boolean) o;
     }
+
+    /**
+     * For testing purposes.
+     * 
+     * @return the feature source providing input features to be mapped to target features
+     */
+    public FeatureSource<? extends FeatureType, ? extends Feature> getMappedSource() {
+        return mappedSource;
+    }
+
 }

@@ -22,13 +22,24 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.Rule;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.style.SemanticType;
+import org.opengis.style.*;
 import org.opengis.style.Symbolizer;
 
 import javax.measure.unit.NonSI;
@@ -1739,23 +1750,17 @@ public class SymbolMBLayer extends MBLayer {
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {
+            // If we have an icon with a Point placement create a PointSymoblizer for the icon.
+            // This enables adjusting the text placement without moving the icon.
+            if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+                org.geotools.styling.PointSymbolizer pointSymbolizer = sf.pointSymbolizer(getId(),
+                        ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
+                        getGraphic(transformer, styleContext));
+                symbolizers.add(pointSymbolizer);
+            } else {
 
-            // If the iconImage is a literal string (not a function), then
-            // we need to support Mapbox token replacement.
-            // Note: the URL is expected to be a CQL STRING ...
-            Expression iconExpression = iconImage();
-            if (iconExpression instanceof Literal) {
-                iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
+                symbolizer.setGraphic(getGraphic(transformer, styleContext));
             }
-            
-            ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);            
-            // layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
-            Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
-                    iconRotate(), null, null);
-            Displacement d = iconOffsetDisplacement();
-            d.setDisplacementY(d.getDisplacementY());
-            g.setDisplacement(d);
-            symbolizer.setGraphic(g);
         }
 
         symbolizers.add(symbolizer);
@@ -1775,6 +1780,26 @@ public class SymbolMBLayer extends MBLayer {
                 null, // (unused)
                 Collections.emptySet(), filter.semanticTypeIdentifiers(), // we only expect this to be applied to polygons
                 rules));
+    }
+
+    private Graphic getGraphic(MBStyleTransformer transformer, MBStyle styleContext) {
+        // If the iconImage is a literal string (not a function), then
+        // we need to support Mapbox token replacement.
+        // Note: the URL is expected to be a CQL STRING ...
+        Expression iconExpression = iconImage();
+        if (iconExpression instanceof Literal) {
+            iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
+        }
+
+        ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);
+        // layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
+        Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
+                iconRotate(), null, null);
+        Displacement d = iconOffsetDisplacement();
+        d.setDisplacementY(d.getDisplacementY());
+        g.setDisplacement(d);
+
+        return g;
     }
 
     /**

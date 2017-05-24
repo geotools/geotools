@@ -12,15 +12,20 @@ import java.util.Map;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -36,6 +41,12 @@ public class LabelShieldTest {
     StreamingRenderer renderer;
 
     SimpleFeatureSource fs_multiline;
+    ContentFeatureSource pointShield;
+    
+    @BeforeClass
+    public static void prepareCRS() {
+        CRS.reset("all");
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -44,6 +55,7 @@ public class LabelShieldTest {
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("diaglines");
         fs_multiline = ds.getFeatureSource("diaglines_multiline");
+        pointShield = ds.getFeatureSource("point_shield");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         
         renderer = new StreamingRenderer();
@@ -62,22 +74,37 @@ public class LabelShieldTest {
     public void testLabelShield() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
         
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
-        
-        renderer.setContext(mc);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
+        renderer.setMapContent(mc);
         
         RendererBaseTest.showRender("Labels and shield", renderer, TIME, bounds);
+    }
+    
+    @Test
+    public void testPointShieldUnderTheLine() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "textLabelShieldStretch2.sld");
+        
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointShield, style));
+        
+        renderer.setMapContent(mc);
+        final ReferencedEnvelope pointBounds = pointShield.getBounds();
+        pointBounds.expandBy(3, 3);
+        BufferedImage image = RendererBaseTest.showRender("Text under the line", renderer, TIME, pointBounds);
+        
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldUnderTheLine.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
     
     @Test
     public void testLabelShieldMultiline() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_multiline, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_multiline, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         BufferedImage image = RendererBaseTest.showRender("Labels and shield", renderer, TIME,
                 bounds);
@@ -89,10 +116,10 @@ public class LabelShieldTest {
     public void testLabelShieldMultilineStretch() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textLabelShieldStretch.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_multiline, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_multiline, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         BufferedImage image = RendererBaseTest.showRender("Labels and shield", renderer, TIME,
                 bounds);
@@ -104,10 +131,10 @@ public class LabelShieldTest {
     public void testOnlyShield() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textOnlyShield.sld");
         
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
         
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         
         RendererBaseTest.showRender("Labels and shield, fontsize = 0", renderer, TIME, bounds);
     }

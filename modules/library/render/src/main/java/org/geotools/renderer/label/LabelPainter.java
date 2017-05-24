@@ -340,14 +340,16 @@ public class LabelPainter {
                     offsetX = margin[1] - margin[3];
                     offsetY = margin[2] - margin[0];
                 }
-                LiteShape2 tempShape = new LiteShape2(gf.createPoint(new Coordinate(labelBounds
-                        .getWidth() / 2.0 + offsetX, -1.0 * labelBounds.getHeight() / 2.0 + offsetY)), null, null,
+                LineInfo lastLine = lines.get(lines.size() - 1);
+                LiteShape2 tempShape = new LiteShape2(gf.createPoint(new Coordinate(labelBounds.getMinX() + labelBounds
+                        .getWidth() / 2.0 + offsetX, 
+                        labelBounds.getMinY() + lastLine.getBounds().getHeight() -1.0 * labelBounds.getHeight() / 2.0 + offsetY)), null, null,
                         false, false);
 
                 // resize graphic and transform it based on the position of the last line
                 graphic = resizeGraphic(graphic);
                 AffineTransform graphicTx = new AffineTransform(transform);
-                LineInfo lastLine = lines.get(lines.size() - 1);
+                
                 graphicTx.translate(lastLine.getComponents().get(0).getX(), lastLine.getY());
                 graphics.setTransform(graphicTx);
                 shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());

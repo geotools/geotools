@@ -1239,12 +1239,12 @@ public final class LabelCacheImpl implements LabelCache {
                         glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
         } else {
+            painter.paintStraightLabel(tempTransform);
             if(DEBUG_CACHE_BOUNDS) {
                 painter.graphics.setStroke(new BasicStroke());
                 painter.graphics.setColor(Color.RED);
                 painter.graphics.draw(transformed);
             }
-            painter.paintStraightLabel(tempTransform);
             if(labelItem.isConflictResolutionEnabled())
                 glyphs.addLabel(labelItem, transformed);
             return true;

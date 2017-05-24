@@ -18,6 +18,7 @@ package org.geotools.data.joining;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ import net.opengis.wfs20.ResolveValueType;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.data.complex.AbstractMappingFeatureIterator;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.DataAccessMappingFeatureIterator;
@@ -127,7 +130,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
      */
     public DataAccessMappingFeatureIterator initSourceFeatures(Instance instance,
             Name featureTypeName, CoordinateReferenceSystem reprojection,
-            List<PropertyName> selectedProperties, boolean includeMandatory, int resolveDepth, Integer resolveTimeOut) throws IOException {
+            List<PropertyName> selectedProperties, boolean includeMandatory, int resolveDepth,
+            Integer resolveTimeOut, Transaction transaction) throws IOException {
         JoiningQuery query = new JoiningQuery();
         query.setCoordinateSystemReproject(reprojection);
 
@@ -200,11 +204,13 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                     + collection);
         }
 
+        MappingFeatureCollection mfc = ((MappingFeatureCollection) collection);
         // copy unrolled filter
-        ((MappingFeatureCollection) collection).setUnrolledFilter(instance.baseTableQuery
+        mfc.setUnrolledFilter(instance.baseTableQuery
                 .getFilter());
 
-        FeatureIterator featureIterator = collection.features();
+        // propagate transaction to nested feature iterators
+        FeatureIterator featureIterator = mfc.features(transaction);
 
         if (!(featureIterator instanceof DataAccessMappingFeatureIterator)) {
             throw new IOException(
@@ -298,6 +304,12 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                     "Link field is missing from feature chaining mapping!");
         }
 
+        Transaction transaction = null;
+        if (caller instanceof AbstractMappingFeatureIterator)
+        {
+            transaction = ((AbstractMappingFeatureIterator)caller).getTransaction();
+        }
+
         Instance instance = instances.get(caller);
         if (instance == null) {
             throw new IllegalArgumentException(
@@ -313,7 +325,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                 .get((Name) featureTypeName);
         if (featureIterator == null) {
             featureIterator = initSourceFeatures(instance, (Name) featureTypeName, reprojection,
-                    selectedProperties, includeMandatory, 0, null);
+                    selectedProperties, includeMandatory, 0, null, transaction);
         }
         Expression nestedSourceExpression = instance.nestedSourceExpressions
                 .get((Name) featureTypeName);
@@ -370,6 +382,12 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                     "Link field is missing from feature chaining mapping!");
         }
 
+        Transaction transaction = null;
+        if (caller instanceof AbstractMappingFeatureIterator)
+        {
+            transaction = ((AbstractMappingFeatureIterator)caller).getTransaction();
+        }
+
         Instance instance = instances.get(caller);
         if (instance == null) {
             throw new IllegalArgumentException(
@@ -384,7 +402,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                 .get((Name) featureTypeName);
         if (featureIterator == null) {
             featureIterator = initSourceFeatures(instance, (Name) featureTypeName, reprojection,
-                    selectedProperties, includeMandatory, resolveDepth, resolveTimeOut);
+                    selectedProperties, includeMandatory, resolveDepth, resolveTimeOut, transaction);
         }
         Expression nestedSourceExpression = instance.nestedSourceExpressions
                 .get((Name) featureTypeName);
@@ -453,6 +471,20 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         instance.skipped.add(new Instance.Skip(idValues));
 
+    }
+
+    /**
+     * For testing purposes only: exposes the nested feature iterators to calling code.
+     * 
+     * @param caller the object going through the features
+     * @return a map of nested feature iterators, keyed by nested feature type name
+     */
+    public Map<Name, DataAccessMappingFeatureIterator> getNestedFeatureIterators(Object caller) {
+        if (instances.containsKey(caller)) {
+            return instances.get(caller).featureIterators;
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
 }

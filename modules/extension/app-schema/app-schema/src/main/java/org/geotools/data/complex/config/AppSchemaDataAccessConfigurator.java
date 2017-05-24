@@ -109,7 +109,9 @@ public class AppSchemaDataAccessConfigurator {
     private AppSchemaDataAccessDTO config;
 
     private AppSchemaFeatureTypeRegistry typeRegistry;
-    
+
+    private DataAccessMap dataStoreMap;
+
     private FilterFactory ff = new FilterFactoryImplReportInvalidProperty();
 
     /**
@@ -150,8 +152,9 @@ public class AppSchemaDataAccessConfigurator {
      * @param config
      *            DOCUMENT ME!
      */
-    private AppSchemaDataAccessConfigurator(AppSchemaDataAccessDTO config) {
+    private AppSchemaDataAccessConfigurator(AppSchemaDataAccessDTO config, DataAccessMap dataStoreMap) {
         this.config = config;
+        this.dataStoreMap = dataStoreMap;
         namespaces = new NamespaceSupport();
         Map nsMap = config.getNamespaces();
         for (Iterator it = nsMap.entrySet().iterator(); it.hasNext();) {
@@ -181,9 +184,23 @@ public class AppSchemaDataAccessConfigurator {
      *             if any error occurs while creating the mappings
      */
     public static Set<FeatureTypeMapping> buildMappings(AppSchemaDataAccessDTO config) throws IOException {
+        return buildMappings(config, new DataAccessMap());
+    }
+
+    /**
+     * This method will not create a source data store if an equivalent one (i.e. same configuration parameters) is found in the provided
+     * <code>sourceDataStoreMap</code>.
+     * 
+     * @see AppSchemaDataAccessConfigurator#buildMappings(AppSchemaDataAccessDTO)
+     * 
+     * @param sourceDataStoreMap map holding the source data stores created so far, e.g. while parsing App-Schema configuration files included by the one
+     *        currently being processed
+     */
+    public static Set<FeatureTypeMapping> buildMappings(AppSchemaDataAccessDTO config,
+            DataAccessMap sourceDataStoreMap) throws IOException {
         AppSchemaDataAccessConfigurator mappingsBuilder;
 
-        mappingsBuilder = new AppSchemaDataAccessConfigurator(config);
+        mappingsBuilder = new AppSchemaDataAccessConfigurator(config, sourceDataStoreMap);
         Set<FeatureTypeMapping> mappingObjects = mappingsBuilder.buildMappings();
 
         return mappingObjects;
@@ -682,7 +699,13 @@ public class AppSchemaDataAccessConfigurator {
 
             AppSchemaDataAccessConfigurator.LOGGER.fine("looking for datastore " + id);
 
-            DataAccess<FeatureType, Feature> dataStore = DataAccessFinder.getDataStore(datastoreParams);
+            DataAccess<FeatureType, Feature> dataStore = null;
+            if (dataStoreMap != null && dataStoreMap.containsKey(datastoreParams)) {
+                dataStore = dataStoreMap.get(datastoreParams);
+            } else {
+                dataStore = DataAccessFinder.getDataStore(datastoreParams);
+                dataStoreMap.put(datastoreParams, dataStore);
+            }
 
             if (dataStore == null) {
                 AppSchemaDataAccessConfigurator.LOGGER.log(Level.SEVERE,

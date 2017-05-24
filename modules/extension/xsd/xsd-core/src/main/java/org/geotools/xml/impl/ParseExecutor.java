@@ -187,9 +187,6 @@ public class ParseExecutor implements Visitor {
             type = (XSDSimpleTypeDefinition) typeDefinition;
         } else {
             XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) typeDefinition;
-            if (complexType.getContentType() instanceof XSDParticle) {
-                
-            }
             if (complexType.getContentType() instanceof XSDSimpleTypeDefinition) {
                 type = (XSDSimpleTypeDefinition) complexType.getContentType();
             }

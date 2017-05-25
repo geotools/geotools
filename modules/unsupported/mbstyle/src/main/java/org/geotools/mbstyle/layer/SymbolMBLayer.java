@@ -897,6 +897,14 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Expression textMaxWidth() throws MBFormatException {
         return parse.percentage(layout, "text-max-width", 10.0);
+    }   
+    
+    /**
+     * 
+     * @return True if the layer has a text-max-width explicitly provided.
+     */
+    public boolean hasTextMaxWidth() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "text-max-width");
     }
 
     /**
@@ -1765,7 +1773,13 @@ public class SymbolMBLayer extends MBLayer {
         // auto wrap
         // getTextSize defaults to 16, and getTextMaxWidth defaults to 10 
         // converts text-max-width(mbstyle) from ems to pixels for autoWrap(sld)
-        symbolizer.getOptions().put("autoWrap", String.valueOf(getTextMaxWidth().intValue() * getTextSize().intValue())); 
+        // Only supported when text-max-width and text-size are not functions (because vendor options don't take expressions)
+        if (hasTextMaxWidth()) {
+            double textMaxWidth = transformer.requireLiteral(textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
+            double textSize = transformer.requireLiteral(textSize(), Double.class, 16.0, "text-size (when text-max-width is specified)", getId());
+            symbolizer.getOptions().put("autoWrap", String.valueOf(textMaxWidth * textSize));             
+        }
+
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {

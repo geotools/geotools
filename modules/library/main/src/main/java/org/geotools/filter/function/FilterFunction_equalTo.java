@@ -31,9 +31,10 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_equalTo extends FunctionExpressionImpl {
     
-    public static FunctionName NAME = new FunctionNameImpl("equalTo", Boolean.class,
-            parameter("object1", Object.class),
-            parameter("object2", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("equalTo", 
+    		parameter("equalTo", Boolean.class,"equal to","Can be used to compare for equality two numbers, two strings, two dates, and so on."),
+            parameter("a", Object.class,"a","Can be any object type: date, string, number, etc..."),
+            parameter("b", Object.class,"b","Can be any object type: date, string, number, etc..."));
 
     public FilterFunction_equalTo() {
         super(NAME);

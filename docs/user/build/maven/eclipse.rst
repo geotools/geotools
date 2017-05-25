@@ -5,20 +5,28 @@ Maven can be used to work with the Eclipse IDE. While direct integration is curr
 Creating .project and .classpath files
 
 You can use maven to set up the files needed for eclipse::
-   
-   mvn eclipse:eclipse -DoutputDirectory=bin -Dall
+
+   mvn eclipse:eclipse
 
 This will produce the following files for each module:
 * .classpath file
 * .project file
 
-The way to read the above line is we are using the eclipse plugin, and we are asking it to do the goal eclipse. The other options are to specify a default output directory (so that eclipse and maven do not both use target/classes and trip on each other). The -Dall switch is used to include the unsupported modules.
+The way to read the above line is we are using the eclipse plugin, and we are asking it to do the goal eclipse. The -Dall switch is used to include the unsupported modules.
 
 If you like you can just do a simple::
    
    C:\java\geotools\trunk\>mvn eclipse:eclipse
 
 Because maven and eclipse will both use **target/classes** you will need to perform a clean when switching between maven and eclipse for building.
+
+.. note::
+   
+   If you would like maven command line and eclipse IDE to use different output directories::
+    
+      mvn eclipse:eclipse -DoutputDirectory=bin -Dall
+   
+   The other options are to specify a default output directory (so that eclipse and maven do not both use target/classes and trip on each other).
 
 You can then import all the GeoTools projects into your Eclipse IDE.
 

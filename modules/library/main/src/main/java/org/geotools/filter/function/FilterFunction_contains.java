@@ -34,10 +34,10 @@ import com.vividsolutions.jts.geom.Geometry;
 public class FilterFunction_contains extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("contains",
-            parameter("contains", Boolean.class),
+            parameter("contains", Boolean.class, "Contains","Returns true if the geometry a contains b"), 
             parameter("geometry1", Geometry.class),
             parameter("geometry2", Geometry.class));
-
+    
     public FilterFunction_contains() {
         super(NAME);
     }

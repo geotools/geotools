@@ -84,6 +84,8 @@ public class VisualTransformerTest {
     SimpleFeatureSource polygonFS;
 
     SimpleFeatureSource polygonsBigFS;    
+    
+    SimpleFeatureSource pointsWithMarksFS;
 
     ReferencedEnvelope bounds;
 
@@ -103,10 +105,11 @@ public class VisualTransformerTest {
         polygonsBigFS = ds.getFeatureSource("testpolygonsbig");
         lineFS = ds.getFeatureSource("testlines");
         lineZigFS = ds.getFeatureSource("testlinezigs");
+        pointsWithMarksFS = ds.getFeatureSource("testmarks");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
-         System.setProperty("org.geotools.test.interactive", "true");
+        // System.setProperty("org.geotools.test.interactive", "true");
     }
 
     /**
@@ -410,6 +413,62 @@ public class VisualTransformerTest {
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Overlap", "circle-style-test-overlap", true, 300, 300);
     }
     
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer, using included GeoTools marks.
+     */
+    @Test
+    public void mbSymbolLayerMarkVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils
+                .parseTestStyle("symbolStyleIconMarkTest.json");
+                
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);        
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Symbol Mark Test", renderer,
+                DISPLAY_TIME, new ReferencedEnvelope[] { bounds }, null);
+
+        ImageAssert.assertEquals(file("symbol-mark-test"), image, 50);
+        mc.dispose();        
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer, using included GeoTools (QGIS) marks.
+     */
+    @Test
+    public void mbSymbolLayerQGISMarkVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils
+                .parseTestStyle("symbolStyleIconQGISMarkTest.json");        
+        
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Symbol QGIS Mark Test", renderer,
+                DISPLAY_TIME, new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("symbol-qgis-mark-test"), image, 50);
+        mc.dispose();
+        
+    }
+
     @Test
     public void mbLineLayerTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTest.json");

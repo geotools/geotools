@@ -20,6 +20,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
 import org.geotools.styling.AnchorPoint;
@@ -32,8 +33,10 @@ import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
+import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -42,12 +45,15 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.style.*;
 import org.opengis.style.Symbolizer;
 
+import com.google.common.collect.ImmutableSet;
+
 import javax.measure.unit.NonSI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A symbol.
@@ -285,6 +291,19 @@ public class SymbolMBLayer extends MBLayer {
         VIEWPORT
     }
 
+    /**
+     * When any of these strings is provided as the sprite source in an MB style, the style's 'icon-image' will actually be interpreted as the
+     * well-known name of a GeoTools {@link Mark} rather than an actual sprite sheet location.
+     */
+    protected static final Set<String> MARK_SHEET_ALIASES = ImmutableSet.of("geotoolsmarks",
+            "geoservermarks", "");
+
+    /**
+     * The default base size (pixels) to use to render GeoTools marks in a MB style. This is needed because MB styles have only a relative "size"
+     * property that scales the icon, but no absolute reference size.
+     */
+    protected static final int MARK_ICON_DEFAULT_SIZE = 32;
+    
     /**
      * 
      * @param json
@@ -1761,6 +1780,7 @@ public class SymbolMBLayer extends MBLayer {
 
                 symbolizer.setGraphic(getGraphic(transformer, styleContext));
             }
+                     
         }
 
         symbolizers.add(symbolizer);
@@ -1782,6 +1802,14 @@ public class SymbolMBLayer extends MBLayer {
                 rules));
     }
 
+    /**
+     * Get a graphic for this style's 'icon-image'. It will usually be an {@link ExternalGraphic} to be handled by the {@link SpriteGraphicFactory}, but
+     * this method also supports GeoTools {@link Mark}s as a special case.
+     * 
+     * @param transformer
+     * @param styleContext The containing style (used to get the sprite source)
+     * @return A graphic based on this style's 'icon-image' property. 
+     */
     private Graphic getGraphic(MBStyleTransformer transformer, MBStyle styleContext) {
         // If the iconImage is a literal string (not a function), then
         // we need to support Mapbox token replacement.
@@ -1790,10 +1818,28 @@ public class SymbolMBLayer extends MBLayer {
         if (iconExpression instanceof Literal) {
             iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
         }
+        
+        Expression graphicSize = null;        
+        GraphicalSymbol gs; 
+        
+        // In the special case that the 'sprite' source designates the internal GeoTools marks, then create a mark graphic.
+        // Otherwise, create a sprite-based external graphic.
+        String spriteSheetLocation = styleContext.getSprite() == null ? "" : styleContext.getSprite().trim().toLowerCase();            
+        if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
+            Fill f = sf.fill(null, iconColor(), null);
+            Stroke s = sf.stroke(iconColor(), null, null, null, null, null, null);
+            gs = sf.mark(iconExpression, f, s);
+        } else {
+            gs = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);
+        }            
+        
+        if (gs instanceof Mark) {
+            // The graphicSize is specified in pixels, so only set it on the Graphic if the GraphicalSymbol is a mark.
+            // If it is an ExternalGraphic from a sprite sheet, the absolute size of the icon is unknown at this point.
+            graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE),  iconSize());
+        }              
 
-        ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);
-        // layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
-        Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
+        Graphic g = sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize,
                 iconRotate(), null, null);
         Displacement d = iconOffsetDisplacement();
         d.setDisplacementY(d.getDisplacementY());

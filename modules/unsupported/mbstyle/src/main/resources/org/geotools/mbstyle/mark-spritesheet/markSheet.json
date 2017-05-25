@@ -1,0 +1,135 @@
+{
+  "shape://backslash": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 0,
+    "y": 0
+  },
+  "shape://carrow": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 32,
+    "y": 0
+  },
+  "shape://ccarrow": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 0,
+    "y": 32
+  },
+  "shape://coarrow": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 32,
+    "y": 32
+  },
+  "shape://dot": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 64,
+    "y": 0
+  },
+  "shape://horline": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 96,
+    "y": 0
+  },
+  "shape://oarrow": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 64,
+    "y": 32
+  },
+  "shape://plus": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 96,
+    "y": 32
+  },
+  "shape://slash": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 0,
+    "y": 64
+  },
+  "shape://times": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 32,
+    "y": 64
+  },
+  "shape://vertline": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 64,
+    "y": 64
+  },
+  "X": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 96,
+    "y": 64
+  },
+  "arrow": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 0,
+    "y": 96
+  },
+  "circle": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 32,
+    "y": 96
+  },
+  "cross": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 64,
+    "y": 96
+  },
+  "hatch": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 96,
+    "y": 96
+  },
+  "square": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 128,
+    "y": 0
+  },
+  "star": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 160,
+    "y": 0
+  },
+  "triangle": {
+    "height": 32,
+    "pixelRatio": 1,
+    "width": 32,
+    "x": 192,
+    "y": 0
+  }
+}

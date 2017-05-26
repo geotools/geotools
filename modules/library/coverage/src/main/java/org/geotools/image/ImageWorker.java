@@ -98,6 +98,7 @@ import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
@@ -686,6 +687,24 @@ public class ImageWorker {
         PlanarImage pl = getPlanarImage();
         if (roi == null) {
             pl.removeProperty("ROI");
+            // get it back, in some ops like mosaic setting it to null has no effect,
+            // will just make it pick from the first source...
+            // Computing the ROI from sources might fail, so a fallback is needed for that case too
+            boolean overwriteROI = false;
+            try {
+                Object property = pl.getProperty("ROI");
+                overwriteROI = property != null && property != Image.UndefinedProperty;
+            } catch(Exception e) {
+                // evidently getting the ROI by computation will cause issues, overwrite with a solid one
+                overwriteROI = true;
+                if(LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, "Failure while checking source image ROI during a ROI reset, normally it's safely ignorable", e);
+                }
+            }
+            if(overwriteROI) {
+                // a ROIGeometry from a rectangle is a good substitute in this case
+                pl.setProperty("ROI", new ROIGeometry(JTS.toPolygon(new Rectangle(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight()))));
+            }
         } else {
             pl.setProperty("ROI", roi);
         }

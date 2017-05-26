@@ -173,7 +173,8 @@ public class ReadResolutionCalculator {
         double resY = XAffineTransform.getScaleY0(requestedGridToWorld);
         GeneralEnvelope cropBboxTarget = CRS.transform(readBBox,
                 requestedBBox.getCoordinateReferenceSystem());
-        double[] points = new double[36];
+        final int NPOINTS = 36;
+        double[] points = new double[NPOINTS * 2];
         for (int i = 0; i < 3; i++) {
             double x;
             if (i == 0) {
@@ -193,29 +194,34 @@ public class ReadResolutionCalculator {
                     y = cropBboxTarget.getMaximum(1) - resY / 2;
                 }
 
-                int k = (i * 3 + j) * 4;
+                int k = (i * 3 + j) * 8;
                 points[k] = x - resX / 2;
-                points[k + 1] = y - resY / 2;
+                points[k + 1] = y;
                 points[k + 2] = x + resX / 2;
-                points[k + 3] = y + resY / 2;
+                points[k + 3] = y;
+                points[k + 4] = x;
+                points[k + 5] = y - resY / 2;
+                points[k + 6] = x;
+                points[k + 7] = y + resY / 2;
             }
         }
-        destinationToSourceTransform.transform(points, 0, points, 0, 18);
+        destinationToSourceTransform.transform(points, 0, points, 0, NPOINTS);
 
         double minDistance = Double.MAX_VALUE;
-        for (int i = 0; i < 36 && minDistance > 0; i += 4) {
+        for (int i = 0; i < points.length && minDistance > 0; i += 4) {
             double dx = points[i + 2] - points[i];
             double dy = points[i + 3] - points[i + 1];
             double d = Math.sqrt(dx * dx + dy * dy);
             if (d < minDistance) {
                 minDistance = d;
-            }
+            } 
         }
 
         // reprojection can turn a segment into a zero lenght one, in that case, fall back on
         // the full resolution in that case
-        return new double[] { Math.max(minDistance, fullResolution[0]),
-                Math.max(minDistance, fullResolution[1]) };
+        double minDistanceX = Math.max(minDistance, fullResolution[0]);
+        double minDistanceY = Math.max(minDistance, fullResolution[1]);
+        return new double[] {minDistanceX, minDistanceY};
     }
 
     public boolean isAccurateResolution() {

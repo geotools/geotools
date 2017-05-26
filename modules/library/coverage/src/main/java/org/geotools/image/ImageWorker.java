@@ -98,6 +98,7 @@ import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
@@ -686,6 +687,13 @@ public class ImageWorker {
         PlanarImage pl = getPlanarImage();
         if (roi == null) {
             pl.removeProperty("ROI");
+            // get it back, in some ops like mosaic setting it to null has no effect,
+            // will just make it pick from the first source...
+            final Object property = pl.getProperty("ROI");
+            if(property != null && property != Image.UndefinedProperty) {
+                // a ROIGeometry from a rectangle is a good substitute in this case
+                pl.setProperty("ROI", new ROIGeometry(JTS.toPolygon(new Rectangle(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight()))));
+            }
         } else {
             pl.setProperty("ROI", roi);
         }

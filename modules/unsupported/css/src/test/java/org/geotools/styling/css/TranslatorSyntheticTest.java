@@ -27,6 +27,7 @@ import java.util.List;
 import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.function.color.DarkenFunction;
+import org.geotools.filter.function.color.SaturateFunction;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.AnchorPoint;
@@ -1073,6 +1074,18 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         final Expression color = ps.getFill().getColor();
         assertThat(color, instanceOf(DarkenFunction.class));
         assertEquals(Color.decode("#660000"), color.evaluate(null, Color.class));
+    }
+    
+    @Test
+    public void testNestedFunction() throws Exception {
+        String css = "* {stroke: saturate(darken(#b5d0d0, 40%), 30%)}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ps = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Expression color = ps.getStroke().getColor();
+        assertThat(color, instanceOf(SaturateFunction.class));
+        Function saturate = (Function) color;
+        assertThat(saturate.getParameters().get(0), instanceOf(DarkenFunction.class));
     }
 
 

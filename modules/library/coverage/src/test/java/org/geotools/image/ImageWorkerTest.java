@@ -1633,26 +1633,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
-    public void testMosaicBackgroundColorWithImagesOwningROI() {
-        BufferedImage red = getSyntheticRGB(Color.RED);
-        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
-        RenderedImage redWithROI = new ImageWorker(red).setROI(redROI).getRenderedImage();
-        
-        BufferedImage blue = getSyntheticRGB(Color.BLUE);
-        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
-        RenderedImage blueWithROI = new ImageWorker(blue).setROI(blueROI).getRenderedImage();
-
-        ImageWorker iw = new ImageWorker();
-        iw.setBackground(new double[] {255, 255, 255});
-        iw.mosaic(new RenderedImage[] {redWithROI, blueWithROI}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, blueROI}, null, null);
-        RenderedImage mosaicked = iw.getRenderedImage();
-        // it has been replaced with a ROI geometry as big as the image since it cannot be removed
-        // due to JAI picking the ROI of the mosaic from the first source
-        Object roiProperty = mosaicked.getProperty("ROI");
-        assertThat(roiProperty, instanceOf(ROIGeometry.class));
-    }
-    
-    @Test
     public void testMosaicIndexedBackgroundColor() {
         BufferedImage gray = getSyntheticGrayIndexed(128);
         

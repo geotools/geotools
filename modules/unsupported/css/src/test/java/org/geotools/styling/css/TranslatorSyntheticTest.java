@@ -1087,7 +1087,34 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Function saturate = (Function) color;
         assertThat(saturate.getParameters().get(0), instanceOf(DarkenFunction.class));
     }
+    
+    @Test
+    public void testScaleDependencyUnits() throws Exception {
+        // k
+        assertScaleMinMax("[@scale < 1k] {stroke: black}", null, 1e3);
+        assertScaleMinMax("[@scale > 1k] {stroke: black}", 1e3, null);
+        // m
+        assertScaleMinMax("[@scale < 1M] {stroke: black}", null, 1e6);
+        assertScaleMinMax("[@scale > 1M] {stroke: black}", 1e6, null);
+        // g
+        assertScaleMinMax("[@scale < 1G] {stroke: black}", null, 1e9);
+        assertScaleMinMax("[@scale > 1G] {stroke: black}", 1e9, null);
+    }
 
+    private void assertScaleMinMax(String css, Double min, Double max) {
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        if(min == null) {
+            assertEquals(0, rule.getMinScaleDenominator(), 0d);
+        } else {
+            assertEquals(min, rule.getMinScaleDenominator(), 0d);
+        }
+        if(max == null) {
+            assertEquals(Double.POSITIVE_INFINITY, rule.getMaxScaleDenominator(), 0d);
+        } else {
+            assertEquals(max, rule.getMaxScaleDenominator(), 0d);
+        }
+    }
 
     private Function assertTransformation(FeatureTypeStyle fts) {
         Expression ex = fts.getTransformation();

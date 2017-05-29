@@ -252,8 +252,8 @@ public class CssParser extends BaseParser<Object> {
 
     Rule MaxScaleSelector() {
         return Sequence("[", OptionalWhiteSpace(), "@scale", OptionalWhiteSpace(),
-                FirstOf("<=", "<"), OptionalWhiteSpace(), Number(), push(new ScaleRange(0, true,
-                        Double.valueOf(match()), false)), //
+                FirstOf("<=", "<"), OptionalWhiteSpace(), ScaleValue(), push(new ScaleRange(0, true,
+                        parseScaleValue(match()), false)), //
                 OptionalWhiteSpace(), "]");
     }
 
@@ -265,9 +265,29 @@ public class CssParser extends BaseParser<Object> {
                 OptionalWhiteSpace(),
                 FirstOf(">=", ">"),
                 OptionalWhiteSpace(),
-                Number(),
-                push(new ScaleRange(Double.valueOf(match()), true, Double.POSITIVE_INFINITY, true)), //
+                ScaleValue(),
+                push(new ScaleRange(parseScaleValue(match()), true, Double.POSITIVE_INFINITY, true)), //
                 OptionalWhiteSpace(), "]");
+    }
+
+    double parseScaleValue(String scaleValue) {
+        double multiplier = 1;
+        
+        // lookup the value multiplier
+        String lowerCase = scaleValue.toLowerCase();
+        if(lowerCase.endsWith("k")) {
+            multiplier = 1e3;
+        } else if(lowerCase.endsWith("m")) {
+            multiplier = 1e6;
+        } else if(lowerCase.endsWith("g")) {
+            multiplier = 1e9;
+        }
+        // if one is found then remove the unit specifier
+        if(multiplier > 1) {
+            lowerCase = lowerCase.substring(0, lowerCase.length() - 1);
+        }
+        
+        return Double.parseDouble(lowerCase) * multiplier;
     }
 
     Rule WhitespaceOrIgnoredComment() {
@@ -473,6 +493,11 @@ public class CssParser extends BaseParser<Object> {
     Rule Number() {
         return Sequence(Optional(AnyOf("-+")), OneOrMore(Digit()),
                 Optional('.', ZeroOrMore(Digit())));
+    }
+    
+    Rule ScaleValue() {
+        return Sequence(OneOrMore(Digit()),
+                Optional('.', ZeroOrMore(Digit())), Optional(AnyOf("kMG")));
     }
 
     @SuppressSubnodes

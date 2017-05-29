@@ -28,7 +28,7 @@ import org.opengis.filter.spatial.BBOX;
  * @author Martin Davis - OpenGeo
  *
  */
-class BBOXExpandingFilterVisitor extends DuplicatingFilterVisitor {
+public class BBOXExpandingFilterVisitor extends DuplicatingFilterVisitor {
     private double expandMinX;
 
     private double expandMaxX;
@@ -50,7 +50,7 @@ class BBOXExpandingFilterVisitor extends DuplicatingFilterVisitor {
         this.expandMinX = expandMinX;
         this.expandMaxX = expandMaxX;
         this.expandMinY = expandMinY;
-        this.expandMaxY = expandMaxX;
+        this.expandMaxY = expandMaxY;
     }
     
     /**

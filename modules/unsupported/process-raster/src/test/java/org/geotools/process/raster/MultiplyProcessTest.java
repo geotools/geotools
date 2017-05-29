@@ -6,6 +6,7 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.AfterClass;
@@ -27,12 +28,12 @@ public class MultiplyProcessTest {
 
     @BeforeClass
     public static void setupJaiExt() {
-        JAIExt.initJAIEXT(true);
+        JAIExt.initJAIEXT(true,true);
     }
 
     @AfterClass
     public static void teardownJaiExt() {
-        JAIExt.initJAIEXT(false);
+        JAIExt.initJAIEXT(false,false);
     }
 
 

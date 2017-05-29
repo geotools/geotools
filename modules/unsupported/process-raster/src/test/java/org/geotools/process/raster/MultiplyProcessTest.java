@@ -8,7 +8,9 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.awt.image.Raster;
@@ -23,16 +25,24 @@ public class MultiplyProcessTest {
 
     GridCoverageFactory covFactory;
 
+    @BeforeClass
+    public static void setupJaiExt() {
+        JAIExt.initJAIEXT(true);
+    }
+
+    @AfterClass
+    public static void teardownJaiExt() {
+        JAIExt.initJAIEXT(false);
+    }
+
+
 
     @Before
     public void setUp() {
         covFactory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
     }
 
-    @Test
-    public void testMultiply() throws Exception {
-        doTestMultiply();
-    }
+
 
     private void doTestMultiply() {
 
@@ -68,17 +78,18 @@ public class MultiplyProcessTest {
     }
 
     /**
-     * We would like to test with jai ext enabled, but this seems to break the test without jai ext....
+     *
      * @throws Exception
      */
-    /*
+
     @Test
     public void testMultiplyJAIExt() throws Exception {
         JAIExt.initJAIEXT(true, true);
         doTestMultiply();
         JAIExt.initJAIEXT(false, true);
     }
-    */
+
+
     float[] data(GridCoverage2D cov) {
         Raster data = cov.getRenderedImage().getData();
         int w = data.getWidth();

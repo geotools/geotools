@@ -35,15 +35,33 @@ import java.net.URLDecoder;
  */
 public class DataUtilities {
 
+    private static final boolean IS_WINDOWS_OS = System.getProperty("os.name").toUpperCase()
+            .contains("WINDOWS");
+
     /**
-     * Copy of DataUtilities.urlToFile(URL url) in gt-main, which cannot be used here because of
-     * cyclic Maven dependencies.
+     * Takes a URL and converts it to a File. The attempts to deal with Windows UNC format specific
+     * problems, specifically files located on network shares and different drives.
+     * 
+     * If the URL.getAuthority() returns null or is empty, then only the url's path property is used
+     * to construct the file. Otherwise, the authority is prefixed before the path.
+     * 
+     * It is assumed that url.getProtocol returns "file".
+     * 
+     * Authority is the drive or network share the file is located on. Such as "C:", "E:",
+     * "\\fooServer"
+     * 
+     * @param url
+     *            a URL object that uses protocol "file"
+     * @return a File that corresponds to the URL's location
      */
     public static File urlToFile(URL url) {
         if (!"file".equals(url.getProtocol())) {
             return null; // not a File URL
         }
         String string = url.toExternalForm();
+        if( url.getQuery() != null){
+            string = string.substring(0, string.indexOf("?"));
+        }
         if (string.contains("+")) {
             // this represents an invalid URL created using either
             // file.toURL(); or
@@ -55,13 +73,20 @@ public class DataUtilities {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not decode the URL to UTF-8 format", e);
         }
+
         String path3;
+
         String simplePrefix = "file:/";
         String standardPrefix = "file://";
-        String os = System.getProperty("os.name");
-        if (os.toUpperCase().contains("WINDOWS") && string.startsWith(standardPrefix)) {
-            // win32: host/share reference
+
+        if (IS_WINDOWS_OS && string.startsWith(standardPrefix)) {
+            // win32: host/share reference. Keep the host slashes.
             path3 = string.substring(standardPrefix.length() - 2);
+            File f = new File(path3);
+            if (!f.exists()) {
+                // Make path relative to be backwards compatible.
+                path3 = path3.substring(2, path3.length());
+            }
         } else if (string.startsWith(standardPrefix)) {
             path3 = string.substring(standardPrefix.length());
         } else if (string.startsWith(simplePrefix)) {
@@ -75,27 +100,23 @@ public class DataUtilities {
                 path3 = path2;
             }
         }
+
         return new File(path3);
     }
-    
+
     /**
-     * A replacement for File.toURI().toURL().
+     * A replacement for {@link File#toURL()} and <code>File.toURI().toURL()</code>.
      * <p>
-     * The handling of file.toURL() is broken; the handling of file.toURI().toURL() is known to be
-     * broken on a few platforms like mac. We have the urlToFile( URL ) method that is able to
-     * untangle both these problems and we use it in the geotools library.
-     * <p>
-     * However occasionally we need to pick up a file and hand it to a third party library like EMF;
-     * this method performs a couple of sanity checks which we can use to prepare a good URL
-     * reference to a file in these situtations.
+     * {@link File#toURL()} does not percent-escape characters and <code>File.toURI().toURL()</code> does not percent-escape non-ASCII characters.
+     * This method ensures that URL characters are correctly percent-escaped, and works around the reported misbehaviour of some Java implementations
+     * on Mac.
      * 
      * @param file
      * @return URL
      */
     public static URL fileToURL(File file) {
         try {
-            URL url = file.toURI().toURL();
-            String string = url.toExternalForm();
+            String string = file.toURI().toASCIIString();
             if (string.contains("+")) {
                 // this represents an invalid URL created using either
                 // file.toURL(); or

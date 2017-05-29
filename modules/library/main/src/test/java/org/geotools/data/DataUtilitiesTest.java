@@ -251,6 +251,13 @@ public class DataUtilitiesTest extends DataTestCase {
         assertNotNull(windowsShareFile);
     }
 
+    public void testFileToUrl() {
+        String url = DataUtilities.fileToURL(new File("file café")).toString();
+        assertTrue("Expected '" + url + "' to start with 'file:'", url.startsWith("file:"));
+        assertTrue("Expected '" + url + "' to end with 'file%20caf%C3%A9'",
+                url.endsWith("file%20caf%C3%A9"));
+    }
+
     private String replaceSlashes(String string) {
         return string.replaceAll("\\\\", "/");
     }

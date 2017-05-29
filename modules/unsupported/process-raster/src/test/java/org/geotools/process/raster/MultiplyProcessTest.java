@@ -84,9 +84,7 @@ public class MultiplyProcessTest {
 
     @Test
     public void testMultiplyJAIExt() throws Exception {
-        JAIExt.initJAIEXT(true, true);
         doTestMultiply();
-        JAIExt.initJAIEXT(false, true);
     }
 
 

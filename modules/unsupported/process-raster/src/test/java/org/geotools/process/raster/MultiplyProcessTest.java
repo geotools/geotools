@@ -1,0 +1,92 @@
+package org.geotools.process.raster;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import org.geotools.coverage.CoverageFactoryFinder;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.factory.GeoTools;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.awt.image.Raster;
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
+
+/**
+ * Unit test for the 'Multiply' process
+ */
+public class MultiplyProcessTest {
+
+    GridCoverageFactory covFactory;
+
+
+    @Before
+    public void setUp() {
+        covFactory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+    }
+
+    @Test
+    public void testMultiply() throws Exception {
+        doTestMultiply();
+    }
+
+    private void doTestMultiply() {
+
+        float[][] grid = new float[][] {
+                {1,2,3,4},
+                {5,6,8,9},
+                {10,11,12,13},
+                {14,15,16,17},
+        };
+
+
+        HashMap properties = new HashMap<>();
+        org.geotools.resources.coverage.CoverageUtilities.setNoDataProperty(properties,new NoDataContainer(2));
+        GridCoverage2D cov = covFactory.create("test", grid, new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
+        GridCoverage2D coverageNoData = covFactory.create("nodata", cov.getRenderedImage(), cov.getEnvelope(), cov.getSampleDimensions(), null, properties);
+
+        MultiplyCoveragesProcess p = new MultiplyCoveragesProcess();
+        GridCoverage2D norm = p.execute(cov,cov,null);
+
+        float[] data = data(norm);
+        for (int i = 0; i < data.length; i++) {
+            assertEquals(Math.pow(grid[i/grid.length][i%grid.length],2.), data[i], 1E-9);
+        }
+
+        GridCoverage2D nodataResult= p.execute(cov,coverageNoData,null);
+        if (JAIExt.isJAIExtOperation("algebric")) {
+            //Only jai EXT takes nodata into account
+            assertEquals(0., data(nodataResult)[1], 1E-9);
+        }else {
+            assertEquals(4., data(nodataResult)[1], 1E-9);
+        }
+
+    }
+
+    /**
+     * We would like to test with jai ext enabled, but this seems to break the test without jai ext....
+     * @throws Exception
+     */
+    /*
+    @Test
+    public void testMultiplyJAIExt() throws Exception {
+        JAIExt.initJAIEXT(true, true);
+        doTestMultiply();
+        JAIExt.initJAIEXT(false, true);
+    }
+    */
+    float[] data(GridCoverage2D cov) {
+        Raster data = cov.getRenderedImage().getData();
+        int w = data.getWidth();
+        int h = data.getHeight();
+
+        float[] grid = new float[w*h];
+        data.getDataElements(0, 0, w, h, grid);
+
+        return grid;
+    }
+}

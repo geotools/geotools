@@ -105,7 +105,7 @@
     <fork.javac>true</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>9.4.1211</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.1.1</postgresql.jdbc.version>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
   </properties>
 

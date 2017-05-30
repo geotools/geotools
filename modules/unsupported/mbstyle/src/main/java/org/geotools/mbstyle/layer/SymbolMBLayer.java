@@ -16,13 +16,22 @@
  */
 package org.geotools.mbstyle.layer;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import javax.measure.unit.NonSI;
+
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.styling.*;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
@@ -37,23 +46,18 @@ import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.style.*;
+import org.opengis.style.GraphicalSymbol;
+import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
 import com.google.common.collect.ImmutableSet;
-
-import javax.measure.unit.NonSI;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A symbol.
@@ -1047,6 +1051,7 @@ public class SymbolMBLayer extends MBLayer {
         }
         return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
     }
+    
     /**
      * (Optional) Units in degrees. Defaults to 45. Requires text-field. Requires symbol-placement = line.
      * 
@@ -1067,6 +1072,14 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Expression textMaxAngle() {
         return parse.percentage(layout, "text-max-angle", 45.0);
+    }
+
+    /**
+     *
+     * @return True if the layer has a text-max-angle explicitly provided.
+     */
+    private boolean hasTextMaxAngle() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "text-max-angle");
     }
 
     /**
@@ -1663,7 +1676,6 @@ public class SymbolMBLayer extends MBLayer {
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
 
         LabelPlacement labelPlacement;
-
         // Create point or line placement
 
         // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
@@ -1732,10 +1744,15 @@ public class SymbolMBLayer extends MBLayer {
                 "symbol-spacing", getId());
         symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
 
-        // text max angle
-        // layer.getTextMaxAngle();
-        // symbolizer.getOptions().put("maxAngleDelta", "40");
-
+        // text max angle - only for line placement
+        // throw MBFormatException if point placement
+        if(labelPlacement instanceof LinePlacement){
+            // followLine will be true if line placement, it is an implied default of MBstyles.
+            symbolizer.getOptions().put("followLine", "true");
+            symbolizer.getOptions().put("maxAngleDelta", String.valueOf(getTextMaxAngle()));
+        } else if (hasTextMaxAngle()) {
+        	throw new MBFormatException("Property text-max-angle requires symbol-placement = line but symbol-placement = " + symbolPlacementVal);
+        }
         // conflictResolution
         // Mapbox allows text overlap and icon overlap separately. GeoTools only has conflictResolution.
         Boolean textAllowOverlap = transformer.requireLiteral(textAllowOverlap(), Boolean.class, false,

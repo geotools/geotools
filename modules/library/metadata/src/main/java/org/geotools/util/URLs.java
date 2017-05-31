@@ -85,21 +85,20 @@ public class URLs {
     }
 
     /**
-     * A replacement for File.toURI().toURL().
+     * A replacement for {@link File#toURL()} and <code>File.toURI().toURL()</code>.
      * <p>
-     * The handling of file.toURL() is broken; the handling of file.toURI().toURL() is known to be broken on a few platforms like mac. We have the
-     * urlToFile( URL ) method that is able to untangle both these problems and we use it in the geotools library.
-     * <p>
-     * However occasionally we need to pick up a file and hand it to a third party library like EMF; this method performs a couple of sanity checks
-     * which we can use to prepare a good URL reference to a file in these situtations.
+     * {@link File#toURL()} does not percent-encode characters and <code>File.toURI().toURL()</code> does not percent-encode non-ASCII characters.
+     * This method ensures that URL characters are correctly percent-encoded, and works around the reported misbehaviour of some Java implementations
+     * on Mac.
      * 
      * @param file
      * @return URL
      */
     public static URL fileToUrl(File file) {
         try {
-            URL url = file.toURI().toURL();
-            String string = url.toString();
+            // URI.toString() and thus URI.toURL() do not
+            // percent-encode non-ASCII characters [GEOT-5737]
+            String string = file.toURI().toASCIIString();
             if (string.contains("+")) {
                 // this represents an invalid URL created using either
                 // file.toURL(); or

@@ -19,6 +19,7 @@ package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -59,6 +60,14 @@ public class URLsTest {
 
     private String replaceSlashes(String string) {
         return string.replaceAll("\\\\", "/");
+    }
+
+    @Test
+    public void testFileToUrl() {
+        String url = URLs.fileToUrl(new File("file café")).toString();
+        assertTrue("Expected '" + url + "' to start with 'file:'", url.startsWith("file:"));
+        assertTrue("Expected '" + url + "' to end with 'file%20caf%C3%A9'",
+                url.endsWith("file%20caf%C3%A9"));
     }
 
     @Test

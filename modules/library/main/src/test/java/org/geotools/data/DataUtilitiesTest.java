@@ -19,9 +19,7 @@ package org.geotools.data;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,8 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import com.vividsolutions.jts.geom.Point;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -50,7 +46,6 @@ import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.test.TestData;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -71,8 +66,8 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Tests cases for DataUtilities.
@@ -197,94 +192,6 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals( subtract.size(), exclude.size() );
     }
 
-    public void testUrlToFile() throws Exception {
-        handleFile(System.getProperty("user.home"));
-        handleFile(System.getProperty("user.dir"));
-
-        String os = System.getProperty("os.name");
-
-        if (os.toUpperCase().contains("WINDOWS")) {
-            handleFile("C:\\");
-            handleFile("C:\\one");
-            handleFile("C:\\one\\two");
-            handleFile("C:\\one\\two\\and three");
-            handleFile("D:\\");
-            
-            // Single slash keeps rooted path
-            assertURL("\\one", "file:/one");
-            assertURL("\\.\\one", "file:/./one");
-            
-            // Double slash makes it relative if non existent.
-            assertURL("one", "file://one");
-            assertURL("./one", "file://./one");
-            
-            if (TestData.isExtensiveTest()){
-                handleFile("\\\\host\\share\\file");
-                // from GEOT-3300 DataUtilities.urlToFile doesn't handle network paths correctly
-                URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
-                File windowsShareFile = DataUtilities.urlToFile( url );
-                assertNotNull(windowsShareFile);
-            }
-        } else {
-            handleFile("/one");
-            handleFile("one");
-            handleFile("/one/two/and three");
-            handleFile("/hello world/this++().file");
-        }       
-        assertURL("one", "file:one");
-        assertURL("/one", "file:///one");
-        assertURL(replaceSlashes("C:\\"), "file://C:/");
-        assertURL(replaceSlashes("C:\\one"), "file://C:/one");
-        assertURL(replaceSlashes("C:\\one\\two"), "file://C:/one/two");
-        assertURL(replaceSlashes("C:\\one\\two\\and three"), "file://C:/one/two/and three");
-
-        assertEquals( "sample",DataUtilities.urlToFile(new URL("file:sample?query")).toString());
-        assertEquals( "sample",DataUtilities.urlToFile(new URL("file:sample#ref")).toString());
-
-        File file = File.createTempFile("hello", "world");
-        handleFile(file.getAbsolutePath());
-        handleFile(file.getPath());
-        
-        // from GEOT-3300 DataUtilities.urlToFile doesn't handle network paths correctly
-        URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
-        File windowsShareFile = DataUtilities.urlToFile( url );
-        assertNotNull(windowsShareFile);
-    }
-
-    private String replaceSlashes(String string) {
-        return string.replaceAll("\\\\", "/");
-    }
-
-    private void assertURL(String expectedFilePath, String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-
-        File file = DataUtilities.urlToFile(url);
-
-        String os = System.getProperty("os.name");
-        if (os.toUpperCase().contains("WINDOWS")) {
-            assertEquals(expectedFilePath.replaceAll("/", "\\\\"), file.getPath());
-        } else {
-            if (expectedFilePath.endsWith("/")) {
-                expectedFilePath = expectedFilePath.substring(0, expectedFilePath.length() - 1);
-            }
-            assertEquals(expectedFilePath, file.getPath());
-        }
-    }
-
-    public void handleFile(String path) throws Exception {
-        File file = new File(path);
-        URI uri = file.toURI();
-        URL url = file.toURI().toURL();
-        URL url2 = file.toURI().toURL();
-
-        assertEquals("jdk contract", file.getAbsoluteFile(), new File(uri));
-
-        File toFile = DataUtilities.urlToFile(url);
-        assertEquals(path + ":url", file.getAbsoluteFile(), toFile);
-
-        File toFile2 = DataUtilities.urlToFile(url2);
-        assertEquals(path + ":url2", file.getAbsoluteFile(), toFile2);
-    }
 
     /**
      * Test for {@link DataUtilities#attributeNames(FeatureType)}

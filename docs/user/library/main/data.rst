@@ -11,31 +11,8 @@ References:
 
 * `DataUtilities <http://docs.geotools.org/latest/javadocs/org/geotools/data/DataUtilities.html>`_ (javadocs)
 
-URL and File
-^^^^^^^^^^^^
-
-DataUtilities also gathers up common solutions to problems encountered in Java, with that in mind we have a number of methods for safely handling files and URLs.
-
-* DataUtilities.fileToURL( file )
-* DataUtilities.urlToFile( url )
-
-One of the changes between Java 5 and Java 6 is the deprecation of the File.toURL() method. Earlier version of Java implemented this method incorrectly, and Java 6 offers File.toURI().toURL() as a replacement.
-
-Problem is that does not help anyone - since when we are provided a URL we cannot be sure if it was constructed correctly.
-
-These two methods have been extensively tested and can handle odd corner cases such
-as files located on windows shared folders.
-
-We use this method internally to make sure we can understand each URL that is handed to the library. It is available for use in your application as well.
-
-Here is a scary example of a windows network share::
-  
-  File file = new File("\\\\host\\share\\file");
-  URL url = DataUtilities.fileToURL( file );
-
-* changeUrlExt(URL, String)
-* getParentUrl(URL)
-* extendURL(URL, String)
+File
+^^^^
 
 * checkFileReadable(File, Logger)
 * checkDirectory(File)

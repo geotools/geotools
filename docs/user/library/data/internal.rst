@@ -94,7 +94,7 @@ Here is an example for "csv" files::
         if (super.canProcess(params)) {
             try {
                 URL url = (URL) URLP.lookUp(params);
-                File f = DataUtilities.urlToFile(url);
+                File f = URLs.urlToFile(url);
                 return f != null && f.exists() && f.isDirectory();
             } catch (Exception e) {
                 return false;
@@ -106,9 +106,9 @@ Here is an example for "csv" files::
     
     public DataStore createNewDataStore(Map params) throws IOException {
         URL url = (URL) URLP.lookUp(params);
-        File dir = DataUtilities.urlToFile(url);
+        File dir = URLs.urlToFile(url);
         if(dir != null && dir.isDirectory()) {
-            return new DirectoryDataStore(DataUtilities.urlToFile(url), new CSVDataStoreFactory(this, params));
+            return new DirectoryDataStore(URLs.urlToFile(url), new CSVDataStoreFactory(this, params));
         } else {
             throw new DataSourceException("Not a directory "+dir );
         }

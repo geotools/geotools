@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -97,7 +98,7 @@ final class DataExamples extends ECQLExamples {
     static private String usaGeometry() {
         try {
             return FileUtils.readFileToString(
-                    DataUtilities.urlToFile(DataExamples.class.getResource("usa-geometry.wkt")),
+                    URLs.urlToFile(DataExamples.class.getResource("usa-geometry.wkt")),
                     "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException(e);

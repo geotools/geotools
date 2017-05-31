@@ -13,6 +13,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.util.URLs;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -73,7 +74,7 @@ DataStore exportToShapefile(MemoryDataStore memory, String typeName, File direct
     File file = new File(directory, fileName + ".shp");
     
     Map<String, java.io.Serializable> creationParams = new HashMap<>();
-    creationParams.put("url", DataUtilities.fileToURL(file));
+    creationParams.put("url", URLs.fileToUrl(file));
     
     FileDataStoreFactorySpi factory = FileDataStoreFinder.getDataStoreFactory("shp");
     DataStore dataStore = factory.createNewDataStore(creationParams);
@@ -128,7 +129,7 @@ DataStore exportToShapefile2(MemoryDataStore memory, String typeName, File direc
     File file = new File(directory, fileName + ".shp");
     
     Map<String, java.io.Serializable> creationParams = new HashMap<>();
-    creationParams.put("url", DataUtilities.fileToURL(file));
+    creationParams.put("url", URLs.fileToUrl(file));
     
     FileDataStoreFactorySpi factory = FileDataStoreFinder.getDataStoreFactory("shp");
     DataStore dataStore = factory.createNewDataStore(creationParams);

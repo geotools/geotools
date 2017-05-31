@@ -331,7 +331,7 @@ public class FilterToCQLTest{
     }
 
     @Test
-    public void testAttributeEuqalsBoolean() throws Exception {
+    public void testAttributeEqualsBoolean() throws Exception {
         cqlTest("foo = true");
     }
 

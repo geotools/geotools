@@ -20,18 +20,16 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.List;
-
-import javax.xml.transform.TransformerException;
-
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.SLDTransformer;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.json.simple.JSONArray;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.Rule;
+import org.geotools.styling.TextSymbolizer2;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
@@ -41,14 +39,19 @@ public class SymbolMBLayerTest {
     SymbolMBLayer testLayerDefault;
     SymbolMBLayer testLayer;
     SymbolMBLayer testLineLayer;
+    SymbolMBLayer testAngleLayer;
     MBStyle defaultStyle;
     MBStyle lineStyle;
     MBStyle pointStyle;
     MBStyle fontStyle;
     List<FeatureTypeStyle> featureTypeLine;
-    List<FeatureTypeStyle> featureTypeDefaults;
     List<FeatureTypeStyle> featureTypePoint;
-    
+    MBStyle angleStyle;
+    MBStyle style;
+    List<FeatureTypeStyle> featureTypeWithAngle;
+    List<FeatureTypeStyle> featureTypeDefaults;
+    List<FeatureTypeStyle> featureTypeTestValues;
+
     @Before
     public void setUp() throws IOException, ParseException {
         JSONObject jsonDefault = MapboxTestUtils.parseTestStyle("symbolStyleTestDefaults.json");
@@ -64,6 +67,14 @@ public class SymbolMBLayerTest {
         testLayer = (SymbolMBLayer) MBStyle.create(json).layer("testid");
         featureTypePoint = testLayer.transformInternal(pointStyle);
         featureTypeLine = testLineLayer.transformInternal(lineStyle);
+        style = MBStyle.create(json);
+        angleStyle = MBStyle.create(jsonAngle);
+        defaultStyle = MBStyle.create(jsonDefault);
+        testLayer = (SymbolMBLayer) style.layer("testid");
+        testAngleLayer = (SymbolMBLayer) angleStyle.layer("testid");
+        testLayerDefault = (SymbolMBLayer) defaultStyle.layer("testid");
+        featureTypeTestValues = testLayer.transformInternal(style);
+        featureTypeWithAngle = testAngleLayer.transformInternal(angleStyle);
         featureTypeDefaults = testLayerDefault.transformInternal(defaultStyle);
     }
 
@@ -87,7 +98,30 @@ public class SymbolMBLayerTest {
         assertEquals(160, testLayerDefault.getTextMaxWidth().intValue() * testLayerDefault.getTextSize().intValue());
         //Test generated MBStyle values
         assertEquals(100, testLayer.getTextMaxWidth().intValue() * testLayer.getTextSize().intValue());
-        
+        //Test values in FeatureTypeStyle transform
+        assertEquals("100.0", featureTypeTestValues.get(0).rules().get(0).getSymbolizers()[1].getOptions().get("autoWrap"));
+    }
+
+    @Test
+    public void testTextRotationDefault(){
+    	//Default MBStyle value
+        assertEquals(0, testLayerDefault.getTextRotate().intValue());
+        //Default values from FeatureTypeStyle transform
+        Rule r = featureTypeDefaults.get(0).rules().get(0);
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
+        assertEquals("0.0", pp.getRotation().toString());
+    }
+
+    @Test
+    public void testTextRotation(){
+        //Test generated MBStyle value
+        assertEquals(10, testLayer.getTextRotate().intValue());
+        //Test values from FeatureTypeStyle transform
+        Rule r = featureTypeTestValues.get(0).rules().get(0);
+        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(1);
+        PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
+        assertEquals("10", pp.getRotation().toString());
     }
     @Test
     public void testTextMaxAngle(){

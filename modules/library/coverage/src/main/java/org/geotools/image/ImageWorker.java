@@ -471,7 +471,7 @@ public class ImageWorker {
         setImage(image);
     }
 
-    private Range extractNoDataProperty(final RenderedImage image) {
+    public Range extractNoDataProperty(final RenderedImage image) {
         Object property = image.getProperty(NoDataContainer.GC_NODATA);
         if(property != null){
             if(property instanceof NoDataContainer){
@@ -1323,6 +1323,8 @@ public class ImageWorker {
         final double[] scale = new double[length];
         final double[] offset = new double[length];
         final double destNodata = (background != null && background.length > 0) ? background[0] : ((nodata != null && !nodata.contains(0)) ? 0d: Double.NaN);
+        // If setting noData to zero, make sure the rescale doesn't map good values to zero.
+        double offsetAdjustment = Math.abs(destNodata - 0 ) < 1E-6 ? 1 : 0;
 
         boolean computeRescale = false;
         for (int i = 0; i < length; i++) {
@@ -1335,8 +1337,8 @@ public class ImageWorker {
                 computeRescale = true;
 
                 // rescale factors
-                scale[i] = 255 / delta;
-                offset[i] = -scale[i] * extrema[0][i];
+                scale[i] = (255 - offsetAdjustment) / delta;
+                offset[i] = (-scale[i] * extrema[0][i]) + offsetAdjustment;
             } else {
                 // we do not rescale explicitly bu in case we have to, we relay on the clamping capabilities of the format operator
                 scale[i] = 1;
@@ -1356,13 +1358,16 @@ public class ImageWorker {
             }
 
             image = JAI.create("Rescale", pb, hints);
+            if (!Double.isNaN(destNodata)) {
+                setNoData(RangeFactory.create((byte)destNodata, DataBuffer.TYPE_BYTE));
+            }
         } else {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0); // The source image.
             pb.set(DataBuffer.TYPE_BYTE, 0); // The destination image data type (BYTE)
-
             image = JAI.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, DataBuffer.TYPE_BYTE));
+
         }
         invalidateStatistics(); // Extremas are no longer valid.
 
@@ -3870,6 +3875,7 @@ public class ImageWorker {
                     pb.set(true, 5);
                     pb.set(nodata, 6);
                     RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
+                    updateNoData(bgValues, image);
 
                     // commonHints);
                     Rectangle targetBB = at.getBounds();
@@ -4168,6 +4174,8 @@ public class ImageWorker {
                     }
                 }
                 image = JAI.create("Scale", pb, localHints);
+                updateNoData(background, image);
+
                 // getting the new ROI property
                 if (roi != null) {
                     PropertyGenerator gen = getOperationDescriptor("Scale")
@@ -4195,6 +4203,7 @@ public class ImageWorker {
                     }
                 }
                 image = JAI.create("Scale", pb, getRenderingHints());
+                updateNoData(background, image);
                 if (roi != null) {
                     PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
@@ -4214,6 +4223,8 @@ public class ImageWorker {
             pb.set(true, 5);
             pb.set(nodata, 6);
             image = JAI.create("Affine", pb, getRenderingHints());
+            updateNoData(bgValues, image);
+
             if (roi != null) {
                 PropertyGenerator gen = getOperationDescriptor("Affine")
                         .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
@@ -4226,6 +4237,15 @@ public class ImageWorker {
             }
         }
         return this;
+    }
+
+    private void updateNoData(double[] bgValues, RenderedImage image) {
+        if (bgValues != null && bgValues.length > 0) {
+            Range newNoData = extractNoDataProperty(image);
+            if (newNoData != null) {
+                setNoData(newNoData);
+            }
+        }
     }
 
     /**

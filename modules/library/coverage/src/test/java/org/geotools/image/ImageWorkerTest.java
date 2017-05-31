@@ -846,13 +846,19 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         worker.setNoData(noData);
         worker.rescaleToBytes();
         RenderedImage image = worker.getRenderedImage();
-        
-        // check the nodata has been actually set
+
+        // check the nodata has been actually set and remapped to zero
         Object property = image.getProperty(NoDataContainer.GC_NODATA);
         assertNotEquals(property, Image.UndefinedProperty);
         assertThat(property, instanceOf(NoDataContainer.class));
         NoDataContainer nd = (NoDataContainer) property;
-        assertEquals(-10, nd.getAsSingleValue(), 0d);
+        assertEquals(0, nd.getAsSingleValue(), 0d);
+
+        // check the min max are in the range 1 - 255 since 0 has been mapped to new no data in Byte Range.
+        double[] min = worker.getMinimums();
+        double[] max = worker.getMaximums();
+        assertEquals(1, min[0], 0d);
+        assertEquals(255, max[0], 0d);
     }
     
     /**

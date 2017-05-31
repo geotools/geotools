@@ -651,7 +651,7 @@ public final class GridCoverageRenderer {
             iw.affine(finalRasterTransformation, interpolation, bkgValues);
             im = iw.getRenderedImage();
             roi = iw.getROI();
-            noData = iw.getNoData();
+            noData = iw.extractNoDataProperty(im);
         } finally {
                 if(DEBUG){
                     writeRenderedImage(im, "postAffine");

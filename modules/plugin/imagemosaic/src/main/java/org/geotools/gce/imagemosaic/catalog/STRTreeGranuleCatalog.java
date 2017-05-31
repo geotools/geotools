@@ -138,14 +138,14 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     private String typeName;
 
-    public STRTreeGranuleCatalog(final Properties params, DataStoreFactorySpi spi,
+    public STRTreeGranuleCatalog(final Properties params, AbstractGTDataStoreGranuleCatalog wrappedCatalogue,
             final Hints hints) {
         super(hints);
         Utilities.ensureNonNull("params", params);
-        this.wrappedCatalogue = new GTDataStoreGranuleCatalog(params, false, spi, hints);
+        this.wrappedCatalogue = wrappedCatalogue;
         this.typeName = (String) params.get("TypeName");
         if (typeName == null) {
-            ((GTDataStoreGranuleCatalog) wrappedCatalogue).typeNames.iterator().next();
+            wrappedCatalogue.getValidTypeNames().iterator().next();
         }
     }
 

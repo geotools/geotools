@@ -63,7 +63,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(CachingDataStoreGranuleCatalog.class);
 
-    private final GTDataStoreGranuleCatalog adaptee;
+    private final AbstractGTDataStoreGranuleCatalog adaptee;
 
     private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache = new SoftValueHashMap<String, GranuleDescriptor>();
 
@@ -72,7 +72,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
      * @param adaptee
      * @param hints
      */
-    public CachingDataStoreGranuleCatalog(GTDataStoreGranuleCatalog adaptee) {
+    public CachingDataStoreGranuleCatalog(AbstractGTDataStoreGranuleCatalog adaptee) {
         super(null);
         this.adaptee = adaptee;
     }

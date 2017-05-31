@@ -813,6 +813,13 @@ public class Hints extends RenderingHints {
      * @since 2.7
      */
     public static final Key RESAMPLE_TOLERANCE = new Key(Double.class);
+    
+    /**
+     * The {@link Repository} to use to fetch DataAccess and DataStore
+     * 
+     * @since 18
+     */
+    public static final ClassKey REPOSITORY = new ClassKey("org.geotools.data.Repository");
 
 
     ////////////////////////////////////////////////////////////////////////

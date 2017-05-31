@@ -384,11 +384,17 @@ public class ImageMosaicConfigHandler {
         GranuleCatalog catalog = null;
         // SPI
         final String SPIClass = properties.getProperty("SPI");
+        DataStoreFactorySpi spi = null; 
         try {
-            // create a datastore as instructed
-            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass)
-                    .newInstance();
-
+            if (SPIClass == null) {
+                if (properties.get(Utils.Prop.STORE_NAME) == null) {
+                    throw new IllegalArgumentException(
+                            "Required property SPI is missing from configuration");
+                }
+            } else {
+                // create a datastore as instructed
+                spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+            }
             // set ParentLocation parameter since for embedded database like H2 we must change the database
             // to incorporate the path where to write the db
             properties.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
@@ -471,7 +477,8 @@ public class ImageMosaicConfigHandler {
         if (indexSchema == null) {
             // Proceed with default Schema
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(name);
+            String typeName = runConfiguration.getParameter(Prop.TYPENAME);
+            featureBuilder.setName(typeName != null ? typeName : name);
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
             featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
                     String.class);

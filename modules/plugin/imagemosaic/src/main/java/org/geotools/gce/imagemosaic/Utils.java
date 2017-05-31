@@ -78,6 +78,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
@@ -151,6 +152,8 @@ public class Utils {
     public final static Key PARENT_DIR = new Key(String.class);
 
     public final static Key MOSAIC_READER = new Key(ImageMosaicReader.class);
+    
+    public final static Key REPOSITORY = new Key(Repository.class);
 
     public final static String RANGE_SPLITTER_CHAR = ";";
 
@@ -244,6 +247,8 @@ public class Utils {
         public final static String USE_EXISTING_SCHEMA = "UseExistingSchema";
 
         public final static String TYPENAME = "TypeName";
+        
+        public final static String STORE_NAME = "StoreName";
 
         public final static String PATH_TYPE = "PathType";
 

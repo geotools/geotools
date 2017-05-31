@@ -154,13 +154,17 @@ public class RangeLookupProcess implements RasterProcess {
         // build the output coverage
         //
         
+        double outputNd = DEFAULT_NODATA;
+        if (noDataProperty != null) {
+            outputNd = noDataProperty.getAsSingleValue();
+        }
         
         // build the output sample dimensions, use the default value ( 0 ) as the no data
         final GridSampleDimension outSampleDimension = new GridSampleDimension("classification",
                 new Category[] { Category.NODATA }, null);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         HashMap<String,Object> properties = new HashMap<String,Object>(){{
-        	put(NoDataContainer.GC_NODATA,new NoDataContainer(0d));
+        	put(NoDataContainer.GC_NODATA,new NoDataContainer(outputNd));
         }};
         org.geotools.resources.coverage.CoverageUtilities.setROIProperty(properties, worker.getROI());
         final GridCoverage2D output = factory.create("reclassified", indexedClassification, coverage

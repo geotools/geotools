@@ -182,9 +182,14 @@ TOKEN [IGNORE_CASE]: /* temporal expression*/
 	<TEQUALS: "tequals">  | 
 	<BEFORE: "before"> 	| 
 	<DURING: "during"> 	|
-	<AFTER:  "after">  	|
+	<AFTER:  "after">
+}
+
+TOKEN: /* time temporal expression*/
+{
 	<UTC: "T">
 }
+
 TOKEN [IGNORE_CASE]: /* existence predicate*/
 {
 	<EXISTS: "exists"> |

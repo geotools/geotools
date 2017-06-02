@@ -17,11 +17,10 @@
 package org.geotools.data.mysql;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -46,9 +45,18 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param STORAGE_ENGINE = 
         new Param("storage engine", String.class, "Storage Engine", false, "MyISAM" );
     
+    /** EnhanceSpatialSupport is available form MYSQL version 5.6 and onward. This includes
+     *  some differentiation of the spatial function naming which generally follow the
+     *  naming convention ST_xxxx. Moreover spatial operations are performed with precise 
+     *  object shape and not with minumum bounding rectangles */
+    public static final Param ENHANCED_SPATIAL_SUPPORT = 
+        new Param("enhancedSpatialSupport", Boolean.class, "Enhanced Spatial Support", false, false );
+    
+    protected boolean enhancedSpatialSupport = (boolean) ENHANCED_SPATIAL_SUPPORT.sample;
+    
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         //return new MySQLDialectPrepared(dataStore);
-        return new MySQLDialectBasic(dataStore);
+        return new MySQLDialectBasic(dataStore, enhancedSpatialSupport);
     }
 
     public String getDisplayName() {
@@ -89,12 +97,35 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         if (storageEngine == null) {
             storageEngine = (String) STORAGE_ENGINE.sample;
         }
+
+        String extraSpatialSupport = (String) ENHANCED_SPATIAL_SUPPORT.lookUp( params );
+        if (extraSpatialSupport == null) {
+	        try {
+				Connection con = dataStore.getDataSource().getConnection();
+				int major = con.getMetaData().getDatabaseMajorVersion();
+				int minor = con.getMetaData().getDatabaseMinorVersion();
+				if (major > 5 || (major == 5 && minor > 6)) {
+					enhancedSpatialSupport = true;
+				} else {
+					enhancedSpatialSupport = false;
+				}
+				System.out.println("MySQL version:" + major);
+				System.out.println("MySQL version:" + minor);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        } else {
+        	enhancedSpatialSupport = (boolean) ENHANCED_SPATIAL_SUPPORT.sample;
+        }
+        
         SQLDialect dialect = dataStore.getSQLDialect();
         if (dialect instanceof MySQLDialectBasic) {
             ((MySQLDialectBasic)dialect).setStorageEngine(storageEngine);
+            ((MySQLDialectBasic)dialect).setUsePreciseSpatialOps(enhancedSpatialSupport);
         }
         else {
             ((MySQLDialectPrepared)dialect).setStorageEngine(storageEngine);
+            ((MySQLDialectPrepared)dialect).setUsePreciseSpatialOps(enhancedSpatialSupport);
         }
         
         return dataStore;

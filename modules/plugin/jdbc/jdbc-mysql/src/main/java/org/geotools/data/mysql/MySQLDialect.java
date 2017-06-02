@@ -319,7 +319,9 @@ public class MySQLDialect extends SQLDialect {
     public void encodePostColumnCreateTable(AttributeDescriptor att, StringBuffer sql) {
         //make geometry columns non null in order to be able to index them
         if (att instanceof GeometryDescriptor && !att.isNillable()) {
-            sql.append( " NOT NULL");
+        	if (!sql.toString().trim().endsWith(" NOT NULL")) {
+        		sql.append( " NOT NULL");
+        	}
         }
     }
     
@@ -398,6 +400,14 @@ public class MySQLDialect extends SQLDialect {
             
             StringBuffer sql = new StringBuffer("INSERT INTO ");
             encodeTableName("geometry_columns", sql);
+            sql.append("(");
+            encodeColumnName(null, "f_table_schema", sql); sql.append(", ");
+            encodeColumnName(null, "f_table_name", sql); sql.append(", ");
+            encodeColumnName(null, "f_geometry_column", sql); sql.append(", ");
+            encodeColumnName(null, "coord_dimension", sql); sql.append(", ");
+            encodeColumnName(null, "srid", sql); sql.append(", ");
+            encodeColumnName(null, "type", sql);
+            sql.append(")");
             sql.append(" VALUES (");
             sql.append(schemaName != null ? "'"+schemaName+"'" : "NULL").append(", ");
             sql.append("'").append(featureType.getTypeName()).append("', ");

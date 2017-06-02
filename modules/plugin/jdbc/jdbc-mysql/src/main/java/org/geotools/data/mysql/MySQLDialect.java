@@ -78,6 +78,12 @@ public class MySQLDialect extends SQLDialect {
      */
     protected String storageEngine;
     
+    /**
+     * flag that indicates that precise spatial operation should be used 
+     * (should apply to MySQL versions 5.6 and above)
+     */
+    protected boolean usePreciseSpatialOps;
+    
     
     public MySQLDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -89,6 +95,14 @@ public class MySQLDialect extends SQLDialect {
     
     public String getStorageEngine() {
         return storageEngine;
+    }
+    
+    public void setUsePreciseSpatialOps(boolean usePreciseSpatialOps) {
+        this.usePreciseSpatialOps = usePreciseSpatialOps;
+    }
+    
+    public boolean getUsePreciseSpatialOps() {
+        return usePreciseSpatialOps;
     }
     
     @Override

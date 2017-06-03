@@ -1100,6 +1100,12 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertScaleMinMax("[@scale < 1G] {stroke: black}", null, 1e9);
         assertScaleMinMax("[@scale > 1G] {stroke: black}", 1e9, null);
     }
+    
+    @Test
+    public void testScaleDenominatorPseudoVariable() throws Exception {
+        assertScaleMinMax("[@sd < 1k] {stroke: black}", null, 1e3);
+        assertScaleMinMax("[@sd > 1k] {stroke: black}", 1e3, null);
+    }
 
     private void assertScaleMinMax(String css, Double min, Double max) {
         Style style = translate(css);

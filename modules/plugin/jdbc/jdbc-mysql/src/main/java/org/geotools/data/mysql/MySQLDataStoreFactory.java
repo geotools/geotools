@@ -30,7 +30,8 @@ import org.geotools.jdbc.SQLDialect;
  * DataStoreFactory for MySQL database.
  *
  * @author David Winslow, The Open Planning Project
- *
+ * @author Nikolaos Pringouris <nprigour@gmail.com> added support
+ * 		   for MySQL versions 5.6 (and above)	
  *
  *
  *
@@ -45,7 +46,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param STORAGE_ENGINE = 
         new Param("storage engine", String.class, "Storage Engine", false, "MyISAM" );
     
-    /** EnhanceSpatialSupport is available form MYSQL version 5.6 and onward. This includes
+    /** EnhanceSpatialSupport is available from MYSQL version 5.6 and onward. This includes
      *  some differentiation of the spatial function naming which generally follow the
      *  naming convention ST_xxxx. Moreover spatial operations are performed with precise 
      *  object shape and not with minumum bounding rectangles */
@@ -98,24 +99,14 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
             storageEngine = (String) STORAGE_ENGINE.sample;
         }
 
-        String extraSpatialSupport = (String) ENHANCED_SPATIAL_SUPPORT.lookUp( params );
-        if (extraSpatialSupport == null) {
-	        try {
-				Connection con = dataStore.getDataSource().getConnection();
-				int major = con.getMetaData().getDatabaseMajorVersion();
-				int minor = con.getMetaData().getDatabaseMinorVersion();
-				if (major > 5 || (major == 5 && minor > 6)) {
-					enhancedSpatialSupport = true;
-				} else {
-					enhancedSpatialSupport = false;
-				}
-				System.out.println("MySQL version:" + major);
-				System.out.println("MySQL version:" + minor);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        } else {
-        	enhancedSpatialSupport = (boolean) ENHANCED_SPATIAL_SUPPORT.sample;
+        Boolean enhancedSpatialFlag = (Boolean) ENHANCED_SPATIAL_SUPPORT.lookUp( params );
+        if (enhancedSpatialFlag == null) {
+        	//enhanced spatial support should be enabled if MySQL 
+        	//version is at least 5.6.
+        	enhancedSpatialSupport = isMySqlVersion56(dataStore);
+        } else if (enhancedSpatialFlag && !isMySqlVersion56(dataStore)) {
+        		System.out.println("MySQL version does not support enhancedSpatialSupport. Disabling it");
+        		enhancedSpatialSupport = false;
         }
         
         SQLDialect dialect = dataStore.getSQLDialect();
@@ -130,4 +121,35 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         
         return dataStore;
     }
+
+    /**
+     * check if the version of MySQL is at least 5.6 (or above).   
+     * @param dataStore
+     * @return
+     */
+	protected static boolean isMySqlVersion56(JDBCDataStore dataStore) {
+		boolean isMySQLVersion56OrAbove = false;
+		Connection con = null;
+		try {
+			con = dataStore.getDataSource().getConnection();
+			int major = con.getMetaData().getDatabaseMajorVersion();
+			int minor = con.getMetaData().getDatabaseMinorVersion();
+			if (major > 5 || (major == 5 && minor > 6)) {
+				isMySQLVersion56OrAbove = true;
+			} else {
+				isMySQLVersion56OrAbove = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (con != null || !con.isClosed()) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				//do nothing
+			}
+		}
+		return isMySQLVersion56OrAbove;
+	}
 }

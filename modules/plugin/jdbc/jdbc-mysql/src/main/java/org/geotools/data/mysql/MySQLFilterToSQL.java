@@ -206,6 +206,16 @@ public class MySQLFilterToSQL extends FilterToSQL {
     }
 
     
+    /**
+     * supported if version of MySQL is at least 5.6.
+     * 
+     * @param filter
+     * @param e1
+     * @param e2
+     * @param swapped
+     * @param extraData
+     * @return
+     */
 	protected Object visitBinarySpatialOperatorEnhanced(BinarySpatialOperator filter, Expression e1,
 			Expression e2, boolean swapped, Object extraData) {
 

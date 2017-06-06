@@ -219,6 +219,31 @@ public class CssRule {
 
         return null;
     }
+    
+    /**
+     * Returns true if any of the "vendor" properties specified is found in the given pseudo-class
+     * 
+     * @param pseudoClass
+     * @param propertyNames
+     * @return
+     */
+    public boolean hasAnyVendorProperty(PseudoClass pseudoClass, Collection<String> propertyNames) {
+        List<Property> psProperties = getProperties().get(pseudoClass);
+        if (psProperties == null) {
+            return false;
+        }
+        for (Property property : psProperties) {
+            String name = property.getName();
+            if(name.startsWith("-gt-")) {
+                name = name.substring(4);
+            }
+            if (propertyNames.contains(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Returns true if any of the properties specified is found in the given pseudo-class

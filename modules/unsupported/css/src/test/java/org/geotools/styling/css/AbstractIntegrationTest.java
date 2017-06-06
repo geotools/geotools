@@ -74,6 +74,15 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             css = "@mode \"Simple\";\n" + css;
         }
 
+        testTranslation(css);
+        if(css.contains("-gt-")) {
+            String cssNoLegacyPrefix = css.replace("-gt-", "");
+            testTranslation(cssNoLegacyPrefix);
+        }
+    }
+
+    private void testTranslation(String css) throws TransformerException, IOException,
+            FileNotFoundException, SAXException, ParserConfigurationException {
         File sldFile = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
                 + (exclusiveRulesEnabled ? "" : "-first")
                 + ".sld");
@@ -123,7 +132,6 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             System.err.println(message);
             fail(message);
         }
-//        }
     }
 
     StyledLayerDescriptor parseToSld(String sld) {

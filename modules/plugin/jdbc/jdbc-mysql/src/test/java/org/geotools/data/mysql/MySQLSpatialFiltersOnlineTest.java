@@ -26,7 +26,18 @@ import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
  */
 public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
+	
     @Override
+	protected void connect() throws Exception {
+		super.connect();
+		if (dialect instanceof MySQLDialect) {
+			System.out.println("MySQLDialect enhanced spatial support is:" + ((MySQLDialect)dialect).getUsePreciseSpatialOps());
+		} else if (dialect instanceof MySQLDialectBasic) {
+			System.out.println("MySQLDialectBasic enhanced spatial support is:" + ((MySQLDialectBasic)dialect).getUsePreciseSpatialOps());
+		}
+	}
+
+	@Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new MySQLDataStoreAPITestSetup();
     }

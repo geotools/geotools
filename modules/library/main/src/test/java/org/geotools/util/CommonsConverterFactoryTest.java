@@ -18,6 +18,7 @@ package org.geotools.util;
 
 import java.math.BigDecimal;
 
+import java.net.URL;
 import java.util.TimeZone;
 import junit.framework.TestCase;
 
@@ -64,6 +65,11 @@ public class CommonsConverterFactoryTest extends TestCase {
     
     Object convert( Object source, Class target ) throws Exception {
         return factory.createConverter( source.getClass(), target, null ).convert( source, target );
+    }
+
+    public void testDataUrlConversion() throws Exception {
+        String url = "data:,YQo=";
+        assertNotNull(convert(url, URL.class));
     }
 
 }

@@ -211,8 +211,9 @@ public class ExpressionToText implements ExpressionVisitor {
             }
             output.append(blueCode.toUpperCase());
             output.append("'");
-        }
-        else {
+        } else if (literal instanceof Boolean) {
+            output.append(literal);
+        } else {
             String escaped = literal.toString().replaceAll("'", "''");
             output.append("'" + escaped + "'");
         }

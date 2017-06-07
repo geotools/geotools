@@ -330,6 +330,11 @@ public class FilterToCQLTest{
         cqlTest("INTERSECTS(\"point\", POINT (1 2))");
     }
 
+    @Test
+    public void testAttributeEqualsBoolean() throws Exception {
+        cqlTest("foo = true");
+    }
+
     protected void cqlTest( String cql ) throws Exception {
         Filter filter = CQL.toFilter(cql);
         Assert.assertNotNull( filter );

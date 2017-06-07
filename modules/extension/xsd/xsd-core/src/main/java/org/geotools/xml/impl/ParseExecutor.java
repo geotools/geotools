@@ -33,6 +33,7 @@ import org.eclipse.xsd.XSDLengthFacet;
 import org.eclipse.xsd.XSDMaxLengthFacet;
 import org.eclipse.xsd.XSDMinLengthFacet;
 import org.eclipse.xsd.XSDNamedComponent;
+import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.XSDVariety;
@@ -171,7 +172,7 @@ public class ParseExecutor implements Visitor {
     }
 
     /**
-     * Pre-parses the instance compontent checking the following:
+     * Pre-parses the instance component checking the following:
      * <p>
      *
      * </p>
@@ -181,12 +182,11 @@ public class ParseExecutor implements Visitor {
         // we only preparse text, so simple types
         XSDSimpleTypeDefinition type = null;
 
-        if (instance.getTypeDefinition() instanceof XSDSimpleTypeDefinition) {
-            type = (XSDSimpleTypeDefinition) instance.getTypeDefinition();
+        XSDTypeDefinition typeDefinition = instance.getTypeDefinition();
+        if (typeDefinition instanceof XSDSimpleTypeDefinition) {
+            type = (XSDSimpleTypeDefinition) typeDefinition;
         } else {
-            XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) instance
-                .getTypeDefinition();
-
+            XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) typeDefinition;
             if (complexType.getContentType() instanceof XSDSimpleTypeDefinition) {
                 type = (XSDSimpleTypeDefinition) complexType.getContentType();
             }
@@ -197,7 +197,8 @@ public class ParseExecutor implements Visitor {
         if (type != null) {
             //alright, lets preparse some text
             //first base on variety
-            if (type.getVariety() == XSDVariety.LIST_LITERAL) {
+            XSDVariety variety = type.getVariety();
+            if (variety == XSDVariety.LIST_LITERAL) {
                 //list, whiteSpace is fixed to "COLLAPSE 
                 text = Whitespace.COLLAPSE.preparse(text);
 
@@ -292,7 +293,7 @@ public class ParseExecutor implements Visitor {
                 }
 
                 return parsed;
-            } else if (type.getVariety() == XSDVariety.UNION_LITERAL) {
+            } else if (variety == XSDVariety.UNION_LITERAL) {
                 //union, "valueSpace" and "lexicalSpace" facets are the union of the contained
                 // datatypes
                 return text;
@@ -326,10 +327,13 @@ public class ParseExecutor implements Visitor {
         } else {
             //type is not simple, or complex with simple content, do a check 
             // for mixed
-            if (instance.getTypeDefinition() instanceof XSDComplexTypeDefinition
-                    && ((XSDComplexTypeDefinition) instance.getTypeDefinition()).isMixed()) {
-                //collape the text
-                text = Whitespace.COLLAPSE.preparse(text);
+            //TODO: If this came from a CDATA block we should not collapse it,
+            // I just need to work out how to tell!
+            XSDComplexTypeDefinition complexTypeDefinition = (XSDComplexTypeDefinition) typeDefinition;
+            if (typeDefinition instanceof XSDComplexTypeDefinition
+                    && complexTypeDefinition.isMixed()) {
+                //Collapse the text
+                //text = Whitespace.COLLAPSE.preparse(text);
             }
         }
 

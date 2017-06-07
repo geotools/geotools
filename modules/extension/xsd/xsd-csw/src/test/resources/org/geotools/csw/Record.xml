@@ -10,7 +10,7 @@
    <dc:identifier>00180e67-b7cf-40a3-861d-b3a09337b195</dc:identifier>
    <dc:title>Image2000 Product 1 (at1) Multispectral</dc:title>
    <dct:modified>2004-10-04 00:00:00</dct:modified>
-   <dct:abstract>IMAGE2000 product 1 individual orthorectified scenes. IMAGE2000 was  produced from ETM+ Landsat 7 satellite data and provides a consistent European coverage of individual orthorectified scenes in national map projection systems.</dct:abstract>
+   <dct:abstract>IMAGE2000 product 1 individual orthorectified scenes. IMAGE2000 was produced from ETM+ Landsat 7 satellite data and provides a consistent European coverage of individual orthorectified scenes in national map projection systems.</dct:abstract>
    <dc:type>dataset</dc:type>
    <dc:subject scheme="http://www.digest.org/2.1">Vegetation</dc:subject>
    <dc:subject>baseMaps</dc:subject>

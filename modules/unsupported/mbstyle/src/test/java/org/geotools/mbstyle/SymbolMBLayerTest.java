@@ -21,9 +21,12 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.List;
 
+import javax.xml.transform.TransformerException;
+
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.SLDTransformer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
@@ -95,4 +98,22 @@ public class SymbolMBLayerTest {
     	assertEquals("false", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("forceLeftToRight"));
 
     }
+    @Test
+    public void testTextPadding(){
+    	assertEquals(20.0, testLayer.getTextPadding());
+    	// defaults to 2.0
+    	assertEquals(2.0, testLayerDefault.getTextPadding());
+    	assertEquals("20.0", featureTypePoint.get(0).rules().get(0).getSymbolizers()[1].getOptions().get("spaceAround"));
+
+    }
+    @Test
+    public void testIconPadding(){
+    	assertEquals(30.0, testLayer.getIconPadding());
+    	// defaults to 2.0
+    	assertEquals(2.0, testLayerDefault.getIconPadding());
+    	assertEquals("20.0", featureTypePoint.get(0).rules().get(0).getSymbolizers()[1].getOptions().get("spaceAround"));
+    	assertEquals(30.0, testLineLayer.getIconPadding());
+    	assertEquals("30.0", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("spaceAround"));
+    }
+    
 }

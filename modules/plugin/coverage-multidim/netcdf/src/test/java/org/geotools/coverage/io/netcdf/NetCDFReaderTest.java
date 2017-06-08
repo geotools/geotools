@@ -196,6 +196,22 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
+    public void testRanges() throws IOException {
+        File file = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY_3.nc");
+        final NetCDFReader reader = new NetCDFReader(file, null);
+        String coverageName = "z";
+        GeneralParameterValue[] values = new GeneralParameterValue[] {};
+        GridCoverage2D coverage = reader.read(coverageName, values);
+        GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
+        double min = sampleDimension.getMinimumValue();
+        double max = sampleDimension.getMaximumValue();
+        double nodata = sampleDimension.getNoDataValues()[0];
+        assertEquals(0.133045, min, 1e-3f);
+        assertEquals(35.827045, max, 1e-3f);
+        assertEquals(-999, nodata, 1e-3f);
+    }
+
+    @Test
     public void NetCDFTestOn4Dcoverages() throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
         File mosaic = new File(TestData.file(this,"."),"NetCDFTestOn4Dcoverages");
         if (mosaic.exists()) {

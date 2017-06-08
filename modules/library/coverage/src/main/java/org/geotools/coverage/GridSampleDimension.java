@@ -824,9 +824,16 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     public double getMinimumValue() {
         if (categories != null && !categories.isEmpty()) {
-            final double value = categories.get(0).minimum;
-            if (!Double.isNaN(value)) {
-                return value;
+            for (int i = 0; i < categories.size(); i++) {
+                Category cat = categories.get(i);
+                if (!Category.NODATA.getName().equals(cat.getName())) {
+                    // Exclude the value of the NODATA category
+                    // which can be retrieved with getNoDataValues
+                    final double value = cat.minimum;
+                        if (!Double.isNaN(value)) {
+                            return value;
+                        }
+                }
             }
         }
         return Double.NEGATIVE_INFINITY;
@@ -840,11 +847,16 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @see #getRange
      */
     public double getMaximumValue() {
-        if (categories != null) {
-            for (int i=categories.size(); --i>=0;) {
-                final double value = categories.get(i).maximum;
-                if (!Double.isNaN(value)) {
-                    return value;
+        if (categories != null && !categories.isEmpty()) {
+            for (int i = categories.size(); --i >= 0;) {
+                Category cat = categories.get(i);
+                if (!Category.NODATA.getName().equals(cat.getName())) {
+                    // Exclude the value of the NODATA category
+                    // which can be retrieved with getNoDataValues
+                    final double value = cat.maximum;
+                        if (!Double.isNaN(value)) {
+                            return value;
+                        }
                 }
             }
         }

@@ -81,6 +81,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -1602,6 +1604,24 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertTrue(roi.contains(120, 120));
         assertFalse(roi.contains(20, 120));
         assertFalse(roi.contains(120, 20));
+    }
+    
+    @Test
+    public void testMosaicNullROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        
+        // inject a null roi, should be treated as full image valid for that granule
+        ImageWorker iw = new ImageWorker();
+        iw.mosaic(new RenderedImage[] {red, blue}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, null}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, instanceOf(ROI.class));
+        ROI roi = (ROI) roiProperty;
+        // check ROI, should be full
+        assertTrue(roi.contains(new Rectangle(0, 0, mosaicked.getWidth(), mosaicked.getHeight())));
     }
     
     @Test

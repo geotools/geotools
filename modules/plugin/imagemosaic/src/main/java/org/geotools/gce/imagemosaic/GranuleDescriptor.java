@@ -327,8 +327,6 @@ public class GranuleDescriptor {
 
     ImageInputStreamSpi cachedStreamSPI;
 
-    private GridToEnvelopeMapper geMapper;
-
     /** {@link DatasetLayout} object containing information about granule internal structure */
     private DatasetLayout layout;
 
@@ -421,7 +419,7 @@ public class GranuleDescriptor {
             // somehow from the tile itself or from the index, but at the moment
             // we do not have such info, hence we assume that it is a simple
             // scale and translate
-            this.geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension),
+            GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension),
                     this.granuleBBOX);
             geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);// this is the default behavior but it is nice to write it down anyway
             this.baseGridToWorld = geMapper.createAffineTransform();

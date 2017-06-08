@@ -16,9 +16,6 @@
  */
 package org.geotools.imageio.netcdf;
 
-import it.geosolutions.imageio.stream.input.URIImageInputStream;
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.*;
@@ -44,8 +41,6 @@ import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
-import org.geotools.gce.imagemosaic.RasterLayerRequest;
-import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.data.DefaultTransaction;
@@ -53,6 +48,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
+import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.imageio.GeoSpatialImageReader;
@@ -71,6 +67,9 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
+import it.geosolutions.imageio.stream.input.URIImageInputStream;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import ucar.ma2.Array;
 import ucar.ma2.IndexIterator;
 import ucar.ma2.InvalidRangeException;
@@ -703,8 +702,6 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         // Setting SampleModel and ColorModel.
         SampleModel sampleModel = new BandedSampleModel(wrapper.getSampleModel().getDataType(), destWidth, destHeight, numDstBands);
-        /*final SampleModel sampleModel = wrapper.getSampleModel()
-                .createCompatibleSampleModel(destWidth, destHeight);*/
         final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
 
         final WritableRaster raster = Raster.createWritableRaster(sampleModel, new Point(0, 0));

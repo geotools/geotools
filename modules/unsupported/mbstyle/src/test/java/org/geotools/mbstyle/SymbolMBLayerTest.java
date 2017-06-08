@@ -32,24 +32,27 @@ import org.junit.Test;
 public class SymbolMBLayerTest {
     SymbolMBLayer testLayerDefault;
     SymbolMBLayer testLayer;
-    SymbolMBLayer testAngleLayer;
+    SymbolMBLayer testLineLayer;
     MBStyle defaultStyle;
-    MBStyle angleStyle;
-    List<FeatureTypeStyle> featureTypeWithAngle;
+    MBStyle lineStyle;
+    MBStyle pointStyle;
+    List<FeatureTypeStyle> featureTypeLine;
     List<FeatureTypeStyle> featureTypeDefaults;
-
+    List<FeatureTypeStyle> featureTypePoint;
     
     @Before
     public void setUp() throws IOException, ParseException {
         JSONObject jsonDefault = MapboxTestUtils.parseTestStyle("symbolStyleTestDefaults.json");
         JSONObject json = MapboxTestUtils.parseTestStyle("symbolStyleTest.json");
         JSONObject jsonAngle = MapboxTestUtils.parseTestStyle("symbolTextLinePlacementTest.json");
-        angleStyle = MBStyle.create(jsonAngle);
+        lineStyle = MBStyle.create(jsonAngle);
         defaultStyle = MBStyle.create(jsonDefault);
-        testAngleLayer = (SymbolMBLayer) angleStyle.layer("testid");
+        pointStyle = MBStyle.create(json);
+        testLineLayer = (SymbolMBLayer) lineStyle.layer("testid");
         testLayerDefault = (SymbolMBLayer) MBStyle.create(jsonDefault).layer("testid");
         testLayer = (SymbolMBLayer) MBStyle.create(json).layer("testid");
-        featureTypeWithAngle = testAngleLayer.transformInternal(angleStyle);
+        featureTypePoint = testLayer.transformInternal(pointStyle);
+        featureTypeLine = testLineLayer.transformInternal(lineStyle);
         featureTypeDefaults = testLayerDefault.transformInternal(defaultStyle);
     }
 
@@ -78,11 +81,18 @@ public class SymbolMBLayerTest {
     @Test
     public void testTextMaxAngle(){
     	// Test json values
-    	assertEquals(25, testAngleLayer.getTextMaxAngle().intValue());
+    	assertEquals(25, testLineLayer.getTextMaxAngle().intValue());
     	// now null assertEquals(45, testLayerDefault.getTextMaxAngle().intValue());
     	// Test FeatureTypeStyle
     	// assertEquals("45.0", featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("maxAngleDelta"));
     	// now null assertEquals("false", featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("followLine"));
-    	assertEquals("true", featureTypeWithAngle.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("followLine"));
+    	assertEquals("true", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("followLine"));
+    }
+    @Test
+    public void testTextKeepUpright(){
+    	assertEquals(false, testLineLayer.getTextKeepUpright());
+    	assertEquals(true, testLayerDefault.getTextKeepUpright());
+    	assertEquals("false", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("forceLeftToRight"));
+
     }
 }

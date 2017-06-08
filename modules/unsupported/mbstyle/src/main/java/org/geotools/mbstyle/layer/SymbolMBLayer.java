@@ -1748,6 +1748,7 @@ public class SymbolMBLayer extends MBLayer {
         // throw MBFormatException if point placement
         if(labelPlacement instanceof LinePlacement){
             // followLine will be true if line placement, it is an implied default of MBstyles.
+            symbolizer.getOptions().put("forceLeftToRight", String.valueOf(textKeepUpright()));
             symbolizer.getOptions().put("followLine", "true");
             symbolizer.getOptions().put("maxAngleDelta", String.valueOf(getTextMaxAngle()));
         } else if (hasTextMaxAngle()) {

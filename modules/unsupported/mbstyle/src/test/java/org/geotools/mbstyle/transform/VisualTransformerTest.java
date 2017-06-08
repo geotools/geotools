@@ -500,6 +500,31 @@ public class VisualTransformerTest {
         mc.dispose();
     }
     
+    // Will test to see if text will render upside down when 'text-keep-upright' set to false
+    @Test
+    public void mbSymbolLayerTextKeepUprightTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextLinePlacementTest.json");        
+        
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+        
+        MapContent mc = new MapContent();
+
+        // mc.addLayer(new FeatureLayer(lineFS, defaultLineStyle()));
+
+        mc.addLayer(new FeatureLayer(lineZigFS, style));    
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Line Style", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("symbol-text-keep-upright"), image, 5000);        
+        mc.dispose();
+    }
     
     @Test
     public void mbLineLayerSpriteTest() throws Exception {

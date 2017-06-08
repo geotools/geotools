@@ -49,7 +49,8 @@
                 "text-font": ["Some Test Font", "Other Test Font"],
                 "symbol-placement": "line",
                 "symbol-spacing": 80,
-                "text-allow-overlap": true
+                "text-allow-overlap": true,
+                "text-keep-upright": false,
             },
             "paint": {
                 "text-color": "#334d77",

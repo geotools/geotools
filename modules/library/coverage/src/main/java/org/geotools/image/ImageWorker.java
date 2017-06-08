@@ -99,6 +99,7 @@ import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
@@ -115,11 +116,12 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 
-import com.sun.imageio.plugins.png.PNGImageWriter;
 import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.jai.util.ImageUtil;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
@@ -4461,13 +4463,23 @@ public class ImageWorker {
         if(roiArray.length < numSources){
             for(int i = roiArray.length; i < numSources; i++){
                 RenderedImage img = (RenderedImage) sources.get(i);
-                ROI r = new ROIShape(new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
+                ROI r = getImageBoundsROI(img);
                 rois.add(r);
             }
         }
+        // handle possible null inputs
+        for (int i = 0; i < roiArray.length; i++) {
+            ROI roi = roiArray[i];
+            if (roi == null) {
+                RenderedImage img = (RenderedImage) sources.get(i);
+                ROI r = getImageBoundsROI(img);
+                rois.set(i, r);
+            }
+            
+        }
         
         // bail out for the simple case without creating new objects
-        if(rois.size() == 1) {
+        if (rois.size() == 1) {
             return rois.get(0);
         }
         
@@ -4496,15 +4508,15 @@ public class ImageWorker {
         }
         
         // optimization in case we end up with just one ROI, no need to mosaic
-        if(rasterROIs.size() == 0) {
+        if (rasterROIs.size() == 0) {
             return vectorReference;
-        } else if(rasterROIs.size() == 1 && vectorReference == null) {
+        } else if (rasterROIs.size() == 1 && vectorReference == null) {
             return rasterROIs.get(0);
         }
-        
+
         // ok, rasterize the vector one if any and mosaic
         ParameterBlock pb = new ParameterBlock();
-        if(vectorReference != null) {
+        if (vectorReference != null) {
             pb.addSource(vectorReference.getAsImage());
         }
         for (ROI rasterROI : rasterROIs) {
@@ -4518,6 +4530,17 @@ public class ImageWorker {
         pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
         RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
         return new ROI(roiMosaic);
+    }
+    
+    private ROI getImageBoundsROI(RenderedImage image) {
+        final int minX = image.getMinX();
+        final int minY = image.getMinY();
+        final int maxX = minX + image.getWidth();
+        final int maxY = minY + image.getHeight();
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(minX, minY, maxX, minY, maxX, maxY,
+                minX, maxY, minX, minY);
+        Geometry footprint = new GeometryFactory().createPolygon(cs);
+        return new ROIGeometry(footprint);
     }
     
     private Range[] handleMosaicThresholds(double[][] thresholds, int srcNum) {

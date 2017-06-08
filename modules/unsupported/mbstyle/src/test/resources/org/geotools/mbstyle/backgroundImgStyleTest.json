@@ -13,27 +13,26 @@
     "bearing": 0,
     "pitch": 0,
     "sources": {
-        "mapbox://mapbox.satellite": {
-            "url": "mapbox://mapbox.satellite",
-            "type": "raster",
-            "tileSize": 256
+        "geoserver-states": {
+            "url": "http://localhost:8080/geoserver/topp/states/wms",
+            "type": "vector"
         }
     },
-    "sprite": "mapbox://sprites/testuser/ciz48dnnj004l2rplkpqsra81",
+    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
     "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "backgroundimg",
             "type": "background",
-            "source": "test-source",
-            "source-layer": "test-source-layer",            
+            "source": "geoserver-states",
+            "source-layer": "states",
             "layout": {
                 "visibility": "visible"
             },
             "paint": {
-                "background-pattern": "homer-simpson",
+                "background-pattern": "owl",
                 "background-opacity": 0.75,
-                "background-color": "#00FF00"
+                "background-color": "#0000FF"
             }
         }
     ],

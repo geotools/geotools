@@ -263,6 +263,30 @@ public class HeterogenousCRSTest {
     }
     
     @Test
+    public void testHeteroUtmFootprintTransparency() throws Exception {
+        String testLocation = "hetero_utm_footprint";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        
+        // read a coverage and compare with expected image
+        final String expectedResultLocation = "hetero_utm_footprint_results/footprints.png";
+        ParameterValue<String> footprintBehavior = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        footprintBehavior.setValue("Transparent");
+        // use sort to get a stable result
+        ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
+        sortBy.setValue("location A");
+        
+        assertExpectedMosaic(imReader, expectedResultLocation, footprintBehavior, sortBy);
+        imReader.dispose();
+    }
+    
+    @Test
     public void testHeteroCRSDateline() throws IOException, URISyntaxException, TransformException,
             FactoryException {
         URL storeUrl = TestData.url(this, "hetero_crs_dateline");

@@ -17,7 +17,6 @@
 package org.geotools.coverage.processing;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 import java.awt.Image;
@@ -46,15 +45,14 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
-import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
@@ -806,5 +804,58 @@ public final class CropTest extends GridProcessingTestBase {
 
         // Setting old acceleration value for Mosaic
         Registry.setNativeAccelerationAllowed("Mosaic", Boolean.valueOf(oldDisableMediaLib));
+    }
+    
+    /**
+     * Tests the "Crop" with a topologically invalid ROI
+     */
+    @Test
+    public void testCropWithToplogicalInvalidROI() throws TransformException, InterruptedException, FactoryException {
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+
+        /*
+         * Get the source coverage and build the cropped envelope.
+         */
+        final GridCoverage2D source = coverage;
+        final Envelope oldEnvelope = source.getEnvelope();
+        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
+                oldEnvelope.getMinimum(0),
+                oldEnvelope.getMinimum(1)
+        }, new double[] {
+                oldEnvelope.getMaximum(0),
+                oldEnvelope.getMaximum(1)
+        });
+        cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
+
+
+        // hourglass shaped polygon, self intersecting
+        // ---
+        // \ /
+        //  X
+        // / \
+        // ---
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1),
+                oldEnvelope.getMaximum(0), oldEnvelope.getMinimum(1),
+                oldEnvelope.getMinimum(0), oldEnvelope.getMaximum(1),
+                oldEnvelope.getMaximum(0), oldEnvelope.getMaximum(1),
+                oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)
+                );
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( JTSFactoryFinder.EMPTY_HINTS );
+        Geometry mask = geometryFactory.createPolygon(cs);
+
+
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(source);
+        param.parameter("Envelope").setValue(cropEnvelope);
+        param.parameter("ROI").setValue(mask);
+
+        // first, does not blow up
+        GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
+        cropped = (GridCoverage2D) processor.doOperation(param);
+        RenderedImage raster = cropped.getRenderedImage();
+
+        // The value should be zero since that portion has been cut away
+        assertEquals(0, raster.getTile(0, 0).getSample(0, raster.getMinY() + raster.getHeight() / 2, 0));
+        assertTrue(cropEnvelope.equals(cropped.getEnvelope()));
     }
 }

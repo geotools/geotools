@@ -23,7 +23,6 @@ import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.ReadType;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -39,7 +38,6 @@ import org.opengis.referencing.ReferenceIdentifier;
 import javax.media.jai.Interpolation;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -864,6 +862,10 @@ public class RasterLayerRequest {
 
     public int getDefaultArtifactsFilterThreshold() {
         return defaultArtifactsFilterThreshold;
+    }
+
+    void setFootprintBehavior(FootprintBehavior footprintBehavior) {
+        this.footprintBehavior = footprintBehavior;
     }
 
     public double getArtifactsFilterPTileThreshold() {

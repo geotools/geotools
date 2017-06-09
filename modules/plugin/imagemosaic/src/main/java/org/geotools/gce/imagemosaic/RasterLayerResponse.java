@@ -1411,7 +1411,12 @@ public class RasterLayerResponse {
         RasterManager originalRasterManager = originalRequest.getRasterManager();
         RasterManager manager = originalRasterManager.getForGranuleCRS(templateDescriptor, this.mosaicBBox);
         RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager);
-        if(request.spatialRequestHelper.isEmpty()) {
+        // if the output needs to have transparent footprint behavior, we need to preserve the
+        // various sub-mosaic ROIs until the final mosaicking
+        if (request.getFootprintBehavior() == FootprintBehavior.Transparent) {
+            request.setFootprintBehavior(FootprintBehavior.Cut);
+        }
+        if (request.spatialRequestHelper.isEmpty()) {
             return null;
         }
         RasterLayerResponse response = new RasterLayerResponse(request, manager,

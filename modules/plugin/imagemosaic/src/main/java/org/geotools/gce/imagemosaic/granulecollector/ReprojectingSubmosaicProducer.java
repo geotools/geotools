@@ -24,7 +24,9 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.media.jai.Interpolation;
@@ -48,7 +50,6 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -61,7 +62,6 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Geometry;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 
 /**
  * SubmosaicProducer that can handle reprojecting its contents into the target mosaic CRS. This
@@ -171,8 +171,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
 
             final MathTransform2D finalGridToWorld = mosaicProducer.rasterLayerResponse.getFinalGridToWorldCorner();
             ReferencedEnvelope submosaicBBOX = computeSubmosaicBoundingBox(finalGridToWorld, mosaicElement.getSource(), finalCrs);
-            GridCoverage2D submosaicCoverage = factory.create("submosaic",
-                    mosaicElement.getSource(), submosaicBBOX);
+            GridCoverage2D submosaicCoverage = createCoverageFromElement(mosaicElement, factory, submosaicBBOX);
             GridCoverage2D resampledCoverage = (GridCoverage2D) operations
                     .resample(submosaicCoverage, rasterLayerResponse.getMosaicBBox(), rasterLayerResponse.getRequest().getInterpolation());
             
@@ -201,6 +200,20 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
                     mosaicElement.getPamDataset());
         } else {
             return mosaicElement;
+        }
+    }
+
+    private GridCoverage2D createCoverageFromElement(MosaicElement mosaicElement,
+            GridCoverageFactory factory, ReferencedEnvelope submosaicBBOX) {
+        final RenderedImage image = mosaicElement.getSource();
+        Object roiProperty = image.getProperty("ROI");
+        if (roiProperty instanceof ROI) {
+            // move the property at the coverage level too
+            Map<String, Object> properties = new HashMap<>();
+            CoverageUtilities.setROIProperty(properties, (ROI) roiProperty);
+            return factory.create("submosaic", image, submosaicBBOX, null, null, properties);
+        } else {
+            return factory.create("submosaic", image, submosaicBBOX);
         }
     }
 
@@ -266,6 +279,10 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             return image;
         } else {
             ImageWorker iw = new ImageWorker(image);
+            final Object roi = image.getProperty("ROI");
+            if(roi instanceof ROI) {
+                iw.setROI((ROI) roi);
+            }
             iw.setRenderingHints(localHints);
             iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
             RenderedImage renderedImage = iw.getRenderedImage();

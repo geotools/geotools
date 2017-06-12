@@ -77,4 +77,3 @@ Unsupported plugins:
    solr
    wfs
    wfs-ng
-   vpf

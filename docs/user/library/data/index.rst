@@ -75,5 +75,4 @@ Unsupported plugins:
    mongodb
    sfs
    solr
-   wfs
    wfs-ng

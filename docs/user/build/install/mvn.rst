@@ -12,10 +12,10 @@ Reference:
 Download and Install Maven
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Download Maven. Last tested with Maven 3.0.5.
+1. Download Maven. Last tested with Maven 3.3.9.
 2. Unzip the maven download to your computer:
    
-   Example: C:\java\apache-maven-3.0.5.
+   Example: C:\java\apache-maven-3.3.9.
    
    If you do not have an unzip program may we recommend: http://www.7-zip.org/
 
@@ -49,4 +49,9 @@ Maven and Apt-Get
 Current versions of Ubuntu provide Maven 3; however if you're using an older version or you'd like to use the very latest, please
 install the latest version manually by following the `official installation instructions <https://maven.apache.org/install.html>`_.
 
+Maven and Home Brew
+^^^^^^^^^^^^^^^^^^^
 
+On MacOS the homebrew package manager provides a "formula" to install maven::
+
+  brew install maven

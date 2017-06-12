@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.opengis.feature.type.Name;
@@ -49,7 +50,12 @@ public class MappingAttributeIterator extends DataAccessMappingFeatureIterator {
 
     public MappingAttributeIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, Query unrolledQuery) throws IOException {
-        super(store, mapping, query, unrolledQuery, false);
+        this(store, mapping, query, unrolledQuery, null);
+    }
+
+    public MappingAttributeIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery, Transaction transaction) throws IOException {
+        super(store, mapping, query, unrolledQuery, false, transaction);
         elementName = mapping.getTargetFeature().getName();
         checkAttributeMappings();
     }

@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
@@ -105,6 +106,11 @@ public class MappingFeatureIteratorFactory {
 
     public static IMappingFeatureIterator getInstance(AppSchemaDataAccess store,
             FeatureTypeMapping mapping, Query query, Filter unrolledFilter) throws IOException {
+        return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter, null);
+    }
+
+    public static IMappingFeatureIterator getInstance(AppSchemaDataAccess store,
+            FeatureTypeMapping mapping, Query query, Filter unrolledFilter, Transaction transaction) throws IOException {
 
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);
@@ -155,10 +161,11 @@ public class MappingFeatureIteratorFactory {
                         .getRootMapping());
             }
             if (isSimpleType(mapping)) {
-                iterator = new MappingAttributeIterator(store, mapping, query, unrolledQuery);
+                iterator = new MappingAttributeIterator(store, mapping, query, unrolledQuery,
+                        transaction);
             } else {
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query,
-                        unrolledQuery, false);
+                        unrolledQuery, false, transaction);
             }
         } else {
             // HACK HACK HACK
@@ -224,7 +231,7 @@ public class MappingFeatureIteratorFactory {
                     removeQueryLimitIfDenormalised = true;
                 } 
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered,
-                        removeQueryLimitIfDenormalised, hasPostFilter);
+                        removeQueryLimitIfDenormalised, hasPostFilter, transaction);
                 if (isListFilter != null) {
                     ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
                 }

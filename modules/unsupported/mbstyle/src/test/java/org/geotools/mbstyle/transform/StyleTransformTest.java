@@ -248,6 +248,37 @@ public class StyleTransformTest {
             assertEquals(expectedDashes.get(i), n);
         }        
     }
+
+    @Test
+    public void testLineGapWidth() throws IOException, ParseException {
+        JSONObject jsonObject = parseTestStyle("lineStyleGapTest.json");
+
+        // Find the LineMBLayer and assert it contains the correct FeatureTypeStyle.
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof LineMBLayer);
+        LineMBLayer mbLine = (LineMBLayer) layers.get(0);
+
+        List<FeatureTypeStyle> fts = mbLine.transform(mbStyle);
+
+        assertEquals(1, fts.get(0).rules().size());
+        Rule r = fts.get(0).rules().get(0);
+
+        assertEquals(3, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(0);
+        assertTrue(symbolizer instanceof LineSymbolizer);
+        LineSymbolizer lsym = (LineSymbolizer) symbolizer;
+
+        assertEquals(new Color(0, 153, 255),
+                lsym.getStroke().getColor().evaluate(null, Color.class));
+        assertEquals("square", lsym.getStroke().getLineCap().evaluate(null, String.class));
+        assertEquals("round", lsym.getStroke().getLineJoin().evaluate(null, String.class));
+        assertEquals(.5d, lsym.getStroke().getOpacity().evaluate(null, Double.class), .0001);
+        assertEquals(Integer.valueOf(18), lsym.getStroke().getWidth().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+
+    }
     
     @Test
     public void testLineDefaults() throws IOException, ParseException {

@@ -16,16 +16,6 @@
  */
 package org.geotools.mbstyle.transform;
 
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-
-import java.awt.Color;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-
 import org.geotools.TestData;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -39,24 +29,23 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 //import org.geotools.gce.geotiff.GeoTiffReader;
 
@@ -121,7 +110,7 @@ public class VisualTransformerTest {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
-        // System.setProperty("org.geotools.test.interactive", "true");
+         System.setProperty("org.geotools.test.interactive", "true");
     }
     /**
      * Test generation of a GeoTools style from an MBBackgroundLayer
@@ -540,7 +529,13 @@ public class VisualTransformerTest {
     public void mbLineLayerTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTest.json");
         testVisualizeStyleWithLineFeatures(jsonObject, "Line Style", "line-style", true);
-    }    
+    }
+
+    @Test
+    public void mbLineLayerGapTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleGapTest.json");
+        testVisualizeStyleWithLineFeatures(jsonObject, "Line Gap Style", "line-gap-style", true);
+    }
     
     @Test
     public void mbLineLayerAllPropertiesTest() throws Exception {

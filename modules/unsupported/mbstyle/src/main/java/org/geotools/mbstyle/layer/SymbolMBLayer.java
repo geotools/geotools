@@ -16,38 +16,16 @@
  */
 package org.geotools.mbstyle.layer;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.measure.unit.NonSI;
-
+import com.google.common.collect.ImmutableSet;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
+import org.geotools.styling.*;
 import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -57,7 +35,10 @@ import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
-import com.google.common.collect.ImmutableSet;
+import javax.measure.unit.NonSI;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * A symbol.
@@ -1777,6 +1758,21 @@ public class SymbolMBLayer extends MBLayer {
                     "none");
         }
 
+        // MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile edges to avoid
+        // mutual collisions.  This concept is represented by using the Partials option in GeoTools.  The partials
+        // options instructs the renderer to render labels that cross the map extent, which are normally not painted
+        // since there is no guarantee that a map put on the side of the current one (tiled rendering) will contain
+        // the other half of the label. By enabling “partials” the style editor takes responsibility for the other
+        // half being there (maybe because the label points have been placed by hand and are assured not to conflict
+        // with each other, at all zoom levels).
+        //
+        // Based upon the above if symbol-avoid-edges is true we do not need
+        // to add the partials option as the renderer will do this by default. But if symbol-avoid-edges is missing or
+        // set to false, then we do need to add the partials option set to true.
+        if (!getSymbolAvoidEdges()){
+            symbolizer.getOptions().put("partials", "true");
+        }
+
         //Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
             symbolizer.getOptions().put("graphic-margin",
@@ -1801,6 +1797,14 @@ public class SymbolMBLayer extends MBLayer {
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {
+            // icon-ignore-placement requires an icon-image so we handle this property here.
+            // By default - or icon-ignore-placement: false, MapBox prevents symbols from being visible if they collide
+            // with other icons.  GeoServer only implements this behavior if the vendorOption labelObstacle is set
+            // to true.
+            if (!getIconIgnorePlacement()) {
+                symbolizer.getOptions().put("labelObstacle", "true");
+            }
+
             // If we have an icon with a Point placement create a PointSymoblizer for the icon.
             // This enables adjusting the text placement without moving the icon.
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
@@ -1813,6 +1817,12 @@ public class SymbolMBLayer extends MBLayer {
                 symbolizer.setGraphic(getGraphic(transformer, styleContext));
             }
                      
+        }
+
+        // Check that a labelObstacle vendor option hasn't already been placed on the symbolizer and that
+        // textIgnorePlacement is either null or false, if so add it.  If textIgnorePlacement is true, accept default behavior.
+        if (symbolizer.getOptions().get("labelObstacle") == null && !getTextIgnorePlacement()) {
+            symbolizer.getOptions().put("labelObstacle", "true");
         }
 
         symbolizers.add(symbolizer);

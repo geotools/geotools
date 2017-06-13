@@ -238,8 +238,11 @@ public class MultiRange<T extends Comparable<? super T>> {
             return ff.less(variable, ff.literal(range.getMaxValue()));
         }
     }
-
     
+    @Override
+    public String toString() {
+        return "MultiRange [ranges=" + ranges + "]";
+    }
     
 
     

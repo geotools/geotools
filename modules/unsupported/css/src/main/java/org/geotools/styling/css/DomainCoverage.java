@@ -22,6 +22,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
@@ -35,6 +37,7 @@ import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
@@ -55,8 +58,8 @@ class DomainCoverage {
      */
     static final NumberRange<Double> FULL_SCALE_RANGE = new NumberRange<Double>(Double.class, 0d,
             Double.POSITIVE_INFINITY);
-
-
+    
+    static final Logger LOGGER = Logging.getLogger(DomainCoverage.class);
 
     /**
      * A simplified representation of a Selector that takes apart the three main components, scale
@@ -71,6 +74,8 @@ class DomainCoverage {
         NumberRange<Double> scaleRange;
 
         Filter filter;
+        
+        Integer complexity;
 
         public SLDSelector(NumberRange<?> scaleRange, Filter filter) {
             this.scaleRange = new NumberRange(Double.class, scaleRange.getMinimum(),
@@ -161,6 +166,15 @@ class DomainCoverage {
         private DomainCoverage getOuterType() {
             return DomainCoverage.this;
         }
+        
+        public int getComplexity() {
+            if(complexity == null) {
+                FilterComplexityVisitor visitor = new FilterComplexityVisitor();
+                this.filter.accept(visitor, null);
+                complexity = visitor.count;
+            }
+            return complexity;
+        }
 
     }
 
@@ -218,6 +232,12 @@ class DomainCoverage {
      * When true, the detailed (expensive) coverage computation will generate exclusive rules
      */
     boolean exclusiveRulesEnabled = true;
+    
+    /**
+     * If the threshold is set, switches out of exclusive mode once the total complexity
+     * of the coverage goes beyond the threshold.
+     */
+    int complexityThreshold = 0;
 
     /**
      * Create a new domain coverage for the given feature type
@@ -246,6 +266,15 @@ class DomainCoverage {
             return Collections.emptyList();
         } else {
             generatedSelectors.add(ruleCoverage);
+        }
+        
+        if(exclusiveRulesEnabled && complexityThreshold > 0) {
+            final int totalComplexity = getTotalComplexity();
+            if(totalComplexity > complexityThreshold) {
+                LOGGER.log(Level.INFO, "Switching CSS translation to non exclusive mode as total "
+                        + "domain coverage complexity {0} went above threshold {1}", new Object[] {totalComplexity, complexityThreshold});
+                exclusiveRulesEnabled = false;
+            }
         }
 
         // if we are just checking for straight duplicates, let it go
@@ -306,6 +335,14 @@ class DomainCoverage {
                 return Collections.emptyList();
             }
         }
+    }
+
+    private int getTotalComplexity() {
+        int total = 0;
+        for (SLDSelector selector : elements) {
+            total += selector.getComplexity();
+        }
+        return total;
     }
 
     private List<CssRule> coverageToRules(CssRule rule, List<SLDSelector> ruleCoverage) {

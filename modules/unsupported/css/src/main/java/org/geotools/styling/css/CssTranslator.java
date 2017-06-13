@@ -432,6 +432,7 @@ public class CssTranslator {
                         LOGGER.fine("Sticking to Exclusive translation mode, rules number is "
                                 + rulesCount + " with a threshold of " + autoThreshold);
                         coverage.exclusiveRulesEnabled = true;
+                        coverage.complexityThreshold = autoThreshold;
                     } else {
                         LOGGER.info("Switching to Simple translation mode, rules number is "
                                 + rulesCount + " with a threshold of " + autoThreshold);

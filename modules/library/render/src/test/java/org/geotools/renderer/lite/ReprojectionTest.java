@@ -124,6 +124,7 @@ public class ReprojectionTest extends TestCase {
         });
         errors = 0;
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), reUtm);
+        mapContext.dispose();
         // we should get two errors since there are two features that cannot be
         // projected but the renderer itself should not throw exceptions
         assertEquals(1, errors);

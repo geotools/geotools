@@ -51,13 +51,12 @@ public class WrapPointSymbolizerTest {
         renderer.setRendererHints(rendererParams);
         renderer.setMapContent(mc);
         
-        RendererBaseTest.showRender("WrapPointSymbolizer", renderer, TIME, bounds);
-        
         final BufferedImage image = new BufferedImage(400, 80, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) image.getGraphics();
         g.setColor(Color.white);
         g.fillRect(0, 0, 400, 80);
         renderer.paint(g, new Rectangle(0, 0, 400, 80), bounds);
+        mc.dispose();
         
         RendererBaseTest.showImage("WrapPointSymbolizer", TIME, image);
         

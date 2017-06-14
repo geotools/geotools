@@ -71,6 +71,7 @@ public class GridCoverageRenderingOutOfViewTest {
             }
         });
         renderer.paint(image.createGraphics(), new Rectangle(400, 300), refenv);
+        map.dispose();
 
         assertNull(error.get());
     }

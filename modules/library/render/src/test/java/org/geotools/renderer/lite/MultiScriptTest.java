@@ -225,6 +225,7 @@ public class MultiScriptTest extends TestCase {
         g.fillRect(0, 0, SIZE, SIZE);
         g.setTransform(new AffineTransform(1.1, Math.sin(Math.toRadians(15)), -Math.sin(Math.toRadians(15)), 1.1, 15, 20));
         renderer.paint(g, new Rectangle(SIZE, SIZE), bounds);
+        mc.dispose();
         renderer.getMapContent().dispose();
 
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptTransformedLine.png";

@@ -78,6 +78,7 @@ public class StreamingRendererDirectLayerTest {
         
         Graphics2D destGraphics = image.createGraphics();
         renderer.paint(destGraphics, SCREEN, WORLD);
+        mapContent.dispose();
         
         // PerceptualDiff could be used to examine the resulting image.
         // For now we just do a quick and dirty check

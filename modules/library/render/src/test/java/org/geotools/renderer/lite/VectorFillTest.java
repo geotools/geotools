@@ -127,7 +127,9 @@ public class VectorFillTest {
         BufferedImage bi = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = bi.createGraphics();
         renderer.paint(graphics, new Rectangle(0, 0, 10, 10), bounds);
+        mc.dispose();
         graphics.dispose();
+        mc.dispose();
     }
 
     @Test

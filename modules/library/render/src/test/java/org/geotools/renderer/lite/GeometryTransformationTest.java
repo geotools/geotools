@@ -167,6 +167,7 @@ public class GeometryTransformationTest {
         renderer.setMapContent(map);
         renderer.paint(graphics, new Rectangle(100, 100), new ReferencedEnvelope(0, 10, 0, 10, null));
         graphics.dispose();
+        map.dispose();
         
         // ImageIO.write(bi, "png", new File("/tmp/sample.png"));
         

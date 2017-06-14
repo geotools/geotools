@@ -112,6 +112,9 @@ public abstract class RendererBaseTest {
         for (int i = 0; i < images.length; i++) {
             images[i] = renderImage(renderer, bounds[i], listener);
         }
+        if(renderer.getMapContent() != null) {
+            renderer.getMapContent().dispose();
+        }
         final BufferedImage image = mergeImages(images);
 
         showImage(testName, timeOut, image);

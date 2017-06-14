@@ -228,6 +228,7 @@ public class StreamingRendererTest {
                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         
         sr.paint(graphics, new Rectangle(200, 200),reWgs);
+        mc.dispose();
         // test right interpolation hint is set on Graphics2D
         assertEquals(graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
@@ -278,6 +279,7 @@ public class StreamingRendererTest {
         errors = 0;
         features = 0;
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reUtm);
+        mc.dispose();
         
         // we should get errors since there are two features that cannot be
         // projected but the renderer itself should not throw exceptions
@@ -337,6 +339,7 @@ public class StreamingRendererTest {
         ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180,
                 -170, 20, 40), DefaultGeographicCRS.WGS84);
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reWgs);
+        mapContext.dispose();
         
         // we should get two errors since there are two features that cannot be
         // projected but the renderer itself should not throw exceptions
@@ -395,6 +398,7 @@ public class StreamingRendererTest {
         features = 0;
         BufferedImage image = new BufferedImage(200, 200,BufferedImage.TYPE_4BYTE_ABGR);
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reWgs);
+        mapContent.dispose();
         
         // all the lines should have been painted, the coverage reports as painted too 
         // since the reporting happens in the main thread that does not error
@@ -459,6 +463,7 @@ public class StreamingRendererTest {
         Graphics2D graphics = bi.createGraphics();
         sr.paint(graphics, new Rectangle(0, 0, 100, 100), new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84));
         graphics.dispose();
+        mc.dispose();
         
         System.out.println(filters);
         assertEquals(2, filters.size());
@@ -518,6 +523,7 @@ public class StreamingRendererTest {
         // now have the lines be big enough to be painted instead
         features.clear();
         sr.paint(graphics, new Rectangle(0, 0, 1, 1), new ReferencedEnvelope(0, 1, 0, 1, DefaultGeographicCRS.WGS84));
+        mc.dispose();
         assertEquals(2, features.size());
         assertEquals("zz1", features.get(0).getID());
         assertEquals("zz2", features.get(1).getID());
@@ -566,6 +572,7 @@ public class StreamingRendererTest {
             sr.paint(graphics, new Rectangle(5, 5, 7, 7), envelope);
         } finally {
             graphics.dispose();
+            mc.dispose();
         }
 
         //must have only one bbox, not two
@@ -631,6 +638,7 @@ public class StreamingRendererTest {
         errors = 0;
 
         sr.paint(graphics, paintArea, referencedEnvelope);
+        mc.dispose();
 
         assertTrue(errors == 0);
     }
@@ -674,6 +682,7 @@ public class StreamingRendererTest {
                 new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny),
                 CRS.decode("EPSG:4326"));
         gRender.paint(graphics, paintArea, referencedEnvelope);
+        mapContent.dispose();
         // checking that four features were rendered, if the default geometry attribute was not
         // correctly handled no geometries were selected and so no features were rendered
         Assert.assertEquals(features, 4);

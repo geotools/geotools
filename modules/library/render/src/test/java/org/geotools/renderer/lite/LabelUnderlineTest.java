@@ -85,6 +85,7 @@ public class LabelUnderlineTest {
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
         // render the lines with the underline labels
         renderer.paint(graphics, new Rectangle(0, 0, image.getWidth(), image.getHeight()), bounds);
+        mapContent.dispose();
         // let's see if the result image match our expectations
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/underlineStyle.sld.png");
         ImageAssert.assertEquals(reference, image, 3000);
@@ -111,6 +112,8 @@ public class LabelUnderlineTest {
         ReferencedEnvelope bounds = featureSource.getBounds();
         bounds.expandBy(-1, -1);
         renderer.paint(graphics, new Rectangle(0, 0, image.getWidth(), image.getHeight()), bounds);
+        mapContent.dispose();
+        mapContent.dispose();
         // let's see if the result image match our expectations
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/labelTopLeft.sld.png");
         ImageAssert.assertEquals(reference, image, 3000);

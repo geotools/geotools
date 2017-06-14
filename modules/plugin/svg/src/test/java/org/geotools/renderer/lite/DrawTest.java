@@ -173,6 +173,7 @@ public class DrawTest {
         ReferencedEnvelope dataArea = mc.getMaxBounds();
 
         renderer.paint(g2d, outputArea, dataArea);
+        mc.dispose();
     }
     @Test
     public void testPoint() throws Exception {

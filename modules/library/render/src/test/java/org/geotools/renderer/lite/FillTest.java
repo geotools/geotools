@@ -128,6 +128,7 @@ public class FillTest {
         Graphics2D graphics = bi.createGraphics();
         renderer.paint(graphics, new Rectangle(0, 0, 10, 10), bounds);
         graphics.dispose();
+        mc.dispose();
     }
 
     @Test

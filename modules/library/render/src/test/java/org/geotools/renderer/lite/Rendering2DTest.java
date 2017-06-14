@@ -1184,5 +1184,6 @@ public class Rendering2DTest extends TestCase {
         });
         sr.paint((Graphics2D) bi.getGraphics(), new Rectangle(640, 480), 
                 new ReferencedEnvelope(new Envelope(0, 10, 0, 10), DefaultGeographicCRS.WGS84));
+        mc.dispose();
     }
 }

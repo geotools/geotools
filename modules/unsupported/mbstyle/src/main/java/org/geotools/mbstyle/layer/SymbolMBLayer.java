@@ -821,9 +821,15 @@ public class SymbolMBLayer extends MBLayer {
      * @return The font to use for the label
      */
     public List<String> getTextFont() {
-        String[] fonts = parse.array(String.class, layout, "text-font",
-                new String[] { "Open Sans Regular", "Arial Unicode MS Regular" });
-        return Arrays.asList(fonts); 
+        String[] fonts;
+        if (layout.get("text-font") instanceof JSONObject) {
+            JSONArray stops = (JSONArray) ((JSONObject) layout.get("text-font")).get("stops");
+            fonts = ((JSONArray)((JSONArray) stops.get(0)).get(1)).get(0).toString().split(",");
+        } else {
+            fonts = parse.array(String.class, layout, "text-font",
+                    new String[] { "Open Sans Regular", "Arial Unicode MS Regular" });
+        }
+        return Arrays.asList(fonts);
     }
 
     /**

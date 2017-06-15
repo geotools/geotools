@@ -199,7 +199,7 @@ public class MBObjectStops {
             String key = (String) keys.next();
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
-                if (child.containsKey("stops") && ((JSONArray)((JSONArray)child.get("stops")).get(0)).get(0) instanceof JSONObject) {
+                if (child.containsKey("stops")) {
                     hasStops = true;
                 }
             }
@@ -294,16 +294,32 @@ public class MBObjectStops {
                                 objectsToRemove.add(stops.get(i));
                             }
                         }
+                        if (stop.get(0) instanceof Long) {
+                            if (((Long) stop.get(0)).longValue() == range[0]){
+                                objectsToEdit.add((JSONArray) stops.get(i));
+                            } else {
+                                objectsToRemove.add(stops.get(i));
+                            }
+                        }
                     }
                     for (Object o : objectsToRemove) {
                         stops.remove(o);
                     }
                     for (JSONArray o : objectsToEdit) {
                         JSONArray stopsArray = new JSONArray();
-                        stopsArray.add(0, ((JSONObject) o.get(0)).get("value"));
-                        stopsArray.add(1, o.get(1));
-                        stops.remove(o);
-                        stops.add(stopsArray);
+                        if (o.get(0) instanceof JSONObject) {
+                            stopsArray.add(0, ((JSONObject) o.get(0)).get("value"));
+                            stopsArray.add(1, o.get(1));
+                            stops.remove(o);
+                            stops.add(stopsArray);
+                        }
+                        if (o.get(0) instanceof Long) {
+                            stopsArray.add(0, o.get(0));
+                            stopsArray.add(1, o.get(1));
+                            stops.remove(o);
+                            stops.add(stopsArray);
+                        }
+
                     }
                 }
                 if (((JSONArray)child.get("stops")).size() == 0) {

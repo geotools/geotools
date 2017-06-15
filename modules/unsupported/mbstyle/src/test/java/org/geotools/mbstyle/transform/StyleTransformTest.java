@@ -673,4 +673,34 @@ public class StyleTransformTest {
         
         
     }
+
+    @Test
+    public void testTextFontStops() throws Exception {
+        JSONObject jsonObject = parseTestStyle("textFontTest.json");
+        MBStyle mbStyle = new MBStyle(jsonObject);
+
+        List<MBLayer> layers = mbStyle.layers("test-source");
+        assertEquals(1, layers.size());
+        assertTrue(layers.get(0) instanceof SymbolMBLayer);
+        List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
+
+        assertEquals(1, fts.get(0).rules().size());
+        Rule r = fts.get(0).rules().get(0);
+
+        assertEquals(2, r.symbolizers().size());
+        Symbolizer symbolizer = r.symbolizers().get(1);
+        assertTrue(symbolizer instanceof TextSymbolizer);
+        TextSymbolizer tsym = (TextSymbolizer) symbolizer;
+
+        assertEquals(1, tsym.fonts().size());
+        assertEquals(1, tsym.fonts().get(0).getFamily().size());
+
+        assertEquals("Apple-Chancery", tsym.fonts().get(0).getFamily().get(0).toString());
+
+//        StyledLayerDescriptor sld = mbStyle.transform();
+//        SLDTransformer styleTransform = new SLDTransformer();
+//        String xml = styleTransform.transform(sld);
+//        System.out.print(xml);
+
+    }
 }

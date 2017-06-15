@@ -17,6 +17,7 @@
 package org.geotools.filter.v1_0;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.xml.namespace.QName;
@@ -114,13 +115,15 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
         throws Exception {
         //number of possibilities here since single child is of type any
 
-        //1. has child elements
-        if (!node.getChildren().isEmpty()) {
-            Object childValue = node.getChildValue(0);
-            if(childValue instanceof Text){
-                childValue = ((Text)childValue).getValue();
+        //1. has text child elements
+        List values = node.getChildValues(Text.class);
+        if (!values.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Object v: values) {
+                Text text = (Text) v;
+                sb.append(text.getValue());
             }
-            return factory.literal(childValue);
+            return factory.literal(sb.toString());
         }
 
         //2. no child elements, just return the text if any

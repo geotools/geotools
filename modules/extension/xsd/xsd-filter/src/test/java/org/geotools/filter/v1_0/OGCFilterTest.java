@@ -63,12 +63,25 @@ public class OGCFilterTest extends TestCase {
         String xml = "<Filter>" + "  <PropertyIsEqualTo>" + "    <PropertyName>foo</PropertyName>"
             + "    <Literal>bar</Literal>" + "  </PropertyIsEqualTo>" + "</Filter>";
 
-        OGCConfiguration configuration = new OGCConfiguration();
-        configuration.getProperties().add(Properties.IGNORE_SCHEMA_LOCATION);
-
-        Parser parser = new Parser(configuration);
+        Parser parser = new Parser(new OGCConfiguration());
+        parser.setStrict(false);
         Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
         assertNotNull(filter);
+    }
+    
+    public void testLiteralWithEntity() throws Exception {
+        String xml = "<Filter>" + "  <PropertyIsEqualTo>" + "    <PropertyName>foo</PropertyName>"
+            + "    <Literal>bar &gt; 10 and &lt; 20</Literal>" + "  </PropertyIsEqualTo>" + "</Filter>";
+
+        Parser parser = new Parser(new OGCConfiguration());
+        parser.setStrict(false);
+        Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        assertNotNull(filter);
+        PropertyIsEqualTo equal = (PropertyIsEqualTo) filter;
+        PropertyName pn = (PropertyName) equal.getExpression1();
+        assertEquals("foo", pn.getPropertyName());
+        Literal literal = (Literal) equal.getExpression2();
+        assertEquals("bar > 10 and < 20", literal.getValue());
     }
     
 

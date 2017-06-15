@@ -254,6 +254,10 @@ public class FilterMockData {
         return not;
     }
 
+    static Not notIsNull() {
+        return f.not(propertyIsNull());
+    }
+
     static Beyond beyond() {
         return f.beyond(f.property("the_geom"), f.literal(geometry()), 1.0d, "m");
     }

@@ -32,6 +32,7 @@ import javax.measure.unit.NonSI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class RasterMBLayer extends MBLayer {
@@ -221,14 +222,44 @@ public class RasterMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
+        // NORMALIZE appears to be the default contrast method
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
-
+        
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
         RasterSymbolizer symbolizer = sf.rasterSymbolizer(getId(), null,
                 sf.description(Text.text("raster"), null), NonSI.PIXEL, opacity(), null,
                 null, null, ce, null, null);
 
+        // Mapbox styles brightness
+        // Assumes RGB bands so can proceed in that order
+        if(getBrightnessMin() != null && getBrightnessMax() != null) {
+//    		    HashMap vendorOptions = new HashMap<>();
+    		    ContrastEnhancement channelCe = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+    		    channelCe.addOption("algorithm", ff.literal("ClipToMinimumMaximum"));
+    		    channelCe.addOption("minValue", ff.literal(String.valueOf((double)getBrightnessMin() * 255)));
+    		    channelCe.addOption("maxValue", ff.literal(String.valueOf((double)getBrightnessMax() * 255)));
+//    		    vendorOptions.put("algorithm", "ClipToMinimumMaximum");
+//    		    vendorOptions.put("minValue", String.valueOf((double)getBrightnessMin() * 255)); // 0 -255 are the min/max value for color brightness in geotools  
+//    		    vendorOptions.put("maxValue", String.valueOf((double)getBrightnessMax() * 255)); // brightness scaled to between 0-1 in mapbox
+//    		    channelCe.setOptions(vendorOptions);
+//        }
+    		    final int RED = 0, GREEN = 1, BLUE = 2;
+    		    int[] channelNum = { -1, -1, -1 };
+    		    SelectedChannelType[] sct = new SelectedChannelType[3];
+    		    if (channelNum[RED] < 0 || channelNum[GREEN] < 0 || channelNum[BLUE] < 0) {
+    		    	    channelNum[RED] = 1;
+    		    	    channelNum[GREEN] = 2;
+    		    	    channelNum[BLUE] = 3;
+    		    }
+    		    for (int i = 0; i < 3; i++) {
+    		    	    sct[i] = sf.createSelectedChannelType(String.valueOf(channelNum[i]), channelCe);
+    		    	    sct[i].setContrastEnhancement(channelCe);
+    		    }
+    		    ChannelSelection sel = sf.channelSelection(sct[0], sct[1], sct[2]);
+    		    symbolizer.setChannelSelection(sel);
+        }
+        
         List<Rule> rules = new ArrayList<>();
         MBFilter filter = getFilter();
         org.geotools.styling.Rule rule = sf.rule(getId(), null, null, 0.0, Double.MAX_VALUE,
@@ -243,7 +274,7 @@ public class RasterMBLayer extends MBLayer {
                 Collections.emptySet(),
                 filter.semanticTypeIdentifiers(),
                 rules));
-    }
+        }
 
     /**
      * Rendering type of this layer.

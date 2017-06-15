@@ -29,6 +29,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.json.simple.JSONArray;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
+import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.TextSymbolizer2;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -166,6 +167,13 @@ public class SymbolMBLayerTest {
         assertEquals("Apple-Chancery", ((CategorizeFunction)((TextSymbolizer)featureTypeFont.get(0).rules().get(0).getSymbolizers()[0]).fonts().get(0).getFamily().get(0)).getParameters().get(1).toString());
         System.out.println(((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0]).fonts().get(0).getFamily());
         assertEquals("Open Sans Regular", ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0]).fonts().get(0).getFamily().get(0).toString());
+        SLDTransformer styleTransform = new SLDTransformer();
+        try {
+        	    String xml = styleTransform.transform(featureTypeFont.get(0));
+            System.out.println(xml);
+            } catch (Exception e) {
+             System.out.println("exception");
+            }
     }
     
 }

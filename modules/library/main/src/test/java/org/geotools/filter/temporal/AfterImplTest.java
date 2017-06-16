@@ -50,5 +50,7 @@ public class AfterImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         AfterImpl a = new AfterImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(AfterImpl.class.getName()));
+        assertTrue(a.toString().contains(AfterImpl.NAME));
     }
 }

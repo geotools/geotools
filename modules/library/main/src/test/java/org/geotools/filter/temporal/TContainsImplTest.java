@@ -47,5 +47,7 @@ public class TContainsImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         TContainsImpl a = new TContainsImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(TContainsImpl.class.getName()));
+        assertTrue(a.toString().contains(TContainsImpl.NAME));
     }
 }

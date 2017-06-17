@@ -140,16 +140,22 @@ public class DefaultInstant extends DefaultTemporalGeometricPrimitive implements
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder("Instant:").append('\n');
+        StringBuilder s = new StringBuilder();
         if (position != null) {
-            s.append("position:").append(position).append('\n');
+            s.append("position:").append(position);
         }
         if (begunBy != null) {
-            s.append("begunBy:").append(begunBy).append('\n');
+            if (s.length() > 0) {
+                s.append(", ");
+            }
+            s.append("begunBy:").append(begunBy);
         }
         if (endBy != null) {
-            s.append("endBy:").append(endBy).append('\n');
+            if (s.length() > 0) {
+                s.append(", ");
+            }
+            s.append("endBy:").append(endBy);
         }
-        return s.toString();
+        return s.insert(0, "Instant{").append('}').toString();
     }
 }

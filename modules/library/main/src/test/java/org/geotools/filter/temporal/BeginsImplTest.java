@@ -43,5 +43,7 @@ public class BeginsImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         BeginsImpl a = new BeginsImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(BeginsImpl.class.getName()));
+        assertTrue(a.toString().contains(BeginsImpl.NAME));
     }
 }

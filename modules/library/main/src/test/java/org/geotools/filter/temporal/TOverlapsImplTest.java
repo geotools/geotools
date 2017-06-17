@@ -45,5 +45,7 @@ public class TOverlapsImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         TOverlapsImpl a = new TOverlapsImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(TOverlapsImpl.class.getName()));
+        assertTrue(a.toString().contains(TOverlapsImpl.NAME));
     }
 }

@@ -187,14 +187,14 @@ public class CssTranslator {
     @SuppressWarnings("serial")
     static final Map<String, String> POLYGON_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
-            put("-gt-graphic-margin", "graphic-margin");
-            put("-gt-fill-label-obstacle", "labelObstacle");
-            put("-gt-fill-random", "random");
-            put("-gt-fill-random-seed", "random-seed");
-            put("-gt-fill-random-tile-size", "random-tile-size");
-            put("-gt-fill-random-symbol-count", "random-symbol-count");
-            put("-gt-fill-random-space-around", "random-space-around");
-            put("-gt-fill-random-rotation", "random-rotation");
+            put("graphic-margin", "graphic-margin");
+            put("fill-label-obstacle", "labelObstacle");
+            put("fill-random", "random");
+            put("fill-random-seed", "random-seed");
+            put("fill-random-tile-size", "random-tile-size");
+            put("fill-random-symbol-count", "random-symbol-count");
+            put("fill-random-space-around", "random-space-around");
+            put("fill-random-rotation", "random-rotation");
             put("fill-composite", "composite");
 
         }
@@ -203,31 +203,31 @@ public class CssTranslator {
     @SuppressWarnings("serial")
     static final Map<String, String> TEXT_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
-            put("-gt-label-padding", "spaceAround");
-            put("-gt-label-group", "group");
-            put("-gt-label-max-displacement", "maxDisplacement");
-            put("-gt-label-min-group-distance", "minGroupDistance");
-            put("-gt-label-repeat", "repeat");
-            put("-gt-label-all-group", "allGroup");
-            put("-gt-label-remove-overlaps", "removeOverlaps");
-            put("-gt-label-allow-overruns", "allowOverrun");
-            put("-gt-label-follow-line", "followLine");
-            put("-gt-label-underline-text", "underlineText");
-            put("-gt-label-max-angle-delta", "maxAngleDelta");
-            put("-gt-label-auto-wrap", "autoWrap");
-            put("-gt-label-force-ltr", "forceLeftToRight");
-            put("-gt-label-conflict-resolution", "conflictResolution");
-            put("-gt-label-fit-goodness", "goodnessOfFit");
-            put("-gt-label-kerning", "kerning");
-            put("-gt-shield-resize", "graphic-resize");
-            put("-gt-shield-margin", "graphic-margin");
+            put("label-padding", "spaceAround");
+            put("label-group", "group");
+            put("label-max-displacement", "maxDisplacement");
+            put("label-min-group-distance", "minGroupDistance");
+            put("label-repeat", "repeat");
+            put("label-all-group", "allGroup");
+            put("label-remove-overlaps", "removeOverlaps");
+            put("label-allow-overruns", "allowOverrun");
+            put("label-follow-line", "followLine");
+            put("label-underline-text", "underlineText");
+            put("label-max-angle-delta", "maxAngleDelta");
+            put("label-auto-wrap", "autoWrap");
+            put("label-force-ltr", "forceLeftToRight");
+            put("label-conflict-resolution", "conflictResolution");
+            put("label-fit-goodness", "goodnessOfFit");
+            put("label-kerning", "kerning");
+            put("shield-resize", "graphic-resize");
+            put("shield-margin", "graphic-margin");
         }
     };
 
     @SuppressWarnings("serial")
     static final Map<String, String> LINE_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
-            put("-gt-stroke-label-obstacle", "labelObstacle");
+            put("stroke-label-obstacle", "labelObstacle");
             put("stroke-composite", "composite");
         }
     };
@@ -235,7 +235,7 @@ public class CssTranslator {
     @SuppressWarnings("serial")
     static final Map<String, String> POINT_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
-            put("-gt-mark-label-obstacle", "labelObstacle");
+            put("mark-label-obstacle", "labelObstacle");
             put("mark-composite", "composite");
         }
     };
@@ -250,21 +250,21 @@ public class CssTranslator {
     @SuppressWarnings("serial")
     static final Map<String, String> CONTRASTENHANCMENT_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
-            put("-gt-raster-contrast-enhancement-algorithm", "algorithm");
+            put("raster-contrast-enhancement-algorithm", "algorithm");
 
-            put("-gt-raster-contrast-enhancement-min", "minValue");
-            put("-gt-raster-contrast-enhancement-max", "maxValue");
+            put("raster-contrast-enhancement-min", "minValue");
+            put("raster-contrast-enhancement-max", "maxValue");
 
-            put("-gt-raster-contrast-enhancement-normalizationfactor", "normalizationFactor");
-            put("-gt-raster-contrast-enhancement-correctionfactor", "correctionFactor");
+            put("raster-contrast-enhancement-normalizationfactor", "normalizationFactor");
+            put("raster-contrast-enhancement-correctionfactor", "correctionFactor");
             //short forms for lazy people 
-            put("-gt-rce-algorithm", "algorithm");
+            put("rce-algorithm", "algorithm");
 
-            put("-gt-rce-min", "minValue");
-            put("-gt-rce-max", "maxValue");
+            put("rce-min", "minValue");
+            put("rce-max", "maxValue");
 
-            put("-gt-rce-normalizationfactor", "normalizationFactor");
-            put("-gt-rce-correctionfactor", "correctionFactor");
+            put("rce-normalizationfactor", "normalizationFactor");
+            put("rce-correctionfactor", "correctionFactor");
         }
     };
 
@@ -891,7 +891,7 @@ public class CssTranslator {
 
         // see if we can fold the stroke into a polygon symbolizer
         boolean generateStroke = cssRule.hasProperty(PseudoClass.ROOT, "stroke");
-        boolean lineSymbolizerSpecificProperties = cssRule.hasAnyProperty(PseudoClass.ROOT,
+        boolean lineSymbolizerSpecificProperties = cssRule.hasAnyVendorProperty(PseudoClass.ROOT,
                 LINE_VENDOR_OPTIONS.keySet()) || !sameGeometry(cssRule, "stroke-geometry", "fill-geometry");
         boolean includeStrokeInPolygonSymbolizer = generateStroke
                 && !lineSymbolizerSpecificProperties;
@@ -956,10 +956,10 @@ public class CssTranslator {
             boolean includeStrokeInPolygonSymbolizer) {
         Map<String, List<Value>> values;
         if (includeStrokeInPolygonSymbolizer) {
-            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "-gt-graphic-margin",
+            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "graphic-margin", "-gt-graphic-margin",
                     "stroke");
         } else {
-            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "-gt-graphic-margin");
+            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "graphic-margin", "-gt-graphic-margin");
         }
         if (values == null || values.isEmpty()) {
             return;
@@ -1157,7 +1157,11 @@ public class CssTranslator {
                     hb.fill().opacity(haloOpacity);
                 }
             }
-            Expression priority = getExpression(values, "-gt-label-priority", i);
+            Expression priority = getExpression(values, "label-priority", i);
+            if (priority == null) {
+                // for backwards compatibility
+                priority = getExpression(values, "-gt-label-priority", i);
+            }
             if (priority != null) {
                 tb.priority(priority);
             }
@@ -1185,7 +1189,11 @@ public class CssTranslator {
                     i);
             HashMap<String, Expression> constrastParameters = new HashMap<>();
             for (String cssKey : values.keySet()) {
-                String sldKey = CONTRASTENHANCMENT_VENDOR_OPTIONS.get(cssKey);
+                String vendorOptionKey = cssKey;
+                if(vendorOptionKey.startsWith("-gt-")) {
+                    vendorOptionKey = vendorOptionKey.substring(4);
+                }
+                String sldKey = CONTRASTENHANCMENT_VENDOR_OPTIONS.get(vendorOptionKey);
                 if (sldKey != null) {
                     constrastParameters.put(sldKey, getExpression(values, cssKey, i));
                 }
@@ -1565,16 +1573,12 @@ public class CssTranslator {
      */
     private void addVendorOptions(SymbolizerBuilder<?> sb, Map<String, String> vendorOptions,
             Map<String, List<Value>> values, int idx) {
-        // for (Map.Entry<String, String> entry : vendorOptions.entrySet()) {
-        // String cssKey = entry.getKey();
-        // String sldKey = entry.getValue();
-        // String value = getLiteral(values, cssKey, idx, null);
-        // if (value != null) {
-        // sb.option(sldKey, value);
-        // }
-        // }
         for (String cssKey : values.keySet()) {
-            String sldKey = vendorOptions.get(cssKey);
+            String vendorOptionKey = cssKey;
+            if(vendorOptionKey.startsWith("-gt-")) {
+                vendorOptionKey = vendorOptionKey.substring(4);
+            }
+            String sldKey = vendorOptions.get(vendorOptionKey);
             if (sldKey != null) {
                 String value = getLiteral(values, cssKey, idx, null);
                 if (value != null) {

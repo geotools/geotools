@@ -44,5 +44,7 @@ public class DuringImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         DuringImpl a = new DuringImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(DuringImpl.class.getName()));
+        assertTrue(a.toString().contains(DuringImpl.NAME));
     }
 }

@@ -160,11 +160,7 @@ public class DefaultPosition implements Position {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder("Position:").append('\n');
-        if (position != null) {
-            s.append("position:").append(position).append('\n');
-        }
-        return s.toString();
+        return "Position{" + this.position + '}';
     }
 }
 

@@ -41,5 +41,7 @@ public class MeetsImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         MeetsImpl a = new MeetsImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(MeetsImpl.class.getName()));
+        assertTrue(a.toString().contains(MeetsImpl.NAME));
     }
 }

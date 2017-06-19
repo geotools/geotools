@@ -202,7 +202,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>16-SNAPSHOT</version>
+  <version>16.4</version>
   <name>GeoTools</name>
 
   <scm>

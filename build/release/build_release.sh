@@ -129,7 +129,7 @@ popd > /dev/null
 # build the release
 if [ -z $SKIP_BUILD ]; then
   echo "building release"
-  export MAVEN_OPTS="-Xmx1024m"
+  export MAVEN_OPTS="-Xmx2048m"
   mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi

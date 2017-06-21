@@ -23,10 +23,15 @@ import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import org.geotools.filter.function.CategorizeFunction;
+import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.SLDTransformer;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
@@ -39,6 +44,7 @@ public class SymbolMBLayerTest {
     MBStyle defaultStyle;
     MBStyle lineStyle;
     MBStyle pointStyle;
+    MBStyle fontStyle;
     List<FeatureTypeStyle> featureTypeLine;
     List<FeatureTypeStyle> featureTypeDefaults;
     List<FeatureTypeStyle> featureTypePoint;
@@ -48,6 +54,8 @@ public class SymbolMBLayerTest {
         JSONObject jsonDefault = MapboxTestUtils.parseTestStyle("symbolStyleTestDefaults.json");
         JSONObject json = MapboxTestUtils.parseTestStyle("symbolStyleTest.json");
         JSONObject jsonAngle = MapboxTestUtils.parseTestStyle("symbolTextLinePlacementTest.json");
+        JSONObject jsonFont = MapboxTestUtils.parseTestStyle("textFontFamilyTest.json");
+        fontStyle = MBStyle.create(jsonFont);
         lineStyle = MBStyle.create(jsonAngle);
         defaultStyle = MBStyle.create(jsonDefault);
         pointStyle = MBStyle.create(json);
@@ -96,7 +104,7 @@ public class SymbolMBLayerTest {
     	assertEquals(false, testLineLayer.getTextKeepUpright());
     	assertEquals(true, testLayerDefault.getTextKeepUpright());
     	assertEquals("false", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("forceLeftToRight"));
-
+    	
     }
     @Test
     public void testTextPadding(){
@@ -114,6 +122,16 @@ public class SymbolMBLayerTest {
     	assertEquals("20.0", featureTypePoint.get(0).rules().get(0).getSymbolizers()[1].getOptions().get("spaceAround"));
     	assertEquals(30.0, testLineLayer.getIconPadding());
     	assertEquals("30.0", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("spaceAround"));
+    }
+    @Test
+    public void testTextFont(){
+        MBLayer fontLayer = (SymbolMBLayer) fontStyle.layer("text-font");
+        List<FeatureTypeStyle> featureTypeFont = fontLayer.transformInternal(fontStyle);
+        assertEquals(true, ((JSONObject) fontLayer.getLayout().get("text-font")).containsKey("stops"));
+        assertEquals("Apple-Chancery", ((JSONArray)((JSONArray)((JSONArray)((JSONObject) fontLayer.getLayout().get("text-font")).get("stops")).get(0)).get(1)).get(0));
+        assertEquals("Apple-Chancery", ((CategorizeFunction)((TextSymbolizer)featureTypeFont.get(0).rules().get(0).getSymbolizers()[0]).fonts().get(0).getFamily().get(0)).getParameters().get(1).toString());
+        System.out.println(((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0]).fonts().get(0).getFamily());
+        assertEquals("Open Sans Regular", ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0]).fonts().get(0).getFamily().get(0).toString());
     }
     
 }

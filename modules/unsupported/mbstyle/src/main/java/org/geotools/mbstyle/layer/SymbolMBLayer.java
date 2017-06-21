@@ -34,7 +34,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
-
 import javax.measure.unit.NonSI;
 import java.awt.*;
 import java.util.*;
@@ -828,16 +827,16 @@ public class SymbolMBLayer extends MBLayer {
      *
      * @return The font to use for the label
      */
+
     public List<String> getTextFont() {
         String[] fonts;
         if (layout.get("text-font") instanceof JSONObject) {
-            JSONArray stops = (JSONArray) ((JSONObject) layout.get("text-font")).get("stops");
-            fonts = ((JSONArray)((JSONArray) stops.get(0)).get(1)).get(0).toString().split(",");
+            return null;
         } else {
             fonts = parse.array(String.class, layout, "text-font",
-                    new String[] { "Open Sans Regular", "Arial Unicode MS Regular" });
+                    new String[]{"Open Sans Regular", "Arial Unicode MS Regular"});
+            return Arrays.asList(fonts);
         }
-        return Arrays.asList(fonts);
     }
 
     /**
@@ -845,13 +844,9 @@ public class SymbolMBLayer extends MBLayer {
      *
      * @return The font to use for the label
      */
-    public List<Expression> textFont() {
-        List<Expression> fontExpressions = new ArrayList<>();
-        String[] fonts = parse.array(String.class, layout, "text-font", new String[] {"Open Sans Regular","Arial Unicode MS Regular"});
-        for (int i = 0; i < fonts.length; i++) {
-            fontExpressions.add(ff.literal(fonts[i]));
-        }
-        return fontExpressions;
+
+    public Expression textFont() throws MBFormatException {
+        return parse.font(layout, "text-font");
     }
 
     /**
@@ -1665,7 +1660,6 @@ public class SymbolMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
-
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         StyleBuilder sb = new StyleBuilder();
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
@@ -1709,11 +1703,15 @@ public class SymbolMBLayer extends MBLayer {
 
 
         Font font = sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), textSize());
+
         if (getTextFont() != null) {
             font.getFamily().clear();
             for (String textFont : getTextFont()) {
                 font.getFamily().add(ff.literal(textFont));
             }
+        } else if (textFont() != null) {
+            font.getFamily().clear();
+            font.getFamily().add(textFont());
         }
 
 
@@ -1728,7 +1726,6 @@ public class SymbolMBLayer extends MBLayer {
                 textExpression = transformer.cqlExpressionFromTokens(text);
             }
         }
-        
         textExpression = ff.function("StringTransform", textExpression, textTransform());
 
         TextSymbolizer2 symbolizer = (TextSymbolizer2) sf.textSymbolizer(getId(),

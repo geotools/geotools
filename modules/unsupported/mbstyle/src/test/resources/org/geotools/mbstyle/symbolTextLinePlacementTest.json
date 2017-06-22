@@ -40,6 +40,7 @@
                     00,
                     10
                 ],
+                "icon-image": "homer-simpson",
                 "text-anchor": "CENTER",
                 "text-pitch-alignment": "viewport",
                 "text-field": "Sample Text",
@@ -51,6 +52,8 @@
                 "symbol-spacing": 80,
                 "text-allow-overlap": true,
                 "text-keep-upright": false,
+                "text-padding": 15.0,
+                "icon-padding": 30.0,
             },
             "paint": {
                 "text-color": "#334d77",

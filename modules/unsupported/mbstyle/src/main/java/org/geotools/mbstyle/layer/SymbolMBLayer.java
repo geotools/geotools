@@ -814,6 +814,14 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     *
+     * @return True if the layer has a text-field explicitly provided.
+     */
+    private boolean hasTextField() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "text-field");
+    }
+
+    /**
      * (Optional) Font stack to use for displaying text. 
      * 
      * Defaults to <code>["Open Sans Regular","Arial Unicode MS Regular"]</code>. Requires text-field. 
@@ -1787,6 +1795,10 @@ public class SymbolMBLayer extends MBLayer {
             symbolizer.getOptions().put("graphic-margin", "0");
         }
 
+        // text-padding default value is 2 in mapbox, will override Geoserver defaults
+        if(!hasIconImage() || "point".equalsIgnoreCase(symbolPlacementVal.trim()) || (getTextPadding().doubleValue()) >= (getIconPadding().doubleValue())) { 
+            symbolizer.getOptions().put("spaceAround", String.valueOf(getTextPadding()));
+        }
         // halo blur
         // layer.textHaloBlur();
 
@@ -1811,6 +1823,10 @@ public class SymbolMBLayer extends MBLayer {
                 symbolizer.getOptions().put("labelObstacle", "true");
             }
 
+            //Check to see that hasTextField() is true check to see if IconPadding is greater to put to spaceAround
+            if (!hasTextField() || ((getIconPadding().doubleValue()) > (getTextPadding().doubleValue())) && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+                symbolizer.getOptions().put("spaceAround", String.valueOf(getIconPadding()));
+            }
             // If we have an icon with a Point placement create a PointSymoblizer for the icon.
             // This enables adjusting the text placement without moving the icon.
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
@@ -1822,7 +1838,6 @@ public class SymbolMBLayer extends MBLayer {
 
                 symbolizer.setGraphic(getGraphic(transformer, styleContext));
             }
-                     
         }
 
         // Check that a labelObstacle vendor option hasn't already been placed on the symbolizer and that

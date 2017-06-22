@@ -19,6 +19,7 @@ package org.geotools.process.raster;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.iterators.RandomIterFactory;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -236,17 +237,19 @@ public class ScaleProcessTest {
         assertNotNull(container);
         Range nod = container.getAsRange();
 
+        int minNodata = nod.getMin().intValue();
+
         assertEquals(nod.getMax().intValue(), 1);
-        assertEquals(nod.getMin().intValue(), -1);
+        assertEquals(minNodata, -1);
         
-        // Check if all the values are equal to 0
+        // Check if all the values are equal to nodata
         ImageWorker w = new ImageWorker(result.getRenderedImage());
         w.setNoData(null);
         int max = (int) w.getMaximums()[0];
         int min = (int) w.getMinimums()[0];
         
-        assertEquals(max, 0);
-        assertEquals(min, 0);
+        assertEquals(max, minNodata);
+        assertEquals(min, minNodata);
     }
   
     @Test
@@ -337,7 +340,7 @@ public class ScaleProcessTest {
             for(int y = minY; y < maxY; y++){
                 int sample = it.getSample(x, y, 0);
                 if(!roiNew.contains(x, y)){
-                    assertEquals(sample, 0);
+                    assertEquals(sample, -1);
                 }
             }    
         }

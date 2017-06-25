@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.css;
 
+import static org.hamcrest.CoreMatchers.both;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
@@ -61,6 +63,7 @@ import org.opengis.style.Mark;
 import org.opengis.style.Rule;
 import org.opengis.style.Style;
 import org.opengis.style.Symbolizer;
+import org.parboiled.errors.ParserRuntimeException;
 
 public class TranslatorSyntheticTest extends CssBaseTest {
 
@@ -1106,6 +1109,29 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertScaleMinMax("[@sd < 1k] {stroke: black}", null, 1e3);
         assertScaleMinMax("[@sd > 1k] {stroke: black}", 1e3, null);
     }
+    
+    @Test
+    public void testCQLErrorSelector() throws Exception {
+        String css = "[thisFunctionDoesNotExists() > 10] {\nstroke: blue\n}";
+        try {
+            translate(css);
+        } catch(ParserRuntimeException e) {
+            // System.out.println(e);
+            assertThat(e.getMessage(), both(containsString("thisFunctionDoesNotExists")).and(containsString("line 1")));
+        }
+    }
+    
+    @Test
+    public void testCQLErrorProperty() throws Exception {
+        String css = "* \n{stroke: blue; \nstroke-width: [thisFunctionDoesNotExists()]}";
+        try {
+            translate(css);
+        } catch(ParserRuntimeException e) {
+            // System.out.println(e);
+            assertThat(e.getMessage(), both(containsString("thisFunctionDoesNotExists")).and(containsString("line 3")));
+        }
+    }
+
 
     private void assertScaleMinMax(String css, Double min, Double max) {
         Style style = translate(css);

@@ -45,6 +45,7 @@ import org.parboiled.Rule;
 import org.parboiled.annotations.BuildParseTree;
 import org.parboiled.annotations.SuppressNode;
 import org.parboiled.annotations.SuppressSubnodes;
+import org.parboiled.errors.ParserRuntimeException;
 import org.parboiled.parserunners.ParseRunner;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
@@ -187,9 +188,9 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule BasicSelector() {
-        return FirstOf(CatchAllSelector(), ECQLSelector(), MinScaleSelector(), MaxScaleSelector(),
+        return FirstOf(CatchAllSelector(), MinScaleSelector(), MaxScaleSelector(),
                 IdSelector(), PseudoClassSelector(), NumberedPseudoClassSelector(),
-                TypenameSelector());
+                TypenameSelector(), ECQLSelector());
     }
 
     Rule AndSelector() {
@@ -448,10 +449,14 @@ public class CssParser extends BaseParser<Object> {
                     ctx.getValueStack().push(new Value.Expression(e));
                     return true;
                 } catch (CQLException e) {
-                    return false;
+                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
                 }
             }
         });
+    }
+    
+    String reportPosition(Context ctx) {
+        return "Error at line " + ctx.getPosition().line;
     }
 
     Rule ECQLSelector() {
@@ -464,7 +469,7 @@ public class CssParser extends BaseParser<Object> {
                     ctx.getValueStack().push(new Data(f));
                     return true;
                 } catch (CQLException e) {
-                    return false;
+                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
                 }
             }
         });

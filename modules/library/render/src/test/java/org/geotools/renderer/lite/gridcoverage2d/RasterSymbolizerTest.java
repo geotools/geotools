@@ -82,6 +82,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.style.ContrastMethod;
 
@@ -2088,4 +2089,61 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		int dataType = outputImage.getSampleModel().getDataType();
 		assertEquals(DataBuffer.TYPE_BYTE, dataType);
 	}
+	
+    @Test
+    public void contrastEnhancementInChannelSelection() throws IOException {
+
+        StyleBuilder sldBuilder = new StyleBuilder();
+        RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
+        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final SelectedChannelType chTypeRed = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeBlue = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeGreen = new SelectedChannelTypeImpl();
+
+        SelectedChannelType[] channels = new SelectedChannelType[]
+                {chTypeRed, chTypeGreen, chTypeBlue};
+
+        // Assign a different contrast method for each channel
+        // by offsetting min and max of 20 on each channel
+        // and assigning channels number with increments of 2
+        int min = 10;
+        int max = 100;
+        for (int i = 0; i < 3; i++) {
+            final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
+            final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
+            method.addOption("algorithm", sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_STRETCH_TO_MINMAX_NAME));
+            method.addOption("minValue", sldBuilder.literalExpression(min + (20 * i)));
+            method.addOption("maxValue", sldBuilder.literalExpression(max + (20 * i)));
+            cntEnh.setMethod(method);
+            channels[i].setChannelName(Integer.toString((i * 2) + 1));
+            channels[i].setContrastEnhancement(cntEnh);
+        }
+        chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
+
+        symbolizer.setChannelSelection(chSel);
+        symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
+        symbolizer = GridCoverageRenderer.setupSymbolizerForBandsSelection(symbolizer);
+
+        ChannelSelection cs = symbolizer.getChannelSelection();
+        SelectedChannelType[] postBandSelectionChannels = cs.getRGBChannels();
+        for (int i = 0; i < 3; i++) {
+            SelectedChannelType postBandSelectionChannel = postBandSelectionChannels[i];
+            // Before the fix, the following assertion would fail
+            assertNotNull(postBandSelectionChannel );
+            final ContrastEnhancement cntEnh = postBandSelectionChannel.getContrastEnhancement();
+            ContrastMethod method = cntEnh.getMethod();
+
+            // Assert channels number have been re-arranged
+            assertTrue(Integer.toString((i) + 1).equalsIgnoreCase(postBandSelectionChannel.getChannelName()));
+            assertTrue(method.name().equalsIgnoreCase(ContrastMethod.NORMALIZE.name()));
+
+            Map<String, Expression> options = cntEnh.getOptions();
+            assertTrue(options.containsKey("algorithm"));
+            assertTrue(options.containsKey("minValue"));
+            assertTrue(options.containsKey("maxValue"));
+            assertTrue(options.get("algorithm").equals(sldBuilder.literalExpression(ContrastEnhancementType.NORMALIZE_STRETCH_TO_MINMAX_NAME)));
+            assertTrue(options.get("minValue").equals(sldBuilder.literalExpression(min + (20 * i))));
+            assertTrue(options.get("maxValue").equals(sldBuilder.literalExpression(max + (20 * i))));
+        }
+    }
 }

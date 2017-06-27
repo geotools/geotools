@@ -1352,6 +1352,7 @@ public final class GridCoverageRenderer {
                 SelectedChannelTypeImpl channel = new SelectedChannelTypeImpl();
                 channel.setChannelName(Integer.toString(i + 1));
                 channel.setContrastEnhancement(originalChannel.getContrastEnhancement());
+                channels[i] = channel;
                 i++;
             }
             ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor = new ChannelSelectionUpdateStyleVisitor(channels);

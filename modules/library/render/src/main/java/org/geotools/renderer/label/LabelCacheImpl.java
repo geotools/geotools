@@ -1270,7 +1270,7 @@ public final class LabelCacheImpl implements LabelCache {
         if(!pg.contains(centroid)) {
             // resort to sampling, computing the intersection is slow and
             // due invalid geometries can easily break with an exception
-            Point central = RendererUtilities.sampleForCentralPoint(geom, centroid, pg, gf, 5d, -1);
+            Point central = RendererUtilities.sampleForInternalPoint(geom, centroid, pg, gf, 5d, -1);
             if (central != null) {
                 centroid = central;
             }

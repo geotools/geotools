@@ -918,7 +918,7 @@ public final class RendererUtilities {
      * 
      * @return A central point that lies inside of the polygon, or null if one could not be found.
      */
-    public static Point sampleForCentralPoint(Polygon geom, Point centroid, PreparedGeometry pg, GeometryFactory gf, 
+    public static Point sampleForInternalPoint(Polygon geom, Point centroid, PreparedGeometry pg, GeometryFactory gf, 
         double stepSize, int numSamples) {
 
         if (centroid == null) {

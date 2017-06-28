@@ -293,10 +293,10 @@ public class RenderUtilitiesTest extends TestCase {
         assertFalse(g.contains(p));
 
         // test with few samples, we shouldn't hit the inside
-        assertNull(RendererUtilities.sampleForCentralPoint(g, p, null, null, -1, 2));
+        assertNull(RendererUtilities.sampleForInternalPoint(g, p, null, null, -1, 2));
 
         // up the  samples, we should hit the inside now
-        assertNotNull(RendererUtilities.sampleForCentralPoint(g, p, null, null, -1, 10));
+        assertNotNull(RendererUtilities.sampleForInternalPoint(g, p, null, null, -1, 10));
     }
 
     public void testFindCentralPoint() throws Exception {

@@ -1261,6 +1261,9 @@ public final class LabelCacheImpl implements LabelCache {
         }
         
         Point centroid = RendererUtilities.getPolygonCentroid(geom);
+        if (centroid == null) {
+            return false;
+        }
         
         // check we're inside, if not, use a different approach
         PreparedGeometry pg = PreparedGeometryFactory.prepare(geom);

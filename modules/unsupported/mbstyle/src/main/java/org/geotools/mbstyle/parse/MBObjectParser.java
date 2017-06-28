@@ -834,7 +834,43 @@ public class MBObjectParser {
                     + obj.getClass().getSimpleName());
         }
     }
-    
+
+    //
+    //Font
+    //
+    /**
+     * Convert the provided object to a numeric Expression (or function), with a fallback value if the object is null.
+     *
+     * @param json The json context of the object, used for error messages.
+     * @param tag The object to convert
+     * @param fallback The fallback value, used when the provided object is null.
+     * @return A numeric expression for the provided object
+     */
+
+    private Expression font(JSONObject json, String tag, String fallback)
+            throws MBFormatException {
+        if (json == null) {
+            return fallback == null ? null : ff.literal(fallback);
+        }
+        Object obj = json.get(tag);
+
+        if (obj == null) {
+            return ff.literal(fallback);
+        }
+        if (obj instanceof JSONObject) {
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.font();
+        } else {
+            throw new IllegalArgumentException("json contents invalid, " + tag
+                    + " value limited to JSONArray, or JSONObject but was "
+                    + obj.getClass().getSimpleName());
+        }
+    }
+
+    public Expression font(JSONObject json, String tag) throws MBFormatException {
+        return font(json, tag, null);
+    }
+
     //
     // NUMBER
     //

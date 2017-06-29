@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -341,6 +341,8 @@ public class FXMap extends Parent {
     public void resize(double width, double height){
         this.mapCanvas.setWidth(width);
         this.mapCanvas.setHeight(height);
+        this.mapPane.setPrefWidth(width);
+        this.mapPane.setPrefHeight(height);
         this.dimensionX = (int) width;
         this.dimensionY = (int)height;
         repaint();
@@ -537,19 +539,7 @@ public class FXMap extends Parent {
     private void drag(double fromXScreen, double fromYScreen, double toXScreen, double toYScreen) {
         mapCanvas.setTranslateX(0);
         mapCanvas.setTranslateY(0);
-        Point2D.Double from = new Point2D.Double(fromYScreen, fromXScreen);
-        Point2D.Double to = new Point2D.Double(toYScreen, toXScreen);
-		
-		from = transformScreenToWorld(from);
-		to = transformScreenToWorld(to);
-		
-        double fromX = from.getX();
-        double fromY = from.getY();
-        double toX = to.getX();
-        double toY = to.getY();
 
-        double xOffset = (toX - fromX);
-        double yOffset = (toY - fromY);
         ReferencedEnvelope bBox = this.mapContent.getViewport().getBounds();
 
         Point2D.Double minXY = transformScreenToWorld(new Point2D.Double(0 - toXScreen,
@@ -568,12 +558,13 @@ public class FXMap extends Parent {
     }
 
     /**
-     * Draws a marker on a speficic position.
+     * Draws a marker on a specific position.
      * @param xPosition Marker x coordinate in screen coordinates
      * @param yPosition Marker y coordinate in screen coordinates
      */
     public void drawMarker(double xPosition, double yPosition) {
-        double markerSpan = this.mapCanvas.getWidth() / HUNDRED;
+        double markerSpan = Math.sqrt(Math.pow(this.mapCanvas.getWidth(), 2)
+                + Math.pow(this.mapCanvas.getHeight(), 2)) / HUNDRED;
         double upperLeftX = xPosition - markerSpan;
         double upperLeftY = yPosition + markerSpan;
         double upperRightX = xPosition + markerSpan;
@@ -676,7 +667,7 @@ public class FXMap extends Parent {
                     && e.getY() > (mouseYPosOnClick - DRAGGING_OFFSET)) {
                 drawMarker(mouseXPosOnClick, mouseYPosOnClick);
                 markerCount++;
-                                if (markerCount == 2) {
+                if (markerCount == 2) {
                     if (mouseXPosOnClick > previousMouseXPosOnClick) {
                         drawBox(mouseXPosOnClick, mouseYPosOnClick,
                                 previousMouseXPosOnClick,
@@ -711,7 +702,7 @@ public class FXMap extends Parent {
                 zoomLevel--;
             }
             scaleMap(zoomLevel - lastZoomLevel);
-            try{
+            try {
                 zoomTimer.cancel();
             } catch(IllegalStateException ex) {
                 log.log(Level.WARNING, ex.getMessage());

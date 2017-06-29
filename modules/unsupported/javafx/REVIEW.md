@@ -1,30 +1,16 @@
-# MODULE EXAMPLE
+# JavaFX Map Module
 
-Module Maintainer: <YOUR NAME>
+Module Maintainer: Alexander Woestmann (awoestmann@intevation.de)
 
 ## IP Review:
 
- - <REVIEWER 1 NAME> - August 6th, 2006
+ - <REVIEWER 3 NAME> - Junde 2017: Initial commit
 
- - <REVIEWER 2 NAME> - July 24th, 2007: removed dependencies on third party JDBC drivers
-
- - <REVIEWER 3 NAME> - June 2008: Initial commit as LGPL code
-
-STATUS: Clean
+STATUS: In development
 
 ```
-org.geotools.example
+org.geotools.javafx
 ```
 
- - Initial commit LGPL under OSGeo LGPL license.
+- Classes displaying the map.
 
-```
-org.geotools.example2
-```
-
- - Header contains following reference to NASA:
-
----------------------------------------------------------------------------------
-This file is derived from NGA/NASA software available for unlimited distribution.
-See http://earth-info.nima.mil/GandG/wgs84/gravitymod/.
----------------------------------------------------------------------------------

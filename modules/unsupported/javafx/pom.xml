@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- =======================================================================    
-        Maven Project Configuration File                                        
-                                                                                
-        The Geotools Project                                                    
-            http://www.geotools.org/                                            
-                                                                                
-        Version: $Id$              
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org
+
      ======================================================================= -->
   <project xmlns="http://maven.apache.org/POM/4.0.0" 
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -19,40 +18,6 @@
     <version>18-SNAPSHOT</version>
   </parent>
 
-
-  <!-- =========================================================== -->
-  <!--   Properties and Profiles                                   -->
-  <!--       explanation of their effect.                          -->
-  <!--                                                             -->
-  <!--   Available profiles are:                                   -->
-  <!--                                                             -->
-  <!--     nameOfprofile      Explantion of what the profile does  -->
-  <!--                        for the user.                        -->
-  <!--                                                             -->
-  <!--     Example:           mvn -PnameOfprofile install          -->
-  <!--                                                             -->
-  <!--     Note ...                                                -->
-  <!-- =========================================================== -->
-  <!-- Default setting of properties -->
-  <!--
-  <properties>
-    <nameOfproperty>valueOfsetting</nameOfproperty>
-  </properties>
-  -->
-
-  <!-- Profiles set on the command-line to override default properties. -->
-  <!--
-  <profiles>
-    <profile>
-      <id>nameOfprofile</id>
-      <properties>
-        <nameOfproperty>valueOfsetting</nameOfproperty>
-      </properties>
-    </profile>
-  </profiles>
-  -->
-  
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -63,16 +28,12 @@
   <description>
     Provides a widget to display a map in a JavaFX application
   </description>
-  
+
   <organization>
     <name></name>
     <url></url>
   </organization>
-  
-  <!-- for your project. -->
-  <inceptionYear></inceptionYear>
 
-  <!-- Pick your license. -->
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -80,7 +41,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
@@ -199,7 +159,7 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-      
+
       <!-- ====    Testing          ============================== -->
       <!-- ====    Code Formatting  ============================== -->
       <!--
@@ -230,7 +190,7 @@
       </plugin>
       -->
     </plugins>
-    
+
   </build>
 
 </project>

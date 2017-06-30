@@ -87,6 +87,7 @@ import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.ContrastEnhancementType;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelperTest;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.ChannelSelection;
@@ -1273,6 +1274,26 @@ public class GridCoverageRendererTest  {
         
         // outside coverage bounds, just return null but don't NPE
         assertNull(image);
+    }
+    
+    @Test
+    public void testRenderOffDateline() throws Exception {
+        File coverageFile = DataUtilities
+                .urlToFile(GridCoverageReaderHelperTest.class.getResource("test-data/off_dateline.tif"));
+        assertTrue(coverageFile.exists());
+        GeoTiffReader offDatelineReader = new GeoTiffReader(coverageFile);
+
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-180, 0, -90, 90, DefaultGeographicCRS.WGS84);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, envelope,
+                new Rectangle(0, 0, 450, 450), null);
+        
+        RasterSymbolizer symbolizer = new StyleBuilder().createRasterSymbolizer();
+        Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        RenderedImage image = renderer.renderImage(offDatelineReader, null, symbolizer, interpolation, null, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/offDateline.png");
+        ImageAssert.assertEquals(reference, image, 0);
     }
     
     /**

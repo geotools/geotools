@@ -150,7 +150,7 @@ public final class ImageCollectionFormat extends AbstractGridFormat implements F
         try {
             URL url = Utils.checkSource(input);
             if (url != null){
-                File file = DataUtilities.urlToFile(url);
+                File file = URLs.urlToFile(url);
                 if (file.isDirectory()) {
                     return true;
                 }

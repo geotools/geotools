@@ -19,7 +19,7 @@ package org.geotools.gce.grassraster;
 import java.io.File;
 import java.net.URL;
 
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 
 import junit.framework.TestCase;
 
@@ -36,7 +36,7 @@ public class JGrassMapEnvironmentTest extends TestCase {
 
     public void test() {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");
-        File mapFile = DataUtilities.urlToFile(pitUrl);
+        File mapFile = URLs.urlToFile(pitUrl);
         File mapsetFile = mapFile.getParentFile().getParentFile();
 
         JGrassMapEnvironment jME = new JGrassMapEnvironment(mapFile);

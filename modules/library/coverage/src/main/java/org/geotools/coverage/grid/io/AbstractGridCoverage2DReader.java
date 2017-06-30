@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.grid.io;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -55,7 +53,6 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultFileResourceInfo;
 import org.geotools.data.DefaultFileServiceInfo;
 import org.geotools.data.DefaultResourceInfo;
@@ -74,9 +71,9 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -93,6 +90,9 @@ import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 /**
  * This class is a first attempt for providing a way to get more informations out of a single 2D raster datasets (x,y). It is worth to remark that for
@@ -1085,7 +1085,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         if (source instanceof File) {
             file = (File) source;
         } else if (source instanceof URL) {
-            File sf = DataUtilities.urlToFile((URL) source);
+            File sf = URLs.urlToFile((URL) source);
             if (sf.exists()) {
                 file = sf;
             }

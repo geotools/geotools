@@ -134,7 +134,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
         else if (destination instanceof URL) {
             final URL dest = (URL) destination;
             if (dest.getProtocol().equalsIgnoreCase("file")) {
-                final File destFile = DataUtilities.urlToFile(dest);
+                final File destFile = URLs.urlToFile(dest);
                 this.outStream = ImageIOExt.createImageOutputStream(null, destFile);
             }
 

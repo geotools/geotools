@@ -26,16 +26,16 @@ import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
-import junit.framework.Assert;
-
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import junit.framework.Assert;
 
 /**
  * Tests of {@link AppSchemaConfiguration} used with {@link Schemas#findSchemas(Configuration)}.
@@ -122,7 +122,7 @@ public class AppSchemaConfigurationTest {
             }
             Assert.assertNotNull(schemaLocation);
             Assert.assertTrue(schemaLocation.startsWith("file:"));
-            Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
+            Assert.assertTrue(URLs.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "GeologicUnit")));
             // test that relative include can be resolved
@@ -168,7 +168,7 @@ public class AppSchemaConfigurationTest {
     @Test
     public void cache() throws Exception {
         // intentionally use a non-canonical cache path to ensure these handled correctly
-        File cacheDirectory = new File(DataUtilities.urlToFile(AppSchemaConfigurationTest.class
+        File cacheDirectory = new File(URLs.urlToFile(AppSchemaConfigurationTest.class
                 .getResource("/test-data/cache")), "../cache");
         SchemaResolver resolver = new SchemaResolver(
                 new SchemaCache(cacheDirectory, false));
@@ -188,7 +188,7 @@ public class AppSchemaConfigurationTest {
             }
             Assert.assertNotNull(schemaLocation);
             Assert.assertTrue(schemaLocation.startsWith("file:"));
-            Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
+            Assert.assertTrue(URLs.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "GeologicUnit")));
             // test that cache path is not canonical
@@ -211,7 +211,7 @@ public class AppSchemaConfigurationTest {
      */
     @Test
     public void catalogCache() throws Exception {
-        File cacheDirectory = DataUtilities.urlToFile(AppSchemaConfigurationTest.class
+        File cacheDirectory = URLs.urlToFile(AppSchemaConfigurationTest.class
                 .getResource("/test-data/cache"));
         SchemaResolver resolver = new SchemaResolver(SchemaCatalog.build(getClass()
                 .getResource("/test-data/catalog.xml")), new SchemaCache(cacheDirectory, false));
@@ -231,7 +231,7 @@ public class AppSchemaConfigurationTest {
             }
             Assert.assertNotNull(schemaLocation);
             Assert.assertTrue(schemaLocation.startsWith("file:"));
-            Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
+            Assert.assertTrue(URLs.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "GeologicUnit")));
             // test that relative include can be resolved

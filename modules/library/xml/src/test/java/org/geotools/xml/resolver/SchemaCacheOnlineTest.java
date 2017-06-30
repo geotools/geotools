@@ -20,8 +20,8 @@ package org.geotools.xml.resolver;
 import java.io.File;
 import java.net.URI;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.test.OnlineTestSupport;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -171,7 +171,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertNotNull(location);
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
-            Assert.assertTrue(DataUtilities.urlToFile((new URI(location)).toURL()).exists());
+            Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
         }
         // now that schema is is in the cache, should succeed even if downloading is disabled
         {
@@ -180,12 +180,12 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertNotNull(location);
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
-            Assert.assertTrue(DataUtilities.urlToFile((new URI(location)).toURL()).exists());
+            Assert.assertTrue(URLs.urlToFile((new URI(location)).toURL()).exists());
             // test that cache path is not canonical
             Assert.assertFalse(CACHE_DIRECTORY.toString()
                     .equals(CACHE_DIRECTORY.getCanonicalFile().toString()));
             // test that resolved location is canonical, despite cache directory not being canonical
-            Assert.assertEquals(location, DataUtilities.urlToFile((new URI(location)).toURL())
+            Assert.assertEquals(location, URLs.urlToFile((new URI(location)).toURL())
                     .getCanonicalFile().toURI().toString());
         }
     }

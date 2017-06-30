@@ -27,13 +27,12 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPackageTest;
-import org.geotools.geopkg.mosaic.GeoPackageReader;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -69,8 +68,8 @@ public class GeoPackageReaderTest {
         //test CRS is consistent now
         assertTrue(CRS.equalsIgnoreMetadata(gc.getCoordinateReferenceSystem(), gc.getEnvelope().getCoordinateReferenceSystem()));
 
-        //ImageIO.write(img, "png", DataUtilities.urlToFile(getClass().getResource("world_lakes.png")));
-        ImageAssert.assertEquals(DataUtilities.urlToFile(GeoPackageTest.class.getResource("bluemarble.jpeg")), img, 250);
+        //ImageIO.write(img, "png", URLs.urlToFile(getClass().getResource("world_lakes.png")));
+        ImageAssert.assertEquals(URLs.urlToFile(GeoPackageTest.class.getResource("bluemarble.jpeg")), img, 250);
     }
 
     @Test

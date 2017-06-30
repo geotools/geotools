@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.util.URLs;
 
 /**
  * Parse imagePyramid property files and setup the mapping to provide the proper 
@@ -180,7 +181,7 @@ class ImageLevelsMapper {
             final URL shpFileUrl = DataUtilities.extendURL(parentUrl, extension);
             if (shpFileUrl.getProtocol() != null
                     && shpFileUrl.getProtocol().equalsIgnoreCase("file")
-                    && !DataUtilities.urlToFile(shpFileUrl).exists()) {
+                    && !URLs.urlToFile(shpFileUrl).exists()) {
                 reader = new ImageMosaicReader(DataUtilities.extendURL(parentUrl, levelDirName),
                         hints);
             } else {

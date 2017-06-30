@@ -44,7 +44,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
@@ -65,10 +64,11 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.util.URLs;
+import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
-import org.geotools.xml.SchemaIndex;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -799,7 +799,7 @@ public class AppSchemaDataAccessConfigurator {
                         AppSchemaDataAccessConfigurator.LOGGER.finer("mapping file URL is "
                                 + mappingFileUrl.toString());
 
-                        String mappingFileDirPath = DataUtilities.urlToFile(mappingFileUrl)
+                        String mappingFileDirPath = URLs.urlToFile(mappingFileUrl)
                                 .getParent();
                         AppSchemaDataAccessConfigurator.LOGGER
                                 .finer("mapping file parent directory is " + mappingFileDirPath);

@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.xml.SchemaLocationResolver;
 import org.geotools.xml.XSD;
 
@@ -108,7 +108,7 @@ public class ApplicationSchemaXSD extends XSD {
 
                         if (schemaLocationFolder.startsWith("file:")) {
                             try {
-                                schemaLocationFolder = DataUtilities.urlToFile(
+                                schemaLocationFolder = URLs.urlToFile(
                                         new URL(schemaLocationFolder)).getPath();
                             } catch (MalformedURLException e) {
                                 // this can't be a good outcome, but try anyway

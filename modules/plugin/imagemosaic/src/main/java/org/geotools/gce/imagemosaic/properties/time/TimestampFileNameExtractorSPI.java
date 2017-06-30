@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
         if (o instanceof URL) {
             source = (URL) o;
         } else if (o instanceof File) {
-            source = DataUtilities.fileToURL((File) o);
+            source = URLs.fileToUrl((File) o);
         } else if (o instanceof String) {
             try {
                 source = new URL((String) o);

@@ -41,6 +41,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -65,11 +66,11 @@ class Utils {
         // check if we have to build the index
         if (source instanceof File) {
             sourceFile = (File) source;
-            sourceURL = DataUtilities.fileToURL(sourceFile);
+            sourceURL = URLs.fileToUrl(sourceFile);
         } else if (source instanceof URL) {
             sourceURL = (URL) source;
             if (sourceURL.getProtocol().equals("file")) {
-                sourceFile = DataUtilities.urlToFile(sourceURL);
+                sourceFile = URLs.urlToFile(sourceURL);
             }
         } else if (source instanceof String) {
             // is it a File?
@@ -79,13 +80,13 @@ class Utils {
                 // is it a URL
                 try {
                     sourceURL = new URL(tempSource);
-                    source = DataUtilities.urlToFile(sourceURL);
+                    source = URLs.urlToFile(sourceURL);
                 } catch (MalformedURLException e) {
                     sourceURL = null;
                     source = null;
                 }
             } else {
-                sourceURL = DataUtilities.fileToURL(tempFile);
+                sourceURL = URLs.fileToUrl(tempFile);
                 sourceFile = tempFile;
             }
         } else {
@@ -129,7 +130,7 @@ class Utils {
             }
         }
         if (sourceFile.exists()) {
-            return DataUtilities.fileToURL(sourceFile);
+            return URLs.fileToUrl(sourceFile);
         }
 
         //
@@ -287,7 +288,7 @@ class Utils {
             }
         }
 
-        return DataUtilities.fileToURL(sourceFile);
+        return URLs.fileToUrl(sourceFile);
     }
 
     private static void appendResolutionLevels(StringBuilder sbLevels, double[][] resolutions) {

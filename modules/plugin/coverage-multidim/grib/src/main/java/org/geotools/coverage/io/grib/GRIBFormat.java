@@ -23,12 +23,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.coverage.io.netcdf.NetCDFFormat;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -77,7 +77,7 @@ public class GRIBFormat extends NetCDFFormat{
     public boolean accepts(Object source, Hints hints) {
         File file = null;
         if (source instanceof URL) {
-            file = DataUtilities.urlToFile((URL) source);
+            file = URLs.urlToFile((URL) source);
         } else if (source instanceof File ){
             file = (File) source;
         }

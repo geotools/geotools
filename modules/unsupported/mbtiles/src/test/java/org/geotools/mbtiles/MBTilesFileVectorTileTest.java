@@ -1,4 +1,4 @@
-package org.geotools.mbtiles;
+        package org.geotools.mbtiles;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -9,10 +9,10 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.mbtiles.MBTilesMetadata.t_format;
 import org.geotools.mbtiles.MBTilesMetadata.t_type;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class MBTilesFileVectorTileTest {
     
     @Before
     public void setUp() {
-        dbfile = DataUtilities.urlToFile(MBTilesFileVectorTileTest.class.getResource("planet.mbtiles"));
+        dbfile = URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("planet.mbtiles"));
     }
     
     @Test

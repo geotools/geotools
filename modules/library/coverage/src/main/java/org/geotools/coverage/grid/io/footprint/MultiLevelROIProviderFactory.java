@@ -21,8 +21,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -120,7 +120,7 @@ public class MultiLevelROIProviderFactory {
                 LOGGER.fine("Retrieving footprints properties from "
                         + "the specified config file: " + configFile.getAbsolutePath());
             }
-            properties = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
+            properties = CoverageUtilities.loadPropertiesFromURL(URLs.fileToUrl(configFile));
         } else {
             properties = new Properties();
         }

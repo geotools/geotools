@@ -34,11 +34,10 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,8 +48,6 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 /**
  * Test the resolutionLevel-to-ImageMosaicReader mapping machinery. 
@@ -80,7 +77,7 @@ public class ImageLevelsMapperTest extends Assert {
         // Get the resource.
         //
         final URL testFile = TestData.getResource(this, "multipyramidwithoverviews");
-        File mosaicFolder = DataUtilities.urlToFile(testFile);
+        File mosaicFolder = URLs.urlToFile(testFile);
         assertNotNull(testFile);
         File[] pyramidLevels = mosaicFolder.listFiles((FileFilter) FileFilterUtils
                 .directoryFileFilter());

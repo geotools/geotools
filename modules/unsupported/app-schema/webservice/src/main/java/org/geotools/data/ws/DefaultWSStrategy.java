@@ -19,27 +19,22 @@ package org.geotools.data.ws;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-
 import java.util.Map;
-
 import java.util.logging.Logger;
 
-import net.opengis.wfs.GetFeatureType;
-
-import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
-
 import org.geotools.filter.Capabilities;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
-
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.opengis.filter.Filter;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
+import net.opengis.wfs.GetFeatureType;
 
 /**
  * @author rpetty
@@ -76,7 +71,7 @@ public class DefaultWSStrategy implements WSStrategy {
     private void initialiseFreeMarkerConfiguration(URL templateDirectory) {
         cfg = new Configuration();
         try {
-            cfg.setDirectoryForTemplateLoading(DataUtilities.urlToFile(templateDirectory));
+            cfg.setDirectoryForTemplateLoading(URLs.urlToFile(templateDirectory));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

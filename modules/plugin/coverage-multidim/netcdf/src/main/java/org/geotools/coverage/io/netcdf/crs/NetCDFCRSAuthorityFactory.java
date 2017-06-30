@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
+import org.geotools.util.URLs;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -46,7 +47,7 @@ public class NetCDFCRSAuthorityFactory extends FactoryUsingWKT implements CRSAut
             File proj_file = new File(cust_proj_file);
 
             if (proj_file.exists()) {
-                URL url = DataUtilities.fileToURL(proj_file);
+                URL url = URLs.fileToUrl(proj_file);
                 if (url != null) {
                     DEFINITION_URL = url;
                 } else {

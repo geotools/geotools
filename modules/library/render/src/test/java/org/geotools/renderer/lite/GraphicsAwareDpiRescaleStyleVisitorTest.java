@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -15,6 +14,7 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.visitor.RescaleStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
+import org.geotools.util.URLs;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -48,7 +48,7 @@ public class GraphicsAwareDpiRescaleStyleVisitorTest {
     public void testResizeExternalGraphic() throws IOException {
         File imageFile = new File("./src/test/resources/org/geotools/renderer/lite/test-data/draw.png").getCanonicalFile();
         assertTrue(imageFile.exists());
-        String fileUrl = DataUtilities.fileToURL(imageFile).toExternalForm();
+        String fileUrl = URLs.fileToUrl(imageFile).toExternalForm();
         PointSymbolizer ps = sb.createPointSymbolizer(sb.createGraphic(null, null, sb.createExternalGraphic(fileUrl, "image/png")));
         GraphicsAwareDpiRescaleStyleVisitor visitor = new GraphicsAwareDpiRescaleStyleVisitor(2);
         ps.accept(visitor);

@@ -16,38 +16,35 @@
  */
 package org.geotools.gml3.v3_2;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
-
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 import org.xml.sax.SAXException;
+
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+
+import junit.framework.TestCase;
 
 /**
  * 
@@ -69,7 +66,7 @@ public class GMLParsingTest extends TestCase {
         Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
             getClass().getResourceAsStream( "test.xml" )   
         );
-        URL schemaURL = DataUtilities.fileToURL( schema.getAbsoluteFile() );        
+        URL schemaURL = URLs.fileToUrl( schema.getAbsoluteFile() );        
         dom.getDocumentElement().setAttribute( "xsi:schemaLocation", "http://www.geotools.org/test " + schemaURL.getFile() );
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         TransformerFactory.newInstance().newTransformer().transform( 

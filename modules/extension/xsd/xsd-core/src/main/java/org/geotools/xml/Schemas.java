@@ -79,7 +79,7 @@ import org.eclipse.xsd.util.XSDResourceImpl;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.eclipse.xsd.util.XSDUtil;
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.xml.impl.SchemaIndexImpl;
 import org.geotools.xml.impl.TypeWalker;
@@ -299,7 +299,7 @@ public class Schemas {
         //check for case of file url, make sure it is an absolute reference
         File locationFile = null;
         try {
-            locationFile = DataUtilities.urlToFile(new URL(location));
+            locationFile = URLs.urlToFile(new URL(location));
         } catch (MalformedURLException e) {
             // Some tests use relative file URLs, which Schemas.parse cannot
             // support as it does not permit a context URL. Treat them

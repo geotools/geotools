@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 
 /**
  * Cache containing XML schemas. (Should also work for other file types.)
@@ -342,7 +343,7 @@ public class SchemaCache {
         
         synchronized(SchemaCache.class) {
             if(file.exists()) {
-                return DataUtilities.fileToURL(file).toExternalForm();
+                return URLs.fileToUrl(file).toExternalForm();
             }
         }
         
@@ -356,7 +357,7 @@ public class SchemaCache {
                     store(file, bytes);
                     LOGGER.info("Cached XML schema: " + location);
                 }
-                return DataUtilities.fileToURL(file).toExternalForm();
+                return URLs.fileToUrl(file).toExternalForm();
             }
         } 
         return null;
@@ -373,7 +374,7 @@ public class SchemaCache {
         if (!automaticConfigurationEnabled) {
             return null;
         }
-        File file = DataUtilities.urlToFile(url);
+        File file = URLs.urlToFile(url);
         while (true) {
             if (file == null) {
                 return null;

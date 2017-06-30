@@ -1,6 +1,9 @@
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.FIX;
+import static org.geotools.data.shapefile.files.ShpFileType.QIX;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +32,7 @@ import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.data.shapefile.index.quadtree.fs.FileSystemIndexStore;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.util.NullProgressListener;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
@@ -205,8 +209,8 @@ class IndexManager {
                 return false;
             }
 
-            File indexFile = DataUtilities.urlToFile(indexURL);
-            File shpFile = DataUtilities.urlToFile(shpURL);
+            File indexFile = URLs.urlToFile(indexURL);
+            File shpFile = URLs.urlToFile(shpURL);
             long indexLastModified = indexFile.lastModified();
             long shpLastModified = shpFile.lastModified();
             boolean shpChangedMoreRecently = indexLastModified < shpLastModified;
@@ -301,7 +305,7 @@ class IndexManager {
             boolean canCache = false;
             URL treeURL = shpFiles.acquireRead(QIX, writer);
             try {
-                File treeFile = DataUtilities.urlToFile(treeURL);
+                File treeFile = URLs.urlToFile(treeURL);
 
                 if (treeFile != null && treeFile.exists() && treeFile.length() < 1024 * maxQixCacheSize) {
                     canCache = true;
@@ -356,7 +360,7 @@ class IndexManager {
         }
         URL treeURL = shpFiles.acquireRead(QIX, writer);
         try {
-            File treeFile = DataUtilities.urlToFile(treeURL);
+            File treeFile = URLs.urlToFile(treeURL);
 
             if (!treeFile.exists() || (treeFile.length() == 0)) {
                 return null;

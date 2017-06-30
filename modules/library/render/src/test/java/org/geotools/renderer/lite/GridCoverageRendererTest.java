@@ -102,6 +102,7 @@ import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -196,7 +197,7 @@ public class GridCoverageRendererTest  {
         TestData.unzipFile(this, "arcgrid/arcgrid.zip");
         URL rainURL = GridCoverageRendererTest.class
                 .getResource("test-data/arcgrid/precip30min.asc");
-        File rainFile = DataUtilities.urlToFile(rainURL);
+        File rainFile = URLs.urlToFile(rainURL);
         rainReader = new ArcGridReader(rainFile);
 
         // read a image with a roi (mask)

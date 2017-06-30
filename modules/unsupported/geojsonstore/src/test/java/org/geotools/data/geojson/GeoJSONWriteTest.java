@@ -16,7 +16,9 @@
  */
 package org.geotools.data.geojson;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,7 +28,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,11 +44,11 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +98,7 @@ public class GeoJSONWriteTest {
             throw new RuntimeException("Input datafile not found");
         System.out.println("copying " + resource.toExternalForm() + " to " + file);
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        url = DataUtilities.fileToURL(file);
+        url = URLs.fileToUrl(file);
     }
 
     private String checkFileContents(File modified) throws IOException {
@@ -311,7 +312,7 @@ public class GeoJSONWriteTest {
 
         File file2 = new File(directory, "duplicate.json");
         Map<String, Serializable> params2 = new HashMap<String, Serializable>();
-        params2.put("url", DataUtilities.fileToURL(file2));
+        params2.put("url", URLs.fileToUrl(file2));
 
         GeoJSONDataStoreFactory factory = new GeoJSONDataStoreFactory();
         DataStore duplicate = factory.createNewDataStore(params2);

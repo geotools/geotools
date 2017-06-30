@@ -25,19 +25,18 @@ import java.net.URL;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 
-import junit.framework.TestCase;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.grassraster.format.GrassCoverageFormatFactory;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
+
+import junit.framework.TestCase;
 
 /**
  * Test the grass raster reader abd writer.
@@ -67,7 +66,7 @@ public class GrassRasterReaderWriterTest extends TestCase {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");
         AbstractGridFormat format = (AbstractGridFormat) new GrassCoverageFormatFactory()
                 .createFormat();
-        File pitFile = DataUtilities.urlToFile(pitUrl);
+        File pitFile = URLs.urlToFile(pitUrl);
         assertTrue(format.accepts(pitFile));
 
         GridCoverage2D gc = readGc(format, pitFile);
@@ -86,7 +85,7 @@ public class GrassRasterReaderWriterTest extends TestCase {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cellhd/pit");
         AbstractGridFormat format = (AbstractGridFormat) new GrassCoverageFormatFactory()
         .createFormat();
-        File pitFile = DataUtilities.urlToFile(pitUrl);
+        File pitFile = URLs.urlToFile(pitUrl);
         assertFalse(format.accepts(pitFile));
     }
 

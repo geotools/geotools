@@ -30,8 +30,8 @@ import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.util.KVP;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -83,7 +83,7 @@ public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements D
 
         try {
             URL url = (URL) URLP.lookUp(params);
-            File f = DataUtilities.urlToFile(url);
+            File f = URLs.urlToFile(url);
             boolean accept = url.getFile().toUpperCase().endsWith("XLS")||url.getFile().toUpperCase().endsWith("XLSX");
             if(accept) {
                 return true;

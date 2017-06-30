@@ -34,10 +34,6 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -109,6 +105,7 @@ import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
+import org.geotools.util.URLs;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -121,6 +118,10 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
 
 /**
  * this class is responsible for exposing the data and the Georeferencing
@@ -206,7 +207,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 			// setting source
 			if (input instanceof URL) {
 				final URL sourceURL = (URL) input;
-				source = DataUtilities.urlToFile(sourceURL);
+				source = URLs.urlToFile(sourceURL);
 			}
 
 			closeMe = true;
@@ -355,7 +356,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (source instanceof File) {
                 inputFile = (File) source;
             } else if (source instanceof URL && (((URL) source).getProtocol() == "file")) {
-                inputFile = DataUtilities.urlToFile((URL) source);
+                inputFile = URLs.urlToFile((URL) source);
             }
             if (inputFile != null) {
                 maskOvrProvider = new MaskOverviewProvider(dtLayout, inputFile);
@@ -679,7 +680,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (info != null) {
                 // Reading Mask
                 RenderedOp roiRaster = readROIRaster(info.streamSpi,
-                        DataUtilities.fileToURL(info.file), info.index, newHints,
+                        URLs.fileToUrl(info.file), info.index, newHints,
                         info.readParameters);
                 roi = MaskOverviewProvider.scaleROI(roiRaster, coverageRaster.getBounds());
             }

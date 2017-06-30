@@ -32,6 +32,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -80,7 +81,7 @@ public abstract class GranuleCatalogFactory {
     public static GranuleCatalog createGranuleCatalog(final URL sourceURL,
             final CatalogConfigurationBean catalogConfigurationBean,
             final Properties overrideParams, final Hints hints) {
-        final File sourceFile = DataUtilities.urlToFile(sourceURL);
+        final File sourceFile = URLs.urlToFile(sourceURL);
         final String extension = FilenameUtils.getExtension(sourceFile.getAbsolutePath());
 
         // STANDARD PARAMS
@@ -99,11 +100,11 @@ public abstract class GranuleCatalogFactory {
         params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
         params.put(Utils.Prop.WRAP_STORE, catalogConfigurationBean.isWrapStore());
         if (sourceURL != null) {
-            File parentDirectory = DataUtilities.urlToFile(sourceURL);
+            File parentDirectory = URLs.urlToFile(sourceURL);
             if (parentDirectory.isFile())
                 parentDirectory = parentDirectory.getParentFile();
             params.put(Utils.Prop.PARENT_LOCATION,
-                    DataUtilities.fileToURL(parentDirectory).toString());
+                    URLs.fileToUrl(parentDirectory).toString());
         } else
             params.put(Utils.Prop.PARENT_LOCATION, null);
         // add typename

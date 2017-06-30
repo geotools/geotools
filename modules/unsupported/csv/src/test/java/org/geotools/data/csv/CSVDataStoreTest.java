@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
@@ -25,6 +24,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -42,7 +42,7 @@ public class CSVDataStoreTest {
     public void setUp() throws Exception {
         URL resource = TestData.getResource(CSVDataStoreTest.class, "locations.csv");
         assertNotNull("Failure finding locations csv file", resource);
-        File file = DataUtilities.urlToFile(resource);
+        File file = URLs.urlToFile(resource);
         CSVFileState csvFileState = new CSVFileState(file);
         CSVLatLonStrategy csvStrategy = new CSVLatLonStrategy(csvFileState);
         csvDataStore = new CSVDataStore(csvFileState, csvStrategy);

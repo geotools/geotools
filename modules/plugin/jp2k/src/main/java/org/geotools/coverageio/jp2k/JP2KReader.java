@@ -16,12 +16,6 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import it.geosolutions.imageio.plugins.jp2k.JP2KStreamMetadata;
-import it.geosolutions.imageio.plugins.jp2k.box.UUIDBox;
-import it.geosolutions.imageio.plugins.jp2k.box.UUIDBoxMetadataNode;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.ByteArrayInputStream;
@@ -52,7 +46,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.Hints;
@@ -61,6 +54,7 @@ import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -70,6 +64,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageio.plugins.jp2k.JP2KStreamMetadata;
+import it.geosolutions.imageio.plugins.jp2k.box.UUIDBox;
+import it.geosolutions.imageio.plugins.jp2k.box.UUIDBoxMetadataNode;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 /**
  * This class can read a JP2K data source and create a {@link GridCoverage2D}
@@ -461,7 +461,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
             throw new DataSourceException(
                     "This plugin accepts only File,  URL and String pointing to a file");
 
-        final File inputFile = DataUtilities.urlToFile(sourceURL);
+        final File inputFile = URLs.urlToFile(sourceURL);
         if (inputFile == null)
             throw new DataSourceException("Unable to find a file for the provided source");
         parentPath = inputFile.getParent();

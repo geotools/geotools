@@ -40,23 +40,23 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.jdbc.Import.ImportTyp;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 /**
  * 
@@ -474,7 +474,7 @@ public abstract class AbstractTest extends TestCase {
 	 */
 	public static boolean isSameFile(URL file1, String file2)
 			throws Exception {
-		return DataUtilities.urlToFile(file1).getCanonicalPath().equals(
+		return URLs.urlToFile(file1).getCanonicalPath().equals(
 				new File(file2).getCanonicalPath());
 	}
 

@@ -104,6 +104,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -338,11 +339,11 @@ public class Utils {
             // check if we have to build the index
             if (source instanceof File) {
                 file = (File) source;
-                url = DataUtilities.fileToURL(file);
+                url = URLs.fileToUrl(file);
             } else if (source instanceof URL) {
                 url = (URL) source;
                 if (url.getProtocol().equals("file")) {
-                    file = DataUtilities.urlToFile(url);
+                    file = URLs.urlToFile(url);
                 }
             } else if (source instanceof String) {
                 // is it a File?
@@ -352,13 +353,13 @@ public class Utils {
                     // is it a URL
                     try {
                         url = new URL(tempSource);
-                        source = DataUtilities.urlToFile(url);
+                        source = URLs.urlToFile(url);
                     } catch (MalformedURLException e) {
                         url = null;
                         source = null;
                     }
                 } else {
-                    url = DataUtilities.fileToURL(tempFile);
+                    url = URLs.fileToUrl(tempFile);
 
                     // so that we can do our magic here below
                     file = tempFile;
@@ -540,7 +541,7 @@ public class Utils {
         if (!sourceURL.toExternalForm().endsWith(".properties")) {
             propsURL = DataUtilities.changeUrlExt(sourceURL, "properties");
             if (propsURL.getProtocol().equals("file")) {
-                final File sourceFile = DataUtilities.urlToFile(propsURL);
+                final File sourceFile = URLs.urlToFile(propsURL);
                 if (!sourceFile.exists()) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("properties file doesn't exist");
@@ -791,7 +792,7 @@ public class Utils {
         }
 
         // Also initialize the indexer here, since it will be needed later on.
-        File mosaicParentFolder = DataUtilities.urlToFile(sourceURL).getParentFile();
+        File mosaicParentFolder = URLs.urlToFile(sourceURL).getParentFile();
         Indexer indexer = loadIndexer(mosaicParentFolder);
 
         if (indexer != null) {
@@ -1228,7 +1229,7 @@ public class Utils {
             if (!sourceFile.isDirectory())
                 // real file, can only be a shapefile at this stage or a
                 // datastore.properties file
-                sourceURL = DataUtilities.fileToURL(sourceFile);
+                sourceURL = URLs.fileToUrl(sourceFile);
             else {
                 // it's a DIRECTORY, let's look for a possible properties files
                 // that we want to load
@@ -1264,7 +1265,7 @@ public class Utils {
                         if (Utils.checkFileReadable(propFile)) {
                             // load it
                             if (null != Utils
-                                    .loadMosaicProperties(DataUtilities.fileToURL(propFile))) {
+                                    .loadMosaicProperties(URLs.fileToUrl(propFile))) {
                                 found = true;
                                 break;
                             }
@@ -1290,7 +1291,7 @@ public class Utils {
                     for (File propFile : properties) {
 
                         // load properties
-                        if (null == Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile)))
+                        if (null == Utils.loadMosaicProperties(URLs.fileToUrl(propFile)))
                             continue;
 
                         // look for a couple shapefile, mosaic properties file
@@ -1359,8 +1360,8 @@ public class Utils {
 
                 } else
                     // now set the new source and proceed
-                    sourceURL = datastoreFound ? DataUtilities.fileToURL(dataStoreProperties)
-                            : DataUtilities.fileToURL(shapeFile);
+                    sourceURL = datastoreFound ? URLs.fileToUrl(dataStoreProperties)
+                            : URLs.fileToUrl(shapeFile);
 
             }
         } else {
@@ -1388,7 +1389,7 @@ public class Utils {
         if (file.isDirectory()) {
             File indexer = new File(file, IndexerUtils.INDEXER_PROPERTIES);
             if (indexer.exists()) {
-                URL indexerUrl = DataUtilities.fileToURL(indexer);
+                URL indexerUrl = URLs.fileToUrl(indexer);
                 Properties config = CoverageUtilities.loadPropertiesFromURL(indexerUrl);
                 if (config != null && config.get(Utils.Prop.NAME) != null) {
                     return (String) config.get(propertyName);
@@ -1425,11 +1426,11 @@ public class Utils {
                 // if (!Utils.checkFileReadable(emptyFile)) {
                 sourceURL = null;
                 // } else {
-                // sourceURL = DataUtilities.fileToURL(emptyFile);
+                // sourceURL = URLs.fileToUrl(emptyFile);
                 // }
             } else {
                 // now set the new source and proceed
-                sourceURL = DataUtilities.fileToURL(shapeFile);
+                sourceURL = URLs.fileToUrl(shapeFile);
             }
         } else {
             File dataStoreProperties = new File(locationPath, "datastore.properties");
@@ -1438,7 +1439,7 @@ public class Utils {
             if (!Utils.checkFileReadable(dataStoreProperties)) {
                 sourceURL = null;
             } else {
-                sourceURL = DataUtilities.fileToURL(dataStoreProperties);
+                sourceURL = URLs.fileToUrl(dataStoreProperties);
             }
         }
 
@@ -1468,7 +1469,7 @@ public class Utils {
         }
         indexFile = new File(locationPath, IndexerUtils.INDEXER_PROPERTIES);
         if (Utils.checkFileReadable(indexFile)) {
-            URL url = DataUtilities.fileToURL(indexFile);
+            URL url = URLs.fileToUrl(indexFile);
             final Properties properties = CoverageUtilities.loadPropertiesFromURL(url);
             if (properties != null) {
                 String canBeEmpty = properties.getProperty(Prop.CAN_BE_EMPTY, null);
@@ -1800,7 +1801,7 @@ public class Utils {
         } else if (source instanceof URL) {
             sourceURL = (URL) source;
             if (sourceURL.getProtocol().equals("file")) {
-                sourceFile = DataUtilities.urlToFile(sourceURL);
+                sourceFile = URLs.urlToFile(sourceURL);
             }
         } else if (source instanceof String) {
             // is it a File?
@@ -1810,13 +1811,13 @@ public class Utils {
                 // is it a URL
                 try {
                     sourceURL = new URL(tempSource);
-                    source = DataUtilities.urlToFile(sourceURL);
+                    source = URLs.urlToFile(sourceURL);
                 } catch (MalformedURLException e) {
                     sourceURL = null;
                     source = null;
                 }
             } else {
-                sourceURL = DataUtilities.fileToURL(tempFile);
+                sourceURL = URLs.fileToUrl(tempFile);
 
                 // so that we can do our magic here below
                 sourceFile = tempFile;
@@ -1925,7 +1926,7 @@ public class Utils {
             String dbname = (String) params.get(DATABASE_KEY);
             // H2 database URLs must not be percent-encoded: see GEOT-4262.
             params.put(DATABASE_KEY,
-                    "file:" + (new File(DataUtilities.urlToFile(new URL(parentLocation)), dbname))
+                    "file:" + (new File(URLs.urlToFile(new URL(parentLocation)), dbname))
                             .getPath());
         }
     }
@@ -2095,7 +2096,7 @@ public class Utils {
 
         ImageInputStreamSpi streamSPI = ImageIOExt.getImageInputStreamSPI(granuleUrl, true);
         if (streamSPI == null) {
-            final File file = DataUtilities.urlToFile(granuleUrl);
+            final File file = URLs.urlToFile(granuleUrl);
             if (file != null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, Utils.getFileInfo(file));

@@ -201,7 +201,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             // setting sourceFile
             if (input instanceof URL) {
                 final URL sourceURL = (URL) input;
-                source = DataUtilities.urlToFile(sourceURL);
+                source = URLs.urlToFile(sourceURL);
             }
 
             closeMe = true;

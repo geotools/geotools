@@ -16,9 +16,15 @@
  */
 package org.geotools.data.geobuf;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.WKTReader;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -28,17 +34,16 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.util.URLs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import static org.junit.Assert.*;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.io.WKTReader;
 
 public class GeobufDataStoreTest {
 
@@ -47,7 +52,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readPoints() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/points.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/points.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -129,7 +134,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readLineStrings() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/lines.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/lines.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -223,7 +228,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readPolygons() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/polygons.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/polygons.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -356,7 +361,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readMultiPoints() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/multipoints.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/multipoints.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -443,7 +448,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readMultiLineStrings() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/multilinestrings.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/multilinestrings.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -532,7 +537,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readMultiPolygons() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/multipolygons.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/multipolygons.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -645,7 +650,7 @@ public class GeobufDataStoreTest {
 
     @Test
     public void readGeometryCollections() throws Exception {
-        File file = DataUtilities.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/geometrycollections.pbf"));
+        File file = URLs.urlToFile(getClass().getClassLoader().getResource("org/geotools/data/geobuf/geometrycollections.pbf"));
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", file);
         DataStore store = DataStoreFinder.getDataStore(params);

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 /**
@@ -99,7 +100,7 @@ public enum PathType {
                     return rasterURL;
 
                 } else {
-                    return DataUtilities.fileToURL(rasterFile);
+                    return URLs.fileToUrl(rasterFile);
                 }
 
             } catch (MalformedURLException e) {

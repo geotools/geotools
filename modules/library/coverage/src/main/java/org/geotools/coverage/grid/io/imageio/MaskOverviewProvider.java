@@ -38,6 +38,7 @@ import javax.media.jai.ROI;
 import org.geotools.data.DataUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.util.URLs;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
 
@@ -121,7 +122,7 @@ public class MaskOverviewProvider {
         }
         if (overviewFile.exists() && overviewFile.canRead()) {
             // Creating overview file URL
-            ovrURL = DataUtilities.fileToURL(overviewFile);
+            ovrURL = URLs.fileToUrl(overviewFile);
             // Creating cached SPIs
             overviewStreamSpi = getInputStreamSPIFromURL(ovrURL);
             ImageInputStream ovrStream = null;
@@ -217,7 +218,7 @@ public class MaskOverviewProvider {
             hasExternalMasksOverviews = hasExternalMasks && numExternalMasksOverviews > 0;
             if (hasExternalMasks) {
                 // Mask URL
-                maskURL = DataUtilities.fileToURL(layout.getExternalMasks());
+                maskURL = URLs.fileToUrl(layout.getExternalMasks());
                 // Creating cached SPIs
                 maskStreamSpi = getInputStreamSPIFromURL(maskURL);
                 ImageInputStream maskStream = null;
@@ -245,7 +246,7 @@ public class MaskOverviewProvider {
                 // Handling external mask overviews
                 if (hasExternalMasksOverviews) {
                     // Mask URL
-                    maskOvrURL = DataUtilities.fileToURL(layout.getExternalMaskOverviews());
+                    maskOvrURL = URLs.fileToUrl(layout.getExternalMaskOverviews());
                     // Creating cached SPIs
                     maskOvrStreamSpi = getInputStreamSPIFromURL(maskOvrURL);
                     ImageInputStream maskOvrStream = null;
@@ -321,19 +322,19 @@ public class MaskOverviewProvider {
             if (imageIndex > 0) {
                 // Check if the ImageChoice is contained inside internal or external masks
                 if (imageIndex < numInternalMasks) {
-                    info.file = DataUtilities.urlToFile(fileURL);
+                    info.file = URLs.urlToFile(fileURL);
                     info.readerSpi = readerSpi;
                     info.streamSpi = streamSpi;
                     info.index = imageIndex != 0 ? layout.getInternalMaskImageIndex(imageIndex) - 1
                             : layout.getInternalMaskImageIndex(imageIndex);
                 } else if (hasExternalMasks) {
                     if (imageIndex < numExternalMasks) {
-                        info.file = DataUtilities.urlToFile(maskURL);
+                        info.file = URLs.urlToFile(maskURL);
                         info.readerSpi = maskReaderSpi;
                         info.streamSpi = maskStreamSpi;
                         info.index = imageIndex;
                     } else if (imageIndex < numExternalMasks + numExternalMasksOverviews) {
-                        info.file = DataUtilities.urlToFile(maskOvrURL);
+                        info.file = URLs.urlToFile(maskOvrURL);
                         info.readerSpi = maskOvrReaderSpi;
                         info.streamSpi = maskOvrStreamSpi;
                         info.index = imageIndex - numExternalMasks;
@@ -341,13 +342,13 @@ public class MaskOverviewProvider {
                         // Read a bigger image
                         if (numExternalMasksOverviews > 0) {
                             // reading External Mask External Overviews
-                            info.file = DataUtilities.urlToFile(maskOvrURL);
+                            info.file = URLs.urlToFile(maskOvrURL);
                             info.readerSpi = maskOvrReaderSpi;
                             info.streamSpi = maskOvrStreamSpi;
                             info.index = numExternalMasksOverviews - 1;
                         } else {
                             // reading External Mask Overviews
-                            info.file = DataUtilities.urlToFile(maskURL);
+                            info.file = URLs.urlToFile(maskURL);
                             info.readerSpi = maskReaderSpi;
                             info.streamSpi = maskStreamSpi;
                             info.index = numExternalMasks - 1;
@@ -355,7 +356,7 @@ public class MaskOverviewProvider {
                     }
                 } else {
                     // Reading Internal Mask Overview
-                    info.file = DataUtilities.urlToFile(fileURL);
+                    info.file = URLs.urlToFile(fileURL);
                     info.readerSpi = readerSpi;
                     info.streamSpi = streamSpi;
                     info.index = numInternalMasks - 1;
@@ -365,14 +366,14 @@ public class MaskOverviewProvider {
                 // Checking for external Masks
                 if (numInternalMasks == 0 && hasExternalMasks) {
                     // reading External Mask Overviews
-                    info.file = DataUtilities.urlToFile(maskURL);
+                    info.file = URLs.urlToFile(maskURL);
                     info.readerSpi = maskReaderSpi;
                     info.streamSpi = maskStreamSpi;
                     info.index = 0;
                     // Check for internal Masks
                 } else if (numInternalMasks > 0) {
                     // Reading Internal Mask Overview
-                    info.file = DataUtilities.urlToFile(fileURL);
+                    info.file = URLs.urlToFile(fileURL);
                     info.readerSpi = readerSpi;
                     info.streamSpi = streamSpi;
                     info.index = layout.getInternalMaskImageIndex(0);
@@ -603,7 +604,7 @@ public class MaskOverviewProvider {
 
         ImageInputStreamSpi streamSPI = ImageIOExt.getImageInputStreamSPI(fileURL, true);
         if (streamSPI == null) {
-            final File file = DataUtilities.urlToFile(fileURL);
+            final File file = URLs.urlToFile(fileURL);
             if (file != null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, file.getCanonicalPath());
@@ -711,7 +712,7 @@ public class MaskOverviewProvider {
 
         public SpiHelper(File inputFile, ImageReaderSpi suggestedSPI) throws IOException {
             this.suggestedSpi = suggestedSPI;
-            this.fileURL = DataUtilities.fileToURL(inputFile);
+            this.fileURL = URLs.fileToUrl(inputFile);
 
             // Creating cached SPIs
             streamSpi = getInputStreamSPIFromURL(fileURL);

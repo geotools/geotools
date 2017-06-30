@@ -26,7 +26,7 @@ import java.util.Map;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.referencing.factory.gridshift.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 /**
@@ -100,11 +100,11 @@ public class DataStoreConfiguration {
         Utilities.ensureNonNull("parentLocation", parentLocation);
         final Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(Utils.SCAN_FOR_TYPENAMES, "true");
-        final String url = DataUtilities.fileToURL(parentLocation).toExternalForm();
+        final String url = URLs.fileToUrl(parentLocation).toExternalForm();
         String updatedDB;
         try {
             updatedDB = "file:"
-                    + (new File(DataUtilities.urlToFile(new URL(url)), database)).getPath();
+                    + (new File(URLs.urlToFile(new URL(url)), database)).getPath();
             params.put("ParentLocation", url);
             params.put("database", updatedDB);
             params.put("dbtype", "h2");

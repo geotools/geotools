@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStoreFinder;
+import org.geotools.util.URLs;
 
 /**
  * Data store wizard.
@@ -129,7 +129,7 @@ public class JDataStoreWizard extends Wizard {
      */
     public File getFile() {
         URL url = (URL) connectionParameters.get("url");
-        return DataUtilities.urlToFile(url);
+        return URLs.urlToFile(url);
     }
 
     /**

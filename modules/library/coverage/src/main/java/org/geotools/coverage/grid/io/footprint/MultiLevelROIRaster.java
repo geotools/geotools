@@ -37,6 +37,7 @@ import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.MaskInfo;
 import org.geotools.data.DataUtilities;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -96,7 +97,7 @@ public class MultiLevelROIRaster implements MultiLevelROI {
             throw new IllegalArgumentException("Unable to load Raster Footprint for granule: "
                     + file.getAbsolutePath());
         }
-        URL granuleUrl = DataUtilities.fileToURL(inFile);
+        URL granuleUrl = URLs.fileToUrl(inFile);
         // Getting input stream and reader from File
         ImageInputStream inStream = null;
         ImageReader reader = null;

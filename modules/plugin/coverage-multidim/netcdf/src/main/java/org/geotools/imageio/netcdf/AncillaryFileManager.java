@@ -63,8 +63,8 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
-import org.geotools.referencing.factory.gridshift.DataUtilities;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
@@ -800,7 +800,7 @@ public class AncillaryFileManager implements FileSetManager{
     public DataStoreConfiguration getDatastoreConfiguration() throws IOException {
         DataStoreConfiguration datastoreConfiguration = null;
         if (datastoreIndexFile != null) {
-            URL datastoreURL = DataUtilities.fileToURL(datastoreIndexFile);
+            URL datastoreURL = URLs.fileToUrl(datastoreIndexFile);
             Properties properties = CoverageUtilities.loadPropertiesFromURL(datastoreURL);
             if (properties != null) {
                 final String SPIClass = properties.getProperty("SPI");
@@ -845,7 +845,7 @@ public class AncillaryFileManager implements FileSetManager{
         String param = getParameter(Utils.Prop.WRAP_STORE);
         if (param != null && param.trim().equalsIgnoreCase("true")) {
             params.put(Utils.Prop.WRAP_STORE, true);
-            params.put(Utils.Prop.PARENT_LOCATION, DataUtilities.fileToURL(getDestinationDir())
+            params.put(Utils.Prop.PARENT_LOCATION, URLs.fileToUrl(getDestinationDir())
                     .toString());
         }
     }

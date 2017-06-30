@@ -41,7 +41,6 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.GranuleLoader;
@@ -55,6 +54,7 @@ import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -186,7 +186,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 }
 
                 // path management
-                File inputFile = DataUtilities.urlToFile(result.getGranuleUrl());
+                File inputFile = URLs.urlToFile(result.getGranuleUrl());
                 String canonicalPath = inputFile.getCanonicalPath();
                 // Remove ovr extension if present
                 String fileCanonicalPath = canonicalPath;

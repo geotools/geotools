@@ -5,7 +5,11 @@
  */
 package org.geotools.data.csv;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,12 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geotools.TestData;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.csv.parse.CSVAttributesOnlyStrategy;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
 import org.geotools.data.csv.parse.CSVSpecifiedWKTStrategy;
 import org.geotools.data.csv.parse.CSVStrategy;
+import org.geotools.util.URLs;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,7 +43,7 @@ public class CSVDataStoreFactoryTest {
         csvDataStoreFactory = new CSVDataStoreFactory();
         locationsResource = TestData.getResource(CSVDataStoreFactoryTest.class, "locations.csv");
         assert locationsResource != null : "Could not find locations.csv resource";
-        file = DataUtilities.urlToFile(locationsResource);
+        file = URLs.urlToFile(locationsResource);
     }
 
     @Test

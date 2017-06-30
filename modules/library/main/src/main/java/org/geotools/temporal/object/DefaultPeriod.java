@@ -133,14 +133,16 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder("Period:").append('\n');
+        StringBuilder s = new StringBuilder();
         if (begining != null) {
-            s.append("begin:").append(begining).append('\n');
+            s.append("begin:").append(begining);
         }
         if (ending != null) {
-            s.append("end:").append(ending).append('\n');
+            if (s.length() > 0) {
+                s.append(", ");
+            }
+            s.append("end:").append(ending);
         }
-
-        return s.toString();
+        return s.insert(0, "Period{").append('}').toString();
     }
 }

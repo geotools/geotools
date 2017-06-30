@@ -9,6 +9,7 @@
  */
 package org.geotools.filter.temporal;
 
+import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.BinaryTemporalOperator;
 import org.opengis.temporal.Instant;
@@ -22,6 +23,8 @@ import org.opengis.temporal.TemporalPrimitive;
  * @source $URL$
  */
 public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperator {
+
+    private static final OperatorNameFilterVisitor operationNameVisitor = new OperatorNameFilterVisitor();
 
     protected Expression e1,e2;
     protected MatchAction matchAction;
@@ -118,5 +121,13 @@ public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperat
         return true;
     }
 
-    
+    /**
+     * Return this filter as a string.
+     * @return String representation of this temporal filter.
+     */
+    @Override
+    public String toString() {
+        Object operator = accept(operationNameVisitor, null);
+        return "[ " + getExpression1() + " " + operator + " " + getExpression2() + " ]";
+    }
 }

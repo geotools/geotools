@@ -251,7 +251,11 @@ public class GridCoverageReaderHelper {
                             GridCoverage2D displaced = GridCoverageRendererUtilities.displace(gc,
                                     -tx, -ty,
                                     gridCoverageFactory);
-                            coverages.add(displaced);
+                            // add only if the already read bits of the source file
+                            // do not contain the new one
+                            if(!coveragesContainArea(coverages, displaced)) {
+                                coverages.add(displaced);
+                            }
                         }
                     }
                 }
@@ -259,6 +263,21 @@ public class GridCoverageReaderHelper {
         }
 
         return coverages;
+    }
+
+    /**
+     * Checks if any coverage in the list already fully contains the area of the test coverage 
+     * @param coverages
+     * @param test
+     * @return
+     */
+    private boolean coveragesContainArea(List<GridCoverage2D> coverages, GridCoverage2D test) {
+        for (GridCoverage2D coverage : coverages) {
+            if(coverage.getEnvelope2D().contains((BoundingBox) test.getEnvelope2D())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private GridCoverage2D cropCoverageOnRequestedEnvelope(GridCoverage2D readCoverage) {

@@ -46,27 +46,20 @@ import org.geotools.resources.i18n.Errors;
  *
  */
 enum ReadType {
-	
     DIRECT_READ{
+    	@Override
     	RenderedImage read(
-    			final ImageReadParam readP,
-    			final int imageIndex, 
-    			final File rasterFile,
-    			final Rectangle readDimension,
-    			final Dimension tileDimension, // we just ignore in this case
-    			final ImageReaderSpi spi
-    			)throws IOException{
+                final ImageReadParam readP,
+                final int imageIndex,
+                final File rasterFile,
+                final Rectangle readDimension,
+                final Dimension tileDimension, // we just ignore in this case
+                final ImageReaderSpi spi,
+                ImageReader reader)throws IOException{
     		//
     		// Using ImageReader to load the data directly
     		//
-    		ImageInputStream inStream=null;
-    		ImageReader reader=null;
     		try{
-    			inStream = Utils.getInputStream(rasterFile);
-    			if(inStream==null)
-    				return null;
-    	
-    			reader=spi.createReaderInstance();
     			if(reader==null)
     			{
     				if (LOGGER.isLoggable(Level.WARNING))
@@ -74,10 +67,7 @@ enum ReadType {
     							+ rasterFile.getAbsolutePath());
     				return null;
     			}
-    			
-    			inStream.reset();
-    			reader.setInput(inStream);
-    			
+
     			//check source regione
     			if(CoverageUtilities.checkEmptySourceRegion(readP, readDimension))
     				return null;
@@ -92,22 +82,7 @@ enum ReadType {
     				LOGGER.log(Level.WARNING,"Unable to compute source area for file "
     						+ rasterFile.getAbsolutePath(),e);	
     			return null;
-    		} finally {
-    			//close everything
-    			try {
-    				// reader
-    				reader.dispose();
-    			} catch (Throwable t) {
-    				// swallow the exception, we are just trying to close as much stuff as possible
-    			} 
-    			
-    			try {
-    				// instream
-    				inStream.close();
-    			} catch (Throwable t) {
-    				// swallow the exception, we are just trying to close as much stuff as possible
-    			} 							
-    		}        		
+    		}
     	}
     }, 
     
@@ -115,67 +90,17 @@ enum ReadType {
     JAI_IMAGEREAD{
     	@Override
     	RenderedImage read(
-    			final ImageReadParam readP,
-    			final int imageIndex, 
-    			final File rasterFile,
-    			final Rectangle readDimension,
-    			final Dimension tileDimension,
-    			final ImageReaderSpi spi
-    			) throws IOException{
+                final ImageReadParam readP,
+                final int imageIndex,
+                final File rasterFile,
+                final Rectangle readDimension,
+                final Dimension tileDimension,
+                final ImageReaderSpi spi,
+                ImageReader reader) throws IOException{
     		
-      		///
-    		// Using ImageReader to load the data directly
-    		//
-    		ImageInputStream inStream=null;
-    		ImageReader reader=null;
-    		try{
-    			//get stream
-    			inStream = Utils.getInputStream(rasterFile);
-    			if(inStream==null)
-    				return null;
-    			// get a reader
-    			reader=spi.createReaderInstance();
-    			if(reader==null)
-    			{
-    				if (LOGGER.isLoggable(Level.WARNING))
-    					LOGGER.warning("Unable to get reader for file "
-    							+ rasterFile.getAbsolutePath());
-    				return null;
-    			}
-    			
-    			inStream.reset();
-    			reader.setInput(inStream);
+			if(CoverageUtilities.checkEmptySourceRegion(readP, readDimension))
+				return null;
 
-    			
-    			//check source region
-    			if(CoverageUtilities.checkEmptySourceRegion(readP, readDimension))
-    				return null;
-    			
-
-    		} catch (IOException e) {
-    			if (LOGGER.isLoggable(Level.WARNING))
-    				LOGGER.log(Level.WARNING,"Unable to compute source area for file "
-    						+ rasterFile.getAbsolutePath(),e);	
-    			return null;
-    		} finally {
-    			//close everything
-    			try {
-    				// reader
-    				if(reader!=null)
-    					reader.dispose();
-    			} catch (Throwable t) {
-    				// swallow the exception, we are just trying to close as much stuff as possible
-    			} 
-    			
-    			try {
-    				// instream
-    				if(inStream!=null)
-    					inStream.close();
-    			} catch (Throwable t) {
-    				// swallow the exception, we are just trying to close as much stuff as possible
-    			} 							
-    		}
-    		
 			// read data    	
 			final ParameterBlock pbjImageRead = new ParameterBlock();
 			pbjImageRead.add(rasterFile);
@@ -206,68 +131,19 @@ enum ReadType {
     JAI_IMAGEREAD_MT{
     	@Override
     	RenderedImage read(
-    			final ImageReadParam readP,
-    			final int imageIndex, 
-    			final File rasterFile,
-    			final Rectangle readDimension,
-    			final Dimension tileDimension,
-    			final ImageReaderSpi spi
-    			) throws IOException{
-    		
-      		///
-    		// Using ImageReader to load the data directly
-    		//
-    		ImageInputStream inStream=null;
-    		ImageReader reader=null;
-    		try{
-    			//get stream
-    			inStream = Utils.getInputStream(rasterFile);
-    			if(inStream==null)
-    				return null;
-    			// get a reader
-    			reader=spi.createReaderInstance();
-    			if(reader==null)
-    			{
-    				if (LOGGER.isLoggable(Level.WARNING))
-    					LOGGER.warning("Unable to get reader for file "
-    							+ rasterFile.getAbsolutePath());
-    				return null;
-    			}
-    			
-    			inStream.reset();
-    			reader.setInput(inStream);
+                final ImageReadParam readP,
+                final int imageIndex,
+                final File rasterFile,
+                final Rectangle readDimension,
+                final Dimension tileDimension,
+                final ImageReaderSpi spi,
+                ImageReader reader) throws IOException{
 
-    			
-    			//check source region
-    			if(CoverageUtilities.checkEmptySourceRegion(readP, readDimension))
-    				return null;
-    			
+			//check source region
+			if(CoverageUtilities.checkEmptySourceRegion(readP, readDimension))
+				return null;
 
-    		} catch (IOException e) {
-    			if (LOGGER.isLoggable(Level.WARNING))
-    				LOGGER.log(Level.WARNING,"Unable to compute source area for file "
-    						+ rasterFile.getAbsolutePath(),e);	
-    			return null;
-    		} finally {
-    			//close everything
-    			try {
-    				// reader
-    				if(reader!=null)
-    					reader.dispose();
-    			} catch (Throwable t) {
-    				// swallow the exception, we are just trying to close as much stuff as possible
-    			} 
-    			
-    			try {
-    				// instream
-    				if(inStream!=null)
-    					inStream.close();
-    			} catch (Throwable t) {
-    				// swallow the exception, we are just trying to close as much stuff as possible
-    			} 							
-    		}
-    		
-			// read data    	
+			// read data
 			final ParameterBlock pbjImageRead = new ParameterBlock();
 			pbjImageRead.add(rasterFile);
 			pbjImageRead.add(imageIndex);
@@ -298,13 +174,13 @@ enum ReadType {
 
     	@Override
 		RenderedImage read(
-    			final ImageReadParam readP,
-    			final int imageIndex, 
-    			final File rasterFile,
-    			final Rectangle readDimension,
-    			final Dimension tileDimension,
-    			final ImageReaderSpi spi
-    			)throws IOException{
+                final ImageReadParam readP,
+                final int imageIndex,
+                final File rasterFile,
+                final Rectangle readDimension,
+                final Dimension tileDimension,
+                final ImageReaderSpi spi,
+                ImageReader reader)throws IOException{
     		throw new UnsupportedOperationException(Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1,"read"));
     	}
     };
@@ -336,20 +212,21 @@ enum ReadType {
 	 * @param tileDimension
 	 *            a {@link Dimension} object that can be used to suggest specific
 	 *            tile dimension for the raster to load. It can be <code>null</code>.
-	 * 
-	 * @return a {@link RenderedImage} instance that matches the provided
+	 *
+	 * @param reader
+     * @return a {@link RenderedImage} instance that matches the provided
 	 *         request parameters as close as possible.
 	 * 
 	 * @throws IOException
 	 *             in case something bad occurs during the decoding process.
 	 */
 	abstract RenderedImage read(
-			final ImageReadParam readParameters,
-			final int imageIndex, 
-			final File rasterFile,
-			final Rectangle readDimension, 
-			final Dimension tileDimension,
-			final ImageReaderSpi spi
-			) throws IOException;
+            final ImageReadParam readParameters,
+            final int imageIndex,
+            final File rasterFile,
+            final Rectangle readDimension,
+            final Dimension tileDimension,
+            final ImageReaderSpi spi,
+            ImageReader reader) throws IOException;
 	
 };

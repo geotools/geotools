@@ -51,9 +51,9 @@ import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi;
 public final class JP2KFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KFormatFactory.class);
-    
+    final static boolean isImageReaderThreadSafe;
     static ImageReaderSpi cachedSpi; 
-    
+
     public static ImageReaderSpi getCachedSpi() {
 		return cachedSpi;
 	}
@@ -68,7 +68,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 
     		}
     	}
-    	
+
     	boolean hasKakaduSpi = false;
     	boolean hasNativeJp2 = false;
     	boolean hasStandardJp2 = false;
@@ -81,18 +81,15 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 			kakaduJp2Name=it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi.class.getName();
 			hasKakaduSpi = true;
 		} catch (ClassNotFoundException e) {
-			if (LOGGER.isLoggable(Level.WARNING))
-    			LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi",e);
+			LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi",e);
 		} 
 		
 		try{
 			Class.forName("com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi");
 			standardJp2Name=com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi.class.getName();
 			hasStandardJp2 = true;
-	        
 		} catch (ClassNotFoundException e) {
-			if (LOGGER.isLoggable(Level.WARNING))
-    			LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi",e);
+			LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi",e);
 		} 
 		
 		try{
@@ -101,22 +98,24 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 			hasNativeJp2 = true;
 			
 		} catch (ClassNotFoundException e) {
-			if (LOGGER.isLoggable(Level.WARNING))
-    			LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi",e);
+			LOGGER.log(Level.WARNING, "Unable to load specific JP2K reader spi",e);
 		} 
 		
 		if (hasKakaduSpi && KakaduUtilities.isKakaduAvailable()){
 			cachedSpi = new JP2KKakaduImageReaderSpi();
+			isImageReaderThreadSafe = true;
 			if (hasStandardJp2)
 				ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakaduJp2Name, standardJp2Name, "JPEG2000");
 			if (hasNativeJp2)
 				ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakaduJp2Name, jp2CodecLibName, "JPEG2000");
 		}
-		else if (hasStandardJp2)
-			cachedSpi = new J2KImageReaderSpi();
-		else
-			cachedSpi = new J2KImageReaderCodecLibSpi();
-		
+		else {
+			isImageReaderThreadSafe = false;
+			if (hasStandardJp2)
+				cachedSpi = new J2KImageReaderSpi();
+			else
+				cachedSpi = new J2KImageReaderCodecLibSpi();
+		}
     }
 
     /**
@@ -137,16 +136,14 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 //            Class.forName("it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi");
 //            available = KakaduUtilities.isKakaduAvailable();
 
-            if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) {
-                    LOGGER.fine("JP2KFormatFactory is availaible.");
-                } else {
-                    LOGGER.fine("JP2KFormatFactory is not availaible.");
-                }
+			if (available) {
+				LOGGER.fine("JP2KFormatFactory is available.");
+			} else {
+				LOGGER.fine("JP2KFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("JP2KFormatFactory is not availaible.");
+                LOGGER.fine("JP2KFormatFactory is not available.");
             }
 
             available = false;

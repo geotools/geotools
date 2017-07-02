@@ -85,9 +85,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
      */
     public JP2KFormat() {
     	setInfo();
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Creating a new JP2KFormat.");
-        }
+        LOGGER.fine("Creating a new JP2KFormat.");
     }
 
     /**
@@ -115,29 +113,20 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints)
+     * @see org.geotools.coverage.grid.io.AbstractGridFormat#getReader(Object, Hints)
      */
     @Override
     public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
         try {
             return new JP2KReader(source, hints);
-        } catch (MismatchedDimensionException e) {
-        	if (LOGGER.isLoggable(Level.WARNING))
-        		LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+        } catch (MismatchedDimensionException|IOException e) {
+            LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
         	return null;
-        } catch (DataSourceException e) {
-        	if (LOGGER.isLoggable(Level.WARNING))
-        		LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-        	return null;
-        } catch (IOException e) {
-        	if (LOGGER.isLoggable(Level.WARNING))
-        		LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-        	return null;
-		} 
+        }
     }
     
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object)
+     * @see org.geotools.coverage.grid.io.AbstractGridFormat#getReader(Object)
      */
     @Override
     public AbstractGridCoverage2DReader getReader( Object source ) {
@@ -145,7 +134,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     }
     
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#createWriter(java.lang.Object
+     * @see org.geotools.coverage.grid.io.AbstractGridFormat#getWriter(java.lang.Object
      *      destination)
      * 
      * Actually, the plugin does not support write capabilities. The method
@@ -158,7 +147,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getDefaultImageIOWriteParameters
+     * @see org.geotools.coverage.grid.io.AbstractGridFormat#getDefaultImageIOWriteParameters
      * 
      * Actually, the plugin does not support write capabilities. The method
      * throws an {@code UnsupportedOperationException}.
@@ -170,7 +159,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#createWriter(java.lang.Object
+     * @see org.geotools.coverage.grid.io.AbstractGridFormat#getWriter(java.lang.Object
      *      destination,Hints hints)
      * 
      * Actually, the plugin does not support write capabilities. The method
@@ -183,7 +172,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#accepts(java.lang.Object input)
+     * @see org.geotools.coverage.grid.io.AbstractGridFormat#accepts(java.lang.Object input)
      */
     @Override
     public boolean accepts(Object input,Hints hints) {
@@ -205,9 +194,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
 			}
             return spi.canDecodeInput(stream);
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
+            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             return false;
         }
     }

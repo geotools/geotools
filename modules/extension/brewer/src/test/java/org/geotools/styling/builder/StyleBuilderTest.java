@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.ExpressionBuilder;
@@ -18,17 +19,18 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
+import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.Halo;
 
 /**
@@ -343,6 +345,14 @@ public class StyleBuilderTest {
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
     }
+    
+    @Test
+    public void testStrokeBuilderDashArrayExpression() {
+        StrokeBuilder b = new StrokeBuilder();
+        assertNull(b.unset().build());
+        assertNotNull(b.reset().build());
+    }
+
 
     @Test
     public void testStyleBuilder() {
@@ -446,6 +456,21 @@ public class StyleBuilderTest {
 
         // now what do we test :-)
     }
+    
+    @Test
+    public void testStrokeBuilderDashArray() {
+        ExpressionBuilder eb = new ExpressionBuilder();
+        StrokeBuilder sb = new StrokeBuilder();
+        Expression expression = (Expression) eb.property("foo").build();
+        Literal literal = (Literal) eb.literal(10).build();
+        sb.dashArray(Arrays.asList(expression, literal));
+        Stroke stroke = sb.build();
+        
+        assertEquals(2, stroke.dashArray().size());
+        assertEquals(expression, stroke.dashArray().get(0));
+        assertEquals(literal, stroke.dashArray().get(1));
+    }
+
 
     /*
      * public void test(){ FeatureTypeFactory factory =

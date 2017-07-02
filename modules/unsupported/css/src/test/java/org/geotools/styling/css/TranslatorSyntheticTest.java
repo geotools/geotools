@@ -1056,6 +1056,30 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(ECQL.toExpression("a * 2"), ls.getPerpendicularOffset());
     }
 
+    @Test
+    public void testDashArraySingleExpression() throws CQLException {
+        String css = "* { stroke: orange; stroke-dasharray: [foo]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Stroke stroke = ls.getStroke();
+        assertEquals(1, stroke.dashArray().size());
+        assertExpression("foo", stroke.dashArray().get(0));
+    }
+    
+    @Test
+    public void testDashArrayMixedExpression() throws CQLException {
+        String css = "* { stroke: orange; stroke-dasharray: [foo] 5 [bar]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Stroke stroke = ls.getStroke();
+        assertEquals(3, stroke.dashArray().size());
+        assertExpression("foo", stroke.dashArray().get(0));
+        assertLiteral("5", stroke.dashArray().get(1));
+        assertExpression("bar", stroke.dashArray().get(2));
+    }
+
     private Function assertTransformation(FeatureTypeStyle fts) {
         Expression ex = fts.getTransformation();
         assertNotNull(ex);

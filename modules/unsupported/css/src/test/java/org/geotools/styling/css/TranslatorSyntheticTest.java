@@ -1132,6 +1132,29 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         }
     }
 
+    @Test
+    public void testDashArraySingleExpression() throws CQLException {
+        String css = "* { stroke: orange; stroke-dasharray: [foo]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Stroke stroke = ls.getStroke();
+        assertEquals(1, stroke.dashArray().size());
+        assertExpression("foo", stroke.dashArray().get(0));
+    }
+    
+    @Test
+    public void testDashArrayMixedExpression() throws CQLException {
+        String css = "* { stroke: orange; stroke-dasharray: [foo] 5 [bar]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Stroke stroke = ls.getStroke();
+        assertEquals(3, stroke.dashArray().size());
+        assertExpression("foo", stroke.dashArray().get(0));
+        assertLiteral("5", stroke.dashArray().get(1));
+        assertExpression("bar", stroke.dashArray().get(2));
+    }
 
     private void assertScaleMinMax(String css, Double min, Double max) {
         Style style = translate(css);

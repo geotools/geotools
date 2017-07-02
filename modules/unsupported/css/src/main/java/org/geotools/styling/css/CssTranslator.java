@@ -1553,15 +1553,51 @@ public class CssTranslator {
                 strokeBuilder.lineJoin(lineJoin);
             }
         }
-        float[] dasharray = getFloatArray(values, "stroke-dasharray", i);
-        if (dasharray != null) {
-            strokeBuilder.dashArray(dasharray);
+        final Value dasharrayValue = getValue(values, "stroke-dasharray", i);
+        if (isLiterals(dasharrayValue)) {
+            float[] dasharray = getFloatArray(values, "stroke-dasharray", i);
+            if (dasharray != null) {
+                strokeBuilder.dashArray(dasharray);
+            }
+        } else if (dasharrayValue instanceof MultiValue) {
+            MultiValue mv = (MultiValue) dasharrayValue;
+            List<Expression> expressions = new ArrayList<>();
+            for (Value v : mv.values) {
+                expressions.add(v.toExpression());
+            }
+            strokeBuilder.dashArray(expressions);
+        } else if (dasharrayValue != null) {
+            List<Expression> expressions = new ArrayList<>();
+            expressions.add(dasharrayValue.toExpression());
+            strokeBuilder.dashArray(expressions);
         }
+        
         Expression dashOffset = getMeasureExpression(values, "stroke-dashoffset", i, "px");
         if (dashOffset != null) {
             strokeBuilder.dashOffset(dashOffset);
         }
 
+    }
+
+    /**
+     * Returns true if the value is a {@link Literal}, or a {@link MultiValue} made of {@link Literal}
+     * @param dasharrayValue
+     * @return
+     */
+    private boolean isLiterals(Value value) {
+        if(value instanceof Literal) {
+            return true;
+        } else if(value instanceof MultiValue) {
+            MultiValue mv = (MultiValue) value;
+            for (Value v : mv.values) {
+                if(!(v instanceof Literal)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

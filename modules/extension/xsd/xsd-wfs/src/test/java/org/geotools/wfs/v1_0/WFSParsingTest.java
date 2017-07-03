@@ -46,6 +46,26 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDSchema;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.util.URLs;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.Parser;
+import org.geotools.xml.Schemas;
+import org.geotools.xml.StreamingParser;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.filter.capability.Operator;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import com.vividsolutions.jts.geom.Point;
+
 import net.opengis.ows10.DCPType;
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.OperationType;
@@ -61,26 +81,6 @@ import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.OperationsType;
 import net.opengis.wfs.TransactionResponseType;
 import net.opengis.wfs.WFSCapabilitiesType;
-
-import org.eclipse.xsd.XSDComplexTypeDefinition;
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDSchema;
-import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.StreamingParser;
-import org.junit.Before;
-import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.capability.Operator;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * 
@@ -351,7 +351,7 @@ public class WFSParsingTest {
         // http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature
         String schemaLocation = doc.getDocumentElement().getAttributeNS(
                 "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
-        String absolutePath = DataUtilities.fileToURL(tmp).toExternalForm();
+        String absolutePath = URLs.fileToUrl(tmp).toExternalForm();
 
         schemaLocation = schemaLocation.replaceAll("http://cite.opengeospatial.org/gmlsf .*",
                 "http://cite.opengeospatial.org/gmlsf " + absolutePath);

@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
@@ -32,6 +31,7 @@ import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 public class IndexerUtils {
@@ -116,7 +116,7 @@ public class IndexerUtils {
                         }
                     } else {
                         final Properties properties = CoverageUtilities
-                            .loadPropertiesFromURL(DataUtilities.fileToURL(configFile));
+                            .loadPropertiesFromURL(URLs.fileToUrl(configFile));
                         if (properties.containsKey("regex")) {
                             value = properties.getProperty("regex");
                         }
@@ -533,7 +533,7 @@ public class IndexerUtils {
             if (Utils.checkFileReadable(indexerFile)) {
                 // load it and parse it
                 final Properties props = CoverageUtilities
-                        .loadPropertiesFromURL(DataUtilities.fileToURL(indexerFile));
+                        .loadPropertiesFromURL(URLs.fileToUrl(indexerFile));
                 indexer = createIndexer(props, params);
             }
         }

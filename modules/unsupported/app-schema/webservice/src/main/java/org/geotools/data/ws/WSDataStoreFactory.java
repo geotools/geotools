@@ -27,11 +27,11 @@ import java.util.logging.Logger;
 
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.ws.protocol.http.HTTPProtocol;
 import org.geotools.data.ws.protocol.http.SimpleHttpProtocol;
 import org.geotools.data.ws.protocol.ws.Version;
 import org.geotools.data.ws.protocol.ws.WSProtocol;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -185,7 +185,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         http.setTryGzip(tryGZIP);
         http.setTimeoutMillis(timeoutMillis);
 
-        InputStream capsIn = new BufferedInputStream(new FileInputStream(DataUtilities.urlToFile(capabilitiesDirectory)));
+        InputStream capsIn = new BufferedInputStream(new FileInputStream(URLs.urlToFile(capabilitiesDirectory)));
 
         WSStrategy strategy = determineCorrectStrategy(templateDirectory, templateName);
         WS_Protocol ws = new WS_Protocol(capsIn, strategy, getQueryRequest, http);

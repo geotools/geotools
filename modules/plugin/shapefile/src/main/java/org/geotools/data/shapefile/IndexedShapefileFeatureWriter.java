@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.FIX;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,12 +25,12 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.fid.FidIndexer;
 import org.geotools.data.shapefile.fid.IndexedFidWriter;
 import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.StorageFile;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -130,7 +130,7 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
     private void deleteFile(ShpFileType shpFileType) {
         URL url = shpFiles.acquireWrite(shpFileType, this);
         try {
-            File toDelete = DataUtilities.urlToFile(url);
+            File toDelete = URLs.urlToFile(url);
 
             if (toDelete.exists()) {
                 toDelete.delete();

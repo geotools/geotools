@@ -155,7 +155,7 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
         File file = null;
         try {
             this.sourceURL = Utils.checkSource(source);
-            source = DataUtilities.urlToFile(sourceURL);
+            source = URLs.urlToFile(sourceURL);
             if (source instanceof File){
                 file = (File) source;
                 rootPath = FilenameUtils.getFullPath(FilenameUtils.normalizeNoEndSeparator(file.getAbsolutePath()) + Utils.SEPARATOR);

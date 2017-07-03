@@ -17,9 +17,6 @@
  */
 package org.geotools.gce.arcgrid;
 
-import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata;
-import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
@@ -62,7 +59,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
@@ -71,6 +67,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
+import org.geotools.util.URLs;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -85,6 +82,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.vividsolutions.jts.io.InStream;
+
+import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata;
+import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
 
 /**
  * This class can read an arc grid data source (ArcGrid or GRASS ASCII) and
@@ -235,7 +235,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
             // URL that point to a file
             final URL sourceURL = ((URL) input);
             if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
-                this.source = input = DataUtilities.urlToFile(sourceURL);
+                this.source = input = URLs.urlToFile(sourceURL);
 
             }
         }

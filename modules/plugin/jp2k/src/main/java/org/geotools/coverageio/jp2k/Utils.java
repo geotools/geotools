@@ -16,9 +16,6 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -27,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
@@ -35,7 +31,10 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+
+import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 
 /**
  * Sparse utilities for the various classes. I use them to extract
@@ -66,7 +65,7 @@ class Utils {
 		// check if we have to build the index
 		if (source instanceof URL) {
 			sourceURL = ((URL) source);
-			source = DataUtilities.urlToFile(sourceURL);
+			source = URLs.urlToFile(sourceURL);
 		} else if (source instanceof String) {
 			// is it a File?
 			final String tempSource = (String) source;
@@ -75,13 +74,13 @@ class Utils {
 				// is it a URL
 				try {
 					sourceURL = new URL(tempSource);
-					source = DataUtilities.urlToFile(sourceURL);
+					source = URLs.urlToFile(sourceURL);
 				} catch (MalformedURLException e) {
 					sourceURL = null;
 					source = null;
 				}
 			} else {
-			    	sourceURL =  DataUtilities.fileToURL(tempFile); 
+			    	sourceURL =  URLs.fileToUrl(tempFile); 
 				source = tempFile;
 			}
 		} else if (source instanceof FileImageInputStreamExt) {

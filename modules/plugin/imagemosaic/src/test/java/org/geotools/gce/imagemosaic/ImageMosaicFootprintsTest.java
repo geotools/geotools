@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Transparency;
-import java.awt.geom.Point2D;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -58,6 +57,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -101,7 +101,7 @@ public class ImageMosaicFootprintsTest {
         // create the base mosaic we are going to use
         File mosaicSource = TestData.file(this,"rgb");
         FileUtils.copyDirectory(mosaicSource, testMosaic);
-        testMosaicUrl = DataUtilities.fileToURL(testMosaic);
+        testMosaicUrl = URLs.fileToUrl(testMosaic);
         
         // footprint source
         footprintsSource = TestData.file(this,"rgb-footprints");
@@ -118,7 +118,7 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testWkbSidecars() throws Exception {
         // create wkb sidecar files
-        ShapefileDataStore ds = new ShapefileDataStore(DataUtilities.fileToURL(new File(
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(new File(
                 footprintsSource, "footprints.shp")));
         ds.getFeatureSource().getFeatures().accepts(new FeatureVisitor() {
 
@@ -144,7 +144,7 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testWktSidecars() throws Exception {
         // create wkb sidecar files
-        ShapefileDataStore ds = new ShapefileDataStore(DataUtilities.fileToURL(new File(
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(new File(
                 footprintsSource, "footprints.shp")));
         ds.getFeatureSource().getFeatures().accepts(new FeatureVisitor() {
 
@@ -170,7 +170,7 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testShapefileSidecars() throws Exception {
         // create wkb sidecar files
-        ShapefileDataStore ds = new ShapefileDataStore(DataUtilities.fileToURL(new File(
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(new File(
                 footprintsSource, "footprints.shp")));
         ds.getFeatureSource().getFeatures().accepts(new FeatureVisitor() {
 
@@ -184,7 +184,7 @@ public class ImageMosaicFootprintsTest {
                     String filename = fileName.substring(0, idx);
                     File shpFile = new File(testMosaic, filename + ".shp");
                     ShapefileDataStore sds = new ShapefileDataStore(
-                            DataUtilities.fileToURL(shpFile));
+                            URLs.fileToUrl(shpFile));
                     SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
                     tb.setName(filename);
                     GeometryDescriptor gd = sf.getFeatureType().getGeometryDescriptor();
@@ -881,7 +881,7 @@ public class ImageMosaicFootprintsTest {
         // create the base mosaic we are going to use
         File mosaicSourceRaster = TestData.file(this, path);
         FileUtils.copyDirectory(mosaicSourceRaster, testMosaicRaster);
-        URL testMosaicRasterUrl = DataUtilities.fileToURL(testMosaicRaster);
+        URL testMosaicRasterUrl = URLs.fileToUrl(testMosaicRaster);
         // copy the footprints mosaic properties
         Properties p = new Properties();
         // Setting Raster property

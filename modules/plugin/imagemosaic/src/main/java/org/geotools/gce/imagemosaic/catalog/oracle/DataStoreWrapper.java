@@ -50,6 +50,7 @@ import org.geotools.data.transform.Definition;
 import org.geotools.data.transform.TransformFactory;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -121,7 +122,7 @@ public abstract class DataStoreWrapper implements DataStore {
         URL url;
         try {
             url = new URL(auxFolderPath);
-            File file = DataUtilities.urlToFile(url);
+            File file = URLs.urlToFile(url);
             if (!file.exists()) {
                 // Pre-create folder when missing
                 file.mkdir();

@@ -62,7 +62,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
@@ -74,6 +73,7 @@ import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -205,7 +205,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		// ///////////////////////////////////////////////////////////
 		final String filename;
 
-		filename = DataUtilities.urlToFile(urlToUse).getName();
+		filename = URLs.urlToFile(urlToUse).getName();
 
 		boolean recognized = false;
 		boolean extUpperCase = false;
@@ -446,7 +446,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		//
 		// /////////////////////////////////////////////////////////////////////
 		// trying to create a channel to the file to read
-		final File file = DataUtilities.urlToFile(demURL);
+		final File file = URLs.urlToFile(demURL);
 		final ImageInputStream iis = ImageIO.createImageInputStream(file);
 		if (header.getByteOrder().compareToIgnoreCase("M") == 0) {
 			iis.setByteOrder(ByteOrder.BIG_ENDIAN);
@@ -538,7 +538,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		BufferedReader reader = null;
 		try {
 			// getting a reader
-			reader = new BufferedReader(new FileReader(DataUtilities.urlToFile(prjURL)));
+			reader = new BufferedReader(new FileReader(URLs.urlToFile(prjURL)));
 
 			// reading the first line to see if I need to read it all
 			final StringBuilder buffer = new StringBuilder(reader.readLine());

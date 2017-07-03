@@ -26,8 +26,8 @@ import org.geotools.coverage.grid.io.footprint.FootprintGeometryProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
-import org.geotools.data.DataUtilities;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.util.URLs;
 import org.opengis.filter.Filter;
 
 /**
@@ -95,7 +95,7 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                         + shapefile.getCanonicalPath() + " but the file was not found");
             } else {
                 final Map<String, Serializable> params = new HashMap<String, Serializable>();
-                params.put("url", DataUtilities.fileToURL(shapefile));
+                params.put("url", URLs.fileToUrl(shapefile));
                 String cql = (String) properties.get(FILTER_PROPERTY);
                 Filter filter = null;
                 if (cql != null) {

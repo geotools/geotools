@@ -36,7 +36,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.ServiceInfo;
@@ -45,6 +44,7 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -109,7 +109,7 @@ public class ImageMosaicRepositoryTest {
 
         DefaultRepository repository = new DefaultRepository();
         ShapefileDataStore ds = new ShapefileDataStore(
-                DataUtilities.fileToURL(new File(testDirectory, "test.shp")));
+                URLs.fileToUrl(new File(testDirectory, "test.shp")));
         repository.register("test", ds);
 
         // now re-init from the existing shapefile data store
@@ -164,7 +164,7 @@ public class ImageMosaicRepositoryTest {
 
         DefaultRepository repository = new DefaultRepository();
         ShapefileDataStore ds = new ShapefileDataStore(
-                DataUtilities.fileToURL(new File(testDirectory, "test.shp")));
+                URLs.fileToUrl(new File(testDirectory, "test.shp")));
         Name name = new NameImpl("foo", "test");
         TestDataAccess dataAccess = new TestDataAccess(name, ds);
         repository.register(name, dataAccess);
@@ -209,7 +209,7 @@ public class ImageMosaicRepositoryTest {
         // setup a directory data store of shapefiles
         DefaultRepository repository = new DefaultRepository();
         final Map<String, Serializable> params = Collections.singletonMap(
-                ShapefileDataStoreFactory.URLP.key, DataUtilities.fileToURL(testDirectory));
+                ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(testDirectory));
         DataStore ds = new ShapefileDataStoreFactory().createDataStore(params);
         assertNotNull(ds);
         repository.register("test", ds);

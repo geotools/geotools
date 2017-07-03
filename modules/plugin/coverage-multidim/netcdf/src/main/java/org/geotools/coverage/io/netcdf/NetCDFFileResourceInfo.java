@@ -31,7 +31,6 @@ import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
 import org.geotools.data.CloseableIterator;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
@@ -43,6 +42,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
+import org.geotools.util.URLs;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
@@ -66,7 +66,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
 
         public WrappedCoverageSlicesToFileGroupIterator(List<CoverageSlice> slices) {
             super(slices);
-            file = DataUtilities.urlToFile(sourceURL);
+            file = URLs.urlToFile(sourceURL);
             location = file.getAbsolutePath();
         }
 
@@ -98,7 +98,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
             relevantSlices.add(next);
             File file = null;
             if (sourceURL != null) {
-                file = DataUtilities.urlToFile(sourceURL);
+                file = URLs.urlToFile(sourceURL);
                 if (file != null && file.exists()) {
                     groupedFeatures++;
                 }
@@ -182,7 +182,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
         public FileGroup next() {
             File file = null;
             if (sourceURL != null) {
-                file = DataUtilities.urlToFile(sourceURL);
+                file = URLs.urlToFile(sourceURL);
                 if (file == null || !file.exists()) {
                     throw new IllegalArgumentException("Unable to get a FileGroup on top of file:  "
                             + file);

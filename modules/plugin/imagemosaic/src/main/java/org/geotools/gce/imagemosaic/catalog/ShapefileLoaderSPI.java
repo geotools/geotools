@@ -21,9 +21,9 @@ import java.io.IOException;
 
 import org.geotools.coverage.grid.io.footprint.FootprintLoader;
 import org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -44,7 +44,7 @@ public class ShapefileLoaderSPI implements FootprintLoaderSpi {
         public Geometry loadFootprint(String pathNoExtension) throws Exception {
             File file = new File(pathNoExtension + ".shp");
             if (file.exists()) {
-                ShapefileDataStore ds = new ShapefileDataStore(DataUtilities.fileToURL(file));
+                ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(file));
                 SimpleFeatureIterator fi = null;
                 try {
                     fi = ds.getFeatureSource().getFeatures().features();

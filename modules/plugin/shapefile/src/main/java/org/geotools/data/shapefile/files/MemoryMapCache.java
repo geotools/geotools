@@ -27,10 +27,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.resources.NIOUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.SoftValueHashMap.ValueCleaner;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -51,7 +51,7 @@ class MemoryMapCache {
 			return wrapped.map(mode, position, size);
 		}
 		
-		File file = DataUtilities.urlToFile(url).getCanonicalFile();
+		File file = URLs.urlToFile(url).getCanonicalFile();
 		MappingKey mk = new MappingKey(file, position, size);
 		MappedByteBuffer buffer = buffers.get(mk);
 		if(buffer == null) {
@@ -81,7 +81,7 @@ class MemoryMapCache {
 	 */
 	void cleanFileCache(URL url) {
 	    try {
-    	    final File rawFile = DataUtilities.urlToFile(url);
+    	    final File rawFile = URLs.urlToFile(url);
     	    if(rawFile == null) {
     	        // not a local file
     	        return;

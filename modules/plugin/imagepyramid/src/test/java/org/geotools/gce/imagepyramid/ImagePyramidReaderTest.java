@@ -43,7 +43,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.GeneralEnvelope;
@@ -52,8 +51,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
-import org.junit.After;
-import org.junit.Assert;
+import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -89,7 +87,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     @Test
     public void testAutomaticBuild() throws IOException {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
-        File sourceDir = DataUtilities.urlToFile(testFile).getParentFile();
+        File sourceDir = URLs.urlToFile(testFile).getParentFile();
         File targetDir = File.createTempFile("pyramid", "tst", TestData.file(this, "."));
         targetDir.delete();
         targetDir.mkdir();
@@ -119,7 +117,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     @Test
     public void testAutomaticBuildGdalRetile() throws IOException {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
-        File sourceDir = DataUtilities.urlToFile(testFile).getParentFile();
+        File sourceDir = URLs.urlToFile(testFile).getParentFile();
         File targetDir = File.createTempFile("pyramid", "tst", TestData.file(this, "."));
         targetDir.delete();
         targetDir.mkdir();
@@ -852,7 +850,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         // Get the resource.
         //
         final URL testFile = TestData.getResource(this, "multipyramid");
-        File mosaicFolder = DataUtilities.urlToFile(testFile);
+        File mosaicFolder = URLs.urlToFile(testFile);
         assertNotNull(testFile);
         File[] pyramidLevels = mosaicFolder.listFiles((FileFilter)FileFilterUtils.directoryFileFilter());
         for (File pyramidLevel : pyramidLevels) {

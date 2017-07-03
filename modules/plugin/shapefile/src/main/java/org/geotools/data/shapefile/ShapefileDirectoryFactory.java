@@ -20,7 +20,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 
 /**
  * Creates a directory datastore pointing to a directory of shapefiles
@@ -50,7 +50,7 @@ public class ShapefileDirectoryFactory extends ShapefileDataStoreFactory {
         if (super.canProcess(params)) {
             try {
                 URL url = (URL) URLP.lookUp(params);
-                File f = DataUtilities.urlToFile(url);
+                File f = URLs.urlToFile(url);
                 return f != null && f.exists() && f.isDirectory();
             } catch (Exception e) {
                 return false;

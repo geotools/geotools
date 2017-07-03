@@ -81,9 +81,7 @@ import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
-import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -99,6 +97,9 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
+import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
 
 /**
  * A granuleDescriptor is a single piece of the mosaic, with its own overviews and everything.
@@ -346,7 +347,7 @@ public class GranuleDescriptor {
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
-        File granuleFile = DataUtilities.urlToFile(granuleUrl);
+        File granuleFile = URLs.urlToFile(granuleUrl);
         AbstractGridFormat format = GridFormatFinder.findFormat(granuleFile, EXCLUDE_MOSAIC);
         // create the base grid to world transformation
         AbstractGridCoverage2DReader gcReader = null;
@@ -380,7 +381,7 @@ public class GranuleDescriptor {
             inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(),
                     ImageIO.getCacheDirectory());
             if (inStream == null) {
-                final File file = DataUtilities.urlToFile(granuleUrl);
+                final File file = URLs.urlToFile(granuleUrl);
                 if (file != null) {
                     if (LOGGER.isLoggable(Level.WARNING)) {
                         LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
@@ -508,7 +509,7 @@ public class GranuleDescriptor {
      * @throws IOException
      */
     private void checkPamDataset() throws IOException {
-        final File file = DataUtilities.urlToFile(granuleUrl);
+        final File file = URLs.urlToFile(granuleUrl);
         final String path = file.getCanonicalPath();
         final String auxFile = path + AUXFILE_EXT;
         pamDataset = pamParser.parsePAM(auxFile);
@@ -595,7 +596,7 @@ public class GranuleDescriptor {
             final boolean handleArtifactsFiltering, final Hints hints) {
 
         this.maxDecimationFactor = maxDecimationFactor;
-        final URL rasterFile = DataUtilities.fileToURL(new File(granuleLocation));
+        final URL rasterFile = URLs.fileToUrl(new File(granuleLocation));
 
         if (rasterFile == null) {
             return;

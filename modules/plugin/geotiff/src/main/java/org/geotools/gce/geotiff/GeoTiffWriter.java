@@ -16,10 +16,6 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -53,7 +49,6 @@ import org.geotools.coverage.grid.io.imageio.geotiff.CRS2GeoTiffMetadataAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.WorldFileWriter;
 import org.geotools.factory.Hints;
 import org.geotools.image.io.GridCoverageWriterProgressAdapter;
@@ -63,6 +58,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -79,6 +75,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.util.ProgressListener;
+
+import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
 
 /**
  * {@link AbstractGridCoverageWriter} implementation for the geotiff format.
@@ -135,7 +135,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
                 else if (destination instanceof URL) {
                         final URL dest = (URL) destination;
                         if (dest.getProtocol().equalsIgnoreCase("file")) {
-                                final File destFile = DataUtilities.urlToFile(dest);
+                                final File destFile = URLs.urlToFile(dest);
                                 this.outStream = ImageIOExt.createImageOutputStream(null, destFile);
                         }
 

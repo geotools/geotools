@@ -34,10 +34,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.util.URLs;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
@@ -345,7 +345,7 @@ public class ShapefileDumperTest {
         }
 
         // extract the features
-        ShapefileDataStore ds = new ShapefileDataStore(DataUtilities.fileToURL(shp));
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(shp));
         shapefileStores.add(ds);
         return ds.getFeatureSource().getFeatures();
     }

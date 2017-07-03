@@ -20,7 +20,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 
 /**
  * Default locator for online resources. Searches by absolute URL, relative
@@ -45,7 +45,7 @@ public class DefaultResourceLocator implements ResourceLocator {
         try {
             url = new URL(uri);
             
-            File f = DataUtilities.urlToFile(url);
+            File f = URLs.urlToFile(url);
             if (f != null && !f.isAbsolute()) {
                 //ok, relative url, if the file exists when we are ok
                 if (!f.exists() && sourceUrl != null) {
@@ -74,7 +74,7 @@ public class DefaultResourceLocator implements ResourceLocator {
 
     protected URL validateRelativeURL(URL relativeUrl) {
         File f;
-        f = DataUtilities.urlToFile(relativeUrl);
+        f = URLs.urlToFile(relativeUrl);
         if (f.exists()) {
             // bingo!
             return relativeUrl;

@@ -31,9 +31,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.data.Parameter;
+import org.geotools.util.URLs;
 
 /**
  * Widget for File; provides a "Browse" button to open a file dialog.
@@ -115,7 +115,7 @@ public class JFileField extends ParamField {
         }
         try {
             URL url = new URL(txt);
-            return DataUtilities.urlToFile(url);
+            return URLs.urlToFile(url);
         } catch (MalformedURLException e) {
         }
         return null; // not a file

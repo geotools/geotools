@@ -16,7 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
@@ -24,7 +25,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,6 @@ import java.util.logging.Logger;
 
 import javax.media.jai.ImageLayout;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -61,7 +60,6 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -96,6 +94,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Range;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -1084,7 +1083,7 @@ public class RasterManager implements Cloneable {
             URL sourceURL = parentReader.sourceURL;
             if (sourceURL.getPath().endsWith("shp")) {
                 typeName = FilenameUtils
-                        .getBaseName(DataUtilities.urlToFile(sourceURL).getCanonicalPath());
+                        .getBaseName(URLs.urlToFile(sourceURL).getCanonicalPath());
             } else {
                 typeName = configuration.getName();
             }
@@ -1108,7 +1107,7 @@ public class RasterManager implements Cloneable {
         }
 
         final URL baseURL = this.parentReader.sourceURL;
-        final File baseFile = DataUtilities.urlToFile(baseURL);
+        final File baseFile = URLs.urlToFile(baseURL);
         // in case we do not manage to convert the source URL we leave right awaycd sr
         if (baseFile == null) {
             if (LOGGER.isLoggable(Level.FINE))
@@ -1392,7 +1391,7 @@ public class RasterManager implements Cloneable {
 
         for (String feature : features) {
             final URL rasterPath = pathType.resolvePath(
-                    DataUtilities.fileToURL(parentReader.parentDirectory).toString(), feature);
+                    URLs.fileToUrl(parentReader.parentDirectory).toString(), feature);
             boolean delete = true;
             if (checkForReferences) {
                 delete = !checkForReferences(coverageName);
@@ -1412,7 +1411,7 @@ public class RasterManager implements Cloneable {
                         }
                     } else if (deleteData) {
                         final boolean removed = FileUtils
-                                .deleteQuietly(DataUtilities.urlToFile(rasterPath));
+                                .deleteQuietly(URLs.urlToFile(rasterPath));
                     }
                 } finally {
                     if (coverageReader != null) {

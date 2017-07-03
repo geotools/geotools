@@ -49,10 +49,10 @@ import javax.media.jai.PlanarImage;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
@@ -922,7 +922,7 @@ public class Import extends AbstractCmd {
 				return true;
 			} else if (typ == ImportTyp.DIR) {
 				if (currentLocation == null) {
-					File dir = DataUtilities.urlToFile(directoryURL);
+					File dir = URLs.urlToFile(directoryURL);
 					imageFiles = dir.listFiles(new ImageFilter(extension));
 					if (imageFiles == null) {
 						logInfo("No files found in: " + dir.getPath()

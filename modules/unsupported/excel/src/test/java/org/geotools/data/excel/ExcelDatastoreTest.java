@@ -29,18 +29,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.geotools.data.DataTestCase;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
+import org.geotools.data.DataTestCase;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -83,7 +82,7 @@ public class ExcelDatastoreTest extends DataTestCase {
                 System.out.println("testing "+f);
                 File file = TestData.file(this, f);
                 HashMap<String, Serializable> params = new HashMap<String, Serializable>();
-                java.net.URL url = DataUtilities.fileToURL(file);
+                java.net.URL url = URLs.fileToUrl(file);
                 //System.out.println(url);
                 int idx = f.lastIndexOf('.');
                 String props = f.substring(0, idx) + ".props";
@@ -135,7 +134,7 @@ public class ExcelDatastoreTest extends DataTestCase {
     public void testExcelDatastore() throws IOException {
         File file = TestData.file(this, "locations.xls");
 
-        java.net.URL url = DataUtilities.fileToURL(file);
+        java.net.URL url = URLs.fileToUrl(file);
         Iterator<DataStoreFactorySpi> it = DataStoreFinder.getAvailableDataStores();
         int count = 0;
         while (it.hasNext()) {

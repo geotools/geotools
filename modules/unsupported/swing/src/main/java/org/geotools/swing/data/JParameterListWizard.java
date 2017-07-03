@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.swing.wizard.JWizard;
+import org.geotools.util.URLs;
 
 /**
  * Wizard prompting the user to enter or review connection parameters.
@@ -192,14 +192,14 @@ public class JParameterListWizard extends JWizard {
      * parameters as a File, if present. Equivalent to:
      * <pre><code>
      *     URL url = (URL) myWizard.getConnectionParameters().get("url");
-     *     File file = DataUtilities.urlToFile(url);
+     *     File file = URLs.urlToFile(url);
      * </code></pre>
      *
      * @return url parameter as a File, or null if not applicable
      */
     public File getFile() {
         URL url = (URL) connectionParameters.get("url");
-        return DataUtilities.urlToFile(url);
+        return URLs.urlToFile(url);
     }
 
 }

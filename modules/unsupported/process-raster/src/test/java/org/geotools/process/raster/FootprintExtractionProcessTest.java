@@ -45,7 +45,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
@@ -61,6 +60,7 @@ import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.Range;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.junit.Before;
 import org.junit.Test;
@@ -177,7 +177,7 @@ public class FootprintExtractionProcessTest {
                 // Preparing creation param
                 final Map<String, Serializable> params = new HashMap<String, Serializable>();
                 params.put(CREATE_SPATIAL_INDEX, Boolean.TRUE);
-                params.put("url", DataUtilities.fileToURL(outputFile));
+                params.put("url", URLs.fileToUrl(outputFile));
 
                 final ShapefileDataStore ds = (ShapefileDataStore) factory
                         .createNewDataStore(params);

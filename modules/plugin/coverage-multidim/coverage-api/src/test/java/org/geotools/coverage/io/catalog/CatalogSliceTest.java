@@ -40,6 +40,7 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
@@ -214,7 +215,7 @@ public class CatalogSliceTest extends Assert{
         params.put("ScanTypeNames", Boolean.valueOf(true));
         // H2 database URLs must not be percent-encoded: see GEOT-4504
         final URL url = new URL("file:"
-                + DataUtilities.urlToFile(TestData.url(this,
+                + URLs.urlToFile(TestData.url(this,
                         ".IASI_C_EUMP_20121120062959_31590_eps_o_l2")));
         params.put("ParentLocation", url);
         params.put("database", url + "/IASI_C_EUMP_20121120062959_31590_eps_o_l2");

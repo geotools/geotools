@@ -68,6 +68,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -1143,7 +1144,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testMultiCoverage() throws Exception {
         File testDir = new File("target", "multi-coverage");
-        URL testUrl = DataUtilities.fileToURL(testDir);
+        URL testUrl = URLs.fileToUrl(testDir);
         if (testDir.exists()) {
             FileUtils.deleteDirectory(testDir);
         }

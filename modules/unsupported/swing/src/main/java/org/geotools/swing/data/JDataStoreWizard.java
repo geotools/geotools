@@ -22,11 +22,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
-import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.FileDataStoreFinder;
 import org.geotools.swing.wizard.JWizard;
+import org.geotools.util.URLs;
 
 /**
  * Wizard prompting the user to enter or review connection parameters.
@@ -184,7 +184,7 @@ public class JDataStoreWizard extends JWizard {
      */
     public File getFile(){
         URL url = (URL) connectionParameters.get("url");
-        return DataUtilities.urlToFile(url);
+        return URLs.urlToFile(url);
     }
     /**
      * @param format2

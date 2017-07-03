@@ -15,8 +15,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.gce.imagemosaic;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -34,7 +32,6 @@ import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
 import org.geotools.geometry.GeneralEnvelope;
@@ -45,7 +42,7 @@ import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.test.TestData;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
+import org.geotools.util.URLs;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.geometry.BoundingBox;
@@ -55,6 +52,9 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
+
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 /**
  * Testing {@link GranuleDescriptor} class.
@@ -95,7 +95,7 @@ public class GranuleTest extends Assert {
 		testUrl.openStream().close();
 		
 		//Create a GranuleDescriptor
-		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(DataUtilities.urlToFile(testUrl).getAbsolutePath()
+		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(URLs.urlToFile(testUrl).getAbsolutePath()
 		        , TEST_BBOX, spi, (MultiLevelROI) null);
 		assertNotNull(granuleDescriptor.toString());
 		
@@ -150,7 +150,7 @@ public class GranuleTest extends Assert {
 		final URL testUrl= TestData.url(this, "/rgb/global_mosaic_12.png");
 		testUrl.openStream().close();
 		
-		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(DataUtilities.urlToFile(testUrl).getAbsolutePath()
+		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(URLs.urlToFile(testUrl).getAbsolutePath()
                         , TEST_BBOX, spi, (MultiLevelROI) null);
 		final GranuleOverviewLevelDescriptor granuleOverviewLevelDescriptor = granuleDescriptor.getLevel(0);
 		assertNotNull(granuleOverviewLevelDescriptor);

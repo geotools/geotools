@@ -36,6 +36,7 @@ import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 
@@ -134,8 +135,8 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
     private NADConGridShift loadGridShiftInternal(URL latGridURL, URL longGridURL)
             throws FactoryException {
         // decide if text or binary grid will be used
-        String latGridName = DataUtilities.urlToFile(latGridURL).getPath();
-        String longGridName = DataUtilities.urlToFile(longGridURL).getPath();
+        String latGridName = URLs.urlToFile(latGridURL).getPath();
+        String longGridName = URLs.urlToFile(longGridURL).getPath();
         try {
             if ((latGridName.endsWith(".las") && longGridName.endsWith(".los"))
                     || (latGridName.endsWith(".LAS") && longGridName.endsWith(".LOS"))) {
@@ -327,7 +328,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         ReadableByteChannel channel = null;
 
         if (url.getProtocol().equals("file")) {
-            File file = DataUtilities.urlToFile(url);
+            File file = URLs.urlToFile(url);
 
             if (!file.exists() || !file.canRead()) {
                 throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));

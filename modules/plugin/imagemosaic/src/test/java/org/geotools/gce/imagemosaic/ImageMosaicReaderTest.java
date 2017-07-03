@@ -30,7 +30,6 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
-import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
@@ -98,7 +97,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -119,7 +117,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.jaitools.imageutils.ImageUtils;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -1176,7 +1174,7 @@ public class ImageMosaicReaderTest extends Assert{
         String[] metadataNames = reader.getMetadataNames();
         assertNull(metadataNames);
 
-        File source = DataUtilities.urlToFile(timeRangesURL);
+        File source = URLs.urlToFile(timeRangesURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"singleHarvest1");
         if(directory1.exists()) {
@@ -1185,7 +1183,7 @@ public class ImageMosaicReaderTest extends Assert{
         FileUtils.copyDirectory(source, directory1);
         
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         File renamed = new File(directory1, "temp_020_099_20081101T000000_20081104T000000.tiff");
         
         
@@ -1298,7 +1296,7 @@ public class ImageMosaicReaderTest extends Assert{
                 .copyFile(TestData.file(this, "watertemp.zip"), new File(tempDir, "watertemp.zip"));
         TestData.unzipFile(this, "water_temp4/watertemp.zip");
         final URL timeElevURL = TestData.url(this, "water_temp4");
-        File source = DataUtilities.urlToFile(timeElevURL);
+        File source = URLs.urlToFile(timeElevURL);
         File testDataDir = TestData.file(this, ".");
         File directory1 = new File(testDataDir, "singleHarvest2");
         if (directory1.exists()) {
@@ -1307,7 +1305,7 @@ public class ImageMosaicReaderTest extends Assert{
         FileUtils.copyDirectory(source, directory1);
 
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         File renamed = new File(directory1, "NCOM_wattemp_000_20081031T0000000_12.tiff");
 
         try {
@@ -1444,11 +1442,11 @@ public class ImageMosaicReaderTest extends Assert{
         
 
         // Get the properties file and check if the SuggestedSPI parameter is set
-        File covFile = DataUtilities.urlToFile(timeAdditionalDomainsRangeURL);
+        File covFile = URLs.urlToFile(timeAdditionalDomainsRangeURL);
         File propFile = new File(covFile, "time_domainsRanges.properties");
         // Ensure the file exists
         assertTrue(propFile.exists());
-        Properties props = CoverageUtilities.loadPropertiesFromURL(DataUtilities.fileToURL(propFile));
+        Properties props = CoverageUtilities.loadPropertiesFromURL(URLs.fileToUrl(propFile));
         // ImageReaderSpi property
         String suggestedSpi = props.getProperty(Utils.Prop.SUGGESTED_SPI);
         // Check if the property exists
@@ -2331,7 +2329,7 @@ public class ImageMosaicReaderTest extends Assert{
     
     @Test
     public void testHarvestSingleFile() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"singleHarvest1");
         File directory2 = new File(testDataDir,"singleHarvest2");
@@ -2358,7 +2356,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertTrue(monthFive.renameTo(renamed));
         
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -2409,7 +2407,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testHarvestSpatial() throws Exception {
-        File source = DataUtilities.urlToFile(rgbURL);
+        File source = URLs.urlToFile(rgbURL);
         File testDataDir = TestData.file(this, ".");
         File directory1 = new File(testDataDir, "rgbHarvest1");
         File directory2 = new File(testDataDir, "rgbHarvest2");
@@ -2429,7 +2427,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
 
         // crate a mosaic
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GeneralEnvelope singleGranuleEnvelope = reader.getOriginalEnvelope();
@@ -2477,7 +2475,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testHarvestSingleFileRGBA() throws Exception {
-        File source = DataUtilities.urlToFile(rgbAURLTiff);
+        File source = URLs.urlToFile(rgbAURLTiff);
         File testDataDir = TestData.file(this, ".");
         File directory1 = new File(testDataDir, "singleHarvestRGBA1");
         File directory2 = new File(testDataDir, "singleHarvestRGBA2");
@@ -2500,7 +2498,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertTrue(monthFive.renameTo(renamed));
 
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -2538,7 +2536,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testHarvestMultipleFiles() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"harvest1");
         File directory2 = new File(testDataDir,"harvest2");
@@ -2565,7 +2563,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // ok, let's create a mosaic with the two original granules
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -2597,7 +2595,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testHarvestPalette() throws Exception {
-        File source = DataUtilities.urlToFile(index2URL);
+        File source = URLs.urlToFile(index2URL);
         File testDataDir = TestData.file(this, ".");
         File directory1 = new File(testDataDir,"mosaic");
         File directory2 = new File(testDataDir,"singleHarvest");
@@ -2618,7 +2616,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // ok, let's create a mosaic 
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL, null);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -2646,7 +2644,7 @@ public class ImageMosaicReaderTest extends Assert{
     
     @Test
     public void testHarvestDirectory() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"harvest1");
         File directory2 = new File(testDataDir,"harvest2");
@@ -2669,7 +2667,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // ok, let's create a mosaic with the two original granules
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -2701,7 +2699,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testHarvestListSingleDirectory() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"harvest1");
         File directory2 = new File(testDataDir,"harvest2");
@@ -2728,7 +2726,7 @@ public class ImageMosaicReaderTest extends Assert{
         files.add(directory2);
 
         // ok, let's create a mosaic with the two original granules
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -2760,7 +2758,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testHarvestListSingleFile() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"singleHarvest1");
         File directory2 = new File(testDataDir,"singleHarvest2");
@@ -2791,7 +2789,7 @@ public class ImageMosaicReaderTest extends Assert{
         files.add(renamed);
 
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -3048,7 +3046,7 @@ public class ImageMosaicReaderTest extends Assert{
     
     @Test
     public void testHarvestError() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory = new File(testDataDir,"harvest-error");
         if(directory.exists()) {
@@ -3065,7 +3063,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
         
         // ok, let's create a mosaic with the original granule
-        URL harvestSingleURL = DataUtilities.fileToURL(directory);
+        URL harvestSingleURL = URLs.fileToUrl(directory);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -3092,7 +3090,7 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testHarvestWithExternalMosaicDir() throws Exception {
 
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File directory1 = new File(testDataDir,"externalindex");
         File directory2 = new File(testDataDir,"singleHarvest2");
@@ -3145,7 +3143,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertTrue(monthFive.renameTo(renamed));
 
         // ok, let's create a mosaic with a single granule and check its times
-        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
         GranuleCatalog originalCatalog = reader.granuleCatalog;
@@ -3200,7 +3198,7 @@ public class ImageMosaicReaderTest extends Assert{
     
     @Test
     public void testSetupExternalMosaicDir() throws Exception {
-        File source = DataUtilities.urlToFile(timeURL);
+        File source = URLs.urlToFile(timeURL);
         File testDataDir= TestData.file(this, ".");
         File data = new File(testDataDir,"externaldata");
         File mosaic = new File(testDataDir,"mosaicexternal");
@@ -3246,7 +3244,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
 
         // ok, let's create the mosaic and check it harvested the data in the "data" directory
-        URL mosaicURL = DataUtilities.fileToURL(mosaic);
+        URL mosaicURL = URLs.fileToUrl(mosaic);
         final AbstractGridFormat format = TestUtils.getFormat(mosaicURL);
         ImageMosaicReader reader = TestUtils.getReader(mosaicURL, format);
         try {
@@ -3469,7 +3467,7 @@ public class ImageMosaicReaderTest extends Assert{
         FileUtils
                 .copyFile(TestData.file(this, zipFile), new File(workDir, zipFile));
         TestData.unzipFile(this, folder + File.separatorChar + zipFile);
-        final URL timeElevURL = DataUtilities.fileToURL(workDir);
+        final URL timeElevURL = URLs.fileToUrl(workDir);
 //
 
 
@@ -3653,7 +3651,7 @@ public class ImageMosaicReaderTest extends Assert{
         URL testURL = TestData.url(this, "index_palette/");
         Assert.assertNotNull(testURL);
 
-        File currentDir = DataUtilities.urlToFile(testURL);
+        File currentDir = URLs.urlToFile(testURL);
 
         // Get the reader
         final AbstractGridFormat format = TestUtils.getFormat(testURL);
@@ -3717,7 +3715,7 @@ public class ImageMosaicReaderTest extends Assert{
 
         File mosaicSource = TestData.file(this, "index_palette");
         FileUtils.copyDirectory(mosaicSource, workDir);
-        URL testURL = DataUtilities.fileToURL(workDir);
+        URL testURL = URLs.fileToUrl(workDir);
         
         // grab the reader to force mosaic config creation
         final AbstractGridFormat format = TestUtils.getFormat(testURL);
@@ -3824,7 +3822,7 @@ public class ImageMosaicReaderTest extends Assert{
         FileUtils.copyDirectory(TestData.file(this, "ext-overview"), workDir);
 
         // create url from file
-        URL dirURL = DataUtilities.fileToURL(workDir);
+        URL dirURL = URLs.fileToUrl(workDir);
         final AbstractGridFormat format = TestUtils.getFormat(dirURL);
         final ImageMosaicReader reader = TestUtils.getReader(dirURL, format);
 
@@ -3874,7 +3872,7 @@ public class ImageMosaicReaderTest extends Assert{
 
         // create the base mosaic we are going to use
         cleanConfigurationFiles(testMosaic, "rgb");
-        URL testMosaicUrl = DataUtilities.fileToURL(testMosaic);
+        URL testMosaicUrl = URLs.fileToUrl(testMosaic);
 
         // place H2 file in the dir
         File dataStoreProperties = new File(testMosaic, "datastore.properties");
@@ -3923,7 +3921,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testMixedSampleModels() throws Exception {
-        File mosaicFolder = DataUtilities.urlToFile(mixedSampleModelURL);
+        File mosaicFolder = URLs.urlToFile(mixedSampleModelURL);
         cleanConfigurationFiles(mosaicFolder, mosaicFolder.getName());
         final AbstractGridFormat format = TestUtils.getFormat(mixedSampleModelURL);
         ImageMosaicReader reader = TestUtils.getReader(mixedSampleModelURL, format);
@@ -3975,7 +3973,7 @@ public class ImageMosaicReaderTest extends Assert{
 
     @Test
     public void testCoverageOnBands() throws Exception {
-        File mosaicFolder = DataUtilities.urlToFile(coverageBandsURL);
+        File mosaicFolder = URLs.urlToFile(coverageBandsURL);
         for (File configFile : mosaicFolder.listFiles(
                 (FileFilter)FileFilterUtils.or( 
                 FileFilterUtils.suffixFileFilter("db"),
@@ -4289,7 +4287,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(3, fileGroups.size());
         assertEquals(3, mainFiles.size());
         assertEquals(IS_MAC ? 12 : 6, supportFiles.size());
-        File dir = DataUtilities.urlToFile(indexURL);
+        File dir = URLs.urlToFile(indexURL);
         String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".gif"));
         String[] supportFilesPaths = dir.list(FileFilterUtils.and(FileFilterUtils.or(
                 FileFilterUtils.suffixFileFilter(".prj"), FileFilterUtils.suffixFileFilter(".wld")), 
@@ -4308,7 +4306,7 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
     public void testOverviewSupportFiles() throws Exception {
         final File overviewDir = TestData.file(this, "ext-overview");
-        final URL overviewURL = DataUtilities.fileToURL(overviewDir);
+        final URL overviewURL = URLs.fileToUrl(overviewDir);
         final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
         ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
         ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
@@ -4327,7 +4325,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(2, fileGroups.size());
         assertEquals(2, mainFiles.size());
         assertEquals(IS_MAC ? 4 : 2, supportFiles.size());
-        File dir = DataUtilities.urlToFile(overviewURL);
+        File dir = URLs.urlToFile(overviewURL);
         String[] mainFilesPaths = dir.list(FileFilterUtils.suffixFileFilter(".tif"));
         String[] supportFilesPaths = dir.list(FileFilterUtils.and(FileFilterUtils.or(
                 FileFilterUtils.suffixFileFilter(".ovr")), 
@@ -4365,8 +4363,8 @@ public class ImageMosaicReaderTest extends Assert{
         GridCoverage2D coverage = TestUtils.checkCoverage(reader, new GeneralParameterValue[]{filter}, null);
         
         // now grab specific reader
-        File file = new File(DataUtilities.urlToFile(rgbURL), "global_mosaic_16.png");
-        URL granuleUrl = DataUtilities.fileToURL(file);
+        File file = new File(URLs.urlToFile(rgbURL), "global_mosaic_16.png");
+        URL granuleUrl = URLs.fileToUrl(file);
         AbstractGridFormat granuleFormat = TestUtils.getFormat(granuleUrl);
         AbstractGridCoverage2DReader granuleReader = granuleFormat.getReader(granuleUrl);
         GridCoverage2D expected = granuleReader.read(null);

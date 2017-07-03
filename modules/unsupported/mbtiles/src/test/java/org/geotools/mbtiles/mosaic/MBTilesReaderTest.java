@@ -10,10 +10,10 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.parameter.Parameter;
+import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 
@@ -35,8 +35,8 @@ public class MBTilesReaderTest {
         assertEquals(0, gc.getEnvelope().getMaximum(1),0.01);
         assertEquals(512, img.getWidth());
         assertEquals(512, img.getHeight());
-        //ImageIO.write(img, "png", DataUtilities.urlToFile(getClass().getResource("world_lakes.png")));
-        ImageAssert.assertEquals(DataUtilities.urlToFile(getClass().getResource("world_lakes.png")), img, 250);
+        //ImageIO.write(img, "png", URLs.urlToFile(getClass().getResource("world_lakes.png")));
+        ImageAssert.assertEquals(URLs.urlToFile(getClass().getResource("world_lakes.png")), img, 250);
     }
     
     @Test

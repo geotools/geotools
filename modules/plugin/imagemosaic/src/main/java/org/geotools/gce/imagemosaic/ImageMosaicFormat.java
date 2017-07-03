@@ -50,6 +50,7 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.Converters;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -341,7 +342,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             CoordinateReferenceSystem crs = null;
             boolean shapefile = true;
             try {
-                final File sourceF = DataUtilities.urlToFile(sourceURL);
+                final File sourceF = URLs.urlToFile(sourceURL);
                 if (FilenameUtils.getName(sourceF.getAbsolutePath())
                         .equalsIgnoreCase("datastore.properties")) {
                     shapefile = false;
@@ -378,7 +379,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     // H2 workadound
                     if (Utils.isH2Store(spi)) {
                         Utils.fixH2DatabaseLocation(params,
-                                DataUtilities.fileToURL(sourceF.getParentFile()).toExternalForm());
+                                URLs.fileToUrl(sourceF.getParentFile()).toExternalForm());
                     }
 
                     tileIndexStore = spi.createDataStore(params);
@@ -387,7 +388,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
                 } else {
                     URL testPropertiesUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
-                    File testFile = DataUtilities.urlToFile(testPropertiesUrl);
+                    File testFile = URLs.urlToFile(testPropertiesUrl);
                     if (!testFile.exists()) {
                         return false;
                     }
@@ -407,7 +408,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     //
                     // do we have a datastore properties file? It will preempt on the shapefile
                     //
-                    final File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+                    final File parent = URLs.urlToFile(sourceURL).getParentFile();
 
                     // this can be used to look for properties files that do NOT define a datastore
                     final File[] properties = parent.listFiles((FilenameFilter) FileFilterUtils.and(
@@ -422,8 +423,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     // do we have a valid datastore + mosaic properties pair?
                     for (File propFile : properties)
                         if (Utils.checkFileReadable(propFile) && Utils
-                                .loadMosaicProperties(DataUtilities.fileToURL(propFile)) != null) {
-                            propsUrl = DataUtilities.fileToURL(propFile);
+                                .loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
+                            propsUrl = URLs.fileToUrl(propFile);
                             break;
                         }
                 }

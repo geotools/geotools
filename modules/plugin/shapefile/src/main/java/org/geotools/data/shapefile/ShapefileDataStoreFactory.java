@@ -38,6 +38,7 @@ import org.geotools.data.directory.DirectoryDataStore;
 import org.geotools.data.directory.FileStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.util.KVP;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -175,9 +176,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         }
         
         // are we creating a directory of shapefiles store, or a single one?
-        File dir = DataUtilities.urlToFile(url);
+        File dir = URLs.urlToFile(url);
         if (dir != null && dir.isDirectory()) {
-            return new DirectoryDataStore(DataUtilities.urlToFile(url), new ShpFileStoreFactory(
+            return new DirectoryDataStore(URLs.urlToFile(url), new ShpFileStoreFactory(
                     this, params));
         } else {
             ShpFiles shpFiles = new ShpFiles(url);
@@ -239,7 +240,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             } else {
                 // maybe it's a directory?
                 Object fileType = FILE_TYPE.lookUp(params);
-                File dir = DataUtilities.urlToFile(url);
+                File dir = URLs.urlToFile(url);
                 // check for null fileType for backwards compatibility
                 return dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));
             }
@@ -269,7 +270,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         }
 
         public DataStore getDataStore(File file) throws IOException {
-            final URL url = DataUtilities.fileToURL(file);
+            final URL url = URLs.fileToUrl(file);
             if (shpFactory.canProcess(url)) {
                 Map<String,Serializable> params = new HashMap<String,Serializable>(originalParams);
                 params.put(URLP.key, url);
@@ -292,7 +293,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         params.put(URLP.key, url);
 
         boolean isLocal = url.getProtocol().equalsIgnoreCase("file");
-        File file = DataUtilities.urlToFile(url);
+        File file = URLs.urlToFile(url);
         if(file != null && file.isDirectory()) {
             return null;
         } else {

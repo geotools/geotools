@@ -23,7 +23,6 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +30,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -334,7 +333,7 @@ public class ShapefileDumper {
     private ShapefileDataStore buildStore(SimpleFeatureType schema)
             throws MalformedURLException, FileNotFoundException, IOException {
         File file = new File(targetDirectory, schema.getTypeName() + ".shp");
-        ShapefileDataStore sfds = new ShapefileDataStore(DataUtilities.fileToURL(file));
+        ShapefileDataStore sfds = new ShapefileDataStore(URLs.fileToUrl(file));
 
         // handle shapefile encoding
         // and dump the charset into a .cst file, for debugging and control purposes

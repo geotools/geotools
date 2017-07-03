@@ -16,7 +16,8 @@
  */
 package org.geotools.data.shapefile.files;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.DBF;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,8 +49,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -194,7 +194,7 @@ public class ShpFiles {
     }
 
     private URL findExistingFile(ShpFileType shpFileType, URL value) {
-        final File file = DataUtilities.urlToFile(value);
+        final File file = URLs.urlToFile(value);
         File directory = file.getParentFile();
         if (directory == null || !directory.exists()) {
             // doesn't exist
@@ -333,7 +333,7 @@ public class ShpFiles {
             throw new IllegalStateException("This method only applies if the files are local");
         }
         URL url = acquireRead(type, requestor);
-        return DataUtilities.urlToFile(url);
+        return URLs.urlToFile(url);
     }
 
     /**
@@ -403,7 +403,7 @@ public class ShpFiles {
     public void unlockRead(File file, FileReader requestor) {
         Collection<URL> allURLS = urls.values();
         for (URL url : allURLS) {
-            if (DataUtilities.urlToFile(url).equals(file)) {
+            if (URLs.urlToFile(url).equals(file)) {
                 unlockRead(url, requestor);
             }
         }
@@ -456,7 +456,7 @@ public class ShpFiles {
             throw new IllegalStateException("This method only applies if the files are local");
         }
         URL url = acquireWrite(type, requestor);
-        return DataUtilities.urlToFile(url);
+        return URLs.urlToFile(url);
     }
 
     /**
@@ -541,7 +541,7 @@ public class ShpFiles {
     public void unlockWrite(File file, FileWriter requestor) {
         Collection<URL> allURLS = urls.values();
         for (URL url : allURLS) {
-            if (DataUtilities.urlToFile(url).equals(file)) {
+            if (URLs.urlToFile(url).equals(file)) {
                 unlockWrite(url, requestor);
             }
         }
@@ -637,8 +637,8 @@ public class ShpFiles {
         if (!isLocal()) {
             return false;
         }
-        return DataUtilities.urlToFile(urls.get(SHP)).canWrite()
-                && DataUtilities.urlToFile(urls.get(DBF)).canWrite();
+        return URLs.urlToFile(urls.get(SHP)).canWrite()
+                && URLs.urlToFile(urls.get(DBF)).canWrite();
     }
 
     /**
@@ -653,7 +653,7 @@ public class ShpFiles {
             if (isLocal()) {
                 Collection<URL> values = urls.values();
                 for (URL url : values) {
-                    File f = DataUtilities.urlToFile(url);
+                    File f = URLs.urlToFile(url);
                     if (!f.delete()) {
                         retVal = false;
                     }
@@ -732,7 +732,7 @@ public class ShpFiles {
 
             OutputStream out;
             if (isLocal()) {
-                File file = DataUtilities.urlToFile(url);
+                File file = URLs.urlToFile(url);
                 out = new FileOutputStream(file);
             } else {
                 URLConnection connection = url.openConnection();
@@ -791,7 +791,7 @@ public class ShpFiles {
         try {
             if (isLocal()) {
 
-                File file = DataUtilities.urlToFile(url);
+                File file = URLs.urlToFile(url);
 
                 RandomAccessFile raf = new RandomAccessFile(file, "r");
                 channel = new FileChannelDecorator(raf.getChannel(), this, url, requestor);
@@ -842,7 +842,7 @@ public class ShpFiles {
             WritableByteChannel channel;
             if (isLocal()) {
 
-                File file = DataUtilities.urlToFile(url);
+                File file = URLs.urlToFile(url);
 
                 RandomAccessFile raf = new RandomAccessFile(file, "rw");
                 channel = new FileChannelDecorator(raf.getChannel(), this, url, requestor);
@@ -972,7 +972,7 @@ public class ShpFiles {
             return false;
         }
 
-        File file = DataUtilities.urlToFile(url);
+        File file = URLs.urlToFile(url);
         return file.exists();
     }
 

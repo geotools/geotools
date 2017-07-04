@@ -1173,9 +1173,43 @@ public class GridCoverageRendererTest  {
         assertEquals(max + 20, maximums[1], 0d);
         assertEquals(max + 40, maximums[2], 0d);
         ImageUtilities.disposeImage(image);
-        
     }
-    
+
+    @Test
+    public void testChannelSelectionOrderWithBandSelection() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
+
+        GridCoverage2DReader reader = new TestMultiBandReader(4,2,0);
+
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
+                new Rectangle(0, 0, 255, 255), null);
+
+        StyleBuilder sldBuilder = new StyleBuilder();
+
+        RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
+        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final SelectedChannelType chTypeRed = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeBlue = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeGreen = new SelectedChannelTypeImpl();
+
+        chTypeRed.setChannelName("5");
+        chTypeGreen.setChannelName("3");
+        chTypeBlue.setChannelName("1");
+
+        chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
+
+        symbolizer.setChannelSelection(chSel);
+        symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
+
+        Graphics2D graphics = ((BufferedImage) TestMultiBandReader.image).createGraphics();
+        renderer.paint(graphics, reader, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK);
+        RenderedImage image = renderer.renderImage(reader, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+
+        // the read operation checked that the proper bandSelect (4,2,0) has been specified
+        // instead of 0,1,2 (as per bugged code)
+        assertEquals(3, image.getSampleModel().getNumBands());
+    }
+
     @Test
     public void testPaintBandSelectionNonSupportingReader() throws Exception {
         File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
@@ -1413,6 +1447,23 @@ public class GridCoverageRendererTest  {
 
         int[] expectedBands;
 
+        static BufferedImage image;
+
+        static {
+            // Create a striped image
+            final int width = 255;
+            final int height = 255;
+            image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+            WritableRaster raster = image.getRaster();
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    for (int b = 0; b < 3; b++) {
+                        raster.setSample(i, j, b, i);
+                    }
+                }
+            }
+        }
+
         public TestMultiBandReader(int... expectedBands) {
             this.expectedBands = expectedBands;
             this.originalEnvelope = new GeneralEnvelope(new ReferencedEnvelope(0, 90, 0, 90,
@@ -1477,25 +1528,14 @@ public class GridCoverageRendererTest  {
         @Override
         public GridCoverage2D read(GeneralParameterValue[] parameters)
                 throws IllegalArgumentException, IOException {
-            assertTrue(Arrays.stream(parameters)
-                    .anyMatch(
-                            p -> "Bands".equals(p.getDescriptor().getName().toString())
-                                    && Arrays.equals(expectedBands,
-                                            (int[]) ((ParameterValue) p).getValue())));
-
-            // Create a striped image
-            final int width = 255;
-            final int height = 255;
-            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-            WritableRaster raster = bi.getRaster();
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    for (int b = 0; b < 3; b++) {
-                        raster.setSample(i, j, b, i);
-                    }
+            for (GeneralParameterValue parameter: parameters) {
+                if ("Bands".equals(parameter.getDescriptor().getName().toString())) {
+                    assertTrue(Arrays.equals(expectedBands,(int[]) ((ParameterValue) parameter).getValue()));
                 }
             }
 
+
+            BufferedImage bi = image;
             GridCoverage2D coverage = CoverageFactoryFinder.getGridCoverageFactory(null).create(
                     "test", bi, getOriginalEnvelope());
 

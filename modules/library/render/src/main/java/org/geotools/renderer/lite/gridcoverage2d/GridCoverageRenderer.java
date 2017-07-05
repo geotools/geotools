@@ -1198,18 +1198,9 @@ public final class GridCoverageRenderer {
                     .toString());
 
         setupInterpolationHints(interpolation);
-        
-        RasterSymbolizer finalSymbolizer = symbolizer;
-        //
-        // Band selection
-        //
-        if (isBandsSelectionApplicable(gridCoverageReader, symbolizer)){
-            readParams = applyBandsSelectionParameter(gridCoverageReader, readParams, symbolizer);
-            finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
-        }
 
         // Build the final image and the transformation
-        RenderedImage finalImage = renderImage(gridCoverageReader, readParams, finalSymbolizer,
+        RenderedImage finalImage = renderImage(gridCoverageReader, readParams, symbolizer,
                 interpolation, background);
         if (finalImage != null) {
             try {

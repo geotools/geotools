@@ -26,10 +26,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.styling.css.selector.Accept;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.FilteredPowerSetBuilder;
 import org.geotools.styling.css.util.PseudoClassRemover;
+import org.geotools.styling.css.util.Signature;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.logging.Logging;
 
@@ -250,6 +252,12 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         Collections.sort(filtered, CssRuleComparator.DESCENDING);
 
         return filtered;
+    }
+
+
+    @Override
+    protected boolean isInclude(CssRule t) {
+        return t.getSelector() instanceof Accept;
     }
 
 }

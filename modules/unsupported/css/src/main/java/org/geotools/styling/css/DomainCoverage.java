@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
@@ -226,7 +227,7 @@ class DomainCoverage {
      * The set of selectors generated so far. We can get several repeated selectors due to
      * conditional pseudo-classes, but only the first one will be not covered
      */
-    Set<List<SLDSelector>> generatedSelectors = new HashSet<>();
+    Set<SLDSelector> generatedSelectors = new HashSet<>();
 
     /**
      * When true, the detailed (expensive) coverage computation will generate exclusive rules
@@ -261,11 +262,11 @@ class DomainCoverage {
         Selector selector = rule.getSelector();
 
         // turns the rule in a set of domain coverage expressions (simplified selectors)
-        List<SLDSelector> ruleCoverage = toSLDSelectors(selector, targetFeatureType);
-        if (generatedSelectors.contains(ruleCoverage)) {
+        List<SLDSelector> ruleCoverage = toSLDSelectors(selector, targetFeatureType).stream().filter(s -> !generatedSelectors.contains(s)).collect(Collectors.toList());
+        if (ruleCoverage.isEmpty()) {
             return Collections.emptyList();
         } else {
-            generatedSelectors.add(ruleCoverage);
+            generatedSelectors.addAll(ruleCoverage);
         }
         
         if(exclusiveRulesEnabled && complexityThreshold > 0) {

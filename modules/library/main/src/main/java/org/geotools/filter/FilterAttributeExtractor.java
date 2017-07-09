@@ -55,7 +55,7 @@ import org.opengis.filter.expression.VolatileFunction;
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
     
     /** Last set visited */
     protected Set<String> attributeNames = new HashSet<String>();
@@ -158,7 +158,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
                     String name = firstParam.evaluate(null, String.class);
                     if(name != null) {
                         attributeNames.add(name);
-                        propertyNames.add(ff.property(name));
+                        propertyNames.add(FF.property(name));
                         foundLiteral = true;
                     }
                 }

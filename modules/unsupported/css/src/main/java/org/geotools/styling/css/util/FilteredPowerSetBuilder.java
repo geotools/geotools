@@ -17,9 +17,7 @@
 package org.geotools.styling.css.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Base class to build a power set from a set of object, filtering it during construction to avoid
@@ -59,7 +57,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * @param k
      * @return
      */
-    private boolean rejected(Signature s, int k) {
+    protected boolean rejected(Signature s, int k) {
         // see if rejected already
         int cardinality = s.cardinality();
         final int max = Math.min(rejects.size(), cardinality);
@@ -147,13 +145,19 @@ public abstract class FilteredPowerSetBuilder<T, R> {
             // none of these new signatures can contain one above because
             // bit K is now set to zero, so reset rejects to the parent value
             this.rejects = storedRejects;
-            s.set(k, false);
-            if (!rejected(s, k)) {
-                fill(s, k + 1, n, result);
+            // avoid generating outputs for bits that are catch all, and being negated
+            if(!isInclude(domain.get(k))) {
+                s.set(k, false);
+                if (!rejected(s, k)) {
+                    fill(s, k + 1, n, result);
+                }    
             }
+            
         }
     }
     
+    protected abstract boolean isInclude(T t);
+
     List<List<Signature>> cloneRejects() {
         List<List<Signature>> result = new ArrayList<>();
         for (List<Signature> l : rejects) {

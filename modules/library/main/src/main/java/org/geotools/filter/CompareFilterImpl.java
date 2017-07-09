@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -210,17 +211,21 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      *         otherwise.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof CompareFilterImpl) {
+        if(this == obj) {
+            return true;
+        }
+        
+        if (obj.getClass().equals(this.getClass())) {
             CompareFilterImpl cFilter = (CompareFilterImpl) obj;
 
             // todo - check for nulls here, or make immutable.
             //
-            int filterType = Filters.getFilterType(this);
-            return filterType == Filters.getFilterType(cFilter)
-                    && (expression1 == cFilter.getExpression1() || (expression1 != null && expression1
-                            .equals(cFilter.getExpression1())))
-                    && (expression2 == cFilter.getExpression2() || (expression2 != null && expression2
-                            .equals(cFilter.getExpression2())));
+            final Expression cfe1 = cFilter.getExpression1();
+            final Expression cfe2 = cFilter.getExpression2();
+            return (expression1 == cfe1 || (expression1 != null && expression1
+                            .equals(cfe1)))
+                    && (expression2 == cfe2 || (expression2 != null && expression2
+                            .equals(cfe2)));
         } else {
             return false;
         }

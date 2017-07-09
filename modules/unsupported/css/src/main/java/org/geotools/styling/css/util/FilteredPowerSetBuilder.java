@@ -42,7 +42,6 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * result
      */
     private List<List<Signature>> rejects = new ArrayList();
-    int minPopulated = Integer.MAX_VALUE;
 
     /**
      * Initializes the power set builds with the initial domain values
@@ -64,7 +63,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         // see if rejected already
         int cardinality = s.cardinality();
         final int max = Math.min(rejects.size(), cardinality);
-        for (int i = minPopulated; i < max; i++) {
+        for (int i = 0; i < max; i++) {
             List<Signature> signatures = rejects.get(i);
             if(signatures != null && rejected(s, k, signatures)) {
                 return true;
@@ -121,7 +120,6 @@ public abstract class FilteredPowerSetBuilder<T, R> {
             if (!accept(objects)) {
                 final Signature cloned = (Signature) s.clone();
                 int cardinality = cloned.cardinality();
-                this.minPopulated = Math.min(minPopulated, cardinality);
                 while(rejects.size() <= cardinality) {
                     rejects.add(null);
                 }
@@ -142,14 +140,26 @@ public abstract class FilteredPowerSetBuilder<T, R> {
             }
         } else {
             s.set(k, true);
+            List<List<Signature>> storedRejects = cloneRejects();
             if (!rejected(s, k)) {
                 fill(s, k + 1, n, result);
             }
+            // none of these new signatures can contain one above because
+            // bit K is now set to zero, so reset rejects to the parent value
+            this.rejects = storedRejects;
             s.set(k, false);
             if (!rejected(s, k)) {
                 fill(s, k + 1, n, result);
             }
         }
+    }
+    
+    List<List<Signature>> cloneRejects() {
+        List<List<Signature>> result = new ArrayList<>();
+        for (List<Signature> l : rejects) {
+            result.add(new ArrayList<>(l));
+        }
+        return result;
     }
 
     /**

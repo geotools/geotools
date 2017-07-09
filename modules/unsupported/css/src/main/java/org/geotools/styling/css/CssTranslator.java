@@ -334,7 +334,7 @@ public class CssTranslator {
         return expanded;
     }
 
-    private int translateCss(final TranslationMode mode, List<CssRule> allRules, StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {
+    private int translateCss(TranslationMode mode, List<CssRule> allRules, StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
         Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(allRules);
@@ -437,6 +437,8 @@ public class CssTranslator {
                         LOGGER.info("Switching to Simple translation mode, rules number is "
                                 + rulesCount + " with a threshold of " + autoThreshold);
                         coverage.exclusiveRulesEnabled = false;
+                        // switch the translation mode permanently from this point on
+                        mode = TranslationMode.Simple;
                     }
 
                 } else {

@@ -349,7 +349,8 @@
 					<xsd:element ref="se:Fill" minOccurs="0"/>
           
 					<!-- geotools specific extension -->
-                    <xsd:element ref="se:Priority" minOccurs="0"/>
+          <xsd:element ref="se:Graphic" minOccurs="0"/>
+          <xsd:element ref="se:Priority" minOccurs="0"/>
 					<xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>

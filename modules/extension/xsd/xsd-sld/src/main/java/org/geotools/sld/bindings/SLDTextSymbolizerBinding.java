@@ -23,10 +23,12 @@ import javax.xml.namespace.QName;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -163,6 +165,10 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
         //&lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
         if (node.hasChild("Fill")) {
             ts.setFill((Fill) node.getChildValue("Fill"));
+        }
+        
+        if (node.hasChild("Graphic") && ts instanceof TextSymbolizer2) {
+            ((TextSymbolizer2) ts).setGraphic((Graphic) node.getChildValue("Graphic"));
         }
 
         if (node.hasChild("Priority")) {

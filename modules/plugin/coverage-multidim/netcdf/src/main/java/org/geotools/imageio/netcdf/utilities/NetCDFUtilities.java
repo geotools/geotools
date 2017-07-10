@@ -24,6 +24,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
 import org.geotools.referencing.operation.projection.MapProjection;
+import org.geotools.util.NumberRange;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.ma2.*;
@@ -131,6 +132,14 @@ public class NetCDFUtilities {
     public static final String FILL_VALUE = "_FillValue";
 
     public static final String MISSING_VALUE = "missing_value";
+
+    public static final String ACTUAL_RANGE = "actual_range";
+
+    public static final String VALID_RANGE = "valid_range";
+
+    public static final String VALID_MIN = "valid_min";
+
+    public static final String VALID_MAX = "valid_max";
 
     public final static String LOWER_LEFT_LONGITUDE = "lower_left_longitude";
 
@@ -956,6 +965,53 @@ public class NetCDFUtilities {
                 }
             }
         }
+        return null;
+    }
+
+    /**
+     * Utility method for getting Range from an input {@link Variable}
+     * 
+     * @param var Variable instance
+     * @return a Range representing actual_range or valid_min/valid_max range or valid_range
+     */
+    public static NumberRange getRange(Variable var) {
+        if (var != null) {
+            double min = Double.NaN;
+            double max = Double.NaN;
+            DataType dataType = null; 
+            Attribute rangeAttribute = var.findAttribute(ACTUAL_RANGE);
+            if (rangeAttribute == null) {
+                rangeAttribute = var.findAttribute(VALID_RANGE);
+            }
+            if (rangeAttribute != null) {
+                dataType = rangeAttribute.getDataType();
+                min = rangeAttribute.getNumericValue(0).doubleValue();
+                max = rangeAttribute.getNumericValue(1).doubleValue();
+            } else {
+                Attribute minAttribute = var.findAttribute(VALID_MIN);
+                Attribute maxAttribute = var.findAttribute(VALID_MAX);
+                if (minAttribute != null && maxAttribute != null) {
+                    dataType = minAttribute.getDataType();
+                    min = minAttribute.getNumericValue().doubleValue();
+                    max = maxAttribute.getNumericValue().doubleValue();
+                }
+            }
+            if (!Double.isNaN(min) && !Double.isNaN(max)) {
+                // Quoting from:
+                // http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html
+                // For integer types, there should be a difference of 1 between the _FillValue and 
+                // this valid minimum or maximum.
+                // Force this constraints to also avoid overlapping categories
+                if (dataType == DataType.BYTE || dataType == DataType.INT || dataType == DataType.SHORT || dataType == DataType.LONG) {
+                    Number noData = getNodata(var);
+                    if (noData != null && (noData.intValue() == min)) {
+                        min++;
+                    }
+                }
+                return NumberRange.create(min, max);
+            }
+        }
+
         return null;
     }
 

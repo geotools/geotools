@@ -824,12 +824,22 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         final int bufferType = NetCDFUtilities.getRawDataType(variableDS);
         sampleModel = new BandedSampleModel(bufferType, width, height, multipleBands == null ? 1 : numBands);
         final Number noData = NetCDFUtilities.getNodata(variableDS);
+        List<Category> catArray = new ArrayList<Category>();
+        Category noDataCategory = null;
+        Category dataCategory = null;
         Category[] categories = null;
         if (noData != null) {
             NumberRange noDataRange = NumberRange.create(noData.doubleValue(), true, noData.doubleValue(), true);
-            categories = new Category[]{ new Category(Vocabulary.formatInternational(VocabularyKeys.NODATA),
-                    new Color[] { new Color(0, 0, 0, 0) }, noDataRange)};
+            noDataCategory = new Category(Category.NODATA.getName(), new Color[] { new Color(0, 0, 0, 0) }, noDataRange);
+            catArray.add(noDataCategory);
         }
+        NumberRange validRange = NetCDFUtilities.getRange(variableDS);
+        if (validRange != null) {
+            dataCategory = new Category("RANGE", (Color)null, validRange);
+            catArray.add(dataCategory);
+        }
+        categories = new Category[catArray.size()];
+        categories = catArray.toArray(categories);
 
         // range type
         String description = variableDS.getDescription();

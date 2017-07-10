@@ -61,10 +61,12 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
@@ -79,6 +81,8 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import org.junit.AfterClass;
@@ -86,6 +90,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opengis.referencing.operation.TransformException;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.vividsolutions.jts.geom.Envelope;
@@ -1751,5 +1756,41 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         worker = worker.crop(0, 0, width/2, height/2);
         maxs = worker.getMaximums();
         assertEquals(width/2 + height/2 - 2, (int)maxs[0]);
+    }
+
+    @Test
+    public void testWarpROIWithJAIExt() throws IOException, TransformException {
+        // no init needed, jai-ext is already enabled
+        assertWarpROI();
+    }
+    
+    @Test
+    public void testWarpROIWithoutJAIExt() throws IOException, TransformException {
+        JAIExt.initJAIEXT(false);
+        assertWarpROI();
+    }
+    
+    public void assertWarpROI() throws IOException, TransformException {
+        ImageWorker worker = new ImageWorker(gray);
+        // ROI covers just 1/4th
+        ROIShape roiShape = new ROIShape(
+                new Rectangle(0, 0, gray.getWidth() / 2, gray.getHeight() / 2));
+        ROI roi = new ROI(roiShape.getAsImage());
+        worker.setROI(roi);
+
+        Warp warp = new WarpBuilder(0.3).buildWarp(
+                new AffineTransform2D(AffineTransform.getScaleInstance(2, 2)),
+                new Rectangle(gray.getWidth(), gray.getHeight()));
+        worker.warp(warp, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+
+        RenderedImage ri = worker.getRenderedImage();
+        final Object roiValue = ri.getProperty("ROI");
+        assertNotEquals(java.awt.Image.UndefinedProperty, roiValue);
+        ROI warpedROI = (ROI) roiValue;
+        PlanarImage warpedROIImage = warpedROI.getAsImage();
+        // check it's not solid white (happens if the wrong warp is used)
+        ImageWorker warpedROIWorker = new ImageWorker(warpedROIImage);
+        assertEquals(1, warpedROIWorker.getMaximums()[0], 0d);
+        assertEquals(0, warpedROIWorker.getMinimums()[0], 0d);
     }
 }

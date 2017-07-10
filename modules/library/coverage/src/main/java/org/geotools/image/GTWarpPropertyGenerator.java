@@ -17,6 +17,7 @@
 package org.geotools.image;
 
 import it.geosolutions.jaiext.warp.WarpDescriptor;
+import it.geosolutions.jaiext.warp.WarpRIF;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -37,6 +38,8 @@ import javax.media.jai.Warp;
 import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.factory.Hints;
+
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 import com.sun.media.jai.util.PropertyGeneratorImpl;
@@ -152,6 +155,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             paramBlk.add(interp);
             paramBlk.add(null);
             paramBlk.add(srcROI);
+            paramBlk.add(null);
 
             // force in the image layout, this way we get exactly the same
             // as the affine we're eliminating
@@ -165,7 +169,13 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
             il.setTileWidth(op.getTileWidth());
             il.setTileHeight(op.getTileHeight());
             localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
-            roiImage = JAI.create("Warp", paramBlk, localHints);
+            // we need to use JAI-EXT own warp, the JAI one ignores the ROI
+            if(JAIExt.isJAIExtOperation("Warp")) {
+                roiImage = JAI.create("Warp", paramBlk, localHints);
+            } else {
+                // force JAI-EXT usage
+                roiImage = PlanarImage.wrapRenderedImage(new WarpRIF().create(paramBlk, localHints));
+            }
             ROI dstROI = new ROI(roiImage, 1);
 
             // If necessary, clip the warped ROI to the destination bounds.

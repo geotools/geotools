@@ -51,8 +51,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;

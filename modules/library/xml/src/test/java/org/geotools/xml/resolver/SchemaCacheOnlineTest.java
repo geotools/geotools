@@ -52,7 +52,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
     /**
      * Schema that is downloaded.
      */
-    private static final String SCHEMA_LOCATION = "http://schemas.geosciml.org/geosciml/2.0/geosciml.xsd";
+    private static final String SCHEMA_LOCATION = "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd";
 
     /**
      * Filename of the schema.

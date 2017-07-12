@@ -178,7 +178,7 @@ class Utils {
         // check if we have to build the index
         if (source instanceof URL) {
             sourceURL = ((URL) source);
-            source = DataUtilities.urlToFile(sourceURL);
+            source = URLs.urlToFile(sourceURL);
         } else if (source instanceof String) {
             // is it a File?
             final String tempSource = (String) source;
@@ -187,7 +187,7 @@ class Utils {
                 // is it a URL
                 try {
                     sourceURL = new URL(tempSource);
-                    source = DataUtilities.urlToFile(sourceURL);
+                    source = URLs.urlToFile(sourceURL);
                 } catch (MalformedURLException e) {
                     sourceURL = null;
                     source = null;

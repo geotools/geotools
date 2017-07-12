@@ -16,26 +16,27 @@
  */
 package org.geotools.mbstyle.layer;
 
+import com.google.common.collect.ImmutableSet;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
 import org.geotools.styling.Font;
+import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
-
 import javax.measure.unit.NonSI;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -274,6 +275,19 @@ public class SymbolMBLayer extends MBLayer {
         VIEWPORT
     }
 
+    /**
+     * When any of these strings is provided as the sprite source in an MB style, the style's 'icon-image' will actually be interpreted as the
+     * well-known name of a GeoTools {@link Mark} rather than an actual sprite sheet location.
+     */
+    protected static final Set<String> MARK_SHEET_ALIASES = ImmutableSet.of("geotoolsmarks",
+            "geoservermarks", "");
+
+    /**
+     * The default base size (pixels) to use to render GeoTools marks in a MB style. This is needed because MB styles have only a relative "size"
+     * property that scales the icon, but no absolute reference size.
+     */
+    protected static final int MARK_ICON_DEFAULT_SIZE = 32;
+    
     /**
      * 
      * @param json
@@ -799,16 +813,30 @@ public class SymbolMBLayer extends MBLayer {
     }
 
     /**
+     *
+     * @return True if the layer has a text-field explicitly provided.
+     */
+    private boolean hasTextField() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "text-field");
+    }
+
+    /**
      * (Optional) Font stack to use for displaying text. 
      * 
      * Defaults to <code>["Open Sans Regular","Arial Unicode MS Regular"]</code>. Requires text-field. 
      *
      * @return The font to use for the label
      */
+
     public List<String> getTextFont() {
-        String[] fonts = parse.array(String.class, layout, "text-font",
-                new String[] { "Open Sans Regular", "Arial Unicode MS Regular" });
-        return Arrays.asList(fonts); 
+        String[] fonts;
+        if (layout.get("text-font") instanceof JSONObject) {
+            return null;
+        } else {
+            fonts = parse.array(String.class, layout, "text-font",
+                    new String[]{"Open Sans Regular", "Arial Unicode MS Regular"});
+            return Arrays.asList(fonts);
+        }
     }
 
     /**
@@ -816,13 +844,9 @@ public class SymbolMBLayer extends MBLayer {
      *
      * @return The font to use for the label
      */
-    public List<Expression> textFont() {
-        List<Expression> fontExpressions = new ArrayList<>();
-        String[] fonts = parse.array(String.class, layout, "text-font", new String[] {"Open Sans Regular","Arial Unicode MS Regular"});
-        for (int i = 0; i < fonts.length; i++) {
-            fontExpressions.add(ff.literal(fonts[i]));
-        }
-        return fontExpressions;
+
+    public Expression textFont() throws MBFormatException {
+        return parse.font(layout, "text-font");
     }
 
     /**
@@ -867,6 +891,14 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Expression textMaxWidth() throws MBFormatException {
         return parse.percentage(layout, "text-max-width", 10.0);
+    }   
+    
+    /**
+     * 
+     * @return True if the layer has a text-max-width explicitly provided.
+     */
+    public boolean hasTextMaxWidth() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "text-max-width");
     }
 
     /**
@@ -1009,6 +1041,7 @@ public class SymbolMBLayer extends MBLayer {
         }
         return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
     }
+    
     /**
      * (Optional) Units in degrees. Defaults to 45. Requires text-field. Requires symbol-placement = line.
      * 
@@ -1029,6 +1062,14 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Expression textMaxAngle() {
         return parse.percentage(layout, "text-max-angle", 45.0);
+    }
+
+    /**
+     *
+     * @return True if the layer has a text-max-angle explicitly provided.
+     */
+    private boolean hasTextMaxAngle() throws MBFormatException {
+        return parse.isPropertyDefined(layout, "text-max-angle");
     }
 
     /**
@@ -1619,13 +1660,11 @@ public class SymbolMBLayer extends MBLayer {
      * @return FeatureTypeStyle
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
-
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         StyleBuilder sb = new StyleBuilder();
         List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
 
         LabelPlacement labelPlacement;
-
         // Create point or line placement
 
         // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
@@ -1664,11 +1703,15 @@ public class SymbolMBLayer extends MBLayer {
 
 
         Font font = sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), textSize());
+
         if (getTextFont() != null) {
             font.getFamily().clear();
             for (String textFont : getTextFont()) {
                 font.getFamily().add(ff.literal(textFont));
             }
+        } else if (textFont() != null) {
+            font.getFamily().clear();
+            font.getFamily().add(textFont());
         }
 
 
@@ -1683,7 +1726,6 @@ public class SymbolMBLayer extends MBLayer {
                 textExpression = transformer.cqlExpressionFromTokens(text);
             }
         }
-        
         textExpression = ff.function("StringTransform", textExpression, textTransform());
 
         TextSymbolizer2 symbolizer = (TextSymbolizer2) sf.textSymbolizer(getId(),
@@ -1694,10 +1736,16 @@ public class SymbolMBLayer extends MBLayer {
                 "symbol-spacing", getId());
         symbolizer.getOptions().put("repeat", String.valueOf(symbolSpacing));
 
-        // text max angle
-        // layer.getTextMaxAngle();
-        // symbolizer.getOptions().put("maxAngleDelta", "40");
-
+        // text max angle - only for line placement
+        // throw MBFormatException if point placement
+        if(labelPlacement instanceof LinePlacement){
+            // followLine will be true if line placement, it is an implied default of MBstyles.
+            symbolizer.getOptions().put("forceLeftToRight", String.valueOf(textKeepUpright()));
+            symbolizer.getOptions().put("followLine", "true");
+            symbolizer.getOptions().put("maxAngleDelta", String.valueOf(getTextMaxAngle()));
+        } else if (hasTextMaxAngle()) {
+        	throw new MBFormatException("Property text-max-angle requires symbol-placement = line but symbol-placement = " + symbolPlacementVal);
+        }
         // conflictResolution
         // Mapbox allows text overlap and icon overlap separately. GeoTools only has conflictResolution.
         Boolean textAllowOverlap = transformer.requireLiteral(textAllowOverlap(), Boolean.class, false,
@@ -1721,6 +1769,21 @@ public class SymbolMBLayer extends MBLayer {
                     "none");
         }
 
+        // MapBox symbol-avoid-edges defaults to false, If true, the symbols will not cross tile edges to avoid
+        // mutual collisions.  This concept is represented by using the Partials option in GeoTools.  The partials
+        // options instructs the renderer to render labels that cross the map extent, which are normally not painted
+        // since there is no guarantee that a map put on the side of the current one (tiled rendering) will contain
+        // the other half of the label. By enabling “partials” the style editor takes responsibility for the other
+        // half being there (maybe because the label points have been placed by hand and are assured not to conflict
+        // with each other, at all zoom levels).
+        //
+        // Based upon the above if symbol-avoid-edges is true we do not need
+        // to add the partials option as the renderer will do this by default. But if symbol-avoid-edges is missing or
+        // set to false, then we do need to add the partials option set to true.
+        if (!getSymbolAvoidEdges()){
+            symbolizer.getOptions().put("partials", "true");
+        }
+
         //Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
             symbolizer.getOptions().put("graphic-margin",
@@ -1729,33 +1792,55 @@ public class SymbolMBLayer extends MBLayer {
             symbolizer.getOptions().put("graphic-margin", "0");
         }
 
+        // text-padding default value is 2 in mapbox, will override Geoserver defaults
+        if(!hasIconImage() || "point".equalsIgnoreCase(symbolPlacementVal.trim()) || (getTextPadding().doubleValue()) >= (getIconPadding().doubleValue())) { 
+            symbolizer.getOptions().put("spaceAround", String.valueOf(getTextPadding()));
+        }
         // halo blur
         // layer.textHaloBlur();
 
         // auto wrap
         // getTextSize defaults to 16, and getTextMaxWidth defaults to 10 
         // converts text-max-width(mbstyle) from ems to pixels for autoWrap(sld)
-        symbolizer.getOptions().put("autoWrap", String.valueOf(getTextMaxWidth().intValue() * getTextSize().intValue())); 
+        // Only supported when text-max-width and text-size are not functions (because vendor options don't take expressions)
+        if (hasTextMaxWidth()) {
+            double textMaxWidth = transformer.requireLiteral(textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
+            double textSize = transformer.requireLiteral(textSize(), Double.class, 16.0, "text-size (when text-max-width is specified)", getId());
+            symbolizer.getOptions().put("autoWrap", String.valueOf(textMaxWidth * textSize));             
+        }
+
 
         // If the layer has an icon image, add it to our symbolizer
         if (hasIconImage()) {
-
-            // If the iconImage is a literal string (not a function), then
-            // we need to support Mapbox token replacement.
-            // Note: the URL is expected to be a CQL STRING ...
-            Expression iconExpression = iconImage();
-            if (iconExpression instanceof Literal) {
-                iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
+            // icon-ignore-placement requires an icon-image so we handle this property here.
+            // By default - or icon-ignore-placement: false, MapBox prevents symbols from being visible if they collide
+            // with other icons.  GeoServer only implements this behavior if the vendorOption labelObstacle is set
+            // to true.
+            if (!getIconIgnorePlacement()) {
+                symbolizer.getOptions().put("labelObstacle", "true");
             }
-            
-            ExternalGraphic eg = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);            
-            // layer.iconSize() - MapBox uses multiplier, GeoTools uses pixels
-            Graphic g = sf.graphic(Arrays.asList(eg), iconOpacity(), null,
-                    iconRotate(), null, null);
-            Displacement d = iconOffsetDisplacement();
-            d.setDisplacementY(d.getDisplacementY());
-            g.setDisplacement(d);
-            symbolizer.setGraphic(g);
+
+            //Check to see that hasTextField() is true check to see if IconPadding is greater to put to spaceAround
+            if (!hasTextField() || ((getIconPadding().doubleValue()) > (getTextPadding().doubleValue())) && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+                symbolizer.getOptions().put("spaceAround", String.valueOf(getIconPadding()));
+            }
+            // If we have an icon with a Point placement create a PointSymoblizer for the icon.
+            // This enables adjusting the text placement without moving the icon.
+            if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
+                org.geotools.styling.PointSymbolizer pointSymbolizer = sf.pointSymbolizer(getId(),
+                        ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
+                        getGraphic(transformer, styleContext));
+                symbolizers.add(pointSymbolizer);
+            } else {
+
+                symbolizer.setGraphic(getGraphic(transformer, styleContext));
+            }
+        }
+
+        // Check that a labelObstacle vendor option hasn't already been placed on the symbolizer and that
+        // textIgnorePlacement is either null or false, if so add it.  If textIgnorePlacement is true, accept default behavior.
+        if (symbolizer.getOptions().get("labelObstacle") == null && !getTextIgnorePlacement()) {
+            symbolizer.getOptions().put("labelObstacle", "true");
         }
 
         symbolizers.add(symbolizer);
@@ -1775,6 +1860,52 @@ public class SymbolMBLayer extends MBLayer {
                 null, // (unused)
                 Collections.emptySet(), filter.semanticTypeIdentifiers(), // we only expect this to be applied to polygons
                 rules));
+    }
+
+    /**
+     * Get a graphic for this style's 'icon-image'. It will usually be an {@link ExternalGraphic} to be handled by the {@link SpriteGraphicFactory}, but
+     * this method also supports GeoTools {@link Mark}s as a special case.
+     * 
+     * @param transformer
+     * @param styleContext The containing style (used to get the sprite source)
+     * @return A graphic based on this style's 'icon-image' property. 
+     */
+    private Graphic getGraphic(MBStyleTransformer transformer, MBStyle styleContext) {
+        // If the iconImage is a literal string (not a function), then
+        // we need to support Mapbox token replacement.
+        // Note: the URL is expected to be a CQL STRING ...
+        Expression iconExpression = iconImage();
+        if (iconExpression instanceof Literal) {
+            iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
+        }
+        
+        Expression graphicSize = null;        
+        GraphicalSymbol gs; 
+        
+        // In the special case that the 'sprite' source designates the internal GeoTools marks, then create a mark graphic.
+        // Otherwise, create a sprite-based external graphic.
+        String spriteSheetLocation = styleContext.getSprite() == null ? "" : styleContext.getSprite().trim().toLowerCase();            
+        if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
+            Fill f = sf.fill(null, iconColor(), null);
+            Stroke s = sf.stroke(iconColor(), null, null, null, null, null, null);
+            gs = sf.mark(iconExpression, f, s);
+        } else {
+            gs = transformer.createExternalGraphicForSprite(iconExpression, iconSize(), styleContext);
+        }            
+        
+        if (gs instanceof Mark) {
+            // The graphicSize is specified in pixels, so only set it on the Graphic if the GraphicalSymbol is a mark.
+            // If it is an ExternalGraphic from a sprite sheet, the absolute size of the icon is unknown at this point.
+            graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE),  iconSize());
+        }              
+
+        Graphic g = sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize,
+                iconRotate(), null, null);
+        Displacement d = iconOffsetDisplacement();
+        d.setDisplacementY(d.getDisplacementY());
+        g.setDisplacement(d);
+
+        return g;
     }
 
     /**

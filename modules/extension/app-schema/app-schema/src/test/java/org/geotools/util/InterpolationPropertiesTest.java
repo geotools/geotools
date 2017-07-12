@@ -74,7 +74,7 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
     @Before
     public void setUp() throws Exception {
         System.setProperty(TEST_SYSTEM_PROPERTY, TEST_SYSTEM_PROPERTY_VALUE);
-        System.setProperty(TEST_FILE_SYSTEM_PROPERTY, DataUtilities.urlToFile(
+        System.setProperty(TEST_FILE_SYSTEM_PROPERTY, URLs.urlToFile(
                 InterpolationProperties.class.getResource("/" + IDENTIFIER
                         + ".file.properties")).getPath());
     }

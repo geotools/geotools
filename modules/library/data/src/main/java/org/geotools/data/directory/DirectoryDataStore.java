@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.Set;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
@@ -44,6 +42,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -122,7 +121,7 @@ public class DirectoryDataStore implements DataStore {
         File f = new File(cache.directory, featureType.getTypeName()+".shp");
         
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("url", DataUtilities.fileToURL(f));
+        params.put("url", URLs.fileToUrl(f));
         params.put("filetype", "shapefile");
         DataStore ds = null;
         try {

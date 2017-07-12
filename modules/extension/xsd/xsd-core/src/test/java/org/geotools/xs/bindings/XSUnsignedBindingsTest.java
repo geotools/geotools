@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.xml.Parser;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XSConfiguration;
@@ -67,7 +67,7 @@ public class XSUnsignedBindingsTest extends TestCase {
 
         return String.format("<my:%s xmlns:my='http://localhost/xob/test' " +
                             "schemaLocation='http://localhost/xob/test %s'>%s</my:%s>",
-            elName, DataUtilities.fileToURL(sampleXsd), elValue, elName);
+            elName, URLs.fileToUrl(sampleXsd), elValue, elName);
     }
 
     void copy(InputStream in, File to) throws IOException {

@@ -28,7 +28,8 @@ import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
 
 /**
  * This class provides the ability to find all the zoom levels within a MapBox Style and returns a reduced list
- * of only the layers and properties containing Base and Stops values.
+ * of only the layers and properties containing Base and Stops values.  This class is only used with "zoom" and
+ * "zoom-and-property" and excludes the use of "property".
  *
  * @author David Vick (Boundless)
  */
@@ -42,7 +43,7 @@ public class MBObjectStops {
     public List<long[]> ranges = new ArrayList<>();
 
     /**
-     * Data structure for pre-processing a MBLayer determining whether the layer contains property and zoom functions
+     * Data structure for pre-processing a MBLayer determining whether the layer contains zoom and zoom-and-property functions
      * and if so, getting the distinct stops for each, building a list of MBLayers (one for each stop) and setting
      * ranges that are used to set min/max scale denominators for each MBLayer.
      * @param layer
@@ -52,7 +53,7 @@ public class MBObjectStops {
             if (layer.getPaint() != null) {
                 hasStops = getStops(layer.getPaint());
             }
-            if (layer.getLayout() != null && !hasStops) {
+            if (layer.getLayout() != null) {
                 hasStops = getStops(layer.getLayout());
             }
             if (hasStops) {
@@ -199,8 +200,15 @@ public class MBObjectStops {
             String key = (String) keys.next();
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
-                if (child.containsKey("stops") && ((JSONArray)((JSONArray)child.get("stops")).get(0)).get(0) instanceof JSONObject) {
-                    hasStops = true;
+                if (child.containsKey("stops")) {
+                    if (!child.containsKey("property")) {
+                        hasStops = true;
+                    } else if (child.get("stops") instanceof JSONArray) {
+                        JSONArray stops = (JSONArray) child.get("stops");
+                        if (stops.get(0) instanceof JSONObject && ((JSONObject)stops.get(0)).containsKey("zoom")) {
+                            hasStops = true;
+                        }
+                    }
                 }
             }
         }
@@ -294,16 +302,32 @@ public class MBObjectStops {
                                 objectsToRemove.add(stops.get(i));
                             }
                         }
+                        if (stop.get(0) instanceof Long) {
+                            if (((Long) stop.get(0)).longValue() == range[0]){
+                                objectsToEdit.add((JSONArray) stops.get(i));
+                            } else {
+                                objectsToRemove.add(stops.get(i));
+                            }
+                        }
                     }
                     for (Object o : objectsToRemove) {
                         stops.remove(o);
                     }
                     for (JSONArray o : objectsToEdit) {
                         JSONArray stopsArray = new JSONArray();
-                        stopsArray.add(0, ((JSONObject) o.get(0)).get("value"));
-                        stopsArray.add(1, o.get(1));
-                        stops.remove(o);
-                        stops.add(stopsArray);
+                        if (o.get(0) instanceof JSONObject) {
+                            stopsArray.add(0, ((JSONObject) o.get(0)).get("value"));
+                            stopsArray.add(1, o.get(1));
+                            stops.remove(o);
+                            stops.add(stopsArray);
+                        }
+                        if (o.get(0) instanceof Long) {
+                            stopsArray.add(0, o.get(0));
+                            stopsArray.add(1, o.get(1));
+                            stops.remove(o);
+                            stops.add(stopsArray);
+                        }
+
                     }
                 }
                 if (((JSONArray)child.get("stops")).size() == 0) {

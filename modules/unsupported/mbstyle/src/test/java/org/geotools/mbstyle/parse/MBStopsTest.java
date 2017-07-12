@@ -39,7 +39,7 @@ public class MBStopsTest {
 
     @Test
     public void testHasPropertyAndZoomFunctions() throws IOException, ParseException {
-        JSONObject styleJson = MapboxTestUtils.parseTestStyle("functionParseTest.json");
+        JSONObject styleJson = MapboxTestUtils.parseTestStyle("textFontTest.json");
 
         MBStyle mbStyle = new MBStyle(styleJson);
         List<MBLayer> layers = mbStyle.layers();

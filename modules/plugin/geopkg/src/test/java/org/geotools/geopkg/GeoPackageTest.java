@@ -42,6 +42,9 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
+import javax.media.jai.PlanarImage;
+
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -70,6 +73,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.sql.SqlUtil;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -79,6 +83,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -86,11 +92,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
-
-import javax.imageio.ImageIO;
-import javax.media.jai.PlanarImage;
 
 public class GeoPackageTest {
 
@@ -615,7 +616,7 @@ public class GeoPackageTest {
         Tile topLeftTile = geopkg.reader(tiles.get(0), 0, 0, 0, 0, 0, 0).next();
 
         BufferedImage tileImg = ImageIO.read(new ByteArrayInputStream(topLeftTile.getData()));
-        ImageAssert.assertEquals(DataUtilities.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), tileImg, 250);
+        ImageAssert.assertEquals(URLs.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), tileImg, 250);
 
         //Render the GeoPackage at zoom level 0
         GeoPackageReader reader = new GeoPackageReader(getClass().getResource("Blue_Marble.gpkg"), null);
@@ -637,7 +638,7 @@ public class GeoPackageTest {
                 null);
 
         //ImageIO.write(topLeftImg, "JPEG", new File("bluemarbletopleft.jpeg"));
-        ImageAssert.assertEquals(DataUtilities.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), topLeftImg, 250);
+        ImageAssert.assertEquals(URLs.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), topLeftImg, 250);
 
     }
 
@@ -786,7 +787,7 @@ public class GeoPackageTest {
             }
         }
         
-        return DataUtilities.fileToURL(new File(d, "bugsites.shp"));
+        return URLs.fileToUrl(new File(d, "bugsites.shp"));
     }
 
     URL setUpGeoTiff() throws IOException {
@@ -795,7 +796,7 @@ public class GeoPackageTest {
         d.mkdirs();
 
         FileUtils.copyURLToFile(TestData.url("geotiff/world.tiff"), new File(d, "world.tiff"));
-        return DataUtilities.fileToURL(new File(d, "world.tiff")); 
+        return URLs.fileToUrl(new File(d, "world.tiff")); 
     }
 
     URL setUpPNG() throws IOException {
@@ -805,6 +806,6 @@ public class GeoPackageTest {
 
         FileUtils.copyURLToFile(TestData.url(this, "Pk50095.png"), new File(d, "Pk50095.png"));
         FileUtils.copyURLToFile(TestData.url(this, "Pk50095.pgw"), new File(d, "Pk50095.pgw"));
-        return DataUtilities.fileToURL(new File(d, "Pk50095.png")); 
+        return URLs.fileToUrl(new File(d, "Pk50095.png")); 
     }
 }

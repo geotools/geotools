@@ -53,11 +53,20 @@ public class GeoJSONReader {
     public boolean isConnected() {
         try {
             inputStream = url.openStream();
+            if(inputStream==null) {
+              url = new URL(url.toExternalForm());
+              inputStream = url.openStream();
+            }
         } catch (IOException e) {
             // whoops
             return false;
         }
         try {
+            if(inputStream.available()==0) {
+              url = new URL(url.toExternalForm());
+              inputStream = url.openStream();
+            }
+        
             LOGGER.finest("inputstream is " + inputStream);
             return (inputStream != null) && (inputStream.available() > 0);
         } catch (IOException e) {

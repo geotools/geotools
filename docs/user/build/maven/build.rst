@@ -8,11 +8,11 @@ Your First Build
 
 1. Start by going to where you have the source code::
 
-     cd C:\java\geotools\trunk
+     cd C:\java\geotools
 
 2. And check that we actually have the source code::
 
-     C:\java\geotools\trunk>dir
+     C:\java\geotools>dir
       Volume in drive C is INTERNAL
       Volume Serial Number is 3CA5-71DD
       Directory of C:\java\geotools\trunk
@@ -32,7 +32,7 @@ Your First Build
 3. Make sure you are connected to the internet
 4. Start your first build::
 
-     C:\java\geotools\trunk>mvn install
+     C:\java\geotools>mvn install
 
 5. If all is well, Maven should download the required .jar files and build GeoTools modules.
 6. At the end of this process it will display a list of all the modules which were built and installed correctly.::

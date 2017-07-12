@@ -19,8 +19,6 @@ package org.geotools.coverage.io;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -33,12 +31,15 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 /**
  * 
@@ -78,7 +79,7 @@ public class ReadTypeTest {
     public void testJAIReadType() throws IOException {
         // Definition of the reader
         ImageReader reader = new TIFFImageReaderSpi().createReaderInstance();
-        FileImageInputStream in = new FileImageInputStream(DataUtilities.urlToFile(granuleUrl));
+        FileImageInputStream in = new FileImageInputStream(URLs.urlToFile(granuleUrl));
 
         try {
             reader.setInput(in);
@@ -172,7 +173,7 @@ public class ReadTypeTest {
         FileImageInputStream in = null;
         try {
             if (getReader && granuleUrl != null) {
-                in = new FileImageInputStream(DataUtilities.urlToFile(granuleUrl));
+                in = new FileImageInputStream(URLs.urlToFile(granuleUrl));
                 reader = new TIFFImageReaderSpi().createReaderInstance();
                 reader.setInput(in);
             }

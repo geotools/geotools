@@ -62,7 +62,6 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
@@ -73,6 +72,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -188,7 +188,7 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 				destination = null;
 			}
 
-			temp = DataUtilities.urlToFile(url);
+			temp = URLs.urlToFile(url);
 
 			if (temp.exists() && !temp.isDirectory()) {
 				destination = null;

@@ -25,21 +25,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.geotools.TestData;
-import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 
 /**
@@ -272,7 +272,7 @@ public abstract class TestCaseSupport extends TestCase {
             copy(testData, new String[] { "shp", "dbf", "shx" }, new String[] { "prj" });
         else if (testData.endsWith(".MIF"))
             copy(testData, new String[] { "MIF", "MID" }, new String[0]);
-        File f = DataUtilities.urlToFile(TestData.url(this, testData));
+        File f = URLs.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
     }
 

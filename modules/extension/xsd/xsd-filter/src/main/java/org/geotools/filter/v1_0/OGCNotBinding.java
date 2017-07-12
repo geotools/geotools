@@ -24,6 +24,7 @@ import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Not;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.geotools.filter.v1_1.OGC;
@@ -94,6 +95,7 @@ public class OGCNotBinding extends AbstractComplexBinding {
         return filterfactory.not(filter);
     }
 
+    @Override
     public Object getProperty(Object object, QName name)
         throws Exception {
         Not not = (Not) object;
@@ -110,6 +112,9 @@ public class OGCNotBinding extends AbstractComplexBinding {
             return not.getFilter();
         }
 
+        if (OGC.comparisonOps.equals(name) && not.getFilter() instanceof PropertyIsNull) {
+            return not.getFilter();
+        }
         return null;
     }
 }

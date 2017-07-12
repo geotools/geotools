@@ -322,12 +322,21 @@ public class HeatmapProcess implements VectorProcess {
         return outputWidth / outputEnv.getWidth();
     }
     
-    private Filter expandBBox(Filter filter, double distance) {
+    protected Filter expandBBox(Filter filter, double distance) {
         return (Filter) filter.accept(new BBOXExpandingFilterVisitor(distance, distance, distance,
                 distance), null);
     }
 
-    public static void extractPoints(SimpleFeatureCollection obsPoints, String attrName,
+    /**
+     * Extract points from a feature collection, and stores them in the heatmap
+     *
+     * @param obsPoints features to extract
+     * @param attrName expression or property name used to evaluate the geometry from a feature
+     * @param trans transform for extracted points
+     * @param heatMap heatmap to add points to
+     * @throws CQLException if attrName can't be parsed
+     */
+    protected void extractPoints(SimpleFeatureCollection obsPoints, String attrName,
             MathTransform trans, HeatmapSurface heatMap) throws CQLException {
         Expression attrExpr = null;
         if (attrName != null) {

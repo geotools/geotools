@@ -27,8 +27,8 @@ import java.net.URI;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.csvreader.CsvReader;
 

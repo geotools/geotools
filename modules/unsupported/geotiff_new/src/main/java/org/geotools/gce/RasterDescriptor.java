@@ -183,7 +183,7 @@ public class RasterDescriptor {
 //        // get basic info
 //        this.rasterBBOX = new ReferencedEnvelope(rasterManager.spatialDomainManager.coverageBBox);
 //        this.baseGridToWorld=new AffineTransform((AffineTransform) rasterManager.spatialDomainManager.coverageGridToWorld2D);
-//        final File granuleFile = DataUtilities.urlToFile(rasterManager.parent.sourceURL);
+//        final File granuleFile = URLs.urlToFile(rasterManager.parent.sourceURL);
 //        
 //        // create the base grid to world transformation
 //        ImageInputStream inStream = null;

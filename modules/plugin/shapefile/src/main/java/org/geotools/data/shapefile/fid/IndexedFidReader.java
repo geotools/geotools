@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile.fid;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.FIX;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,13 +26,13 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FIDReader;
 import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.resources.NIOUtilities;
+import org.geotools.util.URLs;
 
 /**
  * This object reads from a file the fid of a feature in a shapefile.
@@ -110,7 +110,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
             if (removes > getCount() / 2) {
                 URL url = shpFiles.acquireRead(FIX, this);
                 try {
-                    DataUtilities.urlToFile(url).deleteOnExit();
+                    URLs.urlToFile(url).deleteOnExit();
                 } finally {
                     shpFiles.unlockRead(url, this);
                 }

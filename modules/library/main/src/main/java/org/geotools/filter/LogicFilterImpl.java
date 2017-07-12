@@ -39,6 +39,13 @@ import org.opengis.filter.FilterVisitor;
 public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     /** The logger for the default core module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    
+    /**
+     * Computing the hash can be expensive for large logic filters, Effective Java suggests to
+     * cache it. The object is not immutable, so care should be taken to clear the cache
+     * on change.
+     */
+    int cachedHash = 0;
 
     @Deprecated
     protected LogicFilterImpl() {
@@ -97,6 +104,8 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      *       filter.
      */
     public final void addFilter(org.opengis.filter.Filter filter) throws IllegalFilterException {
+        // reset
+        cachedHash = 0;
         int filterType = Filters.getFilterType(this);
         if ((filterType != LOGIC_NOT) || (children.size() == 0)) {
             children.add(filter);
@@ -185,8 +194,9 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
             }
 
             return ((Filters.getFilterType( logFilter ) == Filters.getFilterType( this ))
-            && (logFilter.getSubFilters().size() == this.children.size())
-            && logFilter.getSubFilters().containsAll(this.children));
+                    && (logFilter.getSubFilters().size() == this.children.size())
+                    && logFilter.getSubFilters().containsAll(this.children));
+
         } else {
             return false;
         }
@@ -198,12 +208,15 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @return a code to hash this object by.
      */
     public int hashCode() {
-        int result = 17;
-        int filterType = Filters.getFilterType(this);
-        result = (37 * result) + filterType;
-        result = (37 * result) + children.hashCode();
+        if(cachedHash == 0) {
+            int result = 17;
+            int filterType = Filters.getFilterType(this);
+            result = (37 * result) + filterType;
+            result = (37 * result) + children.hashCode();
+            cachedHash = result;
+        }
 
-        return result;
+        return cachedHash;
     }
 
     /**

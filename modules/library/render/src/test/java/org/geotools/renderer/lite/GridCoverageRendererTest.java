@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -33,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -86,17 +86,24 @@ import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
+import org.geotools.renderer.lite.gridcoverage2d.ContrastEnhancementType;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelperTest;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.resources.image.ImageUtilities;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ChannelSelectionImpl;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.ContrastMethodStrategy;
+import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -191,7 +198,7 @@ public class GridCoverageRendererTest  {
         TestData.unzipFile(this, "arcgrid/arcgrid.zip");
         URL rainURL = GridCoverageRendererTest.class
                 .getResource("test-data/arcgrid/precip30min.asc");
-        File rainFile = DataUtilities.urlToFile(rainURL);
+        File rainFile = URLs.urlToFile(rainURL);
         rainReader = new ArcGridReader(rainFile);
 
         // read a image with a roi (mask)
@@ -343,6 +350,7 @@ public class GridCoverageRendererTest  {
         Graphics2D g2d = (Graphics2D) image.getGraphics();
         renderer.paint(g2d, new Rectangle(0,0,300,300), context.getLayerBounds());
         g2d.dispose();
+        context.dispose();
         // make sure no errors and no features
         assertEquals(0, counter.errors);
         assertEquals(0, counter.features);
@@ -1112,7 +1120,96 @@ public class GridCoverageRendererTest  {
         ImageUtilities.disposeImage(image);
         
     }
-    
+
+    @Test
+    public void testContrastEnhancementInChannelSelectionAfterBandSelection() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
+
+        GridCoverage2DReader reader = new TestMultiBandReader(0,2,4);
+
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
+                new Rectangle(0, 0, 255, 255), null);
+
+        StyleBuilder sldBuilder = new StyleBuilder();
+
+        RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
+        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final SelectedChannelType chTypeRed = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeBlue = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeGreen = new SelectedChannelTypeImpl();
+
+        SelectedChannelType[] channels = new SelectedChannelType[] { chTypeRed, chTypeGreen,
+                chTypeBlue };
+
+        // Assign a different contrast method for each channel
+        // by offsetting min and max of 20 on each channel
+        // and assigning channels number with increments of 2
+        int min = 10;
+        int max = 100;
+        for (int i = 0; i < 3; i++) {
+            final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
+            final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
+            method.addOption("algorithm", sldBuilder
+                    .literalExpression(ContrastEnhancementType.NORMALIZE_CLIP_TO_ZERO_NAME));
+            method.addOption("minValue", sldBuilder.literalExpression(min + (20 * i)));
+            method.addOption("maxValue", sldBuilder.literalExpression(max + (20 * i)));
+            cntEnh.setMethod(method);
+            channels[i].setChannelName(Integer.toString((i * 2) + 1));
+            channels[i].setContrastEnhancement(cntEnh);
+        }
+        chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
+
+        symbolizer.setChannelSelection(chSel);
+        symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
+
+        RenderedImage image = renderer.renderImage(reader, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+        assertEquals(3, image.getSampleModel().getNumBands());
+
+        // Make sure clip occurred even with optimized band selection
+        ImageWorker worker = new ImageWorker(image);
+        
+        double[] maximums = worker.getMaximums();
+        assertEquals(max, maximums[0], 0d);
+        assertEquals(max + 20, maximums[1], 0d);
+        assertEquals(max + 40, maximums[2], 0d);
+        ImageUtilities.disposeImage(image);
+    }
+
+    @Test
+    public void testChannelSelectionOrderWithBandSelection() throws Exception {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
+
+        GridCoverage2DReader reader = new TestMultiBandReader(4,2,0);
+
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
+                new Rectangle(0, 0, 255, 255), null);
+
+        StyleBuilder sldBuilder = new StyleBuilder();
+
+        RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
+        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final SelectedChannelType chTypeRed = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeBlue = new SelectedChannelTypeImpl();
+        final SelectedChannelType chTypeGreen = new SelectedChannelTypeImpl();
+
+        chTypeRed.setChannelName("5");
+        chTypeGreen.setChannelName("3");
+        chTypeBlue.setChannelName("1");
+
+        chSel.setRGBChannels(chTypeRed, chTypeGreen, chTypeBlue);
+
+        symbolizer.setChannelSelection(chSel);
+        symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
+
+        Graphics2D graphics = ((BufferedImage) TestMultiBandReader.image).createGraphics();
+        renderer.paint(graphics, reader, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK);
+        RenderedImage image = renderer.renderImage(reader, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+
+        // the read operation checked that the proper bandSelect (4,2,0) has been specified
+        // instead of 0,1,2 (as per bugged code)
+        assertEquals(3, image.getSampleModel().getNumBands());
+    }
+
     @Test
     public void testPaintBandSelectionNonSupportingReader() throws Exception {
         File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
@@ -1212,6 +1309,26 @@ public class GridCoverageRendererTest  {
         
         // outside coverage bounds, just return null but don't NPE
         assertNull(image);
+    }
+    
+    @Test
+    public void testRenderOffDateline() throws Exception {
+        File coverageFile = DataUtilities
+                .urlToFile(GridCoverageReaderHelperTest.class.getResource("test-data/off_dateline.tif"));
+        assertTrue(coverageFile.exists());
+        GeoTiffReader offDatelineReader = new GeoTiffReader(coverageFile);
+
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-180, 0, -90, 90, DefaultGeographicCRS.WGS84);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, envelope,
+                new Rectangle(0, 0, 450, 450), null);
+        
+        RasterSymbolizer symbolizer = new StyleBuilder().createRasterSymbolizer();
+        Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
+        RenderedImage image = renderer.renderImage(offDatelineReader, null, symbolizer, interpolation, null, 256, 256);
+        assertNotNull(image);
+        File reference = new File(
+                "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/offDateline.png");
+        ImageAssert.assertEquals(reference, image, 0);
     }
     
     /**
@@ -1323,4 +1440,107 @@ public class GridCoverageRendererTest  {
 
 	}
 
+    /**
+     * Mock reader checking the expected band was requested
+     */
+    private static class TestMultiBandReader extends AbstractGridCoverage2DReader {
+
+        int[] expectedBands;
+
+        static BufferedImage image;
+
+        static {
+            // Create a striped image
+            final int width = 255;
+            final int height = 255;
+            image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+            WritableRaster raster = image.getRaster();
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    for (int b = 0; b < 3; b++) {
+                        raster.setSample(i, j, b, i);
+                    }
+                }
+            }
+        }
+
+        public TestMultiBandReader(int... expectedBands) {
+            this.expectedBands = expectedBands;
+            this.originalEnvelope = new GeneralEnvelope(new ReferencedEnvelope(0, 90, 0, 90,
+                    DefaultGeographicCRS.WGS84));
+            this.crs = DefaultGeographicCRS.WGS84;
+        }
+
+        @Override
+        public Format getFormat() {
+            return new AbstractGridFormat() {
+
+                @Override
+                public GridCoverageWriter getWriter(Object destination, Hints hints) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public GridCoverageWriter getWriter(Object destination) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public AbstractGridCoverage2DReader getReader(Object source, Hints hints) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public AbstractGridCoverage2DReader getReader(Object source) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public GeoToolsWriteParams getDefaultImageIOWriteParameters() {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public boolean accepts(Object source, Hints hints) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public ParameterValueGroup getReadParameters() {
+                    HashMap<String, String> info = new HashMap<String, String>();
+
+                    info.put("name", "bandTester");
+                    info.put("description", "desc");
+                    info.put("vendor", "vendor");
+                    info.put("docURL", "http://www.geotools.org");
+                    info.put("version", "1.0");
+
+                    List<GeneralParameterDescriptor> params = new ArrayList<GeneralParameterDescriptor>();
+                    params.add(AbstractGridFormat.BANDS);
+
+                    return new ParameterGroup(new DefaultParameterDescriptorGroup(info,
+                            params.toArray(new GeneralParameterDescriptor[params.size()])));
+                }
+            };
+        }
+
+        @Override
+        public GridCoverage2D read(GeneralParameterValue[] parameters)
+                throws IllegalArgumentException, IOException {
+            for (GeneralParameterValue parameter: parameters) {
+                if ("Bands".equals(parameter.getDescriptor().getName().toString())) {
+                    assertTrue(Arrays.equals(expectedBands,(int[]) ((ParameterValue) parameter).getValue()));
+                }
+            }
+
+
+            BufferedImage bi = image;
+            GridCoverage2D coverage = CoverageFactoryFinder.getGridCoverageFactory(null).create(
+                    "test", bi, getOriginalEnvelope());
+
+            return coverage;
+        }
+
+    }
 }

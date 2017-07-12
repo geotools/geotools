@@ -29,7 +29,6 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.data.CloseableIterator;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
@@ -47,6 +46,7 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -189,7 +189,7 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
             URL resolved = pathType.resolvePath(parentLocation, granuleLocation);
             File file = null;
             if (resolved != null) {
-                file = DataUtilities.urlToFile(resolved);
+                file = URLs.urlToFile(resolved);
                 if (file != null && file.exists()) {
                     groupedFeatures++;
                     firstFeature = next;

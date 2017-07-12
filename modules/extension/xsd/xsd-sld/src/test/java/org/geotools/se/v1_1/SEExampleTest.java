@@ -45,6 +45,7 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
@@ -572,6 +573,17 @@ public class SEExampleTest extends SETestSupport {
         assertThat(eg2.getURI(), not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
         Mark mark = (Mark) symbols.get(2);
         assertEquals("square", mark.getWellKnownName().evaluate(null, String.class)); 
+    }
+    
+    public void testParseTextSymbolizerWithGraphic() throws Exception {
+        TextSymbolizer2 sym = (TextSymbolizer2) parse("example-textsymbolizer-graphic.xml");
+        Graphic graphic = sym.getGraphic();
+        assertNotNull(graphic);
+        assertNotNull(graphic.graphicalSymbols());
+        assertEquals(1, graphic.graphicalSymbols().size());
+        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+        assertEquals("square", mark.getWellKnownName().evaluate(null, String.class));
+        assertEquals(Integer.valueOf(7), graphic.getSize().evaluate(null, Integer.class));
     }
     
 }

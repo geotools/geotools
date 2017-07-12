@@ -30,8 +30,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -111,7 +110,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
 
                 URL url = storageFile.getSrcURLForWrite();
                 try {
-                    File dest = DataUtilities.urlToFile(url);
+                    File dest = URLs.urlToFile(url);
 
                     if (storage.equals(dest))
                         return;

@@ -17,9 +17,7 @@
 package org.geotools.styling.css.util;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Base class to build a power set from a set of object, filtering it during construction to avoid
@@ -41,7 +39,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * Signatures that have been rejected, that we already know won't generate an entry in the
      * result
      */
-    private Set<Signature> rejects = new HashSet<>();
+    private List<List<Signature>> rejects = new ArrayList();
 
     /**
      * Initializes the power set builds with the initial domain values
@@ -59,14 +57,26 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      * @param k
      * @return
      */
-    private boolean rejected(Signature s, int k) {
+    protected boolean rejected(Signature s, int k) {
         // see if rejected already
-        for (Signature reject : rejects) {
-            if (s.contains(reject, k)) {
+        int cardinality = s.cardinality();
+        final int max = Math.min(rejects.size(), cardinality);
+        for (int i = 0; i < max; i++) {
+            List<Signature> signatures = rejects.get(i);
+            if(signatures != null && rejected(s, k, signatures)) {
                 return true;
             }
         }
 
+        return false;
+    }
+
+    private boolean rejected(Signature s, int k, List<Signature> signatures) {
+        for (Signature reject :  signatures) {
+            if (s.contains(reject, k)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -106,7 +116,17 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         List<T> objects = listFromSignature(s);
         if (!objects.isEmpty()) {
             if (!accept(objects)) {
-                rejects.add((Signature) s.clone());
+                final Signature cloned = (Signature) s.clone();
+                int cardinality = cloned.cardinality();
+                while(rejects.size() <= cardinality) {
+                    rejects.add(null);
+                }
+                List<Signature> signatures = rejects.get(cardinality);
+                if(signatures == null) {
+                    signatures = new ArrayList<>();
+                    rejects.set(cardinality, signatures);
+                }
+                signatures.add(cloned);
                 return;
             }
         }
@@ -118,14 +138,32 @@ public abstract class FilteredPowerSetBuilder<T, R> {
             }
         } else {
             s.set(k, true);
+            List<List<Signature>> storedRejects = cloneRejects();
             if (!rejected(s, k)) {
                 fill(s, k + 1, n, result);
             }
-            s.set(k, false);
-            if (!rejected(s, k)) {
-                fill(s, k + 1, n, result);
+            // none of these new signatures can contain one above because
+            // bit K is now set to zero, so reset rejects to the parent value
+            this.rejects = storedRejects;
+            // avoid generating outputs for bits that are catch all, and being negated
+            if(!isInclude(domain.get(k))) {
+                s.set(k, false);
+                if (!rejected(s, k)) {
+                    fill(s, k + 1, n, result);
+                }    
             }
+            
         }
+    }
+    
+    protected abstract boolean isInclude(T t);
+
+    List<List<Signature>> cloneRejects() {
+        List<List<Signature>> result = new ArrayList<>();
+        for (List<Signature> l : rejects) {
+            result.add(new ArrayList<>(l));
+        }
+        return result;
     }
 
     /**
@@ -156,11 +194,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
      */
     private List<T> listFromSignature(Signature signature) {
         List<T> test = new ArrayList<>();
-        for (int i = 0; i < domain.size(); i++) {
-            if (signature.get(i)) {
-                test.add(domain.get(i));
-            }
-        }
+        signature.foreach(i -> test.add(domain.get(i)));
         return test;
     }
 

@@ -29,10 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.digester.Digester;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.AppSchemaDataAccessFactory;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.util.InterpolationProperties;
+import org.geotools.util.URLs;
 import org.xml.sax.SAXException;
 
 /**
@@ -133,7 +133,7 @@ public class XMLConfigDigester {
             } else {
                 InterpolationProperties props = new InterpolationProperties();
                 props.putAll(properties);
-                File dataStoreConfigFile = DataUtilities.urlToFile(dataStoreConfigUrl);
+                File dataStoreConfigFile = URLs.urlToFile(dataStoreConfigUrl);
                 if (dataStoreConfigFile != null) {
                     if (props.getProperty(CONFIG_FILE_PROPERTY) == null) {
                         props.setProperty(CONFIG_FILE_PROPERTY, dataStoreConfigFile.getPath());

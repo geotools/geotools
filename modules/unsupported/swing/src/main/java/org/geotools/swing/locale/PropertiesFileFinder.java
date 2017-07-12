@@ -18,7 +18,6 @@
 package org.geotools.swing.locale;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -31,7 +30,7 @@ import java.util.Locale;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 
 /**
  * Searches for properties files in a resource directory within the gt-swing module
@@ -108,7 +107,7 @@ public class PropertiesFileFinder {
 
         //DataUtiltiies.urlToFile only deals with file protocol
         if (url.getProtocol().equals("file")) {
-            return DataUtilities.urlToFile(url).getPath();
+            return URLs.urlToFile(url).getPath();
         } else {
             return url.toString();
         }            

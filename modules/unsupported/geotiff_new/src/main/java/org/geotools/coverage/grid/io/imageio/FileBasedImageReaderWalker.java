@@ -48,11 +48,11 @@ public abstract class FileBasedImageReaderWalker extends ImageReaderWalker {
             Hints hints,
             ImageReaderSpi readerSPI) throws IOException {
 //        TODO avoid SPI creation
-        super(URLToParams(sourceURL), hints, ImageIOExt.getImageInputStreamSPI(DataUtilities.urlToFile(sourceURL), true), readerSPI);
+        super(URLToParams(sourceURL), hints, ImageIOExt.getImageInputStreamSPI(URLs.urlToFile(sourceURL), true), readerSPI);
       this.sourceURL = sourceURL;
       
       // look for external levels
-      sourceFile= DataUtilities.urlToFile(getSource());
+      sourceFile= URLs.urlToFile(getSource());
       externalOverviewsFile= new File(sourceFile.getCanonicalPath()+".ovr");
       hasExternalOverviews=externalOverviewsFile.exists()&&externalOverviewsFile.isFile()&&externalOverviewsFile.canRead();
       externalOverviewsURL= externalOverviewsFile.toURI().toURL();
@@ -76,7 +76,7 @@ public abstract class FileBasedImageReaderWalker extends ImageReaderWalker {
     // TODO we should try to avoid this lookup as much as possible
     @Override
     protected ImageInputStream createImageInputStream() throws IOException {
-        return ImageIOExt.createImageInputStream(DataUtilities.urlToFile(sourceURL));
+        return ImageIOExt.createImageInputStream(URLs.urlToFile(sourceURL));
     }
 
 

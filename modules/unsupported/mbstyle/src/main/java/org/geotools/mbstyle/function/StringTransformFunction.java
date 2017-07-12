@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.function;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,12 +23,10 @@ import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.text.Text;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 
 /**
  * Function that takes an input and applies a text transformation (one of "lowercase", "uppercase", or "none"). The default transformation is "none".

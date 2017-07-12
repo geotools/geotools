@@ -82,8 +82,6 @@ import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.MosaicBeanBuilder;
-import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
-import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
 import org.geotools.gce.imagemosaic.granulehandler.DefaultGranuleHandler;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandler;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactoryFinder;
@@ -101,6 +99,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DefaultProgressListener;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -355,7 +354,7 @@ public class ImageMosaicConfigHandler {
 
     static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
         Properties properties = CoverageUtilities
-                .loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
+                .loadPropertiesFromURL(URLs.fileToUrl(datastoreProperties));
         if (properties == null) {
             throw new IOException(
                     "Unable to load properties from:" + datastoreProperties.getAbsolutePath());
@@ -384,14 +383,20 @@ public class ImageMosaicConfigHandler {
         GranuleCatalog catalog = null;
         // SPI
         final String SPIClass = properties.getProperty("SPI");
+        DataStoreFactorySpi spi = null; 
         try {
-            // create a datastore as instructed
-            final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass)
-                    .newInstance();
-
+            if (SPIClass == null) {
+                if (properties.get(Utils.Prop.STORE_NAME) == null) {
+                    throw new IllegalArgumentException(
+                            "Required property SPI is missing from configuration");
+                }
+            } else {
+                // create a datastore as instructed
+                spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+            }
             // set ParentLocation parameter since for embedded database like H2 we must change the database
             // to incorporate the path where to write the db
-            properties.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
+            properties.put("ParentLocation", URLs.fileToUrl(parent).toExternalForm());
             if (wraps) {
                 properties.put(Prop.WRAP_STORE, wraps);
             }
@@ -471,7 +476,8 @@ public class ImageMosaicConfigHandler {
         if (indexSchema == null) {
             // Proceed with default Schema
             final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
-            featureBuilder.setName(name);
+            String typeName = runConfiguration.getParameter(Prop.TYPENAME);
+            featureBuilder.setName(typeName != null ? typeName : name);
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
             featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
                     String.class);
@@ -820,7 +826,7 @@ public class ImageMosaicConfigHandler {
             if (sourceURL.getPath().endsWith("shp")) {
                 // In case we didn't find a typeName and we are dealing with a shape index,
                 // we set the typeName as the shape name
-                final File file = DataUtilities.urlToFile(sourceURL);
+                final File file = URLs.urlToFile(sourceURL);
                 catalogBean.setTypeName(FilenameUtils.getBaseName(file.getCanonicalPath()));
             } else {
                 // use the default "mosaic" name
@@ -853,7 +859,7 @@ public class ImageMosaicConfigHandler {
         // Create the catalog
         GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean,
                 null, hints);
-        File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+        File parent = URLs.urlToFile(sourceURL).getParentFile();
         MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
                 .createFootprintProvider(parent);
         catalog.setMultiScaleROIProvider(rois);

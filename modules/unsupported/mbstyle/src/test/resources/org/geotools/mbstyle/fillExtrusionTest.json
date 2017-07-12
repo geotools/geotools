@@ -23,14 +23,6 @@
     "glyphs": "mapbox://fonts/vickdw/{fontstack}/{range}.pbf",
     "layers": [
         {
-            "id": "background",
-            "type": "background",
-            "layout": {},
-            "paint": {
-                "background-color": "hsl(55, 11%, 96%)"
-            }
-        },
-        {
             "id": "building",
             "type": "fill-extrusion",
             "source": "composite",

@@ -26,13 +26,13 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
-import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -55,18 +55,33 @@ public abstract class GranuleCatalogFactory {
     public static GranuleCatalog createGranuleCatalog(final Properties params,
             final boolean caching, final boolean create, final DataStoreFactorySpi spi,
             final Hints hints) {
-        if (caching) {
-            return new STRTreeGranuleCatalog(params, spi, hints);
+        // build the catalog
+        Repository repository = (Repository) hints.get(Hints.REPOSITORY);
+        String storeName = (String) params.get(Utils.Prop.STORE_NAME);
+        AbstractGTDataStoreGranuleCatalog catalog;
+        if (storeName != null && !storeName.trim().isEmpty()) {
+            if (repository == null) {
+                throw new IllegalArgumentException("Was given a store name " + storeName
+                        + " but there is no Repository to resolve it");
+            } else {
+                catalog = new RepositoryDataStoreCatalog(params, create, repository, storeName, spi, hints);
+            }
         } else {
-            return new CachingDataStoreGranuleCatalog(
-                    new GTDataStoreGranuleCatalog(params, create, spi, hints));
+            catalog = new GTDataStoreGranuleCatalog(params, create, spi, hints);
+        }
+        
+        // caching wrappers
+        if (caching) {
+            return new STRTreeGranuleCatalog(params, catalog, hints);
+        } else {
+            return new CachingDataStoreGranuleCatalog(catalog);
         }
     }
 
     public static GranuleCatalog createGranuleCatalog(final URL sourceURL,
             final CatalogConfigurationBean catalogConfigurationBean,
             final Properties overrideParams, final Hints hints) {
-        final File sourceFile = DataUtilities.urlToFile(sourceURL);
+        final File sourceFile = URLs.urlToFile(sourceURL);
         final String extension = FilenameUtils.getExtension(sourceFile.getAbsolutePath());
 
         // STANDARD PARAMS
@@ -85,11 +100,11 @@ public abstract class GranuleCatalogFactory {
         params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
         params.put(Utils.Prop.WRAP_STORE, catalogConfigurationBean.isWrapStore());
         if (sourceURL != null) {
-            File parentDirectory = DataUtilities.urlToFile(sourceURL);
+            File parentDirectory = URLs.urlToFile(sourceURL);
             if (parentDirectory.isFile())
                 parentDirectory = parentDirectory.getParentFile();
             params.put(Utils.Prop.PARENT_LOCATION,
-                    DataUtilities.fileToURL(parentDirectory).toString());
+                    URLs.fileToUrl(parentDirectory).toString());
         } else
             params.put(Utils.Prop.PARENT_LOCATION, null);
         // add typename
@@ -128,23 +143,21 @@ public abstract class GranuleCatalogFactory {
             try {
                 // create a datastore as instructed
                 spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-
             } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                return null;
+                // if we are directed to use a pre-existing store then don't complain about lack of SPI
+                if (properties.get(Utils.Prop.STORE_NAME) == null) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    }
+                    return null;
+                }
             }
         }
         // Instantiate
         if (overrideParams != null && !overrideParams.isEmpty()) {
             params.putAll(overrideParams);
         }
-        final GranuleCatalog catalog = catalogConfigurationBean.isCaching()
-                ? new STRTreeGranuleCatalog(params, spi, hints)
-                : new CachingDataStoreGranuleCatalog(
-                        new GTDataStoreGranuleCatalog(params, false, spi, hints));
-
-        return catalog;
+        return createGranuleCatalog(params, catalogConfigurationBean.isCaching(), false, spi, hints);
     }
 
 }

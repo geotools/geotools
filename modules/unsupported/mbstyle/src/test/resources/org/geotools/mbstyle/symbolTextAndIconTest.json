@@ -45,7 +45,7 @@
                 "text-pitch-alignment": "viewport",
                 "text-field": "{text}",
                 "icon-image": "pattern",
-                "symbol-placement": "point"            
+                "symbol-placement": "point"
             },
             "paint": {
                 "text-color": "#eeedf7",

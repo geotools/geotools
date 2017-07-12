@@ -17,6 +17,7 @@
 package org.geotools.styling.css.util;
 
 import java.util.BitSet;
+import java.util.function.IntConsumer;
 
 /**
  * The binary signature for a list of values, indicates which objects of the list have been selected
@@ -85,7 +86,10 @@ public abstract class Signature implements Cloneable {
     public static Signature newSignature(int size) {
         return new BitsetSignature(size);
     }
-
+    
+    public abstract int cardinality();
+    
+    public abstract void foreach(IntConsumer consumer);
     /**
      * An implementation of signature based on a Java {@link BitSet}
      */
@@ -149,6 +153,20 @@ public abstract class Signature implements Cloneable {
 
         public Object clone() {
             return new BitsetSignature(this);
+        }
+
+        @Override
+        public int cardinality() {
+            return bs.cardinality();
+        }
+
+        @Override
+        public void foreach(IntConsumer consumer) {
+            int next = bs.nextSetBit(0);
+            while(next != -1) {
+                consumer.accept(next);
+                next = bs.nextSetBit(next + 1);
+            }
         }
 
     }

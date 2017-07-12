@@ -17,11 +17,10 @@
 package org.geotools.mbstyle.transform;
 
 import org.geotools.TestData;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
@@ -29,9 +28,7 @@ import org.geotools.map.MapContent;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.referencing.CRS;
-import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
 import org.json.simple.JSONObject;
@@ -40,21 +37,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.media.jai.Interpolation;
-
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.*;
+
+//import org.geotools.gce.geotiff.GeoTiffReader;
 
 /**
  * Perceptual tests for {@link MBStyleTransformer}.
@@ -92,6 +85,8 @@ public class VisualTransformerTest {
     SimpleFeatureSource polygonFS;
 
     SimpleFeatureSource polygonsBigFS;    
+    
+    SimpleFeatureSource pointsWithMarksFS;
 
     ReferencedEnvelope bounds;
 
@@ -111,10 +106,66 @@ public class VisualTransformerTest {
         polygonsBigFS = ds.getFeatureSource("testpolygonsbig");
         lineFS = ds.getFeatureSource("testlines");
         lineZigFS = ds.getFeatureSource("testlinezigs");
+        pointsWithMarksFS = ds.getFeatureSource("testmarks");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
-        // System.setProperty("org.geotools.test.interactive", "true");
+         System.setProperty("org.geotools.test.interactive", "true");
+    }
+    /**
+     * Test generation of a GeoTools style from an MBBackgroundLayer
+     */    
+    @Test
+    public void mbBackgroundLayerVisualTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("backgroundColorStyleTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        EnvFunction.setGlobalValue("wms_bbox", mc.getViewport().getBounds());
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Background Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("background"), image, 50);
+        mc.dispose();
+    }
+    
+    /**
+     * Test generation of a GeoTools style from an MBFillLayer (using a constant sprite fill pattern)
+     */
+    @Test
+    public void mbBackgroundLayerSpritesVisualTest() throws Exception {
+
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("backgroundImgStyleTest.json");
+
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(polygonsBigFS, style));
+        
+        EnvFunction.setGlobalValue("wms_bbox", mc.getViewport().getBounds());
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Background Test", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("background-sprite"), image, 50);
+        mc.dispose();
     }
 
     /**
@@ -377,6 +428,17 @@ public class VisualTransformerTest {
     }
     
     /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer
+     */
+    @Test
+    public void mbSymbolLayerIconAndTextPointPlacementVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconAndTextPointPlacementTest.json");        
+        testVisualizeStyleWithPointFeatures(jsonObject, "Symbol Text+Icon Point Placement", "symbol-text-icon-point-placement", true, 300, 300);
+    }
+    
+    
+    /**
      * Test visualization of a GeoTools style from an MB Circle Layer
      */
     @Test
@@ -407,11 +469,73 @@ public class VisualTransformerTest {
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Overlap", "circle-style-test-overlap", true, 300, 300);
     }
     
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer, using included GeoTools marks.
+     */
+    @Test
+    public void mbSymbolLayerMarkVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils
+                .parseTestStyle("symbolStyleIconMarkTest.json");
+                
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);        
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Symbol Mark Test", renderer,
+                DISPLAY_TIME, new ReferencedEnvelope[] { bounds }, null);
+
+        ImageAssert.assertEquals(file("symbol-mark-test"), image, 50);
+        mc.dispose();        
+    }
+    
+    /**
+     * Test visualization of a GeoTools style from an MB Symbol Layer, using included GeoTools (QGIS) marks.
+     */
+    @Test
+    public void mbSymbolLayerQGISMarkVisualTest() throws Exception {
+        // Read file to JSONObject
+        JSONObject jsonObject = MapboxTestUtils
+                .parseTestStyle("symbolStyleIconQGISMarkTest.json");        
+        
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Symbol QGIS Mark Test", renderer,
+                DISPLAY_TIME, new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("symbol-qgis-mark-test"), image, 50);
+        mc.dispose();
+        
+    }
+
     @Test
     public void mbLineLayerTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleTest.json");
         testVisualizeStyleWithLineFeatures(jsonObject, "Line Style", "line-style", true);
-    }    
+    }
+
+    @Test
+    public void mbLineLayerGapTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleGapTest.json");
+        testVisualizeStyleWithLineFeatures(jsonObject, "Line Gap Style", "line-gap-style", true);
+    }
     
     @Test
     public void mbLineLayerAllPropertiesTest() throws Exception {
@@ -438,6 +562,31 @@ public class VisualTransformerTest {
         mc.dispose();
     }
     
+    // Will test to see if text will render upside down when 'text-keep-upright' set to false
+    @Test
+    public void mbSymbolLayerTextKeepUprightTest() throws Exception {
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextLinePlacementTest.json");        
+        
+        // Get the style
+        MBStyle mbStyle = new MBStyle(jsonObject);
+        StyledLayerDescriptor sld = mbStyle.transform();
+        UserLayer l = (UserLayer) sld.layers().get(0);
+        Style style = l.getUserStyles()[0];
+        
+        MapContent mc = new MapContent();
+
+        // mc.addLayer(new FeatureLayer(lineFS, defaultLineStyle()));
+
+        mc.addLayer(new FeatureLayer(lineZigFS, style));    
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        BufferedImage image = MapboxTestUtils.showRender("Line Style", renderer, DISPLAY_TIME,
+                new ReferencedEnvelope[] { bounds }, null);
+        ImageAssert.assertEquals(file("symbol-text-keep-upright"), image, 5000);        
+        mc.dispose();
+    }
     
     @Test
     public void mbLineLayerSpriteTest() throws Exception {
@@ -455,33 +604,56 @@ public class VisualTransformerTest {
         testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test Displacement Function", "circle-style-displacement-fn-test", true, 300, 300);
     }
         
-    @Test
-    public void testRasterLayer() throws Exception {
-        File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
-        assertTrue(coverageFile.exists());
-        GridCoverage2DReader worldPaletteReader = new GeoTiffReader(coverageFile);
-        
-        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
-        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
-                -20037508.34, 20037508.34, googleMercator);
-        Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
-                / mapExtent.getWidth() * 200));
-        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
-        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
-                screenSize, w2s);        
-        
-        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("rasterStyleTestAllProperties.json");
-        MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
-        RasterSymbolizer s = (RasterSymbolizer)style.featureTypeStyles().get(0).getRules()[0].getSymbolizers()[0];      
+//    @Test
+//    public void testRasterLayer() throws Exception {
+//        File coverageFile = TestData.copy(this, "geotiff/worldPalette.tiff");
+//        assertTrue(coverageFile.exists());
+//        GridCoverage2DReader worldPaletteReader = new GeoTiffReader(coverageFile);
+//        
+//        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+//        ReferencedEnvelope mapExtent = new ReferencedEnvelope(-20037508.34, 20037508.34,
+//                -20037508.34, 20037508.34, googleMercator);
+//        Rectangle screenSize = new Rectangle(200, (int) (mapExtent.getHeight()
+//                / mapExtent.getWidth() * 200));
+//        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+//        GridCoverageRenderer renderer = new GridCoverageRenderer(googleMercator, mapExtent,
+//                screenSize, w2s);        
+//        
+//        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("rasterStyleTestAllProperties.json");
+//        MBStyle mbStyle = new MBStyle(jsonObject);
+//        StyledLayerDescriptor sld = mbStyle.transform();
+//        UserLayer l = (UserLayer) sld.layers().get(0);
+//        Style style = l.getUserStyles()[0];
+//        RasterSymbolizer s = (RasterSymbolizer)style.featureTypeStyles().get(0).getRules()[0].getSymbolizers()[0];      
+//
+//        RenderedImage image = renderer.renderImage(worldPaletteReader, null, s,
+//                Interpolation.getInstance(Interpolation.INTERP_BICUBIC), null, 256, 256);
+//
+//        ImageAssert.assertEquals(file("raster"), image, 50);
+//    }
 
-        RenderedImage image = renderer.renderImage(worldPaletteReader, null, s,
-                Interpolation.getInstance(Interpolation.INTERP_BICUBIC), null, 256, 256);
-
-        ImageAssert.assertEquals(file("raster"), image, 50);
-    }
+//    @Test
+//    public void testFillExtrusion() throws Exception {
+//        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("fillExtrusionTest.json");
+//
+//        // Get the style
+//        MBStyle mbStyle = new MBStyle(jsonObject);
+//        StyledLayerDescriptor sld = mbStyle.transform();
+//        UserLayer l = (UserLayer) sld.layers().get(0);
+//        Style style = l.getUserStyles()[0];
+//
+//        MapContent mc = new MapContent();
+//
+//        mc.addLayer(new FeatureLayer(polygonFS, style));
+//
+//        StreamingRenderer renderer = new StreamingRenderer();
+//        renderer.setMapContent(mc);
+//        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+//        BufferedImage image = MapboxTestUtils.showRender("Fill Extrusion", renderer, DISPLAY_TIME,
+//                new ReferencedEnvelope[] { bounds }, null);
+//        ImageAssert.assertEquals(file("fill-extrusion"), image, 5000);
+//        mc.dispose();
+//    }
     
     public void testVisualizeStyleWithPointFeatures(JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean includeGrid, int width, int height) throws Exception {
 
@@ -530,7 +702,7 @@ public class VisualTransformerTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         BufferedImage image = MapboxTestUtils.showRender(renderTitle, renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
-        ImageAssert.assertEquals(file(renderComparisonFileName), image, 50);        
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 50);
         mc.dispose();
     }
     

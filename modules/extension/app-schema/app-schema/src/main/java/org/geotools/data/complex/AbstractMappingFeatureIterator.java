@@ -23,12 +23,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import net.opengis.wfs20.ResolveValueType;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
@@ -44,13 +46,13 @@ import org.geotools.xlink.XLINK;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.feature.GeometryAttribute;
-import org.opengis.feature.Property;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -141,6 +143,12 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     
     protected Integer resolveTimeOut;
 
+    protected Transaction transaction;
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
     /**
      * True if hasNext has been called prior to calling next()
      */
@@ -161,18 +169,24 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         this(store, mapping, query, unrolledQuery, false, hasPostFilter);
     }
 
-
     //NC - changed
     //possibility to pass on both query and unrolled query
     //so that property names can be taken out of query, also when a custom unrolled query is passed.    
     //one of them can be null, but not both!
-    
     public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised, boolean hasPostFilter) throws IOException {
+        this(store, mapping, query, unrolledQuery, removeQueryLimitIfDenormalised, hasPostFilter, null);
+    }
+
+    public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery, boolean removeQueryLimitIfDenormalised,
+            boolean hasPostFilter, Transaction tx) throws IOException {
         this.store = store;
         this.attf = new AppSchemaFeatureFactoryImpl();
 
         this.mapping = mapping;
+
+        this.transaction = tx;
 
         // validate and initialise resolve options
         Hints hints = query.getHints();
@@ -349,22 +363,30 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      * 
      * @see java.util.Iterator#next()
      */
-    public Feature next() {      
-        if (!hasNext()) {
-            throw new IllegalStateException("there are no more features in this iterator");
+    public Feature next() {
+        boolean hasNext = false;
+        try {
+            hasNext = hasNext();
+        } catch (Throwable e) {
+            close();
+            throw new RuntimeException(e);
+        }
+
+        if (!hasNext) {
+            throw new NoSuchElementException("there are no more features in this iterator");
         }
 
         Feature next;
         try {
             next = computeNext();
-        } catch (IOException e) {
+        } catch (Throwable e) {
             close();
             throw new RuntimeException(e);
         }
-        ++featureCounter;        
-        
+        ++featureCounter;
+
         setHasNextCalled(false);
-                
+
         return next;
     }
     

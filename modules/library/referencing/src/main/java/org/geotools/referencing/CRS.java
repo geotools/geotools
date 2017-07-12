@@ -1470,7 +1470,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         GeneralEnvelope generalEnvelope = toGeneralEnvelope(envelope);
         MapProjection sourceProjection = CRS.getMapProjection(sourceCRS);
         if (sourceProjection instanceof PolarStereographic
-                || sourceProjection instanceof LambertAzimuthalEqualArea) {
+                || (sourceProjection instanceof LambertAzimuthalEqualArea)) {
             ParameterValue<?> fe = sourceProjection.getParameterValues().parameter(
                     MapProjection.AbstractProvider.FALSE_EASTING.getName().getCode());
             double originX = fe.doubleValue();
@@ -1478,59 +1478,60 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                     MapProjection.AbstractProvider.FALSE_NORTHING.getName().getCode());
             double originY = fn.doubleValue();
             DirectPosition2D origin = new DirectPosition2D(originX, originY);
-            if (generalEnvelope.contains(origin)) {
-                if (targetCRS instanceof GeographicCRS) {
-                    DirectPosition lowerCorner = transformed.getLowerCorner();
-                    if (getAxisOrder(targetCRS) == AxisOrder.NORTH_EAST) {
-                        lowerCorner.setOrdinate(1, -180);
-                        transformed.add(lowerCorner);
-                        lowerCorner.setOrdinate(1, 180);
-                        transformed.add(lowerCorner);
+            if(isPole(origin, sourceCRS)) {
+                if (generalEnvelope.contains(origin)) {
+                    if (targetCRS instanceof GeographicCRS) {
+                        DirectPosition lowerCorner = transformed.getLowerCorner();
+                        if (getAxisOrder(targetCRS) == AxisOrder.NORTH_EAST) {
+                            lowerCorner.setOrdinate(1, -180);
+                            transformed.add(lowerCorner);
+                            lowerCorner.setOrdinate(1, 180);
+                            transformed.add(lowerCorner);
+                        } else {
+                            lowerCorner.setOrdinate(0, -180);
+                            transformed.add(lowerCorner);
+                            lowerCorner.setOrdinate(0, 180);
+                            transformed.add(lowerCorner);
+                        }
                     } else {
-                        lowerCorner.setOrdinate(0, -180);
-                        transformed.add(lowerCorner);
-                        lowerCorner.setOrdinate(0, 180);
-                        transformed.add(lowerCorner);
+                        // there is no guarantee that the whole range of longitudes will make
+                        // sense for the target projection. We do a 1deg sampling as a compromise
+                        // between
+                        // speed and accuracy
+                        DirectPosition lc = transformed.getLowerCorner();
+                        DirectPosition uc = transformed.getUpperCorner();
+                        for (int j = -180; j < 180; j++) {
+                            expandEnvelopeByLongitude(j, lc, transformed, targetCRS);
+                            expandEnvelopeByLongitude(j, uc, transformed, targetCRS);
+                        }
                     }
                 } else {
-                    // there is no guarantee that the whole range of longitudes will make
-                    // sense for the target projection. We do a 1deg sampling as a compromise
-                    // between
-                    // speed and accuracy
-                    DirectPosition lc = transformed.getLowerCorner();
-                    DirectPosition uc = transformed.getUpperCorner();
-                    for (int j = -180; j < 180; j++) {
-                        expandEnvelopeByLongitude(j, lc, transformed, targetCRS);
-                        expandEnvelopeByLongitude(j, uc, transformed, targetCRS);
+                    // check where the point closes to the origin is, make sure it's included
+                    // in the tranformation points
+                    if (generalEnvelope.getMinimum(0) < originX
+                            && generalEnvelope.getMaximum(0) > originX) {
+                        DirectPosition lc = generalEnvelope.getLowerCorner();
+                        lc.setOrdinate(0, originX);
+                        mt.transform(lc, lc);
+                        transformed.add(lc);
+                        DirectPosition uc = generalEnvelope.getUpperCorner();
+                        uc.setOrdinate(0, originX);
+                        mt.transform(uc, uc);
+                        transformed.add(uc);
                     }
-
+                    if (generalEnvelope.getMinimum(1) < originY
+                            && generalEnvelope.getMaximum(1) > originY) {
+                        DirectPosition lc = generalEnvelope.getLowerCorner();
+                        lc.setOrdinate(1, originY);
+                        mt.transform(lc, lc);
+                        transformed.add(lc);
+                        DirectPosition uc = generalEnvelope.getUpperCorner();
+                        uc.setOrdinate(1, originY);
+                        mt.transform(uc, uc);
+                        transformed.add(uc);
+                    }
+    
                 }
-            } else {
-                // check where the point closes to the origin is, make sure it's included
-                // in the tranformation points
-                if (generalEnvelope.getMinimum(0) < originX
-                        && generalEnvelope.getMaximum(0) > originX) {
-                    DirectPosition lc = generalEnvelope.getLowerCorner();
-                    lc.setOrdinate(0, originX);
-                    mt.transform(lc, lc);
-                    transformed.add(lc);
-                    DirectPosition uc = generalEnvelope.getUpperCorner();
-                    uc.setOrdinate(0, originX);
-                    mt.transform(uc, uc);
-                    transformed.add(uc);
-                }
-                if (generalEnvelope.getMinimum(1) < originY
-                        && generalEnvelope.getMaximum(1) > originY) {
-                    DirectPosition lc = generalEnvelope.getLowerCorner();
-                    lc.setOrdinate(1, originY);
-                    mt.transform(lc, lc);
-                    transformed.add(lc);
-                    DirectPosition uc = generalEnvelope.getUpperCorner();
-                    uc.setOrdinate(1, originY);
-                    mt.transform(uc, uc);
-                    transformed.add(uc);
-                }
-
             }
         }
         
@@ -1640,6 +1641,36 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         }
         return transformed;
     }
+
+    private static boolean isPole(DirectPosition2D point, CoordinateReferenceSystem crs) {
+        DirectPosition2D result = new DirectPosition2D();
+        GeographicCRS geographic;
+        try {
+            ProjectedCRS projectedCRS = getProjectedCRS(crs);
+            if(projectedCRS != null) { 
+                geographic = projectedCRS.getBaseCRS();
+                MathTransform mt = CRS.findMathTransform(projectedCRS, geographic);
+                mt.transform(point, result);
+            } else if(crs instanceof GeographicCRS) {
+                result = point;
+                geographic = (GeographicCRS) crs;
+            } else {
+                return false;
+            }
+        } catch (MismatchedDimensionException | TransformException | FactoryException e) {
+            return false;
+        }
+        
+        final double EPS = 1e-6;
+        if (getAxisOrder(geographic) == AxisOrder.NORTH_EAST) {
+            return Math.abs(result.x - 90) < EPS || Math.abs(result.x + 90) < EPS;  
+        } else {
+            return Math.abs(result.y - 90) < EPS || Math.abs(result.y + 90) < EPS;
+        }
+
+         
+    }
+
 
     private static void expandEnvelopeByLongitude(double longitude, DirectPosition input,
             GeneralEnvelope transformed, CoordinateReferenceSystem sourceCRS) {

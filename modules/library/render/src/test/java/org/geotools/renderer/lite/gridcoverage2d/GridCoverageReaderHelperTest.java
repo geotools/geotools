@@ -299,6 +299,40 @@ public class GridCoverageReaderHelperTest {
                 reader.dispose();
             }
         }
-
+    }
+    
+    /**
+     * Checks that code does not end up reading an mosaicking a secondary part of data that's
+     * overlapping with the larger area requested, only because the source data self overlaps
+     * (has data beyond the dateline in both directions)
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testReadOffDatelineBothSides() throws Exception {
+        coverageFile = DataUtilities
+                .urlToFile(getClass().getResource("test-data/off_dateline.tif"));
+        assertTrue(coverageFile.exists());
+        GeoTiffReader reader = new GeoTiffReader(coverageFile);
+        try {
+            reader = new GeoTiffReader(coverageFile);
+            ReferencedEnvelope mapExtent = new ReferencedEnvelope(-180, 0, -90, 90, DefaultGeographicCRS.WGS84);
+            GridCoverageReaderHelper helper = new GridCoverageReaderHelper(reader, new Rectangle(1024,
+                    512), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(new ReferencedEnvelope(DefaultGeographicCRS.WGS84), DefaultGeographicCRS.WGS84, true);
+            List<GridCoverage2D> coverages = helper.readCoverageInEnvelope(mapExtent, null, handler, true);
+            assertEquals(1, coverages.size());
+            GridCoverage2D coverage = coverages.get(0);
+            Envelope2D envelope = coverage.getEnvelope2D();
+            final double EPS = 0.2; // this is the native resolution 
+            assertEquals(-180.4, envelope.getMinX(), EPS);
+            assertEquals(2, envelope.getMaxX(), EPS);
+            assertEquals(-90, envelope.getMinY(), EPS);
+            assertEquals(90, envelope.getMaxY(), EPS);
+        } finally {
+            if(reader != null) {
+                reader.dispose();
+            }
+        }
     }
 }

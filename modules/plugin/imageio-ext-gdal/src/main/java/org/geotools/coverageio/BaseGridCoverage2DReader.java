@@ -1,4 +1,5 @@
 /*
+
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
@@ -15,9 +16,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.coverageio;
-
-import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -44,7 +42,6 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.PrjFileReader;
@@ -58,6 +55,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -67,6 +65,9 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
+
+import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
+import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 
 /**
  * Base class for GridCoverage data access
@@ -284,7 +285,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             this.source = sourceURL;
 
             if (sourceURL.getProtocol().compareToIgnoreCase("file") == 0) {
-                this.inputFile = DataUtilities.urlToFile(sourceURL);
+                this.inputFile = URLs.urlToFile(sourceURL);
                 input = this.inputFile;
             } else {
                 throw new IllegalArgumentException("Unsupported input type");

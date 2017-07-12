@@ -33,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -651,7 +653,7 @@ public final class GridCoverageRenderer {
             iw.affine(finalRasterTransformation, interpolation, bkgValues);
             im = iw.getRenderedImage();
             roi = iw.getROI();
-            noData = iw.getNoData();
+            noData = iw.extractNoDataProperty(im);
         } finally {
                 if(DEBUG){
                     writeRenderedImage(im, "postAffine");
@@ -983,6 +985,18 @@ public final class GridCoverageRenderer {
         } else if (symbolizedCoverages.size() == 1) {
             mosaicked = symbolizedCoverages.get(0);
         } else {
+            // sort the coverages by size, avoid having a sliver coverage 1-2 px large or high
+            // first as it will have a skewed grid to world that will then be applied
+            // to all members of the mosaic
+            Comparator<GridCoverage2D> sliverComparator = (c1, c2) -> {
+                RenderedImage r1 = c1.getRenderedImage();
+                RenderedImage r2 = c2.getRenderedImage();
+                // area2 - area1, largest first
+                long areaDiff = ((long) r2.getWidth()) * r2.getHeight() - ((long) r1.getWidth()) * r1.getHeight();
+                return (int) Math.signum(areaDiff);
+            };
+            Collections.sort(symbolizedCoverages, sliverComparator);
+            
             // do not expand index color models, we know they are all the same
             Hints mosaicHints = new Hints(this.hints);
             mosaicHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
@@ -1184,18 +1198,9 @@ public final class GridCoverageRenderer {
                     .toString());
 
         setupInterpolationHints(interpolation);
-        
-        RasterSymbolizer finalSymbolizer = symbolizer;
-        //
-        // Band selection
-        //
-        if (isBandsSelectionApplicable(gridCoverageReader, symbolizer)){
-            readParams = applyBandsSelectionParameter(gridCoverageReader, readParams, symbolizer);
-            finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
-        }
 
         // Build the final image and the transformation
-        RenderedImage finalImage = renderImage(gridCoverageReader, readParams, finalSymbolizer,
+        RenderedImage finalImage = renderImage(gridCoverageReader, readParams, symbolizer,
                 interpolation, background);
         if (finalImage != null) {
             try {
@@ -1352,6 +1357,7 @@ public final class GridCoverageRenderer {
                 SelectedChannelTypeImpl channel = new SelectedChannelTypeImpl();
                 channel.setChannelName(Integer.toString(i + 1));
                 channel.setContrastEnhancement(originalChannel.getContrastEnhancement());
+                channels[i] = channel;
                 i++;
             }
             ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor = new ChannelSelectionUpdateStyleVisitor(channels);

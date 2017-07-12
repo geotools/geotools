@@ -81,9 +81,7 @@ import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
-import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -99,6 +97,9 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
+import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
 
 /**
  * A granuleDescriptor is a single piece of the mosaic, with its own overviews and everything.
@@ -327,8 +328,6 @@ public class GranuleDescriptor {
 
     ImageInputStreamSpi cachedStreamSPI;
 
-    private GridToEnvelopeMapper geMapper;
-
     /** {@link DatasetLayout} object containing information about granule internal structure */
     private DatasetLayout layout;
 
@@ -348,7 +347,7 @@ public class GranuleDescriptor {
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
-        File granuleFile = DataUtilities.urlToFile(granuleUrl);
+        File granuleFile = URLs.urlToFile(granuleUrl);
         AbstractGridFormat format = GridFormatFinder.findFormat(granuleFile, EXCLUDE_MOSAIC);
         // create the base grid to world transformation
         AbstractGridCoverage2DReader gcReader = null;
@@ -382,7 +381,7 @@ public class GranuleDescriptor {
             inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(),
                     ImageIO.getCacheDirectory());
             if (inStream == null) {
-                final File file = DataUtilities.urlToFile(granuleUrl);
+                final File file = URLs.urlToFile(granuleUrl);
                 if (file != null) {
                     if (LOGGER.isLoggable(Level.WARNING)) {
                         LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
@@ -421,7 +420,7 @@ public class GranuleDescriptor {
             // somehow from the tile itself or from the index, but at the moment
             // we do not have such info, hence we assume that it is a simple
             // scale and translate
-            this.geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension),
+            GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(originalDimension),
                     this.granuleBBOX);
             geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);// this is the default behavior but it is nice to write it down anyway
             this.baseGridToWorld = geMapper.createAffineTransform();
@@ -510,7 +509,7 @@ public class GranuleDescriptor {
      * @throws IOException
      */
     private void checkPamDataset() throws IOException {
-        final File file = DataUtilities.urlToFile(granuleUrl);
+        final File file = URLs.urlToFile(granuleUrl);
         final String path = file.getCanonicalPath();
         final String auxFile = path + AUXFILE_EXT;
         pamDataset = pamParser.parsePAM(auxFile);
@@ -597,7 +596,7 @@ public class GranuleDescriptor {
             final boolean handleArtifactsFiltering, final Hints hints) {
 
         this.maxDecimationFactor = maxDecimationFactor;
-        final URL rasterFile = DataUtilities.fileToURL(new File(granuleLocation));
+        final URL rasterFile = URLs.fileToUrl(new File(granuleLocation));
 
         if (rasterFile == null) {
             return;
@@ -878,9 +877,8 @@ public class GranuleDescriptor {
             // which source area we need to crop in the selected level taking
             // into account the scale factors imposed by the selection of this
             // level together with the base level grid to world transformation
-            AffineTransform2D cropWorldToGrid = new AffineTransform2D(
-                    selectedlevel.gridToWorldTransformCorner);
-            cropWorldToGrid = (AffineTransform2D) cropWorldToGrid.inverse();
+            AffineTransform2D cropGridToWorld = new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
+            AffineTransform2D cropWorldToGrid = (AffineTransform2D) cropGridToWorld.inverse();
             // computing the crop source area which lives into the
             // selected level raster space, NOTICE that at the end we need to
             // take into account the fact that we might also decimate therefore
@@ -1044,8 +1042,9 @@ public class GranuleDescriptor {
                     }
                     // Check for Raster ROI
                     if (transformed == null || transformed.getBounds().isEmpty()) {
-                        if (LOGGER.isLoggable(java.util.logging.Level.INFO))
-                            LOGGER.info("Unable to create a granuleDescriptor " + this.toString()
+                        // ROI is less than a pixel big, it happens when zooming out 
+                        if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+                            LOGGER.fine("Unable to create a granuleDescriptor " + this.toString()
                                     + " due to a problem when managing the ROI");
                         return null;
                     }
@@ -1075,8 +1074,8 @@ public class GranuleDescriptor {
                     (float) finalRaster2Model.getTranslateX(),
                     (float) finalRaster2Model.getTranslateY(), interpolation);
             if (finalLayout.isEmpty()) {
-                if (LOGGER.isLoggable(java.util.logging.Level.INFO))
-                    LOGGER.info("Unable to create a granuleDescriptor " + this.toString()
+                if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+                    LOGGER.fine("Unable to create a granuleDescriptor " + this.toString()
                             + " due to jai scale bug creating a null source area");
                 return null;
             }

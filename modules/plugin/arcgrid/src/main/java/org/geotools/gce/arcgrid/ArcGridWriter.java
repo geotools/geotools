@@ -17,10 +17,6 @@
  */
 package org.geotools.gce.arcgrid;
 
-import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata;
-import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageWriter;
-import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageWriterSpi;
-
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
@@ -50,7 +46,6 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
@@ -59,6 +54,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -67,6 +63,10 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
+
+import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata;
+import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageWriter;
+import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageWriterSpi;
 
 /**
  * {@link ArcGridWriter} supports writing of an ArcGrid GridCoverage to a
@@ -134,7 +134,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 			final URL dest = (URL) destination;
 			if (dest.getProtocol().equalsIgnoreCase("file")) {
 				File destFile;
-				destFile = DataUtilities.urlToFile(dest);
+				destFile = URLs.urlToFile(dest);
 				try {
 					super.outStream = ImageIOExt.createImageOutputStream(null, destFile);
 				} catch (IOException e) {
@@ -459,7 +459,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 		}
 
 		// build up the name
-		File ascFile = DataUtilities.urlToFile(url);
+		File ascFile = URLs.urlToFile(url);
 		String prjName = ascFile.getName().substring(0, ascFile.getName().lastIndexOf(".")) + ".prj";
 		File prjFile = new File (ascFile.getParent(), prjName);
 

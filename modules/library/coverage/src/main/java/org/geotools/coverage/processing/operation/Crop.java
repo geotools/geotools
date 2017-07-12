@@ -82,6 +82,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -533,11 +534,20 @@ public class Crop extends Operation2D {
                 // replace the cropEnvelope with the envelope of the intersection
                 // of the ROI and the cropEnvelope.
                 // Remember that envelope(intersection(roi,cropEnvelope)) != intersection(cropEnvelope, envelope(roi))
-                final Polygon modelSpaceROI = FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
-                Geometry intersection =  IntersectUtils.intersection(cropROI, modelSpaceROI);
-                Envelope2D e2d = JTS.getEnvelope2D(intersection.getEnvelopeInternal(), cropEnvelope.getCoordinateReferenceSystem());
-                GeneralEnvelope ge = new GeneralEnvelope((org.opengis.geometry.Envelope)e2d);
-                cropEnvelope.setEnvelope(ge);
+                try {
+                    
+                    final Polygon modelSpaceROI = FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
+                    Geometry intersection =  IntersectUtils.intersection(cropROI, modelSpaceROI);
+                    Envelope2D e2d = JTS.getEnvelope2D(intersection.getEnvelopeInternal(), cropEnvelope.getCoordinateReferenceSystem());
+                    GeneralEnvelope ge = new GeneralEnvelope((org.opengis.geometry.Envelope)e2d);
+                    cropEnvelope.setEnvelope(ge);
+                } catch(TopologyException e) {
+                    // in case the intersection fail, accept using intersection(cropEnvelope, envelope(roi)), as the
+                    // ROI will do the rest (we'll just carry around a larger image but pixels only get out within the ROI)
+                    com.vividsolutions.jts.geom.Envelope cropROIEnvelope = cropROI.getEnvelopeInternal();
+                    com.vividsolutions.jts.geom.Envelope intersection = cropROIEnvelope.intersection(ReferencedEnvelope.reference(cropEnvelope));
+                    cropEnvelope.setEnvelope(new GeneralEnvelope(new ReferencedEnvelope(intersection, cropEnvelope.getCoordinateReferenceSystem())));
+                }
             }
 
 			// //
@@ -637,8 +647,16 @@ public class Crop extends Operation2D {
                             // Approximate Geometry
                             transformGeometry(txROI);
                         }
-                        ROI cropRS = getAsROI(txROI);
-                        roiarr = new ROI[]{cropRS};
+                        // skip the ROI if it fully contains the target raster area
+                        try {
+                            if(!txROI.contains(JTS.toGeometry(finalRasterArea))) {
+                                ROI cropRS = getAsROI(txROI);
+                                roiarr = new ROI[]{cropRS};    
+                            }
+                        } catch(TopologyException e) {
+                            ROI cropRS = getAsROI(txROI);
+                            roiarr = new ROI[]{cropRS};
+                        }
                     } else if(forceMosaic) {
                         ROI roi = getAsROI(JTS.toPolygon(rasterSpaceROI));
                         roiarr = new ROI[]{roi};
@@ -659,7 +677,7 @@ public class Crop extends Operation2D {
 
 					// we do not have to crop in this case (should not really happen at
                     // this time)
-                    if (!forceMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform && nodata == null)
+                    if (!forceMosaic && bounds.getBounds().equals(sourceGridRange) && isSimpleTransform && nodata == null && roiarr == null)
                             return sourceCoverage;
 
 

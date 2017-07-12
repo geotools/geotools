@@ -98,6 +98,8 @@ import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
@@ -114,11 +116,12 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 
-import com.sun.imageio.plugins.png.PNGImageWriter;
 import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.jai.util.ImageUtil;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
@@ -471,7 +474,7 @@ public class ImageWorker {
         setImage(image);
     }
 
-    private Range extractNoDataProperty(final RenderedImage image) {
+    public Range extractNoDataProperty(final RenderedImage image) {
         Object property = image.getProperty(NoDataContainer.GC_NODATA);
         if(property != null){
             if(property instanceof NoDataContainer){
@@ -686,6 +689,24 @@ public class ImageWorker {
         PlanarImage pl = getPlanarImage();
         if (roi == null) {
             pl.removeProperty("ROI");
+            // get it back, in some ops like mosaic setting it to null has no effect,
+            // will just make it pick from the first source...
+            // Computing the ROI from sources might fail, so a fallback is needed for that case too
+            boolean overwriteROI = false;
+            try {
+                Object property = pl.getProperty("ROI");
+                overwriteROI = property != null && property != Image.UndefinedProperty;
+            } catch(Exception e) {
+                // evidently getting the ROI by computation will cause issues, overwrite with a solid one
+                overwriteROI = true;
+                if(LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, "Failure while checking source image ROI during a ROI reset, normally it's safely ignorable", e);
+                }
+            }
+            if(overwriteROI) {
+                // a ROIGeometry from a rectangle is a good substitute in this case
+                pl.setProperty("ROI", new ROIGeometry(JTS.toPolygon(new Rectangle(image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight()))));
+            }
         } else {
             pl.setProperty("ROI", roi);
         }
@@ -1323,6 +1344,8 @@ public class ImageWorker {
         final double[] scale = new double[length];
         final double[] offset = new double[length];
         final double destNodata = (background != null && background.length > 0) ? background[0] : ((nodata != null && !nodata.contains(0)) ? 0d: Double.NaN);
+        // If setting noData to zero, make sure the rescale doesn't map good values to zero.
+        double offsetAdjustment = Math.abs(destNodata - 0 ) < 1E-6 ? 1 : 0;
 
         boolean computeRescale = false;
         for (int i = 0; i < length; i++) {
@@ -1335,8 +1358,8 @@ public class ImageWorker {
                 computeRescale = true;
 
                 // rescale factors
-                scale[i] = 255 / delta;
-                offset[i] = -scale[i] * extrema[0][i];
+                scale[i] = (255 - offsetAdjustment) / delta;
+                offset[i] = (-scale[i] * extrema[0][i]) + offsetAdjustment;
             } else {
                 // we do not rescale explicitly bu in case we have to, we relay on the clamping capabilities of the format operator
                 scale[i] = 1;
@@ -1356,13 +1379,16 @@ public class ImageWorker {
             }
 
             image = JAI.create("Rescale", pb, hints);
+            if (!Double.isNaN(destNodata)) {
+                setNoData(RangeFactory.create((byte)destNodata, DataBuffer.TYPE_BYTE));
+            }
         } else {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0); // The source image.
             pb.set(DataBuffer.TYPE_BYTE, 0); // The destination image data type (BYTE)
-
             image = JAI.create("Format", pb, hints);
             setNoData(RangeFactory.convert(nodata, DataBuffer.TYPE_BYTE));
+
         }
         invalidateStatistics(); // Extremas are no longer valid.
 
@@ -3870,6 +3896,7 @@ public class ImageWorker {
                     pb.set(true, 5);
                     pb.set(nodata, 6);
                     RenderedOp at = JAI.create("Affine", pb, getRenderingHints());
+                    updateNoData(bgValues, image);
 
                     // commonHints);
                     Rectangle targetBB = at.getBounds();
@@ -4168,6 +4195,8 @@ public class ImageWorker {
                     }
                 }
                 image = JAI.create("Scale", pb, localHints);
+                updateNoData(background, image);
+
                 // getting the new ROI property
                 if (roi != null) {
                     PropertyGenerator gen = getOperationDescriptor("Scale")
@@ -4195,6 +4224,7 @@ public class ImageWorker {
                     }
                 }
                 image = JAI.create("Scale", pb, getRenderingHints());
+                updateNoData(background, image);
                 if (roi != null) {
                     PropertyGenerator gen = getOperationDescriptor("Scale")
                             .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
@@ -4214,6 +4244,8 @@ public class ImageWorker {
             pb.set(true, 5);
             pb.set(nodata, 6);
             image = JAI.create("Affine", pb, getRenderingHints());
+            updateNoData(bgValues, image);
+
             if (roi != null) {
                 PropertyGenerator gen = getOperationDescriptor("Affine")
                         .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
@@ -4226,6 +4258,15 @@ public class ImageWorker {
             }
         }
         return this;
+    }
+
+    private void updateNoData(double[] bgValues, RenderedImage image) {
+        if (bgValues != null && bgValues.length > 0) {
+            Range newNoData = extractNoDataProperty(image);
+            if (newNoData != null) {
+                setNoData(newNoData);
+            }
+        }
     }
 
     /**
@@ -4442,13 +4483,23 @@ public class ImageWorker {
         if(roiArray.length < numSources){
             for(int i = roiArray.length; i < numSources; i++){
                 RenderedImage img = (RenderedImage) sources.get(i);
-                ROI r = new ROIShape(new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
+                ROI r = getImageBoundsROI(img);
                 rois.add(r);
             }
         }
+        // handle possible null inputs
+        for (int i = 0; i < roiArray.length; i++) {
+            ROI roi = roiArray[i];
+            if (roi == null) {
+                RenderedImage img = (RenderedImage) sources.get(i);
+                ROI r = getImageBoundsROI(img);
+                rois.set(i, r);
+            }
+            
+        }
         
         // bail out for the simple case without creating new objects
-        if(rois.size() == 1) {
+        if (rois.size() == 1) {
             return rois.get(0);
         }
         
@@ -4477,15 +4528,15 @@ public class ImageWorker {
         }
         
         // optimization in case we end up with just one ROI, no need to mosaic
-        if(rasterROIs.size() == 0) {
+        if (rasterROIs.size() == 0) {
             return vectorReference;
-        } else if(rasterROIs.size() == 1 && vectorReference == null) {
+        } else if (rasterROIs.size() == 1 && vectorReference == null) {
             return rasterROIs.get(0);
         }
-        
+
         // ok, rasterize the vector one if any and mosaic
         ParameterBlock pb = new ParameterBlock();
-        if(vectorReference != null) {
+        if (vectorReference != null) {
             pb.addSource(vectorReference.getAsImage());
         }
         for (ROI rasterROI : rasterROIs) {
@@ -4499,6 +4550,17 @@ public class ImageWorker {
         pb.add(handleMosaicThresholds(ROI_THRESHOLDS, rasterROIs.size() + (vectorReference != null ? 1 : 0)));
         RenderedImage roiMosaic = JAI.create("Mosaic", pb, getRenderingHints());
         return new ROI(roiMosaic);
+    }
+    
+    private ROI getImageBoundsROI(RenderedImage image) {
+        final int minX = image.getMinX();
+        final int minY = image.getMinY();
+        final int maxX = minX + image.getWidth();
+        final int maxY = minY + image.getHeight();
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(minX, minY, maxX, minY, maxX, maxY,
+                minX, maxY, minX, minY);
+        Geometry footprint = new GeometryFactory().createPolygon(cs);
+        return new ROIGeometry(footprint);
     }
     
     private Range[] handleMosaicThresholds(double[][] thresholds, int srcNum) {

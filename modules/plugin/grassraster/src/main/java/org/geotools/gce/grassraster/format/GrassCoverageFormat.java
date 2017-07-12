@@ -25,13 +25,13 @@ import java.util.logging.Logger;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.grassraster.GrassCoverageReader;
 import org.geotools.gce.grassraster.GrassCoverageWriter;
 import org.geotools.gce.grassraster.JGrassUtilities;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -91,7 +91,7 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
         if (o instanceof File) {
             fileToUse = (File) o;
         } else if (o instanceof URL) {
-            fileToUse = DataUtilities.urlToFile((URL) o);
+            fileToUse = URLs.urlToFile((URL) o);
         } else if (o instanceof String) {
             fileToUse = new File((String) o);
         } else {

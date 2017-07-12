@@ -108,7 +108,7 @@ public class YsldEncodeTest {
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         String filter = obj.seq("feature-styles").map(0).seq("rules").map(0).str("filter");
-        assertEquals("${strEndsWith(foo,'bar') = 'true'}", filter);
+        assertEquals("${strEndsWith(foo,'bar') = true}", filter);
     }
 
     @Test

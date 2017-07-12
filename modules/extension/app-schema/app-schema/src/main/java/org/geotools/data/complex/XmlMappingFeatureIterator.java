@@ -91,7 +91,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
      */
     public XmlMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query) throws IOException {
-        super(store, mapping, query);
+        super(store, mapping, query, null, false);
 
         setIdXPath();
         
@@ -105,7 +105,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
     public XmlMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, String xpath, String value) throws IOException {
-        super(store, mapping, query);
+        super(store, mapping, query, null, false);
 
         setIdXPath();
 

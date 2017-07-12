@@ -513,6 +513,34 @@ public class MBFunction {
     }
 
     //
+    //Font
+    //
+    /**
+     * GeoTools {@link Expression} from json definition that evaluates to a font string, used for
+     * 'text-font'.
+     * <p>
+     * Fonts only use interval functions
+     * </p>
+     * <ul>
+     * <li>{@link FunctionType#INTERVAL}: selects stop less than numeric input, and returns stop value as a number</li>
+     * </ul>
+     */
+    public Expression font() {
+        Expression input = input();
+        return fontGenerateCategorize(input);
+
+    }
+
+    private Expression fontGenerateCategorize(Expression expression) {
+        return generateCategorize(expression, (value, stop)->{
+            Expression font = parse.ff.literal(((JSONArray)value).get(0));
+            if (font == null) {
+                throw new MBFormatException("Could not convert stop "+stop+" font "+value+" into a font");
+            }
+            return font;
+        });
+    }
+    //
     // Numeric
     //
     
@@ -930,7 +958,7 @@ public class MBFunction {
      *   }"
      * </pre>
      * 
-     * @return A list of {@link MBFunctions}, one for each dimension in the stop value array.
+     * @return A list of {@link MBFunction}, one for each dimension in the stop value array.
      */
     public List<MBFunction> splitArrayFunction() throws ParseException {
         JSONArray arr = getStops();

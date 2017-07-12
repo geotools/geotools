@@ -75,6 +75,7 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -244,7 +245,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
                 configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
 
-                File mosaicSource = DataUtilities.urlToFile(reader.sourceURL);
+                File mosaicSource = URLs.urlToFile(reader.sourceURL);
                 if (!mosaicSource.isDirectory()) {
                     mosaicSource = mosaicSource.getParentFile();
                 }
@@ -388,7 +389,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
             configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
 
-            File mosaicSource = DataUtilities.urlToFile(reader.sourceURL);
+            File mosaicSource = URLs.urlToFile(reader.sourceURL);
             if (!mosaicSource.isDirectory()) {
                 mosaicSource = mosaicSource.getParentFile();
             }
@@ -541,14 +542,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         MosaicConfigurationBean configuration = null;
         try {
             if (sourceURL.getProtocol().equals("file")) {
-                final File sourceFile = DataUtilities.urlToFile(sourceURL);
+                final File sourceFile = URLs.urlToFile(sourceURL);
                 if (!sourceFile.exists()) {
                     throw new DataSourceException(
                             "The specified sourceURL doesn't refer to an existing file");
                 }
             }
             if (sourceURL != null) {
-                parentDirectory = DataUtilities.urlToFile(sourceURL);
+                parentDirectory = URLs.urlToFile(sourceURL);
                 if (!parentDirectory.isDirectory()) {
                     parentDirectory = parentDirectory.getParentFile();
                 }
@@ -558,7 +559,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 //
                 // do we have a datastore properties file? It will preempt on the shapefile
                 //
-                final File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+                final File parent = URLs.urlToFile(sourceURL).getParentFile();
 
                 // this can be used to look for properties files that do NOT define a datastore
                 final File[] properties = parent
@@ -578,9 +579,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 List<MosaicConfigurationBean> beans = new ArrayList<>();
                 for (File propFile : properties) {
                     if (Utils.checkFileReadable(propFile) && Utils
-                            .loadMosaicProperties(DataUtilities.fileToURL(propFile)) != null) {
+                            .loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
                         configuration = Utils
-                                .loadMosaicProperties(DataUtilities.fileToURL(propFile));
+                                .loadMosaicProperties(URLs.fileToUrl(propFile));
                         if (configuration != null) {
                             beans.add(configuration);
                         }
@@ -635,7 +636,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 // Old style code: we have a single MosaicConfigurationBean. Use that to create the catalog
                 granuleCatalog = ImageMosaicConfigHandler.createCatalog(sourceURL, configuration,
                         this.hints);
-                File parent = DataUtilities.urlToFile(sourceURL).getParentFile();
+                File parent = URLs.urlToFile(sourceURL).getParentFile();
                 MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
                         .createFootprintProvider(parent);
                 granuleCatalog.setMultiScaleROIProvider(rois);
@@ -1471,7 +1472,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     public ResourceInfo getInfo(String coverageName) {
         String name = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(name);
-        String parentLocation = DataUtilities.fileToURL(parentDirectory).toString();
+        String parentLocation = URLs.fileToUrl(parentDirectory).toString();
         return new ImageMosaicFileResourceInfo(manager, parentLocation, this.locationAttributeName);
     }
 

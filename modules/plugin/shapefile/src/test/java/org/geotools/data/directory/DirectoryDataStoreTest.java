@@ -1,6 +1,10 @@
 package org.geotools.data.directory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
@@ -10,11 +14,10 @@ import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.directory.DirectoryDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.util.URLs;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -110,7 +113,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         tempDir = f.getParentFile();
         
         Map params = new HashMap();
-        params.put(ShapefileDataStoreFactory.URLP.key, DataUtilities.fileToURL(tempDir));
+        params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         DataStore store = DataStoreFinder.getDataStore(params);
         
         assertNotNull(store);
@@ -129,7 +132,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         tempDir = f.getParentFile();
         
         Map params = new HashMap();
-        params.put(ShapefileDataStoreFactory.URLP.key, DataUtilities.fileToURL(tempDir));
+        params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         params.put(ShapefileDataStoreFactory.FILE_TYPE.key, "shapefile");
         DataStore store = DataStoreFinder.getDataStore(params);
         
@@ -149,7 +152,7 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         tempDir = f.getParentFile();
         
         Map params = new HashMap();
-        params.put(ShapefileDataStoreFactory.URLP.key, DataUtilities.fileToURL(tempDir));
+        params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
         params.put(ShapefileDataStoreFactory.FILE_TYPE.key, "abcdef...");
         DataStore store = DataStoreFinder.getDataStore(params);
         

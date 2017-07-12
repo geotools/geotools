@@ -121,6 +121,7 @@ public class DisplayCoverageTest {
         try {
             renderer.paint(g2D, bounds, env);
         } finally {
+            context.dispose();
             logger.setLevel(savedLevel);
         }
     }

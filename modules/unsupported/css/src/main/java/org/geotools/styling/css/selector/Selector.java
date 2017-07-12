@@ -39,8 +39,33 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class Selector implements Comparable<Selector> {
     
-    private static final List<Class<? extends Selector>> BASE_CLASSES = Arrays.asList(TypeName.class, ScaleRange.class,
-            Id.class, Data.class, PseudoClass.class);
+    private static class AndCombiner {
+        Class clazz;
+        Method andMethod;
+        
+        public AndCombiner(Class clazz, Method method) {
+            super();
+            this.clazz = clazz;
+            this.andMethod = method;
+        }
+    }
+    
+    private static List<AndCombiner> AND_COMBINERS;
+    
+    static {
+        Class[] baseClasses = new Class[] {TypeName.class, ScaleRange.class,
+                Id.class, Data.class, PseudoClass.class};
+        AND_COMBINERS = new ArrayList<>();
+        for (Class baseClass : baseClasses) {
+            try {
+                Method combineAnd = baseClass.getDeclaredMethod("combineAnd", List.class, Object.class);
+                AND_COMBINERS.add(new AndCombiner(baseClass, combineAnd));
+            } catch (NoSuchMethodException | SecurityException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    
 
     static final Logger LOGGER = Logging.getLogger(Selector.class);
 
@@ -98,24 +123,23 @@ public abstract class Selector implements Comparable<Selector> {
         classifieds.remove(Accept.class);
 
         // perform combinations for selected types
-        for (Class<? extends Selector> clazz : BASE_CLASSES) {
-            List<Selector> classSelectors = classifieds.get(clazz);
+        for (AndCombiner combiner : AND_COMBINERS) {
+            List<Selector> classSelectors = classifieds.get(combiner.clazz);
             if (classSelectors == null) {
                 continue;
             }
             if(classSelectors.size() > 1) {
                 try {
-                    Method combineAnd = clazz.getDeclaredMethod("combineAnd", List.class,
-                            Object.class);
-                    Selector result = (Selector) combineAnd.invoke(null, classSelectors, context);
+                    
+                    Selector result = (Selector) combiner.andMethod.invoke(null, classSelectors, context);
                     if (result == REJECT) {
                         return REJECT;
                     } else if (result == ACCEPT) {
-                        classifieds.remove(clazz);
+                        classifieds.remove(combiner.clazz);
                     } else if (result instanceof And) {
-                        classifieds.put(clazz, new ArrayList<>(((Composite) result).getChildren()));
+                        classifieds.put(combiner.clazz, new ArrayList<>(((Composite) result).getChildren()));
                     } else {
-                        classifieds.put(clazz, Collections.singletonList(result));
+                        classifieds.put(combiner.clazz, Collections.singletonList(result));
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);

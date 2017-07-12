@@ -4,23 +4,39 @@ Maven Eclipse Plugin
 Maven can be used to work with the Eclipse IDE. While direct integration is currently underway (thanks to Sonyatype) we are documenting the traditional approach here for reference.
 Creating .project and .classpath files
 
-You can use maven to set up the files needed for eclipse::
+#. You can use maven to set up the files needed for eclipse::
+
+     mvn eclipse:eclipse
+
+   This will produce the following files for each module:
    
-   mvn eclipse:eclipse -DoutputDirectory=bin -Dall
+   * .classpath file
+   * .project file
 
-This will produce the following files for each module:
-* .classpath file
-* .project file
+   The way to read the above line is we are using the eclipse plugin, and we are asking it to do the goal eclipse. The -Dall switch is used to include the unsupported modules.
 
-The way to read the above line is we are using the eclipse plugin, and we are asking it to do the goal eclipse. The other options are to specify a default output directory (so that eclipse and maven do not both use target/classes and trip on each other). The -Dall switch is used to include the unsupported modules.
-
-If you like you can just do a simple::
+#. You can then import all the GeoTools projects into your Eclipse IDE.
    
-   C:\java\geotools\trunk\>mvn eclipse:eclipse
+   Navigate to :menuselection:`File --> Import`
+   
+   From the :guilabel:`Import` dialog navigate to :menuselection:`General --> Existing projects into workspace`
+   
+   Select your geotools checkout directory, the modules (with generated .project files) will be listed allowing you to import them all.
 
-Because maven and eclipse will both use **target/classes** you will need to perform a clean when switching between maven and eclipse for building.
+#. It will take a moment to compile the first time.
 
-You can then import all the GeoTools projects into your Eclipse IDE.
+   Note: Because maven and eclipse will both use **target/classes** you will need to perform a clean when switching between maven and eclipse for building.
+
+#. You will need to run `mvn eclipse:eclipse` again if any dependencies change.
+
+.. note::
+   
+   If you would like maven command line and eclipse IDE to use different output directories::
+    
+      mvn eclipse:eclipse -DoutputDirectory=bin
+   
+   The other options are to specify a default output directory (so that eclipse and maven do not both use target/classes and trip on each other).
+
 
 Customising the Name of the Generated Projects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

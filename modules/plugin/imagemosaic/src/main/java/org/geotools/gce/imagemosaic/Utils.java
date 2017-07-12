@@ -78,6 +78,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
@@ -90,22 +91,30 @@ import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.granulecollector.ReprojectingSubmosaicProducerFactory;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -144,6 +153,8 @@ public class Utils {
     public final static Key PARENT_DIR = new Key(String.class);
 
     public final static Key MOSAIC_READER = new Key(ImageMosaicReader.class);
+    
+    public final static Key REPOSITORY = new Key(Repository.class);
 
     public final static String RANGE_SPLITTER_CHAR = ";";
 
@@ -237,6 +248,8 @@ public class Utils {
         public final static String USE_EXISTING_SCHEMA = "UseExistingSchema";
 
         public final static String TYPENAME = "TypeName";
+        
+        public final static String STORE_NAME = "StoreName";
 
         public final static String PATH_TYPE = "PathType";
 
@@ -326,11 +339,11 @@ public class Utils {
             // check if we have to build the index
             if (source instanceof File) {
                 file = (File) source;
-                url = DataUtilities.fileToURL(file);
+                url = URLs.fileToUrl(file);
             } else if (source instanceof URL) {
                 url = (URL) source;
                 if (url.getProtocol().equals("file")) {
-                    file = DataUtilities.urlToFile(url);
+                    file = URLs.urlToFile(url);
                 }
             } else if (source instanceof String) {
                 // is it a File?
@@ -340,13 +353,13 @@ public class Utils {
                     // is it a URL
                     try {
                         url = new URL(tempSource);
-                        source = DataUtilities.urlToFile(url);
+                        source = URLs.urlToFile(url);
                     } catch (MalformedURLException e) {
                         url = null;
                         source = null;
                     }
                 } else {
-                    url = DataUtilities.fileToURL(tempFile);
+                    url = URLs.fileToUrl(tempFile);
 
                     // so that we can do our magic here below
                     file = tempFile;
@@ -528,7 +541,7 @@ public class Utils {
         if (!sourceURL.toExternalForm().endsWith(".properties")) {
             propsURL = DataUtilities.changeUrlExt(sourceURL, "properties");
             if (propsURL.getProtocol().equals("file")) {
-                final File sourceFile = DataUtilities.urlToFile(propsURL);
+                final File sourceFile = URLs.urlToFile(propsURL);
                 if (!sourceFile.exists()) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("properties file doesn't exist");
@@ -779,7 +792,7 @@ public class Utils {
         }
 
         // Also initialize the indexer here, since it will be needed later on.
-        File mosaicParentFolder = DataUtilities.urlToFile(sourceURL).getParentFile();
+        File mosaicParentFolder = URLs.urlToFile(sourceURL).getParentFile();
         Indexer indexer = loadIndexer(mosaicParentFolder);
 
         if (indexer != null) {
@@ -1216,7 +1229,7 @@ public class Utils {
             if (!sourceFile.isDirectory())
                 // real file, can only be a shapefile at this stage or a
                 // datastore.properties file
-                sourceURL = DataUtilities.fileToURL(sourceFile);
+                sourceURL = URLs.fileToUrl(sourceFile);
             else {
                 // it's a DIRECTORY, let's look for a possible properties files
                 // that we want to load
@@ -1252,7 +1265,7 @@ public class Utils {
                         if (Utils.checkFileReadable(propFile)) {
                             // load it
                             if (null != Utils
-                                    .loadMosaicProperties(DataUtilities.fileToURL(propFile))) {
+                                    .loadMosaicProperties(URLs.fileToUrl(propFile))) {
                                 found = true;
                                 break;
                             }
@@ -1278,7 +1291,7 @@ public class Utils {
                     for (File propFile : properties) {
 
                         // load properties
-                        if (null == Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile)))
+                        if (null == Utils.loadMosaicProperties(URLs.fileToUrl(propFile)))
                             continue;
 
                         // look for a couple shapefile, mosaic properties file
@@ -1347,8 +1360,8 @@ public class Utils {
 
                 } else
                     // now set the new source and proceed
-                    sourceURL = datastoreFound ? DataUtilities.fileToURL(dataStoreProperties)
-                            : DataUtilities.fileToURL(shapeFile);
+                    sourceURL = datastoreFound ? URLs.fileToUrl(dataStoreProperties)
+                            : URLs.fileToUrl(shapeFile);
 
             }
         } else {
@@ -1376,7 +1389,7 @@ public class Utils {
         if (file.isDirectory()) {
             File indexer = new File(file, IndexerUtils.INDEXER_PROPERTIES);
             if (indexer.exists()) {
-                URL indexerUrl = DataUtilities.fileToURL(indexer);
+                URL indexerUrl = URLs.fileToUrl(indexer);
                 Properties config = CoverageUtilities.loadPropertiesFromURL(indexerUrl);
                 if (config != null && config.get(Utils.Prop.NAME) != null) {
                     return (String) config.get(propertyName);
@@ -1413,11 +1426,11 @@ public class Utils {
                 // if (!Utils.checkFileReadable(emptyFile)) {
                 sourceURL = null;
                 // } else {
-                // sourceURL = DataUtilities.fileToURL(emptyFile);
+                // sourceURL = URLs.fileToUrl(emptyFile);
                 // }
             } else {
                 // now set the new source and proceed
-                sourceURL = DataUtilities.fileToURL(shapeFile);
+                sourceURL = URLs.fileToUrl(shapeFile);
             }
         } else {
             File dataStoreProperties = new File(locationPath, "datastore.properties");
@@ -1426,7 +1439,7 @@ public class Utils {
             if (!Utils.checkFileReadable(dataStoreProperties)) {
                 sourceURL = null;
             } else {
-                sourceURL = DataUtilities.fileToURL(dataStoreProperties);
+                sourceURL = URLs.fileToUrl(dataStoreProperties);
             }
         }
 
@@ -1456,7 +1469,7 @@ public class Utils {
         }
         indexFile = new File(locationPath, IndexerUtils.INDEXER_PROPERTIES);
         if (Utils.checkFileReadable(indexFile)) {
-            URL url = DataUtilities.fileToURL(indexFile);
+            URL url = URLs.fileToUrl(indexFile);
             final Properties properties = CoverageUtilities.loadPropertiesFromURL(url);
             if (properties != null) {
                 String canBeEmpty = properties.getProperty(Prop.CAN_BE_EMPTY, null);
@@ -1788,7 +1801,7 @@ public class Utils {
         } else if (source instanceof URL) {
             sourceURL = (URL) source;
             if (sourceURL.getProtocol().equals("file")) {
-                sourceFile = DataUtilities.urlToFile(sourceURL);
+                sourceFile = URLs.urlToFile(sourceURL);
             }
         } else if (source instanceof String) {
             // is it a File?
@@ -1798,13 +1811,13 @@ public class Utils {
                 // is it a URL
                 try {
                     sourceURL = new URL(tempSource);
-                    source = DataUtilities.urlToFile(sourceURL);
+                    source = URLs.urlToFile(sourceURL);
                 } catch (MalformedURLException e) {
                     sourceURL = null;
                     source = null;
                 }
             } else {
-                sourceURL = DataUtilities.fileToURL(tempFile);
+                sourceURL = URLs.fileToUrl(tempFile);
 
                 // so that we can do our magic here below
                 sourceFile = tempFile;
@@ -1913,7 +1926,7 @@ public class Utils {
             String dbname = (String) params.get(DATABASE_KEY);
             // H2 database URLs must not be percent-encoded: see GEOT-4262.
             params.put(DATABASE_KEY,
-                    "file:" + (new File(DataUtilities.urlToFile(new URL(parentLocation)), dbname))
+                    "file:" + (new File(URLs.urlToFile(new URL(parentLocation)), dbname))
                             .getPath());
         }
     }
@@ -2083,7 +2096,7 @@ public class Utils {
 
         ImageInputStreamSpi streamSPI = ImageIOExt.getImageInputStreamSPI(granuleUrl, true);
         if (streamSPI == null) {
-            final File file = DataUtilities.urlToFile(granuleUrl);
+            final File file = URLs.urlToFile(granuleUrl);
             if (file != null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
@@ -2130,5 +2143,71 @@ public class Utils {
         AttributeDescriptor location = schema.getDescriptor(locationAttributeName);
         return location != null
                 && CharSequence.class.isAssignableFrom(location.getType().getBinding());
+    }
+    
+    public static ReferencedEnvelope reprojectEnvelope(ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, ReferencedEnvelope targetReferenceEnvelope)
+            throws FactoryException, TransformException {
+        Geometry reprojected = Utils.reprojectEnvelopeToGeometry(sourceEnvelope, targetCRS, targetReferenceEnvelope);
+        if(reprojected == null) {
+            return new ReferencedEnvelope(targetCRS);
+        } else {
+            if(reprojected.getNumGeometries() > 1) {
+                return new ReferencedEnvelope(reprojected.getGeometryN(0).getEnvelopeInternal(), targetCRS);
+            } else {
+                return new ReferencedEnvelope(reprojected.getEnvelopeInternal(), targetCRS);
+            }
+        }
+
+    }
+    
+    public static Geometry reprojectEnvelopeToGeometry(ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, ReferencedEnvelope targetReferenceEnvelope)
+            throws FactoryException, TransformException {
+        ProjectionHandler handler;
+        CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
+        if(targetReferenceEnvelope == null) {
+            targetReferenceEnvelope = ReferencedEnvelope.reference(getCRSEnvelope(targetCRS));
+        }
+        if(targetReferenceEnvelope != null) {
+            handler = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, sourceCRS, true);
+        } else {
+            // cannot handle wrapping if we do not have a reference envelope, but
+            // cutting/adapting will still work
+            ReferencedEnvelope reference = new ReferencedEnvelope(targetCRS);
+            handler = ProjectionHandlerFinder.getHandler(reference, sourceCRS, false);
+        }
+        
+        if(handler != null) {
+            MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
+            Geometry footprint = JTS.toGeometry(sourceEnvelope);
+            Geometry preProcessed = handler.preProcess(footprint);
+            if(preProcessed == null) {
+                return null;
+            }
+            Geometry transformed = JTS.transform(preProcessed, transform);
+            // this might generate multipolygons for data crossing the dataline, which 
+            // is actually what we want
+            Geometry postProcessed = handler.postProcess(transform.inverse(), transformed);
+            if(postProcessed == null) {
+                return null;
+            }
+            return postProcessed;
+        } else {
+            sourceEnvelope = new ReferencedEnvelope(CRS.transform(sourceEnvelope, targetCRS));
+        }
+        
+        
+        return JTS.toGeometry(sourceEnvelope);
+    }
+
+    private static org.opengis.geometry.Envelope getCRSEnvelope(CoordinateReferenceSystem targetCRS)
+            throws FactoryException, NoSuchAuthorityCodeException {
+        if(targetCRS.getDomainOfValidity() == null) {
+            Integer code = CRS.lookupEpsgCode(targetCRS, true);
+            if(code != null) {
+                CRS.decode("EPSG:" + code, CRS.getAxisOrder(targetCRS) != AxisOrder.NORTH_EAST);
+            }
+        }
+        org.opengis.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
+        return envelope;
     }
 }

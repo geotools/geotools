@@ -65,6 +65,10 @@ if [ `is_primary_branch_num $tag` == "1" ]; then
   echo "$tag is a not a valid release tag, can't be same as primary branch name"
   exit 1
 fi
+#checkout branch locally if it doesn't exist
+if ! git show-ref refs/heads/$branch; then 
+  git fetch origin $branch:$branch
+fi
 
 echo "Building release with following parameters:"
 echo "  branch = $branch"
@@ -125,7 +129,7 @@ popd > /dev/null
 # build the release
 if [ -z $SKIP_BUILD ]; then
   echo "building release"
-  export MAVEN_OPTS="-Xmx1024m"
+  export MAVEN_OPTS="-Xmx2048m"
   mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi

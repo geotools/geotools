@@ -34,9 +34,6 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -54,18 +51,21 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.MapInfoFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.operation.MathTransform;
+
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
 /**
  * Provides basic information about the GeoTIFF format IO. This is currently an
@@ -167,7 +167,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 				//
 				// /////////////////////////////////////////////////////////////
 				final URL url = (URL) o;
-				o = DataUtilities.urlToFile(url);
+				o = URLs.urlToFile(url);
 			} else if(o instanceof ImageInputStream) {
 					closeMe=false;
 			}
@@ -286,7 +286,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 			URL url = (URL) source;
 
 			try {
-				final File file = DataUtilities.urlToFile(url); 
+				final File file = URLs.urlToFile(url); 
 				return new GeoTiffReader(file, hints);
 			} catch (DataSourceException e) {
 				if (LOGGER.isLoggable(Level.WARNING))

@@ -42,7 +42,6 @@
                 "line-translate-anchor": "viewport",
                 "line-dasharray": [50, 50],
                 "line-offset": 4,
-                "line-gap-width": 8,
                 "line-translate": [
                     3,
                     3

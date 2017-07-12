@@ -159,7 +159,7 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
                 //
                 // /////////////////////////////////////////////////////////////
                 final URL url = (URL) o;
-                o = DataUtilities.urlToFile(url);
+                o = URLs.urlToFile(url);
 
             } else if (o instanceof ImageInputStream) {
                 closeMe = false;
@@ -272,7 +272,7 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
             URL url = (URL) source;
 
             try {
-                final File file = DataUtilities.urlToFile(url);
+                final File file = URLs.urlToFile(url);
                 return new GeoTiffReader(file, hints);
             } catch (DataSourceException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {

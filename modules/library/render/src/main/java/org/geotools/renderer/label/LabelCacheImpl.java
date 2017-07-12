@@ -46,6 +46,7 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.label.LabelCacheItem.GraphicResize;
 import org.geotools.renderer.lite.LabelCache;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
@@ -1239,12 +1240,12 @@ public final class LabelCacheImpl implements LabelCache {
                         glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
         } else {
+            painter.paintStraightLabel(tempTransform);
             if(DEBUG_CACHE_BOUNDS) {
                 painter.graphics.setStroke(new BasicStroke());
                 painter.graphics.setColor(Color.RED);
                 painter.graphics.draw(transformed);
             }
-            painter.paintStraightLabel(tempTransform);
             if(labelItem.isConflictResolutionEnabled())
                 glyphs.addLabel(labelItem, transformed);
             return true;
@@ -1265,21 +1266,9 @@ public final class LabelCacheImpl implements LabelCache {
             return false;
         }
         
-        Point centroid;
-        try {
-            centroid = geom.getCentroid();
-        } catch (Exception e) {
-            // generalized polygons causes problems - this
-            // tries to hide them.
-            try {
-                centroid = geom.getExteriorRing().getCentroid();
-            } catch (Exception ee) {
-                try {
-                    centroid = geom.getFactory().createPoint(geom.getCoordinate());
-                } catch (Exception eee) {
-                    return false; // we're hooped
-                }
-            }
+        Point centroid = RendererUtilities.getPolygonCentroid(geom);
+        if (centroid == null) {
+            return false;
         }
         
         // check we're inside, if not, use a different approach
@@ -1287,37 +1276,11 @@ public final class LabelCacheImpl implements LabelCache {
         if(!pg.contains(centroid)) {
             // resort to sampling, computing the intersection is slow and
             // due invalid geometries can easily break with an exception
-            Envelope env = geom.getEnvelopeInternal();
-            double step = 5;
-            int steps = (int) Math.round((env.getMaxX() - env.getMinX()) / step);
-            Coordinate c = new Coordinate();
-            Point pp = gf.createPoint(c);
-            c.y = centroid.getY();
-            int max = -1;
-            int maxIdx = -1;
-            int containCounter = -1;
-            for (int i = 0; i < steps; i++) {
-                c.x = env.getMinX() + step * i;
-                pp.geometryChanged();
-                if(!pg.contains(pp)) {
-                    containCounter = 0;
-                } else if(i == 0) {
-                    containCounter = 1;
-                } else {
-                    containCounter++;
-                    if(containCounter > max) {
-                        max = containCounter;
-                        maxIdx = i;
-                    }
-                }
+            Point central = RendererUtilities.sampleForInternalPoint(geom, centroid, pg, gf, 5d, -1);
+            if (central != null) {
+                centroid = central;
             }
-                    
-            if(maxIdx != -1) {
-                int midIdx = max > 1 ? maxIdx - max / 2 : maxIdx;
-                c.x = env.getMinX() + step * midIdx;
-                pp.geometryChanged();
-                centroid = pp;
-            } else {
+            else {
                 return false;
             }
         }

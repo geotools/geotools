@@ -20,6 +20,9 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 import junit.framework.TestCase;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -280,5 +283,25 @@ public class RenderUtilitiesTest extends TestCase {
         scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
         assertTrue(scale > 1.0d);
         
+    }
+
+    public void testSampleForCentralPoint() throws Exception {
+        // create a "C" shape polygon that won't contain it's centroid
+        Polygon g = (Polygon) new WKTReader().read("POLYGON ((-112.534433451864 43.8706532611928,-112.499157652296 44.7878240499628,-99.6587666095152 44.7878240499628,-99.7242788087131 43.2155312692142,-111.085391877449 43.099601544023,-110.744593363875 36.1862602686501,-98.6760836215473 35.9436771582516,-98.7415958207452 33.5197257879307,-111.77852346112 33.9783111823157,-111.758573671673 34.6566040234952,-113.088767445077 34.7644575726901,-113.023255245879 43.8706532611928,-112.534433451864 43.8706532611928))");
+        Point p = g.getCentroid();
+
+        assertFalse(g.contains(p));
+
+        // test with few samples, we shouldn't hit the inside
+        assertNull(RendererUtilities.sampleForInternalPoint(g, p, null, null, -1, 2));
+
+        // up the  samples, we should hit the inside now
+        assertNotNull(RendererUtilities.sampleForInternalPoint(g, p, null, null, -1, 10));
+    }
+
+    public void testFindCentralPoint() throws Exception {
+        // self crossing polygon
+        Polygon g = (Polygon) new WKTReader().read("POLYGON ((0 0, 0 10, 10 0, 10 10, 0 0))");
+        assertNotNull(RendererUtilities.getPolygonCentroid(g));
     }
 }

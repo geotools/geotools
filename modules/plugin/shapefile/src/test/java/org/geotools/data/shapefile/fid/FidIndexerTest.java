@@ -18,11 +18,11 @@ package org.geotools.data.shapefile.fid;
 
 import static junit.framework.Assert.assertEquals;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.util.URLs;
 import org.junit.Test;
 
 /**
@@ -40,7 +40,7 @@ public class FidIndexerTest extends FIDTestCase {
         ShpFiles shpFiles = new ShpFiles(backshp.toURI().toURL());
         FidIndexer.generate(shpFiles);
 
-        ShapefileDataStore ds = new ShapefileDataStore(DataUtilities.fileToURL(backshp));
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(backshp));
 
         SimpleFeatureSource fs = ds.getFeatureSource();
         int features = fs.getCount(Query.ALL);

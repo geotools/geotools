@@ -30,6 +30,7 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -57,7 +58,7 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         this.state = state;
         String typeName = query.getTypeName();
         URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).url;
-        file = DataUtilities.urlToFile(url);
+        file = URLs.urlToFile(url);
         File directory = file.getParentFile();
         LOGGER.fine("Opening writer for "+url);
         if (directory == null) {

@@ -1,15 +1,16 @@
 package org.geotools.referencing.operation.transform;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.geotools.referencing.factory.gridshift.DataUtilities;
 import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
+import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 
@@ -27,7 +28,7 @@ public class NADCONGridShiftFactoryTest {
 		copyFile(los, tlos);
 		
 		NADCONGridShiftFactory factory = new NADCONGridShiftFactory();
-		NADConGridShift shift = factory.loadGridShift(DataUtilities.fileToURL(tlas), DataUtilities.fileToURL(tlos));
+		NADConGridShift shift = factory.loadGridShift(URLs.fileToUrl(tlas), URLs.fileToUrl(tlos));
 		// minor checks on the grid
 		assertNotNull(shift);
 		

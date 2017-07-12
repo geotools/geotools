@@ -88,6 +88,7 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.Format;
@@ -182,7 +183,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
         if (input instanceof URL) {
             sourceURL = (URL) input;
         } else if (input instanceof File) {
-            sourceURL = DataUtilities.fileToURL((File) input);
+            sourceURL = URLs.fileToUrl((File) input);
         }
         return sourceURL;
     }

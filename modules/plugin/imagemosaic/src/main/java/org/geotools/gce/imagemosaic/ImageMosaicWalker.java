@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,10 +36,10 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 /**
@@ -190,7 +189,7 @@ abstract class ImageMosaicWalker implements Runnable {
             // Setting of the ReaderSPI to use
             if (configHandler.getCachedReaderSPI() == null) {
                 // Get the URL associated to the file
-                URL granuleUrl = DataUtilities.fileToURL(fileBeingProcessed);
+                URL granuleUrl = URLs.fileToUrl(fileBeingProcessed);
                 // Get the ImageInputStreamSPI associated to the URL
                 ImageInputStreamSpi inStreamSpi = Utils.getInputStreamSPIFromURL(granuleUrl);
                 // Ensure that the ImageInputStreamSPI is available

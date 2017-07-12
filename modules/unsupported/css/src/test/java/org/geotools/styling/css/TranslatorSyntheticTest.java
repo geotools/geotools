@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.css;
 
+import static org.hamcrest.CoreMatchers.both;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
@@ -27,6 +29,7 @@ import java.util.List;
 import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.function.color.DarkenFunction;
+import org.geotools.filter.function.color.SaturateFunction;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.AnchorPoint;
@@ -60,6 +63,7 @@ import org.opengis.style.Mark;
 import org.opengis.style.Rule;
 import org.opengis.style.Style;
 import org.opengis.style.Symbolizer;
+import org.parboiled.errors.ParserRuntimeException;
 
 public class TranslatorSyntheticTest extends CssBaseTest {
 
@@ -1074,7 +1078,98 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertThat(color, instanceOf(DarkenFunction.class));
         assertEquals(Color.decode("#660000"), color.evaluate(null, Color.class));
     }
+    
+    @Test
+    public void testNestedFunction() throws Exception {
+        String css = "* {stroke: saturate(darken(#b5d0d0, 40%), 30%)}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ps = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Expression color = ps.getStroke().getColor();
+        assertThat(color, instanceOf(SaturateFunction.class));
+        Function saturate = (Function) color;
+        assertThat(saturate.getParameters().get(0), instanceOf(DarkenFunction.class));
+    }
+    
+    @Test
+    public void testScaleDependencyUnits() throws Exception {
+        // k
+        assertScaleMinMax("[@scale < 1k] {stroke: black}", null, 1e3);
+        assertScaleMinMax("[@scale > 1k] {stroke: black}", 1e3, null);
+        // m
+        assertScaleMinMax("[@scale < 1M] {stroke: black}", null, 1e6);
+        assertScaleMinMax("[@scale > 1M] {stroke: black}", 1e6, null);
+        // g
+        assertScaleMinMax("[@scale < 1G] {stroke: black}", null, 1e9);
+        assertScaleMinMax("[@scale > 1G] {stroke: black}", 1e9, null);
+    }
+    
+    @Test
+    public void testScaleDenominatorPseudoVariable() throws Exception {
+        assertScaleMinMax("[@sd < 1k] {stroke: black}", null, 1e3);
+        assertScaleMinMax("[@sd > 1k] {stroke: black}", 1e3, null);
+    }
+    
+    @Test
+    public void testCQLErrorSelector() throws Exception {
+        String css = "[thisFunctionDoesNotExists() > 10] {\nstroke: blue\n}";
+        try {
+            translate(css);
+        } catch(ParserRuntimeException e) {
+            // System.out.println(e);
+            assertThat(e.getMessage(), both(containsString("thisFunctionDoesNotExists")).and(containsString("line 1")));
+        }
+    }
+    
+    @Test
+    public void testCQLErrorProperty() throws Exception {
+        String css = "* \n{stroke: blue; \nstroke-width: [thisFunctionDoesNotExists()]}";
+        try {
+            translate(css);
+        } catch(ParserRuntimeException e) {
+            // System.out.println(e);
+            assertThat(e.getMessage(), both(containsString("thisFunctionDoesNotExists")).and(containsString("line 3")));
+        }
+    }
 
+    @Test
+    public void testDashArraySingleExpression() throws CQLException {
+        String css = "* { stroke: orange; stroke-dasharray: [foo]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Stroke stroke = ls.getStroke();
+        assertEquals(1, stroke.dashArray().size());
+        assertExpression("foo", stroke.dashArray().get(0));
+    }
+    
+    @Test
+    public void testDashArrayMixedExpression() throws CQLException {
+        String css = "* { stroke: orange; stroke-dasharray: [foo] 5 [bar]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Stroke stroke = ls.getStroke();
+        assertEquals(3, stroke.dashArray().size());
+        assertExpression("foo", stroke.dashArray().get(0));
+        assertLiteral("5", stroke.dashArray().get(1));
+        assertExpression("bar", stroke.dashArray().get(2));
+    }
+
+    private void assertScaleMinMax(String css, Double min, Double max) {
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        if(min == null) {
+            assertEquals(0, rule.getMinScaleDenominator(), 0d);
+        } else {
+            assertEquals(min, rule.getMinScaleDenominator(), 0d);
+        }
+        if(max == null) {
+            assertEquals(Double.POSITIVE_INFINITY, rule.getMaxScaleDenominator(), 0d);
+        } else {
+            assertEquals(max, rule.getMaxScaleDenominator(), 0d);
+        }
+    }
 
     private Function assertTransformation(FeatureTypeStyle fts) {
         Expression ex = fts.getTransformation();

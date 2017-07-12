@@ -24,20 +24,20 @@ import java.net.URL;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 
-import junit.framework.TestCase;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.grassraster.format.GrassCoverageFormatFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import junit.framework.TestCase;
 
 /**
  * Reader tests for different active region cases.
@@ -57,7 +57,7 @@ public class AdvancedReaderTest extends TestCase {
 
     protected void setUp() throws Exception {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");
-        pitFile = DataUtilities.urlToFile(pitUrl);
+        pitFile = URLs.urlToFile(pitUrl);
         crs = CRS.decode("EPSG:3004");
         crs32632 = CRS.decode("EPSG:32632");
 

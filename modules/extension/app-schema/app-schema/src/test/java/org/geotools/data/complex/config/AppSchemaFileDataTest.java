@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex.config;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,7 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Set;
-import static org.junit.Assert.assertEquals;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
@@ -35,6 +37,7 @@ import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +107,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     private static void copyTestData(String baseFileName, File destDir) throws IOException {
         destDir.mkdirs();
         FileUtils.copyFileToDirectory(
-                DataUtilities.urlToFile(AppSchemaFileDataTest.class.getResource(testData
+                URLs.urlToFile(AppSchemaFileDataTest.class.getResource(testData
                         + baseFileName)), destDir);
     }
 
@@ -246,7 +249,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     private AppSchemaDataAccess buildDataAccess(String mappingsFileName) throws Exception {
         // generate the path to a mappings-file in the resources directory
         String configFilePath = extendFilename(testDir.getPath(), mappingsFileName);
-        URL configFileUrl = DataUtilities.fileToURL(new File(configFilePath));
+        URL configFileUrl = URLs.fileToUrl(new File(configFilePath));
 
         // parse the mappings-file
         XMLConfigDigester configReader = new XMLConfigDigester();

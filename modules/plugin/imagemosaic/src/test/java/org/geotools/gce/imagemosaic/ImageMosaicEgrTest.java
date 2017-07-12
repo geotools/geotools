@@ -17,7 +17,6 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.awt.RenderingHints;
 import java.io.File;
@@ -43,7 +42,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -52,6 +50,7 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -101,7 +100,7 @@ public class ImageMosaicEgrTest {
         File mosaicSource = TestData.file(this, "egr");
         FileUtils.copyDirectory(mosaicSource, testMosaic);
         // System.out.println(testMosaic.getAbsolutePath());
-        testMosaicUrl = DataUtilities.fileToURL(testMosaic);
+        testMosaicUrl = URLs.fileToUrl(testMosaic);
     }
 
     private GeneralParameterValue[] getFootprintReadParams(GridCoverage2DReader reader,

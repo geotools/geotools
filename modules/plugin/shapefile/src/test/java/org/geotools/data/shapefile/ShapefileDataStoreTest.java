@@ -16,7 +16,13 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +75,7 @@ import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -305,7 +312,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testSpacesInPath() throws Exception {
         URL u = TestData.url(TestCaseSupport.class, "folder with spaces/pointtest.shp");
-        File f = DataUtilities.urlToFile(u);
+        File f = URLs.urlToFile(u);
         assertTrue(f.exists());
         ShapefileDataStore s = new ShapefileDataStore(u);
         loadFeatures(s);
@@ -968,9 +975,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // this shapefile has 4 records that are marked as deleted only inside the dbf, but 
         // not in the headers
         URL u = TestData.url(TestCaseSupport.class, "deleted/archsites.dbf");
-        File shpFile = DataUtilities.urlToFile(u);
+        File shpFile = URLs.urlToFile(u);
         
-        ShapefileDataStore store = new ShapefileDataStore(DataUtilities.fileToURL(shpFile));
+        ShapefileDataStore store = new ShapefileDataStore(URLs.fileToUrl(shpFile));
         ContentFeatureSource fs = store.getFeatureSource();
         // this one reads the shp header, which still contains trace of all records
         assertEquals(25, fs.getCount(Query.ALL));
@@ -1719,7 +1726,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testLinestringOnePoint() throws Exception {
         URL u = TestData.url(TestCaseSupport.class, "lsOnePoint/lsOnePoint.shp");
-        File f = DataUtilities.urlToFile(u);
+        File f = URLs.urlToFile(u);
         assertTrue(f.exists());
 
         store = new ShapefileDataStore(u);

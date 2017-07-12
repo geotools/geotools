@@ -19,9 +19,11 @@ package org.geotools.renderer.crs;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
+import org.geotools.referencing.operation.projection.Mercator;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Returns a {@link ProjectionHandler} for any {@link GeographicCRS}
@@ -55,13 +57,26 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
             
             if(wrap && maxWraps > 0) {
                 double centralMeridian = geogCrs.getDatum().getPrimeMeridian().getGreenwichLongitude();
-                return new WrappingProjectionHandler(renderingEnvelope, validArea, sourceCrs, centralMeridian, maxWraps);
+                WrappingProjectionHandler handler = new WrappingProjectionHandler(renderingEnvelope, validArea, sourceCrs, centralMeridian, maxWraps);
+                handler.setDatelineWrappingCheckEnabled(!isWrappingException(crs, horizontalSourceCrs));
+                return handler;
             } else {
                 return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
             }
         }
 
         return null;
+    }
+    
+    private boolean isWrappingException(CoordinateReferenceSystem sourceCrs,
+            CoordinateReferenceSystem targetCRS) throws FactoryException {
+        MathTransform mt = CRS.findMathTransform(sourceCrs, targetCRS);
+        // this projection does not wrap coordinates, generates values larger than 180 instead
+        if(mt instanceof Mercator) {
+            return true;
+        }
+        
+        return false;
     }
 
 }

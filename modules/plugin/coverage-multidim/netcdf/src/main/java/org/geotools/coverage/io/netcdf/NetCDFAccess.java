@@ -38,7 +38,6 @@ import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.Parameter;
 import org.geotools.data.ServiceInfo;
@@ -48,6 +47,7 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.imageio.GeoSpatialImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.util.NullProgressListener;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
@@ -97,7 +97,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
         File sourceFile = null;
         if (protocol.equalsIgnoreCase("file")){
             // convert to file
-            sourceFile = DataUtilities.urlToFile(source);
+            sourceFile = URLs.urlToFile(source);
             
             // check that it is a file,exists and can be at least read
             if (!sourceFile.exists() || !sourceFile.isFile() || !sourceFile.canRead()){

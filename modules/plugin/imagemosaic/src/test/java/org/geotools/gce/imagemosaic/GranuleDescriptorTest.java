@@ -23,6 +23,7 @@ import java.net.URL;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -42,7 +43,7 @@ public class GranuleDescriptorTest {
         Geometry geometry = new WKTReader().read("POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))");
         fb.add(geometry);
         URL resource = getClass().getResource("test-data/rgb/global_mosaic_0.png");
-        fb.add(DataUtilities.urlToFile(resource));
+        fb.add(URLs.urlToFile(resource));
         fb.add(geometry.buffer(10));
         SimpleFeature feature = fb.buildFeature("xyz");
 

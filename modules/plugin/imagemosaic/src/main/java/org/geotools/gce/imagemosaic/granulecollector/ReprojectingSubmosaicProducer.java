@@ -24,7 +24,9 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.media.jai.Interpolation;
@@ -44,6 +46,7 @@ import org.geotools.gce.imagemosaic.Mosaicker;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
+import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
@@ -55,6 +58,8 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
 
@@ -90,6 +95,10 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         this.renderingHints = createRenderingHints(hints, request);
         this.operations = new Operations(renderingHints);
     }
+    
+    public boolean isReprojecting() {
+        return true;
+    }
 
     private static RenderingHints createRenderingHints(Hints hints, RasterLayerRequest request) {
         RenderingHints renderHints = new RenderingHints(null);
@@ -113,10 +122,13 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             try {
                 RasterLayerResponse transformedResponse = rasterLayerResponse
                         .reprojectTo(granuleDescriptor);
+                if(transformedResponse == null) {
+                    return false;
+                }
                 this.currentSubmosaicProducer = new CRSBoundMosaicProducer(transformedResponse,
                         dryRun, targetCRS, granuleDescriptor);
                 perMosaicProducers.add(currentSubmosaicProducer);
-                accepted = currentSubmosaicProducer.acceptGranule(granuleDescriptor);
+                accepted = true;
             } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "Failed to setup CRS specific sub-mosaic", e);
             }
@@ -142,7 +154,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
                             mosaicProducer);
                     mosaicInputs.add(reprojectedMosaicElement);
                 }
-            } catch (FactoryException e) {
+            } catch (FactoryException | TransformException e) {
                 throw new IllegalStateException(e);
             }
         }
@@ -151,29 +163,57 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     }
 
     private MosaicElement reprojectMosaicElement(MosaicElement mosaicElement,
-            CRSBoundMosaicProducer mosaicProducer) throws FactoryException {
+            CRSBoundMosaicProducer mosaicProducer) throws FactoryException, TransformException {
 
-        if (!CRS.equalsIgnoreMetadata(targetCRS, mosaicProducer.getCrs())) {
+        final CoordinateReferenceSystem finalCrs = mosaicProducer.getCrs();
+        if (!CRS.equalsIgnoreMetadata(targetCRS, finalCrs)) {
             GridCoverageFactory factory = new GridCoverageFactory(null);
 
-            ReferencedEnvelope submosaicBBOX = computeSubmosaicBoundingBox(mosaicProducer,
-                    mosaicElement);
-            GridCoverage2D submosaicCoverage = factory.create("submosaic",
-                    mosaicElement.getSource(), submosaicBBOX);
+            final MathTransform2D finalGridToWorld = mosaicProducer.rasterLayerResponse.getFinalGridToWorldCorner();
+            ReferencedEnvelope submosaicBBOX = computeSubmosaicBoundingBox(finalGridToWorld, mosaicElement.getSource(), finalCrs);
+            GridCoverage2D submosaicCoverage = createCoverageFromElement(mosaicElement, factory, submosaicBBOX);
             GridCoverage2D resampledCoverage = (GridCoverage2D) operations
-                    .resample(submosaicCoverage, targetCRS);
+                    .resample(submosaicCoverage, rasterLayerResponse.getMosaicBBox(), rasterLayerResponse.getRequest().getInterpolation());
+            
+            RenderedImage image = positionInOutputMosaic(resampledCoverage);
+            
+            // cropping is done after re-positining to avoid breaking warp/affine reduction. 
+            // This is important not just for performance, but very much for output quality
+            Geometry geometry = Utils.reprojectEnvelopeToGeometry(submosaicBBOX, targetCRS, rasterLayerResponse.getMosaicBBox());
+            if(geometry != null && geometry.getNumGeometries() > 1) {
+                // dateline crossing happend, clip on the reprojected vector geometry
+                // as the reprojection math can do very "funny" stuff in the middle
+                // due to numerical issues in reprojection math
+                ReferencedEnvelope resampledImageEnvelope = computeSubmosaicBoundingBox(rasterLayerResponse.getFinalGridToWorldCorner(), image, finalCrs);
+                GridCoverage2D repositionedCoverage = factory.create("repositioned", image, resampledImageEnvelope);
+                GridCoverage2D croppedCoverage = (GridCoverage2D) operations.crop(repositionedCoverage, geometry);
+                image = croppedCoverage.getRenderedImage();
+            }
+            
 
-            RenderedImage resampledImage = positionInOutputMosaic(resampledCoverage);
+            PlanarImage alphaBand = image.getColorModel().hasAlpha()
+                    ? new ImageWorker(image).retainLastBand().getPlanarImage() : null;
 
-            PlanarImage alphaBand = resampledImage.getColorModel().hasAlpha()
-                    ? new ImageWorker(resampledImage).retainLastBand().getPlanarImage() : null;
-
-            Object property = resampledImage.getProperty("ROI");
+            Object property = image.getProperty("ROI");
             ROI overallROI = (property instanceof ROI) ? (ROI) property : null;
-            return new MosaicElement(alphaBand, overallROI, resampledImage,
+            return new MosaicElement(alphaBand, overallROI, image,
                     mosaicElement.getPamDataset());
         } else {
             return mosaicElement;
+        }
+    }
+
+    private GridCoverage2D createCoverageFromElement(MosaicElement mosaicElement,
+            GridCoverageFactory factory, ReferencedEnvelope submosaicBBOX) {
+        final RenderedImage image = mosaicElement.getSource();
+        Object roiProperty = image.getProperty("ROI");
+        if (roiProperty instanceof ROI) {
+            // move the property at the coverage level too
+            Map<String, Object> properties = new HashMap<>();
+            CoverageUtilities.setROIProperty(properties, (ROI) roiProperty);
+            return factory.create("submosaic", image, submosaicBBOX, null, null, properties);
+        } else {
+            return factory.create("submosaic", image, submosaicBBOX);
         }
     }
 
@@ -185,10 +225,8 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
      * @return
      * @throws FactoryException
      */
-    private ReferencedEnvelope computeSubmosaicBoundingBox(CRSBoundMosaicProducer mosaicProducer,
-            MosaicElement mosaicElement) throws FactoryException {
-        RenderedImage image = mosaicElement.getSource();
-        MathTransform2D tx = mosaicProducer.rasterLayerResponse.getFinalGridToWorldCorner();
+    private ReferencedEnvelope computeSubmosaicBoundingBox(MathTransform2D tx, 
+            RenderedImage image, CoordinateReferenceSystem crs) throws FactoryException {
         double[] mosaicked = new double[] { image.getMinX(), image.getMinY(),
                 image.getMinX() + image.getWidth(), image.getMinY() + image.getHeight() };
         try {
@@ -197,7 +235,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             throw new FactoryException(e);
         }
         ReferencedEnvelope submosaicBBOX = new ReferencedEnvelope(mosaicked[0], mosaicked[2],
-                mosaicked[1], mosaicked[3], mosaicProducer.getCrs());
+                mosaicked[1], mosaicked[3], crs);
         return submosaicBBOX;
     }
 
@@ -241,6 +279,10 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             return image;
         } else {
             ImageWorker iw = new ImageWorker(image);
+            final Object roi = image.getProperty("ROI");
+            if(roi instanceof ROI) {
+                iw.setROI((ROI) roi);
+            }
             iw.setRenderingHints(localHints);
             iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
             RenderedImage renderedImage = iw.getRenderedImage();

@@ -16,13 +16,13 @@
  */
 package org.geotools.data.wms.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.MockHttpClient;
@@ -31,6 +31,7 @@ import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.Test;
 
 public class DimensionParsingTest {
@@ -51,7 +52,7 @@ public class DimensionParsingTest {
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().contains("GetCapabilities")) {
                 File getCaps = TestData.file(this, capabilitiesFileName);
-                URL caps = DataUtilities.fileToURL(getCaps);
+                URL caps = URLs.fileToUrl(getCaps);
                 return new MockHttpResponse(caps, "text/xml");
             } else {
                 throw new IllegalArgumentException(

@@ -61,10 +61,12 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
@@ -79,13 +81,18 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opengis.referencing.operation.TransformException;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.vividsolutions.jts.geom.Envelope;
@@ -846,13 +853,19 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         worker.setNoData(noData);
         worker.rescaleToBytes();
         RenderedImage image = worker.getRenderedImage();
-        
-        // check the nodata has been actually set
+
+        // check the nodata has been actually set and remapped to zero
         Object property = image.getProperty(NoDataContainer.GC_NODATA);
         assertNotEquals(property, Image.UndefinedProperty);
         assertThat(property, instanceOf(NoDataContainer.class));
         NoDataContainer nd = (NoDataContainer) property;
-        assertEquals(-10, nd.getAsSingleValue(), 0d);
+        assertEquals(0, nd.getAsSingleValue(), 0d);
+
+        // check the min max are in the range 1 - 255 since 0 has been mapped to new no data in Byte Range.
+        double[] min = worker.getMinimums();
+        double[] max = worker.getMaximums();
+        assertEquals(1, min[0], 0d);
+        assertEquals(255, max[0], 0d);
     }
     
     /**
@@ -1605,6 +1618,24 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
     
     @Test
+    public void testMosaicNullROI() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        
+        // inject a null roi, should be treated as full image valid for that granule
+        ImageWorker iw = new ImageWorker();
+        iw.mosaic(new RenderedImage[] {red, blue}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, null}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, instanceOf(ROI.class));
+        ROI roi = (ROI) roiProperty;
+        // check ROI, should be full
+        assertTrue(roi.contains(new Rectangle(0, 0, mosaicked.getWidth(), mosaicked.getHeight())));
+    }
+    
+    @Test
     public void testMosaicRasterGeometry() throws Exception {
         BufferedImage red = getSyntheticRGB(Color.RED);
         ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
@@ -1630,6 +1661,26 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedImage mosaicked = iw.getRenderedImage();
         Object roiProperty = mosaicked.getProperty("ROI");
         assertThat(roiProperty, not((instanceOf(ROI.class))));
+    }
+    
+    @Test
+    public void testMosaicBackgroundColorWithImagesOwningROI() {
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        ROI redROI = new ROI(new ROIShape(new Rectangle2D.Double(0, 0, 64, 64)).getAsImage());
+        RenderedImage redWithROI = new ImageWorker(red).setROI(redROI).getRenderedImage();
+        
+        BufferedImage blue = getSyntheticRGB(Color.BLUE);
+        ROI blueROI = new ROIGeometry(JTS.toGeometry(new Envelope(63, 127, 63, 127)));
+        RenderedImage blueWithROI = new ImageWorker(blue).setROI(blueROI).getRenderedImage();
+
+        ImageWorker iw = new ImageWorker();
+        iw.setBackground(new double[] {255, 255, 255});
+        iw.mosaic(new RenderedImage[] {redWithROI, blueWithROI}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, new ROI[] {redROI, blueROI}, null, null);
+        RenderedImage mosaicked = iw.getRenderedImage();
+        // it has been replaced with a ROI geometry as big as the image since it cannot be removed
+        // due to JAI picking the ROI of the mosaic from the first source
+        Object roiProperty = mosaicked.getProperty("ROI");
+        assertThat(roiProperty, instanceOf(ROIGeometry.class));
     }
     
     @Test
@@ -1731,5 +1782,41 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         worker = worker.crop(0, 0, width/2, height/2);
         maxs = worker.getMaximums();
         assertEquals(width/2 + height/2 - 2, (int)maxs[0]);
+    }
+
+    @Test
+    public void testWarpROIWithJAIExt() throws IOException, TransformException {
+        // no init needed, jai-ext is already enabled
+        assertWarpROI();
+    }
+    
+    @Test
+    public void testWarpROIWithoutJAIExt() throws IOException, TransformException {
+        JAIExt.initJAIEXT(false);
+        assertWarpROI();
+    }
+    
+    public void assertWarpROI() throws IOException, TransformException {
+        ImageWorker worker = new ImageWorker(gray);
+        // ROI covers just 1/4th
+        ROIShape roiShape = new ROIShape(
+                new Rectangle(0, 0, gray.getWidth() / 2, gray.getHeight() / 2));
+        ROI roi = new ROI(roiShape.getAsImage());
+        worker.setROI(roi);
+
+        Warp warp = new WarpBuilder(0.3).buildWarp(
+                new AffineTransform2D(AffineTransform.getScaleInstance(2, 2)),
+                new Rectangle(gray.getWidth(), gray.getHeight()));
+        worker.warp(warp, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+
+        RenderedImage ri = worker.getRenderedImage();
+        final Object roiValue = ri.getProperty("ROI");
+        assertNotEquals(java.awt.Image.UndefinedProperty, roiValue);
+        ROI warpedROI = (ROI) roiValue;
+        PlanarImage warpedROIImage = warpedROI.getAsImage();
+        // check it's not solid white (happens if the wrong warp is used)
+        ImageWorker warpedROIWorker = new ImageWorker(warpedROIImage);
+        assertEquals(1, warpedROIWorker.getMaximums()[0], 0d);
+        assertEquals(0, warpedROIWorker.getMinimums()[0], 0d);
     }
 }

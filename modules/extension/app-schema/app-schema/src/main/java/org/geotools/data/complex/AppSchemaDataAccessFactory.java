@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,9 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
+import org.geotools.data.complex.config.DataAccessMap;
 import org.geotools.data.complex.config.XMLConfigDigester;
+import org.geotools.util.URLs;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
@@ -67,10 +68,11 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
-        return createDataStore(params, false);
+        return createDataStore(params, false, new DataAccessMap());
     }
 
-    public DataAccess<FeatureType, Feature> createDataStore(Map params, boolean hidden) throws IOException {
+    public DataAccess<FeatureType, Feature> createDataStore(Map params, boolean hidden,
+            DataAccessMap sourceDataStoreMap) throws IOException {
         Set<FeatureTypeMapping> mappings;
         AppSchemaDataAccess dataStore;
 
@@ -84,7 +86,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         List<String> includes = config.getIncludes();
         for (Iterator<String> it = includes.iterator(); it.hasNext();) {
             String parentLocation;
-            parentLocation = DataUtilities.urlToFile(configFileUrl).getParent();
+            parentLocation = URLs.urlToFile(configFileUrl).getParent();
             File includedConfig = new File(parentLocation, it.next());
             if (!includedConfig.exists()) {
                 throw new RuntimeException(
@@ -92,13 +94,17 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
                                 + includedConfig.getPath() + "' doesn't exist!");
             }
 
-            URL relatedConfigURL = DataUtilities.fileToURL(includedConfig);
+            URL relatedConfigURL = URLs.fileToUrl(includedConfig);
             params.put("url", relatedConfigURL);
-            // this will register the related data access, to enable feature chaining
-            createDataStore(params, true);
+            // this will register the related data access, to enable feature chaining;
+            // sourceDataStoreMap is passed on to keep track of the already created source data stores
+            // and avoid creating the same data store twice (this enables feature iterators sharing
+            // the same transaction to re-use the connection instead of opening a new one for each
+            // joined type)
+            createDataStore(params, true, sourceDataStoreMap);
         }
 
-        mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
+        mappings = AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
 
         dataStore = new AppSchemaDataAccess(mappings, hidden);
 

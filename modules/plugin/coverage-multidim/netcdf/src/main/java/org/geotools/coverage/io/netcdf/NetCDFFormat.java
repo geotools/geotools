@@ -26,11 +26,11 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.filter.Filter;
@@ -111,7 +111,7 @@ public class NetCDFFormat extends AbstractGridFormat{
     public boolean accepts(Object source, Hints hints) {
         File file = null;
         if (source instanceof URL) {
-            file = DataUtilities.urlToFile((URL) source);
+            file = URLs.urlToFile((URL) source);
         } else if (source instanceof File ){
             file = (File) source;
         }

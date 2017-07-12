@@ -24,16 +24,17 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.styling.*;
+import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
-import org.opengis.style.Stroke;
+import org.opengis.style.Symbolizer;
 
 import javax.measure.unit.NonSI;
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -517,6 +518,7 @@ public class LineMBLayer extends MBLayer {
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
+        List<Symbolizer> symbolizers = new ArrayList<>();
         org.geotools.styling.Stroke stroke = sf.stroke(lineColor(), lineOpacity(), lineWidth(),
                 lineJoin(), lineCap(), null, null); // last "offset" is really "dash offset"
 
@@ -530,15 +532,34 @@ public class LineMBLayer extends MBLayer {
             stroke.setGraphicFill(fill);
         }
 
+        if (getLineGapWidth().intValue() > 0) {
+
+            org.geotools.styling.Stroke gapStroke = sf.stroke(lineColor(), lineOpacity(), ff.add(lineWidth(), lineGapWidth()),
+                    lineJoin(), lineCap(), null, null);
+            LineSymbolizer gapOuterLine = sf.lineSymbolizer(getId(), null,
+                    sf.description(Text.text("line"), null), NonSI.PIXEL, gapStroke, lineOffset());
+
+            org.geotools.styling.Stroke blankStroke = sf.stroke(ff.literal(Color.WHITE), lineOpacity(),
+                    ff.subtract(ff.add(lineWidth(), lineGapWidth()), ff.literal(1)),
+                    lineJoin(), lineCap(), null, null);
+            LineSymbolizer blankLine = sf.lineSymbolizer(getId(), null,
+                    sf.description(Text.text("line"), null), NonSI.PIXEL, blankStroke, lineOffset());
+            symbolizers.add(gapOuterLine);
+            symbolizers.add(blankLine);
+        }
+        symbolizers.add(ls);
+
+
         MBFilter filter = getFilter();
         List<org.opengis.style.Rule> rules = new ArrayList<>();
+
         Rule rule = sf.rule(
                 getId(),
                 null,
                 null,
                 0.0,
                 Double.POSITIVE_INFINITY,
-                Arrays.asList(ls),
+                symbolizers,
                 filter.filter());
         rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);

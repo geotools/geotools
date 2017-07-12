@@ -16,24 +16,17 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.spi.ImageReaderSpi;
-
-import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -43,8 +36,6 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -52,19 +43,21 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.TransformException;
+
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import junit.framework.JUnit4TestAdapter;
+import junit.textui.TestRunner;
 
 /**
  * Testing {@link OverviewsController}.
@@ -188,8 +181,8 @@ public class OverviewsControllerTest extends Assert {
         // Initialize granules related variables 
         //
         // //
-        final File g1File = new File(DataUtilities.urlToFile(heterogeneousGranulesURL), "world_a.tif");
-        final File g2File = new File(DataUtilities.urlToFile(heterogeneousGranulesURL), "world_b.tif");
+        final File g1File = new File(URLs.urlToFile(heterogeneousGranulesURL), "world_a.tif");
+        final File g2File = new File(URLs.urlToFile(heterogeneousGranulesURL), "world_b.tif");
         final ImageReadParam readParamsG1 = new ImageReadParam();
         final ImageReadParam readParamsG2 = new ImageReadParam();
         int imageIndexG1 = 0;

@@ -44,6 +44,7 @@ import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 import org.geotools.gce.imagemosaic.jdbc.ImageMosaicJDBCReader;
 import org.geotools.referencing.factory.gridshift.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 
@@ -457,10 +458,10 @@ public class JDBCPGRasterConfigurationBuilder {
         validateConfiguration();
 
         // Step 2: Check for/Create Config file
-        final File configFile = new File(DataUtilities.urlToFile(configDir).getAbsolutePath()
+        final File configFile = new File(URLs.urlToFile(configDir).getAbsolutePath()
                 + File.separatorChar + configBean.getCoverageName() + ".pgraster.xml");
 
-        URL url = DataUtilities.fileToURL(configFile);
+        URL url = URLs.fileToUrl(configFile);
         Config config = null;
         Connection connection = null;
         final List<File> filesToBeDeleted = new ArrayList<File>();
@@ -697,7 +698,7 @@ public class JDBCPGRasterConfigurationBuilder {
      * @throws IOException 
      */
     private void importTilesIntoDB(final Connection connection, final List<File> filesToBeDeleted) throws SQLException, IOException {
-        final File configDirectory = DataUtilities.urlToFile(configDir);
+        final File configDirectory = URLs.urlToFile(configDir);
 
         // Preliminary check on configuration directory validity
         if (!configDirectory.exists()) {
@@ -729,7 +730,7 @@ public class JDBCPGRasterConfigurationBuilder {
         // Note that GDAL put tiles for level 0 straight on the folder.
         // additional levels are stored on folder 1, 2, 3 and so on
 
-        final File dataDir = DataUtilities.urlToFile(configDir);
+        final File dataDir = URLs.urlToFile(configDir);
 
         // Preparing a single script containing all the raster2pgsql commands to be invoked
         String script = createScript(dataDir, database, schema, host, port, pguser, tablePrefix, fileExtension, tileTables, importOptions, filesToBeDeleted);

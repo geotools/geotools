@@ -191,7 +191,7 @@
             </modules>
         </profile>
         <profile>
-          <id>javafxMap</id>
+          <id>javafx</id>
           <modules>
             <module>javafx</module>
           </modules>
@@ -221,7 +221,6 @@
 				<module>css</module>
 				<module>geojsonstore</module>
 				<module>polylabel</module>
-                <module>javafx</module>
 			</modules>
 		</profile>
 	</profiles>

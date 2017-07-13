@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
@@ -47,6 +48,7 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.URLs;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -58,6 +60,8 @@ import org.opengis.filter.sort.SortOrder;
  * and world file for TIFFs.
  */
 public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements FileResourceInfo {
+    
+    static final Logger LOGGER = Logging.getLogger(ImageMosaicFileResourceInfo.class);
 
     private final static String PRJ = ".PRJ";
 
@@ -419,6 +423,8 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
                     .supportsSorting(sb);
             if (isSortBySupported) {
                 updatedQuery.setSortBy(sb);
+            } else {
+                LOGGER.severe("Sorting parameter ignored, underlying datastore cannot sort on " + Arrays.toString(sb));
             }
             updatedQuery.setTypeName(typeName);
 

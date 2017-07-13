@@ -41,39 +41,39 @@ public interface CoverageSubtypeParentType extends EObject {
     QName getCoverageSubtype();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtype <em>Coverage Subtype</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtype <em>Coverage Subtype</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Coverage Subtype</em>' attribute.
-     * @see #getCoverageSubtype()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Coverage Subtype</em>' attribute.
+	 * @see #getCoverageSubtype()
+	 * @generated
+	 */
     void setCoverageSubtype(QName value);
 
     /**
-     * Returns the value of the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Coverage Subtype Parent</em>' containment reference.
-     * @see #setCoverageSubtypeParent(CoverageSubtypeParentType)
-     * @see net.opengis.wcs20.Wcs20Package#getCoverageSubtypeParentType_CoverageSubtypeParent()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='CoverageSubtypeParent' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * <!-- begin-model-doc -->
+	 * 
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Coverage Subtype Parent</em>' containment reference.
+	 * @see #setCoverageSubtypeParent(CoverageSubtypeParentType)
+	 * @see net.opengis.wcs20.Wcs20Package#getCoverageSubtypeParentType_CoverageSubtypeParent()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='CoverageSubtypeParent' namespace='##targetNamespace'"
+	 * @generated
+	 */
     CoverageSubtypeParentType getCoverageSubtypeParent();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Coverage Subtype Parent</em>' containment reference.
-     * @see #getCoverageSubtypeParent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Coverage Subtype Parent</em>' containment reference.
+	 * @see #getCoverageSubtypeParent()
+	 * @generated
+	 */
     void setCoverageSubtypeParent(CoverageSubtypeParentType value);
 
 } // CoverageSubtypeParentType

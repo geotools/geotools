@@ -31,103 +31,103 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class InterpolationAxesTypeImpl extends EObjectImpl implements InterpolationAxesType {
     /**
-     * The cached value of the '{@link #getInterpolationAxis() <em>Interpolation Axis</em>}' reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getInterpolationAxis() <em>Interpolation Axis</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getInterpolationAxis()
-     * @generated
-     * @ordered
-     */
+	 * @see #getInterpolationAxis()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<InterpolationAxisType> interpolationAxis;
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected InterpolationAxesTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.INTERPOLATION_AXES_TYPE;
-    }
+		return Wcs20Package.Literals.INTERPOLATION_AXES_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<InterpolationAxisType> getInterpolationAxis() {
-        if (interpolationAxis == null) {
-            interpolationAxis = new EObjectResolvingEList<InterpolationAxisType>(InterpolationAxisType.class, this, Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS);
-        }
-        return interpolationAxis;
-    }
+		if (interpolationAxis == null) {
+			interpolationAxis = new EObjectResolvingEList<InterpolationAxisType>(InterpolationAxisType.class, this, Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS);
+		}
+		return interpolationAxis;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
-                return getInterpolationAxis();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
+				return getInterpolationAxis();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
-                getInterpolationAxis().clear();
-                getInterpolationAxis().addAll((Collection<? extends InterpolationAxisType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
+				getInterpolationAxis().clear();
+				getInterpolationAxis().addAll((Collection<? extends InterpolationAxisType>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
-                getInterpolationAxis().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
+				getInterpolationAxis().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
-                return interpolationAxis != null && !interpolationAxis.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS:
+				return interpolationAxis != null && !interpolationAxis.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //InterpolationAxesTypeImpl

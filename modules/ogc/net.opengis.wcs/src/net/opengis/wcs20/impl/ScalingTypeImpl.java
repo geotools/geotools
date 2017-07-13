@@ -35,306 +35,306 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
     /**
-     * The cached value of the '{@link #getScaleByFactor() <em>Scale By Factor</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getScaleByFactor() <em>Scale By Factor</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getScaleByFactor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getScaleByFactor()
+	 * @generated
+	 * @ordered
+	 */
     protected ScaleByFactorType scaleByFactor;
 
     /**
-     * The cached value of the '{@link #getScaleAxesByFactor() <em>Scale Axes By Factor</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getScaleAxesByFactor() <em>Scale Axes By Factor</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getScaleAxesByFactor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getScaleAxesByFactor()
+	 * @generated
+	 * @ordered
+	 */
     protected ScaleAxisByFactorType scaleAxesByFactor;
 
     /**
-     * The cached value of the '{@link #getScaleToSize() <em>Scale To Size</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getScaleToSize() <em>Scale To Size</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getScaleToSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getScaleToSize()
+	 * @generated
+	 * @ordered
+	 */
     protected ScaleToSizeType scaleToSize;
 
     /**
-     * The cached value of the '{@link #getScaleToExtent() <em>Scale To Extent</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getScaleToExtent() <em>Scale To Extent</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getScaleToExtent()
-     * @generated
-     * @ordered
-     */
+	 * @see #getScaleToExtent()
+	 * @generated
+	 * @ordered
+	 */
     protected ScaleToExtentType scaleToExtent;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ScalingTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.SCALING_TYPE;
-    }
+		return Wcs20Package.Literals.SCALING_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleByFactorType getScaleByFactor() {
-        if (scaleByFactor != null && scaleByFactor.eIsProxy()) {
-            InternalEObject oldScaleByFactor = (InternalEObject)scaleByFactor;
-            scaleByFactor = (ScaleByFactorType)eResolveProxy(oldScaleByFactor);
-            if (scaleByFactor != oldScaleByFactor) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR, oldScaleByFactor, scaleByFactor));
-            }
-        }
-        return scaleByFactor;
-    }
+		if (scaleByFactor != null && scaleByFactor.eIsProxy()) {
+			InternalEObject oldScaleByFactor = (InternalEObject)scaleByFactor;
+			scaleByFactor = (ScaleByFactorType)eResolveProxy(oldScaleByFactor);
+			if (scaleByFactor != oldScaleByFactor) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR, oldScaleByFactor, scaleByFactor));
+			}
+		}
+		return scaleByFactor;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleByFactorType basicGetScaleByFactor() {
-        return scaleByFactor;
-    }
+		return scaleByFactor;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setScaleByFactor(ScaleByFactorType newScaleByFactor) {
-        ScaleByFactorType oldScaleByFactor = scaleByFactor;
-        scaleByFactor = newScaleByFactor;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR, oldScaleByFactor, scaleByFactor));
-    }
+		ScaleByFactorType oldScaleByFactor = scaleByFactor;
+		scaleByFactor = newScaleByFactor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR, oldScaleByFactor, scaleByFactor));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleAxisByFactorType getScaleAxesByFactor() {
-        if (scaleAxesByFactor != null && scaleAxesByFactor.eIsProxy()) {
-            InternalEObject oldScaleAxesByFactor = (InternalEObject)scaleAxesByFactor;
-            scaleAxesByFactor = (ScaleAxisByFactorType)eResolveProxy(oldScaleAxesByFactor);
-            if (scaleAxesByFactor != oldScaleAxesByFactor) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR, oldScaleAxesByFactor, scaleAxesByFactor));
-            }
-        }
-        return scaleAxesByFactor;
-    }
+		if (scaleAxesByFactor != null && scaleAxesByFactor.eIsProxy()) {
+			InternalEObject oldScaleAxesByFactor = (InternalEObject)scaleAxesByFactor;
+			scaleAxesByFactor = (ScaleAxisByFactorType)eResolveProxy(oldScaleAxesByFactor);
+			if (scaleAxesByFactor != oldScaleAxesByFactor) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR, oldScaleAxesByFactor, scaleAxesByFactor));
+			}
+		}
+		return scaleAxesByFactor;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleAxisByFactorType basicGetScaleAxesByFactor() {
-        return scaleAxesByFactor;
-    }
+		return scaleAxesByFactor;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setScaleAxesByFactor(ScaleAxisByFactorType newScaleAxesByFactor) {
-        ScaleAxisByFactorType oldScaleAxesByFactor = scaleAxesByFactor;
-        scaleAxesByFactor = newScaleAxesByFactor;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR, oldScaleAxesByFactor, scaleAxesByFactor));
-    }
+		ScaleAxisByFactorType oldScaleAxesByFactor = scaleAxesByFactor;
+		scaleAxesByFactor = newScaleAxesByFactor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR, oldScaleAxesByFactor, scaleAxesByFactor));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleToSizeType getScaleToSize() {
-        if (scaleToSize != null && scaleToSize.eIsProxy()) {
-            InternalEObject oldScaleToSize = (InternalEObject)scaleToSize;
-            scaleToSize = (ScaleToSizeType)eResolveProxy(oldScaleToSize);
-            if (scaleToSize != oldScaleToSize) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE, oldScaleToSize, scaleToSize));
-            }
-        }
-        return scaleToSize;
-    }
+		if (scaleToSize != null && scaleToSize.eIsProxy()) {
+			InternalEObject oldScaleToSize = (InternalEObject)scaleToSize;
+			scaleToSize = (ScaleToSizeType)eResolveProxy(oldScaleToSize);
+			if (scaleToSize != oldScaleToSize) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE, oldScaleToSize, scaleToSize));
+			}
+		}
+		return scaleToSize;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleToSizeType basicGetScaleToSize() {
-        return scaleToSize;
-    }
+		return scaleToSize;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setScaleToSize(ScaleToSizeType newScaleToSize) {
-        ScaleToSizeType oldScaleToSize = scaleToSize;
-        scaleToSize = newScaleToSize;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE, oldScaleToSize, scaleToSize));
-    }
+		ScaleToSizeType oldScaleToSize = scaleToSize;
+		scaleToSize = newScaleToSize;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE, oldScaleToSize, scaleToSize));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleToExtentType getScaleToExtent() {
-        if (scaleToExtent != null && scaleToExtent.eIsProxy()) {
-            InternalEObject oldScaleToExtent = (InternalEObject)scaleToExtent;
-            scaleToExtent = (ScaleToExtentType)eResolveProxy(oldScaleToExtent);
-            if (scaleToExtent != oldScaleToExtent) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT, oldScaleToExtent, scaleToExtent));
-            }
-        }
-        return scaleToExtent;
-    }
+		if (scaleToExtent != null && scaleToExtent.eIsProxy()) {
+			InternalEObject oldScaleToExtent = (InternalEObject)scaleToExtent;
+			scaleToExtent = (ScaleToExtentType)eResolveProxy(oldScaleToExtent);
+			if (scaleToExtent != oldScaleToExtent) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT, oldScaleToExtent, scaleToExtent));
+			}
+		}
+		return scaleToExtent;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ScaleToExtentType basicGetScaleToExtent() {
-        return scaleToExtent;
-    }
+		return scaleToExtent;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setScaleToExtent(ScaleToExtentType newScaleToExtent) {
-        ScaleToExtentType oldScaleToExtent = scaleToExtent;
-        scaleToExtent = newScaleToExtent;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT, oldScaleToExtent, scaleToExtent));
-    }
+		ScaleToExtentType oldScaleToExtent = scaleToExtent;
+		scaleToExtent = newScaleToExtent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT, oldScaleToExtent, scaleToExtent));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
-                if (resolve) return getScaleByFactor();
-                return basicGetScaleByFactor();
-            case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
-                if (resolve) return getScaleAxesByFactor();
-                return basicGetScaleAxesByFactor();
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
-                if (resolve) return getScaleToSize();
-                return basicGetScaleToSize();
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
-                if (resolve) return getScaleToExtent();
-                return basicGetScaleToExtent();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
+				if (resolve) return getScaleByFactor();
+				return basicGetScaleByFactor();
+			case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
+				if (resolve) return getScaleAxesByFactor();
+				return basicGetScaleAxesByFactor();
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
+				if (resolve) return getScaleToSize();
+				return basicGetScaleToSize();
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
+				if (resolve) return getScaleToExtent();
+				return basicGetScaleToExtent();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
-                setScaleByFactor((ScaleByFactorType)newValue);
-                return;
-            case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
-                setScaleAxesByFactor((ScaleAxisByFactorType)newValue);
-                return;
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
-                setScaleToSize((ScaleToSizeType)newValue);
-                return;
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
-                setScaleToExtent((ScaleToExtentType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
+				setScaleByFactor((ScaleByFactorType)newValue);
+				return;
+			case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
+				setScaleAxesByFactor((ScaleAxisByFactorType)newValue);
+				return;
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
+				setScaleToSize((ScaleToSizeType)newValue);
+				return;
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
+				setScaleToExtent((ScaleToExtentType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
-                setScaleByFactor((ScaleByFactorType)null);
-                return;
-            case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
-                setScaleAxesByFactor((ScaleAxisByFactorType)null);
-                return;
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
-                setScaleToSize((ScaleToSizeType)null);
-                return;
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
-                setScaleToExtent((ScaleToExtentType)null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
+				setScaleByFactor((ScaleByFactorType)null);
+				return;
+			case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
+				setScaleAxesByFactor((ScaleAxisByFactorType)null);
+				return;
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
+				setScaleToSize((ScaleToSizeType)null);
+				return;
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
+				setScaleToExtent((ScaleToExtentType)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
-                return scaleByFactor != null;
-            case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
-                return scaleAxesByFactor != null;
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
-                return scaleToSize != null;
-            case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
-                return scaleToExtent != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
+				return scaleByFactor != null;
+			case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
+				return scaleAxesByFactor != null;
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
+				return scaleToSize != null;
+			case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
+				return scaleToExtent != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //ScalingTypeImpl

@@ -19,13 +19,13 @@ public interface RangeItemType extends EObject {
     
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.RangeItemType#getRangeComponent <em>Range Component</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.RangeItemType#getRangeComponent <em>Range Component</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Range Component</em>' attribute.
-     * @see #getRangeComponent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Range Component</em>' attribute.
+	 * @see #getRangeComponent()
+	 * @generated
+	 */
     void setRangeComponent(String value);
 
 
@@ -38,13 +38,13 @@ public interface RangeItemType extends EObject {
 
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.RangeItemType#getRangeInterval <em>Range Interval</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.RangeItemType#getRangeInterval <em>Range Interval</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Range Interval</em>' reference.
-     * @see #getRangeInterval()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Range Interval</em>' reference.
+	 * @see #getRangeInterval()
+	 * @generated
+	 */
     void setRangeInterval(RangeIntervalType value);
     
 

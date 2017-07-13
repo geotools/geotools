@@ -19,13 +19,13 @@ public interface ScaleAxisType extends EObject {
 
   
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ScaleAxisType#getAxis <em>Axis</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ScaleAxisType#getAxis <em>Axis</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Axis</em>' attribute.
-     * @see #getAxis()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Axis</em>' attribute.
+	 * @see #getAxis()
+	 * @generated
+	 */
     void setAxis(String value);
 
 
@@ -37,13 +37,13 @@ public interface ScaleAxisType extends EObject {
 
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ScaleAxisType#getScaleFactor <em>Scale Factor</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ScaleAxisType#getScaleFactor <em>Scale Factor</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Scale Factor</em>' attribute.
-     * @see #getScaleFactor()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Scale Factor</em>' attribute.
+	 * @see #getScaleFactor()
+	 * @generated
+	 */
     void setScaleFactor(double value);
 
 }

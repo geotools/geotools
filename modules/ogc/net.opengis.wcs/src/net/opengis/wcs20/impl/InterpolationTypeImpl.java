@@ -31,188 +31,188 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public class InterpolationTypeImpl extends EObjectImpl implements InterpolationType {
     /**
-     * The cached value of the '{@link #getInterpolationMethod() <em>Interpolation Method</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getInterpolationMethod() <em>Interpolation Method</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getInterpolationMethod()
-     * @generated
-     * @ordered
-     */
+	 * @see #getInterpolationMethod()
+	 * @generated
+	 * @ordered
+	 */
     protected InterpolationMethodType interpolationMethod;
 
     /**
-     * The cached value of the '{@link #getInterpolationAxes() <em>Interpolation Axes</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getInterpolationAxes() <em>Interpolation Axes</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getInterpolationAxes()
-     * @generated
-     * @ordered
-     */
+	 * @see #getInterpolationAxes()
+	 * @generated
+	 * @ordered
+	 */
     protected InterpolationAxesType interpolationAxes;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected InterpolationTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.INTERPOLATION_TYPE;
-    }
+		return Wcs20Package.Literals.INTERPOLATION_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public InterpolationMethodType getInterpolationMethod() {
-        if (interpolationMethod != null && interpolationMethod.eIsProxy()) {
-            InternalEObject oldInterpolationMethod = (InternalEObject)interpolationMethod;
-            interpolationMethod = (InterpolationMethodType)eResolveProxy(oldInterpolationMethod);
-            if (interpolationMethod != oldInterpolationMethod) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD, oldInterpolationMethod, interpolationMethod));
-            }
-        }
-        return interpolationMethod;
-    }
+		if (interpolationMethod != null && interpolationMethod.eIsProxy()) {
+			InternalEObject oldInterpolationMethod = (InternalEObject)interpolationMethod;
+			interpolationMethod = (InterpolationMethodType)eResolveProxy(oldInterpolationMethod);
+			if (interpolationMethod != oldInterpolationMethod) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD, oldInterpolationMethod, interpolationMethod));
+			}
+		}
+		return interpolationMethod;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public InterpolationMethodType basicGetInterpolationMethod() {
-        return interpolationMethod;
-    }
+		return interpolationMethod;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setInterpolationMethod(InterpolationMethodType newInterpolationMethod) {
-        InterpolationMethodType oldInterpolationMethod = interpolationMethod;
-        interpolationMethod = newInterpolationMethod;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD, oldInterpolationMethod, interpolationMethod));
-    }
+		InterpolationMethodType oldInterpolationMethod = interpolationMethod;
+		interpolationMethod = newInterpolationMethod;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD, oldInterpolationMethod, interpolationMethod));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public InterpolationAxesType getInterpolationAxes() {
-        if (interpolationAxes != null && interpolationAxes.eIsProxy()) {
-            InternalEObject oldInterpolationAxes = (InternalEObject)interpolationAxes;
-            interpolationAxes = (InterpolationAxesType)eResolveProxy(oldInterpolationAxes);
-            if (interpolationAxes != oldInterpolationAxes) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES, oldInterpolationAxes, interpolationAxes));
-            }
-        }
-        return interpolationAxes;
-    }
+		if (interpolationAxes != null && interpolationAxes.eIsProxy()) {
+			InternalEObject oldInterpolationAxes = (InternalEObject)interpolationAxes;
+			interpolationAxes = (InterpolationAxesType)eResolveProxy(oldInterpolationAxes);
+			if (interpolationAxes != oldInterpolationAxes) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES, oldInterpolationAxes, interpolationAxes));
+			}
+		}
+		return interpolationAxes;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public InterpolationAxesType basicGetInterpolationAxes() {
-        return interpolationAxes;
-    }
+		return interpolationAxes;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setInterpolationAxes(InterpolationAxesType newInterpolationAxes) {
-        InterpolationAxesType oldInterpolationAxes = interpolationAxes;
-        interpolationAxes = newInterpolationAxes;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES, oldInterpolationAxes, interpolationAxes));
-    }
+		InterpolationAxesType oldInterpolationAxes = interpolationAxes;
+		interpolationAxes = newInterpolationAxes;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES, oldInterpolationAxes, interpolationAxes));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
-                if (resolve) return getInterpolationMethod();
-                return basicGetInterpolationMethod();
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
-                if (resolve) return getInterpolationAxes();
-                return basicGetInterpolationAxes();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
+				if (resolve) return getInterpolationMethod();
+				return basicGetInterpolationMethod();
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
+				if (resolve) return getInterpolationAxes();
+				return basicGetInterpolationAxes();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
-                setInterpolationMethod((InterpolationMethodType)newValue);
-                return;
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
-                setInterpolationAxes((InterpolationAxesType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
+				setInterpolationMethod((InterpolationMethodType)newValue);
+				return;
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
+				setInterpolationAxes((InterpolationAxesType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
-                setInterpolationMethod((InterpolationMethodType)null);
-                return;
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
-                setInterpolationAxes((InterpolationAxesType)null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
+				setInterpolationMethod((InterpolationMethodType)null);
+				return;
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
+				setInterpolationAxes((InterpolationAxesType)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
-                return interpolationMethod != null;
-            case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
-                return interpolationAxes != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
+				return interpolationMethod != null;
+			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
+				return interpolationAxes != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //InterpolationTypeImpl

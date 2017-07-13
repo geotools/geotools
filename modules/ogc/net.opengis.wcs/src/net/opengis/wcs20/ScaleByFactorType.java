@@ -18,13 +18,13 @@ public interface ScaleByFactorType extends EObject {
     public double getScaleFactor();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ScaleByFactorType#getScaleFactor <em>Scale Factor</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ScaleByFactorType#getScaleFactor <em>Scale Factor</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Scale Factor</em>' attribute.
-     * @see #getScaleFactor()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Scale Factor</em>' attribute.
+	 * @see #getScaleFactor()
+	 * @generated
+	 */
     void setScaleFactor(double value);
 
 }

@@ -26,171 +26,171 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class GetCapabilitiesTypeImpl extends net.opengis.ows20.impl.GetCapabilitiesTypeImpl implements GetCapabilitiesType {
     /**
-     * The default value of the '{@link #getService() <em>Service</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getService() <em>Service</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getService()
-     * @generated
-     * @ordered
-     */
+	 * @see #getService()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String SERVICE_EDEFAULT = "WCS";
 
     /**
-     * The cached value of the '{@link #getService() <em>Service</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getService() <em>Service</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getService()
-     * @generated
-     * @ordered
-     */
+	 * @see #getService()
+	 * @generated
+	 * @ordered
+	 */
     protected String service = SERVICE_EDEFAULT;
 
     /**
-     * This is true if the Service attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Service attribute has been set.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     protected boolean serviceESet;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected GetCapabilitiesTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.GET_CAPABILITIES_TYPE;
-    }
+		return Wcs20Package.Literals.GET_CAPABILITIES_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getService() {
-        return service;
-    }
+		return service;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setService(String newService) {
-        String oldService = service;
-        service = newService;
-        boolean oldServiceESet = serviceESet;
-        serviceESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE, oldService, service, !oldServiceESet));
-    }
+		String oldService = service;
+		service = newService;
+		boolean oldServiceESet = serviceESet;
+		serviceESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE, oldService, service, !oldServiceESet));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void unsetService() {
-        String oldService = service;
-        boolean oldServiceESet = serviceESet;
-        service = SERVICE_EDEFAULT;
-        serviceESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE, oldService, SERVICE_EDEFAULT, oldServiceESet));
-    }
+		String oldService = service;
+		boolean oldServiceESet = serviceESet;
+		service = SERVICE_EDEFAULT;
+		serviceESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE, oldService, SERVICE_EDEFAULT, oldServiceESet));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public boolean isSetService() {
-        return serviceESet;
-    }
+		return serviceESet;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
-                return getService();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
+				return getService();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
-                setService((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
+				setService((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
-                unsetService();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
+				unsetService();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
-                return isSetService();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.GET_CAPABILITIES_TYPE__SERVICE:
+				return isSetService();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (service: ");
-        if (serviceESet) result.append(service); else result.append("<unset>");
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (service: ");
+		if (serviceESet) result.append(service); else result.append("<unset>");
+		result.append(')');
+		return result.toString();
+	}
 
 } //GetCapabilitiesTypeImpl

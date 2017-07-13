@@ -29,120 +29,120 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements DescribeCoverageType {
     /**
-     * The cached value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCoverageId()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCoverageId()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<String> coverageId;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected DescribeCoverageTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.DESCRIBE_COVERAGE_TYPE;
-    }
+		return Wcs20Package.Literals.DESCRIBE_COVERAGE_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<String> getCoverageId() {
-        if (coverageId == null) {
-            coverageId = new EDataTypeEList<String>(String.class, this, Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID);
-        }
-        return coverageId;
-    }
+		if (coverageId == null) {
+			coverageId = new EDataTypeEList<String>(String.class, this, Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID);
+		}
+		return coverageId;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                return getCoverageId();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
+				return getCoverageId();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                getCoverageId().clear();
-                getCoverageId().addAll((Collection<? extends String>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
+				getCoverageId().clear();
+				getCoverageId().addAll((Collection<? extends String>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                getCoverageId().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
+				getCoverageId().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                return coverageId != null && !coverageId.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
+				return coverageId != null && !coverageId.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (coverageId: ");
-        result.append(coverageId);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (coverageId: ");
+		result.append(coverageId);
+		result.append(')');
+		return result.toString();
+	}
 
 } //DescribeCoverageTypeImpl

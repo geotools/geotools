@@ -90,9 +90,17 @@ public class TileViewer {
         // String baseURL =
         // "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/${code}?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
         // map.addLayer(new TileLayer(new BingService("Road", baseURL)));
-        map.addLayer(new AsyncTileLayer(new OSMService("Mapnik",
-                "http://tile.openstreetmap.org/")));
+        // map.addLayer(new AsyncTileLayer(new OSMService("Mapnik", "http://tile.openstreetmap.org/")));
 
+        /*String baseURL = "http://raspberrypi:9000/wmts/1.0.0/WMTSCapabilities.xml";
+        TileService service = new WMTSService("states", baseURL, "states", "webmercator",WMTSServiceType.REST);*/
+        
+        /*String baseURL = "http://raspberrypi:9000/service?REQUEST=GetCapabilities&SERVICE=WMTS";
+        TileService service = new WMTSService("states", baseURL, "states", "webmercator",WMTSServiceType.KVP);*/
+        
+//        String baseURL = "http://raspberrypi:8080/geoserver/gwc/service/wmts?REQUEST=GetCapabilities";
+//        TileService service = new WMTSService("states", baseURL, "topp:states", "EPSG:900913",WMTSServiceType.KVP, null);
+//        map.addLayer(new AsyncTileLayer(service));
         // createTestCoverageLayer(map);
 
         if (shapeFilename != null && shapeFilename.endsWith(".shp")) {
@@ -113,8 +121,8 @@ public class TileViewer {
         String baseURL = "http://tile.openstreetmap.org/";
         TileService service = new OSMService("OSM", baseURL);
 
-        Tile t = new OSMTile(new OSMTileIdentifier(38596, 49269,
-                new WebMercatorZoomLevel(17), service.getName()), service);
+        Tile t = new OSMTile(new OSMTileIdentifier(38596, 49269, new WebMercatorZoomLevel(17),
+                service.getName()), service);
 
         GridCoverageFactory gf = new GridCoverageFactory();
 
@@ -125,8 +133,7 @@ public class TileViewer {
 
         Style rasterStyle = SLD.wrapSymbolizers(sym);
 
-        GridCoverage2D coverage = gf.create("Factory", t.getBufferedImage(),
-                env);
+        GridCoverage2D coverage = gf.create("Factory", t.getBufferedImage(), env);
         GridCoverageLayer gcl = new GridCoverageLayer(coverage, rasterStyle);
 
         // map.addLayer(gcl);
@@ -149,7 +156,10 @@ public class TileViewer {
     }
 
     public static void main(String[] args) {
-
-        new TileViewer(args[0]);
+        if(args.length>0) {
+            new TileViewer(args[0]);
+        }else {
+            new TileViewer(null);
+        }
     }
 }

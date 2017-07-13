@@ -3451,6 +3451,18 @@ public interface Ows11Package extends EPackage {
      */
 	int MAP = 56;
 
+    int CAPABILITIES_BASE_TYPE_OPERATION_COUNT = 0;
+
+    int DESCRIPTION_TYPE_OPERATION_COUNT = 0;
+
+    int CONTENTS_BASE_TYPE_OPERATION_COUNT = 0;
+
+    int GET_CAPABILITIES_TYPE_OPERATION_COUNT = 0;
+
+    int DATASET_DESCRIPTION_SUMMARY_BASE_TYPE_OPERATION_COUNT = 0;
+
+    int ONLINE_RESOURCE_TYPE_OPERATION_COUNT = 0;
+
 
 				/**
      * Returns the meta object for class '{@link net.opengis.ows11.AbstractReferenceBaseType <em>Abstract Reference Base Type</em>}'.

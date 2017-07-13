@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/wmts/1.0"
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:ows="http://www.opengis.net/ows/1.1" 
+	xmlns:wmts="http://www.opengis.net/wmts/1.0" 
+	elementFormDefault="qualified" xml:lang="en"
+	version="1.0.1">
+	<annotation>
+		<appinfo>wmtsPayload_response</appinfo>
+		<documentation>
+			This XML Schema Document initially was intended to encode SOAP 
+			response for a WMTS GetTile request but in the future it might be used 
+			and part of a WMTS service (or even in any OWS service) that needs a 
+			binary encoding. 
+			
+			WMTS is an OGC Standard.
+			Copyright (c) 2009,2010 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	<!-- =============================================================
+		includes and imports
+	============================================================== -->
+	<include schemaLocation="wmts.xsd"/>
+	<import namespace="http://www.opengis.net/ows/1.1" 
+				schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+	<!-- =============================================================
+		elements and types
+	============================================================== -->
+	<element name="BinaryPayload">
+		<complexType>
+			<sequence>
+				<element name="Format" type="ows:MimeType">
+					<annotation>
+						<documentation>
+							MIMEType format of the PayloadContent 
+							once base64 decodified.
+						</documentation>
+					</annotation>
+				</element>
+				<element name="BinaryContent" type="base64Binary">
+					<annotation>
+						<documentation>
+							Binary content encoded in base64. It could be useful to 
+							enclose it in a CDATA element to avoid XML parsing.
+						</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="TextPayload">
+		<complexType>
+			<sequence>
+				<element name="Format" type="ows:MimeType">
+					<annotation>
+						<documentation>MIMEType format of the TextContent</documentation>
+					</annotation>
+				</element>
+				<element name="TextContent" type="string">
+					<annotation>
+						<documentation>
+							Text string like HTML, XHTML, XML or TXT. HTML and TXT data has 
+							to be enclosed in a CDATA element to avoid XML parsing.
+						</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

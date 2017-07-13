@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/wmts/1.0"
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:wmts="http://www.opengis.net/wmts/1.0" 
+	elementFormDefault="qualified" xml:lang="en"
+	version="1.0.1">
+	<annotation>
+		<appinfo>wmts</appinfo>
+		<documentation>
+			This XML Schema Document includes all WMTS schemas and 
+			is useful for SOAP messages.
+			
+			WMTS is an OGC Standard.
+			Copyright (c) 2009,2010 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	<!-- ==============================================================
+		includes and imports
+	============================================================== -->
+	<include schemaLocation="wmtsKVP.xsd"/>
+	<include schemaLocation="wmtsGetCapabilities_request.xsd"/>
+	<include schemaLocation="wmtsGetCapabilities_response.xsd"/>
+	<include schemaLocation="wmtsGetTile_request.xsd"/>
+	<include schemaLocation="wmtsPayload_response.xsd"/>
+	<include schemaLocation="wmtsGetFeatureInfo_request.xsd"/>
+	<include schemaLocation="wmtsGetFeatureInfo_response.xsd"/>
+</schema>

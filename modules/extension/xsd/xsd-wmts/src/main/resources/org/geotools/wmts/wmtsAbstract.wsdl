@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+	targetNamespace="http://www.opengis.net/wmts_wsdl/1.0"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wmts_wsdl="http://www.opengis.net/wmts_wsdl/1.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:wmts="http://www.opengis.net/wmts/1.0"
+	xmlns:ows="http://www.opengis.net/ows/1.1"
+	name="WMTS">
+	
+	<!-- version="1.0.1" updated 2012-07-21 -->
+
+	<!-- This WSDL document encodes describes the WMTS 
+		service for KVP and SOAP encodings.
+			
+		WMTS is an OGC Standard.
+		Copyright (c) 2009,2010 Open Geospatial Consortium.
+		To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+	-->
+	
+	<types>
+		<xsd:schema targetNamespace="http://www.opengis.net/wmts_wsdl/1.0">
+		    <xsd:import namespace="http://www.opengis.net/ows/1.1" 
+		    	schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsCommon.xsd"/>
+		    <xsd:import namespace="http://www.opengis.net/wmts/1.0"
+		    	schemaLocation="http://schemas.opengis.net/wmts/1.0/wmts.xsd"/>
+		</xsd:schema>
+	</types>
+	
+	<!-- ****************************************
+                          Messages
+         **************************************** -->
+         
+	<message name="GetCapabilitiesMessage_GET">
+		<part name="service" type="wmts:RequestServiceType"/>
+		<part name="request" type="wmts:GetCapabilitiesValueType"/>
+		<part name="AcceptVersions" type="wmts:VersionType"/>
+		<part name="Sections" type="wmts:SectionsType"/>
+		<part name="updateSequence" type="xsd:string"/>
+		<part name="AcceptFormats" type="wmts:AcceptedFormatsType"/>
+	</message>
+	
+	<message name="GetCapabilitiesMessage_POST">
+		<part name="request" element="wmts:GetCapabilities"/>
+	</message>
+	
+	<message name="GetCapabilitiesResult">
+		<part name="response" element="wmts:Capabilities"/>
+	</message>
+	
+	<message name="GetTileMessage_GET">
+		<part name="service" type="wmts:RequestServiceType"/>
+		<part name="request" type="wmts:GetTileValueType"/>
+		<part name="version" type="wmts:VersionType"/>
+		<part name="layer" type="xsd:string"/>
+		<part name="style" type="xsd:string"/>
+		<part name="format" type="ows:MimeType"/>
+		<part name="TileMatrixSet" type="xsd:string"/>
+		<part name="TileMatrix" type="xsd:string"/>
+		<part name="TileRow" type="xsd:unsignedInt"/>
+		<part name="TileCol" type="xsd:unsignedInt"/>
+	</message>
+	
+	<message name="GetTileMessage_POST">
+		<part name="request" element="wmts:GetTile"/>
+	</message>
+	
+	<message name="GetTileResult">
+		<part name="response1" type="xsd:base64Binary"/>
+	</message>
+
+	<message name="GetTileResult_SOAP">
+		<part name="body" element="wmts:BinaryPayload" />
+	</message>
+	
+	<message name="GetFeatureInfoMessage_GET">
+		<part name="service" type="wmts:RequestServiceType"/>
+		<part name="request" type="wmts:GetFeatureInfoValueType"/>
+		<part name="version" type="wmts:VersionType"/>
+		<part name="layer" type="xsd:string"/>
+		<part name="style" type="xsd:string"/>
+		<part name="format" type="ows:MimeType"/>
+		<part name="TileMatrixSet" type="xsd:string"/>
+		<part name="TileMatrix" type="xsd:string"/>
+		<part name="TileRow" type="xsd:unsignedInt"/>
+		<part name="TileCol" type="xsd:unsignedInt"/>
+		<part name="J" type="xsd:unsignedInt"/>
+		<part name="I" type="xsd:unsignedInt"/>
+		<part name="InfoFormat" type="xsd:string"/>
+	</message>
+	
+	<message name="GetFeatureInfoMessage_POST">
+		<part name="request" element="wmts:GetFeatureInfo"/>
+	</message>
+	
+	<message name="GetFeatureInfoResult">
+		<part name="response1" type="xsd:anyType"/>
+	</message>
+
+	<message name="GetFeatureInfoResult_SOAP">
+		<part name="body" element="wmts:FeatureInfoResponse" />
+	</message>
+
+	<message name="ServiceExceptionMessage">
+		<part name="exception" element="ows:ExceptionReport"/>
+	</message>
+
+	<!-- ****************************************
+                           Ports
+         **************************************** -->
+	
+	<portType name="WMTS_HTTP_Port_GET">
+		<operation name="GetCapabilities">
+			<input message="wmts_wsdl:GetCapabilitiesMessage_GET"/>
+			<output message="wmts_wsdl:GetCapabilitiesResult"/>
+			<fault name="exception" message="wmts_wsdl:ServiceExceptionMessage"/>
+		</operation>
+		<operation name="GetTile">
+			<input message="wmts_wsdl:GetTileMessage_GET"/>
+			<output message="wmts_wsdl:GetTileResult"/>
+			<fault name="exception" message="wmts_wsdl:ServiceExceptionMessage"/>
+		</operation>
+		<operation name="GetFeatureInfo">
+			<input message="wmts_wsdl:GetFeatureInfoMessage_GET"/>
+			<output message="wmts_wsdl:GetFeatureInfoResult"/>
+			<fault name="exception" message="wmts_wsdl:ServiceExceptionMessage"/>
+		</operation>
+	</portType>
+	
+	<portType name="WMTS_HTTP_Port_SOAP">
+		<operation name="GetCapabilities">
+			<input message="wmts_wsdl:GetCapabilitiesMessage_POST"/>
+			<output message="wmts_wsdl:GetCapabilitiesResult"/>
+			<fault name="exception" message="wmts_wsdl:ServiceExceptionMessage"/>
+		</operation>
+		<operation name="GetTile">
+			<input message="wmts_wsdl:GetTileMessage_POST"/>
+			<output message="wmts_wsdl:GetTileResult_SOAP"/>
+			<fault name="exception" message="wmts_wsdl:ServiceExceptionMessage"/>
+		</operation>
+		<operation name="GetFeatureInfo">
+			<input message="wmts_wsdl:GetFeatureInfoMessage_POST"/>
+			<output message="wmts_wsdl:GetFeatureInfoResult_SOAP"/>
+			<fault name="exception" message="wmts_wsdl:ServiceExceptionMessage"/>
+		</operation>
+	</portType>
+
+</definitions>

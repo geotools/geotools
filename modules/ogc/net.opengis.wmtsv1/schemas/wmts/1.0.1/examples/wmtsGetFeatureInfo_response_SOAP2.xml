@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is an example of a SOAP WMTS GetFeatureInfo response -->
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xsi:schemaLocation="http://www.w3.org/2003/05/soap-envelope http://www.w3.org/2003/05/soap-envelope">
+	<soap:Body>
+		<FeatureInfoResponse xmlns="http://www.opengis.net/wmts/1.0" 
+			xmlns:gml="http://www.opengis.net/gml" 
+			xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetFeatureInfo_response.xsd">
+			<TextPayload>
+				<Format>text/html</Format>
+				<TextContent>
+<![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+	<title>GetFeatureInfoResponse<title>
+						<b>Elevation</b>503.0<br>
+						<b>TileRow</b>1<br>
+						<b>TileCol</b>2<br>
+						<b>J</b>86<br>
+						<b>I</b>132<br>
+</HTML>]]>
+				</TextContent>
+			</TextPayload>
+		</FeatureInfoResponse>
+	</soap:Body>
+</soap:Envelope>

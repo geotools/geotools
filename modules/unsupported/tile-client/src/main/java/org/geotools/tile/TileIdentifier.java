@@ -65,14 +65,14 @@ public abstract class TileIdentifier {
 
     private void setX(int x) {
         if (x < 0) {
-            throw new IllegalArgumentException("X must be >= 0.");
+           throw new IllegalArgumentException("X must be >= 0 ("+x+")");
         }
         this.x = x;
     }
 
     private void setY(int y) {
         if (y < 0) {
-            throw new IllegalArgumentException("X must be >= 0.");
+            throw new IllegalArgumentException("Y must be >= 0 ("+y+")");
         }
         this.y = y;
     }

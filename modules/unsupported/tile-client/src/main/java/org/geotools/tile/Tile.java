@@ -48,7 +48,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class Tile implements ImageLoader {
 
-    private static final Logger LOGGER = Logging.getLogger(Tile.class
+    protected static final Logger LOGGER = Logging.getLogger(Tile.class
             .getPackage().getName());
 
     /**
@@ -194,7 +194,7 @@ public abstract class Tile implements ImageLoader {
             setRenderState(RenderState.RENDERED);
 
             return this.tileImage;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to load image: " + this.getUrl(),
                     e);
             setRenderState(RenderState.INVALID);
@@ -437,7 +437,7 @@ public abstract class Tile implements ImageLoader {
     }
 
     public String toString() {
-        return this.getUrl().toString();
+        return this.getId();//this.getUrl().toString();
     }
 
     public abstract URL getUrl();

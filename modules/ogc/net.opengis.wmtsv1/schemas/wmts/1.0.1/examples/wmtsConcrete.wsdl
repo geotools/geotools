@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://www.opengis.net/wmts_wsdl/1.0"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wmts_wsdl="http://www.opengis.net/wmts_wsdl/1.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="WMTS-Example">
+	
+	<!-- version="1.0.1" updated 2012-07-21 -->
+
+	<!-- This WSDL document encodes describes the WMTS 
+		service for KVP and SOAP encodings.
+			
+		WMTS is an OGC Standard.
+		Copyright (c) 2009,2010 Open Geospatial Consortium.
+		To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+	-->
+	
+	<!-- import WMTS types, message and portType -->
+	<import namespace="http://www.opengis.net/wmts_wsdl/1.0"
+		location="http://schemas.opengis.net/wmts/1.0/wmtsAbstract.wsdl"/> 
+
+<!-- ****************************************
+                         Bindings
+      **************************************** -->
+             
+	<!-- HTTP Get KVP  bindings -->
+
+	<binding name="WMTS_HTTP_GET_Binding"
+	              type="wmts_wsdl:WMTS_HTTP_Port_GET" 
+	              xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+	              
+		<http:binding verb="GET"/>
+		
+		<operation name="GetCapabilities">
+			<http:operation location=""/>
+			<input>
+				<http:urlEncoded/>
+			</input>
+			<output>
+				<mime:mimeXML/>
+			</output>
+			<fault name="exception">
+				<mime:mimeXML/>
+			</fault>
+		</operation>
+		
+		<operation name="GetTile">
+			<http:operation location=""/>
+			<input>
+				<http:urlEncoded/>
+			</input>
+			<output>
+                <mime:content type="image/*"/>
+			</output>
+			<fault name="exception">
+				<mime:mimeXML/>
+			</fault>
+		</operation>
+		
+		<operation name="GetFeatureInfo">
+			<http:operation location=""/>
+			<input>
+				<http:urlEncoded/>
+			</input>
+			<output>
+                <mime:mimeXML/>
+			</output>
+			<fault name="exception">
+				<mime:mimeXML/>
+			</fault>
+		</operation>
+
+	</binding>
+
+	<!-- HTTP Post SOAP  bindings -->
+
+	<binding name="WMTS_SOAP_Binding"
+	              type="wmts_wsdl:WMTS_HTTP_Port_SOAP" 
+	              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	              
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		<operation name="GetCapabilities">
+			<soap:operation soapAction="http://www.opengis.net/wms/requests#GetCapabilities"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+			<fault name="exception">
+				<soap:fault name="exception" use="literal"/>
+			</fault>
+		</operation>
+		
+		<operation name="GetTile">
+			<soap:operation soapAction="http://www.opengis.net/wms/requests#GetTile"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+                <soap:body use="literal"/>
+			</output>
+			<fault name="exception">
+				<soap:fault name="exception" use="literal"/>
+			</fault>
+		</operation>
+	
+		<operation name="GetFeatureInfo">
+			<soap:operation soapAction="http://www.opengis.net/wms/requests#GetFeatureInfo"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+                <soap:body use="literal"/>
+			</output>
+			<fault name="exception">
+				<soap:fault name="exception" use="literal"/>
+			</fault>
+		</operation>
+
+	</binding> 
+
+	<!-- ****************************************
+                        Services
+          **************************************** -->
+	<service name="WMTS-TiledWorld-UAB-CREAF-MiraMon">
+	
+		<port name="WMTS-GET-Port" binding="wmts_wsdl:WMTS_HTTP_GET_Binding"
+					xmlns:http="http://schemas.xmlsoap.org/wsdl/http/">
+			<http:address location="http://www.opengis.uab.es/cgi-bin/world/MiraMon5_0.cgi"/>
+		</port>
+
+		<port name="WMTS-SOAP-Port" binding="wmts_wsdl:WMTS_SOAP_Binding" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+			<soap:address location="http://www.opengis.uab.es/cgi-bin/world/MiraMon5_0.cgi"/>
+		</port>
+
+	</service>
+  	
+</definitions>

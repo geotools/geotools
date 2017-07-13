@@ -112,6 +112,7 @@
     <module>xsd-wps</module>
     <module>xsd-wms</module>
     <module>xsd-csw</module>
+    <module>xsd-wmts</module>
   </modules>
 
 </project>

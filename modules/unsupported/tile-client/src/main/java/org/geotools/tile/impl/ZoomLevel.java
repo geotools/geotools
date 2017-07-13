@@ -30,17 +30,20 @@ public abstract class ZoomLevel {
 
     private int zoomLevel;
 
-    private int maxTilePerRowNumber;
+    protected int maxTilePerRowNumber;
 
-    private int maxTilePerColNumber;
+    protected int maxTilePerColNumber;
 
-    private long maxTileNumber;
+    protected long maxTileNumber;
 
+    public ZoomLevel() {
+        
+    }
     public ZoomLevel(int zoomLevel) {
         setZoomLevel(zoomLevel);
     }
 
-    private void setZoomLevel(int zoomLevel) {
+    protected void setZoomLevel(int zoomLevel) {
         if (zoomLevel < 0) {
             throw new IllegalArgumentException("Zoom level must be >= 0.");
         }

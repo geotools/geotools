@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.logging.Logger;
 
 import org.geotools.data.wms.xml.Attribution;
 import org.geotools.data.wms.xml.Dimension;
@@ -36,6 +37,8 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultProjectedCRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
@@ -56,6 +59,9 @@ import org.opengis.referencing.operation.TransformException;
  *         /geotools/data/ows/Layer.java $
  */
 public class Layer implements Comparable<Layer> {
+
+    private static final Logger LOGGER = Logging.getLogger(Layer.class);
+
     /** A machine-readable (typically one word) identifier */
     private String name;
 
@@ -80,7 +86,7 @@ public class Layer implements Comparable<Layer> {
      * A set of Strings representing SRSs. These are the SRSs contributed by this layer. For the
      * complete list you need to consider these values and those defined by its parent.
      */
-    private Set<String> srs = null;
+    protected Set<String> srs = new HashSet<>();
 
     /**
      * The bounding boxes on each layer; usually this matches the actual data coordinate reference
@@ -591,6 +597,8 @@ public class Layer implements Comparable<Layer> {
             if( !srsName.equals("CRS:84")){
                 throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
             }
+        }else {
+            latLonBoundingBox.setSRSName("CRS:84",false);;
         }
         this.latLonBoundingBox = latLonBoundingBox;
     }
@@ -810,7 +818,7 @@ public class Layer implements Comparable<Layer> {
      * @param crs
      * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
-    public GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
+    public  GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
         if( crs == null ){
             return null;
         }
@@ -819,18 +827,7 @@ public class Layer implements Comparable<Layer> {
         if (found != null){
             return found;
         }
-        Collection<String> identifiers = new ArrayList<String>();
-        for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
-            String srsName = identifier.toString();
-            identifiers.add( srsName );
-            if( srsName.startsWith("EPSG:")){
-                String urn = srsName.replace("EPSG:", "urn:ogc:def:crs:EPSG::");
-                identifiers.add( urn );
-            }
-        }
-        if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
-            identifiers.add( "CRS:84" );
-        }
+        Collection<String> identifiers = extractCRSNames(crs);
         // first pass look for an exact match
         CRSEnvelope tempBBox = null;
         for (String srsName : identifiers ) {
@@ -866,12 +863,41 @@ public class Layer implements Comparable<Layer> {
                 env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),tempBBox.getMinY() },
                         new double[] { tempBBox.getMaxX(), tempBBox.getMaxY() });
                 env.setCoordinateReferenceSystem(crs);
+                LOGGER.warning("Forcing bbox as " + env);
             }
             // success!!
             envelopeCache.put(crs, env);
             return env;
         }
         return null;
+    }
+
+    /**
+     * @param crs
+     * @return
+     */
+    protected Collection<String> extractCRSNames(CoordinateReferenceSystem crs) {
+        Collection<String> identifiers = new ArrayList<String>();
+        for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
+            String srsName = identifier.toString();
+            identifiers.add( srsName );
+            if( srsName.startsWith("EPSG:")){
+                String urn = srsName.replace("EPSG:", "urn:ogc:def:crs:EPSG::");
+                identifiers.add( urn );
+            }
+            if (srsName.contains("900913")) {
+                identifiers.add("EPSG:3857");
+            }
+            if (srsName.equalsIgnoreCase("EPSG:3857")) {
+                identifiers.add("urn:ogc:def:crs:EPSG::900913");
+            }
+        }
+        if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
+            identifiers.add( "CRS:84" );
+        }
+        
+        
+        return identifiers;
     }
 
     /**

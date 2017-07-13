@@ -1,0 +1,1334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="v_1" nsURI="http://www.opengis.net/wmts/1.0" nsPrefix="v_1">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;This XML Schema Document initially was intended to encode SOAP &#xA;&#x9;&#x9;&#x9;response for a WMTS GetTile request but in the future it might be used &#xA;&#x9;&#x9;&#x9;and part of a WMTS service (or even in any OWS service) that needs a &#xA;&#x9;&#x9;&#x9;binary encoding. &#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;WMTS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2009,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xA;&#xA;&#x9;&#x9;&#x9;This XML Schema Document includes all WMTS schemas and &#xA;&#x9;&#x9;&#x9;is useful for SOAP messages.&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;WMTS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2009,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xA;&#xA;&#x9;&#x9;&#x9;This XML Schema Document defines XML WMTS GetTile &#xA;&#x9;&#x9;&#x9;request that can be used in SOAP encodings.&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;WMTS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2009,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xA;&#xA;&#x9;&#x9;&#x9;This XML Schema Document defines the XML WMTS &#xA;&#x9;&#x9;&#x9;GetCapabilites request that can be used in SOAP encodings.&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;WMTS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2009,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xA;&#xA;&#x9;&#x9;&#x9;This XML Schema Document encodes the WMTS GetCapabilities &#xA;&#x9;&#x9;&#x9;operations response message.&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;WMTS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2009,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xA;&#xA;&#x9;&#x9;&#x9;This XML Schema Document encodes XML WMTS GetTile &#xA;&#x9;&#x9;&#x9;request that can be used in SOAP encodings.&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;WMTS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2009,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;    &#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xA;This XML Schema Document includes and imports, directly and indirectly, all the XML Schemas defined by the OWS Common Implemetation Specification.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the GetResourceByID operation request message. This typical operation is specified as a base for profiling in specific OWS specifications. For information on the allowed changes and limitations in such profiling, see Subclause 9.4.1 of the OWS Common specification.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the Exception Report response to all OWS operations.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the allowed values (or domain) of a quantity, often for an input or output parameter to an OWS. Such a parameter is sometimes called a variable, quantity, literal, or typed literal. Such a parameter can use one of many data types, including double, integer, boolean, string, or URI. The allowed values can also be encoded for a quantity that is not explicit or not transferred, but is constrained by a server implementation.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema  Document encodes the typical Contents section of an OWS service metadata (Capabilities) document. This  Schema can be built upon to define the Contents section for a specific OWS. If the ContentsBaseType in this XML Schema cannot be restricted and extended to define the Contents section for a specific OWS, all other relevant parts defined in owsContents.xsd shall be used by the &quot;ContentsType&quot; in the wxsContents.xsd prepared for the specific OWS.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document specifies types and elements for input and output of operation data, allowing including multiple data items with each data item either included or referenced. The contents of each type and element specified here can be restricted and/or extended for each use in a specific OWS specification.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document specifies types and elements for document or resource references and for package manifests that contain multiple references. The contents of each type and element specified here can be restricted and/or extended for each use in a specific OWS specification.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the parts of the MD_DataIdentification class of ISO 19115 (OGC Abstract Specification Topic 11) which are expected to be used for most datasets. This Schema also encodes the parts of this class that are expected to be useful for other metadata. Both may be used within the Contents section of OWS service metadata (Capabilities) documents.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes various parameters and parameter types that can be used in OWS operation requests and responses.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This schema document provides attribute declarations and&#xA;attribute group, complex type and simple type definitions which can be used in&#xA;the construction of user schemas to define the structure of particular linking&#xA;constructs, e.g.&#xA;&#xA;&lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&#xA;           xmlns:xl=&quot;http://www.w3.org/1999/xlink&quot;>&#xA;&#xA; &lt;xs:import namespace=&quot;http://www.w3.org/1999/xlink&quot;&#xA;            location=&quot;http://www.w3.org/1999/xlink.xsd&quot;>&#xA;&#xA; &lt;xs:element name=&quot;mySimple&quot;>&#xA;  &lt;xs:complexType>&#xA;   ...&#xA;   &lt;xs:attributeGroup ref=&quot;xl:simpleAttrs&quot;/>&#xA;   ...&#xA;  &lt;/xs:complexType>&#xA; &lt;/xs:element>&#xA; ...&#xA;&lt;/xs:schema>&#xA;&#xA;   &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h1>About the XML namespace&lt;/h1>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      This schema document describes the XML namespace, in a form&#xA;      suitable for import by other schema documents.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      See &lt;a href=&quot;http://www.w3.org/XML/1998/namespace.html&quot;>&#xA;      http://www.w3.org/XML/1998/namespace.html&lt;/a> and&#xA;      &lt;a href=&quot;http://www.w3.org/TR/REC-xml&quot;>&#xA;      http://www.w3.org/TR/REC-xml&lt;/a> for information &#xA;      about this namespace.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      Note that local names in this namespace are intended to be&#xA;      defined only by the World Wide Web Consortium or its subgroups.&#xA;      The names currently defined in this namespace are listed below.&#xA;      They should not be used with conflicting semantics by any Working&#xA;      Group, specification, or document instance.&#xA;     &lt;/p>&#xA;     &lt;p>   &#xA;      See further below in this document for more information about &lt;a href=&quot;#usage&quot;>how to refer to this schema document from your own&#xA;      XSD schema documents&lt;/a> and about &lt;a href=&quot;#nsversioning&quot;>the&#xA;      namespace-versioning policy governing this schema document&lt;/a>.&#xA;     &lt;/p>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;&#xA;   &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;   &#xA;    &lt;h3>Father (in any context at all)&lt;/h3> &#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      denotes Jon Bosak, the chair of &#xA;      the original XML Working Group.  This name is reserved by &#xA;      the following decision of the W3C XML Plenary and &#xA;      XML Coordination groups:&#xA;     &lt;/p>&#xA;     &lt;blockquote>&#xA;       &lt;p>&#xA;&#x9;In appreciation for his vision, leadership and&#xA;&#x9;dedication the W3C XML Plenary on this 10th day of&#xA;&#x9;February, 2000, reserves for Jon Bosak in perpetuity&#xA;&#x9;the XML name &quot;xml:Father&quot;.&#xA;       &lt;/p>&#xA;     &lt;/blockquote>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;&#xA;   &lt;div id=&quot;usage&quot; xml:id=&quot;usage&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h2>&#xA;      &lt;a name=&quot;usage&quot;>About this schema document&lt;/a>&#xA;    &lt;/h2>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      This schema defines attributes and an attribute group suitable&#xA;      for use by schemas wishing to allow &lt;code>xml:base&lt;/code>,&#xA;      &lt;code>xml:lang&lt;/code>, &lt;code>xml:space&lt;/code> or&#xA;      &lt;code>xml:id&lt;/code> attributes on elements they define.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      To enable this, such a schema must import this schema for&#xA;      the XML namespace, e.g. as follows:&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;          &amp;lt;schema . . .&amp;gt;&#xA;           . . .&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xA;                      schemaLocation=&quot;http://www.w3.org/2001/xml.xsd&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      or&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xA;                      schemaLocation=&quot;http://www.w3.org/2009/01/xml.xsd&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      Subsequently, qualified reference to any of the attributes or the&#xA;      group defined below will have the desired effect, e.g.&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;          &amp;lt;type . . .&amp;gt;&#xA;           . . .&#xA;           &amp;lt;attributeGroup ref=&quot;xml:specialAttrs&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      will define a type which will schema-validate an instance element&#xA;      with any of those attributes.&#xA;     &lt;/p>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;&#xA;   &lt;div id=&quot;nsversioning&quot; xml:id=&quot;nsversioning&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h2>&#xA;      &lt;a name=&quot;nsversioning&quot;>Versioning policy for this schema document&lt;/a>&#xA;    &lt;/h2>&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      In keeping with the XML Schema WG's standard versioning&#xA;      policy, this schema document will persist at&#xA;      &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;       http://www.w3.org/2009/01/xml.xsd&lt;/a>.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      At the date of issue it can also be found at&#xA;      &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xA;       http://www.w3.org/2001/xml.xsd&lt;/a>.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      The schema document at that URI may however change in the future,&#xA;      in order to remain compatible with the latest version of XML&#xA;      Schema itself, or with the XML namespace itself.  In other words,&#xA;      if the XML Schema or XML namespaces change, the version of this&#xA;      document at &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xA;       http://www.w3.org/2001/xml.xsd &#xA;      &lt;/a> &#xA;      will change accordingly; the version at &#xA;      &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;       http://www.w3.org/2009/01/xml.xsd &#xA;      &lt;/a> &#xA;      will not change.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      Previous dated (and unchanging) versions of this schema &#xA;      document are at:&#xA;     &lt;/p>&#xA;     &lt;ul>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2009/01/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2007/08/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2007/08/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2004/10/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2004/10/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2001/03/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2001/03/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;     &lt;/ul>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;This XML Schema Document defines the GetCapabilities operation request and response XML elements and types, which are common to all OWSs. This XML Schema shall be edited by each OWS, for example, to specify a specific value for the &quot;service&quot; attribute.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the common &quot;ServiceIdentification&quot; section of the GetCapabilities operation response, known as the Capabilities XML document. This section encodes the SV_ServiceIdentification class of ISO 19119 (OGC Abstract Specification Topic 12). &#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the common &quot;ServiceProvider&quot; section of the GetCapabilities operation response, known as the Capabilities XML document. This section encodes the SV_ServiceProvider class of ISO 19119 (OGC Abstract Specification Topic 12). &#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the basic contents of the &quot;OperationsMetadata&quot; section of the GetCapabilities operation response, also known as the Capabilities XML document.&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;&#xA;This XML Schema Document encodes the parts of ISO 19115 used by the common &quot;ServiceIdentification&quot; and &quot;ServiceProvider&quot; sections of the GetCapabilities operation response, known as the service metadata XML document. The parts encoded here are the MD_Keywords, CI_ResponsibleParty, and related classes. The UML package prefixes were omitted from XML names, and the XML element names were all capitalized, for consistency with other OWS Schemas. This document also provides a simple coding of text in multiple languages, simplified from Annex J of ISO 19115.&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;OWS is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2006,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#x9;&#x9;"/>
+  </eAnnotations>
+  <eAnnotations>
+    <details key="appinfo" value="wmtsPayload_response&#xA;wmts&#xA;wmtsGetTile_request&#xA;wmtsGetCapabilities_request&#xA;wmtsGetCapabilities_response&#xA;wmtsGetTile_request&#xA;owsAll.xsd&#xA;owsGetResourceByID.xsd&#xA;owsExceptionReport.xsd&#xA;owsDomainType.xsd&#xA;owsContents.xsd&#xA;owsInputOutputData.xsd&#xA;owsManifest.xsd&#xA;owsDataIdentification.xsd&#xA;owsCommon.xsd&#xA;owsGetCapabilities.xsd&#xA;owsServiceIdentification.xsd&#xA;owsServiceProvider.xsd&#xA;owsOperationsMetadata.xsd&#xA;ows19115subset.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.w3.org/XML/1998/namespace">
+    <details key="lang" value="en"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="AcceptedFormatsType" instanceClassName="java.lang.String">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Comma separated list of a standard MIME type, &#xA;&#x9;&#x9;&#x9;possibly a parameterized MIME type. "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="AcceptedFormatsType"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+      <details key="pattern" value="((application|audio|image|text|video|message|multipart|model)/.+(;\s*.+=.+)*)(,(application|audio|image|text|video|message|multipart|model)/.+(;\s*.+=.+)*)"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BinaryPayloadType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="BinaryPayload_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;MIMEType format of the PayloadContent &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;once base64 decodified.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="binaryContent" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Base64Binary">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Binary content encoded in base64. It could be useful to &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;enclose it in a CDATA element to avoid XML parsing.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BinaryContent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CapabilitiesType" eSuperTypes="../net.opengis.ows/ows11.ecore#//CapabilitiesBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Capabilities_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" eType="#//ContentsType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Metadata about the data served by this server. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;For WMTS, this section SHALL contain data about layers and &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;TileMatrixSets"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Contents"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="themes" upperBound="-1"
+        eType="#//ThemesType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Metadata describing a theme hierarchy for the layers&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Themes"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wSDL" upperBound="-1" eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//OnlineResourceType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a WSDL resource"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="WSDL"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceMetadataURL" upperBound="-1"
+        eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//OnlineResourceType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Reference to a ServiceMetadata resource on resource &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;oriented architectural style&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceMetadataURL"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentsType" eSuperTypes="../net.opengis.ows/ows11.ecore#//ContentsBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ContentsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixSet" upperBound="-1"
+        eType="#//TileMatrixSetType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A description of the geometry of a tile fragmentation"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSet"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionNameValueType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DimensionNameValue_._type"/>
+      <details key="kind" value="simple"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Dimension value"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value=":0"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Dimension name"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionType" eSuperTypes="../net.opengis.ows/ows11.ecore#//DescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Dimension_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//CodeType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A name of dimensional axis"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uOM" eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//DomainMetadataType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Units of measure of dimensional axis."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="UOM"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unitSymbol" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Symbol of the units."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="UnitSymbol"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Default value that will be used if a tile request does &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;not specify a value or uses the keyword 'default'.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Default"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="current" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;A value of 1 (or 'true') indicates (a) that temporal data are &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;normally kept current and (b) that the request value of this &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;dimension accepts the keyword 'current'.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Current"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" unique="false" lowerBound="1"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Available value for this dimension."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Value"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentRoot">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value=""/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mixed" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="name" value=":mixed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xMLNSPrefixMap" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xmlns:prefix"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xSISchemaLocation" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xsi:schemaLocation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binaryPayload" upperBound="-2"
+        eType="#//BinaryPayloadType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BinaryPayload"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="capabilities" upperBound="-2"
+        eType="#//CapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="XML defines the WMTS GetCapabilities operation response. &#xA;&#x9;&#x9;&#x9;ServiceMetadata document provides clients with service metadata about a specific service &#xA;&#x9;&#x9;&#x9;instance, including metadata about the tightly-coupled data served. If the server &#xA;&#x9;&#x9;&#x9;does not implement the updateSequence parameter, the server SHALL always &#xA;&#x9;&#x9;&#x9;return the complete Capabilities document, without the updateSequence parameter. &#xA;&#x9;&#x9;&#x9;When the server implements the updateSequence parameter and the &#xA;&#x9;&#x9;&#x9;GetCapabilities operation request included the updateSequence parameter &#xA;&#x9;&#x9;&#x9;with the current value, the server SHALL return this element with only the &#xA;&#x9;&#x9;&#x9;&quot;version&quot; and &quot;updateSequence&quot; attributes. Otherwise, all optional elements &#xA;&#x9;&#x9;&#x9;SHALL be included or not depending on the actual value of the Contents &#xA;&#x9;&#x9;&#x9;parameter in the GetCapabilities operation request.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Capabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimension" upperBound="-2"
+        eType="#//DimensionType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Metadata about a particular dimension that the tiles of &#xA;&#x9;&#x9;&#x9;&#x9;a layer are available.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Dimension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionNameValue" upperBound="-2"
+        eType="#//DimensionNameValueType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DimensionNameValue"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureInfoResponse" upperBound="-2"
+        eType="#//FeatureInfoResponseType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureInfoResponse"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getCapabilities" upperBound="-2"
+        eType="#//GetCapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="WMTS GetCapabilities operation request."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetCapabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getFeatureInfo" upperBound="-2"
+        eType="#//GetFeatureInfoType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetFeatureInfo"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getTile" upperBound="-2"
+        eType="#//GetTileType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetTile"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="layer" upperBound="-2"
+        eType="#//LayerType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Layer"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.opengis.net/ows/1.1#DatasetDescriptionSummary"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="legendURL" upperBound="-2"
+        eType="#//LegendURLType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;        Zero or more LegendURL elements may be provided, providing an&#xA;        image(s) of a legend relevant to each Style of a Layer.  The Format&#xA;        element indicates the MIME type of the legend. minScaleDenominator&#xA;        and maxScaleDenominator attributes may be provided to indicate to&#xA;        the client which scale(s) (inclusive) the legend image is appropriate&#xA;        for.  (If provided, these values must exactly match the scale&#xA;        denominators of available TileMatrixes.)  width and height&#xA;        attributes may be provided to assist client applications in laying&#xA;        out space to display the legend.&#xA;      "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LegendURL"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" upperBound="-2"
+        eType="#//StyleType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Style"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="textPayload" upperBound="-2"
+        eType="#//TextPayloadType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TextPayload"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="theme" upperBound="-2"
+        eType="#//ThemeType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Theme"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="themes" upperBound="-2"
+        eType="#//ThemesType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Provides a set of hierarchical themes that the &#xA;&#x9;&#x9;&#x9;&#x9;client can use to categorize the layers by.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Themes"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrix" upperBound="-2"
+        eType="#//TileMatrixType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Describes a particular tile matrix."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrix"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixLimits" upperBound="-2"
+        eType="#//TileMatrixLimitsType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Metadata describing the limits of a TileMatrix &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;for this layer."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixLimits"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixSet" upperBound="-2"
+        eType="#//TileMatrixSetType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Describes a particular set of tile matrices."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSet"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixSetLimits" upperBound="-2"
+        eType="#//TileMatrixSetLimitsType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Metadata about a the limits of the tile row and tile col indices.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSetLimits"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixSetLink" upperBound="-2"
+        eType="#//TileMatrixSetLinkType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Metadata about the TileMatrixSet reference."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSetLink"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureInfoResponseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="FeatureInfoResponse_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureCollectionGroup"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This allows to define any FeatureCollection that is a substitutionGroup &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;of gml:_GML and use it here. A Geography Markup Language GML &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Simple Features Profile level 0 response format is strongly &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;recommended as a FeatureInfo response.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="_FeatureCollection:group"/>
+        <details key="namespace" value="http://www.opengis.net/gml"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureCollection" eType="ecore:EClass gml311.ecore#//AbstractFeatureCollectionType"
+        changeable="false" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This allows to define any FeatureCollection that is a substitutionGroup &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;of gml:_GML and use it here. A Geography Markup Language GML &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Simple Features Profile level 0 response format is strongly &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;recommended as a FeatureInfo response.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="_FeatureCollection"/>
+        <details key="namespace" value="http://www.opengis.net/gml"/>
+        <details key="group" value="http://www.opengis.net/gml#_FeatureCollection:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="textPayload" eType="#//TextPayloadType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This allows to include any text format that is not a gml:_FeatureCollection &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;like HTML, TXT, etc&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TextPayload"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binaryPayload" eType="#//BinaryPayloadType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This allows to include any binary format. Binary formats are not &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;common response for a GeFeatureInfo requests but possible for &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;some imaginative implementations.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BinaryPayload"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anyContent" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This allows to include any XML content that it is not any of &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the previous ones.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="AnyContent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetCapabilitiesType" eSuperTypes="../net.opengis.ows/ows11.ecore#//GetCapabilitiesType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCapabilities_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//ServiceType" defaultValueLiteral="WMTS"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="GetCapabilitiesValueType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCapabilitiesValueType"/>
+    </eAnnotations>
+    <eLiterals name="GetCapabilities"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="GetCapabilitiesValueTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCapabilitiesValueType:Object"/>
+      <details key="baseType" value="GetCapabilitiesValueType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetFeatureInfoType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetFeatureInfo_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getTile" lowerBound="1"
+        eType="#//GetTileType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The corresponding GetTile request parameters"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetTile"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="j" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Row index of a pixel in the tile"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="J"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="i" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Column index of a pixel in the tile"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="I"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="infoFormat" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Output MIME type format of the &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;retrieved information"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="InfoFormat"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" defaultValueLiteral="WMTS"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" defaultValueLiteral="1.0.0"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="version"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="GetFeatureInfoValueType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetFeatureInfoValueType"/>
+    </eAnnotations>
+    <eLiterals name="GetFeatureInfo"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="GetFeatureInfoValueTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetFeatureInfoValueType:Object"/>
+      <details key="baseType" value="GetFeatureInfoValueType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetTileType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetTile_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layer" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A layer identifier has to be referenced"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Layer"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="style" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A style identifier has to be referenced."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Style"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Output format of the tile"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionNameValue" upperBound="-1"
+        eType="#//DimensionNameValueType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Dimension name and value"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DimensionNameValue"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileMatrixSet" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A TileMatrixSet identifier has to be referenced"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSet"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileMatrix" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A TileMatrix identifier has to be referenced"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrix"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileRow" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Row index of tile matrix"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileRow"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileCol" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Column index of tile matrix"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileCol"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" defaultValueLiteral="WMTS"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" defaultValueLiteral="1.0.0"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="version"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="GetTileValueType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetTileValueType"/>
+    </eAnnotations>
+    <eLiterals name="GetTile"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="GetTileValueTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetTileValueType:Object"/>
+      <details key="baseType" value="GetTileValueType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LayerType" eSuperTypes="../net.opengis.ows/ows11.ecore#//DatasetDescriptionSummaryBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LayerType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" lowerBound="1" upperBound="-1"
+        eType="#//StyleType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Metadata about the styles of this layer"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Style"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Supported valid output MIME types for a tile"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="infoFormat" unique="false"
+        upperBound="-1" eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Supported valid output MIME types for a FeatureInfo. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If there isn't any, The server do not support FeatureInfo requests&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;for this layer."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="InfoFormat"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimension" upperBound="-1"
+        eType="#//DimensionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extra dimensions for a tile and FeatureInfo requests."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Dimension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixSetLink" lowerBound="1"
+        upperBound="-1" eType="#//TileMatrixSetLinkType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a tileMatrixSet and limits"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSetLink"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="resourceURL" upperBound="-1"
+        eType="#//URLTemplateType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;URL template to a tile or a FeatureInfo resource on &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;resource oriented architectural style&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ResourceURL"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LegendURLType" eSuperTypes="../net.opengis.ows/ows11.ecore#//OnlineResourceType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The URL from which the legend image can be retrieved"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LegendURL_._type"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A supported output format for the legend image"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="format"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Height (in pixels) of the legend image"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="height"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxScaleDenominator" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Double"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Denominator of the maximum scale (exclusive) for which this legend image is valid"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="maxScaleDenominator"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minScaleDenominator" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Double"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Denominator of the minimum scale (inclusive) for which this legend image is valid"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="minScaleDenominator"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Width (in pixels) of the legend image"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="width"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RequestServiceType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="RequestServiceType"/>
+    </eAnnotations>
+    <eLiterals name="WMTS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="RequestServiceTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="RequestServiceType:Object"/>
+      <details key="baseType" value="RequestServiceType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ResourceTypeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="resourceType_._type"/>
+    </eAnnotations>
+    <eLiterals name="tile"/>
+    <eLiterals name="FeatureInfo" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ResourceTypeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="resourceType_._type:Object"/>
+      <details key="baseType" value="resourceType_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="SectionsType" instanceClassName="java.lang.String">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;XML encoded identifier comma separated list of a standard &#xA;&#x9;&#x9;&#x9;&#x9;MIME type, possibly a parameterized MIME type. &#xA;&#x9;&#x9;&#x9;&#xA;Comma separated list of available &#xA;&#x9;&#x9;&#x9;&#x9;ServiceMetadata root elements. "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="SectionsType"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+      <details key="pattern" value="(ServiceIdentification|ServiceProvider|OperationsMetadata|Contents|Themes)(,(ServiceIdentification|ServiceProvider|OperationsMetadata|Contents|Themes))*"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StyleType" eSuperTypes="../net.opengis.ows/ows11.ecore#//DescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Style_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//CodeType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;An unambiguous reference to this style, identifying &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a specific version when needed, normally used by software&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="legendURL" upperBound="-1"
+        eType="#//LegendURLType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Description of an image that represents &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the legend of the map"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LegendURL"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDefault" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This style is used when no style is specified"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="isDefault"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TemplateType" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="template_._type"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+      <details key="pattern" value="([A-Za-z0-9\-_\.!~\*'\(\);/\?:@\+:$,#\{\}=&amp;]|%25[A-Fa-f0-9][A-Fa-f0-9])+"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TextPayloadType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TextPayload_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="MIMEType format of the TextContent"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="textContent" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Text string like HTML, XHTML, XML or TXT. HTML and TXT data has &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;to be enclosed in a CDATA element to avoid XML parsing.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TextContent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ThemesType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Themes_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="theme" upperBound="-1"
+        eType="#//ThemeType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Metadata describing the top-level themes where &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;layers available on this server can be classified.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Theme"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ThemeType" eSuperTypes="../net.opengis.ows/ows11.ecore#//DescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Theme_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//CodeType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Name of the theme"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="theme" upperBound="-1"
+        eType="#//ThemeType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Metadata describing the child (subordinate) themes &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;of this theme where layers available on this server &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;can be classified&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Theme"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layerRef" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to layer"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LayerRef"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TileMatrixLimitsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TileMatrixLimits_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileMatrix" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a TileMatrix identifier"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrix"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minTileRow" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Minimum tile row index valid for this &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;layer. From 0 to maxTileRow"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MinTileRow"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxTileRow" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximim tile row index valid for this &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;layer. From minTileRow to matrixWidth-1 of the tileMatrix &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;section of this tileMatrixSet"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MaxTileRow"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minTileCol" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Minimum tile column index valid for this &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;layer. From 0 to maxTileCol"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MinTileCol"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxTileCol" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximim tile column index valid for this layer. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;From minTileCol to tileHeight-1 of the tileMatrix section &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;of this tileMatrixSet."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MaxTileCol"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TileMatrixSetLimitsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TileMatrixSetLimits_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixLimits" lowerBound="1"
+        upperBound="-1" eType="#//TileMatrixLimitsType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Metadata describing the limits of the TileMatrixSet indices. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Multiplicity must be the multiplicity of TileMatrix in this &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;TileMatrixSet.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixLimits"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TileMatrixSetLinkType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TileMatrixSetLink_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileMatrixSet" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a tileMatrixSet"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSet"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrixSetLimits" eType="#//TileMatrixSetLimitsType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Indices limits for this tileMatrixSet. The absence of this &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;element means that tile row and tile col indices are only limited by 0 &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;and the corresponding tileMatrixSet maximum definitions."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrixSetLimits"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TileMatrixSetType" eSuperTypes="../net.opengis.ows/ows11.ecore#//DescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TileMatrixSet_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//CodeType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Tile matrix set identifier"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="boundingBoxGroup" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Minimum bounding rectangle surrounding &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the visible layer presented by this tile matrix &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;set, in the supported CRS "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="BoundingBox:group"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="boundingBox" eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//BoundingBoxType"
+        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Minimum bounding rectangle surrounding &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the visible layer presented by this tile matrix &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;set, in the supported CRS "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BoundingBox"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+        <details key="group" value="http://www.opengis.net/ows/1.1#BoundingBox:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="supportedCRS" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to one coordinate reference &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;system (CRS)."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SupportedCRS"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wellKnownScaleSet" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to a well known scale set.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Scale, &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Pixel, &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;urn:ogc:def:wkss:OGC:1.0:GoogleCRS84Quad and &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible are &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;possible values that are defined in Annex E. It has to be consistent with the &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;SupportedCRS and with the ScaleDenominators of the TileMatrix elements.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="WellKnownScaleSet"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tileMatrix" lowerBound="1"
+        upperBound="-1" eType="#//TileMatrixType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Describes a scale level and its tile matrix."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileMatrix"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TileMatrixType" eSuperTypes="../net.opengis.ows/ows11.ecore#//DescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TileMatrix_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        eType="ecore:EClass ../net.opengis.ows/ows11.ecore#//CodeType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Tile matrix identifier. Typically an abreviation of &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the ScaleDenominator value or its equivalent pixel size"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/1.1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleDenominator" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Double" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Scale denominator level of this tile matrix"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ScaleDenominator"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topLeftCorner" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//PositionType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Position in CRS coordinates of the top-left corner of this tile matrix. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This are the  precise coordinates of the top left corner of top left &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;pixel of the 0,0 tile in SupportedCRS coordinates of this TileMatrixSet.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TopLeftCorner"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileWidth" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Width of each tile of this tile matrix in pixels."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileWidth"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tileHeight" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Height of each tile of this tile matrix in pixels"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TileHeight"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="matrixWidth" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Width of the matrix (number of tiles in width)"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MatrixWidth"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="matrixHeight" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Height of the matrix (number of tiles in height)"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MatrixHeight"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="URLTemplateType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="URLTemplateType"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows11.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Format of the resource representation that can &#xA;&#x9;&#x9;&#x9;&#x9;be retrieved one resolved the URL template."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="format"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceType" lowerBound="1"
+        eType="#//ResourceTypeType" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Resource type to be retrieved. It can only &#xA;&#x9;&#x9;&#x9;&#x9;be &quot;tile&quot; or &quot;FeatureInfo&quot;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="resourceType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="template" lowerBound="1"
+        eType="#//TemplateType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="URL template. A template processor will be &#xA;&#x9;&#x9;&#x9;&#x9;applied to substitute some variables between {} for their values&#xA;&#x9;&#x9;&#x9;&#x9;and get a URL to a resource. &#xA;&#x9;&#x9;&#x9;&#x9;We cound not use a anyURI type (that conforms the character &#xA;&#x9;&#x9;&#x9;&#x9;restrictions specified in RFC2396 and excludes '{' '}' characters &#xA;&#x9;&#x9;&#x9;&#x9;in some XML parsers) because this attribute must accept the &#xA;&#x9;&#x9;&#x9;&#x9;'{' '}' caracters."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="template"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="VersionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="VersionType"/>
+    </eAnnotations>
+    <eLiterals name="_100" literal="1.0.0"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="VersionTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="VersionType:Object"/>
+      <details key="baseType" value="VersionType"/>
+    </eAnnotations>
+  </eClassifiers>
+</ecore:EPackage>

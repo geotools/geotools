@@ -21,6 +21,7 @@ import org.geotools.tile.Tile;
 import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorTileFactory;
+import org.geotools.tile.impl.WebMercatorTileService;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
@@ -45,7 +46,7 @@ public class OSMTileFactory extends WebMercatorTileFactory {
          * (http://wiki.openstreetmap.org/wiki/Tilenames#X_and_Y), we have to
          * correct if necessary.
          */
-        lat = OSMTileFactory.moveInRange(lat, -85.0511, 85.0511);
+        lat = OSMTileFactory.moveInRange(lat, WebMercatorTileService.MIN_LATITUDE, WebMercatorTileService.MAX_LATITUDE);
 
         int xTile = (int) Math.floor((lon + 180) / 360
                 * (1 << zoomLevel.getZoomLevel()));
@@ -66,7 +67,7 @@ public class OSMTileFactory extends WebMercatorTileFactory {
      * @param max
      * @return
      */
-    private static double moveInRange(double value, double min, double max) {
+    public static double moveInRange(double value, double min, double max) {
         if (value < min) {
             value = min;
         } else if (value > max) {

@@ -30,6 +30,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * This class is responsible for finding the right zoom-level for a given map
@@ -92,24 +94,26 @@ public class ScaleZoomLevelMatcher {
         this.scale = scale;
     }
 
+    /**
+     * @deprecated is wmtSource.getTileCrs() really meaningful?
+     */
+    @Deprecated
     public static ScaleZoomLevelMatcher createMatcher(
             ReferencedEnvelope mapExtentMapCrs, double scale,
             TileService wmtSource) throws Exception {
-        CoordinateReferenceSystem crsMap = mapExtentMapCrs
-                .getCoordinateReferenceSystem();
+
+        CoordinateReferenceSystem crsMap = mapExtentMapCrs.getCoordinateReferenceSystem();
         CoordinateReferenceSystem crsTiles = wmtSource.getTileCrs(); // the CRS
                                                                      // used for
                                                                      // the tile
         // cutting
 
         // Transformation: MapCrs -> TileCrs (mostly WGS_84)
-        MathTransform transformMapToTileCrs = getTransformation(crsMap,
-                crsTiles);
+        MathTransform transformMapToTileCrs = CRS.findMathTransform(crsMap,crsTiles);
 
         // Transformation: TileCrs (mostly WGS_84) -> MapCrs (needed for the
         // blank tiles)
-        MathTransform transformTileCrsToMap = getTransformation(crsTiles,
-                crsMap);
+        MathTransform transformTileCrsToMap = CRS.findMathTransform(crsTiles,crsMap);
 
         // Get the mapExtent in the tiles CRS
         ReferencedEnvelope mapExtentTileCrs = getProjectedEnvelope(
@@ -118,6 +122,27 @@ public class ScaleZoomLevelMatcher {
         return new ScaleZoomLevelMatcher(crsMap, crsTiles,
                 transformMapToTileCrs, transformTileCrsToMap, mapExtentTileCrs,
                 mapExtentMapCrs, scale);
+    }
+
+    public static ScaleZoomLevelMatcher createMatcher(
+            ReferencedEnvelope requestExtent,
+            CoordinateReferenceSystem crsTiles,
+            double scale) throws FactoryException, TransformException {
+
+        CoordinateReferenceSystem crsMap = requestExtent.getCoordinateReferenceSystem();
+
+        // Transformation: MapCrs -> TileCrs 
+        MathTransform transformMapToTile = CRS.findMathTransform(crsMap, crsTiles);
+
+        // Transformation: TileCrs -> MapCrs (needed for the blank tiles)
+        MathTransform transformTileToMap = CRS.findMathTransform(crsTiles, crsMap);
+
+        // Get the mapExtent in the tiles CRS
+        ReferencedEnvelope mapExtentTileCrs = getProjectedEnvelope(requestExtent, crsTiles, transformMapToTile);
+
+        return new ScaleZoomLevelMatcher(crsMap, crsTiles,
+                transformMapToTile, transformTileToMap, mapExtentTileCrs,
+                requestExtent, scale);
     }
 
     /**
@@ -132,14 +157,14 @@ public class ScaleZoomLevelMatcher {
     public static ReferencedEnvelope getProjectedEnvelope(
             ReferencedEnvelope envelope,
             CoordinateReferenceSystem destinationCRS,
-            MathTransform transformation) throws Exception {
-        CoordinateReferenceSystem sourceCRS = envelope
-                .getCoordinateReferenceSystem();
+            MathTransform transformation) throws TransformException, FactoryException {
+
+        CoordinateReferenceSystem sourceCRS = envelope.getCoordinateReferenceSystem();
 
         if (sourceCRS.equals(destinationCRS)) {
             // no need to reproject
-
             return envelope;
+            
         } else {
             // Reproject envelope: first try JTS.transform, if that fails use
             // ReferencedEnvelope.transform
@@ -152,25 +177,6 @@ public class ScaleZoomLevelMatcher {
                 return envelope.transform(destinationCRS, false);
             }
         }
-    }
-
-    /**
-     * Returns the transformation to convert between these two CRS's.
-     *
-     * @param fromCRS
-     * @param toCRS
-     * @return
-     * @throws Exception
-     */
-    public static MathTransform getTransformation(
-            CoordinateReferenceSystem fromCRS, CoordinateReferenceSystem toCRS)
-            throws Exception {
-        if (!fromCRS.equals(toCRS)) {
-
-            return CRS.findMathTransform(fromCRS, toCRS);
-        }
-
-        return null;
     }
 
     public CoordinateReferenceSystem getCrsMap() {

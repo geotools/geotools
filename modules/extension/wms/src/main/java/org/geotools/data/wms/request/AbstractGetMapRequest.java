@@ -227,7 +227,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         return DefaultEngineeringCRS.CARTESIAN_2D;
     }
 
-    private static boolean isGeotoolsLongitudeFirstAxisOrderForced() {
+    protected static boolean isGeotoolsLongitudeFirstAxisOrderForced() {
         return Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER) ||
                 GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
     }

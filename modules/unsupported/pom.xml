@@ -237,6 +237,8 @@
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
 		<module>polylabel</module>
+		<module>tile-client</module>
+		<module>wmts</module>
 	</modules>
 
 </project>

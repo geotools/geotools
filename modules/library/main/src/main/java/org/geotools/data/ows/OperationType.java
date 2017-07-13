@@ -17,6 +17,7 @@
 package org.geotools.data.ows;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
  * @source $URL$
  */
 public class OperationType {
-	protected List<String> formats;
+	protected List<String> formats=new ArrayList<>();
 	protected URL get;
 	protected URL post;
 

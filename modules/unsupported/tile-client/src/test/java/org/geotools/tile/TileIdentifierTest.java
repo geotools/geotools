@@ -102,7 +102,7 @@ public class TileIdentifierTest {
         Assert.assertEquals("SomeService", this.tileId.getServiceName());
     }
 
-    private TileIdentifier createTestTileIdentifier(int z, int x, int y,
+    protected TileIdentifier createTestTileIdentifier(int z, int x, int y,
             String name) {
         return createTestTileIdentifier(new WebMercatorZoomLevel(z), x, y, name);
     };

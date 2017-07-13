@@ -1305,6 +1305,9 @@ public class RasterManager implements Cloneable {
         // Checking whether it supports sorting capabilities
         if (granuleCatalog.getQueryCapabilities(typeName).supportsSorting(sb)) {
             query.setSortBy(sb);
+        } else {
+            LOGGER.severe("Sorting parameter ignored, underlying datastore cannot sort on "
+                    + Arrays.toString(sb));
         }
 
         final FeatureCalc visitor = domainType == DomainType.TIME_RANGE

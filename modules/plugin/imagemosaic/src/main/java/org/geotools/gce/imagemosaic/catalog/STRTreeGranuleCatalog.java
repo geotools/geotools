@@ -20,6 +20,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -35,6 +37,7 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
@@ -329,19 +332,28 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             // load what we need to load
             checkIndex(lock);
             final List<GranuleDescriptor> features = index.query(requestedBBox);
-            final ListFeatureCollection retVal = new ListFeatureCollection(
-                    wrappedCatalogue.getType(typeName));
+            List<SimpleFeature> filtered = new ArrayList<>();
             final int maxGranules = q.getMaxFeatures();
             int numGranules = 0;
             for (GranuleDescriptor g : features) {
                 // check how many tiles we are returning
-                if (maxGranules > 0 && numGranules >= maxGranules)
+                if (q.getSortBy() == null && maxGranules > 0 && numGranules >= maxGranules)
                     break;
                 final SimpleFeature originator = g.getOriginator();
                 if (originator != null && filter.evaluate(originator))
-                    retVal.add(originator);
+                    filtered.add(originator);
             }
-            return retVal;
+            if (q.getSortBy() != null) {
+                Comparator<SimpleFeature> comparator = SortedFeatureReader
+                        .getComparator(q.getSortBy());
+                if (comparator != null) {
+                    Collections.sort(filtered, comparator);
+                }
+                if (maxGranules > 0 && filtered.size() > maxGranules) {
+                    filtered = filtered.subList(0, maxGranules);
+                }
+            }
+            return new ListFeatureCollection(wrappedCatalogue.getType(typeName), filtered);
         } finally {
             lock.unlock();
         }
@@ -384,8 +396,29 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
             // get filter and check bbox
             checkIndex(lock);
-            index.query(requestedBBox, new JTSIndexVisitorAdapter(visitor, q));
-
+            Comparator<SimpleFeature> comparator = q.getSortBy() == null ? null
+                    : SortedFeatureReader.getComparator(q.getSortBy());
+            if (comparator == null) {
+                index.query(requestedBBox, new JTSIndexVisitorAdapter(visitor, q));
+            } else {
+                List<GranuleDescriptor> granules = index.query(requestedBBox);
+                Comparator<GranuleDescriptor> granuleComparator = (gd1, gd2) -> {
+                    SimpleFeature sf1 = gd1.getOriginator();
+                    SimpleFeature sf2 = gd2.getOriginator();
+                    return comparator.compare(sf1, sf2);
+                };
+                Collections.sort(granules, granuleComparator);
+                int maxGranules = q.getMaxFeatures();
+                if (maxGranules > 0 && granules.size() > maxGranules) {
+                    granules = granules.subList(0, maxGranules);
+                }
+                for (GranuleDescriptor gd : granules) {
+                    if (visitor.isVisitComplete()) {
+                        break;
+                    }
+                    visitor.visit(gd, gd.getOriginator());
+                }
+            }
         } finally {
             lock.unlock();
         }
@@ -495,6 +528,9 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     @Override
     public QueryCapabilities getQueryCapabilities(String typeName) {
+        if(this.typeName.equals(typeName)) {
+            return getQueryCapabilities();
+        }
         throw new UnsupportedOperationException("Unsupported operation");
     }
 

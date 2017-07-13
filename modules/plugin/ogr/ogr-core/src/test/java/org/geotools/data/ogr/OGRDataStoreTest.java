@@ -404,7 +404,9 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GeoJSON", null, ogr);
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
-        SimpleFeatureCollection fc = s.getFeatureSource("OGRGeoJSON").getFeatures();
+        // OGR GeoJSON layer name is "OGRGeoJSON" in GDAL up to 2.1 and "junk" (set from feature
+        // collection name) in GDAL 2.2 or later. See: http://www.gdal.org/drv_geojson.html
+        SimpleFeatureCollection fc = s.getFeatureSource(s.getTypeNames()[0]).getFeatures();
         assertEquals(features.size(), fc.size());
         // Read
         int c = 0;

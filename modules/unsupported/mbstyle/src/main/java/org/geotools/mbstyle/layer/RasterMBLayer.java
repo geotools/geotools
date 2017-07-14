@@ -225,14 +225,26 @@ public class RasterMBLayer extends MBLayer {
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
-        if(getBrightnessMax() != null || getBrightnessMin() != null){
+        if (getContrast() != null) {
             ce.setMethod(ContrastMethod.NORMALIZE);
             ce.addOption("algorithm", ff.literal("StretchToMinimumMaximum"));
             Double newMin = (Double)getBrightnessMin() * 255;
             Double newMax = (Double)getBrightnessMax() * 255;
             ce.addOption("minValue", ff.literal(String.valueOf(newMin.intValue())));
             ce.addOption("maxValue", ff.literal(String.valueOf(newMax.intValue())));
+//            double contrast = (double) getContrast();
+//            double maxValue = 255d;
+//            double minValue = 0d;
+//            if (contrast < 0) {
+//            }
+//            if (contrast > 0) {
+//
+//            }
+//            ce.addOption("minValue", ff.literal(String.valueOf(minValue)));
+//            ce.addOption("maxValue", ff.literal(String.valueOf(maxValue)));
         }
+
+
         RasterSymbolizer symbolizer = sf.rasterSymbolizer(getId(), null,
                 sf.description(Text.text("raster"), null), NonSI.PIXEL, opacity(), null,
                 null, null, ce, null, null);

@@ -34,7 +34,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -104,7 +103,7 @@ class MergeSortDumper {
         if (maxFeatures < 0) {
             maxFeatures = getMaxFeatures(Query.ALL);
         }
-        Comparator<SimpleFeature> comparator = getComparator(sortBy);
+        Comparator<SimpleFeature> comparator = SortedFeatureReader.getComparator(sortBy);
 
         // easy case, no sorting needed
         if (comparator == null) {
@@ -187,43 +186,6 @@ class MergeSortDumper {
         }
 
         return new FeatureBlockReader(io, start, features.size());
-    }
-
-
-
-    /**
-     * Builds a comparator out of the sortBy list
-     * 
-     * @param sortBy
-     * @return
-     */
-    static Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
-        // handle the easy cases, no sorting or natural sorting
-        if (sortBy == SortBy.UNSORTED || sortBy == null) {
-            return null;
-        }
-
-        // build a list of comparators
-        List<Comparator<SimpleFeature>> comparators = new ArrayList<Comparator<SimpleFeature>>();
-        for (SortBy sb : sortBy) {
-            if (sb == SortBy.NATURAL_ORDER) {
-                comparators.add(new FidComparator(true));
-            } else if (sb == SortBy.REVERSE_ORDER) {
-                comparators.add(new FidComparator(false));
-            } else {
-                String name = sb.getPropertyName().getPropertyName();
-                boolean ascending = sb.getSortOrder() == SortOrder.ASCENDING;
-                comparators.add(new PropertyComparator(name, ascending));
-            }
-        }
-
-        // return the final comparator
-        if (comparators.size() == 1) {
-            return comparators.get(0);
-        } else {
-            return new CompositeComparator(comparators);
-        }
-
     }
 
 }

@@ -28,190 +28,190 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class DimensionSubsetTypeImpl extends EObjectImpl implements DimensionSubsetType {
     /**
-     * The default value of the '{@link #getDimension() <em>Dimension</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getDimension() <em>Dimension</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getDimension()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDimension()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DIMENSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getDimension() <em>Dimension</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getDimension() <em>Dimension</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getDimension()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDimension()
+	 * @generated
+	 * @ordered
+	 */
     protected String dimension = DIMENSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getCRS() <em>CRS</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getCRS() <em>CRS</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCRS()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCRS()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String CRS_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCRS() <em>CRS</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCRS() <em>CRS</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCRS()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCRS()
+	 * @generated
+	 * @ordered
+	 */
     protected String cRS = CRS_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected DimensionSubsetTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.DIMENSION_SUBSET_TYPE;
-    }
+		return Wcs20Package.Literals.DIMENSION_SUBSET_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getDimension() {
-        return dimension;
-    }
+		return dimension;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setDimension(String newDimension) {
-        String oldDimension = dimension;
-        dimension = newDimension;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION, oldDimension, dimension));
-    }
+		String oldDimension = dimension;
+		dimension = newDimension;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION, oldDimension, dimension));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getCRS() {
-        return cRS;
-    }
+		return cRS;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setCRS(String newCRS) {
-        String oldCRS = cRS;
-        cRS = newCRS;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_SUBSET_TYPE__CRS, oldCRS, cRS));
-    }
+		String oldCRS = cRS;
+		cRS = newCRS;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_SUBSET_TYPE__CRS, oldCRS, cRS));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
-                return getDimension();
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
-                return getCRS();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
+				return getDimension();
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
+				return getCRS();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
-                setDimension((String)newValue);
-                return;
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
-                setCRS((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
+				setDimension((String)newValue);
+				return;
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
+				setCRS((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
-                setDimension(DIMENSION_EDEFAULT);
-                return;
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
-                setCRS(CRS_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
+				setDimension(DIMENSION_EDEFAULT);
+				return;
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
+				setCRS(CRS_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
-                return DIMENSION_EDEFAULT == null ? dimension != null : !DIMENSION_EDEFAULT.equals(dimension);
-            case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
-                return CRS_EDEFAULT == null ? cRS != null : !CRS_EDEFAULT.equals(cRS);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__DIMENSION:
+				return DIMENSION_EDEFAULT == null ? dimension != null : !DIMENSION_EDEFAULT.equals(dimension);
+			case Wcs20Package.DIMENSION_SUBSET_TYPE__CRS:
+				return CRS_EDEFAULT == null ? cRS != null : !CRS_EDEFAULT.equals(cRS);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (dimension: ");
-        result.append(dimension);
-        result.append(", cRS: ");
-        result.append(cRS);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (dimension: ");
+		result.append(dimension);
+		result.append(", cRS: ");
+		result.append(cRS);
+		result.append(')');
+		return result.toString();
+	}
 
 } //DimensionSubsetTypeImpl

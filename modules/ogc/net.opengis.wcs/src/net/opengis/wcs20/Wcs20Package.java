@@ -750,3697 +750,3738 @@ import org.eclipse.emf.ecore.EReference;
  */
 public interface Wcs20Package extends EPackage {
     /**
-     * The package name.
-     * <!-- begin-user-doc -->
+	 * The package name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     String eNAME = "wcs20";
 
     /**
-     * The package namespace URI.
-     * <!-- begin-user-doc -->
+	 * The package namespace URI.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     String eNS_URI = "http://www.opengis.net/wcs/2.0";
 
     /**
-     * The package namespace name.
-     * <!-- begin-user-doc -->
+	 * The package namespace name.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     String eNS_PREFIX = "wcs";
 
     /**
-     * The singleton instance of the package.
-     * <!-- begin-user-doc -->
+	 * The singleton instance of the package.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     Wcs20Package eINSTANCE = net.opengis.wcs20.impl.Wcs20PackageImpl.init();
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.CapabilitiesTypeImpl <em>Capabilities Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.CapabilitiesTypeImpl <em>Capabilities Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.CapabilitiesTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCapabilitiesType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.CapabilitiesTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCapabilitiesType()
+	 * @generated
+	 */
     int CAPABILITIES_TYPE = 0;
 
     /**
-     * The feature id for the '<em><b>Service Identification</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Identification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__SERVICE_IDENTIFICATION = Ows20Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION;
 
     /**
-     * The feature id for the '<em><b>Service Provider</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Provider</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__SERVICE_PROVIDER = Ows20Package.CAPABILITIES_BASE_TYPE__SERVICE_PROVIDER;
 
     /**
-     * The feature id for the '<em><b>Operations Metadata</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Operations Metadata</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__OPERATIONS_METADATA = Ows20Package.CAPABILITIES_BASE_TYPE__OPERATIONS_METADATA;
 
     /**
-     * The feature id for the '<em><b>Languages</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Languages</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__LANGUAGES = Ows20Package.CAPABILITIES_BASE_TYPE__LANGUAGES;
 
     /**
-     * The feature id for the '<em><b>Update Sequence</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Update Sequence</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__UPDATE_SEQUENCE = Ows20Package.CAPABILITIES_BASE_TYPE__UPDATE_SEQUENCE;
 
     /**
-     * The feature id for the '<em><b>Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__VERSION = Ows20Package.CAPABILITIES_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Service Metadata</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Metadata</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__SERVICE_METADATA = Ows20Package.CAPABILITIES_BASE_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Contents</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Contents</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE__CONTENTS = Ows20Package.CAPABILITIES_BASE_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Capabilities Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Capabilities Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CAPABILITIES_TYPE_FEATURE_COUNT = Ows20Package.CAPABILITIES_BASE_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ContentsTypeImpl <em>Contents Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ContentsTypeImpl <em>Contents Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ContentsTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContentsType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ContentsTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContentsType()
+	 * @generated
+	 */
     int CONTENTS_TYPE = 1;
 
     /**
-     * The feature id for the '<em><b>Dataset Description Summary</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dataset Description Summary</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CONTENTS_TYPE__DATASET_DESCRIPTION_SUMMARY = Ows20Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY;
 
     /**
-     * The feature id for the '<em><b>Other Source</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Other Source</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CONTENTS_TYPE__OTHER_SOURCE = Ows20Package.CONTENTS_BASE_TYPE__OTHER_SOURCE;
 
     /**
-     * The feature id for the '<em><b>Coverage Summary</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Summary</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CONTENTS_TYPE__COVERAGE_SUMMARY = Ows20Package.CONTENTS_BASE_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CONTENTS_TYPE__EXTENSION = Ows20Package.CONTENTS_BASE_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Contents Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Contents Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int CONTENTS_TYPE_FEATURE_COUNT = Ows20Package.CONTENTS_BASE_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl <em>Coverage Descriptions Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl <em>Coverage Descriptions Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionsType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionsType()
+	 * @generated
+	 */
     int COVERAGE_DESCRIPTIONS_TYPE = 2;
 
     /**
-     * The feature id for the '<em><b>Coverage Description</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Description</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION = 0;
 
     /**
-     * The number of structural features of the '<em>Coverage Descriptions Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Coverage Descriptions Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTIONS_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageDescriptionTypeImpl <em>Coverage Description Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageDescriptionTypeImpl <em>Coverage Description Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.CoverageDescriptionTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.CoverageDescriptionTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionType()
+	 * @generated
+	 */
     int COVERAGE_DESCRIPTION_TYPE = 3;
 
     /**
-     * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE__COVERAGE_ID = 0;
 
     /**
-     * The feature id for the '<em><b>Coverage Function</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Function</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE__COVERAGE_FUNCTION = 1;
 
     /**
-     * The feature id for the '<em><b>Metadata</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Metadata</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE__METADATA = 2;
 
     /**
-     * The feature id for the '<em><b>Domain Set</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Domain Set</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE__DOMAIN_SET = 3;
 
     /**
-     * The feature id for the '<em><b>Range Type</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Range Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE__RANGE_TYPE = 4;
 
     /**
-     * The feature id for the '<em><b>Service Parameters</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Parameters</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE__SERVICE_PARAMETERS = 5;
 
     /**
-     * The number of structural features of the '<em>Coverage Description Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Coverage Description Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_DESCRIPTION_TYPE_FEATURE_COUNT = 6;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageOfferingsTypeImpl <em>Coverage Offerings Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageOfferingsTypeImpl <em>Coverage Offerings Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.CoverageOfferingsTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageOfferingsType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.CoverageOfferingsTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageOfferingsType()
+	 * @generated
+	 */
     int COVERAGE_OFFERINGS_TYPE = 4;
 
     /**
-     * The feature id for the '<em><b>Service Metadata</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Metadata</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA = 0;
 
     /**
-     * The feature id for the '<em><b>Offered Coverage</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Offered Coverage</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE = 1;
 
     /**
-     * The number of structural features of the '<em>Coverage Offerings Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Coverage Offerings Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_OFFERINGS_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl <em>Coverage Subtype Parent Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl <em>Coverage Subtype Parent Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSubtypeParentType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSubtypeParentType()
+	 * @generated
+	 */
     int COVERAGE_SUBTYPE_PARENT_TYPE = 5;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUBTYPE_PARENT_TYPE__COVERAGE_SUBTYPE = 0;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUBTYPE_PARENT_TYPE__COVERAGE_SUBTYPE_PARENT = 1;
 
     /**
-     * The number of structural features of the '<em>Coverage Subtype Parent Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Coverage Subtype Parent Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUBTYPE_PARENT_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageSummaryTypeImpl <em>Coverage Summary Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.CoverageSummaryTypeImpl <em>Coverage Summary Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.CoverageSummaryTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSummaryType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.CoverageSummaryTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSummaryType()
+	 * @generated
+	 */
     int COVERAGE_SUMMARY_TYPE = 6;
 
     /**
-     * The feature id for the '<em><b>Title</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Title</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__TITLE = Ows20Package.DESCRIPTION_TYPE__TITLE;
 
     /**
-     * The feature id for the '<em><b>Abstract</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Abstract</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__ABSTRACT = Ows20Package.DESCRIPTION_TYPE__ABSTRACT;
 
     /**
-     * The feature id for the '<em><b>Keywords</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Keywords</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__KEYWORDS = Ows20Package.DESCRIPTION_TYPE__KEYWORDS;
 
     /**
-     * The feature id for the '<em><b>WGS84 Bounding Box</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>WGS84 Bounding Box</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__COVERAGE_ID = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 3;
 
     /**
-     * The feature id for the '<em><b>Bounding Box Group</b></em>' attribute list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Bounding Box Group</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Bounding Box</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Bounding Box</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__BOUNDING_BOX = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 5;
 
     /**
-     * The feature id for the '<em><b>Metadata Group</b></em>' attribute list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Metadata Group</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__METADATA_GROUP = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 6;
 
     /**
-     * The feature id for the '<em><b>Metadata</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Metadata</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE__METADATA = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 7;
 
     /**
-     * The number of structural features of the '<em>Coverage Summary Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Coverage Summary Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int COVERAGE_SUMMARY_TYPE_FEATURE_COUNT = Ows20Package.DESCRIPTION_TYPE_FEATURE_COUNT + 8;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.RequestBaseTypeImpl <em>Request Base Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.RequestBaseTypeImpl <em>Request Base Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.RequestBaseTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRequestBaseType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.RequestBaseTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRequestBaseType()
+	 * @generated
+	 */
     int REQUEST_BASE_TYPE = 16;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int REQUEST_BASE_TYPE__EXTENSION = 0;
 
     /**
-     * The feature id for the '<em><b>Service</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int REQUEST_BASE_TYPE__SERVICE = 1;
 
     /**
-     * The feature id for the '<em><b>Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int REQUEST_BASE_TYPE__VERSION = 2;
 
     /**
-     * The feature id for the '<em><b>Base Url</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Base Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int REQUEST_BASE_TYPE__BASE_URL = 3;
 
     /**
-     * The number of structural features of the '<em>Request Base Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Request Base Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int REQUEST_BASE_TYPE_FEATURE_COUNT = 4;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.DescribeCoverageTypeImpl <em>Describe Coverage Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.DescribeCoverageTypeImpl <em>Describe Coverage Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.DescribeCoverageTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeCoverageType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.DescribeCoverageTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeCoverageType()
+	 * @generated
+	 */
     int DESCRIBE_COVERAGE_TYPE = 7;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_COVERAGE_TYPE__EXTENSION = REQUEST_BASE_TYPE__EXTENSION;
 
     /**
-     * The feature id for the '<em><b>Service</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_COVERAGE_TYPE__SERVICE = REQUEST_BASE_TYPE__SERVICE;
 
     /**
-     * The feature id for the '<em><b>Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_COVERAGE_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Base Url</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Base Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_COVERAGE_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
 
     /**
-     * The feature id for the '<em><b>Coverage Id</b></em>' attribute list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Id</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_COVERAGE_TYPE__COVERAGE_ID = REQUEST_BASE_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Describe Coverage Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Describe Coverage Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_COVERAGE_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionSubsetTypeImpl <em>Dimension Subset Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionSubsetTypeImpl <em>Dimension Subset Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.DimensionSubsetTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSubsetType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.DimensionSubsetTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSubsetType()
+	 * @generated
+	 */
     int DIMENSION_SUBSET_TYPE = 9;
 
     /**
-     * The feature id for the '<em><b>Dimension</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SUBSET_TYPE__DIMENSION = 0;
 
     /**
-     * The feature id for the '<em><b>CRS</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>CRS</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SUBSET_TYPE__CRS = 1;
 
     /**
-     * The number of structural features of the '<em>Dimension Subset Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Dimension Subset Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SUBSET_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionSliceTypeImpl <em>Dimension Slice Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionSliceTypeImpl <em>Dimension Slice Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.DimensionSliceTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSliceType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.DimensionSliceTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSliceType()
+	 * @generated
+	 */
     int DIMENSION_SLICE_TYPE = 8;
 
     /**
-     * The feature id for the '<em><b>Dimension</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SLICE_TYPE__DIMENSION = DIMENSION_SUBSET_TYPE__DIMENSION;
 
     /**
-     * The feature id for the '<em><b>CRS</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>CRS</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SLICE_TYPE__CRS = DIMENSION_SUBSET_TYPE__CRS;
 
     /**
-     * The feature id for the '<em><b>Slice Point</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Slice Point</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SLICE_TYPE__SLICE_POINT = DIMENSION_SUBSET_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Dimension Slice Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Dimension Slice Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_SLICE_TYPE_FEATURE_COUNT = DIMENSION_SUBSET_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionTrimTypeImpl <em>Dimension Trim Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionTrimTypeImpl <em>Dimension Trim Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.DimensionTrimTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionTrimType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.DimensionTrimTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionTrimType()
+	 * @generated
+	 */
     int DIMENSION_TRIM_TYPE = 10;
 
     /**
-     * The feature id for the '<em><b>Dimension</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_TRIM_TYPE__DIMENSION = DIMENSION_SUBSET_TYPE__DIMENSION;
 
     /**
-     * The feature id for the '<em><b>CRS</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>CRS</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_TRIM_TYPE__CRS = DIMENSION_SUBSET_TYPE__CRS;
 
     /**
-     * The feature id for the '<em><b>Trim Low</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Trim Low</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_TRIM_TYPE__TRIM_LOW = DIMENSION_SUBSET_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Trim High</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Trim High</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_TRIM_TYPE__TRIM_HIGH = DIMENSION_SUBSET_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Dimension Trim Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Dimension Trim Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DIMENSION_TRIM_TYPE_FEATURE_COUNT = DIMENSION_SUBSET_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.DocumentRootImpl <em>Document Root</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.DocumentRootImpl <em>Document Root</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.DocumentRootImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDocumentRoot()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.DocumentRootImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDocumentRoot()
+	 * @generated
+	 */
     int DOCUMENT_ROOT = 11;
 
     /**
-     * The feature id for the '<em><b>XMLNS Prefix Map</b></em>' map.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>XMLNS Prefix Map</b></em>' map.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__XMLNS_PREFIX_MAP = 0;
 
     /**
-     * The feature id for the '<em><b>XSI Schema Location</b></em>' map.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>XSI Schema Location</b></em>' map.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__XSI_SCHEMA_LOCATION = 1;
 
     /**
-     * The feature id for the '<em><b>Capabilities</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Capabilities</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__CAPABILITIES = 2;
 
     /**
-     * The feature id for the '<em><b>Contents</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Contents</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__CONTENTS = 3;
 
     /**
-     * The feature id for the '<em><b>Coverage Description</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Description</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_DESCRIPTION = 4;
 
     /**
-     * The feature id for the '<em><b>Coverage Descriptions</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Descriptions</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_DESCRIPTIONS = 5;
 
     /**
-     * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_ID = 6;
 
     /**
-     * The feature id for the '<em><b>Coverage Offerings</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Offerings</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_OFFERINGS = 7;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_SUBTYPE = 8;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_SUBTYPE_PARENT = 9;
 
     /**
-     * The feature id for the '<em><b>Coverage Summary</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Summary</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__COVERAGE_SUMMARY = 10;
 
     /**
-     * The feature id for the '<em><b>Describe Coverage</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Describe Coverage</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__DESCRIBE_COVERAGE = 11;
 
     /**
-     * The feature id for the '<em><b>Dimension Slice</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension Slice</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__DIMENSION_SLICE = 12;
 
     /**
-     * The feature id for the '<em><b>Dimension Subset</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension Subset</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__DIMENSION_SUBSET = 13;
 
     /**
-     * The feature id for the '<em><b>Dimension Trim</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension Trim</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__DIMENSION_TRIM = 14;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__EXTENSION = 15;
 
     /**
-     * The feature id for the '<em><b>Get Capabilities</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Get Capabilities</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__GET_CAPABILITIES = 16;
 
     /**
-     * The feature id for the '<em><b>Get Coverage</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Get Coverage</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__GET_COVERAGE = 17;
 
     /**
-     * The feature id for the '<em><b>Offered Coverage</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Offered Coverage</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__OFFERED_COVERAGE = 18;
 
     /**
-     * The feature id for the '<em><b>Service Metadata</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Metadata</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__SERVICE_METADATA = 19;
 
     /**
-     * The feature id for the '<em><b>Service Parameters</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Parameters</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT__SERVICE_PARAMETERS = 20;
 
     /**
-     * The number of structural features of the '<em>Document Root</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Document Root</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DOCUMENT_ROOT_FEATURE_COUNT = 21;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ExtensionTypeImpl <em>Extension Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ExtensionTypeImpl <em>Extension Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ExtensionTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ExtensionTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionType()
+	 * @generated
+	 */
     int EXTENSION_TYPE = 12;
 
     /**
-     * The feature id for the '<em><b>Contents</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Contents</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_TYPE__CONTENTS = 0;
 
     /**
-     * The number of structural features of the '<em>Extension Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Extension Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.GetCapabilitiesTypeImpl <em>Get Capabilities Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.GetCapabilitiesTypeImpl <em>Get Capabilities Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.GetCapabilitiesTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCapabilitiesType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.GetCapabilitiesTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCapabilitiesType()
+	 * @generated
+	 */
     int GET_CAPABILITIES_TYPE = 13;
 
     /**
-     * The feature id for the '<em><b>Accept Versions</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Accept Versions</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS = Ows20Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS;
 
     /**
-     * The feature id for the '<em><b>Sections</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__SECTIONS = Ows20Package.GET_CAPABILITIES_TYPE__SECTIONS;
 
     /**
-     * The feature id for the '<em><b>Accept Formats</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Accept Formats</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__ACCEPT_FORMATS = Ows20Package.GET_CAPABILITIES_TYPE__ACCEPT_FORMATS;
 
     /**
-     * The feature id for the '<em><b>Accept Languages</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Accept Languages</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__ACCEPT_LANGUAGES = Ows20Package.GET_CAPABILITIES_TYPE__ACCEPT_LANGUAGES;
 
     /**
-     * The feature id for the '<em><b>Update Sequence</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Update Sequence</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE = Ows20Package.GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE;
 
     /**
-     * The feature id for the '<em><b>Base Url</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Base Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__BASE_URL = Ows20Package.GET_CAPABILITIES_TYPE__BASE_URL;
 
     /**
-     * The feature id for the '<em><b>Service</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE__SERVICE = Ows20Package.GET_CAPABILITIES_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Get Capabilities Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Get Capabilities Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_CAPABILITIES_TYPE_FEATURE_COUNT = Ows20Package.GET_CAPABILITIES_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.GetCoverageTypeImpl <em>Get Coverage Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.GetCoverageTypeImpl <em>Get Coverage Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.GetCoverageTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCoverageType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.GetCoverageTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCoverageType()
+	 * @generated
+	 */
     int GET_COVERAGE_TYPE = 14;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__EXTENSION = REQUEST_BASE_TYPE__EXTENSION;
 
     /**
-     * The feature id for the '<em><b>Service</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__SERVICE = REQUEST_BASE_TYPE__SERVICE;
 
     /**
-     * The feature id for the '<em><b>Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Base Url</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Base Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
 
     /**
-     * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__COVERAGE_ID = REQUEST_BASE_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Dimension Subset Group</b></em>' attribute list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension Subset Group</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__DIMENSION_SUBSET_GROUP = REQUEST_BASE_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Dimension Subset</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension Subset</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__DIMENSION_SUBSET = REQUEST_BASE_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Format</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Format</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__FORMAT = REQUEST_BASE_TYPE_FEATURE_COUNT + 3;
 
     /**
-     * The feature id for the '<em><b>Media Type</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Media Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__MEDIA_TYPE = REQUEST_BASE_TYPE_FEATURE_COUNT + 4;
 
     /**
-     * The feature id for the '<em><b>Filter</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Filter</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int GET_COVERAGE_TYPE__FILTER = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
 
     /**
-     * The number of structural features of the '<em>Get Coverage Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Sort By</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GET_COVERAGE_TYPE__SORT_BY = REQUEST_BASE_TYPE_FEATURE_COUNT + 6;
+
+				/**
+	 * The number of structural features of the '<em>Get Coverage Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int GET_COVERAGE_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 6;
+	 * @generated
+	 * @ordered
+	 */
+    int GET_COVERAGE_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 7;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.OfferedCoverageTypeImpl <em>Offered Coverage Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.OfferedCoverageTypeImpl <em>Offered Coverage Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.OfferedCoverageTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getOfferedCoverageType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.OfferedCoverageTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getOfferedCoverageType()
+	 * @generated
+	 */
     int OFFERED_COVERAGE_TYPE = 15;
 
     /**
-     * The feature id for the '<em><b>Abstract Coverage</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Abstract Coverage</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int OFFERED_COVERAGE_TYPE__ABSTRACT_COVERAGE = 0;
 
     /**
-     * The feature id for the '<em><b>Service Parameters</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service Parameters</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int OFFERED_COVERAGE_TYPE__SERVICE_PARAMETERS = 1;
 
     /**
-     * The number of structural features of the '<em>Offered Coverage Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Offered Coverage Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int OFFERED_COVERAGE_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ServiceMetadataTypeImpl <em>Service Metadata Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ServiceMetadataTypeImpl <em>Service Metadata Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ServiceMetadataTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceMetadataType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ServiceMetadataTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceMetadataType()
+	 * @generated
+	 */
     int SERVICE_METADATA_TYPE = 17;
 
     /**
-     * The feature id for the '<em><b>Format Supported</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Format Supported</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_METADATA_TYPE__FORMAT_SUPPORTED = 0;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_METADATA_TYPE__EXTENSION = 1;
 
     /**
-     * The number of structural features of the '<em>Service Metadata Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Service Metadata Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_METADATA_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ServiceParametersTypeImpl <em>Service Parameters Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ServiceParametersTypeImpl <em>Service Parameters Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ServiceParametersTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceParametersType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ServiceParametersTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceParametersType()
+	 * @generated
+	 */
     int SERVICE_PARAMETERS_TYPE = 18;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_PARAMETERS_TYPE__COVERAGE_SUBTYPE = 0;
 
     /**
-     * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_PARAMETERS_TYPE__COVERAGE_SUBTYPE_PARENT = 1;
 
     /**
-     * The feature id for the '<em><b>Native Format</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Native Format</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_PARAMETERS_TYPE__NATIVE_FORMAT = 2;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_PARAMETERS_TYPE__EXTENSION = 3;
 
     /**
-     * The number of structural features of the '<em>Service Parameters Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Service Parameters Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SERVICE_PARAMETERS_TYPE_FEATURE_COUNT = 4;
 
     /**
-     * The meta object id for the '{@link java.lang.Object <em>Object</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link java.lang.Object <em>Object</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see java.lang.Object
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getObject()
-     * @generated
-     */
+	 * @see java.lang.Object
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getObject()
+	 * @generated
+	 */
     int OBJECT = 19;
 
     /**
-     * The number of structural features of the '<em>Object</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Object</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int OBJECT_FEATURE_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ExtensionItemTypeImpl <em>Extension Item Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ExtensionItemTypeImpl <em>Extension Item Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ExtensionItemTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionItemType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ExtensionItemTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionItemType()
+	 * @generated
+	 */
     int EXTENSION_ITEM_TYPE = 20;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_ITEM_TYPE__NAME = 0;
 
     /**
-     * The feature id for the '<em><b>Namespace</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_ITEM_TYPE__NAMESPACE = 1;
 
     /**
-     * The feature id for the '<em><b>Simple Content</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Simple Content</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_ITEM_TYPE__SIMPLE_CONTENT = 2;
 
     /**
-     * The feature id for the '<em><b>Object Content</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Object Content</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_ITEM_TYPE__OBJECT_CONTENT = 3;
 
     /**
-     * The number of structural features of the '<em>Extension Item Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Extension Item Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int EXTENSION_ITEM_TYPE_FEATURE_COUNT = 4;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.RangeIntervalTypeImpl <em>Range Interval Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.RangeIntervalTypeImpl <em>Range Interval Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.RangeIntervalTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeIntervalType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.RangeIntervalTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeIntervalType()
+	 * @generated
+	 */
     int RANGE_INTERVAL_TYPE = 21;
 
     /**
-     * The feature id for the '<em><b>Start Component</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Start Component</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_INTERVAL_TYPE__START_COMPONENT = 0;
 
     /**
-     * The feature id for the '<em><b>End Component</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>End Component</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_INTERVAL_TYPE__END_COMPONENT = 1;
 
     /**
-     * The number of structural features of the '<em>Range Interval Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Range Interval Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_INTERVAL_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.RangeItemTypeImpl <em>Range Item Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.RangeItemTypeImpl <em>Range Item Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.RangeItemTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeItemType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.RangeItemTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeItemType()
+	 * @generated
+	 */
     int RANGE_ITEM_TYPE = 22;
 
     /**
-     * The feature id for the '<em><b>Range Component</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Range Component</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_ITEM_TYPE__RANGE_COMPONENT = 0;
 
     /**
-     * The feature id for the '<em><b>Range Interval</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Range Interval</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_ITEM_TYPE__RANGE_INTERVAL = 1;
 
     /**
-     * The number of structural features of the '<em>Range Item Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Range Item Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_ITEM_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.RangeSubsetTypeImpl <em>Range Subset Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.RangeSubsetTypeImpl <em>Range Subset Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.RangeSubsetTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeSubsetType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.RangeSubsetTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeSubsetType()
+	 * @generated
+	 */
     int RANGE_SUBSET_TYPE = 23;
 
     /**
-     * The feature id for the '<em><b>Range Items</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Range Items</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_SUBSET_TYPE__RANGE_ITEMS = 0;
 
     /**
-     * The number of structural features of the '<em>Range Subset Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Range Subset Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int RANGE_SUBSET_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl <em>Scale Axis By Factor Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl <em>Scale Axis By Factor Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisByFactorType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisByFactorType()
+	 * @generated
+	 */
     int SCALE_AXIS_BY_FACTOR_TYPE = 24;
 
     /**
-     * The feature id for the '<em><b>Scale Axis</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale Axis</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS = 0;
 
     /**
-     * The number of structural features of the '<em>Scale Axis By Factor Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Scale Axis By Factor Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_AXIS_BY_FACTOR_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleAxisTypeImpl <em>Scale Axis Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleAxisTypeImpl <em>Scale Axis Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ScaleAxisTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ScaleAxisTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisType()
+	 * @generated
+	 */
     int SCALE_AXIS_TYPE = 25;
 
     /**
-     * The feature id for the '<em><b>Axis</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Axis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_AXIS_TYPE__AXIS = 0;
 
     /**
-     * The feature id for the '<em><b>Scale Factor</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale Factor</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_AXIS_TYPE__SCALE_FACTOR = 1;
 
     /**
-     * The number of structural features of the '<em>Scale Axis Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Scale Axis Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_AXIS_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleByFactorTypeImpl <em>Scale By Factor Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleByFactorTypeImpl <em>Scale By Factor Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ScaleByFactorTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleByFactorType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ScaleByFactorTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleByFactorType()
+	 * @generated
+	 */
     int SCALE_BY_FACTOR_TYPE = 26;
 
     /**
-     * The feature id for the '<em><b>Scale Factor</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale Factor</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_BY_FACTOR_TYPE__SCALE_FACTOR = 0;
 
     /**
-     * The number of structural features of the '<em>Scale By Factor Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Scale By Factor Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_BY_FACTOR_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleToExtentTypeImpl <em>Scale To Extent Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleToExtentTypeImpl <em>Scale To Extent Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ScaleToExtentTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToExtentType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ScaleToExtentTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToExtentType()
+	 * @generated
+	 */
     int SCALE_TO_EXTENT_TYPE = 27;
 
     /**
-     * The feature id for the '<em><b>Target Axis Extent</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Target Axis Extent</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT = 0;
 
     /**
-     * The number of structural features of the '<em>Scale To Extent Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Scale To Extent Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_TO_EXTENT_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleToSizeTypeImpl <em>Scale To Size Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleToSizeTypeImpl <em>Scale To Size Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ScaleToSizeTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToSizeType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ScaleToSizeTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToSizeType()
+	 * @generated
+	 */
     int SCALE_TO_SIZE_TYPE = 28;
 
     /**
-     * The feature id for the '<em><b>Target Axis Size</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Target Axis Size</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_TO_SIZE_TYPE__TARGET_AXIS_SIZE = 0;
 
     /**
-     * The number of structural features of the '<em>Scale To Size Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Scale To Size Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALE_TO_SIZE_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.ScalingTypeImpl <em>Scaling Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.ScalingTypeImpl <em>Scaling Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.ScalingTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScalingType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.ScalingTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScalingType()
+	 * @generated
+	 */
     int SCALING_TYPE = 29;
 
     /**
-     * The feature id for the '<em><b>Scale By Factor</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale By Factor</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALING_TYPE__SCALE_BY_FACTOR = 0;
 
     /**
-     * The feature id for the '<em><b>Scale Axes By Factor</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale Axes By Factor</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALING_TYPE__SCALE_AXES_BY_FACTOR = 1;
 
     /**
-     * The feature id for the '<em><b>Scale To Size</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale To Size</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALING_TYPE__SCALE_TO_SIZE = 2;
 
     /**
-     * The feature id for the '<em><b>Scale To Extent</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Scale To Extent</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALING_TYPE__SCALE_TO_EXTENT = 3;
 
     /**
-     * The number of structural features of the '<em>Scaling Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Scaling Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SCALING_TYPE_FEATURE_COUNT = 4;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.TargetAxisExtentTypeImpl <em>Target Axis Extent Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.TargetAxisExtentTypeImpl <em>Target Axis Extent Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.TargetAxisExtentTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisExtentType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.TargetAxisExtentTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisExtentType()
+	 * @generated
+	 */
     int TARGET_AXIS_EXTENT_TYPE = 30;
 
     /**
-     * The feature id for the '<em><b>Axis</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Axis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_EXTENT_TYPE__AXIS = 0;
 
     /**
-     * The feature id for the '<em><b>Low</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Low</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_EXTENT_TYPE__LOW = 1;
 
     /**
-     * The feature id for the '<em><b>High</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>High</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_EXTENT_TYPE__HIGH = 2;
 
     /**
-     * The number of structural features of the '<em>Target Axis Extent Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Target Axis Extent Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_EXTENT_TYPE_FEATURE_COUNT = 3;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.TargetAxisSizeTypeImpl <em>Target Axis Size Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.TargetAxisSizeTypeImpl <em>Target Axis Size Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.TargetAxisSizeTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisSizeType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.TargetAxisSizeTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisSizeType()
+	 * @generated
+	 */
     int TARGET_AXIS_SIZE_TYPE = 31;
 
     /**
-     * The feature id for the '<em><b>Axis</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Axis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_SIZE_TYPE__AXIS = 0;
 
     /**
-     * The feature id for the '<em><b>Target Size</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Target Size</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_SIZE_TYPE__TARGET_SIZE = 1;
 
     /**
-     * The number of structural features of the '<em>Target Axis Size Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Target Axis Size Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int TARGET_AXIS_SIZE_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationAxesTypeImpl <em>Interpolation Axes Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationAxesTypeImpl <em>Interpolation Axes Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.InterpolationAxesTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxesType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.InterpolationAxesTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxesType()
+	 * @generated
+	 */
     int INTERPOLATION_AXES_TYPE = 32;
 
     /**
-     * The feature id for the '<em><b>Interpolation Axis</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Interpolation Axis</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS = 0;
 
     /**
-     * The number of structural features of the '<em>Interpolation Axes Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Interpolation Axes Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_AXES_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationAxisTypeImpl <em>Interpolation Axis Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationAxisTypeImpl <em>Interpolation Axis Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.InterpolationAxisTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxisType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.InterpolationAxisTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxisType()
+	 * @generated
+	 */
     int INTERPOLATION_AXIS_TYPE = 33;
 
     /**
-     * The feature id for the '<em><b>Axis</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Axis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_AXIS_TYPE__AXIS = 0;
 
     /**
-     * The feature id for the '<em><b>Interpolation Method</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Interpolation Method</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_AXIS_TYPE__INTERPOLATION_METHOD = 1;
 
     /**
-     * The number of structural features of the '<em>Interpolation Axis Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Interpolation Axis Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_AXIS_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationMethodTypeImpl <em>Interpolation Method Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationMethodTypeImpl <em>Interpolation Method Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.InterpolationMethodTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationMethodType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.InterpolationMethodTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationMethodType()
+	 * @generated
+	 */
     int INTERPOLATION_METHOD_TYPE = 34;
 
     /**
-     * The feature id for the '<em><b>Interpolation Method</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Interpolation Method</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_METHOD_TYPE__INTERPOLATION_METHOD = 0;
 
     /**
-     * The number of structural features of the '<em>Interpolation Method Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Interpolation Method Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_METHOD_TYPE_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationTypeImpl <em>Interpolation Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationTypeImpl <em>Interpolation Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.InterpolationTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.InterpolationTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationType()
+	 * @generated
+	 */
     int INTERPOLATION_TYPE = 35;
 
     /**
-     * The feature id for the '<em><b>Interpolation Method</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Interpolation Method</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_TYPE__INTERPOLATION_METHOD = 0;
 
     /**
-     * The feature id for the '<em><b>Interpolation Axes</b></em>' reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Interpolation Axes</b></em>' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_TYPE__INTERPOLATION_AXES = 1;
 
     /**
-     * The number of structural features of the '<em>Interpolation Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Interpolation Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int INTERPOLATION_TYPE_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl <em>Describe EO Coverage Set Type</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl <em>Describe EO Coverage Set Type</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeEOCoverageSetType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeEOCoverageSetType()
+	 * @generated
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE = 36;
 
     /**
-     * The feature id for the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__EXTENSION = REQUEST_BASE_TYPE__EXTENSION;
 
     /**
-     * The feature id for the '<em><b>Service</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Service</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__SERVICE = REQUEST_BASE_TYPE__SERVICE;
 
     /**
-     * The feature id for the '<em><b>Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Version</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Base Url</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Base Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
 
     /**
-     * The feature id for the '<em><b>Eo Id</b></em>' attribute list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Eo Id</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID = REQUEST_BASE_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Containment Type</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Containment Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__CONTAINMENT_TYPE = REQUEST_BASE_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Sections</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Sections</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__SECTIONS = REQUEST_BASE_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Dimension Trim</b></em>' reference list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Dimension Trim</b></em>' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM = REQUEST_BASE_TYPE_FEATURE_COUNT + 3;
 
     /**
-     * The feature id for the '<em><b>Count</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Count</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE__COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 4;
 
     /**
-     * The number of structural features of the '<em>Describe EO Coverage Set Type</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Describe EO Coverage Set Type</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int DESCRIBE_EO_COVERAGE_SET_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.impl.SectionsImpl <em>Sections</em>}' class.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.impl.SectionsImpl <em>Sections</em>}' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.impl.SectionsImpl
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSections()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.impl.SectionsImpl
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSections()
+	 * @generated
+	 */
     int SECTIONS = 37;
 
     /**
-     * The feature id for the '<em><b>Section</b></em>' attribute list.
-     * <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Section</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SECTIONS__SECTION = 0;
 
     /**
-     * The number of structural features of the '<em>Sections</em>' class.
-     * <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Sections</em>' class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     int SECTIONS_FEATURE_COUNT = 1;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}' enum.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '<em>Sort By</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.opengis.filter.sort.SortBy
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSortBy()
+	 * @generated
+	 */
+	int SORT_BY = 44;
+
+				/**
+	 * The meta object id for the '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}' enum.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.ContainmentType
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContainmentType()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.ContainmentType
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContainmentType()
+	 * @generated
+	 */
     int CONTAINMENT_TYPE = 38;
 
     /**
-     * The meta object id for the '{@link net.opengis.wcs20.Section <em>Section</em>}' enum.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '{@link net.opengis.wcs20.Section <em>Section</em>}' enum.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see net.opengis.wcs20.Section
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSection()
-     * @generated
-     */
+	 * @see net.opengis.wcs20.Section
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSection()
+	 * @generated
+	 */
     int SECTION = 39;
 
     /**
-     * The meta object id for the '<em>Version String Type</em>' data type.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '<em>Version String Type</em>' data type.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see java.lang.String
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
-     * @generated
-     */
+	 * @see java.lang.String
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
+	 * @generated
+	 */
     int VERSION_STRING_TYPE = 40;
 
 
     /**
-     * The meta object id for the '<em>Version String Type 1</em>' data type.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '<em>Version String Type 1</em>' data type.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see java.lang.String
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
-     * @generated
-     */
+	 * @see java.lang.String
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
+	 * @generated
+	 */
     int VERSION_STRING_TYPE_1 = 41;
 
 
     /**
-     * The meta object id for the '<em>QName</em>' data type.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '<em>QName</em>' data type.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see javax.xml.namespace.QName
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
-     * @generated
-     */
+	 * @see javax.xml.namespace.QName
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
+	 * @generated
+	 */
     int QNAME = 42;
 
 
     /**
-     * The meta object id for the '<em>Filter</em>' data type.
-     * <!-- begin-user-doc -->
+	 * The meta object id for the '<em>Filter</em>' data type.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.opengis.filter.Filter
-     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
-     * @generated
-     */
+	 * @see org.opengis.filter.Filter
+	 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
+	 * @generated
+	 */
     int FILTER = 43;
 
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.CapabilitiesType <em>Capabilities Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.CapabilitiesType <em>Capabilities Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Capabilities Type</em>'.
-     * @see net.opengis.wcs20.CapabilitiesType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Capabilities Type</em>'.
+	 * @see net.opengis.wcs20.CapabilitiesType
+	 * @generated
+	 */
     EClass getCapabilitiesType();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CapabilitiesType#getServiceMetadata <em>Service Metadata</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CapabilitiesType#getServiceMetadata <em>Service Metadata</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Service Metadata</em>'.
-     * @see net.opengis.wcs20.CapabilitiesType#getServiceMetadata()
-     * @see #getCapabilitiesType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Service Metadata</em>'.
+	 * @see net.opengis.wcs20.CapabilitiesType#getServiceMetadata()
+	 * @see #getCapabilitiesType()
+	 * @generated
+	 */
     EReference getCapabilitiesType_ServiceMetadata();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CapabilitiesType#getContents <em>Contents</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CapabilitiesType#getContents <em>Contents</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Contents</em>'.
-     * @see net.opengis.wcs20.CapabilitiesType#getContents()
-     * @see #getCapabilitiesType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Contents</em>'.
+	 * @see net.opengis.wcs20.CapabilitiesType#getContents()
+	 * @see #getCapabilitiesType()
+	 * @generated
+	 */
     EReference getCapabilitiesType_Contents();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ContentsType <em>Contents Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ContentsType <em>Contents Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Contents Type</em>'.
-     * @see net.opengis.wcs20.ContentsType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Contents Type</em>'.
+	 * @see net.opengis.wcs20.ContentsType
+	 * @generated
+	 */
     EClass getContentsType();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.ContentsType#getCoverageSummary <em>Coverage Summary</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.ContentsType#getCoverageSummary <em>Coverage Summary</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Coverage Summary</em>'.
-     * @see net.opengis.wcs20.ContentsType#getCoverageSummary()
-     * @see #getContentsType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Coverage Summary</em>'.
+	 * @see net.opengis.wcs20.ContentsType#getCoverageSummary()
+	 * @see #getContentsType()
+	 * @generated
+	 */
     EReference getContentsType_CoverageSummary();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ContentsType#getExtension <em>Extension</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ContentsType#getExtension <em>Extension</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Extension</em>'.
-     * @see net.opengis.wcs20.ContentsType#getExtension()
-     * @see #getContentsType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Extension</em>'.
+	 * @see net.opengis.wcs20.ContentsType#getExtension()
+	 * @see #getContentsType()
+	 * @generated
+	 */
     EReference getContentsType_Extension();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.CoverageDescriptionsType <em>Coverage Descriptions Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.CoverageDescriptionsType <em>Coverage Descriptions Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Coverage Descriptions Type</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionsType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Coverage Descriptions Type</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionsType
+	 * @generated
+	 */
     EClass getCoverageDescriptionsType();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageDescriptionsType#getCoverageDescription <em>Coverage Description</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageDescriptionsType#getCoverageDescription <em>Coverage Description</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Coverage Description</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionsType#getCoverageDescription()
-     * @see #getCoverageDescriptionsType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Coverage Description</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionsType#getCoverageDescription()
+	 * @see #getCoverageDescriptionsType()
+	 * @generated
+	 */
     EReference getCoverageDescriptionsType_CoverageDescription();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.CoverageDescriptionType <em>Coverage Description Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.CoverageDescriptionType <em>Coverage Description Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Coverage Description Type</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Coverage Description Type</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType
+	 * @generated
+	 */
     EClass getCoverageDescriptionType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageDescriptionType#getCoverageId <em>Coverage Id</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageDescriptionType#getCoverageId <em>Coverage Id</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Id</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType#getCoverageId()
-     * @see #getCoverageDescriptionType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Id</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType#getCoverageId()
+	 * @see #getCoverageDescriptionType()
+	 * @generated
+	 */
     EAttribute getCoverageDescriptionType_CoverageId();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getCoverageFunction <em>Coverage Function</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getCoverageFunction <em>Coverage Function</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Function</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType#getCoverageFunction()
-     * @see #getCoverageDescriptionType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Function</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType#getCoverageFunction()
+	 * @see #getCoverageDescriptionType()
+	 * @generated
+	 */
     EReference getCoverageDescriptionType_CoverageFunction();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageDescriptionType#getMetadata <em>Metadata</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageDescriptionType#getMetadata <em>Metadata</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Metadata</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType#getMetadata()
-     * @see #getCoverageDescriptionType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Metadata</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType#getMetadata()
+	 * @see #getCoverageDescriptionType()
+	 * @generated
+	 */
     EReference getCoverageDescriptionType_Metadata();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getDomainSet <em>Domain Set</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getDomainSet <em>Domain Set</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Domain Set</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType#getDomainSet()
-     * @see #getCoverageDescriptionType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Domain Set</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType#getDomainSet()
+	 * @see #getCoverageDescriptionType()
+	 * @generated
+	 */
     EReference getCoverageDescriptionType_DomainSet();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getRangeType <em>Range Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getRangeType <em>Range Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Range Type</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType#getRangeType()
-     * @see #getCoverageDescriptionType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Range Type</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType#getRangeType()
+	 * @see #getCoverageDescriptionType()
+	 * @generated
+	 */
     EReference getCoverageDescriptionType_RangeType();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getServiceParameters <em>Service Parameters</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageDescriptionType#getServiceParameters <em>Service Parameters</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Service Parameters</em>'.
-     * @see net.opengis.wcs20.CoverageDescriptionType#getServiceParameters()
-     * @see #getCoverageDescriptionType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Service Parameters</em>'.
+	 * @see net.opengis.wcs20.CoverageDescriptionType#getServiceParameters()
+	 * @see #getCoverageDescriptionType()
+	 * @generated
+	 */
     EReference getCoverageDescriptionType_ServiceParameters();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.CoverageOfferingsType <em>Coverage Offerings Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.CoverageOfferingsType <em>Coverage Offerings Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Coverage Offerings Type</em>'.
-     * @see net.opengis.wcs20.CoverageOfferingsType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Coverage Offerings Type</em>'.
+	 * @see net.opengis.wcs20.CoverageOfferingsType
+	 * @generated
+	 */
     EClass getCoverageOfferingsType();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageOfferingsType#getServiceMetadata <em>Service Metadata</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageOfferingsType#getServiceMetadata <em>Service Metadata</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Service Metadata</em>'.
-     * @see net.opengis.wcs20.CoverageOfferingsType#getServiceMetadata()
-     * @see #getCoverageOfferingsType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Service Metadata</em>'.
+	 * @see net.opengis.wcs20.CoverageOfferingsType#getServiceMetadata()
+	 * @see #getCoverageOfferingsType()
+	 * @generated
+	 */
     EReference getCoverageOfferingsType_ServiceMetadata();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageOfferingsType#getOfferedCoverage <em>Offered Coverage</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageOfferingsType#getOfferedCoverage <em>Offered Coverage</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Offered Coverage</em>'.
-     * @see net.opengis.wcs20.CoverageOfferingsType#getOfferedCoverage()
-     * @see #getCoverageOfferingsType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Offered Coverage</em>'.
+	 * @see net.opengis.wcs20.CoverageOfferingsType#getOfferedCoverage()
+	 * @see #getCoverageOfferingsType()
+	 * @generated
+	 */
     EReference getCoverageOfferingsType_OfferedCoverage();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.CoverageSubtypeParentType <em>Coverage Subtype Parent Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.CoverageSubtypeParentType <em>Coverage Subtype Parent Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Coverage Subtype Parent Type</em>'.
-     * @see net.opengis.wcs20.CoverageSubtypeParentType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Coverage Subtype Parent Type</em>'.
+	 * @see net.opengis.wcs20.CoverageSubtypeParentType
+	 * @generated
+	 */
     EClass getCoverageSubtypeParentType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtype <em>Coverage Subtype</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtype <em>Coverage Subtype</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
-     * @see net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtype()
-     * @see #getCoverageSubtypeParentType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
+	 * @see net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtype()
+	 * @see #getCoverageSubtypeParentType()
+	 * @generated
+	 */
     EAttribute getCoverageSubtypeParentType_CoverageSubtype();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
-     * @see net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtypeParent()
-     * @see #getCoverageSubtypeParentType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
+	 * @see net.opengis.wcs20.CoverageSubtypeParentType#getCoverageSubtypeParent()
+	 * @see #getCoverageSubtypeParentType()
+	 * @generated
+	 */
     EReference getCoverageSubtypeParentType_CoverageSubtypeParent();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.CoverageSummaryType <em>Coverage Summary Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.CoverageSummaryType <em>Coverage Summary Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Coverage Summary Type</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Coverage Summary Type</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType
+	 * @generated
+	 */
     EClass getCoverageSummaryType();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageSummaryType#getWGS84BoundingBox <em>WGS84 Bounding Box</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageSummaryType#getWGS84BoundingBox <em>WGS84 Bounding Box</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>WGS84 Bounding Box</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getWGS84BoundingBox()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>WGS84 Bounding Box</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getWGS84BoundingBox()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EReference getCoverageSummaryType_WGS84BoundingBox();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageSummaryType#getCoverageId <em>Coverage Id</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageSummaryType#getCoverageId <em>Coverage Id</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Id</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getCoverageId()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Id</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getCoverageId()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EAttribute getCoverageSummaryType_CoverageId();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageSummaryType#getCoverageSubtype <em>Coverage Subtype</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.CoverageSummaryType#getCoverageSubtype <em>Coverage Subtype</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getCoverageSubtype()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getCoverageSubtype()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EAttribute getCoverageSummaryType_CoverageSubtype();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageSummaryType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.CoverageSummaryType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getCoverageSubtypeParent()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getCoverageSubtypeParent()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EReference getCoverageSummaryType_CoverageSubtypeParent();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.CoverageSummaryType#getBoundingBoxGroup <em>Bounding Box Group</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.CoverageSummaryType#getBoundingBoxGroup <em>Bounding Box Group</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Bounding Box Group</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getBoundingBoxGroup()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the attribute list '<em>Bounding Box Group</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getBoundingBoxGroup()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EAttribute getCoverageSummaryType_BoundingBoxGroup();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageSummaryType#getBoundingBox <em>Bounding Box</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageSummaryType#getBoundingBox <em>Bounding Box</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Bounding Box</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getBoundingBox()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Bounding Box</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getBoundingBox()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EReference getCoverageSummaryType_BoundingBox();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.CoverageSummaryType#getMetadataGroup <em>Metadata Group</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.CoverageSummaryType#getMetadataGroup <em>Metadata Group</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Metadata Group</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getMetadataGroup()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the attribute list '<em>Metadata Group</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getMetadataGroup()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EAttribute getCoverageSummaryType_MetadataGroup();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageSummaryType#getMetadata <em>Metadata</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.CoverageSummaryType#getMetadata <em>Metadata</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Metadata</em>'.
-     * @see net.opengis.wcs20.CoverageSummaryType#getMetadata()
-     * @see #getCoverageSummaryType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Metadata</em>'.
+	 * @see net.opengis.wcs20.CoverageSummaryType#getMetadata()
+	 * @see #getCoverageSummaryType()
+	 * @generated
+	 */
     EReference getCoverageSummaryType_Metadata();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.DescribeCoverageType <em>Describe Coverage Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.DescribeCoverageType <em>Describe Coverage Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Describe Coverage Type</em>'.
-     * @see net.opengis.wcs20.DescribeCoverageType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Describe Coverage Type</em>'.
+	 * @see net.opengis.wcs20.DescribeCoverageType
+	 * @generated
+	 */
     EClass getDescribeCoverageType();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.DescribeCoverageType#getCoverageId <em>Coverage Id</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.DescribeCoverageType#getCoverageId <em>Coverage Id</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Coverage Id</em>'.
-     * @see net.opengis.wcs20.DescribeCoverageType#getCoverageId()
-     * @see #getDescribeCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the attribute list '<em>Coverage Id</em>'.
+	 * @see net.opengis.wcs20.DescribeCoverageType#getCoverageId()
+	 * @see #getDescribeCoverageType()
+	 * @generated
+	 */
     EAttribute getDescribeCoverageType_CoverageId();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.DimensionSliceType <em>Dimension Slice Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.DimensionSliceType <em>Dimension Slice Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Dimension Slice Type</em>'.
-     * @see net.opengis.wcs20.DimensionSliceType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Dimension Slice Type</em>'.
+	 * @see net.opengis.wcs20.DimensionSliceType
+	 * @generated
+	 */
     EClass getDimensionSliceType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSliceType#getSlicePoint <em>Slice Point</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSliceType#getSlicePoint <em>Slice Point</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Slice Point</em>'.
-     * @see net.opengis.wcs20.DimensionSliceType#getSlicePoint()
-     * @see #getDimensionSliceType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Slice Point</em>'.
+	 * @see net.opengis.wcs20.DimensionSliceType#getSlicePoint()
+	 * @see #getDimensionSliceType()
+	 * @generated
+	 */
     EAttribute getDimensionSliceType_SlicePoint();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.DimensionSubsetType <em>Dimension Subset Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.DimensionSubsetType <em>Dimension Subset Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Dimension Subset Type</em>'.
-     * @see net.opengis.wcs20.DimensionSubsetType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Dimension Subset Type</em>'.
+	 * @see net.opengis.wcs20.DimensionSubsetType
+	 * @generated
+	 */
     EClass getDimensionSubsetType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSubsetType#getDimension <em>Dimension</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSubsetType#getDimension <em>Dimension</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Dimension</em>'.
-     * @see net.opengis.wcs20.DimensionSubsetType#getDimension()
-     * @see #getDimensionSubsetType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Dimension</em>'.
+	 * @see net.opengis.wcs20.DimensionSubsetType#getDimension()
+	 * @see #getDimensionSubsetType()
+	 * @generated
+	 */
     EAttribute getDimensionSubsetType_Dimension();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSubsetType#getCRS <em>CRS</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSubsetType#getCRS <em>CRS</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>CRS</em>'.
-     * @see net.opengis.wcs20.DimensionSubsetType#getCRS()
-     * @see #getDimensionSubsetType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>CRS</em>'.
+	 * @see net.opengis.wcs20.DimensionSubsetType#getCRS()
+	 * @see #getDimensionSubsetType()
+	 * @generated
+	 */
     EAttribute getDimensionSubsetType_CRS();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.DimensionTrimType <em>Dimension Trim Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.DimensionTrimType <em>Dimension Trim Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Dimension Trim Type</em>'.
-     * @see net.opengis.wcs20.DimensionTrimType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Dimension Trim Type</em>'.
+	 * @see net.opengis.wcs20.DimensionTrimType
+	 * @generated
+	 */
     EClass getDimensionTrimType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionTrimType#getTrimLow <em>Trim Low</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionTrimType#getTrimLow <em>Trim Low</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Trim Low</em>'.
-     * @see net.opengis.wcs20.DimensionTrimType#getTrimLow()
-     * @see #getDimensionTrimType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Trim Low</em>'.
+	 * @see net.opengis.wcs20.DimensionTrimType#getTrimLow()
+	 * @see #getDimensionTrimType()
+	 * @generated
+	 */
     EAttribute getDimensionTrimType_TrimLow();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionTrimType#getTrimHigh <em>Trim High</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionTrimType#getTrimHigh <em>Trim High</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Trim High</em>'.
-     * @see net.opengis.wcs20.DimensionTrimType#getTrimHigh()
-     * @see #getDimensionTrimType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Trim High</em>'.
+	 * @see net.opengis.wcs20.DimensionTrimType#getTrimHigh()
+	 * @see #getDimensionTrimType()
+	 * @generated
+	 */
     EAttribute getDimensionTrimType_TrimHigh();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.DocumentRoot <em>Document Root</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.DocumentRoot <em>Document Root</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Document Root</em>'.
-     * @see net.opengis.wcs20.DocumentRoot
-     * @generated
-     */
+	 * @return the meta object for class '<em>Document Root</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot
+	 * @generated
+	 */
     EClass getDocumentRoot();
 
     /**
-     * Returns the meta object for the map '{@link net.opengis.wcs20.DocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the map '{@link net.opengis.wcs20.DocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the map '<em>XMLNS Prefix Map</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getXMLNSPrefixMap()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the map '<em>XMLNS Prefix Map</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getXMLNSPrefixMap()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_XMLNSPrefixMap();
 
     /**
-     * Returns the meta object for the map '{@link net.opengis.wcs20.DocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the map '{@link net.opengis.wcs20.DocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the map '<em>XSI Schema Location</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getXSISchemaLocation()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the map '<em>XSI Schema Location</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getXSISchemaLocation()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_XSISchemaLocation();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCapabilities <em>Capabilities</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCapabilities <em>Capabilities</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Capabilities</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCapabilities()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Capabilities</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCapabilities()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_Capabilities();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getContents <em>Contents</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getContents <em>Contents</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Contents</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getContents()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Contents</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getContents()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_Contents();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageDescription <em>Coverage Description</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageDescription <em>Coverage Description</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Description</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageDescription()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Description</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageDescription()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_CoverageDescription();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageDescriptions <em>Coverage Descriptions</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageDescriptions <em>Coverage Descriptions</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Descriptions</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageDescriptions()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Descriptions</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageDescriptions()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_CoverageDescriptions();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DocumentRoot#getCoverageId <em>Coverage Id</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DocumentRoot#getCoverageId <em>Coverage Id</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Id</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageId()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Id</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageId()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EAttribute getDocumentRoot_CoverageId();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageOfferings <em>Coverage Offerings</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageOfferings <em>Coverage Offerings</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Offerings</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageOfferings()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Offerings</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageOfferings()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_CoverageOfferings();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DocumentRoot#getCoverageSubtype <em>Coverage Subtype</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DocumentRoot#getCoverageSubtype <em>Coverage Subtype</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageSubtype()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageSubtype()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EAttribute getDocumentRoot_CoverageSubtype();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageSubtypeParent()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageSubtypeParent()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_CoverageSubtypeParent();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageSummary <em>Coverage Summary</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getCoverageSummary <em>Coverage Summary</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Summary</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getCoverageSummary()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Summary</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getCoverageSummary()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_CoverageSummary();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDescribeCoverage <em>Describe Coverage</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDescribeCoverage <em>Describe Coverage</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Describe Coverage</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getDescribeCoverage()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Describe Coverage</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getDescribeCoverage()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_DescribeCoverage();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDimensionSlice <em>Dimension Slice</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDimensionSlice <em>Dimension Slice</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Dimension Slice</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getDimensionSlice()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Dimension Slice</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getDimensionSlice()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_DimensionSlice();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDimensionSubset <em>Dimension Subset</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDimensionSubset <em>Dimension Subset</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Dimension Subset</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getDimensionSubset()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Dimension Subset</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getDimensionSubset()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_DimensionSubset();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDimensionTrim <em>Dimension Trim</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getDimensionTrim <em>Dimension Trim</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Dimension Trim</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getDimensionTrim()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Dimension Trim</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getDimensionTrim()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_DimensionTrim();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getExtension <em>Extension</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getExtension <em>Extension</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Extension</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getExtension()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Extension</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getExtension()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_Extension();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getGetCapabilities <em>Get Capabilities</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getGetCapabilities <em>Get Capabilities</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Get Capabilities</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getGetCapabilities()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Get Capabilities</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getGetCapabilities()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_GetCapabilities();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getGetCoverage <em>Get Coverage</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getGetCoverage <em>Get Coverage</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Get Coverage</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getGetCoverage()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Get Coverage</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getGetCoverage()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_GetCoverage();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getOfferedCoverage <em>Offered Coverage</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getOfferedCoverage <em>Offered Coverage</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Offered Coverage</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getOfferedCoverage()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Offered Coverage</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getOfferedCoverage()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_OfferedCoverage();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getServiceMetadata <em>Service Metadata</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getServiceMetadata <em>Service Metadata</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Service Metadata</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getServiceMetadata()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Service Metadata</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getServiceMetadata()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_ServiceMetadata();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getServiceParameters <em>Service Parameters</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DocumentRoot#getServiceParameters <em>Service Parameters</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Service Parameters</em>'.
-     * @see net.opengis.wcs20.DocumentRoot#getServiceParameters()
-     * @see #getDocumentRoot()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Service Parameters</em>'.
+	 * @see net.opengis.wcs20.DocumentRoot#getServiceParameters()
+	 * @see #getDocumentRoot()
+	 * @generated
+	 */
     EReference getDocumentRoot_ServiceParameters();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ExtensionType <em>Extension Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ExtensionType <em>Extension Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Extension Type</em>'.
-     * @see net.opengis.wcs20.ExtensionType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Extension Type</em>'.
+	 * @see net.opengis.wcs20.ExtensionType
+	 * @generated
+	 */
     EClass getExtensionType();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ExtensionType#getContents <em>Contents</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.ExtensionType#getContents <em>Contents</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Contents</em>'.
-     * @see net.opengis.wcs20.ExtensionType#getContents()
-     * @see #getExtensionType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Contents</em>'.
+	 * @see net.opengis.wcs20.ExtensionType#getContents()
+	 * @see #getExtensionType()
+	 * @generated
+	 */
     EReference getExtensionType_Contents();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.GetCapabilitiesType <em>Get Capabilities Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.GetCapabilitiesType <em>Get Capabilities Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Get Capabilities Type</em>'.
-     * @see net.opengis.wcs20.GetCapabilitiesType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Get Capabilities Type</em>'.
+	 * @see net.opengis.wcs20.GetCapabilitiesType
+	 * @generated
+	 */
     EClass getGetCapabilitiesType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCapabilitiesType#getService <em>Service</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCapabilitiesType#getService <em>Service</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Service</em>'.
-     * @see net.opengis.wcs20.GetCapabilitiesType#getService()
-     * @see #getGetCapabilitiesType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Service</em>'.
+	 * @see net.opengis.wcs20.GetCapabilitiesType#getService()
+	 * @see #getGetCapabilitiesType()
+	 * @generated
+	 */
     EAttribute getGetCapabilitiesType_Service();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.GetCoverageType <em>Get Coverage Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.GetCoverageType <em>Get Coverage Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Get Coverage Type</em>'.
-     * @see net.opengis.wcs20.GetCoverageType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Get Coverage Type</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType
+	 * @generated
+	 */
     EClass getGetCoverageType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getCoverageId <em>Coverage Id</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getCoverageId <em>Coverage Id</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Id</em>'.
-     * @see net.opengis.wcs20.GetCoverageType#getCoverageId()
-     * @see #getGetCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Id</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getCoverageId()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
     EAttribute getGetCoverageType_CoverageId();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.GetCoverageType#getDimensionSubsetGroup <em>Dimension Subset Group</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.GetCoverageType#getDimensionSubsetGroup <em>Dimension Subset Group</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Dimension Subset Group</em>'.
-     * @see net.opengis.wcs20.GetCoverageType#getDimensionSubsetGroup()
-     * @see #getGetCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the attribute list '<em>Dimension Subset Group</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getDimensionSubsetGroup()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
     EAttribute getGetCoverageType_DimensionSubsetGroup();
 
     /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.GetCoverageType#getDimensionSubset <em>Dimension Subset</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link net.opengis.wcs20.GetCoverageType#getDimensionSubset <em>Dimension Subset</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Dimension Subset</em>'.
-     * @see net.opengis.wcs20.GetCoverageType#getDimensionSubset()
-     * @see #getGetCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference list '<em>Dimension Subset</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getDimensionSubset()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
     EReference getGetCoverageType_DimensionSubset();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getFormat <em>Format</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getFormat <em>Format</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Format</em>'.
-     * @see net.opengis.wcs20.GetCoverageType#getFormat()
-     * @see #getGetCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Format</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getFormat()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
     EAttribute getGetCoverageType_Format();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getMediaType <em>Media Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getMediaType <em>Media Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Media Type</em>'.
-     * @see net.opengis.wcs20.GetCoverageType#getMediaType()
-     * @see #getGetCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Media Type</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getMediaType()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
     EAttribute getGetCoverageType_MediaType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getFilter <em>Filter</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.GetCoverageType#getFilter <em>Filter</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Filter</em>'.
-     * @see net.opengis.wcs20.GetCoverageType#getFilter()
-     * @see #getGetCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Filter</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getFilter()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
     EAttribute getGetCoverageType_Filter();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.OfferedCoverageType <em>Offered Coverage Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.GetCoverageType#getSortBy <em>Sort By</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Sort By</em>'.
+	 * @see net.opengis.wcs20.GetCoverageType#getSortBy()
+	 * @see #getGetCoverageType()
+	 * @generated
+	 */
+	EAttribute getGetCoverageType_SortBy();
+
+				/**
+	 * Returns the meta object for class '{@link net.opengis.wcs20.OfferedCoverageType <em>Offered Coverage Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Offered Coverage Type</em>'.
-     * @see net.opengis.wcs20.OfferedCoverageType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Offered Coverage Type</em>'.
+	 * @see net.opengis.wcs20.OfferedCoverageType
+	 * @generated
+	 */
     EClass getOfferedCoverageType();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.OfferedCoverageType#getAbstractCoverage <em>Abstract Coverage</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.OfferedCoverageType#getAbstractCoverage <em>Abstract Coverage</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Abstract Coverage</em>'.
-     * @see net.opengis.wcs20.OfferedCoverageType#getAbstractCoverage()
-     * @see #getOfferedCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Abstract Coverage</em>'.
+	 * @see net.opengis.wcs20.OfferedCoverageType#getAbstractCoverage()
+	 * @see #getOfferedCoverageType()
+	 * @generated
+	 */
     EReference getOfferedCoverageType_AbstractCoverage();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.OfferedCoverageType#getServiceParameters <em>Service Parameters</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.OfferedCoverageType#getServiceParameters <em>Service Parameters</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Service Parameters</em>'.
-     * @see net.opengis.wcs20.OfferedCoverageType#getServiceParameters()
-     * @see #getOfferedCoverageType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Service Parameters</em>'.
+	 * @see net.opengis.wcs20.OfferedCoverageType#getServiceParameters()
+	 * @see #getOfferedCoverageType()
+	 * @generated
+	 */
     EReference getOfferedCoverageType_ServiceParameters();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.RequestBaseType <em>Request Base Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.RequestBaseType <em>Request Base Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Request Base Type</em>'.
-     * @see net.opengis.wcs20.RequestBaseType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Request Base Type</em>'.
+	 * @see net.opengis.wcs20.RequestBaseType
+	 * @generated
+	 */
     EClass getRequestBaseType();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.RequestBaseType#getExtension <em>Extension</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.RequestBaseType#getExtension <em>Extension</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Extension</em>'.
-     * @see net.opengis.wcs20.RequestBaseType#getExtension()
-     * @see #getRequestBaseType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Extension</em>'.
+	 * @see net.opengis.wcs20.RequestBaseType#getExtension()
+	 * @see #getRequestBaseType()
+	 * @generated
+	 */
     EReference getRequestBaseType_Extension();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RequestBaseType#getService <em>Service</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.RequestBaseType#getService <em>Service</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Service</em>'.
-     * @see net.opengis.wcs20.RequestBaseType#getService()
-     * @see #getRequestBaseType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Service</em>'.
+	 * @see net.opengis.wcs20.RequestBaseType#getService()
+	 * @see #getRequestBaseType()
+	 * @generated
+	 */
     EAttribute getRequestBaseType_Service();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RequestBaseType#getVersion <em>Version</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.RequestBaseType#getVersion <em>Version</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Version</em>'.
-     * @see net.opengis.wcs20.RequestBaseType#getVersion()
-     * @see #getRequestBaseType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Version</em>'.
+	 * @see net.opengis.wcs20.RequestBaseType#getVersion()
+	 * @see #getRequestBaseType()
+	 * @generated
+	 */
     EAttribute getRequestBaseType_Version();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RequestBaseType#getBaseUrl <em>Base Url</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.RequestBaseType#getBaseUrl <em>Base Url</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Base Url</em>'.
-     * @see net.opengis.wcs20.RequestBaseType#getBaseUrl()
-     * @see #getRequestBaseType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Base Url</em>'.
+	 * @see net.opengis.wcs20.RequestBaseType#getBaseUrl()
+	 * @see #getRequestBaseType()
+	 * @generated
+	 */
     EAttribute getRequestBaseType_BaseUrl();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ServiceMetadataType <em>Service Metadata Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ServiceMetadataType <em>Service Metadata Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Service Metadata Type</em>'.
-     * @see net.opengis.wcs20.ServiceMetadataType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Service Metadata Type</em>'.
+	 * @see net.opengis.wcs20.ServiceMetadataType
+	 * @generated
+	 */
     EClass getServiceMetadataType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ServiceMetadataType#getFormatSupported <em>Format Supported</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ServiceMetadataType#getFormatSupported <em>Format Supported</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Format Supported</em>'.
-     * @see net.opengis.wcs20.ServiceMetadataType#getFormatSupported()
-     * @see #getServiceMetadataType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Format Supported</em>'.
+	 * @see net.opengis.wcs20.ServiceMetadataType#getFormatSupported()
+	 * @see #getServiceMetadataType()
+	 * @generated
+	 */
     EAttribute getServiceMetadataType_FormatSupported();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ServiceMetadataType#getExtension <em>Extension</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ServiceMetadataType#getExtension <em>Extension</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Extension</em>'.
-     * @see net.opengis.wcs20.ServiceMetadataType#getExtension()
-     * @see #getServiceMetadataType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Extension</em>'.
+	 * @see net.opengis.wcs20.ServiceMetadataType#getExtension()
+	 * @see #getServiceMetadataType()
+	 * @generated
+	 */
     EReference getServiceMetadataType_Extension();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ServiceParametersType <em>Service Parameters Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ServiceParametersType <em>Service Parameters Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Service Parameters Type</em>'.
-     * @see net.opengis.wcs20.ServiceParametersType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Service Parameters Type</em>'.
+	 * @see net.opengis.wcs20.ServiceParametersType
+	 * @generated
+	 */
     EClass getServiceParametersType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtype <em>Coverage Subtype</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtype <em>Coverage Subtype</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
-     * @see net.opengis.wcs20.ServiceParametersType#getCoverageSubtype()
-     * @see #getServiceParametersType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Coverage Subtype</em>'.
+	 * @see net.opengis.wcs20.ServiceParametersType#getCoverageSubtype()
+	 * @see #getServiceParametersType()
+	 * @generated
+	 */
     EAttribute getServiceParametersType_CoverageSubtype();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
-     * @see net.opengis.wcs20.ServiceParametersType#getCoverageSubtypeParent()
-     * @see #getServiceParametersType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Coverage Subtype Parent</em>'.
+	 * @see net.opengis.wcs20.ServiceParametersType#getCoverageSubtypeParent()
+	 * @see #getServiceParametersType()
+	 * @generated
+	 */
     EReference getServiceParametersType_CoverageSubtypeParent();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ServiceParametersType#getNativeFormat <em>Native Format</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ServiceParametersType#getNativeFormat <em>Native Format</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Native Format</em>'.
-     * @see net.opengis.wcs20.ServiceParametersType#getNativeFormat()
-     * @see #getServiceParametersType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Native Format</em>'.
+	 * @see net.opengis.wcs20.ServiceParametersType#getNativeFormat()
+	 * @see #getServiceParametersType()
+	 * @generated
+	 */
     EAttribute getServiceParametersType_NativeFormat();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ServiceParametersType#getExtension <em>Extension</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.ServiceParametersType#getExtension <em>Extension</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Extension</em>'.
-     * @see net.opengis.wcs20.ServiceParametersType#getExtension()
-     * @see #getServiceParametersType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Extension</em>'.
+	 * @see net.opengis.wcs20.ServiceParametersType#getExtension()
+	 * @see #getServiceParametersType()
+	 * @generated
+	 */
     EReference getServiceParametersType_Extension();
 
     /**
-     * Returns the meta object for class '{@link java.lang.Object <em>Object</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link java.lang.Object <em>Object</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Object</em>'.
-     * @see java.lang.Object
-     * @model instanceClass="java.lang.Object"
-     * @generated
-     */
+	 * @return the meta object for class '<em>Object</em>'.
+	 * @see java.lang.Object
+	 * @model instanceClass="java.lang.Object"
+	 * @generated
+	 */
     EClass getObject();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ExtensionItemType <em>Extension Item Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ExtensionItemType <em>Extension Item Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Extension Item Type</em>'.
-     * @see net.opengis.wcs20.ExtensionItemType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Extension Item Type</em>'.
+	 * @see net.opengis.wcs20.ExtensionItemType
+	 * @generated
+	 */
     EClass getExtensionItemType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getName <em>Name</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see net.opengis.wcs20.ExtensionItemType#getName()
-     * @see #getExtensionItemType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see net.opengis.wcs20.ExtensionItemType#getName()
+	 * @see #getExtensionItemType()
+	 * @generated
+	 */
     EAttribute getExtensionItemType_Name();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getNamespace <em>Namespace</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getNamespace <em>Namespace</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Namespace</em>'.
-     * @see net.opengis.wcs20.ExtensionItemType#getNamespace()
-     * @see #getExtensionItemType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Namespace</em>'.
+	 * @see net.opengis.wcs20.ExtensionItemType#getNamespace()
+	 * @see #getExtensionItemType()
+	 * @generated
+	 */
     EAttribute getExtensionItemType_Namespace();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getSimpleContent <em>Simple Content</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getSimpleContent <em>Simple Content</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Simple Content</em>'.
-     * @see net.opengis.wcs20.ExtensionItemType#getSimpleContent()
-     * @see #getExtensionItemType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Simple Content</em>'.
+	 * @see net.opengis.wcs20.ExtensionItemType#getSimpleContent()
+	 * @see #getExtensionItemType()
+	 * @generated
+	 */
     EAttribute getExtensionItemType_SimpleContent();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.ExtensionItemType#getObjectContent <em>Object Content</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.ExtensionItemType#getObjectContent <em>Object Content</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Object Content</em>'.
-     * @see net.opengis.wcs20.ExtensionItemType#getObjectContent()
-     * @see #getExtensionItemType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Object Content</em>'.
+	 * @see net.opengis.wcs20.ExtensionItemType#getObjectContent()
+	 * @see #getExtensionItemType()
+	 * @generated
+	 */
     EReference getExtensionItemType_ObjectContent();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.RangeIntervalType <em>Range Interval Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.RangeIntervalType <em>Range Interval Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Range Interval Type</em>'.
-     * @see net.opengis.wcs20.RangeIntervalType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Range Interval Type</em>'.
+	 * @see net.opengis.wcs20.RangeIntervalType
+	 * @generated
+	 */
     EClass getRangeIntervalType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeIntervalType#getStartComponent <em>Start Component</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeIntervalType#getStartComponent <em>Start Component</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Start Component</em>'.
-     * @see net.opengis.wcs20.RangeIntervalType#getStartComponent()
-     * @see #getRangeIntervalType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Start Component</em>'.
+	 * @see net.opengis.wcs20.RangeIntervalType#getStartComponent()
+	 * @see #getRangeIntervalType()
+	 * @generated
+	 */
     EAttribute getRangeIntervalType_StartComponent();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeIntervalType#getEndComponent <em>End Component</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeIntervalType#getEndComponent <em>End Component</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>End Component</em>'.
-     * @see net.opengis.wcs20.RangeIntervalType#getEndComponent()
-     * @see #getRangeIntervalType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>End Component</em>'.
+	 * @see net.opengis.wcs20.RangeIntervalType#getEndComponent()
+	 * @see #getRangeIntervalType()
+	 * @generated
+	 */
     EAttribute getRangeIntervalType_EndComponent();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.RangeItemType <em>Range Item Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.RangeItemType <em>Range Item Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Range Item Type</em>'.
-     * @see net.opengis.wcs20.RangeItemType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Range Item Type</em>'.
+	 * @see net.opengis.wcs20.RangeItemType
+	 * @generated
+	 */
     EClass getRangeItemType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeItemType#getRangeComponent <em>Range Component</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeItemType#getRangeComponent <em>Range Component</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Range Component</em>'.
-     * @see net.opengis.wcs20.RangeItemType#getRangeComponent()
-     * @see #getRangeItemType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Range Component</em>'.
+	 * @see net.opengis.wcs20.RangeItemType#getRangeComponent()
+	 * @see #getRangeItemType()
+	 * @generated
+	 */
     EAttribute getRangeItemType_RangeComponent();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.RangeItemType#getRangeInterval <em>Range Interval</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.RangeItemType#getRangeInterval <em>Range Interval</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Range Interval</em>'.
-     * @see net.opengis.wcs20.RangeItemType#getRangeInterval()
-     * @see #getRangeItemType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Range Interval</em>'.
+	 * @see net.opengis.wcs20.RangeItemType#getRangeInterval()
+	 * @see #getRangeItemType()
+	 * @generated
+	 */
     EReference getRangeItemType_RangeInterval();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.RangeSubsetType <em>Range Subset Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.RangeSubsetType <em>Range Subset Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Range Subset Type</em>'.
-     * @see net.opengis.wcs20.RangeSubsetType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Range Subset Type</em>'.
+	 * @see net.opengis.wcs20.RangeSubsetType
+	 * @generated
+	 */
     EClass getRangeSubsetType();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.RangeSubsetType#getRangeItems <em>Range Items</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.RangeSubsetType#getRangeItems <em>Range Items</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Range Items</em>'.
-     * @see net.opengis.wcs20.RangeSubsetType#getRangeItems()
-     * @see #getRangeSubsetType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Range Items</em>'.
+	 * @see net.opengis.wcs20.RangeSubsetType#getRangeItems()
+	 * @see #getRangeSubsetType()
+	 * @generated
+	 */
     EReference getRangeSubsetType_RangeItems();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleAxisByFactorType <em>Scale Axis By Factor Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ScaleAxisByFactorType <em>Scale Axis By Factor Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Scale Axis By Factor Type</em>'.
-     * @see net.opengis.wcs20.ScaleAxisByFactorType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Scale Axis By Factor Type</em>'.
+	 * @see net.opengis.wcs20.ScaleAxisByFactorType
+	 * @generated
+	 */
     EClass getScaleAxisByFactorType();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleAxisByFactorType#getScaleAxis <em>Scale Axis</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleAxisByFactorType#getScaleAxis <em>Scale Axis</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Scale Axis</em>'.
-     * @see net.opengis.wcs20.ScaleAxisByFactorType#getScaleAxis()
-     * @see #getScaleAxisByFactorType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Scale Axis</em>'.
+	 * @see net.opengis.wcs20.ScaleAxisByFactorType#getScaleAxis()
+	 * @see #getScaleAxisByFactorType()
+	 * @generated
+	 */
     EReference getScaleAxisByFactorType_ScaleAxis();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleAxisType <em>Scale Axis Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ScaleAxisType <em>Scale Axis Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Scale Axis Type</em>'.
-     * @see net.opengis.wcs20.ScaleAxisType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Scale Axis Type</em>'.
+	 * @see net.opengis.wcs20.ScaleAxisType
+	 * @generated
+	 */
     EClass getScaleAxisType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleAxisType#getAxis <em>Axis</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleAxisType#getAxis <em>Axis</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Axis</em>'.
-     * @see net.opengis.wcs20.ScaleAxisType#getAxis()
-     * @see #getScaleAxisType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Axis</em>'.
+	 * @see net.opengis.wcs20.ScaleAxisType#getAxis()
+	 * @see #getScaleAxisType()
+	 * @generated
+	 */
     EAttribute getScaleAxisType_Axis();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleAxisType#getScaleFactor <em>Scale Factor</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleAxisType#getScaleFactor <em>Scale Factor</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Scale Factor</em>'.
-     * @see net.opengis.wcs20.ScaleAxisType#getScaleFactor()
-     * @see #getScaleAxisType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Scale Factor</em>'.
+	 * @see net.opengis.wcs20.ScaleAxisType#getScaleFactor()
+	 * @see #getScaleAxisType()
+	 * @generated
+	 */
     EAttribute getScaleAxisType_ScaleFactor();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleByFactorType <em>Scale By Factor Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ScaleByFactorType <em>Scale By Factor Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Scale By Factor Type</em>'.
-     * @see net.opengis.wcs20.ScaleByFactorType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Scale By Factor Type</em>'.
+	 * @see net.opengis.wcs20.ScaleByFactorType
+	 * @generated
+	 */
     EClass getScaleByFactorType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleByFactorType#getScaleFactor <em>Scale Factor</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleByFactorType#getScaleFactor <em>Scale Factor</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Scale Factor</em>'.
-     * @see net.opengis.wcs20.ScaleByFactorType#getScaleFactor()
-     * @see #getScaleByFactorType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Scale Factor</em>'.
+	 * @see net.opengis.wcs20.ScaleByFactorType#getScaleFactor()
+	 * @see #getScaleByFactorType()
+	 * @generated
+	 */
     EAttribute getScaleByFactorType_ScaleFactor();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleToExtentType <em>Scale To Extent Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ScaleToExtentType <em>Scale To Extent Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Scale To Extent Type</em>'.
-     * @see net.opengis.wcs20.ScaleToExtentType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Scale To Extent Type</em>'.
+	 * @see net.opengis.wcs20.ScaleToExtentType
+	 * @generated
+	 */
     EClass getScaleToExtentType();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleToExtentType#getTargetAxisExtent <em>Target Axis Extent</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleToExtentType#getTargetAxisExtent <em>Target Axis Extent</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Target Axis Extent</em>'.
-     * @see net.opengis.wcs20.ScaleToExtentType#getTargetAxisExtent()
-     * @see #getScaleToExtentType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Target Axis Extent</em>'.
+	 * @see net.opengis.wcs20.ScaleToExtentType#getTargetAxisExtent()
+	 * @see #getScaleToExtentType()
+	 * @generated
+	 */
     EReference getScaleToExtentType_TargetAxisExtent();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleToSizeType <em>Scale To Size Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ScaleToSizeType <em>Scale To Size Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Scale To Size Type</em>'.
-     * @see net.opengis.wcs20.ScaleToSizeType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Scale To Size Type</em>'.
+	 * @see net.opengis.wcs20.ScaleToSizeType
+	 * @generated
+	 */
     EClass getScaleToSizeType();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleToSizeType#getTargetAxisSize <em>Target Axis Size</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleToSizeType#getTargetAxisSize <em>Target Axis Size</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Target Axis Size</em>'.
-     * @see net.opengis.wcs20.ScaleToSizeType#getTargetAxisSize()
-     * @see #getScaleToSizeType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Target Axis Size</em>'.
+	 * @see net.opengis.wcs20.ScaleToSizeType#getTargetAxisSize()
+	 * @see #getScaleToSizeType()
+	 * @generated
+	 */
     EReference getScaleToSizeType_TargetAxisSize();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.ScalingType <em>Scaling Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.ScalingType <em>Scaling Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Scaling Type</em>'.
-     * @see net.opengis.wcs20.ScalingType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Scaling Type</em>'.
+	 * @see net.opengis.wcs20.ScalingType
+	 * @generated
+	 */
     EClass getScalingType();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleByFactor <em>Scale By Factor</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleByFactor <em>Scale By Factor</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Scale By Factor</em>'.
-     * @see net.opengis.wcs20.ScalingType#getScaleByFactor()
-     * @see #getScalingType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Scale By Factor</em>'.
+	 * @see net.opengis.wcs20.ScalingType#getScaleByFactor()
+	 * @see #getScalingType()
+	 * @generated
+	 */
     EReference getScalingType_ScaleByFactor();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleAxesByFactor <em>Scale Axes By Factor</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleAxesByFactor <em>Scale Axes By Factor</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Scale Axes By Factor</em>'.
-     * @see net.opengis.wcs20.ScalingType#getScaleAxesByFactor()
-     * @see #getScalingType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Scale Axes By Factor</em>'.
+	 * @see net.opengis.wcs20.ScalingType#getScaleAxesByFactor()
+	 * @see #getScalingType()
+	 * @generated
+	 */
     EReference getScalingType_ScaleAxesByFactor();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleToSize <em>Scale To Size</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleToSize <em>Scale To Size</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Scale To Size</em>'.
-     * @see net.opengis.wcs20.ScalingType#getScaleToSize()
-     * @see #getScalingType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Scale To Size</em>'.
+	 * @see net.opengis.wcs20.ScalingType#getScaleToSize()
+	 * @see #getScalingType()
+	 * @generated
+	 */
     EReference getScalingType_ScaleToSize();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleToExtent <em>Scale To Extent</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleToExtent <em>Scale To Extent</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Scale To Extent</em>'.
-     * @see net.opengis.wcs20.ScalingType#getScaleToExtent()
-     * @see #getScalingType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Scale To Extent</em>'.
+	 * @see net.opengis.wcs20.ScalingType#getScaleToExtent()
+	 * @see #getScalingType()
+	 * @generated
+	 */
     EReference getScalingType_ScaleToExtent();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.TargetAxisExtentType <em>Target Axis Extent Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.TargetAxisExtentType <em>Target Axis Extent Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Target Axis Extent Type</em>'.
-     * @see net.opengis.wcs20.TargetAxisExtentType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Target Axis Extent Type</em>'.
+	 * @see net.opengis.wcs20.TargetAxisExtentType
+	 * @generated
+	 */
     EClass getTargetAxisExtentType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getAxis <em>Axis</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getAxis <em>Axis</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Axis</em>'.
-     * @see net.opengis.wcs20.TargetAxisExtentType#getAxis()
-     * @see #getTargetAxisExtentType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Axis</em>'.
+	 * @see net.opengis.wcs20.TargetAxisExtentType#getAxis()
+	 * @see #getTargetAxisExtentType()
+	 * @generated
+	 */
     EAttribute getTargetAxisExtentType_Axis();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getLow <em>Low</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getLow <em>Low</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Low</em>'.
-     * @see net.opengis.wcs20.TargetAxisExtentType#getLow()
-     * @see #getTargetAxisExtentType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Low</em>'.
+	 * @see net.opengis.wcs20.TargetAxisExtentType#getLow()
+	 * @see #getTargetAxisExtentType()
+	 * @generated
+	 */
     EAttribute getTargetAxisExtentType_Low();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getHigh <em>High</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getHigh <em>High</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>High</em>'.
-     * @see net.opengis.wcs20.TargetAxisExtentType#getHigh()
-     * @see #getTargetAxisExtentType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>High</em>'.
+	 * @see net.opengis.wcs20.TargetAxisExtentType#getHigh()
+	 * @see #getTargetAxisExtentType()
+	 * @generated
+	 */
     EAttribute getTargetAxisExtentType_High();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.TargetAxisSizeType <em>Target Axis Size Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.TargetAxisSizeType <em>Target Axis Size Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Target Axis Size Type</em>'.
-     * @see net.opengis.wcs20.TargetAxisSizeType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Target Axis Size Type</em>'.
+	 * @see net.opengis.wcs20.TargetAxisSizeType
+	 * @generated
+	 */
     EClass getTargetAxisSizeType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisSizeType#getAxis <em>Axis</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisSizeType#getAxis <em>Axis</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Axis</em>'.
-     * @see net.opengis.wcs20.TargetAxisSizeType#getAxis()
-     * @see #getTargetAxisSizeType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Axis</em>'.
+	 * @see net.opengis.wcs20.TargetAxisSizeType#getAxis()
+	 * @see #getTargetAxisSizeType()
+	 * @generated
+	 */
     EAttribute getTargetAxisSizeType_Axis();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisSizeType#getTargetSize <em>Target Size</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisSizeType#getTargetSize <em>Target Size</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Target Size</em>'.
-     * @see net.opengis.wcs20.TargetAxisSizeType#getTargetSize()
-     * @see #getTargetAxisSizeType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Target Size</em>'.
+	 * @see net.opengis.wcs20.TargetAxisSizeType#getTargetSize()
+	 * @see #getTargetAxisSizeType()
+	 * @generated
+	 */
     EAttribute getTargetAxisSizeType_TargetSize();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationAxesType <em>Interpolation Axes Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationAxesType <em>Interpolation Axes Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Interpolation Axes Type</em>'.
-     * @see net.opengis.wcs20.InterpolationAxesType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Interpolation Axes Type</em>'.
+	 * @see net.opengis.wcs20.InterpolationAxesType
+	 * @generated
+	 */
     EClass getInterpolationAxesType();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.InterpolationAxesType#getInterpolationAxis <em>Interpolation Axis</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.InterpolationAxesType#getInterpolationAxis <em>Interpolation Axis</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Interpolation Axis</em>'.
-     * @see net.opengis.wcs20.InterpolationAxesType#getInterpolationAxis()
-     * @see #getInterpolationAxesType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Interpolation Axis</em>'.
+	 * @see net.opengis.wcs20.InterpolationAxesType#getInterpolationAxis()
+	 * @see #getInterpolationAxesType()
+	 * @generated
+	 */
     EReference getInterpolationAxesType_InterpolationAxis();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationAxisType <em>Interpolation Axis Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationAxisType <em>Interpolation Axis Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Interpolation Axis Type</em>'.
-     * @see net.opengis.wcs20.InterpolationAxisType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Interpolation Axis Type</em>'.
+	 * @see net.opengis.wcs20.InterpolationAxisType
+	 * @generated
+	 */
     EClass getInterpolationAxisType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationAxisType#getAxis <em>Axis</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationAxisType#getAxis <em>Axis</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Axis</em>'.
-     * @see net.opengis.wcs20.InterpolationAxisType#getAxis()
-     * @see #getInterpolationAxisType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Axis</em>'.
+	 * @see net.opengis.wcs20.InterpolationAxisType#getAxis()
+	 * @see #getInterpolationAxisType()
+	 * @generated
+	 */
     EAttribute getInterpolationAxisType_Axis();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod <em>Interpolation Method</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod <em>Interpolation Method</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Interpolation Method</em>'.
-     * @see net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod()
-     * @see #getInterpolationAxisType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Interpolation Method</em>'.
+	 * @see net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod()
+	 * @see #getInterpolationAxisType()
+	 * @generated
+	 */
     EAttribute getInterpolationAxisType_InterpolationMethod();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationMethodType <em>Interpolation Method Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationMethodType <em>Interpolation Method Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Interpolation Method Type</em>'.
-     * @see net.opengis.wcs20.InterpolationMethodType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Interpolation Method Type</em>'.
+	 * @see net.opengis.wcs20.InterpolationMethodType
+	 * @generated
+	 */
     EClass getInterpolationMethodType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod <em>Interpolation Method</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod <em>Interpolation Method</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Interpolation Method</em>'.
-     * @see net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod()
-     * @see #getInterpolationMethodType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Interpolation Method</em>'.
+	 * @see net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod()
+	 * @see #getInterpolationMethodType()
+	 * @generated
+	 */
     EAttribute getInterpolationMethodType_InterpolationMethod();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationType <em>Interpolation Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationType <em>Interpolation Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Interpolation Type</em>'.
-     * @see net.opengis.wcs20.InterpolationType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Interpolation Type</em>'.
+	 * @see net.opengis.wcs20.InterpolationType
+	 * @generated
+	 */
     EClass getInterpolationType();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.InterpolationType#getInterpolationMethod <em>Interpolation Method</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.InterpolationType#getInterpolationMethod <em>Interpolation Method</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Interpolation Method</em>'.
-     * @see net.opengis.wcs20.InterpolationType#getInterpolationMethod()
-     * @see #getInterpolationType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Interpolation Method</em>'.
+	 * @see net.opengis.wcs20.InterpolationType#getInterpolationMethod()
+	 * @see #getInterpolationType()
+	 * @generated
+	 */
     EReference getInterpolationType_InterpolationMethod();
 
     /**
-     * Returns the meta object for the reference '{@link net.opengis.wcs20.InterpolationType#getInterpolationAxes <em>Interpolation Axes</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference '{@link net.opengis.wcs20.InterpolationType#getInterpolationAxes <em>Interpolation Axes</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Interpolation Axes</em>'.
-     * @see net.opengis.wcs20.InterpolationType#getInterpolationAxes()
-     * @see #getInterpolationType()
-     * @generated
-     */
+	 * @return the meta object for the reference '<em>Interpolation Axes</em>'.
+	 * @see net.opengis.wcs20.InterpolationType#getInterpolationAxes()
+	 * @see #getInterpolationType()
+	 * @generated
+	 */
     EReference getInterpolationType_InterpolationAxes();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.DescribeEOCoverageSetType <em>Describe EO Coverage Set Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.DescribeEOCoverageSetType <em>Describe EO Coverage Set Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Describe EO Coverage Set Type</em>'.
-     * @see net.opengis.wcs20.DescribeEOCoverageSetType
-     * @generated
-     */
+	 * @return the meta object for class '<em>Describe EO Coverage Set Type</em>'.
+	 * @see net.opengis.wcs20.DescribeEOCoverageSetType
+	 * @generated
+	 */
     EClass getDescribeEOCoverageSetType();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getEoId <em>Eo Id</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getEoId <em>Eo Id</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Eo Id</em>'.
-     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getEoId()
-     * @see #getDescribeEOCoverageSetType()
-     * @generated
-     */
+	 * @return the meta object for the attribute list '<em>Eo Id</em>'.
+	 * @see net.opengis.wcs20.DescribeEOCoverageSetType#getEoId()
+	 * @see #getDescribeEOCoverageSetType()
+	 * @generated
+	 */
     EAttribute getDescribeEOCoverageSetType_EoId();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType <em>Containment Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType <em>Containment Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Containment Type</em>'.
-     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType()
-     * @see #getDescribeEOCoverageSetType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Containment Type</em>'.
+	 * @see net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType()
+	 * @see #getDescribeEOCoverageSetType()
+	 * @generated
+	 */
     EAttribute getDescribeEOCoverageSetType_ContainmentType();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getSections <em>Sections</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getSections <em>Sections</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Sections</em>'.
-     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getSections()
-     * @see #getDescribeEOCoverageSetType()
-     * @generated
-     */
+	 * @return the meta object for the containment reference '<em>Sections</em>'.
+	 * @see net.opengis.wcs20.DescribeEOCoverageSetType#getSections()
+	 * @see #getDescribeEOCoverageSetType()
+	 * @generated
+	 */
     EReference getDescribeEOCoverageSetType_Sections();
 
     /**
-     * Returns the meta object for the reference list '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getDimensionTrim <em>Dimension Trim</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the reference list '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getDimensionTrim <em>Dimension Trim</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Dimension Trim</em>'.
-     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getDimensionTrim()
-     * @see #getDescribeEOCoverageSetType()
-     * @generated
-     */
+	 * @return the meta object for the reference list '<em>Dimension Trim</em>'.
+	 * @see net.opengis.wcs20.DescribeEOCoverageSetType#getDimensionTrim()
+	 * @see #getDescribeEOCoverageSetType()
+	 * @generated
+	 */
     EReference getDescribeEOCoverageSetType_DimensionTrim();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getCount <em>Count</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getCount <em>Count</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Count</em>'.
-     * @see net.opengis.wcs20.DescribeEOCoverageSetType#getCount()
-     * @see #getDescribeEOCoverageSetType()
-     * @generated
-     */
+	 * @return the meta object for the attribute '<em>Count</em>'.
+	 * @see net.opengis.wcs20.DescribeEOCoverageSetType#getCount()
+	 * @see #getDescribeEOCoverageSetType()
+	 * @generated
+	 */
     EAttribute getDescribeEOCoverageSetType_Count();
 
     /**
-     * Returns the meta object for class '{@link net.opengis.wcs20.Sections <em>Sections</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for class '{@link net.opengis.wcs20.Sections <em>Sections</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Sections</em>'.
-     * @see net.opengis.wcs20.Sections
-     * @generated
-     */
+	 * @return the meta object for class '<em>Sections</em>'.
+	 * @see net.opengis.wcs20.Sections
+	 * @generated
+	 */
     EClass getSections();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.Sections#getSection <em>Section</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute list '{@link net.opengis.wcs20.Sections#getSection <em>Section</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Section</em>'.
-     * @see net.opengis.wcs20.Sections#getSection()
-     * @see #getSections()
-     * @generated
-     */
+	 * @return the meta object for the attribute list '<em>Section</em>'.
+	 * @see net.opengis.wcs20.Sections#getSection()
+	 * @see #getSections()
+	 * @generated
+	 */
     EAttribute getSections_Section();
 
     /**
-     * Returns the meta object for enum '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for data type '{@link org.opengis.filter.sort.SortBy <em>Sort By</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>Sort By</em>'.
+	 * @see org.opengis.filter.sort.SortBy
+	 * @model instanceClass="org.opengis.filter.sort.SortBy"
+	 * @generated
+	 */
+	EDataType getSortBy();
+
+				/**
+	 * Returns the meta object for enum '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Containment Type</em>'.
-     * @see net.opengis.wcs20.ContainmentType
-     * @generated
-     */
+	 * @return the meta object for enum '<em>Containment Type</em>'.
+	 * @see net.opengis.wcs20.ContainmentType
+	 * @generated
+	 */
     EEnum getContainmentType();
 
     /**
-     * Returns the meta object for enum '{@link net.opengis.wcs20.Section <em>Section</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for enum '{@link net.opengis.wcs20.Section <em>Section</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Section</em>'.
-     * @see net.opengis.wcs20.Section
-     * @generated
-     */
+	 * @return the meta object for enum '<em>Section</em>'.
+	 * @see net.opengis.wcs20.Section
+	 * @generated
+	 */
     EEnum getSection();
 
     /**
-     * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Version String Type</em>'.
-     * @see java.lang.String
-     * @model instanceClass="java.lang.String"
-     *        extendedMetaData="name='VersionStringType' baseType='http://www.eclipse.org/emf/2003/XMLType#string' pattern='2\\.0\\.\\d+'"
-     * @generated
-     */
+	 * @return the meta object for data type '<em>Version String Type</em>'.
+	 * @see java.lang.String
+	 * @model instanceClass="java.lang.String"
+	 *        extendedMetaData="name='VersionStringType' baseType='http://www.eclipse.org/emf/2003/XMLType#string' pattern='2\\.0\\.\\d+'"
+	 * @generated
+	 */
     EDataType getVersionStringType();
 
     /**
-     * Returns the meta object for data type '{@link java.lang.String <em>Version String Type 1</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for data type '{@link java.lang.String <em>Version String Type 1</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Version String Type 1</em>'.
-     * @see java.lang.String
-     * @model instanceClass="java.lang.String"
-     * @generated
-     */
+	 * @return the meta object for data type '<em>Version String Type 1</em>'.
+	 * @see java.lang.String
+	 * @model instanceClass="java.lang.String"
+	 * @generated
+	 */
     EDataType getVersionStringType_1();
 
     /**
-     * Returns the meta object for data type '{@link javax.xml.namespace.QName <em>QName</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for data type '{@link javax.xml.namespace.QName <em>QName</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>QName</em>'.
-     * @see javax.xml.namespace.QName
-     * @model instanceClass="javax.xml.namespace.QName"
-     * @generated
-     */
+	 * @return the meta object for data type '<em>QName</em>'.
+	 * @see javax.xml.namespace.QName
+	 * @model instanceClass="javax.xml.namespace.QName"
+	 * @generated
+	 */
     EDataType getQName();
 
     /**
-     * Returns the meta object for data type '{@link org.opengis.filter.Filter <em>Filter</em>}'.
-     * <!-- begin-user-doc -->
+	 * Returns the meta object for data type '{@link org.opengis.filter.Filter <em>Filter</em>}'.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Filter</em>'.
-     * @see org.opengis.filter.Filter
-     * @model instanceClass="org.opengis.filter.Filter"
-     * @generated
-     */
+	 * @return the meta object for data type '<em>Filter</em>'.
+	 * @see org.opengis.filter.Filter
+	 * @model instanceClass="org.opengis.filter.Filter"
+	 * @generated
+	 */
     EDataType getFilter();
 
     /**
-     * Returns the factory that creates the instances of the model.
-     * <!-- begin-user-doc -->
+	 * Returns the factory that creates the instances of the model.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the factory that creates the instances of the model.
-     * @generated
-     */
+	 * @return the factory that creates the instances of the model.
+	 * @generated
+	 */
     Wcs20Factory getWcs20Factory();
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * Defines literals for the meta objects that represent
      * <ul>
      *   <li>each class,</li>
@@ -4449,1295 +4490,1313 @@ public interface Wcs20Package extends EPackage {
      *   <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     interface Literals {
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.CapabilitiesTypeImpl <em>Capabilities Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.CapabilitiesTypeImpl <em>Capabilities Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.CapabilitiesTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCapabilitiesType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.CapabilitiesTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCapabilitiesType()
+		 * @generated
+		 */
         EClass CAPABILITIES_TYPE = eINSTANCE.getCapabilitiesType();
 
         /**
-         * The meta object literal for the '<em><b>Service Metadata</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service Metadata</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference CAPABILITIES_TYPE__SERVICE_METADATA = eINSTANCE.getCapabilitiesType_ServiceMetadata();
 
         /**
-         * The meta object literal for the '<em><b>Contents</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Contents</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference CAPABILITIES_TYPE__CONTENTS = eINSTANCE.getCapabilitiesType_Contents();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ContentsTypeImpl <em>Contents Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ContentsTypeImpl <em>Contents Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ContentsTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContentsType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ContentsTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContentsType()
+		 * @generated
+		 */
         EClass CONTENTS_TYPE = eINSTANCE.getContentsType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Summary</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Summary</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference CONTENTS_TYPE__COVERAGE_SUMMARY = eINSTANCE.getContentsType_CoverageSummary();
 
         /**
-         * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference CONTENTS_TYPE__EXTENSION = eINSTANCE.getContentsType_Extension();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl <em>Coverage Descriptions Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl <em>Coverage Descriptions Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionsType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.CoverageDescriptionsTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionsType()
+		 * @generated
+		 */
         EClass COVERAGE_DESCRIPTIONS_TYPE = eINSTANCE.getCoverageDescriptionsType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Description</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Description</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION = eINSTANCE.getCoverageDescriptionsType_CoverageDescription();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageDescriptionTypeImpl <em>Coverage Description Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageDescriptionTypeImpl <em>Coverage Description Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.CoverageDescriptionTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.CoverageDescriptionTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageDescriptionType()
+		 * @generated
+		 */
         EClass COVERAGE_DESCRIPTION_TYPE = eINSTANCE.getCoverageDescriptionType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute COVERAGE_DESCRIPTION_TYPE__COVERAGE_ID = eINSTANCE.getCoverageDescriptionType_CoverageId();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Function</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Function</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_DESCRIPTION_TYPE__COVERAGE_FUNCTION = eINSTANCE.getCoverageDescriptionType_CoverageFunction();
 
         /**
-         * The meta object literal for the '<em><b>Metadata</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Metadata</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_DESCRIPTION_TYPE__METADATA = eINSTANCE.getCoverageDescriptionType_Metadata();
 
         /**
-         * The meta object literal for the '<em><b>Domain Set</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Domain Set</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_DESCRIPTION_TYPE__DOMAIN_SET = eINSTANCE.getCoverageDescriptionType_DomainSet();
 
         /**
-         * The meta object literal for the '<em><b>Range Type</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Range Type</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_DESCRIPTION_TYPE__RANGE_TYPE = eINSTANCE.getCoverageDescriptionType_RangeType();
 
         /**
-         * The meta object literal for the '<em><b>Service Parameters</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service Parameters</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_DESCRIPTION_TYPE__SERVICE_PARAMETERS = eINSTANCE.getCoverageDescriptionType_ServiceParameters();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageOfferingsTypeImpl <em>Coverage Offerings Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageOfferingsTypeImpl <em>Coverage Offerings Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.CoverageOfferingsTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageOfferingsType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.CoverageOfferingsTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageOfferingsType()
+		 * @generated
+		 */
         EClass COVERAGE_OFFERINGS_TYPE = eINSTANCE.getCoverageOfferingsType();
 
         /**
-         * The meta object literal for the '<em><b>Service Metadata</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service Metadata</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA = eINSTANCE.getCoverageOfferingsType_ServiceMetadata();
 
         /**
-         * The meta object literal for the '<em><b>Offered Coverage</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Offered Coverage</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE = eINSTANCE.getCoverageOfferingsType_OfferedCoverage();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl <em>Coverage Subtype Parent Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl <em>Coverage Subtype Parent Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSubtypeParentType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.CoverageSubtypeParentTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSubtypeParentType()
+		 * @generated
+		 */
         EClass COVERAGE_SUBTYPE_PARENT_TYPE = eINSTANCE.getCoverageSubtypeParentType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute COVERAGE_SUBTYPE_PARENT_TYPE__COVERAGE_SUBTYPE = eINSTANCE.getCoverageSubtypeParentType_CoverageSubtype();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_SUBTYPE_PARENT_TYPE__COVERAGE_SUBTYPE_PARENT = eINSTANCE.getCoverageSubtypeParentType_CoverageSubtypeParent();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageSummaryTypeImpl <em>Coverage Summary Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.CoverageSummaryTypeImpl <em>Coverage Summary Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.CoverageSummaryTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSummaryType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.CoverageSummaryTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getCoverageSummaryType()
+		 * @generated
+		 */
         EClass COVERAGE_SUMMARY_TYPE = eINSTANCE.getCoverageSummaryType();
 
         /**
-         * The meta object literal for the '<em><b>WGS84 Bounding Box</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>WGS84 Bounding Box</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX = eINSTANCE.getCoverageSummaryType_WGS84BoundingBox();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute COVERAGE_SUMMARY_TYPE__COVERAGE_ID = eINSTANCE.getCoverageSummaryType_CoverageId();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE = eINSTANCE.getCoverageSummaryType_CoverageSubtype();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT = eINSTANCE.getCoverageSummaryType_CoverageSubtypeParent();
 
         /**
-         * The meta object literal for the '<em><b>Bounding Box Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Bounding Box Group</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP = eINSTANCE.getCoverageSummaryType_BoundingBoxGroup();
 
         /**
-         * The meta object literal for the '<em><b>Bounding Box</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Bounding Box</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_SUMMARY_TYPE__BOUNDING_BOX = eINSTANCE.getCoverageSummaryType_BoundingBox();
 
         /**
-         * The meta object literal for the '<em><b>Metadata Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Metadata Group</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute COVERAGE_SUMMARY_TYPE__METADATA_GROUP = eINSTANCE.getCoverageSummaryType_MetadataGroup();
 
         /**
-         * The meta object literal for the '<em><b>Metadata</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Metadata</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference COVERAGE_SUMMARY_TYPE__METADATA = eINSTANCE.getCoverageSummaryType_Metadata();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.DescribeCoverageTypeImpl <em>Describe Coverage Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.DescribeCoverageTypeImpl <em>Describe Coverage Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.DescribeCoverageTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeCoverageType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.DescribeCoverageTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeCoverageType()
+		 * @generated
+		 */
         EClass DESCRIBE_COVERAGE_TYPE = eINSTANCE.getDescribeCoverageType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DESCRIBE_COVERAGE_TYPE__COVERAGE_ID = eINSTANCE.getDescribeCoverageType_CoverageId();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionSliceTypeImpl <em>Dimension Slice Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionSliceTypeImpl <em>Dimension Slice Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.DimensionSliceTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSliceType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.DimensionSliceTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSliceType()
+		 * @generated
+		 */
         EClass DIMENSION_SLICE_TYPE = eINSTANCE.getDimensionSliceType();
 
         /**
-         * The meta object literal for the '<em><b>Slice Point</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Slice Point</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DIMENSION_SLICE_TYPE__SLICE_POINT = eINSTANCE.getDimensionSliceType_SlicePoint();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionSubsetTypeImpl <em>Dimension Subset Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionSubsetTypeImpl <em>Dimension Subset Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.DimensionSubsetTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSubsetType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.DimensionSubsetTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionSubsetType()
+		 * @generated
+		 */
         EClass DIMENSION_SUBSET_TYPE = eINSTANCE.getDimensionSubsetType();
 
         /**
-         * The meta object literal for the '<em><b>Dimension</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DIMENSION_SUBSET_TYPE__DIMENSION = eINSTANCE.getDimensionSubsetType_Dimension();
 
         /**
-         * The meta object literal for the '<em><b>CRS</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>CRS</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DIMENSION_SUBSET_TYPE__CRS = eINSTANCE.getDimensionSubsetType_CRS();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionTrimTypeImpl <em>Dimension Trim Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionTrimTypeImpl <em>Dimension Trim Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.DimensionTrimTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionTrimType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.DimensionTrimTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDimensionTrimType()
+		 * @generated
+		 */
         EClass DIMENSION_TRIM_TYPE = eINSTANCE.getDimensionTrimType();
 
         /**
-         * The meta object literal for the '<em><b>Trim Low</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Trim Low</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DIMENSION_TRIM_TYPE__TRIM_LOW = eINSTANCE.getDimensionTrimType_TrimLow();
 
         /**
-         * The meta object literal for the '<em><b>Trim High</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Trim High</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DIMENSION_TRIM_TYPE__TRIM_HIGH = eINSTANCE.getDimensionTrimType_TrimHigh();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.DocumentRootImpl <em>Document Root</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.DocumentRootImpl <em>Document Root</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.DocumentRootImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDocumentRoot()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.DocumentRootImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDocumentRoot()
+		 * @generated
+		 */
         EClass DOCUMENT_ROOT = eINSTANCE.getDocumentRoot();
 
         /**
-         * The meta object literal for the '<em><b>XMLNS Prefix Map</b></em>' map feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>XMLNS Prefix Map</b></em>' map feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__XMLNS_PREFIX_MAP = eINSTANCE.getDocumentRoot_XMLNSPrefixMap();
 
         /**
-         * The meta object literal for the '<em><b>XSI Schema Location</b></em>' map feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>XSI Schema Location</b></em>' map feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__XSI_SCHEMA_LOCATION = eINSTANCE.getDocumentRoot_XSISchemaLocation();
 
         /**
-         * The meta object literal for the '<em><b>Capabilities</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Capabilities</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__CAPABILITIES = eINSTANCE.getDocumentRoot_Capabilities();
 
         /**
-         * The meta object literal for the '<em><b>Contents</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Contents</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__CONTENTS = eINSTANCE.getDocumentRoot_Contents();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Description</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Description</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__COVERAGE_DESCRIPTION = eINSTANCE.getDocumentRoot_CoverageDescription();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Descriptions</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Descriptions</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__COVERAGE_DESCRIPTIONS = eINSTANCE.getDocumentRoot_CoverageDescriptions();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DOCUMENT_ROOT__COVERAGE_ID = eINSTANCE.getDocumentRoot_CoverageId();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Offerings</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Offerings</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__COVERAGE_OFFERINGS = eINSTANCE.getDocumentRoot_CoverageOfferings();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DOCUMENT_ROOT__COVERAGE_SUBTYPE = eINSTANCE.getDocumentRoot_CoverageSubtype();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__COVERAGE_SUBTYPE_PARENT = eINSTANCE.getDocumentRoot_CoverageSubtypeParent();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Summary</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Summary</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__COVERAGE_SUMMARY = eINSTANCE.getDocumentRoot_CoverageSummary();
 
         /**
-         * The meta object literal for the '<em><b>Describe Coverage</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Describe Coverage</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__DESCRIBE_COVERAGE = eINSTANCE.getDocumentRoot_DescribeCoverage();
 
         /**
-         * The meta object literal for the '<em><b>Dimension Slice</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension Slice</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__DIMENSION_SLICE = eINSTANCE.getDocumentRoot_DimensionSlice();
 
         /**
-         * The meta object literal for the '<em><b>Dimension Subset</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension Subset</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__DIMENSION_SUBSET = eINSTANCE.getDocumentRoot_DimensionSubset();
 
         /**
-         * The meta object literal for the '<em><b>Dimension Trim</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension Trim</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__DIMENSION_TRIM = eINSTANCE.getDocumentRoot_DimensionTrim();
 
         /**
-         * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__EXTENSION = eINSTANCE.getDocumentRoot_Extension();
 
         /**
-         * The meta object literal for the '<em><b>Get Capabilities</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Get Capabilities</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__GET_CAPABILITIES = eINSTANCE.getDocumentRoot_GetCapabilities();
 
         /**
-         * The meta object literal for the '<em><b>Get Coverage</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Get Coverage</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__GET_COVERAGE = eINSTANCE.getDocumentRoot_GetCoverage();
 
         /**
-         * The meta object literal for the '<em><b>Offered Coverage</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Offered Coverage</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__OFFERED_COVERAGE = eINSTANCE.getDocumentRoot_OfferedCoverage();
 
         /**
-         * The meta object literal for the '<em><b>Service Metadata</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service Metadata</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__SERVICE_METADATA = eINSTANCE.getDocumentRoot_ServiceMetadata();
 
         /**
-         * The meta object literal for the '<em><b>Service Parameters</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service Parameters</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DOCUMENT_ROOT__SERVICE_PARAMETERS = eINSTANCE.getDocumentRoot_ServiceParameters();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ExtensionTypeImpl <em>Extension Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ExtensionTypeImpl <em>Extension Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ExtensionTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ExtensionTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionType()
+		 * @generated
+		 */
         EClass EXTENSION_TYPE = eINSTANCE.getExtensionType();
 
         /**
-         * The meta object literal for the '<em><b>Contents</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Contents</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference EXTENSION_TYPE__CONTENTS = eINSTANCE.getExtensionType_Contents();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.GetCapabilitiesTypeImpl <em>Get Capabilities Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.GetCapabilitiesTypeImpl <em>Get Capabilities Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.GetCapabilitiesTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCapabilitiesType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.GetCapabilitiesTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCapabilitiesType()
+		 * @generated
+		 */
         EClass GET_CAPABILITIES_TYPE = eINSTANCE.getGetCapabilitiesType();
 
         /**
-         * The meta object literal for the '<em><b>Service</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute GET_CAPABILITIES_TYPE__SERVICE = eINSTANCE.getGetCapabilitiesType_Service();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.GetCoverageTypeImpl <em>Get Coverage Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.GetCoverageTypeImpl <em>Get Coverage Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.GetCoverageTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCoverageType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.GetCoverageTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getGetCoverageType()
+		 * @generated
+		 */
         EClass GET_COVERAGE_TYPE = eINSTANCE.getGetCoverageType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute GET_COVERAGE_TYPE__COVERAGE_ID = eINSTANCE.getGetCoverageType_CoverageId();
 
         /**
-         * The meta object literal for the '<em><b>Dimension Subset Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension Subset Group</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute GET_COVERAGE_TYPE__DIMENSION_SUBSET_GROUP = eINSTANCE.getGetCoverageType_DimensionSubsetGroup();
 
         /**
-         * The meta object literal for the '<em><b>Dimension Subset</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension Subset</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference GET_COVERAGE_TYPE__DIMENSION_SUBSET = eINSTANCE.getGetCoverageType_DimensionSubset();
 
         /**
-         * The meta object literal for the '<em><b>Format</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Format</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute GET_COVERAGE_TYPE__FORMAT = eINSTANCE.getGetCoverageType_Format();
 
         /**
-         * The meta object literal for the '<em><b>Media Type</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Media Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute GET_COVERAGE_TYPE__MEDIA_TYPE = eINSTANCE.getGetCoverageType_MediaType();
 
         /**
-         * The meta object literal for the '<em><b>Filter</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Filter</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute GET_COVERAGE_TYPE__FILTER = eINSTANCE.getGetCoverageType_Filter();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.OfferedCoverageTypeImpl <em>Offered Coverage Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Sort By</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute GET_COVERAGE_TYPE__SORT_BY = eINSTANCE.getGetCoverageType_SortBy();
+
+								/**
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.OfferedCoverageTypeImpl <em>Offered Coverage Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.OfferedCoverageTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getOfferedCoverageType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.OfferedCoverageTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getOfferedCoverageType()
+		 * @generated
+		 */
         EClass OFFERED_COVERAGE_TYPE = eINSTANCE.getOfferedCoverageType();
 
         /**
-         * The meta object literal for the '<em><b>Abstract Coverage</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Abstract Coverage</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference OFFERED_COVERAGE_TYPE__ABSTRACT_COVERAGE = eINSTANCE.getOfferedCoverageType_AbstractCoverage();
 
         /**
-         * The meta object literal for the '<em><b>Service Parameters</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service Parameters</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference OFFERED_COVERAGE_TYPE__SERVICE_PARAMETERS = eINSTANCE.getOfferedCoverageType_ServiceParameters();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.RequestBaseTypeImpl <em>Request Base Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.RequestBaseTypeImpl <em>Request Base Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.RequestBaseTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRequestBaseType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.RequestBaseTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRequestBaseType()
+		 * @generated
+		 */
         EClass REQUEST_BASE_TYPE = eINSTANCE.getRequestBaseType();
 
         /**
-         * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference REQUEST_BASE_TYPE__EXTENSION = eINSTANCE.getRequestBaseType_Extension();
 
         /**
-         * The meta object literal for the '<em><b>Service</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Service</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute REQUEST_BASE_TYPE__SERVICE = eINSTANCE.getRequestBaseType_Service();
 
         /**
-         * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute REQUEST_BASE_TYPE__VERSION = eINSTANCE.getRequestBaseType_Version();
 
         /**
-         * The meta object literal for the '<em><b>Base Url</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Base Url</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute REQUEST_BASE_TYPE__BASE_URL = eINSTANCE.getRequestBaseType_BaseUrl();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ServiceMetadataTypeImpl <em>Service Metadata Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ServiceMetadataTypeImpl <em>Service Metadata Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ServiceMetadataTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceMetadataType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ServiceMetadataTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceMetadataType()
+		 * @generated
+		 */
         EClass SERVICE_METADATA_TYPE = eINSTANCE.getServiceMetadataType();
 
         /**
-         * The meta object literal for the '<em><b>Format Supported</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Format Supported</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SERVICE_METADATA_TYPE__FORMAT_SUPPORTED = eINSTANCE.getServiceMetadataType_FormatSupported();
 
         /**
-         * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SERVICE_METADATA_TYPE__EXTENSION = eINSTANCE.getServiceMetadataType_Extension();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ServiceParametersTypeImpl <em>Service Parameters Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ServiceParametersTypeImpl <em>Service Parameters Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ServiceParametersTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceParametersType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ServiceParametersTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getServiceParametersType()
+		 * @generated
+		 */
         EClass SERVICE_PARAMETERS_TYPE = eINSTANCE.getServiceParametersType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SERVICE_PARAMETERS_TYPE__COVERAGE_SUBTYPE = eINSTANCE.getServiceParametersType_CoverageSubtype();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Coverage Subtype Parent</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SERVICE_PARAMETERS_TYPE__COVERAGE_SUBTYPE_PARENT = eINSTANCE.getServiceParametersType_CoverageSubtypeParent();
 
         /**
-         * The meta object literal for the '<em><b>Native Format</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Native Format</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SERVICE_PARAMETERS_TYPE__NATIVE_FORMAT = eINSTANCE.getServiceParametersType_NativeFormat();
 
         /**
-         * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Extension</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SERVICE_PARAMETERS_TYPE__EXTENSION = eINSTANCE.getServiceParametersType_Extension();
 
         /**
-         * The meta object literal for the '{@link java.lang.Object <em>Object</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link java.lang.Object <em>Object</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see java.lang.Object
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getObject()
-         * @generated
-         */
+		 * @see java.lang.Object
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getObject()
+		 * @generated
+		 */
         EClass OBJECT = eINSTANCE.getObject();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ExtensionItemTypeImpl <em>Extension Item Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ExtensionItemTypeImpl <em>Extension Item Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ExtensionItemTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionItemType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ExtensionItemTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionItemType()
+		 * @generated
+		 */
         EClass EXTENSION_ITEM_TYPE = eINSTANCE.getExtensionItemType();
 
         /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute EXTENSION_ITEM_TYPE__NAME = eINSTANCE.getExtensionItemType_Name();
 
         /**
-         * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute EXTENSION_ITEM_TYPE__NAMESPACE = eINSTANCE.getExtensionItemType_Namespace();
 
         /**
-         * The meta object literal for the '<em><b>Simple Content</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Simple Content</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute EXTENSION_ITEM_TYPE__SIMPLE_CONTENT = eINSTANCE.getExtensionItemType_SimpleContent();
 
         /**
-         * The meta object literal for the '<em><b>Object Content</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Object Content</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference EXTENSION_ITEM_TYPE__OBJECT_CONTENT = eINSTANCE.getExtensionItemType_ObjectContent();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeIntervalTypeImpl <em>Range Interval Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeIntervalTypeImpl <em>Range Interval Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.RangeIntervalTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeIntervalType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.RangeIntervalTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeIntervalType()
+		 * @generated
+		 */
         EClass RANGE_INTERVAL_TYPE = eINSTANCE.getRangeIntervalType();
 
         /**
-         * The meta object literal for the '<em><b>Start Component</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Start Component</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute RANGE_INTERVAL_TYPE__START_COMPONENT = eINSTANCE.getRangeIntervalType_StartComponent();
 
         /**
-         * The meta object literal for the '<em><b>End Component</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>End Component</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute RANGE_INTERVAL_TYPE__END_COMPONENT = eINSTANCE.getRangeIntervalType_EndComponent();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeItemTypeImpl <em>Range Item Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeItemTypeImpl <em>Range Item Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.RangeItemTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeItemType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.RangeItemTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeItemType()
+		 * @generated
+		 */
         EClass RANGE_ITEM_TYPE = eINSTANCE.getRangeItemType();
 
         /**
-         * The meta object literal for the '<em><b>Range Component</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Range Component</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute RANGE_ITEM_TYPE__RANGE_COMPONENT = eINSTANCE.getRangeItemType_RangeComponent();
 
         /**
-         * The meta object literal for the '<em><b>Range Interval</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Range Interval</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference RANGE_ITEM_TYPE__RANGE_INTERVAL = eINSTANCE.getRangeItemType_RangeInterval();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeSubsetTypeImpl <em>Range Subset Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeSubsetTypeImpl <em>Range Subset Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.RangeSubsetTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeSubsetType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.RangeSubsetTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeSubsetType()
+		 * @generated
+		 */
         EClass RANGE_SUBSET_TYPE = eINSTANCE.getRangeSubsetType();
 
         /**
-         * The meta object literal for the '<em><b>Range Items</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Range Items</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference RANGE_SUBSET_TYPE__RANGE_ITEMS = eINSTANCE.getRangeSubsetType_RangeItems();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl <em>Scale Axis By Factor Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl <em>Scale Axis By Factor Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisByFactorType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisByFactorType()
+		 * @generated
+		 */
         EClass SCALE_AXIS_BY_FACTOR_TYPE = eINSTANCE.getScaleAxisByFactorType();
 
         /**
-         * The meta object literal for the '<em><b>Scale Axis</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale Axis</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS = eINSTANCE.getScaleAxisByFactorType_ScaleAxis();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleAxisTypeImpl <em>Scale Axis Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleAxisTypeImpl <em>Scale Axis Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ScaleAxisTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ScaleAxisTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisType()
+		 * @generated
+		 */
         EClass SCALE_AXIS_TYPE = eINSTANCE.getScaleAxisType();
 
         /**
-         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SCALE_AXIS_TYPE__AXIS = eINSTANCE.getScaleAxisType_Axis();
 
         /**
-         * The meta object literal for the '<em><b>Scale Factor</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale Factor</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SCALE_AXIS_TYPE__SCALE_FACTOR = eINSTANCE.getScaleAxisType_ScaleFactor();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleByFactorTypeImpl <em>Scale By Factor Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleByFactorTypeImpl <em>Scale By Factor Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ScaleByFactorTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleByFactorType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ScaleByFactorTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleByFactorType()
+		 * @generated
+		 */
         EClass SCALE_BY_FACTOR_TYPE = eINSTANCE.getScaleByFactorType();
 
         /**
-         * The meta object literal for the '<em><b>Scale Factor</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale Factor</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SCALE_BY_FACTOR_TYPE__SCALE_FACTOR = eINSTANCE.getScaleByFactorType_ScaleFactor();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleToExtentTypeImpl <em>Scale To Extent Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleToExtentTypeImpl <em>Scale To Extent Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ScaleToExtentTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToExtentType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ScaleToExtentTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToExtentType()
+		 * @generated
+		 */
         EClass SCALE_TO_EXTENT_TYPE = eINSTANCE.getScaleToExtentType();
 
         /**
-         * The meta object literal for the '<em><b>Target Axis Extent</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Target Axis Extent</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT = eINSTANCE.getScaleToExtentType_TargetAxisExtent();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleToSizeTypeImpl <em>Scale To Size Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleToSizeTypeImpl <em>Scale To Size Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ScaleToSizeTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToSizeType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ScaleToSizeTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToSizeType()
+		 * @generated
+		 */
         EClass SCALE_TO_SIZE_TYPE = eINSTANCE.getScaleToSizeType();
 
         /**
-         * The meta object literal for the '<em><b>Target Axis Size</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Target Axis Size</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALE_TO_SIZE_TYPE__TARGET_AXIS_SIZE = eINSTANCE.getScaleToSizeType_TargetAxisSize();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScalingTypeImpl <em>Scaling Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.ScalingTypeImpl <em>Scaling Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.ScalingTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScalingType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.ScalingTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScalingType()
+		 * @generated
+		 */
         EClass SCALING_TYPE = eINSTANCE.getScalingType();
 
         /**
-         * The meta object literal for the '<em><b>Scale By Factor</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale By Factor</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALING_TYPE__SCALE_BY_FACTOR = eINSTANCE.getScalingType_ScaleByFactor();
 
         /**
-         * The meta object literal for the '<em><b>Scale Axes By Factor</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale Axes By Factor</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALING_TYPE__SCALE_AXES_BY_FACTOR = eINSTANCE.getScalingType_ScaleAxesByFactor();
 
         /**
-         * The meta object literal for the '<em><b>Scale To Size</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale To Size</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALING_TYPE__SCALE_TO_SIZE = eINSTANCE.getScalingType_ScaleToSize();
 
         /**
-         * The meta object literal for the '<em><b>Scale To Extent</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Scale To Extent</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference SCALING_TYPE__SCALE_TO_EXTENT = eINSTANCE.getScalingType_ScaleToExtent();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.TargetAxisExtentTypeImpl <em>Target Axis Extent Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.TargetAxisExtentTypeImpl <em>Target Axis Extent Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.TargetAxisExtentTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisExtentType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.TargetAxisExtentTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisExtentType()
+		 * @generated
+		 */
         EClass TARGET_AXIS_EXTENT_TYPE = eINSTANCE.getTargetAxisExtentType();
 
         /**
-         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute TARGET_AXIS_EXTENT_TYPE__AXIS = eINSTANCE.getTargetAxisExtentType_Axis();
 
         /**
-         * The meta object literal for the '<em><b>Low</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Low</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute TARGET_AXIS_EXTENT_TYPE__LOW = eINSTANCE.getTargetAxisExtentType_Low();
 
         /**
-         * The meta object literal for the '<em><b>High</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>High</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute TARGET_AXIS_EXTENT_TYPE__HIGH = eINSTANCE.getTargetAxisExtentType_High();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.TargetAxisSizeTypeImpl <em>Target Axis Size Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.TargetAxisSizeTypeImpl <em>Target Axis Size Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.TargetAxisSizeTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisSizeType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.TargetAxisSizeTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisSizeType()
+		 * @generated
+		 */
         EClass TARGET_AXIS_SIZE_TYPE = eINSTANCE.getTargetAxisSizeType();
 
         /**
-         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute TARGET_AXIS_SIZE_TYPE__AXIS = eINSTANCE.getTargetAxisSizeType_Axis();
 
         /**
-         * The meta object literal for the '<em><b>Target Size</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Target Size</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute TARGET_AXIS_SIZE_TYPE__TARGET_SIZE = eINSTANCE.getTargetAxisSizeType_TargetSize();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationAxesTypeImpl <em>Interpolation Axes Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationAxesTypeImpl <em>Interpolation Axes Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.InterpolationAxesTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxesType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.InterpolationAxesTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxesType()
+		 * @generated
+		 */
         EClass INTERPOLATION_AXES_TYPE = eINSTANCE.getInterpolationAxesType();
 
         /**
-         * The meta object literal for the '<em><b>Interpolation Axis</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Interpolation Axis</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS = eINSTANCE.getInterpolationAxesType_InterpolationAxis();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationAxisTypeImpl <em>Interpolation Axis Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationAxisTypeImpl <em>Interpolation Axis Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.InterpolationAxisTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxisType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.InterpolationAxisTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxisType()
+		 * @generated
+		 */
         EClass INTERPOLATION_AXIS_TYPE = eINSTANCE.getInterpolationAxisType();
 
         /**
-         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute INTERPOLATION_AXIS_TYPE__AXIS = eINSTANCE.getInterpolationAxisType_Axis();
 
         /**
-         * The meta object literal for the '<em><b>Interpolation Method</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Interpolation Method</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute INTERPOLATION_AXIS_TYPE__INTERPOLATION_METHOD = eINSTANCE.getInterpolationAxisType_InterpolationMethod();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationMethodTypeImpl <em>Interpolation Method Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationMethodTypeImpl <em>Interpolation Method Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.InterpolationMethodTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationMethodType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.InterpolationMethodTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationMethodType()
+		 * @generated
+		 */
         EClass INTERPOLATION_METHOD_TYPE = eINSTANCE.getInterpolationMethodType();
 
         /**
-         * The meta object literal for the '<em><b>Interpolation Method</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Interpolation Method</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute INTERPOLATION_METHOD_TYPE__INTERPOLATION_METHOD = eINSTANCE.getInterpolationMethodType_InterpolationMethod();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationTypeImpl <em>Interpolation Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationTypeImpl <em>Interpolation Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.InterpolationTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.InterpolationTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationType()
+		 * @generated
+		 */
         EClass INTERPOLATION_TYPE = eINSTANCE.getInterpolationType();
 
         /**
-         * The meta object literal for the '<em><b>Interpolation Method</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Interpolation Method</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference INTERPOLATION_TYPE__INTERPOLATION_METHOD = eINSTANCE.getInterpolationType_InterpolationMethod();
 
         /**
-         * The meta object literal for the '<em><b>Interpolation Axes</b></em>' reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Interpolation Axes</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference INTERPOLATION_TYPE__INTERPOLATION_AXES = eINSTANCE.getInterpolationType_InterpolationAxes();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl <em>Describe EO Coverage Set Type</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl <em>Describe EO Coverage Set Type</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeEOCoverageSetType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.DescribeEOCoverageSetTypeImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getDescribeEOCoverageSetType()
+		 * @generated
+		 */
         EClass DESCRIBE_EO_COVERAGE_SET_TYPE = eINSTANCE.getDescribeEOCoverageSetType();
 
         /**
-         * The meta object literal for the '<em><b>Eo Id</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Eo Id</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID = eINSTANCE.getDescribeEOCoverageSetType_EoId();
 
         /**
-         * The meta object literal for the '<em><b>Containment Type</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Containment Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DESCRIBE_EO_COVERAGE_SET_TYPE__CONTAINMENT_TYPE = eINSTANCE.getDescribeEOCoverageSetType_ContainmentType();
 
         /**
-         * The meta object literal for the '<em><b>Sections</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Sections</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DESCRIBE_EO_COVERAGE_SET_TYPE__SECTIONS = eINSTANCE.getDescribeEOCoverageSetType_Sections();
 
         /**
-         * The meta object literal for the '<em><b>Dimension Trim</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Dimension Trim</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EReference DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM = eINSTANCE.getDescribeEOCoverageSetType_DimensionTrim();
 
         /**
-         * The meta object literal for the '<em><b>Count</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Count</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute DESCRIBE_EO_COVERAGE_SET_TYPE__COUNT = eINSTANCE.getDescribeEOCoverageSetType_Count();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.impl.SectionsImpl <em>Sections</em>}' class.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.impl.SectionsImpl <em>Sections</em>}' class.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.impl.SectionsImpl
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSections()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.impl.SectionsImpl
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSections()
+		 * @generated
+		 */
         EClass SECTIONS = eINSTANCE.getSections();
 
         /**
-         * The meta object literal for the '<em><b>Section</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Section</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @generated
-         */
+		 * @generated
+		 */
         EAttribute SECTIONS__SECTION = eINSTANCE.getSections_Section();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}' enum.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em>Sort By</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.opengis.filter.sort.SortBy
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSortBy()
+		 * @generated
+		 */
+		EDataType SORT_BY = eINSTANCE.getSortBy();
+
+								/**
+		 * The meta object literal for the '{@link net.opengis.wcs20.ContainmentType <em>Containment Type</em>}' enum.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.ContainmentType
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContainmentType()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.ContainmentType
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getContainmentType()
+		 * @generated
+		 */
         EEnum CONTAINMENT_TYPE = eINSTANCE.getContainmentType();
 
         /**
-         * The meta object literal for the '{@link net.opengis.wcs20.Section <em>Section</em>}' enum.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '{@link net.opengis.wcs20.Section <em>Section</em>}' enum.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see net.opengis.wcs20.Section
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSection()
-         * @generated
-         */
+		 * @see net.opengis.wcs20.Section
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getSection()
+		 * @generated
+		 */
         EEnum SECTION = eINSTANCE.getSection();
 
         /**
-         * The meta object literal for the '<em>Version String Type</em>' data type.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em>Version String Type</em>' data type.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see java.lang.String
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
-         * @generated
-         */
+		 * @see java.lang.String
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
+		 * @generated
+		 */
         EDataType VERSION_STRING_TYPE = eINSTANCE.getVersionStringType();
 
         /**
-         * The meta object literal for the '<em>Version String Type 1</em>' data type.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em>Version String Type 1</em>' data type.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see java.lang.String
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
-         * @generated
-         */
+		 * @see java.lang.String
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
+		 * @generated
+		 */
         EDataType VERSION_STRING_TYPE_1 = eINSTANCE.getVersionStringType_1();
 
         /**
-         * The meta object literal for the '<em>QName</em>' data type.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em>QName</em>' data type.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see javax.xml.namespace.QName
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
-         * @generated
-         */
+		 * @see javax.xml.namespace.QName
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
+		 * @generated
+		 */
         EDataType QNAME = eINSTANCE.getQName();
 
         /**
-         * The meta object literal for the '<em>Filter</em>' data type.
-         * <!-- begin-user-doc -->
+		 * The meta object literal for the '<em>Filter</em>' data type.
+		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see org.opengis.filter.Filter
-         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
-         * @generated
-         */
+		 * @see org.opengis.filter.Filter
+		 * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getFilter()
+		 * @generated
+		 */
         EDataType FILTER = eINSTANCE.getFilter();
 
     }

@@ -31,104 +31,104 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class ScaleAxisByFactorTypeImpl extends EObjectImpl implements ScaleAxisByFactorType {
     /**
-     * The cached value of the '{@link #getScaleAxis() <em>Scale Axis</em>}' reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getScaleAxis() <em>Scale Axis</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getScaleAxis()
-     * @generated
-     * @ordered
-     */
+	 * @see #getScaleAxis()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<ScaleAxisType> scaleAxis;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ScaleAxisByFactorTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.SCALE_AXIS_BY_FACTOR_TYPE;
-    }
+		return Wcs20Package.Literals.SCALE_AXIS_BY_FACTOR_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<ScaleAxisType> getScaleAxis() {
-        if (scaleAxis == null) {
-            scaleAxis = new EObjectResolvingEList<ScaleAxisType>(ScaleAxisType.class, this, Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS);
-        }
-        return scaleAxis;
-    }
+		if (scaleAxis == null) {
+			scaleAxis = new EObjectResolvingEList<ScaleAxisType>(ScaleAxisType.class, this, Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS);
+		}
+		return scaleAxis;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
-                return getScaleAxis();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
+				return getScaleAxis();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
-                getScaleAxis().clear();
-                getScaleAxis().addAll((Collection<? extends ScaleAxisType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
+				getScaleAxis().clear();
+				getScaleAxis().addAll((Collection<? extends ScaleAxisType>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
-                getScaleAxis().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
+				getScaleAxis().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
-                return scaleAxis != null && !scaleAxis.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS:
+				return scaleAxis != null && !scaleAxis.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //ScaleAxisByFactorTypeImpl

@@ -4,7 +4,8 @@
     modelName="Wcs20" importerID="org.eclipse.emf.importer.java" complianceLevel="6.0"
     copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../org.w3.xlink/xlink.genmodel#//xlink platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace ../net.opengis.ows/ows11.genmodel#//ows11 ../net.opengis.ows/ows20.genmodel#//ows20">
   <foreignModel>@model</foreignModel>
-  <genPackages prefix="Wcs20" basePackage="net.opengis" resource="XML" disposableProviderFactory="true"
+  <genPackages prefix="Wcs20" basePackage="net.opengis" disposableProviderFactory="true"
+      adapterFactory="false" generateModelWizard="false" contentTypeIdentifier=""
       ecorePackage="wcs20.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="wcs20.ecore#//ContainmentType">
       <genEnumLiterals ecoreEnumLiteral="wcs20.ecore#//ContainmentType/OVERLAPS"/>
@@ -106,6 +107,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/format"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/mediaType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/filter"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//GetCoverageType/sortBy"/>
     </genClasses>
     <genClasses ecoreClass="wcs20.ecore#//OfferedCoverageType">
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//OfferedCoverageType/abstractCoverage"/>
@@ -200,5 +202,6 @@
     <genClasses ecoreClass="wcs20.ecore#//Sections">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//Sections/section"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="wcs20.ecore#//SortBy"/>
   </genPackages>
 </genmodel:GenModel>

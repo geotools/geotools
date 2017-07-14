@@ -43,92 +43,92 @@ public interface ServiceParametersType extends EObject {
     QName getCoverageSubtype();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtype <em>Coverage Subtype</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtype <em>Coverage Subtype</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Coverage Subtype</em>' attribute.
-     * @see #getCoverageSubtype()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Coverage Subtype</em>' attribute.
+	 * @see #getCoverageSubtype()
+	 * @generated
+	 */
     void setCoverageSubtype(QName value);
 
     /**
-     * Returns the value of the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Coverage Subtype Parent</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Coverage Subtype Parent</em>' containment reference.
-     * @see #setCoverageSubtypeParent(CoverageSubtypeParentType)
-     * @see net.opengis.wcs20.Wcs20Package#getServiceParametersType_CoverageSubtypeParent()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='CoverageSubtypeParent' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * <!-- begin-model-doc -->
+	 * 
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Coverage Subtype Parent</em>' containment reference.
+	 * @see #setCoverageSubtypeParent(CoverageSubtypeParentType)
+	 * @see net.opengis.wcs20.Wcs20Package#getServiceParametersType_CoverageSubtypeParent()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='CoverageSubtypeParent' namespace='##targetNamespace'"
+	 * @generated
+	 */
     CoverageSubtypeParentType getCoverageSubtypeParent();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getCoverageSubtypeParent <em>Coverage Subtype Parent</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Coverage Subtype Parent</em>' containment reference.
-     * @see #getCoverageSubtypeParent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Coverage Subtype Parent</em>' containment reference.
+	 * @see #getCoverageSubtypeParent()
+	 * @generated
+	 */
     void setCoverageSubtypeParent(CoverageSubtypeParentType value);
 
     /**
-     * Returns the value of the '<em><b>Native Format</b></em>' attribute.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Native Format</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Native Format</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Native Format</em>' attribute.
-     * @see #setNativeFormat(String)
-     * @see net.opengis.wcs20.Wcs20Package#getServiceParametersType_NativeFormat()
-     * @model dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
-     *        extendedMetaData="kind='element' name='nativeFormat' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * @return the value of the '<em>Native Format</em>' attribute.
+	 * @see #setNativeFormat(String)
+	 * @see net.opengis.wcs20.Wcs20Package#getServiceParametersType_NativeFormat()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
+	 *        extendedMetaData="kind='element' name='nativeFormat' namespace='##targetNamespace'"
+	 * @generated
+	 */
     String getNativeFormat();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getNativeFormat <em>Native Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getNativeFormat <em>Native Format</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Native Format</em>' attribute.
-     * @see #getNativeFormat()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Native Format</em>' attribute.
+	 * @see #getNativeFormat()
+	 * @generated
+	 */
     void setNativeFormat(String value);
 
     /**
-     * Returns the value of the '<em><b>Extension</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Extension</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Extension element used to hook in additional content e.g. in extensions or application profiles.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Extension</em>' containment reference.
-     * @see #setExtension(ExtensionType)
-     * @see net.opengis.wcs20.Wcs20Package#getServiceParametersType_Extension()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='Extension' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * <!-- begin-model-doc -->
+	 * Extension element used to hook in additional content e.g. in extensions or application profiles.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Extension</em>' containment reference.
+	 * @see #setExtension(ExtensionType)
+	 * @see net.opengis.wcs20.Wcs20Package#getServiceParametersType_Extension()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='Extension' namespace='##targetNamespace'"
+	 * @generated
+	 */
     ExtensionType getExtension();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getExtension <em>Extension</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ServiceParametersType#getExtension <em>Extension</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Extension</em>' containment reference.
-     * @see #getExtension()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Extension</em>' containment reference.
+	 * @see #getExtension()
+	 * @generated
+	 */
     void setExtension(ExtensionType value);
 
 } // ServiceParametersType

@@ -25,6 +25,7 @@ import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
@@ -62,6 +63,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.media.jai.RenderedOp;
 import javax.swing.JFrame;
 
@@ -4378,5 +4380,51 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(expectedEnvelope.getMaximum(0), actualEnvelope.getMaximum(0), EPS);
         assertEquals(expectedEnvelope.getMaximum(1), actualEnvelope.getMaximum(1), EPS);
         
+    }
+    
+    @Test
+    public void testSortOnCachedCatalog() throws Exception {
+        // copy the test data
+        File source = URLs.urlToFile(timeURL);
+        File testDataDir = TestData.file(this, ".");
+        File timeCached = new File(testDataDir, "timeCached");
+        if (timeCached.exists()) {
+            FileUtils.deleteDirectory(timeCached);
+        }
+        FileUtils.copyDirectory(source, timeCached);
+        Arrays.stream(timeCached.listFiles(
+                (dir, name) -> name.startsWith("time_geotiff") || "sample_image".equals(name)))
+                .forEach(f -> f.delete());
+
+        // make it create the index and config files
+        URL timeCachedUrl = URLs.fileToUrl(timeCached);
+        final AbstractGridFormat format = TestUtils.getFormat(timeCachedUrl);
+        ImageMosaicReader reader = TestUtils.getReader(timeCachedUrl, format);
+        assertNotNull(reader);
+        reader.dispose();
+
+        // set it up so that it uses caching
+        File indexerProperties = new File(timeCached, "timeCached.properties");
+        Properties indexer = new Properties();
+        try (InputStream is = new FileInputStream(indexerProperties)) {
+            indexer.load(is);
+        }
+        indexer.put("Caching", "true");
+        try (OutputStream os = new FileOutputStream(indexerProperties)) {
+            indexer.store(os, null);
+        }
+
+        // read reference image (the one that should be on top)
+        BufferedImage expected = ImageIO
+                .read(new File(timeCached, "world.200405.3x5400x2700.tiff"));
+
+        // sort on time attribute
+        final ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
+        sortBy.setValue("time D");
+        reader = TestUtils.getReader(timeCachedUrl, format);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { sortBy });
+        ImageAssert.assertEquals(expected, coverage.getRenderedImage(), 0);
+        coverage.dispose(true);
+        reader.dispose();
     }
 }

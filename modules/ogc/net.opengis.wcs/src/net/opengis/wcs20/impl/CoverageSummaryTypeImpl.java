@@ -53,421 +53,421 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements CoverageSummaryType {
     /**
-     * The cached value of the '{@link #getWGS84BoundingBox() <em>WGS84 Bounding Box</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getWGS84BoundingBox() <em>WGS84 Bounding Box</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getWGS84BoundingBox()
-     * @generated
-     * @ordered
-     */
+	 * @see #getWGS84BoundingBox()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<WGS84BoundingBoxType> wGS84BoundingBox;
 
     /**
-     * The default value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCoverageId()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCoverageId()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String COVERAGE_ID_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCoverageId()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCoverageId()
+	 * @generated
+	 * @ordered
+	 */
     protected String coverageId = COVERAGE_ID_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getCoverageSubtype() <em>Coverage Subtype</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getCoverageSubtype() <em>Coverage Subtype</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCoverageSubtype()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCoverageSubtype()
+	 * @generated
+	 * @ordered
+	 */
     protected static final QName COVERAGE_SUBTYPE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCoverageSubtype() <em>Coverage Subtype</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCoverageSubtype() <em>Coverage Subtype</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCoverageSubtype()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCoverageSubtype()
+	 * @generated
+	 * @ordered
+	 */
     protected QName coverageSubtype = COVERAGE_SUBTYPE_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getCoverageSubtypeParent() <em>Coverage Subtype Parent</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCoverageSubtypeParent() <em>Coverage Subtype Parent</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCoverageSubtypeParent()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCoverageSubtypeParent()
+	 * @generated
+	 * @ordered
+	 */
     protected CoverageSubtypeParentType coverageSubtypeParent;
 
     /**
-     * The cached value of the '{@link #getBoundingBoxGroup() <em>Bounding Box Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBoundingBoxGroup() <em>Bounding Box Group</em>}' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getBoundingBoxGroup()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBoundingBoxGroup()
+	 * @generated
+	 * @ordered
+	 */
     protected FeatureMap boundingBoxGroup;
 
     /**
-     * The cached value of the '{@link #getMetadataGroup() <em>Metadata Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getMetadataGroup() <em>Metadata Group</em>}' attribute list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getMetadataGroup()
-     * @generated
-     * @ordered
-     */
+	 * @see #getMetadataGroup()
+	 * @generated
+	 * @ordered
+	 */
     protected FeatureMap metadataGroup;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected CoverageSummaryTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE;
-    }
+		return Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
-        if (wGS84BoundingBox == null) {
-            wGS84BoundingBox = new EObjectContainmentEList<WGS84BoundingBoxType>(WGS84BoundingBoxType.class, this, Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX);
-        }
-        return wGS84BoundingBox;
-    }
+		if (wGS84BoundingBox == null) {
+			wGS84BoundingBox = new EObjectContainmentEList<WGS84BoundingBoxType>(WGS84BoundingBoxType.class, this, Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX);
+		}
+		return wGS84BoundingBox;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getCoverageId() {
-        return coverageId;
-    }
+		return coverageId;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setCoverageId(String newCoverageId) {
-        String oldCoverageId = coverageId;
-        coverageId = newCoverageId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID, oldCoverageId, coverageId));
-    }
+		String oldCoverageId = coverageId;
+		coverageId = newCoverageId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID, oldCoverageId, coverageId));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public QName getCoverageSubtype() {
-        return coverageSubtype;
-    }
+		return coverageSubtype;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setCoverageSubtype(QName newCoverageSubtype) {
-        QName oldCoverageSubtype = coverageSubtype;
-        coverageSubtype = newCoverageSubtype;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE, oldCoverageSubtype, coverageSubtype));
-    }
+		QName oldCoverageSubtype = coverageSubtype;
+		coverageSubtype = newCoverageSubtype;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE, oldCoverageSubtype, coverageSubtype));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public CoverageSubtypeParentType getCoverageSubtypeParent() {
-        return coverageSubtypeParent;
-    }
+		return coverageSubtypeParent;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public NotificationChain basicSetCoverageSubtypeParent(CoverageSubtypeParentType newCoverageSubtypeParent, NotificationChain msgs) {
-        CoverageSubtypeParentType oldCoverageSubtypeParent = coverageSubtypeParent;
-        coverageSubtypeParent = newCoverageSubtypeParent;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, oldCoverageSubtypeParent, newCoverageSubtypeParent);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
-    }
+		CoverageSubtypeParentType oldCoverageSubtypeParent = coverageSubtypeParent;
+		coverageSubtypeParent = newCoverageSubtypeParent;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, oldCoverageSubtypeParent, newCoverageSubtypeParent);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setCoverageSubtypeParent(CoverageSubtypeParentType newCoverageSubtypeParent) {
-        if (newCoverageSubtypeParent != coverageSubtypeParent) {
-            NotificationChain msgs = null;
-            if (coverageSubtypeParent != null)
-                msgs = ((InternalEObject)coverageSubtypeParent).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, null, msgs);
-            if (newCoverageSubtypeParent != null)
-                msgs = ((InternalEObject)newCoverageSubtypeParent).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, null, msgs);
-            msgs = basicSetCoverageSubtypeParent(newCoverageSubtypeParent, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, newCoverageSubtypeParent, newCoverageSubtypeParent));
-    }
+		if (newCoverageSubtypeParent != coverageSubtypeParent) {
+			NotificationChain msgs = null;
+			if (coverageSubtypeParent != null)
+				msgs = ((InternalEObject)coverageSubtypeParent).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, null, msgs);
+			if (newCoverageSubtypeParent != null)
+				msgs = ((InternalEObject)newCoverageSubtypeParent).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, null, msgs);
+			msgs = basicSetCoverageSubtypeParent(newCoverageSubtypeParent, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT, newCoverageSubtypeParent, newCoverageSubtypeParent));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public FeatureMap getBoundingBoxGroup() {
-        if (boundingBoxGroup == null) {
-            boundingBoxGroup = new BasicFeatureMap(this, Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP);
-        }
-        return boundingBoxGroup;
-    }
+		if (boundingBoxGroup == null) {
+			boundingBoxGroup = new BasicFeatureMap(this, Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP);
+		}
+		return boundingBoxGroup;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<BoundingBoxType> getBoundingBox() {
-        return getBoundingBoxGroup().list(Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX);
-    }
+		return getBoundingBoxGroup().list(Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public FeatureMap getMetadataGroup() {
-        if (metadataGroup == null) {
-            metadataGroup = new BasicFeatureMap(this, Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP);
-        }
-        return metadataGroup;
-    }
+		if (metadataGroup == null) {
+			metadataGroup = new BasicFeatureMap(this, Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP);
+		}
+		return metadataGroup;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<MetadataType> getMetadata() {
-        return getMetadataGroup().list(Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE__METADATA);
-    }
+		return getMetadataGroup().list(Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE__METADATA);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
-                return ((InternalEList<?>)getWGS84BoundingBox()).basicRemove(otherEnd, msgs);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
-                return basicSetCoverageSubtypeParent(null, msgs);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
-                return ((InternalEList<?>)getBoundingBoxGroup()).basicRemove(otherEnd, msgs);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
-                return ((InternalEList<?>)getBoundingBox()).basicRemove(otherEnd, msgs);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
-                return ((InternalEList<?>)getMetadataGroup()).basicRemove(otherEnd, msgs);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
-                return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
+				return ((InternalEList<?>)getWGS84BoundingBox()).basicRemove(otherEnd, msgs);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
+				return basicSetCoverageSubtypeParent(null, msgs);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
+				return ((InternalEList<?>)getBoundingBoxGroup()).basicRemove(otherEnd, msgs);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
+				return ((InternalEList<?>)getBoundingBox()).basicRemove(otherEnd, msgs);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
+				return ((InternalEList<?>)getMetadataGroup()).basicRemove(otherEnd, msgs);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
+				return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
-                return getWGS84BoundingBox();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
-                return getCoverageId();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
-                return getCoverageSubtype();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
-                return getCoverageSubtypeParent();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
-                if (coreType) return getBoundingBoxGroup();
-                return ((FeatureMap.Internal)getBoundingBoxGroup()).getWrapper();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
-                return getBoundingBox();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
-                if (coreType) return getMetadataGroup();
-                return ((FeatureMap.Internal)getMetadataGroup()).getWrapper();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
-                return getMetadata();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
+				return getWGS84BoundingBox();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
+				return getCoverageId();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
+				return getCoverageSubtype();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
+				return getCoverageSubtypeParent();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
+				if (coreType) return getBoundingBoxGroup();
+				return ((FeatureMap.Internal)getBoundingBoxGroup()).getWrapper();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
+				return getBoundingBox();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
+				if (coreType) return getMetadataGroup();
+				return ((FeatureMap.Internal)getMetadataGroup()).getWrapper();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
+				return getMetadata();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
-                getWGS84BoundingBox().clear();
-                getWGS84BoundingBox().addAll((Collection<? extends WGS84BoundingBoxType>)newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
-                setCoverageId((String)newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
-                setCoverageSubtype((QName)newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
-                setCoverageSubtypeParent((CoverageSubtypeParentType)newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
-                ((FeatureMap.Internal)getBoundingBoxGroup()).set(newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
-                getBoundingBox().clear();
-                getBoundingBox().addAll((Collection<? extends BoundingBoxType>)newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
-                ((FeatureMap.Internal)getMetadataGroup()).set(newValue);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
-                getMetadata().clear();
-                getMetadata().addAll((Collection<? extends MetadataType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
+				getWGS84BoundingBox().clear();
+				getWGS84BoundingBox().addAll((Collection<? extends WGS84BoundingBoxType>)newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
+				setCoverageId((String)newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
+				setCoverageSubtype((QName)newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
+				setCoverageSubtypeParent((CoverageSubtypeParentType)newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
+				((FeatureMap.Internal)getBoundingBoxGroup()).set(newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
+				getBoundingBox().clear();
+				getBoundingBox().addAll((Collection<? extends BoundingBoxType>)newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
+				((FeatureMap.Internal)getMetadataGroup()).set(newValue);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
+				getMetadata().clear();
+				getMetadata().addAll((Collection<? extends MetadataType>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
-                getWGS84BoundingBox().clear();
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
-                setCoverageId(COVERAGE_ID_EDEFAULT);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
-                setCoverageSubtype(COVERAGE_SUBTYPE_EDEFAULT);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
-                setCoverageSubtypeParent((CoverageSubtypeParentType)null);
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
-                getBoundingBoxGroup().clear();
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
-                getBoundingBox().clear();
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
-                getMetadataGroup().clear();
-                return;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
-                getMetadata().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
+				getWGS84BoundingBox().clear();
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
+				setCoverageId(COVERAGE_ID_EDEFAULT);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
+				setCoverageSubtype(COVERAGE_SUBTYPE_EDEFAULT);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
+				setCoverageSubtypeParent((CoverageSubtypeParentType)null);
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
+				getBoundingBoxGroup().clear();
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
+				getBoundingBox().clear();
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
+				getMetadataGroup().clear();
+				return;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
+				getMetadata().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
-                return wGS84BoundingBox != null && !wGS84BoundingBox.isEmpty();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
-                return COVERAGE_ID_EDEFAULT == null ? coverageId != null : !COVERAGE_ID_EDEFAULT.equals(coverageId);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
-                return COVERAGE_SUBTYPE_EDEFAULT == null ? coverageSubtype != null : !COVERAGE_SUBTYPE_EDEFAULT.equals(coverageSubtype);
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
-                return coverageSubtypeParent != null;
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
-                return boundingBoxGroup != null && !boundingBoxGroup.isEmpty();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
-                return !getBoundingBox().isEmpty();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
-                return metadataGroup != null && !metadataGroup.isEmpty();
-            case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
-                return !getMetadata().isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX:
+				return wGS84BoundingBox != null && !wGS84BoundingBox.isEmpty();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_ID:
+				return COVERAGE_ID_EDEFAULT == null ? coverageId != null : !COVERAGE_ID_EDEFAULT.equals(coverageId);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE:
+				return COVERAGE_SUBTYPE_EDEFAULT == null ? coverageSubtype != null : !COVERAGE_SUBTYPE_EDEFAULT.equals(coverageSubtype);
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
+				return coverageSubtypeParent != null;
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
+				return boundingBoxGroup != null && !boundingBoxGroup.isEmpty();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX:
+				return !getBoundingBox().isEmpty();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP:
+				return metadataGroup != null && !metadataGroup.isEmpty();
+			case Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA:
+				return !getMetadata().isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (coverageId: ");
-        result.append(coverageId);
-        result.append(", coverageSubtype: ");
-        result.append(coverageSubtype);
-        result.append(", boundingBoxGroup: ");
-        result.append(boundingBoxGroup);
-        result.append(", metadataGroup: ");
-        result.append(metadataGroup);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (coverageId: ");
+		result.append(coverageId);
+		result.append(", coverageSubtype: ");
+		result.append(coverageSubtype);
+		result.append(", boundingBoxGroup: ");
+		result.append(boundingBoxGroup);
+		result.append(", metadataGroup: ");
+		result.append(metadataGroup);
+		result.append(')');
+		return result.toString();
+	}
 
 } //CoverageSummaryTypeImpl

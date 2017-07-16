@@ -11,7 +11,6 @@ script:
 notifications:
   email: false
   on_failure: never
-env: GDAL_LIBRARY_NAME=disabled_see_geot-4733
 jdk: 
   - oraclejdk8
 addons:

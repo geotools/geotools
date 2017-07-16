@@ -240,55 +240,55 @@ public class NestedAttributeMapping extends AttributeMapping {
                                
         // get all the nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = source.getFeatures(filter);
-        FeatureIterator<Feature> it = fCollection.features();
         Filter matchingIdFilter = null;
-        if (nestedIdExpression.equals(Expression.NIL)) {
-            HashSet<FeatureId> featureIds = new HashSet<FeatureId>();
-            while (it.hasNext()) {
-                Feature f = it.next();
-                matchingFeatures.add(f);
-                if (isMultiple && f.getIdentifier() != null) {
-                    featureIds.add(f.getIdentifier());
-                }
-            }
 
-            // Find features of the same id from denormalised view
-            if (!featureIds.isEmpty()) {
-                matchingIdFilter = filterFac.id(featureIds);
-            }
-        } else {
-            HashSet<String> featureIds = new HashSet<String>();
-            while (it.hasNext()) {
-                Feature f = it.next();
-                matchingFeatures.add(f);
-                if (isMultiple) {
-                    featureIds.add(Converters.convert(nestedIdExpression.evaluate(f), String.class));
+        try (FeatureIterator<Feature> it = fCollection.features()) {
+            if (nestedIdExpression.equals(Expression.NIL)) {
+                HashSet<FeatureId> featureIds = new HashSet<FeatureId>();
+                while (it.hasNext()) {
+                    Feature f = it.next();
+                    matchingFeatures.add(f);
+                    if (isMultiple && f.getIdentifier() != null) {
+                        featureIds.add(f.getIdentifier());
+                    }
                 }
-            }
 
-            // Find features of the same id from denormalised view
-            if (!featureIds.isEmpty()) {
-                List<Filter> idFilters = new ArrayList<Filter>(featureIds.size());
-                for (String id : featureIds) {
-                    idFilters.add(filterFac.equals(nestedIdExpression, filterFac.literal(id)));
+                // Find features of the same id from denormalised view
+                if (!featureIds.isEmpty()) {
+                    matchingIdFilter = filterFac.id(featureIds);
                 }
-                matchingIdFilter = filterFac.or(idFilters);
+            } else {
+                HashSet<String> featureIds = new HashSet<String>();
+                while (it.hasNext()) {
+                    Feature f = it.next();
+                    matchingFeatures.add(f);
+                    if (isMultiple) {
+                        featureIds.add(Converters.convert(nestedIdExpression.evaluate(f), String.class));
+                    }
+                }
+
+                // Find features of the same id from denormalised view
+                if (!featureIds.isEmpty()) {
+                    List<Filter> idFilters = new ArrayList<Filter>(featureIds.size());
+                    for (String id : featureIds) {
+                        idFilters.add(filterFac.equals(nestedIdExpression, filterFac.literal(id)));
+                    }
+                    matchingIdFilter = filterFac.or(idFilters);
+                }
             }
         }
-
-        it.close();
 
         if (matchingIdFilter != null) {
             fCollection = source.getFeatures(matchingIdFilter);
 
             if (fCollection.size() > matchingFeatures.size()) {
                 // there are rows of same id from denormalised view
-                it = fCollection.features();
-                matchingFeatures.clear();
-                while (it.hasNext()) {
-                    matchingFeatures.add(it.next());
+                try (FeatureIterator<Feature> it = fCollection.features()) {
+                    matchingFeatures.clear();
+                    while (it.hasNext()) {
+                        matchingFeatures.add(it.next());
+                    }
                 }
-                it.close();
             }
         }
 
@@ -416,11 +416,11 @@ public class NestedAttributeMapping extends AttributeMapping {
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(query);
         if (fCollection instanceof MappingFeatureCollection) {            
-            FeatureIterator<Feature> iterator = fCollection.features();
-            while (iterator.hasNext()) {
-                matchingFeatures.add(iterator.next());
+            try (FeatureIterator<Feature> iterator = fCollection.features()) {
+                while (iterator.hasNext()) {
+                    matchingFeatures.add(iterator.next());
+                }
             }
-            iterator.close();
         }
 
 

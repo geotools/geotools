@@ -64,28 +64,29 @@ When creating the first release candidate of a series, there are some extra step
     git pull
     git status
 
-* Create the new stable branch and push it to GitHub; for example, if master is ``13-SNAPSHOT`` and the remote for the official GeoTools is called ``geotools``::
+* Create the new stable branch and push it to GitHub; for example, if master is ``17-SNAPSHOT`` and the remote for the official GeoTools is called ``geotools``::
 
-    git checkout -b 13.x
-    git push geotools 13.x
+    git checkout -b 17.x
+    git push geotools 17.x
 
-* Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``13-SNAPSHOT`` to ``14-SNAPSHOT``::
+* Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
 
     git checkout master
-    find . -name pom.xml -exec sed -i 's/13-SNAPSHOT/14-SNAPSHOT/g' {} \;
-    sed -i 's/13-SNAPSHOT/14-SNAPSHOT/g' \
+    find . -name pom.xml -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
+    sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
         build/rename.xml \
         docs/build.xml \
         docs/common.py \
+        docs/user/artifacts/xml/pom3.xml \
         docs/user/tutorial/quickstart/artifacts/pom2.xml \
         modules/library/metadata/src/main/java/org/geotools/factory/GeoTools.java
 
 * Commit the changes and push to the master branch on GitHub::
 
-      git commit -am "Updated version to 14-SNAPSHOT"
+      git commit -am "Update version to 18-SNAPSHOT"
       git push geotools master
       
-* Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``14-SNAPSHOT``, create a Jira version ``14-beta`` for the first release of the ``14.x`` series
+* Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-beta`` for the first release of the ``18.x`` series
 
 * Update the jobs on ares:
   

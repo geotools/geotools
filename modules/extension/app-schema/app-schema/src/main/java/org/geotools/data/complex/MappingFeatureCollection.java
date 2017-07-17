@@ -22,7 +22,9 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureResults;
 import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
@@ -175,7 +177,31 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
             throw new RuntimeException(e);
         }
     }
-    
+
+    /**
+     * <p>
+     * This overload allows client code to explicitly specify the transaction that the created iterator will be working against.
+     * </p>
+     * 
+     * <p>
+     * Passing <code>null</code> is equivalent to calling {@link #features()} and lets the iterator decide whether a new transaction should be created
+     * (and closed when the iterator is closed) or not. Currently, a new transaction is created by {@link DataAccessMappingFeatureIterator} only if a
+     * database backend is available and joining is enabled, to reduce the number of concurrent connections opened due to feature chaining.
+     * </p>
+     * 
+     * @see org.geotools.feature.FeatureCollection#features()
+     * 
+     * @param transaction the transaction the created iterator will be working against
+     */
+    public FeatureIterator<Feature> features(Transaction transaction) {
+        try {
+            return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter,
+                    transaction);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public XmlMappingFeatureIterator features(String xpath, String value) throws IOException {
         return new XmlMappingFeatureIterator(store, mapping, query, xpath, value);
     }

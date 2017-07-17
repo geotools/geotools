@@ -18,9 +18,11 @@
 package org.geotools.data.complex;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +41,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.ComplexAttribute;
@@ -724,6 +727,52 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
         // clean ups
         guIterator.close();
+    }
+
+    /**
+     * Tests that equivalent source data stores (i.e. with exactly the same configuration parameters) are detected and only one instance of them is
+     * created and shared between all feature mappings referencing it.
+     * 
+     * <p>
+     * Note: the above holds true in the context of a single {@link AppSchemaDataAccess} instance, not across data stores.
+     * </p>
+     * 
+     * @throws IOException
+     */
+    @Test
+    public void testSourceDataStoreConsolidation() throws IOException {
+        FeatureSource guFs = DataAccessRegistry.getFeatureSource(GEOLOGIC_UNIT_NAME);
+        assertTrue(guFs instanceof MappingFeatureSource);
+        FeatureTypeMapping guMapping = ((MappingFeatureSource) guFs).getMapping();
+
+        FeatureSource cpFs = DataAccessRegistry.getFeatureSource(COMPOSITION_PART);
+        assertTrue(cpFs instanceof MappingFeatureSource);
+        FeatureTypeMapping cpMapping = ((MappingFeatureSource) cpFs).getMapping();
+
+        FeatureSource ccFs = DataAccessRegistry.getFeatureSource(CONTROLLED_CONCEPT);
+        assertTrue(ccFs instanceof MappingFeatureSource);
+        FeatureTypeMapping ccMapping = ((MappingFeatureSource) ccFs).getMapping();
+
+        FeatureSource cgiFs = DataAccessRegistry.getFeatureSource(CGI_TERM_VALUE);
+        assertTrue(cgiFs instanceof MappingFeatureSource);
+        FeatureTypeMapping cgiMapping = ((MappingFeatureSource) cgiFs).getMapping();
+
+        // these feature types all come from the same AppSchemaDataAccess and their source data store
+        // configuration is the same --> they point to the same source data store instance
+        FeatureSource guSourceFs = guMapping.getSource();
+        assertEquals(guSourceFs.getDataStore(), cpMapping.getSource().getDataStore());
+        assertEquals(guSourceFs.getDataStore(), ccMapping.getSource().getDataStore());
+        assertEquals(guSourceFs.getDataStore(), cgiMapping.getSource().getDataStore());
+
+        FeatureSource mfSource = DataAccessRegistry.getFeatureSource(MAPPED_FEATURE);
+        assertTrue(mfSource instanceof MappingFeatureSource);
+        FeatureTypeMapping mfMapping = ((MappingFeatureSource) mfSource).getMapping();
+
+        // MappedFeature type comes from a different AppSchemaDataAccess --> even though its source
+        // data store configuration is the same as the other types', it points to a different source
+        // data store instance
+        FeatureSource mfSourceFs = mfMapping.getSource();
+        assertNotEquals(guSourceFs.getDataStore(), mfSourceFs.getDataStore());
     }
 
     /**

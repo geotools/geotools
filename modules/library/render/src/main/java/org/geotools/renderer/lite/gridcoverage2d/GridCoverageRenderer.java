@@ -665,7 +665,7 @@ public final class GridCoverageRenderer {
         for(int i=0;i<numBands;i++) {
             sd[i]= new GridSampleDimension(TypeMap.getColorInterpretation(im.getColorModel(), i).name());
         }
-        
+
         Map properties = input.getProperties();
         if(properties == null){
             properties = new HashMap<>();

@@ -124,7 +124,9 @@ class FeatureTypeMapper {
         int width = ogr.FieldGetWidth(field);
         
         if (ogr.FieldIsIntegerType(type)) {
-            if (width <= 3) {
+            if (width == 0) {
+		return BigDecimal.class;
+	     } else if (width <= 3) {
                 return Byte.class;
             } else if (width <= 5) {
                 return Short.class;

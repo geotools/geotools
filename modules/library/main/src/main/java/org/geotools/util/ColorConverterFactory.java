@@ -55,6 +55,13 @@ public class ColorConverterFactory implements ConverterFactory {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             String rgba = (String) source;
             try {
+                // expand compact color expression
+                if(rgba.length() == 4) {
+                    char r = rgba.charAt(1);
+                    char g = rgba.charAt(2);
+                    char b = rgba.charAt(3);
+                    rgba = "#" + r + r + g + g + b + b;
+                }
                 return target.cast(Color.decode(rgba));
             } catch (NumberFormatException badRGB) {
                 // unavailable

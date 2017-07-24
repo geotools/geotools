@@ -42,7 +42,7 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
     private MultiLevelROIProviderMosaicFactory() {
     }
-
+    
     /**
      * Builds a footprint provider from mosaic location
      * 

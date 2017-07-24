@@ -18,12 +18,10 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.Executors;
 
 import javax.media.jai.Interpolation;
 
@@ -40,7 +39,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -49,6 +47,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.test.TestData;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -75,6 +74,19 @@ public class HeterogenousCRSTest {
     @BeforeClass
     public static void resetReciprocals() throws Exception {
         MapProjection.SKIP_SANITY_CHECKS = false;
+    }
+    
+    @AfterClass
+    public static void cleanupCRS() {
+        System.clearProperty("org.geotools.referencing.forceXY");
+        CRS.reset("all");
+    }
+
+    @BeforeClass
+    public static void initCRS() {
+        // make sure CRS ordering is correct
+        CRS.reset("all");
+        System.setProperty("org.geotools.referencing.forceXY", "true");
     }
 
     @Test
@@ -310,6 +322,39 @@ public class HeterogenousCRSTest {
         GridCoverage2D gcAfter = imReader.read(new GeneralParameterValue[] {ggAfter});
         RenderedImage riAfter = gcAfter.getRenderedImage();
         ImageAssert.assertEquals(testFile("hetero_crs_dateline_results/after.png"), riAfter, 1000);
+    }
+    
+    @Test
+    public void testHeteroCRSRasterMask() throws IOException, URISyntaxException, TransformException,
+            FactoryException {
+        URL storeUrl = TestData.url(this, "rastermask2");
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder("hetero_crs_rastermask");
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        // force hetero setup, different CRS for the mosaic
+        String indexer = "GranuleAcceptors=org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory\n" +
+                "GranuleHandler=org.geotools.gce.imagemosaic.granulehandler.ReprojectingGranuleHandlerFactory\n" +
+                "HeterogeneousCRS=true\n" + //
+                "MosaicCRS=EPSG\\:3857\n" + // the reprojection bit
+                "Schema=*the_geom:Polygon,location:String,crs:String";
+        FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer);
+        
+        // footprint management
+        String footprints = "footprint_source=raster";
+        FileUtils.writeStringToFile(new File(testDirectory, "footprints.properties"), footprints);
+        
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, new Hints());
+        Assert.assertNotNull(imReader);
+        assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), "EPSG:3857");
+
+        // check it's not empty (used to be)
+        final ParameterValue<String> footprintParam =  AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        footprintParam.setValue("Transparent");
+        GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {footprintParam});
+        assertNotNull(coverage);
+        ImageAssert.assertEquals(testFile("hetero_crs_rastermask.png"), coverage.getRenderedImage(), 1000);
     }
     
     GeneralParameterValue buildGridGeometryParameter(ReferencedEnvelope envelope, int width, int height) {

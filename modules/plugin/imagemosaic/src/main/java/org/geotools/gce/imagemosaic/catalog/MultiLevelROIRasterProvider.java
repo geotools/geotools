@@ -31,9 +31,19 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIRaster;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.factory.Hints;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * {@link MultiLevelROIProvider} implementation returning a {@link MultiLevelROIRaster} instance
@@ -50,7 +60,7 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
 
     /** Mosaic Folder used as root folder */
     private File mosaicFolder;
-
+    
     public MultiLevelROIRasterProvider(File mosaicFolder) {
         this.mosaicFolder = mosaicFolder;
     }
@@ -86,10 +96,26 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                                 ? layout.getNumExternalMaskOverviews() : 0;
                         int totalMasks = numExternalMasks + numInternalMasks
                                 + numExternalMaskOverviews;
+                        
                         // Check if masks are present
                         // NOTE No Mask: Outside ROI
                         if (totalMasks > 0) {
-                            return new MultiLevelROIRaster(layout, file, sf);
+                            CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
+                            final SimpleFeatureType indexSchema = sf.getFeatureType();
+                            if(crs != null &&  indexSchema != null && indexSchema.getCoordinateReferenceSystem() != null && 
+                                    !CRS.equalsIgnoreMetadata(crs, indexSchema.getCoordinateReferenceSystem())) {
+                                // do not trust the feature footprint, it's reprojected
+                                ReferencedEnvelope envelope = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+                                Polygon nativeFootprint = JTS.toGeometry(envelope);
+                                SimpleFeatureType ftNative = FeatureTypes.transform(indexSchema, reader.getCoordinateReferenceSystem());
+                                SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ftNative);
+                                fb.init(sf);
+                                fb.set(indexSchema.getGeometryDescriptor().getLocalName(), nativeFootprint);
+                                SimpleFeature nativeFeature = fb.buildFeature(sf.getID());
+                                return new MultiLevelROIRaster(layout, file, nativeFeature);
+                            } else {
+                                return new MultiLevelROIRaster(layout, file, sf);
+                            }
                         }
                     }
                 } catch (Exception e) {

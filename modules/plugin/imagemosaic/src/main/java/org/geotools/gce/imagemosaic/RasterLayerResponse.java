@@ -348,6 +348,7 @@ public class RasterLayerResponse {
                     // in case there was a reprojection issue assume intersection
                     intersects = true;
                 }
+                intersects = inclusionGeometry.intersects(bb);
             }
             if (!footprintBehavior.handleFootprints() || inclusionGeometry == null
                     || (footprintBehavior.handleFootprints() && intersects)) {

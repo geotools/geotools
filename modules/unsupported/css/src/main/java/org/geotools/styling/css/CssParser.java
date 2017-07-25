@@ -17,12 +17,17 @@
 package org.geotools.styling.css;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,6 +64,11 @@ import org.parboiled.support.ValueStack;
  */
 @BuildParseTree
 public class CssParser extends BaseParser<Object> {
+
+    /**
+     * Matches a environment variable expression 
+     */
+    private static final Pattern ENV_PATTERN = Pattern.compile("@([\\w\\d]+)(\\(([^\\)]+)\\))?");
 
     static CssParser INSTANCE;
 
@@ -253,7 +263,7 @@ public class CssParser extends BaseParser<Object> {
 
     Rule MaxScaleSelector() {
         return Sequence("[", OptionalWhiteSpace(), FirstOf("@scale", "@sd"), OptionalWhiteSpace(),
-                FirstOf("<=", "<"), OptionalWhiteSpace(), ScaleValue(), push(new ScaleRange(0, true,
+                FirstOf("<=", "<"), OptionalWhiteSpace(), ScaleNumber(), push(new ScaleRange(0, true,
                         parseScaleValue(match()), false)), //
                 OptionalWhiteSpace(), "]");
     }
@@ -266,7 +276,7 @@ public class CssParser extends BaseParser<Object> {
                 OptionalWhiteSpace(),
                 FirstOf(">=", ">"),
                 OptionalWhiteSpace(),
-                ScaleValue(),
+                ScaleNumber(),
                 push(new ScaleRange(parseScaleValue(match()), true, Double.POSITIVE_INFINITY, true)), //
                 OptionalWhiteSpace(), "]");
     }
@@ -327,8 +337,32 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule SimpleValue() {
-        return FirstOf(URLFunction(), TransformFunction(), Function(), Color(), NamedColor(), Measure(),
-                ValueIdentifier(), MixedExpression());
+        return FirstOf(URLFunction(), TransformFunction(), Function(), Color(), NamedColor(),  
+                Measure(), ValueIdentifier(), VariableValue(), MixedExpression());
+    }
+    
+    Rule VariableValue() {
+        return Sequence(Ch('@'), Identifier(), push(new Value.Literal(match())), Optional(Sequence(Ch('('), OneOrMore(Sequence(TestNot(AnyOf(")")), ANY)), push(new Value.Literal(match())), Ch(')'))), new Action() {
+            @Override
+            public boolean run(Context context) {
+                List<Value> values = popAll(Value.class).stream().map(o -> (Value) o).collect(Collectors.toList());
+                Literal id = (Literal) values.get(0);
+                if("sd".equals(id.body)) {
+                    values.set(0, new Value.Literal("wms_scale_denominator"));
+                }
+                if(values.size() == 2) {
+                    Value.Literal defaultValue = (Literal) values.get(1);
+                    String body = defaultValue.body;
+                    if(Value.COLORS_TO_HEX.containsKey(body)) {
+                        values.set(1, new Value.Literal(Value.COLORS_TO_HEX.get(body)));
+                    } else if(body.startsWith("'") && body.endsWith("'")) {
+                        values.set(1, new Value.Literal(body.substring(1, body.length() - 1)));
+                    }
+                }
+                push(new Value.Function("env", values));
+                return true;
+            }
+        });
     }
 
     Rule MixedExpression() {
@@ -433,10 +467,31 @@ public class CssParser extends BaseParser<Object> {
 
     Rule Measure() {
         return Sequence(
-                Sequence(
-                        Number(),
-                        Optional(FirstOf(String("px"), String("m"), String("ft"), String("%"),
-                                String("deg")))), push(new Value.Literal(match())));
+                Sequence(Number(),
+                        Optional(FirstOf(String("k"), String("M"), String("G"), String("px"),
+                                String("m"), String("ft"), String("%"), String("deg")))),
+                new Action() {
+                    @Override
+                    public boolean run(Context ctx) {
+                        String match = match();
+                        if(match.endsWith("k") || match.endsWith("M") || match.endsWith("G")) {
+                            match = scaleValueToString(match);
+                        }
+                        ctx.getValueStack().push(new Value.Literal(match));
+                        return true;
+                    }
+
+                });
+    }
+    
+    private String scaleValueToString(String match) {
+        double scale = parseScaleValue(match);
+        if(scale == Math.floor(scale)) {
+            match = String.valueOf((long) scale); 
+        } else {
+            match = String.valueOf(scale);
+        }
+        return match;
     }
 
     Rule ECQLExpression() {
@@ -444,6 +499,7 @@ public class CssParser extends BaseParser<Object> {
             @Override
             public boolean run(Context ctx) {
                 String expression = match();
+                expression = expandEnvironmentVariables(expression);
                 try {
                     org.opengis.filter.expression.Expression e = ECQL.toExpression(expression);
                     ctx.getValueStack().push(new Value.Expression(e));
@@ -452,7 +508,73 @@ public class CssParser extends BaseParser<Object> {
                     throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
                 }
             }
+
         });
+    }
+    
+    private String expandEnvironmentVariables(String expression) {
+        String variablesExpanded = expandUnquoted(expression, (token, sb) -> {
+                Matcher matcher = ENV_PATTERN.matcher(token);
+                
+                if(!matcher.find()) {
+                    sb.append(token);
+                } else {
+                    do {
+                        String variable = matcher.group(1);
+                        
+                        if("sd".equals(variable)) {
+                            // for conformity with GeoServer WMS env vars
+                            variable = "wms_scale_denominator";
+                        }
+                        
+                        String defaultValue = matcher.group(3);
+                        if(defaultValue != null) {
+                            matcher.appendReplacement(sb, "env('" + variable + "', '" + defaultValue + "')");
+                        } else {
+                            matcher.appendReplacement(sb, "env('" + variable + "')");
+                        }
+                    } while(matcher.find());
+                    matcher.appendTail(sb);
+                }
+        });
+        String numbersExpanded = expandUnquoted(variablesExpanded, (token, sb) -> {
+            Pattern scaledNumber = Pattern.compile("(?<!\\w)\\d+(\\.\\d+)?[kMG]");
+            Matcher matcher = scaledNumber.matcher(token);
+            
+            if(!matcher.find()) {
+                sb.append(token);
+            } else {
+                do {
+                    String value = matcher.group(0);
+                    String expandedScaleValue = scaleValueToString(value);
+                    matcher.appendReplacement(sb, expandedScaleValue);
+                } while(matcher.find());
+                matcher.appendTail(sb);
+            }
+        });
+        
+        return numbersExpanded;
+    }
+    
+    String expandUnquoted(String expression, BiConsumer<String, StringBuffer> replacer) {
+     // perform variable expansion, but do not expand within single quoted sections
+        StringTokenizer st = new StringTokenizer(expression, "'", true);
+        StringBuffer sb = new StringBuffer(); // Matcher needs StringBuffer
+        boolean expand = true;
+        while(st.hasMoreTokens()) {
+            String token = st.nextToken();
+            if("'".equals(token)) {
+                expand = !expand;
+                sb.append("'");
+            } else if(expand) {
+                replacer.accept(token, sb);
+            } else {
+                sb.append(token);
+            }
+   
+        }
+        String expanded = sb.toString();
+        return expanded;
     }
     
     String reportPosition(Context ctx) {
@@ -464,6 +586,7 @@ public class CssParser extends BaseParser<Object> {
             @Override
             public boolean run(Context ctx) {
                 String expression = match();
+                expression = expandEnvironmentVariables(expression);
                 try {
                     Filter f = ECQL.toFilter(expression);
                     ctx.getValueStack().push(new Data(f));
@@ -500,9 +623,14 @@ public class CssParser extends BaseParser<Object> {
                 Optional('.', ZeroOrMore(Digit())));
     }
     
-    Rule ScaleValue() {
+    Rule ScaleNumber() {
         return Sequence(OneOrMore(Digit()),
                 Optional('.', ZeroOrMore(Digit())), Optional(AnyOf("kMG")));
+    }
+    
+    Rule ScaleValue() {
+        return Sequence(OneOrMore(Digit()),
+                Optional('.', ZeroOrMore(Digit())), AnyOf("kMG"), push(new Value.Literal(String.valueOf(parseScaleValue(match())))));
     }
 
     @SuppressSubnodes
@@ -670,4 +798,5 @@ public class CssParser extends BaseParser<Object> {
         }
         return false;
     }
+    
 }

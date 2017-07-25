@@ -795,9 +795,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         CssRule rule = ss.getRules().get(0);
         
         assertEquals(2, rule.getNestedRules().size());
-        
     }
-
+    
     private <T extends Selector> T assertSelector(Selector selector, Class<T> clazz) {
         assertThat(selector, instanceOf(clazz));
         return (T) selector;

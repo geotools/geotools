@@ -77,6 +77,11 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Expression expected = ECQL.toExpression(expectedCql);
         assertEquals(expected, actual);
     }
+    
+    private void assertFilter(String expectedCql, Filter actual) throws CQLException {
+        Filter expected = ECQL.toFilter(expectedCql);
+        assertEquals(expected, actual);
+    }
 
     private void assertVendorOption(String expectedValue, String name,
             org.geotools.styling.Symbolizer ps) {
@@ -1155,6 +1160,139 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertLiteral("5", stroke.dashArray().get(1));
         assertExpression("bar", stroke.dashArray().get(2));
     }
+    
+    @Test
+    public void testVariableExpansion() throws CQLException {
+        String css = "* { stroke: @color}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Expression color = ls.getStroke().getColor();
+        assertExpression("env('color')", color);
+    }
+    
+    @Test
+    public void testVariableExpansionWithDefaultColor() throws CQLException {
+        String css = "* { stroke: @color(black)}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Expression color = ls.getStroke().getColor();
+        assertExpression("env('color', '#000000')", color);
+    }
+    
+    @Test
+    public void testVariableExpansionWithDefaultString() throws CQLException {
+        String css = "* { stroke: @color('black')}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Expression color = ls.getStroke().getColor();
+        assertExpression("env('color', 'black')", color);
+    }
+    
+    @Test
+    public void testVariableExpansionInCql() throws CQLException {
+        String css = "* { stroke: black; stroke-width: [10 + @thick]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Stroke stroke = ls.getStroke();
+        final Expression color = stroke.getColor();
+        assertExpression("'#000000'", color);
+        Expression width = stroke.getWidth();
+        assertExpression("10 + env('thick')", width);
+    }
+    
+    @Test
+    public void testVariableExpansionWithDefaultInCql() throws CQLException {
+        String css = "* { stroke: black; stroke-width: [10 + @thick(0)]}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Stroke stroke = ls.getStroke();
+        final Expression color = stroke.getColor();
+        assertExpression("'#000000'", color);
+        Expression width = stroke.getWidth();
+        assertExpression("10 + env('thick', '0')", width);
+    }
+    
+    @Test
+    public void testVariableExpansionInSelector() throws CQLException {
+        String css = "[variable > @limit] { stroke: black}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        Filter filter = rule.getFilter();
+        assertFilter("variable > env('limit')", filter);
+        
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Stroke stroke = ls.getStroke();
+        assertExpression("'#000000'", stroke.getColor());
+    }
+    
+    @Test
+    public void testVariableExpansionWithDefaultInSelector() throws CQLException {
+        String css = "[variable > @limit(10)] { stroke: black}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        Filter filter = rule.getFilter();
+        assertFilter("variable > env('limit', '10')", filter);
+        
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Stroke stroke = ls.getStroke();
+        assertExpression("'#000000'", stroke.getColor());
+    }
+    
+    @Test
+    public void testNotVariablePropertyValue() throws CQLException {
+        String css = "* { label: 'not@env'}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertExpression("'not@env'", ts.getLabel());
+    }
+    
+    @Test
+    public void testNotVariableCql() throws CQLException {
+        String css = "* { label: ['not@env']}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        TextSymbolizer ts = assertSingleSymbolizer(rule, TextSymbolizer.class);
+        assertExpression("'not@env'", ts.getLabel());
+    }
+    
+    @Test
+    public void testExpandWmsScaleDenominator() throws CQLException {
+        String css = "* { stroke: categorize(@sd, blue, 10000, lime)}";
+        assertCategorizeScaleDenominator(css);
+    }
+
+    private void assertCategorizeScaleDenominator(String css) throws CQLException {
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        Expression color = ls.getStroke().getColor();
+        assertThat(color, instanceOf(Function.class));
+        Function f = (Function) color;
+        assertEquals("Categorize", f.getName());
+        assertExpression("env('wms_scale_denominator')", f.getParameters().get(0));
+        assertExpression("'#0000ff'", f.getParameters().get(1));
+        assertExpression("10000", f.getParameters().get(2));
+        assertExpression("'#00ff00'", f.getParameters().get(3));
+    }
+    
+    @Test
+    public void testExpandWmsScaleDenominatorIsoSuffix() throws CQLException {
+        String css = "* { stroke: categorize(@sd, blue, 10k, lime)}";
+        assertCategorizeScaleDenominator(css);
+    }
+    
+    @Test
+    public void testExpandWmsScaleDenominatorIsoSuffixInCql() throws CQLException {
+        String css = "* { stroke: [categorize(@sd, '#0000ff', 10k, '#00ff00')]}";
+        assertCategorizeScaleDenominator(css);
+    }
+
 
     private void assertScaleMinMax(String css, Double min, Double max) {
         Style style = translate(css);

@@ -3,6 +3,7 @@ package org.geotools.renderer.label;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,7 +21,9 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -156,6 +159,24 @@ public class LabelCacheImplTest {
         cache.end(testGraphics, new Rectangle(0, 0, 10, 10));
         // got here, did we get the exception
         assertNotNull(exception.get());
+    }
+    
+    @Test
+    public void testUsesCustomLabelPainter() throws Exception {
+        LabelPainter painter = Mockito.mock(LabelPainter.class);
+        Graphics2D graphics = Mockito.mock(Graphics2D.class);
+        
+        cache.setConstructPainter((x,y)->painter);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        SimpleFeature f1 = createFeature("label1", L1);
+        cache.put(LAYER_ID, ts, f1, new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null,
+                false), ALL_SCALES);
+        
+        cache.endLayer(LAYER_ID, graphics, new Rectangle(0, 0, 256, 256));
+        cache.end(graphics, new Rectangle(0, 0, 256, 256));
+        
+        Mockito.verify(painter).setLabel(Mockito.any(LabelCacheItem.class));
+        Mockito.verify(painter, Mockito.atLeastOnce()).getLabel();
     }
 
     private SimpleFeature createFeature(String label, Geometry geom) {

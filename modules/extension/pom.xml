@@ -51,6 +51,8 @@
     <module>grid</module>
     <module>validation</module>
     <module>wms</module>
+    <module>tile-client</module>
+    <module>wmts</module>
     <module>xsd</module>
     <module>transform</module>
     <module>ysld</module>

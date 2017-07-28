@@ -156,12 +156,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>tile</id>
-			<modules>
-				<module>tile-client</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>mongodb</id>
 			<modules>
 				<module>mongodb</module>
@@ -237,8 +231,6 @@
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
 		<module>polylabel</module>
-		<module>tile-client</module>
-		<module>wmts</module>
 	</modules>
 
 </project>

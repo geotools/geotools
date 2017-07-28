@@ -27,190 +27,190 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DimensionTrimTypeImpl extends DimensionSubsetTypeImpl implements DimensionTrimType {
     /**
-     * The default value of the '{@link #getTrimLow() <em>Trim Low</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getTrimLow() <em>Trim Low</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTrimLow()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTrimLow()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TRIM_LOW_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getTrimLow() <em>Trim Low</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getTrimLow() <em>Trim Low</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTrimLow()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTrimLow()
+	 * @generated
+	 * @ordered
+	 */
     protected String trimLow = TRIM_LOW_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getTrimHigh() <em>Trim High</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getTrimHigh() <em>Trim High</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTrimHigh()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTrimHigh()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TRIM_HIGH_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getTrimHigh() <em>Trim High</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getTrimHigh() <em>Trim High</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTrimHigh()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTrimHigh()
+	 * @generated
+	 * @ordered
+	 */
     protected String trimHigh = TRIM_HIGH_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected DimensionTrimTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.DIMENSION_TRIM_TYPE;
-    }
+		return Wcs20Package.Literals.DIMENSION_TRIM_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getTrimLow() {
-        return trimLow;
-    }
+		return trimLow;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setTrimLow(String newTrimLow) {
-        String oldTrimLow = trimLow;
-        trimLow = newTrimLow;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW, oldTrimLow, trimLow));
-    }
+		String oldTrimLow = trimLow;
+		trimLow = newTrimLow;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW, oldTrimLow, trimLow));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getTrimHigh() {
-        return trimHigh;
-    }
+		return trimHigh;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setTrimHigh(String newTrimHigh) {
-        String oldTrimHigh = trimHigh;
-        trimHigh = newTrimHigh;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH, oldTrimHigh, trimHigh));
-    }
+		String oldTrimHigh = trimHigh;
+		trimHigh = newTrimHigh;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH, oldTrimHigh, trimHigh));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
-                return getTrimLow();
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
-                return getTrimHigh();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
+				return getTrimLow();
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
+				return getTrimHigh();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
-                setTrimLow((String)newValue);
-                return;
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
-                setTrimHigh((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
+				setTrimLow((String)newValue);
+				return;
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
+				setTrimHigh((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
-                setTrimLow(TRIM_LOW_EDEFAULT);
-                return;
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
-                setTrimHigh(TRIM_HIGH_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
+				setTrimLow(TRIM_LOW_EDEFAULT);
+				return;
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
+				setTrimHigh(TRIM_HIGH_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
-                return TRIM_LOW_EDEFAULT == null ? trimLow != null : !TRIM_LOW_EDEFAULT.equals(trimLow);
-            case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
-                return TRIM_HIGH_EDEFAULT == null ? trimHigh != null : !TRIM_HIGH_EDEFAULT.equals(trimHigh);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_LOW:
+				return TRIM_LOW_EDEFAULT == null ? trimLow != null : !TRIM_LOW_EDEFAULT.equals(trimLow);
+			case Wcs20Package.DIMENSION_TRIM_TYPE__TRIM_HIGH:
+				return TRIM_HIGH_EDEFAULT == null ? trimHigh != null : !TRIM_HIGH_EDEFAULT.equals(trimHigh);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (trimLow: ");
-        result.append(trimLow);
-        result.append(", trimHigh: ");
-        result.append(trimHigh);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (trimLow: ");
+		result.append(trimLow);
+		result.append(", trimHigh: ");
+		result.append(trimHigh);
+		result.append(')');
+		return result.toString();
+	}
 
 } //DimensionTrimTypeImpl

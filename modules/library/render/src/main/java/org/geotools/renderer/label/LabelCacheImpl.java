@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -166,6 +167,8 @@ public final class LabelCacheImpl implements LabelCache {
     private VendorOptionParser voParser = new VendorOptionParser();
     
     private List<RenderListener> renderListeners = new CopyOnWriteArrayList<RenderListener>();
+    
+    private BiFunction<Graphics2D, LabelRenderingMode, LabelPainter> constructPainter = LabelPainter::new; 
 
     public void enableLayer(String layerId) {
         needsOrdering = true;
@@ -181,6 +184,15 @@ public final class LabelCacheImpl implements LabelCache {
      */
     public void setLabelRenderingMode(LabelRenderingMode mode) {
         this.labelRenderingMode = mode;
+    }
+
+    /**
+     * Change the method used to construct LabelPainters. Defaults to 
+     * {@link LabelPainter#LabelPainter}.
+     */
+    public void setConstructPainter(
+            BiFunction<Graphics2D, LabelRenderingMode, LabelPainter> constructPainter) {
+        this.constructPainter = constructPainter;
     }
 
     public void stop() {
@@ -463,7 +475,7 @@ public final class LabelCacheImpl implements LabelCache {
         } else {
             items = getActiveLabels();
         }
-        LabelPainter painter = new LabelPainter(graphics, labelRenderingMode);
+        LabelPainter painter = constructPainter.apply(graphics, labelRenderingMode);
         for (LabelCacheItem labelItem : items) {
             if (stop)
                 return;

@@ -20,13 +20,13 @@ public interface ExtensionItemType extends EObject {
     public String getName();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getName <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
     /**
@@ -36,13 +36,13 @@ public interface ExtensionItemType extends EObject {
     public String getNamespace();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getNamespace <em>Namespace</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getNamespace <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Namespace</em>' attribute.
-     * @see #getNamespace()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Namespace</em>' attribute.
+	 * @see #getNamespace()
+	 * @generated
+	 */
     void setNamespace(String value);
 
     /**
@@ -52,13 +52,13 @@ public interface ExtensionItemType extends EObject {
     public String getSimpleContent();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getSimpleContent <em>Simple Content</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getSimpleContent <em>Simple Content</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Simple Content</em>' attribute.
-     * @see #getSimpleContent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Simple Content</em>' attribute.
+	 * @see #getSimpleContent()
+	 * @generated
+	 */
     void setSimpleContent(String value);
 
     /**
@@ -68,13 +68,13 @@ public interface ExtensionItemType extends EObject {
     public Object getObjectContent();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getObjectContent <em>Object Content</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.ExtensionItemType#getObjectContent <em>Object Content</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Object Content</em>' reference.
-     * @see #getObjectContent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Object Content</em>' reference.
+	 * @see #getObjectContent()
+	 * @generated
+	 */
     void setObjectContent(Object value);
     
 }

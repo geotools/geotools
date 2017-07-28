@@ -786,6 +786,12 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="filter" eType="#//Filter"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="sortBy" upperBound="-1"
+        eType="#//SortBy">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;                The SortBy element is used specify property names whose&#xA;                values should be used to order (upon presentation) the&#xA;                set of feature instances that satisfy the query."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OfferedCoverageType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -1081,4 +1087,5 @@
   <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType_1" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EDataType" name="QName" instanceClassName="javax.xml.namespace.QName"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Filter" instanceClassName="org.opengis.filter.Filter"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="SortBy" instanceClassName="org.opengis.filter.sort.SortBy"/>
 </ecore:EPackage>

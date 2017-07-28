@@ -30,196 +30,196 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public class RangeItemTypeImpl extends EObjectImpl implements RangeItemType {
     /**
-     * The default value of the '{@link #getRangeComponent() <em>Range Component</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getRangeComponent() <em>Range Component</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getRangeComponent()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRangeComponent()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String RANGE_COMPONENT_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getRangeComponent() <em>Range Component</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getRangeComponent() <em>Range Component</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getRangeComponent()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRangeComponent()
+	 * @generated
+	 * @ordered
+	 */
     protected String rangeComponent = RANGE_COMPONENT_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getRangeInterval() <em>Range Interval</em>}' reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getRangeInterval() <em>Range Interval</em>}' reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getRangeInterval()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRangeInterval()
+	 * @generated
+	 * @ordered
+	 */
     protected RangeIntervalType rangeInterval;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected RangeItemTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.RANGE_ITEM_TYPE;
-    }
+		return Wcs20Package.Literals.RANGE_ITEM_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getRangeComponent() {
-        return rangeComponent;
-    }
+		return rangeComponent;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setRangeComponent(String newRangeComponent) {
-        String oldRangeComponent = rangeComponent;
-        rangeComponent = newRangeComponent;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT, oldRangeComponent, rangeComponent));
-    }
+		String oldRangeComponent = rangeComponent;
+		rangeComponent = newRangeComponent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT, oldRangeComponent, rangeComponent));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public RangeIntervalType getRangeInterval() {
-        if (rangeInterval != null && rangeInterval.eIsProxy()) {
-            InternalEObject oldRangeInterval = (InternalEObject)rangeInterval;
-            rangeInterval = (RangeIntervalType)eResolveProxy(oldRangeInterval);
-            if (rangeInterval != oldRangeInterval) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL, oldRangeInterval, rangeInterval));
-            }
-        }
-        return rangeInterval;
-    }
+		if (rangeInterval != null && rangeInterval.eIsProxy()) {
+			InternalEObject oldRangeInterval = (InternalEObject)rangeInterval;
+			rangeInterval = (RangeIntervalType)eResolveProxy(oldRangeInterval);
+			if (rangeInterval != oldRangeInterval) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL, oldRangeInterval, rangeInterval));
+			}
+		}
+		return rangeInterval;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public RangeIntervalType basicGetRangeInterval() {
-        return rangeInterval;
-    }
+		return rangeInterval;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setRangeInterval(RangeIntervalType newRangeInterval) {
-        RangeIntervalType oldRangeInterval = rangeInterval;
-        rangeInterval = newRangeInterval;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL, oldRangeInterval, rangeInterval));
-    }
+		RangeIntervalType oldRangeInterval = rangeInterval;
+		rangeInterval = newRangeInterval;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL, oldRangeInterval, rangeInterval));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
-                return getRangeComponent();
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
-                if (resolve) return getRangeInterval();
-                return basicGetRangeInterval();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
+				return getRangeComponent();
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
+				if (resolve) return getRangeInterval();
+				return basicGetRangeInterval();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
-                setRangeComponent((String)newValue);
-                return;
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
-                setRangeInterval((RangeIntervalType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
+				setRangeComponent((String)newValue);
+				return;
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
+				setRangeInterval((RangeIntervalType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
-                setRangeComponent(RANGE_COMPONENT_EDEFAULT);
-                return;
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
-                setRangeInterval((RangeIntervalType)null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
+				setRangeComponent(RANGE_COMPONENT_EDEFAULT);
+				return;
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
+				setRangeInterval((RangeIntervalType)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
-                return RANGE_COMPONENT_EDEFAULT == null ? rangeComponent != null : !RANGE_COMPONENT_EDEFAULT.equals(rangeComponent);
-            case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
-                return rangeInterval != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_COMPONENT:
+				return RANGE_COMPONENT_EDEFAULT == null ? rangeComponent != null : !RANGE_COMPONENT_EDEFAULT.equals(rangeComponent);
+			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
+				return rangeInterval != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (rangeComponent: ");
-        result.append(rangeComponent);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (rangeComponent: ");
+		result.append(rangeComponent);
+		result.append(')');
+		return result.toString();
+	}
 
 } //RangeItemTypeImpl

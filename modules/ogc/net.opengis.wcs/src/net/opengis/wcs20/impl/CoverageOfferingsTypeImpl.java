@@ -39,183 +39,183 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class CoverageOfferingsTypeImpl extends EObjectImpl implements CoverageOfferingsType {
     /**
-     * The cached value of the '{@link #getServiceMetadata() <em>Service Metadata</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getServiceMetadata() <em>Service Metadata</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getServiceMetadata()
-     * @generated
-     * @ordered
-     */
+	 * @see #getServiceMetadata()
+	 * @generated
+	 * @ordered
+	 */
     protected ServiceMetadataType serviceMetadata;
 
     /**
-     * The cached value of the '{@link #getOfferedCoverage() <em>Offered Coverage</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getOfferedCoverage() <em>Offered Coverage</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getOfferedCoverage()
-     * @generated
-     * @ordered
-     */
+	 * @see #getOfferedCoverage()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<OfferedCoverageType> offeredCoverage;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected CoverageOfferingsTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.COVERAGE_OFFERINGS_TYPE;
-    }
+		return Wcs20Package.Literals.COVERAGE_OFFERINGS_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ServiceMetadataType getServiceMetadata() {
-        return serviceMetadata;
-    }
+		return serviceMetadata;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public NotificationChain basicSetServiceMetadata(ServiceMetadataType newServiceMetadata, NotificationChain msgs) {
-        ServiceMetadataType oldServiceMetadata = serviceMetadata;
-        serviceMetadata = newServiceMetadata;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, oldServiceMetadata, newServiceMetadata);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
-    }
+		ServiceMetadataType oldServiceMetadata = serviceMetadata;
+		serviceMetadata = newServiceMetadata;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, oldServiceMetadata, newServiceMetadata);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setServiceMetadata(ServiceMetadataType newServiceMetadata) {
-        if (newServiceMetadata != serviceMetadata) {
-            NotificationChain msgs = null;
-            if (serviceMetadata != null)
-                msgs = ((InternalEObject)serviceMetadata).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, null, msgs);
-            if (newServiceMetadata != null)
-                msgs = ((InternalEObject)newServiceMetadata).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, null, msgs);
-            msgs = basicSetServiceMetadata(newServiceMetadata, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, newServiceMetadata, newServiceMetadata));
-    }
+		if (newServiceMetadata != serviceMetadata) {
+			NotificationChain msgs = null;
+			if (serviceMetadata != null)
+				msgs = ((InternalEObject)serviceMetadata).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, null, msgs);
+			if (newServiceMetadata != null)
+				msgs = ((InternalEObject)newServiceMetadata).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, null, msgs);
+			msgs = basicSetServiceMetadata(newServiceMetadata, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA, newServiceMetadata, newServiceMetadata));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<OfferedCoverageType> getOfferedCoverage() {
-        if (offeredCoverage == null) {
-            offeredCoverage = new EObjectContainmentEList<OfferedCoverageType>(OfferedCoverageType.class, this, Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE);
-        }
-        return offeredCoverage;
-    }
+		if (offeredCoverage == null) {
+			offeredCoverage = new EObjectContainmentEList<OfferedCoverageType>(OfferedCoverageType.class, this, Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE);
+		}
+		return offeredCoverage;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
-                return basicSetServiceMetadata(null, msgs);
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
-                return ((InternalEList<?>)getOfferedCoverage()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
+				return basicSetServiceMetadata(null, msgs);
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
+				return ((InternalEList<?>)getOfferedCoverage()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
-                return getServiceMetadata();
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
-                return getOfferedCoverage();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
+				return getServiceMetadata();
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
+				return getOfferedCoverage();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
-                setServiceMetadata((ServiceMetadataType)newValue);
-                return;
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
-                getOfferedCoverage().clear();
-                getOfferedCoverage().addAll((Collection<? extends OfferedCoverageType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
+				setServiceMetadata((ServiceMetadataType)newValue);
+				return;
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
+				getOfferedCoverage().clear();
+				getOfferedCoverage().addAll((Collection<? extends OfferedCoverageType>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
-                setServiceMetadata((ServiceMetadataType)null);
-                return;
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
-                getOfferedCoverage().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
+				setServiceMetadata((ServiceMetadataType)null);
+				return;
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
+				getOfferedCoverage().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
-                return serviceMetadata != null;
-            case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
-                return offeredCoverage != null && !offeredCoverage.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
+				return serviceMetadata != null;
+			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
+				return offeredCoverage != null && !offeredCoverage.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //CoverageOfferingsTypeImpl

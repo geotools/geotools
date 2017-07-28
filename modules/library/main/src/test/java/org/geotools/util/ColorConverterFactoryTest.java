@@ -142,4 +142,11 @@ public class ColorConverterFactoryTest extends TestCase {
         assertNotNull( "converter not registered", color );
         assertEquals( expected, color );
     }
+    
+    public void testCompactColor() {
+        Color color = Converters.convert("#aaa", Color.class);
+        assertEquals(170, color.getRed());
+        assertEquals(170, color.getGreen());
+        assertEquals(170, color.getBlue());
+    }
 }

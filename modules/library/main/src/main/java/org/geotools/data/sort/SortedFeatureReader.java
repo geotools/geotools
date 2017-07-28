@@ -18,6 +18,9 @@ package org.geotools.data.sort;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.Query;
@@ -26,6 +29,7 @@ import org.geotools.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 /**
  * FeatureReader used to sort contents.
@@ -99,6 +103,41 @@ public class SortedFeatureReader implements SimpleFeatureReader {
 
     public void close() throws IOException {
         delegate.close();
+    }
+
+    /**
+     * Builds a comparator that can be used to sort SimpleFeature instances in memory
+     * 
+     * @param sortBy
+     * @return
+     */
+    public static Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
+        // handle the easy cases, no sorting or natural sorting
+        if (sortBy == SortBy.UNSORTED || sortBy == null) {
+            return null;
+        }
+    
+        // build a list of comparators
+        List<Comparator<SimpleFeature>> comparators = new ArrayList<Comparator<SimpleFeature>>();
+        for (SortBy sb : sortBy) {
+            if (sb == SortBy.NATURAL_ORDER) {
+                comparators.add(new FidComparator(true));
+            } else if (sb == SortBy.REVERSE_ORDER) {
+                comparators.add(new FidComparator(false));
+            } else {
+                String name = sb.getPropertyName().getPropertyName();
+                boolean ascending = sb.getSortOrder() == SortOrder.ASCENDING;
+                comparators.add(new PropertyComparator(name, ascending));
+            }
+        }
+    
+        // return the final comparator
+        if (comparators.size() == 1) {
+            return comparators.get(0);
+        } else {
+            return new CompositeComparator(comparators);
+        }
+    
     }
 
 }

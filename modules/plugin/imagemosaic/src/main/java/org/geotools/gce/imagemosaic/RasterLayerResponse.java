@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -347,6 +348,7 @@ public class RasterLayerResponse {
                     // in case there was a reprojection issue assume intersection
                     intersects = true;
                 }
+                intersects = inclusionGeometry.intersects(bb);
             }
             if (!footprintBehavior.handleFootprints() || inclusionGeometry == null
                     || (footprintBehavior.handleFootprints() && intersects)) {
@@ -1030,7 +1032,10 @@ public class RasterLayerResponse {
                 this.sortBy = new SortBy[] {sort};
                 if (catalog.getQueryCapabilities(rasterManager.getTypeName()).supportsSorting(sortBy)) {
                     query.setSortBy(sortBy);
-                }               
+                } else {
+                    LOGGER.severe("Sorting parameter ignored, underlying datastore cannot sort on "
+                            + Arrays.toString(sortBy));
+                }
             }
         }
     }

@@ -18,13 +18,13 @@ public interface RangeIntervalType extends EObject {
     public String getStartComponent();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.RangeIntervalType#getStartComponent <em>Start Component</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.RangeIntervalType#getStartComponent <em>Start Component</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Start Component</em>' attribute.
-     * @see #getStartComponent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Start Component</em>' attribute.
+	 * @see #getStartComponent()
+	 * @generated
+	 */
     void setStartComponent(String value);
 
     /**
@@ -35,13 +35,13 @@ public interface RangeIntervalType extends EObject {
     public String getEndComponent();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.RangeIntervalType#getEndComponent <em>End Component</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.RangeIntervalType#getEndComponent <em>End Component</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>End Component</em>' attribute.
-     * @see #getEndComponent()
-     * @generated
-     */
+	 * @param value the new value of the '<em>End Component</em>' attribute.
+	 * @see #getEndComponent()
+	 * @generated
+	 */
     void setEndComponent(String value);
 
 }

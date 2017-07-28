@@ -19,13 +19,13 @@ public interface InterpolationMethodType extends EObject {
     public String getInterpolationMethod();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod <em>Interpolation Method</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod <em>Interpolation Method</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Interpolation Method</em>' attribute.
-     * @see #getInterpolationMethod()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Interpolation Method</em>' attribute.
+	 * @see #getInterpolationMethod()
+	 * @generated
+	 */
     void setInterpolationMethod(String value);
 
 }

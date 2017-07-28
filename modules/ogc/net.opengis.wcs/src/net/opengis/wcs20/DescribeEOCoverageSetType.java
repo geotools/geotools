@@ -45,13 +45,13 @@ public interface DescribeEOCoverageSetType extends RequestBaseType {
     String getContainmentType();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType <em>Containment Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getContainmentType <em>Containment Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Containment Type</em>' attribute.
-     * @see #getContainmentType()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Containment Type</em>' attribute.
+	 * @see #getContainmentType()
+	 * @generated
+	 */
     void setContainmentType(String value);
 
     /**
@@ -72,13 +72,13 @@ public interface DescribeEOCoverageSetType extends RequestBaseType {
     Sections getSections();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getSections <em>Sections</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getSections <em>Sections</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Sections</em>' containment reference.
-     * @see #getSections()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Sections</em>' containment reference.
+	 * @see #getSections()
+	 * @generated
+	 */
     void setSections(Sections value);
 
     /**
@@ -94,13 +94,13 @@ public interface DescribeEOCoverageSetType extends RequestBaseType {
     int getCount();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getCount <em>Count</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.DescribeEOCoverageSetType#getCount <em>Count</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Count</em>' attribute.
-     * @see #getCount()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Count</em>' attribute.
+	 * @see #getCount()
+	 * @generated
+	 */
     void setCount(int value);
 
 } // DescribeCoverageType

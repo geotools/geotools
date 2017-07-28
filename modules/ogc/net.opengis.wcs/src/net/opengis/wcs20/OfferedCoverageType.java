@@ -39,29 +39,29 @@ public interface OfferedCoverageType extends EObject {
     Object getAbstractCoverage();
 
     /**
-     * Returns the value of the '<em><b>Service Parameters</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Service Parameters</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * ServiceParameters further define how the corresponding coverage is accessible. CoverageSubtype helps identifying the type of coverage on hand, in particular with respect to the potential size of its domainSet and rangeSet components. Extension elements allow WCS extensions to plug in their particular coverage-specific service information.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Service Parameters</em>' containment reference.
-     * @see #setServiceParameters(ServiceParametersType)
-     * @see net.opengis.wcs20.Wcs20Package#getOfferedCoverageType_ServiceParameters()
-     * @model containment="true" required="true"
-     *        extendedMetaData="kind='element' name='ServiceParameters' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * <!-- begin-model-doc -->
+	 * ServiceParameters further define how the corresponding coverage is accessible. CoverageSubtype helps identifying the type of coverage on hand, in particular with respect to the potential size of its domainSet and rangeSet components. Extension elements allow WCS extensions to plug in their particular coverage-specific service information.
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Service Parameters</em>' containment reference.
+	 * @see #setServiceParameters(ServiceParametersType)
+	 * @see net.opengis.wcs20.Wcs20Package#getOfferedCoverageType_ServiceParameters()
+	 * @model containment="true" required="true"
+	 *        extendedMetaData="kind='element' name='ServiceParameters' namespace='##targetNamespace'"
+	 * @generated
+	 */
     ServiceParametersType getServiceParameters();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.OfferedCoverageType#getServiceParameters <em>Service Parameters</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.OfferedCoverageType#getServiceParameters <em>Service Parameters</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Service Parameters</em>' containment reference.
-     * @see #getServiceParameters()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Service Parameters</em>' containment reference.
+	 * @see #getServiceParameters()
+	 * @generated
+	 */
     void setServiceParameters(ServiceParametersType value);
 
 } // OfferedCoverageType

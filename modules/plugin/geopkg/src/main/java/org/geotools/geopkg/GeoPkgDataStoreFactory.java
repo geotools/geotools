@@ -18,9 +18,11 @@ package org.geotools.geopkg;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.Parameter;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
@@ -37,7 +39,8 @@ import org.sqlite.SQLiteConfig;
 public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "geopkg");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "geopkg",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     /** optional user parameter */
     public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 

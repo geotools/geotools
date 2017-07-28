@@ -24,9 +24,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
 
 import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -55,7 +57,8 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     public static String SelectGeometryColumns="select * from db2gse.st_geometry_columns where 0 = 1";
     
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "db2");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "db2",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     /** enables using EnvelopesIntersect in bbox queries */
     public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);

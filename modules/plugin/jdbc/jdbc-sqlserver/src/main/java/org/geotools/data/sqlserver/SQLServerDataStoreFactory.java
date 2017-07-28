@@ -17,8 +17,10 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
+import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -35,7 +37,8 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "sqlserver");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "sqlserver",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for using integrated security, only works on windows, ignores the user and password parameters, the current windows user account is used for login*/
     public static final Param INTSEC = new Param("Integrated Security", Boolean.class, "Login as current windows user account. Works only in windows. Ignores user and password settings.", false, new Boolean(false));

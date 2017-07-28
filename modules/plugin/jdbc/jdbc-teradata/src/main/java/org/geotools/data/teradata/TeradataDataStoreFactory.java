@@ -18,12 +18,14 @@ package org.geotools.data.teradata;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.jdbc.CompositePrimaryKeyFinder;
@@ -48,7 +50,8 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     /**
      * parameter for database type
      */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "teradata");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "teradata",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     public static final Param LOBWORKAROUND = new Param("Disable LOB Workaround",Boolean.class,
             "Disable LOB workaround", false, Boolean.FALSE);

@@ -19,10 +19,12 @@ package org.geotools.data.oracle;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
 
 import oracle.jdbc.OracleConnection;
 
+import org.geotools.data.Parameter;
 import org.geotools.data.Transaction;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
@@ -43,7 +45,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     private static final String JDBC_PATH = "jdbc:oracle:thin:@";
     
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "oracle");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "oracle", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database port */
     public static final Param PORT = new Param("port", Integer.class, "Port", false, 1521);

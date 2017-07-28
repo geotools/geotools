@@ -19,6 +19,7 @@ package org.geotools.data.jdbc.datasource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -26,6 +27,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.data.Parameter;
 
 /**
  * A datasource factory using DBCP connection pool
@@ -39,8 +41,8 @@ import org.geotools.data.DataAccessFactory.Param;
  */
 public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
 
-    public static final Param DSTYPE = new Param("dstype", String.class,
-            "Must be DBCP", false);
+    public static final Param DSTYPE = new Param("dstype", String.class, "Must be DBCP", false,
+            null, Collections.singletonMap(Parameter.LEVEL, "program"));
     
     public static final Param USERNAME = new Param("username", String.class,
             "User name to login as", false);

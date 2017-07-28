@@ -20,9 +20,11 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -43,7 +45,8 @@ public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
 
   
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "spatialite");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "spatialite",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     /** optional user parameter */
     public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 

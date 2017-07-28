@@ -17,12 +17,14 @@
 package org.geotools.data.jdbc.datasource;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.data.Parameter;
 import org.geotools.factory.GeoTools;
 
 /**
@@ -36,8 +38,8 @@ import org.geotools.factory.GeoTools;
  */
 public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
     
-    public static final Param DSTYPE = new Param("dstype", String.class,
-            "Must be JNDI", false);
+    public static final Param DSTYPE = new Param("dstype", String.class, "Must be JNDI", false,
+            null, Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final Param JNDI_REFNAME = new Param("jdniReferenceName", String.class,
             "The path where the connection pool must be located", true);

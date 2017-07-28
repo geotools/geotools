@@ -24,10 +24,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -41,7 +43,8 @@ import org.geotools.util.KVP;
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "postgis");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "postgis",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     /** enables using && in bbox queries */
     public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);

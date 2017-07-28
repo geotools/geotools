@@ -96,8 +96,8 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     public static final Param NAMESPACE_PARAM = new Param(NAMESPACE_PARAM_NAME, String.class,
             "namespace associated to this data store", false);
 
-    public static final Param DBTYPE_PARAM = new Param(DBTYPE_PARAM_NAME, String.class,
-            "fixed value. Must be \"arcsde\"", true, "arcsde");
+    public static final Param DBTYPE_PARAM = new Param(DBTYPE_PARAM_NAME, String.class, "fixed value. Must be \"arcsde\"",
+            true, "arcsde", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final Param SERVER_PARAM = new Param(SERVER_NAME_PARAM_NAME, String.class,
             "sever name where the ArcSDE gateway is running", true);

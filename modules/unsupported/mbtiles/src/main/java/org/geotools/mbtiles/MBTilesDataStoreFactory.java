@@ -1,8 +1,10 @@
 package org.geotools.mbtiles;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -11,7 +13,8 @@ import org.sqlite.SQLiteConfig;
 public class MBTilesDataStoreFactory extends JDBCDataStoreFactory {
 
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "mbtiles");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "mbtiles",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     /** optional user parameter */
     public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 

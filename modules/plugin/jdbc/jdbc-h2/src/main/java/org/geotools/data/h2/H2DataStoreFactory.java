@@ -18,11 +18,13 @@ package org.geotools.data.h2;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
@@ -41,7 +43,8 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class H2DataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "h2");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "h2",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     
     /** parameter for how to handle associations */
     public static final Param ASSOCIATIONS = new Param("Associations", Boolean.class,

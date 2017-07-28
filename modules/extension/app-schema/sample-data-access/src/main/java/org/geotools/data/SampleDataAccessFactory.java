@@ -49,8 +49,8 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      */
     public static final String DBTYPE_STRING = "sample-data-access";
 
-    public static final DataAccessFactory.Param DBTYPE = new DataAccessFactory.Param("dbtype",
-            String.class, "Fixed value '" + DBTYPE_STRING + "'", true, DBTYPE_STRING);
+    public static final DataAccessFactory.Param DBTYPE = new DataAccessFactory.Param("dbtype",  String.class,
+            "Fixed value '" + DBTYPE_STRING + "'", true, DBTYPE_STRING, Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /**
      * The connection parameters required to use this factory.

@@ -41,7 +41,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
-import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;

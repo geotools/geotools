@@ -31,11 +31,9 @@ import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.styling.css.Value.Function;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
 
 /**
  * A value for a CSS property. Values can be several things, including from literals, expressions,

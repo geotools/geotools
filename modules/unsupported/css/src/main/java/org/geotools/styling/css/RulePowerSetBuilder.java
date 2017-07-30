@@ -19,9 +19,7 @@ package org.geotools.styling.css;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +29,6 @@ import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.FilteredPowerSetBuilder;
 import org.geotools.styling.css.util.PseudoClassRemover;
-import org.geotools.styling.css.util.Signature;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.logging.Logging;
 

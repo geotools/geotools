@@ -40,7 +40,7 @@ public class CSSParseException extends IllegalArgumentException {
     }
 
     private static String buildMessage(List<ParseError> errors) {
-        if (errors == null || errors.size() < 0) {
+        if (errors == null || errors.isEmpty()) {
             throw new IllegalArgumentException(
                     "Cannot build a CSSParseException without a list of errors");
         }

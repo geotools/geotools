@@ -676,7 +676,7 @@ public class CssTranslator {
                 return TranslationMode.valueOf(value);
             } catch (Exception e) {
                 throw new IllegalArgumentException("Invalid translation mode '" + value
-                        + "', supported values are: " + TranslationMode.values());
+                        + "', supported values are: " + Arrays.toString(TranslationMode.values()));
             }
         }
 

@@ -102,7 +102,7 @@ class RulesCombiner {
     }
 
     Selector combineSelectors(List<CssRule> rules) {
-        if (rules == lastCombinedSelector) {
+        if (rules == lastRuleSet) {
             return lastCombinedSelector;
         }
         Selector s;

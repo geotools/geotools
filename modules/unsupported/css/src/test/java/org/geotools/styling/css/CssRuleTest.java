@@ -113,7 +113,6 @@ public class CssRuleTest extends CssBaseTest {
         assertProperty(subRule3, 1, "z-index", new Value.Literal("3"));
     }
 
-
     private CssRule parseSingleRule(String css) {
         Stylesheet ss = parse(css);
         assertEquals(1, ss.getRules().size());

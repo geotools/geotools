@@ -56,8 +56,8 @@ import org.parboiled.support.ParsingResult;
 import org.parboiled.support.ValueStack;
 
 /**
- * Parser for the cartographic CSS. In order to parse a CSS either get a parser using the
- * {@link #getInstance()} method, or directly call {@link #parse(String)}
+ * Parser for the cartographic CSS. In order to parse a CSS either get a parser using the {@link #getInstance()} method, or directly call
+ * {@link #parse(String)}
  * 
  * @author Andrea Aime - GeoSolutions
  */
@@ -65,29 +65,30 @@ import org.parboiled.support.ValueStack;
 public class CssParser extends BaseParser<Object> {
 
     /**
-     * Matches a environment variable expression 
+     * Matches a environment variable expression
      */
     private static final Pattern ENV_PATTERN = Pattern.compile("@([\\w\\d]+)(\\(([^\\)]+)\\))?");
 
     static CssParser INSTANCE;
 
     static final Object MARKER = new Object();
-    
+
     /**
      * Quick key/value storage
      */
     static final class KeyValue {
-        
+
         String key;
+
         Value value;
 
         public KeyValue(String key, Value value) {
             this.key = key;
             this.value = value;
         }
-        
+
     }
-    
+
     static final class Prefix {
         String prefix;
 
@@ -95,20 +96,18 @@ public class CssParser extends BaseParser<Object> {
             super();
             this.prefix = prefix;
         }
-        
+
     }
 
     /**
-     * Allows Parboiled to do its magic, while disallowing normal users from instantiating this
-     * class
+     * Allows Parboiled to do its magic, while disallowing normal users from instantiating this class
      */
     protected CssParser() {
 
     }
 
     /**
-     * Returns the single instance of the CSS parser. The CSSParser should not be instantiated
-     * directly, Parboiled needs to do it instead.
+     * Returns the single instance of the CSS parser. The CSSParser should not be instantiated directly, Parboiled needs to do it instead.
      * 
      * @return
      */
@@ -122,8 +121,7 @@ public class CssParser extends BaseParser<Object> {
     }
 
     /**
-     * Turns the CSS provided into a {@link Stylesheet} object, will throw a
-     * {@link CSSParseException} in case of syntax errors
+     * Turns the CSS provided into a {@link Stylesheet} object, will throw a {@link CSSParseException} in case of syntax errors
      * 
      * @return
      * @throws IOException
@@ -141,8 +139,8 @@ public class CssParser extends BaseParser<Object> {
 
     Rule StyleSheet() {
         return Sequence(ZeroOrMore(Directive(), OptionalWhiteSpace()), OneOrMore(CssRule()),
-                WhiteSpaceOrIgnoredComment(), EOI, push(new Stylesheet(popAll(CssRule.class),
-                        popAll((Directive.class)))));
+                WhiteSpaceOrIgnoredComment(), EOI,
+                push(new Stylesheet(popAll(CssRule.class), popAll((Directive.class)))));
     }
 
     Rule Directive() {
@@ -151,7 +149,7 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule CssRule() {
-        return Sequence(WhiteSpaceOrComment(), Selector(), OptionalWhiteSpace(),//
+        return Sequence(WhiteSpaceOrComment(), Selector(), OptionalWhiteSpace(), //
                 '{', OptionalWhiteSpace(), //
                 RuleContents(), WhiteSpaceOrIgnoredComment(), '}', new Action() {
 
@@ -168,12 +166,13 @@ public class CssParser extends BaseParser<Object> {
                                 pop();
                             }
                         }
-                        
+
                         final Stream stream = contents.stream();
-                        Map<Boolean, List> splitContents = (Map<Boolean, List>) stream.collect(Collectors.partitioningBy(x -> x instanceof CssRule));
+                        Map<Boolean, List> splitContents = (Map<Boolean, List>) stream
+                                .collect(Collectors.partitioningBy(x -> x instanceof CssRule));
                         List<Property> properties = splitContents.get(Boolean.FALSE);
                         List<CssRule> subRules = splitContents.get(Boolean.TRUE);
-                        
+
                         final CssRule rule = new CssRule(selector, properties, comment);
                         rule.nestedRules = subRules;
                         push(rule);
@@ -183,13 +182,12 @@ public class CssParser extends BaseParser<Object> {
 
                 });
     }
-    
+
     Rule RuleContents() {
-        return Sequence(
-                FirstOf(CssRule(), Property()),
-                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';',
-                        OptionalWhiteSpace(), FirstOf(CssRule(), Property()))), Optional(';'),
-                push(popAll(Property.class, CssRule.class)));
+        return Sequence(FirstOf(CssRule(), Property()),
+                ZeroOrMore(Sequence(WhitespaceOrIgnoredComment(), ';', OptionalWhiteSpace(),
+                        FirstOf(CssRule(), Property()))),
+                Optional(';'), push(popAll(Property.class, CssRule.class)));
     }
 
     Rule Selector() {
@@ -197,9 +195,9 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule BasicSelector() {
-        return FirstOf(CatchAllSelector(), MinScaleSelector(), MaxScaleSelector(),
-                IdSelector(), PseudoClassSelector(), NumberedPseudoClassSelector(),
-                TypenameSelector(), ECQLSelector());
+        return FirstOf(CatchAllSelector(), MinScaleSelector(), MaxScaleSelector(), IdSelector(),
+                PseudoClassSelector(), NumberedPseudoClassSelector(), TypenameSelector(),
+                ECQLSelector());
     }
 
     Rule AndSelector() {
@@ -221,16 +219,8 @@ public class CssParser extends BaseParser<Object> {
 
     @SuppressSubnodes
     Rule NumberedPseudoClassSelector() {
-        return Sequence(
-                ":nth-",
-                ClassName(),
-                '(',
-                Number(),
-                push(match()),
-                ')',
-                swap()
-                        && push(PseudoClass.newPseudoClass((String) pop(),
-                                Integer.valueOf((String) pop()))));
+        return Sequence(":nth-", ClassName(), '(', Number(), push(match()), ')', swap() && push(
+                PseudoClass.newPseudoClass((String) pop(), Integer.valueOf((String) pop()))));
     }
 
     Rule ClassName() {
@@ -239,18 +229,16 @@ public class CssParser extends BaseParser<Object> {
 
     @SuppressSubnodes
     Rule TypenameSelector() {
-        return Sequence(QualifiedIdentifier(), push(new TypeName(
-                match())));
+        return Sequence(QualifiedIdentifier(), push(new TypeName(match())));
     }
-    
+
     Rule QualifiedIdentifier() {
         return Sequence(Identifier(), Optional(':', Identifier()));
     }
 
     @SuppressSubnodes
     Rule IdSelector() {
-        return Sequence(
-                '#',
+        return Sequence('#',
                 Sequence(Identifier(), Optional(':', Identifier()),
                         Optional('.', Sequence(TestNot(AnyOf("\"'[]")), ANY))),
                 push(new Id(match())));
@@ -262,41 +250,36 @@ public class CssParser extends BaseParser<Object> {
 
     Rule MaxScaleSelector() {
         return Sequence("[", OptionalWhiteSpace(), FirstOf("@scale", "@sd"), OptionalWhiteSpace(),
-                FirstOf("<=", "<"), OptionalWhiteSpace(), ScaleNumber(), push(new ScaleRange(0, true,
-                        parseScaleValue(match()), false)), //
+                FirstOf("<=", "<"), OptionalWhiteSpace(), ScaleNumber(),
+                push(new ScaleRange(0, true, parseScaleValue(match()), false)), //
                 OptionalWhiteSpace(), "]");
     }
 
     Rule MinScaleSelector() {
-        return Sequence(
-                "[",
-                OptionalWhiteSpace(),
-                FirstOf("@scale", "@sd"),
-                OptionalWhiteSpace(),
-                FirstOf(">=", ">"),
-                OptionalWhiteSpace(),
-                ScaleNumber(),
-                push(new ScaleRange(parseScaleValue(match()), true, Double.POSITIVE_INFINITY, true)), //
+        return Sequence("[", OptionalWhiteSpace(), FirstOf("@scale", "@sd"), OptionalWhiteSpace(),
+                FirstOf(">=", ">"), OptionalWhiteSpace(), ScaleNumber(),
+                push(new ScaleRange(parseScaleValue(match()), true, Double.POSITIVE_INFINITY,
+                        true)), //
                 OptionalWhiteSpace(), "]");
     }
 
     double parseScaleValue(String scaleValue) {
         double multiplier = 1;
-        
+
         // lookup the value multiplier
         String lowerCase = scaleValue.toLowerCase();
-        if(lowerCase.endsWith("k")) {
+        if (lowerCase.endsWith("k")) {
             multiplier = 1e3;
-        } else if(lowerCase.endsWith("m")) {
+        } else if (lowerCase.endsWith("m")) {
             multiplier = 1e6;
-        } else if(lowerCase.endsWith("g")) {
+        } else if (lowerCase.endsWith("g")) {
             multiplier = 1e9;
         }
         // if one is found then remove the unit specifier
-        if(multiplier > 1) {
+        if (multiplier > 1) {
             lowerCase = lowerCase.substring(0, lowerCase.length() - 1);
         }
-        
+
         return Double.parseDouble(lowerCase) * multiplier;
     }
 
@@ -305,25 +288,18 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule Property() {
-        return Sequence(WhiteSpaceOrIgnoredComment(), Identifier(),
-                push(match()),
-                OptionalWhiteSpace(),
-                Colon(),
-                OptionalWhiteSpace(), //
+        return Sequence(WhiteSpaceOrIgnoredComment(), Identifier(), push(match()),
+                OptionalWhiteSpace(), Colon(), OptionalWhiteSpace(), //
                 Sequence(Value(), OptionalWhiteSpace(),
                         ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
                 push(popAll(Value.class)) && swap()
                         && push(new Property(pop(String.class), pop(List.class))));
     }
-    
+
     Rule KeyValue() {
-        return Sequence(Identifier(), push(match()),
-                OptionalWhiteSpace(),
-                Colon(),
-                OptionalWhiteSpace(), 
-                Value(),
-                swap()
-                && push(new KeyValue(pop(String.class), pop(Value.class))));
+        return Sequence(Identifier(), push(match()), OptionalWhiteSpace(), Colon(),
+                OptionalWhiteSpace(), Value(),
+                swap() && push(new KeyValue(pop(String.class), pop(Value.class))));
     }
 
     @SuppressNode
@@ -336,32 +312,37 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule SimpleValue() {
-        return FirstOf(URLFunction(), TransformFunction(), Function(), Color(), NamedColor(),  
+        return FirstOf(URLFunction(), TransformFunction(), Function(), Color(), NamedColor(),
                 Measure(), ValueIdentifier(), VariableValue(), MixedExpression());
     }
-    
+
     Rule VariableValue() {
-        return Sequence(Ch('@'), Identifier(), push(new Value.Literal(match())), Optional(Sequence(Ch('('), OneOrMore(Sequence(TestNot(AnyOf(")")), ANY)), push(new Value.Literal(match())), Ch(')'))), new Action() {
-            @Override
-            public boolean run(Context context) {
-                List<Value> values = popAll(Value.class).stream().map(o -> (Value) o).collect(Collectors.toList());
-                Literal id = (Literal) values.get(0);
-                if("sd".equals(id.body)) {
-                    values.set(0, new Value.Literal("wms_scale_denominator"));
-                }
-                if(values.size() == 2) {
-                    Value.Literal defaultValue = (Literal) values.get(1);
-                    String body = defaultValue.body;
-                    if(Value.COLORS_TO_HEX.containsKey(body)) {
-                        values.set(1, new Value.Literal(Value.COLORS_TO_HEX.get(body)));
-                    } else if(body.startsWith("'") && body.endsWith("'")) {
-                        values.set(1, new Value.Literal(body.substring(1, body.length() - 1)));
+        return Sequence(Ch('@'), Identifier(), push(new Value.Literal(match())),
+                Optional(Sequence(Ch('('), OneOrMore(Sequence(TestNot(AnyOf(")")), ANY)),
+                        push(new Value.Literal(match())), Ch(')'))),
+                new Action() {
+                    @Override
+                    public boolean run(Context context) {
+                        List<Value> values = popAll(Value.class).stream().map(o -> (Value) o)
+                                .collect(Collectors.toList());
+                        Literal id = (Literal) values.get(0);
+                        if ("sd".equals(id.body)) {
+                            values.set(0, new Value.Literal("wms_scale_denominator"));
+                        }
+                        if (values.size() == 2) {
+                            Value.Literal defaultValue = (Literal) values.get(1);
+                            String body = defaultValue.body;
+                            if (Value.COLORS_TO_HEX.containsKey(body)) {
+                                values.set(1, new Value.Literal(Value.COLORS_TO_HEX.get(body)));
+                            } else if (body.startsWith("'") && body.endsWith("'")) {
+                                values.set(1,
+                                        new Value.Literal(body.substring(1, body.length() - 1)));
+                            }
+                        }
+                        push(new Value.Function("env", values));
+                        return true;
                     }
-                }
-                push(new Value.Function("env", values));
-                return true;
-            }
-        });
+                });
     }
 
     Rule MixedExpression() {
@@ -406,17 +387,18 @@ public class CssParser extends BaseParser<Object> {
                 ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), Value()), ')',
                 push(buildFunction(popAll(Value.class), (String) pop())));
     }
-    
+
     Value.Function buildFunction(List<Value> values, String name) {
         return new Value.Function(name, values);
     }
-    
+
     Rule TransformFunction() {
-        return Sequence(QualifiedIdentifier(), push(new Prefix(match())), '(', Optional(OptionalWhiteSpace(), KeyValue()),
+        return Sequence(QualifiedIdentifier(), push(new Prefix(match())), '(',
+                Optional(OptionalWhiteSpace(), KeyValue()),
                 ZeroOrMore(OptionalWhiteSpace(), ',', OptionalWhiteSpace(), KeyValue()), ')',
                 push(buildTransformFunction(popAll(KeyValue.class), pop(Prefix.class))));
     }
-    
+
     Value.TransformFunction buildTransformFunction(List<KeyValue> values, Prefix name) {
         Map<String, Value> parameters = new LinkedHashMap<>();
         for (KeyValue keyValue : values) {
@@ -424,7 +406,7 @@ public class CssParser extends BaseParser<Object> {
         }
         return new Value.TransformFunction(name.prefix, parameters);
     }
-    
+
     Rule URLFunction() {
         return Sequence("url", OptionalWhiteSpace(), "(", OptionalWhiteSpace(), URL(),
                 OptionalWhiteSpace(), ")", push(new Value.Function("url", (Value) pop())));
@@ -446,16 +428,16 @@ public class CssParser extends BaseParser<Object> {
 
     Rule QuotedURL() {
         // same as simple url, but with ' surrounding it, and not within the url itlsef
-        return Sequence(
-                "'",
+        return Sequence("'",
                 Sequence(OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&*+,;="))),
-                        push(new Value.Literal(match()))), "'");
+                        push(new Value.Literal(match()))),
+                "'");
     }
 
     Rule ValueIdentifier() {
         return Sequence(Identifier(), push(new Value.Literal(match())));
     }
-    
+
     Rule String() {
         return FirstOf(
                 Sequence('\'', ZeroOrMore(Sequence(TestNot(AnyOf("'\\")), ANY)),
@@ -473,7 +455,7 @@ public class CssParser extends BaseParser<Object> {
                     @Override
                     public boolean run(Context ctx) {
                         String match = match();
-                        if(match.endsWith("k") || match.endsWith("M") || match.endsWith("G")) {
+                        if (match.endsWith("k") || match.endsWith("M") || match.endsWith("G")) {
                             match = scaleValueToString(match);
                         }
                         ctx.getValueStack().push(new Value.Literal(match));
@@ -482,11 +464,11 @@ public class CssParser extends BaseParser<Object> {
 
                 });
     }
-    
+
     private String scaleValueToString(String match) {
         double scale = parseScaleValue(match);
-        if(scale == Math.floor(scale)) {
-            match = String.valueOf((long) scale); 
+        if (scale == Math.floor(scale)) {
+            match = String.valueOf((long) scale);
         } else {
             match = String.valueOf(scale);
         }
@@ -504,78 +486,80 @@ public class CssParser extends BaseParser<Object> {
                     ctx.getValueStack().push(new Value.Expression(e));
                     return true;
                 } catch (CQLException e) {
-                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
+                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(),
+                            e);
                 }
             }
 
         });
     }
-    
+
     private String expandEnvironmentVariables(String expression) {
         String variablesExpanded = expandUnquoted(expression, (token, sb) -> {
-                Matcher matcher = ENV_PATTERN.matcher(token);
-                
-                if(!matcher.find()) {
-                    sb.append(token);
-                } else {
-                    do {
-                        String variable = matcher.group(1);
-                        
-                        if("sd".equals(variable)) {
-                            // for conformity with GeoServer WMS env vars
-                            variable = "wms_scale_denominator";
-                        }
-                        
-                        String defaultValue = matcher.group(3);
-                        if(defaultValue != null) {
-                            matcher.appendReplacement(sb, "env('" + variable + "', '" + defaultValue + "')");
-                        } else {
-                            matcher.appendReplacement(sb, "env('" + variable + "')");
-                        }
-                    } while(matcher.find());
-                    matcher.appendTail(sb);
-                }
+            Matcher matcher = ENV_PATTERN.matcher(token);
+
+            if (!matcher.find()) {
+                sb.append(token);
+            } else {
+                do {
+                    String variable = matcher.group(1);
+
+                    if ("sd".equals(variable)) {
+                        // for conformity with GeoServer WMS env vars
+                        variable = "wms_scale_denominator";
+                    }
+
+                    String defaultValue = matcher.group(3);
+                    if (defaultValue != null) {
+                        matcher.appendReplacement(sb,
+                                "env('" + variable + "', '" + defaultValue + "')");
+                    } else {
+                        matcher.appendReplacement(sb, "env('" + variable + "')");
+                    }
+                } while (matcher.find());
+                matcher.appendTail(sb);
+            }
         });
         String numbersExpanded = expandUnquoted(variablesExpanded, (token, sb) -> {
             Pattern scaledNumber = Pattern.compile("(?<!\\w)\\d+(\\.\\d+)?[kMG]");
             Matcher matcher = scaledNumber.matcher(token);
-            
-            if(!matcher.find()) {
+
+            if (!matcher.find()) {
                 sb.append(token);
             } else {
                 do {
                     String value = matcher.group(0);
                     String expandedScaleValue = scaleValueToString(value);
                     matcher.appendReplacement(sb, expandedScaleValue);
-                } while(matcher.find());
+                } while (matcher.find());
                 matcher.appendTail(sb);
             }
         });
-        
+
         return numbersExpanded;
     }
-    
+
     String expandUnquoted(String expression, BiConsumer<String, StringBuffer> replacer) {
-     // perform variable expansion, but do not expand within single quoted sections
+        // perform variable expansion, but do not expand within single quoted sections
         StringTokenizer st = new StringTokenizer(expression, "'", true);
         StringBuffer sb = new StringBuffer(); // Matcher needs StringBuffer
         boolean expand = true;
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
             String token = st.nextToken();
-            if("'".equals(token)) {
+            if ("'".equals(token)) {
                 expand = !expand;
                 sb.append("'");
-            } else if(expand) {
+            } else if (expand) {
                 replacer.accept(token, sb);
             } else {
                 sb.append(token);
             }
-   
+
         }
         String expanded = sb.toString();
         return expanded;
     }
-    
+
     String reportPosition(Context ctx) {
         return "Error at line " + ctx.getPosition().line;
     }
@@ -591,15 +575,15 @@ public class CssParser extends BaseParser<Object> {
                     ctx.getValueStack().push(new Data(f));
                     return true;
                 } catch (CQLException e) {
-                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
+                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(),
+                            e);
                 }
             }
         });
     }
 
     Rule ECQL(Action parserChecker) {
-        return Sequence(
-                '[',
+        return Sequence('[',
                 OneOrMore(FirstOf(SingleQuotedString(), DoubleQuotedString(),
                         Sequence(TestNot(AnyOf("\"'[]")), ANY))), //
                 parserChecker, ']');
@@ -621,25 +605,24 @@ public class CssParser extends BaseParser<Object> {
         return Sequence(Optional(AnyOf("-+")), OneOrMore(Digit()),
                 Optional('.', ZeroOrMore(Digit())));
     }
-    
+
     Rule ScaleNumber() {
-        return Sequence(OneOrMore(Digit()),
-                Optional('.', ZeroOrMore(Digit())), Optional(AnyOf("kMG")));
+        return Sequence(OneOrMore(Digit()), Optional('.', ZeroOrMore(Digit())),
+                Optional(AnyOf("kMG")));
     }
-    
+
     Rule ScaleValue() {
-        return Sequence(OneOrMore(Digit()),
-                Optional('.', ZeroOrMore(Digit())), AnyOf("kMG"), push(new Value.Literal(String.valueOf(parseScaleValue(match())))));
+        return Sequence(OneOrMore(Digit()), Optional('.', ZeroOrMore(Digit())), AnyOf("kMG"),
+                push(new Value.Literal(String.valueOf(parseScaleValue(match())))));
     }
 
     @SuppressSubnodes
     Rule Color() {
         return Sequence(
-                Sequence(
-                        '#',
+                Sequence('#',
                         FirstOf(Sequence(Hex(), Hex(), Hex(), Hex(), Hex(), Hex()),
-                                Sequence(Hex(), Hex(), Hex()))), push(new Value.Literal(
-                        toHexColor(match()))));
+                                Sequence(Hex(), Hex(), Hex()))),
+                push(new Value.Literal(toHexColor(match()))));
     }
 
     String toHexColor(String hex) {
@@ -684,23 +667,6 @@ public class CssParser extends BaseParser<Object> {
     Rule Identifier() {
         return Sequence(Optional('-'), NameStart(), ZeroOrMore(NameCharacter()));
     }
-    
-//    Rule QualifiedIdentifier() {
-//        return Sequence(Optional(Identifier(), push(new Prefix(match())), ':'), Identifier(), 
-//                new Action() {
-//                    @Override
-//                    public boolean run(Context ctx) {
-//                        String name = (java.lang.String) pop();
-//                        if(peek() instanceof Prefix) {
-//                            Prefix prefix = (Prefix) pop();
-//                            name = prefix.prefix + ":" + name;
-//                        }
-//                        
-//                        push(name);
-//                    }
-//                });
-//    }
-
 
     @SuppressNode
     Rule NameStart() {
@@ -761,14 +727,14 @@ public class CssParser extends BaseParser<Object> {
     }
 
     /**
-     * We redefine the rule creation for string literals to automatically match trailing whitespace
-     * if the string literal ends with a space character, this way we don't have to insert extra
-     * whitespace() rules after each character or string literal
+     * We redefine the rule creation for string literals to automatically match trailing whitespace if the string literal ends with a space character,
+     * this way we don't have to insert extra whitespace() rules after each character or string literal
      */
     @Override
     protected Rule fromStringLiteral(String string) {
-        return string.matches("\\s+$") ? Sequence(String(string.substring(0, string.length() - 1)),
-                OptionalWhiteSpace()) : String(string);
+        return string.matches("\\s+$")
+                ? Sequence(String(string.substring(0, string.length() - 1)), OptionalWhiteSpace())
+                : String(string);
     }
 
     <T> T pop(Class<T> clazz) {
@@ -791,11 +757,11 @@ public class CssParser extends BaseParser<Object> {
 
     private boolean isInstance(Class[] classes, Object peek) {
         for (int i = 0; i < classes.length; i++) {
-            if(classes[i].isInstance(peek)) {
+            if (classes[i].isInstance(peek)) {
                 return true;
             }
         }
         return false;
     }
-    
+
 }

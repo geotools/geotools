@@ -33,7 +33,7 @@ public class Reject extends Selector {
     }
 
     public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
+        return visitor.visit(this);
     }
 
 }

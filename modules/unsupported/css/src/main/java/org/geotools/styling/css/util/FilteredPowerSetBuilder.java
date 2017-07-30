@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class to build a power set from a set of object, filtering it during construction to avoid
- * trying sub-trees that lead to no results
+ * Base class to build a power set from a set of object, filtering it during construction to avoid trying sub-trees that lead to no results
  * 
  * @author Andrea Aime - GeoSolutions
  * 
@@ -36,8 +35,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     private List<T> domain;
 
     /**
-     * Signatures that have been rejected, that we already know won't generate an entry in the
-     * result
+     * Signatures that have been rejected, that we already know won't generate an entry in the result
      */
     private List<List<Signature>> rejects = new ArrayList();
 
@@ -63,7 +61,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         final int max = Math.min(rejects.size(), cardinality);
         for (int i = 0; i < max; i++) {
             List<Signature> signatures = rejects.get(i);
-            if(signatures != null && rejected(s, k, signatures)) {
+            if (signatures != null && rejected(s, k, signatures)) {
                 return true;
             }
         }
@@ -72,7 +70,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     private boolean rejected(Signature s, int k, List<Signature> signatures) {
-        for (Signature reject :  signatures) {
+        for (Signature reject : signatures) {
             if (s.contains(reject, k)) {
                 return true;
             }
@@ -104,8 +102,8 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     /**
-     * Recursively builds all possible signatures in the domain (will stop immediately if a
-     * signature is not accepted, or builds on top of a already rejected signature)
+     * Recursively builds all possible signatures in the domain (will stop immediately if a signature is not accepted, or builds on top of a already
+     * rejected signature)
      * 
      * @param s
      * @param k
@@ -118,11 +116,11 @@ public abstract class FilteredPowerSetBuilder<T, R> {
             if (!accept(objects)) {
                 final Signature cloned = (Signature) s.clone();
                 int cardinality = cloned.cardinality();
-                while(rejects.size() <= cardinality) {
+                while (rejects.size() <= cardinality) {
                     rejects.add(null);
                 }
                 List<Signature> signatures = rejects.get(cardinality);
-                if(signatures == null) {
+                if (signatures == null) {
                     signatures = new ArrayList<>();
                     rejects.set(cardinality, signatures);
                 }
@@ -146,16 +144,16 @@ public abstract class FilteredPowerSetBuilder<T, R> {
             // bit K is now set to zero, so reset rejects to the parent value
             this.rejects = storedRejects;
             // avoid generating outputs for bits that are catch all, and being negated
-            if(!isInclude(domain.get(k))) {
+            if (!isInclude(domain.get(k))) {
                 s.set(k, false);
                 if (!rejected(s, k)) {
                     fill(s, k + 1, n, result);
-                }    
+                }
             }
-            
+
         }
     }
-    
+
     protected abstract boolean isInclude(T t);
 
     List<List<Signature>> cloneRejects() {
@@ -167,10 +165,9 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     /**
-     * Builds a result from a combination of input objects. The method can return null to identify a
-     * combination that does not generate anything useful, but whose set of object could still
-     * generate a valid combination when grown with more objects (thus, not a candidate for
-     * returning false in {@link #accept(List)})
+     * Builds a result from a combination of input objects. The method can return null to identify a combination that does not generate anything
+     * useful, but whose set of object could still generate a valid combination when grown with more objects (thus, not a candidate for returning
+     * false in {@link #accept(List)})
      * 
      * @param objects
      * @return
@@ -178,8 +175,8 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     protected abstract List<R> buildResult(List<T> objects);
 
     /**
-     * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will
-     * be built from this set, and any superset of these objects will also be rejected
+     * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will be built from this set, and any superset of these
+     * objects will also be rejected
      * 
      * @param set
      * @return

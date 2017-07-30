@@ -20,8 +20,7 @@ import java.util.BitSet;
 import java.util.function.IntConsumer;
 
 /**
- * The binary signature for a list of values, indicates which objects of the list have been selected
- * using 1s, those that have not using 0s
+ * The binary signature for a list of values, indicates which objects of the list have been selected using 1s, those that have not using 0s
  * 
  * @author Andrea Aime - GeoSolutions
  */
@@ -86,10 +85,11 @@ public abstract class Signature implements Cloneable {
     public static Signature newSignature(int size) {
         return new BitsetSignature(size);
     }
-    
+
     public abstract int cardinality();
-    
+
     public abstract void foreach(IntConsumer consumer);
+
     /**
      * An implementation of signature based on a Java {@link BitSet}
      */
@@ -163,7 +163,7 @@ public abstract class Signature implements Cloneable {
         @Override
         public void foreach(IntConsumer consumer) {
             int next = bs.nextSetBit(0);
-            while(next != -1) {
+            while (next != -1) {
                 consumer.accept(next);
                 next = bs.nextSetBit(next + 1);
             }

@@ -58,6 +58,7 @@ import org.xml.sax.SAXParseException;
 public abstract class AbstractIntegrationTest extends CssBaseTest {
 
     private static final StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
+
     File file;
 
     boolean exclusiveRulesEnabled;
@@ -75,7 +76,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
 
         testTranslation(css);
-        if(css.contains("-gt-")) {
+        if (css.contains("-gt-")) {
             String cssNoLegacyPrefix = css.replace("-gt-", "");
             testTranslation(cssNoLegacyPrefix);
         }
@@ -84,8 +85,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
     private void testTranslation(String css) throws TransformerException, IOException,
             FileNotFoundException, SAXException, ParserConfigurationException {
         File sldFile = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
-                + (exclusiveRulesEnabled ? "" : "-first")
-                + ".sld");
+                + (exclusiveRulesEnabled ? "" : "-first") + ".sld");
         if (!sldFile.exists()) {
             Stylesheet ss = CssParser.parse(css);
             CssTranslator tx = new CssTranslator();
@@ -96,8 +96,8 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
 
         Style actual = cssToSld(css);
-        File sldFile2 = new File("./target/css", FilenameUtils.getBaseName(file.getName())
-                + ".sld");
+        File sldFile2 = new File("./target/css",
+                FilenameUtils.getBaseName(file.getName()) + ".sld");
         writeStyle(actual, sldFile2);
         String actualSld = FileUtils.readFileToString(sldFile2);
 
@@ -107,8 +107,8 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             for (Object e : validationErrors) {
                 if (e instanceof SAXParseException) {
                     SAXParseException se = (SAXParseException) e;
-                    System.out.println("line " + se.getLineNumber() + ": "
-                            + se.getLocalizedMessage());
+                    System.out.println(
+                            "line " + se.getLineNumber() + ": " + se.getLocalizedMessage());
                 } else {
                     System.out.println(e);
                 }
@@ -122,10 +122,10 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         String expectedSld = FileUtils.readFileToString(sldFile);
         StyledLayerDescriptor expectedSLD = parseToSld(expectedSld);
         StyledLayerDescriptor actualSLD = parseToSld(actualSld);
-//        Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
-//        Document actualDom = XMLUnit.buildControlDocument(actualSld);
-//        Diff diff = new Diff(expectedDom, actualDom);
-//        if (!diff.identical()) {
+        // Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
+        // Document actualDom = XMLUnit.buildControlDocument(actualSld);
+        // Diff diff = new Diff(expectedDom, actualDom);
+        // if (!diff.identical()) {
         if (!expectedSLD.equals(actualSLD)) {
             String message = "Comparison failed, the two files are: " + sldFile.getAbsolutePath()
                     + " " + sldFile2.getAbsolutePath();
@@ -140,17 +140,15 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         return parser.parseSLD();
     }
 
-
-    private List validateSLD(String sld) throws IOException, SAXException,
-            ParserConfigurationException {
+    private List validateSLD(String sld)
+            throws IOException, SAXException, ParserConfigurationException {
         Parser parser = new Parser(new SLDConfiguration());
         parser.validate(new StringReader(sld));
         return parser.getValidationErrors();
     }
 
-
-    private void writeStyle(Style s, File sldFile) throws TransformerException, IOException,
-            FileNotFoundException {
+    private void writeStyle(Style s, File sldFile)
+            throws TransformerException, IOException, FileNotFoundException {
         StyledLayerDescriptor sld = STYLE_FACTORY.createStyledLayerDescriptor();
         NamedLayer layer = STYLE_FACTORY.createNamedLayer();
         layer.addStyle((org.geotools.styling.Style) s);

@@ -112,18 +112,20 @@ public class CssTranslator {
         /**
          * Generates fully exclusive rules, extra rules are removed
          */
-        Exclusive, /**
-                    * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the first matching rules to the renderer,
-                    * will generate more rules, but work a lot less to do so by avoiding to compute the domain coverage
-                    */
-        Simple, /**
-                 * The translator will pick Exclusive by default, but if the rules to be turned into SLD go beyond
-                 */
-        Flat,   /**
-                 * All rules are merged straight forward if filters are exactly matching only with the
-                 * direct following pseudo rules. There is no cascading going on, no creation of additional 
-                 * rules. After merging the rules are sorted by z-index.
-                 */
+        Exclusive,
+        /**
+         * Sets the "exclusive" evaluation mode in the FeatureTypeStyle and delegates finding the first matching rules to the renderer, will generate
+         * more rules, but work a lot less to do so by avoiding to compute the domain coverage
+         */
+        Simple,
+        /**
+         * The translator will pick Exclusive by default, but if the rules to be turned into SLD go beyond
+         */
+        Flat,
+        /**
+         * All rules are merged straight forward if filters are exactly matching only with the direct following pseudo rules. There is no cascading
+         * going on, no creation of additional rules. After merging the rules are sorted by z-index.
+         */
         Auto;
     };
 
@@ -134,9 +136,9 @@ public class CssTranslator {
     static final String DIRECTIVE_AUTO_THRESHOLD = "autoThreshold";
 
     static final String DIRECTIVE_TRANSLATION_MODE = "mode";
-    
+
     static final String DIRECTIVE_STYLE_TITLE = "styleTitle";
-    
+
     static final String DIRECTIVE_STYLE_ABSTRACT = "styleAbstract";
 
     static final int MAX_OUTPUT_RULES_DEFAULT = Integer
@@ -177,7 +179,7 @@ public class CssTranslator {
      * The sort group for z-ordering
      */
     static final String SORT_BY_GROUP = "sort-by-group";
-    
+
     /**
      * The transformation
      */
@@ -256,7 +258,7 @@ public class CssTranslator {
 
             put("raster-contrast-enhancement-normalizationfactor", "normalizationFactor");
             put("raster-contrast-enhancement-correctionfactor", "correctionFactor");
-            //short forms for lazy people 
+            // short forms for lazy people
             put("rce-algorithm", "algorithm");
 
             put("rce-min", "minValue");
@@ -314,7 +316,8 @@ public class CssTranslator {
         if (mode == TranslationMode.Flat) {
             translatedRuleCount = translateFlat(allRules, styleBuilder);
         } else {
-            translatedRuleCount = translateCss(mode, allRules, styleBuilder, maxCombinations, autoThreshold);
+            translatedRuleCount = translateCss(mode, allRules, styleBuilder, maxCombinations,
+                    autoThreshold);
         }
 
         // check that we have generated at least one rule in output
@@ -329,11 +332,13 @@ public class CssTranslator {
 
     private List<CssRule> expandNested(List<CssRule> topRules) {
         RulesCombiner combiner = new RulesCombiner(new UnboundSimplifyingFilterVisitor());
-        List<CssRule> expanded = topRules.stream().flatMap(r -> r.expandNested(combiner).stream()).collect(Collectors.toList());
+        List<CssRule> expanded = topRules.stream().flatMap(r -> r.expandNested(combiner).stream())
+                .collect(Collectors.toList());
         return expanded;
     }
 
-    private int translateCss(TranslationMode mode, List<CssRule> allRules, StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {
+    private int translateCss(TranslationMode mode, List<CssRule> allRules,
+            StyleBuilder styleBuilder, int maxCombinations, int autoThreshold) {
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
         Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(allRules);
@@ -380,7 +385,8 @@ public class CssTranslator {
                 // over and over the same simplifications
                 CachedSimplifyingFilterVisitor cachedSimplifier = new CachedSimplifyingFilterVisitor(
                         targetFeatureType);
-                RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules, cachedSimplifier, maxCombinations) {
+                RulePowerSetBuilder builder = new RulePowerSetBuilder(flattenedRules,
+                        cachedSimplifier, maxCombinations) {
                     @Override
                     protected java.util.List<CssRule> buildResult(java.util.List<CssRule> rules) {
                         if (zIndex != null && zIndex > 0) {
@@ -402,8 +408,8 @@ public class CssTranslator {
                 // the only one that we want to be applied (in exclusive mode it will be
                 // the only one matching, the simple mode we want the evaluation to stop there)
                 ftsBuilder.option(FeatureTypeStyle.KEY_EVALUATION_MODE,
-                            FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
-                
+                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST);
+
                 if (featureTypeName != null) {
                     ftsBuilder.setFeatureTypeNames(
                             Arrays.asList((Name) new NameImpl(featureTypeName)));
@@ -465,9 +471,9 @@ public class CssTranslator {
                     for (CssRule derived : derivedRules) {
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
                         translatedRuleCount++;
-                        
+
                         // Reminder about why this is done the way it's done. These are all rule properties
-                        // in CSS and are subject to override. In SLD they contribute to containing 
+                        // in CSS and are subject to override. In SLD they contribute to containing
                         // FeatureTypeStyle, so the first one found wins and controls this z-level
 
                         // check if we have global composition going, and use the value of
@@ -507,12 +513,11 @@ public class CssTranslator {
                                 sortByGroup = values.get(0).toLiteral();
                             }
                         }
-                        
-                        // check if we have a transform, apply it 
-                        if(transform == null) {
+
+                        // check if we have a transform, apply it
+                        if (transform == null) {
                             List<Value> values = derived
-                                    .getPropertyValues(PseudoClass.ROOT, TRANSFORM)
-                                    .get(TRANSFORM);
+                                    .getPropertyValues(PseudoClass.ROOT, TRANSFORM).get(TRANSFORM);
                             if (values != null && !values.isEmpty()) {
                                 transform = values.get(0).toExpression();
                             }
@@ -540,7 +545,7 @@ public class CssTranslator {
         }
         return translatedRuleCount;
     }
-    
+
     private int translateFlat(List<CssRule> allRules, StyleBuilder styleBuilder) {
         List<CssRule> finalRules = new ArrayList<>();
         CssRule actualRule = null;
@@ -560,7 +565,8 @@ public class CssTranslator {
                         }
                     }
                     if (changed) {
-                        actualRule = new CssRule(actualRule.selector, properties, actualRule.comment);
+                        actualRule = new CssRule(actualRule.selector, properties,
+                                actualRule.comment);
                     }
                 }
             } else {
@@ -590,7 +596,8 @@ public class CssTranslator {
             for (Map.Entry<String, List<CssRule>> entry : typenameRules.entrySet()) {
                 String featureTypeName = entry.getKey();
                 List<CssRule> localRules = entry.getValue();
-                final FeatureType targetFeatureType = getTargetFeatureType(featureTypeName, localRules);
+                final FeatureType targetFeatureType = getTargetFeatureType(featureTypeName,
+                        localRules);
                 List<CssRule> flattenedRules = flattenScaleRanges(localRules);
 
                 FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
@@ -617,8 +624,8 @@ public class CssTranslator {
                     // the first rule providing the information (the one with the highest
                     // priority)
                     if (composite == null) {
-                        List<Value> values = cssRule
-                                .getPropertyValues(PseudoClass.ROOT, COMPOSITE).get(COMPOSITE);
+                        List<Value> values = cssRule.getPropertyValues(PseudoClass.ROOT, COMPOSITE)
+                                .get(COMPOSITE);
                         if (values != null && !values.isEmpty()) {
                             composite = values.get(0).toLiteral();
                         }
@@ -634,8 +641,8 @@ public class CssTranslator {
 
                     // check if we have any sort-by
                     if (sortBy == null) {
-                        List<Value> values = cssRule
-                                .getPropertyValues(PseudoClass.ROOT, SORT_BY).get(SORT_BY);
+                        List<Value> values = cssRule.getPropertyValues(PseudoClass.ROOT, SORT_BY)
+                                .get(SORT_BY);
                         if (values != null && !values.isEmpty()) {
                             sortBy = values.get(0).toLiteral();
                         }
@@ -894,7 +901,8 @@ public class CssTranslator {
         // see if we can fold the stroke into a polygon symbolizer
         boolean generateStroke = cssRule.hasProperty(PseudoClass.ROOT, "stroke");
         boolean lineSymbolizerSpecificProperties = cssRule.hasAnyVendorProperty(PseudoClass.ROOT,
-                LINE_VENDOR_OPTIONS.keySet()) || !sameGeometry(cssRule, "stroke-geometry", "fill-geometry");
+                LINE_VENDOR_OPTIONS.keySet())
+                || !sameGeometry(cssRule, "stroke-geometry", "fill-geometry");
         boolean includeStrokeInPolygonSymbolizer = generateStroke
                 && !lineSymbolizerSpecificProperties;
         boolean generatePolygonSymbolizer = cssRule.hasProperty(PseudoClass.ROOT, "fill");
@@ -958,10 +966,11 @@ public class CssTranslator {
             boolean includeStrokeInPolygonSymbolizer) {
         Map<String, List<Value>> values;
         if (includeStrokeInPolygonSymbolizer) {
-            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "graphic-margin", "-gt-graphic-margin",
-                    "stroke");
+            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "graphic-margin",
+                    "-gt-graphic-margin", "stroke");
         } else {
-            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "graphic-margin", "-gt-graphic-margin");
+            values = cssRule.getPropertyValues(PseudoClass.ROOT, "fill", "graphic-margin",
+                    "-gt-graphic-margin");
         }
         if (values == null || values.isEmpty()) {
             return;
@@ -1178,7 +1187,8 @@ public class CssTranslator {
      * @param ruleBuilder
      */
     private void addRasterSymbolizer(CssRule cssRule, RuleBuilder ruleBuilder) {
-        Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "raster","rce");
+        Map<String, List<Value>> values = cssRule.getPropertyValues(PseudoClass.ROOT, "raster",
+                "rce");
         if (values == null || values.isEmpty()) {
             return;
         }
@@ -1192,7 +1202,7 @@ public class CssTranslator {
             HashMap<String, Expression> constrastParameters = new HashMap<>();
             for (String cssKey : values.keySet()) {
                 String vendorOptionKey = cssKey;
-                if(vendorOptionKey.startsWith("-gt-")) {
+                if (vendorOptionKey.startsWith("-gt-")) {
                     vendorOptionKey = vendorOptionKey.substring(4);
                 }
                 String sldKey = CONTRASTENHANCMENT_VENDOR_OPTIONS.get(vendorOptionKey);
@@ -1214,16 +1224,13 @@ public class CssTranslator {
                 } else {
                     applyContrastEnhancement(
                             cs.red().channelName(channelNames[0]).contrastEnhancement(),
-                            constrastEnhancements, constrastParameters, gammas,
-                            0);
+                            constrastEnhancements, constrastParameters, gammas, 0);
                     applyContrastEnhancement(
                             cs.green().channelName(channelNames[1]).contrastEnhancement(),
-                            constrastEnhancements, constrastParameters, gammas,
-                            1);
+                            constrastEnhancements, constrastParameters, gammas, 1);
                     applyContrastEnhancement(
                             cs.blue().channelName(channelNames[2]).contrastEnhancement(),
-                            constrastEnhancements, constrastParameters, gammas,
-                            2);
+                            constrastEnhancements, constrastParameters, gammas, 2);
                 }
             } else {
                 applyContrastEnhancement(rb.contrastEnhancement(), constrastEnhancements,
@@ -1313,8 +1320,6 @@ public class CssTranslator {
             } else {
                 contrastEnhancementName = constrastEnhancements[i];
             }
-            
-            
 
             //
             if ("histogram".equals(contrastEnhancementName)) {
@@ -1480,7 +1485,7 @@ public class CssTranslator {
             if (strokeGeometry != null) {
                 lb.geometry(strokeGeometry);
             }
-            
+
             Expression strokeOffset = getExpression(values, "stroke-offset", i);
             if (strokeOffset != null && !isZero(strokeOffset)) {
                 lb.perpendicularOffset(strokeOffset);
@@ -1494,11 +1499,12 @@ public class CssTranslator {
 
     /**
      * Returns true if the expression is a constant value zero
+     * 
      * @param expression
      * @return
      */
     private boolean isZero(Expression expression) {
-        if(!(expression instanceof org.opengis.filter.expression.Literal)) {
+        if (!(expression instanceof org.opengis.filter.expression.Literal)) {
             return false;
         }
         org.opengis.filter.expression.Literal l = (org.opengis.filter.expression.Literal) expression;
@@ -1572,7 +1578,7 @@ public class CssTranslator {
             expressions.add(dasharrayValue.toExpression());
             strokeBuilder.dashArray(expressions);
         }
-        
+
         Expression dashOffset = getMeasureExpression(values, "stroke-dashoffset", i, "px");
         if (dashOffset != null) {
             strokeBuilder.dashOffset(dashOffset);
@@ -1582,16 +1588,17 @@ public class CssTranslator {
 
     /**
      * Returns true if the value is a {@link Literal}, or a {@link MultiValue} made of {@link Literal}
+     * 
      * @param dasharrayValue
      * @return
      */
     private boolean isLiterals(Value value) {
-        if(value instanceof Literal) {
+        if (value instanceof Literal) {
             return true;
-        } else if(value instanceof MultiValue) {
+        } else if (value instanceof MultiValue) {
             MultiValue mv = (MultiValue) value;
             for (Value v : mv.values) {
-                if(!(v instanceof Literal)) {
+                if (!(v instanceof Literal)) {
                     return false;
                 }
             }
@@ -1613,7 +1620,7 @@ public class CssTranslator {
             Map<String, List<Value>> values, int idx) {
         for (String cssKey : values.keySet()) {
             String vendorOptionKey = cssKey;
-            if(vendorOptionKey.startsWith("-gt-")) {
+            if (vendorOptionKey.startsWith("-gt-")) {
                 vendorOptionKey = vendorOptionKey.substring(4);
             }
             String sldKey = vendorOptions.get(vendorOptionKey);

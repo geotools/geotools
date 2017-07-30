@@ -37,68 +37,68 @@ import org.geotools.styling.css.selector.TypeName;
  */
 public class TypeNameExtractor extends AbstractSelectorVisitor {
 
-	private final Set<TypeName> typeNames = new LinkedHashSet<>();
+    private final Set<TypeName> typeNames = new LinkedHashSet<>();
 
-	@Override
-	public Object visit(Accept accept) {
-		getTypeNames().add(TypeName.DEFAULT);
-		return null;
-	}
+    @Override
+    public Object visit(Accept accept) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
 
-	@Override
-	public Object visit(Reject reject) {
-		getTypeNames().add(TypeName.DEFAULT);
-		return null;
-	}
+    @Override
+    public Object visit(Reject reject) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
 
-	@Override
-	public Object visit(Id id) {
-		getTypeNames().add(TypeName.DEFAULT);
-		return null;
-	}
+    @Override
+    public Object visit(Id id) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
 
-	@Override
-	public Object visit(Data data) {
-		getTypeNames().add(TypeName.DEFAULT);
-		return null;
-	}
+    @Override
+    public Object visit(Data data) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
 
-	@Override
-	public Object visit(TypeName typeName) {
-		getTypeNames().add(typeName);
-		return null;
-	}
+    @Override
+    public Object visit(TypeName typeName) {
+        getTypeNames().add(typeName);
+        return null;
+    }
 
-	@Override
-	public Object visit(ScaleRange scaleRange) {
-		getTypeNames().add(TypeName.DEFAULT);
-		return null;
-	}
+    @Override
+    public Object visit(ScaleRange scaleRange) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
 
-	@Override
-	public Object visit(PseudoClass pseudoClass) {
-		getTypeNames().add(TypeName.DEFAULT);
-		return null;
-	}
+    @Override
+    public Object visit(PseudoClass pseudoClass) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
 
-	@Override
-	public Object visit(And and) {
-		boolean found = false;
-		for (Selector s : and.getChildren()) {
-			if (s instanceof TypeName) {
-				found = true;
-				getTypeNames().add((TypeName) s);
-			}
-		}
-		if (!found) {
-			getTypeNames().add(TypeName.DEFAULT);
-		}
-		return null;
-	}
+    @Override
+    public Object visit(And and) {
+        boolean found = false;
+        for (Selector s : and.getChildren()) {
+            if (s instanceof TypeName) {
+                found = true;
+                getTypeNames().add((TypeName) s);
+            }
+        }
+        if (!found) {
+            getTypeNames().add(TypeName.DEFAULT);
+        }
+        return null;
+    }
 
-	public Set<TypeName> getTypeNames() {
-		return typeNames;
-	}
+    public Set<TypeName> getTypeNames() {
+        return typeNames;
+    }
 
     public void reset() {
         typeNames.clear();

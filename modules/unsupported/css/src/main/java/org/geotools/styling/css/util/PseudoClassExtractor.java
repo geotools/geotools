@@ -38,69 +38,69 @@ import org.opengis.filter.Filter;
  */
 public class PseudoClassExtractor extends AbstractSelectorVisitor {
 
-	private final Set<PseudoClass> pseudoClasses = new LinkedHashSet<>();
+    private final Set<PseudoClass> pseudoClasses = new LinkedHashSet<>();
 
-	@Override
-	public Object visit(Accept accept) {
-		getPseudoClasses().add(PseudoClass.ROOT);
-		return null;
-	}
+    @Override
+    public Object visit(Accept accept) {
+        getPseudoClasses().add(PseudoClass.ROOT);
+        return null;
+    }
 
-	@Override
-	public Object visit(Reject reject) {
-		getPseudoClasses().add(PseudoClass.ROOT);
-		return null;
-	}
+    @Override
+    public Object visit(Reject reject) {
+        getPseudoClasses().add(PseudoClass.ROOT);
+        return null;
+    }
 
-	@Override
-	public Object visit(Id id) {
-		getPseudoClasses().add(PseudoClass.ROOT);
-		return null;
-	}
+    @Override
+    public Object visit(Id id) {
+        getPseudoClasses().add(PseudoClass.ROOT);
+        return null;
+    }
 
-	@Override
-	public Object visit(Data data) {
-		getPseudoClasses().add(PseudoClass.ROOT);
-		return null;
-	}
+    @Override
+    public Object visit(Data data) {
+        getPseudoClasses().add(PseudoClass.ROOT);
+        return null;
+    }
 
-	@Override
-	public Object visit(TypeName typeName) {
-		getPseudoClasses().add(PseudoClass.ROOT);
-		return null;
-	}
+    @Override
+    public Object visit(TypeName typeName) {
+        getPseudoClasses().add(PseudoClass.ROOT);
+        return null;
+    }
 
-	@Override
-	public Object visit(ScaleRange scaleRange) {
-		getPseudoClasses().add(PseudoClass.ROOT);
-		return null;
-	}
+    @Override
+    public Object visit(ScaleRange scaleRange) {
+        getPseudoClasses().add(PseudoClass.ROOT);
+        return null;
+    }
 
-	@Override
-	public Object visit(PseudoClass pseudoClass) {
-		getPseudoClasses().add(pseudoClass);
-		return null;
+    @Override
+    public Object visit(PseudoClass pseudoClass) {
+        getPseudoClasses().add(pseudoClass);
+        return null;
 
-	}
+    }
 
-	@Override
-	public Object visit(And and) {
-		boolean found = false;
-		for (Selector s : and.getChildren()) {
-			if(s instanceof PseudoClass) {
-				found = true;
-				getPseudoClasses().add((PseudoClass) s);
-			}
-		}
-		if(!found) {
-			getPseudoClasses().add(PseudoClass.ROOT);
-		}
-		return null;
-	}
+    @Override
+    public Object visit(And and) {
+        boolean found = false;
+        for (Selector s : and.getChildren()) {
+            if (s instanceof PseudoClass) {
+                found = true;
+                getPseudoClasses().add((PseudoClass) s);
+            }
+        }
+        if (!found) {
+            getPseudoClasses().add(PseudoClass.ROOT);
+        }
+        return null;
+    }
 
-	public Set<PseudoClass> getPseudoClasses() {
-		return pseudoClasses;
-	}
+    public Set<PseudoClass> getPseudoClasses() {
+        return pseudoClasses;
+    }
 
     public static Set<PseudoClass> getPseudoClasses(Selector selector) {
         PseudoClassExtractor extractor = new PseudoClassExtractor();

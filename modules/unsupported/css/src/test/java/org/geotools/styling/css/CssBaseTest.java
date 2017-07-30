@@ -35,16 +35,15 @@ public class CssBaseTest {
 
     CssParser parser = CssParser.getInstance();
 
-    protected void assertProperty(CssRule r, PseudoClass pseudoClass, int propertyIdx, String propertyName,
-            Value expectedValue) {
+    protected void assertProperty(CssRule r, PseudoClass pseudoClass, int propertyIdx,
+            String propertyName, Value expectedValue) {
         Property p = r.getProperties().get(pseudoClass).get(propertyIdx);
         assertEquals(propertyName, p.getName());
         assertEquals(1, p.getValues().size());
         Value value = p.getValues().get(0);
         assertEquals(expectedValue, value);
     }
-    
-    
+
     protected void assertProperty(CssRule r, int propertyIdx, String propertyName,
             Value expectedValue) {
         assertProperty(r, PseudoClass.ROOT, propertyIdx, propertyName, expectedValue);

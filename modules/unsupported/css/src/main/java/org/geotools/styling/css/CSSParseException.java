@@ -49,8 +49,9 @@ public class CSSParseException extends IllegalArgumentException {
         for (ParseError pe : errors) {
             Position pos = pe.getInputBuffer().getPosition(pe.getStartIndex());
             String message = pe.getErrorMessage() != null ? pe.getErrorMessage()
-                    : pe instanceof InvalidInputError ? new DefaultInvalidInputErrorFormatter()
-                            .format((InvalidInputError) pe) : pe.getClass().getSimpleName();
+                    : pe instanceof InvalidInputError
+                            ? new DefaultInvalidInputErrorFormatter().format((InvalidInputError) pe)
+                            : pe.getClass().getSimpleName();
             sb.append(message).append(" (line ").append(pos.line).append(", column ")
                     .append(pos.column).append(")");
             sb.append('\n');

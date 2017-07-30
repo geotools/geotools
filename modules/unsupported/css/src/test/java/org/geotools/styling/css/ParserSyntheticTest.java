@@ -239,12 +239,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof Accept);
         assertEquals(1, r.getProperties().size());
-        assertProperty(
-                r,
-                0,
-                "mark",
-                new Value.Function("symbol", Collections.singletonList((Value) new Value.Literal(
-                        "circle"))));
+        assertProperty(r, 0, "mark", new Value.Function("symbol",
+                Collections.singletonList((Value) new Value.Literal("circle"))));
     }
 
     @Test
@@ -261,8 +257,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         assertTrue(r.getSelector() instanceof Accept);
         assertEquals(1, r.getProperties().size());
-        assertProperty(r, 0, "label-anchor", new Value.MultiValue(new Value.Literal("50%"),
-                new Value.Literal("50%")));
+        assertProperty(r, 0, "label-anchor",
+                new Value.MultiValue(new Value.Literal("50%"), new Value.Literal("50%")));
     }
 
     @Test
@@ -421,8 +417,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
         assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
-                .get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
@@ -440,8 +436,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof And);
         And s = (And) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
-                .get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
@@ -459,8 +455,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Or);
         Or s = (Or) r.getSelector();
         assertEquals(new Data(ECQL.toFilter("att < 15")), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
-                .get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
@@ -478,8 +474,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(r.getSelector() instanceof Or);
         Or s = (Or) r.getSelector();
         assertEquals(new TypeName("topp:states"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
-                .get(1));
+        assertEquals(new ScaleRange(3000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
     }
 
     @Test
@@ -535,8 +531,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertNull(r.getComment());
         And s = (And) r.getSelector();
         assertEquals(new Id("states.2"), s.getChildren().get(0));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), s.getChildren()
-                .get(1));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true),
+                s.getChildren().get(1));
         assertEquals(new Data(ECQL.toFilter("myAtt > 10")), s.getChildren().get(2));
 
     }
@@ -559,8 +555,8 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertTrue(s.getChildren().get(0) instanceof And);
         And and = (And) s.getChildren().get(0);
         assertEquals(new Id("states.2"), and.getChildren().get(0));
-        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true), and.getChildren()
-                .get(1));
+        assertEquals(new ScaleRange(1000, true, Double.POSITIVE_INFINITY, true),
+                and.getChildren().get(1));
 
     }
 
@@ -721,18 +717,20 @@ public class ParserSyntheticTest extends CssBaseTest {
         Stylesheet ss = CssParser.parse(css);
         assertEquals(1, ss.getRules().size());
     }
-    
+
     @Test
     public void testSimpleTransform() {
         String css = "* { transform: ras:Contour(levels: 1100 1200 1300); stroke: black}";
         Stylesheet ss = CssParser.parse(css);
         assertEquals(1, ss.getRules().size());
         CssRule rule = ss.getRules().get(0);
-        final Value.MultiValue levelsValue = new Value.MultiValue(new Value.Literal("1100"), new Value.Literal("1200"), new Value.Literal("1300"));
-        assertProperty(rule, 0, "transform", new Value.TransformFunction("ras:Contour", Collections.singletonMap("levels", levelsValue)));
+        final Value.MultiValue levelsValue = new Value.MultiValue(new Value.Literal("1100"),
+                new Value.Literal("1200"), new Value.Literal("1300"));
+        assertProperty(rule, 0, "transform", new Value.TransformFunction("ras:Contour",
+                Collections.singletonMap("levels", levelsValue)));
         assertProperty(rule, 1, "stroke", new Value.Literal("#000000"));
     }
-    
+
     @Test
     public void testMarkSubrule() {
         String css = "* { mark: symbol(circle); :mark { size: 10}}";
@@ -743,9 +741,10 @@ public class ParserSyntheticTest extends CssBaseTest {
         CssRule nested = rule.getNestedRules().get(0);
         PseudoClass selector = assertSelector(nested.getSelector(), PseudoClass.class);
         assertEquals("mark", selector.getClassName());
-        assertProperty(nested, PseudoClass.newPseudoClass("mark"), 0, "size", new Value.Literal("10"));
+        assertProperty(nested, PseudoClass.newPseudoClass("mark"), 0, "size",
+                new Value.Literal("10"));
     }
-    
+
     @Test
     public void testSubruleWithNoTitle() {
         String css = "/* @title All */ * { mark: symbol(circle); :mark { size: 10}}";
@@ -757,7 +756,7 @@ public class ParserSyntheticTest extends CssBaseTest {
         CssRule nested = rule.getNestedRules().get(0);
         assertNull(nested.getComment());
     }
-    
+
     @Test
     public void testSubruleWithTitle() {
         String css = "/* @title All */ * { mark: symbol(circle); /* @title special */ [a = 10] { mark: symbol(triangle)}}";
@@ -769,7 +768,7 @@ public class ParserSyntheticTest extends CssBaseTest {
         CssRule nested = rule.getNestedRules().get(0);
         assertEquals("@title special", nested.getComment());
     }
-    
+
     @Test
     public void testFeatureTypeSubrule() {
         String css = "* { fill: red; topp:states { stroke: yellow }}";
@@ -782,17 +781,17 @@ public class ParserSyntheticTest extends CssBaseTest {
         assertEquals("topp:states", selector.name);
         assertProperty(nested, 0, "stroke", new Value.Literal("#ffff00"));
     }
-    
+
     @Test
     public void testMultiNestedSelectors() {
         String css = "* { stroke: black; [a <= 10] { fill: yellow }; [a > 10] { fill: red}; stroke-opacity: 50%}";
         Stylesheet ss = CssParser.parse(css);
         assertEquals(1, ss.getRules().size());
         CssRule rule = ss.getRules().get(0);
-        
+
         assertEquals(2, rule.getNestedRules().size());
     }
-    
+
     private <T extends Selector> T assertSelector(Selector selector, Class<T> clazz) {
         assertThat(selector, instanceOf(clazz));
         return (T) selector;

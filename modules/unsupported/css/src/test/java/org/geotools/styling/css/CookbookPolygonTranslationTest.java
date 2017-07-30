@@ -15,7 +15,6 @@
  *    Lesser General Public License for more details.
  */
 
-
 package org.geotools.styling.css;
 
 import java.io.File;

@@ -47,7 +47,7 @@ import org.geotools.util.Converters;
 public class CssRule {
 
     public static final Integer NO_Z_INDEX = null;
-    
+
     Selector selector;
 
     Map<PseudoClass, List<Property>> properties;
@@ -55,7 +55,7 @@ public class CssRule {
     String comment;
 
     List<CssRule> ancestry;
-    
+
     List<CssRule> nestedRules;
 
     /**
@@ -146,8 +146,7 @@ public class CssRule {
     }
 
     /**
-     * Returns the property values by pseudo-class, matching those that satisfy the specified name
-     * prefixes
+     * Returns the property values by pseudo-class, matching those that satisfy the specified name prefixes
      * 
      * @param pseudoClass
      * @param symbolizerPrefixes
@@ -198,7 +197,7 @@ public class CssRule {
 
         return false;
     }
-    
+
     /**
      * Returns the property with a given name (will look for an exact match)
      * 
@@ -219,7 +218,7 @@ public class CssRule {
 
         return null;
     }
-    
+
     /**
      * Returns true if any of the "vendor" properties specified is found in the given pseudo-class
      * 
@@ -234,7 +233,7 @@ public class CssRule {
         }
         for (Property property : psProperties) {
             String name = property.getName();
-            if(name.startsWith("-gt-")) {
+            if (name.startsWith("-gt-")) {
                 name = name.substring(4);
             }
             if (propertyNames.contains(name)) {
@@ -267,8 +266,7 @@ public class CssRule {
     }
 
     /**
-     * This rule covers the other if it has the same selector, and has all the properties of the
-     * other, plus eventually some more
+     * This rule covers the other if it has the same selector, and has all the properties of the other, plus eventually some more
      * 
      * @param other
      * @return
@@ -296,8 +294,7 @@ public class CssRule {
     }
 
     /**
-     * Extracts a sub-rule at the given z-index. Will return null if this rule has nothing at that
-     * specific z-index
+     * Extracts a sub-rule at the given z-index. Will return null if this rule has nothing at that specific z-index
      * 
      * @param zIndex
      * @return
@@ -329,8 +326,8 @@ public class CssRule {
                         }
                         List<Value> values = property.getValues();
                         if (zIndexPosition < values.size()) {
-                            Property p = new Property(property.getName(), Arrays.asList(values
-                                    .get(zIndexPosition)));
+                            Property p = new Property(property.getName(),
+                                    Arrays.asList(values.get(zIndexPosition)));
                             zIndexProperties.add(p);
                         } else if (values.size() == 1) {
                             // properties that does not have multiple values are bound to all levels
@@ -350,11 +347,11 @@ public class CssRule {
             // to figure out if a combination of rules can be applied at a z-index > 0, or not
             if (zIndex != null && zIndexes.contains(zIndex)) {
                 List<Property> rootProperties = zProperties.get(PseudoClass.ROOT);
-                if(rootProperties == null) {
+                if (rootProperties == null) {
                     rootProperties = new ArrayList<>();
                     zProperties.put(PseudoClass.ROOT, rootProperties);
                 }
-                rootProperties.add(new Property("z-index", 
+                rootProperties.add(new Property("z-index",
                         Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
             }
             CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
@@ -467,8 +464,8 @@ public class CssRule {
     }
 
     /**
-     * Returns the original rules from which this rule originated (rules get re-organized and
-     * combined a lot during the translation process to Geotools {@link Style}
+     * Returns the original rules from which this rule originated (rules get re-organized and combined a lot during the translation process to
+     * Geotools {@link Style}
      */
     public List<CssRule> getAncestry() {
         return ancestry;
@@ -477,9 +474,10 @@ public class CssRule {
     public void setAncestry(List<CssRule> ancestry) {
         this.ancestry = ancestry;
     }
-    
+
     /**
      * Returns the rules nested in this one
+     * 
      * @return
      */
     public List<CssRule> getNestedRules() {
@@ -487,8 +485,7 @@ public class CssRule {
     }
 
     /**
-     * Returns true if the style has at least one property activating a symbolizer, e.g., fill,
-     * stroke, mark, label or raster-channel
+     * Returns true if the style has at least one property activating a symbolizer, e.g., fill, stroke, mark, label or raster-channel
      * 
      * @param rootProperties
      * @return
@@ -514,8 +511,8 @@ public class CssRule {
     }
 
     /**
-     * Returns the list of pseudo classes that can be mixed into this rule, meaning we have root
-     * properties in which these pseudo classes can be mixed in.
+     * Returns the list of pseudo classes that can be mixed into this rule, meaning we have root properties in which these pseudo classes can be mixed
+     * in.
      * 
      * @param rootProperties
      * @return
@@ -551,8 +548,8 @@ public class CssRule {
     }
 
     /**
-     * Adds pseudo classes for fill and stroke, whose ability to mix-in depends on whether a
-     * function (symbol) or a straight value was used for the value of the property
+     * Adds pseudo classes for fill and stroke, whose ability to mix-in depends on whether a function (symbol) or a straight value was used for the
+     * value of the property
      * 
      * @param result
      * @param property
@@ -575,8 +572,7 @@ public class CssRule {
     }
 
     /**
-     * Collects all properties starting with the propertyName, and adds pseudo classes up to the max
-     * index found in said properties
+     * Collects all properties starting with the propertyName, and adds pseudo classes up to the max index found in said properties
      * 
      * @param result
      * @param propertyName
@@ -593,8 +589,7 @@ public class CssRule {
     }
 
     /**
-     * Returns the max number of property values in the provided property set (for repeated
-     * symbolizers)
+     * Returns the max number of property values in the provided property set (for repeated symbolizers)
      * 
      * @param valueMap
      * @return
@@ -609,8 +604,9 @@ public class CssRule {
     }
 
     /**
-     * Turns a rule with nested subrules into a flat list of rules (this rule, plus all nested with
-     * a properly combined selector and property inheritance)
+     * Turns a rule with nested subrules into a flat list of rules (this rule, plus all nested with a properly combined selector and property
+     * inheritance)
+     * 
      * @return
      */
     public List<CssRule> expandNested(RulesCombiner combiner) {
@@ -618,7 +614,7 @@ public class CssRule {
             return Collections.singletonList(this);
         } else {
             Stream<CssRule> nestedRulesStream = nestedRules.stream().flatMap(r -> {
-                return r.expandNested(combiner).stream().map(sr -> { 
+                return r.expandNested(combiner).stream().map(sr -> {
                     CssRule combined = combiner.combineRules(Arrays.asList(this, sr));
                     combined.setComment(sr.getComment());
                     combined.setAncestry(null);

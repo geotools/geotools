@@ -115,9 +115,9 @@ public class Data extends Selector {
         filter.accept(extractor, null);
         return new Specificity(0, extractor.getSpecificityScore(), 0);
     }
-    
+
     public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
+        return visitor.visit(this);
     }
 
 }

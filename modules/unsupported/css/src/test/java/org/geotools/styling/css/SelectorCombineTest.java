@@ -70,5 +70,4 @@ public class SelectorCombineTest {
         assertEquals(Selector.REJECT, Selector.and(range1, range3));
     }
 
-
 }

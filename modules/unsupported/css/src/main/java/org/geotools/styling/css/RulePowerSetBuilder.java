@@ -33,8 +33,8 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.logging.Logging;
 
 /**
- * Gives a list of Rules, it builds their power set, making it so that any set of rules extracted as
- * at least a chance to match a feature (e.g., the rule selectors are not contractiding each other)
+ * Gives a list of Rules, it builds their power set, making it so that any set of rules extracted as at least a chance to match a feature (e.g., the
+ * rule selectors are not contractiding each other)
  * 
  * @author Andrea Aime - GeoSolutions
  * 
@@ -42,19 +42,18 @@ import org.geotools.util.logging.Logging;
 class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
     static final Logger LOGGER = Logging.getLogger(RulePowerSetBuilder.class);
-    
+
     RulesCombiner combiner;
 
     int maxCombinations = -1;
 
     int count = 0;
-    
+
     UnboundSimplifyingFilterVisitor simplifier;
 
     /**
-     * These are pseudo class bits that mix in the main rule set, or not, depending on whether their
-     * pseudo class is a match. They are treated separately to reduce the number of rules the power
-     * set generates
+     * These are pseudo class bits that mix in the main rule set, or not, depending on whether their pseudo class is a match. They are treated
+     * separately to reduce the number of rules the power set generates
      */
     List<CssRule> mixins;
 
@@ -76,7 +75,6 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         return new List[] { main, mixins };
     }
 
-
     public RulePowerSetBuilder(List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier) {
         this(classifyRules(domain), simplifier, -1);
     }
@@ -94,7 +92,6 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         this.simplifier = simplifier;
         this.combiner = new RulesCombiner(simplifier);
     }
-
 
     @Override
     protected List<CssRule> buildResult(List<CssRule> rules) {
@@ -151,8 +148,9 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                     List<CssRule> list = new ArrayList<>();
                     list.add(combined);
                     list.addAll(applicableMixins.subList(idx, applicableMixins.size()));
-                    RulePowerSetBuilder builder = new RulePowerSetBuilder(new List[] { list,
-                            Collections.emptyList() }, simplifier, maxCombinations - count);
+                    RulePowerSetBuilder builder = new RulePowerSetBuilder(
+                            new List[] { list, Collections.emptyList() }, simplifier,
+                            maxCombinations - count);
                     List<CssRule> conditionalPowerSet = builder.buildPowerSet();
                     results.addAll(conditionalPowerSet);
                 } else {
@@ -176,13 +174,10 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         return results;
     }
 
-   
-
     /**
-     * Returns all the mixins that can be combined with the rule at hand, that is, mixins that have
-     * their pseudo-classes matched by the main rule symbolizers. Two lists will be returned, an
-     * in-conditional one, where the mixins just blend into the main rule, and a conditional one,
-     * where the mixin adds its own conditions, and thus require its own power set expansion
+     * Returns all the mixins that can be combined with the rule at hand, that is, mixins that have their pseudo-classes matched by the main rule
+     * symbolizers. Two lists will be returned, an in-conditional one, where the mixins just blend into the main rule, and a conditional one, where
+     * the mixin adds its own conditions, and thus require its own power set expansion
      * 
      * @param rule
      * @return
@@ -209,18 +204,18 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
         return result;
     }
-    
+
     /**
      * Filter applicable mixin rules. Defaults to accepting all rules.
+     * 
      * @param rule
      * @param mixinRule
-     * @return 
+     * @return
      */
     protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
         return true;
     }
 
-    
     @Override
     protected boolean accept(List<CssRule> rules) {
         if (count > maxCombinations) {
@@ -229,8 +224,6 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         Selector combined = combiner.combineSelectors(rules);
         return combined != Selector.REJECT;
     }
-
-    
 
     @Override
     protected List<CssRule> postFilterResult(List<CssRule> result) {
@@ -250,7 +243,6 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
         return filtered;
     }
-
 
     @Override
     protected boolean isInclude(CssRule t) {

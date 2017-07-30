@@ -47,7 +47,8 @@ public class DefaultResourceLocator implements ResourceLocator {
             if (f != null && !f.isAbsolute()) {
                 // ok, relative url, if the file exists when we are ok
                 if (!f.exists() && sourceUrl != null) {
-                    URL relativeUrl = makeRelativeURL(f.getPath(), url.getQuery());
+                    String query = getQueryPart(url);
+                    URL relativeUrl = makeRelativeURL(f.getPath(), query);
                     if (relativeUrl != null) {
                         URL validated = validateRelativeURL(relativeUrl);
                         if (validated != null) {
@@ -69,6 +70,23 @@ public class DefaultResourceLocator implements ResourceLocator {
             }
         }
         return url;
+    }
+
+    /**
+     * Variant to URL.getQuery() that won't balk at having # in the query (e.g., a color in a
+     * parametric SVG reference), e.g. <code>firestation.svg?fill=#FF0000</code>
+     *
+     * @param url
+     * @return
+     */
+    private String getQueryPart(URL url) {
+        String external = url.toExternalForm();
+        int idx = external.indexOf('?');
+        if (idx == -1 || idx == external.length() - 1) {
+            return null;
+        } else {
+            return external.substring(idx + 1);
+        }
     }
 
     protected URL validateRelativeURL(URL relativeUrl) {

@@ -161,6 +161,34 @@ public class SLDParserTest {
                     + "    </UserStyle>\n"
                     + "</StyledLayerDescriptor>";
 
+    static String SLD_MARK_FILE =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<StyledLayerDescriptor version=\"1.0.0\" \n"
+                    + "        xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n"
+                    + "        xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" \n"
+                    + "        xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n"
+                    + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+                    + "    <UserStyle>\n"
+                    + "        <Name>Default Styler</Name>\n"
+                    + "        <Title>Default Styler</Title>\n"
+                    + "        <Abstract></Abstract>\n"
+                    + "        <FeatureTypeStyle>\n"
+                    + "            <FeatureTypeName>Feature</FeatureTypeName>\n"
+                    + "            <Rule>\n"
+                    + "                <PointSymbolizer>\n"
+                    + "                    <Graphic>\n"
+                    + "                       <Mark>\n"
+                    + "                          <WellKnownName>file://foo.svg</WellKnownName>"
+                    + "                          <Fill/>"
+                    + "                          <Stroke/>"
+                    + "                       </Mark>"
+                    + "                    </Graphic>\n"
+                    + "                </PointSymbolizer>\n"
+                    + "            </Rule>\n"
+                    + "        </FeatureTypeStyle>\n"
+                    + "    </UserStyle>\n"
+                    + "</StyledLayerDescriptor>";
+
     static String SLD_EXTERNALENTITY =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<!DOCTYPE StyledLayerDescriptor [\n"
@@ -497,6 +525,38 @@ public class SLDParserTest {
         assertEquals(1, graphicalSymbols.size());
         Mark mark = (Mark) graphicalSymbols.get(0);
         assertEquals(mark, CommonFactoryFinder.getStyleFactory(null).createMark());
+    }
+
+    @Test
+    public void testParseMarkFileReference() throws Exception {
+        SLDParser parser = new SLDParser(styleFactory, input(SLD_MARK_FILE));
+        parser.setOnLineResourceLocator(
+                uri -> {
+                    if ("file://foo.svg".equals(uri)) {
+                        try {
+                            return new URL("file://test/foo.svg");
+                        } catch (MalformedURLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        return null;
+                    }
+                });
+        Style[] styles = parser.readXML();
+
+        assertEquals(1, styles.length);
+        List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
+        assertEquals(1, fts.size());
+        List<Rule> rules = fts.get(0).rules();
+        assertEquals(1, rules.size());
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+        assertEquals(1, symbolizers.size());
+        PointSymbolizer ps = (PointSymbolizer) symbolizers.get(0);
+        // here we would have had two instead of one
+        List<GraphicalSymbol> graphicalSymbols = ps.getGraphic().graphicalSymbols();
+        assertEquals(1, graphicalSymbols.size());
+        Mark mark = (Mark) graphicalSymbols.get(0);
+        assertEquals("file://test/foo.svg", mark.getWellKnownName().evaluate(null, String.class));
     }
 
     @Test

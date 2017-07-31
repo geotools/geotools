@@ -28,11 +28,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.RenderedImage;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +45,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 import javax.media.jai.ROI;
+import javax.media.jai.TiledImage;
 
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -124,6 +123,7 @@ import org.opengis.referencing.operation.MathTransform;
 import com.vividsolutions.jts.geom.Envelope;
 
 import it.geosolutions.jaiext.JAIExt;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * @author Simone Giannecchini
@@ -163,6 +163,7 @@ public class GridCoverageRendererTest  {
     private GeoTiffReader worldRoiReader;
 
     private GeoTiffReader sampleGribReader;
+
 
     // @BeforeClass
     // public static void enableJaiExt() {
@@ -1123,13 +1124,12 @@ public class GridCoverageRendererTest  {
 
     @Test
     public void testContrastEnhancementInChannelSelectionAfterBandSelection() throws Exception {
-        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
 
         GridCoverage2DReader reader = new TestMultiBandReader(0,2,4);
+        applyAndAssertContrastEnhancement(reader);
+    }
 
-        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
-                new Rectangle(0, 0, 255, 255), null);
-
+    private RasterSymbolizer createClippingChannelSelectionSymbolizer(int min, int max) {
         StyleBuilder sldBuilder = new StyleBuilder();
 
         RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
@@ -1144,8 +1144,7 @@ public class GridCoverageRendererTest  {
         // Assign a different contrast method for each channel
         // by offsetting min and max of 20 on each channel
         // and assigning channels number with increments of 2
-        int min = 10;
-        int max = 100;
+
         for (int i = 0; i < 3; i++) {
             final ContrastEnhancement cntEnh = new ContrastEnhancementImpl();
             final ContrastMethodStrategy method = new NormalizeContrastMethodStrategy();
@@ -1161,13 +1160,48 @@ public class GridCoverageRendererTest  {
 
         symbolizer.setChannelSelection(chSel);
         symbolizer.setOpacity(sldBuilder.literalExpression(1.0));
+        return symbolizer;
+    }
+
+    /**
+     * GEOT-5773 Geoserver can generate images without a color model (before the RasterSymbolizer is applied).
+     * These images should also be rendered appropriately when the symbolizer converts the bands to a range that makes sense.
+     */
+    @Test
+    public void testContrastEnhancementInChannelSelectionAfterBandSelectionWithoutColorModel() throws Exception {
+        GridCoverage2DReader reader = new TestMultiBandReader(0,2,4){
+            @Override
+            public GridCoverage2D read(GeneralParameterValue[] parameters) throws IOException {
+                GridCoverage2D originalCoverage = super.read(parameters);
+                RenderedImage source = new ImageWorker(originalCoverage.getRenderedImage()).format(DataBuffer.TYPE_USHORT).getRenderedImage();
+                TiledImage shortImage = new TiledImage(source.getMinX(), source.getMinY(), source.getWidth(), source.getHeight(), source.getTileGridXOffset(), source.getTileGridYOffset(), source.getSampleModel(), null);
+                shortImage.set(source);
+
+                //force color model to be null, this also occurs in real cases
+                GridCoverage2D coverage = CoverageFactoryFinder.getGridCoverageFactory(null).create(
+                        originalCoverage.getName(), shortImage, originalCoverage.getEnvelope2D());
+                return coverage;
+            }
+        };
+        applyAndAssertContrastEnhancement(reader);
+    }
+
+    private void applyAndAssertContrastEnhancement(GridCoverage2DReader reader) throws TransformException, NoninvertibleTransformException, FactoryException, IOException {
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84);
+        GridCoverageRenderer renderer = new GridCoverageRenderer(DefaultGeographicCRS.WGS84, mapExtent,
+                new Rectangle(0, 0, 255, 255), null);
+
+
+        int min = 10;
+        int max = 100;
+        RasterSymbolizer symbolizer = createClippingChannelSelectionSymbolizer(min,max);
 
         RenderedImage image = renderer.renderImage(reader, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
         assertEquals(3, image.getSampleModel().getNumBands());
 
         // Make sure clip occurred even with optimized band selection
         ImageWorker worker = new ImageWorker(image);
-        
+
         double[] maximums = worker.getMaximums();
         assertEquals(max, maximums[0], 0d);
         assertEquals(max + 20, maximums[1], 0d);

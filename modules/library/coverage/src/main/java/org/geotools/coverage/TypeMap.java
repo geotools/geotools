@@ -510,6 +510,9 @@ public final class TypeMap {
 	public static ColorInterpretation getColorInterpretation(final ColorModel model, final int band)
             throws IllegalArgumentException
     {
+        if (model == null) {
+            return ColorInterpretation.UNDEFINED;
+        }
         if (band<0 || band>=ColorUtilities.getNumBands(model)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }

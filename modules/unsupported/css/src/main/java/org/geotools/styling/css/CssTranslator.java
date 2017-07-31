@@ -48,6 +48,7 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.builder.ChannelSelectionBuilder;
 import org.geotools.styling.builder.ColorMapBuilder;
 import org.geotools.styling.builder.ColorMapEntryBuilder;
@@ -204,22 +205,24 @@ public class CssTranslator {
     @SuppressWarnings("serial")
     static final Map<String, String> TEXT_VENDOR_OPTIONS = new HashMap<String, String>() {
         {
-            put("label-padding", "spaceAround");
+            put("label-padding", TextSymbolizer.SPACE_AROUND_KEY);
             put("label-group", "group");
-            put("label-max-displacement", "maxDisplacement");
-            put("label-min-group-distance", "minGroupDistance");
-            put("label-repeat", "repeat");
-            put("label-all-group", "allGroup");
-            put("label-remove-overlaps", "removeOverlaps");
-            put("label-allow-overruns", "allowOverrun");
-            put("label-follow-line", "followLine");
-            put("label-underline-text", "underlineText");
-            put("label-max-angle-delta", "maxAngleDelta");
-            put("label-auto-wrap", "autoWrap");
-            put("label-force-ltr", "forceLeftToRight");
-            put("label-conflict-resolution", "conflictResolution");
-            put("label-fit-goodness", "goodnessOfFit");
-            put("label-kerning", "kerning");
+            put("label-max-displacement", TextSymbolizer.MAX_DISPLACEMENT_KEY);
+            put("label-min-group-distance", TextSymbolizer.MIN_GROUP_DISTANCE_KEY);
+            put("label-repeat", TextSymbolizer.LABEL_REPEAT_KEY);
+            put("label-all-group", TextSymbolizer.LABEL_ALL_GROUP_KEY);
+            put("label-remove-overlaps", TextSymbolizer.REMOVE_OVERLAPS_KEY);
+            put("label-allow-overruns", TextSymbolizer.ALLOW_OVERRUNS_KEY);
+            put("label-follow-line", TextSymbolizer.FOLLOW_LINE_KEY);
+            put("label-underline-text", TextSymbolizer.UNDERLINE_TEXT_KEY);
+            put("label-strikethrough-text", TextSymbolizer.STRIKETHROUGH_TEXT_KEY);
+            put("label-max-angle-delta", TextSymbolizer.MAX_ANGLE_DELTA_KEY);
+            put("label-auto-wrap", TextSymbolizer.AUTO_WRAP_KEY);
+            put("label-force-ltr", TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY);
+            put("label-conflict-resolution", TextSymbolizer.CONFLICT_RESOLUTION_KEY);
+            put("label-fit-goodness", TextSymbolizer.GOODNESS_OF_FIT_KEY);
+            put("label-kerning", TextSymbolizer.KERNING_KEY);
+            put("label-polygon-align", TextSymbolizer.POLYGONALIGN_KEY);
             put("shield-resize", "graphic-resize");
             put("shield-margin", "graphic-margin");
         }

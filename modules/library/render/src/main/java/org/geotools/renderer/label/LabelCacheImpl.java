@@ -343,7 +343,7 @@ public final class LabelCacheImpl implements LabelCache {
         item.setRepeat(voParser.getIntOption(symbolizer, LABEL_REPEAT_KEY, DEFAULT_LABEL_REPEAT));
         item.setLabelAllGroup(voParser.getBooleanOption(symbolizer, LABEL_ALL_GROUP_KEY,
                         DEFAULT_LABEL_ALL_GROUP));
-        item.setRemoveGroupOverlaps(voParser.getBooleanOption(symbolizer, "removeOverlaps",
+        item.setRemoveGroupOverlaps(voParser.getBooleanOption(symbolizer, REMOVE_OVERLAPS_KEY,
                 DEFAULT_REMOVE_OVERLAPS));
         item.setAllowOverruns(voParser.getBooleanOption(symbolizer, ALLOW_OVERRUNS_KEY,
                         DEFAULT_ALLOW_OVERRUNS));
@@ -359,6 +359,7 @@ public final class LabelCacheImpl implements LabelCache {
         item.setGraphicMargin(voParser.getGraphicMargin(symbolizer, "graphic-margin"));
         item.setPartialsEnabled(voParser.getBooleanOption(symbolizer, PARTIALS_KEY, DEFAULT_PARTIALS));
         item.setTextUnderlined(voParser.getBooleanOption(symbolizer, UNDERLINE_TEXT_KEY, DEFAULT_UNDERLINE_TEXT));
+        item.setTextStrikethrough(voParser.getBooleanOption(symbolizer, STRIKETHROUGH_TEXT_KEY, DEFAULT_STRIKETHROUGH_TEXT));
 
         return item;
     }

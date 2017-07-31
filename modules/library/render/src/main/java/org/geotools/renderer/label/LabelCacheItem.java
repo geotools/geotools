@@ -88,6 +88,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     int[] graphicMargin = null;
 
     boolean textUnderlined = false;
+    
+    boolean textStrikethrough = false;
 
     TextSymbolizer symbolizer;
 
@@ -381,6 +383,14 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setTextUnderlined(boolean textUnderlined) {
         this.textUnderlined = textUnderlined;
+    }
+    
+    public boolean isTextStrikethrough() {
+        return textStrikethrough;
+    }
+
+    public void setTextStrikethrough(boolean textStrikethrough) {
+        this.textStrikethrough = textStrikethrough;
     }
 
     @Override

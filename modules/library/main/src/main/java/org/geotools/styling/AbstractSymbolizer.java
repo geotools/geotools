@@ -149,9 +149,17 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         if (options == null) {
             if (other.options != null && !other.options.isEmpty())
                 return false;
-        } else if (!options.equals(other.options))
-            if (options.isEmpty() && other.options != null) 
+        }
+        if (options == null || options.isEmpty()) {
+            // this options are NULL or empty
+            if (other.options != null && !other.options.isEmpty()) {
+                // the other options are neither NULL or empty
                 return false;
+            }
+        } else if (!options.equals(other.options)) {
+            // options are not considered the same
+            return false;
+        }
         return true;
     }
     

@@ -435,7 +435,7 @@ public class SLDStyleFactoryTest extends TestCase {
         ts.setFill(sf.createFill(null));
         Font font = sf.createFont(ff.literal("Serif"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
         ts.setFont(font);
-        ts.getOptions().put(TextSymbolizer.KERNING, "false");
+        ts.getOptions().put(TextSymbolizer.KERNING_KEY, "false");
         
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
         assertEquals(20, tsd.getFont().getSize());

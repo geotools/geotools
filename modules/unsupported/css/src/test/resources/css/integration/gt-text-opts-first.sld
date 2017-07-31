@@ -18,11 +18,12 @@
             <sld:VendorOption name="maxDisplacement">0</sld:VendorOption>
             <sld:VendorOption name="minGroupDistance">-1</sld:VendorOption>
             <sld:VendorOption name="repeat">0</sld:VendorOption>
-            <sld:VendorOption name="allGroup">false</sld:VendorOption>
+            <sld:VendorOption name="labelAllGroup">false</sld:VendorOption>
             <sld:VendorOption name="removeOverlaps">false</sld:VendorOption>
-            <sld:VendorOption name="allowOverrun">true</sld:VendorOption>
+            <sld:VendorOption name="allowOverruns">true</sld:VendorOption>
             <sld:VendorOption name="followLine">false</sld:VendorOption>
             <sld:VendorOption name="underlineText">true</sld:VendorOption>
+            <sld:VendorOption name="strikethroughText">true</sld:VendorOption>
             <sld:VendorOption name="maxAngleDelta">22.5</sld:VendorOption>
             <sld:VendorOption name="autoWrap">0</sld:VendorOption>
             <sld:VendorOption name="forceLeftToRight">true</sld:VendorOption>

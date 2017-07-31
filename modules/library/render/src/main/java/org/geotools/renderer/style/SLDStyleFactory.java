@@ -978,7 +978,7 @@ public class SLDStyleFactory {
         javaFont = javaFont.deriveFont(styleCode, size);
         
         // check vendor options
-        boolean kerning = voParser.getBooleanOption(symbolizer, TextSymbolizer.KERNING, 
+        boolean kerning = voParser.getBooleanOption(symbolizer, TextSymbolizer.KERNING_KEY, 
                 TextSymbolizer.DEFAULT_KERNING);
         if(kerning) {
             javaFont = applyKerning(javaFont);

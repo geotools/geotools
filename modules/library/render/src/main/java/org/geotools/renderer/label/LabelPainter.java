@@ -496,12 +496,14 @@ public class LabelPainter {
         if (labelItem.getTextStyle().getHaloFill() != null) {
             configureHalo();
             graphics.draw(outline);
-            // draw underline halo if needed
+            // draw underline and strikethrough halo if needed
             drawStraightLabelUnderlineIfNeeded(outline, metrics, true);
+            drawStraightLabelStrikethroughIfNeeded(outline, metrics, true);
         }
         configureLabelStyle();
-        // draw the under line
+        // draw the under line and strikethrough
         drawStraightLabelUnderlineIfNeeded(outline, metrics, false);
+        drawStraightLabelStrikethroughIfNeeded(outline, metrics, false);
         if(labelRenderingMode == LabelRenderingMode.STRING) {
             graphics.drawGlyphVector(gv, 0, 0);
         } else if(labelRenderingMode == LabelRenderingMode.OUTLINE) {
@@ -520,7 +522,7 @@ public class LabelPainter {
      * Computes a line component metrics only if the current label is underlined.
      */
     private LineMetrics computeLineMetricsIfNeeded(LineComponent component) {
-        if (labelItem.isTextUnderlined()) {
+        if (labelItem.isTextUnderlined() || labelItem.isTextStrikethrough()) {
             return component.computeLineMetrics(graphics.getFontRenderContext());
         }
         return null;
@@ -531,35 +533,52 @@ public class LabelPainter {
      * using the provided thickness and offset.
      */
     private void drawStraightLabelUnderlineIfNeeded(java.awt.Shape outline, LineMetrics metrics, boolean drawingHalo) {
-        Rectangle2D bounds = outline.getBounds2D().getBounds();
-        double minX = bounds.getMinX();
-        double maxX = bounds.getMaxX();
-        drawStraightLabelUnderlineIfNeeded(minX, maxX, metrics, drawingHalo);
-    }
-
-    /**
-     * Draws a line under the text with the same color of the text and with the same width
-     * using the provided thickness and offset.
-     */
-    private void drawStraightLabelUnderlineIfNeeded(double minX, double maxX, LineMetrics metrics, boolean drawingHalo) {
         // let's see if text underline is enabled for this label or we have something to draw
-        if (!labelItem.isTextUnderlined() || (Math.abs(maxX - minX) < 0.0000001)) {
+        if (!labelItem.isTextUnderlined()) {
             // text underline not enabled or nothing to draw
             return;
         }
         // get needed metrics values
-        float underlineThickness = metrics.getUnderlineThickness();
-        float underlineOffset = metrics.getUnderlineOffset();
+        float thickness = metrics.getUnderlineThickness();
+        float offset = metrics.getUnderlineOffset() * 2;
+        drawStraightLabelLine(outline, drawingHalo, thickness, offset);
+    }
+    
+    /**
+     * Draws a line under the text with the same color of the text and with the same width
+     * using the provided thickness and offset.
+     */
+    private void drawStraightLabelStrikethroughIfNeeded(java.awt.Shape outline, LineMetrics metrics, boolean drawingHalo) {
+        // let's see if text strikethrough is enabled for this label or we have something to draw
+        if (!labelItem.isTextStrikethrough()) {
+            // text strikethrough not enabled or nothing to draw
+            return;
+        }
+        // get needed metrics values
+        float thickness = metrics.getStrikethroughThickness();
+        float offset = metrics.getStrikethroughOffset();
+        drawStraightLabelLine(outline, drawingHalo, thickness, offset);
+    }
+
+    private void drawStraightLabelLine(java.awt.Shape outline, boolean drawingHalo, float thickness, float offset) {
+        Rectangle2D bounds = outline.getBounds2D().getBounds();
+        double minX = bounds.getMinX();
+        double maxX = bounds.getMaxX();
+        if((Math.abs(maxX - minX) < 0.0000001)) {
+            // nothing to draw
+            return;
+        }
+        
         // let's se if we are drawing the halo around the underline line
         if (drawingHalo) {
             // when drawing the halo we assume that the correct halo configuration has been set
-            graphics.draw(new Line2D.Double(minX, underlineOffset * 2, maxX, underlineOffset * 2));
+            graphics.draw(new Line2D.Double(minX, offset, maxX, offset));
         } else {
-            // storing the current stroke and setting the stroke according to underline thickness
+            // storing the current stroke and setting the stroke according to the specified thickness
             Stroke currentStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(underlineThickness));
+            graphics.setStroke(new BasicStroke(thickness));
             // we draw a line with the same color of the text and a stroke of 2
-            graphics.draw(new Line2D.Double(minX, underlineOffset * 2, maxX, underlineOffset * 2));
+            graphics.draw(new Line2D.Double(minX, offset, maxX, offset));
             // we need to restore the previous stroke
             graphics.setStroke(currentStroke);
         }
@@ -672,19 +691,28 @@ public class LabelPainter {
             }
 
             // draw halo and label
+            // extracting label first line component and compute its metrics
+            LineComponent component = line.getComponents().get(0);
+            final LineMetrics metrics = computeLineMetricsIfNeeded(component);
             if (labelItem.getTextStyle().getHaloFill() != null) {
                 configureHalo();
                 if (labelItem.isTextUnderlined()) {
                     // we need to draw the underline halo
-                    drawCurvedUnderline(line, cursor, startOrdinate, true);
+                    drawCurvedUnderline(line, cursor, startOrdinate, true, metrics);
+                }
+                if (labelItem.isTextStrikethrough()) {
+                    // we need to draw the strikethrough halo
+                    drawCurvedStrikethrough(line, cursor, startOrdinate, true, metrics);
                 }
                 drawOrFillOutlines(allOutlines, allTransforms, false);
             }
             graphics.setTransform(oldTransform);
             configureLabelStyle();
             if (labelItem.isTextUnderlined()) {
-                // we need to draw the underline
-                drawCurvedUnderline(line, cursor, startOrdinate, false);
+                drawCurvedUnderline(line, cursor, startOrdinate, false, metrics);
+            }
+            if (labelItem.isTextStrikethrough()) {
+                drawCurvedStrikethrough(line, cursor, startOrdinate, false, metrics);
             }
             drawOrFillOutlines(allOutlines, allTransforms, true);
         } finally {
@@ -695,10 +723,23 @@ public class LabelPainter {
     /**
      * Helper method that will draw the underline of a curved label using the context of the cursor.
      */
-    private void drawCurvedUnderline(LineInfo line, LineStringCursor cursor, double startOrdinate, boolean drawingHalo) {
-        // extracting label first line component and compute is metrics
-        LineComponent component = line.getComponents().get(0);
-        LineMetrics metrics = computeLineMetricsIfNeeded(component);
+    private void drawCurvedUnderline(LineInfo line, LineStringCursor cursor, double startOrdinate, boolean drawingHalo, LineMetrics metrics) {
+        final float lineOffset = metrics.getUnderlineOffset() * 2;
+        final float lineThickness = metrics.getUnderlineThickness();
+        drawCurvedLine(line, cursor, startOrdinate, drawingHalo, lineOffset, lineThickness);
+    }
+    
+    /**
+     * Helper method that will draw the underline of a curved label using the context of the cursor.
+     */
+    private void drawCurvedStrikethrough(LineInfo line, LineStringCursor cursor, double startOrdinate, boolean drawingHalo, LineMetrics metrics) {
+        final float lineOffset = metrics.getStrikethroughOffset();
+        final float lineThickness = metrics.getStrikethroughThickness();
+        drawCurvedLine(line, cursor, startOrdinate, drawingHalo, lineOffset, lineThickness);
+    }
+
+    private void drawCurvedLine(LineInfo line, LineStringCursor cursor, double startOrdinate,
+            boolean drawingHalo, final float lineOffset, final float lineThickness) {
         // the cursor is in the last char of the label
         double endOrdinate = cursor.getCurrentOrdinate();
         // compute the advance based on the first char of the label
@@ -707,7 +748,8 @@ public class LabelPainter {
         // extract from the linestring the portion associated with the layer
         LineString labelLineString = cursor.getSubLineString(startOrdinate - advance, endOrdinate - advance);
         // compute the underline linestring
-        LiteShape underlineLineString = computeCurvedUnderline(labelLineString, metrics);
+        
+        LiteShape underlineLineString = computeCurvedLine(labelLineString, lineOffset);
         if (drawingHalo) {
             // when drawing the halo we assume that the correct halo configuration has been set
             graphics.draw(underlineLineString);
@@ -716,7 +758,8 @@ public class LabelPainter {
             Stroke oldStroke = graphics.getStroke();
             try {
                 // if we are not drawing the halo we need to set the proper stroke
-                graphics.setStroke(new BasicStroke(metrics.getUnderlineThickness()));
+                
+                graphics.setStroke(new BasicStroke(lineThickness));
                 // draw the underline
                 graphics.draw(underlineLineString);
             } finally {
@@ -747,8 +790,9 @@ public class LabelPainter {
     /**
      * Given the portion of the linestring associated with the label and label metrics,
      * this method will compute a proper underline.
+     * @param lineOffset TODO
      */
-    private LiteShape computeCurvedUnderline(LineString labelLineString, LineMetrics metrics) {
+    private LiteShape computeCurvedLine(LineString labelLineString, float lineOffset) {
         Coordinate[] coordinates = labelLineString.getCoordinates();
         Coordinate[] parallelCoordinates = new Coordinate[coordinates.length];
         double anchorOffset = getLinePlacementYAnchor() * getLineHeight();
@@ -759,7 +803,7 @@ public class LabelPainter {
             double dx = coordinateB.x - coordinateA.x;
             double dy = coordinateB.y - coordinateA.y;
             double length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-            double offset = -(anchorOffset + metrics.getUnderlineOffset() * 2);
+            double offset = -(anchorOffset + lineOffset);
             // compute the parallel coordinates
             double x1 = coordinateA.x + offset * (coordinateB.y - coordinateA.y) / length;
             double x2 = coordinateB.x + offset * (coordinateB.y - coordinateA.y) / length;

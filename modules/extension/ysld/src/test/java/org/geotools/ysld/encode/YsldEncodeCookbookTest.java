@@ -984,6 +984,7 @@ public class YsldEncodeCookbookTest {
         //            </Fill>
         //            <VendorOption name="followLine">true</VendorOption>
         //            <VendorOption name="underlineText">true</VendorOption>
+        //            <VendorOption name="strikethroughText">true</VendorOption>
         //            <VendorOption name="maxAngleDelta">90</VendorOption>
         //            <VendorOption name="maxDisplacement">400</VendorOption>
         //            <VendorOption name="repeat">150</VendorOption>
@@ -999,6 +1000,7 @@ public class YsldEncodeCookbookTest {
         assertThat(text.get("fill-color"), isColor("000000"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"underlineText"));
+        assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"strikethroughText"));
         assertEquals(90, text.integer(Ysld.OPTION_PREFIX+"maxAngleDelta").intValue());
         assertEquals(400, text.integer(Ysld.OPTION_PREFIX+"maxDisplacement").intValue());
         assertEquals(150, text.integer(Ysld.OPTION_PREFIX+"repeat").intValue());

@@ -16,12 +16,6 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Set;
-
 import org.geotools.filter.text.ecql.ECQL;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -32,6 +26,10 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.SemanticType;
+
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class MBFilterTest {
     
@@ -57,7 +55,7 @@ public class MBFilterTest {
         Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
         assertTrue(!types.contains(SemanticType.POLYGON));
         Filter filter = mbfilter.filter();
-        assertEquals("class = 'street_limited' AND admin_level >= 3 AND NOT ((dimension(geometry()) = 2 AND NOT (isCoverage() = 'true')))", ECQL.toCQL(filter) );
+        assertEquals("class = 'street_limited' AND admin_level >= 3 AND NOT ((dimension(geometry()) = 2 AND NOT (isCoverage() = true)))", ECQL.toCQL(filter) );
     }
     
     @Test
@@ -80,7 +78,7 @@ public class MBFilterTest {
         types = mbfilter.semanticTypeIdentifiers();
         assertTrue( types.contains(SemanticType.POLYGON) && types.size()==1);
         filter = mbfilter.filter();
-        assertEquals("(dimension(geometry()) = 2 AND NOT (isCoverage() = 'true'))", ECQL.toCQL(filter) );
+        assertEquals("(dimension(geometry()) = 2 AND NOT (isCoverage() = true))", ECQL.toCQL(filter) );
         
         json = array("['==', '$type','Point']");
         mbfilter = new MBFilter(json);
@@ -212,12 +210,12 @@ public class MBFilterTest {
         
         MBFilter mbfilter = new MBFilter(json);
         Filter filter = mbfilter.filter();
-        assertEquals("EQUALS(in(a,1,2,3), 'true')", ECQL.toCQL(filter) );
+        assertEquals("EQUALS(in(a,1,2,3), true)", ECQL.toCQL(filter) );
         
         json = array("['!in', 'a', 1, 2, 3]");
         mbfilter = new MBFilter(json);
         filter = mbfilter.filter();
-        assertEquals("EQUALS(in(a,1,2,3), 'false')", ECQL.toCQL(filter) );
+        assertEquals("EQUALS(in(a,1,2,3), false)", ECQL.toCQL(filter) );
     }
     
     @Test

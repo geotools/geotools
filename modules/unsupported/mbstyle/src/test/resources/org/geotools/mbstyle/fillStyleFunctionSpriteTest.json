@@ -32,7 +32,7 @@
             "paint": {
                 "fill-pattern": {
                     "default": "bomb",
-                    "property": "category"
+                    "property": "category",
                     "stops": [
                         ["category1", "pattern"],
                         ["category2", "owlhead"],

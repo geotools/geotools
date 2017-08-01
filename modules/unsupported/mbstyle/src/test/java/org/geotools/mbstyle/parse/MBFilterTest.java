@@ -16,12 +16,6 @@
  */
 package org.geotools.mbstyle.parse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Set;
-
 import org.geotools.filter.text.ecql.ECQL;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -32,6 +26,10 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.SemanticType;
+
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class MBFilterTest {
     

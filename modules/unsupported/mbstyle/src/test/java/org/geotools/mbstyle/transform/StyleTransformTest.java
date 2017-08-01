@@ -21,6 +21,7 @@ import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.FilterFunction_isometric;
 import org.geotools.filter.function.FilterFunction_offset;
 import org.geotools.mbstyle.MBStyle;
@@ -475,7 +476,7 @@ public class StyleTransformTest {
         assertTrue(symbolizer instanceof PolygonSymbolizer);
         PolygonSymbolizer psym = (PolygonSymbolizer) symbolizer;
 
-        assertEquals(Color.GREEN, psym.getFill().getColor().evaluate(null, Color.class));
+        assertEquals(Color.BLUE, psym.getFill().getColor().evaluate(null, Color.class));
         assertEquals(1, psym.getFill().getGraphicFill().graphicalSymbols().size());
         assertEquals(Double.valueOf(0.75), psym.getFill().getOpacity().evaluate(null, Double.class));
 
@@ -604,7 +605,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(1);
-        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOption("labelObstacle"));
+        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOption("labelObstacle"));
     }
 
     @Test
@@ -695,7 +696,7 @@ public class StyleTransformTest {
         assertEquals(1, tsym.fonts().size());
         assertEquals(1, tsym.fonts().get(0).getFamily().size());
 
-        assertEquals("Apple-Chancery", tsym.fonts().get(0).getFamily().get(0).toString());
+        assertEquals("Apple-Chancery", (((CategorizeFunction)tsym.fonts().get(0).getFamily().get(0)).getParameters()).get(1).toString());
 
 //        StyledLayerDescriptor sld = mbStyle.transform();
 //        SLDTransformer styleTransform = new SLDTransformer();

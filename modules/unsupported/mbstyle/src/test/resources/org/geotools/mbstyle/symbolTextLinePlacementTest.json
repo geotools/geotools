@@ -40,7 +40,6 @@
                     00,
                     10
                 ],
-                "icon-image": "homer-simpson",
                 "text-anchor": "CENTER",
                 "text-pitch-alignment": "viewport",
                 "text-field": "Sample Text",

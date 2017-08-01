@@ -48,12 +48,12 @@ public class MBStopsTest {
         }
         for (MBLayer layer : layers) {
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
-            if (mbObjectStops.hasStops) {
+            if (mbObjectStops.ls.hasStops) {
                 //System.out.println(layer.getId() + " Contains property and zoom functions");
-                assertTrue(layer.getId() + " Contains property and zoom functions", mbObjectStops.hasStops);
+                assertTrue(layer.getId() + " Contains property and zoom functions", mbObjectStops.ls.hasStops);
             } else {
                 //System.out.println(layer.getId() + " does not contain property and zoom functions");
-                assertFalse(layer.getId() + " does not contain property and zoom functions", mbObjectStops.hasStops);
+                assertFalse(layer.getId() + " does not contain property and zoom functions", mbObjectStops.ls.hasStops);
             }
         }
     }
@@ -68,7 +68,7 @@ public class MBStopsTest {
         }
         for (MBLayer layer : layers) {
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
-            if (mbObjectStops.hasStops) {
+            if (mbObjectStops.ls.hasStops) {
                 /*
                  * Here we are testing this function, when reduced to zoom level 0.
                  *

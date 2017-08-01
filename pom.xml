@@ -753,7 +753,7 @@
       <dependency>
         <groupId>com.vividsolutions</groupId>
         <artifactId>jts-core</artifactId>
-        <version>1.14</version>
+        <version>1.14.0</version>
         <exclusions>
           <exclusion>
             <groupId>xerces</groupId>

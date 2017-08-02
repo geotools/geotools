@@ -297,7 +297,7 @@ public class FactoryRegistry {
      * @see #getServiceProviders(Class, Filter, Hints)
      * @see FactoryCreator#getServiceProvider
      */
-    public <T> T getServiceProvider(final Class<T> category, final Filter filter, final Hints hints, final Hints.Key key)
+    public <T> T getServiceProvider(final Class<T> category, final Filter filter, Hints hints, final Hints.Key key)
             throws FactoryRegistryException
     {
         synchronizeIteratorProviders();
@@ -361,8 +361,8 @@ public class FactoryRegistry {
                      * one, we assume that the user is interrested in the most top level one and
                      * discart this particular hint for the dependencies.
                      */
-                    Hints reducedHints = new Hints(hints);
-                    if (reducedHints.remove(key) != hint) {
+                    hints = new Hints(hints);
+                    if (hints.remove(key) != hint) {
                         // Should never happen except on concurrent modification in an other thread.
                         throw new AssertionError(key);
                     }
@@ -380,7 +380,7 @@ public class FactoryRegistry {
                             if (debug) {
                                 debug("CHECK", category, key, "consider hint[" + i + ']', type);
                             }
-                            final T candidate = getServiceImplementation(category, type, filter, reducedHints);
+                            final T candidate = getServiceImplementation(category, type, filter, hints);
                             if (candidate != null) {
                                 if (debug) {
                                     debug("RETURN", category, key, "found implementation", candidate.getClass());

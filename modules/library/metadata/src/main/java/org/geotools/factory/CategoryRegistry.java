@@ -107,7 +107,7 @@ class CategoryRegistry {
 		private final Class<?> category;
 
 		private final Map<Class<?>, T> instancesByType = new HashMap<>();
-		private final PartiallyOrderedSet<T> instances = new PartiallyOrderedSet<>();
+		private final PartiallyOrderedSet<T> instances = new PartiallyOrderedSet<>(false);
 
 		private InstanceRegistry(FactoryRegistry factoryRegistry, Class<?> category) {
 			this.factoryRegistry = factoryRegistry;

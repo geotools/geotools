@@ -56,8 +56,9 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
             return true;
         }
     }
-    
-    public void setOrder(E source, E target) {
+
+    // TODO: document that returns true if this establishes new ordering
+    public boolean setOrder(E source, E target) {
         DirectedGraphNode<E> sourceNode = elementsToNodes.get(source);
         DirectedGraphNode<E> targetNode = elementsToNodes.get(target);
         if(sourceNode == null) {
@@ -66,10 +67,11 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         if(targetNode == null) {
             throw new IllegalArgumentException("Could not find target node in the set: " + target);
         }
-        sourceNode.addOutgoing(targetNode);
+        return sourceNode.addOutgoing(targetNode);
     }
-    
-    public void clearOrder(E source, E target) {
+
+    // TODO: document that returns true if ordering existed
+    public boolean clearOrder(E source, E target) {
         DirectedGraphNode<E> sourceNode = elementsToNodes.get(source);
         DirectedGraphNode<E> targetNode = elementsToNodes.get(target);
         if(sourceNode == null) {
@@ -79,8 +81,9 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
             throw new IllegalArgumentException("Could not find target node in the set: " + target);
         }
         // clear both directions to be sure
-        sourceNode.removeOutgoing(targetNode);
-        targetNode.removeOutgoing(sourceNode);
+        boolean targetToSourceExisted = sourceNode.removeOutgoing(targetNode);
+        boolean sourceToTargetExisted = targetNode.removeOutgoing(sourceNode);
+        return targetToSourceExisted || sourceToTargetExisted;
     }
 
     @Override
@@ -119,17 +122,18 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
             ingoings.clear();
         }
 
+        // TODO: document that returns true if ordering existed
         public boolean removeOutgoing(DirectedGraphNode<E> targetNode) {
             targetNode.ingoings.remove(this);
             return outgoings.remove(targetNode);
-            
         }
 
-        public void addOutgoing(DirectedGraphNode<E> targetNode) {
+        // TODO: document that returns true if this establishes new ordering
+        public boolean addOutgoing(DirectedGraphNode<E> targetNode) {
             // keep the link between two nodes going in a single direction
             targetNode.ingoings.add(this);
             targetNode.outgoings.remove(this);
-            outgoings.add(targetNode);
+            return outgoings.add(targetNode);
         }
 
         public Collection<DirectedGraphNode<E>> getOutgoings() {

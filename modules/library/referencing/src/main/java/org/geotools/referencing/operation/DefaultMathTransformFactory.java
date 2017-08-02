@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.TreeSet;
+import javax.imageio.spi.ServiceRegistry;
 import javax.measure.unit.Unit;
 import javax.measure.quantity.Length;
 import javax.measure.converter.ConversionException;
@@ -198,7 +199,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
     /**
      * A filter for the set of available operations.
      */
-    private static final class MethodFilter implements FactoryRegistry.Filter {
+    private static final class MethodFilter implements ServiceRegistry.Filter {
         /**
          * The expected type ({@code Projection.class}) for projections).
          */

@@ -21,6 +21,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
+import javax.imageio.spi.ServiceRegistry.Filter;
 
 import org.geotools.util.logging.Logging;
 import org.geotools.resources.i18n.Errors;

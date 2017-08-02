@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools;
+package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

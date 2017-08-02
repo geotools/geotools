@@ -201,7 +201,7 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
                     residualInDegrees.put(node, new Countdown(inDegree));
                 }
             }
-            if(sources.size() == 0) {
+            if(!elementsToNodes.isEmpty() && sources.isEmpty()) {
                 throwLoopException();
             }
         }

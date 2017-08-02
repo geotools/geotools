@@ -18,6 +18,7 @@ package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,14 @@ import java.util.List;
 import org.junit.Test;
 
 public class PartiallyOrderedSetTest {
+
+    @Test
+    public void testIterationOverEmptySet() {
+        PartiallyOrderedSet<String> poset = new PartiallyOrderedSet<>();
+        for (String s : poset) {
+            fail();
+        }
+    }
 
     @Test
     public void testNoOrder() {

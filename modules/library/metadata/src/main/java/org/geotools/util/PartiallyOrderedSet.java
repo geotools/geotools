@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools;
+package org.geotools.util;
 
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -32,7 +32,7 @@ import java.util.Set;
  * 
  * @author Andrea Aime
  */
-class PartiallyOrderedSet<E> extends AbstractSet<E> {
+public class PartiallyOrderedSet<E> extends AbstractSet<E> {
     
     private Map<E, DirectedGraphNode<E>> elementsToNodes = new LinkedHashMap<>();
     

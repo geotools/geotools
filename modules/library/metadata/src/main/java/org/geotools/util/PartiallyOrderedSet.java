@@ -17,7 +17,6 @@
 package org.geotools.util;
 
 import java.util.AbstractSet;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -33,57 +32,87 @@ import java.util.Set;
  * @author Andrea Aime
  */
 public class PartiallyOrderedSet<E> extends AbstractSet<E> {
+
+    private final boolean throwOnCycle;
+    private final Map<E, DirectedGraphNode> elementsToNodes = new LinkedHashMap<>();
     
-    private Map<E, DirectedGraphNode<E>> elementsToNodes = new LinkedHashMap<>();
-    
+    public PartiallyOrderedSet(boolean throwOnCycle) {
+        this.throwOnCycle = throwOnCycle;
+    }
+
+    public PartiallyOrderedSet() {
+        this(true);
+    }
+
     @Override
     public boolean add(E e) {
         if(elementsToNodes.containsKey(e)) {
             return false;
         } else {
-            elementsToNodes.put(e, new DirectedGraphNode<E>(e));
+            elementsToNodes.put(e, new DirectedGraphNode(e));
             return true;
         }
     }
     
     @Override
     public boolean remove(Object o) {
-        DirectedGraphNode<E> node = elementsToNodes.remove(o);
+        DirectedGraphNode node = elementsToNodes.remove(o);
         if(node == null) {
             return false;
         } else {
-            node.clear();
+            clearNode(node);
             return true;
         }
     }
 
+    private void clearNode(DirectedGraphNode node) {
+        node.outgoings.forEach(target -> target.ingoings.remove(node));
+        node.outgoings.clear();
+        node.ingoings.forEach(source -> source.outgoings.remove(node));
+        node.ingoings.clear();
+    }
+
     // TODO: document that returns true if this establishes new ordering
     public boolean setOrder(E source, E target) {
-        DirectedGraphNode<E> sourceNode = elementsToNodes.get(source);
-        DirectedGraphNode<E> targetNode = elementsToNodes.get(target);
+        DirectedGraphNode sourceNode = elementsToNodes.get(source);
+        DirectedGraphNode targetNode = elementsToNodes.get(target);
         if(sourceNode == null) {
             throw new IllegalArgumentException("Could not find source node in the set: " + source);
         }
         if(targetNode == null) {
             throw new IllegalArgumentException("Could not find target node in the set: " + target);
         }
-        return sourceNode.addOutgoing(targetNode);
+        return createDirectedEdge(sourceNode, targetNode);
+    }
+
+    // TODO: document that returns true if this establishes new ordering
+    private boolean createDirectedEdge(DirectedGraphNode source, DirectedGraphNode target) {
+        removeDirectedEdge(target, source);
+        boolean sourceNew = source.outgoings.add(target);
+        boolean targetNew = target.ingoings.add(source);
+        assert sourceNew == targetNew;
+        return targetNew;
     }
 
     // TODO: document that returns true if ordering existed
     public boolean clearOrder(E source, E target) {
-        DirectedGraphNode<E> sourceNode = elementsToNodes.get(source);
-        DirectedGraphNode<E> targetNode = elementsToNodes.get(target);
+        DirectedGraphNode sourceNode = elementsToNodes.get(source);
+        DirectedGraphNode targetNode = elementsToNodes.get(target);
         if(sourceNode == null) {
             throw new IllegalArgumentException("Could not find source node in the set: " + source);
         }
         if(targetNode == null) {
             throw new IllegalArgumentException("Could not find target node in the set: " + target);
         }
-        // clear both directions to be sure
-        boolean targetToSourceExisted = sourceNode.removeOutgoing(targetNode);
-        boolean sourceToTargetExisted = targetNode.removeOutgoing(sourceNode);
-        return targetToSourceExisted || sourceToTargetExisted;
+        return removeDirectedEdge(sourceNode, targetNode);
+    }
+
+    // TODO: document that returns true if ordering existed
+    private boolean removeDirectedEdge(DirectedGraphNode source, DirectedGraphNode target) {
+        boolean sourceExisted = source.outgoings.remove(target);
+        boolean targetExisted = target.ingoings.remove(source);
+        assert sourceExisted == targetExisted;
+        return targetExisted;
     }
 
     @Override
@@ -99,45 +128,17 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
     
     /**
      * A graph node with ingoing and outgoing edges to other nodes
-     *  
-     * @param <E>
      */
-    class DirectedGraphNode<E> {
+    class DirectedGraphNode {
 
         E element;
         
-        Set<DirectedGraphNode<E>> outgoings = new HashSet<>();
+        Set<DirectedGraphNode> outgoings = new HashSet<>();
         
-        Set<DirectedGraphNode<E>> ingoings = new HashSet<>();
+        Set<DirectedGraphNode> ingoings = new HashSet<>();
 
         public DirectedGraphNode(E element) {
             this.element = element;
-        }
-
-        /**
-         * Clean up all ingoing and outgoing edges
-         */
-        public void clear() {
-            outgoings.clear();
-            ingoings.clear();
-        }
-
-        // TODO: document that returns true if ordering existed
-        public boolean removeOutgoing(DirectedGraphNode<E> targetNode) {
-            targetNode.ingoings.remove(this);
-            return outgoings.remove(targetNode);
-        }
-
-        // TODO: document that returns true if this establishes new ordering
-        public boolean addOutgoing(DirectedGraphNode<E> targetNode) {
-            // keep the link between two nodes going in a single direction
-            targetNode.ingoings.add(this);
-            targetNode.outgoings.remove(this);
-            return outgoings.add(targetNode);
-        }
-
-        public Collection<DirectedGraphNode<E>> getOutgoings() {
-            return outgoings;
         }
 
         public E getValue() {
@@ -154,7 +155,7 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
             sb.append(element);
             if(outgoings.size() > 0) {
                 sb.append(" -> (");
-                for (DirectedGraphNode<E> outgoing : outgoings) {
+                for (DirectedGraphNode outgoing : outgoings) {
                     sb.append(outgoing.element).append(",");
                 }
                 // remove last comma and close parens
@@ -188,12 +189,11 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
     class TopologicalSortIterator implements Iterator<E> {
         
         // lists of nodes with zero residual inDegrees (aka sources)
-        LinkedList<DirectedGraphNode<E>> sources = new LinkedList<>();
-        Map<DirectedGraphNode<E>, Countdown> residualInDegrees = new LinkedHashMap<>();
-        
+        private final LinkedList<DirectedGraphNode> sources = new LinkedList<>();
+        private final Map<DirectedGraphNode, Countdown> residualInDegrees = new LinkedHashMap<>();
         
         public TopologicalSortIterator() {
-            for (DirectedGraphNode<E> node : elementsToNodes.values()) {
+            for (DirectedGraphNode node : elementsToNodes.values()) {
                 int inDegree = node.getInDegree();
                 if(inDegree == 0) {
                     sources.add(node);
@@ -201,20 +201,22 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
                     residualInDegrees.put(node, new Countdown(inDegree));
                 }
             }
-            if(!elementsToNodes.isEmpty() && sources.isEmpty()) {
-                throwLoopException();
+            if(sources.isEmpty() && !elementsToNodes.isEmpty()) {
+                maybeThrowLoopException();
             }
         }
 
-        private void throwLoopException() {
-            String message = "Some of the partial order relationship form a loop: " + residualInDegrees.keySet();
-            throw new IllegalStateException(message);
+        private void maybeThrowLoopException() {
+            if (throwOnCycle) {
+                String message = "Some of the partial order relationship form a loop: " + residualInDegrees.keySet();
+                throw new IllegalStateException(message);
+            }
         }
 
         @Override
         public boolean hasNext() {
             if(sources.isEmpty() && !residualInDegrees.isEmpty()) {
-                throwLoopException();
+                maybeThrowLoopException();
             }
             return !sources.isEmpty();
         }
@@ -224,11 +226,11 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
             if(!hasNext()) {
                 throw new NoSuchElementException();
             }
-            DirectedGraphNode<E> next = sources.removeFirst();
+            DirectedGraphNode next = sources.removeFirst();
             
             // lower the residual inDegree of all nodes after this one,
             // creating a new set of sources
-            for (DirectedGraphNode<E> out : next.getOutgoings()) {
+            for (DirectedGraphNode out : next.outgoings) {
                 Countdown countdown = residualInDegrees.get(out);
                 if(countdown.decrement() == 0) {
                     sources.add(out);
@@ -240,4 +242,5 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         }
         
     }
+
 }

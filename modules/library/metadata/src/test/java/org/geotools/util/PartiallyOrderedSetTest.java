@@ -194,14 +194,34 @@ public class PartiallyOrderedSetTest {
         poset.add("b");
         poset.setOrder("a", "b");
         poset.setOrder("a", "b");
-        
+
         // leverage the backing linkedhashmap for predictable order
         List<String> entries = toList(poset);
         assertEquals(2, entries.size());
         assertEquals("a", entries.get(0));
         assertEquals("b", entries.get(1));
     }
-    
+
+    @Test
+    public void testRepeatedAddThenRemove() {
+        PartiallyOrderedSet<String> poset = new PartiallyOrderedSet<>();
+        poset.add("a");
+        poset.add("b");
+        poset.setOrder("a", "b");
+        poset.remove("a");
+        poset.add("a");
+        poset.setOrder("a", "b");
+        poset.remove("a");
+        poset.add("a");
+        poset.setOrder("a", "b");
+
+        // verify that repeated adding and removal does not break the set
+        List<String> entries = toList(poset);
+        assertEquals(2, entries.size());
+        assertEquals("a", entries.get(0));
+        assertEquals("b", entries.get(1));
+    }
+
     public <E> List<E> toList(PartiallyOrderedSet<E> poset) {
         List<E> result = new ArrayList<E>();
         for (E e : poset) {

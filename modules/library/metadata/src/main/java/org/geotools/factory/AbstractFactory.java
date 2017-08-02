@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.io.Writer;
 import java.io.IOException;
 import java.awt.RenderingHints;
-import javax.imageio.spi.ServiceRegistry;
-import javax.imageio.spi.RegisterableService;
 
 import org.opengis.referencing.AuthorityFactory;
 import org.geotools.util.Utilities;
@@ -121,7 +119,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @version $Id$
  * @author Martin Desruisseaux
  */
-public class AbstractFactory implements Factory, RegisterableService {
+public class AbstractFactory implements Factory, RegistrableFactory {
     /**
      * The minimum priority for a factory, which is {@value}. Factories with lowest priority
      * will be used only if there is no other factory in the same
@@ -288,7 +286,7 @@ public class AbstractFactory implements Factory, RegisterableService {
      * @see #MINIMUM_PRIORITY
      * @see #MAXIMUM_PRIORITY
      */
-    public void onRegistration(final ServiceRegistry registry, final Class category) {
+    public void onRegistration(final FactoryRegistry registry, final Class category) {
         for (final Iterator it=registry.getServiceProviders(category, false); it.hasNext();) {
             final Object provider = it.next();
             if (provider!=this && provider instanceof AbstractFactory) {
@@ -321,7 +319,7 @@ public class AbstractFactory implements Factory, RegisterableService {
      *                 deregistered.
      * @param category The registry category from which this object is being deregistered.
      */
-    public void onDeregistration(final ServiceRegistry registry, final Class category) {
+    public void onDeregistration(final FactoryRegistry registry, final Class category) {
         // No action needed.
     }
 

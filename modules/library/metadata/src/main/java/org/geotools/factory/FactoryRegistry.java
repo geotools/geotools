@@ -22,8 +22,10 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.lang.ref.Reference;
 import java.awt.RenderingHints;
-import javax.imageio.spi.ServiceRegistry;
+import java.util.stream.Stream;
+import javax.imageio.spi.ServiceRegistry.Filter;
 
+import com.google.common.collect.Iterators;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.geotools.resources.Classes;
@@ -32,12 +34,14 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.LoggingKeys;
 
+import static org.geotools.util.Utilities.streamAsSubtype;
+
 
 /**
- * A registry for factories, organized by categories (usualy by <strong>interface</strong>). For
+ * A registry for factories, organized by categories (usually by <strong>interface</strong>). For
  * example <code>{@linkplain org.opengis.referencing.crs.CRSFactory}.class</code> is a category,
  * and <code>{@linkplain org.opengis.referencing.operation.MathTransformFactory}.class</code> is
- * an other category.
+ * another category.
  * <p>
  * For each category, implementations are registered in a file placed in the
  * {@code META-INF/services/} directory, as specified in the {@link ServiceRegistry}
@@ -60,7 +64,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  *     registry.getServiceProviders(MathTransformProvider.class, filter, hints);<br>
  * </code></blockquote>
  * <p>
- * <strong>NOTE: This class is not thread safe</strong>. Users are responsable
+ * <strong>NOTE: This class is not thread safe</strong>. Users are responsible
  * for synchronisation. This is usually done in an utility class wrapping this
  * service registry (e.g. {@link org.geotools.referencing.ReferencingFactoryFinder}).
  *
@@ -76,7 +80,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * @see org.geotools.referencing.ReferencingFactoryFinder
  * @see org.geotools.coverage.CoverageFactoryFinder
  */
-public class FactoryRegistry extends ServiceRegistry {
+public class FactoryRegistry {
     /**
      * The logger for all events related to factory registry.
      */
@@ -86,6 +90,9 @@ public class FactoryRegistry extends ServiceRegistry {
      * The logger level for debug messages.
      */
     private static final Level DEBUG_LEVEL = Level.FINEST;
+
+    // TODO: document
+    private final CategoryRegistry registry = new CategoryRegistry();
 
     /**
      * A copy of the global configuration defined through {@link FactoryIteratorProviders}
@@ -102,7 +109,7 @@ public class FactoryRegistry extends ServiceRegistry {
      * On initialization, all categories need to be scanned for plugins. After a category
      * has been first used, it is removed from this set so we don't scan for plugins again.
      */
-    private Set<Class<?>> needScanForPlugins;
+    private final Set<Class<?>> needScanForPlugins = new HashSet<>();
 
     /**
      * Categories under scanning. This is used by {@link #scanForPlugins(Collection,Class)}
@@ -130,9 +137,8 @@ public class FactoryRegistry extends ServiceRegistry {
      *
      * @since 2.4
      */
-    @SuppressWarnings("unchecked")
     public FactoryRegistry(final Class<?> category) {
-        this((Collection) Collections.singleton(category));
+        this(Collections.singleton(category));
     }
 
     /**
@@ -152,13 +158,50 @@ public class FactoryRegistry extends ServiceRegistry {
      * @param categories The categories.
      */
     public FactoryRegistry(final Collection<Class<?>> categories) {
-        super(categories.iterator());
-        for (final Iterator<Class<?>> it=getCategories(); it.hasNext();) {
-            if (needScanForPlugins == null) {
-                needScanForPlugins = new HashSet<Class<?>>();
-            }
-            needScanForPlugins.add(it.next());
+        for (Class<?> category : categories) {
+            needScanForPlugins.add(category);
+            registry.registerCategory(category);
         }
+    }
+
+    /*
+     * TODO: discuss how much API can be broken
+     *
+     * Breakage:
+     *
+     *  - not all methods of `ServiceRegistry` API were implemented
+     *
+     * Possible breakage:
+     *
+     *  - in general nomenclature, replace "ServiceProvider" with "Factory"
+     *  - RegisterableService interface can no longer be used because it expects a `ServiceProvider`
+     *  - replace `Filter` with `Predicate<? super T>`
+     *
+     */
+
+    public Stream<Class<?>> streamCategories() {
+        return registry.streamCategories();
+    }
+
+    // TODO: ensure uniform null handling here and in CategoryRegistry
+
+    // TODO: document
+    public <T> T getServiceProviderByClass(Class<T> providerClass) {
+        if (providerClass == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The providerClass must not be null.");
+        }
+        return registry.getInstanceOfType(providerClass).orElse(null);
+    }
+
+    // TODO: document
+    public <T> Iterator<T> getServiceProviders(final Class<T> category, final boolean useOrdering) {
+        return registry.iterateInstances(category, useOrdering);
+    }
+
+    // TODO: document
+    public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
+        return Iterators.filter(getServiceProviders(category, useOrdering), filter::filter);
     }
 
     /**
@@ -187,13 +230,9 @@ public class FactoryRegistry extends ServiceRegistry {
             // more than one thread to use your FactoryRegistry at a time.
             throw new RecursiveSearchException(category);
         }
-        final Filter hintsFilter = new Filter() {
-            public boolean filter(final Object provider) {
-                return isAcceptable(category.cast(provider), category, hints, filter);
-            }
-        };
         synchronizeIteratorProviders();
         scanForPluginsIfNeeded(category);
+        Filter hintsFilter = provider -> isAcceptable(category.cast(provider), category, hints, filter);
         return getServiceProviders(category, hintsFilter, true);
     }
 
@@ -258,8 +297,7 @@ public class FactoryRegistry extends ServiceRegistry {
      * @see #getServiceProviders(Class, Filter, Hints)
      * @see FactoryCreator#getServiceProvider
      */
-    public <T> T getServiceProvider(final Class<T> category, final Filter filter,
-                                    Hints hints, final Hints.Key key)
+    public <T> T getServiceProvider(final Class<T> category, final Filter filter, final Hints hints, final Hints.Key key)
             throws FactoryRegistryException
     {
         synchronizeIteratorProviders();
@@ -323,8 +361,8 @@ public class FactoryRegistry extends ServiceRegistry {
                      * one, we assume that the user is interrested in the most top level one and
                      * discart this particular hint for the dependencies.
                      */
-                    hints = new Hints(hints);
-                    if (hints.remove(key) != hint) {
+                    Hints reducedHints = new Hints(hints);
+                    if (reducedHints.remove(key) != hint) {
                         // Should never happen except on concurrent modification in an other thread.
                         throw new AssertionError(key);
                     }
@@ -342,7 +380,7 @@ public class FactoryRegistry extends ServiceRegistry {
                             if (debug) {
                                 debug("CHECK", category, key, "consider hint[" + i + ']', type);
                             }
-                            final T candidate = getServiceImplementation(category, type, filter, hints);
+                            final T candidate = getServiceImplementation(category, type, filter, reducedHints);
                             if (candidate != null) {
                                 if (debug) {
                                     debug("RETURN", category, key, "found implementation", candidate.getClass());
@@ -503,7 +541,7 @@ public class FactoryRegistry extends ServiceRegistry {
         }
         if (hints != null) {
             if (candidate instanceof Factory) {
-                if (!usesAcceptableHints((Factory) candidate, category, hints, (Set<Factory>) null)) {
+                if (!usesAcceptableHints((Factory) candidate, category, hints, null)) {
                     return false;
                 }
             }
@@ -601,7 +639,7 @@ public class FactoryRegistry extends ServiceRegistry {
             if (value instanceof Factory) {
                 final Factory dependency = (Factory) value;
                 if (alreadyDone == null) {
-                    alreadyDone = new HashSet<Factory>();
+                    alreadyDone = new HashSet<>();
                 }
                 if (!alreadyDone.contains(dependency)) {
                     alreadyDone.add(factory);
@@ -687,7 +725,7 @@ public class FactoryRegistry extends ServiceRegistry {
      * @return All classloaders to be used for scanning plugins.
      */
     public final Set<ClassLoader> getClassLoaders() {
-        final Set<ClassLoader> loaders = new HashSet<ClassLoader>();
+        final Set<ClassLoader> loaders = new HashSet<>();
         for (int i=0; i<4; i++) {
             final ClassLoader loader;
             try {
@@ -716,10 +754,9 @@ public class FactoryRegistry extends ServiceRegistry {
          * other one. Try to remove those dependencies.
          */
         final ClassLoader[] asArray = loaders.toArray(new ClassLoader[loaders.size()]);
-        for (int i=0; i<asArray.length; i++) {
-            ClassLoader loader = asArray[i];
+        for (ClassLoader loader : asArray) {
             try {
-                while ((loader=loader.getParent()) != null) {
+                while ((loader = loader.getParent()) != null) {
                     loaders.remove(loader);
                 }
             } catch (SecurityException exception) {
@@ -745,17 +782,14 @@ public class FactoryRegistry extends ServiceRegistry {
      */
     public void scanForPlugins() {
         final Set<ClassLoader> loaders = getClassLoaders();
-        for (final Iterator<Class<?>> categories=getCategories(); categories.hasNext();) {
-            final Class<?> category = categories.next();
-            scanForPlugins(loaders, category);
-        }
+        registry.streamCategories().forEach(category -> scanForPlugins(loaders, category));
     }
 
     /**
      * Scans for factory plug-ins of the given category, with guard against recursivities.
      * The recursivity check make debugging easier than inspecting a {@link StackOverflowError}.
      *
-     * @param loader The class loader to use.
+     * @param loaders The class loaders to use.
      * @param category The category to scan for plug-ins.
      */
     private <T> void scanForPlugins(final Collection<ClassLoader> loaders, final Class<T> category) {
@@ -769,15 +803,16 @@ public class FactoryRegistry extends ServiceRegistry {
              * First, scan META-INF/services directories (the default mechanism).
              */
             for (final ClassLoader loader : loaders) {
-                newServices |= register(lookupProviders(category, loader), category, message);
+                Iterator<T> services = ServiceLoader.load(category, loader).iterator();
+                newServices |= register(services, category, message);
                 newServices |= registerFromSystemProperty(loader, category, message);
             }
             /*
              * Next, query the user-provider iterators, if any.
              */
             final FactoryIteratorProvider[] fip = FactoryIteratorProviders.getIteratorProviders();
-            for (int i=0; i<fip.length; i++) {
-                final Iterator<T> it = fip[i].iterator(category);
+            for (FactoryIteratorProvider aFip : fip) {
+                final Iterator<T> it = aFip.iterator(category);
                 if (it != null) {
                     newServices |= register(it, category, message);
                 }
@@ -797,13 +832,45 @@ public class FactoryRegistry extends ServiceRegistry {
      * Scans the given category for plugins only if needed. After this method has been
      * invoked once for a given category, it will no longer scan for that category.
      */
-    private <T> void scanForPluginsIfNeeded(final Class<?> category) {
-        if (needScanForPlugins != null && needScanForPlugins.remove(category)) {
-            if (needScanForPlugins.isEmpty()) {
-                needScanForPlugins = null;
-            }
+    private void scanForPluginsIfNeeded(final Class<?> category) {
+        if (needScanForPlugins.remove(category)) {
             scanForPlugins(getClassLoaders(), category);
         }
+    }
+
+    // TODO: document
+    public void registerServiceProviders(final Iterator<?> providers) {
+        if (providers == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The providers must not be null.");
+        }
+        providers.forEachRemaining(this::registerServiceProvider);
+    }
+
+    // TODO: document
+    public void registerServiceProvider(final Object provider) {
+        if (provider == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The provider must not be null.");
+        }
+        registry.registerInstance(provider);
+    }
+
+    // TODO: document
+    public <T> boolean registerServiceProvider(final T provider, final Class<T> category) {
+        if (provider == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The provider must not be null.");
+        }
+        if (category == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The category must not be null.");
+        }
+        if (!category.isAssignableFrom(provider.getClass())) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new ClassCastException();
+        }
+        return registry.registerInstance(provider, category);
     }
 
     /**
@@ -838,7 +905,7 @@ public class FactoryRegistry extends ServiceRegistry {
                 continue;
             } catch (ExceptionInInitializerError error) {
                 /*
-                 * If an exception occured during class initialization, log the cause.
+                 * If an exception occurred during class initialization, log the cause.
                  * The ExceptionInInitializerError alone doesn't help enough.
                  */
                 final Throwable cause = error.getCause();
@@ -1009,23 +1076,23 @@ public class FactoryRegistry extends ServiceRegistry {
         if (newProviders == null) {
             return;
         }
-        for (final Iterator<Class<?>> categories=getCategories(); categories.hasNext();) {
-            final Class<?> category = categories.next();
-            if (needScanForPlugins == null || !needScanForPlugins.contains(category)) {
-                /*
-                 * Register immediately the factories only if some other factories were already
-                 * registered for this category,  because in such case scanForPlugin() will not
-                 * be invoked automatically. If no factory are registered for this category, do
-                 * nothing - we will rely on the lazy invocation of scanForPlugins() when first
-                 * needed. We perform this check because getServiceProviders(category).hasNext()
-                 * is the criterion used by FactoryRegistry in order to decide if it should invoke
-                 * automatically scanForPlugins().
-                 */
-                for (int i=0; i<newProviders.length; i++) {
-                    register(newProviders[i], category);
-                }
-            }
-        }
+
+        registry.streamCategories()
+                .filter(category -> !needScanForPlugins.contains(category))
+                .forEach(category -> {
+                    /*
+                     * Register immediately the factories only if some other factories were already
+                     * registered for this category,  because in such case scanForPlugin() will not
+                     * be invoked automatically. If no factory are registered for this category, do
+                     * nothing - we will rely on the lazy invocation of scanForPlugins() when first
+                     * needed. We perform this check because getServiceProviders(category).hasNext()
+                     * is the criterion used by FactoryRegistry in order to decide if it should invoke
+                     * automatically scanForPlugins().
+                     */
+                    for (FactoryIteratorProvider newProvider : newProviders) {
+                        register(newProvider, category);
+                    }
+                });
     }
 
     /**
@@ -1039,6 +1106,65 @@ public class FactoryRegistry extends ServiceRegistry {
                 log("synchronizeIteratorProviders", message);
             }
         }
+    }
+
+    // TODO: document
+    public void deregisterAll() {
+        registry.deregisterInstances();
+    }
+
+    // TODO: document
+    public void deregisterAll(Class<?> category) {
+        registry.deregisterInstances(category);
+    }
+
+    // TODO: document
+    public void deregisterServiceProviders(final Iterator<?> providers) {
+        if (providers == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The providers must not be null.");
+        }
+        providers.forEachRemaining(this::deregisterServiceProvider);
+    }
+
+    // TODO: document
+    public void deregisterServiceProvider(final Object provider) {
+        if (provider == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The provider must not be null.");
+        }
+        registry.deregisterInstance(provider);
+    }
+
+    // TODO: document
+    public <T> boolean deregisterServiceProvider(final T provider, final Class<T> category) {
+        if (provider == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The provider must not be null.");
+        }
+        if (category == null) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The category must not be null.");
+        }
+        if (!category.isAssignableFrom(provider.getClass())) {
+            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            throw new ClassCastException();
+        }
+        return registry.deregisterInstance(provider, category);
+    }
+
+    // TODO: document
+    public <T> boolean setOrdering(final Class<T> category, final T firstProvider, final T secondProvider) {
+        if (firstProvider == null) {
+            throw new IllegalArgumentException("First provider must not be null.");
+        }
+        if (secondProvider == null) {
+            throw new IllegalArgumentException("Second provider must not be null.");
+        }
+        if (firstProvider == secondProvider) {
+            throw new IllegalArgumentException("Providers must not be the same instance.");
+        }
+        return registry.setOrder(category, firstProvider, secondProvider);
     }
 
     /**
@@ -1105,15 +1231,11 @@ public class FactoryRegistry extends ServiceRegistry {
     public <T> boolean setOrdering(final Class<T> base, final boolean set,
                                    final Filter service1, final Filter service2)
     {
-        boolean done = false;
-        for (final Iterator<Class<?>> categories=getCategories(); categories.hasNext();) {
-            final Class<?> candidate = categories.next();
-            if (base.isAssignableFrom(candidate)) {
-                final Class<? extends T> category = candidate.asSubclass(base);
-                done |= setOrUnsetOrdering(category, set, service1, service2);
-            }
-        }
-        return done;
+        return registry.streamCategories()
+                .flatMap(category -> streamAsSubtype(category, base))
+                .map(category -> setOrUnsetOrdering(category, set, service1, service2))
+                .reduce((done1, done2) -> done1 || done2)
+                .orElse(false);
     }
 
     /**
@@ -1136,4 +1258,19 @@ public class FactoryRegistry extends ServiceRegistry {
         }
         return done;
     }
+
+    // TODO: document
+    public <T> boolean unsetOrdering(final Class<T> category, final T firstProvider, final T secondProvider) {
+        if (firstProvider == null) {
+            throw new IllegalArgumentException("First provider must not be null.");
+        }
+        if (secondProvider == null) {
+            throw new IllegalArgumentException("Second provider must not be null.");
+        }
+        if (firstProvider == secondProvider) {
+            throw new IllegalArgumentException("Providers must not be the same instance.");
+        }
+        return registry.clearOrder(category, firstProvider, secondProvider);
+    }
+
 }

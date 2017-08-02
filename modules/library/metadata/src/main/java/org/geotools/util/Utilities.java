@@ -22,8 +22,10 @@ import java.util.AbstractQueue;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.geotools.factory.Hints;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -668,6 +670,18 @@ public final class Utilities {
         if (object == null) {
             throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
+    }
+
+    // TODO: document
+    public static <T> Stream<T> stream(Optional<T> optional) {
+        return optional.isPresent() ? Stream.of(optional.get()) : Stream.empty();
+    }
+
+    // TODO: document
+    public static <T, U> Stream<Class<? extends U>> streamAsSubtype(Class<T> type, Class<U> subtype) {
+        return subtype.isAssignableFrom(type)
+                ? Stream.of(type.asSubclass(subtype))
+                : Stream.empty();
     }
 
 }

@@ -36,6 +36,8 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 
+import static java.util.stream.Collectors.toList;
+
 
 /**
  * Prints a list of factory. This is used for {@link ReferencingFactoryFinder#listProviders}
@@ -87,11 +89,10 @@ final class FactoryPrinter implements Comparator<Class<?>> {
         /*
          * Gets the categories in some sorted order.
          */
-        final List<Class<?>> categories = new ArrayList<Class<?>>();
-        for (final Iterator<Class<?>> it=registry.getCategories(); it.hasNext();) {
-            categories.add(it.next());
-        }
-        Collections.sort(categories, this);
+        final List<Class<?>> categories = registry
+                .streamCategories()
+                .sorted(this)
+                .collect(toList());
         /*
          * Prints the table header.
          */

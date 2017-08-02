@@ -19,13 +19,16 @@ import static org.geotools.util.Utilities.stream;
 
 class CategoryRegistry {
 
+	private final FactoryRegistry factoryRegistry;
 	private final Map<Class<?>, InstanceRegistry<?>> categories = new HashMap<>();
 
-	public CategoryRegistry() { }
+	public CategoryRegistry(FactoryRegistry factoryRegistry) {
+		this.factoryRegistry = factoryRegistry;
+	}
 
 	public void registerCategory(final Class<?> category) {
 		// TODO: should anything happen if the category is already registered?
-		categories.put(category, new InstanceRegistry<>());
+		categories.put(category, new InstanceRegistry<>(factoryRegistry, category));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -100,15 +103,29 @@ class CategoryRegistry {
 
 	private static class InstanceRegistry<T> {
 
+		private final FactoryRegistry factoryRegistry;
+		private final Class<?> category;
+
 		private final Map<Class<?>, T> instancesByType = new HashMap<>();
 		private final PartiallyOrderedSet<T> instances = new PartiallyOrderedSet<>();
+
+		private InstanceRegistry(FactoryRegistry factoryRegistry, Class<?> category) {
+			this.factoryRegistry = factoryRegistry;
+			this.category = category;
+		}
 
 		// documentation hint: returns true if this the first instance of its class
 		public boolean register(final T instance) {
 			boolean deregistered = deregisterByType(instance);
 			registerInternal(instance);
-			// TODO: call onRegistration
+			notifyRegistered(instance);
 			return !deregistered;
+		}
+
+		private void notifyRegistered(final T instance) {
+			if (instance instanceof RegistrableFactory) {
+				((RegistrableFactory) instance).onRegistration(factoryRegistry, category);
+			}
 		}
 
 		private void registerInternal(final T instance) {
@@ -125,22 +142,28 @@ class CategoryRegistry {
 			}
 		}
 
-		public void clear() {
-			Iterator values = instancesByType.values().iterator();
-			while (values.hasNext()) {
-				Object instance = values.next();
-				values.remove();
-				instances.remove(instance);
-				// TODO: if `removed != null`, call onDeregistration with `removed`
-			}
-		}
-
 		// documentation hint: returns true if an instance of the same type was previously registered
 		private boolean deregisterByType(final T instance) {
 			T removed = instancesByType.remove(instance.getClass());
 			instances.remove(instance);
-			// TODO: if `removed != null`, call onDeregistration with `removed`
+			notifyDeregistered(instance);
 			return removed != null;
+		}
+
+		private void notifyDeregistered(final T instance) {
+			if (instance instanceof RegistrableFactory) {
+				((RegistrableFactory) instance).onDeregistration(factoryRegistry, category);
+			}
+		}
+
+		public void clear() {
+			Iterator<T> values = instancesByType.values().iterator();
+			while (values.hasNext()) {
+				T instance = values.next();
+				values.remove();
+				instances.remove(instance);
+				notifyDeregistered(instance);
+			}
 		}
 
 		public Iterator<T> iterate(final boolean useOrder) {

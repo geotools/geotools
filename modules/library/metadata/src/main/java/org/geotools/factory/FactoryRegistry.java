@@ -92,7 +92,7 @@ public class FactoryRegistry {
     private static final Level DEBUG_LEVEL = Level.FINEST;
 
     // TODO: document
-    private final CategoryRegistry registry = new CategoryRegistry();
+    private final CategoryRegistry registry = new CategoryRegistry(this);
 
     /**
      * A copy of the global configuration defined through {@link FactoryIteratorProviders}

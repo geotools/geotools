@@ -46,6 +46,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -321,6 +322,7 @@ public class CSVWriteTest {
     
     @Test
     public void testAttribyteOnlyStrategyWrites() throws IOException {
+        TestData.copy(this, "shapes/statepop.shp");
         File states = TestData.file("shapes/statepop.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(states);
         assertNotNull("couldn't create store",store);
@@ -428,6 +430,7 @@ public class CSVWriteTest {
     
     @Test
     public void testWKTWrites() throws IOException {
+        TestData.copy(this, "shapes/statepop.shp");
         File states = TestData.file("shapes/statepop.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(states);
         assertNotNull("couldn't create store",store);

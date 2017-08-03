@@ -423,7 +423,7 @@ public class CSVWriteTest {
         assertTrue("No Lat",line.contains("LAT"));
         assertTrue("No Lon",line.contains("LON"));
         line = lineReader.readLine();
-        assertEquals("46.066667,11.116667,Trento,140,2002",line);
+        assertEquals("11.116667,46.066667,Trento,140,2002",line);
     }
     
     @Test

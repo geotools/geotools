@@ -191,7 +191,13 @@ public class CSVLatLonStrategy extends CSVStrategy {
             }
         }
         if (geometryDescriptor != null && lat != null && lng != null) {
-            Coordinate coordinate = new Coordinate(lng, lat);
+            Coordinate coordinate;
+            if(geometryDescriptor.getCoordinateReferenceSystem().getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.NORTH)) {
+                coordinate = new Coordinate(lng, lat);
+            } else {
+                coordinate = new Coordinate(lat, lng);
+            }
+            
             Point point = geometryFactory.createPoint(coordinate);
             builder.set(geometryDescriptor.getLocalName(), point);
         }

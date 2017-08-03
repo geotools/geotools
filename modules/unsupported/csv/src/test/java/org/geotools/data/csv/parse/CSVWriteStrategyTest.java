@@ -75,7 +75,7 @@ public class CSVWriteStrategyTest {
         Point trento = gf.createPoint(new Coordinate(46.066667, 11.116667));
     	SimpleFeature feature = SimpleFeatureBuilder.build(featureType,
     			new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
-    	String[] csvRecord = new String[] {"11.116667", "46.066667", "Trento", "140", "2002"};
+    	String[] csvRecord = new String[] {"46.066667", "11.116667", "Trento", "140", "2002"};
     	SimpleFeature parsed = strategy.decode("fid1", csvRecord);
     	assertEquals(feature, parsed);
     	
@@ -102,7 +102,7 @@ public class CSVWriteStrategyTest {
         Point trento = gf.createPoint(new Coordinate(46.066667, 11.116667));
     	SimpleFeature feature = SimpleFeatureBuilder.build(featureType,
     			new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
-    	String[] csvRecord = new String[] {"11.116667", "46.066667", "Trento", "140", "2002"};
+    	String[] csvRecord = new String[] {"46.066667", "11.116667", "Trento", "140", "2002"};
     	SimpleFeature parsed = strategy.decode("fid1", csvRecord);
     	assertEquals(feature, parsed);
     	

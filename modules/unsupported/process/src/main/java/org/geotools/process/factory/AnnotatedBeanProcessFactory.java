@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.geotools.factory.FactoryRegistry;
@@ -225,7 +226,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         }
 
         public Class<T> getBeanClass() {
-            return (Class<T>) getCategories().next();
+            return (Class<T>) streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
         }
 
         public Class<? extends T>[] lookupBeanClasses() {

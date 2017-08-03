@@ -19,6 +19,7 @@ package org.geotools.filter.expression;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.geotools.factory.FactoryRegistry;
@@ -45,8 +46,7 @@ public class PropertyAccessors {
         cache.add( new NullPropertyAccessorFactory()); //NC - added       
         cache.add( new SimpleFeaturePropertyAccessorFactory());
         cache.add( new DirectPropertyAccessorFactory());       
-        Iterator factories = FactoryRegistry
-                 .lookupProviders(PropertyAccessorFactory.class);
+        Iterator factories = ServiceLoader.load(PropertyAccessorFactory.class).iterator();
          while (factories.hasNext()) {
             Object factory = factories.next();
             if ( factory instanceof SimpleFeaturePropertyAccessorFactory || factory instanceof DirectPropertyAccessorFactory

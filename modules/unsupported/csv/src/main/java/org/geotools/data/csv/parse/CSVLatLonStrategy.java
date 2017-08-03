@@ -35,6 +35,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.AxisDirection;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
@@ -134,12 +136,18 @@ public class CSVLatLonStrategy extends CSVStrategy {
         List<String> header = new ArrayList<String>();
         
         GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();
+        CoordinateReferenceSystem crs = geometryDescrptor.getCoordinateReferenceSystem();
         if (geometryDescrptor != null
                 && CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84,
-                        geometryDescrptor.getCoordinateReferenceSystem())
+                        crs)
                 && geometryDescrptor.getType().getBinding().isAssignableFrom(Point.class)) {
-            header.add(this.latField);
-            header.add(this.lngField);
+            if(crs.getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.NORTH)) {
+                header.add(this.latField);
+                header.add(this.lngField);
+            } else {
+                header.add(this.lngField);
+                header.add(this.latField);
+            }
         } else {
             throw new IOException("Unable use " + this.latField + "/" + this.lngField +
                         " to represent " + geometryDescrptor);
@@ -193,14 +201,31 @@ public class CSVLatLonStrategy extends CSVStrategy {
     @Override
     public String[] encode(SimpleFeature feature) {
         List<String> csvRecord = new ArrayList<String>();
+        String[] headers = csvFileState.getCSVHeaders();
+        int latIndex = 0;
+        int lngIndex = 0;
+        for(int i=0;i<headers.length;i++) {
+            if(headers[i].equalsIgnoreCase(latField)) {
+                latIndex = i;
+            }
+            if(headers[i].equalsIgnoreCase(lngField)) {
+                lngIndex = i;
+            }
+        }
         for (Property property : feature.getProperties()) {
             Object value = property.getValue();
             if (value == null) {
                 csvRecord.add("");
             } else if (value instanceof Point) {
                 Point point = (Point) value;
-                csvRecord.add(Double.toString(point.getY()));
-                csvRecord.add(Double.toString(point.getX()));
+                if(lngIndex<latIndex) {
+                    csvRecord.add(Double.toString(point.getY()));
+                    csvRecord.add(Double.toString(point.getX()));
+                } else {
+                    csvRecord.add(Double.toString(point.getX()));
+                    csvRecord.add(Double.toString(point.getY()));
+                }
+
             }
             else {
                 String txt = value.toString();

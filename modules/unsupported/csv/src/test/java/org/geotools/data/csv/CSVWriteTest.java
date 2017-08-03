@@ -9,9 +9,13 @@
 package org.geotools.data.csv;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.CharArrayReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,12 +27,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.FileDataStore;
+import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -39,8 +46,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.geotools.test.TestData;
-import org.geotools.util.Utilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,7 +67,7 @@ import com.vividsolutions.jts.geom.Point;
 public class CSVWriteTest {
     File tmp;
 
-    File file;
+    File statesfile;
 
     @Before
     public void createTemporaryLocations() throws IOException {
@@ -80,10 +85,10 @@ public class CSVWriteTest {
             System.err.println("Could not create " + tmp);
             System.exit(1);
         }
-        file = new File(tmp, "locations.csv");
+        statesfile = new File(tmp, "locations.csv");
 
         URL resource = TestData.getResource(CSVWriteTest.class, "locations.csv");
-        Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(resource.openStream(), statesfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
     
     private String checkFileContents(File modified) throws IOException {
@@ -105,7 +110,7 @@ public class CSVWriteTest {
     @Test
     public void featureStoreExample() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
+        params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         SimpleFeatureSource featureSource = store.getFeatureSource("locations");
@@ -116,7 +121,7 @@ public class CSVWriteTest {
     @Test
     public void transactionExample() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
+        params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         Transaction t1 = new DefaultTransaction("transaction 1");
@@ -179,7 +184,7 @@ public class CSVWriteTest {
     @Test
     public void removeAllExample() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
+        params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         Transaction t = new DefaultTransaction("locations");
@@ -200,7 +205,7 @@ public class CSVWriteTest {
             SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
             assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
             // Make sure the file is empty
-            assertEquals("file should have no content", "", checkFileContents(file));
+            assertEquals("file should have no content", "", checkFileContents(statesfile));
             t.commit();
         } catch (Throwable eek) {
             t.rollback();
@@ -213,7 +218,10 @@ public class CSVWriteTest {
     @Test
     public void replaceAll() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
+        params.put("file", statesfile);
+        params.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.SPECIFC_STRATEGY);
+        params.put(CSVDataStoreFactory.LATFIELDP.key, "LAT");
+        params.put(CSVDataStoreFactory.LnGFIELDP.key, "LON");
         DataStore store = DataStoreFinder.getDataStore(params);
 
         final SimpleFeatureType type = store.getSchema("locations");
@@ -252,16 +260,16 @@ public class CSVWriteTest {
                 1, featureStore.getFeatures().size());
         final String newline = System.lineSeparator();
         String contents = "LAT,LON,CITY,NUMBER,YEAR" + newline + 
-        		"POINT (45.52 -122.681944),Portland,800,2014,";
+        		"45.52,-122.681944,Portland,800,2014";
         assertEquals("Ensure the file has only the one feature we created", 
-                contents.trim(), checkFileContents(file).trim());
+                contents.trim(), checkFileContents(statesfile).trim());
     }
 
     @Test
     public void appendContent() throws Exception {
         File directory = tmp;
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("file", file);
+        params.put("file", statesfile);
         DataStore store = DataStoreFinder.getDataStore(params);
         SimpleFeatureType featureType = store.getSchema("locations");
         
@@ -301,7 +309,7 @@ public class CSVWriteTest {
         // Compare the new file written to with the old one
         ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
         ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-        Files.copy(file.toPath(), baos1);
+        Files.copy(statesfile.toPath(), baos1);
         Files.copy(file2.toPath(), baos2);
         String contents1 = new String(baos1.toByteArray(), StandardCharsets.UTF_8);
         String contents2 = new String(baos2.toByteArray(), StandardCharsets.UTF_8);
@@ -309,6 +317,158 @@ public class CSVWriteTest {
         // Making sure whitespace doesn't cause problems
         // and adjust for potential windows line endings.
         assertEqualsIgnoreWhitespace("Contents of both files should be the same", contents1,contents2);
+    }
+    
+    @Test
+    public void testAttribyteOnlyStrategyWrites() throws IOException {
+        File states = TestData.file("shapes/statepop.shp");
+        FileDataStore store = FileDataStoreFinder.getDataStore(states);
+        assertNotNull("couldn't create store",store);
+        File file2 = File.createTempFile("CSVTest", ".csv");
+        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        params2.put("file", file2);
+        params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.ATTRIBUTES_ONLY_STRATEGY);
+        
+        CSVDataStoreFactory factory = new CSVDataStoreFactory();
+        DataStore duplicate = factory.createNewDataStore(params2);
+        SimpleFeatureType featureType = store.getSchema();
+        
+        duplicate.createSchema( featureType );
+        
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature feature, newFeature;
+
+        
+        reader = store.getFeatureReader();
+        
+        writer = duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT);
+        try {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
+                
+                newFeature.setAttributes( feature.getAttributes() );
+                writer.write();
+            }
+        } finally {
+            reader.close();
+            writer.close();
+        }
+        String contents = checkFileContents(file2);
+        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
+        String line = lineReader.readLine(); //header
+        assertFalse("Geom is included", line.toLowerCase().contains("the_geom"));
+        line = lineReader.readLine();
+        assertFalse("Geom is included",line.toLowerCase().contains("multipolygon"));
+    }
+    
+    @Test
+    public void testSpecificStrategyWrites() throws IOException {
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("file", statesfile);
+        params.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.SPECIFC_STRATEGY);
+        params.put(CSVDataStoreFactory.LATFIELDP.key, "LAT");
+        params.put(CSVDataStoreFactory.LnGFIELDP.key, "LON");
+        DataStore store = DataStoreFinder.getDataStore(params);
+
+        final SimpleFeatureType type = store.getSchema("locations");
+
+        SimpleFeature f;
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        
+        // 45.52, -122.681944, Portland, 800, 2014
+        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
+        Point portland = gf.createPoint(new Coordinate( 45.52, -122.681944));
+        f = SimpleFeatureBuilder.build(type, new Object[] { portland, "Portland", 800, 2014 }, "locations.1");
+        collection.add(f);
+
+        
+        File file2 = File.createTempFile("CSVTest", ".csv");
+        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        params2.put("file", file2);
+        params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.SPECIFC_STRATEGY);
+        params2.put(CSVDataStoreFactory.LATFIELDP.key, "LAT");
+        params2.put(CSVDataStoreFactory.LnGFIELDP.key, "LON");
+        CSVDataStoreFactory factory = new CSVDataStoreFactory();
+        DataStore duplicate = factory.createNewDataStore(params2);
+        SimpleFeatureType featureType = store.getSchema("locations");
+        
+        duplicate.createSchema( featureType );
+        
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature feature, newFeature;
+
+        
+        reader = store.getFeatureReader(new Query("locations"), Transaction.AUTO_COMMIT);
+        
+        writer = duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT);
+        try {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
+                
+                newFeature.setAttributes( feature.getAttributes() );
+                writer.write();
+            }
+        } finally {
+            reader.close();
+            writer.close();
+        }
+        String contents = checkFileContents(file2);
+        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
+        String line = lineReader.readLine(); //header
+       
+        assertTrue("No Lat",line.contains("LAT"));
+        assertTrue("No Lon",line.contains("LON"));
+        line = lineReader.readLine();
+        assertEquals("46.066667,11.116667,Trento,140,2002",line);
+    }
+    
+    @Test
+    public void testWKTWrites() throws IOException {
+        File states = TestData.file("shapes/statepop.shp");
+        FileDataStore store = FileDataStoreFinder.getDataStore(states);
+        assertNotNull("couldn't create store",store);
+        File file2 = File.createTempFile("CSVTest", ".csv");
+        Map<String, Serializable> params2 = new HashMap<String, Serializable>();
+        params2.put("file", file2);
+        params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
+        params2.put(CSVDataStoreFactory.WKTP.key, "the_geom_wkt");
+        
+        CSVDataStoreFactory factory = new CSVDataStoreFactory();
+        DataStore duplicate = factory.createNewDataStore(params2);
+        SimpleFeatureType featureType = store.getSchema();
+        
+        duplicate.createSchema( featureType );
+        
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        SimpleFeature feature, newFeature;
+
+        
+        reader = store.getFeatureReader();
+        
+        writer = duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT);
+        try {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
+                
+                newFeature.setAttributes( feature.getAttributes() );
+                writer.write();
+            }
+        } finally {
+            reader.close();
+            writer.close();
+        }
+        String contents = checkFileContents(file2);
+        BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
+        String line = lineReader.readLine(); //header
+        assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
+        line = lineReader.readLine();
+        assertTrue("Geom is not included",line.toLowerCase().contains("multipolygon"));
     }
     
     public static void assertEqualsIgnoreWhitespace(String message, String expected, String actual) {
@@ -331,4 +491,6 @@ public class CSVWriteTest {
         }
         return crush.toString();
     }
+    
+    
 }

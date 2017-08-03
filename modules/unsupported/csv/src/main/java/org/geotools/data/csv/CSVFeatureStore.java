@@ -38,6 +38,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
     public CSVFeatureStore(CSVStrategy csvStrategy, CSVFileState csvFileState, 
     		ContentEntry entry, Query query) {
         super(entry, query);
+
         this.csvStrategy = csvStrategy;
         this.csvFileState = csvFileState;
     }

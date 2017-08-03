@@ -32,6 +32,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
 import com.csvreader.CsvWriter;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
@@ -54,6 +55,7 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
                 continue;
             header.add(descriptor.getLocalName());
         }
+        
         // Write out header, producing an empty file of the correct type
         CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()),',');
         try {
@@ -71,6 +73,8 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
             Object value = property.getValue();
             if (value == null) {
                 csvRecord.add("");
+            } else if (Geometry.class.isAssignableFrom(value.getClass())) {
+                // skip geometries
             } else {
                 String txt = value.toString();
                 csvRecord.add(txt);

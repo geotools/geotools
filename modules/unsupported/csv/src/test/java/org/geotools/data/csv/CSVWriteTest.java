@@ -322,8 +322,8 @@ public class CSVWriteTest {
     
     @Test
     public void testAttribyteOnlyStrategyWrites() throws IOException {
-        TestData.copy(this, "shapes/statepop.shp");
-        File states = TestData.file("shapes/statepop.shp");
+        
+        URL states = TestData.url("shapes/statepop.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(states);
         assertNotNull("couldn't create store",store);
         File file2 = File.createTempFile("CSVTest", ".csv");
@@ -430,8 +430,8 @@ public class CSVWriteTest {
     
     @Test
     public void testWKTWrites() throws IOException {
-        TestData.copy(this, "shapes/statepop.shp");
-        File states = TestData.file("shapes/statepop.shp");
+        
+        URL states = TestData.url("shapes/statepop.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(states);
         assertNotNull("couldn't create store",store);
         File file2 = File.createTempFile("CSVTest", ".csv");

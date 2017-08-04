@@ -36,8 +36,8 @@ import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
 public class MBObjectStops {
 
     JSONParser parser = new JSONParser();
+    public LayerStops ls = new LayerStops();
     List<Long> layerZoomLevels;
-    public boolean hasStops = false;
     public List<Long> stops = new ArrayList<>();
     public List<MBLayer> layersForStop = new ArrayList<>();
     public List<long[]> ranges = new ArrayList<>();
@@ -51,12 +51,12 @@ public class MBObjectStops {
     public MBObjectStops(MBLayer layer) {
         try {
             if (layer.getPaint() != null) {
-                hasStops = getStops(layer.getPaint());
+                ls = getStops(layer.getPaint(), ls);
             }
             if (layer.getLayout() != null) {
-                hasStops = getStops(layer.getLayout());
+                ls = getStops(layer.getLayout(), ls);
             }
-            if (hasStops) {
+            if (ls.zoomStops || ls.zoomPropertyStops) {
                 stops = getStopLevels(layer);
                 layersForStop = getLayerStyleForStops(layer, stops);
                 ranges = getStopLevelRanges(stops);
@@ -154,8 +154,8 @@ public class MBObjectStops {
         return ranges;
     }
 
-    boolean getStops(JSONObject jsonObject) {
-        return containsStops(jsonObject);
+    LayerStops getStops(JSONObject jsonObject, LayerStops ls) {
+        return containsStops(jsonObject, ls);
     }
 
     /**
@@ -191,7 +191,7 @@ public class MBObjectStops {
         return stop(layer);
     }
 
-    boolean containsStops(JSONObject jsonObject) {
+    LayerStops containsStops(JSONObject jsonObject, LayerStops ls) {
         Boolean hasStops = false;
 
         Set<?> keySet = jsonObject.keySet();
@@ -201,18 +201,26 @@ public class MBObjectStops {
             if (jsonObject.get(key) instanceof JSONObject) {
                 JSONObject child = (JSONObject) jsonObject.get(key);
                 if (child.containsKey("stops")) {
-                    if (!child.containsKey("property")) {
-                        hasStops = true;
-                    } else if (child.get("stops") instanceof JSONArray) {
+                    if (child.containsKey("property")) {
+                        // here we must determine if it is just property stops
+                        // or if we are dealing with property and zoom functions
                         JSONArray stops = (JSONArray) child.get("stops");
-                        if (stops.get(0) instanceof JSONObject && ((JSONObject)stops.get(0)).containsKey("zoom")) {
-                            hasStops = true;
+                        JSONArray stopObject = (JSONArray) stops.get(0); // all stops are JSONArrays
+
+                        //Check the first value of the Array, if it is a JSONObject
+                        // we are dealing with zoom and property functions
+                        if (stopObject.get(0) instanceof JSONObject) {
+                            ls.zoomPropertyStops = true;
+                        } else {
+                            ls.propertyStops = true;
                         }
+                    } else if (!child.containsKey("property")) {
+                        ls.zoomStops = true;
                     }
                 }
             }
         }
-        return hasStops;
+        return ls;
     }
 
     /**
@@ -369,5 +377,36 @@ public class MBObjectStops {
             }
         }
         return layerZoomLevels;
+    }
+
+    public class LayerStops {
+        public boolean propertyStops = false;
+        public boolean zoomStops = false;
+        public boolean zoomPropertyStops = false;
+        public boolean hasStops = false;
+
+        public boolean isPropertyStops() {
+            return propertyStops;
+        }
+
+        public void setPropertyStops(boolean propertyStops) {
+            this.propertyStops = propertyStops;
+        }
+
+        public boolean isZoomStops() {
+            return zoomStops;
+        }
+
+        public void setZoomStops(boolean zoomStops) {
+            this.zoomStops = zoomStops;
+        }
+
+        public boolean isZoomPropertyStops() {
+            return zoomPropertyStops;
+        }
+
+        public void setZoomPropertyStops(boolean zoomPropertyStops) {
+            this.zoomPropertyStops = zoomPropertyStops;
+        }
     }
 }

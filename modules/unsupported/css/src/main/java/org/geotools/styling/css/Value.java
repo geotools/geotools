@@ -31,15 +31,12 @@ import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.styling.css.Value.Function;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
 
 /**
- * A value for a CSS property. Values can be several things, including from literals, expressions,
- * composition of multiple values.
+ * A value for a CSS property. Values can be several things, including from literals, expressions, composition of multiple values.
  * 
  * @author Andrea Aime - GeoSolutions
  *
@@ -202,12 +199,11 @@ abstract class Value {
     }
 
     /**
-     * Turns this value into a OGC expression. Only literals and expressions can be converted to a
-     * OGC expression
+     * Turns this value into a OGC expression. Only literals and expressions can be converted to a OGC expression
      */
     public org.opengis.filter.expression.Expression toExpression() {
-        throw new UnsupportedOperationException("Cannot turn this value into a OGC expression: "
-                + this);
+        throw new UnsupportedOperationException(
+                "Cannot turn this value into a OGC expression: " + this);
     }
 
     /**
@@ -289,9 +285,9 @@ abstract class Value {
         static final String URL = "url";
 
         static final String SYMBOL = "symbol";
-        
+
         public static boolean isGraphicsFunction(Value v) {
-            if(!(v instanceof Function)) {
+            if (!(v instanceof Function)) {
                 return false;
             } else {
                 Function f = (Function) v;
@@ -305,6 +301,7 @@ abstract class Value {
 
         /**
          * Builds a function
+         * 
          * @param name
          * @param parameters
          */
@@ -313,8 +310,8 @@ abstract class Value {
             this.parameters = parameters;
             this.name = name;
             if ((URL.equals(name) || SYMBOL.equals(name)) && parameters.size() != 1) {
-                throw new IllegalArgumentException("Function " + name
-                        + " takes a single argument, not " + parameters.size());
+                throw new IllegalArgumentException(
+                        "Function " + name + " takes a single argument, not " + parameters.size());
             }
         }
 
@@ -341,7 +338,7 @@ abstract class Value {
             result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
             return result;
         }
-        
+
         @Override
         public org.opengis.filter.expression.Expression toExpression() {
             // turn function call if possible
@@ -374,7 +371,7 @@ abstract class Value {
         }
 
     }
-    
+
     /**
      * A function, with a name and named parameters
      * 
@@ -392,6 +389,7 @@ abstract class Value {
 
         /**
          * Builds a function
+         * 
          * @param name
          * @param parameters
          */
@@ -400,8 +398,8 @@ abstract class Value {
             this.parameters = parameters;
             this.name = name;
             if ((URL.equals(name) || SYMBOL.equals(name)) && parameters.size() != 1) {
-                throw new IllegalArgumentException("Function " + name
-                        + " takes a single argument, not " + parameters.size());
+                throw new IllegalArgumentException(
+                        "Function " + name + " takes a single argument, not " + parameters.size());
             }
         }
 
@@ -440,21 +438,22 @@ abstract class Value {
                 return false;
             return true;
         }
-        
+
         @Override
         public org.opengis.filter.expression.Expression toExpression() {
             Map<String, Parameter<?>> paramInfo = loadProcessInfo(processName(name));
-            if(paramInfo == null) {
-                throw new RuntimeException("Could not locate rendering transformation named " + name);
+            if (paramInfo == null) {
+                throw new RuntimeException(
+                        "Could not locate rendering transformation named " + name);
             }
             List<org.opengis.filter.expression.Expression> arguments = new ArrayList<>();
-            
+
             // See if we have to add the implicit parameter layer
             String inputLayerParameter = getInputLayerParameter(paramInfo);
-            if(inputLayerParameter != null && !parameters.containsKey(inputLayerParameter)) {
+            if (inputLayerParameter != null && !parameters.containsKey(inputLayerParameter)) {
                 arguments.add(toParamFunction(inputLayerParameter, null));
             }
-            
+
             // Transform all the parameters we have
             for (Map.Entry<String, Value> p : parameters.entrySet()) {
                 String key = p.getKey();
@@ -462,21 +461,23 @@ abstract class Value {
                 org.opengis.filter.expression.Expression ex = toParamFunction(key, v);
                 arguments.add(ex);
             }
-            
+
             org.opengis.filter.expression.Expression[] argsArray = toExpressionArray(arguments);
             return FF.function(name, argsArray);
         }
-        
+
         private String getInputLayerParameter(Map<String, Parameter<?>> paramInfo) {
             for (Map.Entry<String, Parameter<?>> entry : paramInfo.entrySet()) {
-                if(entry.getValue() != null) {
+                if (entry.getValue() != null) {
                     final Class<?> type = entry.getValue().getType();
-                    if(GridCoverage2D.class.isAssignableFrom(type) || FeatureCollection.class.isAssignableFrom(type) || GridCoverage2DReader.class.isAssignableFrom(type)) {
+                    if (GridCoverage2D.class.isAssignableFrom(type)
+                            || FeatureCollection.class.isAssignableFrom(type)
+                            || GridCoverage2DReader.class.isAssignableFrom(type)) {
                         return entry.getKey();
                     }
                 }
             }
-            
+
             return null;
         }
 
@@ -484,26 +485,27 @@ abstract class Value {
             List<org.opengis.filter.expression.Expression> paramArgs = new ArrayList<>();
             // the param name
             paramArgs.add(FF.literal(key));
-            if(v instanceof MultiValue) {
+            if (v instanceof MultiValue) {
                 MultiValue mv = (MultiValue) v;
                 for (Value cv : mv.values) {
                     final org.opengis.filter.expression.Expression ex = cv.toExpression();
                     paramArgs.add(ex);
                 }
-            } else if(v != null) {
+            } else if (v != null) {
                 final org.opengis.filter.expression.Expression ex = v.toExpression();
                 paramArgs.add(ex);
             }
             org.opengis.filter.expression.Expression[] paramArgsArray = toExpressionArray(
                     paramArgs);
-            org.opengis.filter.expression.Function function = FF.function("parameter", paramArgsArray);
+            org.opengis.filter.expression.Function function = FF.function("parameter",
+                    paramArgsArray);
             return function;
         }
 
         private org.opengis.filter.expression.Expression[] toExpressionArray(
                 List<org.opengis.filter.expression.Expression> arguments) {
-            org.opengis.filter.expression.Expression[] argsArray = (org.opengis.filter.expression.Expression[]) 
-                    arguments.toArray(new org.opengis.filter.expression.Expression[arguments.size()]);
+            org.opengis.filter.expression.Expression[] argsArray = (org.opengis.filter.expression.Expression[]) arguments
+                    .toArray(new org.opengis.filter.expression.Expression[arguments.size()]);
             return argsArray;
         }
 
@@ -515,16 +517,16 @@ abstract class Value {
 
             return new NameImpl(split[0], split[1]);
         }
-        
+
         @SuppressWarnings("unchecked")
-        public static Map<String,Parameter<?>> loadProcessInfo(Name name) {
+        public static Map<String, Parameter<?>> loadProcessInfo(Name name) {
             Class<?> processorsClass = null;
             try {
-                processorsClass = Class.forName("org.geotools.process.Processors", false, Value.class.getClassLoader());
+                processorsClass = Class.forName("org.geotools.process.Processors", false,
+                        Value.class.getClassLoader());
                 Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
-                return (Map<String,Parameter<?>>) getParameterInfo.invoke(null, name);
-            }
-            catch(Exception e) {
+                return (Map<String, Parameter<?>>) getParameterInfo.invoke(null, name);
+            } catch (Exception e) {
                 throw new RuntimeException("Error looking up process info", e);
             }
         }
@@ -585,8 +587,8 @@ abstract class Value {
         }
 
         public String toLiteral() {
-            throw new UnsupportedOperationException("Cannot turn this value into a literal: "
-                    + this);
+            throw new UnsupportedOperationException(
+                    "Cannot turn this value into a literal: " + this);
         }
 
     }

@@ -8,8 +8,8 @@ To use this module in your application:
 
 Related Links:
 
-* `CSS <http://docs.geoserver.org/latest/en/user/extensions/css/index.html>`_ (GeoServer User Guide)
-* `CSS Cookbook <http://docs.geoserver.org/latest/en/user/extensions/css/cookbook/index.html>`_ (GeoServer User Guide)
+* `CSS <http://docs.geoserver.org/latest/en/user/styling/css/index.html>`_ (GeoServer User Guide)
+* `CSS Cookbook <http://docs.geoserver.org/latest/en/user/styling/css/cookbook/index.html>`_ (GeoServer User Guide)
 
 **Maven**::
    

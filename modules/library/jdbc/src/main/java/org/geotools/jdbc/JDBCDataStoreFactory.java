@@ -57,7 +57,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true);
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, null,
+            Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database host */
     public static final Param HOST = new Param("host", String.class, "Host", true, "localhost");

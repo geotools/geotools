@@ -70,8 +70,7 @@ import org.opengis.parameter.Parameter;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Applies duck typing to properties in filters, aggregating the types found in the
- * {@link TypeAggregator}
+ * Applies duck typing to properties in filters, aggregating the types found in the {@link TypeAggregator}
  * 
  * @author Andrea Aime - GeoSolutions
  */
@@ -138,7 +137,7 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
     @Override
     public Object visit(Function expression, Object data) {
         FunctionName name = expression.getFunctionName();
-        if(name != null && name.getArgumentCount() > 0) {
+        if (name != null && name.getArgumentCount() > 0) {
             List<Parameter<?>> argumentTypes = name.getArguments();
             List<Expression> arguments = expression.getParameters();
             for (int i = 0; i < Math.min(arguments.size(), argumentTypes.size()); i++) {

@@ -31,9 +31,9 @@ public class Accept extends Selector {
     public Specificity getSpecificity() {
         return Specificity.ZERO;
     }
-    
+
     public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
+        return visitor.visit(this);
     }
 
 }

@@ -82,7 +82,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      */
     public static final Param FILE_TYPE = new Param("filetype", String.class,
             "Discriminator for directory stores", false, "shapefile", new KVP(Param.LEVEL,
-                    "advanced"));
+                    "program"));
 
     /**
      * Optional - Enable/disable the automatic creation of spatial index

@@ -16,14 +16,14 @@
  */
 package org.geotools.mbstyle.transform;
 
-import java.io.IOException;
-
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class StyleTransformFunctionTest {
 

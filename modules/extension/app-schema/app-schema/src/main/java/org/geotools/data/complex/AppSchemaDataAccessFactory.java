@@ -26,11 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataAccessFactory;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
+import org.geotools.data.*;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.DataAccessMap;
@@ -58,8 +54,8 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public static final String DBTYPE_STRING = "app-schema";
 
-    public static final DataAccessFactory.Param DBTYPE = new DataAccessFactory.Param("dbtype",
-            String.class, "Fixed value '" + DBTYPE_STRING + "'", true, DBTYPE_STRING);
+    public static final DataAccessFactory.Param DBTYPE = new DataAccessFactory.Param("dbtype", String.class,
+            "Fixed value '" + DBTYPE_STRING + "'", true, DBTYPE_STRING, Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final DataAccessFactory.Param URL = new DataAccessFactory.Param("url", URL.class,
             "URL to an application schema datastore XML configuration file", true);

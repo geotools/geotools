@@ -345,7 +345,7 @@ public class MBStyle {
                 List<FeatureTypeStyle> featureTypeStyle = null;
                 // check for property and zoom functions, if true we will have a layer for each one that
                 // becomes a feature type style.
-                if (mbObjectStops.hasStops) {
+                if (mbObjectStops.ls.zoomStops || mbObjectStops.ls.zoomPropertyStops) {
                     List<Long> stopLevels = mbObjectStops.stops;
                     int i = 0;
                     for (MBLayer l : mbObjectStops.layersForStop) {

@@ -61,7 +61,6 @@ public class ScaleRange extends Selector {
         return result;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -83,10 +82,9 @@ public class ScaleRange extends Selector {
     public String toString() {
         return "ScaleRange " + range;
     }
-    
-    public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
-    }
 
+    public Object accept(SelectorVisitor visitor) {
+        return visitor.visit(this);
+    }
 
 }

@@ -18,10 +18,12 @@ package org.geotools.data.mysql;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -39,7 +41,8 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true,"mysql");
+    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true,"mysql",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     /** Default port number for MYSQL */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 3306);
     /** Storage engine to use when creating tables */

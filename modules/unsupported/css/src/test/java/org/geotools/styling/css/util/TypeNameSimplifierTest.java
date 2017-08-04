@@ -1,3 +1,20 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
 package org.geotools.styling.css.util;
 
 import static org.junit.Assert.assertEquals;
@@ -38,8 +55,8 @@ public class TypeNameSimplifierTest {
         Selector s1 = Selector.and(restricted, code2);
         // two without
         Selector s2 = new Data(ECQL.toFilter("code = '3'"));
-        Selector s3 = Selector.and(new Data(ECQL.toFilter("code = '4'")), new ScaleRange(
-                new NumberRange<Double>(Double.class, 10000d, 20000d)));
+        Selector s3 = Selector.and(new Data(ECQL.toFilter("code = '4'")),
+                new ScaleRange(new NumberRange<Double>(Double.class, 10000d, 20000d)));
 
         Selector combined = new Or(s1, s2, s3);
 

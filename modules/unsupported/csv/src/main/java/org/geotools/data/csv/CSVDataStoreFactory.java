@@ -43,6 +43,18 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
+    /** GUESS_STRATEGY */
+    public static final String GUESS_STRATEGY = "guess";
+
+    /** ATTRIBUTES_ONLY_STRATEGY */
+    public static final String ATTRIBUTES_ONLY_STRATEGY = "AttributesOnly";
+
+    /** SPECIFC_STRATEGY */
+    public static final String SPECIFC_STRATEGY = "specify";
+
+    /** WKT_STRATEGY */
+    public static final String WKT_STRATEGY = "wkt";
+
     private static final String FILE_TYPE = "csv";
 
     public static final String[] EXTENSIONS = new String[] { "." + FILE_TYPE };
@@ -159,9 +171,11 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         CSVStrategy csvStrategy = null;
         if (strategyParam != null) {
             String strategyString = strategyParam.toString();
-            if (strategyString.equalsIgnoreCase("guess")) {
+            if (strategyString.equalsIgnoreCase(GUESS_STRATEGY)) {
                 csvStrategy = new CSVLatLonStrategy(csvFileState);
-            } else if (strategyString.equalsIgnoreCase("specify")) {
+            } else if (strategyString.equalsIgnoreCase(ATTRIBUTES_ONLY_STRATEGY)) {
+                csvStrategy = new CSVAttributesOnlyStrategy(csvFileState);
+            } else if (strategyString.equalsIgnoreCase(SPECIFC_STRATEGY)) {
                 Object latParam = LATFIELDP.lookUp(params);
                 Object lngParam = LnGFIELDP.lookUp(params);
                 if (latParam == null || lngParam == null) {
@@ -170,7 +184,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                 }
                 csvStrategy = new CSVLatLonStrategy(csvFileState, latParam.toString(),
                         lngParam.toString());
-            } else if (strategyString.equalsIgnoreCase("wkt")) {
+            } else if (strategyString.equalsIgnoreCase(WKT_STRATEGY)) {
                 Object wktParam = WKTP.lookUp(params);
                 if (wktParam == null) {
                     throw new IllegalArgumentException(

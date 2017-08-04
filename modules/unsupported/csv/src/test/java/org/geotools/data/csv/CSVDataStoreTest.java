@@ -61,7 +61,7 @@ public class CSVDataStoreTest {
             if (x == -1) {
                 x = d;
             } else {
-                Coordinate coordinate = new Coordinate(d, x);
+                Coordinate coordinate = new Coordinate(x, d);
                 x = -1;
                 result.add(coordinate);
             }

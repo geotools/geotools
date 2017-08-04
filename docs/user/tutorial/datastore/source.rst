@@ -202,7 +202,7 @@ line by line, parsing Features as we go. Because this class actually does some w
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureReader.java
       :language: java
       :start-after: // close start
-      :end-before: // cose end
+      :end-before: // close end
    
    .. note:: The FeatureState is not closed or disposed - as several threads may be making concurrent use of the **CSVDataStore**.
 

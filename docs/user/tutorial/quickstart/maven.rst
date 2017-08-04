@@ -202,13 +202,6 @@ Creating a new project
      :start-after: </dependencies>
      :end-before: <build>
 
-#. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
-
-   .. literalinclude:: artifacts/pom2.xml
-        :language: xml
-        :start-after: </repositories>
-        :end-before: </project>
-     
 #. Return to the command line and get maven to download the required jars for your project with this
    command::
     

@@ -51,7 +51,7 @@ example.
    .. literalinclude:: artifacts/pom.xml
       :language: xml
       :start-after: <url>http://maven.apache.org</url>
-      :end-before: <repositories>
+      :end-before: </project>
 
 2. Create the package **org.geotools.tutorial.filter** and class **QueryLab** class and copy and paste the following to get going:
    

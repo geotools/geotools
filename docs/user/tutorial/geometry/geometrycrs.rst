@@ -39,7 +39,7 @@ the geometry of the features.
 .. literalinclude:: ./artifacts/pom.xml
         :language: xml
         :start-after: </properties>
-        :end-before: <repositories>
+        :end-before: </project>
     
 2. Create the package **org.geotools.tutorial.crs** and class **CRSLab.java** file and copy and paste the following code:
 

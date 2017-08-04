@@ -50,7 +50,7 @@ and overlaying it with country boundaries from a shapefile.
 .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
-        :end-before: <repositories>
+        :end-before: </project>
 
 2. Please create the package **org.geotools.tutorial.raster** and class **ImageLab** and copy and paste in the following code:
 

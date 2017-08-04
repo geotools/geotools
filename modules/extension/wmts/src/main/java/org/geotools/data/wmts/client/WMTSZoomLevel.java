@@ -21,7 +21,7 @@ import org.geotools.tile.impl.ZoomLevel;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSZoomLevel extends ZoomLevel {
 

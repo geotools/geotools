@@ -18,7 +18,7 @@ package org.geotools.data.wmts.model;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class TileMatrixLimits {
     String tileMatix;

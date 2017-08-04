@@ -43,7 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSServiceTest {
 

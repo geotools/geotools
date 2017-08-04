@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,18 +19,16 @@ package org.geotools.data.wmts.model;
 import org.geotools.data.ows.OperationType;
 
 /**
- * Available WMS Operations are listed in a Request element.
+ * Available WMTS Operations are listed in a Request element.
  *
- * @author rgould
+ * (Based on existing work by rgould for WMS service)
+ * @author ian
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  *
- *
- * @source $URL$
  */
 public class WMTSRequest {
     private OperationType getCapabilities;
 
-    private OperationType getFeatureInfo;
-    private OperationType getLegendGraphic;
     private OperationType getTile;
 
     /**
@@ -49,24 +47,6 @@ public class WMTSRequest {
      */
     public void setGetCapabilities(OperationType getCapabilities) {
         this.getCapabilities = getCapabilities;
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the getFeatureInfo.
-     */
-    public OperationType getGetFeatureInfo() {
-        return getFeatureInfo;
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param getFeatureInfo The getFeatureInfo to set.
-     */
-    public void setGetFeatureInfo(OperationType getFeatureInfo) {
-        this.getFeatureInfo = getFeatureInfo;
     }
 
     /**

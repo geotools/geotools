@@ -21,11 +21,13 @@ import java.util.List;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class TileMatrixSetLink {
+
     String identifier = "";
     List<TileMatrixLimits> limits = new ArrayList<>();
+
     /**
      * @return the identifier
      */
@@ -50,7 +52,7 @@ public class TileMatrixSetLink {
     public void setLimits(List<TileMatrixLimits> limits) {
         this.limits = limits;
     }
-    
+
     public void addLimit(TileMatrixLimits limit) {
         limits.add(limit);
     }

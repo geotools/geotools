@@ -20,8 +20,6 @@ import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -155,40 +153,7 @@ public class TileMatrix {
         this.matrixHeight = matrixHeight;
     }
 
-    @Deprecated
-    public static TileMatrix parse(Element e) {
-        TileMatrix ret = new TileMatrix();
-        NodeList kids = e.getChildNodes();
-        for (int i = 0; i < kids.getLength(); i++) {
-            if (!(kids.item(i) instanceof Element)) {
-                continue;
-            }
-            Element kid = (Element) kids.item(i);
-            String tagName = kid.getLocalName();
-            if (tagName.equalsIgnoreCase("Identifier")) {
-                ret.setIdentifier(kid.getTextContent());
-            } else if (tagName.equalsIgnoreCase("ScaleDenominator")) {
-                ret.setDenominator(Double.parseDouble(kid.getTextContent()));
-            } else if (tagName.equalsIgnoreCase("TopLeftCorner")) {
-                String[] part = kid.getTextContent().split(" ");
-                double x = Double.parseDouble(part[0]);
-                double y = Double.parseDouble(part[1]);
-                Point tl = gf.createPoint(new Coordinate(x, y));
-                ret.setTopLeft(tl);
-            } else if (tagName.equalsIgnoreCase("TileWidth")) {
-                ret.setTileWidth(Integer.parseInt(kid.getTextContent()));
-            } else if (tagName.equalsIgnoreCase("TileHeight")) {
-                ret.setTileHeight(Integer.parseInt(kid.getTextContent()));
-            } else if (tagName.equalsIgnoreCase("MatrixWidth")) {
-                ret.setMatrixWidth(Integer.parseInt(kid.getTextContent()));
-            } else if (tagName.equalsIgnoreCase("MatrixHeight")) {
-                ret.setMatrixHeight(Integer.parseInt(kid.getTextContent()));
-            }
-        }
-        return ret;
-
-    }
-
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getIdentifier()).append("\t")

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -76,7 +76,7 @@ public class WMTSTileFactory4326Test {
         int i=0;
         TileService[] services = new TileService[2];
         for (WMTSServiceType t : WMTSServiceType.values()) {
-            
+
             services[i++] = createKVPService(); // TODO: create a testpoint array for REST too
 
         }

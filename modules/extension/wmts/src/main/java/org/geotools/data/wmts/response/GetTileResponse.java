@@ -63,6 +63,4 @@ public class GetTileResponse extends Response {
     public void setRequestURL(URL requestURL) {
         this.requestURL = requestURL;
     }
-    
-    
 }

@@ -2,13 +2,10 @@ package org.geotools.map;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -21,18 +18,14 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.wms.request.GetFeatureInfoRequest;
-import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.request.GetTileRequest;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
-import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.tile.Tile;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
@@ -45,6 +38,10 @@ import org.opengis.referencing.operation.TransformException;
 
 /**
  * A grid coverage readers backing onto a WMTS server by issuing GetTile requests
+ *
+ * @author ian
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ *
  */
 public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
@@ -55,7 +52,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     static GridCoverageFactory gcf = new GridCoverageFactory();
 
      /**
-     * The WMS server
+     * The WMTS server
      */
     WebMapTileServer wmts;
 
@@ -115,9 +112,12 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     CoordinateReferenceSystem requestCRS;
 
     String requestedTime;
+
+    final public boolean debug = System.getProperty("wmts.debug") != null;
+
     /**
      * Builds a new WMS coverage reader
-     * 
+     *
      * @param server
      * @param layer
      */
@@ -180,7 +180,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                     LOGGER.info("guessing CRS to: "+srsName);
                 }
             }
-            
+
             validSRS = owsLayer.getSrs();
 
         } else {
@@ -217,42 +217,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         updateBounds();
     }
 
-    /**
-     * Issues GetFeatureInfo against a point using the params of the last GetMap request
-     * 
-     * @param pos
-     * @return
-     * @throws IOException
-     */
-//    public InputStream getFeatureInfo(DirectPosition2D pos, String infoFormat, int featureCount,
-//            GetTileRequest getTileReq) throws IOException {
-//        GetFeatureInfoRequest request = wmts.createGetFeatureInfoRequest(getTileReq);
-//        request.setFeatureCount(1);
-//        // request.setQueryLayers(new LinkedHashSet<Layer>(layers));
-//        request.setInfoFormat(infoFormat);
-//        request.setFeatureCount(featureCount);
-//        try {
-//            AffineTransform tx = RendererUtilities.worldToScreenTransform(requestedEnvelope,
-//                    new Rectangle(width, height));
-//            Point2D dest = new Point2D.Double();
-//            Point2D src = new Point2D.Double(pos.x, pos.y);
-//            tx.transform(src, dest);
-//            request.setQueryPoint((int) dest.getX(), (int) dest.getY());
-//        } catch (Exception e) {
-//            throw (IOException) new IOException("Failed to grab feature info").initCause(e);
-//        }
-//
-//        try {
-//            if (LOGGER.isLoggable(Level.FINE)) {
-//                LOGGER.fine("Issuing request: " + request.getFinalURL());
-//            }
-//            GetFeatureInfoResponse response = wmts.issueRequest(request);
-//            return response.getInputStream();
-//        } catch (Throwable t) {
-//            throw (IOException) new IOException("Failed to grab feature info").initCause(t);
-//        }
-//    }
-
     @Override
     public GridCoverage2D read(GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException {
@@ -285,10 +249,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                     // the actual width and height is one more than that
                     width = gg.getGridRange().getHigh(0) + 1;
                     height = gg.getGridRange().getHigh(1) + 1;
-//                } else if (name.equals(AbstractGridFormat.TIME.getName())) {
-//                    LOGGER.fine("TIME parameter found");
-//                    time = (String)((ParameterValue) param).getValue(); // check cast
-//                    LOGGER.fine("TIME parameter value is " + time);
                 }
             }
         }
@@ -316,7 +276,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
      */
     GridCoverage2D getMap(ReferencedEnvelope requestedEnvelope, int width, int height, String time)
             throws IOException {
-        
+
         // build the request
         ReferencedEnvelope gridEnvelope = initTileRequest(requestedEnvelope, width, height, time);
 
@@ -327,7 +287,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             }
 
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            
+
             getTileRequest().setCRS(gridEnvelope.getCoordinateReferenceSystem());
             Set<Tile> responses = wmts.issueRequest(getTileRequest());
             double xscale = width / requestedEnvelope.getWidth();
@@ -337,7 +297,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
             double xoff = requestedEnvelope.getMedian(0) * scale - width / 2;
             double yoff = requestedEnvelope.getMedian(1) * scale + height / 2;
-//COuld we use RenderUtilities here?
+            //C ould we use RenderUtilities here?
             AffineTransform worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
             renderTiles(responses, image.createGraphics(), requestedEnvelope, worldToScreen);
 
@@ -356,7 +316,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
         double[] inPoints = new double[4];
         double[] outPoints = new double[4];
-              
+
         for (Tile tile : tiles) {
             ReferencedEnvelope nativeTileEnvelope = tile.getExtent();
 
@@ -377,14 +337,15 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 System.out.println(inPoints[i]+","+inPoints[i+1]+" to "+outPoints[i]+","+outPoints[i+1]);
             }*/
             renderTile(tile, g2d, outPoints);
-            
-            // -- DEBUG !!!
-            g2d.setColor(Color.RED);
-            g2d.drawRect((int) outPoints[0], (int) outPoints[1], (int) Math.ceil(outPoints[2] - outPoints[0]),
-                (int) Math.ceil(outPoints[3] - outPoints[1]));
-            int x = (int) outPoints[0]+(int) (Math.ceil(outPoints[2] - outPoints[0])/2);
-            int y = (int) outPoints[1]+(int) (Math.ceil(outPoints[3] - outPoints[1])/2);
-            g2d.drawString(tile.getId(), x, y);
+
+            if(debug) {
+                g2d.setColor(Color.RED);
+                g2d.drawRect((int) outPoints[0], (int) outPoints[1], (int) Math.ceil(outPoints[2] - outPoints[0]),
+                    (int) Math.ceil(outPoints[3] - outPoints[1]));
+                int x = (int) outPoints[0]+(int) (Math.ceil(outPoints[2] - outPoints[0])/2);
+                int y = (int) outPoints[1]+(int) (Math.ceil(outPoints[3] - outPoints[1])/2);
+                g2d.drawString(tile.getId(), x, y);
+            }
         }
 
     }
@@ -415,7 +376,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     /**
      * Sets up a map request with the provided parameters, making sure it is compatible with the layers own native SRS list
-     * 
+     *
      * @param bbox
      * @param width
      * @param height
@@ -465,7 +426,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         tileRequest.setRequestedHeight(height);
         tileRequest.setRequestedWidth(width);
         tileRequest.setRequestedBBox(gridEnvelope); // should be requestEnvelope?
-        tileRequest.setRequestedTime(time); 
+        tileRequest.setRequestedTime(time);
 
         try {
             this.requestCRS = CRS.decode(requestSrs);
@@ -474,11 +435,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         }
 
         ReferencedEnvelope requestEnvelope = gridEnvelope;
-//XXX        getTileRequest().setBBox(requestEnvelope);
-        //mapRequest.setSRS(requestSrs);
 
-        
-//XXX        this.requestedEnvelope = gridEnvelope;
         this.width = width;
         this.height = height;
 
@@ -492,7 +449,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     /**
      * Returns the layer bounds
-     * 
+     *
      * @return
      */
     public void updateBounds() {
@@ -507,7 +464,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     /**
      * Converts a {@link Envelope} into a {@link ReferencedEnvelope}
-     * 
+     *
      * @param envelope
      * @return
      */

@@ -43,7 +43,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ * 
  */
 public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, Layer> {
 
@@ -90,8 +91,8 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /**
      * @param capabilities
-     * @throws IOException 
-     * @throws ServiceException 
+     * @throws IOException
+     * @throws ServiceException
      */
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
         super(capabilities, capabilities.getRequest().getGetCapabilities().getGet());
@@ -100,8 +101,8 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /**
      * @param delegate
-     * @throws IOException 
-     * @throws ServiceException 
+     * @throws IOException
+     * @throws ServiceException
      */
     public WebMapTileServer(WebMapTileServer delegate) throws ServiceException, IOException {
         this(delegate.serverURL);
@@ -137,7 +138,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @return
      */
     public Set<Tile> issueRequest(GetTileRequest tileRequest) throws ServiceException {
-        
+
         return tileRequest.getTiles();
     }
 
@@ -159,7 +160,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         }
 
         request.getHeaders().putAll(headers);
-        
+
         return request;
     }
 
@@ -215,7 +216,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      */
     public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
         Map<String, CRSEnvelope> boundingBoxes = layer.getBoundingBoxes();
-        CRSEnvelope box = boundingBoxes.get(crs.getName());
+        CRSEnvelope box = boundingBoxes.get(crs.getName().getCode());
         if (box != null) {
             return new GeneralEnvelope(box);
         }

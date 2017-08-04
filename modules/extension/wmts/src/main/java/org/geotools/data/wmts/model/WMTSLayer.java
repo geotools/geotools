@@ -28,7 +28,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSLayer extends Layer {
 
@@ -36,10 +36,15 @@ public class WMTSLayer extends Layer {
             .getLogger("org.geotools.data.wmts");
 
     Map<String,TileMatrixSetLink> limits = new HashMap<>();
+
     List<String> formats = new ArrayList<>();
+
     List<String> infoFormats = new ArrayList<>();
+
     Map<String, String> templates = new HashMap<>();
+
     private CoordinateReferenceSystem preferredCRS = null;
+
     /**
      * @param title
      */

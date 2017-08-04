@@ -45,7 +45,7 @@ import org.geotools.util.ObjectCaches;
  * Handle information about a WMTS tile
  *
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSTile extends Tile {
 

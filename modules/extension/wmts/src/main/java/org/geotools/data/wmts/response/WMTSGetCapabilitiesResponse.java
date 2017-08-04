@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -14,6 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.data.wmts.response;
 
 import java.io.IOException;
@@ -36,32 +37,31 @@ import net.opengis.wmts.v_1.CapabilitiesType;
 
 /**
  * Provides a hook up to parse the capabilties document from inputstream.
- * 
- * @author Richard Gould
  *
+ * (Based on existing work by rgould for WMS service)
+ * @author ian
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  *
- *
- * @source $URL$
  */
 public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 
     public WMTSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
         this(response, null);
     }
-    
+
     public WMTSGetCapabilitiesResponse(HTTPResponse response, Map<String, Object> hints) throws ServiceException, IOException {
         super(response);
 
         try {
-            
+
             Object object;
             InputStream inputStream = null;
             try {
                 inputStream = response.getResponseStream();
                 Parser parser = new Parser(new WMTSConfiguration());
-                
+
                 object = parser.parse(new InputSource(inputStream));
-               
+
             } catch (SAXException |ParserConfigurationException e) {
                 throw (ServiceException) new ServiceException("Error while parsing XML.")
                         .initCause(e);

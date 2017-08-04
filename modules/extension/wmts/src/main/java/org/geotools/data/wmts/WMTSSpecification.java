@@ -34,7 +34,8 @@ import org.geotools.ows.ServiceException;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ * 
  */
 public class WMTSSpecification extends Specification {
 

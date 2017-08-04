@@ -26,7 +26,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 public class TileMatrixSet {
-    private static CoordinateReferenceSystem WEB_MERCATOR_CRS;
+    private static final CoordinateReferenceSystem WEB_MERCATOR_CRS;
 
     static {
         CoordinateReferenceSystem tmpCrs = null;
@@ -112,27 +112,6 @@ public class TileMatrixSet {
     public void setBbox(CRSEnvelope bbox) {
         this.bbox = bbox;
     }
-
-//    /**
-//     * @param e
-//     */
-//    @Deprecated
-//    public static TileMatrixSet parseTileMatrixSet(Element e) {
-//        TileMatrixSet ret = new TileMatrixSet();
-//        NodeList crs = e.getElementsByTagNameNS(OWS, "SupportedCRS");
-//        ret.setCRS(crs.item(0).getTextContent());
-//        NodeList id = e.getElementsByTagNameNS(OWS, "Identifier");
-//        ret.setIdentifier(id.item(0).getTextContent());
-//        NodeList matrices = e.getElementsByTagName("TileMatrix");
-//
-//        for (int i = 0; i < matrices.getLength(); i++) {
-//            TileMatrix tm = TileMatrix.parse((Element) matrices.item(i));
-//            tm.setParent(ret);
-//            ret.addMatrix(tm);
-//        }
-//
-//        return ret;
-//    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();

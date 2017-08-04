@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,19 +19,17 @@ package org.geotools.map;
 import java.util.logging.Logger;
 
 import org.geotools.data.ows.Layer;
+import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.parameter.DefaultParameterDescriptor;
-import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -88,87 +86,6 @@ public class WMTSMapLayer extends GridReaderLayer {
         }
         return super.getBounds();
     }
-
-    /**
-     * Retrieves the feature info as text (assuming "text/plain" is a supported feature info format)
-     *
-     * @param pos
-     *            the position to be checked, in real world coordinates
-     * @return
-     * @throws IOException
-     */
-//    public String getFeatureInfoAsText(DirectPosition2D pos, int featureCount) throws IOException {
-//        BufferedReader br = null;
-//        try {
-//            GetTileRequest mapRequest = getReader().getTileRequest();
-//            InputStream is = getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
-//            br = new BufferedReader(new InputStreamReader(is));
-//            String line;
-//            StringBuilder sb = new StringBuilder();
-//            while ((line = br.readLine()) != null) {
-//                sb.append(line).append("\n");
-//            }
-//            return sb.toString();
-//        } catch (IOException e) {
-//            throw e;
-//        } catch (Throwable t) {
-//            throw new IOException("Failed to grab feature info", t);
-//        } finally {
-//            if (br != null)
-//                br.close();
-//        }
-//    }
-
-    /**
-     * Retrieves the feature info as a generic input stream, it's the duty of the caller to
-     * interpret the contents and ensure the stream is closed feature info format)
-     *
-     * @param pos
-     *            the position to be checked, in real world coordinates
-     * @param infoFormat
-     *            The INFO_FORMAT parameter in the GetFeatureInfo request
-     * @return
-     * @throws IOException
-     */
-//    public InputStream getFeatureInfo(DirectPosition2D pos, String infoFormat, int featureCount)
-//            throws IOException {
-//        GetTileRequest mapRequest = getReader().getTileRequest();
-//        return getReader().getFeatureInfo(pos, infoFormat, featureCount, mapRequest);
-//    }
-
-    /**
-     * Allows to run a standalone GetFeatureInfo request, without the need to have previously run a
-     * GetMap request on this layer. Mostly useful for stateless users that rebuild the map context
-     * for each rendering operation (e.g., GeoServer)
-     *
-     * @param pos
-     * @param infoFormat
-     *            The INFO_FORMAT parameter in the GetFeatureInfo request
-     * @return
-     * @throws IOException
-     */
-//    public InputStream getFeatureInfo(ReferencedEnvelope bbox, int width, int height, int x, int y,
-//            String infoFormat, int featureCount) throws IOException {
-//        try {
-//            getReader().initTileRequest(bbox, width, height);
-//            // we need to convert x/y from the screen to the original coordinates, and then to the ones
-//            // that will be used to make the request
-//            AffineTransform at = RendererUtilities.worldToScreenTransform(bbox, new Rectangle(width, height));
-//            Point2D screenPos = new Point2D.Double(x, y);
-//            Point2D worldPos = new Point2D.Double(x, y);
-//            at.inverseTransform(screenPos, worldPos);
-//            DirectPosition2D fromPos = new DirectPosition2D(worldPos.getX(), worldPos.getY());
-//            DirectPosition2D toPos = new DirectPosition2D();
-//            MathTransform mt = CRS.findMathTransform(bbox.getCoordinateReferenceSystem(), getReader().requestCRS, true);
-//            mt.transform(fromPos, toPos);
-//            GetTileRequest mapRequest = getReader().getTileRequest();
-//            return getReader().getFeatureInfo(toPos, infoFormat, featureCount, mapRequest);
-//        } catch(IOException e) {
-//            throw e;
-//        } catch(Exception t) {
-//            throw new IOException("Unexpected issue during GetFeatureInfo execution", t);
-//        }
-//    }
 
     /**
      * Returns the {@link WebMapServer} used by this layer

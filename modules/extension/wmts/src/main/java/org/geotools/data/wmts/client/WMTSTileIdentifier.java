@@ -18,17 +18,16 @@ package org.geotools.data.wmts.client;
 
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
-import org.geotools.tile.impl.osm.OSMTileIdentifier;
 
 /**
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSTileIdentifier extends TileIdentifier {
 
     /**
      * create an identifier based on /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
-     * 
+     *
      * @param x
      * @param y
      * @param zoomLevel
@@ -36,7 +35,7 @@ public class WMTSTileIdentifier extends TileIdentifier {
      */
     public WMTSTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
         super(x, y, zoomLevel, serviceName);
-        
+
     }
 
     @Override

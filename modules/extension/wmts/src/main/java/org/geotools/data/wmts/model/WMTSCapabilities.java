@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -35,8 +35,6 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.AbstractSingleCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
@@ -44,7 +42,6 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import java.util.logging.Level;
 
 import net.opengis.ows11.WGS84BoundingBoxType;
 import net.opengis.ows11.AllowedValuesType;
@@ -69,15 +66,14 @@ import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.URLTemplateType;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
-import org.opengis.referencing.crs.GeographicCRS;
 
 /**
  * Represents a base object for a WMTS getCapabilities response.
  *
- * @author Richard Gould, Refractions Research
- * @author Ian Turton
+ * (Based on existing work by rgould for WMS service)
+ * @author ian
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  *
- * @source $URL$
  */
 public class WMTSCapabilities extends Capabilities {
 
@@ -423,8 +419,6 @@ public class WMTSCapabilities extends Capabilities {
                 } else if (opx.getName().equalsIgnoreCase("GetTile")) {
 
                     request.setGetTile(opt);
-                } else if (opx.getName().equalsIgnoreCase("GetFeatureInfo")) {
-                    request.setGetFeatureInfo(opt);
                 }
             }
         }

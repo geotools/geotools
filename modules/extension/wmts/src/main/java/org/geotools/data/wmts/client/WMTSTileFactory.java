@@ -40,7 +40,7 @@ import org.opengis.referencing.cs.CoordinateSystem;
  * Implementation of TileFactory for WMTS
  *
  * @author ian
- *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSTileFactory extends TileFactory {
     /** pixelSizeMeters */

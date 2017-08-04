@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,10 +16,6 @@
  */
 package org.geotools.data.wmts.model;
 
-import org.geotools.data.wmts.model.WMTSLayer;
-import org.geotools.data.wmts.model.WMTSCapabilities;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -30,17 +26,12 @@ import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.wmts.request.GetTileRequest;
-import org.geotools.test.TestData;
-import org.geotools.wmts.WMTSConfiguration;
-import org.geotools.xml.Parser;
 import org.xml.sax.SAXException;
 
 import junit.framework.TestCase;
-import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.data.wmts.WMTSSpecification;
 import org.geotools.data.wmts.WebMapTileServer;
-import org.geotools.data.wmts.model.TileMatrixLimits;
-import org.geotools.data.wmts.model.TileMatrixSetLink;
+import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
 
 /**
  *
@@ -49,20 +40,18 @@ import org.geotools.data.wmts.model.TileMatrixSetLink;
  * @source $URL$
  */
 public class WMTSCapabilitiesTest extends TestCase {
-    protected URL server;
 
     protected WMTSSpecification spec;
 
     public WMTSCapabilitiesTest() throws Exception {
         this.spec = new WMTSSpecification();
-        this.server = new URL("http://maps.boundlessgeo-dev.com/geoserver/gwc/service/wmts?");
     }
 
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.0.0");
     }
 
-    
+
     protected void checkProperties(Properties properties) {
         assertEquals(properties.getProperty("REQUEST"), "GetCapabilities");
         assertEquals(properties.getProperty("VERSION"), "1.0.0");
@@ -84,8 +73,6 @@ public class WMTSCapabilitiesTest extends TestCase {
 
             WMTSRequest request = capabilities.getRequest();
 
-            assertEquals(request.getGetFeatureInfo().getGet(),
-                    new URL("http://astun-desktop:8080/geoserver/gwc/service/wmts?"));
             OperationType getTile = request.getGetTile();
             assertNotNull(getTile);
 
@@ -112,7 +99,7 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertEquals(1, tml3.getMaxrow());
             assertEquals(7, tml3.getMincol());
             assertEquals(7, tml3.getMaxcol());
-            
+
             assertEquals("b_road",layers[1].getTitle());
             assertEquals("meridian:b_road", layers[1].getName() );
             assertEquals("b_road_polyline",layers[20].getTitle());
@@ -219,7 +206,7 @@ public class WMTSCapabilitiesTest extends TestCase {
 
             assertEquals("AMSR2_Snow_Water_Equivalent", l0.getName());
             assertNull(l0.getParent());
-            
+
             //assertTrue(l0.getSrs().contains("urn:ogc:def:crs:OGC:2:84")); // case should not matter
             assertTrue(l0.getSrs().contains("CRS:84"));
 
@@ -242,57 +229,6 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
-    public void testCreateGetTileRequest() throws Exception {
-        try {
-            WebMapTileServer wmts = new WebMapTileServer(server);
-            WMTSCapabilities caps = wmts.getCapabilities();
-            GetTileRequest request = wmts.createGetTileRequest();
-            assertNotNull(request);
-//            request.setFormat("image/jpeg");
-            //System.out.println(request.getFinalURL().toExternalForm());
-
-//            assertTrue(request.getFinalURL().toExternalForm().indexOf("jpeg") >= 0);
-        } catch (java.net.ConnectException ce) {
-            if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
-            } else {
-                throw (ce);
-            }
-        }
-    }
-
-    public void testCreateGetFeatureInfoRequest() throws Exception {
-        /*
-         * TODO FIX THIS try{ URL featureURL = new URL("http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?VERSION=1.1.0&REQUEST=GetCapabilities");
-         * WebMapServer wms = getCustomWMS(featureURL); WMSCapabilities caps = wms.getCapabilities(); assertNotNull(caps);
-         * assertNotNull(caps.getRequest().getGetFeatureInfo());
-         * 
-         * GetMapRequest getMapRequest = wms.createGetMapRequest();
-         * 
-         * List layers = Arrays.asList(WMSUtils.getNamedLayers(caps)); List simpleLayers = new ArrayList(); Iterator iter = layers.iterator(); while
-         * (iter.hasNext()) { Layer layer = (Layer) iter.next(); SimpleLayer sLayer = new SimpleLayer(layer.getName(), ""); simpleLayers.add(sLayer);
-         * List styles = layer.getStyles(); if (styles.size() == 0) { sLayer.setStyle(""); continue; } Random random = new Random(); int randomInt =
-         * random.nextInt(styles.size()); sLayer.setStyle((String) styles.get(randomInt)); } getMapRequest.setLayers(simpleLayers);
-         * 
-         * getMapRequest.setSRS("EPSG:4326"); getMapRequest.setDimensions("400", "400"); getMapRequest.setFormat("image/png");
-         * 
-         * getMapRequest.setBBox("-114.01268,59.4596930,-113.26043,60.0835794"); URL url2 = getMapRequest.getFinalURL();
-         * 
-         * GetFeatureInfoRequest request = wms.createGetFeatureInfoRequest(getMapRequest); request.setQueryLayers(WMSUtils.getQueryableLayers(caps));
-         * request.setQueryPoint(200, 200); request.setInfoFormat(caps.getRequest().getGetFeatureInfo().getFormatStrings()[0]);
-         * 
-         * System.out.println(request.getFinalURL());
-         * 
-         * GetFeatureInfoResponse response = (GetFeatureInfoResponse) wms.issueRequest(request); System.out.println(response.getContentType());
-         * assertTrue( response.getContentType().indexOf("text/plain") != -1 ); BufferedReader in = new BufferedReader(new
-         * InputStreamReader(response.getInputStream())); String line;
-         * 
-         * boolean textFound = false; while ((line = in.readLine()) != null) { System.out.println(line); if
-         * (line.indexOf("Wood Buffalo National Park") != -1) { textFound = true; } } assertTrue(textFound); } catch(java.net.ConnectException ce){
-         * if(ce.getMessage().indexOf("timed out")>0){ System.err.println("Unable to test - timed out: "+ce); } else{ throw(ce); } }
-         */
-    }
-
     /**
      * @param featureURL
      * @throws IOException
@@ -302,28 +238,6 @@ public class WMTSCapabilitiesTest extends TestCase {
     protected WebMapTileServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);
-    }
-
-    protected WMTSCapabilities createCapabilities(String capFile) throws Exception {
-        try {
-            File getCaps = TestData.file(null, capFile);
-            assertNotNull(getCaps);
-
-            Parser parser = new Parser(new WMTSConfiguration());
-
-            Object object = parser.parse(new FileReader(getCaps));
-            assertTrue("Capabilities failed to parse " + object.getClass(), object instanceof CapabilitiesType);
-
-            WMTSCapabilities capabilities = new WMTSCapabilities((CapabilitiesType) object);
-            return capabilities;
-        } catch (java.net.ConnectException ce) {
-            if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
-                return null;
-            } else {
-                throw (ce);
-            }
-        }
     }
 
 }

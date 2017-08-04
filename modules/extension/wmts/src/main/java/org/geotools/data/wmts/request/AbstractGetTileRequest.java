@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -14,6 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.data.wmts.request;
 
 import java.io.IOException;
@@ -52,10 +53,9 @@ import org.opengis.referencing.operation.TransformException;
 
 /**
  * 
- * @author Richard Gould
- *
- *
- * @source $URL$
+ * (Based on existing work by rgould for WMS service)
+ * @author ian
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public abstract class AbstractGetTileRequest extends AbstractWMTSRequest
         implements GetTileRequest {

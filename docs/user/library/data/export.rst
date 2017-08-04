@@ -31,7 +31,7 @@ it is under construction.
 
    .. literalinclude:: /../src/main/java/org/geotools/data/DataExamples.java
       :language: java
-      :start-after: // exportToShapefile2start
+      :start-after: // exportToShapefile2 start
       :end-before: // exportToShapefile2 end
 
 

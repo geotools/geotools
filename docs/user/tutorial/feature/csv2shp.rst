@@ -61,7 +61,7 @@ Please ensure your pom.xml includes the following:
 .. literalinclude:: artifacts/pom.xml
    :language: xml
    :start-after: </properties>
-   :end-before: <repositories>
+   :end-before: </project>
 
 Note that the jars mentioned above will pull in a host of other dependencies
 (such as the hsql database driver).

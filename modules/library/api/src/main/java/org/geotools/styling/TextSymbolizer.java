@@ -175,6 +175,11 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      * If, in case of grouping, self overlaps have to be taken into account and
      * removed (expensive!)
      */
+    public static String REMOVE_OVERLAPS_KEY = "removeOverlaps";
+
+    /**
+     * Default value for REMOVE_OVERLAPS_KEY
+     */
     public static boolean DEFAULT_REMOVE_OVERLAPS = false;
     
     /**
@@ -190,7 +195,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     public static boolean DEFAULT_FOLLOW_LINE = false;
 
     /**
-     * When TRUE labels text will be underline, the underline wil have the same color of the text.
+     * When TRUE labels text will be underline, the underline will have the same color of the text.
      */
     String UNDERLINE_TEXT_KEY = "underlineText";
 
@@ -198,6 +203,16 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      * If labels text should be underline or not.
      */
     boolean DEFAULT_UNDERLINE_TEXT = false;
+    
+    /**
+     * When TRUE labels text will be stroked through, the line will have the same color of the text.
+     */
+    String STRIKETHROUGH_TEXT_KEY = "strikethroughText";
+
+    /**
+     * If labels text should be stroke through or not.
+     */
+    boolean DEFAULT_STRIKETHROUGH_TEXT = false;
     
     /**
      * When drawing curved labels, max allowed angle between two subsequent characters. Higher
@@ -312,7 +327,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     /**
      * Option to enable automatic adjustment of the space between characters
      */
-    String KERNING = "kerning";
+    String KERNING_KEY = "kerning";
 
     /**
      * Default behaviour is to perform kerning

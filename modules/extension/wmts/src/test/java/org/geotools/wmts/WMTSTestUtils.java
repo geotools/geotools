@@ -29,8 +29,8 @@ import org.geotools.xml.Parser;
  *
  * @author Emanuele Tajariol (etj AT geo-solutions DOT it)
  */
-public class WMTSTestUtils
-{
+public class WMTSTestUtils {
+
     public static WMTSCapabilities createCapabilities(String capFile) throws Exception {
         File getCaps = TestData.file(null, capFile);
         assertNotNull(getCaps);
@@ -38,7 +38,8 @@ public class WMTSTestUtils
         Parser parser = new Parser(new WMTSConfiguration());
 
         Object object = parser.parse(new FileReader(getCaps));
-        assertTrue("Capabilities failed to parse " + object.getClass(), object instanceof CapabilitiesType);
+        assertTrue("Capabilities failed to parse " + object.getClass(),
+                object instanceof CapabilitiesType);
 
         WMTSCapabilities capabilities = new WMTSCapabilities((CapabilitiesType) object);
         return capabilities;

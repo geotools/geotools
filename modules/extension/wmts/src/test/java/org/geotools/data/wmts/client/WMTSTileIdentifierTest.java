@@ -48,11 +48,12 @@ public class WMTSTileIdentifierTest {
         this.tileId = null;
     }
 
-    protected TileIdentifier createTestTileIdentifier(int z, int x, int y, String name) throws Exception {
-        if(service==null) {
+    protected TileIdentifier createTestTileIdentifier(int z, int x, int y, String name)
+            throws Exception {
+        if (service == null) {
             this.setup();
         }
-        return createTestTileIdentifier(new WMTSZoomLevel(z,service), x, y, name);
+        return createTestTileIdentifier(new WMTSZoomLevel(z, service), x, y, name);
     }
 
     @Before
@@ -93,23 +94,22 @@ public class WMTSTileIdentifierTest {
 
     @Test
     public void testGetRightNeighbour() {
-        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(11, 12,
-                new WMTSZoomLevel(5,service), "SomeService");
+        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(11, 12, new WMTSZoomLevel(5, service),
+                "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getRightNeighbour());
     }
 
     @Test
     public void testGetLowertNeighbour() {
-        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(10, 13,
-                new WMTSZoomLevel(5,service), "SomeService");
+        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(10, 13, new WMTSZoomLevel(5, service),
+                "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getLowerNeighbour());
     }
 
-    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel,
-            int x, int y, String name) {
+    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel, int x, int y,
+            String name) {
         return new WMTSTileIdentifier(x, y, zoomLevel, name);
-
     }
 }

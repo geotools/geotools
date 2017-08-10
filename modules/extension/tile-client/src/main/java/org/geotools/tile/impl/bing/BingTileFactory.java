@@ -26,17 +26,13 @@ import org.geotools.tile.impl.ZoomLevel;
  *
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/bing/BingTileFactory.java $
  */
 class BingTileFactory extends WebMercatorTileFactory {
 
-    public Tile findTileAtCoordinate(double lon, double lat,
-            ZoomLevel zoomLevel, TileService service) {
+    public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel,
+            TileService service) {
 
-        int[] tileXY = BingTileUtil.lonLatToPixelXY(lon, lat,
-                zoomLevel.getZoomLevel());
+        int[] tileXY = BingTileUtil.lonLatToPixelXY(lon, lat, zoomLevel.getZoomLevel());
 
         int colX = (int) Math.floor(tileXY[0] / BingTile.DEFAULT_TILE_SIZE);
         int rowY = (int) Math.floor(tileXY[1] / BingTile.DEFAULT_TILE_SIZE);
@@ -46,14 +42,12 @@ class BingTileFactory extends WebMercatorTileFactory {
 
     @Override
     public Tile findRightNeighbour(Tile tile, TileService service) {
-        return new BingTile(tile.getTileIdentifier().getRightNeighbour(),
-                service);
+        return new BingTile(tile.getTileIdentifier().getRightNeighbour(), service);
     }
 
     @Override
     public Tile findLowerNeighbour(Tile tile, TileService service) {
-        return new BingTile(tile.getTileIdentifier().getLowerNeighbour(),
-                service);
+        return new BingTile(tile.getTileIdentifier().getLowerNeighbour(), service);
     }
 
 }

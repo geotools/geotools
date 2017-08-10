@@ -35,7 +35,7 @@ public class WMTSLayer extends Layer {
     static public final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.wmts");
 
-    Map<String,TileMatrixSetLink> limits = new HashMap<>();
+    Map<String, TileMatrixSetLink> limits = new HashMap<>();
 
     List<String> formats = new ArrayList<>();
 
@@ -51,47 +51,53 @@ public class WMTSLayer extends Layer {
     public WMTSLayer(String title) {
         super(title);
     }
+
     /**
      * @return the limits
      */
     public Map<String, TileMatrixSetLink> getTileMatrixLinks() {
         return limits;
     }
+
     /**
      * @param limitList
      */
     public void addTileMatrixLinks(List<TileMatrixSetLink> limitList) {
 
-        for(TileMatrixSetLink limit:limitList) {
-            limits.put(limit.getIdentifier(),limit);
+        for (TileMatrixSetLink limit : limitList) {
+            limits.put(limit.getIdentifier(), limit);
         }
-
     }
 
     public void addTileMatrixLink(TileMatrixSetLink link) {
-        limits.put(link.getIdentifier(),link);
-
+        limits.put(link.getIdentifier(), link);
     }
+
     /**
      * @return the formats
      */
     public List<String> getFormats() {
         return formats;
     }
+
     /**
-     * @param formats the formats to set
+     * @param formats
+     *            the formats to set
      */
     public void setFormats(List<String> formats) {
         this.formats = formats;
     }
+
     /**
      * @return the infoFormats
      */
     public List<String> getInfoFormats() {
         return infoFormats;
     }
+
     /**
-     * @param infoFormats the infoFormats to set
+     * @param infoFormats
+     *            the infoFormats to set
      */
     public void setInfoFormats(List<String> infoFormats) {
         this.infoFormats = infoFormats;
@@ -102,32 +108,34 @@ public class WMTSLayer extends Layer {
      * @param template
      */
     public void putResourceURL(String format, String template) {
-        templates.put(format,template);
-
+        templates.put(format, template);
     }
+
     /**
      * @param object
      * @return
      */
     public String getTemplate(String key) {
-
         return templates.get(key);
     }
 
     public void addSRS(CoordinateReferenceSystem crs) {
-        if(srs==null) {
+        if (srs == null) {
             srs = new HashSet<>();
         }
         srs.addAll(extractCRSNames(crs));
     }
+
     /**
      * @return the preferredCRS
      */
     public CoordinateReferenceSystem getPreferredCRS() {
         return preferredCRS;
     }
+
     /**
-     * @param preferredCRS the preferredCRS to set
+     * @param preferredCRS
+     *            the preferredCRS to set
      */
     public void setPreferredCRS(CoordinateReferenceSystem preferredCRS) {
         this.preferredCRS = preferredCRS;

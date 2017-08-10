@@ -30,8 +30,11 @@ import org.geotools.data.wmts.model.WMTSServiceType;
  */
 public class GetTileResponse extends Response {
     private WMTSServiceType type;
+
     private URL requestURL;
-    public GetTileResponse(HTTPResponse httpResponse, WMTSServiceType wmtsServiceType) throws ServiceException, IOException {
+
+    public GetTileResponse(HTTPResponse httpResponse, WMTSServiceType wmtsServiceType)
+            throws ServiceException, IOException {
         super(httpResponse);
         this.setType(wmtsServiceType);
     }
@@ -44,7 +47,8 @@ public class GetTileResponse extends Response {
     }
 
     /**
-     * @param type the type to set
+     * @param type
+     *            the type to set
      */
     public void setType(WMTSServiceType type) {
         this.type = type;
@@ -58,7 +62,8 @@ public class GetTileResponse extends Response {
     }
 
     /**
-     * @param requestURL the requestURL to set
+     * @param requestURL
+     *            the requestURL to set
      */
     public void setRequestURL(URL requestURL) {
         this.requestURL = requestURL;

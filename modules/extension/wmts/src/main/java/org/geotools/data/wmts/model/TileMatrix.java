@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import org.opengis.referencing.FactoryException;
 
 public class TileMatrix {
+
     static private final GeometryFactory gf = new GeometryFactory();
 
     String identifier;
@@ -48,8 +49,9 @@ public class TileMatrix {
     int matrixWidth;
 
     int matrixHeight;
-    
+
     private TileMatrixSet parent;
+
     /**
      * @return the identifier
      */
@@ -58,7 +60,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param identifier the identifier to set
+     * @param identifier
+     *            the identifier to set
      */
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
@@ -76,7 +79,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param denominator the denominator to set
+     * @param denominator
+     *            the denominator to set
      */
     public void setDenominator(double denominator) {
         this.denominator = denominator;
@@ -91,7 +95,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param topLeft the topLeft to set
+     * @param topLeft
+     *            the topLeft to set
      */
     public void setTopLeft(Point topLeft) {
         this.topLeft = topLeft;
@@ -105,7 +110,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param tileWidth the tileWidth to set
+     * @param tileWidth
+     *            the tileWidth to set
      */
     public void setTileWidth(int tileWidth) {
         this.tileWidth = tileWidth;
@@ -119,7 +125,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param tileHeight the tileHeight to set
+     * @param tileHeight
+     *            the tileHeight to set
      */
     public void setTileHeight(int tileHeight) {
         this.tileHeight = tileHeight;
@@ -133,7 +140,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param matrixWidth the matrixWidth to set
+     * @param matrixWidth
+     *            the matrixWidth to set
      */
     public void setMatrixWidth(int matrixWidth) {
         this.matrixWidth = matrixWidth;
@@ -147,7 +155,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param matrixHeight the matrixHeight to set
+     * @param matrixHeight
+     *            the matrixHeight to set
      */
     public void setMatrixHeight(int matrixHeight) {
         this.matrixHeight = matrixHeight;
@@ -156,8 +165,7 @@ public class TileMatrix {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getIdentifier()).append("\t")
-                .append(getDenominator()).append("\t")
+        sb.append(getIdentifier()).append("\t").append(getDenominator()).append("\t")
                 .append(getResolution()).append("\t");
         sb.append(getTopLeft()).append("\t");
         sb.append(getTileWidth()).append("x").append(getTileHeight()).append("\n");
@@ -169,44 +177,47 @@ public class TileMatrix {
      * @param doubleValue2
      */
     public void setTopLeft(double lon, double lat) {
-        boolean isLongitudeFirstAxisOrderForced = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER) ||
-                GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
+        boolean isLongitudeFirstAxisOrderForced = Boolean
+                .getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
+                || GeoTools.getDefaultHints()
+                        .get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
 
         CoordinateReferenceSystem crs = getCrs();
-        if (isLongitudeFirstAxisOrderForced
-                || (crs != null && crs.getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.EAST))) {
-            topLeft = gf.createPoint(new Coordinate(lon,lat));
+        if (isLongitudeFirstAxisOrderForced || (crs != null && crs.getCoordinateSystem().getAxis(0)
+                .getDirection().equals(AxisDirection.EAST))) {
+            topLeft = gf.createPoint(new Coordinate(lon, lat));
             return;
         }
-        //guess lat/lon?
-        topLeft = gf.createPoint(new Coordinate(lat,lon));
+        // guess lat/lon?
+        topLeft = gf.createPoint(new Coordinate(lat, lon));
     }
 
-    public TileMatrixSet getParent()
-    {
+    public TileMatrixSet getParent() {
         return parent;
     }
 
-    public void setParent(TileMatrixSet parent)
-    {
+    public void setParent(TileMatrixSet parent) {
         this.parent = parent;
     }
 
     private CoordinateReferenceSystem parsedCrs = null;
+
     private boolean isCrsParsed = false;
+
     /**
      * Retrieve the CRS from the parent TileMatrixSet
      */
     public CoordinateReferenceSystem getCrs() {
-        if(isCrsParsed) {
+        if (isCrsParsed) {
             return parsedCrs;
         }
-        if(parent != null) {
+        if (parent != null) {
             try {
                 parsedCrs = parent.getCoordinateReferenceSystem();
 
             } catch (FactoryException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Can't parse CRS: " + e.getMessage(), e);
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+                        "Can't parse CRS: " + e.getMessage(), e);
             }
             isCrsParsed = true; // mark it as parsed even if error occurred
         }

@@ -24,20 +24,15 @@ import org.geotools.tile.TileService;
 
 /**
  * <p>
- * The WebMercatorTileFactory is an abstract class that holds some of the tile
- * calculation logic for Mercator-based tile services.
+ * The WebMercatorTileFactory is an abstract class that holds some of the tile calculation logic for Mercator-based tile services.
  * </p>
  * <p>
- * <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">
- * OpenStreetMap Wiki</a>
+ * <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames"> OpenStreetMap Wiki</a>
  * http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Java
  * </p>
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/WebMercatorTileFactory.java $
  */
 public abstract class WebMercatorTileFactory extends TileFactory {
 
@@ -47,15 +42,13 @@ public abstract class WebMercatorTileFactory extends TileFactory {
         return new WebMercatorZoomLevel(zoomLevel);
     }
 
-    public static ReferencedEnvelope getExtentFromTileName(
-            TileIdentifier tileName) {
+    public static ReferencedEnvelope getExtentFromTileName(TileIdentifier tileName) {
 
         final int z = tileName.getZ();
 
-        ReferencedEnvelope extent = new ReferencedEnvelope(tile2lon(
-                tileName.getX(), z), tile2lon(tileName.getX() + 1, z),
-                tile2lat(tileName.getY(), z), tile2lat(tileName.getY() + 1, z),
-                DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope extent = new ReferencedEnvelope(tile2lon(tileName.getX(), z),
+                tile2lon(tileName.getX() + 1, z), tile2lat(tileName.getY(), z),
+                tile2lat(tileName.getY() + 1, z), DefaultGeographicCRS.WGS84);
 
         return extent;
     }

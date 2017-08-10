@@ -33,9 +33,10 @@ import org.geotools.styling.StyleFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Wraps a WMTS layer into a {@link MapLayer} for interactive rendering usage
+ * Wraps a WMTS layer into a {@link MapLayer} for interactive rendering usage.
  * 
  * TODO: expose a GetFeatureInfo that returns a feature collection
+ *
  * TODO: expose the list of named styles and allow choosing which style to use
  *
  * @author Ian Turton
@@ -45,6 +46,7 @@ public class WMTSMapLayer extends GridReaderLayer {
 
     static public final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.map");
+
     /**
      * The default raster style
      */
@@ -72,16 +74,16 @@ public class WMTSMapLayer extends GridReaderLayer {
      * @param layer
      */
     public WMTSMapLayer(WebMapTileServer wmts, Layer layer) {
-        super( new WMTSCoverageReader(wmts, layer), STYLE );
+        super(new WMTSCoverageReader(wmts, layer), STYLE);
     }
-    
-    public WMTSCoverageReader getReader(){
+
+    public WMTSCoverageReader getReader() {
         return (WMTSCoverageReader) this.reader;
     }
 
     public synchronized ReferencedEnvelope getBounds() {
         WMTSCoverageReader wmsReader = getReader();
-        if( wmsReader != null ){
+        if (wmsReader != null) {
             return wmsReader.bounds;
         }
         return super.getBounds();
@@ -115,9 +117,12 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     /**
-     * Returns true if the specified CRS can be used directly to perform WMS requests. Natively
-     * supported crs will provide the best rendering quality as no client side reprojection is
-     * necessary, the image coming from the WMS server will be used as-is
+     * Returns true if the specified CRS can be used directly to perform WMS
+     * requests.
+     *
+     * Natively supported crs will provide the best rendering quality as no
+     * client side reprojection is necessary, the image coming from the WMS
+     * server will be used as-is
      *
      * @param crs
      * @return

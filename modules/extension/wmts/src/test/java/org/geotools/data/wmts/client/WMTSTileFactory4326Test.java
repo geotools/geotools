@@ -93,7 +93,6 @@ public class WMTSTileFactory4326Test {
             new TestPoint(50, 70, 1, 0, 2),
             new TestPoint(50, -70, 1,  0,2),
             new TestPoint(-50, 70, 1,  0,2)
-        };
 
 //        TestPoint[] tests = {
 //            new TestPoint(90, -180, 2, 1,1),

@@ -17,13 +17,13 @@
 package org.geotools.data.wmts.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.geotools.data.ows.CRSEnvelope;
 
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 
 public class TileMatrixSet {
     private static final CoordinateReferenceSystem WEB_MERCATOR_CRS;
@@ -41,6 +41,7 @@ public class TileMatrixSet {
         WEB_MERCATOR_CRS = tmpCrs;
 
     }
+
     final public static String OWS = "http://www.opengis.net/ows/1.1";
 
     private String identifier;
@@ -75,9 +76,10 @@ public class TileMatrixSet {
 
     public CoordinateReferenceSystem getCoordinateReferenceSystem()
             throws NoSuchAuthorityCodeException, FactoryException {
-        
+
         //TODO: Kill who ever is still using this hack!
-        if(crs.equalsIgnoreCase("epsg:900913")||crs.equalsIgnoreCase("urn:ogc:def:crs:EPSG::900913")) {
+        if (crs.equalsIgnoreCase("epsg:900913")
+                || crs.equalsIgnoreCase("urn:ogc:def:crs:EPSG::900913")) {
             return WEB_MERCATOR_CRS;
         }
 
@@ -87,7 +89,7 @@ public class TileMatrixSet {
     /**
      * @return the matrices
      */
-    public ArrayList<TileMatrix> getMatrices() {
+    public List<TileMatrix> getMatrices() {
         return matrices;
     }
 

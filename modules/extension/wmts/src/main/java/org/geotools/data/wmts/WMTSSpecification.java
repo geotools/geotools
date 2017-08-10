@@ -40,6 +40,7 @@ import org.geotools.ows.ServiceException;
 public class WMTSSpecification extends Specification {
 
     public static final String WMTS_VERSION = "1.0.0";
+
     private WMTSServiceType type;
 
     /**
@@ -61,7 +62,8 @@ public class WMTSSpecification extends Specification {
         return new GetCapsRequest(server);
     }
 
-    public GetTileRequest createGetTileRequest(URL server, Properties props, WMTSCapabilities caps) {
+    public GetTileRequest createGetTileRequest(URL server, Properties props,
+            WMTSCapabilities caps) {
         return new GetTileRequest(server, props, caps);
 
     }
@@ -73,7 +75,8 @@ public class WMTSSpecification extends Specification {
          * @param properties
          * @param type
          */
-        public GetTileRequest(URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
+        public GetTileRequest(URL onlineResource, Properties properties,
+                WMTSCapabilities capabilities) {
             super(onlineResource, properties);
             this.type = capabilities.getType();
             this.capabilities = capabilities;
@@ -83,7 +86,7 @@ public class WMTSSpecification extends Specification {
         public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
             // TODO Auto-generated method stub
             return new GetTileResponse(response, getType());
-       }
+        }
 
         @Override
         protected void initVersion() {
@@ -98,7 +101,8 @@ public class WMTSSpecification extends Specification {
         }
 
         /**
-         * @param type the type to set
+         * @param type
+         *            the type to set
          */
         public void setType(WMTSServiceType type) {
             this.type = type;
@@ -110,30 +114,31 @@ public class WMTSSpecification extends Specification {
         /**
          * Construct a Request compatible with a 1.0.1 WMTS.
          *
-         * @param urlGetCapabilities URL of GetCapabilities document.
+         * @param urlGetCapabilities
+         *            URL of GetCapabilities document.
          */
-        public GetCapsRequest( URL urlGetCapabilities ) {
+        public GetCapsRequest(URL urlGetCapabilities) {
             super(urlGetCapabilities);
         }
 
         @Override
         protected void initService() {
-            setProperty(SERVICE , "WMTS");
+            setProperty(SERVICE, "WMTS");
         }
 
         @Override
         protected void initVersion() {
-            setProperty(VERSION, WMTS_VERSION); //$NON-NLS-1$ //$NON-NLS-2$
+            setProperty(VERSION, WMTS_VERSION); // $NON-NLS-1$ //$NON-NLS-2$
         }
 
         @Override
-        protected String processKey( String key ) {
+        protected String processKey(String key) {
             return WMTSSpecification.processKey(key);
         }
 
         @Override
-        public WMTSGetCapabilitiesResponse createResponse(HTTPResponse httpResponse) throws ServiceException,
-                IOException {
+        public WMTSGetCapabilitiesResponse createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
             return new WMTSGetCapabilitiesResponse(httpResponse, hints);
         }
     }
@@ -146,6 +151,5 @@ public class WMTSSpecification extends Specification {
 
         return key.trim().toUpperCase();
     }
-
 
 }

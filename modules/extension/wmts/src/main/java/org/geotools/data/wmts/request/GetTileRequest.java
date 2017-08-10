@@ -33,6 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * DOC TODO
  *
  * (Based on existing work by rgould for WMS service)
+ * 
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  *
@@ -46,8 +47,11 @@ public interface GetTileRequest extends Request {
     Set<Tile> getTiles() throws ServiceException;
 
     void setRequestedHeight(int height);
+
     void setRequestedWidth(int width);
+
     void setRequestedBBox(ReferencedEnvelope bbox);
+
     void setRequestedTime(String time);
 
     void setCRS(CoordinateReferenceSystem coordinateReferenceSystem);

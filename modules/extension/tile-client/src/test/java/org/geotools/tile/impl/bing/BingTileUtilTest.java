@@ -38,13 +38,12 @@ public class BingTileUtilTest {
 
         int levelOfDetail = 5;
 
-        int[] pixelXY = BingTileUtil.lonLatToPixelXY(coords[0], coords[1],
-                levelOfDetail);
+        int[] pixelXY = BingTileUtil.lonLatToPixelXY(coords[0], coords[1], levelOfDetail);
 
         Assert.assertArrayEquals(new int[] { 4255, 2742 }, pixelXY);
 
-        double[] calculatedCoords = BingTileUtil.pixelXYToLonLat(pixelXY[0],
-                pixelXY[1], levelOfDetail);
+        double[] calculatedCoords = BingTileUtil.pixelXYToLonLat(pixelXY[0], pixelXY[1],
+                levelOfDetail);
 
         double delta = 0.000001;
         Assert.assertEquals(calculatedCoords[0], 6.9873046875, delta);
@@ -59,12 +58,10 @@ public class BingTileUtilTest {
 
         int levelOfDetail = 5;
 
-        int[] pixelXY = BingTileUtil.lonLatToPixelXY(coords[0], coords[1],
-                levelOfDetail);
+        int[] pixelXY = BingTileUtil.lonLatToPixelXY(coords[0], coords[1], levelOfDetail);
         int[] tileXY = BingTileUtil.pixelXYToTileXY(pixelXY[0], pixelXY[1]);
 
-        String quadKey = BingTileUtil.tileXYToQuadKey(tileXY[0], tileXY[1],
-                levelOfDetail);
+        String quadKey = BingTileUtil.tileXYToQuadKey(tileXY[0], tileXY[1], levelOfDetail);
 
         Assert.assertEquals("12020", quadKey);
 
@@ -76,13 +73,11 @@ public class BingTileUtilTest {
         double[] coords = { 7, 51 };
         int levelOfDetail = 5;
 
-        String quadKey = BingTileUtil.lonLatToQuadKey(coords[0], coords[1],
-                levelOfDetail);
+        String quadKey = BingTileUtil.lonLatToQuadKey(coords[0], coords[1], levelOfDetail);
 
         Assert.assertEquals("12020", quadKey);
 
-        String quadKey2 = BingTileUtil
-                .lonLatToQuadKey(coords[0], coords[1], 12);
+        String quadKey2 = BingTileUtil.lonLatToQuadKey(coords[0], coords[1], 12);
         Assert.assertEquals("120203023133", quadKey2);
     }
 
@@ -92,8 +87,8 @@ public class BingTileUtilTest {
         double[] coords = { 7, 51 };
         int levelOfDetail = 8;
 
-        ReferencedEnvelope env = BingTileUtil.getTileBoundingBox(coords[0],
-                coords[1], levelOfDetail);
+        ReferencedEnvelope env = BingTileUtil.getTileBoundingBox(coords[0], coords[1],
+                levelOfDetail);
 
         double delta = 0.000001;
         Assert.assertEquals(5.625, env.getMinX(), delta);
@@ -110,8 +105,7 @@ public class BingTileUtilTest {
         Assert.assertEquals(BingTile.DEFAULT_TILE_SIZE, BingTileUtil.mapSize(0));
 
         Assert.assertEquals(512, BingTileUtil.mapSize(1));
-        Assert.assertEquals(BingTile.DEFAULT_TILE_SIZE * 2,
-                BingTileUtil.mapSize(1));
+        Assert.assertEquals(BingTile.DEFAULT_TILE_SIZE * 2, BingTileUtil.mapSize(1));
 
         Assert.assertEquals(1024, BingTileUtil.mapSize(2));
     }

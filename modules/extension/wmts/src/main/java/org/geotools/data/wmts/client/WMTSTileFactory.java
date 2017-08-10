@@ -45,6 +45,7 @@ import org.opengis.referencing.cs.CoordinateSystem;
 public class WMTSTileFactory extends TileFactory {
     /** pixelSizeMeters */
     private static final double PixelSizeMeters = 0.28e-3;
+
     private static final Logger LOGGER = Logging
             .getLogger(WMTSTileFactory.class.getPackage().getName());
 
@@ -54,7 +55,6 @@ public class WMTSTileFactory extends TileFactory {
     public WMTSTileFactory() {
         // TODO Auto-generated constructor stub
     }
-
 
     @Override
     public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel,
@@ -74,14 +74,14 @@ public class WMTSTileFactory extends TileFactory {
             tileMatrixLimits.setMaxRow(tileMatrix.getMatrixHeight());
         }
 
-
         double pixelSpan = getPixelSpan(tileMatrix);
 
         double tileSpanY = (tileMatrix.getTileHeight() * pixelSpan);
         double tileSpanX = (tileMatrix.getTileWidth() * pixelSpan);
         double tileMatrixMinX;
         double tileMatrixMaxY;
-        if (tileMatrix.getCrs().getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.EAST)) {
+        if (tileMatrix.getCrs().getCoordinateSystem().getAxis(0).getDirection()
+                .equals(AxisDirection.EAST)) {
             tileMatrixMinX = tileMatrix.getTopLeft().getX();
             tileMatrixMaxY = tileMatrix.getTopLeft().getY();
         } else {
@@ -104,7 +104,8 @@ public class WMTSTileFactory extends TileFactory {
         if (yTile < tileMatrixLimits.getMinrow())
             yTile = tileMatrixLimits.getMinrow();
 
-        LOGGER.fine("findTile: (lon,lat)=("+lon+","+lat+")  (col,row)=" + xTile + ", " + yTile + " zoom:" + zoomLevel.getZoomLevel());
+        LOGGER.fine("findTile: (lon,lat)=(" + lon + "," + lat + ")  (col,row)=" + xTile + ", "
+                + yTile + " zoom:" + zoomLevel.getZoomLevel());
         return new WMTSTile((int) xTile, (int) yTile, zoomLevel, service);
     }
 
@@ -115,14 +116,12 @@ public class WMTSTileFactory extends TileFactory {
 
     @Override
     public Tile findRightNeighbour(Tile tile, TileService service) {
-
         return new WMTSTile((WMTSTileIdentifier) tile.getTileIdentifier().getRightNeighbour(),
                 service);
     }
 
     @Override
     public Tile findLowerNeighbour(Tile tile, TileService service) {
-
         return new WMTSTile((WMTSTileIdentifier) tile.getTileIdentifier().getLowerNeighbour(),
                 service);
     }
@@ -170,7 +169,6 @@ public class WMTSTileFactory extends TileFactory {
         return ret;
     }
 
-
     /**
      * @param tileMatrix
      * @param unit
@@ -179,15 +177,20 @@ public class WMTSTileFactory extends TileFactory {
     private static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
         Unit<?> unit = coordinateSystem.getAxis(0).getUnit();
-        double pixelSpan = tileMatrix.getDenominator() * PixelSizeMeters;// now divide by meters per unit!
-        if (unit.equals(NonSI.DEGREE_ANGLE)) {
-            /*// use the length of a degree at the equator = 60 nautical miles!
-            unit = NonSI.NAUTICAL_MILE;
-            UnitConverter metersperunit = unit.getConverterTo(SI.METER);
-            pixelSpan /= metersperunit.convert(60.0);*/
 
-            //constant value from https://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
-            //apparently - 60.10764611706782 NaMiles
+        // now divide by meters per unit!
+        double pixelSpan = tileMatrix.getDenominator() * PixelSizeMeters;
+        if (unit.equals(NonSI.DEGREE_ANGLE)) {
+            /*
+             * use the length of a degree at the equator = 60 nautical miles!
+             * unit = NonSI.NAUTICAL_MILE; UnitConverter metersperunit =
+             * unit.getConverterTo(SI.METER); pixelSpan /=
+             * metersperunit.convert(60.0);
+             */
+
+            // constant value from
+            // https://msi.nga.mil/MSISiteContent/StaticFiles/Calculators/degree.html
+            // apparently - 60.10764611706782 NaMiles
             pixelSpan /= 111319;
         } else {
             UnitConverter metersperunit = unit.getConverterTo(SI.METER);

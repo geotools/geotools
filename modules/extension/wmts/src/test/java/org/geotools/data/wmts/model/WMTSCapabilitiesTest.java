@@ -29,6 +29,7 @@ import org.geotools.data.wmts.request.GetTileRequest;
 import org.xml.sax.SAXException;
 
 import junit.framework.TestCase;
+import org.apache.commons.collections.CollectionUtils;
 import org.geotools.data.wmts.WMTSSpecification;
 import org.geotools.data.wmts.WebMapTileServer;
 import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
@@ -50,7 +51,6 @@ public class WMTSCapabilitiesTest extends TestCase {
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.0.0");
     }
-
 
     protected void checkProperties(Properties properties) {
         assertEquals(properties.getProperty("REQUEST"), "GetCapabilities");
@@ -76,12 +76,11 @@ public class WMTSCapabilitiesTest extends TestCase {
             OperationType getTile = request.getGetTile();
             assertNotNull(getTile);
 
-            assertEquals(110,capabilities.getLayerList().size());
+            assertEquals(110, capabilities.getLayerList().size());
 
-            Layer[] layers = (Layer[]) capabilities.getLayerList()
-                    .toArray(new Layer[capabilities.getLayerList().size()]);
+            List<WMTSLayer> layers = capabilities.getLayerList();
+            WMTSLayer l0 = layers.get(0);
 
-            WMTSLayer l0 = (WMTSLayer)layers[0];
             assertEquals("OML_Foreshore", l0.getTitle());
             assertNull(l0.getParent());
             assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::4326")); // case should not matter
@@ -100,12 +99,12 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertEquals(7, tml3.getMincol());
             assertEquals(7, tml3.getMaxcol());
 
-            assertEquals("b_road",layers[1].getTitle());
-            assertEquals("meridian:b_road", layers[1].getName() );
-            assertEquals("b_road_polyline",layers[20].getTitle());
-            assertEquals("meridian:b_road_polyline",layers[20].getName());
+            assertEquals("b_road", layers.get(1).getTitle());
+            assertEquals("meridian:b_road", layers.get(1).getName());
+            assertEquals("b_road_polyline", layers.get(20).getTitle());
+            assertEquals("meridian:b_road_polyline", layers.get(20).getName());
 
-            CRSEnvelope bbox = (CRSEnvelope) layers[1].getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,7 +121,7 @@ public class WMTSCapabilitiesTest extends TestCase {
         try {
             assertEquals("1.0.0", capabilities.getVersion());
 
-            WMTSService service = (WMTSService)capabilities.getService();
+            WMTSService service = (WMTSService) capabilities.getService();
             assertEquals("OGC WMTS", service.getName());
             assertEquals("WMTS BGDI", service.getTitle());
 
@@ -136,37 +135,41 @@ public class WMTSCapabilitiesTest extends TestCase {
             OperationType getTile = request.getGetTile();
             assertNotNull(getTile);
 
-            assertEquals(306,capabilities.getLayerList().size());
+            assertEquals(306, capabilities.getLayerList().size());
 
-            Layer[] layers = (Layer[]) capabilities.getLayerList()
-                    .toArray(new Layer[capabilities.getLayerList().size()]);
-
-            WMTSLayer l0 = (WMTSLayer)layers[0];
+            List<WMTSLayer> layers = capabilities.getLayerList();
+            WMTSLayer l0 = layers.get(0);
 
             assertEquals("ch.are.agglomerationen_isolierte_staedte", l0.getName());
             assertNull(l0.getParent());
-            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::2056")); // case should not matter
-            assertTrue(l0.getSrs().contains("EPSG:2056")); // case should not matter
+            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::2056")); // case
+                                                                            // should
+                                                                            // not
+                                                                            // matter
+            assertTrue(l0.getSrs().contains("EPSG:2056")); // case should not
+                                                           // matter
 
             assertNotNull("Missing dimensions", l0.getDimensions());
             assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
             String dimName = l0.getDimensions().keySet().iterator().next();
-            assertTrue("Bad dimension name (Time!="+dimName+")", "Time".equalsIgnoreCase(dimName));
+            assertTrue("Bad dimension name (Time!=" + dimName + ")",
+                    "Time".equalsIgnoreCase(dimName));
 
             assertNotNull(l0.getTileMatrixLinks());
-            assertEquals(1,l0.getTileMatrixLinks().keySet().size());
+            assertEquals(1, l0.getTileMatrixLinks().keySet().size());
             assertEquals("2056_26", l0.getTileMatrixLinks().keySet().iterator().next());
-            assertEquals("2056_26", l0.getTileMatrixLinks().values().iterator().next().getIdentifier());
+            assertEquals("2056_26",
+                    l0.getTileMatrixLinks().values().iterator().next().getIdentifier());
             assertEquals(0, l0.getTileMatrixLinks().values().iterator().next().getLimits().size());
 
             assertEquals(12, capabilities.getMatrixSets().size());
             assertEquals("2056_17", capabilities.getMatrixSets().get(0).getIdentifier());
             assertEquals(18, capabilities.getMatrixSets().get(0).getMatrices().size());
-            assertEquals(14285750.5715, capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator());
+            assertEquals(14285750.5715,
+                    capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator());
 
-            CRSEnvelope bbox = (CRSEnvelope) layers[1].getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,7 +186,7 @@ public class WMTSCapabilitiesTest extends TestCase {
         try {
             assertEquals("1.0.0", capabilities.getVersion());
 
-            WMTSService service = (WMTSService)capabilities.getService();
+            WMTSService service = (WMTSService) capabilities.getService();
             assertEquals("OGC WMTS", service.getName());
             assertEquals("NASA Global Imagery Browse Services for EOSDIS", service.getTitle());
 
@@ -197,27 +200,26 @@ public class WMTSCapabilitiesTest extends TestCase {
             OperationType getTile = request.getGetTile();
             assertNotNull(getTile);
 
-            assertEquals(519,capabilities.getLayerList().size());
+            assertEquals(519, capabilities.getLayerList().size());
 
-            Layer[] layers = (Layer[]) capabilities.getLayerList()
-                    .toArray(new Layer[capabilities.getLayerList().size()]);
-
-            Layer l0 = layers[0];
+            List<WMTSLayer> layers = capabilities.getLayerList();
+            WMTSLayer l0 = layers.get(0);
 
             assertEquals("AMSR2_Snow_Water_Equivalent", l0.getName());
             assertNull(l0.getParent());
 
-            //assertTrue(l0.getSrs().contains("urn:ogc:def:crs:OGC:2:84")); // case should not matter
+            // assertTrue(l0.getSrs().contains("urn:ogc:def:crs:OGC:2:84")); //
+            // case should not matter
             assertTrue(l0.getSrs().contains("CRS:84"));
 
             assertNotNull("Missing dimensions", l0.getDimensions());
             assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
             String dimName = l0.getDimensions().keySet().iterator().next();
-            assertTrue("Bad dimension name (Time!="+dimName+")", "Time".equalsIgnoreCase(dimName));
+            assertTrue("Bad dimension name (Time!=" + dimName + ")",
+                    "Time".equalsIgnoreCase(dimName));
 
-            CRSEnvelope bbox = (CRSEnvelope) layers[1].getBoundingBoxes().get("EPSG:4326");
+            CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,12 +231,6 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
-    /**
-     * @param featureURL
-     * @throws IOException
-     * @throws URISyntaxException
-     * @throws SAXException
-     */
     protected WebMapTileServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);

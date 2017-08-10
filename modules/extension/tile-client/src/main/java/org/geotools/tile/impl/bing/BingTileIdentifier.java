@@ -31,9 +31,6 @@ import org.geotools.tile.impl.ZoomLevel;
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/bing/BingTileIdentifier.java $
  */
 public class BingTileIdentifier extends TileIdentifier {
 
@@ -45,22 +42,21 @@ public class BingTileIdentifier extends TileIdentifier {
      * @param y
      * @param serviceName
      */
-    public BingTileIdentifier(int x, int y, ZoomLevel zoomLevel,
-            String serviceName) {
+    public BingTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
         super(x, y, zoomLevel, serviceName);
     }
 
     public BingTileIdentifier getRightNeighbour() {
 
-        return new BingTileIdentifier(TileIdentifier.arithmeticMod(
-                (getX() + 1), getZoomLevel().getMaxTilePerRowNumber()), getY(),
-                getZoomLevel(), getServiceName());
+        return new BingTileIdentifier(
+                TileIdentifier.arithmeticMod((getX() + 1), getZoomLevel().getMaxTilePerRowNumber()),
+                getY(), getZoomLevel(), getServiceName());
     }
 
     public BingTileIdentifier getLowerNeighbour() {
 
-        return new BingTileIdentifier(getX(), TileIdentifier.arithmeticMod(
-                (getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
+        return new BingTileIdentifier(getX(),
+                TileIdentifier.arithmeticMod((getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
                 getZoomLevel(), getServiceName());
     }
 
@@ -69,7 +65,6 @@ public class BingTileIdentifier extends TileIdentifier {
     }
 
     public String getCode() {
-        return BingTileUtil.tileXYToQuadKey(this.getX(), this.getY(),
-                this.getZ());
+        return BingTileUtil.tileXYToQuadKey(this.getX(), this.getY(), this.getZ());
     }
 }

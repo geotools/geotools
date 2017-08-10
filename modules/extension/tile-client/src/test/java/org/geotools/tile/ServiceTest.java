@@ -68,27 +68,29 @@ public abstract class ServiceTest {
 
         extentNameToExtent = new HashMap<String, ReferencedEnvelope>();
 
-        DE_EXTENT = new ReferencedEnvelope(new Envelope(6, 15, 47, 55),
-                DefaultGeographicCRS.WGS84);
+        DE_EXTENT = new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
 
         extentNameToExtent.put(DE_EXTENT_NAME, DE_EXTENT);
 
-        BR_EXTENT = new ReferencedEnvelope(new Envelope(-43.72, -42.93, -23.10,
-                -22.63), DefaultGeographicCRS.WGS84);
+        BR_EXTENT = new ReferencedEnvelope(new Envelope(-43.72, -42.93, -23.10, -22.63),
+                DefaultGeographicCRS.WGS84);
 
         extentNameToExtent.put(BR_EXTENT_NAME, BR_EXTENT);
 
-        HAWAII_EXTENT = new ReferencedEnvelope(new Envelope(-160.635967,
-                -154.483623, 18.651309, 22.598660), DefaultGeographicCRS.WGS84);
+        HAWAII_EXTENT = new ReferencedEnvelope(
+                new Envelope(-160.635967, -154.483623, 18.651309, 22.598660),
+                DefaultGeographicCRS.WGS84);
         extentNameToExtent.put(HAWAII_EXTENT_NAME, HAWAII_EXTENT);
 
         // hmmm failing near date line
-        NZ_EXTENT = new ReferencedEnvelope(new Envelope(164.798799, 179.029327,
-                -47.732492, -33.697613), DefaultGeographicCRS.WGS84);
+        NZ_EXTENT = new ReferencedEnvelope(
+                new Envelope(164.798799, 179.029327, -47.732492, -33.697613),
+                DefaultGeographicCRS.WGS84);
         extentNameToExtent.put(NZ_EXTENT_NAME, NZ_EXTENT);
 
-        TZ_EXTENT = new ReferencedEnvelope(new Envelope(143.880831, 149.505830,
-                -43.700251, -40.338803), DefaultGeographicCRS.WGS84);
+        TZ_EXTENT = new ReferencedEnvelope(
+                new Envelope(143.880831, 149.505830, -43.700251, -40.338803),
+                DefaultGeographicCRS.WGS84);
         extentNameToExtent.put(TZ_EXTENT_NAME, TZ_EXTENT);
 
     }

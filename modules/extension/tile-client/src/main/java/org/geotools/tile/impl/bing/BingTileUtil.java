@@ -23,23 +23,17 @@ import org.geotools.tile.impl.WebMercatorTileService;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * BingTileUtil contains code ported from <a
- * href="https://msdn.microsoft.com/en-us/library/bb259689.aspx>Bing Maps</a>
- * offering a collection of utilities methods concerning Bing Maps and its tile
- * model.
+ * BingTileUtil contains code ported from <a href="https://msdn.microsoft.com/en-us/library/bb259689.aspx>Bing Maps</a> offering a collection of
+ * utilities methods concerning Bing Maps and its tile model.
  * <p>
- * Disclaimer: code contained here has been ported and, thus, re-written. The
- * comments, on the other hand, have been mostly taken verbatim with the sole
- * purpose of precision and keeping the original intent left clear. The author
- * does not claim copyrights or authorship for comments. Original comments are
+ * Disclaimer: code contained here has been ported and, thus, re-written. The comments, on the other hand, have been mostly taken verbatim with the
+ * sole purpose of precision and keeping the original intent left clear. The author does not claim copyrights or authorship for comments. Original
+ * comments are
  * <q>quoted</q>.
  * </p>
  *
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/bing/BingTileUtil.java $
  */
 public final class BingTileUtil {
 
@@ -48,30 +42,25 @@ public final class BingTileUtil {
     }
 
     /**
-     * <q>Converts a point from latitude/longitude WGS-84 coordinates (in
-     * degrees) into pixel XY coordinates at a specified level of detail.</q>
+     * <q>Converts a point from latitude/longitude WGS-84 coordinates (in degrees) into pixel XY coordinates at a specified level of detail.</q>
      * <p>
      * The Term "Level of detail" is a synonym for zoom level.
      * </p>
      *
      * @param longitude Longitude of the point, in degrees.
      * @param latitude Latitude of the point, in degrees.
-     * @param zoomLevel The zoom level or "Level of detail", from 1 (lowest
-     *        detail) to 23 (highest detail).
+     * @param zoomLevel The zoom level or "Level of detail", from 1 (lowest detail) to 23 (highest detail).
      * @return
      */
-    public static int[] lonLatToPixelXY(double longitude, double latitude,
-            int zoomLevel) {
+    public static int[] lonLatToPixelXY(double longitude, double latitude, int zoomLevel) {
         double _latitude = clip(latitude, WebMercatorTileService.MIN_LATITUDE,
                 WebMercatorTileService.MAX_LATITUDE);
-        double _longitude = clip(longitude,
-                WebMercatorTileService.MIN_LONGITUDE,
+        double _longitude = clip(longitude, WebMercatorTileService.MIN_LONGITUDE,
                 WebMercatorTileService.MAX_LONGITUDE);
 
         double x = (_longitude + 180) / 360;
         double sinLatitude = Math.sin(_latitude * Math.PI / 180);
-        double y = 0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude))
-                / (4 * Math.PI);
+        double y = 0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI);
 
         int mapSize = mapSize(zoomLevel);
         int pixelX = (int) clip(x * mapSize + 0.5, 0, mapSize - 1);
@@ -81,19 +70,16 @@ public final class BingTileUtil {
     }
 
     /**
-     * <q>Converts a pixel from pixel XY coordinates at a specified level of
-     * detail [i.e. zoom level] into latitude/longitude WGS-84 coordinates (in
+     * <q>Converts a pixel from pixel XY coordinates at a specified level of detail [i.e. zoom level] into latitude/longitude WGS-84 coordinates (in
      * degrees).</q>
      * <p>
-     * Note that the X and Y coordinates of a "virtual image" that contains all
-     * tiles of a given level. They are not the coordinates of a given column or
-     * row.
+     * Note that the X and Y coordinates of a "virtual image" that contains all tiles of a given level. They are not the coordinates of a given column
+     * or row.
      * </p>
      * 
      * @param pixelX X coordinate of the point, in pixels.
      * @param pixelY Y coordinates of the point, in pixels.
-     * @param zoomLevel zoom level or "Level of detail", from 1 (lowest detail)
-     *        to 23 (highest detail)
+     * @param zoomLevel zoom level or "Level of detail", from 1 (lowest detail) to 23 (highest detail)
      * @return
      */
     public static double[] pixelXYToLonLat(int pixelX, int pixelY, int zoomLevel) {
@@ -101,19 +87,16 @@ public final class BingTileUtil {
         double x = (clip(pixelX, 0, mapSize - 1) / mapSize) - 0.5;
         double y = 0.5 - (clip(pixelY, 0, mapSize - 1) / mapSize);
 
-        double latitude = 90 - 360 * Math.atan(Math.exp(-y * 2 * Math.PI))
-                / Math.PI;
+        double latitude = 90 - 360 * Math.atan(Math.exp(-y * 2 * Math.PI)) / Math.PI;
         double longitude = 360 * x;
 
         return new double[] { longitude, latitude };
     }
 
     /**
-     * <q>Determines the map width and height (in pixels) at a specified level
-     * of detail.</q>
+     * <q>Determines the map width and height (in pixels) at a specified level of detail.</q>
      * 
-     * @param zoomLevel Zoom level or "Level of detail", from 1 (lowest detail)
-     *        to 23 (highest detail)
+     * @param zoomLevel Zoom level or "Level of detail", from 1 (lowest detail) to 23 (highest detail)
      * @return the map size
      */
     public static int mapSize(int zoomLevel) {
@@ -121,8 +104,7 @@ public final class BingTileUtil {
     }
 
     /**
-     * <q>Converts pixel XY coordinates into tile XY coordinates of the tile
-     * containing the specified pixel.</q>
+     * <q>Converts pixel XY coordinates into tile XY coordinates of the tile containing the specified pixel.</q>
      * 
      * @param pixelX Pixel X coordinate.
      * @param pixelY Pixel Y coordinate.
@@ -136,13 +118,11 @@ public final class BingTileUtil {
     }
 
     /**
-     * <q>Converts tile XY coordinates into a QuadKey at a specified level of
-     * detail.</q>
+     * <q>Converts tile XY coordinates into a QuadKey at a specified level of detail.</q>
      * 
      * @param tileX Tile X coordinate.
      * @param tileY Tile Y coordinate.
-     * @param zoomLevel Zoom level or "Level of detail", from 1 (lowest detail)
-     *        to 23 (highest detail)
+     * @param zoomLevel Zoom level or "Level of detail", from 1 (lowest detail) to 23 (highest detail)
      * @return A string containing the QuadKey.
      */
     public static String tileXYToQuadKey(int tileX, int tileY, int zoomLevel) {
@@ -176,8 +156,7 @@ public final class BingTileUtil {
     }
 
     /**
-     * Finds the quadkey of a tile for a given pair of coordinates and at a
-     * given zoom level.
+     * Finds the quadkey of a tile for a given pair of coordinates and at a given zoom level.
      *
      * @param lon The longitude
      * @param lat The latitude
@@ -200,8 +179,7 @@ public final class BingTileUtil {
      * @param zoomLevel
      * @return A string denoting the quadkey of the tile.
      */
-    public static ReferencedEnvelope getTileBoundingBox(double lon, double lat,
-            int zoomLevel) {
+    public static ReferencedEnvelope getTileBoundingBox(double lon, double lat, int zoomLevel) {
 
         int[] imageXY = lonLatToPixelXY(lon, lat, zoomLevel);
 
@@ -211,14 +189,12 @@ public final class BingTileUtil {
         int tileTopLeftPixelX = numberOfTilesX * BingTile.DEFAULT_TILE_SIZE;
         int tileTopLeftPixelY = numberOfTilesY * BingTile.DEFAULT_TILE_SIZE;
 
-        double[] topLeftCoords = pixelXYToLonLat(tileTopLeftPixelX,
-                tileTopLeftPixelY, zoomLevel);
-        double[] bottomRightCoords = pixelXYToLonLat(tileTopLeftPixelX
-                + BingTile.DEFAULT_TILE_SIZE, tileTopLeftPixelY
-                + BingTile.DEFAULT_TILE_SIZE, zoomLevel);
+        double[] topLeftCoords = pixelXYToLonLat(tileTopLeftPixelX, tileTopLeftPixelY, zoomLevel);
+        double[] bottomRightCoords = pixelXYToLonLat(tileTopLeftPixelX + BingTile.DEFAULT_TILE_SIZE,
+                tileTopLeftPixelY + BingTile.DEFAULT_TILE_SIZE, zoomLevel);
 
-        Envelope envelope = new Envelope(topLeftCoords[0],
-                bottomRightCoords[0], topLeftCoords[1], bottomRightCoords[1]);
+        Envelope envelope = new Envelope(topLeftCoords[0], bottomRightCoords[0], topLeftCoords[1],
+                bottomRightCoords[1]);
 
         return new ReferencedEnvelope(envelope, DefaultGeographicCRS.WGS84);
     }

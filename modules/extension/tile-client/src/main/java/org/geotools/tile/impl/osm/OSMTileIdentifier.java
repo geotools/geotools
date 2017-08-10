@@ -30,15 +30,11 @@ import org.geotools.tile.impl.ZoomLevel;
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/osm/OSMTileIdentifier.java $
  */
 
 public class OSMTileIdentifier extends TileIdentifier {
 
-    public OSMTileIdentifier(int x, int y, ZoomLevel zoomLevel,
-            String serviceName) {
+    public OSMTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
         super(x, y, zoomLevel, serviceName);
     }
 
@@ -58,21 +54,20 @@ public class OSMTileIdentifier extends TileIdentifier {
 
     private StringBuilder createGenericCodeBuilder(final String separator) {
         StringBuilder sb = new StringBuilder(50);
-        sb.append(getZ()).append(separator).append(getX()).append(separator)
-                .append(getY());
+        sb.append(getZ()).append(separator).append(getX()).append(separator).append(getY());
 
         return sb;
     }
 
     public TileIdentifier getRightNeighbour() {
-        return new OSMTileIdentifier(TileIdentifier.arithmeticMod((getX() + 1),
-                getZoomLevel().getMaxTilePerRowNumber()), getY(),
-                getZoomLevel(), getServiceName());
+        return new OSMTileIdentifier(
+                TileIdentifier.arithmeticMod((getX() + 1), getZoomLevel().getMaxTilePerRowNumber()),
+                getY(), getZoomLevel(), getServiceName());
     }
 
     public TileIdentifier getLowerNeighbour() {
-        return new OSMTileIdentifier(getX(), TileIdentifier.arithmeticMod(
-                (getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
+        return new OSMTileIdentifier(getX(),
+                TileIdentifier.arithmeticMod((getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
                 getZoomLevel(), getServiceName());
     }
 

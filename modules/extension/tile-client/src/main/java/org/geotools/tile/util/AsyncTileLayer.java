@@ -35,9 +35,6 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/util/AsyncTileLayer.java $
  */
 public class AsyncTileLayer extends TileLayer {
 
@@ -49,8 +46,7 @@ public class AsyncTileLayer extends TileLayer {
 
     @Override
     protected void renderTiles(Collection<Tile> tiles, Graphics2D g2d,
-            ReferencedEnvelope viewportExtent,
-            AffineTransform worldToImageTransform) {
+            ReferencedEnvelope viewportExtent, AffineTransform worldToImageTransform) {
 
         long t = System.currentTimeMillis();
 
@@ -70,8 +66,7 @@ public class AsyncTileLayer extends TileLayer {
         // System.out.println("Async: " + (System.currentTimeMillis() - t));
     }
 
-    protected void renderTile(final Tile tile, final Graphics2D g2d,
-            final double[] points) {
+    protected void renderTile(final Tile tile, final Graphics2D g2d, final double[] points) {
 
         Runnable r = new Runnable() {
 
@@ -91,8 +86,7 @@ public class AsyncTileLayer extends TileLayer {
     }
 
     protected void localRenderTiles(Collection<Tile> tiles, Graphics2D g2d,
-            ReferencedEnvelope viewportExtent,
-            AffineTransform worldToImageTransform) {
+            ReferencedEnvelope viewportExtent, AffineTransform worldToImageTransform) {
 
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -104,8 +98,8 @@ public class AsyncTileLayer extends TileLayer {
 
             ReferencedEnvelope tileEnvViewport;
             try {
-                tileEnvViewport = nativeTileEnvelope.transform(
-                        viewportExtent.getCoordinateReferenceSystem(), true);
+                tileEnvViewport = nativeTileEnvelope
+                        .transform(viewportExtent.getCoordinateReferenceSystem(), true);
             } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }
@@ -128,5 +122,4 @@ public class AsyncTileLayer extends TileLayer {
         }
 
     }
-
 }

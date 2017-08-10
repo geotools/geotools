@@ -26,7 +26,8 @@ import org.geotools.tile.impl.ZoomLevel;
 public class WMTSTileIdentifier extends TileIdentifier {
 
     /**
-     * create an identifier based on /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
+     * create an identifier based on
+     * /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
      *
      * @param x
      * @param y
@@ -62,16 +63,14 @@ public class WMTSTileIdentifier extends TileIdentifier {
     @Override
     public TileIdentifier getRightNeighbour() {
         int width = getZoomLevel().getMaxTilePerRowNumber();
-        return new WMTSTileIdentifier(
-                TileIdentifier.arithmeticMod((getX() + 1), width),
-                getY(), getZoomLevel(), getServiceName());
+        return new WMTSTileIdentifier(TileIdentifier.arithmeticMod((getX() + 1), width), getY(),
+                getZoomLevel(), getServiceName());
     }
 
     @Override
     public TileIdentifier getLowerNeighbour() {
-        int height = ((WMTSZoomLevel)getZoomLevel()).getMaxTilePerColNumber();
-        return new WMTSTileIdentifier(getX(),
-                TileIdentifier.arithmeticMod((getY() + 1), height),
+        int height = ((WMTSZoomLevel) getZoomLevel()).getMaxTilePerColNumber();
+        return new WMTSTileIdentifier(getX(), TileIdentifier.arithmeticMod((getY() + 1), height),
                 getZoomLevel(), getServiceName());
     }
 

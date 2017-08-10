@@ -39,12 +39,13 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * A TileService represent the class of objects that serve map tiles. TileServices must at least have a name and a base URL.
+ * A TileService represent the class of objects that serve map tiles.
+ * 
+ * TileServices must at least have a name and a base URL.
  * 
  * @author to.srwn
  * @author Ugo Taddei
  * @since 12
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client /src/main/java/org/geotools/tile/TileService.java $
  */
 public abstract class TileService {
 
@@ -249,8 +250,8 @@ public abstract class TileService {
 
         // TODO understand the minus 1 below
         int zoomLevelA = getZoomLevelToUse(zoomLevelMatcher, scaleFactor, recommendedZoomLevel) - 1;
-        if(zoomLevelA<=0)
-            zoomLevelA=0; // this is related to the -1 above!
+        if (zoomLevelA <= 0)
+            zoomLevelA = 0; // this is related to the -1 above!
         ZoomLevel zoomLevel = tileFactory.getZoomLevel(zoomLevelA, this);
 
         long maxNumberOfTilesForZoomLevel = zoomLevel.getMaxTileNumber();
@@ -276,20 +277,18 @@ public abstract class TileService {
                 // get the next tile right of this one
                 // Tile rightNeighbour = movingTile.getRightNeighbour();
                 Tile rightNeighbour = tileFactory.findRightNeighbour(movingTile, this);// movingTile.getRightNeighbour();
-              
+
                 // Check if the new tile is still part of the extent and
                 // that we don't have the first tile again
                 if (extent.intersects((Envelope) rightNeighbour.getExtent())
                         && !firstTileOfRow.equals(rightNeighbour)) {
-
-                    
 
                     addTileToCache(rightNeighbour);
                     tileList.add(rightNeighbour);
 
                     movingTile = rightNeighbour;
                 } else {
-                    
+
                     break;
                 }
                 if (tileList.size() > maxNumberOfTiles) {

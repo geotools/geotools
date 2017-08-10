@@ -29,22 +29,17 @@ public class TileIdentifierTest {
 
     @Before
     public void beforeTest() {
-
         this.tileId = createTestTileIdentifier(5, 10, 12, "SomeService");
-
     }
 
     @After
     public void afterTest() {
-
         this.tileId = null;
-
     }
 
     @Test
     public void testConstructor() {
         Assert.assertNotNull(this.tileId);
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -102,8 +97,7 @@ public class TileIdentifierTest {
         Assert.assertEquals("SomeService", this.tileId.getServiceName());
     }
 
-    protected TileIdentifier createTestTileIdentifier(int z, int x, int y,
-            String name) {
+    protected TileIdentifier createTestTileIdentifier(int z, int x, int y, String name) {
         return createTestTileIdentifier(new WebMercatorZoomLevel(z), x, y, name);
     };
 
@@ -113,20 +107,19 @@ public class TileIdentifierTest {
         Assert.assertFalse(this.tileId.equals(null));
         Assert.assertFalse(this.tileId.equals("Blah"));
 
-        TileIdentifier otherTile = createTestTileIdentifier(5, 10, 12,
-                "SomeService");
+        TileIdentifier otherTile = createTestTileIdentifier(5, 10, 12, "SomeService");
         Assert.assertTrue(this.tileId.equals(otherTile));
         Assert.assertTrue(otherTile.equals(this.tileId));
 
     }
 
-    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel,
-            int x, int y, String name) {
+    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel, int x, int y,
+            String name) {
         return createTileIdentifierPrototype(zoomLevel, x, y, name);
     }
 
-    public static final TileIdentifier createTileIdentifierPrototype(
-            ZoomLevel zoomLevel, int x, int y, String name) {
+    public static final TileIdentifier createTileIdentifierPrototype(ZoomLevel zoomLevel, int x,
+            int y, String name) {
         return new TileIdentifier(x, y, zoomLevel, name) {
 
             @Override

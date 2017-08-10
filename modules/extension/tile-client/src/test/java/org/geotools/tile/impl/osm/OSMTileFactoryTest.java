@@ -33,14 +33,12 @@ public class OSMTileFactoryTest extends TileFactoryTest {
     @Test
     public void testGetTileFromCoordinate() {
 
-        Tile tile = factory.findTileAtCoordinate(51, 7,
-                new WebMercatorZoomLevel(5), createService());
+        Tile tile = factory.findTileAtCoordinate(51, 7, new WebMercatorZoomLevel(5),
+                createService());
 
         TileService service = createService();
-        OSMTile expectedTile = new OSMTile(20, 15, new WebMercatorZoomLevel(5),
-                service);
+        OSMTile expectedTile = new OSMTile(20, 15, new WebMercatorZoomLevel(5), service);
         Assert.assertEquals(expectedTile, tile);
-
     }
 
     @Test
@@ -51,11 +49,9 @@ public class OSMTileFactoryTest extends TileFactoryTest {
 
         Tile neighbour = factory.findRightNeighbour(tile, service);
 
-        OSMTile expectedNeighbour = new OSMTile(21, 15,
-                new WebMercatorZoomLevel(5), service);
+        OSMTile expectedNeighbour = new OSMTile(21, 15, new WebMercatorZoomLevel(5), service);
 
         Assert.assertEquals(expectedNeighbour, neighbour);
-
     }
 
     @Test
@@ -66,39 +62,34 @@ public class OSMTileFactoryTest extends TileFactoryTest {
 
         Tile neighbour = factory.findLowerNeighbour(tile, service);
 
-        OSMTile expectedNeighbour = new OSMTile(20, 16,
-                new WebMercatorZoomLevel(5), service);
+        OSMTile expectedNeighbour = new OSMTile(20, 16, new WebMercatorZoomLevel(5), service);
 
         Assert.assertEquals(expectedNeighbour, neighbour);
-
     }
 
     @Test
     public void testGetExtentFromTileName() {
 
-        OSMTileIdentifier tileId = new OSMTileIdentifier(10, 12,
-                new WebMercatorZoomLevel(5), "SomeName");
+        OSMTileIdentifier tileId = new OSMTileIdentifier(10, 12, new WebMercatorZoomLevel(5),
+                "SomeName");
         OSMTile tile = new OSMTile(tileId, new BingService("2", "d"));
 
-        ReferencedEnvelope env = WebMercatorTileFactory
-                .getExtentFromTileName(tileId);
+        ReferencedEnvelope env = WebMercatorTileFactory.getExtentFromTileName(tileId);
 
         Assert.assertEquals(tile.getExtent(), env);
 
-        ReferencedEnvelope expectedEnv = new ReferencedEnvelope(-67.5, -56.25,
-                31.9521622380, 40.9798980, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope expectedEnv = new ReferencedEnvelope(-67.5, -56.25, 31.9521622380,
+                40.9798980, DefaultGeographicCRS.WGS84);
 
         Assert.assertEquals(env.getMinX(), expectedEnv.getMinX(), 0.000001);
         Assert.assertEquals(env.getMinY(), expectedEnv.getMinY(), 0.000001);
         Assert.assertEquals(env.getMaxX(), expectedEnv.getMaxX(), 0.000001);
         Assert.assertEquals(env.getMaxY(), expectedEnv.getMaxY(), 0.000001);
-
     }
 
     private TileService createService() {
         String baseURL = "http://tile.openstreetmap.org/";
         return new OSMService("OSM", baseURL);
-
     }
 
     protected TileFactory createFactory() {

@@ -29,15 +29,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * <p>
- * The WebMercatorTileService is an abstract class that holds some of the tile
- * service logic for Mercator-based tile services.
+ * The WebMercatorTileService is an abstract class that holds some of the tile service logic for Mercator-based tile services.
  * </p>
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/WebMercatorTileService.java $
  */
 public abstract class WebMercatorTileService extends TileService {
 
@@ -60,12 +56,11 @@ public abstract class WebMercatorTileService extends TileService {
         try {
             tmpCrs = CRS.decode("EPSG:3857");
         } catch (FactoryException e) {
-            LOGGER.log(Level.SEVERE,
-                    "Failed to create Web Mercator CRS EPSG:3857", e);
+            LOGGER.log(Level.SEVERE, "Failed to create Web Mercator CRS EPSG:3857", e);
             throw new RuntimeException(e);
         }
+        
         WEB_MERCATOR_CRS = tmpCrs;
-
     }
 
     protected WebMercatorTileService(String name, String baseURL) {
@@ -73,8 +68,8 @@ public abstract class WebMercatorTileService extends TileService {
     }
 
     public ReferencedEnvelope getBounds() {
-        return new ReferencedEnvelope(MIN_LONGITUDE, MAX_LONGITUDE,
-                MIN_LATITUDE, MAX_LATITUDE, DefaultGeographicCRS.WGS84);
+        return new ReferencedEnvelope(MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE,
+                DefaultGeographicCRS.WGS84);
     }
 
     public CoordinateReferenceSystem getProjectedTileCrs() {

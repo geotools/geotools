@@ -16,14 +16,11 @@
  */
 package org.geotools.map;
 
-import static org.junit.Assert.fail;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-import org.geotools.data.ows.Layer;
 import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -32,7 +29,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.test.OnlineTestCase;
-import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -62,20 +58,21 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         restWMTS = new URL(fixture.getProperty("rest_server"));
         WebMapTileServer server2 = new WebMapTileServer(restWMTS);
         WMTSLayer w2layer = (WMTSLayer) server2.getCapabilities().getLayer("topp:states");
-        restMapLayer = new WMTSMapLayer(server2,w2layer);
+        restMapLayer = new WMTSMapLayer(server2, w2layer);
     }
 
     /**
      * Test method for {@link org.geotools.map.WMTSMapLayer#getBounds()}.
-     * @throws FactoryException 
+     * 
+     * @throws FactoryException
      */
     @Test
     public void testGetBounds() throws FactoryException {
         ReferencedEnvelope env = kvpMapLayer.getBounds();
         checkEnv(env);
         env = restMapLayer.getBounds();
-        //work out how to make MapProxy set bounds to layer size
-        //checkEnv(env);
+        // work out how to make MapProxy set bounds to layer size
+        // checkEnv(env);
     }
 
     /**
@@ -83,22 +80,27 @@ public class WMTSMapLayerTest extends OnlineTestCase {
      * @throws FactoryException
      */
     private void checkEnv(ReferencedEnvelope env) throws FactoryException {
-        assertEquals("wrong CRS","EPSG:3857", CRS.lookupIdentifier(env.getCoordinateReferenceSystem(),true));
-        assertEquals(env.getMinimum(0), -1.3885038382923e7,0.001);
-        assertEquals(env.getMinimum(1), 2870337.130793,0.001);
-        assertEquals(env.getMaximum(0), -7455049.489182421,0.001);
-        assertEquals(env.getMaximum(1), 6338174.055756185,0.001);
+        assertEquals("wrong CRS", "EPSG:3857",
+                CRS.lookupIdentifier(env.getCoordinateReferenceSystem(), true));
+        assertEquals(env.getMinimum(0), -1.3885038382923e7, 0.001);
+        assertEquals(env.getMinimum(1), 2870337.130793, 0.001);
+        assertEquals(env.getMaximum(0), -7455049.489182421, 0.001);
+        assertEquals(env.getMaximum(1), 6338174.055756185, 0.001);
     }
 
     /**
-     * Test method for {@link org.geotools.map.WMTSMapLayer#getCoordinateReferenceSystem()}.
-     * @throws FactoryException 
+     * Test method for
+     * {@link org.geotools.map.WMTSMapLayer#getCoordinateReferenceSystem()}.
+     * 
+     * @throws FactoryException
      */
     @Test
     public void testGetCoordinateReferenceSystem() throws FactoryException {
-        
-        assertEquals("wrong CRS","EPSG:3857", CRS.lookupIdentifier(kvpMapLayer.getCoordinateReferenceSystem(),true));
-        assertEquals("wrong CRS","EPSG:4326", CRS.lookupIdentifier(restMapLayer.getCoordinateReferenceSystem(),true));
+
+        assertEquals("wrong CRS", "EPSG:3857",
+                CRS.lookupIdentifier(kvpMapLayer.getCoordinateReferenceSystem(), true));
+        assertEquals("wrong CRS", "EPSG:4326",
+                CRS.lookupIdentifier(restMapLayer.getCoordinateReferenceSystem(), true));
     }
 
     /**
@@ -111,17 +113,20 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         mapContent.addLayer(kvpMapLayer);
         renderer.setMapContent(mapContent);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-        
+
         Rectangle paintArea = new Rectangle(0, 0, 100, 100);
-        AffineTransform transform = RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
+        AffineTransform transform = RendererUtilities
+                .worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
         renderer.paint(image.createGraphics(), paintArea, transform);
         assertNotNull(kvpMapLayer.getLastGetMap());
     }
 
     /**
-     * Test method for {@link org.geotools.map.WMTSMapLayer#isNativelySupported(org.opengis.referencing.crs.CoordinateReferenceSystem)}.
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
+     * Test method for
+     * {@link org.geotools.map.WMTSMapLayer#isNativelySupported(org.opengis.referencing.crs.CoordinateReferenceSystem)}.
+     * 
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
      */
     @Test
     public void testIsNativelySupported() throws NoSuchAuthorityCodeException, FactoryException {
@@ -129,11 +134,11 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         assertTrue(restMapLayer.isNativelySupported(crs));
         assertTrue(kvpMapLayer.isNativelySupported(crs));
         crs = CRS.decode("epsg:3857");
-        //Sort out web mercator lookup
-        //assertTrue(restMapLayer.isNativelySupported(crs));
-        //assertTrue(kvpMapLayer.isNativelySupported(crs));
+        // Sort out web mercator lookup
+        // assertTrue(restMapLayer.isNativelySupported(crs));
+        // assertTrue(kvpMapLayer.isNativelySupported(crs));
         crs = CRS.decode("epsg:27700");
-        //assertFalse(restMapLayer.isNativelySupported(crs));
+        // assertFalse(restMapLayer.isNativelySupported(crs));
         assertFalse(kvpMapLayer.isNativelySupported(crs));
     }
 

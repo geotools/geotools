@@ -30,30 +30,25 @@ import org.geotools.tile.impl.ZoomLevel;
  * @author Tobias Sauerwein
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/osm/OSMTileFactory.java $
  */
 public class OSMTileFactory extends WebMercatorTileFactory {
 
-    public Tile findTileAtCoordinate(double lon, double lat,
-            ZoomLevel zoomLevel, TileService service) {
+    public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel,
+            TileService service) {
         lat = TileFactory.normalizeDegreeValue(lat, 90);
         lon = TileFactory.normalizeDegreeValue(lon, 180);
 
         /**
-         * Because the latitude is only valid in 85.0511 °N to 85.0511 °S
-         * (http://wiki.openstreetmap.org/wiki/Tilenames#X_and_Y), we have to
-         * correct if necessary.
+         * Because the latitude is only valid in 85.0511 °N to 85.0511 °S (http://wiki.openstreetmap.org/wiki/Tilenames#X_and_Y), we have to correct
+         * if necessary.
          */
-        lat = OSMTileFactory.moveInRange(lat, WebMercatorTileService.MIN_LATITUDE, WebMercatorTileService.MAX_LATITUDE);
+        lat = OSMTileFactory.moveInRange(lat, WebMercatorTileService.MIN_LATITUDE,
+                WebMercatorTileService.MAX_LATITUDE);
 
-        int xTile = (int) Math.floor((lon + 180) / 360
-                * (1 << zoomLevel.getZoomLevel()));
-        int yTile = (int) Math.floor((1 - Math.log(Math
-                .tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180))
-                / Math.PI)
-                / 2 * (1 << zoomLevel.getZoomLevel()));
+        int xTile = (int) Math.floor((lon + 180) / 360 * (1 << zoomLevel.getZoomLevel()));
+        int yTile = (int) Math.floor(
+                (1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180))
+                        / Math.PI) / 2 * (1 << zoomLevel.getZoomLevel()));
 
         return new OSMTile(xTile, yTile, zoomLevel, service);
     }
@@ -78,14 +73,12 @@ public class OSMTileFactory extends WebMercatorTileFactory {
     }
 
     public Tile findRightNeighbour(Tile tile, TileService service) {
-        return new OSMTile(tile.getTileIdentifier().getRightNeighbour(),
-                service);
+        return new OSMTile(tile.getTileIdentifier().getRightNeighbour(), service);
     }
 
     @Override
     public Tile findLowerNeighbour(Tile tile, TileService service) {
-        return new OSMTile(tile.getTileIdentifier().getLowerNeighbour(),
-                service);
+        return new OSMTile(tile.getTileIdentifier().getLowerNeighbour(), service);
     }
 
 }

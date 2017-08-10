@@ -31,9 +31,6 @@ import org.geotools.tile.impl.ZoomLevel;
  * @author Tobias Sauerwein
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/osm/OSMTile.java $
  */
 public class OSMTile extends Tile {
 
@@ -46,16 +43,14 @@ public class OSMTile extends Tile {
     }
 
     public OSMTile(TileIdentifier tileName, TileService service) {
-        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName),
-                DEFAULT_TILE_SIZE);
+        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName), DEFAULT_TILE_SIZE);
 
         this.service = service;
     }
 
     @Override
     public URL getUrl() {
-        String url = this.service.getBaseUrl() + getTileIdentifier().getCode()
-                + ".png";
+        String url = this.service.getBaseUrl() + getTileIdentifier().getCode() + ".png";
         try {
             return new URL(url);
         } catch (Exception e) {

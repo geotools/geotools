@@ -40,20 +40,15 @@ import org.opengis.referencing.operation.TransformException;
 
 /**
  * <p>
- * TileLayer is a direct map layer that does the mosaicking work for tiles of a
- * given tile service.
+ * TileLayer is a direct map layer that does the mosaicking work for tiles of a given tile service.
  * </p>
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/util/TileLayer.java $
  */
 public class TileLayer extends DirectLayer {
 
-    private static final Logger LOGGER = Logging.getLogger(TileLayer.class
-            .getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(TileLayer.class.getPackage().getName());
 
     private static final GridCoverageFactory gridFactory = new GridCoverageFactory();
 
@@ -74,13 +69,11 @@ public class TileLayer extends DirectLayer {
     }
 
     public ReferencedEnvelope getBounds() {
-        return new ReferencedEnvelope(-180, 180, -85, 85,
-                DefaultGeographicCRS.WGS84);
+        return new ReferencedEnvelope(-180, 180, -85, 85, DefaultGeographicCRS.WGS84);
     }
 
     @Override
-    public void draw(Graphics2D graphics, MapContent map,
-            MapViewport theViewport) {
+    public void draw(Graphics2D graphics, MapContent map, MapViewport theViewport) {
 
         LOGGER.fine("Started drawing");
 
@@ -89,8 +82,7 @@ public class TileLayer extends DirectLayer {
         final ReferencedEnvelope viewportExtent = viewport.getBounds();
         int scale = calculateScale(viewportExtent, viewport.getScreenArea());
 
-        Collection<Tile> tiles = service.findTilesInExtent(viewportExtent,
-                scale, false, 128);
+        Collection<Tile> tiles = service.findTilesInExtent(viewportExtent, scale, false, 128);
 
         BufferedImage mosaickedImage = createImage(viewport.getScreenArea());
         Graphics2D g2d = mosaickedImage.createGraphics();
@@ -99,8 +91,7 @@ public class TileLayer extends DirectLayer {
 
         // System.out.println("Sync: " + (System.currentTimeMillis() - t));
 
-        this.coverage = gridFactory.create("GridCoverage", mosaickedImage,
-                viewportExtent);
+        this.coverage = gridFactory.create("GridCoverage", mosaickedImage, viewportExtent);
 
         graphics.drawImage(mosaickedImage, 0, 0, null);
 
@@ -109,8 +100,7 @@ public class TileLayer extends DirectLayer {
     }
 
     protected void renderTiles(Collection<Tile> tiles, Graphics2D g2d,
-            ReferencedEnvelope viewportExtent,
-            AffineTransform worldToImageTransform) {
+            ReferencedEnvelope viewportExtent, AffineTransform worldToImageTransform) {
 
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -122,8 +112,8 @@ public class TileLayer extends DirectLayer {
 
             ReferencedEnvelope tileEnvViewport;
             try {
-                tileEnvViewport = nativeTileEnvelope.transform(
-                        viewportExtent.getCoordinateReferenceSystem(), true);
+                tileEnvViewport = nativeTileEnvelope
+                        .transform(viewportExtent.getCoordinateReferenceSystem(), true);
             } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }
@@ -145,8 +135,7 @@ public class TileLayer extends DirectLayer {
 
         BufferedImage img = getTileImage(tile);
 
-        g2d.drawImage(img, (int) points[0], (int) points[1],
-                (int) Math.ceil(points[2] - points[0]),
+        g2d.drawImage(img, (int) points[0], (int) points[1], (int) Math.ceil(points[2] - points[0]),
                 (int) Math.ceil(points[3] - points[1]), null);
     }
 
@@ -161,8 +150,8 @@ public class TileLayer extends DirectLayer {
         int scale = 0;
 
         try {
-            scale = (int) Math.round(RendererUtilities.calculateScale(extent,
-                    screenArea.width, screenArea.height, this.resolution));
+            scale = (int) Math.round(RendererUtilities.calculateScale(extent, screenArea.width,
+                    screenArea.height, this.resolution));
         } catch (FactoryException | TransformException ex) {
             throw new RuntimeException("Failed to calculate scale", ex);
         }
@@ -171,8 +160,7 @@ public class TileLayer extends DirectLayer {
 
     private BufferedImage createImage(Rectangle rectangle) {
 
-        return new BufferedImage(rectangle.width, rectangle.height,
-                BufferedImage.TYPE_INT_RGB);
+        return new BufferedImage(rectangle.width, rectangle.height, BufferedImage.TYPE_INT_RGB);
 
     }
 }

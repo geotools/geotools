@@ -42,28 +42,27 @@ public class BingServiceTest extends ServiceTest {
         String urlSuffix = "?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
 
         extentNameToUrlList = new HashMap<String, List<String>>();
-        List<String> expectedIds_DE = Arrays.asList(new String[] { "12022",
-                "12021", "12023", "12020" });
+        List<String> expectedIds_DE = Arrays
+                .asList(new String[] { "12022", "12021", "12023", "12020" });
 
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_DE, urlSuffix);
         extentNameToUrlList.put(DE_EXTENT_NAME, expectedIds_DE);
 
-        List<String> expectedIds_BR = Arrays.asList(new String[] {
-                "2112000123", "2112000031", "2112000120", "2112000121",
-                "2112000033", "2112000122" });
+        List<String> expectedIds_BR = Arrays.asList(new String[] { "2112000123", "2112000031",
+                "2112000120", "2112000121", "2112000033", "2112000122" });
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_BR, urlSuffix);
         extentNameToUrlList.put(BR_EXTENT_NAME, expectedIds_BR);
 
-        List<String> expectedIds_HAWAII = Arrays.asList(new String[] {
-                "022211", "022300", "022033", "022122" });
+        List<String> expectedIds_HAWAII = Arrays
+                .asList(new String[] { "022211", "022300", "022033", "022122" });
 
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_HAWAII, urlSuffix);
         extentNameToUrlList.put(HAWAII_EXTENT_NAME, expectedIds_HAWAII);
 
     }
 
-    private static void enrichIdWithNameAndExtension(String prefix,
-            List<String> expectedIds, String suffix) {
+    private static void enrichIdWithNameAndExtension(String prefix, List<String> expectedIds,
+            String suffix) {
         for (int i = 0; i < expectedIds.size(); i++) {
             String oldValue = expectedIds.get(i);
             String newValue = prefix + oldValue + suffix;
@@ -126,12 +125,10 @@ public class BingServiceTest extends ServiceTest {
         }
     }
 
-    private Collection<Tile> findTilesInExtent(ReferencedEnvelope extent,
-            int scale) {
+    private Collection<Tile> findTilesInExtent(ReferencedEnvelope extent, int scale) {
 
         TileService service = createService();
-        Collection<Tile> tiles = service.findTilesInExtent(extent, scale,
-                true, 28);
+        Collection<Tile> tiles = service.findTilesInExtent(extent, scale, true, 28);
 
         return tiles;
     }

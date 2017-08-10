@@ -37,23 +37,17 @@ public class TileTest {
 
     @Before
     public void beforeTest() {
-
         this.tile = createTestTile();
-
     }
 
     @After
     public void afterTest() {
-
         this.tile = null;
-
     }
 
     @Test
     public void testContructor() {
-
         Assert.assertNotNull(this.tile);
-
     }
 
     @Test
@@ -66,23 +60,20 @@ public class TileTest {
         Tile otherTile = createTestTile();
         Assert.assertTrue(this.tile.equals(otherTile));
         Assert.assertTrue(otherTile.equals(this.tile));
-
     }
 
     @Test
     public void testCreateErrorImage() {
-        BufferedImage img = this.tile.createErrorImage("Failed:"
-                + this.tile.getId());
+        BufferedImage img = this.tile.createErrorImage("Failed:" + this.tile.getId());
         Assert.assertNotNull(img);
         Assert.assertEquals(256, img.getHeight());
         Assert.assertEquals(256, img.getWidth());
-
     }
 
     @Test
     public void testGetExtent() {
-        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47,
-                55), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47, 55),
+                DefaultGeographicCRS.WGS84);
         Assert.assertEquals(env, this.tile.getExtent());
     }
 
@@ -93,13 +84,13 @@ public class TileTest {
 
     protected Tile createTestTile() {
 
-        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47,
-                55), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47, 55),
+                DefaultGeographicCRS.WGS84);
         ZoomLevel zoomLevel = new WebMercatorZoomLevel(5);
 
-        return new Tile(TileIdentifierTest.createTileIdentifierPrototype(zoomLevel, 10,
-                12, "SomeService"), env,
-                256) {
+        return new Tile(
+                TileIdentifierTest.createTileIdentifierPrototype(zoomLevel, 10, 12, "SomeService"),
+                env, 256) {
 
             @Override
             public URL getUrl() {

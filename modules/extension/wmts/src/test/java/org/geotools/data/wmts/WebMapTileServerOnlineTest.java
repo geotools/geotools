@@ -33,7 +33,6 @@ import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
-import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -62,7 +61,6 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         serverURL = new URL(fixture.getProperty("kvp_server"));
         brokenURL = new URL("http://afjklda.com");
         restWMTS = new URL(fixture.getProperty("rest_server"));
-        
     }
 
     @Override
@@ -82,7 +80,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         WebMapTileServer wms = new WebMapTileServer(serverURL);
 
         assertNotNull(wms.getCapabilities());
-        
+
         wms = new WebMapTileServer(restWMTS);
         assertNotNull(wms.getCapabilities());
     }
@@ -93,23 +91,27 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         assertNotNull(wms.getCapabilities());
     }
 
-    public void testIssueGetTileRequestKVP() throws ServiceException, IOException, FactoryException {
+    public void testIssueGetTileRequestKVP()
+            throws ServiceException, IOException, FactoryException {
         WebMapTileServer wmts = new WebMapTileServer(serverURL);
         issueGetTileRequest(wmts);
     }
-    public void testIssueGetTileRequestREST() throws ServiceException, IOException, FactoryException {
+
+    public void testIssueGetTileRequestREST()
+            throws ServiceException, IOException, FactoryException {
         WebMapTileServer wmts = new WebMapTileServer(restWMTS);
         issueGetTileRequest(wmts);
     }
-    public void issueGetTileRequest(WebMapTileServer wmts) throws ServiceException, FactoryException  {
-        
+
+    public void issueGetTileRequest(WebMapTileServer wmts)
+            throws ServiceException, FactoryException {
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
         GetTileRequest request = wmts.createGetTileRequest();
 
         // request.setVersion("1.1.1");
-        
+
         WMTSLayer layer = (WMTSLayer) capabilities.getLayer("topp:states");
         assertNotNull(layer);
         request.setLayer(layer);
@@ -123,7 +125,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         if (!formats.contains("image/png")) {
             format = (String) formats.get(0);
         }
-//        request.setFormat(format);
+        // request.setFormat(format);
 
         ReferencedEnvelope re = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         request.setRequestedBBox(re);
@@ -133,12 +135,11 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // System.out.println("Content Type: " + response.getContentType());
-            //System.out.println(response.getTileIdentifier());
+            // System.out.println(response.getTileIdentifier());
             BufferedImage image = response.getBufferedImage();
             assertEquals(256, image.getHeight());
         }
     }
-
 
     public void testGetEnvelope() throws Exception {
         WebMapTileServer wms = new WebMapTileServer(serverURL);
@@ -147,7 +148,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         Layer layer = (Layer) caps.getLayer("topp:states");
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
-       
+
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
         assertNotNull(envelope);
         // <ows:LowerCorner>-134.731422 24.955967</ows:LowerCorner>
@@ -160,7 +161,6 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
     @Override
     protected String getFixtureId() {
-    
         return "wmts";
     }
 }

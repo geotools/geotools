@@ -52,7 +52,9 @@ public class WMTSTile extends Tile {
     public static final int DEFAULT_TILE_SIZE = 256;
 
     /**
-     * Many WMTS tiles may be reloaded over and over, especially in a tiled getMap request.
+     * Many WMTS tiles may be reloaded over and over, especially in a tiled
+     * getMap request.
+     *
      * TODO: The size should be made configurable
      **/
     private static ObjectCache tileImages = ObjectCaches.create("soft", 150);
@@ -60,7 +62,6 @@ public class WMTSTile extends Tile {
     private final WMTSServiceType type;
 
     private final WMTSTileService service;
-
 
     public WMTSTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
         this(new WMTSTileIdentifier(x, y, zoomLevel, service.getName()), service);
@@ -91,18 +92,18 @@ public class WMTSTile extends Tile {
         TileIdentifier tileIdentifier = getTileIdentifier();
         if (null == type) {
             throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
-        } else switch (type) {
+        } else
+            switch (type) {
             case KVP:
                 return getKVPurl(baseUrl, tileIdentifier);
             case REST:
                 return getRESTurl(baseUrl, tileIdentifier);
             default:
                 throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
-        }
+            }
     }
 
-    private URL getRESTurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException
-    {
+    private URL getRESTurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException {
         String tileMatrix = service.getTileMatrix(tileIdentifier.getZ()).getIdentifier();
 
         baseUrl = baseUrl.replace("{TileMatrixSet}", service.getTileMatrixSetName());
@@ -110,14 +111,15 @@ public class WMTSTile extends Tile {
         baseUrl = baseUrl.replace("{TileCol}", "" + tileIdentifier.getX());
         baseUrl = baseUrl.replace("{TileRow}", "" + tileIdentifier.getY());
 
-        baseUrl = replaceToken(baseUrl, "time", service.getDimensions().get(WMTSTileService.DIMENSION_TIME));
+        baseUrl = replaceToken(baseUrl, "time",
+                service.getDimensions().get(WMTSTileService.DIMENSION_TIME));
 
         LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
 
         try {
             return new URL(baseUrl);
         } catch (MalformedURLException e) {
-            //I'm pretty sure this never happens!
+            // I'm pretty sure this never happens!
             throw new RuntimeException(e);
         }
     }
@@ -125,48 +127,50 @@ public class WMTSTile extends Tile {
     private String replaceToken(String base, String dimName, String dimValue) {
         String token = "{" + dimName + "}";
         int index = base.toLowerCase().indexOf(token.toLowerCase());
-        if(index != -1) {
+        if (index != -1) {
             LOGGER.fine("Resolving dimension " + dimName + " --> " + dimValue);
-            return base.substring(0, index) + dimValue + base.substring(index + dimName.length() + 2);
+            return base.substring(0, index) + dimValue
+                    + base.substring(index + dimName.length() + 2);
         } else {
             return base;
         }
     }
 
-    private URL getKVPurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException
-    {
-        //in theory it should end with ? but there may be other params that the server needs out of spec
-        if(!baseUrl.contains("?")) {
-
-            baseUrl+="?";
+    private URL getKVPurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException {
+        // in theory it should end with ? but there may be other params that the
+        // server needs out of spec
+        if (!baseUrl.contains("?")) {
+            baseUrl += "?";
         }
         HashMap<String, Object> params = new HashMap<>();
         params.put("service", "WMTS");
         params.put("version", "1.0.0");
         params.put("request", "getTile");
-        params.put("layer",  service.getLayerName());
-        params.put("style",  service.getStyleName());
+        params.put("layer", service.getLayerName());
+        params.put("style", service.getStyleName());
         params.put("format", service.getFormat());
         params.put("tilematrixset", service.getTileMatrixSetName());
-//        params.put("TileMatrix", service.getTileMatrixSetName()+":"+tileIdentifier.getZ());
-//        params.put("TileMatrix", tileIdentifier.getZ());
+        // params.put("TileMatrix",
+        // service.getTileMatrixSetName()+":"+tileIdentifier.getZ());
+        // params.put("TileMatrix", tileIdentifier.getZ());
         params.put("TileMatrix", service.getTileMatrix(tileIdentifier.getZ()).getIdentifier());
         params.put("TileCol", tileIdentifier.getX());
         params.put("TileRow", tileIdentifier.getY());
 
         StringBuilder arguments = new StringBuilder();
-        for(String p:params.keySet()) {
+        for (String p : params.keySet()) {
             try {
-                arguments.append(p).append("=").append(URLEncoder.encode(params.get(p).toString(),"UTF-8"));
+                arguments.append(p).append("=")
+                        .append(URLEncoder.encode(params.get(p).toString(), "UTF-8"));
                 arguments.append('&');
-            }catch (Exception e) {
+            } catch (Exception e) {
                 // TODO: handle exception
             }
         }
         try {
-            return new URL(baseUrl+arguments.toString());
+            return new URL(baseUrl + arguments.toString());
         } catch (MalformedURLException e) {
-            //I'm pretty sure this never happens!
+            // I'm pretty sure this never happens!
             throw new RuntimeException(e);
         }
     }
@@ -176,15 +180,15 @@ public class WMTSTile extends Tile {
      */
     @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
-        LOGGER.log(Level.FINE, "Loading tile "+getId()+": " + this.getUrl());
+        LOGGER.log(Level.FINE, "Loading tile " + getId() + ": " + this.getUrl());
 
         String tileKey = tile.getUrl().toString();
 
-        if( !(tileImages.peek(tileKey) == null || tileImages.get(tileKey) == null)) {
-            LOGGER.log(Level.FINE, "Tile image already loaded for tile "+getId());
+        if (!(tileImages.peek(tileKey) == null || tileImages.get(tileKey) == null)) {
+            LOGGER.log(Level.FINE, "Tile image already loaded for tile " + getId());
             return (BufferedImage) tileImages.get(tileKey);
         } else {
-            LOGGER.log(Level.FINE, "Tile image not yet loaded for tile "+getId());
+            LOGGER.log(Level.FINE, "Tile image not yet loaded for tile " + getId());
             BufferedImage bi = doLoadImageTileImage(tile);
             tileImages.put(tileKey, bi);
             return bi;
@@ -193,7 +197,8 @@ public class WMTSTile extends Tile {
 
     public BufferedImage doLoadImageTileImage(Tile tile) throws IOException {
 
-        Map<String, String> headers = (Map<String, String>)this.service.getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
+        Map<String, String> headers = (Map<String, String>) this.service.getExtrainfo()
+                .get(WMTSTileService.EXTRA_HEADERS);
         InputStream is = null;
         try {
             is = setupInputStream(getUrl(), headers);
@@ -203,30 +208,29 @@ public class WMTSTile extends Tile {
         }
     }
 
-    private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException
-    {
+    private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
         HttpClient client = new HttpClient();
         String uri = url.toExternalForm();
         uri = uri.replaceAll("\\{Time\\}", "20140101");
-        LOGGER.log(Level.FINE, "URL is "+ uri);
+        LOGGER.log(Level.FINE, "URL is " + uri);
 
         HttpMethod get = new GetMethod(uri);
-        if(MapUtils.isNotEmpty(headers)) {
+        if (MapUtils.isNotEmpty(headers)) {
             for (String headerName : headers.keySet()) {
-                if(LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "Adding header " +  headerName +" = " + headers.get(headerName));
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE,
+                            "Adding header " + headerName + " = " + headers.get(headerName));
                 }
                 get.addRequestHeader(headerName, headers.get(headerName));
             }
         }
 
         int code = client.executeMethod(get);
-        if(code != 200) {
+        if (code != 200) {
             throw new IOException("Connection returned code " + code);
         }
 
         return get.getResponseBodyAsStream();
     }
-
 
 }

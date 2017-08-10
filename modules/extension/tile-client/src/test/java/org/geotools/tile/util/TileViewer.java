@@ -40,6 +40,7 @@ import org.geotools.tile.ServiceTest;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
+import org.geotools.tile.impl.bing.BingService;
 import org.geotools.tile.impl.osm.OSMService;
 import org.geotools.tile.impl.osm.OSMTile;
 import org.geotools.tile.impl.osm.OSMTileIdentifier;
@@ -87,21 +88,31 @@ public class TileViewer {
 
         map.getViewport().setBounds(env);
 
-        // String baseURL =
-        // "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/${code}?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
-        // map.addLayer(new TileLayer(new BingService("Road", baseURL)));
-        // map.addLayer(new AsyncTileLayer(new OSMService("Mapnik", "http://tile.openstreetmap.org/")));
+        String baseURL = "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/${code}?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
+        map.addLayer(new TileLayer(new BingService("Road", baseURL)));
+        map.addLayer(
+                new AsyncTileLayer(new OSMService("Mapnik", "http://tile.openstreetmap.org/")));
 
-        /*String baseURL = "http://raspberrypi:9000/wmts/1.0.0/WMTSCapabilities.xml";
-        TileService service = new WMTSService("states", baseURL, "states", "webmercator",WMTSServiceType.REST);*/
-        
-        /*String baseURL = "http://raspberrypi:9000/service?REQUEST=GetCapabilities&SERVICE=WMTS";
-        TileService service = new WMTSService("states", baseURL, "states", "webmercator",WMTSServiceType.KVP);*/
-        
-//        String baseURL = "http://raspberrypi:8080/geoserver/gwc/service/wmts?REQUEST=GetCapabilities";
-//        TileService service = new WMTSService("states", baseURL, "topp:states", "EPSG:900913",WMTSServiceType.KVP, null);
-//        map.addLayer(new AsyncTileLayer(service));
-        // createTestCoverageLayer(map);
+        /*
+         * String baseURL =
+         * "http://raspberrypi:9000/wmts/1.0.0/WMTSCapabilities.xml";
+         * TileService service = new WMTSService("states", baseURL, "states",
+         * "webmercator",WMTSServiceType.REST);
+         */
+
+        /*
+         * String baseURL =
+         * "http://raspberrypi:9000/service?REQUEST=GetCapabilities&SERVICE=WMTS";
+         * TileService service = new WMTSService("states", baseURL, "states",
+         * "webmercator",WMTSServiceType.KVP);
+         */
+
+        // String baseURL =
+        // "http://raspberrypi:8080/geoserver/gwc/service/wmts?REQUEST=GetCapabilities";
+        // TileService service = new WMTSService("states", baseURL,
+        // "topp:states", "EPSG:900913",WMTSServiceType.KVP, null);
+        // map.addLayer(new AsyncTileLayer(service));
+        createTestCoverageLayer(map);
 
         if (shapeFilename != null && shapeFilename.endsWith(".shp")) {
             // addTestShape(map, shapeFilename);
@@ -156,9 +167,9 @@ public class TileViewer {
     }
 
     public static void main(String[] args) {
-        if(args.length>0) {
+        if (args.length > 0) {
             new TileViewer(args[0]);
-        }else {
+        } else {
             new TileViewer(null);
         }
     }

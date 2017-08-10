@@ -43,28 +43,26 @@ public class OSMServiceTest extends ServiceTest {
         String urlSuffix = ".png";
 
         extentNameToUrlList = new HashMap<String, List<String>>();
-        List<String> expectedIds_DE = Arrays.asList(new String[] { "5/16/11",
-                "5/17/11", "5/16/10", "5/17/10" });
+        List<String> expectedIds_DE = Arrays
+                .asList(new String[] { "5/16/11", "5/17/11", "5/16/10", "5/17/10" });
 
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_DE, urlSuffix);
         extentNameToUrlList.put(DE_EXTENT_NAME, expectedIds_DE);
 
-        List<String> expectedIds_BR = Arrays.asList(new String[] {
-                "10/387/578", "10/389/578", "10/388/578", "10/389/579",
-                "10/388/579", "10/387/579" });
+        List<String> expectedIds_BR = Arrays.asList(new String[] { "10/387/578", "10/389/578",
+                "10/388/578", "10/389/579", "10/388/579", "10/387/579" });
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_BR, urlSuffix);
         extentNameToUrlList.put(BR_EXTENT_NAME, expectedIds_BR);
 
-        List<String> expectedIds_HAWAII = Arrays.asList(new String[] {
-                "6/4/27", "6/3/28", "6/3/27", "6/4/28" });
+        List<String> expectedIds_HAWAII = Arrays
+                .asList(new String[] { "6/4/27", "6/3/28", "6/3/27", "6/4/28" });
 
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_HAWAII, urlSuffix);
         extentNameToUrlList.put(HAWAII_EXTENT_NAME, expectedIds_HAWAII);
-
     }
 
-    private static void enrichIdWithNameAndExtension(String prefix,
-            List<String> expectedIds, String suffix) {
+    private static void enrichIdWithNameAndExtension(String prefix, List<String> expectedIds,
+            String suffix) {
         for (int i = 0; i < expectedIds.size(); i++) {
             String oldValue = expectedIds.get(i);
             String newValue = prefix + oldValue + suffix;
@@ -78,7 +76,6 @@ public class OSMServiceTest extends ServiceTest {
         testGetTilesInExtent(DE_EXTENT_NAME, 5957345);
         testGetTilesInExtent(BR_EXTENT_NAME, 500000);
         testGetTilesInExtent(HAWAII_EXTENT_NAME, 5957345);
-
     }
 
     @Test
@@ -90,8 +87,7 @@ public class OSMServiceTest extends ServiceTest {
     @Test
     public void testGetBaseURL() {
         TileService service = createService();
-        Assert.assertEquals("http://tile.openstreetmap.org/",
-                service.getBaseUrl());
+        Assert.assertEquals("http://tile.openstreetmap.org/", service.getBaseUrl());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -125,12 +121,10 @@ public class OSMServiceTest extends ServiceTest {
         }
     }
 
-    private Collection<Tile> findTilesInExtent(ReferencedEnvelope extent,
-            int scale) {
+    private Collection<Tile> findTilesInExtent(ReferencedEnvelope extent, int scale) {
 
         TileService service = createService();
-        Collection<Tile> tileList = service.findTilesInExtent(extent, scale,
-                true, 28);
+        Collection<Tile> tileList = service.findTilesInExtent(extent, scale, true, 28);
 
         return tileList;
     }
@@ -142,6 +136,5 @@ public class OSMServiceTest extends ServiceTest {
     private TileService createService() {
         String baseURL = "http://tile.openstreetmap.org/";
         return new OSMService("OSM", baseURL);
-
     }
 }

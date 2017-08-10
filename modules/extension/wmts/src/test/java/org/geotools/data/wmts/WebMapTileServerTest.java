@@ -31,21 +31,21 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
-public class WebMapTileServerTest 
-{
+public class WebMapTileServerTest {
 
     @Test
     public void nasaGetEnvelopeTest() throws Exception {
+
         WMTSCapabilities caps = createCapabilities("nasa.getcapa.xml");
         WebMapTileServer wmts = new WebMapTileServer(caps);
 
         Layer layer = (Layer) caps.getLayer("AMSRE_Surface_Rain_Rate_Night");
-//        urn:ogc:def:crs:OGC:1.3:CRS84
+        // urn:ogc:def:crs:OGC:1.3:CRS84
 
-//         <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
-//            <ows:LowerCorner>-180 -90</ows:LowerCorner>
-//            <ows:UpperCorner>180 90</ows:UpperCorner>
-//        </ows:WGS84BoundingBox>
+        // <ows:WGS84BoundingBox crs="urn:ogc:def:crs:OGC:2:84">
+        // <ows:LowerCorner>-180 -90</ows:LowerCorner>
+        // <ows:UpperCorner>180 90</ows:UpperCorner>
+        // </ows:WGS84BoundingBox>
 
         assertNotNull(wmts.getEnvelope(layer, CRS.decode("urn:ogc:def:crs:OGC:1.3:CRS84")));
         assertNotNull(wmts.getEnvelope(layer, CRS.decode("CRS:84")));
@@ -70,8 +70,8 @@ public class WebMapTileServerTest
         Layer layer = (Layer) caps.getLayer("ch.are.alpenkonvention");
         // <ows:SupportedCRS>urn:ogc:def:crs:EPSG:2056</ows:SupportedCRS>
         // <ows:WGS84BoundingBox>
-        //   <ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
-        //   <ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
+        // <ows:LowerCorner>5.140242 45.398181</ows:LowerCorner>
+        // <ows:UpperCorner>11.47757 48.230651</ows:UpperCorner>
         // </ows:WGS84BoundingBox>
 
         assertNotNull(wmts.getEnvelope(layer, CRS.decode("urn:ogc:def:crs:OGC:1.3:CRS84")));

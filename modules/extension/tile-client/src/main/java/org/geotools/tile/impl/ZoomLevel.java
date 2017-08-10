@@ -22,9 +22,6 @@ package org.geotools.tile.impl;
  * 
  * @author Tobias Sauerwein
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/ZoomLevel.java $
  */
 public abstract class ZoomLevel {
 
@@ -37,8 +34,8 @@ public abstract class ZoomLevel {
     protected long maxTileNumber;
 
     public ZoomLevel() {
-        
     }
+
     public ZoomLevel(int zoomLevel) {
         setZoomLevel(zoomLevel);
     }

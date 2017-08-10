@@ -37,7 +37,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * A grid coverage readers backing onto a WMTS server by issuing GetTile requests
+ * A grid coverage readers backing onto a WMTS server by issuing GetTile
+ * requests
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
@@ -51,7 +52,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     static GridCoverageFactory gcf = new GridCoverageFactory();
 
-     /**
+    /**
      * The WMTS server
      */
     WebMapTileServer wmts;
@@ -94,7 +95,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     /**
      * The last request envelope
      */
-//    ReferencedEnvelope requestedEnvelope;
+    // ReferencedEnvelope requestedEnvelope;
 
     /**
      * Last request width
@@ -127,7 +128,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         // init the reader
         setLayer(layer);
 
-        // best guess at the format with a preference for PNG (since it's normally transparent)
+        // best guess at the format with a preference for PNG (since it's
+        // normally transparent)
         List<String> formats = ((WMTSLayer) layer).getFormats();// wms2.getCapabilities().getRequest().getGetTile().getFormats();
         this.format = formats.iterator().next();
         for (String f : formats) {
@@ -146,21 +148,23 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         if (srsName == null) { // initialize from first (unique) layer
 
             // prefer 4326
-            for (String preferred : new String[]{"EPSG:4326", "WGS84", "CRS:84", "WGS 84", "WGS84(DD)"}) {
+            for (String preferred : new String[] { "EPSG:4326", "WGS84", "CRS:84", "WGS 84",
+                    "WGS84(DD)" }) {
                 if (owsLayer.getSrs().contains(preferred)) {
                     srsName = preferred;
-                    LOGGER.info("defaulting CRS to: "+srsName);
+                    LOGGER.info("defaulting CRS to: " + srsName);
                 }
             }
 
             // no 4326, let's see if the layer is offering something valid
-            if (srsName == null ) {
+            if (srsName == null) {
                 for (String srs : owsLayer.getSrs()) {
                     try {
-                        // check it's valid, if not we crap out and move to the next
+                        // check it's valid, if not we crap out and move to the
+                        // next
                         CRS.decode(srs);
                         srsName = srs;
-                        LOGGER.info("setting CRS: "+srsName);
+                        LOGGER.info("setting CRS: " + srsName);
                         break;
                     } catch (Exception e) {
                         // it's fine, we could not decode that code
@@ -168,16 +172,16 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 }
             }
 
-            if (srsName == null ) {
+            if (srsName == null) {
                 if (owsLayer.getSrs().isEmpty()) {
-                    // force  4326
+                    // force 4326
                     srsName = "EPSG:4326";
-                    LOGGER.info("adding default CRS to: "+srsName);
+                    LOGGER.info("adding default CRS to: " + srsName);
                     owsLayer.getSrs().add(srsName);
                 } else {
                     // if not even that works we just take the first...
                     srsName = owsLayer.getSrs().iterator().next();
-                    LOGGER.info("guessing CRS to: "+srsName);
+                    LOGGER.info("guessing CRS to: " + srsName);
                 }
             }
 
@@ -228,13 +232,13 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         // check out if time coordinate is needed, and provide a valid default
         String time = null;
         for (Dimension dim : layer.getLayerDimensions()) {
-            if("time".equalsIgnoreCase(dim.getName())) {
+            if ("time".equalsIgnoreCase(dim.getName())) {
                 time = dim.getExtent().getDefaultValue();
                 LOGGER.fine("TIME dimension found, default is " + time);
                 break;
             }
         }
-        if(requestedTime != null) {
+        if (requestedTime != null) {
             LOGGER.fine("TIME dimension requested: " + requestedTime);
             time = requestedTime;
         }
@@ -245,8 +249,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) ((ParameterValue) param).getValue();
                     requestedEnvelope = gg.getEnvelope();
-                    // the range high value is the highest pixel included in the raster,
-                    // the actual width and height is one more than that
+                    // the range high value is the highest pixel included in the
+                    // raster, the actual width and height is one more than that
                     width = gg.getGridRange().getHigh(0) + 1;
                     height = gg.getGridRange().getHigh(1) + 1;
                 }
@@ -283,7 +287,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         // issue the request and wrap response in a grid coverage
         try {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Issuing request: " + getTileRequest().getFinalURL(), new RuntimeException("TRACE!"));
+                LOGGER.log(Level.FINE, "Issuing request: " + getTileRequest().getFinalURL(),
+                        new RuntimeException("TRACE!"));
             }
 
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -297,7 +302,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
             double xoff = requestedEnvelope.getMedian(0) * scale - width / 2;
             double yoff = requestedEnvelope.getMedian(1) * scale + height / 2;
-            //C ould we use RenderUtilities here?
+            // C ould we use RenderUtilities here?
             AffineTransform worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
             renderTiles(responses, image.createGraphics(), requestedEnvelope, worldToScreen);
 
@@ -333,17 +338,20 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             inPoints[2] = tileEnvViewport.getMaxX();
             inPoints[1] = tileEnvViewport.getMaxY();
             worldToImageTransform.transform(inPoints, 0, outPoints, 0, 2);
-            /*for(int i=0;i<4;i+=2) {
-                System.out.println(inPoints[i]+","+inPoints[i+1]+" to "+outPoints[i]+","+outPoints[i+1]);
-            }*/
+            /*
+             * for(int i=0;i<4;i+=2) {
+             * System.out.println(inPoints[i]+","+inPoints[i+1]+" to "+outPoints
+             * [i]+","+outPoints[i+1]); }
+             */
             renderTile(tile, g2d, outPoints);
 
-            if(debug) {
+            if (debug) {
                 g2d.setColor(Color.RED);
-                g2d.drawRect((int) outPoints[0], (int) outPoints[1], (int) Math.ceil(outPoints[2] - outPoints[0]),
-                    (int) Math.ceil(outPoints[3] - outPoints[1]));
-                int x = (int) outPoints[0]+(int) (Math.ceil(outPoints[2] - outPoints[0])/2);
-                int y = (int) outPoints[1]+(int) (Math.ceil(outPoints[3] - outPoints[1])/2);
+                g2d.drawRect((int) outPoints[0], (int) outPoints[1],
+                        (int) Math.ceil(outPoints[2] - outPoints[0]),
+                        (int) Math.ceil(outPoints[3] - outPoints[1]));
+                int x = (int) outPoints[0] + (int) (Math.ceil(outPoints[2] - outPoints[0]) / 2);
+                int y = (int) outPoints[1] + (int) (Math.ceil(outPoints[3] - outPoints[1]) / 2);
                 g2d.drawString(tile.getId(), x, y);
             }
         }
@@ -357,8 +365,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             LOGGER.fine("couldn't draw " + tile.getId());
             return;
         }
-        g2d.drawImage(img, (int) points[0], (int) points[1],
-                (int) Math.ceil(points[2] - points[0]),
+        g2d.drawImage(img, (int) points[0], (int) points[1], (int) Math.ceil(points[2] - points[0]),
                 (int) Math.ceil(points[3] - points[1]), null);
     }
 
@@ -373,9 +380,9 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         return crs;
     }
 
-
     /**
-     * Sets up a map request with the provided parameters, making sure it is compatible with the layers own native SRS list
+     * Sets up a map request with the provided parameters, making sure it is
+     * compatible with the layers own native SRS list
      *
      * @param bbox
      * @param width
@@ -396,7 +403,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (epsgCode != null) {
                 code = "EPSG:" + epsgCode;
             } else {
-                // otherwise let's make a fuller scan, but this method is more fragile...
+                // otherwise let's make a fuller scan, but this method is more
+                // fragile...
                 code = CRS.lookupIdentifier(bbox.getCoordinateReferenceSystem(), false);
             }
 
@@ -425,7 +433,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         tileRequest.setLayer(layer);
         tileRequest.setRequestedHeight(height);
         tileRequest.setRequestedWidth(width);
-        tileRequest.setRequestedBBox(gridEnvelope); // should be requestEnvelope?
+        tileRequest.setRequestedBBox(gridEnvelope); // should be
+                                                    // requestEnvelope?
         tileRequest.setRequestedTime(time);
 
         try {
@@ -456,7 +465,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         LOGGER.entering("WMTSCoverage", "updatingBounds");
         GeneralEnvelope envelope = layer.getEnvelope(requestCRS);
         ReferencedEnvelope result = reference(envelope);
-        LOGGER.info("setting bounds to "+result);
+        LOGGER.info("setting bounds to " + result);
 
         this.bounds = result;
         this.originalEnvelope = new GeneralEnvelope(result);
@@ -504,7 +513,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     /**
-     * @param mapRequest the mapRequest to set
+     * @param mapRequest
+     *            the mapRequest to set
      */
     public void setTileRequest(GetTileRequest mapRequest) {
         this.tileRequest = mapRequest;

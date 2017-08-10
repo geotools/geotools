@@ -18,16 +18,12 @@ package org.geotools.tile.impl;
 
 /**
  * <p>
- * The WebMercatorTileService is an abstract class that holds some of the tile
- * service logic for Mercator-based tile services.
+ * The WebMercatorTileService is an abstract class that holds some of the tile service logic for Mercator-based tile services.
  * </p>
  * 
  * @author to.srwn
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/WebMercatorZoomLevel.java $
  */
 public class WebMercatorZoomLevel extends ZoomLevel {
 
@@ -36,8 +32,7 @@ public class WebMercatorZoomLevel extends ZoomLevel {
     }
 
     /**
-     * The maximum tile-number: For example at zoom-level 2, the tilenames are
-     * in the following range: 2/0/0 - 2/3/3 (zoom-level/x/y):
+     * The maximum tile-number: For example at zoom-level 2, the tilenames are in the following range: 2/0/0 - 2/3/3 (zoom-level/x/y):
      * zoom-level/2^(zoom-level)-1/2^(zoom-level)-1)
      */
     public int calculateMaxTilePerColNumber(int zoomLevel) {

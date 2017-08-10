@@ -22,13 +22,10 @@ import java.io.IOException;
 /**
  * The ImageLoader is a delegate used by a tile to load the image. Its purpose
  * is to provide a tile image cache opportunity to speed up image loading and
- * prevent tile to be repeatedly loaded off the network.
+ * and prevent tile to be repeatedly loaded off the network.
  * 
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/ImageLoader.java $
  */
 public interface ImageLoader {
 

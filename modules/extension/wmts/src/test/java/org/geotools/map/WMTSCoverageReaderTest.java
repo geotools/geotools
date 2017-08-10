@@ -50,14 +50,15 @@ import org.xml.sax.SAXException;
  */
 public class WMTSCoverageReaderTest {
 
-
     private final static String KVP_CAPA_RESOURCENAME = "test-data/getcapa_kvp.xml";
+
     private final static String REST_CAPA_RESOURCENAME = "test-data/admin_ch.getcapa.xml";
 
     @Test
     public void testRESTInitMapRequest() throws Exception {
         WebMapTileServer server = createServer(REST_CAPA_RESOURCENAME);
-        WMTSLayer layer = (WMTSLayer) server.getCapabilities().getLayer("ch.are.agglomerationen_isolierte_staedte");
+        WMTSLayer layer = (WMTSLayer) server.getCapabilities()
+                .getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
@@ -68,23 +69,25 @@ public class WMTSCoverageReaderTest {
         WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
         WMTSLayer layer = (WMTSLayer) server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox = new ReferencedEnvelope(-180, 180, -90, 90,
+                CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
     }
 
-    public void testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox) throws Exception {
-        
-        int width=400;
-        int height=200;
+    public void testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+            throws Exception {
+
+        int width = 400;
+        int height = 200;
         Color backgroundColor = Color.WHITE;
         ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
         assertNotNull(grid);
         GetTileRequest mapRequest = wcr.getTileRequest();
         mapRequest.setCRS(grid.getCoordinateReferenceSystem());
         Set<Tile> responses = wcr.wmts.issueRequest(mapRequest);
-        for(Tile t:responses) {
+        for (Tile t : responses) {
             System.out.println(t);
-            System.out.println(t.getTileIdentifier()+" "+t.getExtent());
+            System.out.println(t.getTileIdentifier() + " " + t.getExtent());
         }
     }
 
@@ -96,26 +99,25 @@ public class WMTSCoverageReaderTest {
     }
 
     private WMTSCapabilities createCapabilities(File capa) throws ServiceException {
-            Object object;
-            InputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(capa);
-                Parser parser = new Parser(new WMTSConfiguration());
+        Object object;
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(capa);
+            Parser parser = new Parser(new WMTSConfiguration());
 
-                object = parser.parse(new InputSource(inputStream));
+            object = parser.parse(new InputSource(inputStream));
 
-            } catch (SAXException |ParserConfigurationException | IOException e) {
-                throw (ServiceException) new ServiceException("Error while parsing XML.")
-                        .initCause(e);
-            } finally {
-                IOUtils.closeQuietly(inputStream);
-            }
+        } catch (SAXException | ParserConfigurationException | IOException e) {
+            throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
 
-            if (object instanceof ServiceException) {
-                throw (ServiceException) object;
-            }
+        if (object instanceof ServiceException) {
+            throw (ServiceException) object;
+        }
 
-            return new WMTSCapabilities( (CapabilitiesType)object);
+        return new WMTSCapabilities((CapabilitiesType) object);
     }
 
     private File getRESTgetcapaFile(String resourceName) {

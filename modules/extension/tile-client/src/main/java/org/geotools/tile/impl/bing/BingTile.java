@@ -33,16 +33,12 @@ import org.geotools.util.logging.Logging;
  * @author Tobias Sauerwein
  * @author Ugo Taddei
  * @since 12
- * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/tile-client
- *         /src/main/java/org/geotools/tile/impl/bing/BingTileIdentifier.java $
  */
 public class BingTile extends Tile {
 
     public static final int DEFAULT_TILE_SIZE = 256;
 
-    private static final Logger LOGGER = Logging.getLogger(BingTile.class
-            .getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(BingTile.class.getPackage().getName());
 
     private TileService service;
 
@@ -54,22 +50,19 @@ public class BingTile extends Tile {
      * @param service
      */
     public BingTile(int x, int y, ZoomLevel zoomLevel, TileService service) {
-        this(new BingTileIdentifier(x, y, zoomLevel, service.getName()),
-                service);
+        this(new BingTileIdentifier(x, y, zoomLevel, service.getName()), service);
     }
 
     public BingTile(TileIdentifier tileName, TileService service) {
 
-        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName),
-                DEFAULT_TILE_SIZE);
+        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName), DEFAULT_TILE_SIZE);
 
         // this.tileIdentifier = tileName;
         this.service = service;
     }
 
     public URL getUrl() {
-        String url = this.service.getBaseUrl().replace("${code}",
-                getTileIdentifier().getCode());
+        String url = this.service.getBaseUrl().replace("${code}", getTileIdentifier().getCode());
         try {
             return new URL(url);
         } catch (Exception e) {

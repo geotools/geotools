@@ -147,17 +147,16 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      */
     public GetTileRequest createGetTileRequest() {
 
-        GetTileRequest request;
+        URL url;
 
         if (WMTSServiceType.KVP.equals(type)) {
-            URL onlineResource = findURL(getCapabilities().getRequest().getGetTile());
-
-            request =  (GetTileRequest) ((WMTSSpecification) specification)
-                    .createGetTileRequest(onlineResource, (Properties) null, capabilities);
+            url = findURL(getCapabilities().getRequest().getGetTile());
         } else {
-            request = (GetTileRequest) ((WMTSSpecification) specification)
-                    .createGetTileRequest(serverURL, (Properties) null, capabilities);
+            url = serverURL;
         }
+
+        GetTileRequest request = (GetTileRequest) ((WMTSSpecification) specification)
+                .createGetTileRequest(url, (Properties) null, capabilities);
 
         request.getHeaders().putAll(headers);
 

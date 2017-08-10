@@ -919,8 +919,6 @@ public class SLDStyleFactory {
      */
     private java.awt.Font[] getFonts(Object feature, List<Font> fonts, TextSymbolizer symbolizer) {
         
-        // add kerning here!
-        
         List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
         if (fonts != null) {
@@ -953,6 +951,12 @@ public class SLDStyleFactory {
     private java.awt.Font applyKerning(java.awt.Font font) {
         return font.deriveFont(Collections.singletonMap(TextAttribute.KERNING, TextAttribute.KERNING_ON));
     }
+    
+    private java.awt.Font applySpacing(java.awt.Font font, double spacing) {
+        // tracking is a percentage of the font size
+        double tracking = spacing / font.getSize();
+        return font.deriveFont(Collections.singletonMap(TextAttribute.TRACKING, tracking));
+    }
 
     private java.awt.Font styleFont(Object feature, Font curr,
         java.awt.Font javaFont, TextSymbolizer symbolizer) {
@@ -983,6 +987,12 @@ public class SLDStyleFactory {
         if(kerning) {
             javaFont = applyKerning(javaFont);
         }
+        double spacing = voParser.getDoubleOption(symbolizer, TextSymbolizer.CHAR_SPACING_KEY, 
+                TextSymbolizer.DEFAULT_CHAR_SPACING);
+        if(spacing != 0) {
+            javaFont = applySpacing(javaFont, spacing);
+        }
+        
         return javaFont;
     }
 

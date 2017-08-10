@@ -1,0 +1,6 @@
+* {
+  stroke: red;
+  label: [name];
+  font-fill: black;
+  label-char-spacing: 5;
+}

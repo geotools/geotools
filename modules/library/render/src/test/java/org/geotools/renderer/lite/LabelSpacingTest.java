@@ -21,35 +21,34 @@ import java.io.File;
 
 import org.geotools.image.test.ImageAssert;
 import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
 
 /**
  * Tests labels underling.
  */
-public class LabelStrikethoughtTest extends AbstractLabelLineTest {
-
+public class LabelSpacingTest extends AbstractLabelLineTest {
+    
     @Test
-    public void testLabelsStrikethrough() throws Exception {
-        // load the style that will strikethrough the labels
-        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", TextSymbolizer.STRIKETHROUGH_TEXT_KEY, "VENDOR_VALUE", "true");
+    public void testLabelsIncreaseSpacing() throws Exception {
+        // load the style that will increase the char spacing
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", "charSpacing", "VENDOR_VALUE", "10");
         // set the map content
         BufferedImage image = renderNonStraightLines(featureSource, style, 1000, 1000, bounds);
         // let's see if the result image match our expectations
         File reference = new File(
-                "./src/test/resources/org/geotools/renderer/lite/test-data/strikethroughStyle.sld.png");
+                "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelsIncreaseSpacing.png");
         ImageAssert.assertEquals(reference, image, 3000);
     }
     
     @Test
-    public void testLabelsNotStrikethrough() throws Exception {
-        // load the style that will strikethrough the labels
-        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", TextSymbolizer.STRIKETHROUGH_TEXT_KEY, "VENDOR_VALUE", "false");
+    public void testLabelsDecreaseSpacing() throws Exception {
+        // load the style that will decrease the char spacing
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", "charSpacing", "VENDOR_VALUE", "-5");
         // set the map content
         BufferedImage image = renderNonStraightLines(featureSource, style, 1000, 1000, bounds);
         // let's see if the result image match our expectations
         File reference = new File(
-                "./src/test/resources/org/geotools/renderer/lite/test-data/strikethroughDisabledStyle.sld.png");
+                "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelsDecreaseSpacing.png");
         ImageAssert.assertEquals(reference, image, 3000);
     }
 }

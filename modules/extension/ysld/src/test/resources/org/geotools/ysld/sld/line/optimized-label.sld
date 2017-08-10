@@ -32,6 +32,7 @@
             <VendorOption name="maxAngleDelta">90</VendorOption>
             <VendorOption name="maxDisplacement">400</VendorOption>
             <VendorOption name="repeat">150</VendorOption>
+            <VendorOption name="charSpacing">5</VendorOption>
           </TextSymbolizer>
         </Rule>
       </FeatureTypeStyle>

@@ -36,6 +36,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -666,10 +668,15 @@ public class LabelPainter {
                 double start = cursor.getCurrentOrdinate();
                 Shape[] outlines = new Shape[numGlyphs];
                 AffineTransform[] transforms = new AffineTransform[numGlyphs];
+                final Font font = component.getGlyphVector().getFont();
+                Number tracking = (Number) font.getAttributes().get(TextAttribute.TRACKING);
                 for (int i = 0; i < numGlyphs; i++) {
                     outlines[i] = glyphVector.getGlyphOutline(i);
                     Point2D p = glyphVector.getGlyphPosition(i);
                     float advance = nextAdvance;
+                    if(tracking != null) {
+                        advance = advance + font.getSize2D() * tracking.floatValue(); 
+                    }
                     nextAdvance = i < numGlyphs - 1
                             ? glyphVector.getGlyphMetrics(i + 1).getAdvance() * 0.5f : 0;
 

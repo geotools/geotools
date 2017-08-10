@@ -14,6 +14,7 @@
   -gt-label-follow-line: false;
   -gt-label-underline-text: true;
   -gt-label-strikethrough-text: true;
+  -gt-label-char-spacing: 5;
   -gt-label-max-angle-delta: 22.5;
   -gt-label-auto-wrap: 0;
   -gt-label-force-ltr: true;

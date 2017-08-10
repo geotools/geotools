@@ -1001,6 +1001,7 @@ public class YsldEncodeCookbookTest {
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"followLine"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"underlineText"));
         assertEquals(true, text.bool(Ysld.OPTION_PREFIX+"strikethroughText"));
+        assertEquals(5, text.integer(Ysld.OPTION_PREFIX+"charSpacing").intValue());
         assertEquals(90, text.integer(Ysld.OPTION_PREFIX+"maxAngleDelta").intValue());
         assertEquals(400, text.integer(Ysld.OPTION_PREFIX+"maxDisplacement").intValue());
         assertEquals(150, text.integer(Ysld.OPTION_PREFIX+"repeat").intValue());

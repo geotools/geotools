@@ -216,6 +216,7 @@ public class CssTranslator {
             put("label-follow-line", TextSymbolizer.FOLLOW_LINE_KEY);
             put("label-underline-text", TextSymbolizer.UNDERLINE_TEXT_KEY);
             put("label-strikethrough-text", TextSymbolizer.STRIKETHROUGH_TEXT_KEY);
+            put("label-char-spacing", TextSymbolizer.CHAR_SPACING_KEY);
             put("label-max-angle-delta", TextSymbolizer.MAX_ANGLE_DELTA_KEY);
             put("label-auto-wrap", TextSymbolizer.AUTO_WRAP_KEY);
             put("label-force-ltr", TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY);

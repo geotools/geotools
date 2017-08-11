@@ -45,17 +45,15 @@ public class PropertyAccessors {
         // reasons         
         cache.add( new NullPropertyAccessorFactory()); //NC - added       
         cache.add( new SimpleFeaturePropertyAccessorFactory());
-        cache.add( new DirectPropertyAccessorFactory());       
-        Iterator factories = ServiceLoader.load(PropertyAccessorFactory.class).iterator();
-         while (factories.hasNext()) {
-            Object factory = factories.next();
-            if ( factory instanceof SimpleFeaturePropertyAccessorFactory || factory instanceof DirectPropertyAccessorFactory
-                 || factory instanceof NullPropertyAccessorFactory )
-                continue;
-            
-            cache.add((PropertyAccessorFactory) factory);
-         }
-         FACTORY_CACHE = (PropertyAccessorFactory[]) cache.toArray(new PropertyAccessorFactory[cache.size()]);
+        cache.add( new DirectPropertyAccessorFactory());
+        for (PropertyAccessorFactory factory : ServiceLoader.load(PropertyAccessorFactory.class)) {
+            boolean nonCached = factory instanceof SimpleFeaturePropertyAccessorFactory
+                    || factory instanceof DirectPropertyAccessorFactory
+                    || factory instanceof NullPropertyAccessorFactory;
+            if (!nonCached)
+                cache.add(factory);
+        }
+        FACTORY_CACHE = cache.toArray(new PropertyAccessorFactory[cache.size()]);
     }
     
     /**

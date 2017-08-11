@@ -92,7 +92,7 @@ public class FactoryRegistry {
     private static final Level DEBUG_LEVEL = Level.FINEST;
 
     // TODO: document
-    private final CategoryRegistry registry = new CategoryRegistry(this);
+    private final CategoryRegistry registry;
 
     /**
      * A copy of the global configuration defined through {@link FactoryIteratorProviders}
@@ -105,9 +105,9 @@ public class FactoryRegistry {
     private final FactoryIteratorProviders globalConfiguration = new FactoryIteratorProviders();
 
     /**
-     * The set of category that need to be scanned for plugins, or {@code null} if none.
-     * On initialization, all categories need to be scanned for plugins. After a category
-     * has been first used, it is removed from this set so we don't scan for plugins again.
+     * The set of category that need to be scanned for plugins. On initialization, all
+     * categories need to be scanned for plugins. After a category has been first used, it
+     * is removed from this set so we don't scan for plugins again.
      */
     private final Set<Class<?>> needScanForPlugins = new HashSet<>();
 
@@ -158,10 +158,8 @@ public class FactoryRegistry {
      * @param categories The categories.
      */
     public FactoryRegistry(final Collection<Class<?>> categories) {
-        for (Class<?> category : categories) {
-            needScanForPlugins.add(category);
-            registry.registerCategory(category);
-        }
+        registry = new CategoryRegistry(this, categories);
+        needScanForPlugins.addAll(categories);
     }
 
     /*

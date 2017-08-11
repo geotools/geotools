@@ -220,7 +220,7 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentImplementation(GML.PointPropertyType,
             PointPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.PointType, PointTypeBinding.class);
-      
+
         container.registerComponentImplementation(GML.PolygonType, PolygonTypeBinding.class);
         container.registerComponentImplementation(GML.ReferenceType, ReferenceTypeBinding.class);
         container.registerComponentImplementation(GML.SurfaceArrayPropertyType,
@@ -242,7 +242,12 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentImplementation(GML.RingType, RingTypeBinding.class);
         container.registerComponentImplementation(GML.CompositeCurveType,
                 CompositeCurveTypeBinding.class);
-        
+
+        container.registerComponentImplementation(GML.MultiGeometryType,
+                org.geotools.gml3.bindings.MultiGeometryTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiGeometryPropertyType,
+                org.geotools.gml3.bindings.MultiGeometryPropertyTypeBinding.class);
+
         //extended bindings for arc/surface support
         if (isExtendedArcSurfaceSupport()) {
             container.registerComponentImplementation(GML.ArcStringType,
@@ -265,8 +270,6 @@ public class GMLConfiguration extends Configuration {
                     org.geotools.gml3.bindings.ext.CurveTypeBinding.class);
             container.registerComponentImplementation(GML.MultiCurveType, 
                     org.geotools.gml3.bindings.ext.MultiCurveTypeBinding.class);
-            //container.registerComponentImplementation(GML.MultiPolygonType, 
-            //        org.geotools.gml3.bindings.ext.MultiPolygonTypeBinding.class);
             container.registerComponentImplementation(GML.MultiSurfaceType, 
                     org.geotools.gml3.bindings.ext.MultiSurfaceTypeBinding.class);
             container.registerComponentImplementation(GML.PolygonPatchType, 

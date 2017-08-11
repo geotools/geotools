@@ -10,15 +10,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
 import static org.geotools.util.Utilities.stream;
 
-/*
- * TODO: document all
- *
- *  - no null checks
- *  - no subclass relationships between categories and instances
+/**
+ * The category registry holds multiple instances per category. Categories are
+ * {@link Class classes} and instances are also accessible by the class they implement.
+ * Note that instances have to implement/extend the category they are filed under.
  */
-
 class CategoryRegistry {
 
 	/**
@@ -29,13 +28,16 @@ class CategoryRegistry {
 	private final ImmutableMap<Class<?>, InstanceRegistry<?>> categories;
 
 	/**
-	 * Creates a new registry with the specified Registers the specified category. If the same category is registered multiple times,
-	 * all instances previously registered for that category are lost.
+	 * Creates a new registry with the specified Registers the specified category.
+	 * If the same category is registered multiple times, all instances previously
+	 * registered for that category are lost.
 	 *
 	 * @param factoryRegistry The {@link FactoryRegistry} this registry belongs to.
-	 * @param categories The categories to register; must not be {@code null}.
+	 * @param categories The categories to register; must not be {@code null} but can contain {@code null}.
 	 */
-	public CategoryRegistry(FactoryRegistry factoryRegistry, Iterable<Class<?>> categories) {
+	public CategoryRegistry(final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
+		requireNonNull(factoryRegistry);
+		requireNonNull(categories);
 		this.categories = createCategoriesMap(factoryRegistry, categories);
 	}
 
@@ -47,8 +49,14 @@ class CategoryRegistry {
 		return categoriesBuilder.build();
 	}
 
+	/**
+	 * Registers the specified instance under all categories that are supertypes of the instance.
+	 *
+	 * @param instance The instance to register.
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> void registerInstance(final T instance) {
+		requireNonNull(instance);
 		streamCategories()
 				.filter(category -> category.isAssignableFrom(instance.getClass()))
 				// the cast is correct because the filter above only leaves categories that are supertypes of `instance`
@@ -56,13 +64,26 @@ class CategoryRegistry {
 				.forEach(registry -> registry.register(instance));
 	}
 
-	// documentation hint: returns true if this the first instance of its class
+	/**
+	 * Registers the specified instance under the specified category.
+	 * The category itself must already be registered.
+	 *
+	 * @param instance The instance to register.
+	 * @param category The category to register the instance under.
+	 * @return {@code true} if this the first instance of its class.
+	 */
 	public <T> boolean registerInstance(final T instance, final Class<T> category) {
 		return instanceRegistry(category).register(instance);
 	}
 
-	// documentation hint: returns true if an instance of the same type was previously registered
+	/**
+	 * Deregisters all instances with the same type as the specified one from all categories.
+	 *
+	 * @param instance The instance to deregister.
+	 */
+	@SuppressWarnings("unchecked")
 	public <T> void deregisterInstance(final T instance) {
+		requireNonNull(instance);
 		streamCategories()
 				.filter(category -> category.isAssignableFrom(instance.getClass()))
 				// the cast is correct because the filter above only leaves categories that are supertypes of `instance`
@@ -70,39 +91,79 @@ class CategoryRegistry {
 				.forEach(registry -> registry.deregister(instance));
 	}
 
-	// documentation hint: returns true if an instance of the same type was previously registered
+	/**
+	 * Deregisters all instances with the same type as the specified one from the specified category.
+	 * The category must be registered.
+	 * If instances of the same type are registered under other categories they remain available under them.
+	 *
+	 * @param instance The instance to deregister.
+	 * @param category The category, from which the instance should be removed.
+	 * @return {true} if an instance of the same type was previously registered
+	 */
 	public <T> boolean deregisterInstance(final T instance, final Class<T> category) {
 		return instanceRegistry(category).deregister(instance);
 	}
 
-	public void deregisterInstances() {
-		categories.values().forEach(InstanceRegistry::clear);
-	}
-
+	/**
+	 * Deregisters all instances registered under the specified category.
+	 * The category itself remain registered.
+	 *
+	 * @param category The category from which to deregister instances.
+	 */
 	public void deregisterInstances(Class<?> category) {
 		instanceRegistry(category).clear();
 	}
 
+	/**
+	 * Deregisters all instances. The categories themselves remain registered.
+	 */
+	public void deregisterInstances() {
+		categories.values().forEach(InstanceRegistry::clear);
+	}
+
+	/**
+	 * Finds the {@link InstanceRegistry} for the specified category.
+	 * Throws an exception if that category was not registered.
+	 */
 	private <T> InstanceRegistry<T> instanceRegistry(final Class<T> category) {
+		requireNonNull(category);
 		@SuppressWarnings("unchecked")
 		// during construction, we registered `InstanceRegistry<T>` for `Class<T>`, so this cast is save
 		InstanceRegistry<T> registry = (InstanceRegistry<T>) categories.get(category);
 		if (registry == null) {
-			// TODO: do something fancy like in FactoryRegistry#getServiceProvider(Class, Predicate, Hints, Hints.Key) ?
+			// TODO: do something fancy like in FactoryRegistry#getFactory(Class, Predicate, Hints, Hints.Key) ?
 			throw new IllegalArgumentException("The category '" + category + "' is not registered");
 		}
 		return registry;
 	}
 
+	/**
+	 * @return all registered categories
+	 */
 	public Stream<Class<?>> streamCategories() {
 		return categories.keySet().stream();
 	}
 
+	/**
+	 * Returns all instances that were registered with the specified category
+	 *
+	 * @param category The category for which instances are.
+	 * @param useOrder whether to return instances in topological order as specified by {@link #setOrder}
+	 * @return The instances registered for the specified category.
+	 */
 	public <T> Iterator<T> iterateInstances(final Class<T> category, final boolean useOrder) {
 		return instanceRegistry(category).iterate(useOrder);
 	}
 
+	/**
+	 * Returns an arbitrary instance that extends/implements the specified type that is filed
+	 * under a category that also extends/implements that type.
+	 *
+	 * @param type The type to look up.
+	 * @return An instance if one was found.
+	 */
 	public <S> Optional<S> getInstanceOfType(Class<S> type) {
+		requireNonNull(type);
 		return streamCategories()
 				.filter(category -> category.isAssignableFrom(type))
 				.map(this::instanceRegistry)
@@ -110,12 +171,32 @@ class CategoryRegistry {
 				.findFirst();
 	}
 
-	public <T> boolean setOrder(Class<T> category, T firstProvider, T secondProvider) {
-		return instanceRegistry(category).setOrder(firstProvider, secondProvider);
+	/**
+	 * Orders the specified instances, so that the first appears before the second when
+	 * {@link #iterateInstances(Class, boolean) iterateInstances} is called with
+	 * {@code useOrder = true}.
+	 *
+	 * @param category The category to order instances for.
+	 * @return {@code true} if this establishes a new order
+	 */
+	public <T> boolean setOrder(Class<T> category, T firstInstance, T secondInstance) {
+		requireNonNull(firstInstance);
+		requireNonNull(secondInstance);
+		return instanceRegistry(category).setOrder(firstInstance, secondInstance);
 	}
 
-	public <T> boolean clearOrder(Class<T> category, T firstProvider, T secondProvider) {
-		return instanceRegistry(category).clearOrder(firstProvider, secondProvider);
+	/**
+	 * Removes the ordering between the specified instances, so that the first no longer appears
+	 * before the second when {@link #iterateInstances(Class, boolean) iterateInstances} is
+	 * called with {@code useOrder = true}.
+	 *
+	 * @param category The category to clear instance order for.
+	 * @return {@code true} if that ordering existed before
+	 */
+	public <T> boolean clearOrder(Class<T> category, T firstInstance, T secondInstance) {
+		requireNonNull(firstInstance);
+		requireNonNull(secondInstance);
+		return instanceRegistry(category).clearOrder(firstInstance, secondInstance);
 	}
 
 	private static class InstanceRegistry<T> {
@@ -131,8 +212,8 @@ class CategoryRegistry {
 			this.category = category;
 		}
 
-		// documentation hint: returns true if this the first instance of its class
 		public boolean register(final T instance) {
+			requireNonNull(instance);
 			boolean deregistered = deregisterByType(instance);
 			registerInternal(instance);
 			notifyRegistered(instance);
@@ -151,6 +232,7 @@ class CategoryRegistry {
 		}
 
 		public boolean deregister(final T instance) {
+			requireNonNull(instance);
 			if (instancesByType.containsKey(instance.getClass())) {
 				deregisterByType(instance);
 				return true;
@@ -192,24 +274,26 @@ class CategoryRegistry {
 		}
 
 		public <S> Optional<S> getInstanceOfType(Class<S> type) {
+			requireNonNull(type);
 			@SuppressWarnings("unchecked")
 			S instance = (S) instancesByType.get(type);
 			return Optional.ofNullable(instance);
 		}
 
-		// document hint: returns true if this establishes new order
-		public boolean setOrder(T firstProvider, T secondProvider) {
-			return instancesByType.containsKey(firstProvider.getClass())
-					&& instancesByType.containsKey(secondProvider.getClass())
+		public boolean setOrder(T firstInstance, T secondInstance) {
+			return instancesByType.containsKey(firstInstance.getClass())
+					&& instancesByType.containsKey(secondInstance.getClass())
 					// if both are contained, set the order
-					&& instances.setOrder(firstProvider, secondProvider);
+					&& instances.setOrder(firstInstance, secondInstance);
 		}
 
-		public boolean clearOrder(T firstProvider, T secondProvider) {
-			return instancesByType.containsKey(firstProvider.getClass())
-					&& instancesByType.containsKey(secondProvider.getClass())
+		public boolean clearOrder(T firstInstance, T secondInstance) {
+			requireNonNull(firstInstance);
+			requireNonNull(secondInstance);
+			return instancesByType.containsKey(firstInstance.getClass())
+					&& instancesByType.containsKey(secondInstance.getClass())
 					// if both are contained, set the order
-					&& instances.clearOrder(firstProvider, secondProvider);
+					&& instances.clearOrder(firstInstance, secondInstance);
 		}
 	}
 

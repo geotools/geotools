@@ -100,34 +100,41 @@ public class LabelWrapTest extends TestCase {
     }
     
     public void testAutoWrapWithIncreasedSpacing() throws Exception {
-        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", 5);
+        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", TextSymbolizer.CHAR_SPACING_KEY, 5);
         BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceIncreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
     
     public void testAutoWrapWithDecreasedSpacing() throws Exception {
-        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", -2);
+        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", TextSymbolizer.CHAR_SPACING_KEY, -2);
         BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceDecreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
+    public void testAutoWrapWithIncreasedWordSpacing() throws Exception {
+        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", TextSymbolizer.WORD_SPACING_KEY, 15);
+        BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledWordSpaceIncreased.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
+    }
 
-    private Style getCharSpacedStyle(String styleFile, float charSpacing) throws IOException {
+    private Style getCharSpacedStyle(String styleFile, String key, float spacing) throws IOException {
         Style style = RendererBaseTest.loadStyle(this, styleFile);
         DuplicatingStyleVisitor visitor = new DuplicatingStyleVisitor() {
             @Override
             public void visit(TextSymbolizer text) {
                 super.visit(text);
                 TextSymbolizer ts = (TextSymbolizer) getCopy();
-                ts.getOptions().put(TextSymbolizer.CHAR_SPACING_KEY, String.valueOf(charSpacing));
+                ts.getOptions().put(key, String.valueOf(spacing));
             }
         };
         style.accept(visitor);
         Style spacedStyle = (Style) visitor.getCopy();
         return spacedStyle;
     }
+    
     
     public void testAutoWrapLocalTransform() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");

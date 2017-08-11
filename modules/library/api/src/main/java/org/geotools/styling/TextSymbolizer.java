@@ -346,6 +346,18 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     public static final double DEFAULT_CHAR_SPACING = 0;
     
     /**
+     * Option expand word spacing, expressed as a value in pixels. This option does not support
+     * negative values
+     */
+    public static final String WORD_SPACING_KEY = "wordSpacing";
+
+    /**
+     * Default extra word spacing (no extra)
+     */
+    public static final double DEFAULT_WORD_SPACING = 0;
+
+    
+    /**
      * Returns the expression that will be evaluated to determine what text is
      * displayed.
      *

@@ -51,4 +51,16 @@ public class LabelSpacingTest extends AbstractLabelLineTest {
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelsDecreaseSpacing.png");
         ImageAssert.assertEquals(reference, image, 3000);
     }
+    
+    @Test
+    public void testLabelsIncreaseWordSpacing() throws Exception {
+        // load the style that will increase the word spacing in labels
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", "wordSpacing", "VENDOR_VALUE", "10");
+        // set the map content
+        BufferedImage image = renderNonStraightLines(featureSource, style, 1000, 1000, bounds);
+        // let's see if the result image match our expectations
+        File reference = new File(
+                "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelsIncreaseWordSpacing.png");
+        ImageAssert.assertEquals(reference, image, 3000);
+    }
 }

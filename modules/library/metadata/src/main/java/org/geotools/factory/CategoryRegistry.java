@@ -1,5 +1,7 @@
 package org.geotools.factory;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import org.geotools.util.PartiallyOrderedSet;
 
 import java.util.HashMap;
@@ -19,16 +21,30 @@ import static org.geotools.util.Utilities.stream;
 
 class CategoryRegistry {
 
-	private final FactoryRegistry factoryRegistry;
-	private final Map<Class<?>, InstanceRegistry<?>> categories = new HashMap<>();
+	/**
+	 * Heterogeneous map, where `Class<T>` is mapped to `InstanceRegistry<T>` for any `T`.
+	 *
+	 * Code depends on this map being immutable to avoid concurrent modification exceptions.
+	 */
+	private final ImmutableMap<Class<?>, InstanceRegistry<?>> categories;
 
-	public CategoryRegistry(FactoryRegistry factoryRegistry) {
-		this.factoryRegistry = factoryRegistry;
+	/**
+	 * Creates a new registry with the specified Registers the specified category. If the same category is registered multiple times,
+	 * all instances previously registered for that category are lost.
+	 *
+	 * @param factoryRegistry The {@link FactoryRegistry} this registry belongs to.
+	 * @param categories The categories to register; must not be {@code null}.
+	 */
+	public CategoryRegistry(FactoryRegistry factoryRegistry, Iterable<Class<?>> categories) {
+		this.categories = createCategoriesMap(factoryRegistry, categories);
 	}
 
-	public void registerCategory(final Class<?> category) {
-		// TODO: should anything happen if the category is already registered?
-		categories.put(category, new InstanceRegistry<>(factoryRegistry, category));
+	private static ImmutableMap<Class<?>, InstanceRegistry<?>> createCategoriesMap(
+			final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
+		Builder<Class<?>, InstanceRegistry<?>> categoriesBuilder = ImmutableMap.builder();
+		categories.forEach(category ->
+				categoriesBuilder.put(category, new InstanceRegistry<>(factoryRegistry, category)));
+		return categoriesBuilder.build();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,6 +85,7 @@ class CategoryRegistry {
 
 	private <T> InstanceRegistry<T> instanceRegistry(final Class<T> category) {
 		@SuppressWarnings("unchecked")
+		// during construction, we registered `InstanceRegistry<T>` for `Class<T>`, so this cast is save
 		InstanceRegistry<T> registry = (InstanceRegistry<T>) categories.get(category);
 		if (registry == null) {
 			// TODO: do something fancy like in FactoryRegistry#getServiceProvider(Class, Predicate, Hints, Hints.Key) ?

@@ -16,9 +16,11 @@ Welcome
 Welcome to Geospatial for Java - this workbook is aimed at Java developers who are new to geospatial
 and would like to get started.
 
-You should have completed either the GeoTools NetBeans Quickstart or the GeoTools Eclipse Quickstart
+.. _quickstarts: ../quickstart/index.html
+
+You should have completed one of the GeoTools' Quickstarts_ 
 prior to running through this workbook. We need to be sure that you have an environment to work
-in with GeoTools jars and all their dependencies. For those using maven we will start off each
+in with GeoTools jars and all their dependencies. For those using just maven we will start off each
 section with the dependencies required.
 
 This workbook features a new "code first" approach. We have made every effort to make these
@@ -129,13 +131,13 @@ Write the feature data to the shapefile
 
 Things to note:
 
-* We check that we have read-write access by confirming our FeatureSource object
+* We check that we have read and **write** access by confirming our FeatureSource object
   implements the FeatureStore methods
 * Take a moment to check how closely the shapefile was able to match our
   template (the SimpleFeatureType TYPE). Compare this output to see how they are different.
 * The SimpleFeatureStore that we use to do this expects a FeatureCollection object,
   so we wrap our list of features in a ListFeatureCollection.
-* The use of transaction commit() to safely write out the features in one go.
+* The use of :code:`transaction.commit()` to safely write out the features in one go.
 
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
      :language: java
@@ -176,8 +178,8 @@ Another way to build a SimpleFeatureType
 ----------------------------------------
 
 Although the DataUtilities class used above provided a quick and easy way to build a
-SimpleFeatureType, for most applications you will want to take advantage of the more
-flexible **SimpleFeatureTypeBuilder**. 
+SimpleFeatureType. For any *real* application you will want to use the more
+flexible and flexible **SimpleFeatureTypeBuilder**. 
 
 Here is how to use SimpleFeatureTypeBuilder to accomplish the same result:
 

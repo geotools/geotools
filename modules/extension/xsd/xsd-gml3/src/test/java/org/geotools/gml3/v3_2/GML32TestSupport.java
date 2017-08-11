@@ -4,10 +4,12 @@ import java.util.HashMap;
 
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * 
@@ -49,6 +51,17 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     protected void tearDown() throws Exception {
         super.tearDown();
         GML3MockData.setGML(null);
+    }
+
+    /**
+     * Return the gml:id of a Node (must be an Element).
+     * 
+     * @param node
+     * @return the gml:id
+     */
+    protected String getID(Node node) {
+        return node.getAttributes().getNamedItemNS(GML.NAMESPACE, GML.id.getLocalPart())
+                .getNodeValue();
     }
 
 }

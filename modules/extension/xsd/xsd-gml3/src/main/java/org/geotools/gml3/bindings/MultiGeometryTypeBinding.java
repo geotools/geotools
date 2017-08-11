@@ -112,7 +112,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
     
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if (GML.geometryMember.equals(name)) {
+        if (GML.geometryMember.getLocalPart().equals(name.getLocalPart())) {
             GeometryCollection multiGeometry = (GeometryCollection) object;
             Geometry[] members = new Geometry[multiGeometry.getNumGeometries()];
 

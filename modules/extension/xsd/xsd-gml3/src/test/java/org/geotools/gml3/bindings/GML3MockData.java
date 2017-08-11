@@ -77,7 +77,7 @@ public class GML3MockData {
     }
     
     public static Element point(Document document, Node parent) {
-        Element point = element(GML.Point, document, parent);
+        Element point = element(qName("Point"), document, parent);
         point.setAttribute("srsName", "urn:x-ogc:def:crs:EPSG:6.11.2:4326");
 
         Element pos = element(qName("pos"), document, point);

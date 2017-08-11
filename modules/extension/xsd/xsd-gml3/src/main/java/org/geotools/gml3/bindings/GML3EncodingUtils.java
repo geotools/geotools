@@ -158,7 +158,7 @@ public class GML3EncodingUtils {
         return GML2EncodingUtils.getID(g);
     }
 
-    static void setID(Geometry g, String id) {
+    public static void setID(Geometry g, String id) {
         GML2EncodingUtils.setID(g, id);
     }
 

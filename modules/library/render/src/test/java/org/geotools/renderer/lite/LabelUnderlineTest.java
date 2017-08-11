@@ -28,6 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.Style;
+import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 
@@ -39,7 +40,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
     @Test
     public void testLabelsUnderline() throws Exception {
         // load the style that will underline the labels
-        Style style = RendererBaseTest.loadStyle(this, "underlineStyle.sld");
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", TextSymbolizer.UNDERLINE_TEXT_KEY, "VENDOR_VALUE", "true");
         // set the map content
         BufferedImage image = renderNonStraightLines(featureSource, style, 1000, 1000, bounds);
         // let's see if the result image match our expectations
@@ -51,7 +52,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
     public void testLabelsUnderline_legacyAnchorPoint() throws Exception {
         System.setProperty(SLDStyleFactory.USE_LEGACY_ANCHOR_POINT_KEY, "true");
         // load the style that will underline the labels
-        Style style = RendererBaseTest.loadStyle(this, "underlineStyle.sld");
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", TextSymbolizer.UNDERLINE_TEXT_KEY, "VENDOR_VALUE", "true");
         BufferedImage image = renderNonStraightLines(featureSource, style, 1000, 1000, bounds);
         // let's see if the result image match our expectations
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/underlineStyle-legacyAnchorPoint.sld.png");

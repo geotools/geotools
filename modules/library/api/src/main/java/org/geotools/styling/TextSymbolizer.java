@@ -327,12 +327,23 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     /**
      * Option to enable automatic adjustment of the space between characters
      */
-    String KERNING_KEY = "kerning";
+    public static final String KERNING_KEY = "kerning";
 
     /**
      * Default behaviour is to perform kerning
      */
-    boolean DEFAULT_KERNING = true;
+    public static final boolean DEFAULT_KERNING = true;
+    
+    /**
+     * Option expand/shrink character spacing, expressed as a value in pixels. A negative value
+     * will shrink spacing, making character eventually overlap. 
+     */
+    public static final String CHAR_SPACING_KEY = "charSpacing";
+
+    /**
+     * Default extra char spacing (no extra)
+     */
+    public static final double DEFAULT_CHAR_SPACING = 0;
     
     /**
      * Returns the expression that will be evaluated to determine what text is

@@ -60,8 +60,8 @@ class LabelSplitter {
         if (!(text.contains("\n") || labelItem.getAutoWrap() > 0) && singleFont) {
             FontRenderContext frc = graphics.getFontRenderContext();
             TextLayout layout = new TextLayout(text, fonts[0], frc);
-            LineComponent component = new LineComponent(text,
-                    layoutSentence(text, labelItem, graphics, fonts[0]), layout);
+            final GlyphVector gv = layoutSentence(text, labelItem, graphics, fonts[0]);
+            LineComponent component = new LineComponent(text, gv, layout);
             LineInfo line = new LineInfo(component);
             return Collections.singletonList(line);
         }

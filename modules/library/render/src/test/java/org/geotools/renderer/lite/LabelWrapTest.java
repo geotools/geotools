@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import junit.framework.TestCase;
 
@@ -27,6 +28,8 @@ import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.test.TestData;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -94,6 +97,36 @@ public class LabelWrapTest extends TestCase {
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
 
+    }
+    
+    public void testAutoWrapWithIncreasedSpacing() throws Exception {
+        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", 5);
+        BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceIncreased.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
+    }
+    
+    public void testAutoWrapWithDecreasedSpacing() throws Exception {
+        Style spacedStyle = getCharSpacedStyle("textWrapEnabled.sld", -2);
+        BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceDecreased.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
+    }
+
+
+    private Style getCharSpacedStyle(String styleFile, float charSpacing) throws IOException {
+        Style style = RendererBaseTest.loadStyle(this, styleFile);
+        DuplicatingStyleVisitor visitor = new DuplicatingStyleVisitor() {
+            @Override
+            public void visit(TextSymbolizer text) {
+                super.visit(text);
+                TextSymbolizer ts = (TextSymbolizer) getCopy();
+                ts.getOptions().put(TextSymbolizer.CHAR_SPACING_KEY, String.valueOf(charSpacing));
+            }
+        };
+        style.accept(visitor);
+        Style spacedStyle = (Style) visitor.getCopy();
+        return spacedStyle;
     }
     
     public void testAutoWrapLocalTransform() throws Exception {

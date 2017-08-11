@@ -48,7 +48,7 @@
                             <CssParameter name="fill">#FF0000</CssParameter>
                         </Fill>
                         <VendorOption name="followLine">true</VendorOption>
-                        <VendorOption name="strikethroughText">true</VendorOption>
+                        <VendorOption name="%VENDOR_KEY%">%VENDOR_VALUE%</VendorOption>
                     </TextSymbolizer>
                 </Rule>
                 <Rule>
@@ -85,7 +85,7 @@
                         <Fill>
                             <CssParameter name="fill">#00FF00</CssParameter>
                         </Fill>
-                        <VendorOption name="strikethroughText">true</VendorOption>
+                        <VendorOption name="%VENDOR_KEY%">%VENDOR_VALUE%</VendorOption>
                     </TextSymbolizer>
                 </Rule>
                 <Rule>
@@ -115,7 +115,7 @@
                             <CssParameter name="fill">#00FFFF</CssParameter>
                         </Fill>
                         <VendorOption name="followLine">true</VendorOption>
-                        <VendorOption name="strikethroughText">true</VendorOption>
+                        <VendorOption name="%VENDOR_KEY%">%VENDOR_VALUE%</VendorOption>
                     </TextSymbolizer>
                 </Rule>
                 <Rule>
@@ -137,7 +137,7 @@
                             <LinePlacement/>
                         </LabelPlacement>
                         <VendorOption name="autoWrap">3</VendorOption>
-                        <VendorOption name="strikethroughText">true</VendorOption>
+                        <VendorOption name="%VENDOR_KEY%">%VENDOR_VALUE%</VendorOption>
                     </TextSymbolizer>
                 </Rule>
             </FeatureTypeStyle>

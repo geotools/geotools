@@ -46,18 +46,14 @@ CSVDataStore now implements the FileDataStore interface to ensure a standard for
 CSVDataStoreFactory
 ^^^^^^^^^^^^^^^^^^^
 
-The new architecture with the added strategy objects expands the CSVDataStoreFactory's capabilities. It comprises of more Param fields now.
-
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
-      :language: java
-      :start-after: import org.geotools.util.KVP;
-      :end-before: @Override
-
+The new architecture with the added strategy objects expands the CSVDataStoreFactory's capabilities. It contains a few more :code:`Param` fields now. 
 Much of the class's structure is improved to be more compartmentalized. The metadata is mostly the same with some data now being held in class fields rather than literals.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :lines: 55-68
+      :start-after: import com.vividsolutions.jts.geom.GeometryFactory;
+      :end-before: @Override
+
 
 The method **isAvailable()** just attempts to read the class, and if it succeeds, returns true.
 

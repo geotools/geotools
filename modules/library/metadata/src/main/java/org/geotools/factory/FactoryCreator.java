@@ -21,6 +21,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Predicate;
 import javax.imageio.spi.ServiceRegistry.Filter;
 
 import org.geotools.util.logging.Logging;
@@ -135,15 +136,27 @@ public class FactoryCreator extends FactoryRegistry {
      * @throws FactoryRegistryException if the factory can't be created for some other reason.
      */
     @Override
+    @Deprecated // TODO document
     public <T> T getServiceProvider(final Class<T>  category,
                                     final Filter    filter,
                                     final Hints     hints,
                                     final Hints.Key key)
             throws FactoryRegistryException
     {
+        Predicate<T> predicate = filter == null ? null : filter::filter;
+        return getFactory(category, predicate, hints, key);
+    }
+
+    // TODO document
+    public <T> T getFactory(final Class<T>     category,
+                            final Predicate<? super T> filter,
+                            final Hints        hints,
+                            final Hints.Key    key)
+            throws FactoryRegistryException
+    {
         final FactoryNotFoundException notFound;
         try {
-            return super.getServiceProvider(category, filter, hints, key);
+            return super.getFactory(category, filter, hints, key);
         } catch (FactoryNotFoundException exception) {
             // Will be rethrown later in case of failure to create the factory.
             notFound = exception;
@@ -193,13 +206,13 @@ public class FactoryCreator extends FactoryRegistry {
          * Note: all Factory objects should be fully constructed by now,
          * since the super-class has already iterated over all factories.
          */
-        for (final Iterator<T> it=getUnfilteredProviders(category); it.hasNext();) {
+        for (final Iterator<T> it = getUnfilteredFactories(category); it.hasNext();) {
             final T factory = it.next();
             final Class<?> implementation = factory.getClass();
             if (types!=null && !isTypeOf(types, implementation)) {
                 continue;
             }
-            if (filter!=null && !filter.filter(factory)) {
+            if (filter!=null && !filter.test(factory)) {
                 continue;
             }
             final T candidate;
@@ -208,7 +221,7 @@ public class FactoryCreator extends FactoryRegistry {
             } catch (FactoryNotFoundException exception) {
                 // The factory has a dependency which has not been found.
                 // Be tolerant to that kind of error.
-                Logging.recoverableException(LOGGER, FactoryCreator.class, "getServiceProvider", exception);
+                Logging.recoverableException(LOGGER, FactoryCreator.class, "getFactory", exception);
                 continue;
             } catch (FactoryRegistryException exception) {
                 if (exception.getCause() instanceof NoSuchMethodException) {
@@ -282,9 +295,19 @@ public class FactoryCreator extends FactoryRegistry {
      * @return The factory.
      * @throws FactoryRegistryException if the factory creation failed.
      */
+    @Deprecated // TODO: document
     protected <T> T createServiceProvider(final Class<T> category,
                                           final Class<?> implementation,
                                           final Hints hints)
+            throws FactoryRegistryException
+    {
+        return createFactory(category, implementation, hints);
+    }
+
+    // TODO: document
+    protected <T> T createFactory(final Class<T> category,
+                                  final Class<?> implementation,
+                                  final Hints    hints)
             throws FactoryRegistryException
     {
         Throwable cause;

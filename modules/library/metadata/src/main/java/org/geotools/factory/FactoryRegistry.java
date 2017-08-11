@@ -17,6 +17,7 @@
 package org.geotools.factory;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -61,12 +62,12 @@ import static org.geotools.util.Utilities.streamAsSubtype;
  * Filter filter = null;<br>
  * Hints hints = null;<br>
  * Iterator&lt;MathTransform&gt; providers =
- *     registry.getServiceProviders(MathTransformProvider.class, filter, hints);<br>
+ *     registry.getFactories(MathTransformProvider.class, filter, hints);<br>
  * </code></blockquote>
  * <p>
  * <strong>NOTE: This class is not thread safe</strong>. Users are responsible
  * for synchronisation. This is usually done in an utility class wrapping this
- * service registry (e.g. {@link org.geotools.referencing.ReferencingFactoryFinder}).
+ * factory registry (e.g. {@link org.geotools.referencing.ReferencingFactoryFinder}).
  *
  * @since 2.1
  *
@@ -168,13 +169,6 @@ public class FactoryRegistry {
      * Breakage:
      *
      *  - not all methods of `ServiceRegistry` API were implemented
-     *
-     * Possible breakage:
-     *
-     *  - in general nomenclature, replace "ServiceProvider" with "Factory"
-     *  - RegisterableService interface can no longer be used because it expects a `ServiceProvider`
-     *  - replace `Filter` with `Predicate<? super T>`
-     *
      */
 
     public Stream<Class<?>> streamCategories() {
@@ -184,22 +178,39 @@ public class FactoryRegistry {
     // TODO: ensure uniform null handling here and in CategoryRegistry
 
     // TODO: document
+    @Deprecated
     public <T> T getServiceProviderByClass(Class<T> providerClass) {
-        if (providerClass == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The providerClass must not be null.");
+        return getFactoryByClass(providerClass);
+    }
+
+    public <T> T getFactoryByClass(Class<T> categoryClass) {
+        if (categoryClass == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The categoryClass must not be null.");
         }
-        return registry.getInstanceOfType(providerClass).orElse(null);
+        return registry.getInstanceOfType(categoryClass).orElse(null);
     }
 
     // TODO: document
+    @Deprecated
     public <T> Iterator<T> getServiceProviders(final Class<T> category, final boolean useOrdering) {
+        return getFactories(category, useOrdering);
+    }
+
+    // TODO: document
+    public <T> Iterator<T> getFactories(final Class<T> category, final boolean useOrdering) {
         return registry.iterateInstances(category, useOrdering);
     }
 
     // TODO: document
+    @Deprecated
     public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
-        return Iterators.filter(getServiceProviders(category, useOrdering), filter::filter);
+        return getFactories(category, filter::filter, useOrdering);
+    }
+
+    // TODO: document
+    public <T> Iterator<T> getFactories(final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
+        return Iterators.filter(getFactories(category, useOrdering), factoryFilter::test);
     }
 
     /**
@@ -217,10 +228,17 @@ public class FactoryRegistry {
      *
      * @since 2.3
      */
+    @Deprecated // TODO: document
     public synchronized <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
+        Predicate<? super T> predicate = filter == null ? null : filter::filter;
+        return getFactories(category, predicate, hints);
+    }
+
+    // TODO: document; filter and hints can be null
+    public synchronized <T> Iterator<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
         /*
-         * The implementation of this method is very similar to the 'getUnfilteredProviders'
-         * one except for filter handling. See the comments in 'getUnfilteredProviders' for
+         * The implementation of this method is very similar to the 'getUnfilteredFactories'
+         * one except for filter handling. See the comments in 'getUnfilteredFactories' for
          * more implementation details.
          */
         if (scanningCategories.contains(category)) {
@@ -230,13 +248,13 @@ public class FactoryRegistry {
         }
         synchronizeIteratorProviders();
         scanForPluginsIfNeeded(category);
-        Filter hintsFilter = provider -> isAcceptable(category.cast(provider), category, hints, filter);
-        return getServiceProviders(category, hintsFilter, true);
+        Predicate<T> isAcceptable = factory -> isAcceptable(category.cast(factory), category, hints, filter);
+        return getFactories(category, isAcceptable, true);
     }
 
     /**
-     * Implementation of {@link #getServiceProviders(Class, Filter, Hints)} without the filtering
-     * applied by the {@link #isAcceptable(Object, Class, Hints, Filter)} method. If this filtering
+     * Implementation of {@link #getFactories(Class, Predicate, Hints)} without the filtering
+     * applied by the {@link #isAcceptable(Object, Class, Hints, Predicate)} method. If this filtering
      * is not already presents in the filter given to this method, then it must be applied on the
      * elements returned by the iterator. The later is preferrable when:
      * <p>
@@ -251,21 +269,21 @@ public class FactoryRegistry {
      *
      * @todo Use Hints to match Constructor.
      */
-    final <T> Iterator<T> getUnfilteredProviders(final Class<T> category) {
+    final <T> Iterator<T> getUnfilteredFactories(final Class<T> category) {
         /*
-         * If the map is not empty, then this mean that a scanning is under progress, i.e.
+         * If the map is not empty, then this means that a scanning is under progress, i.e.
          * 'scanForPlugins' is currently being executed. This is okay as long as the user
          * is not asking for one of the categories under scanning. Otherwise, the answer
-         * returned by 'getServiceProviders' would be incomplete because not all plugins
-         * have been found yet. This can lead to some bugs hard to spot because this methoud
-         * could complete normally but return the wrong plugin. It is safer to thrown an
-         * exception so the user is advised that something is wrong.
+         * returned by 'getFactories' would be incomplete because not all plugins
+         * have been found yet. This can lead to some bugs that are hard to spot because
+         * this method could complete normally but return the wrong plugin. It is safer to
+         * thrown an exception so the user is advised that something is wrong.
          */
         if (scanningCategories.contains(category)) {
             throw new RecursiveSearchException(category);
         }
         scanForPluginsIfNeeded(category);
-        return getServiceProviders(category, true);
+        return getFactories(category, true);
     }
 
     /**
@@ -295,23 +313,20 @@ public class FactoryRegistry {
      * @see #getServiceProviders(Class, Filter, Hints)
      * @see FactoryCreator#getServiceProvider
      */
+    @Deprecated // TODO: document
     public <T> T getServiceProvider(final Class<T> category, final Filter filter, Hints hints, final Hints.Key key)
+            throws FactoryRegistryException {
+        Predicate<T> predicate = filter == null ? null : filter::filter;
+        return getFactory(category, predicate, hints, key);
+    }
+
+    // TODO document; filter, hints, key can be null
+    public <T> T getFactory(final Class<T> category, final Predicate<? super T> filter, Hints hints, final Hints.Key key)
             throws FactoryRegistryException
     {
         synchronizeIteratorProviders();
         final boolean debug = LOGGER.isLoggable(DEBUG_LEVEL);
         if (debug) {
-            /*
-             * We are not required to insert the method name ("GetServiceProvider") in the
-             * message because it is part of the informations already stored by LogRecord,
-             * and formatted by the default java.util.logging.SimpleFormatter.
-             *
-             * Conventions for the message part according java.util.logging.Logger javadoc:
-             * - "ENTRY"  at the begining of a method.
-             * - "RETURN" at the end of a method, if successful.
-             * - "THROW"  in case of failure.
-             * - "CHECK"  ... is our own addition to Sun's convention for this method ...
-             */
             debug("ENTRY", category, key, null, null);
         }
         Class<?> implementation = null;
@@ -343,14 +358,14 @@ public class FactoryRegistry {
                         return category.cast(hint);
                     }
                     /*
-                     * Before to pass the hints to the private 'getServiceImplementation' method,
+                     * Before to pass the hints to the private 'getFactoryImplementation' method,
                      * remove the hint for the user-supplied key.  This is because this hint has
-                     * been processed by this public 'getServiceProvider' method, and the policy
+                     * been processed by this public 'getFactory' method, and the policy
                      * is to remove the processed hints before to pass them to child dependencies
                      * (see the "Check recursively in factory dependencies" comment elswhere in
                      * this class).
                      *
-                     * Use case: DefaultDataSourceTest invokes indirectly 'getServiceProvider'
+                     * Use case: DefaultDataSourceTest invokes indirectly 'getFactory'
                      * with a "CRS_AUTHORITY_FACTORY = ThreadedEpsgFactory.class" hint. However
                      * ThreadedEpsgFactory (in the org.geotools.referencing.factory.epsg package)
                      * is a wrapper around DirectEpsgFactory, and defines this dependency through
@@ -378,7 +393,7 @@ public class FactoryRegistry {
                             if (debug) {
                                 debug("CHECK", category, key, "consider hint[" + i + ']', type);
                             }
-                            final T candidate = getServiceImplementation(category, type, filter, hints);
+                            final T candidate = getFactoryImplementation(category, type, filter, hints);
                             if (candidate != null) {
                                 if (debug) {
                                     debug("RETURN", category, key, "found implementation", candidate.getClass());
@@ -398,7 +413,7 @@ public class FactoryRegistry {
         if (debug && implementation != null) {
             debug("CHECK", category, key, "consider hint[last]", implementation);
         }
-        final T candidate = getServiceImplementation(category, implementation, filter, hints);
+        final T candidate = getFactoryImplementation(category, implementation, filter, hints);
         if (candidate != null) {
             if (debug) {
                 debug("RETURN", category, key, "found implementation", candidate.getClass());
@@ -413,14 +428,15 @@ public class FactoryRegistry {
     }
 
     /**
-     * Logs a debug message for {@link #getServiceProvider} method. Note: we are not required
-     * to insert the method name ({@code "GetServiceProvider"}) in the message because it is
-     * part of the informations already stored by {@link LogRecord}, and formatted by the
-     * default {@link java.util.logging.SimpleFormatter}.
+     * Logs a debug message for {@link #getFactory} method.
+     * 
+     * Note: we are not required to insert the method name ({@code "GetFactory"}) in the
+     * message because it is part of the informations already stored by {@link LogRecord},
+     * and formatted by the default {@link java.util.logging.SimpleFormatter}.
      *
      * @param status   {@code "ENTRY"}, {@code "RETURN"} or {@code "THROW"},
      *                 according {@link Logger} conventions.
-     * @param category The category given to the {@link #getServiceProvider} method.
+     * @param category The category given to the {@link #getFactory} method.
      * @param key      The key being examined, or {@code null}.
      * @param message  Optional message, or {@code null} if none.
      * @param type     Optional class to format after the message, or {@code null}.
@@ -443,14 +459,14 @@ public class FactoryRegistry {
         }
         final LogRecord record = new LogRecord(DEBUG_LEVEL, buffer.toString());
         record.setSourceClassName(FactoryRegistry.class.getName());
-        record.setSourceMethodName("getServiceProvider");
+        record.setSourceMethodName("getFactory");
         record.setLoggerName(LOGGER.getName());
         LOGGER.log(record);
     }
 
     /**
      * Searchs the first implementation in the registery matching the specified conditions.
-     * This method is invoked only by the {@link #getServiceProvider(Class, Filter, Hints,
+     * This method is invoked only by the {@link #getFactory(Class, Predicate, Hints,
      * Hints.Key)} public method above; there is no recursivity there. This method do not
      * creates new instance if no matching factory is found.
      *
@@ -460,10 +476,10 @@ public class FactoryRegistry {
      * @param  hints          A {@linkplain Hints map of hints}, or {@code null} if none.
      * @return A factory for the specified category and hints, or {@code null} if none.
      */
-    private <T> T getServiceImplementation(final Class<T> category, final Class<?> implementation,
-                                           final Filter filter, final Hints hints)
+    private <T> T getFactoryImplementation(final Class<T> category, final Class<?> implementation,
+                                           final Predicate<? super T> filter, final Hints hints)
     {
-        for (final Iterator<T> it=getUnfilteredProviders(category); it.hasNext();) {
+        for (final Iterator<T> it = getUnfilteredFactories(category); it.hasNext();) {
             final T candidate = it.next();
             // Implementation class must be tested before 'isAcceptable'
             // in order to avoid StackOverflowError in some situations.
@@ -509,23 +525,18 @@ public class FactoryRegistry {
 
     /**
      * Returns {@code true} is the specified {@code factory} meets the requirements specified by
-     * a map of {@code hints} and the filter. This method is the entry point for the following
-     * public methods:
-     * <ul>
-     *   <li>Singleton {@link #getServiceProvider (Class category, Filter, Hints, Hints.Key)}</li>
-     *   <li>Iterator  {@link #getServiceProviders(Class category, Filter, Hints)}</li>
-     * </ul>
+     * a map of {@code hints} and the {@code candidateFilter}.
      *
-     * @param candidate The factory to checks.
-     * @param category  The factory category. Usually an interface.
-     * @param hints     The optional user requirements, or {@code null}.
-     * @param filter    The optional filter, or {@code null}.
+     * @param candidate         The factory to checks.
+     * @param category          The factory category. Usually an interface.
+     * @param hints             The optional user requirements, or {@code null}.
+     * @param candidateFilter   The optional filter, or {@code null}.
      * @return {@code true} if the {@code factory} meets the user requirements.
      */
     final <T> boolean isAcceptable(final T candidate, final Class<T> category,
-                                   final Hints hints, final Filter filter)
+                                   final Hints hints, final Predicate<? super T> candidateFilter)
     {
-        if (filter!=null && !filter.filter(candidate)) {
+        if (candidateFilter!=null && !candidateFilter.test(candidate)) {
             return false;
         }
         /*
@@ -796,14 +807,14 @@ public class FactoryRegistry {
         }
         try {
             final StringBuilder message = getLogHeader(category);
-            boolean newServices = false;
+            boolean newFactories = false;
             /*
              * First, scan META-INF/services directories (the default mechanism).
              */
             for (final ClassLoader loader : loaders) {
-                Iterator<T> services = ServiceLoader.load(category, loader).iterator();
-                newServices |= register(services, category, message);
-                newServices |= registerFromSystemProperty(loader, category, message);
+                Iterator<T> factories = ServiceLoader.load(category, loader).iterator();
+                newFactories |= register(factories, category, message);
+                newFactories |= registerFromSystemProperty(loader, category, message);
             }
             /*
              * Next, query the user-provider iterators, if any.
@@ -812,13 +823,13 @@ public class FactoryRegistry {
             for (FactoryIteratorProvider aFip : fip) {
                 final Iterator<T> it = aFip.iterator(category);
                 if (it != null) {
-                    newServices |= register(it, category, message);
+                    newFactories |= register(it, category, message);
                 }
             }
             /*
              * Finally, log the list of registered factories.
              */
-            if (newServices) {
+            if (newFactories) {
                 log("scanForPlugins", message);
             }
         } finally {
@@ -837,42 +848,58 @@ public class FactoryRegistry {
     }
 
     // TODO: document
+    @Deprecated
     public void registerServiceProviders(final Iterator<?> providers) {
-        if (providers == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The providers must not be null.");
-        }
-        providers.forEachRemaining(this::registerServiceProvider);
+        registerFactories(providers);
     }
 
     // TODO: document
+    public void registerFactories(final Iterator<?> factories) {
+        if (factories == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factories must not be null.");
+        }
+        factories.forEachRemaining(this::registerFactory);
+    }
+
+    // TODO: document
+    @Deprecated
     public void registerServiceProvider(final Object provider) {
-        if (provider == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The provider must not be null.");
+        registerFactory(provider);
+    }
+
+    public void registerFactory(final Object factory) {
+        if (factory == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factory must not be null.");
         }
-        registry.registerInstance(provider);
+        registry.registerInstance(factory);
     }
 
     // TODO: document
+    @Deprecated
     public <T> boolean registerServiceProvider(final T provider, final Class<T> category) {
-        if (provider == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The provider must not be null.");
+        return registerFactory(provider, category);
+    }
+
+    public <T> boolean registerFactory(final T factory, final Class<T> category) {
+        if (factory == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factory must not be null.");
         }
         if (category == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new IllegalArgumentException("The category must not be null.");
         }
-        if (!category.isAssignableFrom(provider.getClass())) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+        if (!category.isAssignableFrom(factory.getClass())) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new ClassCastException();
         }
-        return registry.registerInstance(provider, category);
+        return registry.registerInstance(factory, category);
     }
 
     /**
-     * {@linkplain #registerServiceProvider Registers} all factories given by the
+     * {@linkplain #registerFactory Registers} all factories given by the
      * supplied iterator.
      *
      * @param factories The factories (or "service providers") to register.
@@ -883,7 +910,7 @@ public class FactoryRegistry {
     private <T> boolean register(final Iterator<T> factories, final Class<T> category,
                                  final StringBuilder message)
     {
-        boolean newServices = false;
+        boolean newFactories = false;
         final String lineSeparator = System.getProperty("line.separator", "\n");
         while (factories.hasNext()) {
             T factory;
@@ -932,13 +959,13 @@ public class FactoryRegistry {
                  * instance were already registered, reuse the same instance
                  * instead of duplicating it.
                  */
-                final T replacement = getServiceProviderByClass(factoryClass);
+                final T replacement = getFactoryByClass(factoryClass);
                 if (replacement != null) {
                     factory = replacement;
                     // Need to register anyway, because the category may not be
                     // the same.
                 }
-                if (registerServiceProvider(factory, category)) {
+                if (registerFactory(factory, category)) {
                     /*
                      * The factory is now registered. Add it to the message to
                      * be logged. We will log all factories together in a single
@@ -948,11 +975,11 @@ public class FactoryRegistry {
                     message.append(lineSeparator);
                     message.append("  ");
                     message.append(factoryClass.getName());
-                    newServices = true;
+                    newFactories = true;
                 }
             }
         }
-        return newServices;
+        return newFactories;
     }
 
     /**
@@ -968,21 +995,21 @@ public class FactoryRegistry {
     private <T> boolean registerFromSystemProperty(final ClassLoader loader,
             final Class<T> category, final StringBuilder message)
     {
-        boolean newServices = false;
+        boolean newFactories = false;
         try {
             final String classname = System.getProperty(category.getName());
             if (classname != null) try {
                 final Class<?> candidate = loader.loadClass(classname);
                 if (category.isAssignableFrom(candidate)) {
                     final Class<? extends T> factoryClass = candidate.asSubclass(category);
-                    T factory = getServiceProviderByClass(factoryClass);
+                    T factory = getFactoryByClass(factoryClass);
                     if (factory == null) try {
                         factory = factoryClass.newInstance();
-                        if (registerServiceProvider(factory, category)) {
+                        if (registerFactory(factory, category)) {
                             message.append(System.getProperty("line.separator", "\n"));
                             message.append("  ");
                             message.append(factoryClass.getName());
-                            newServices = true;
+                            newFactories = true;
                         }
                     } catch (IllegalAccessException exception) {
                         throw new FactoryRegistryException(Errors.format(
@@ -998,7 +1025,7 @@ public class FactoryRegistry {
                      * not be properly ordered. Since this code exists more for compatibility reasons
                      * than as a commited API, we ignore this short comming for now.
                      */
-                    for (final Iterator<T> it=getServiceProviders(category, false); it.hasNext();) {
+                    for (final Iterator<T> it=getFactories(category, false); it.hasNext();) {
                         final T other = it.next();
                         if (other != factory) {
                             setOrdering(category, factory, other);
@@ -1014,7 +1041,7 @@ public class FactoryRegistry {
             // We are not allowed to read property, probably
             // because we are running in an applet. Ignore...
         }
-        return newServices;
+        return newFactories;
     }
 
     /**
@@ -1083,7 +1110,7 @@ public class FactoryRegistry {
                      * registered for this category,  because in such case scanForPlugin() will not
                      * be invoked automatically. If no factory are registered for this category, do
                      * nothing - we will rely on the lazy invocation of scanForPlugins() when first
-                     * needed. We perform this check because getServiceProviders(category).hasNext()
+                     * needed. We perform this check because getFactory(category).hasNext()
                      * is the criterion used by FactoryRegistry in order to decide if it should invoke
                      * automatically scanForPlugins().
                      */
@@ -1117,52 +1144,70 @@ public class FactoryRegistry {
     }
 
     // TODO: document
+    @Deprecated
     public void deregisterServiceProviders(final Iterator<?> providers) {
-        if (providers == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The providers must not be null.");
-        }
-        providers.forEachRemaining(this::deregisterServiceProvider);
+        deregisterFactories(providers);
     }
 
     // TODO: document
+    public void deregisterFactories(final Iterator<?> factories) {
+        if (factories == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factories must not be null.");
+        }
+        factories.forEachRemaining(this::deregisterFactory);
+    }
+
+    // TODO: document
+    @Deprecated
     public void deregisterServiceProvider(final Object provider) {
+        deregisterFactory(provider);
+    }
+
+    // TODO: document
+    public void deregisterFactory(final Object provider) {
         if (provider == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new IllegalArgumentException("The provider must not be null.");
         }
         registry.deregisterInstance(provider);
     }
 
     // TODO: document
-    public <T> boolean deregisterServiceProvider(final T provider, final Class<T> category) {
-        if (provider == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The provider must not be null.");
-        }
-        if (category == null) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The category must not be null.");
-        }
-        if (!category.isAssignableFrom(provider.getClass())) {
-            // TODO: do something fancy like in getServiceProvider(Class, Filter, Hints, Hints.Key) ?
-            throw new ClassCastException();
-        }
-        return registry.deregisterInstance(provider, category);
+    @Deprecated
+    public <T> void deregisterServiceProvider(final T provider, final Class<T> category) {
+        deregisterFactory(provider);
     }
 
     // TODO: document
-    public <T> boolean setOrdering(final Class<T> category, final T firstProvider, final T secondProvider) {
-        if (firstProvider == null) {
+    public <T> boolean deregisterFactory(final T factory, final Class<T> category) {
+        if (factory == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factory must not be null.");
+        }
+        if (category == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The category must not be null.");
+        }
+        if (!category.isAssignableFrom(factory.getClass())) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new ClassCastException();
+        }
+        return registry.deregisterInstance(factory, category);
+    }
+
+    // TODO: document
+    public <T> boolean setOrdering(final Class<T> category, final T firstFactory, final T secondFactory) {
+        if (firstFactory == null) {
             throw new IllegalArgumentException("First provider must not be null.");
         }
-        if (secondProvider == null) {
+        if (secondFactory == null) {
             throw new IllegalArgumentException("Second provider must not be null.");
         }
-        if (firstProvider == secondProvider) {
+        if (firstFactory == secondFactory) {
             throw new IllegalArgumentException("Providers must not be the same instance.");
         }
-        return registry.setOrder(category, firstProvider, secondProvider);
+        return registry.setOrder(category, firstFactory, secondFactory);
     }
 
     /**
@@ -1184,7 +1229,7 @@ public class FactoryRegistry {
     public <T> boolean setOrdering(final Class<T> category, final Comparator<T> comparator) {
         boolean set = false;
         final List<T> previous = new ArrayList<T>();
-        for (final Iterator<T> it=getServiceProviders(category, false); it.hasNext();) {
+        for (final Iterator<T> it=getFactories(category, false); it.hasNext();) {
             final T f1 = it.next();
             for (int i=previous.size(); --i>=0;) {
                 final T f2 = previous.get(i);
@@ -1195,7 +1240,7 @@ public class FactoryRegistry {
                     /*
                      * This exception is expected if the user-supplied comparator follows strictly
                      * the java.util.Comparator specification and has determined that it can't
-                     * compare the supplied factories. From ServiceRegistry point of view, it just
+                     * compare the supplied factories. From FactoryRegistry point of view, it just
                      * means that the ordering between those factories will stay undeterminated.
                      */
                     continue;
@@ -1222,16 +1267,23 @@ public class FactoryRegistry {
      * @param base     The base category. Only categories {@linkplain Class#isAssignableFrom
      *                 assignable} to {@code base} will be processed.
      * @param set      {@code true} for setting the ordering, or {@code false} for unsetting.
-     * @param service1 Filter for the preferred factory.
-     * @param service2 Filter for the factory to which {@code service1} is preferred.
+     * @param filter1 Filter for the preferred factory.
+     * @param filter2 Filter for the factory to which {@code filter1} is preferred.
      * @return {@code true} if the ordering changed as a result of this call.
      */
+    @Deprecated // TODO document
     public <T> boolean setOrdering(final Class<T> base, final boolean set,
-                                   final Filter service1, final Filter service2)
+                                   final Filter filter1, final Filter filter2) {
+        return setOrdering(base, set, (Predicate<T>) filter1::filter, filter2::filter);
+    }
+
+    // TODO: document
+    public <T> boolean setOrdering(final Class<T> base, final boolean set,
+                                   final Predicate<? super T> filter1, final Predicate<? super T> filter2)
     {
         return registry.streamCategories()
                 .flatMap(category -> streamAsSubtype(category, base))
-                .map(category -> setOrUnsetOrdering(category, set, service1, service2))
+                .map(category -> setOrUnsetOrdering(category, set, filter1, filter2))
                 .reduce((done1, done2) -> done1 || done2)
                 .orElse(false);
     }
@@ -1240,15 +1292,15 @@ public class FactoryRegistry {
      * Helper method for the above.
      */
     private <T> boolean setOrUnsetOrdering(final Class<T> category, final boolean set,
-                                           final Filter service1, final Filter service2)
+                                           final Predicate<? super T> filter1, final Predicate<? super T> filter2)
     {
         boolean done = false;
         T impl1 = null;
         T impl2 = null;
-        for (final Iterator<? extends T> it=getServiceProviders(category, false); it.hasNext();) {
+        for (final Iterator<? extends T> it=getFactories(category, false); it.hasNext();) {
             final T factory = it.next();
-            if (service1.filter(factory)) impl1 = factory;
-            if (service2.filter(factory)) impl2 = factory;
+            if (filter1.test(factory)) impl1 = factory;
+            if (filter2.test(factory)) impl2 = factory;
             if (impl1!=null && impl2!=null && impl1!=impl2) {
                 if (set) done |=   setOrdering(category, impl1, impl2);
                 else     done |= unsetOrdering(category, impl1, impl2);

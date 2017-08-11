@@ -44,18 +44,19 @@ open feature reader
   locations.12 Nottingham
   locations.13 Portland
   locations.14 Seoul
+  locations.15 Bonn
 close feature reader
-read in 14 features
+read in 15 features
 
 example3 end
 
 example4 start
 
 feature locations.7
-  Location = POINT (-123.365556 48.428611)
-  CITY = Victoria
-  NUMBER = 721
-  YEAR = 2007
+	Location = POINT (-123.365556 48.428611)
+	CITY = Victoria
+	NUMBER = 721
+	YEAR = 2007
 
 example4 end
 
@@ -68,13 +69,11 @@ example5 end
 
 example6 start
 
-           List Contents: [locations.1, locations.2, locations.3, locations.4, locations.5, locations.6, locations.7, locations.8, locations.9, locations.10, locations.11, locations.12, locations.13, locations.14]
-    FeatureSource  count: 14
+           List Contents: [locations.1, locations.2, locations.3, locations.4, locations.5, locations.6, locations.7, locations.8, locations.9, locations.10, locations.11, locations.12, locations.13, locations.14, locations.15]
+    FeatureSource  count: 15
     FeatureSource bounds: null
-FeatureCollection   size: 14
+FeatureCollection   size: 15
 FeatureCollection bounds: ReferencedEnvelope[-123.365556 : 151.211111, -33.925278 : 52.95]
-         collection size: 14
+         collection size: 15
 
 example6 end
-
-

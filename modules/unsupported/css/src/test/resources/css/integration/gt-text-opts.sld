@@ -25,6 +25,7 @@
             <sld:VendorOption name="underlineText">true</sld:VendorOption>
             <sld:VendorOption name="strikethroughText">true</sld:VendorOption>
             <sld:VendorOption name="charSpacing">5</sld:VendorOption>
+            <sld:VendorOption name="wordSpacing">15</sld:VendorOption>
             <sld:VendorOption name="maxAngleDelta">22.5</sld:VendorOption>
             <sld:VendorOption name="autoWrap">0</sld:VendorOption>
             <sld:VendorOption name="forceLeftToRight">true</sld:VendorOption>

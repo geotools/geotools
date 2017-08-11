@@ -360,6 +360,7 @@ public final class LabelCacheImpl implements LabelCache {
         item.setPartialsEnabled(voParser.getBooleanOption(symbolizer, PARTIALS_KEY, DEFAULT_PARTIALS));
         item.setTextUnderlined(voParser.getBooleanOption(symbolizer, UNDERLINE_TEXT_KEY, DEFAULT_UNDERLINE_TEXT));
         item.setTextStrikethrough(voParser.getBooleanOption(symbolizer, STRIKETHROUGH_TEXT_KEY, DEFAULT_STRIKETHROUGH_TEXT));
+        item.setWordSpacing(voParser.getDoubleOption(symbolizer, WORD_SPACING_KEY, DEFAULT_WORD_SPACING));
 
         return item;
     }

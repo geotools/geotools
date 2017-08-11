@@ -548,7 +548,9 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * spaceAround(50) The minimum distance between two labels, in pixels
 
-* charSpacing(0) The extra space between characters, in pixels
+* charSpacing(0) The extra space between characters, in pixels. Can be negative.
+
+* wordSpacing(0) The extra space between words, in pixels. Must be zero or positive.
 
 * underlineText(true): When true instructs the renderer to underline labels
 

@@ -90,6 +90,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     boolean textUnderlined = false;
     
     boolean textStrikethrough = false;
+    
+    double wordSpacing;
 
     TextSymbolizer symbolizer;
 
@@ -391,6 +393,14 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     public void setTextStrikethrough(boolean textStrikethrough) {
         this.textStrikethrough = textStrikethrough;
+    }
+    
+    public double getWordSpacing() {
+        return wordSpacing;
+    }
+
+    public void setWordSpacing(double wordSpacing) {
+        this.wordSpacing = wordSpacing;
     }
 
     @Override

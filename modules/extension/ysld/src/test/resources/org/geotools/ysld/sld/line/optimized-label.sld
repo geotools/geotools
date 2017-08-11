@@ -33,6 +33,7 @@
             <VendorOption name="maxDisplacement">400</VendorOption>
             <VendorOption name="repeat">150</VendorOption>
             <VendorOption name="charSpacing">5</VendorOption>
+            <VendorOption name="wordSpacing">15</VendorOption>
           </TextSymbolizer>
         </Rule>
       </FeatureTypeStyle>

@@ -31,7 +31,6 @@ import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizerImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

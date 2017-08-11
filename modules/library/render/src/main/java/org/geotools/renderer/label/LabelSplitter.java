@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.geotools.renderer.label.LineInfo.LineComponent;
 
@@ -47,7 +48,12 @@ import org.geotools.renderer.label.LineInfo.LineComponent;
  */
 class LabelSplitter {
 
-    private static final String NOT_EMPTY_STRING = " ";
+    private static final String SINGLE_CHAR_STRING = " ";
+    
+    /**
+     * Splits a string on spaces between words, keeping the spaces attached to the
+     */
+    private static final Pattern WORD_SPLITTER = Pattern.compile("(?<=\\s)(?=\\S)");
 
     public List<LineInfo> layout(LabelCacheItem labelItem, Graphics2D graphics) {
         String text = labelItem.getLabel();
@@ -60,10 +66,10 @@ class LabelSplitter {
         if (!(text.contains("\n") || labelItem.getAutoWrap() > 0) && singleFont) {
             FontRenderContext frc = graphics.getFontRenderContext();
             TextLayout layout = new TextLayout(text, fonts[0], frc);
-            final GlyphVector gv = layoutSentence(text, labelItem, graphics, fonts[0]);
-            LineComponent component = new LineComponent(text, gv, layout);
-            LineInfo line = new LineInfo(component);
-            return Collections.singletonList(line);
+            LineInfo lineInfo = new LineInfo();
+            List<LineComponent> components = buildLineComponents(text, fonts[0], labelItem, graphics, layout);
+            components.forEach(c -> lineInfo.add(c));
+            return Collections.singletonList(lineInfo);
         }
 
         // first split along the newlines
@@ -80,11 +86,9 @@ class LabelSplitter {
                 for (FontRange range : ranges) {
                     graphics.setFont(range.font);
                     FontRenderContext frc = graphics.getFontRenderContext();
-
                     TextLayout layout = new TextLayout(range.text, range.font, frc);
-                    LineComponent component = new LineComponent(range.text,
-                            layoutSentence(range.text, labelItem, graphics, range.font), layout);
-                    lineInfo.add(component);
+                    List<LineComponent> components = buildLineComponents(range.text, range.font, labelItem, graphics, layout);
+                    components.forEach(c -> lineInfo.add(c));
                 }
                 lines.add(lineInfo);
             }
@@ -155,9 +159,9 @@ class LabelSplitter {
                             extracted = extracted.replaceAll("\\s+$", "");
                         }
                         currentLineRange++;
-                        LineComponent component = new LineComponent(extracted,
-                                layoutSentence(extracted, labelItem, graphics, range.font), layout);
-                        lineInfo.add(component);
+                        List<LineComponent> components = buildLineComponents(extracted, range.font, labelItem, graphics, layout);
+                        components.forEach(c -> lineInfo.add(c));
+
                     }
                     lines.add(lineInfo);
                     prevPosition = newPosition;
@@ -166,6 +170,43 @@ class LabelSplitter {
         }
 
         return lines;
+    }
+
+    private List<LineComponent> buildLineComponents(String text, Font font,
+            LabelCacheItem labelItem, Graphics2D graphics, TextLayout layout) {
+        final double wordSpacing = labelItem.getWordSpacing();
+        if (text.trim().indexOf(' ') == -1 || wordSpacing <= 0) {
+            // no word spacing
+            LineComponent component = new LineComponent(text,
+                    layoutSentence(text, labelItem, graphics, font), layout);
+            return Arrays.asList(component);
+        } else {
+            // java does not support word spacing, we need to fake it. Since the machinery
+            // works against LineCompoennts we'll insert extra ones between the words
+            // having the right extra size
+            String[] parts = WORD_SPLITTER.split(text);
+            List<LineComponent> result = new ArrayList<>();
+            for (int i = 0; i < parts.length; i++) {
+                String part = parts[i];
+                LineComponent component = new LineComponent(part,
+                        layoutSentence(part, labelItem, graphics, font), layout);
+                result.add(component);
+                if (i < parts.length - 1) {
+                    // add a fake space with a tracking adjusting its size to the
+                    // desired extra word spacing
+                    double tracking = wordSpacing / font.getSize();
+                    Font spacerFont = font
+                            .deriveFont(Collections.singletonMap(TextAttribute.TRACKING, tracking));
+                    TextLayout spacerLayout = new TextLayout(SINGLE_CHAR_STRING, spacerFont,
+                            graphics.getFontRenderContext());
+                    LineComponent spacer = new LineComponent(SINGLE_CHAR_STRING,
+                            layoutSentence(SINGLE_CHAR_STRING, labelItem, graphics, spacerFont),
+                            spacerLayout);
+                    result.add(spacer);
+                }
+            }
+            return result;
+        }
     }
 
     private List<FontRange> getLineRanges(List<FontRange> ranges, int prevPosition,
@@ -216,7 +257,7 @@ class LabelSplitter {
      */
     private String checkForEmptyLine(String line) {
         if (line == null || line.equals("")) {
-            return NOT_EMPTY_STRING;
+            return SINGLE_CHAR_STRING;
         }
         return line;
     }

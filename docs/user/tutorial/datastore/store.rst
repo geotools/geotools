@@ -157,7 +157,7 @@ are always on the same transaction, but other than that this approach is working
         :start-after: // transaction start
         :end-before: // transaction end
         
-  #. Use the delegate to implement the internal ContentDataStore methods. 
+  #. Use the delegate to implement the internal ContentDataStore methods. In Eclipse you can use Source->Generate Delegate Methods to speed this up.
 
      .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java
         :language: java
@@ -171,7 +171,7 @@ are always on the same transaction, but other than that this approach is working
         :start-after: // visitor start
         :end-before: // visitor end
      
-     .. warning:: Double check you are adding the above to CSVFeature**Source**.
+     .. warning:: Double check you are adding the above to CSVFeature **Source**.
      
      .. note::
      
@@ -235,7 +235,7 @@ A couple common questions:
 * Q: How does that work with transactions?
   
   ContentState manages a DiffTransactionState used to capture each modification. Each change is
-  recorded by FeatureId (a feature recorded for each add or modification, or null recorded
+  recorded by FeatureId (a feature recorded for each add or modification, or null 
   for a delete).
   
   .. figure:: images/Transaction.png
@@ -298,6 +298,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
    * Quickly making a copy of the file if we are just interested in appending
    * Starting the file off with a copy of the headers
    * Creating a delegate to read the original file
+   * Check if the columns are lat,lon or lon,lat for when we write them out.
    
    Putting all that together:
    
@@ -355,7 +356,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
       :start-after: // remove start
       :end-before: // remove end
 
-6. Add write() implementation:
+6. Add write() implementation, note how we have to keep track of the axis order (surprisingly this is not fixed):
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java

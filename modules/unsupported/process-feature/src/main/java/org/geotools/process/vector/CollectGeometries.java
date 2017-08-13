@@ -38,7 +38,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "Collect Geometries", description = "Collects the deafult geometries of the input features and combines them into a single geometry collection")
+@DescribeProcess(title = "Collect Geometries", description = "Collects the default geometries of the input features and combines them into a single geometry collection")
 public class CollectGeometries implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Geometry collection of all input geometries")

@@ -210,7 +210,9 @@ Things to Try
 =============
 
 Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
-stuck at any point please ask your instructor; or sign up to the geotools-users email list.
+stuck at any point please ask your instructor; or sign up to the geotools-users_ email list.
+
+.. _geotools-users: http://docs.geotools.org/latest/developer/communication.html
 
 Here are some additional challenges for you to try:
 

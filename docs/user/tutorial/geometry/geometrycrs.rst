@@ -16,12 +16,15 @@ Welcome
 Welcome to Geospatial for Java. This workbook is aimed at Java developers who
 are new to geospatial and would like to get started.
 
-Please set up your
-development environment prior to starting this tutorial. We will list the maven
+.. _quickstarts: ../quickstart/index.html
+
+You should have completed one of the GeoTools' Quickstarts_ 
+prior to running through this workbook. We need to be sure that you have an environment to work
+in with GeoTools jars and all their dependencies. We will list the maven
 dependencies required at the start of the workbook.
 
 This work book covers the dirty raw underbelly of the GIS world; yes I am afraid
-we are talking about *Math*. However please do not be afraid, all the math
+we are talking about *Maths*. However please do not be afraid, all the maths
 amounts to is shapes drawn on the earth.
 
 This workbook is constructed in a code first manner, allowing you to work
@@ -39,7 +42,7 @@ the geometry of the features.
 .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
-        :end-before: <repositories>
+        :end-before: </project>
     
 2. Create the package **org.geotools.tutorial.crs** and class **CRSLab.java** file and copy and paste the following code:
 
@@ -224,10 +227,14 @@ Here are a couple things to try with the above application.
    :start-after: // docs start validate action2
    :end-before: // docs end validate action2
 
-* Visit the JTS web site and look up how to simplify geometry. Modify the example
+* Visit the `JTS web site`_ and look up how to simplify geometry. Modify the example
   to simplify the geometry before writing it out -  there are several  techniques
-  to try (the TopologyPreservingSimplifier and DouglasPeuckerSimplifier classes
+  to try (the TopologyPreservingSimplifier_ and DouglasPeuckerSimplifier_ classes
   are recommended).
+
+.. _`jts web site`: https://www.locationtech.org/projects/technology.jts
+.. _TopologyPreservingSimplifier: https://locationtech.github.io/jts/javadoc/org/locationtech/jts/simplify/TopologyPreservingSimplifier.html
+.. _DouglasPeuckerSimplifier: https://locationtech.github.io/jts/javadoc/org/locationtech/jts/simplify/DouglasPeuckerSimplifier.html
 
   This exercise is a common form of data preparation.
 
@@ -445,8 +452,7 @@ EPSG:3005
         
     ``CRS.decode("EPSG:3005");``
 
-Note that both EPSG:4326 and EPSG:3785 are using lat/lon – but arrive at a very
-different shape for their map.
+
 
 Axis Order
 ----------

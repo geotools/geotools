@@ -399,7 +399,7 @@ Special care is needed when stepping through the contents of a FeatureCollection
 FeatureIterator. A FeatureIterator will actually be streaming the data off disk and we need to
 remember to close the stream  when we are done.
 
-Even though a FeatureCollection is a |ldquo| Collection |rdquo| it is very lazy and does not load
+Even though a FeatureCollection is a :code:`Collection` it is very lazy and does not load
 anything until you start iterating through the contents. 
 
 The closest Java concepts I have to FeatureCollection and FeatureIterator come from JDBC as show
@@ -415,4 +415,4 @@ below.
  ================== ====================
 
 If that is too much just remember |hyphen| please close your feature iterator when you are done. If
-not you will leak resources and get into trouble.
+not you will leak resources and get into trouble. 

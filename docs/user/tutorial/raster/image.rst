@@ -243,7 +243,7 @@ At a basic level we can fetch information from a WMS using a GetMap operation::
 The trick is knowing what parameters to fill in for |ldquo| layer |rdquo| and |ldquo| style |rdquo| when making one of these
 requests.
 
-The WMS Service offers a GetCapabilities document that describes what layers are available and wha
+The WMS Service offers a GetCapabilities document that describes what layers are available and what
 other operations like GetMap are available to work on those layers.
 
 GeoTools has a great implementation to help out here |hyphen| it can parse that capabilities document for
@@ -260,7 +260,7 @@ a list of layers, the supported image formats and so forth.
    // the capabilities document (so the rootLayer is at index 0)
    List layers = capabilities.getLayerList();
 
-WebMapServer class also knows how to set up a GetMap request for several different version of the
+The WebMapServer class also knows how to set up a GetMap request for several different version of the
 WMS standard.
 
 .. code-block:: java

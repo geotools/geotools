@@ -107,6 +107,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgresql.jdbc.version>9.4.1211</postgresql.jdbc.version>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+    <git.commit.useNative>false</git.commit.useNative>
+    <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1496,7 +1498,7 @@
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
-        <version>2.1.2</version>
+        <version>2.1.15</version>
         <executions>
           <execution>
             <goals>
@@ -1504,10 +1506,9 @@
             </goals>
           </execution>
         </executions>
-        <configuration> 
+        <configuration>
           <prefix>build</prefix>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
-
           <!-- needed for filtering with VERSION.txt -->
           <skipPoms>false</skipPoms>
           <verbose>false</verbose>
@@ -1515,7 +1516,24 @@
             <!-- the git describe step is expensive, we don't need it -->
             <skip>true</skip>
           </gitDescribe>
-        </configuration> 
+          <injectAllReactorProjects>true</injectAllReactorProjects>
+          <runOnlyOnce>${git.commit.runOnlyOnce}</runOnlyOnce>
+          <!--
+          In order to use native git (3+ times faster) add the following in ~/.m2/settings.xml
+          <profiles>
+            <profile>
+              <id>gitNative</id>
+              <properties>
+                <git.commit.useNative>true</git.commit.useNative>
+              </properties>
+            </profile>
+          <profiles>
+          <activeProfiles>
+            <activeProfile>gitNative</activeProfile>
+          </activeProfiles>
+          -->
+          <useNativeGit>${git.commit.useNative}</useNativeGit>
+        </configuration>
       </plugin>
       
       <!-- ======================================================= -->

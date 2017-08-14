@@ -6,6 +6,9 @@ cache:
 language: java
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' ~/.m2/settings.xml
+install: true
+env:
+  - MAVEN_OPTS=-Xmx512m
 script:
   - mvn -B -fae -T4 -Dall clean install
 notifications:
